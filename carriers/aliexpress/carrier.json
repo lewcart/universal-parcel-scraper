@@ -89,6 +89,13 @@
       "confidence": "low",
       "preferred": true,
       "checksum": "s10"
+    },
+    {
+      "id": "aliexpress-mi",
+      "pattern": "^[A-Z]{2}\\d{9}MI$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

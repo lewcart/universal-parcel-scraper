@@ -24,8 +24,18 @@ describe('S10-shaped numbers', () => {
     ]);
     expect(detectCarrierMatch('RR123456789TY').candidates).toEqual(['chronopost']);
     expect(checksumRejections('RR123456789TY')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-ty', checksum: 's10' }]);
-    // A single tracked MI number does not establish a family.
-    expect(detectCarrierMatch('RR123456785MI').candidates).toEqual(['chronopost']);
+  });
+
+  it('suggests AliExpress first for an MI number, a suffix Cainiao gives an AliExpress parcel', () => {
+    expect(detectCarrierMatch('rr 123 456 785 mi')).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'chronopost'], preferred: ['aliexpress'],
+    });
+    expect(recognitionCandidates('RR123456785MI')).toEqual([
+      { carrier: 'aliexpress', needsInput: null, preferred: true },
+      { carrier: 'chronopost', needsInput: null, preferred: false },
+    ]);
+    expect(detectCarrierMatch('RR123456789MI').candidates).toEqual(['chronopost']);
+    expect(checksumRejections('RR123456789MI')).toEqual([{ carrier: 'aliexpress', rule: 'aliexpress-mi', checksum: 's10' }]);
   });
 
   it('keeps a country suffix with no dedicated post in international mail', () => {

@@ -233,6 +233,12 @@
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

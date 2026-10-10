@@ -443,6 +443,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "aliexpress",
           "chronopost"
         ]
       },
@@ -466,6 +467,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "aliexpress",
           "chronopost"
         ]
       },

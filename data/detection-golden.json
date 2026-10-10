@@ -25332,9 +25332,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "aliexpress",
       "chronopost"
     ],
+    "preferred": [
+      "aliexpress"
+    ],
     "asked": [
+      "aliexpress",
       "chronopost"
     ]
   },
@@ -25970,9 +25975,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "aliexpress",
       "chronopost"
     ],
+    "preferred": [
+      "aliexpress"
+    ],
     "asked": [
+      "aliexpress",
       "chronopost"
     ]
   },
@@ -25981,9 +25991,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "aliexpress",
       "chronopost"
     ],
+    "preferred": [
+      "aliexpress"
+    ],
     "asked": [
+      "aliexpress",
       "chronopost"
     ]
   },

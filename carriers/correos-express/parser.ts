@@ -22,12 +22,14 @@ export function normalizeCorreosExpressNumber(raw: string): string {
 /**
  * A twenty-three-digit parcel label opens with the shipment number less its
  * check digit, then gives the parcel's position, the destination postcode and
- * its own check digit. The page names the shipment it belongs to.
+ * its own check digit. The page names the shipment it belongs to, and so
+ * supplies the shipment's first digit: Spanish labels keep it, and one
+ * Portuguese label opened with 6 for a shipment starting with 9. Only the next
+ * fourteen digits must agree.
  */
-function labelShipment(number: string): string | undefined {
-  if (number.length !== 23 || !hasGs1CheckDigit(number)) return undefined;
-  const base = number.slice(0, 15);
-  return [...'0123456789'].map(digit => base + digit).find(hasGs1CheckDigit);
+function isLabelShipment(number: string, shipment: string | undefined): boolean {
+  return number.length === 23 && hasGs1CheckDigit(number) && /^\d{16}$/.test(shipment ?? '')
+    && hasGs1CheckDigit(shipment!) && shipment!.slice(1, 15) === number.slice(1, 15);
 }
 
 function scanClock(raw: string): { local_time?: string; provider_time_text?: string } {
@@ -61,9 +63,9 @@ export function parseCorreosExpress(html: string, raw: string): CarrierResult {
   }
   const heading = $('h3.status');
   const identities = heading.find('.shipping > span').map((_, node) => clean($(node).text(), 40)).get();
-  const shipment = labelShipment(number);
+  const shipment = isLabelShipment(number, identities[0]) ? identities[0] : undefined;
   if (tables.length !== 1 || heading.length !== 1 || heading.find('.shipping').length !== 1 || identities.length !== 1
-    || (identities[0] !== number && identities[0] !== shipment)
+    || (identities[0] !== number && !shipment)
     || $('#shippingNumber').length !== 1 || $('#shippingNumber').val() !== number) {
     throw new SchemaError('Correos Express', 'Correos Express returned a different or ambiguous shipment');
   }
@@ -106,5 +108,5 @@ export function parseCorreosExpress(html: string, raw: string): CarrierResult {
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
     last_status_text: latest.description, last_update: null, last_update_local: latest.local_time ?? null,
     expected_delivery: active && day && latestDay && day >= latestDay ? day : null,
-    ...(identities[0] === shipment ? { canonical_tracking_number: shipment } : {}), events: events.slice(0, 100) };
+    ...(shipment ? { canonical_tracking_number: shipment } : {}), events: events.slice(0, 100) };
 }

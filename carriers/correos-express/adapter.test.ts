@@ -57,9 +57,14 @@ describe('Correos Express direct tracking', () => {
     const result = parseCorreosExpress(page(SHIPMENT), LABEL);
     expect(result).toMatchObject({ status: 'in_transit', canonical_tracking_number: SHIPMENT });
     expect(parseCorreosExpress(page(LABEL), LABEL).canonical_tracking_number).toBeUndefined();
-    // Another shipment, an echo of another label, and a label whose own check digit fails.
+    // A label opening with another first digit than its shipment's, as a Portuguese one did.
+    const OPENED = '69000000000000001999997';
+    expect(parseCorreosExpress(page(SHIPMENT, OPENED), OPENED)).toMatchObject({ canonical_tracking_number: SHIPMENT });
+    // Another shipment, an echo of another label, a label whose own check digit fails, a shipment
+    // whose check digit fails, and one that differs from the label beyond its first digit.
     for (const [changed, input] of [[page('9900000000000012'), LABEL], [page(SHIPMENT, '99000000000000002999993'), LABEL],
-      [page(SHIPMENT, '99000000000000001999995'), '99000000000000001999995']] as const) {
+      [page(SHIPMENT, '99000000000000001999995'), '99000000000000001999995'], [page('9900000000000005', OPENED), OPENED],
+      [page('6900000000000119', OPENED), OPENED]] as const) {
       expect(() => parseCorreosExpress(changed, input)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     }
   });

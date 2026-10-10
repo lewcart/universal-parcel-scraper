@@ -18,8 +18,10 @@ the hidden field must both echo the request. A 23-digit parcel label opens with
 the shipment number less its check digit, then gives the parcel's position, the
 destination postcode and its own check digit. Its page names that shipment, so
 the label is accepted when the hidden field echoes it and the visible label
-shows the shipment it opens with, which becomes the canonical number. The
-postcode never leaves the label, and the corpus keeps only synthetic labels.
+shows the shipment it opens with, which becomes the canonical number. Several
+live replies bind this. A Portuguese label opened with another first digit than
+its shipment's, so only the next fourteen digits must agree. The postcode never
+leaves the label, and the corpus keeps only synthetic labels.
 
 Scans retain the carrier's newest-first order. Their clocks have no stated zone,
 so valid digits remain local time and unresolved labels remain provider text.

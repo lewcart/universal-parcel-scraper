@@ -27,7 +27,8 @@
     "history",
     "estimated_delivery",
     "weight",
-    "dimensions"
+    "dimensions",
+    "canonical_tracking_number"
   ],
   "portal": {
     "url": "https://www.ontrac.com/tracking/?number={trackingNumber}",

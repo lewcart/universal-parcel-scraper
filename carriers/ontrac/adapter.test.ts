@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { adapter, OntracTracker } from './adapter.js';
-import { normalizeOntracNumber, parseOntrac } from './parser.js';
+import { normalizeOntracNumber, normalizeOntracRequest, parseOntrac } from './parser.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { classifyOntracStatus } from './status.js';
 import { InvalidInputError } from '../../core/errors/index.js';
@@ -43,9 +43,27 @@ describe('OnTrac direct tracking', () => {
       expect(parseOntrac(value, NUMBER)).not.toHaveProperty('dimensions_text');
     }
     const declared = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
-    expect(declared.capabilities).toEqual(['history', 'estimated_delivery', 'weight', 'dimensions']);
+    expect(declared.capabilities).toEqual(['history', 'estimated_delivery', 'weight', 'dimensions', 'canonical_tracking_number']);
     const inTransit = payload(); inTransit.Packages[0].Events.shift();
     expect(parseOntrac(inTransit, NUMBER).expected_delivery).toBe('2026-01-03T20:00:00-08:00');
+  });
+  it('resolves a shipper\'s AD reference to the one parcel OnTrac names by its own number', async () => {
+    const result = parseOntrac(payload(), 'ad 000000001');
+    expect(result).toMatchObject({ status: 'delivered', canonical_tracking_number: NUMBER, weight_kg: expect.any(Number) });
+    expect(result.events).toHaveLength(3);
+    expect(parseOntrac(payload(), NUMBER)).not.toHaveProperty('canonical_tracking_number');
+    expect(() => parseOntrac({ Packages: [payload().Packages[0], { ...payload().Packages[0], Tracking: '1LS0000000000002' }] }, 'AD000000001'))
+      .toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    for (const value of [{ Packages: [] }, { Packages: [{ ...payload().Packages[0], Tracking: 'AD000000001' }] }, { Packages: [{ ...payload().Packages[0], Tracking: '' }] }]) {
+      expect(() => parseOntrac(value, 'AD000000001')).toThrowError(expect.objectContaining({ kind: 'schema' }));
+    }
+    expect(normalizeOntracRequest('ad-000000001')).toBe('AD000000001');
+    for (const number of ['AD00000001', 'AD0000000001', 'AE000000001']) expect(() => normalizeOntracRequest(number)).toThrow(InvalidInputError);
+    expect(() => normalizeOntracNumber('AD000000001')).toThrow(InvalidInputError);
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(payload())));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
+    await expect(instance.track({ number: 'AD000000001' })).resolves.toMatchObject({ canonical_tracking_number: NUMBER });
+    expect(fetcher.mock.calls[0]?.[0]).toBe('https://webtrack.ontrac.com/PackageServices/tracking/AD000000001');
   });
   it('rejects missing, wrong and ambiguous identities and empty histories', () => {
     for (const value of [null, {}, { Packages: [] }, { Packages: [{ ...payload().Packages[0], Tracking: '1LS0000000000002' }] }, { Packages: [payload().Packages[0], payload().Packages[0]] }]) {

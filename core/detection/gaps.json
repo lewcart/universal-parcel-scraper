@@ -461,7 +461,7 @@
     "carrier": "ontrac",
     "pattern": "^AD\\d{9}$",
     "kind": "by_design",
-    "reason": "Shipper references that OnTrac's tracker resolves to the parcel's own number. They are not tracking numbers, so detection and the adapter leave them out."
+    "reason": "Shipper references that OnTrac's tracker resolves to the parcel's own number. They are not tracking numbers, so no rule points them to OnTrac; the adapter takes them when the user picks OnTrac or opens an OnTrac link."
   },
   {
     "carrier": "paack",

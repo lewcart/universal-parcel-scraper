@@ -138,8 +138,10 @@ function locationCountry(location: unknown): string | null {
  * the departure that names one (an airline's included), else the nearest
  * later one's, else `destination`. The guess can be a transit hub's country;
  * Hong Kong, Singapore and China all keep +08:00. A country on several clocks
- * lends none, and with none the scan stays a wall time.
- * Returns the zone, or null for a wall time, of each scan dated abroad, by its index in the leg.
+ * lends none, and the scan stays a wall time. With no country named at all,
+ * NZ Post's Auckland reading stays, the last guess: hours off, but the scan
+ * keeps its place, and a delivery its instant.
+ * Returns the zone, or null for a wall time, of each scan placed abroad, by its index in the leg.
  */
 function nzPostAbroad(events: unknown[], number: string, destination: string | null): Map<number, string | null> {
   const abroad = new Map<number, string | null>();
@@ -158,7 +160,7 @@ function nzPostAbroad(events: unknown[], number: string, destination: string | n
     if (scan.airline) return;
     const country = scan.country ?? after.slice(0, position).reverse().find((other) => other.country)?.country
       ?? after.slice(position + 1).find((other) => other.country)?.country ?? destination;
-    abroad.set(scan.index, country ? countryTimeZone(country) : null);
+    if (country) abroad.set(scan.index, countryTimeZone(country));
   });
   return abroad;
 }
@@ -296,7 +298,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
       if (wall && abroad.has(index) && !zone) {
-        // A scan NZ Post dated abroad, with no country to borrow, keeps its description as a wall time.
+        // A scan NZ Post dated abroad, in a country on several clocks, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };
         delete local.time;
         events.push(local);

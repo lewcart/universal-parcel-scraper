@@ -194,7 +194,7 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(scan(100999), number).events?.[0]?.time).toBe('2026-05-07T20:20:00.000Z');
   });
 
-  it('reads NZ Post\'s clock at the scan\'s own date, and keeps a scan abroad on an item it sends as a wall time', () => {
+  it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },
       description, location: null, stage: null, sub_status: 'InTransit_Other' });
@@ -206,8 +206,9 @@ describe('17TRACK result parsing', () => {
         row('2026-08-05', '15:59:44', '+13:00', 'Label created'),
       ] }] } } }] });
     const outbound = parse17TrackResponse(reply('ZZ123456785NZ'), 'ZZ123456785NZ');
-    // August is New Zealand's winter, +12:00, whatever offset 17TRACK put on it in October.
-    expect(outbound.events?.map(e => e.time ?? e.local_time)).toEqual(['2026-08-14T12:47:00',
+    // August is New Zealand's winter, +12:00, whatever offset 17TRACK put on it in October. The scan
+    // abroad, in no country the reply names, keeps that reading as the last guess.
+    expect(outbound.events?.map(e => e.time ?? e.local_time)).toEqual(['2026-08-14T00:47:00.000Z',
       '2026-08-07T23:13:00.000Z', '2026-08-06T01:55:10.000Z', '2026-08-05T03:59:44.000Z']);
     expect(outbound.events?.[0]).toMatchObject({ description: 'Held for clearance, Your item is currently being held for clearance',
       provider_time_iso: '2026-08-14T12:47:00+13:00' });
@@ -242,9 +243,9 @@ describe('17TRACK result parsing', () => {
     expect(relayed.events?.find(e => e.description === '到达境外出口互换局')).toMatchObject({ time: '2026-08-05T18:09:00.000Z' });
     // An airline scan naming a country lends it before the destination does, though a transit hub's can be the wrong one.
     expect(held(reply([nzLeg('Japan')], 'CN'))).toMatchObject({ time: '2026-08-14T03:47:00.000Z' });
-    // A lender on several clocks, or none at all, leaves the wall time.
+    // A lender on several clocks leaves the wall time; with none at all, NZ Post's Auckland reading stays.
     expect(held(reply([nzLeg('United States')], 'CN'))).toMatchObject({ local_time: '2026-08-14T12:47:00' });
-    expect(held(reply([nzLeg(null)]))).toMatchObject({ local_time: '2026-08-14T12:47:00' });
+    expect(held(reply([nzLeg(null)]))).toMatchObject({ time: '2026-08-14T00:47:00.000Z' });
     // An origin on several clocks keeps 17TRACK's reading of the exchange scan.
     expect(parse17TrackResponse(reply([chinaPostLeg('CN')], null, 'ZZ123456785US'), 'ZZ123456785US').events?.[0]?.time)
       .toBe('2026-08-05T22:09:00.000Z');

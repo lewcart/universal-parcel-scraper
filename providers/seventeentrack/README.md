@@ -119,8 +119,9 @@ carrier.
   included), else the nearest later one's, else the destination the reply names: the
   recipient's country, or the country of the one other post whose leg it carries (China
   Post's `CN`). The guess can be a transit hub's country, but Hong Kong, Singapore and China
-  all keep `+08:00`. When that country has several clocks, or nothing names one, the scan
-  stays a wall time (`local_time`). The reply stays conclusive.
+  all keep `+08:00`. When that country has several clocks, the scan stays a wall time
+  (`local_time`). When nothing names a country, NZ Post's Auckland reading stays, the last
+  guess: hours off, but a delivery keeps its instant. The reply stays conclusive.
 - China Post's leg mirrors the origin post's outward exchange scans (`到达境外出口互换局`,
   `离开境外出口互换局`) on that post's wall clock, and 17TRACK labels them `+08:00`: an NZ
   Post arrival at 06:09 Auckland time showed four hours late (checked 2026-10-10). On an

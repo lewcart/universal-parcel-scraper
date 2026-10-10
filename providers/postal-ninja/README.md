@@ -2,9 +2,9 @@
 
 Opt-in universal provider: selecting `Postal Ninja` in `providers` (`SCRAPER_PROVIDERS` for
 the CLI and server) asks it after the other aggregators, whatever its coverage evidence,
-because its histories rarely have a scan a consumer can place.
+because its international histories rarely have a scan a consumer can place.
 Through TRAWL it returns full histories, often with destination legs. Its scan times
-usually have no zone. Persisted provider name: `Postal Ninja`. The results page needs a
+have no zone, so only a history one service reports within one country is placed. Persisted provider name: `Postal Ninja`. The results page needs a
 handle from a verified lookup, which cannot be built from the tracking number, so the
 link shown to users is the public form.
 
@@ -61,11 +61,16 @@ numbers or handles cannot end the lookup.
 
 - Identity: `status: FOUND`, `track.tc` equals the number, `track.hid` equals `hid`, and
   the state is `TRACKING`, `FINISHED`, `STOPPED` or `ARCHIVED`.
-- `dt` has no zone, even across countries. It is kept as `local_time`, and as `time` only
-  when it carries an explicit offset. The provider's order is kept, because wall times
-  cannot be sorted reliably against UTC instants. If the newest scan has no offset,
-  `last_update` is null. A history with no offset at all, the usual case, is
-  inconclusive through `fetchSource()`: it gives a consumer no scan it can place.
+- `dt` has no zone, even across countries. It is the scanning office's wall clock, even
+  when another service relays the scan under its own name (`ds`): DHL Germany repeats
+  China Post's export scans at Chinese times, and an international postal item's feed
+  carries the other country's scans. So only a history one service reports alone, and
+  for an S10 item one whose origin is its destination (`destCn`), is placed: in that
+  service's zone, as Ship24 reads its couriers', else in the zone routing passes for the
+  parcel's carrier. Other scans keep their wall time as `local_time`; an explicit offset
+  is kept as it is. The provider's order is kept, because wall times cannot be sorted
+  reliably against UTC instants. If the newest scan has no instant, `last_update` is
+  null, and a history with none at all is inconclusive through `fetchSource()`.
 - `track.toAddress` is never read. At most 1000 events.
 
 ## Rejected approaches

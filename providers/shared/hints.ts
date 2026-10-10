@@ -7,9 +7,11 @@
  * Nothing here decides a carrier on its own.
  */
 import type { CarrierId } from '../../generated/catalog.js';
-import { brandCarrierIds, carrierIdFromName } from '../../core/catalog/hints.js';
+import { carrierTimezone } from '../../core/catalog/index.js';
+import { brandCarrierIds, brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { checksumFailures } from '../../core/detection/detect.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
+import { sharedClockZone } from '../../core/time/index.js';
 
 export { isKnownCarrierName } from '../../core/catalog/hints.js';
 
@@ -27,6 +29,14 @@ export function brandCarrierForNumber(name: string, trackingNumber: string): str
   if (matching.length === 1) return matching[0];
   const preferred = matching.filter((id) => detected.preferred.includes(id as CarrierId));
   return preferred.length === 1 ? preferred[0] : undefined;
+}
+
+/** A courier name's clock: its catalog carrier's, the country it names, or its brand's shared one. */
+export function courierZone(name: string, number: string, wall: string): string | null {
+  const carrier = carrierIdFromName(name) ?? brandCarrierForNumber(name, number);
+  const zone = carrier ? carrierTimezone(carrier) : 'UTC';
+  if (zone !== 'UTC') return zone;
+  return carrierNameCountryZone(name) ?? sharedClockZone(brandTimeZones(name), wall);
 }
 
 /**

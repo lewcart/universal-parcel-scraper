@@ -28,6 +28,32 @@ describe('Postal Ninja result parsing', () => {
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
   });
 
+  it('reads a history one service reports on that service\'s clock, else on the carrier\'s', () => {
+    const scans = [{ ds: 'An Post Ireland', dt: '2026-08-17T07:22:00', dsc: 'Out for delivery' }, { ds: 'An Post Ireland', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
+    expect(parsePostalNinjaResponse(withEvents(scans), number, 'Europe/Rome').events?.map((scan) => scan.time))
+      .toEqual(['2026-08-17T10:17:00.000Z', '2026-08-17T06:22:00.000Z']);
+    const unknown = scans.map((scan) => ({ ...scan, ds: 'Example Express' }));
+    expect(parsePostalNinjaResponse(withEvents(unknown), number, 'Europe/Rome').events?.map((scan) => scan.time))
+      .toEqual(['2026-08-17T09:17:00.000Z', '2026-08-17T05:22:00.000Z']);
+    expect(parsePostalNinjaResponse(withEvents(unknown), number).last_update).toBeNull();
+  });
+
+  it('keeps wall times when services relay one another\'s scans or a postal item crosses a border', () => {
+    // DHL Germany repeats the origin post's scans at the origin's clock.
+    const relayed = parsePostalNinjaResponse(withEvents([
+      { ds: 'Example Post', dt: '2026-08-12T20:05:00', dsc: 'Posting/Collection' },
+      { ds: 'DHL Germany', dt: '2026-08-12T20:05:00', dsc: 'Posting/Collection' },
+      { ds: 'An Post Ireland', dt: '2026-08-17T11:17:00', dsc: 'Delivered' },
+    ]), number, 'Europe/Dublin');
+    expect(relayed.last_update).toBeNull();
+    expect(relayed.events?.every((scan) => scan.local_time && !scan.time)).toBe(true);
+    const postal = 'RR123456785CH';
+    const item = (destCn: string) => ({ ...found, track: { ...found.track, tc: postal, destCn,
+      events: [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }] } });
+    expect(parsePostalNinjaResponse(item('SV'), postal).last_update).toBeNull();
+    expect(parsePostalNinjaResponse(item('CH'), postal).last_update).toBe('2026-08-17T09:17:00.000Z');
+  });
+
   it('accepts the widget compact response without inventing missing history', () => {
     const track = { ...found.track, events: undefined };
     const parsed = parsePostalNinjaResponse({ ...found, track: {
@@ -95,7 +121,8 @@ describe('Postal Ninja TRAWL capture', () => {
     const {fetcher, trawl} = setup(captured([entry({status: 'PROCESSING', tc: number, hid: found.hid}, check), entry(found)]));
     const provider = adapter({trawl, recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null});
     expect(provider.steps).toEqual(['trawl']);
-    await expect(provider.track({number, postcode: null}, {budgetMs: 30_000})).resolves.toMatchObject({tracking_provider: 'Postal Ninja', current_stage: 'delivered'});
+    await expect(provider.track({number, postcode: null, timezone: 'Europe/Rome'}, {budgetMs: 30_000}))
+      .resolves.toMatchObject({tracking_provider: 'Postal Ninja', current_stage: 'delivered', last_update: '2026-08-17T09:17:00.000Z'});
     expect(JSON.parse(String(fetcher.mock.calls[0]![1]?.body))).toMatchObject({url, skipHttp: true, maxTier: 3, captureResponses: [get, check]});
     expect(scrapeUniversalPage).not.toHaveBeenCalled();
   });
@@ -155,7 +182,7 @@ describe('Postal Ninja widget lookup', () => {
       signal!.addEventListener('abort', () => reject(signal!.reason), { once: true });
     }));
     const controller = new AbortController();
-    const lookup = new PostalNinjaTracker({ executablePath: '/test/chromium' }).fetch(number, undefined, controller.signal);
+    const lookup = new PostalNinjaTracker({ executablePath: '/test/chromium' }).fetch(number, undefined, null, controller.signal);
     await vi.waitFor(() => expect(scrapeUniversalPage).toHaveBeenCalledOnce());
     controller.abort(new Error('caller cancelled'));
     await expect(lookup).rejects.toThrow('caller cancelled');

@@ -14,8 +14,6 @@
  */
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
-import { carrierTimezone } from '../../core/catalog/index.js';
-import { brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -23,7 +21,7 @@ import type { StepRecorder } from '../../core/telemetry/index.js';
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
 import { countryTimeZone, sharedClockZone } from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
-import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
+import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { localEvent, numberOf, place, result, type UniversalSource } from '../shared/result.js';
 import { Ship24HttpClient } from './http.js';
 
@@ -33,14 +31,6 @@ const MAX_COURIERS = 20;
 /** The direct tier's own share of the lookup budget; the browser keeps the rest. */
 const DIRECT_BUDGET_MS = 8_000;
 
-/** A courier name's clock: its catalog carrier's, the country it names, or its brand's shared one. */
-function courierZones(name: string, number: string, wall: string): string | null {
-  const carrier = carrierIdFromName(name) ?? brandCarrierForNumber(name, number);
-  const zone = carrier ? carrierTimezone(carrier) : 'UTC';
-  if (zone !== 'UTC') return zone;
-  return carrierNameCountryZone(name) ?? sharedClockZone(brandTimeZones(name), wall);
-}
-
 /**
  * The zone of a scan whose timestamp names no offset: it is the scanning
  * carrier's wall clock. Read it in the clock every courier the reply names
@@ -49,7 +39,7 @@ function courierZones(name: string, number: string, wall: string): string | null
  * With none of them it stays a wall time, which the timeline cannot place.
  */
 function wallZone(couriers: string[], location: unknown, number: string, wall: string, fallback: string | null): string | null {
-  const zones = couriers.map((name) => courierZones(name, number, wall));
+  const zones = couriers.map((name) => courierZone(name, number, wall));
   const named = zones.length && zones.every((zone): zone is string => zone !== null) ? sharedClockZone(zones, wall) : null;
   if (named) return named;
   const country = typeof location === 'string' ? location.split(',').at(-1) : undefined;

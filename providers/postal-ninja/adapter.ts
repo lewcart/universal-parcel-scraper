@@ -11,6 +11,7 @@
  */
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
+import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { ChallengeError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -19,6 +20,7 @@ import type { TrawlClient, TrawlScrapeResponse } from '../../core/transport/inde
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
+import { courierZone } from '../shared/hints.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
@@ -40,7 +42,7 @@ function isMatchingResultPage(page: TrawlScrapeResponse, number: string): boolea
   });
 }
 
-export function parsePostalNinjaResponse(payload: unknown, trackingNumber: string): CarrierResult {
+export function parsePostalNinjaResponse(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
   const number = numberOf(trackingNumber);
   if (!isRecord(payload) || payload.status !== 'FOUND' || !isRecord(payload.track)
     || payload.track.tc !== number || payload.track.hid !== payload.hid
@@ -55,10 +57,19 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
     : payload.track.events;
   if (!Array.isArray(rawEvents) || rawEvents.length > MAX_EVENTS) throw new SchemaError(SOURCE, 'Postal Ninja returned invalid events');
   const events: CarrierEvent[] = [];
-  // Postal Ninja supplies events oldest first. Its dt values are local wall
-  // times without a zone, even when multiple countries are involved. Preserve
-  // them as local_time, but never invent UTC scans or use the destination zone
-  // for the whole journey. Explicit offsets, when present, can be persisted.
+  // Postal Ninja supplies events oldest first. Its dt values are wall times
+  // without a zone, at the scanning office's clock even when another service
+  // relays them under its own name (ds): DHL Germany repeats China Post's
+  // export scans at Chinese times, and an international postal item's feed
+  // carries the other country's scans. So only a history one service reports
+  // alone, and for a postal item one that stays in its country, is placed: in
+  // that service's zone, else in the zone routing passes for the parcel's
+  // carrier. Other scans keep their wall time as local_time. Explicit offsets,
+  // when present, are persisted as they are.
+  const services = new Set((rawEvents as unknown[]).map((raw) => isRecord(raw) ? text(raw.ds) : ''));
+  const [service] = services;
+  const placed = services.size === 1
+    && (!isValidS10TrackingNumber(number) || number.slice(-2) === text(payload.track.destCn));
   for (const raw of [...rawEvents as unknown[]].reverse()) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event');
     const description = text(raw.dsc);
@@ -72,7 +83,10 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
       const classified = classifyEvent(description);
       const { stage } = classified;
       if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
-      events.push({ local_time: raw.dt, description: stage === 'delivered' ? 'Delivered' : description, ...classified });
+      const zone = placed ? (service ? courierZone(service, number, raw.dt) : null) ?? timezone : null;
+      const instant = zone ? DateTime.fromISO(raw.dt, { zone }) : null;
+      events.push({ ...(instant?.isValid ? { time: instant.toUTC().toISO() } : { local_time: raw.dt }),
+        description: stage === 'delivered' ? 'Delivered' : description, ...classified });
     }
   }
   return result(events, SOURCE, true);
@@ -87,7 +101,7 @@ export interface PostalNinjaOptions extends Omit<UniversalBrowserOptions, 'signa
 export class PostalNinjaTracker {
   constructor(readonly options: PostalNinjaOptions = {}) {}
 
-  async fetch(trackingNumber: string, budgetMs?: number, signal?: AbortSignal): Promise<CarrierResult> {
+  async fetch(trackingNumber: string, budgetMs?: number, timezone: string | null = null, signal?: AbortSignal): Promise<CarrierResult> {
     const number = numberOf(trackingNumber);
     const timeoutMs = budgetMs ?? this.options.timeoutMs ?? 45_000;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) throw new TypeError('Postal Ninja timeout must be between 1 and 60000 ms');
@@ -137,7 +151,7 @@ export class PostalNinjaTracker {
           // TRAWL success must include the normal page's full history; otherwise
           // fallback providers should get a chance to return the missing scans.
           if (isRecord(payload) && isRecord(payload.track) && !Array.isArray(payload.track.events)) continue;
-          try { return parsePostalNinjaResponse(payload, number); }
+          try { return parsePostalNinjaResponse(payload, number, timezone); }
           catch (error) { if (error instanceof SchemaError) pending ??= error; else throw error; }
         }
         throw submissionError ?? pending ?? captureFailure(page, spec);
@@ -162,7 +176,7 @@ export class PostalNinjaTracker {
           if (await save.count()) await save.uncheck();
           await form.locator('button[type="submit"]').click();
         },
-      }, (payload) => parsePostalNinjaResponse(payload, number)),
+      }, (payload) => parsePostalNinjaResponse(payload, number, timezone)),
     }]);
   }
 }
@@ -176,6 +190,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: SOURCE,
     steps: [environment.trawl ? 'trawl' : 'browser'],
-    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, context?.signal),
+    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, input.timezone ?? null, context?.signal),
   };
 };

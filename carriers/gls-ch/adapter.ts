@@ -80,10 +80,12 @@ export type GLSPostcodeShape = 4 | 'any';
 /**
  * The recipient postcode: four Swiss digits, or with `any` the postcode of any
  * country GLS delivers in. GLS refuses only what no country writes, such as a
- * symbol or fewer than three characters.
+ * symbol or fewer than three characters. With `any` only, a Swiss or
+ * Liechtenstein postcode written with its country prefix is sent as its four
+ * digits, which GLS matches.
  */
 export function normalizeGLSSwitzerlandPostcode(raw: string, shape: GLSPostcodeShape = 4): string {
-  const value = shape === 'any' ? deliveryPostcodeText(raw) : raw.trim();
+  const value = shape === 'any' ? deliveryPostcodeText(raw).replace(/^(?:CH|FL|LI)[- ]?(?=\d{4}$)/, '') : raw.trim();
   if (!(shape === 'any' ? DELIVERY_POSTCODE : /^\d{4}$/).test(value)) {
     const wanted = shape === 'any' ? 'recipient postcode' : '4-digit recipient postcode';
     throw new InputRequiredError('GLS', `the ${wanted}`, `GLS detailed tracking requires the ${wanted}`);

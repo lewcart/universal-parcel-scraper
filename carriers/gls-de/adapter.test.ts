@@ -84,7 +84,8 @@ describe('GLS Germany', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it.each([['1012 ab', '1012 AB'], ['SW1A  1AA', 'SW1A 1AA'], ['00-001', '00-001'], [' 8000 ', '8000']])(
+  it.each([['1012 ab', '1012 AB'], ['SW1A  1AA', 'SW1A 1AA'], ['00-001', '00-001'], [' 8000 ', '8000'],
+    ['CH-8000', '8000'], ['fl-9490', '9490'], ['LI 9490', '9490'], ['CH8000', '8000']])(
     'sends the postcode of another country GLS delivers in: %s',
     async (typed, sent) => {
       const fetcher = vi.fn<typeof fetch>()
@@ -143,6 +144,30 @@ describe('GLS Germany', () => {
     await expect(new GLSGermanyTracker().fetch(NUMBER, '10115')).rejects.toMatchObject({ name: 'GLSGermanyTrackingError', status: 404 });
     // An answer is never sent again.
     expect(fetcher).toHaveBeenCalledOnce();
+  });
+
+  it.each(['E609', 'E800'])('reports a postcode GLS does not match (%s) as not found, as GLS Switzerland does', async (lastError) => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(Response.json({ tuStatus: [parcel()] }))
+      .mockResolvedValueOnce(Response.json({ lastError }, { status: 404 }));
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'GLSGermanyTrackingError', status: 404 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    ['another GLS code', JSON.stringify({ lastError: 'E206' })],
+    ['no GLS code', JSON.stringify({ message: 'Not Found' })],
+    ['a page instead of GLS\'s reply', '<html><body>Not Found</body></html>'],
+  ])('keeps a detail 404 with %s an upstream error', async (_case, body) => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(Response.json({ tuStatus: [parcel()] }))
+      .mockResolvedValueOnce(new Response(body, { status: 404 }));
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
+  });
+
+  it('keeps an overview 404 other than an expired parcel an upstream error', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ lastError: 'E609' }, { status: 404 }));
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
   });
 
   it('sends a request that hangs once more, inside the budget', async () => {

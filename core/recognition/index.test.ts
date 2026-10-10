@@ -84,6 +84,17 @@ describe('recognition candidates', () => {
     expect(recognitionCandidates('10000000000001').map((candidate) => candidate.carrier)).toEqual(['seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
   });
 
+  it('asks GLS France, then GLS Germany, then GLS Switzerland about a GLS number', () => {
+    // GLS's group overview answers for every network's parcels alike, so GLS
+    // Germany and GLS Switzerland always agree; GLS France answers only its own.
+    for (const number of ['12345678901', '123456789011', 'AB12CD34']) {
+      expect(recognitionAskedCarriers(number).slice(0, 3)).toEqual(['gls-fr', 'gls-de', 'gls-ch']);
+    }
+    expect(recognitionAskedCarriers('ABCDEF')).toEqual(['gls-de', 'gls-ch']);
+    // A caller's country only reorders the questions.
+    expect(recognitionAskedCarriers('12345678901', { countryHint: 'CH' })[0]).toBe('gls-ch');
+  });
+
   it('can ask bpost about an ambiguous numeric barcode without a recipient postcode', () => {
     expect(recognitionCandidates('000000000000000000000001')).toEqual(expect.arrayContaining([
       { carrier: 'bpost', needsInput: null, preferred: false },
@@ -169,8 +180,11 @@ describe('settling on a carrier', () => {
   it('prefers number evidence, then one brand\'s most common network, and otherwise lets the user choose', () => {
     expect(settleRecognition([outcome('dpd', 'known', { preferred: true }), outcome('ciblex', 'known')], now))
       .toEqual({ carrier: 'dpd', choices: [] });
-    expect(settleRecognition([outcome('gls-de', 'known'), outcome('gls-ch', 'known')], now))
-      .toEqual({ carrier: 'gls-ch', choices: [] });
+    expect(settleRecognition([outcome('gls-ch', 'known'), outcome('gls-de', 'known')], now))
+      .toEqual({ carrier: 'gls-de', choices: [] });
+    // GLS France's own tracker answers only French parcels, with the history and no postcode.
+    expect(settleRecognition([outcome('gls-ch', 'known'), outcome('gls-de', 'known'), outcome('gls-fr', 'known')], now))
+      .toEqual({ carrier: 'gls-fr', choices: [] });
     expect(settleRecognition([outcome('dpd', 'known'), outcome('hermes-de', 'known')], now))
       .toEqual({ choices: ['dpd', 'hermes-de'] });
     expect(settleRecognition([outcome('seur', 'known'), outcome('brt', 'known')], now))

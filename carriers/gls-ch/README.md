@@ -77,6 +77,10 @@ HTTP 400, 403 and 404 all mean "no such parcel" and raise
 
 - No history without the postcode, which is why the carrier declares it as a
   required input.
+- GLS Germany recognizes the same numbers through the same overview, and
+  recognition prefers it, because its tracker also takes postcodes outside
+  Switzerland. Group-wide `/EU/` links go there too. A Swiss parcel lands here
+  through a `/CH/` link or by picking it.
 
 ## Testing
 

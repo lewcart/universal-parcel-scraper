@@ -22,6 +22,13 @@ import {
 const PROVIDER = 'GLS Germany tracking';
 const CARRIER = 'GLS Germany';
 const DEFAULT_TIMEOUT_MS = 15_000;
+/** GLS's `lastError` for an expired parcel. */
+const OVERVIEW_NOT_FOUND: readonly string[] = ['E000'];
+/**
+ * And for a postcode that does not match. GLS also answers E609 to a malformed detail request
+ * (a missing owner code or `millis`, a wrong `caller`), so gls-ch's tests pin that request's shape.
+ */
+const DETAIL_NOT_FOUND: readonly string[] = ['E000', 'E609', 'E800'];
 
 export interface GLSGermanyOptions {
   timeoutMs?: number;
@@ -80,7 +87,7 @@ export class GLSGermanyTracker {
     const owner = owners.find((row) => row.type === 'REQUEST');
     const detail = await this.request(glsSwitzerlandDetailApiUrl(
       String(parcel.tuNo), postcode, this.now(), cleanScalar(owner?.code, 64), 'any',
-    ), budget);
+    ), budget, true);
     try {
       const result = parseGLSSwitzerlandTrackingResponse(detail, String(parcel.tuNo));
       // Both services use CET/CEST; expose the regional timezone to clients.
@@ -114,7 +121,7 @@ export class GLSGermanyTracker {
    * A request that fails to reach GLS, or hangs, is sent once more: the first gets at most half of
    * what is left, so the second fits in the rest.
    */
-  private async request(url: string, budget: LookupBudget): Promise<unknown> {
+  private async request(url: string, budget: LookupBudget, detail = false): Promise<unknown> {
     const { response, bytes } = await withNetworkRetry(budget, (timeoutMs) => fetchBounded(url, {
       signal: budget.signal,
       headers: { Accept: 'application/json', Referer: 'https://gls-group.eu/EU/en/parcel-tracking', 'User-Agent': this.#userAgent },
@@ -125,10 +132,19 @@ export class GLSGermanyTracker {
       allowHttpError: true,
       ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
     }));
-    // A challenge, invalid postcode, rate limit or outage must not become "not found".
+    // A challenge, rate limit or outage must not become "not found". GLS's own 404 for an expired
+    // parcel does, and so does, on the detail request, its 404 for a postcode that does not match a
+    // parcel the overview found, as on GLS Switzerland. Any other code, or a 404 without GLS's
+    // reply, stays an upstream error.
     if (response.status === 404) {
-      const payload = parseJsonBytes(bytes, PROVIDER);
-      if (isRecord(payload) && payload.lastError === 'E000') throw new GLSGermanyTrackingError();
+      let payload: unknown;
+      try {
+        payload = parseJsonBytes(bytes, PROVIDER);
+      } catch {
+        payload = undefined;
+      }
+      const code = isRecord(payload) && typeof payload.lastError === 'string' ? payload.lastError : '';
+      if ((detail ? DETAIL_NOT_FOUND : OVERVIEW_NOT_FOUND).includes(code)) throw new GLSGermanyTrackingError();
     }
     if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
     return parseJsonBytes(bytes, PROVIDER);

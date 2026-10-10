@@ -37,7 +37,7 @@
       "direct"
     ],
     "recognition": {
-      "rank": 60
+      "rank": 50
     },
     "refresh": {
       "minMinutes": 60,
@@ -54,9 +54,9 @@
     "provider_code"
   ],
   "portal": {
-    "url": "https://gls-group.eu/EU/en/parcel-tracking?match={trackingNumber}",
-    "searchUrl": "https://gls-group.eu/EU/en/parcel-tracking",
-    "canaryUrl": "https://gls-group.eu/EU/en/parcel-tracking",
+    "url": "https://gls-group.eu/GROUP/en/parcel-tracking?match={trackingNumber}",
+    "searchUrl": "https://gls-group.eu/GROUP/en/parcel-tracking",
+    "canaryUrl": "https://gls-group.eu/GROUP/en/parcel-tracking",
     "shows": [
       "status",
       "history",
@@ -99,7 +99,7 @@
         "parcelNumber",
         "matchParcelNumber"
       ],
-      "pathPattern": "^/(?:EU|CH)/"
+      "pathPattern": "^/CH/"
     }
   ],
   "detection": [

@@ -194,9 +194,11 @@ describe('evidence-backed tracking formats', () => {
     expect(parseTrackingInput('Tracking number: PENDING').source).toBe('none');
     expect(parseTrackingInput('Your parcel AALZJR is on its way').source).toBe('none');
     expect(parseTrackingInput('thank you').source).toBe('none');
-    // A carrier's own link can carry one.
+    // A carrier's own link can carry one. GLS's group-wide links go to GLS Germany, its Swiss ones to GLS Switzerland.
     expect(parseTrackingInput('https://gls-group.eu/EU/en/parcel-tracking?match=AALZJR'))
-      .toMatchObject({ trackingNumber: 'AALZJR', source: 'link' });
+      .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-de', source: 'link' });
+    expect(parseTrackingInput('https://gls-group.eu/CH/de/paketverfolgung?match=AALZJR'))
+      .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-ch', source: 'link' });
   });
 
   it('offers UPS for an H waybill without selecting it', () => {

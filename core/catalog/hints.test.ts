@@ -60,6 +60,7 @@ describe('delivery partner evidence', () => {
     ['DHL eCommerce', 'https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html', 'dhl-ecommerce'],
     ['GLS Germany', 'https://gls-group.eu/EU/en/parcel-tracking', 'gls-de'],
     ['GLS France', 'https://gls-group.eu/EU/en/parcel-tracking', 'gls-fr'],
+    ['GLS Switzerland', 'https://gls-group.eu/EU/en/parcel-tracking', 'gls-ch'],
     ['GLS Germany', 'https://www.dhl.com/', undefined],
     // Without a name, a rule limited to some paths of a shared host covers only those paths.
     ['', 'https://www.gofo.com/', 'gofo'],
@@ -69,6 +70,8 @@ describe('delivery partner evidence', () => {
     ['', 'https://www.gofo.com/es/', undefined],
     ['', 'https://www.gofo.com/usa/', undefined],
     ['', 'https://gls-group.eu/FR/fr/suivi-colis', 'gls-fr'],
+    ['', 'https://gls-group.eu/EU/en/parcel-tracking', 'gls-de'],
+    ['', 'https://gls-group.eu/CH/de/paketverfolgung', 'gls-ch'],
     ['', 'https://gls-group.eu/', undefined],
     // A carrier's own host: its tracking pages and home page name it, its other pages none.
     ['', 'https://vas.brt.it/vas/sped_det_show.hsm', 'brt'],

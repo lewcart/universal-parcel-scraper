@@ -19,15 +19,21 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
   (weights 3, 1, 3, … from the right, plus one). Nine other carriers share
   the 12-digit shape, so detection offers GLS for it only when that digit
   passes. GLS numbers are never 13 or 14 digits.
-- HTTP 404 is a not-found only when the body has GLS's `lastError: E000`.
-  Otherwise it stays an upstream error: the service also returns 404 for
-  challenges and invalid postcodes, which must not look like an expired parcel.
-  Delivered parcels age out of public history and then return `E000`.
+- HTTP 404 is a not-found when the body has GLS's `lastError: E000`, and on
+  the detail request when it has `E609` or `E800`: the postcode does not match
+  the parcel the overview found, which GLS Switzerland reports the same way.
+  GLS also answers `E609` to a malformed request, so gls-ch's tests pin the
+  detail request's shape. Any other code, or a 404 without GLS's reply, stays an
+  upstream error: the service also returns 404 for challenges, which must not
+  look like an expired parcel. Delivered parcels age out of public history and
+  then return `E000`.
 - The postcode is the recipient's, in any country's format: the GROUP service
   answers for parcels GLS delivers across its network, and this carrier is
   where a GLS parcel from another country is filed. GLS refuses fewer than three
   characters or a symbol as a wrong format (HTTP 400) and answers any other
-  postcode that does not match with the same `E800` 404 as a wrong one.
+  postcode that does not match with a 404 error code, as for a wrong one. A
+  Swiss or Liechtenstein postcode typed with its `CH-`, `FL-` or `LI-` prefix
+  is sent as its four digits.
 - The result's timezone is relabelled `Europe/Berlin`. Both services run on
   CET/CEST, so only the label changes.
 - `recognizes(number)`, the adapter's `recognize()`, queries the overview on
@@ -41,10 +47,15 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
 
 ## Limitations
 
-- Recognition cannot tell a German parcel from a Swiss one. The GROUP service answers
-  for both networks, and its overview of a delivered German parcel names no owner. When
-  both networks recognize a number, the more popular one, GLS Switzerland, is chosen.
-  GLS Germany is reached through a German link or by picking it.
+- Recognition cannot tell a German parcel from a Swiss one. The overview is one
+  group-wide service whatever its country path (the path only sets the language),
+  and its overview of a delivered parcel names no owner. When both networks
+  recognize a number, GLS Germany is chosen: it is the more common network, and
+  its tracker takes any country's postcode, so it reaches the history of either
+  network's parcel. Group-wide `/EU/` links come here too. GLS Switzerland is
+  reached through a `/CH/` link or by picking it. GLS France still comes first
+  when it knows the number: its own tracker answers only French parcels, with
+  the history and no postcode.
 
 ## Testing
 

@@ -855,15 +855,15 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 60,
+      "recognitionRank": 50,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
       }
     },
-    "canaryUrl": "https://gls-group.eu/EU/en/parcel-tracking",
-    "trackingUrlTemplate": "https://gls-group.eu/EU/en/parcel-tracking?match={trackingNumber}",
-    "trackingSearchUrl": "https://gls-group.eu/EU/en/parcel-tracking",
+    "canaryUrl": "https://gls-group.eu/GROUP/en/parcel-tracking",
+    "trackingUrlTemplate": "https://gls-group.eu/GROUP/en/parcel-tracking?match={trackingNumber}",
+    "trackingSearchUrl": "https://gls-group.eu/GROUP/en/parcel-tracking",
     "linkRules": [
       {
         "domains": [
@@ -874,7 +874,7 @@ export const CARRIER_CATALOG = {
           "parcelNumber",
           "matchParcelNumber"
         ],
-        "pathPattern": "^/(?:EU|CH)/"
+        "pathPattern": "^/CH/"
       }
     ],
     "detectionRules": [
@@ -1755,22 +1755,22 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 50,
+      "recognitionRank": 60,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
       }
     },
     "canaryUrl": "https://gls-group.eu/EU/en/parcel-tracking",
-    "trackingUrlTemplate": "https://gls-group.eu/DE/de/paketverfolgung?match={trackingNumber}",
-    "trackingSearchUrl": "https://gls-group.eu/DE/de/paketverfolgung",
+    "trackingUrlTemplate": "https://gls-group.eu/EU/en/parcel-tracking?match={trackingNumber}",
+    "trackingSearchUrl": "https://gls-group.eu/EU/en/parcel-tracking",
     "linkRules": [
       {
         "domains": [
           "gls-group.eu",
           "gls-group.com"
         ],
-        "pathPattern": "^/DE/",
+        "pathPattern": "^/(?:DE|EU)/",
         "params": [
           "match",
           "parcelNumber",

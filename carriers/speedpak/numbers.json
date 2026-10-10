@@ -92,6 +92,44 @@
         "confidence": "high"
       },
       "note": "An Orange Connex tracking page archived by the Wayback Machine. SpeedPAK's tracker no longer keeps numbers this old."
+    },
+    {
+      "number": "ES1003287306769SP0102010900N",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261008234529/https://www.orangeconnex.com/tracking?language=en&trackingnumber=ES1003287306769SP0102010900N",
+        "date": "2026-10-08",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "speedpak",
+        "confidence": "high"
+      },
+      "note": "An Orange Connex tracking page archived by the Wayback Machine. SpeedPAK's tracker returns its history: bound for Switzerland, handed to PostNL for the last mile."
+    },
+    {
+      "number": "ES1003265855393SP0102035900N",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260831170133/https://parcelsapp.com/en/tracking/ES1003265855393SP0102035900N",
+        "date": "2026-08-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "speedpak",
+        "confidence": "high"
+      },
+      "note": "A ParcelsApp tracking page archived by the Wayback Machine. SpeedPAK's tracker returns its history: delivered in Portugal after a PostNL hand-off."
     }
   ]
 }

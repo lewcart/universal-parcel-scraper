@@ -3,7 +3,7 @@ import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
-import { canadaProvinceTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
+import { canadaProvinceTimeZone, countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { canadaPostPackageStage, canadaPostScanStage, canadaPostStage, isKnownCanadaPostScan, statusForStage } from './status.js';
@@ -64,7 +64,29 @@ function calendarDate(value: unknown): string | null {
   return parsed.isValid ? parsed.toISODate() : null;
 }
 
-function eventClock(value: unknown): Record<string, string> {
+// Exchange scans other posts report through the postal union: mailed,
+// processed and left in the originating country, arrived abroad, customs, and
+// arrived at the delivery office in the destination country.
+const EXCHANGE_SCANS = new Set(['4000', '4100', '4202', '4310', '4311', '4330', '4400', '4450', '4600']);
+
+/**
+ * The clock of a scan whose offset is not its own: one in another country, or
+ * an exchange scan with no Canadian province. Canada Post labels them -05:00
+ * or -04:00 with no regard to the place, and even varies the label within one
+ * office: a Japanese posting at "12:33 -04:00" is 12:33 in Tokyo on Japan
+ * Post's own page, a Korean one is on Korea Post's clock, a Montana delivery
+ * office's "05:05 -05:00" is 05:05 MDT on USPS's page, and the Toronto
+ * exchange office's "01:11 -05:00" fell in summer time (checked 2026-10-10).
+ * Such a scan is read on its country's single clock; elsewhere it stays a
+ * wall clock. Null for a scan whose offset stands.
+ */
+function relayedClock(code: string, country: string, region: string): { zone: string | null } | null {
+  const abroad = country !== '' && country !== 'CA';
+  if (!abroad && (!EXCHANGE_SCANS.has(code) || (country === 'CA' && region))) return null;
+  return { zone: abroad ? countryTimeZone(country) : null };
+}
+
+function eventClock(value: unknown, relayed: { zone: string | null } | null = null): Record<string, string> {
   if (value == null) return {};
   if (!isRecord(value)) throw new SchemaError('canada-post', 'Canada Post returned an invalid scan clock');
   const date = textField(value, 'date', 32);
@@ -73,10 +95,12 @@ function eventClock(value: unknown): Record<string, string> {
   const raw = [date, time, offset].filter(Boolean).join(' ');
   if (/^\d{4}-\d{2}-\d{2}$/.test(date) && /^(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(time)) {
     const local = `${date}T${time.length === 5 ? `${time}:00` : time}`;
-    if (/^(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/i.test(offset)) {
+    const placed = relayed?.zone ? isoTime(local, relayed.zone) : null;
+    if (placed) return { time: placed.iso };
+    if (!relayed && /^(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/i.test(offset)) {
       const parsed = explicitOffsetTime(`${local}${offset}`);
       if (parsed) return { time: parsed.iso };
-    } else if (!offset) {
+    } else if (relayed || !offset) {
       // UTC validates the calendar only; no timezone is attached to local digits.
       const parsed = DateTime.fromISO(local, { zone: 'UTC' });
       const valid = parsed.isValid ? parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) : null;
@@ -149,7 +173,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     const location = isRecord(raw.locationAddr)
       ? [textField(raw.locationAddr, 'city', 160), region].filter(Boolean).join(', ') : '';
     const stage = type === 'Signature' || code === '20' ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
-    const event: CarrierEvent = { ...eventClock(raw.datetime), description: stage === 'delivered' ? 'Delivered' : description,
+    const event: CarrierEvent = { ...eventClock(raw.datetime, relayedClock(code, country, region)), description: stage === 'delivered' ? 'Delivered' : description,
       provider_code: code, ...(stage ? { stage } : {}), ...(location ? { location } : {}) };
     return { event, type, region, country, sourceDate: isRecord(raw.datetime) ? calendarDate(raw.datetime.date) : null,
       returnCue: returnStarted(description) || type === 'RtsLabelProc' };

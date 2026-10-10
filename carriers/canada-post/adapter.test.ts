@@ -169,6 +169,32 @@ describe('Canada Post clock and estimate boundaries', () => {
     expect(result.events?.[0]).not.toHaveProperty('time');
   });
 
+  it('reads scans relayed from abroad on their country\'s clock, not on the offset Canada Post gives them', () => {
+    // Live shapes (2026-10-10): Canada Post labels them -05:00 or -04:00 whatever
+    // the place; Japan Post, Korea Post and USPS show the same digits on their
+    // own clocks. Synthetic offices and clocks.
+    const relayed = (cd: string, date: string, time: string, zoneOffset: string, locationAddr: Record<string, string>) =>
+      ({ cd, descEn: 'International item processed', type: 'InfoTId', datetime: { date, time, zoneOffset }, locationAddr });
+    const p = moving();
+    p.events.push(
+      relayed('4202', '2026-03-10', '19:00:00', '-05:00', { city: 'JPEXAA', regionCd: '', countryCd: 'JP' }),
+      relayed('4000', '2026-03-09', '12:33:00', '-04:00', { city: 'EXAMPLE', regionCd: '', countryCd: 'JP' }),
+    );
+    const abroad = parse(p, MOVING_NUMBER);
+    expect(abroad.last_update).toBe('2026-03-15T22:41:00-05:00');
+    expect(abroad.events?.slice(-2).map(event => event.time)).toEqual(['2026-03-10T19:00:00+09:00', '2026-03-09T12:33:00+09:00']);
+    // A country with several clocks, or an exchange office with no province, keeps the wall clock.
+    const out = moving();
+    out.events.unshift({ cd: '0174', descEn: 'Item out for Delivery', type: 'Out',
+      datetime: { date: '2026-03-17', time: '06:10:00', zoneOffset: '-05:00' }, locationAddr: { city: '', regionCd: '', countryCd: 'US' } });
+    out.events.push(relayed('4310', '2026-03-11', '01:11:00', '-05:00', { city: 'CAEXAA', regionCd: '', countryCd: '' }));
+    const result = parse(out, MOVING_NUMBER);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-03-17T06:10:00' });
+    expect(result.events?.map(event => event.time ?? event.local_time)).toEqual([
+      '2026-03-17T06:10:00', '2026-03-15T22:41:00-05:00', '2026-03-12T09:30:00-05:00', '2026-03-11T01:11:00',
+    ]);
+  });
+
   it.each(['+02:99', '+14:01', '+23:00', '-14:01'])('preserves invalid offset %s rather than accepting normalized time', offset => {
     const p = moving(); p.events[0].datetime.zoneOffset = offset; p.events[1].datetime.date = '2026-03-25';
     const result = parse(p, MOVING_NUMBER);

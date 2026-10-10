@@ -17,10 +17,14 @@ const SUPPORT_LINE = new RegExp(String.raw`\s*(?:For delivery issues (?:&|and) t
 
 /** GOFO US waybills: GFUS numbers, and the older GF and CR series its tracker still serves. */
 const WAYBILL = /^(?:GFUS\d{14}|GF\d{13}|CR\d{12})$/;
+/** YunExpress numbers GOFO delivers under the same number, as both waybill and tracking number. */
+const YUNEXPRESS = /^YT\d{16}$/;
 
 export function normalizeGofoNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!WAYBILL.test(number)) throw new InvalidInputError('GOFO', 'GOFO US requires a GOFO waybill: GFUS and 14 digits, GF and 13, or CR and 12');
+  if (!WAYBILL.test(number) && !YUNEXPRESS.test(number)) {
+    throw new InvalidInputError('GOFO', 'GOFO US requires a GOFO waybill (GFUS and 14 digits, GF and 13, or CR and 12) or a YunExpress number it delivers');
+  }
   return number;
 }
 
@@ -68,7 +72,7 @@ export function parseGofo(payload: unknown, rawNumber: string): CarrierResult {
   // The requested number is the waybill. The tracking number repeats it or is
   // the shipper's own reference, which must not name another GOFO parcel.
   const reference = entries[0]!.trackingNumber;
-  const ownReference = reference === number || (typeof reference === 'string' && clean(reference, 100) !== ''
+  const ownReference = reference === number || (!YUNEXPRESS.test(number) && typeof reference === 'string' && clean(reference, 100) !== ''
     && !WAYBILL.test(normalizeTrackingNumber(reference)));
   if (entries.length !== 1 || entries[0]!.waybillNo !== number || !ownReference || error.errorCount !== 0) {
     throw new SchemaError('GOFO', 'GOFO returned a different or ambiguous parcel');

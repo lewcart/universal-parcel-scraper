@@ -335,7 +335,7 @@
     "carrier": "gofo",
     "pattern": "^YT\\d{16}$",
     "kind": "by_design",
-    "reason": "YunExpress numbers that GOFO delivers in the US under the same number. GOFO's tracker answers for them, but they are YunExpress's own, so detection reads them as YunExpress and the GOFO adapter accepts only GOFO waybills."
+    "reason": "YunExpress numbers that GOFO delivers in the US under the same number. GOFO's tracker answers for them, but they are YunExpress's own, so detection reads them as YunExpress; the GOFO adapter takes them when the user picks GOFO or opens a GOFO link."
   },
   {
     "carrier": "hermes",

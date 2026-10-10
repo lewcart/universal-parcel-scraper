@@ -15,6 +15,11 @@ two. The waybill must be the requested number; the tracking number repeats it
 or is the shipper's own reference, never another GOFO number. The latest summary
 must agree with the first scan.
 
+When the user picks GOFO, or opens a GOFO link carrying one, a YunExpress `YT`
+number that GOFO delivers under the same number is sent too, and GOFO must give it
+as both waybill and tracking number. Detection reads these numbers as YunExpress's. GOFO files a `YT` number
+it does not deliver under another region, so that answer stays inconclusive.
+
 The public page renders the whole list without paging and ignores the event
 counter, which can count scans the list omits. A larger counter is accepted only
 while the list still starts at label creation, so a list cut at either end stays

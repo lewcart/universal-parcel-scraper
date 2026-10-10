@@ -109,6 +109,26 @@ describe('GOFO US history', () => {
     }
   });
 
+  it('tracks a YunExpress number GOFO delivers under the same number, and only as that parcel', () => {
+    const yt = 'YT0000000000000001';
+    const value = fixture();
+    for (const row of [item(value), ...item(value).trackEventList]) {
+      if (row.waybillNo != null) row.waybillNo = yt;
+      if (row.trackingNumber != null) row.trackingNumber = yt;
+    }
+    bind(value);
+    const result = parseGofo(value, 'yt 0000000000000001');
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', service_name: expect.any(String) });
+    expect(result).not.toHaveProperty('canonical_tracking_number');
+    const reference = structuredClone(value); item(reference).trackingNumber = 'YT0000000000000002';
+    const waybill = structuredClone(value); item(waybill).waybillNo = NUMBER;
+    for (const other of [reference, waybill]) expect(() => parseGofo(other, yt)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    // GOFO lists a YunExpress number it does not deliver under another region, which is not absence.
+    const unknown = { success: 1, code: 200, data: { success: [], error: { other: [yt], errorCount: 1 } } };
+    expect(() => parseGofo(unknown, yt)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    for (const near of ['YT000000000000001', 'YT00000000000000001', 'YU0000000000000001']) expect(() => normalizeGofoNumber(near)).toThrow(InvalidInputError);
+  });
+
   it('requires the observed numeric envelope and exact US absence, keeping reroutes and empty replies uncertain', () => {
     const negative = { success: 1, code: 200, data: { success: [], error: { errorCount: 1, us: [NUMBER] } } };
     expect(() => parseGofo(negative, NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));

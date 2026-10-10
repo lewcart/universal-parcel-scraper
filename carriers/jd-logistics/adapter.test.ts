@@ -60,6 +60,92 @@ describe('JD Logistics international projection', () => {
     expect(result.status).toBe('unknown'); expect(result.current_stage).toBeUndefined();
   });
 
+  describe('scan instants from the epoch and declared zone', () => {
+    type Node = Record<string, unknown>;
+    const scan = (wall: string, timeZone: string, epochAt: string, extra: Node = {}): Node => ({
+      operatorTime: wall, operatorDesc: 'Arrived at sorting facility', timeZone, operationTimestamp: Date.parse(epochAt), ...extra });
+    const parse = (...nodes: Node[]) => {
+      const reply = history(); reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList = nodes as never;
+      return parseJdLogistics(reply, NUMBER);
+    };
+
+    it('dates a scan whose epoch reads as its wall clock at the declared offset, in that offset', () => {
+      const result = parse(
+        scan('2026-09-03 10:00:00', 'UTC+2', '2026-09-03T10:00:00+02:00', { routeCityName: 'Example City', routeProvinceName: 'Germany' }),
+        scan('2026-09-01 08:00:00', 'UTC+8', '2026-09-01T08:00:00+08:00'),
+        scan('2026-08-31 10:30:00', 'GMT-03:30', '2026-08-31T10:30:00-03:30'),
+      );
+      expect(result.events?.map(event => event.time)).toEqual(['2026-09-03T10:00:00+02:00', '2026-09-01T08:00:00+08:00', '2026-08-31T10:30:00-03:30']);
+      expect(result.last_update).toBe('2026-09-03T10:00:00+02:00');
+      expect(result.last_update_local).toBeUndefined();
+    });
+
+    it('dates a Saudi scan only at the offset Saudi Arabia keeps', () => {
+      const saudi = { routeCityName: 'Example Province', routeProvinceName: 'Saudi Arabia' };
+      expect(parse(scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', saudi)).events?.[0]?.time).toBe('2026-09-03T10:00:00+03:00');
+      expect(parse(scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', { routeCountry: '沙特' })).events?.[0]?.time).toBe('2026-09-03T10:00:00+03:00');
+      expect(parse(scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', saudi)).events?.[0]).toMatchObject({ local_time: '2026-09-03T10:00:00' });
+    });
+
+    it('dates an Egyptian summer scan at +3, not at its winter +2', () => {
+      const egypt = { routeCityName: 'Example Governorate', routeProvinceName: 'Egypt' };
+      expect(parse(scan('2026-07-15 10:00:00', 'UTC+3', '2026-07-15T10:00:00+03:00', egypt)).events?.[0]?.time).toBe('2026-07-15T10:00:00+03:00');
+      expect(parse(scan('2026-07-15 10:00:00', 'UTC+2', '2026-07-15T10:00:00+02:00', egypt)).events?.[0]).toMatchObject({ local_time: '2026-07-15T10:00:00' });
+    });
+
+    it('dates a scan whose city is a city-state or region at that place\'s offset', () => {
+      expect(parse(scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: 'Macau' })).events?.[0]?.time).toBe('2026-09-03T10:00:00+08:00');
+      expect(parse(scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: '新加坡' })).events?.[0]?.time).toBe('2026-09-03T10:00:00+08:00');
+    });
+
+    it('orders a fully dated history by instant and keeps ties in JD\'s order', () => {
+      const result = parse(
+        scan('2026-09-02 12:00:00', 'UTC+8', '2026-09-02T12:00:00+08:00', { operatorDesc: 'Older' }),
+        scan('2026-09-02 09:00:00', 'UTC+3', '2026-09-02T09:00:00+03:00', { operatorDesc: 'Newest' }),
+        scan('2026-09-01 10:00:00', 'UTC', '2026-09-01T10:00:00Z', { operatorDesc: 'Tie, listed first' }),
+        scan('2026-09-01 10:00:00', 'UTC', '2026-09-01T10:00:00Z', { operatorDesc: 'Tie, listed second' }),
+      );
+      expect(result.events?.map(event => event.description)).toEqual(['Newest', 'Older', 'Tie, listed first', 'Tie, listed second']);
+      expect(result.last_status_text).toBe('Newest');
+    });
+
+    it.each([
+      ['an epoch that reads the wall clock in another zone', scan('2026-09-03 10:00:00', 'UTC+2', '2026-09-03T10:00:00+08:00')],
+      ['no epoch', scan('2026-09-03 10:00:00', 'UTC+2', 'invalid')],
+      ['an epoch as text', { ...scan('2026-09-03 10:00:00', 'UTC+2', '2026-09-03T10:00:00+02:00'), operationTimestamp: String(Date.parse('2026-09-03T08:00:00Z')) }],
+      ['a zone name instead of an offset', scan('2026-09-03 10:00:00', 'CST', '2026-09-03T10:00:00+08:00')],
+      ['an impossible declared offset', scan('2026-09-03 10:00:00', 'UTC+15', '2026-09-03T10:00:00+15:00')],
+      ['a declared offset the scan\'s country does not keep', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeProvinceName: 'Germany' })],
+      ['a wall clock its country skips', scan('2026-03-29 02:30:00', 'UTC+1', '2026-03-29T02:30:00+01:00', { routeCountry: 'Germany' })],
+      ['a wall clock its country repeats', scan('2026-10-25 02:30:00', 'UTC+1', '2026-10-25T02:30:00+01:00', { routeCityName: 'Example City', routeProvinceName: 'Germany' })],
+      ['a declared offset the country named in Chinese does not keep', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCountry: '德国' })],
+      ['a declared offset Saudi Arabia does not keep', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCountry: '沙特阿拉伯' })],
+      ['a country spanning several zones', scan('2026-09-03 10:00:00', 'UTC+7', '2026-09-03T10:00:00+07:00', { routeCountry: '印度尼西亚' })],
+      ['a country spanning several zones, named in English', scan('2026-09-03 10:00:00', 'UTC-4', '2026-09-03T10:00:00-04:00', { routeProvinceName: 'United States' })],
+      ['a country whose zone is not known here', scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', { routeProvinceName: 'Jordan' })],
+      ['a country field read neither way', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCountry: '示例国' })],
+      ['a country written in a form not read here', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: 'Riyadh', routeProvinceName: 'KSA' })],
+      ['a country abbreviation beside a city', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: 'Los Angeles', routeProvinceName: 'USA' })],
+      ['a city-state its declared offset does not suit', scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', { routeCityName: '新加坡' })],
+      ['a province and city but no country', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: '示例市', routeProvinceName: '示例省' })],
+    ])('keeps the wall clock local with %s', (_, node) => {
+      const result = parse(node);
+      expect(result.events?.[0]).toMatchObject({ local_time: (node.operatorTime as string).replace(' ', 'T') });
+      expect(result.events?.[0]?.time).toBeUndefined();
+      expect(result.last_update).toBeNull();
+    });
+
+    it('keeps JD\'s order when any scan stays local', () => {
+      const result = parse(
+        scan('2026-09-02 12:00:00', 'UTC+8', '2026-09-02T12:00:00+08:00', { operatorDesc: 'Listed first' }),
+        scan('2026-09-02 09:00:00', 'CST', '2026-09-02T09:00:00+08:00', { operatorDesc: 'Local' }),
+        scan('2026-09-02 10:00:00', 'UTC+3', '2026-09-02T10:00:00+03:00', { operatorDesc: 'Dated, newer' }),
+      );
+      expect(result.events?.map(event => event.description)).toEqual(['Listed first', 'Local', 'Dated, newer']);
+      expect(result.last_update).toBe('2026-09-02T12:00:00+08:00');
+    });
+  });
+
   it.each(['+99:00', '+02:99', '+14:01', '-1500'])('rejects an impossible offset: %s', offset => {
     const reply = history(); reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList[0]!.operatorTime = `2026-09-03T10:00:00${offset}`;
     expect(() => parseJdLogistics(reply, NUMBER)).toThrow('invalid scan offset');
@@ -92,6 +178,34 @@ describe('JD Logistics international projection', () => {
     expect(parseJdLogistics(reply, NUMBER).events?.[0]?.description).toBe('Your package has been unloaded at【Example Hub】');
   });
 
+  it('names each scan\'s country in English, whichever field gives it', () => {
+    const reply = history();
+    const nodes = reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList as Record<string, unknown>[];
+    const at = (place: Record<string, unknown>) => {
+      nodes[0] = { operatorTime: '2026-09-03 10:00:00', operatorDesc: 'Delivered', ...place };
+      return parseJdLogistics(reply, NUMBER).events?.[0]?.location;
+    };
+    expect(at({ routeCityName: 'Example Province', routeProvinceName: 'Saudi Arabia', routeCountry: '沙特阿拉伯' })).toBe('Example Province, Saudi Arabia');
+    expect(at({ routeCityName: 'Example Province', routeProvinceName: 'Saudi Arabia' })).toBe('Example Province, Saudi Arabia');
+    expect(at({ routeCityName: 'Example Province', routeCountry: '沙特阿拉伯' })).toBe('Example Province, Saudi Arabia');
+    expect(at({ routeCityName: 'Example District', routeCountry: '中国香港' })).toBe('Example District, Hong Kong SAR China');
+    expect(at({ routeCityName: 'Singapore', routeCountry: '新加坡' })).toBe('Singapore');
+    // A city that is the region itself stands alone.
+    expect(at({ routeCityName: 'Hong Kong', routeCountry: '中国香港' })).toBe('Hong Kong');
+    expect(at({ routeCityName: '香港', routeCountry: '香港' })).toBe('香港');
+    expect(at({ routeCityName: 'Macao', routeCountry: '澳门' })).toBe('Macao');
+    expect(at({ routeCityName: 'Macau', routeCountry: '中国澳门' })).toBe('Macau');
+    expect(at({ routeCityName: 'Example Parish', routeCountry: '澳门' })).toBe('Example Parish, Macao SAR China');
+    // The usual Chinese short forms.
+    expect(['沙特', '阿联酋', '印尼', '澳洲', '中国大陆'].map(country => at({ routeCityName: 'Example City', routeCountry: country }))).toEqual([
+      'Example City, Saudi Arabia', 'Example City, United Arab Emirates', 'Example City, Indonesia', 'Example City, Australia', 'Example City, China']);
+    // A country read neither way stays as written; a province or a province code adds nothing.
+    expect(at({ routeCityName: 'Example City', routeProvinceName: 'Example Province', routeCountry: '示例国' })).toBe('Example City, 示例国');
+    expect(at({ routeCityName: 'Example City', routeProvinceName: 'IN' })).toBe('Example City');
+    expect(at({ routeProvinceName: 'Germany' })).toBe('Germany');
+    expect(at({})).toBeUndefined();
+  });
+
   it('lets a stored row that still holds the courier\'s contact take the redacted scan', () => {
     const policy = sameInstantIdentityPolicy('jd-logistics', { supportsScanMatching: true });
     const stored = { stage: 'in_transit', location: 'Example Province',
@@ -101,6 +215,21 @@ describe('JD Logistics international projection', () => {
     expect(policy?.matches?.(incoming, stored)).toBe(true);
     expect(policy?.matches?.(incoming, { ...stored, location: 'Another Province' })).toBe(false);
     expect(policy?.matches?.(incoming, { ...stored, description: 'Your package has been unloaded at【Example Hub】' })).toBe(false);
+  });
+
+  it('lets a stored row holding the courier\'s contact take a parsed scan at its English location', () => {
+    const policy = sameInstantIdentityPolicy('jd-logistics', { supportsScanMatching: true });
+    const contact = 'Your package is on the way; the courier is 【EXP-Jane Example Courier，500000000】, please be patient.';
+    const reply = history();
+    reply.data[0]!.wayBillTrackItemDtoList[0]!.trackNodeList = [{ operatorTime: '2026-09-03 10:00:00', operatorDesc: contact,
+      operationCode: 'DMLMLS', routeCityName: 'Example Province', routeCountry: '沙特阿拉伯', timeZone: 'UTC+3',
+      operationTimestamp: Date.parse('2026-09-03T10:00:00+03:00') }] as never;
+    const event = parseJdLogistics(reply, NUMBER).events![0]!;
+    expect(event).toMatchObject({ time: '2026-09-03T10:00:00+03:00', location: 'Example Province, Saudi Arabia' });
+    const incoming = { stage: event.stage!, description: event.description!, location: event.location!, providerCode: event.provider_code! };
+    const stored = { stage: 'in_transit', description: contact, location: 'Example Province, Saudi Arabia', providerCode: '' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, { ...stored, location: 'Example Province, 沙特阿拉伯' })).toBe(false);
   });
 
   it('lets a scan stored before its code was kept take the code and its stage', () => {

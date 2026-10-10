@@ -16,12 +16,30 @@ Each scan keeps its operation code as its provider code and takes its stage from
 decides the status. The courier's name and phone are dropped from the out-for-delivery wording
 (`wording.ts`).
 
+A scan's location is its city and its country in English. JD names the country in Chinese in
+`routeCountry` on some scans, by its full name or a usual short form, and in English in
+`routeProvinceName` on its international lanes, so either gives the same name. A country read
+neither way stays as written; a province adds nothing. A city that is the country itself, such
+as Hong Kong, Macau or Singapore, stands alone.
+
+Each scan's wall clock is local to the scan, whatever zone the request names. A scan also
+carries epoch milliseconds and a declared fixed offset (`UTC+3`). It is dated, in that offset,
+only when the epoch reads as its wall clock there. Every country its place fields name must
+also have a single zone known here, and that zone must keep that offset at that wall clock,
+neither skipping nor repeating it. Beside the shared single-zone table, the parser knows Saudi
+Arabia, Kuwait, Qatar, Bahrain, Oman, Egypt and Macau, so a Saudi scan is dated at +3 and
+stays local at +8. A country spanning several zones (United States, Australia, Indonesia,
+Brazil), one not known here, or a country field read neither way keeps the clock local. So does
+a place naming no country read here, such as a Chinese province and city without a country or
+an abbreviation like `KSA`. Only a scan with no place at all, such as the order's creation, is
+dated on its epoch and declared offset alone. A fully dated history is ordered by instant, ties
+in JD's order; any local clock keeps JD's order, newest first.
+
 ## Limitations
 
-An empty answer is inconclusive outside the international service. Scan clocks without an
-explicit offset remain local; the request's display timezone does not establish a scan's zone.
-The epoch time and zone each scan also carries are not read. Proof-of-delivery images and
-recipient verification are excluded. Chinese domestic waybills answer an empty list here.
+An empty answer is inconclusive outside the international service. A scan without an epoch is
+not dated from its declared zone alone. Proof-of-delivery images and recipient verification are
+excluded. Chinese domestic waybills answer an empty list here.
 
 ## Testing
 

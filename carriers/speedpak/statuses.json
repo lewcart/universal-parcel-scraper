@@ -228,6 +228,20 @@
       "note": "SpeedPAK's own label (eventDescCn), also beside a last-mile carrier's wording."
     },
     {
+      "wording": "离开分拨站点",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "SpeedPAK's own label (eventDescCn), also beside a last-mile carrier's wording."
+    },
+    {
+      "wording": "目的国小包收货确认",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "SpeedPAK's own label (eventDescCn), also beside a last-mile carrier's wording."
+    },
+    {
       "wording": "开始派送",
       "language": "zh",
       "stage": "out_for_delivery",

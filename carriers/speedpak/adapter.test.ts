@@ -63,6 +63,21 @@ describe('SpeedPAK response projection', () => {
     ]);
   });
 
+  it('keeps a destination hand-off\'s departures and arrivals moving by their labels', () => {
+    const payload = fixture();
+    const traces = payload.result.waybills[0].traces;
+    const later = traces[0].oprTimestamp;
+    traces.splice(0, 0,
+      { eventDesc: 'The consignment has reached the destination country', eventDescCn: '目的国小包收货确认', oprTimestamp: later + 3_000, oprCountry: 'US' },
+      { eventDesc: 'Left the destination depot', eventDescCn: '离开分拨站点', oprTimestamp: later + 2_000, oprCountry: 'US' },
+      // A generic transfer label carries a partner's pickups and failures alike, so its wording decides.
+      { eventDesc: 'We were unable to deliver your parcel', eventDescCn: '包裹转运', oprTimestamp: later + 1_000, oprCountry: 'US' });
+    const result = parseSpeedpak(payload, NUMBER);
+    expect(result.events?.slice(0, 3).map(event => [event.stage, event.stage_source])).toEqual([
+      ['in_transit', 'carrier_map'], ['in_transit', 'carrier_map'], [undefined, undefined],
+    ]);
+  });
+
   it('names a partner only when its detection offers the reference', () => {
     const payload = fixture();
     payload.result.waybills[0].traces[2].eventDesc = 'LM Carrier: [USPS] , LM tracking No.: [UUS00T0000000000000]';

@@ -45,6 +45,8 @@ const LABELS: Readonly<Record<string, ClassifiedStatus>> = {
   站点扫描: MOVING,
   同步尾程供应商: MOVING,
   尾程转运中: MOVING,
+  离开分拨站点: MOVING,
+  目的国小包收货确认: MOVING,
   开始派送: { status: 'out_for_delivery', stage: 'out_for_delivery' },
   派送完成: { status: 'delivered', stage: 'delivered' },
 };

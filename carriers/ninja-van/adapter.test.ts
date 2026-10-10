@@ -62,9 +62,20 @@ describe('Ninja Van parser', () => {
       return normalizeCarrierResult(parseNinjaVan(payload, NUMBER));
     };
     expect(moving({})).toMatchObject({ expected_delivery: '2026-04-04', expected_delivery_from: '2026-04-02' });
-    const oneDay = moving({ delivery_start_date: '2026-04-03', delivery_end_date: '2026-04-03' });
-    expect(oneDay.expected_delivery).toBe('2026-04-03');
-    expect(oneDay.expected_delivery_from).toBeUndefined();
+    // A one-day window takes its timeslot's clocks; an unknown or reversed timeslot keeps the day.
+    const oneDay = (window: Record<string, unknown>) => moving({ delivery_start_date: '2026-04-03', delivery_end_date: '2026-04-03', ...window });
+    expect(oneDay({})).toMatchObject({ expected_delivery_from: '2026-04-03T09:00:00+08:00', expected_delivery: '2026-04-03T22:00:00+08:00' });
+    expect(oneDay({ delivery_timeslot: '12 PM to 03 PM' }))
+      .toMatchObject({ expected_delivery_from: '2026-04-03T12:00:00+08:00', expected_delivery: '2026-04-03T15:00:00+08:00' });
+    for (const delivery_timeslot of ['Anytime', '06 PM to 09 AM', '13 PM to 03 PM', '9:30 AM to 12 PM']) {
+      expect(oneDay({ delivery_timeslot }).expected_delivery).toBe('2026-04-03');
+      expect(oneDay({ delivery_timeslot }).expected_delivery_from).toBeUndefined();
+    }
+    // A timeslot that ended before the newest scan keeps its day.
+    const today = (delivery_timeslot: string) => moving({ delivery_start_date: '2026-04-02', delivery_end_date: '2026-04-02', delivery_timeslot });
+    expect(today('09 AM to 12 PM').expected_delivery).toBe('2026-04-02');
+    expect(today('09 AM to 12 PM').expected_delivery_from).toBeUndefined();
+    expect(today('06 PM to 10 PM')).toMatchObject({ expected_delivery_from: '2026-04-02T18:00:00+08:00', expected_delivery: '2026-04-02T22:00:00+08:00' });
     // The server moves an overdue window's start up to the lookup day, so a start after the end is no estimate.
     for (const window of [{ delivery_timeslot: '' }, { status: 'Pending' }, { status: 'On Hold' },
       { delivery_start_date: '2026-04-05', delivery_end_date: '2026-04-03' },
@@ -99,6 +110,26 @@ describe('Ninja Van parser', () => {
     };
     expect(late(NUMBER)).toBeNull();
     expect(late('NLVNA00000000')).toBe('2026-04-01');
+  });
+
+  const oneDayOn = (country: string) => {
+    const number = `NL${country.toUpperCase()}A00000000`;
+    const payload: Record<string, unknown> = { ...clone(), tracking_id: number, status: 'Transit', delivery_timeslot: '03 PM to 06 PM',
+      delivery_start_date: '2026-04-03', delivery_end_date: '2026-04-03' };
+    payload.events = clone().events.slice(1, 6);
+    return parseNinjaVan(payload, number);
+  };
+
+  it.each([['sg', '+08:00'], ['my', '+08:00'], ['ph', '+08:00'], ['th', '+07:00'], ['vn', '+07:00']] as const)(
+    'reads a one-day timeslot on the %s route\'s clock', (country, offset) => {
+      expect(oneDayOn(country)).toMatchObject({
+        expected_delivery_from: `2026-04-03T15:00:00${offset}`, expected_delivery: `2026-04-03T18:00:00${offset}` });
+    });
+
+  it('keeps the day of a one-day window in Indonesia, whose three zones the reply does not tell apart', () => {
+    const result = oneDayOn('id');
+    expect(result.expected_delivery).toBe('2026-04-03');
+    expect(result.expected_delivery_from).toBeUndefined();
   });
 
   it('does not call ambiguous return delivery a recipient delivery', () => {

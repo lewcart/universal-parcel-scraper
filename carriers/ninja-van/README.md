@@ -36,7 +36,16 @@ The delivery window is read as the public page reads it: days in the route's
 country, only while the order is moving towards the recipient and has a
 timeslot. The server moves an overdue window's start up to the day of the
 lookup, so a start after the end gives no estimate, and a window that ended
-before the newest scan is dropped as stale. The timeslot itself is not read.
+before the newest scan is dropped as stale. On the Singapore, Malaysia,
+Philippines, Thailand and Vietnam routes, a one-day window takes its timeslot's
+clocks in the route's country, `09 AM to 12 PM` as 09:00 to 12:00. Indonesia
+spans three zones and the reply names no destination region, so its one-day
+window stays a day. A window of several days stays days, since its timeslot
+recurs each day. A timeslot that is not two whole hours in order, or that ended
+before the newest scan, leaves the day. The reply names no destination country,
+so the clocks assume the parcel is delivered under its route's clock, as the
+public page reads the window; a cross-border parcel delivered in a country an
+hour apart from its route would read an hour off.
 
 ## Live test
 

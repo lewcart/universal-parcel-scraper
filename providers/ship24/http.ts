@@ -1,24 +1,30 @@
 
 /**
- * The signed request the public Ship24 web app makes for one parcel.
+ * The signed requests the public Ship24 web app makes for one parcel.
  *
  * The website builds `x-ship24-token` from a timestamp, an opaque digest, a
  * MurmurHash3 checksum bound to the tracking number and an HMAC over the
- * three. The constants below are public frontend configuration read from the
- * site's own script, not a provisioned API credential: no account, cookie,
- * browser fingerprint or issued token is involved. See README.md.
+ * three. Its refresh request carries a second token, the bytes of the
+ * timestamp and the number between three of the same marker characters. The
+ * constants below are public frontend configuration read from the site's own
+ * script, not a provisioned API credential: no account, cookie, browser
+ * fingerprint or issued token is involved. See README.md.
  */
 import { createHash, createHmac } from 'node:crypto';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 
 const PAGE = 'https://www.ship24.com/tracking';
+const API = 'https://api.ship24.com/api/parcels';
 // Public website checksum configuration, not a provisioned API credential.
 // Source (verified 2026-09-10):
 // https://cdn.ship24.com/assets/main.16f5bc7c0914804e.js
 // getOneParcel's N(...) argument and the first value appended to $zoho_.
 const WEBSITE_SIGNING_KEY = "qxV6SOr2tqw9m36j0-R-ohPt1PAB2et0"; // gitleaks:allow -- public frontend checksum constant, not an API credential
 const WEBSITE_SALT = '\u1780';
+// The other two values appended to $zoho_, which getWithCrawlerAuth's token
+// uses (https://cdn.ship24.com/assets/main.5992cb0ad5830e4b.js, checked 2026-10-10).
+const REFRESH_MARKERS = ['\u1781', '\u1782'] as const;
 
 // Standard MurmurHash3 x86/32, used by the public frontend's request checksum.
 export function ship24Checksum(text: string): number {
@@ -55,6 +61,21 @@ function token(number: string): string {
   return `${encoded}.${createHmac('sha256', WEBSITE_SIGNING_KEY).update(encoded).digest('hex')}`;
 }
 
+/**
+ * The refresh token: the UTF-8 bytes of the salt, the time, the second marker,
+ * the number and the first marker, comma-separated, with the second byte and
+ * the one before last set to 150, written as decimal bytes.
+ */
+export function refreshToken(number: string, timestamp = Date.now()): string {
+  const bytes = Buffer.from([WEBSITE_SALT, timestamp, REFRESH_MARKERS[1], number, REFRESH_MARKERS[0]].join(','));
+  bytes[1] = 150;
+  bytes[bytes.length - 2] = 150;
+  return [...bytes].join(',');
+}
+
+// Ship24's parcel id, a UUID.
+const PARCEL_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export class Ship24HttpClient {
   readonly #userAgent: string;
 
@@ -62,13 +83,28 @@ export class Ship24HttpClient {
     this.#userAgent = userAgentOf(userAgent);
   }
 
+  /** The parcel as Ship24 has it stored; `to_updated` asks for a refresh. */
   async fetch(number: string, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
     if (!/^(?=.*\d)[A-Z0-9]{4,40}$/.test(number)) throw new InvalidInputError('Ship24', 'Invalid Ship24 tracking number');
+    return this.#post(`${API}/${number}?lang=en`, token(number), timeoutMs, signal);
+  }
+
+  /**
+   * The refresh the web app asks for when the stored parcel says `to_updated`:
+   * Ship24 queries the carriers again and replies with the parcel's current
+   * history, or none yet.
+   */
+  async refresh(parcelId: string, number: string, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
+    if (!/^(?=.*\d)[A-Z0-9]{4,40}$/.test(number) || !PARCEL_ID.test(parcelId)) throw new InvalidInputError('Ship24', 'Invalid Ship24 parcel reference');
+    return this.#post(`${API}/update/${parcelId}/mainTN/${number}?lang=en`, refreshToken(number), timeoutMs, signal);
+  }
+
+  async #post(url: string, signature: string, timeoutMs: number, signal?: AbortSignal): Promise<unknown> {
     if (!Number.isFinite(timeoutMs) || timeoutMs < 1) throw new TypeError('Ship24 HTTP timeout must be positive');
-    const { bytes } = await fetchBounded(`https://api.ship24.com/api/parcels/${number}?lang=en`, {
+    const { bytes } = await fetchBounded(url, {
       method: 'POST', signal,
       headers: { 'Content-Type': 'application/json', Origin: 'https://www.ship24.com',
-        Referer: PAGE, 'User-Agent': this.#userAgent, 'x-ship24-token': token(number) },
+        Referer: PAGE, 'User-Agent': this.#userAgent, 'x-ship24-token': signature },
       body: JSON.stringify({ userAgent: '', os: 'Linux', browser: 'Unknown', device: 'Unknown',
         os_version: 'unknown', browser_version: 'unknown', deviceType: 'desktop',
         orientation: 'landscape', uL: 'en-US' }),

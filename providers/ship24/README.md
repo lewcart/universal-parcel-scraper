@@ -11,11 +11,18 @@ Persisted provider name: `Ship24`. Link shown to users:
 Both steps share one budget: 45 s standalone, 30 s inside the chain.
 
 1. `direct`: one signed anonymous `POST https://www.ship24.com/api/parcels/{number}?lang=en`
-   ([http.ts](http.ts)), capped at 8 s. Result labelled
-   `tracking_source: structured-web-response`.
+   ([http.ts](http.ts)). That is the parcel as Ship24 stored it. When it says
+   `to_updated`, a second signed `POST .../api/parcels/update/{_id}/mainTN/{number}`
+   has Ship24 query the carriers again and returns the current history, as the web app
+   does. A stored history stands if that refresh fails or takes over 15 s. Result
+   labelled `tracking_source: structured-web-response`.
 2. `browser`: the public tracking page in a fresh local Chromium
-   (`TRACKING_CHROMIUM_PATH`), reading the same API response from the page. Result
+   (`TRACKING_CHROMIUM_PATH`), reading the stored-parcel response from the page. Result
    labelled `browser-session-response`.
+
+With a Chromium configured, the direct step keeps 10 s (at most half the budget) for
+the browser. A slow direct answer is Ship24 querying carriers, or a slow 404, which the
+page would only ask for again.
 
 The browser step runs only when a browser could fix the direct failure:
 
@@ -23,7 +30,7 @@ The browser step runs only when a browser could fix the direct failure:
 - HTTP 429 and 5xx are reported with their `Retry-After`, so the router backs off once
   instead of asking twice.
 - HTTP 404 and 410 are final: the page calls the same API and only waits out the budget.
-- The 8 s cap keeps most of the budget for the browser if the signing scheme changes.
+- So is a parcel Ship24 knows but has no scans for after the refresh (`NoHistoryError`).
 
 Built without an HTTP client (as in browser tests), the adapter runs the browser step
 alone. Only one local browser session runs per server process; an overlapping lookup
@@ -33,9 +40,11 @@ waits its turn within its own budget.
 
 The website builds an `x-ship24-token` header from a timestamp, an opaque SHA-256
 digest, a MurmurHash3 checksum bound to the tracking number, and an HMAC over the three.
-[http.ts](http.ts) reproduces that algorithm. Its HMAC key and checksum salt are public
-frontend configuration, copied from the site script cited in the file, not account
-credentials. No account, cookie, fingerprint or issued token is used.
+[http.ts](http.ts) reproduces that algorithm. The refresh request's token is simpler: the
+decimal UTF-8 bytes of the salt, the time, the number and two more marker characters,
+with two bytes altered. Its HMAC key, checksum salt and markers are public frontend
+configuration, copied from the site scripts cited in the file, not account credentials.
+No account, cookie, fingerprint or issued token is used.
 
 - A GET on the parcel API returns 404 and an unsigned POST returns 403. A signed POST
   returns 201 with the shipment.
@@ -44,7 +53,9 @@ credentials. No account, cookie, fingerprint or issued token is used.
 
 ## Parsing
 
-- A reply counts only when `data.tracking_number` matches the requested number.
+- A reply counts only when `data.tracking_number` matches the requested number. A
+  matching reply without events is no history; while `to_updated` is still set it is
+  inconclusive.
 - Times come from `timestamp`, which carries the real offset. `datetime` can end in `Z`
   while holding the carrier's local time. Some legs (Chronopost, national posts, UPU
   feeds) have no offset in `timestamp`: that is the scanning office's wall clock, read

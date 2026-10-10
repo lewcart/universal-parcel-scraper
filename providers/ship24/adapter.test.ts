@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { IndeterminateError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { LookupRecord, StepRecord, StepRecorder } from '../../core/telemetry/index.js';
 import { scrapeUniversalPage } from '../../core/transport/browser.js';
 import { parseShip24Response, Ship24Tracker } from './adapter.js';
@@ -14,6 +14,8 @@ const delivered = JSON.parse(readFileSync(new URL('./fixtures/delivered.json', i
 const history = { data: { tracking_number: number,
   events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Delivered', dispatch_code_id: 7 }] } };
 const reply = (data: unknown) => new Response(JSON.stringify(data), { status: 201 });
+const parcelId = '00000000-0000-4000-8000-000000000000';
+const stale = (events: unknown[] = history.data.events) => ({ data: { _id: parcelId, tracking_number: number, to_updated: true, events } });
 
 /** The instant of one offset-less noon scan at `location`, or undefined when it stays a wall time. */
 function noonAt(location: string | undefined, data: Record<string, unknown> = {}, tracking = number, timezone: string | null = null) {
@@ -84,13 +86,20 @@ describe('Ship24 result parsing', () => {
       .toThrow('no matching shipment history');
   });
 
-  it.each([
-    ['no events', []],
-    ['only a notice', [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Tracking number not found' }]],
-  ])('reports a matching reply with %s as inconclusive, never as a reply of the wrong shape', (_, events) => {
-    const parse = () => parseShip24Response({ data: { tracking_number: number, events } }, number);
+  it('reports a matching reply with only a notice as inconclusive, never as a reply of the wrong shape', () => {
+    const parse = () => parseShip24Response({ data: { tracking_number: number,
+      events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Tracking number not found' }] } }, number);
     expect(parse).toThrow(IndeterminateError);
     expect(parse).toThrow(expect.objectContaining({ kind: 'indeterminate', provider: 'Ship24', message: 'No usable tracking events' }));
+  });
+
+  it('reports a known parcel without scans as having no history, unless Ship24 has yet to ask the carriers', () => {
+    for (const events of [[], undefined]) {
+      expect(() => parseShip24Response({ data: { tracking_number: number, events } }, number)).toThrow(NoHistoryError);
+    }
+    const pending = () => parseShip24Response(stale([]), number);
+    expect(pending).toThrow(IndeterminateError);
+    expect(pending).not.toThrow(NoHistoryError);
   });
 
   it.each([
@@ -214,9 +223,59 @@ describe('Ship24 anonymous HTTP tracking', () => {
 
   it('reports a history without usable scans as inconclusive when no Chromium is configured', async () => {
     const { tracker, fetcher, steps } = fixture(null);
-    fetcher.mockResolvedValueOnce(reply({ data: { tracking_number: number, events: [] } }));
+    fetcher.mockResolvedValueOnce(reply({ data: { tracking_number: number,
+      events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Tracking number not found' }] } }));
     await expect(tracker.fetch(number)).rejects.toMatchObject({ kind: 'indeterminate', message: 'No usable tracking events' });
     expect(steps.map(({ step, outcome, errorType }) => [step, outcome, errorType])).toEqual([['direct', 'indeterminate', 'IndeterminateError']]);
+  });
+
+  it('asks Ship24 to query the carriers again when the stored parcel says so, as the web app does', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000_000);
+    const { tracker, fetcher } = fixture();
+    fetcher.mockResolvedValueOnce(reply(stale([])));
+    await expect(tracker.fetch(number)).resolves.toMatchObject({ current_stage: 'delivered', tracking_source: 'structured-web-response' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    const [url, init] = fetcher.mock.calls[1]!;
+    expect(String(url)).toBe(`https://api.ship24.com/api/parcels/update/${parcelId}/mainTN/${number}?lang=en`);
+    expect(init).toMatchObject({ method: 'POST' });
+    // Decimal UTF-8 bytes of the markers, the time and the number, two bytes changed to 150.
+    const signature = (init!.headers as Record<string, string>)['x-ship24-token']!;
+    expect(Buffer.from(signature.split(',').map(Number)).toString()).toBe(`\u1580,1000000,\u1782,${number},\u1581`);
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+  });
+
+  it('keeps a stored history when its refresh fails or takes too long', async () => {
+    const { client, tracker, fetcher } = fixture();
+    const refresh = vi.spyOn(client, 'refresh');
+    fetcher.mockResolvedValueOnce(reply(stale())).mockRejectedValueOnce(new TypeError('fetch failed'));
+    await expect(tracker.fetch(number)).resolves.toMatchObject({ current_stage: 'delivered', tracking_source: 'structured-web-response' });
+    expect(refresh).toHaveBeenCalledWith(parcelId, number, 15_000, expect.anything());
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+  });
+
+  it('reports a parcel Ship24 still has no scans for after the refresh, without the browser', async () => {
+    const { tracker, fetcher, steps } = fixture();
+    fetcher.mockResolvedValueOnce(reply(stale([]))).mockResolvedValueOnce(reply({ data: { tracking_number: number, events: [] } }));
+    await expect(tracker.fetch(number)).rejects.toThrow(NoHistoryError);
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+    expect(steps.map(({ step, errorType }) => [step, errorType])).toEqual([['direct', 'NoHistoryError']]);
+  });
+
+  it('lets the browser try when the refresh of a parcel without scans fails', async () => {
+    const { tracker, fetcher } = fixture();
+    fetcher.mockResolvedValueOnce(reply(stale([]))).mockRejectedValueOnce(new TypeError('fetch failed'));
+    vi.mocked(scrapeUniversalPage).mockResolvedValueOnce({ events: [], status: 'delivered' });
+    await expect(tracker.fetch(number)).resolves.toMatchObject({ tracking_source: 'browser-session-response' });
+  });
+
+  it('gives the direct request all of the budget but the browser\'s reserve', async () => {
+    vi.spyOn(performance, 'now').mockReturnValue(1000);
+    for (const [executablePath, budget, direct] of [['/test/chromium', 45_000, 35_000], ['/test/chromium', 12_000, 6000], [null, 45_000, 45_000]] as const) {
+      const { client, tracker } = fixture(executablePath);
+      const fetch = vi.spyOn(client, 'fetch');
+      await tracker.fetch(number, budget);
+      expect(fetch).toHaveBeenCalledWith(number, direct, expect.anything());
+    }
   });
 
   it('rejects unrelated history before falling back and does not leak it into the result', async () => {

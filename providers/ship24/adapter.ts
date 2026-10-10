@@ -14,7 +14,7 @@
  */
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
-import { SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -29,8 +29,14 @@ import { Ship24HttpClient } from './http.js';
 const SOURCE: UniversalSource = 'Ship24';
 const MAX_EVENTS = 1000;
 const MAX_COURIERS = 20;
-/** The direct tier's own share of the lookup budget; the browser keeps the rest. */
-const DIRECT_BUDGET_MS = 8_000;
+/**
+ * What the browser keeps of the budget when the direct tier fails: enough to
+ * load the page and read a parcel Ship24 already holds. A slow direct answer
+ * is Ship24 querying the carriers, which the page would only start again.
+ */
+const BROWSER_RESERVE_MS = 10_000;
+/** How long a refresh may keep a stored history waiting; most take a few seconds, a stuck carrier query 30. */
+const REFRESH_MS = 15_000;
 
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 
@@ -154,8 +160,15 @@ function wallZone(journey: Journey, scan: Record<string, unknown>, wall: string)
 export function parseShip24Response(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
   const number = numberOf(trackingNumber);
   const data = isRecord(payload) && isRecord(payload.data) ? payload.data : null;
-  if (!data || data.tracking_number !== number || data.error || !Array.isArray(data.events) || data.events.length > MAX_EVENTS) {
+  if (!data || data.tracking_number !== number || data.error
+    || (data.events !== undefined && (!Array.isArray(data.events) || data.events.length > MAX_EVENTS))) {
     throw new SchemaError(SOURCE, 'Ship24 has no matching shipment history');
+  }
+  // Ship24 knows the parcel but holds no scan: it has yet to query the
+  // carriers (`to_updated`), or it did and they had nothing.
+  if (!Array.isArray(data.events) || !data.events.length) {
+    if (data.to_updated === true) throw new IndeterminateError(SOURCE, 'Ship24 has not queried the carriers for the shipment yet');
+    throw new NoHistoryError(SOURCE, 'Ship24 found the shipment but no scans for it yet');
   }
   // The public frontend renders couriers[].translation.name. Keep names only;
   // website/phone fields and alternate numbers are not needed for discovery.
@@ -191,12 +204,34 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
 /**
  * A browser cannot repair a rate limit or a server outage: keep the original
  * status and Retry-After for the router's backoff instead of asking twice.
- * Nor can it find a parcel the API answered 404 for: the page waits for the
- * same reply, so every such fallback only burned the rest of the budget.
+ * Nor can it find a parcel the API answered 404 for, or scans Ship24 said it
+ * has none of: the page asks the same API and shows the same answer.
  */
 function browserCanRecover(error: unknown): boolean {
-  return !(error instanceof UpstreamHttpError
+  return !(error instanceof NoHistoryError) && !(error instanceof UpstreamHttpError
     && (error.status === 404 || error.status === 410 || error.status === 429 || error.status >= 500));
+}
+
+/**
+ * The parcel as the web app shows it: the stored record, refreshed when it
+ * says `to_updated`. The refresh is Ship24 querying the carriers again. If it
+ * fails or is slow, a stored history stands, as on the website; a record with
+ * no scans yet is no answer, so the refresh's failure is.
+ */
+async function currentParcel(http: Ship24HttpClient, number: string, budgetMs: number, signal?: AbortSignal): Promise<unknown> {
+  const deadline = performance.now() + budgetMs;
+  const left = () => Math.max(1, Math.floor(deadline - performance.now()));
+  const stored = await http.fetch(number, left(), signal);
+  const data = isRecord(stored) && isRecord(stored.data) && stored.data.tracking_number === number ? stored.data : null;
+  if (data?.to_updated !== true || typeof data._id !== 'string') return stored;
+  const scanned = Array.isArray(data.events) && data.events.length > 0;
+  try {
+    const fresh = await http.refresh(data._id, number, scanned ? Math.min(left(), REFRESH_MS) : left(), signal);
+    return isRecord(fresh) && isRecord(fresh.data) && fresh.data.tracking_number === number ? fresh : stored;
+  } catch (error) {
+    if (signal?.aborted || !scanned) throw error;
+    return stored;
+  }
 }
 
 export interface Ship24Options extends Omit<UniversalBrowserOptions, 'signal'> {
@@ -213,12 +248,14 @@ export class Ship24Tracker {
     const timeoutMs = budgetMs ?? this.options.timeoutMs ?? 45_000;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) throw new TypeError('Ship24 timeout must be between 1 and 60000 ms');
     const http = this.options.httpClient ?? null;
+    const browser = http === null || Boolean(this.options.executablePath);
     return runSteps({ carrier: SOURCE, budgetMs: timeoutMs, signal, recorder: this.options.recorder }, [
       {
         id: 'direct',
         enabled: http !== null,
         run: async ({ remainingMs, signal }) => ({
-          ...parseShip24Response(await http!.fetch(number, Math.max(1, Math.min(DIRECT_BUDGET_MS, Math.floor(remainingMs))), signal), number, timezone),
+          ...parseShip24Response(await currentParcel(http!, number, browser
+            ? Math.max(remainingMs / 2, remainingMs - BROWSER_RESERVE_MS) : remainingMs, signal), number, timezone),
           tracking_source: 'structured-web-response',
         }),
       },
@@ -226,7 +263,7 @@ export class Ship24Tracker {
         id: 'browser',
         // Without a Chromium this tier could only replace the direct failure
         // with its own configuration error. Alone, it still runs to report it.
-        enabled: http === null || Boolean(this.options.executablePath),
+        enabled: browser,
         recovers: browserCanRecover,
         run: async ({ remainingMs, signal }) => ({
           ...await scrapeUniversalPage({ executablePath: this.options.executablePath, timeoutMs: Math.max(1, Math.floor(remainingMs)), signal }, {

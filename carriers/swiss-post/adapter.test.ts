@@ -100,6 +100,29 @@ describe('Swiss Post historical event codes', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it('reads the destination post\'s unlocated events on its clock, not on the Swiss offset they carry', () => {
+    const history = [
+      { eventCode: 'LETTER.*.82.909', timestamp: '2026-10-08T12:26:00+02:00' },
+      { eventCode: 'LETTER.*.82.9112', timestamp: '2026-10-06T06:45:39+02:00', country: 'CH' },
+      { eventCode: 'LETTER.*.82.918', timestamp: '2026-09-24T15:30:00+02:00' },
+      { eventCode: 'LETTER.*.82.915', timestamp: '2026-09-03T22:19:00+02:00' },
+      { eventCode: 'LETTER.*.82.813', timestamp: '2026-09-03T12:20:24+02:00', city: 'Example', zip: '000000', country: 'CH' },
+    ];
+    const clocks = (shipment: Record<string, unknown>) => parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', ...shipment }, history)
+      .events?.map((event) => event.time ?? `local ${String(event.local_time)}`);
+    expect(clocks({ internationalExport: true, recipientCountry: 'SV' })).toEqual([
+      '2026-10-08T12:26:00-06:00', '2026-10-06T06:45:39+02:00', '2026-09-24T15:30:00-06:00',
+      '2026-09-03T22:19:00+02:00', '2026-09-03T12:20:24+02:00']);
+    // A destination with several clocks leaves them wall times, ordered among the instants by their digits.
+    const several = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', internationalExport: true, recipientCountry: 'US' }, history);
+    expect(several.events?.map((event) => event.time ?? `local ${String(event.local_time)}`)).toEqual([
+      'local 2026-10-08T12:26:00', '2026-10-06T06:45:39+02:00', 'local 2026-09-24T15:30:00',
+      '2026-09-03T22:19:00+02:00', '2026-09-03T12:20:24+02:00']);
+    expect(several).toMatchObject({ last_update: null, last_update_local: '2026-10-08T12:26:00' });
+    // A parcel arriving in Switzerland keeps every offset as sent.
+    expect(clocks({ internationalImport: true, recipientCountry: 'CH' })?.[0]).toBe('2026-10-08T12:26:00+02:00');
+  });
+
   it('falls back to the shipment summary when the newest scan has no stage', () => {
     const result = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
       { eventCode: 'LETTER.*.82.924', timestamp: '2026-09-02T10:00:00+02:00' },

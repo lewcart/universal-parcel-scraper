@@ -5,7 +5,7 @@ import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingCont
 import { NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../generated/catalog.js';
-import { countryCode } from '../../core/time/index.js';
+import { countryCode, countryTimeZone, isoTime } from '../../core/time/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
 import { fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
@@ -199,12 +199,39 @@ export function swissPostPickupPoint(office: unknown, site: string): string {
  * Local ordering policy: event timestamps are read only to sort. Values without
  * an offset are treated as UTC for that comparison, which keeps the ordering
  * stable without rewriting the string the carrier sent — the event keeps the
- * carrier's own `timestamp` verbatim.
+ * carrier's own `timestamp` verbatim, but for a destination post's event.
  */
 function timestamp(value: string): number {
   const explicitZone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(value);
   const parsed = Date.parse(explicitZone ? value : `${value}Z`);
   return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
+/**
+ * Events Swiss Post relays from the destination post of a parcel it sends
+ * abroad: arrival in the destination country, its customs, sorting and
+ * delivery rounds. With no city, postcode or country they carry the
+ * destination office's wall clock under Swiss Post's offset: an El Salvador
+ * delivery round at 12:26 local came as 12:26 +02:00, and Correos de El
+ * Salvador dates it 18:26 UTC (checked 2026-10-10). Swiss Post's own
+ * unlocated events (813, 915) keep its clock.
+ */
+const DESTINATION_EVENTS = new Set(['909', '918', '919', '920', '921', '923', '924', '926', '934', '938']);
+const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?)(?:Z|[+-]\d{2}:?\d{2})?$/i;
+
+/** A destination post's event, on its country's clock when that keeps one, else a wall time. */
+function destinationClock(event: JsonObject, time: string, destination: string | null): { time: string } | { local_time: string } {
+  const located = text(event.city, 100) || text(event.zip, 30) || text(event.country, 10);
+  const wall = WALL_CLOCK.exec(time)?.[1];
+  if (!destination || located || !wall || !DESTINATION_EVENTS.has(text(event.eventCode, 100).split('.').at(-1) ?? '')) return { time };
+  const zone = countryTimeZone(destination);
+  const placed = zone ? isoTime(wall, zone) : null;
+  return placed ? { time: placed.iso } : { local_time: wall };
+}
+
+/** An event's instant, else its wall time. */
+function clockOf(event: CarrierEvent): string {
+  return event.time ?? (typeof event.local_time === 'string' ? event.local_time : '');
 }
 
 export function parseSwissPostShipment(
@@ -219,6 +246,9 @@ export function parseSwissPostShipment(
     : item.internationalExport
       ? 'EXPORT'
       : 'INLAND';
+  const destination = text(item.recipientCountry, 10).toUpperCase();
+  const abroad = item.internationalExport === true && !item.internationalImport && /^[A-Z]{2}$/.test(destination)
+    && destination !== 'CH' ? destination : null;
   const events: CarrierEvent[] = [];
   for (const rawEvent of rawEvents.slice(0, 100)) {
     if (!isRecord(rawEvent)) continue;
@@ -226,7 +256,7 @@ export function parseSwissPostShipment(
     const eventCode = text(rawEvent.eventCode, 100);
     if (!time || !eventCode) continue;
     const event: CarrierEvent = {
-      time,
+      ...destinationClock(rawEvent, time, abroad),
       location: eventLocation(rawEvent),
       description: eventDescription(rawEvent, translations, internationalType),
       provider_code: eventCode,
@@ -235,7 +265,7 @@ export function parseSwissPostShipment(
     if (stage) event.stage = stage;
     events.push(event);
   }
-  events.sort((left, right) => timestamp(right.time ?? '') - timestamp(left.time ?? ''));
+  events.sort((left, right) => timestamp(clockOf(right)) - timestamp(clockOf(left)));
   // The newest scan's own stage leads; the shipment summary fills in when that
   // scan has none (an enquiry note, an unmapped code, or no scans at all).
   let stage: Stage | undefined = (events[0]?.stage as Stage | undefined) ?? GLOBAL_STATUS_STAGE[globalStatus];
@@ -247,9 +277,11 @@ export function parseSwissPostShipment(
   if (stage && STAGE_STATUS[stage]) status = STAGE_STATUS[stage]!;
   let lastStatusText: string;
   let lastUpdate: string | null;
+  let lastUpdateLocal: string | undefined;
   if (events[0]) {
     lastStatusText = events[0].description ?? 'Tracking update';
     lastUpdate = events[0].time ?? null;
+    if (!events[0].time) lastUpdateLocal = clockOf(events[0]) || undefined;
   } else {
     lastStatusText = globalStatus;
     lastUpdate = text(item.lastEventDateTime, 100) || null;
@@ -260,12 +292,12 @@ export function parseSwissPostShipment(
     : null;
   const weight = weightKg(item);
   const dimensions = dimensionsText(item);
-  const destination = text(item.recipientCountry, 10).toUpperCase();
   return {
     status,
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: lastStatusText,
     last_update: lastUpdate,
+    ...(lastUpdateLocal ? { last_update_local: lastUpdateLocal } : {}),
     expected_delivery: finished ? null : swissPostExpectedDelivery(item),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(weight !== null ? { weight_kg: weight } : {}),

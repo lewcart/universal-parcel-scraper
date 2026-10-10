@@ -69,7 +69,14 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   destination country and delivery time come from the shipment summary. The
   delivery estimate is dropped once the shipment is delivered or returned.
 - Timestamps are kept exactly as sent and parsed only to sort (offset-less
-  values read as UTC for that comparison). `core/time` is not used for this reason.
+  values read as UTC for that comparison), but for the destination post's events.
+- On a parcel Swiss Post sends abroad (`internationalExport`), the destination post's
+  events (codes 909, 918–921, 923, 924, 926, 934, 938) come with no city, postcode or
+  country, and carry that office's wall clock under Swiss Post's offset: an El Salvador
+  delivery round at 12:26 local came as `12:26+02:00`, which Correos de El Salvador
+  dates 18:26 UTC (checked 2026-10-10). They are read on the clock of
+  `recipientCountry` when it keeps one, and stay wall times (`local_time`) otherwise.
+  Swiss Post's own unlocated events (813, 915) keep its offset.
 - Wording is only trimmed, not whitespace-collapsed, so `core/transport`'s
   `clean()` is not used.
 - Scan locations keep the facility's name and number as sent ("Zürich

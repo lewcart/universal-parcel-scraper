@@ -33,10 +33,11 @@ can raise that count without adding progress. A summary alone, a challenge or a 
 identity check does not count as history. A negative on an expired reference says nothing
 about current coverage.
 
-Postal Ninja's counts include scans with no zone. It places only the scans of services whose
-clock is established ([Parsing](postal-ninja/README.md#parsing)), so many of its histories
-have no scan a consumer can place on a timeline. In a host's lookups its answers left no
-usable scan, so it is asked after the other aggregators whatever its count.
+Postal Ninja's counts include scans with no zone. It places a scan on its service's clock
+where that is established and otherwise borrows a zone as a guess
+([Parsing](postal-ninja/README.md#parsing)), but many of its histories still have no scan a
+consumer can place on a timeline. In a host's lookups its answers left no usable scan, so it
+is asked after the other aggregators whatever its count.
 
 <!-- GENERATED:coverage -->
 | Carrier | Direct support | Direct sample | Ship24 | ParcelsApp | 17TRACK | Postal Ninja | UPU |

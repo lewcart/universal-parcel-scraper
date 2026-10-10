@@ -2,10 +2,10 @@
 
 Opt-in universal provider: selecting `Postal Ninja` in `providers` (`SCRAPER_PROVIDERS` for
 the CLI and server) asks it after the other aggregators, whatever its coverage evidence,
-because its international histories rarely have a scan a consumer can place.
+because many of its international histories have no scan a consumer can place.
 Through TRAWL it returns full histories, often with destination legs. Its scan times
-have no zone, so only scans of a service whose clock is established are placed (see
-[Parsing](#parsing)). Persisted provider name: `Postal Ninja`. The results page needs a
+have no zone: scans of a service whose clock is established are placed on it, and others
+borrow a zone as a guess (see [Parsing](#parsing)). Persisted provider name: `Postal Ninja`. The results page needs a
 handle from a verified lookup, which cannot be built from the tracking number, so the
 link shown to users is the public form.
 
@@ -72,9 +72,9 @@ numbers or handles cannot end the lookup.
   | One zone, wherever the scan happened | Swiss Post (Zurich), Singapore Post (Singapore) | Swiss Post 17/17 on two items, with their arrival scans in El Salvador and China; Singapore Post 9/9 on an item to China, with its Chinese scans |
   | One zone per network, by destination | GOFO Express: US Los Angeles, FR Paris | 20/20 on two US parcels, with New Jersey and New York scans; 7/7 on a French parcel and the newest scan of a YunExpress parcel GOFO delivered in France |
   | The scanning office's | An Post Ireland, CTT Express, Correos de España, DHL Parcel Netherlands, DPD, DPD Poland, DPD UK, GLS, Hermes Germany, MRW, Nova Poshta, Packeta, Poczta Polska, PostNord, Posten Norge, UkrPoshta | Domestic parcels in their countries, `DPD` on the Polish, German and Spanish networks; UkrPoshta's Ukrainian scans of an item to China |
-  | The scanning office's, named by its location | FedEx, UPS | UPS 11/11 on two parcels across Eastern, Central and Mountain time; FedEx 16/17 on two parcels from Washington to Florida and from Ohio to Kentucky |
+  | The scanning office's, named by its location | FedEx, UPS | UPS 12/12 on two parcels across Eastern, Central and Mountain time; FedEx 16/17 on two parcels from Washington to Florida and from Ohio to Kentucky |
 
-  Every other service's clock is unknown, and its scans keep their wall time.
+  Every other service's clock is unknown.
 - A fixed or network clock places its service's scans in any history. A local clock
   places them only in a full history that service reports alone, and for an S10 item
   one whose origin is its destination (`destCn`): beside other services, a service relays
@@ -83,34 +83,45 @@ numbers or handles cannot end the lookup.
   destination's, else the service's (`courierZone`, as Ship24 reads its couriers'), else
   the zone routing passes for the parcel's carrier, else that of the one country the
   carrier serves (BRT's Italy). A destination on another clock than the service's may be a
-  parcel that crossed a border, and places nothing. A compact widget reply's two scans
+  parcel that crossed a border, and establishes none. A compact widget reply's two scans
   cannot show that one service reports the whole history.
 - FedEx and UPS are also placed only in a full history they report alone, each scan by
   the US state or Canadian province its location names before the country ("Atlanta, GA,
   United States"). A state with several zones is read in its majority zone, as Ship24
   and ParcelsApp read theirs: FedEx's scan in Jacob City, in the Florida panhandle on
   Central time, came out an hour early. A location without a state ("United States") or
-  without a country ("Chicago, IL") places nothing.
-- A local clock writes a scan dated without a time as midnight (FedEx's pickup), which
-  places nothing. UPS dates its scans between midnight and 1 a.m. at 12:xx (its arrival
-  in Lenexa at 00:25 is 12:25, and a departure from Atlanta at 00:12 comes after the
-  delivery), so none of its 12:xx scans is placed.
+  without a country ("Chicago, IL") establishes no clock.
 - A carrier's home is no clock by itself: Poste Italiane's scans are UTC, two hours off
   Rome time in summer, and the consolidators the catalog files under China report their
   destination scans at the destination's clocks.
-- Known clocks that still place nothing: DHL Express keeps each facility's clock, but
+- Known clocks that are not established: DHL Express keeps each facility's clock, but
   names its newest US and Canadian scans without their state ("MARSHALL-USA"); Australia
   Post, Canada Post, USPS and Correios do Brasil keep the scan's clock in countries with
   several; New Zealand Post relays China Post's scans at Chinese time; 4PX gives Chinese
   scans in UTC and US scans twelve hours early.
-- Other scans keep their wall time as `local_time`; an explicit offset is kept as it is.
-  Once every scan has an instant, scans are ordered by it; otherwise the provider's order
+- A scan without an established clock borrows a zone, so that a reply whose newest scan
+  names no place still has a dated newest scan: that of the nearest earlier scan of the
+  same service with an established clock, else of the nearest later one, else the zone
+  routing passes for the parcel's carrier, else, in a history the service reports alone,
+  the one the service's name gives (`courierZone`). This is a guess. On the benchmark's
+  parcels it was right for UPS's label scan, three hours off for FedEx's "Shipment
+  information sent", which is at the shipper's clock, and six hours late for Correos de El
+  Salvador's newest scan of a Swiss Post item, read in Zurich time. A scan with no zone to
+  borrow keeps its wall time as `local_time`; an explicit offset is kept as it is.
+- A scan whose hour is unknown keeps its wall time whatever its zone. A scan dated
+  without a time is written as midnight (FedEx's pickup, Geodis's departure). UPS dates
+  its scans between midnight and 1 a.m. at 12:xx (its arrival in Lenexa at 00:25 is
+  12:25, and a departure from Atlanta at 00:12 comes after the delivery), so its 12:xx
+  scans are not placed, except a delivery, which is read as afternoon (12:59 in Dubois,
+  Wyoming).
+- Once every scan has an instant, scans are ordered by it; otherwise the provider's order
   is kept, because wall times cannot be sorted against instants. If the newest scan has no
   instant, `last_update` is null, and a history with none at all is inconclusive through
   `fetchSource()`.
-- A scan dated more than an hour after the reply's `lastFetch` is a deadline, such as
-  Posten Norge's "Last day for retrieval", and is left out. A wall time without a zone
-  counts only when it is that late in every zone, up to UTC+14.
+- A pickup deadline is no scan, and is left out: one named so (PostNord's "Last day to
+  pickup", Posten Norge's "Last day for retrieval"), or any row dated more than an hour
+  after the reply's `lastFetch`. A wall time counts as after it only when it is that late
+  in every zone, up to UTC+14.
 - `track.toAddress` is never read. At most 1000 events.
 
 ## Rejected approaches

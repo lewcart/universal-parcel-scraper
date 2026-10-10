@@ -46,20 +46,25 @@ describe('Postal Ninja result parsing', () => {
     expect(parsePostalNinjaResponse(gofo(), number).last_update).toBeNull();
   });
 
-  it('places a fixed clock\'s scans beside other services\' and keeps theirs as wall times', () => {
+  it('places a fixed clock\'s scans beside other services\', which borrow the carrier\'s zone or keep their wall times', () => {
     // Swiss Post keeps Zurich time for its scans abroad; the other services relay
-    // the same scans at clocks of their own.
+    // the same scans at clocks of their own, unknown here.
     const item = 'RR123456785CH';
-    const parsed = parsePostalNinjaResponse(postal(item, 'SV', [
+    const reply = postal(item, 'SV', [
       { ds: 'DHL Germany', dt: '2026-08-12T08:05:00', dsc: 'Posting/Collection' },
       { ds: 'Swiss Post', dt: '2026-08-12T10:05:00', dsc: 'Time at which your consignment was mailed' },
       { ds: 'Swiss Post', dt: '2026-08-16T15:30:00', dsc: 'Arrival in destination country' },
       { ds: 'Example Post', dt: '2026-08-16T21:30:00', dsc: 'Receive shipment at exchange office' },
-    ]), item, 'Europe/Zurich');
-    expect(times(parsed)).toEqual(['local 2026-08-16T21:30:00', '2026-08-16T13:30:00.000Z',
+    ]);
+    const unplaced = parsePostalNinjaResponse(reply, item);
+    expect(times(unplaced)).toEqual(['local 2026-08-16T21:30:00', '2026-08-16T13:30:00.000Z',
       '2026-08-12T08:05:00.000Z', 'local 2026-08-12T08:05:00']);
     // The newest scan has no instant, so an older one does not stand in for it.
-    expect(parsed.last_update).toBeNull();
+    expect(unplaced.last_update).toBeNull();
+    // With the carrier's zone, the others' scans borrow it: a guess, two hours
+    // early for DHL Germany's here.
+    expect(times(parsePostalNinjaResponse(reply, item, 'Europe/Zurich'))).toEqual(['2026-08-16T19:30:00.000Z', '2026-08-16T13:30:00.000Z',
+      '2026-08-12T08:05:00.000Z', '2026-08-12T06:05:00.000Z']);
     expect(parsePostalNinjaResponse(postal(item, 'SV', [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }]), item).last_update)
       .toBe('2026-08-17T09:17:00.000Z');
   });
@@ -87,35 +92,41 @@ describe('Postal Ninja result parsing', () => {
     expect(parsePostalNinjaResponse(withEvents(scans('DPD')), number, null, 'brt').last_update).toBe('2026-08-17T09:17:00.000Z');
     expect(parsePostalNinjaResponse(withEvents(scans('Poste Italiane')), number, null, 'brt').last_update).toBe('2026-08-17T11:17:00.000Z');
     expect(parsePostalNinjaResponse(withEvents(scans('DPD')), number, null, 'packeta').last_update).toBeNull();
-    // A destination on another clock than the service's may be a parcel that crossed a border.
-    expect(parsePostalNinjaResponse(postal(number, 'FR', scans('DPD UK')), number).last_update).toBeNull();
-    // A service whose clock is unknown keeps its wall times, whatever zone the carrier has.
-    expect(parsePostalNinjaResponse(withEvents(scans('Example Express')), number, 'Europe/Rome').last_update).toBeNull();
+    // A destination on another clock than the service's may be a parcel that
+    // crossed a border, and a service whose clock is unknown has none: their
+    // scans borrow the carrier's zone, else the one the service's name gives.
+    expect(parsePostalNinjaResponse(postal(number, 'FR', scans('DPD UK')), number, 'Europe/Paris').last_update).toBe('2026-08-17T09:17:00.000Z');
+    expect(parsePostalNinjaResponse(postal(number, 'FR', scans('DPD UK')), number).last_update).toBe('2026-08-17T10:17:00.000Z');
+    expect(parsePostalNinjaResponse(withEvents(scans('Example Express')), number, 'Europe/Rome').last_update).toBe('2026-08-17T09:17:00.000Z');
+    expect(parsePostalNinjaResponse(withEvents(scans('Example Express')), number).last_update).toBeNull();
   });
 
   it('reads a carrier on the clock of each scan\'s office by the state or province its location names', () => {
     const parsed = parsePostalNinjaResponse(withEvents([
-      // No state, or no country to say IL is one: the office's clock is unknown.
+      // No state, or no country to say IL is one: the office's clock is unknown,
+      // and the scan borrows the zone of the nearest earlier one, else later one.
       { ds: 'UPS', dt: '2026-08-15T09:00:00', dsc: 'Shipper created a label', loc: 'United States' },
-      { ds: 'UPS', dt: '2026-08-15T18:00:00', dsc: 'Origin Scan', loc: 'Chicago, IL' },
       { ds: 'UPS', dt: '2026-08-15T21:40:00', dsc: 'Arrived at Facility', loc: 'Mississauga, ON, L5T 2N7, Canada' },
       { ds: 'UPS', dt: '2026-08-16T08:05:00', dsc: 'Departed from Facility', loc: 'Atlanta, GA, United States' },
+      { ds: 'UPS', dt: '2026-08-16T18:00:00', dsc: 'Departed from Facility', loc: 'Chicago, IL' },
       { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'TACOMA, WA, 98424, United States' },
-    ]), number, 'America/New_York');
-    expect(times(parsed)).toEqual(['2026-08-17T18:17:00.000Z', '2026-08-16T12:05:00.000Z', '2026-08-16T01:40:00.000Z',
-      'local 2026-08-15T18:00:00', 'local 2026-08-15T09:00:00']);
+    ]), number);
+    expect(times(parsed)).toEqual(['2026-08-17T18:17:00.000Z', '2026-08-16T22:00:00.000Z', '2026-08-16T12:05:00.000Z',
+      '2026-08-16T01:40:00.000Z', '2026-08-15T13:00:00.000Z']);
     expect(parsed.last_update).toBe('2026-08-17T18:17:00.000Z');
     // A pickup dated without a time is written as midnight, and UPS dates a scan
-    // between midnight and 1 a.m. at 12:xx: neither is a wall time to place.
+    // between midnight and 1 a.m. at 12:xx: no zone places either. A delivery
+    // at 12:xx is read as afternoon.
     const memphis = (ds: string, dt: string, dsc: string) => ({ ds, dt, dsc, loc: 'MEMPHIS, TN, United States' });
     expect(times(parsePostalNinjaResponse(withEvents([
       memphis('FedEx', '2026-08-16T00:00:00', 'Picked up'),
       memphis('FedEx', '2026-08-16T12:25:00', 'Arrived at FedEx location'),
-    ]), number))).toEqual(['2026-08-16T17:25:00.000Z', 'local 2026-08-16T00:00:00']);
+    ]), number, 'America/Chicago'))).toEqual(['2026-08-16T17:25:00.000Z', 'local 2026-08-16T00:00:00']);
     expect(times(parsePostalNinjaResponse(withEvents([
       memphis('UPS', '2026-08-16T12:25:00', 'Arrived at Facility'),
       memphis('UPS', '2026-08-16T13:25:00', 'Departed from Facility'),
-    ]), number))).toEqual(['2026-08-16T18:25:00.000Z', 'local 2026-08-16T12:25:00']);
+      memphis('UPS', '2026-08-17T12:40:00', 'Delivered'),
+    ]), number, 'America/Chicago'))).toEqual(['2026-08-17T17:40:00.000Z', '2026-08-16T18:25:00.000Z', 'local 2026-08-16T12:25:00']);
     // Beside another service, the office's clock is not read.
     expect(parsePostalNinjaResponse(withEvents([
       { ds: 'USPS', dt: '2026-08-17T10:00:00', dsc: 'Out for delivery', loc: 'ATLANTA, GA 30301' },
@@ -123,31 +134,36 @@ describe('Postal Ninja result parsing', () => {
     ]), number).last_update).toBeNull();
   });
 
-  it('keeps local clocks as wall times beside other services and when a postal item crosses a border', () => {
+  it('reads local clocks beside other services, or for a postal item that crosses a border, only in the carrier\'s zone', () => {
     // DHL Germany repeats the origin post's scans at the origin's clock.
-    const relayed = parsePostalNinjaResponse(withEvents([
+    const relayed = withEvents([
       { ds: 'Example Post', dt: '2026-08-12T20:05:00', dsc: 'Posting/Collection' },
       { ds: 'DHL Germany', dt: '2026-08-12T20:05:00', dsc: 'Posting/Collection' },
       { ds: 'An Post Ireland', dt: '2026-08-17T11:17:00', dsc: 'Delivered' },
-    ]), number, 'Europe/Dublin');
-    expect(relayed.last_update).toBeNull();
-    expect(relayed.events?.every((scan) => scan.local_time && !scan.time)).toBe(true);
+    ]);
+    const unplaced = parsePostalNinjaResponse(relayed, number);
+    expect(unplaced.last_update).toBeNull();
+    expect(unplaced.events?.every((scan) => scan.local_time && !scan.time)).toBe(true);
+    expect(times(parsePostalNinjaResponse(relayed, number, 'Europe/Dublin'))).toEqual(['2026-08-17T10:17:00.000Z', '2026-08-12T19:05:00.000Z']);
     const item = 'RR123456785SE';
     const delivered = [{ ds: 'PostNord', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
     expect(parsePostalNinjaResponse(postal(item, 'NO', delivered), item).last_update).toBeNull();
     expect(parsePostalNinjaResponse(postal(item, 'SE', delivered), item).last_update).toBe('2026-08-17T09:17:00.000Z');
   });
 
-  it('leaves out a deadline dated after Postal Ninja last read the carrier', () => {
-    const reply = (lastFetch?: string) => ({ ...found, track: { ...found.track, destCn: 'NO', ...(lastFetch ? { lastFetch } : {}), events: [
+  it('leaves out pickup deadlines', () => {
+    const reply = (deadline: string, lastFetch?: string) => ({ ...found, track: { ...found.track, destCn: 'NO', ...(lastFetch ? { lastFetch } : {}), events: [
       { ds: 'Posten Norge', dt: '2026-08-17T11:17:00', dsc: 'The parcel has arrived at the pickup point' },
-      { ds: 'Posten Norge', dt: '2026-08-24T00:00:00', dsc: 'Last day for retrieval' },
+      { ds: 'Posten Norge', dt: '2026-08-24T10:00:00', dsc: deadline },
     ] } });
-    const parsed = parsePostalNinjaResponse(reply('2026-08-17T12:00:00Z'), number);
-    expect(parsed.events?.map((scan) => scan.description)).toEqual(['The parcel has arrived at the pickup point']);
+    const descriptions = (parsed: ReturnType<typeof parsePostalNinjaResponse>) => parsed.events?.map((scan) => scan.description);
+    const arrived = ['The parcel has arrived at the pickup point'];
+    expect(descriptions(parsePostalNinjaResponse(reply('Last day for retrieval'), number))).toEqual(arrived);
+    // Any row dated after Postal Ninja last read the carrier is one too.
+    const parsed = parsePostalNinjaResponse(reply('Will be returned to the sender', '2026-08-17T12:00:00Z'), number);
+    expect(descriptions(parsed)).toEqual(arrived);
     expect(parsed.last_update).toBe('2026-08-17T09:17:00.000Z');
-    // Without that time, nothing is left out.
-    expect(parsePostalNinjaResponse(reply(), number).events).toHaveLength(2);
+    expect(parsePostalNinjaResponse(reply('Will be returned to the sender'), number).events).toHaveLength(2);
   });
 
   it('accepts the widget compact response without inventing missing history', () => {
@@ -164,11 +180,13 @@ describe('Postal Ninja result parsing', () => {
       { local_time: '2026-08-01T10:00:00', description: 'Shipment information received', stage: 'registered', stage_source: 'wording:provider' },
     ]);
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
-    // Two scans cannot show that one service reports the whole history.
-    const compact = (ds: string) => parsePostalNinjaResponse({ ...found, track: { ...track, firstEv: { ds, dt: '2026-08-01T10:00:00', dsc: 'Accepted' },
-      lastEv: { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' } } }, number, 'Europe/Rome').last_update;
-    expect(compact('DPD')).toBeNull();
-    expect(compact('Swiss Post')).toBe('2026-08-17T09:17:00.000Z');
+    // Two scans cannot show that one service reports the whole history: a local
+    // clock's borrow the carrier's zone.
+    const compact = (ds: string, zone: string | null) => parsePostalNinjaResponse({ ...found, track: { ...track,
+      firstEv: { ds, dt: '2026-08-01T10:00:00', dsc: 'Accepted' }, lastEv: { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' } } }, number, zone).last_update;
+    expect(compact('DPD', null)).toBeNull();
+    expect(compact('DPD', 'Europe/Rome')).toBe('2026-08-17T09:17:00.000Z');
+    expect(compact('Swiss Post', null)).toBe('2026-08-17T09:17:00.000Z');
   });
 
   it('deduplicates a compact single scan and rejects malformed compact data', () => {

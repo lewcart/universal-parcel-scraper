@@ -5,7 +5,8 @@
  * their home zone wherever the scan happened. Each entry was established on
  * benchmark parcels against the carrier's own instants (its adapter's offsets
  * or epoch times, or its website); README.md gives the evidence. A service
- * missing here has no known clock, and its scans keep their wall time.
+ * missing here has no known clock: its scans borrow a zone in the adapter, as
+ * a guess, or keep their wall time.
  */
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { canadaProvinceTimeZone, countryCode, countryTimeZone, sharedClockZone, usStateTimeZone } from '../../core/time/index.js';
@@ -47,12 +48,12 @@ const LOCAL_CLOCKS: ReadonlySet<string> = new Set([
 const LOCATED_CLOCKS: ReadonlySet<string> = new Set(['FedEx', 'UPS']);
 /**
  * Services whose scans between midnight and 1 a.m. reach Postal Ninja twelve
- * hours late: UPS's arrival in Lenexa at 00:25 is dated 12:25. Any scan they
- * date 12:xx may be either.
+ * hours late: UPS's arrival in Lenexa at 00:25 is dated 12:25. A scan they
+ * date 12:xx may be either, except a delivery, which is read as afternoon.
  */
 const TWELVE_HOUR_CLOCKS: ReadonlySet<string> = new Set(['UPS']);
 
-/** A local clock writes a scan dated without a time as midnight (FedEx's pickup). */
+/** A scan dated without a time is written as midnight (FedEx's pickup, Geodis's departure). */
 const MIDNIGHT = /T00:00(?::00)?$/;
 const POSTAL_CODE = /^(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 
@@ -97,18 +98,31 @@ function locationZone(location: string): string | null {
   return countryTimeZone(country);
 }
 
+/** A scan as the reply gives it. */
+export interface Scan {
+  /** Postal Ninja's name for the service that reported it (`ds`). */
+  service: string;
+  /** Its `dt`, without a zone. */
+  wall: string;
+  location: string;
+  delivered: boolean;
+}
+
 /**
- * The zone of a scan's wall time, from the service that reported it: its fixed
- * or network clock in any history, else in a history it reports alone its
- * location's clock, or a local clock's country: the destination's, else the
- * service's (`courierZone`) or the carrier's. A destination on another clock
- * than the service's may be a parcel that crossed a border, so it places
- * nothing. Null when the clock is unknown.
+ * The established zone of a scan's wall time, from the service that reported
+ * it: its fixed or network clock in any history, else in a history it reports
+ * alone its location's clock, or a local clock's country: the destination's,
+ * else the service's (`courierZone`) or the carrier's. A destination on another
+ * clock than the service's may be a parcel that crossed a border, so it
+ * establishes none. Null when the clock is unknown; false when the hour is
+ * (a date written as midnight, UPS's 12:xx), so that no zone can place the
+ * scan.
  */
-export function serviceZone(service: string, wall: string, location: string, journey: Journey): string | null {
+export function serviceZone({ service, wall, location, delivered }: Scan, journey: Journey): string | null | false {
   const fixed = FIXED_CLOCKS.get(service) ?? (journey.destination ? NETWORK_CLOCKS.get(service)?.get(journey.destination) : undefined);
   if (fixed) return fixed;
-  if (!journey.alone || MIDNIGHT.test(wall) || (TWELVE_HOUR_CLOCKS.has(service) && wall.slice(11, 13) === '12')) return null;
+  if (MIDNIGHT.test(wall) || (TWELVE_HOUR_CLOCKS.has(service) && wall.slice(11, 13) === '12' && !delivered)) return false;
+  if (!journey.alone) return null;
   if (LOCATED_CLOCKS.has(service)) return locationZone(location);
   if (!LOCAL_CLOCKS.has(service)) return null;
   const home = courierZone(service, journey.number, wall) ?? journey.fallback;

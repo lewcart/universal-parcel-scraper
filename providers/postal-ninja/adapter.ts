@@ -21,6 +21,7 @@ import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/tr
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
+import { courierZone } from '../shared/hints.js';
 import { carrierHomeZone, serviceZone } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
@@ -31,6 +32,8 @@ const MAX_EVENTS = 1000;
 const CLOCK_SKEW_MS = 3_600_000;
 /** The furthest a wall clock runs ahead of UTC (UTC+14). */
 const EARLIEST_ZONE_MS = 14 * 3_600_000;
+/** A pickup deadline Postal Ninja lists among the scans (PostNord's "Last day to pickup", Posten Norge's "Last day for retrieval"). */
+const DEADLINE = /^last day\b/i;
 /** The states whose history the provider considers established. */
 const TRACKED_STATES = ['TRACKING', 'FINISHED', 'STOPPED', 'ARCHIVED'];
 
@@ -61,52 +64,71 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
     ? [payload.track.firstEv, payload.track.lastEv].filter((value) => value != null)
     : payload.track.events;
   if (!Array.isArray(rawEvents) || rawEvents.length > MAX_EVENTS) throw new SchemaError(SOURCE, 'Postal Ninja returned invalid events');
-  const events: CarrierEvent[] = [];
   // Postal Ninja supplies events oldest first. Its dt values are wall times
   // without a zone, on a clock that depends on the service that reports the
   // scan (ds): UTC for some, the service's home zone wherever the scan
-  // happened for others, the scanning office's for most. Each scan is placed
-  // on its service's established clock (clocks.ts). The scanning office's
-  // counts only in a full history that service reports alone, and for a postal
-  // item one that stays in its country: beside other services, a service can
-  // relay their scans at their clocks or at none. Other scans keep their wall
-  // time as local_time. Explicit offsets, when present, are persisted as they are.
+  // happened for others, the scanning office's for most. A scan is placed on
+  // its service's established clock (clocks.ts). The scanning office's counts
+  // only in a full history that service reports alone, and for a postal item
+  // one that stays in its country: beside other services, a service can relay
+  // their scans at their clocks or at none. Explicit offsets, when present,
+  // are persisted as they are.
   const destination = text(payload.track.destCn) || null;
   const services = new Set((rawEvents as unknown[]).map((raw) => isRecord(raw) ? text(raw.ds) : ''));
   const journey = { number, destination, fallback: timezone ?? carrierHomeZone(carrier),
     alone: payload.track.events !== undefined && services.size === 1
       && (!isValidS10TrackingNumber(number) || number.slice(-2) === destination) };
-  for (const raw of [...rawEvents as unknown[]].reverse()) {
+  const scans: { wall: string | null; service: string; zone: string | null | false; event: Omit<CarrierEvent, 'local_time'> }[] = [];
+  for (const raw of rawEvents as unknown[]) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event');
     const description = text(raw.dsc);
-    if (!description || isNotice(description)) continue;
+    if (!description || isNotice(description) || DEADLINE.test(description)) continue;
     if (typeof raw.dt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?/.test(raw.dt)
       || !DateTime.fromISO(raw.dt, { zone: 'UTC' }).isValid) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event date');
     if (/(?:Z|[+-]\d{2}:\d{2})$/.test(raw.dt)) {
       const parsed = event(raw.dt, description);
-      if (parsed) events.push(parsed);
+      if (parsed) scans.push({ wall: null, service: text(raw.ds), zone: null, event: parsed });
     } else {
       const classified = classifyEvent(description);
       const { stage } = classified;
       if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
       // A scan's location (loc) is read only for its clock.
-      const zone = serviceZone(text(raw.ds), raw.dt, text(raw.loc), journey);
-      const instant = zone ? DateTime.fromISO(raw.dt, { zone }) : null;
-      events.push({ ...(instant?.isValid ? { time: instant.toUTC().toISO() } : { local_time: raw.dt }),
-        description: stage === 'delivered' ? 'Delivered' : description, ...classified });
+      const scan = { service: text(raw.ds), wall: raw.dt, location: text(raw.loc), delivered: stage === 'delivered' };
+      scans.push({ wall: raw.dt, service: scan.service, zone: serviceZone(scan, journey),
+        event: { description: stage === 'delivered' ? 'Delivered' : description, ...classified } });
     }
   }
-  // Postal Ninja lists a pickup deadline among the scans ("Last day for
-  // retrieval"), dated after it last read the carrier (lastFetch). It is no
-  // scan, and placed it would be the parcel's newest instant. A wall time is
-  // after that read only when it is in every zone.
+  // A scan whose service's clock is unknown here borrows a zone: that of the
+  // nearest earlier scan of the same service with an established one, else of
+  // the nearest later one, else the carrier's, else, in a history the service
+  // reports alone, the one its name gives. This is a guess, which keeps a reply
+  // dated when its newest scan names no place. A scan whose hour is unknown
+  // (false) keeps its wall time.
+  const zoneAt = (index: number, wall: string): string | null => {
+    const { zone, service } = scans[index]!;
+    if (zone !== null) return zone || null;
+    const established = (other: typeof scans[number]) => other.service === service && typeof other.zone === 'string' ? other.zone : null;
+    for (let earlier = index - 1; earlier >= 0; earlier -= 1) { const borrowed = established(scans[earlier]!); if (borrowed) return borrowed; }
+    for (let later = index + 1; later < scans.length; later += 1) { const borrowed = established(scans[later]!); if (borrowed) return borrowed; }
+    return timezone ?? (journey.alone ? courierZone(service, number, wall) : null);
+  };
+  const events = scans.map((scan, index): CarrierEvent => {
+    if (scan.wall === null) return scan.event;
+    const zone = zoneAt(index, scan.wall);
+    const instant = zone ? DateTime.fromISO(scan.wall, { zone }) : null;
+    return instant?.isValid ? { time: instant.toUTC().toISO(), ...scan.event } : { local_time: scan.wall, ...scan.event };
+  }).reverse();
+  // A deadline is no scan, and placed it would be the parcel's newest instant.
+  // Besides those it names, a row dated after Postal Ninja last read the
+  // carrier (lastFetch) is one. A wall time is after that read only when it
+  // is in every zone.
   const readAt = Date.parse(text(payload.track.lastFetch));
   const after = (scan: CarrierEvent) => (scan.time ? Date.parse(scan.time)
     : Date.parse(`${String(scan.local_time)}Z`) - EARLIEST_ZONE_MS) > readAt + CLOCK_SKEW_MS;
-  const scans = events.filter((scan) => !after(scan));
+  const kept = events.filter((scan) => !after(scan));
   // Services on different clocks interleave in Postal Ninja's order. Once
   // every scan has an instant, they are ordered by it.
-  return result(scans, SOURCE, scans.some((scan) => !scan.time));
+  return result(kept, SOURCE, kept.some((scan) => !scan.time));
 }
 
 export interface PostalNinjaOptions extends Omit<UniversalBrowserOptions, 'signal'> {

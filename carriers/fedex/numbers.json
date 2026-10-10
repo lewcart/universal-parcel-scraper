@@ -1087,17 +1087,14 @@
         "dateKind": "capture"
       },
       "context": {
+        "service": "FedEx Ground Economy",
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "usps",
-          "nz-post"
-        ]
+        "carrier": "fedex",
+        "confidence": "high"
       },
-      "note": "A 20-digit Ground Economy number archived from a FedEx tracking link: a USPS package number without its 92 channel. FedEx's tracker files these under SmartPost, but detection does not offer FedEx."
+      "note": "A 20-digit Ground Economy number archived from a FedEx tracking link: a USPS package number without its 92 channel, whose check digit passes with the 92 in front."
     },
     {
       "number": "74890983300058417827",
@@ -1110,7 +1107,144 @@
         "dateKind": "capture"
       },
       "context": {
+        "service": "FedEx Ground Economy",
         "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A 20-digit Ground Economy number archived from a FedEx tracking link: a USPS package number without its 92 channel, whose check digit passes with the 92 in front."
+    },
+    {
+      "number": "61290274420320913673",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260412022730/https://www.fedex.com/fedextrack/system-error?trknbr=61290274420320913673",
+        "date": "2026-04-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number of service type 612: a USPS package number without its 92 channel, whose check digit passes with the 92 in front. FedEx's tracker files it under SmartPost and returns its history through delivery by FedEx Ground."
+    },
+    {
+      "number": "61290367906223222924",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260411183451/https://www.fedex.com/fedextrack/system-error?trknbr=61290367906223222924",
+        "date": "2026-04-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number of service type 612: a USPS package number without its 92 channel, whose check digit passes with the 92 in front. FedEx's tracker files it under SmartPost and returns its history through delivery by FedEx Ground."
+    },
+    {
+      "number": "61290381371820112600",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260408201827/https://www.fedex.com/fedextrack/system-error?trknbr=61290381371820112600",
+        "date": "2026-04-08",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number of service type 612: a USPS package number without its 92 channel, whose check digit passes with the 92 in front. FedEx's tracker files it under SmartPost and returns its history through delivery by FedEx Ground."
+    },
+    {
+      "number": "74890360845720131731",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260502010548/https://www.fedex.com/fedextrack/system-error?trknbr=74890360845720131731",
+        "date": "2026-05-02",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number of service type 748: a USPS package number without its 92 channel, whose check digit passes with the 92 in front. FedEx's tracker files it under SmartPost and returns its history through delivery by FedEx Ground."
+    },
+    {
+      "number": "74890408776522880345",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260504205229/https://www.fedex.com/fedextrack/system-error?trknbr=74890408776522880345",
+        "date": "2026-05-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number of service type 748: a USPS package number without its 92 channel, whose check digit passes with the 92 in front. FedEx's tracker files it under SmartPost and returns its history through delivery by FedEx Ground."
+    },
+    {
+      "number": "61299998825468864607",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251109042958/https://www.fedex.com/fedextrack/system-error?trknbr=61299998825468864607",
+        "date": "2025-11-09",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "FedEx Ground Economy",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fedex",
+        "confidence": "high"
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. A 20-digit Ground Economy number whose check digit passes with the 92 in front. FedEx's tracker now returns a later parcel under the same number, filed under SmartPost: the U.S. Postal Service accepted it under the number with 92 in front and delivered it."
+    },
+    {
+      "number": "61299998825428896854",
+      "role": "negative",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250613174313/https://www.fedex.com/fedextrack/no-results-found?trknbr=61299998825428896854",
+        "date": "2025-06-13",
+        "dateKind": "capture",
+        "access": "full_page"
       },
       "expect": {
         "carrier": "unknown",
@@ -1120,7 +1254,27 @@
           "nz-post"
         ]
       },
-      "note": "A 20-digit Ground Economy number archived from a FedEx tracking link: a USPS package number without its 92 channel. FedEx's tracker files these under SmartPost, but detection does not offer FedEx."
+      "note": "A FedEx tracking link archived by the Wayback Machine. Its check digit, which USPS requires on every package number, fails with the 92 in front, while every Ground Economy number FedEx's tracker knew passes it, as do nearly all archived FedEx links of this family. No other check scheme fits and no swap of neighbouring digits repairs it, so a single mistyped digit is the likely cause, and detection leaves FedEx out."
+    },
+    {
+      "number": "61290983483523829637",
+      "role": "negative",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260117002305/https://www.fedex.com/fedextrack/system-error?trknbr=61290983483523829637",
+        "date": "2026-01-17",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "A FedEx tracking link archived by the Wayback Machine. Its check digit, which USPS requires on every package number, fails with the 92 in front, while every Ground Economy number FedEx's tracker knew passes it, as do nearly all archived FedEx links of this family. No other check scheme fits and no swap of neighbouring digits repairs it, so a single mistyped digit is the likely cause, and detection leaves FedEx out."
     },
     {
       "number": "9612804169230236160243",

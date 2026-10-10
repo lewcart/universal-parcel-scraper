@@ -16,6 +16,10 @@ import { FEDEX_CODE_STAGE, fedexStage, fedexStatus } from './status.js';
 const DELIVERED_NUMBER = '999999999999';
 const IN_TRANSIT_NUMBER = '999999999998';
 const HELD_NUMBER = '999999999996';
+// Made-up Ground Economy numbers: a service type code, a Mailer ID of nines and
+// a serial, closed by the check digit computed with 92 in front.
+const GROUND_ECONOMY_NUMBER = '61299999999900000010';
+const OTHER_GROUND_ECONOMY_NUMBER = '61299999999900000034';
 const TRACK_API = 'https://api.fedex.com/track/v2/shipments';
 const TRAWL_URL = 'http://trawl.internal:8191';
 const DELIVERED = JSON.parse(
@@ -45,6 +49,30 @@ function heldFixture(edit: (shipment: Record<string, unknown>) => void = () => {
   edit((payload.output as { packages: Record<string, unknown>[] }).packages[0]!);
   return payload;
 }
+
+/** A Ground Economy parcel with these scans, newest first: [date, code, status, details]. */
+function groundEconomyFixture(scans: readonly (readonly [string, string, string, string])[], number = GROUND_ECONOMY_NUMBER): Record<string, unknown> {
+  const payload = deliveredFixture();
+  const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;
+  shipment.trackingNbr = number;
+  shipment.displayTrackingNbr = number;
+  // The package status follows the newest scan.
+  shipment.keyStatusCD = scans[0]?.[1] ?? '';
+  shipment.keyStatus = scans[0]?.[2] ?? '';
+  shipment.statusWithDetails = '';
+  shipment.scanEventList = scans.map(([date, statusCD, status, scanDetails]) => ({
+    date, time: '10:00:00', gmtOffset: '-05:00', scanLocation: 'EXAMPLE CITY, TN', status, statusCD, scanDetails,
+  }));
+  return payload;
+}
+
+const USPS_SCANS = [
+  ['2026-06-08', 'DL', 'Delivered', 'Package delivered by U.S. Postal Service to addressee'],
+  ['2026-06-08', 'OD', 'Out for delivery', 'Out for delivery with the U.S. Postal Service'],
+  ['2026-06-07', 'AR', 'At U.S. Postal Service facility', `Accepted by U.S. Postal Service - Tracking ID 92${GROUND_ECONOMY_NUMBER}`],
+  ['2026-06-05', 'DP', 'Departed FedEx location', ''],
+  ['2026-06-04', 'PU', 'Picked up', ''],
+] as const;
 
 function stepRecorder(): { recorder: StepRecorder; records: string[] } {
   const records: string[] = [];
@@ -135,12 +163,15 @@ describe('FedEx structured response', () => {
 
   it('produces every capability carrier.json declares', () => {
     const result = parseFedExTrackingResponse(deliveredFixture(), DELIVERED_NUMBER);
-    expect(CAPABILITIES).toEqual(['history', 'location', 'eta', 'delivered_at', 'pickup_point']);
+    expect(CAPABILITIES).toEqual(['history', 'location', 'eta', 'delivered_at', 'pickup_point', 'delivery_partner', 'delivery_tracking_number']);
     expect(result.events?.length).toBeGreaterThan(0);
     expect(result.events?.some((event) => event.location)).toBe(true);
     expect(result.delivered_at).toBeTruthy();
     expect(parseFedExTrackingResponse(inTransitFixture(), IN_TRANSIT_NUMBER).expected_delivery).toBeTruthy();
     expect(parseFedExTrackingResponse(heldFixture(), HELD_NUMBER).pickup_point).toBeTruthy();
+    const handedOver = parseFedExTrackingResponse(groundEconomyFixture(USPS_SCANS), GROUND_ECONOMY_NUMBER);
+    expect(handedOver.delivery_carrier).toBeTruthy();
+    expect(handedOver.delivery_tracking_number).toBeTruthy();
   });
 
   it('names the hold location while the parcel is ready for pickup', () => {
@@ -163,6 +194,60 @@ describe('FedEx structured response', () => {
     // An `HP` package is ready for pickup too.
     expect(parseFedExTrackingResponse(heldFixture((shipment) => { shipment.keyStatusCD = 'HP'; }), HELD_NUMBER))
       .toMatchObject({ current_stage: 'ready_for_pickup', pickup_point: result.pickup_point });
+  });
+
+  it('names USPS and its package number once USPS has a Ground Economy parcel', () => {
+    const result = parseFedExTrackingResponse(groundEconomyFixture(USPS_SCANS), GROUND_ECONOMY_NUMBER);
+    expect(result).toMatchObject({
+      status: 'delivered',
+      current_stage: 'delivered',
+      delivery_carrier: 'usps',
+      delivery_tracking_number: `92${GROUND_ECONOMY_NUMBER}`,
+    });
+    expect(result.events?.map((event) => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted']);
+    // Before USPS has it, FedEx alone tracks the parcel.
+    expect(parseFedExTrackingResponse(groundEconomyFixture(USPS_SCANS.slice(3)), GROUND_ECONOMY_NUMBER))
+      .not.toHaveProperty('delivery_carrier');
+  });
+
+  it('names no partner while delivery stays with FedEx Ground', () => {
+    const result = parseFedExTrackingResponse(groundEconomyFixture([
+      ['2026-06-08', 'OD', 'On FedEx vehicle for delivery', ''],
+      ['2026-06-07', 'AF', 'At local FedEx facility', 'Delivery scheduled via FedEx Ground, not US Postal Service'],
+      ['2026-06-04', 'PU', 'Picked up', ''],
+    ]), GROUND_ECONOMY_NUMBER);
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery' });
+    expect(result.events?.[1]).toMatchObject({ stage: 'in_transit' });
+    expect(result).not.toHaveProperty('delivery_carrier');
+    expect(result).not.toHaveProperty('delivery_tracking_number');
+    // Nor when a scan says USPS will not have the parcel.
+    for (const details of [
+      'Package will not be delivered by U.S. Postal Service',
+      'This package is no longer with the U.S. Postal Service',
+      'Never accepted by the US Postal Service',
+    ]) {
+      const negated = groundEconomyFixture([['2026-06-07', 'AF', 'At local FedEx facility', details]]);
+      expect(parseFedExTrackingResponse(negated, GROUND_ECONOMY_NUMBER), details).not.toHaveProperty('delivery_carrier');
+    }
+  });
+
+  it('takes the package number the USPS scan names, else the Ground Economy number with 92', () => {
+    const named = groundEconomyFixture([
+      ['2026-06-07', 'AR', 'At U.S. Postal Service facility', `Accepted by U.S. Postal Service - Tracking ID 92${OTHER_GROUND_ECONOMY_NUMBER}`],
+    ]);
+    expect(parseFedExTrackingResponse(named, GROUND_ECONOMY_NUMBER))
+      .toMatchObject({ delivery_carrier: 'usps', delivery_tracking_number: `92${OTHER_GROUND_ECONOMY_NUMBER}` });
+    const unnamed = [['2026-06-08', 'OD', 'Out for delivery', 'Out for delivery with the U.S. Postal Service']] as const;
+    expect(parseFedExTrackingResponse(groundEconomyFixture(unnamed), GROUND_ECONOMY_NUMBER))
+      .toMatchObject({ delivery_carrier: 'usps', delivery_tracking_number: `92${GROUND_ECONOMY_NUMBER}` });
+    // A named number that is not a USPS package number, or a failing check
+    // digit on the number asked, leaves no number to follow.
+    const unusable = groundEconomyFixture([
+      ['2026-06-07', 'AR', 'At U.S. Postal Service facility', 'Accepted by U.S. Postal Service - Tracking ID 9261299999999900000011'],
+    ], '61299999999900000011');
+    expect(parseFedExTrackingResponse(unusable, '61299999999900000011')).not.toHaveProperty('delivery_carrier');
+    expect(parseFedExTrackingResponse(groundEconomyFixture(unnamed, DELIVERED_NUMBER), DELIVERED_NUMBER))
+      .not.toHaveProperty('delivery_carrier');
   });
 
   it('writes a hold location without a state as postcode and town', () => {
@@ -421,7 +506,7 @@ describe('FedEx lookup steps', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
     const lookup = new FedExTracker({ trawlUrl: TRAWL_URL }).fetch('1Z999AA10123456784');
-    await expect(lookup).rejects.toThrow('FedEx tracking numbers must contain 12 or 15 digits');
+    await expect(lookup).rejects.toThrow('FedEx tracking numbers must contain 12, 15 or 20 digits');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
   });
@@ -447,6 +532,25 @@ describe('FedEx lookup steps', () => {
     expect(new URL(fedexTrackingUrl(barcode)).searchParams.get('trknbr')).toBe(number);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({ url: fedexTrackingUrl(number) });
     expect(result).toMatchObject({ status: 'delivered', tracking_url: fedexTrackingUrl(number) });
+  });
+
+  it('tracks a twenty-digit Ground Economy number, even one whose check digit fails', async () => {
+    for (const number of [GROUND_ECONOMY_NUMBER, '61299999999900000011']) {
+      const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
+        tier: 3, statusCode: 200, html: '<body>Tracking app</body>',
+        capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(groundEconomyFixture(USPS_SCANS.slice(3), number)) }],
+      }));
+
+      const result = await new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(`${number.slice(0, 4)} ${number.slice(4)}`);
+
+      expect(new URL(fedexTrackingUrl(number)).searchParams.get('trknbr')).toBe(number);
+      expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({ url: fedexTrackingUrl(number) });
+      expect(result).toMatchObject({ status: 'in_transit', tracking_url: fedexTrackingUrl(number) });
+      fetcher.mockRestore();
+    }
+    for (const number of ['6129999999990000001', '612999999999000000100']) {
+      await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(number)).rejects.toMatchObject({ kind: 'invalid_input' });
+    }
   });
 
   it('rejects a label barcode whose embedded number fails its check before any request', async () => {

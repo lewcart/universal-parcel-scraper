@@ -26,6 +26,21 @@ export function isValidFedEx1DBarcode(value: string): boolean {
   return /^\d{20}00\d{12}$/.test(value) && isValidFedExTrackingNumber(value.slice(22));
 }
 
+/**
+ * The 20-digit FedEx Ground Economy number, formerly SmartPost: a USPS package
+ * identifier without its `92` channel, so a three-digit service type code, a
+ * Mailer ID and the serial. Its check digit is the identifier's MOD10, computed
+ * with the `92` in front: https://postalpro.usps.com/pub199
+ */
+export function isValidFedExGroundEconomyNumber(value: string): boolean {
+  return /^\d{20}$/.test(value) && hasGs1CheckDigit(`92${value}`);
+}
+
+/** The USPS package identifier a Ground Economy number stands for, or null. */
+export function fedexGroundEconomyUspsNumber(value: string): string | null {
+  return isValidFedExGroundEconomyNumber(value) ? `92${value}` : null;
+}
+
 /** The tracking number a whole FedEx label barcode carries, or null. */
 export function fedexBarcodeTrackingNumber(value: string): string | null {
   if (isValidFedExGround96Barcode(value)) return value.slice(7);

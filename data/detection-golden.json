@@ -13982,7 +13982,31 @@
     ]
   },
   {
-    "input": "61299994738840303974",
+    "input": "61290274420320913673",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
+    ]
+  },
+  {
+    "input": "61290367906223222924",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
+    ]
+  },
+  {
+    "input": "61290381371820112600",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
+    ]
+  },
+  {
+    "input": "61290983483523829637",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -13991,6 +14015,34 @@
     ],
     "asked": [
       "nz-post"
+    ]
+  },
+  {
+    "input": "61299994738840303974",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
+    ]
+  },
+  {
+    "input": "61299998825428896854",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "usps",
+      "nz-post"
+    ],
+    "asked": [
+      "nz-post"
+    ]
+  },
+  {
+    "input": "61299998825468864607",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
     ]
   },
   {
@@ -15079,15 +15131,27 @@
     ]
   },
   {
-    "input": "74890983300058417827",
-    "carrier": "unknown",
-    "confidence": "low",
+    "input": "74890360845720131731",
+    "carrier": "fedex",
+    "confidence": "high",
     "candidates": [
-      "usps",
-      "nz-post"
-    ],
-    "asked": [
-      "nz-post"
+      "fedex"
+    ]
+  },
+  {
+    "input": "74890408776522880345",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
+    ]
+  },
+  {
+    "input": "74890983300058417827",
+    "carrier": "fedex",
+    "confidence": "high",
+    "candidates": [
+      "fedex"
     ]
   },
   {

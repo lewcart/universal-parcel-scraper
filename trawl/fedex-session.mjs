@@ -11,7 +11,7 @@ export function fedexSessionNumber(url, capture = {}) {
     || !['/fedextrack/', '/wtrk/track/'].includes(page.pathname)
     || capture.captureResponses?.length !== 1 || capture.captureResponses[0] !== API) return null;
   const numbers = page.searchParams.getAll('trknbr');
-  return numbers.length === 1 && /^(\d{12}|\d{15})$/.test(numbers[0]) ? numbers[0] : null;
+  return numbers.length === 1 && /^(\d{12}|\d{15}|\d{20})$/.test(numbers[0]) ? numbers[0] : null;
 }
 
 async function bounded(promise, ms, message) {

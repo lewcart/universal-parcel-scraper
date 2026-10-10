@@ -272,12 +272,6 @@
     "reason": "Thirteen digits are shared by several posts and couriers and nothing in the number points to FAN Courier."
   },
   {
-    "carrier": "fedex",
-    "pattern": "^(?:612|748)9\\d{16}$",
-    "kind": "open",
-    "reason": "FedEx Ground Economy numbers are USPS package numbers without their 92 channel, and FedEx's tracker files them under SmartPost. Detection, the adapter and the browser service's FedEx route accept only 12 or 15 digits."
-  },
-  {
     "carrier": "four-px",
     "pattern": "^MS\\d{8}XSG$",
     "kind": "open",

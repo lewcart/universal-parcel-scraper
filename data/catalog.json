@@ -815,6 +815,11 @@
         "confidence": "low",
         "checksum": "fedex-1d",
         "preferred": true
+      },
+      {
+        "pattern": "^(?:612|748)9\\d{16}$",
+        "confidence": "high",
+        "checksum": "fedex-ground-economy"
       }
     ]
   },

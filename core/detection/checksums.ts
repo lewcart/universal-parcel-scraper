@@ -12,7 +12,7 @@ import { isValidColissimoParcelNumber } from './colissimo.js';
 import { isValidCorreosSpainCheckLetter } from './correosSpain.js';
 import { isValidDpdParcelNumber } from './dpd.js';
 import { isValidEvriParcelNumber } from './evri.js';
-import { isValidFedEx1DBarcode, isValidFedExGround96Barcode } from './fedex.js';
+import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundEconomyNumber } from './fedex.js';
 import { isValidGlsParcelNumber } from './gls.js';
 import { isValidHermesParcelNumber } from './hermes.js';
 import { isValidDhlIdentcode } from './identcode.js';
@@ -60,5 +60,6 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   'fedex-ground-96': isValidFedExGround96Barcode,
   'fedex-1d': isValidFedEx1DBarcode,
   identcode: isValidDhlIdentcode,
+  'fedex-ground-economy': isValidFedExGroundEconomyNumber,
   'pos-laju': isValidPosLajuConsignment,
 };

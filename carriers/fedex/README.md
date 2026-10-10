@@ -6,13 +6,16 @@ universal-provider fallback does a lot of the work.
 
 ## How it works
 
-The adapter accepts 12- or 15-digit numbers (spaces, dots and dashes stripped) and rejects
-anything else before any request, except a scanned label barcode, which it tracks by the
-number it carries: a 22-digit `96` Ground barcode by its last 15 digits, a 34-digit
+The adapter accepts 12-, 15- or 20-digit numbers (spaces, dots and dashes stripped) and
+rejects anything else before any request, except a scanned label barcode, which it tracks by
+the number it carries: a 22-digit `96` Ground barcode by its last 15 digits, a 34-digit
 barcode by its last 12 behind two zeros. Detection prefers FedEx for a 12-digit number whose
 last digit matches (weights 3, 1, 7 from the left, sum mod 11, then mod 10), for a 15-digit
 Ground number whose last digit is its GS1 mod 10 check, and for a label barcode whose
-embedded number passes its check; it drops FedEx otherwise. Every shape stays shared: any
+embedded number passes its check; it drops FedEx otherwise. It selects FedEx for a 20-digit
+Ground Economy number (formerly SmartPost) starting `6129` or `7489`: a USPS package number
+without its `92` channel, whose check digit passes with the `92` in front. The adapter does
+not enforce that check, so a number someone insists on still reaches FedEx. Every shape stays shared: any
 22 digits fit Austrian Post, Estafeta and USPS, and a USPS `420` barcode can carry zeros
 where the 34-digit layout expects them; it still selects USPS when its package identifier
 would. Without a browser service it fails at once with
@@ -65,6 +68,14 @@ fallback')`.
   then `halAddress`: its street lines, and "City, ST 12345" or, without a state or province,
   "postcode city". Without a street or town it is the name alone; without a name, or for a
   residential hold address, there is none. A delivered parcel has none, collected there or not.
+- Ground Economy can hand a parcel to the U.S. Postal Service for the last leg. Once a scan
+  shows USPS has it (accepted by, at, with or delivered by the U.S. Postal Service, with no
+  "not" before it), the result names `usps` as `delivery_carrier` and the USPS package number
+  the scan names as `delivery_tracking_number`. Without a named number, only a 20-digit
+  Ground Economy number whose check digit passes gets one: itself with `92` in front. A 12-
+  or 15-digit number, or a 20-digit one whose check fails, gets a partner only when a scan
+  names the USPS number. Most Ground Economy parcels say instead that FedEx Ground delivers
+  them, and name no partner.
 - Delivered scans are rewritten to "Delivered" because FedEx's line names the signatory.
 - Scan times come from `date` + `time` + `gmtOffset`. A scan without a usable triple keeps no
   time rather than a guessed zone.

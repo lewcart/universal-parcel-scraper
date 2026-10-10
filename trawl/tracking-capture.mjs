@@ -243,7 +243,7 @@ const SITES = [
       if (page.origin !== 'https://www.fedex.com') return null;
       if (page.pathname !== '/wtrk/track/' && page.pathname !== '/fedextrack/') return null;
       const number = (page.searchParams.get('trknbr') ?? '').toUpperCase();
-      return /^(\d{12}|\d{15})$/.test(number) ? number : null;
+      return /^(\d{12}|\d{15}|\d{20})$/.test(number) ? number : null;
     },
     settled(data) {
       // One POST, one final reply: any decoded envelope ends the wait. The

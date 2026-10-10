@@ -252,6 +252,27 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(`${head}00${ten}0`, `${head}00${ten}1`, `${head}00${twelve('9'.repeat(11))}`);
   },
 
+  'fedex-ground-economy'(r) {
+    // A USPS package identifier without its 92 channel: a service type code, a
+    // Mailer ID starting with 9 and the serial, closed by the identifier's check.
+    const valid = [
+      ...Array.from({ length: 3 }, () => r.complete(`6129${r.string(15)}`)),
+      ...Array.from({ length: 3 }, () => r.complete(`7489${r.string(15)}`)),
+      r.complete(r.string(19)),
+      r.complete(r.string(19)),
+    ];
+    standard(r, valid);
+    // The check counts the 92 in front: a check over the twenty digits alone, or
+    // with another channel in front, proves nothing.
+    const head = r.string(19);
+    r.add(completeBy(hasGs1CheckDigit, head), completeBy((value) => hasGs1CheckDigit(`91${value}`), head),
+      completeBy((value) => hasGs1CheckDigit(`93${value}`), head));
+    // The 22-digit identifier is not the twenty-digit number.
+    const first = valid[0]!;
+    r.add(`92${first}`, `92${first.slice(0, -1)}`);
+    r.add(r.complete('0'.repeat(19)), r.complete('9'.repeat(19)));
+  },
+
   'fedex-ground-96'(r) {
     // 96, a two-digit SCNC and a three-digit service code, then the fifteen-digit Ground number.
     const ground = (head: string) => completeBy(hasGs1CheckDigit, head);

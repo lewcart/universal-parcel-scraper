@@ -20,7 +20,7 @@ import { describe, expect, it } from 'vitest';
 import { MAX_RECOGNITIONS, recognitionAskedCarriers, recognitionCandidates } from '../catalog/recognition.js';
 import { isValidColissimoParcelNumber } from '../detection/colissimo.js';
 import { isValidEvriParcelNumber } from '../detection/evri.js';
-import { isValidFedEx1DBarcode, isValidFedExGround96Barcode } from '../detection/fedex.js';
+import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundEconomyNumber } from '../detection/fedex.js';
 import { isValidDhlIdentcode } from '../detection/identcode.js';
 import {
   detectCarrierMatch,
@@ -65,7 +65,7 @@ interface DetectionRule {
   readonly checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'pos-laju';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju';
   readonly preferred?: true;
 }
 
@@ -121,6 +121,7 @@ function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
   if (rule.checksum === 'fedex-ground-96') return isValidFedExGround96Barcode(value);
   if (rule.checksum === 'fedex-1d') return isValidFedEx1DBarcode(value);
   if (rule.checksum === 'identcode') return isValidDhlIdentcode(value);
+  if (rule.checksum === 'fedex-ground-economy') return isValidFedExGroundEconomyNumber(value);
   if (rule.checksum === 'pos-laju') return isValidPosLajuConsignment(value);
   return true;
 }

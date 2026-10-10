@@ -679,7 +679,15 @@ test('serves the FedEx endpoint from either tracking page path and only for vali
   await respond(fedexReply());
   await capture.settle(1000);
   assert.deepEqual((await capture.drain()).capturedResponses.map(row => JSON.parse(row.body).output.packages[0].trackingNbr), [fedexNumber]);
+  // A made-up twenty-digit Ground Economy number.
+  const groundEconomy = '61299999999900000010';
+  const economy = await fixture(`https://www.fedex.com/fedextrack/?trknbr=${groundEconomy}`, fedexApi);
+  assert.ok(economy.capture);
+  await economy.respond(fedexReply(groundEconomy));
+  await economy.capture.settle(1000);
+  assert.deepEqual((await economy.capture.drain()).capturedResponses.map(row => JSON.parse(row.body).output.packages[0].trackingNbr), [groundEconomy]);
   for (const [url, endpoint] of [
+    ['https://www.fedex.com/wtrk/track/?trknbr=6129999999990000001', fedexApi],
     ['https://www.fedex.com/wtrk/track/?trknbr=not-a-fedex-number', fedexApi],
     ['https://www.fedex.com/wtrk/track/', fedexApi],
     ['https://www.fedex.com/fedextrack/system-error?trknbr=' + fedexNumber, fedexApi],

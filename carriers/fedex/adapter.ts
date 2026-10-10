@@ -1,7 +1,8 @@
 
 import { load } from 'cheerio';
 import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { fedexBarcodeTrackingNumber } from '../../core/detection/fedex.js';
+import { fedexBarcodeTrackingNumber, fedexGroundEconomyUspsNumber } from '../../core/detection/fedex.js';
+import { uspsPackageIdentifier } from '../../core/detection/usps.js';
 import {
   ChallengeError,
   InputRequiredError,
@@ -52,8 +53,11 @@ export function normalizeFedExTrackingNumber(raw: string): string {
   // A scanned label barcode is tracked by the tracking number it carries.
   const embedded = fedexBarcodeTrackingNumber(value);
   if (embedded) return embedded;
-  if (!/^\d{12}$/.test(value) && !/^\d{15}$/.test(value)) {
-    throw new InvalidInputError('FedEx', 'FedEx tracking numbers must contain 12 or 15 digits, or be a checksum-valid 22- or 34-digit FedEx label barcode');
+  // Twelve or fifteen digits, or a twenty-digit Ground Economy number. Its check
+  // digit is not enforced here: detection already ranks by it, and a number a
+  // caller insists on still reaches FedEx.
+  if (!/^(?:\d{12}|\d{15}|\d{20})$/.test(value)) {
+    throw new InvalidInputError('FedEx', 'FedEx tracking numbers must contain 12, 15 or 20 digits, or be a checksum-valid 22- or 34-digit FedEx label barcode');
   }
   return value;
 }
@@ -122,6 +126,30 @@ function holdLocation(shipment: JsonObject): string {
   const region = clean(address.stateOrProvinceCode, 40);
   const town = region ? `${city}, ${[region, postcode].filter(Boolean).join(' ')}` : [postcode, city].filter(Boolean).join(' ');
   return [name, street[0], street.slice(1).join(', '), town].filter(Boolean).join('\n');
+}
+
+// Ground Economy can hand a parcel to the U.S. Postal Service for the last leg.
+// FedEx then relays USPS's scans, the first naming the package number USPS
+// tracks it under; most parcels instead say delivery stays with FedEx Ground.
+const USPS_HAS_PARCEL = /\b(?:accepted by|at|with|delivered by) (?:the )?u\.?s\.? postal service\b/i;
+// A negation before USPS in the same sentence says USPS does not have it.
+const USPS_NEGATED = /\b(?:not|never|no longer)\b[^.;!?]*\bu\.?s\.? postal service\b/i;
+const USPS_TRACKING_ID = /\btracking id\s*:?\s*(\d{22}|\d{26})\b/i;
+
+/**
+ * The USPS package number a parcel travels under once a scan shows USPS has
+ * it: the one the scan names, else, for a 20-digit Ground Economy number whose
+ * check digit passes, that number with 92 in front. Otherwise null.
+ */
+function uspsHandoff(scans: readonly JsonObject[], number: string): string | null {
+  const texts = scans.map((scan) => `${clean(scan.status)} ${clean(scan.scanDetails)}`)
+    .filter((text) => USPS_HAS_PARCEL.test(text) && !USPS_NEGATED.test(text));
+  if (texts.length === 0) return null;
+  for (const text of texts) {
+    const named = uspsPackageIdentifier(USPS_TRACKING_ID.exec(text)?.[1] ?? '');
+    if (named) return named;
+  }
+  return fedexGroundEconomyUspsNumber(number);
 }
 
 function errorCode(error: unknown): string {
@@ -212,6 +240,7 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
   const delivered = stage === 'delivered';
   const estimate = delivered ? null : expectedDelivery(shipment.estDeliveryDt);
   const pickupPoint = stage === 'ready_for_pickup' ? holdLocation(shipment) : '';
+  const postal = uspsHandoff(scans.slice(0, MAX_EVENTS_TO_INSPECT), number);
   return {
     status,
     ...(stage ? { current_stage: stage } : {}),
@@ -221,6 +250,7 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     ...(delivered && deliveredAt(shipment.actDeliveryDt)
       ? { delivered_at: deliveredAt(shipment.actDeliveryDt) } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
+    ...(postal ? { delivery_carrier: 'usps', delivery_tracking_number: postal } : {}),
     events: trimmed,
   };
 }

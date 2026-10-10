@@ -231,3 +231,22 @@ it('suggests UniUni for cross-border shipper references without selecting it', (
     expect(detectCarrierMatch(number).candidates).not.toContain('uniuni');
   }
 });
+
+describe('FedEx Ground Economy numbers', () => {
+  // Made-up numbers: service type 612 or 748, a Mailer ID of nines and a serial.
+  it('selects FedEx when the check digit passes with the USPS 92 channel in front', () => {
+    for (const number of ['61299999999900000010', '74899999999900000023', '6129 9999 9999 0000 0010']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'fedex', confidence: 'high', candidates: ['fedex'] });
+    }
+  });
+
+  it('leaves FedEx out for a failing check digit or another service type', () => {
+    for (const number of ['61299999999900000011', '74899999999900000020']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['usps', 'nz-post'] });
+      expect(checksumRejections(number)).toEqual([{ carrier: 'fedex', rule: 'fedex-ground-economy', checksum: 'fedex-ground-economy' }]);
+    }
+    for (const number of ['61399999999900000010', '61209999999900000010', '9261299999999900000010']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('fedex');
+    }
+  });
+});

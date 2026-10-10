@@ -72,8 +72,11 @@ function fixture(replies = [], settings = {}) {
 test('session route requires the exact FedEx page, one number and one capture endpoint', () => {
   assert.equal(fedexSessionNumber(url(NUMBER), capture), NUMBER);
   assert.equal(fedexSessionNumber(url(NUMBER).replace('/fedextrack/', '/wtrk/track/'), capture), NUMBER);
+  // A made-up twenty-digit Ground Economy number.
+  assert.equal(fedexSessionNumber(url('61299999999900000010'), capture), '61299999999900000010');
   for (const candidate of [url(NUMBER).replace('www.fedex.com', 'other.test'),
-    url(NUMBER).replace('/fedextrack/', '/other/'), url('wrong'), url(NUMBER) + '&trknbr=' + OTHER]) {
+    url(NUMBER).replace('/fedextrack/', '/other/'), url('wrong'), url(NUMBER) + '&trknbr=' + OTHER,
+    url('6129999999990000001'), url('612999999999000000100')]) {
     assert.equal(fedexSessionNumber(candidate, capture), null);
   }
   assert.equal(fedexSessionNumber(url(NUMBER), { captureResponses: [API, 'https://other.test'] }), null);

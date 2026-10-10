@@ -25,7 +25,9 @@
     "location",
     "eta",
     "delivered_at",
-    "pickup_point"
+    "pickup_point",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "url": "https://www.fedex.com/fedextrack/?trknbr={trackingNumber}",
@@ -36,14 +38,17 @@
       "history",
       "eta",
       "location",
-      "pickup_point"
+      "pickup_point",
+      "delivery_partner"
     ],
     "scraped": [
       "status",
       "history",
       "eta",
       "location",
-      "pickup_point"
+      "pickup_point",
+      "delivery_partner",
+      "delivery_tracking_number"
     ],
     "discarded": [
       "recipient name and address",
@@ -94,6 +99,12 @@
       "confidence": "low",
       "checksum": "fedex-1d",
       "preferred": true
+    },
+    {
+      "id": "fedex-ground-economy",
+      "pattern": "^(?:612|748)9\\d{16}$",
+      "confidence": "high",
+      "checksum": "fedex-ground-economy"
     }
   ]
 }

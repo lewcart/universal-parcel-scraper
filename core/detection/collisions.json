@@ -21,6 +21,15 @@
     "reason": "Planzer's high-confidence range sits inside the broad NZ Post and USPS 20-digit candidates; the Planzer rule decides."
   },
   {
+    "shape": "Twenty digits from 6129 or 7489 that pass the USPS check with 92 in front",
+    "carriers": [
+      "fedex",
+      "nz-post",
+      "usps"
+    ],
+    "reason": "FedEx Ground Economy numbers, USPS package numbers without their 92 channel, sit inside the broad NZ Post and USPS 20-digit candidates; the FedEx rule, whose check digit counts the 92, decides."
+  },
+  {
     "shape": "Twenty digits outside the Planzer, DHL and Nordic ranges that are not a valid SSCC",
     "carriers": [
       "nz-post",

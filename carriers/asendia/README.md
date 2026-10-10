@@ -72,8 +72,12 @@ providers in the same check (see [routing](https://github.com/plhery/delivery-tr
 - Only shipments on Asendia USA's platform. European Asendia numbers usually get not-found from
   A1 and depend on the universal providers.
 - No delivery estimate.
-- USPS scans relayed by A1 carry `+00:00` but may be local wall time labelled UTC (unconfirmed);
-  the offset is kept as sent. USPS pre-shipment scans are date-only and arrive as midnight UTC.
+- A1 dates partners' scans in true UTC: a Swiss Post scan at 18:20 `+02:00` is A1's 16:20
+  `+00:00`, and a German delivery round UPU shows at 09:07 local is A1's 07:07 (checked
+  2026-10-10). USPS scans were not checked against USPS, and one `A1 Processed Data` scan
+  looked like a California wall clock labelled UTC: 22:04 `+00:00`, seven hours before its
+  05:04 check-in, at the minute UPU dates the posting at a California office. Offsets are
+  kept as sent. USPS pre-shipment scans are date-only and arrive as midnight UTC.
 - A structural change to `main.js` fails as schema drift.
 
 ## Testing

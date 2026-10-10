@@ -183,6 +183,38 @@ describe('17TRACK result parsing', () => {
       .events?.[0]?.time).toBe('2026-10-04T15:34:00.000Z');
   });
 
+  it('reads Asendia USA\'s offset-less clock as the UTC A1 dates its scans in, not as US Eastern time', () => {
+    const scan = (key: number) => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'Asendia USA' }, events: [{
+        time_iso: '2026-05-07T16:20:00-04:00', time_utc: '2026-05-07T20:20:00Z', time_raw: { date: '2026-05-07', time: '16:20:00', timezone: null },
+        description: 'Arrived at destination', location: 'EXAMPLE CITY, Switzerland', stage: null, sub_status: 'InTransit_Other' }] }] } } }] });
+    expect(parse17TrackResponse(scan(100016), number).events?.[0]).toMatchObject({ time: '2026-05-07T16:20:00.000Z',
+      provider_time_iso: '2026-05-07T16:20:00-04:00', time_provenance: 'provider_inferred' });
+    // Another feed of the same name keeps 17TRACK's reading.
+    expect(parse17TrackResponse(scan(100999), number).events?.[0]?.time).toBe('2026-05-07T20:20:00.000Z');
+  });
+
+  it('reads NZ Post\'s clock at the scan\'s own date, and keeps a scan abroad on an item it sends as a wall time', () => {
+    const row = (date: string, time: string, offset: string, description: string) => ({
+      time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },
+      description, location: null, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (requested: string) => ({ meta: { code: 200 }, shipments: [{ number: requested, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key: 14061, name: 'NZ Post (New Zealand Post)' }, events: [
+        row('2026-08-14', '12:47:00', '+13:00', 'Held for clearance, Your item is currently being held for clearance'),
+        row('2026-08-08', '11:13:00', '+13:00', 'In transit with airline, Your item is being transported by the airline'),
+        row('2026-08-06', '13:55:10', '+13:00', 'International departure, Your item has been processed'),
+        row('2026-08-05', '15:59:44', '+13:00', 'Label created'),
+      ] }] } } }] });
+    const outbound = parse17TrackResponse(reply('ZZ123456785NZ'), 'ZZ123456785NZ');
+    // August is New Zealand's winter, +12:00, whatever offset 17TRACK put on it in October.
+    expect(outbound.events?.map(e => e.time ?? e.local_time)).toEqual(['2026-08-14T12:47:00',
+      '2026-08-07T23:13:00.000Z', '2026-08-06T01:55:10.000Z', '2026-08-05T03:59:44.000Z']);
+    expect(outbound.events?.[0]).toMatchObject({ description: 'Held for clearance, Your item is currently being held for clearance',
+      provider_time_iso: '2026-08-14T12:47:00+13:00' });
+    // An item coming into New Zealand is scanned there throughout.
+    expect(parse17TrackResponse(reply('ZZ123456785CH'), 'ZZ123456785CH').events?.[0]?.time).toBe('2026-08-14T00:47:00.000Z');
+  });
+
   it('reads the clock and offset 17TRACK shows when its UTC conversion disagrees', () => {
     // An India Post leg: the wall clock under India's offset, and a conversion 30 minutes after it.
     const scan = { time_iso: '2026-07-14T14:40:00+05:30', time_utc: '2026-07-14T09:40:00Z',

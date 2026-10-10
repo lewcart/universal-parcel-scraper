@@ -103,6 +103,39 @@ function facilityWall(raw: Record<string, unknown>): string | null {
 }
 
 /**
+ * 17TRACK's carrier 100016, Asendia USA, relays A1's tracking: A1 dates every
+ * scan in UTC, its partners' too. A Swiss Post scan at 18:20 +02:00 is A1's
+ * 16:20, a German delivery round 09:07 local is its 07:07. 17TRACK labels
+ * those digits with US Eastern time (checked 2026-10-10).
+ */
+function relaysUtcClock(key: unknown): boolean {
+  return key === 100016;
+}
+
+/** 17TRACK's carrier 14061, NZ Post. */
+const NZ_POST = 14061;
+const NZ_DEPARTURE = /^international departure\b/i;
+const NZ_AIRLINE = /^in transit with airline\b/i;
+
+/**
+ * NZ Post's leg shows NZ Post's wall clocks, and 17TRACK labels them with New
+ * Zealand's offset on the day it looks: in October it put +13:00 on August
+ * scans, when New Zealand kept +12:00, so an Auckland departure at 13:55 came
+ * an hour early (checked 2026-10-10). They are read on Auckland's clock at
+ * their own date. On an item NZ Post sends abroad (an S10 number ending NZ), a
+ * scan after the international departure, but an airline's, shows the clock
+ * where it happened: a Guangzhou customs scan at 12:47 local, which UPU dates
+ * the same. The leg names no place, so such a scan stays a wall time.
+ * Returns the wall clock of the leg's first departure, or null.
+ */
+function nzPostDeparture(events: unknown[], number: string): string | null {
+  if (!/^[A-Z]{2}\d{9}NZ$/.test(number)) return null;
+  const walls = events.filter(isRecord).filter(raw => NZ_DEPARTURE.test(text(raw.description)))
+    .map(facilityWall).filter((wall): wall is string => wall !== null).sort();
+  return walls[0] ?? null;
+}
+
+/**
  * An India Post take-off, which India Post dates with the departure airport's
  * wall clock labelled UTC, and 17TRACK takes the label at its word: it showed
  * a Mumbai take-off 5.5 hours late and one from Frankfurt 2 hours late
@@ -181,17 +214,29 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const name = universalCarrierHints([reported.name]).reported_carriers[0];
     const operator = { ...(name ? { reporting_carrier: name } : {}),
       ...(typeof reported.key === 'number' && Number.isSafeInteger(reported.key) ? { reporting_carrier_key: reported.key } : {}) };
+    const utc = relaysUtcClock(reported.key);
+    const nz = reported.key === NZ_POST;
+    const departure = nz && provider.events.length <= MAX_EVENTS ? nzPostDeparture(provider.events, number) : null;
     for (const raw of provider.events) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
-      // A facility's clock, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relaysFacilityClock(name) ? facilityWall(raw) : null;
-      const zone = wall ? facilityZone(text(raw.location)) : null;
+      // A facility's clock, A1's UTC or NZ Post's, on which 17TRACK puts one offset for the whole parcel.
+      const wall = relaysFacilityClock(name) || utc || nz ? facilityWall(raw) : null;
+      const abroad = wall !== null && departure !== null && wall > departure && !NZ_AIRLINE.test(text(raw.description));
+      const zone = !wall || abroad ? null : utc ? 'UTC' : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location));
       const placed = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
+      if (abroad && wall) {
+        // A scan NZ Post dated abroad keeps its description as a wall time.
+        const local: CarrierEvent = { ...parsed, local_time: wall };
+        delete local.time;
+        events.push(local);
+        latest.see(wall, false);
+        continue;
+      }
       const unplaced = wall !== null && !placed?.isValid;
       latest.see(wall ?? String(raw.time_iso ?? raw.time_utc).slice(0, 19), unplaced);
       // With no zone for the facility it is a wall time, counted like a row without a date.

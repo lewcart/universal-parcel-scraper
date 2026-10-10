@@ -104,6 +104,18 @@ carrier.
   [DHL Express rule](../../carriers/dhl-express/clock.ts) reads from their location
   instead. A scan the rule cannot place is counted in `undated_event_count`, and when it
   is the reply's latest scan the reply is inconclusive.
+- Asendia USA (carrier key 100016) relays A1's tracking, which dates every scan in UTC,
+  partners' scans too, and 17TRACK labels those digits with US Eastern time. A Swiss Post
+  scan at 18:20 `+02:00` is A1's 16:20, which 17TRACK showed as 16:20 `-04:00` (checked
+  2026-10-10). That leg's `time_raw` is read as UTC.
+- NZ Post's leg (carrier key 14061) shows NZ Post's wall clocks, and 17TRACK labels them
+  with New Zealand's offset on the day it looks: in October it put `+13:00` on August
+  scans, when New Zealand kept `+12:00` (checked 2026-10-10). That leg's `time_raw` is read
+  on Auckland's clock at the scan's own date. On an item NZ Post sends abroad (an S10
+  number ending `NZ`), a scan after the international departure, but an airline's, shows
+  the clock where it happened ([NZ Post](../../carriers/nz-post/README.md)). The leg names
+  no place, so none of those scans is placed for another to borrow a zone from, and each
+  stays a wall time (`local_time`). The reply stays conclusive.
 - India Post dates a take-off with the departure airport's wall clock labelled UTC, and
   17TRACK keeps the label: a Mumbai take-off showed 5.5 hours late, a Frankfurt one 2 hours
   late. India Post rows worded `Aircraft Departure` or `UPLIFT` are counted in

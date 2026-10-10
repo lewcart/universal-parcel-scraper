@@ -263,9 +263,9 @@ describe('17TRACK result parsing', () => {
     }
   });
 
-  it('asks for a postcode only when no other required field stands beside it', () => {
+  it('asks for a postcode only when the form requires it and no other field', () => {
     const country = { key: 'destination_country', input_type: 'Options', regex: '^([A-Z]{2})$' };
-    const postcode = { key: 'postal_code', input_type: 'Text', regex: '^(|[A-Z0-9\\- ]{4,9})$' };
+    const postcode = { key: 'postal_code', input_type: 'Text', regex: '^([A-Z0-9\\- ]{4,9})$' };
     const reply = (fields: Record<string, unknown>) => ({ meta: { code: 200 }, shipments: [{ number, code: 400, shipment: null, ...fields }] });
     for (const fields of [{ params_v2: [country, postcode] }, { params_v2: [{ key: 'destination_country' }, postcode] },
       { param: { type: 'DestCountry', format: '^([A-Z]{2})$' }, params: [{ type: 'DestCountry', format: '^([A-Z]{2})$' }, { type: 'PostalCode' }] }]) {
@@ -274,6 +274,11 @@ describe('17TRACK result parsing', () => {
     // An optional field beside it leaves the postcode the only input to give.
     for (const fields of [{ params_v2: [{ ...country, regex: '^(|[A-Z]{2})$' }, postcode] }, { params_v2: [postcode] }]) {
       expect(thrown(() => parse17TrackResponse(reply(fields), number))).toMatchObject({ kind: 'input_required', field: 'postcode' });
+    }
+    // A postcode the form would submit empty is not needed.
+    const optional = { ...postcode, regex: '^(|[A-Z0-9\\- ]{4,9})$' };
+    for (const fields of [{ params_v2: [optional] }, { param: { type: 'PostalCode', format: '^(|\\d{5})$' } }]) {
+      expect(thrown(() => parse17TrackResponse(reply(fields), number))).toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
     }
   });
 

@@ -108,15 +108,19 @@ function requiresValue(pattern: unknown): boolean {
 /**
  * The fields 17TRACK lists for the carrier it picked are that carrier's form,
  * not a diagnosis: for PostNL it asks for a destination country, which its
- * pattern requires, beside an optional postcode (checked 2026-10-10). A
- * postcode alone cannot complete that form, so it is no postcode prompt.
+ * pattern requires, beside an optional postcode (checked 2026-10-10). Only a
+ * postcode the form requires, and the only field it requires, is a prompt.
+ * An optional one is no prompt: on the benchmark's four (DPD France, GEODIS,
+ * The Courier Guy under GLS), no source had the parcel, and 17TRACK returns
+ * those carriers' history without a postcode when it has it.
  */
 function requestsPostcode(shipment: Record<string, unknown>): boolean {
   const fields = Array.isArray(shipment.params_v2)
     ? shipment.params_v2.filter(isRecord).map(p => ({ postcode: p.key === 'postal_code', pattern: p.regex }))
     : [shipment.param, ...Array.isArray(shipment.params) ? shipment.params as unknown[] : []].filter(isRecord)
       .map(p => ({ postcode: p.type === 'PostalCode', pattern: p.format }));
-  return fields.some(field => field.postcode) && !fields.some(field => !field.postcode && requiresValue(field.pattern));
+  return fields.some(field => field.postcode && requiresValue(field.pattern))
+    && !fields.some(field => !field.postcode && requiresValue(field.pattern));
 }
 
 export function parse17TrackResponse(payload: unknown, trackingNumber: string, postcode: string | null = null): CarrierResult {

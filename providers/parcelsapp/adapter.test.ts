@@ -634,7 +634,7 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
-  it('lends a scan with no place the clock of its network\'s nearest placed scan, as a guess', () => {
+  it('lends a wall-clock scan with no place the clock of its network\'s nearest placed scan, as a guess', () => {
     const times = (carriers: string[], states: Record<string, unknown>[], timezone: string | null = null) =>
       parseParcelsAppResponse({ carriers, states }, number, identity(), timezone).events?.map((scan) => scan.time);
     const scan = (date: string, location?: string, carrier = 0) => ({ date, status: 'In transit', carrier, ...(location ? { location } : {}) });
@@ -675,40 +675,59 @@ describe('ParcelsApp result parsing', () => {
     expect(times(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'Example Office')], 'Europe/London')).toEqual(['2026-09-11T22:38:00.000Z']);
     expect(times(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'Example Office'), scan('2026-09-10T11:36:00+00:00', 'Example City, Germany')],
       'Europe/London')).toEqual(['2026-09-11T21:38:00.000Z', '2026-09-10T09:36:00.000Z']);
-    expect(() => times(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'United States')], 'Europe/London'))
-      .toThrow('ParcelsApp cannot place the latest scan');
+    expect(times(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'United States')], 'Europe/London')).toEqual(['2026-09-11T23:38:00.000Z']);
     // Canada Post's "USA" names the US for other carriers' guesses too.
     expect(times(['Royal Mail'], [scan('2026-09-11T23:38:00Z', 'Example City, USA')])).toEqual(['2026-09-11T23:38:00.000Z']);
   });
 
-  it('gives no instant to a scan with no place and no clock to borrow', () => {
-    const scans = (carriers: string[], states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers, states }, number, identity());
-    const scan = (date: string, location?: string, carrier = 0) => ({ date, status: 'In transit', carrier, ...(location ? { location } : {}) });
-    // An older one is left out and counted.
-    expect(scans(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'Example City, United Kingdom'), scan('2026-09-10T11:36:00+00:00', 'Example City, United States')]))
-      .toMatchObject({ last_update: '2026-09-11T22:38:00.000Z', undated_event_count: 1 });
-    // GOFO dates its labels on Pacific time wherever the parcel goes, and
-    // Cainiao its origin leg on China time while it relays the delivery: their
-    // scans with no place lend nothing and borrow nothing.
-    expect(scans(['GoFo Express', 'Cainiao'], [
-      scan('2026-10-03T16:01:13Z', 'Example City, FL'),
-      scan('2026-10-03T16:01:13Z', 'Example City', 1),
-      scan('2026-09-28T13:52:26Z', 'Example Town', 1),
-      scan('2026-09-27T12:34:50Z'),
-    ])).toMatchObject({ last_update: '2026-10-03T20:01:13.000Z', undated_event_count: 2 });
-    // The latest one leaves the reply unable to say where the parcel is.
+  it('copies a placed scan of another carrier, reads known clocks, and keeps the label of a wall-clock scan with no other zone', () => {
+    const reply = (carriers: string[], states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers, states }, number, identity());
+    const scan = (date: string, location?: string, carrier = 0, status = 'In transit') => ({ date, status, carrier, ...(location ? { location } : {}) });
+    // The same digits and wording as another carrier's placed scan: a copy, on
+    // its clock, and one scan with it. A scan of the network before it lends
+    // that clock to the next with other wording.
+    expect(reply(['EMS', 'Japan Post'], [
+      scan('2026-07-08T14:50:00+00:00', '10001', 0, 'Delivered'),
+      scan('2026-07-08T14:50:00Z', 'UNITED KINGDOM', 1, 'Delivered'),
+      scan('2026-07-08T06:11:00+00:00', '10001', 0, 'Out for delivery'),
+      scan('2026-07-08T06:11:00Z', 'UNITED KINGDOM', 1, 'Item out for physical delivery'),
+    ]).events?.map((event) => [event.time, event.description])).toEqual([
+      ['2026-07-08T13:50:00.000Z', 'Delivered'],
+      ['2026-07-08T05:11:00.000Z', 'Out for delivery'],
+      ['2026-07-08T05:11:00.000Z', 'Item out for physical delivery'],
+    ]);
+    // GOFO's labels on Pacific time and Cainiao's origin leg on China time,
+    // whatever their neighbours; Cainiao's other scans borrow as any other.
+    expect(reply(['GoFo Express', 'Cainiao'], [
+      scan('2026-10-03T16:01:13Z', 'Example City, FL', 0, 'Delivered'),
+      scan('2026-10-03T16:01:13Z', 'Example City', 1, 'Delivered'),
+      scan('2026-10-01T21:26:36Z', undefined, 1, 'Leaving customs'),
+      scan('2026-09-28T03:35:09Z', undefined, 1, 'Order received successfully'),
+      scan('2026-09-27T12:34:50Z', undefined, 0, 'Shipping Label Created'),
+    ]).events?.map((event) => event.time)).toEqual([
+      '2026-10-03T20:01:13.000Z',
+      '2026-10-02T01:26:36.000Z',
+      '2026-09-27T19:35:09.000Z',
+      '2026-09-27T19:34:50.000Z',
+    ]);
+    // With no other zone, ParcelsApp's label, as before these steps: never an undated scan.
     for (const [carriers, states] of [
       [['Canada Post'], [scan('2026-10-10T06:10:00Z', 'USA'), scan('2026-10-01T12:58:00Z', 'EXAMPLE CITY, ON, Canada')]],
       [['USPS', 'UPS'], [scan('2026-10-10T06:10:00Z'), scan('2026-10-04T15:24:00Z', 'Example City, NY', 1)]],
       [['EMS'], [scan('2026-10-10T06:10:00Z', '10001'), scan('2026-10-04T15:24:00Z', 'EXAMPLE CITY')]],
-      [['Cainiao'], [scan('2026-10-10T06:10:00Z'), scan('2026-10-04T15:24:00Z', 'Example City, Germany')]],
+      [['Cainiao'], [scan('2026-10-10T06:10:00Z'), scan('2026-10-04T15:24:00Z', 'Example Town')]],
       [['EcoScooting'], [scan('2026-10-10T06:10:00Z'), scan('2026-10-04T15:24:00Z')]],
     ] as const) {
-      expect(() => scans([...carriers], [...states]), carriers.join()).toThrow('ParcelsApp cannot place the latest scan');
+      const result = reply([...carriers], [...states]);
+      expect(result, carriers.join()).toMatchObject({ last_update: '2026-10-10T06:10:00.000Z' });
+      expect(result.undated_event_count, carriers.join()).toBeUndefined();
     }
-    // As on the rendered page, which prints no location: only routing's zone can place it.
-    const page = rendered(carrierRow('10 Oct 2026', '06:10', 'Out for delivery', 'USPS'));
-    expect(() => parseParcelsAppHtml(page, number)).toThrow('ParcelsApp cannot place the latest scan');
+    // 4PX's label is its own instant: China time.
+    expect(reply(['4PX Express'], [scan('2026-05-23T10:00:38Z')]).last_update).toBe('2026-05-23T10:00:38.000Z');
+    // The rendered page prints no location: routing's zone, a known clock, or the label.
+    const page = rendered(carrierRow('10 Oct 2026', '06:10', 'Out for delivery', 'USPS')
+      + carrierRow('27 Sep 2026', '12:34', 'Shipping Label Created', 'GoFo Express'));
+    expect(parseParcelsAppHtml(page, number).events?.map((event) => event.time)).toEqual(['2026-10-10T06:10:00.000Z', '2026-09-27T19:34:00.000Z']);
     expect(parseParcelsAppHtml(page, number, 'America/New_York').events?.[0]?.time).toBe('2026-10-10T10:10:00.000Z');
   });
 

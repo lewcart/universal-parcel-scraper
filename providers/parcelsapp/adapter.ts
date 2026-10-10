@@ -94,21 +94,34 @@ const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'e
  * for SpeedPAK; the EMS office clocks Parcelforce and NZ Post relay; Cainiao's
  * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; and 4PX's (below).
  * They are read in the state, province or single-clock country their location
- * names. A scan that none places borrows a clock (`borrowedZones`), a guess;
- * one with none to borrow has no instant: it is counted, and a reply whose
- * latest scan it is cannot say where the parcel is.
+ * names; `wallClockZones` reads the others.
  */
 const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress']);
 /**
- * Wall-clock networks whose scans with no place keep a clock their placed
- * neighbours do not have, so they borrow none (checked 2026-10-10). GOFO's
- * are its labels, which GOFO's feed dates on Pacific time wherever the parcel
- * is injected (a Florida parcel's at -07:00). Cainiao's, in a reply another
- * network delivers, are its origin leg on China time while its placed scans
- * copy the delivery's: borrowed, a US parcel's put "Order received" 12 hours
- * after GOFO's label, read on China time 19 seconds after it.
+ * The clocks of some wall-clock scans whatever their neighbours', checked on
+ * 2026-10-10. GOFO's feed dates its labels on Pacific time wherever the
+ * parcel is injected (a Florida parcel's at -07:00). Cainiao's own feed dates
+ * its origin leg on China time, from the warehouse to the linehaul office, in
+ * two parcels bound for the UK whose later legs it dates on GMT+2, +1 and +0;
+ * in a US parcel, "Package finished" and "Last-mile delivery forecast" fall
+ * minutes from scans of that leg. Such a scan borrows no neighbour's clock:
+ * borrowed from a GOFO parcel's Florida scans, the label came 3 hours early
+ * and Cainiao's "Order received" 12 hours after it, 19 seconds on China time.
  */
-const KEEPS_WALL_CLOCK = new Set(['gofoexpress', 'cainiao']);
+const KNOWN_CLOCKS: ReadonlyMap<string, { wording: RegExp; zone: string }> = new Map([
+  ['gofoexpress', { wording: /^shipping label created$/i, zone: 'America/Los_Angeles' }],
+  ['cainiao', { wording: new RegExp(`^(?:${[
+    'order received successfully', 'package finished', 'leave the warehouse', 'accepted by carrier',
+    '(?:inbound|outbound) in sorting center', 'last-mile delivery forecast', 'arrived at departure transport hub',
+    'export customs clearance started', 'export clearance success', '(?:leaving|left) from departure country/region',
+    'arrived at linehaul office',
+  ].join('|')})$`, 'i'), zone: 'Asia/Shanghai' }],
+]);
+
+function knownClock(name: unknown, status: string): string | null {
+  const known = KNOWN_CLOCKS.get(nameKey(name));
+  return known?.wording.test(status.trim()) ? known.zone : null;
+}
 /**
  * Networks whose dates are their home clock wherever the scan was: their own
  * instants or labels shown on that clock, checked on 2026-10-10. Italy Post's
@@ -261,7 +274,12 @@ function numberNetworkZone(carrier: string | undefined, number: string): string 
   return zone === 'UTC' ? null : zone;
 }
 
-function scanZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string, inNorthAmerica = false): string | null {
+/**
+ * The zone a scan's carrier or place gives it: null for a date that is its
+ * instant, or a DHL Express facility the rule cannot place, and undefined for
+ * a scan only a guess can place (`guessedZone`).
+ */
+function placedZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false): string | null | undefined {
   const name = stateCarrierName(payload, state);
   const key = nameKey(name);
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
@@ -284,6 +302,14 @@ function scanZone(payload: Record<string, unknown>, state: Record<string, unknow
   const located = countryTimeZone(place);
   if (located) return located;
   if (region) return region.zone;
+  return undefined;
+}
+
+function guessedZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string): string | null {
+  const name = stateCarrierName(payload, state);
+  const key = nameKey(name);
+  const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
+  const location = scanLocation(name, state.location);
   // The zones below only guess where the scan was. A location in another
   // country, one with several clocks or none listed ("Example City, CA,
   // United States", "Example City, South Africa"), rules a guess out, and the
@@ -305,7 +331,7 @@ function scanZone(payload: Record<string, unknown>, state: Record<string, unknow
  * clock on China time, its US ones too: the wall clock is that instant's
  * digits in Shanghai (checked 2026-10-10 against 4PX's page, which shows each
  * with the offset of its place). An instant is right only for a scan on China
- * time, which a scan with no place cannot show.
+ * time, which is how a scan nothing places reads when it keeps its label.
  */
 function stateDate(name: unknown, date: unknown): unknown {
   if (nameKey(name) !== '4pxexpress' || typeof date !== 'string') return date;
@@ -315,61 +341,79 @@ function stateDate(name: unknown, date: unknown): unknown {
 }
 
 /**
- * How to read a state: its date (4PX's wall clock), the zone that places it,
- * whether its state or province did, and whether, left without a zone, it is
- * a wall clock with no instant rather than a labeled one. A wall-clock
- * network's scan takes routing's zone only after it has found no clock to
- * borrow (`borrowedZones`), so that zone is kept apart, as `fallback`.
+ * How to read a state: its date (4PX's wall clock) and ParcelsApp's labeled
+ * one, the zone its carrier or place gives (with the guesses of steps 3 to 5
+ * for a network that is not a wall clock), whether its state or province
+ * gave it, and for a wall-clock scan, routing's zone and any known clock,
+ * which `wallClockZones` falls back on.
  */
-function readState(payload: Record<string, unknown>, raw: Record<string, unknown>, fallback: string | null, number: string, inNorthAmerica = false) {
+function readState(payload: Record<string, unknown>, raw: Record<string, unknown>, status: string, fallback: string | null, number: string,
+  inNorthAmerica = false) {
   const name = stateCarrierName(payload, raw);
   const state = { ...raw, date: stateDate(name, raw.date) };
   const location = scanLocation(name, raw.location);
-  const wall = WALL_CLOCKS.has(nameKey(name)) && !ownOffset(name, state.date);
-  const borrows = wall && !KEEPS_WALL_CLOCK.has(nameKey(name));
-  const zone = scanZone(payload, state, borrows ? null : fallback, number, inNorthAmerica);
-  return { name, date: state.date, zone, offset: ownOffset(name, state.date), location,
+  const offset = ownOffset(name, state.date);
+  const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
+  const placed = placedZone(payload, state, number, inNorthAmerica);
+  const zone = placed !== undefined ? placed : wallClock ? null : guessedZone(payload, state, fallback, number);
+  return { name, date: state.date, labeled: raw.date, zone, placed: placed ?? null, offset, location, wallClock,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
-    borrows, fallback: borrows ? fitsPlace(fallback, location) : null,
-    wall: relaysFacilityClock(name) || wall };
+    fallback: wallClock ? fitsPlace(fallback, location) : null, known: wallClock ? knownClock(name, status) : null };
 }
 
+type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
+
 /**
- * A guess for each wall-clock scan that nothing places (`zones[i]` null): the
- * zone of the scan just before it, by wall clock, among the scans of the same
- * network the reply does place, else of the one just after it, else the zone
- * routing passes for the parcel. A zone the scan's location rules out is
- * skipped ("USA" takes no Canadian zone). The guess holds when a scan with no
- * place happens where its neighbours do, and is hours off when it does not.
- * Checked on 2026-10-10 against the carriers' own clocks. Canada Post's
- * first scan and one in Chicago took the right zone, and its last two, in
- * Montana, the Chicago hub's, an hour off USPS's. SpeedPAK's four took the
- * right one, and a Chinese system event the US one, 14 hours off.
- * 4PX's nine did; its four between the departing flight and the first US scan
- * took China's, and its first scan the US label's, 12 hours off. USPS's "In
- * Transit to Next Facility" was not checked: no source gives its clock. A
- * scan with none of these keeps its wall clock.
+ * The zone of each scan. One from a network that is not a wall clock keeps
+ * the one it has. A wall-clock scan takes, in order:
+ * 1. the zone of its place;
+ * 2. that of another carrier's placed scan with the same digits and wording,
+ *    which it copies (`copy`);
+ * 3. as a guess, that of the scan of its network just before it by wall
+ *    clock that steps 1 and 2 place, else of the one just after it;
+ * 4. the zone routing passes for the parcel;
+ * 5. its known clock (`KNOWN_CLOCKS`), for a scan that skips step 3;
+ * 6. none: it keeps ParcelsApp's label, as it did before these steps, the
+ *    last guess.
+ * A zone the scan's location rules out is skipped ("USA" takes no Canadian
+ * zone). Step 3 holds when the scan happens where its neighbours do, and is
+ * hours off when it does not. Checked on 2026-10-10 against the carriers'
+ * own clocks: Canada Post's first scan and one in Chicago took the right
+ * zone, and its last two, in Montana, the Chicago hub's, an hour off USPS's.
+ * SpeedPAK's four took the right one, and a Chinese system event the US one,
+ * 14 hours off. 4PX's nine did; its four between the departing flight and the
+ * first US scan took China's, and its first scan the US label's, 12 hours
+ * off. USPS's "In Transit to Next Facility" was not checked: no source gives
+ * its clock.
  */
-function borrowedZones(entries: readonly { name: unknown; date: unknown; location: string; borrows: boolean; fallback: string | null }[],
-  zones: readonly (string | null | undefined)[]): (string | null)[] {
+function wallClockZones(entries: readonly {
+  name: unknown; date: unknown; location: string; zone: string | null; copy: string | undefined;
+  wallClock: boolean; fallback: string | null; known: string | null;
+}[]): { zone: string | null; step: ZoneStep }[] {
+  const found = entries.map((entry): { zone: string | null; step: ZoneStep } | null => !entry.wallClock ? { zone: entry.zone, step: 'carrier' }
+    : entry.zone ? { zone: entry.zone, step: 'place' } : entry.copy ? { zone: entry.copy, step: 'copy' } : null);
   const walls = entries.map((entry) => mislabeledWallTime(entry.date) ?? '');
   return entries.map((entry, index) => {
-    const own = zones[index];
+    const own = found[index];
     if (own) return own;
-    if (!entry.borrows) return null;
     const key = nameKey(entry.name);
     const wall = walls[index]!;
     let before: { wall: string; zone: string } | undefined;
     let after: { wall: string; zone: string } | undefined;
-    entries.forEach((other, at) => {
-      const zone = zones[at];
-      const near = { wall: walls[at]!, zone: zone ?? '' };
-      if (at === index || !zone || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
-      if (near.wall <= wall) {
-        if (!before || near.wall > before.wall) before = near;
-      } else if (!after || near.wall < after.wall) after = near;
-    });
-    return (before ?? after)?.zone ?? entry.fallback;
+    if (!entry.known) {
+      entries.forEach((other, at) => {
+        const zone = found[at]?.zone;
+        const near = { wall: walls[at]!, zone: zone ?? '' };
+        if (!zone || !other.wallClock || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
+        if (near.wall <= wall) {
+          if (!before || near.wall > before.wall) before = near;
+        } else if (!after || near.wall < after.wall) after = near;
+      });
+    }
+    const borrowed = (before ?? after)?.zone;
+    const known = fitsPlace(entry.known, entry.location);
+    return borrowed ? { zone: borrowed, step: 'borrowed' } : entry.fallback ? { zone: entry.fallback, step: 'routing' }
+      : known ? { zone: known, step: 'known' } : { zone: null, step: 'labeled' };
   });
 }
 
@@ -413,34 +457,44 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       undated++;
       continue;
     }
-    const state = readState(payload, raw, timezone, number, inNorthAmerica);
     const status = relayedLabel(raw.status);
+    const state = readState(payload, raw, status, timezone, number, inNorthAmerica);
     const scan = carrierScan(typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined, status);
     entries.push({ ...state, raw, scan, wording: scan?.wording ?? status });
   }
-  // Another carrier's copy of such a scan (Cainiao relaying UniUni's "Delivered"
-  // at the same minute, with no place) takes that scan's zone, so the two stay
-  // one scan. A copy of a GOFO scan with an offset of its own writes the same
-  // digits under a UTC label (YTO's, Cirro's and EQuick's of GOFO France's),
-  // and takes that offset.
+  // Another carrier's copy of a scan placed in its state or province (Cainiao
+  // relaying UniUni's "Delivered" at the same minute, with no place) takes
+  // that scan's zone, so the two stay one scan. A copy of a GOFO scan with an
+  // offset of its own writes the same digits under a UTC label (YTO's, Cirro's
+  // and EQuick's of GOFO France's), and takes that offset. A wall-clock scan
+  // with no place copies any other carrier's placed scan this way.
   const copyKey = ({ date, wording }: typeof entries[number], wall = mislabeledWallTime(date)) => {
     const text = wall ? localEvent(date, wording)?.description : undefined;
     return wall && text ? `${wall}|${text}` : '';
   };
+  const offsetClocks = entries.filter((entry) => entry.offset).map((entry) => [
+    copyKey(entry, DateTime.fromISO(String(entry.date).trim(), { setZone: true }).toISO({ includeOffset: false })), `UTC${entry.offset}`] as const);
   const localClocks = new Map([
-    ...entries.filter((entry) => entry.local).map((entry) => [copyKey(entry), entry.zone!] as const),
-    ...entries.filter((entry) => entry.offset).map((entry) => [
-      copyKey(entry, DateTime.fromISO(String(entry.date).trim(), { setZone: true }).toISO({ includeOffset: false })), `UTC${entry.offset}`] as const),
+    ...entries.filter((entry) => entry.local).map((entry) => [copyKey(entry), entry.zone!] as const), ...offsetClocks,
   ].filter(([key]) => key));
-  const zones = borrowedZones(entries, entries.map((entry) =>
-    (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone));
+  // Two placed scans with the same key on different clocks place no copy.
+  const placedClocks = new Map<string, string>();
+  for (const [key, zone] of [...entries.flatMap((entry) => entry.placed ? [[copyKey(entry), entry.placed] as const] : []), ...offsetClocks]) {
+    if (key) placedClocks.set(key, placedClocks.has(key) && placedClocks.get(key) !== zone ? '' : zone);
+  }
+  const zones = wallClockZones(entries.map((entry) => ({ ...entry,
+    zone: entry.wallClock ? entry.zone : (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone,
+    copy: entry.wallClock && !entry.zone ? placedClocks.get(copyKey(entry)) || undefined : undefined })));
   const latest = new LatestScan(SOURCE);
   for (const [index, entry] of entries.entries()) {
     const { raw, name, scan, date } = entry;
-    const zone = zones[index];
-    const unplaced = !zone && entry.wall;
-    const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
-    if (parsed) latest.see(mislabeledWallTime(date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
+    const { zone } = zones[index]!;
+    // A DHL Express scan whose facility the rule cannot place is a wall clock
+    // with no instant. Any other scan with no zone keeps ParcelsApp's label.
+    const unplaced = !zone && relaysFacilityClock(name);
+    const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? entry.labeled,
+      entry.wording);
+    if (parsed) latest.see(mislabeledWallTime(date) ?? '', unplaced);
     // Nor has an offset-less date that no zone resolves: a wall time, not an instant.
     if (parsed && !parsed.time) {
       undated++;
@@ -537,19 +591,20 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     const labeled = DateTime.fromFormat(`${date} ${time}`, 'dd LLL yyyy HH:mm', { locale: 'en', zone: 'UTC' });
     if (!labeled.isValid) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event date');
     const state = readState({ carriers }, { date: labeled.toISO(), ...(name ? { carrier: carriers.indexOf(name) } : {}) },
-      timezone, numberOf(trackingNumber));
+      description, timezone, numberOf(trackingNumber));
     // The page prints no location, so no DHL Express scan has a facility to
-    // read its clock in, and no other wall clock a place or a placed scan of
-    // its network to borrow from: routing's zone, if any, is its guess.
-    const zone = state.zone ?? state.fallback;
+    // read its clock in, and no other wall clock a place, a copy to take or a
+    // placed scan of its network to borrow from: routing's zone, its known
+    // clock or its label.
+    const zone = state.zone ?? state.fallback ?? state.known;
     const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
-    const unplaced = !zone && state.wall;
-    latest.see(mislabeledWallTime(state.date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
+    const unplaced = !zone && relaysFacilityClock(name);
+    latest.see(mislabeledWallTime(state.date) ?? '', unplaced);
     if (unplaced) {
       undated++;
       return;
     }
-    const parsed = event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
+    const parsed = event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.labeled, scan?.wording ?? description);
     if (parsed) events.push(parsed);
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   });

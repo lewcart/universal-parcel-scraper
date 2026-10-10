@@ -20,20 +20,18 @@ export { facilityZone };
 /**
  * The newest wall clock of a reply, and whether that scan was left without an
  * instant. A reply whose latest scan has none cannot say where the parcel is,
- * and an older scan must not stand in for it. `scan` names that scan in the
- * error.
+ * and an older scan must not stand in for it.
  */
 export class LatestScan {
   private wall = '';
   private unplaced = false;
-  private scan = '';
   constructor(private readonly source: UniversalSource) {}
 
-  see(wall: string, unplaced: boolean, scan = 'DHL Express scan'): void {
-    if (wall > this.wall || (wall === this.wall && unplaced)) [this.wall, this.unplaced, this.scan] = [wall, unplaced, scan];
+  see(wall: string, unplaced: boolean): void {
+    if (wall > this.wall || (wall === this.wall && unplaced)) [this.wall, this.unplaced] = [wall, unplaced];
   }
 
   check(): void {
-    if (this.unplaced) throw new IndeterminateError(this.source, `${this.source} cannot place the latest ${this.scan}`);
+    if (this.unplaced) throw new IndeterminateError(this.source, `${this.source} cannot place the latest DHL Express scan`);
   }
 }

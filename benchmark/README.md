@@ -41,7 +41,7 @@ by hand in carriers.json, with the reason.
 ```sh
 export COVERAGE_PROBE_TRAWL_URL=http://localhost:8191   # TRAWL: 17TRACK, Postal Ninja, browser-backed adapters
 export TRACKING_CHROMIUM_PATH=/path/to/chromium          # Ship24's recovery, local-browser adapters
-node scripts/benchmark.mjs probe                          # every number through every source, about two hours
+node scripts/benchmark.mjs probe                          # every number through every source, about three and a half hours
 node scripts/benchmark.mjs probe --carriers dhl,ups       # some carriers
 node scripts/benchmark.mjs probe --unrun                  # numbers or sources never asked
 node scripts/benchmark.mjs probe --sources 17TRACK --retry  # errors and challenges again
@@ -52,6 +52,11 @@ Answers merge into [results.jsonl](results.jsonl), one line per number and sourc
 outcome, the scan count, undated scans, the newest scan's time and stage, the carrier names
 the source reported, the time taken and the date checked. No event text is kept. A failed
 lookup does not replace an earlier answer.
+
+ParcelsApp's lookups start a minute apart, in a lane of their own: asked faster, it blocks
+the address and then answers `NO_DATA` to every number (see its
+[limitations](../providers/parcelsapp/README.md#limitations)). Ten of those in a row stop
+its lane and are recorded as blocked, which `--retry` asks again.
 
 Provider order does not read this file. It follows the routing evidence in
 [providers/coverage.json](../providers/coverage.json), described in

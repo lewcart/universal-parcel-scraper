@@ -180,6 +180,16 @@ step exists for future protocol changes.
 - Postcode unlock is unverified. For an invalid postcode, SEUR and bpost repeat
   `require_fields` instead of returning an explicit error, both in the real form and via
   HTTP. Verifying the unlock needs a known valid number and postcode pair.
+- Rate limit. On 2026-10-10 ParcelsApp blocked an address after about 145 lookups in 40
+  minutes, three or four a minute, most of them for numbers it had not cached. From then on
+  it answered every lookup from that address with an instant `{"error":"NO_DATA"}` and
+  HTTP 200, for any number, on the website too. The block still held four hours later.
+  Another network got answers, and so did the production server, at a few lookups an hour.
+  The adapter cannot tell this answer from a real one, which is one reason `NO_DATA` stays
+  inconclusive.
+- Test with the adapter, not curl. The same day, curl from the production server got
+  `NO_DATA` for a parcel the adapter fetched from that server and address minutes
+  earlier, with the same body and User-Agent, over HTTP/1.1 and HTTP/2.
 - Email, phone, house-number, sign-in and country-selector forms are not supported.
 - `Estimated delivery` forecast rows are projected as events and can set `last_update`.
 

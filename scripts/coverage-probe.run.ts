@@ -33,6 +33,10 @@ type Source = 'direct' | UniversalSource;
 
 const TRAWL_URL = process.env.COVERAGE_PROBE_TRAWL_URL ?? '';
 const SOURCES: Source[] = ['direct', ...COVERAGE_SOURCES];
+/** ParcelsApp blocked an address after about 145 lookups in 40 minutes (providers/parcelsapp/README.md). */
+const PARCELSAPP_GAP_MS = 60_000;
+/** The benchmark's longest run of real ParcelsApp negatives was four. */
+const PARCELSAPP_BLOCK_STREAK = 10;
 
 function environment(): AdapterEnvironment {
   return {
@@ -107,17 +111,37 @@ it('probes every case through every source', async () => {
   const env = environment();
   const registry = new AdapterRegistry(REGISTRY, env);
   const tracker = new UniversalTracker({ enablePostalNinja: true, environment: env, ...(TRAWL_URL ? {} : { trawlUrl: '' }) });
-  // Browser-service lookups run one at a time, beside the HTTP ones.
-  const lane = async (browser: boolean) => {
+  // Browser-service lookups run one at a time, beside the HTTP ones. ParcelsApp's have a
+  // paced lane of their own.
+  const laneOf = (source: Source) => source === 'ParcelsApp' ? 'paced'
+    : BROWSER_SOURCES.has(source as UniversalSource) ? 'browser' : 'http';
+  const write = (record: Awaited<ReturnType<typeof probe>>) => {
+    appendFileSync(output, `${JSON.stringify(record)}\n`);
+    console.log(`${record.carrier} ${record.source} ${record.ms} ms ${record.outcome}${'rows' in record ? ` ${record.rows}` : ''}${'error' in record ? ` ${record.error}` : ''}`);
+  };
+  const lane = async (name: string, gapMs = 0) => {
+    let started = -Infinity;
+    // A blocked ParcelsApp address answers NO_DATA to everything: negatives wait for the next
+    // answer, and a long run of them ends the lane as blocked.
+    const negatives: Awaited<ReturnType<typeof probe>>[] = [];
     for (const item of cases) {
       for (const source of SOURCES) {
-        if ((only && !only.has(source)) || (item.sources && !item.sources.includes(source))
-          || BROWSER_SOURCES.has(source as UniversalSource) !== browser) continue;
+        if ((only && !only.has(source)) || (item.sources && !item.sources.includes(source)) || laneOf(source) !== name) continue;
+        await new Promise((resolve) => setTimeout(resolve, Math.max(0, started + gapMs - Date.now())));
+        started = Date.now();
         const record = await probe(item, source, registry, tracker);
-        appendFileSync(output, `${JSON.stringify(record)}\n`);
-        console.log(`${item.carrier} ${source} ${record.ms} ms ${record.outcome}${'rows' in record ? ` ${record.rows}` : ''}${'error' in record ? ` ${record.error}` : ''}`);
+        if (name === 'paced' && record.outcome === 'no_history') {
+          negatives.push(record);
+          if (negatives.length < PARCELSAPP_BLOCK_STREAK) continue;
+          for (const held of negatives) write({ ...held, outcome: 'blocked', error: 'NO_DATA while ParcelsApp blocked the address' });
+          console.log(`ParcelsApp answered ${negatives.length} NO_DATA in a row: stopped its lane`);
+          return;
+        }
+        negatives.splice(0).forEach(write);
+        write(record);
       }
     }
+    negatives.forEach(write);
   };
-  await Promise.all([lane(true), lane(false)]);
-}, 3_600_000);
+  await Promise.all([lane('browser'), lane('http'), lane('paced', PARCELSAPP_GAP_MS)]);
+}, 6 * 3_600_000);

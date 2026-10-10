@@ -4095,6 +4095,132 @@
           }
         }
       ]
+    },
+    {
+      "carrier": "omniva",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number RL714436355EE",
+          "results": {
+            "Ship24": 1,
+            "ParcelsApp": 1,
+            "17TRACK": "no_history",
+            "Postal Ninja": "undated",
+            "UPU": "no_history"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "gls-it",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number CL 660213461",
+          "results": {
+            "Ship24": 10,
+            "ParcelsApp": 11,
+            "17TRACK": 11,
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        },
+        {
+          "note": "Benchmark number ww668513923",
+          "results": {
+            "Ship24": 12,
+            "ParcelsApp": 12,
+            "17TRACK": 12,
+            "Postal Ninja": 12,
+            "UPU": "n/a"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "gls-es",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number 1306462516",
+          "stale": true,
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "postcode_prompt",
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        },
+        {
+          "note": "Benchmark number 1267649789",
+          "stale": true,
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "postcode_prompt",
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "speedy",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number 52096359735",
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": 21,
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "fan-courier",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number 4164600013923",
+          "stale": true,
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "no_history",
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "sameday",
+      "direct": "Yes",
+      "sample": "No adapter",
+      "references": [
+        {
+          "note": "Benchmark number 1TMB2419700167",
+          "stale": true,
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "no_history",
+            "17TRACK": "no_history",
+            "Postal Ninja": "undated",
+            "UPU": "n/a"
+          }
+        }
+      ]
     }
   ]
 }

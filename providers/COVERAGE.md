@@ -163,15 +163,21 @@ is asked after the other aggregators whatever its count.
 | [DPD Poland](../carriers/dpd-pl/README.md) | Yes | ✓ 8, partial | ✓ 1, partial | ✓ 12 | ✓ 8 | ✓ 5 | N/A |
 | [DHL eCommerce Poland](../carriers/dhl-ecommerce-pl/README.md) | Yes | Summary only | ✓ 12 | No history | ✓ 12 | No history | N/A |
 | [SunYou](../carriers/sunyou/README.md) | Yes | No history | No history | No history | No history | No history | N/A |
+| [Omniva](../carriers/omniva/README.md) | Yes | No adapter | ✓ 1 | ✓ 1 | No history | Undated | No history |
+| [GLS Italy](../carriers/gls-it/README.md) | Yes | No adapter | ✓ 10 | ✓ 11 | ✓ 11 | No history | N/A |
+| [GLS Spain](../carriers/gls-es/README.md) | Yes | No adapter | No history | Postcode prompt | No history | No history | N/A |
+| [Speedy](../carriers/speedy/README.md) | Yes | No adapter | No history | ✓ 21 | No history | No history | N/A |
+| [FAN Courier](../carriers/fan-courier/README.md) | Yes | No adapter | No history | No history | No history | No history | N/A |
+| [Sameday](../carriers/sameday/README.md) | Yes | No adapter | No history | No history | No history | Undated | N/A |
 <!-- /GENERATED:coverage -->
 
 <!-- GENERATED:lookup-order -->
 | Source | Carriers with history | Full | Partial | Only source |
 | --- | ---: | ---: | ---: | ---: |
-| Ship24 | 61 | 22 | 39 | 0 |
-| ParcelsApp | 76 | 48 | 28 | 4 |
-| 17TRACK | 75 | 48 | 27 | 4 |
-| Postal Ninja | 57 | 19 | 38 | 0 |
+| Ship24 | 63 | 24 | 39 | 0 |
+| ParcelsApp | 79 | 51 | 28 | 5 |
+| 17TRACK | 76 | 49 | 27 | 4 |
+| Postal Ninja | 58 | 19 | 39 | 0 |
 
 With Postal Ninja enabled, carriers without their own order use ParcelsApp → Ship24 → 17TRACK → Postal Ninja. These carriers have their own:
 

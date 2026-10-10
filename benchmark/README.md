@@ -80,7 +80,7 @@ source follows any more is marked stale there.
 ## Summary
 
 <!-- GENERATED:summary -->
-100 carriers, 91 of them in the catalog, checked between 2026-10-10 and 2026-10-10.
+100 carriers, 97 of them in the catalog, checked between 2026-10-10 and 2026-10-10.
 
 | Source | Carriers with history | Full | Partial | Undated only | Median answer |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -167,7 +167,7 @@ source follows any more is marked stale there.
 | [PostNord](../carriers/postnord/README.md) | ✓ 7 | ✓ 8 | ✓ 7 | ✓ 8 | ✓ 8 | No history |
 | [Bring](../carriers/bring-posten/README.md) | ✓ 8 | ✓ 8 | ✓ 8 | ✓ 8 | ✓ 10 | N/A |
 | [Posti](../carriers/posti/README.md) | No history | No history | No history | No history | No history | No history |
-| Omniva | No adapter | ✓ 1 | ✓ 1 | No history | Undated | No history |
+| [Omniva](../carriers/omniva/README.md) | No adapter | ✓ 1 | ✓ 1 | No history | Undated | No history |
 
 ### Italy
 
@@ -176,7 +176,7 @@ source follows any more is marked stale there.
 | [Poste Italiane](../carriers/poste-italiane/README.md) | ✓ 10 | ✓ 10 | ✓ 10 | ✓ 10 | ✓ 9 | N/A |
 | [BRT](../carriers/brt/README.md) | ✓ 9 | No history | ✓ 23 | ✓ 9 | ✓ 5, partial | N/A |
 | SDA | No adapter | ✓ 3 | ✓ 28 | ✓ 6, partial | ✓ 3 | N/A |
-| GLS Italy | No adapter | ✓ 12 | ✓ 12 | ✓ 12 | ✓ 12 | N/A |
+| [GLS Italy](../carriers/gls-it/README.md) | No adapter | ✓ 12 | ✓ 12 | ✓ 12 | ✓ 12 | N/A |
 
 ### Spain and Portugal
 
@@ -193,7 +193,7 @@ source follows any more is marked stale there.
 | [DHL eCommerce Iberia](../carriers/dhl-ecommerce-es/README.md) | ✓ 11 | ✓ 11 | ✓ 20 | ✓ 11 | No history | No history |
 | [Paack](../carriers/paack/README.md) | Postcode prompt | No history | No history | No history | No history | N/A |
 | [Ecoscooting](../carriers/ecoscooting/README.md) | ✓ 14 | ✓ 6 | ✓ 13 | ✓ 14 | Undated | N/A |
-| GLS Spain | No adapter | No history | Postcode prompt | No history | No history | N/A |
+| [GLS Spain](../carriers/gls-es/README.md) | No adapter | No history | Postcode prompt | No history | No history | N/A |
 
 ### Central and Eastern Europe
 
@@ -211,9 +211,9 @@ source follows any more is marked stale there.
 
 | Carrier | Direct | Ship24 | ParcelsApp | 17TRACK | Postal Ninja | UPU |
 | --- | --- | --- | --- | --- | --- | --- |
-| Speedy | No adapter | No history | ✓ 21 | No history | No history | N/A |
-| FAN Courier | No adapter | No history | No history | No history | No history | N/A |
-| Sameday | No adapter | No history | No history | No history | Undated | N/A |
+| [Speedy](../carriers/speedy/README.md) | No adapter | No history | ✓ 21 | No history | No history | N/A |
+| [FAN Courier](../carriers/fan-courier/README.md) | No adapter | No history | No history | No history | No history | N/A |
+| [Sameday](../carriers/sameday/README.md) | No adapter | No history | No history | No history | Undated | N/A |
 | Yurtiçi Kargo | No adapter | No history | Postcode prompt | No history | No history | N/A |
 
 ### Global
@@ -302,7 +302,7 @@ source follows any more is marked stale there.
 | DPD Germany | `01415130681967` | [2026-10-05](https://www.paketda.de/fragen-antworten.php?suche=01415130681967) | 2026-10-10 | ✓ 12 | ✓ 12 | ✓ 3, partial (a third of the rows or fewer) | ✓ 3, partial (a third of the rows or fewer) | ✓ 5 | N/A |
 | GLS Germany | `37390065090` | [2026-08-24](https://de.reclabox.com/beschwerde/254878-gls-neuenstein-paket-ohne-zustellversuch-im-paketshop-abgekippt) | 2026-10-10 | Postcode prompt | No history | ✓ 3 | No history | ✓ 4 | N/A |
 | GLS Germany | `AALZJR` | [2026-08-05](https://www.paketda.de/fragen-antworten.php?suche=AALZJR) | 2026-10-10 | Postcode prompt | Refused | Refused | Refused | Refused | N/A |
-| DHL eCommerce | `420127019261290376171425385106` | [undated](https://webtrack.dhlglobalmail.com/?trackingnumber=420127019261290376171425385106) | 2026-10-10 | ✓ 11 | No history | ✓ 11 | ✓ 11 | Blocked | N/A |
+| DHL eCommerce | `420127019261290376171425385106` |  | 2026-10-10 | ✓ 11 | No history | ✓ 11 | ✓ 11 | Blocked | N/A |
 | DHL eCommerce | `9261290316844317469885` | [undated](https://webtrack.dhlglobalmail.com/?trackingnumber=9261290316844317469885) | 2026-10-10 | ✓ 1 | No history | ✓ 1 | No history | Blocked | N/A |
 | Royal Mail | `MZ465962009GB` | [2026-03-16](https://web.archive.org/web/20260316193534/https://www.royalmail.com/portal/rm/track?trackNumber=MZ465962009GB) | 2026-10-10 | ✓ 5 | No history | No history | No history | No history | No history |
 | Royal Mail | `IV745750017GB` | [2026-03-11](https://web.archive.org/web/20260311233047/https://www.royalmail.com/portal/rm/track?trackNumber=IV745750017GB) | 2026-10-10 | ✓ 5 | No history | No history | No history | No history | No history |
@@ -352,7 +352,7 @@ source follows any more is marked stale there.
 | SDA | `964D80079157F` | [2026-08-12](https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-dichiarato-consegnato-ma/8c0de968cf63956b3d) | 2026-10-10 | No adapter | ✓ 6, partial (a third of the rows or fewer, stops early) | ✓ 28 | ✓ 6, partial (a third of the rows or fewer, stops early) | Undated | N/A |
 | GLS Italy | `CL 660213461` | [2026-10-02](https://it.trustpilot.com/review/gls-italy.com?sort=recency) | 2026-10-10 | No adapter | ✓ 10 | ✓ 11 | ✓ 11 | No history | N/A |
 | GLS Italy | `ww668513923` | [2026-07-02](https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/spedizione-bloccata-a-gls-capu/d7f3f9e87fa92e0b1c) | 2026-10-10 | No adapter | ✓ 12 | ✓ 12 | ✓ 12 | ✓ 12 | N/A |
-| Correos | `PHAS9C041996281E` | [2026-10-05](https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PHAS9C0419962810128017D) | 2026-10-10 | ✓ 10 | No history | ✓ 10 | ✓ 10 | ✓ 10 | N/A |
+| Correos | `PHAS9C041996281E` | [2026-08-17](https://es.trustpilot.com/reviews/6a83008bf44f16ad720a6d32) | 2026-10-10 | ✓ 10 | No history | ✓ 10 | ✓ 10 | ✓ 10 | N/A |
 | Correos | `LX309102212ES` | [2026-09-18](https://www.ocu.org/reclamar/lista-reclamaciones-publicas/entrega-de-paquete-abierto-y-s/bb3c389c2b30f513a5) | 2026-10-10 | ✓ 9 | ✓ 9 | ✓ 9 | ✓ 9 | ✓ 9 | No history |
 | SEUR | `88380161263793` | [2026-09-30](https://www.ocu.org/reclamar/lista-reclamaciones-publicas/no-realizan-intento-de-entrega/addd747044249526a6) | 2026-10-10 | Error | No history | No history | No history | No history | N/A |
 | SEUR | `07474002501967` | [2026-09-23](https://www.ocu.org/reclamar/lista-reclamaciones-publicas/han-ignorado-el-punto-de-entre/1626552520d044c1b1) | 2026-10-10 | ✓ 4 | ✓ 4 | ✓ 5 | ✓ 5 | ✓ 5 | N/A |

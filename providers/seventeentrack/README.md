@@ -65,8 +65,10 @@ carrier.
 - Times: `time_utc`, else `time_iso`, and both must carry an offset. When both parse but name
   different instants, `time_iso`, the clock and offset 17TRACK shows, wins: on India Post's legs
   `time_utc` lands 30 minutes after it. Rows with neither are dropped and counted in
-  `undated_event_count`. A malformed non-empty timestamp is a schema error. Retrieval time is
-  never used as a scan time.
+  `undated_event_count`, and so are rows whose `time_raw` has no date: 17TRACK can fill their
+  `time_iso` with a placeholder such as `01.01.2000, 00:00` (DPD Germany's rows for a parcel
+  from abroad). A malformed non-empty timestamp is a schema error. Retrieval time is never
+  used as a scan time.
 - 17TRACK sometimes adds the offset itself (`time_raw.timezone` is null), and it can be
   wrong: for one parcel, the China Post leg put `+08:00` on the same wall clock that
   USPS reported at `-07:00`. Each event keeps `provider_time_iso`, `time_provenance`

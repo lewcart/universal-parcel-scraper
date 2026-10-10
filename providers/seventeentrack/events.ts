@@ -7,6 +7,18 @@ import { event, place, text } from '../shared/result.js';
 import { SUB_STAGES, subStatusStage } from './status.js';
 
 /**
+ * A scan the carrier did not date. Besides leaving both readings empty,
+ * 17TRACK can write a placeholder such as `01.01.2000, 00:00` into `time_iso`
+ * of a scan whose raw clock has no date (DPD Germany's rows for a parcel
+ * from abroad); `time_utc` is then empty too.
+ */
+export function undatedScan(raw: JsonObject): boolean {
+  if (raw.time_utc != null) return false;
+  return raw.time_iso == null || (isRecord(raw.time_raw) && raw.time_raw.date === null
+    && !(typeof raw.time_iso === 'string' && EXPLICIT_OFFSET_PATTERN.test(raw.time_iso)));
+}
+
+/**
  * 17TRACK's two readings of a scan usually name one instant. When they
  * disagree, `time_iso` is the clock and offset 17TRACK shows: on India Post's
  * legs `time_utc` lands 30 minutes after it, on scans India Post itself dates.
@@ -28,8 +40,8 @@ function scanTime(raw: JsonObject): unknown {
 export function seventeenTrackEvent(raw: JsonObject, operator: JsonObject, placed?: string): CarrierEvent | null {
   // Some completed responses contain undated explanatory rows alongside real
   // scans. Skip only absent dates; malformed nonempty timestamps still fail.
+  if (!placed && undatedScan(raw)) return null;
   const time = placed ?? scanTime(raw);
-  if (time === null || time === undefined) return null;
   const code = text(raw.sub_status);
   const parsed = event(time, raw.description, raw.stage ?? (Object.hasOwn(SUB_STAGES, code) ? code.split('_')[0] : undefined));
   if (!parsed) return null;

@@ -143,6 +143,17 @@ describe('17TRACK result parsing', () => {
       .toThrow('invalid tracking event');
   });
 
+  it('counts a scan 17TRACK dates with a placeholder because its raw clock has no date', () => {
+    const placeholder = { ...postalScan('OutForDelivery_Other', 'Parcel out for delivery'), time_iso: '01.01.2000, 00:00', time_utc: null,
+      time_raw: { date: null, time: null, timezone: null } };
+    const result = parse17TrackResponse(postalHistory([postalScan('Delivered_Other', 'Parcel delivered'), placeholder, placeholder]), number);
+    expect(result).toMatchObject({ current_stage: 'delivered', undated_event_count: 2 });
+    expect(result.events).toHaveLength(1);
+    // A placeholder beside a raw date is not one 17TRACK left undated.
+    expect(() => parse17TrackResponse(postalHistory([{ ...placeholder, time_raw: { date: '2026-09-20', time: null, timezone: null } }]), number))
+      .toThrow('invalid tracking event');
+  });
+
   it('reads DHL Express scans on their facility\'s clock, not on the one offset 17TRACK gives the parcel', () => {
     // Public shape: every scan stamped with the destination's offset, the facility's clock in time_raw.
     const scan = (date: string, time: string, location: string, description = 'Processed') => ({

@@ -22,7 +22,7 @@ import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { numberOf, result, text, type UniversalSource } from '../shared/result.js';
-import { seventeenTrackEvent } from './events.js';
+import { seventeenTrackEvent, undatedScan } from './events.js';
 
 const SOURCE: UniversalSource = '17TRACK';
 const API_URL = 'https://t.17track.net/track/restapi';
@@ -148,7 +148,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       ...(typeof reported.key === 'number' && Number.isSafeInteger(reported.key) ? { reporting_carrier_key: reported.key } : {}) };
     for (const raw of provider.events) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
-      if (raw.time_utc == null && raw.time_iso == null) undated++;
+      if (undatedScan(raw)) undated++;
       // A facility's clock, on which 17TRACK puts one offset for the whole parcel.
       const wall = relaysFacilityClock(name) ? facilityWall(raw) : null;
       const zone = wall ? facilityZone(text(raw.location)) : null;

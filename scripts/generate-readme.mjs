@@ -55,7 +55,7 @@ const blocks = {
   ].join('\n'),
   coverage: [
     `In a benchmark of ${benchmark.length} carriers picked for shoppers in Europe, run on public tracking numbers anyone can recheck, dedicated adapters return history for **${summary.comparison.direct}**, rising to **${union}** with all fallbacks enabled. The best single aggregator returns ${best}.${undated.length
-      ? ` Histories without scan times, which the library does not use, would add ${undated.map(source => `${measured.undated[source]} for ${source}`).join(' and ')}.` : ''}`,
+      ? ` Histories whose scans cannot be placed in time, which the library does not use, would add ${undated.map(source => `${measured.undated[source]} for ${source}`).join(' and ')}.` : ''}`,
     '', picture('coverage', `Carriers with tracking history: ${rows.map(row => `${row.label} ${row.count}`).join(', ')}.`),
   ].join('\n'),
 };

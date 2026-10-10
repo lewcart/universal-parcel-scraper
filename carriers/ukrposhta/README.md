@@ -68,7 +68,9 @@ stays unanswered, since the portal is not asked.
 Detection only suggests Ukrposhta, for a thirteen-digit domestic barcode, a length
 other carriers share, and for a postal number it issued.
 The fallback needs `TRACKING_CHROMIUM_PATH`. Neither
-not-found reply names the barcode, so tracking reports neither as parcel absence. On the
+not-found reply names the barcode, so tracking reports neither as parcel absence:
+each stays inconclusive, with the reason `status_api_not_found`, or
+`portal_not_found` when the portal, asked last, misses it too. On the
 portal, multiple-piece shipments, count changes between requests and conflicting
 current scans are inconclusive. Delivery and estimate dates are not inferred from
 local scan clocks or the query time; only a delivery scan dated on Kyiv time dates

@@ -66,8 +66,9 @@ export function parseUkrposhtaOverview(payload: unknown, requested: string): Ukr
   const number = normalizeUkrposhtaNumber(requested);
   const data = envelope(payload);
   // The native unknown response has no returned barcode. It cannot prove
-  // absence for this reference, even though the page calls it not found.
-  if (isRecord(data.result) && data.result.message === 'Shipment not found') throw new IndeterminateError(PROVIDER);
+  // absence for this reference, even though the page calls it not found. Its
+  // reason tells a host the portal missed it, not that the history was unsettled.
+  if (isRecord(data.result) && data.result.message === 'Shipment not found') throw new IndeterminateError(PROVIDER, undefined, { reason: 'portal_not_found' });
   if (!Array.isArray(data.result)) throw new SchemaError(PROVIDER, 'Ukrposhta omitted its parcel overview');
   if (!data.result.length) throw new IndeterminateError(PROVIDER);
   if (data.result.length !== 1) throw new IndeterminateError(PROVIDER, 'Ukrposhta returned an ambiguous parcel overview');

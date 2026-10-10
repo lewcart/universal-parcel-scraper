@@ -106,7 +106,8 @@ describe('Ukrposhta native history projection', () => {
   });
 
   it('keeps unbound not-found and verification replies distinct', () => {
-    expect(() => parseUkrposhtaOverview(fixture('unknown'), NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseUkrposhtaOverview(fixture('unknown'), NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parseUkrposhtaOverview({ result: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
     expect(() => parseUkrposhtaOverview({ code: 'captcha_failed' }, NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     expect(() => parseUkrposhtaOverview({ result: {} }, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
@@ -292,9 +293,12 @@ describe('Ukrposhta direct status API retrieval', () => {
     const seam = browserSeam({ overview: fixture('unknown'), history: fixture().history }, international);
     const unknown = () => statusApi({ message: 'Shipment not found' }, 404);
     const options = { executablePath: '/synthetic/chromium', token: TOKEN };
-    await expect(new UkrposhtaTracker({ ...options, fetcher: unknown() }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(new UkrposhtaTracker({ ...options, fetcher: unknown() }).fetch(NUMBER))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'status_api_not_found' });
     expect(seam.launch).not.toHaveBeenCalled();
-    await expect(new UkrposhtaTracker({ ...options, fetcher: unknown() }).fetch(international)).rejects.toMatchObject({ kind: 'indeterminate' });
+    // Neither source has it: the portal's miss is the answer, and says so.
+    await expect(new UkrposhtaTracker({ ...options, fetcher: unknown() }).fetch(international))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
     expect(seam.launch).toHaveBeenCalledOnce();
   });
 

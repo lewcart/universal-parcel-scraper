@@ -50,6 +50,16 @@ describe('UPU postal tracking', () => {
     expect(value.current_stage_source).toBe('wording:language');
   });
 
+  it('merges the records an item was reported under for each origin and destination pair', () => {
+    const exported = { ID: number, Events: [scan('EXA', 'Item presented to export Customs/Security', '/Date(1789206480000+0200)/'), scan()],
+      State: 1, DestinationCountryCd: 'CN' };
+    const value = parseUpuResponse([...payload([scan(), scan('EMB', 'Arrival at outward office of exchange', '/Date(1789210080000+0200)/')]), exported], number);
+    expect(value.events?.map((event) => event.provider_code)).toEqual(['EMB', 'EXA', 'EMA']);
+    expect(value.current_stage).toBe('in_transit');
+    expect(() => parseUpuResponse([...payload(Array.from({ length: 600 }, () => scan())), { ...exported,
+      Events: Array.from({ length: 401 }, () => scan()) }], number)).toThrow('no matching shipment history');
+  });
+
   it('handles a negative WCF offset as wall time, not a verified instant', () => {
     expect(parseUpuResponse(payload([scan('EMA', 'Posting/Collection', '/Date(1789202880000-0300)/')]), number).events?.[0])
       .toMatchObject({ local_time: '2026-09-12T05:48:00' });
@@ -62,7 +72,8 @@ describe('UPU postal tracking', () => {
   });
 
   it.each([
-    null, {}, [{ ID: 'EB000000014CN', Events: [scan()] }], [...payload(), ...payload()],
+    null, {}, [{ ID: 'EB000000014CN', Events: [scan()] }], [...payload(), { ID: 'EB000000014CN', Events: [scan()] }],
+    [...payload(), { ID: number }], Array.from({ length: 11 }, () => payload()[0]),
     payload([scan('EMA', 'Posting/Collection', '/Date(1789202880000+2500)/')]),
     payload([scan('EMA', 'Posting/Collection', '2026-02-31T10:00:00Z')]),
     payload(Array.from({ length: 1001 }, () => scan())),

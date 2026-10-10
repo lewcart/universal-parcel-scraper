@@ -32,6 +32,10 @@ curl --fail-with-body --max-time 15 \
 ## Parsing
 
 - The returned `ID` must equal the requested item. An array alone proves nothing.
+- An item can come as several records, one per origin and destination pair it was
+  reported under: export customs scans can sit in a second record whose destination is the
+  origin country. Every record must name the item; their scans are merged, at most 10
+  records and 1,000 scans in all.
 - An unknown or expired item returns HTTP 200 with an empty body. The adapter raises
   `NotFoundError`, as it does for an empty array or a reply with only forecasts.
 - `Events` includes forecasts. `EventCd: "DLV"` means "Estimated delivery", and it is

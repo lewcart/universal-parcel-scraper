@@ -13,6 +13,7 @@ import { classifyEvent, hasPrivateDeliveryDetails, isNotice, numberOf, result, t
 const SOURCE = 'UPU';
 export const UPU_BUDGET_MS = 8_000;
 const MAX_EVENTS = 1_000;
+const MAX_RECORDS = 10;
 const STAGES: Record<string, Stage> = {
   EMA: 'accepted', EMB: 'in_transit', EMC: 'in_transit', EMD: 'in_transit',
   EDA: 'customs', EDB: 'customs', EDC: 'in_transit',
@@ -46,12 +47,17 @@ function localTime(value: unknown): string {
 export function parseUpuResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = numberOf(trackingNumber);
   if (Array.isArray(payload) && payload.length === 0) throw new NotFoundError(SOURCE, 'UPU has no available history');
-  if (!Array.isArray(payload) || payload.length !== 1 || !isRecord(payload[0]) || payload[0].ID !== number
-    || !Array.isArray(payload[0].Events) || payload[0].Events.length > MAX_EVENTS) {
+  // One record per origin and destination pair the item was reported under: an
+  // export reported with the origin country as destination comes as a second
+  // record of the same item. Every record must name the requested item.
+  if (!Array.isArray(payload) || payload.length > MAX_RECORDS
+    || !payload.every((record) => isRecord(record) && record.ID === number && Array.isArray(record.Events))) {
     throw new SchemaError(SOURCE, 'UPU has no matching shipment history');
   }
+  const rows = payload.flatMap((record) => (record as { Events: unknown[] }).Events);
+  if (rows.length > MAX_EVENTS) throw new SchemaError(SOURCE, 'UPU has no matching shipment history');
   const events: CarrierEvent[] = [];
-  for (const raw of payload[0].Events) {
+  for (const raw of rows) {
     if (!isRecord(raw) || typeof raw.EventCd !== 'string' || !/^[A-Z0-9]{2,8}$/.test(raw.EventCd)) {
       throw new SchemaError(SOURCE, 'UPU returned an invalid event');
     }

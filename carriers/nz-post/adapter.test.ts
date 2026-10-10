@@ -77,6 +77,34 @@ describe('NZ Post exact-reference projection', () => {
     expect(parseNzPost(tie, NUMBER).events?.[0]!.description).toBe('Delivered');
   });
 
+  it('takes back the Auckland clock NZ Post reads a scan abroad on, after the item leaves New Zealand', () => {
+    const item = 'ZZ123456785NZ';
+    const scan = (date_time: string, edifact_code: string, status: string, depot_name?: string) =>
+      ({ date_time, edifact_code, status, ...(depot_name ? { depot_name } : {}), source: 'IPS' });
+    const events = [
+      scan('2026-08-06T01:55:10Z', '5007', 'International departure', 'EXAMPLE CITY'),
+      scan('2026-08-07T09:23:00Z', '5064', 'In transit with airline', 'Hong Kong'),
+      scan('2026-08-07T10:23:00Z', '5283', 'In transit with airline', 'Guangzhou'),
+      scan('2026-08-08T21:05:00Z', '5015', 'International arrival', 'Hong Kong'),
+      scan('2026-08-14T00:47:00Z', '5019', 'Held for clearance', 'EXAMPLE CITY'),
+    ];
+    const parse = (scans: typeof events) =>
+      parseNzPost({ success: true, status_code: 1, results: [{ tracking_reference: item, tracking_events: scans }] }, item);
+    const result = parse(events);
+    // Hong Kong keeps one clock, which the scan at a town borrows. The departure and the airline's scans are as sent.
+    expect(result.events?.map(event => event.time ?? `local ${String(event.local_time)}`)).toEqual([
+      '2026-08-14T12:47:00+08:00', '2026-08-09T09:05:00+08:00', '2026-08-07T10:23:00Z', '2026-08-07T09:23:00Z', '2026-08-06T01:55:10Z']);
+    expect(result).toMatchObject({ last_update: '2026-08-14T12:47:00+08:00' });
+    // With no scan abroad placed, they stay wall times.
+    const towns = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' } : scan));
+    expect(towns.events?.slice(0, 2).map(event => event.local_time)).toEqual(['2026-08-14T12:47:00', '2026-08-09T09:05:00']);
+    expect(towns).toMatchObject({ last_update: null, last_update_local: '2026-08-14T12:47:00' });
+    // An item arriving from abroad is scanned in New Zealand after its departure.
+    const inbound = 'ZZ123456785CH';
+    expect(parseNzPost({ success: true, status_code: 1, results: [{ tracking_reference: inbound, tracking_events: events }] }, inbound)
+      .events?.[0]?.time).toBe('2026-08-14T00:47:00Z');
+  });
+
   it('distinguishes pre-advice, pickup availability, failed attempts and unknown codes', () => {
     for (const code of ['205', '206', '997']) expect(classifyNzPostStatus(code)).toMatchObject({ status: 'pending', stage: 'registered' });
     expect(classifyNzPostStatus('141')).toMatchObject({ status: 'in_transit', stage: 'ready_for_pickup' });

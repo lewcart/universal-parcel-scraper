@@ -2,9 +2,10 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { trackingPlace } from '../../places/trackingLocation.js';
 import { isNzPostPlaceholderLocation } from './identity.js';
 import { classifyNzPostStatus } from './status.js';
 
@@ -34,6 +35,40 @@ function clock(value: unknown): Pick<CarrierEvent, 'time'> & Record<string, stri
   return raw ? { provider_time_text: raw } : {};
 }
 
+const INTERNATIONAL_DEPARTURE = '5007';
+/** An airline's scan, "In transit with airline": 5064, or a 528x code (5280 to 5285 seen on an EMS item). */
+const AIRLINE = /^(?:5064|528\d)$/;
+
+/** A scan abroad: its wall clock and the zone its depot names, by its index in the source. */
+interface AbroadScan { index: number; wall: string; zone: string | null }
+
+/**
+ * NZ Post reads the wall clock of a scan abroad as New Zealand's: a Guangzhou
+ * customs scan at 12:47 local came as 00:47Z, 12:47 in Auckland, and UPU
+ * dates it 12:47 at the Guangzhou office of exchange (checked 2026-10-10). Its
+ * own scans are right: an Auckland departure at 13:55 local came as 01:55Z.
+ * So a scan abroad gets its wall clock back on Auckland's, to be read on the
+ * clock of the country its depot names.
+ */
+function abroadScan(index: number, clocked: ReturnType<typeof clock>, depot: string): AbroadScan | null {
+  const wall = clocked.time ? DateTime.fromISO(clocked.time, { setZone: true }).setZone('Pacific/Auckland')
+    .toISO({ includeOffset: false, suppressMilliseconds: true }) : null;
+  return wall ? { index, wall, zone: depot ? countryTimeZone(trackingPlace(depot).country) : null } : null;
+}
+
+/**
+ * The clock of a scan abroad whose depot names a town ("GUANGZHOU") or a
+ * country with several clocks, a guess: the zone of the nearest earlier scan
+ * abroad whose depot places it, else of the nearest later one. All of them are
+ * the destination post's. Null when none does, and the scan stays a wall time.
+ */
+function abroadZone(scans: readonly AbroadScan[], position: number): string | null {
+  const scan = scans[position]!;
+  if (scan.zone) return scan.zone;
+  return scans.slice(0, position).reverse().find(other => other.zone)?.zone
+    ?? scans.slice(position + 1).find(other => other.zone)?.zone ?? null;
+}
+
 export function parseNzPost(payload: unknown, number: string): CarrierResult {
   const requested = normalizeNzPostNumber(number);
   if (!isRecord(payload) || typeof payload.success !== 'boolean' || !Number.isInteger(payload.status_code)) throw new SchemaError('nz-post');
@@ -57,7 +92,13 @@ export function parseNzPost(payload: unknown, number: string): CarrierResult {
   }
   if (payload.status_code !== 1) throw new IndeterminateError('nz-post', 'NZ Post returned an incomplete lookup');
   if (!Array.isArray(item.tracking_events) || item.tracking_events.length > 500) throw new SchemaError('nz-post');
-  const projected = item.tracking_events.map((raw): CarrierEvent => {
+  // On an item NZ Post sends abroad, the scans after its international
+  // departure happen abroad, but for an airline's, whose clock was not checked,
+  // and one whose depot names New Zealand. The source lists the oldest first.
+  const outbound = /^[A-Z]{2}\d{9}NZ$/.test(requested);
+  let departed = false;
+  const abroadScans: AbroadScan[] = [];
+  const projected = item.tracking_events.map((raw, index): CarrierEvent => {
     if (!isRecord(raw)) throw new SchemaError('nz-post');
     const description = clean(raw.status, 300);
     const code = clean(raw.edifact_code, 40);
@@ -65,10 +106,22 @@ export function parseNzPost(payload: unknown, number: string): CarrierResult {
     const depot = clean(raw.depot_name, 160);
     const location = isNzPostPlaceholderLocation(depot) ? '' : depot;
     const mapped = classifyNzPostStatus(code);
+    const abroad = departed && !AIRLINE.test(code) && !(location && trackingPlace(location).country === 'NZ');
+    if (outbound && code === INTERNATIONAL_DEPARTURE) departed = true;
     // Long descriptions embed signatures and other recipient details. The
     // short status and depot name carry the tracking evidence independently.
-    return { ...clock(raw.date_time), description, provider_code: code,
+    const clocked = clock(raw.date_time);
+    const scan = abroad ? abroadScan(index, clocked, location) : null;
+    if (scan) abroadScans.push(scan);
+    return { ...clocked, description, provider_code: code,
       ...(location ? { location } : {}), ...(mapped ? { stage: mapped.stage } : {}) };
+  });
+  abroadScans.forEach((scan, position) => {
+    const zone = abroadZone(abroadScans, position);
+    const placed = zone ? isoTime(scan.wall, zone) : null;
+    const event: CarrierEvent = { ...projected[scan.index]!, ...placed ? { time: placed.iso } : { local_time: scan.wall } };
+    if (!placed) delete event.time;
+    projected[scan.index] = event;
   });
   if (!projected.length) throw new IndeterminateError('nz-post', 'NZ Post returned no parcel history');
   // The consumer client treats the last source row as current. Preserve that

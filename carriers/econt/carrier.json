@@ -1,0 +1,58 @@
+{
+  "id": "econt",
+  "displayName": "Econt",
+  "aliases": [
+    "Econt Express",
+    "Еконт",
+    "Еконт Експрес"
+  ],
+  "region": {
+    "countries": [
+      "BG"
+    ]
+  },
+  "brand": {
+    "color": "#234182"
+  },
+  "selectable": true,
+  "timezone": "Europe/Sofia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.econt.com/services/track-shipment/{trackingNumber}",
+    "searchUrl": "https://www.econt.com/services/track-shipment",
+    "canaryUrl": "https://www.econt.com/services/track-shipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "econt.com"
+      ],
+      "path": "^/(?:en/)?services/track-shipment/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "econt.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "econt.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "num"
+      ]
+    }
+  ],
+  "detection": []
+}

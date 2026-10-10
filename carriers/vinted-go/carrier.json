@@ -1,0 +1,53 @@
+{
+  "id": "vinted-go",
+  "displayName": "Vinted Go",
+  "aliases": [
+    "VintedGo"
+  ],
+  "region": {
+    "countries": [
+      "FR",
+      "BE",
+      "NL",
+      "ES",
+      "PT",
+      "FI"
+    ]
+  },
+  "brand": {
+    "color": "#004654"
+  },
+  "selectable": true,
+  "timezone": "Europe/Paris",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://vintedgo.com/en/tracking/{trackingNumber}",
+    "searchUrl": "https://vintedgo.com/en/tracking",
+    "canaryUrl": "https://vintedgo.com/en/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "vintedgo.com"
+      ],
+      "path": "^/(?:[a-z]{2}(?:-[a-z]{2})?/)?tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "vinted-go-1",
+      "pattern": "^1[78]\\d{14}$",
+      "confidence": "low",
+      "checksum": "luhn"
+    }
+  ]
+}

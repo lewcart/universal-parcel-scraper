@@ -1,0 +1,68 @@
+{
+  "id": "lietuvos-pastas",
+  "displayName": "Lietuvos paštas",
+  "aliases": [
+    "Lietuvos pastas",
+    "LP Express",
+    "Lithuanian Post",
+    "Lithuania Post"
+  ],
+  "region": {
+    "countries": [
+      "LT"
+    ]
+  },
+  "brand": {
+    "color": "#fedd00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Vilnius",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://lpexpress.lt/track?parcel={trackingNumber}",
+    "searchUrl": "https://lpexpress.lt/track",
+    "canaryUrl": "https://lpexpress.lt/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "lpexpress.lt"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "parcel"
+      ]
+    },
+    {
+      "domains": [
+        "lpexpress.lt"
+      ],
+      "path": "^/(?:track/id|tracking)/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "post.lt"
+      ],
+      "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)/index/?$",
+      "params": [
+        "num"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "lietuvos-pastas-1",
+      "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
+      "confidence": "low"
+    }
+  ]
+}

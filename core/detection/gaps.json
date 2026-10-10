@@ -1,5 +1,17 @@
 [
   {
+    "carrier": "99minutos",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are a bare counter that TNT and other carriers also print, and nothing in the number points to 99minutos."
+  },
+  {
+    "carrier": "99minutos",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by DHL and several other carriers, and nothing in the number points to 99minutos."
+  },
+  {
     "carrier": "abf-freight",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -106,6 +118,24 @@
     "reason": "The printed composite carries the postcode after its dashes and is entered with the carrier chosen."
   },
   {
+    "carrier": "cargus",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Cargus."
+  },
+  {
+    "carrier": "cargus",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to Cargus."
+  },
+  {
+    "carrier": "cargus",
+    "pattern": "^[A-Z]{3}\\d{8}[A-Z]$",
+    "kind": "by_design",
+    "reason": "Three letters, eight digits and a letter appear only in lookups on Cargus's former site from 2014 to 2016, so no rule claims a layout that looks retired."
+  },
+  {
     "carrier": "cdek",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -121,6 +151,12 @@
     "carrier": "dachser",
     "kind": "by_design",
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
+  },
+  {
+    "carrier": "dao",
+    "pattern": "^00057\\d{15}$",
+    "kind": "by_design",
+    "reason": "DAO's twenty-digit numbers are SSCCs under a Danish GS1 prefix, which names whoever issued them rather than the carrier, so no rule claims them."
   },
   {
     "carrier": "day-ross",
@@ -213,6 +249,18 @@
     "reason": "Express piece identifiers resolve to their waybill on DHL's global tracking page, but the mobile API takes waybills only and DHL Paket's rule claims the shape."
   },
   {
+    "carrier": "dpd-ie",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers, TNT among them, and nothing in the number points to DPD Ireland."
+  },
+  {
+    "carrier": "dpd-ie",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to DPD Ireland."
+  },
+  {
     "carrier": "dsv",
     "kind": "by_design",
     "reason": "DSV and former DB Schenker references publish no shape and range from airport-coded to purely numeric ones, so the user picks DSV."
@@ -248,6 +296,18 @@
     "reason": "One reported Dynalogic reference of this layout; the family is not established."
   },
   {
+    "carrier": "early-bird",
+    "pattern": "^00\\d{18}$",
+    "kind": "by_design",
+    "reason": "An SSCC carries the GS1 company prefix of whoever issued it, not the carrier, so no rule can name Early Bird from it."
+  },
+  {
+    "carrier": "econt",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Econt."
+  },
+  {
     "carrier": "envialia",
     "pattern": "^\\d{16}$",
     "kind": "by_design",
@@ -264,6 +324,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Ten digits are shared by several carriers and nothing in the number points to Estes."
+  },
+  {
+    "carrier": "express-one",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Express One."
   },
   {
     "carrier": "fan-courier",
@@ -294,6 +360,12 @@
     "pattern": "^[A-Z]{2}\\d{13}$",
     "kind": "open",
     "reason": "One Gebrüder Weiss sample of this shape; the family is not established."
+  },
+  {
+    "carrier": "geis",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to Geis."
   },
   {
     "carrier": "geniki-taxydromiki",
@@ -332,10 +404,28 @@
     "reason": "The long GLS parcel ID with its suffix was reported once; GLS publishes no rule for it."
   },
   {
+    "carrier": "go-express",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers, FedEx and GLS among them, and nothing in the number points to GO! Express."
+  },
+  {
     "carrier": "gofo",
     "pattern": "^YT\\d{16}$",
     "kind": "by_design",
     "reason": "YunExpress numbers that GOFO delivers in the US under the same number. GOFO's tracker answers for them, but they are YunExpress's own, so detection reads them as YunExpress; the GOFO adapter takes them when the user picks GOFO or opens a GOFO link."
+  },
+  {
+    "carrier": "helthjem",
+    "pattern": "^00\\d{18}$",
+    "kind": "by_design",
+    "reason": "An SSCC carries the GS1 company prefix of whoever issued it, not the carrier, so no rule can name Helthjem from it."
+  },
+  {
+    "carrier": "helthjem",
+    "pattern": "^\\d{18}$",
+    "kind": "by_design",
+    "reason": "Without its 00 identifier the number is a bare SSCC, whose GS1 company prefix names whoever issued it rather than the carrier."
   },
   {
     "carrier": "hermes",
@@ -368,6 +458,12 @@
     "reason": "A legacy Yodel reference the adapter does not take."
   },
   {
+    "carrier": "instabox",
+    "pattern": "^[A-Z]{2}0[12]\\d{8}(?:\\d{2})?$",
+    "kind": "by_design",
+    "reason": "Two letters and ten digits are already shapes of Amazon, J&T, Relais Colis and Colis Privé numbers, and Instabox's letters vary between parcels, so the user picks Instabox."
+  },
+  {
     "carrier": "intelcom",
     "pattern": "^(?!INTLCM|CRIN)[A-Z0-9]{12,20}$",
     "kind": "by_design",
@@ -382,8 +478,14 @@
   {
     "carrier": "jitsu",
     "pattern": "^[0-9A-Z]{16}$",
-    "kind": "open",
-    "reason": "One Jitsu tracking code of sixteen letters and digits; the family is not established."
+    "kind": "by_design",
+    "reason": "Jitsu publishes no layout for its sixteen-character codes, and their letters and digits follow no pattern that sets them apart."
+  },
+  {
+    "carrier": "jitsu",
+    "pattern": "^SCD\\d{4}[0-9A-Z]\\d{11}$",
+    "kind": "by_design",
+    "reason": "Jitsu publishes no layout for numbers starting SCD, which may be one shipper's own."
   },
   {
     "carrier": "kuehne-nagel",
@@ -420,6 +522,18 @@
     "pattern": "^PB\\d{11}$",
     "kind": "open",
     "reason": "One MPL business-parcel sample of this shape; the family is not established."
+  },
+  {
+    "carrier": "matkahuolto",
+    "pattern": "^00\\d{18}$",
+    "kind": "by_design",
+    "reason": "An SSCC carries the GS1 company prefix of whoever issued it, not the carrier, so no rule can name Matkahuolto from it."
+  },
+  {
+    "carrier": "matkahuolto",
+    "pattern": "^\\d{18}$",
+    "kind": "by_design",
+    "reason": "Without its 00 identifier the number is a bare SSCC, whose GS1 company prefix names whoever issued it rather than the carrier."
   },
   {
     "carrier": "meest",
@@ -464,6 +578,12 @@
     "reason": "Shipper references that OnTrac's tracker resolves to the parcel's own number. They are not tracking numbers, so no rule points them to OnTrac; the adapter takes them when the user picks OnTrac or opens an OnTrac link."
   },
   {
+    "carrier": "osm-worldwide",
+    "pattern": "^[A-Z]{3}IPA\\d{8}$",
+    "kind": "by_design",
+    "reason": "Only two numbers of this layout were seen, both in 2021, too few to show that OSM Worldwide alone prints it."
+  },
+  {
     "carrier": "paack",
     "kind": "by_design",
     "reason": "Paack identifiers are retailer order numbers with no stable shape, so one can match another carrier's rule."
@@ -473,6 +593,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Detection selects Packeta for the Z form only; ten bare digits are a crowded shape."
+  },
+  {
+    "carrier": "paquetexpress",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by GLS, PostLogistics and several other carriers, and Paquetexpress publishes no layout or check digit that would set its numbers apart."
   },
   {
     "carrier": "parcelforce",
@@ -496,6 +622,12 @@
     "pattern": "^\\d{14}$",
     "kind": "by_design",
     "reason": "A DPD parcel number that PostNord delivered. The shape is DPD's; PostNord's tracker also knows the parcel it delivers."
+  },
+  {
+    "carrier": "ppl",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to PPL."
   },
   {
     "carrier": "ptt",
@@ -551,6 +683,12 @@
     "reason": "An invented shape check; ShipUp has no number shape of its own."
   },
   {
+    "carrier": "slovak-parcel-service",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "SPS's tracker also takes a parcel number without its 703 country prefix, eleven digits that nothing ties to SPS."
+  },
+  {
     "carrier": "speedy",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -602,6 +740,12 @@
     "pattern": "^(?:BAUNI\\d{15}|UD\\d{14}|UR\\d{17})$",
     "kind": "open",
     "reason": "UniUni's tracker serves these Canadian parcels, one sample per shape; no family is established."
+  },
+  {
+    "carrier": "venipak",
+    "pattern": "^0?\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits, sometimes typed with a leading zero, are shared by several carriers and nothing in the number points to Venipak."
   },
   {
     "carrier": "wanbexpress",

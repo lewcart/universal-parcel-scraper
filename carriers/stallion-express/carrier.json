@@ -1,0 +1,58 @@
+{
+  "id": "stallion-express",
+  "displayName": "Stallion Express",
+  "aliases": [
+    "Stallion"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#fbad40"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://stallion.ca/track/?tracking={trackingNumber}",
+    "searchUrl": "https://stallion.ca/track/",
+    "canaryUrl": "https://stallion.ca/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "stallion.ca",
+        "stallionexpress.ca"
+      ],
+      "pathPattern": "^/track(?:ing)?/?$",
+      "params": [
+        "tracking"
+      ]
+    },
+    {
+      "domains": [
+        "ship.stallion.ca",
+        "ship.stallionexpress.ca"
+      ],
+      "path": "^/track(?:ing)?/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "stallion-express-1",
+      "pattern": "^2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
+      "confidence": "low"
+    }
+  ]
+}

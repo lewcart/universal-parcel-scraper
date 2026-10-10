@@ -1,0 +1,52 @@
+{
+  "id": "osm-worldwide",
+  "displayName": "OSM Worldwide",
+  "aliases": [
+    "OSM",
+    "One Stop Mailing"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#a2002b"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.osmworldwide.com/tracking/?trackingIds={trackingNumber}",
+    "searchUrl": "https://www.osmworldwide.com/tracking/",
+    "canaryUrl": "https://www.osmworldwide.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "osmworldwide.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackingIds",
+        "trackingNumbers"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "osm-worldwide-1",
+      "pattern": "^A\\d{10}[A-Z]{3}\\d{8}$",
+      "confidence": "high"
+    }
+  ]
+}

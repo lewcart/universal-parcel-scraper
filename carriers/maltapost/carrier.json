@@ -1,0 +1,43 @@
+{
+  "id": "maltapost",
+  "displayName": "MaltaPost",
+  "aliases": [
+    "Malta Post",
+    "MaltaPost p.l.c."
+  ],
+  "region": {
+    "countries": [
+      "MT"
+    ]
+  },
+  "brand": {
+    "color": "#d43b2c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Malta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
+    "searchUrl": "https://www.maltapost.com/tracking",
+    "canaryUrl": "https://www.maltapost.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "maltapost.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
+    }
+  ],
+  "detection": []
+}

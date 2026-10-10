@@ -1,0 +1,320 @@
+{
+  "carrier": "paquetexpress",
+  "records": [
+    {
+      "number": "01160567878",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230324062100/https://www.paquetexpress.com.mx/rastreo/01160567878",
+        "date": "2023-03-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01143307588",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230515141818/https://www.paquetexpress.com.mx/rastreo/01143307588?",
+        "date": "2023-05-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01161134911",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230721141843/https://www.paquetexpress.com.mx/rastreo/01161134911?utm_source=rastreo&utm_medium=sms",
+        "date": "2023-07-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01154779413",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230724113704/https://www.paquetexpress.com.mx/rastreo/01154779413",
+        "date": "2023-07-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01159254120",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230813100203/https://www.paquetexpress.com.mx/rastreo/01159254120?",
+        "date": "2023-08-13",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01149509150",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240101111343/https://www.paquetexpress.com.mx/rastreo/01149509150?utm_source=rastreo&utm_medium=sms",
+        "date": "2024-01-01",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01157663546",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240324023637/https://www.paquetexpress.com.mx/rastreo/01157663546",
+        "date": "2024-03-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01160304301",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240409121032/https://www.paquetexpress.com.mx/rastreo/01160304301?",
+        "date": "2024-04-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01161397357",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240807012118/https://www.paquetexpress.com.mx/rastreo/01161397357",
+        "date": "2024-08-07",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01160219965",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250610183539/https://www.paquetexpress.com.mx/rastreo/01160219965?utm_source=rastreo&utm_medium=sms",
+        "date": "2025-06-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01161858191",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251021133143/https://www.paquetexpress.com.mx/rastreo/01161858191",
+        "date": "2025-10-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "01149934532",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251027122222/https://www.paquetexpress.com.mx/rastreo/01149934532?",
+        "date": "2025-10-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

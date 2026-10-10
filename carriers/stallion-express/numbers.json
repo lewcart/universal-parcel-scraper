@@ -1,0 +1,93 @@
+{
+  "carrier": "stallion-express",
+  "records": [
+    {
+      "number": "220602XMJ8",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220602191538/https://stallionexpress.ca/track/?tracking=220602XMJ8",
+        "date": "2022-06-02",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express"
+        ]
+      },
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "240915P11U",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240915061634/https://ship.stallionexpress.ca/track/240915P11U",
+        "date": "2024-09-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express"
+        ]
+      },
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2409229H96",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241230065609/https://ship.stallionexpress.ca/track/2409229H96",
+        "date": "2024-12-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express"
+        ]
+      },
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2609226XH5",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260927142936/https://stallion.ca/track/?tracking=2609226XH5",
+        "date": "2026-09-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express"
+        ]
+      },
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

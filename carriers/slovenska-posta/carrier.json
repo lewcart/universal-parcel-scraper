@@ -1,0 +1,58 @@
+{
+  "id": "slovenska-posta",
+  "displayName": "Slovenská pošta",
+  "aliases": [
+    "Slovak Post",
+    "Slovenska posta"
+  ],
+  "region": {
+    "countries": [
+      "SK"
+    ]
+  },
+  "brand": {
+    "color": "#f9bb00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bratislava",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
+    "searchUrl": "https://www.posta.sk/sledovanie-zasielok",
+    "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posta.sk"
+      ],
+      "pathPattern": "^/sledovanie-zasielok/?$",
+      "fragment": "(?:^|&)parcel=([^&]+)"
+    },
+    {
+      "domains": [
+        "tandt.posta.sk"
+      ],
+      "path": "^/en/items/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "tandt.posta.sk"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": []
+}

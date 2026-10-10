@@ -1,0 +1,54 @@
+{
+  "id": "early-bird",
+  "displayName": "Early Bird",
+  "aliases": [
+    "Earlybird",
+    "Early Bird AB"
+  ],
+  "region": {
+    "countries": [
+      "SE"
+    ]
+  },
+  "brand": {
+    "color": "#dd7f4a"
+  },
+  "selectable": true,
+  "timezone": "Europe/Stockholm",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://earlybird.se/spara-och-hjalp?id={trackingNumber}",
+    "searchUrl": "https://earlybird.se/spara-och-hjalp",
+    "canaryUrl": "https://earlybird.se/spara-och-hjalp",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "earlybird.se"
+      ],
+      "pathPattern": "^/(?:tracking|spara-och-hjalp)/?$",
+      "params": [
+        "id"
+      ]
+    },
+    {
+      "domains": [
+        "track.earlybird.se"
+      ],
+      "pathPattern": "^/(?:oversikt)?/?$",
+      "params": [
+        "a"
+      ]
+    }
+  ],
+  "detection": []
+}

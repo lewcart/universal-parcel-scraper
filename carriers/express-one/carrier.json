@@ -1,0 +1,45 @@
+{
+  "id": "express-one",
+  "displayName": "Express One",
+  "aliases": [
+    "Express One Hungary",
+    "ExpressOne"
+  ],
+  "region": {
+    "countries": [
+      "HU"
+    ]
+  },
+  "brand": {
+    "color": "#ec6500"
+  },
+  "selectable": true,
+  "timezone": "Europe/Budapest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.expressone.hu/?plc_number={trackingNumber}",
+    "searchUrl": "https://tracking.expressone.hu/",
+    "canaryUrl": "https://tracking.expressone.hu/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.expressone.hu"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "plc_number"
+      ]
+    }
+  ],
+  "detection": []
+}

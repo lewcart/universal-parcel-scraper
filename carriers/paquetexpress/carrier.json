@@ -1,0 +1,43 @@
+{
+  "id": "paquetexpress",
+  "displayName": "Paquetexpress",
+  "aliases": [
+    "Paquete Express",
+    "PaquetExpress",
+    "Operadora de Servicios Paquetexpress"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#002a52"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.paquetexpress.com.mx/rastreo/{trackingNumber}",
+    "searchUrl": "https://www.paquetexpress.com.mx/rastreo",
+    "canaryUrl": "https://www.paquetexpress.com.mx/rastreo",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "paquetexpress.com.mx"
+      ],
+      "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
+    }
+  ],
+  "detection": []
+}

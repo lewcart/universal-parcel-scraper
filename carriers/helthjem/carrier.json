@@ -1,0 +1,50 @@
+{
+  "id": "helthjem",
+  "displayName": "Helthjem",
+  "aliases": [
+    "Helthjem Netthandel"
+  ],
+  "region": {
+    "countries": [
+      "NO"
+    ]
+  },
+  "brand": {
+    "color": "#ffb202"
+  },
+  "selectable": true,
+  "timezone": "Europe/Oslo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://helthjem.no/sporing/{trackingNumber}",
+    "searchUrl": "https://helthjem.no/sporing",
+    "canaryUrl": "https://helthjem.no/sporing",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "helthjem.no"
+      ],
+      "path": "^/sporing/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "helthjem.no"
+      ],
+      "pathPattern": "^/sporing/?$",
+      "params": [
+        "sporingsnummer"
+      ]
+    }
+  ],
+  "detection": []
+}

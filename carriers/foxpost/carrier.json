@@ -1,0 +1,52 @@
+{
+  "id": "foxpost",
+  "displayName": "Foxpost",
+  "aliases": [
+    "FOXPOST",
+    "FoxPost",
+    "FoxPost Kft."
+  ],
+  "region": {
+    "countries": [
+      "HU"
+    ]
+  },
+  "brand": {
+    "color": "#b70100"
+  },
+  "selectable": true,
+  "timezone": "Europe/Budapest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",
+    "searchUrl": "https://foxpost.hu/csomagkovetes/",
+    "canaryUrl": "https://foxpost.hu/csomagkovetes/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "foxpost.hu"
+      ],
+      "pathPattern": "^/(?:csomagkovetes|en/parcel-tracking)/?$",
+      "params": [
+        "code"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "foxpost-1",
+      "pattern": "^CLFOX\\d{15}$",
+      "confidence": "high"
+    }
+  ]
+}

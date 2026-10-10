@@ -1,0 +1,53 @@
+{
+  "id": "99minutos",
+  "displayName": "99minutos",
+  "aliases": [
+    "99 Minutos",
+    "99minutos.com"
+  ],
+  "region": {
+    "countries": [
+      "MX",
+      "CL",
+      "PE",
+      "CO",
+      "AR"
+    ]
+  },
+  "brand": {
+    "color": "#85c440"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.99minutos.com/search/{trackingNumber}",
+    "searchUrl": "https://tracking.99minutos.com/",
+    "canaryUrl": "https://tracking.99minutos.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.99minutos.com",
+        "rastreo.99minutos.com"
+      ],
+      "path": "^/search/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "99minutos.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

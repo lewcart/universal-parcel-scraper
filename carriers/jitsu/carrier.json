@@ -34,7 +34,9 @@
     {
       "domains": [
         "recipient.gojitsu.com",
-        "recipient.axlehire.com"
+        "recipient.axlehire.com",
+        "tracking.gojitsu.com",
+        "tracking.axlehire.com"
       ],
       "path": "^/([^/?#]+)/?$"
     }

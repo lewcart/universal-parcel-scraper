@@ -1,0 +1,70 @@
+{
+  "id": "omniva",
+  "displayName": "Omniva",
+  "aliases": [
+    "Eesti Post",
+    "Estonian Post"
+  ],
+  "region": {
+    "countries": [
+      "EE",
+      "LV",
+      "LT"
+    ]
+  },
+  "brand": {
+    "color": "#f86300"
+  },
+  "selectable": true,
+  "timezone": "Europe/Tallinn",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://minu.omniva.ee/track/{trackingNumber}",
+    "searchUrl": "https://minu.omniva.ee/track",
+    "canaryUrl": "https://minu.omniva.ee/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "minu.omniva.ee",
+        "minuold.omniva.ee",
+        "mano.omniva.lt",
+        "manoold.omniva.lt",
+        "mana.omniva.lv",
+        "manaold.omniva.lv"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "omniva.ee",
+        "omniva.lt"
+      ],
+      "pathPattern": "^/(?:era/jalgimine|abi/jalgimine|verslo/siuntos_sekimas)/?$",
+      "params": [
+        "barcode"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "omniva-1",
+      "pattern": "^JJEE\\d{17}$",
+      "confidence": "high"
+    },
+    {
+      "id": "omniva-2",
+      "pattern": "^JJEE[A-Z]{3}\\d{11}$",
+      "confidence": "high"
+    }
+  ]
+}

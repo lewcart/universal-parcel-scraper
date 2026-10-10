@@ -1,0 +1,48 @@
+{
+  "id": "hrvatska-posta",
+  "displayName": "Hrvatska pošta",
+  "aliases": [
+    "Croatian Post",
+    "Hrvatska Pošta",
+    "Hrvatska posta",
+    "Croatia Post",
+    "HP"
+  ],
+  "region": {
+    "countries": [
+      "HR"
+    ]
+  },
+  "brand": {
+    "color": "#ffd100"
+  },
+  "selectable": true,
+  "timezone": "Europe/Zagreb",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
+    "searchUrl": "https://posiljka.posta.hr/",
+    "canaryUrl": "https://posiljka.posta.hr/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posiljka.posta.hr"
+      ],
+      "pathPattern": "^/(?:hr/|en/)?tracking/trackingdata/?$",
+      "params": [
+        "barcode"
+      ]
+    }
+  ],
+  "detection": []
+}

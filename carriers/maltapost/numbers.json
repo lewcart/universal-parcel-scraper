@@ -1,0 +1,95 @@
+{
+  "carrier": "maltapost",
+  "records": [
+    {
+      "number": "10884000425364",
+      "role": "quarantined",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250707210759/https://www.maltapost.com/TrackAndTraceApi/v1/trackedItems?barcode=10884000425364",
+        "date": "2025-07-07",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk",
+          "xpressbees"
+        ]
+      },
+      "note": "Looked up through MaltaPost's own track-and-trace API, as an archived address shows; the capture was not opened. MaltaPost documents no fourteen-digit layout, so it may be a sender's or partner's barcode."
+    },
+    {
+      "number": "SS000070885MT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250714212906/https://www.maltapost.com/TrackAndTraceApi/v1/trackedItems?barcode=SS000070885MT",
+        "date": "2025-07-14",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up through MaltaPost's own track-and-trace API, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "SO502184331MT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251018193050/https://www.maltapost.com/TrackAndTraceApi/v1/trackedItems?barcode=SO502184331MT",
+        "date": "2025-10-18",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up through MaltaPost's own track-and-trace API, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "SO502183438MT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251023173631/https://www.maltapost.com/TrackAndTraceApi/v1/trackedItems?barcode=SO502183438MT",
+        "date": "2025-10-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up through MaltaPost's own track-and-trace API, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

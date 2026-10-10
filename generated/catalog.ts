@@ -4605,6 +4605,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "99minutos": {
+    "displayName": "99minutos",
+    "color": "#85c440",
+    "aliases": [
+      "99 Minutos",
+      "99minutos.com"
+    ],
+    "countries": [
+      "MX",
+      "CL",
+      "PE",
+      "CO",
+      "AR"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.99minutos.com/",
+    "trackingUrlTemplate": "https://tracking.99minutos.com/search/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.99minutos.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.99minutos.com",
+          "rastreo.99minutos.com"
+        ],
+        "path": "^/search/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "99minutos.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "abf-freight": {
     "displayName": "ABF Freight",
     "color": "#1e6630",
@@ -4756,6 +4796,48 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "cargus": {
+    "displayName": "Cargus",
+    "color": "#f68121",
+    "aliases": [
+      "Urgent Cargus",
+      "Cargus International",
+      "Cargus SRL"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
+    "trackingUrlTemplate": "https://www.cargus.ro/personal/urmareste-coletul/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
+    "linkRules": [
+      {
+        "domains": [
+          "cargus.ro"
+        ],
+        "pathPattern": "^/(?:personal/urmareste-coletul|en/personal/track-your-parcel)/?$",
+        "params": [
+          "tracking_number"
+        ]
+      },
+      {
+        "domains": [
+          "cargus.ro"
+        ],
+        "pathPattern": "^/tracking-romanian/?$",
+        "params": [
+          "t"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "cdek": {
     "displayName": "CDEK",
     "color": "#00b33c",
@@ -4778,6 +4860,59 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.cdek.ru/",
     "linkRules": [],
     "detectionRules": []
+  },
+  "cdl": {
+    "displayName": "CDL Last Mile",
+    "color": "#3d74b2",
+    "aliases": [
+      "CDL",
+      "CDL Last Mile Solutions",
+      "CDL Delivers"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://apps.cdldelivers.com/Tracking-Page/track",
+    "trackingUrlTemplate": "https://apps.cdldelivers.com/Tracking-Page/track?id={trackingNumber}",
+    "trackingSearchUrl": "https://apps.cdldelivers.com/Tracking-Page/track",
+    "linkRules": [
+      {
+        "domains": [
+          "apps.cdldelivers.com"
+        ],
+        "pathPattern": "^/Tracking-Page/track/?$",
+        "params": [
+          "id"
+        ]
+      },
+      {
+        "domains": [
+          "ship.cdldelivers.com"
+        ],
+        "pathPattern": "^/Xcelerator/Tracking/Tracking/?$",
+        "params": [
+          "orderId",
+          "packageitemrefno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CDL\\d{11}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{9}-\\d$"
+      }
+    ]
   },
   "ceska-posta": {
     "displayName": "Česká pošta",
@@ -4922,6 +5057,50 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "trackingSearchUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "dao": {
+    "displayName": "DAO",
+    "color": "#e30613",
+    "aliases": [
+      "dao",
+      "Dansk Avis Omdeling",
+      "DAO365"
+    ],
+    "countries": [
+      "DK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Copenhagen",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dao.as/find-din-pakke/",
+    "trackingUrlTemplate": "https://dao.as/find-din-pakke/#q={trackingNumber}",
+    "trackingSearchUrl": "https://dao.as/find-din-pakke/",
+    "linkRules": [
+      {
+        "domains": [
+          "dao.as"
+        ],
+        "pathPattern": "^/(?:en/)?(?:find-din-pakke|track-your-parcel)/?$",
+        "params": [
+          "q",
+          "stregkode"
+        ],
+        "fragment": "^q=([^&]+)"
+      },
+      {
+        "domains": [
+          "dao.as"
+        ],
+        "pathPattern": "^/(?:en/private/track-your-parcel/?|dao-app/?)?$",
+        "params": [
+          "stregkode"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "day-ross": {
@@ -5230,6 +5409,37 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "dpd-ie": {
+    "displayName": "DPD Ireland",
+    "color": "#dc0032",
+    "aliases": [
+      "Interlink Ireland"
+    ],
+    "countries": [
+      "IE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Dublin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.ie/tracking/",
+    "trackingUrlTemplate": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.ie/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "dpd.ie"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "consignmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dpd-pl": {
     "displayName": "DPD Poland",
     "color": "#dc0032",
@@ -5433,6 +5643,92 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "early-bird": {
+    "displayName": "Early Bird",
+    "color": "#dd7f4a",
+    "aliases": [
+      "Earlybird",
+      "Early Bird AB"
+    ],
+    "countries": [
+      "SE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Stockholm",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://earlybird.se/spara-och-hjalp",
+    "trackingUrlTemplate": "https://earlybird.se/spara-och-hjalp?id={trackingNumber}",
+    "trackingSearchUrl": "https://earlybird.se/spara-och-hjalp",
+    "linkRules": [
+      {
+        "domains": [
+          "earlybird.se"
+        ],
+        "pathPattern": "^/(?:tracking|spara-och-hjalp)/?$",
+        "params": [
+          "id"
+        ]
+      },
+      {
+        "domains": [
+          "track.earlybird.se"
+        ],
+        "pathPattern": "^/(?:oversikt)?/?$",
+        "params": [
+          "a"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "econt": {
+    "displayName": "Econt",
+    "color": "#234182",
+    "aliases": [
+      "Econt Express",
+      "Еконт",
+      "Еконт Експрес"
+    ],
+    "countries": [
+      "BG"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Sofia",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.econt.com/services/track-shipment",
+    "trackingUrlTemplate": "https://www.econt.com/services/track-shipment/{trackingNumber}",
+    "trackingSearchUrl": "https://www.econt.com/services/track-shipment",
+    "linkRules": [
+      {
+        "domains": [
+          "econt.com"
+        ],
+        "path": "^/(?:en/)?services/track-shipment/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "econt.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "econt.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ekart": {
     "displayName": "Ekart",
     "color": "#0074D9",
@@ -5465,6 +5761,60 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "elta": {
+    "displayName": "ELTA Hellenic Post",
+    "color": "#0063a9",
+    "aliases": [
+      "ELTA",
+      "ΕΛΤΑ",
+      "Hellenic Post",
+      "Ελληνικά Ταχυδρομεία",
+      "ELTA Courier",
+      "ΕΛΤΑ Courier"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.elta.gr/track",
+    "trackingUrlTemplate": "https://www.elta.gr/track?code={trackingNumber}",
+    "trackingSearchUrl": "https://www.elta.gr/track",
+    "linkRules": [
+      {
+        "domains": [
+          "elta.gr"
+        ],
+        "pathPattern": "^/(?:en/)?track/?$",
+        "params": [
+          "code"
+        ]
+      },
+      {
+        "domains": [
+          "elta-courier.gr"
+        ],
+        "pathPattern": "^/search/?$",
+        "params": [
+          "br"
+        ]
+      },
+      {
+        "domains": [
+          "elta.gr"
+        ],
+        "pathPattern": "^/(?:el-gr/tabid/93|en-us/personal/tracktrace\\.aspx)/?$",
+        "params": [
+          "qc"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "emile": {
     "displayName": "Emile",
@@ -5626,6 +5976,38 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "express-one": {
+    "displayName": "Express One",
+    "color": "#ec6500",
+    "aliases": [
+      "Express One Hungary",
+      "ExpressOne"
+    ],
+    "countries": [
+      "HU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Budapest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.expressone.hu/",
+    "trackingUrlTemplate": "https://tracking.expressone.hu/?plc_number={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.expressone.hu/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.expressone.hu"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "plc_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "fan-courier": {
     "displayName": "FAN Courier",
     "color": "#0f2345",
@@ -5665,6 +6047,44 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "foxpost": {
+    "displayName": "Foxpost",
+    "color": "#b70100",
+    "aliases": [
+      "FOXPOST",
+      "FoxPost",
+      "FoxPost Kft."
+    ],
+    "countries": [
+      "HU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Budapest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://foxpost.hu/csomagkovetes/",
+    "trackingUrlTemplate": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",
+    "trackingSearchUrl": "https://foxpost.hu/csomagkovetes/",
+    "linkRules": [
+      {
+        "domains": [
+          "foxpost.hu"
+        ],
+        "pathPattern": "^/(?:csomagkovetes|en/parcel-tracking)/?$",
+        "params": [
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CLFOX\\d{15}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "gebrueder-weiss": {
     "displayName": "Gebrüder Weiss",
     "color": "#ff6600",
@@ -5687,6 +6107,58 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://my.gw-world.com/trackntrace/-/search/",
     "trackingSearchUrl": "https://my.gw-world.com/trackntrace/-/search/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "geis": {
+    "displayName": "Geis",
+    "color": "#ffe501",
+    "aliases": [
+      "Geis Group",
+      "Geis CZ",
+      "Geis SK"
+    ],
+    "countries": [
+      "CZ",
+      "SK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Prague",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.geis-group.cz/cs/detail-zasilky",
+    "trackingUrlTemplate": "https://www.geis-group.cz/cs/detail-zasilky?packNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.geis-group.cz/cs/detail-zasilky",
+    "linkRules": [
+      {
+        "domains": [
+          "geis-group.cz"
+        ],
+        "pathPattern": "^/(?:cs/detail-zasilky|en/detail-of-cargo)/?$",
+        "params": [
+          "packNumber"
+        ]
+      },
+      {
+        "domains": [
+          "geis-group.cz"
+        ],
+        "pathPattern": "^/cs/sledovani-zasilky/?$",
+        "params": [
+          "p"
+        ]
+      },
+      {
+        "domains": [
+          "geis-group.sk"
+        ],
+        "pathPattern": "^/sk/detail-zasielky/?$",
+        "params": [
+          "packNumber"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "geniki-taxydromiki": {
@@ -5806,6 +6278,46 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "go-express": {
+    "displayName": "GO! Express",
+    "color": "#b9242b",
+    "aliases": [
+      "GO! Express & Logistics",
+      "GO Express",
+      "General Overnight"
+    ],
+    "countries": [
+      "DE",
+      "AT",
+      "CZ",
+      "DK",
+      "LU",
+      "NL",
+      "PL",
+      "SK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
+    "trackingUrlTemplate": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html?reference={trackingNumber}",
+    "trackingSearchUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
+    "linkRules": [
+      {
+        "domains": [
+          "general-overnight.com"
+        ],
+        "pathPattern": "^/[a-z]{3}_[a-z]{2}(?:/[a-z-]+)*(?:\\.html)?/?$",
+        "params": [
+          "reference"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "gofo-fr": {
     "displayName": "GOFO France",
     "color": "#fc4c02",
@@ -5903,6 +6415,100 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "helthjem": {
+    "displayName": "Helthjem",
+    "color": "#ffb202",
+    "aliases": [
+      "Helthjem Netthandel"
+    ],
+    "countries": [
+      "NO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Oslo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://helthjem.no/sporing",
+    "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
+    "trackingSearchUrl": "https://helthjem.no/sporing",
+    "linkRules": [
+      {
+        "domains": [
+          "helthjem.no"
+        ],
+        "path": "^/sporing/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "helthjem.no"
+        ],
+        "pathPattern": "^/sporing/?$",
+        "params": [
+          "sporingsnummer"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "hrvatska-posta": {
+    "displayName": "Hrvatska pošta",
+    "color": "#ffd100",
+    "aliases": [
+      "Croatian Post",
+      "Hrvatska Pošta",
+      "Hrvatska posta",
+      "Croatia Post",
+      "HP"
+    ],
+    "countries": [
+      "HR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Zagreb",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://posiljka.posta.hr/",
+    "trackingUrlTemplate": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
+    "trackingSearchUrl": "https://posiljka.posta.hr/",
+    "linkRules": [
+      {
+        "domains": [
+          "posiljka.posta.hr"
+        ],
+        "pathPattern": "^/(?:hr/|en/)?tracking/trackingdata/?$",
+        "params": [
+          "barcode"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "instabox": {
+    "displayName": "Instabox",
+    "color": "#ff3e3e",
+    "aliases": [
+      "Instabox Sweden AB"
+    ],
+    "countries": [
+      "SE",
+      "NO",
+      "DK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Stockholm",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.instabox.com/en",
+    "trackingSearchUrl": "https://track.instabox.com/en",
+    "linkRules": [],
+    "detectionRules": []
   },
   "intelcom": {
     "displayName": "Intelcom / Dragonfly",
@@ -6015,7 +6621,9 @@ export const CARRIER_CATALOG = {
       {
         "domains": [
           "recipient.gojitsu.com",
-          "recipient.axlehire.com"
+          "recipient.axlehire.com",
+          "tracking.gojitsu.com",
+          "tracking.axlehire.com"
         ],
         "path": "^/([^/?#]+)/?$"
       }
@@ -6131,6 +6739,60 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "lietuvos-pastas": {
+    "displayName": "Lietuvos paštas",
+    "color": "#fedd00",
+    "aliases": [
+      "Lietuvos pastas",
+      "LP Express",
+      "Lithuanian Post",
+      "Lithuania Post"
+    ],
+    "countries": [
+      "LT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Vilnius",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://lpexpress.lt/track",
+    "trackingUrlTemplate": "https://lpexpress.lt/track?parcel={trackingNumber}",
+    "trackingSearchUrl": "https://lpexpress.lt/track",
+    "linkRules": [
+      {
+        "domains": [
+          "lpexpress.lt"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "parcel"
+        ]
+      },
+      {
+        "domains": [
+          "lpexpress.lt"
+        ],
+        "path": "^/(?:track/id|tracking)/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "post.lt"
+        ],
+        "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)/index/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
+        "confidence": "low"
+      }
+    ]
+  },
   "loomis-express": {
     "displayName": "Loomis Express",
     "color": "#004b8e",
@@ -6227,6 +6889,72 @@ export const CARRIER_CATALOG = {
     "trackingSearchUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
     "linkRules": [],
     "detectionRules": []
+  },
+  "maltapost": {
+    "displayName": "MaltaPost",
+    "color": "#d43b2c",
+    "aliases": [
+      "Malta Post",
+      "MaltaPost p.l.c."
+    ],
+    "countries": [
+      "MT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Malta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.maltapost.com/tracking",
+    "trackingUrlTemplate": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
+    "trackingSearchUrl": "https://www.maltapost.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "maltapost.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
+      }
+    ],
+    "detectionRules": []
+  },
+  "matkahuolto": {
+    "displayName": "Matkahuolto",
+    "color": "#001e60",
+    "aliases": [
+      "Oy Matkahuolto Ab"
+    ],
+    "countries": [
+      "FI"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Helsinki",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.matkahuolto.fi/seuranta",
+    "trackingUrlTemplate": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.matkahuolto.fi/seuranta",
+    "linkRules": [
+      {
+        "domains": [
+          "matkahuolto.fi"
+        ],
+        "pathPattern": "^/(?:seuranta|tracking|uppfoljning)/?$",
+        "params": [
+          "parcelNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^MA\\d{19}$",
+        "confidence": "low"
+      }
+    ]
   },
   "meest": {
     "displayName": "Meest",
@@ -6367,6 +7095,204 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "omniva": {
+    "displayName": "Omniva",
+    "color": "#f86300",
+    "aliases": [
+      "Eesti Post",
+      "Estonian Post"
+    ],
+    "countries": [
+      "EE",
+      "LV",
+      "LT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Tallinn",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://minu.omniva.ee/track",
+    "trackingUrlTemplate": "https://minu.omniva.ee/track/{trackingNumber}",
+    "trackingSearchUrl": "https://minu.omniva.ee/track",
+    "linkRules": [
+      {
+        "domains": [
+          "minu.omniva.ee",
+          "minuold.omniva.ee",
+          "mano.omniva.lt",
+          "manoold.omniva.lt",
+          "mana.omniva.lv",
+          "manaold.omniva.lv"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "omniva.ee",
+          "omniva.lt"
+        ],
+        "pathPattern": "^/(?:era/jalgimine|abi/jalgimine|verslo/siuntos_sekimas)/?$",
+        "params": [
+          "barcode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JJEE\\d{17}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JJEE[A-Z]{3}\\d{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "orlen-paczka": {
+    "displayName": "ORLEN Paczka",
+    "color": "#db3830",
+    "aliases": [
+      "Paczka w RUCHu",
+      "Paczka w Ruchu",
+      "Orlen Paczka"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
+    "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
+    "trackingSearchUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
+    "linkRules": [
+      {
+        "domains": [
+          "orlenpaczka.pl"
+        ],
+        "pathPattern": "^/sledz-paczke/?$",
+        "params": [
+          "numer"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^210\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      }
+    ]
+  },
+  "osm-worldwide": {
+    "displayName": "OSM Worldwide",
+    "color": "#a2002b",
+    "aliases": [
+      "OSM",
+      "One Stop Mailing"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.osmworldwide.com/tracking/",
+    "trackingUrlTemplate": "https://www.osmworldwide.com/tracking/?trackingIds={trackingNumber}",
+    "trackingSearchUrl": "https://www.osmworldwide.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "osmworldwide.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackingIds",
+          "trackingNumbers"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^A\\d{10}[A-Z]{3}\\d{8}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "paquetexpress": {
+    "displayName": "Paquetexpress",
+    "color": "#002a52",
+    "aliases": [
+      "Paquete Express",
+      "PaquetExpress",
+      "Operadora de Servicios Paquetexpress"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.paquetexpress.com.mx/rastreo",
+    "trackingUrlTemplate": "https://www.paquetexpress.com.mx/rastreo/{trackingNumber}",
+    "trackingSearchUrl": "https://www.paquetexpress.com.mx/rastreo",
+    "linkRules": [
+      {
+        "domains": [
+          "paquetexpress.com.mx"
+        ],
+        "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "passport": {
+    "displayName": "Passport",
+    "color": "#00e796",
+    "aliases": [
+      "Passport Shipping",
+      "Passport Global",
+      "PassportGlobal"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://passportglobal.com/track/",
+    "trackingUrlTemplate": "https://track.passportglobal.com/{trackingNumber}",
+    "trackingSearchUrl": "https://passportglobal.com/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.passportglobal.com",
+          "track.passportshipping.com"
+        ],
+        "path": "^/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PG\\d{10}[A-Z]{2}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "post-luxembourg": {
     "displayName": "POST Luxembourg",
     "color": "#008736",
@@ -6443,6 +7369,37 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
     "trackingSearchUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "ppl": {
+    "displayName": "PPL",
+    "color": "#004b93",
+    "aliases": [
+      "PPL CZ"
+    ],
+    "countries": [
+      "CZ"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Prague",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
+    "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
+    "trackingSearchUrl": "https://www.ppl.cz/vyhledat-zasilku",
+    "linkRules": [
+      {
+        "domains": [
+          "ppl.cz"
+        ],
+        "pathPattern": "^/(?:vyhledat-zasilku|en/track-a-shipment|en/parcel-detail)/?$",
+        "params": [
+          "shipmentId"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "ptt": {
@@ -6639,6 +7596,87 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "slovak-parcel-service": {
+    "displayName": "Slovak Parcel Service",
+    "color": "#f58220",
+    "aliases": [
+      "SPS"
+    ],
+    "countries": [
+      "SK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bratislava",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sps-sro.sk/moja-zasielka/",
+    "trackingUrlTemplate": "https://www.sps-sro.sk/moja-zasielka/?shipment_id={trackingNumber}",
+    "trackingSearchUrl": "https://www.sps-sro.sk/moja-zasielka/",
+    "linkRules": [
+      {
+        "domains": [
+          "sps-sro.sk"
+        ],
+        "pathPattern": "^/(?:en/)?(?:moja-zasielka|sledovanie-zasielky|track-trace)/?$",
+        "params": [
+          "shipment_id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^703\\d{11}$",
+        "confidence": "low"
+      }
+    ]
+  },
+  "slovenska-posta": {
+    "displayName": "Slovenská pošta",
+    "color": "#f9bb00",
+    "aliases": [
+      "Slovak Post",
+      "Slovenska posta"
+    ],
+    "countries": [
+      "SK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bratislava",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
+    "trackingUrlTemplate": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
+    "trackingSearchUrl": "https://www.posta.sk/sledovanie-zasielok",
+    "linkRules": [
+      {
+        "domains": [
+          "posta.sk"
+        ],
+        "pathPattern": "^/sledovanie-zasielok/?$",
+        "fragment": "(?:^|&)parcel=([^&]+)"
+      },
+      {
+        "domains": [
+          "tandt.posta.sk"
+        ],
+        "path": "^/en/items/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "tandt.posta.sk"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "speedpak": {
     "displayName": "SpeedPAK",
     "color": "#ee7532",
@@ -6766,6 +7804,50 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "stallion-express": {
+    "displayName": "Stallion Express",
+    "color": "#fbad40",
+    "aliases": [
+      "Stallion"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://stallion.ca/track/",
+    "trackingUrlTemplate": "https://stallion.ca/track/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://stallion.ca/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "stallion.ca",
+          "stallionexpress.ca"
+        ],
+        "pathPattern": "^/track(?:ing)?/?$",
+        "params": [
+          "tracking"
+        ]
+      },
+      {
+        "domains": [
+          "ship.stallion.ca",
+          "ship.stallionexpress.ca"
+        ],
+        "path": "^/track(?:ing)?/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "trans-o-flex": {
     "displayName": "trans-o-flex",
     "color": "#f37e00",
@@ -6810,6 +7892,83 @@ export const CARRIER_CATALOG = {
     "trackingSearchUrl": "https://shipper.ubismartparcel.com/#/ubi",
     "linkRules": [],
     "detectionRules": []
+  },
+  "venipak": {
+    "displayName": "Venipak",
+    "color": "#9339f2",
+    "countries": [
+      "LT",
+      "LV",
+      "EE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Vilnius",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://venipak.com/lt/en/parcel-tracking/",
+    "trackingUrlTemplate": "https://venipak.com/lt/en/tracking/track/{trackingNumber}",
+    "trackingSearchUrl": "https://venipak.com/lt/en/parcel-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "venipak.com"
+        ],
+        "path": "^/(?:[a-z]{2}/)?(?:en/)?tracking/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "venipak.lt"
+        ],
+        "path": "^/(?:siuntos-kelias|en/tracking-information)/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^V\\d{5}E\\d{7}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "vinted-go": {
+    "displayName": "Vinted Go",
+    "color": "#004654",
+    "aliases": [
+      "VintedGo"
+    ],
+    "countries": [
+      "FR",
+      "BE",
+      "NL",
+      "ES",
+      "PT",
+      "FI"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Paris",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vintedgo.com/en/tracking",
+    "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://vintedgo.com/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "vintedgo.com"
+        ],
+        "path": "^/(?:[a-z]{2}(?:-[a-z]{2})?/)?tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^1[78]\\d{14}$",
+        "confidence": "low",
+        "checksum": "luhn"
+      }
+    ]
   },
   "wanbexpress": {
     "displayName": "WanbExpress",
@@ -7160,18 +8319,22 @@ export const CARRIER_IDS = [
   "the-courier-guy",
   "j-and-t",
   "ems",
+  "99minutos",
   "abf-freight",
   "acs-courier",
   "allegro-one",
   "apc-overnight",
   "aras-kargo",
   "box-now",
+  "cargus",
   "cdek",
+  "cdl",
   "ceska-posta",
   "chit-chats",
   "cne",
   "correos-de-mexico",
   "cyprus-post",
+  "dao",
   "day-ross",
   "dhl-ecommerce-es",
   "dhl-ecommerce-nl",
@@ -7179,41 +8342,61 @@ export const CARRIER_IDS = [
   "dhl-ecommerce-uk",
   "dhl-express",
   "dpd-de",
+  "dpd-ie",
   "dpd-pl",
   "dpd-uk",
   "dsv",
   "dx",
   "dynalogic",
+  "early-bird",
+  "econt",
   "ekart",
+  "elta",
   "emile",
   "envialia",
   "epost-global",
   "estes",
   "evri-uk",
+  "express-one",
   "fan-courier",
+  "foxpost",
   "gebrueder-weiss",
+  "geis",
   "geniki-taxydromiki",
   "gls-es",
   "gls-it",
+  "go-express",
   "gofo-fr",
   "gofo-it",
+  "helthjem",
+  "hrvatska-posta",
+  "instabox",
   "intelcom",
   "j-and-t-cargo",
   "jitsu",
   "kuehne-nagel",
   "latvijas-pasts",
   "lbc-express",
+  "lietuvos-pastas",
   "loomis-express",
   "lso",
   "magyar-posta",
+  "maltapost",
+  "matkahuolto",
   "meest",
   "mng-kargo",
   "nationex",
   "nova-poshta",
   "omgo",
+  "omniva",
+  "orlen-paczka",
+  "osm-worldwide",
+  "paquetexpress",
+  "passport",
   "post-luxembourg",
   "posta-slovenije",
   "posta-srbije",
+  "ppl",
   "ptt",
   "redpack",
   "rl-carriers",
@@ -7221,11 +8404,16 @@ export const CARRIER_IDS = [
   "sagawa",
   "saia",
   "sameday",
+  "slovak-parcel-service",
+  "slovenska-posta",
   "speedpak",
   "speedy",
   "spx-ph",
+  "stallion-express",
   "trans-o-flex",
   "ubi-smart-parcel",
+  "venipak",
+  "vinted-go",
   "wanbexpress",
   "whistl",
   "xdp",
@@ -7343,18 +8531,22 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "the-courier-guy": ["the-courier-guy-1","the-courier-guy-2"],
   "j-and-t": ["j-and-t-1","j-and-t-2","j-and-t-3","j-and-t-4","j-and-t-5","j-and-t-6"],
   "ems": [],
+  "99minutos": [],
   "abf-freight": [],
   "acs-courier": [],
   "allegro-one": ["allegro-one-1"],
   "apc-overnight": [],
   "aras-kargo": [],
   "box-now": [],
+  "cargus": [],
   "cdek": [],
+  "cdl": ["cdl-1","cdl-2"],
   "ceska-posta": ["ceska-posta-1"],
   "chit-chats": [],
   "cne": ["cne-1"],
   "correos-de-mexico": [],
   "cyprus-post": [],
+  "dao": [],
   "day-ross": ["day-ross-1"],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],
   "dhl-ecommerce-nl": ["dhl-ecommerce-nl-1","dhl-ecommerce-nl-2","dhl-ecommerce-nl-3"],
@@ -7362,41 +8554,61 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-ecommerce-uk": ["dhl-ecommerce-uk-2","dhl-ecommerce-uk-1"],
   "dhl-express": ["dhl-express-waybill"],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
+  "dpd-ie": [],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dsv": [],
   "dx": ["dx-1"],
   "dynalogic": [],
+  "early-bird": [],
+  "econt": [],
   "ekart": ["ekart-ecommerce"],
+  "elta": [],
   "emile": ["emile-1"],
   "envialia": [],
   "epost-global": ["epost-global-1"],
   "estes": [],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
+  "express-one": [],
   "fan-courier": [],
+  "foxpost": ["foxpost-1"],
   "gebrueder-weiss": [],
+  "geis": [],
   "geniki-taxydromiki": [],
   "gls-es": [],
   "gls-it": ["gls-it-1"],
+  "go-express": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
+  "helthjem": [],
+  "hrvatska-posta": [],
+  "instabox": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "jitsu": [],
   "kuehne-nagel": ["kuehne-nagel-1"],
   "latvijas-pasts": [],
   "lbc-express": ["lbc-domestic"],
+  "lietuvos-pastas": ["lietuvos-pastas-1"],
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lso": ["lso-1"],
   "magyar-posta": [],
+  "maltapost": [],
+  "matkahuolto": ["matkahuolto-1"],
   "meest": [],
   "mng-kargo": [],
   "nationex": [],
   "nova-poshta": ["nova-poshta-domestic"],
   "omgo": ["omgo-1"],
+  "omniva": ["omniva-1","omniva-2"],
+  "orlen-paczka": ["orlen-paczka-1"],
+  "osm-worldwide": ["osm-worldwide-1"],
+  "paquetexpress": [],
+  "passport": ["passport-1"],
   "post-luxembourg": [],
   "posta-slovenije": [],
   "posta-srbije": [],
+  "ppl": [],
   "ptt": ["ptt-1"],
   "redpack": [],
   "rl-carriers": [],
@@ -7404,11 +8616,16 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sagawa": ["sagawa-waybill"],
   "saia": [],
   "sameday": [],
+  "slovak-parcel-service": ["slovak-parcel-service-1"],
+  "slovenska-posta": [],
   "speedpak": ["speedpak-1"],
   "speedy": [],
   "spx-ph": ["spx-ph-prefixed","spx-ph-shopee-express","spx-ph-domestic"],
+  "stallion-express": ["stallion-express-1"],
   "trans-o-flex": [],
   "ubi-smart-parcel": [],
+  "venipak": ["venipak-1"],
+  "vinted-go": ["vinted-go-1"],
   "wanbexpress": [],
   "whistl": [],
   "xdp": ["xdp-1"],

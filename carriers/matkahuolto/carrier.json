@@ -1,0 +1,50 @@
+{
+  "id": "matkahuolto",
+  "displayName": "Matkahuolto",
+  "aliases": [
+    "Oy Matkahuolto Ab"
+  ],
+  "region": {
+    "countries": [
+      "FI"
+    ]
+  },
+  "brand": {
+    "color": "#001e60"
+  },
+  "selectable": true,
+  "timezone": "Europe/Helsinki",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
+    "searchUrl": "https://www.matkahuolto.fi/seuranta",
+    "canaryUrl": "https://www.matkahuolto.fi/seuranta",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "matkahuolto.fi"
+      ],
+      "pathPattern": "^/(?:seuranta|tracking|uppfoljning)/?$",
+      "params": [
+        "parcelNumber"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "matkahuolto-1",
+      "pattern": "^MA\\d{19}$",
+      "confidence": "low"
+    }
+  ]
+}

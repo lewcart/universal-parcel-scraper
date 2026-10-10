@@ -1,0 +1,35 @@
+{
+  "id": "instabox",
+  "displayName": "Instabox",
+  "aliases": [
+    "Instabox Sweden AB"
+  ],
+  "region": {
+    "countries": [
+      "SE",
+      "NO",
+      "DK"
+    ]
+  },
+  "brand": {
+    "color": "#ff3e3e"
+  },
+  "selectable": true,
+  "timezone": "Europe/Stockholm",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://track.instabox.com/en",
+    "canaryUrl": "https://track.instabox.com/en",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

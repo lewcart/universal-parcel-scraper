@@ -1,0 +1,57 @@
+{
+  "id": "dao",
+  "displayName": "DAO",
+  "aliases": [
+    "dao",
+    "Dansk Avis Omdeling",
+    "DAO365"
+  ],
+  "region": {
+    "countries": [
+      "DK"
+    ]
+  },
+  "brand": {
+    "color": "#e30613"
+  },
+  "selectable": true,
+  "timezone": "Europe/Copenhagen",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://dao.as/find-din-pakke/#q={trackingNumber}",
+    "searchUrl": "https://dao.as/find-din-pakke/",
+    "canaryUrl": "https://dao.as/find-din-pakke/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dao.as"
+      ],
+      "pathPattern": "^/(?:en/)?(?:find-din-pakke|track-your-parcel)/?$",
+      "params": [
+        "q",
+        "stregkode"
+      ],
+      "fragment": "^q=([^&]+)"
+    },
+    {
+      "domains": [
+        "dao.as"
+      ],
+      "pathPattern": "^/(?:en/private/track-your-parcel/?|dao-app/?)?$",
+      "params": [
+        "stregkode"
+      ]
+    }
+  ],
+  "detection": []
+}

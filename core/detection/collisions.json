@@ -1995,5 +1995,103 @@
       "zto"
     ],
     "reason": "A passing check digit adds Purolator to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "CC, CH or HC, nine digits and LT",
+    "carriers": [
+      "chronopost",
+      "lietuvos-pastas"
+    ],
+    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps LP Express numbers that carry no valid S10 check digit; both stay low-confidence suggestions."
+  },
+  {
+    "shape": "CC, CH or HC, nine digits and LT with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "lietuvos-pastas"
+    ],
+    "reason": "With a valid check digit the number is a Lithuanian UPU S10 item; the postal fallback's high-confidence rule decides and the LP Express suggestion stays hidden."
+  },
+  {
+    "shape": "210 and ten digits that pass the GS1 check and fail the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "orlen-paczka",
+      "yunda"
+    ],
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "orlen-paczka",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "14 digits starting 703",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "relais-colis",
+      "seur",
+      "slovak-parcel-service"
+    ],
+    "reason": "SPS parcel numbers start with 703, Slovakia's country code, so SPS is offered next to the other carriers that print fourteen digits; number shape alone cannot identify the carrier."
+  },
+  {
+    "shape": "14 digits starting 703 that pass the Hermes checksum",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "relais-colis",
+      "seur",
+      "slovak-parcel-service"
+    ],
+    "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier."
+  },
+  {
+    "shape": "Nine digits, a hyphen and one digit",
+    "carriers": [
+      "cdl",
+      "dhl",
+      "dhl-ecommerce-es",
+      "estafeta",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "Without its hyphen CDL's order number is ten digits, which DHL, Estafeta, Mondial Relay, Relais Colis, Tipsa and DHL eCommerce Spain also print; CDL stays a low-confidence suggestion."
+  },
+  {
+    "shape": "Sixteen digits starting 17 or 18 that pass the Luhn check",
+    "carriers": [
+      "dhl-ecommerce",
+      "evri-uk",
+      "tnt",
+      "vinted-go"
+    ],
+    "reason": "DHL eCommerce, Evri and TNT accept any sixteen digits, so they also take Vinted Go's parcel numbers; all are low-confidence, so the number stays a suggestion."
   }
 ]

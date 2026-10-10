@@ -1,0 +1,44 @@
+{
+  "id": "ppl",
+  "displayName": "PPL",
+  "aliases": [
+    "PPL CZ"
+  ],
+  "region": {
+    "countries": [
+      "CZ"
+    ]
+  },
+  "brand": {
+    "color": "#004b93"
+  },
+  "selectable": true,
+  "timezone": "Europe/Prague",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
+    "searchUrl": "https://www.ppl.cz/vyhledat-zasilku",
+    "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ppl.cz"
+      ],
+      "pathPattern": "^/(?:vyhledat-zasilku|en/track-a-shipment|en/parcel-detail)/?$",
+      "params": [
+        "shipmentId"
+      ]
+    }
+  ],
+  "detection": []
+}

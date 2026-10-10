@@ -1,0 +1,44 @@
+{
+  "id": "dpd-ie",
+  "displayName": "DPD Ireland",
+  "aliases": [
+    "Interlink Ireland"
+  ],
+  "region": {
+    "countries": [
+      "IE"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Dublin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",
+    "searchUrl": "https://www.dpd.ie/tracking/",
+    "canaryUrl": "https://www.dpd.ie/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dpd.ie"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "consignmentNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

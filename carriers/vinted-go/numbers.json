@@ -1,0 +1,155 @@
+{
+  "carrier": "vinted-go",
+  "records": [
+    {
+      "number": "1716207887335440",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240526125909/https://vintedgo.com/en/tracking/1716207887335440",
+        "date": "2024-05-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1772214195306585",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260318231614/https://vintedgo.com/en/tracking/1772214195306585?region=europe",
+        "date": "2026-03-18",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1773090342772278",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260318233513/https://vintedgo.com/en/tracking/1773090342772278?region=europe",
+        "date": "2026-03-18",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1774438160082271",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260329223834/https://vintedgo.com/en/tracking/1774438160082271?region=europe",
+        "date": "2026-03-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1787868588362357",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260902022727/https://vintedgo.com/en/tracking/1787868588362357?country=pt&region=europe",
+        "date": "2026-09-02",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1789812634676046",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260929073609/https://vintedgo.com/en/tracking/1789812634676046?country=fr&region=europe",
+        "date": "2026-09-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk",
+          "vinted-go"
+        ]
+      },
+      "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

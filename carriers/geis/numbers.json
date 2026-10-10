@@ -1,0 +1,113 @@
+{
+  "carrier": "geis",
+  "records": [
+    {
+      "number": "06028364905",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20190717224841/https://www.geis-group.cz/cs/sledovani-zasilky?p=06028364905",
+        "date": "2019-07-17",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "44122521167",
+      "role": "quarantined",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221121123633/https://www.geis-group.cz/cs/detail-zasilky?packNumber=44122521167",
+        "date": "2022-11-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened. It sits in the ascending 441 series of PPL parcel numbers looked up on PPL's tracker in 2024, so it may be a PPL parcel searched on Geis's site."
+    },
+    {
+      "number": "05082566005",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240409141308/https://www.geis-group.cz/cs/sledovani-zasilky?p=05082566005",
+        "date": "2024-04-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "12060138459",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251015014557/https://www.geis-group.cz/cs/sledovani-zasilky?p=12060138459",
+        "date": "2025-10-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

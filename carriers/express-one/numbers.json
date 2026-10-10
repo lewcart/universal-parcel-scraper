@@ -1,0 +1,56 @@
+{
+  "carrier": "express-one",
+  "records": [
+    {
+      "number": "2400032175124",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231027143723/https://tracking.expressone.hu/?plc_number=2400032175124&nocache=1698417393141",
+        "date": "2023-10-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Looked up on Express One's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "7365729786924",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231115060748/https://tracking.expressone.hu/?plc_number=7365729786924&nocache=1700028425866",
+        "date": "2023-11-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda"
+        ]
+      },
+      "note": "Looked up on Express One's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

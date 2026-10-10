@@ -1,0 +1,57 @@
+{
+  "carrier": "early-bird",
+  "records": [
+    {
+      "number": "00373325385394147175",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241113093256/https://earlybird.se/tracking/?id=00373325385394147175",
+        "date": "2024-11-13",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "swiss-post-cargo",
+          "postnord",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "Looked up on Early Bird's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "00373402216107620730",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260218015051/https://earlybird.se/tracking/?id=00373402216107620730",
+        "date": "2026-02-18",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "swiss-post-cargo",
+          "postnord",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "Looked up on Early Bird's own tracker, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

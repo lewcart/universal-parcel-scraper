@@ -1,0 +1,50 @@
+{
+  "id": "passport",
+  "displayName": "Passport",
+  "aliases": [
+    "Passport Shipping",
+    "Passport Global",
+    "PassportGlobal"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#00e796"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.passportglobal.com/{trackingNumber}",
+    "searchUrl": "https://passportglobal.com/track/",
+    "canaryUrl": "https://passportglobal.com/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.passportglobal.com",
+        "track.passportshipping.com"
+      ],
+      "path": "^/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "passport-1",
+      "pattern": "^PG\\d{10}[A-Z]{2}$",
+      "confidence": "high"
+    }
+  ]
+}

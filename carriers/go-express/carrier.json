@@ -1,0 +1,53 @@
+{
+  "id": "go-express",
+  "displayName": "GO! Express",
+  "aliases": [
+    "GO! Express & Logistics",
+    "GO Express",
+    "General Overnight"
+  ],
+  "region": {
+    "countries": [
+      "DE",
+      "AT",
+      "CZ",
+      "DK",
+      "LU",
+      "NL",
+      "PL",
+      "SK"
+    ]
+  },
+  "brand": {
+    "color": "#b9242b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html?reference={trackingNumber}",
+    "searchUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
+    "canaryUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "general-overnight.com"
+      ],
+      "pathPattern": "^/[a-z]{3}_[a-z]{2}(?:/[a-z-]+)*(?:\\.html)?/?$",
+      "params": [
+        "reference"
+      ]
+    }
+  ],
+  "detection": []
+}

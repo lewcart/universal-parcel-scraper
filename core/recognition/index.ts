@@ -79,11 +79,22 @@ function recent(outcome: RecognitionOutcome, now: Date): boolean {
   return !Number.isFinite(at) || now.getTime() - at < RECENT_ACTIVITY_MS;
 }
 
+const COUNTRY_MATCH_SCORES = { home: 2, served: 1 } as const;
+
+function countryMatchScore(outcome: RecognitionOutcome): number {
+  return outcome.countryMatch ? COUNTRY_MATCH_SCORES[outcome.countryMatch] : 0;
+}
+
 /**
  * The carrier the answers settle on: the only recent one, else the only one
  * number evidence backs, else, when every answer comes from one brand's
- * networks, the most popular of them. Unrelated carriers that all know the
- * number stay a choice for the user.
+ * networks, one that tracks without the user's input, then the one serving the
+ * caller's country (its home country first), then the most popular. The
+ * caller's country is only a guess at where the parcel goes, so it never
+ * outweighs a network that knows the number and can track it at once. The
+ * country is the hint given to `recognitionCandidates`, carried on each
+ * outcome. Unrelated carriers that all know the number stay a choice for the
+ * user.
  */
 export function settleRecognition(outcomes: readonly RecognitionOutcome[], now = new Date()): { carrier?: string; choices: string[] } {
   const known = outcomes.filter((outcome) => outcome.status === 'known' && recent(outcome, now));
@@ -93,8 +104,9 @@ export function settleRecognition(outcomes: readonly RecognitionOutcome[], now =
   if (backed.length === 1) return { carrier: backed[0]!.carrier, choices: [] };
   const brands = new Set(known.map((outcome) => carrierBrand(outcome.carrier) ?? outcome.carrier));
   if (brands.size === 1) {
-    const [best] = [...known].sort((left, right) =>
-      (CARRIER_RECOGNITION_RANKS[right.carrier] ?? 0) - (CARRIER_RECOGNITION_RANKS[left.carrier] ?? 0));
+    const [best] = [...known].sort((left, right) => Number(!right.needsInput) - Number(!left.needsInput)
+      || countryMatchScore(right) - countryMatchScore(left)
+      || (CARRIER_RECOGNITION_RANKS[right.carrier] ?? 0) - (CARRIER_RECOGNITION_RANKS[left.carrier] ?? 0));
     return { carrier: best!.carrier, choices: [] };
   }
   return { choices: known.map((outcome) => outcome.carrier) };

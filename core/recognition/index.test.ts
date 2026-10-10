@@ -91,8 +91,14 @@ describe('recognition candidates', () => {
       expect(recognitionAskedCarriers(number).slice(0, 3)).toEqual(['gls-fr', 'gls-de', 'gls-ch']);
     }
     expect(recognitionAskedCarriers('ABCDEF')).toEqual(['gls-de', 'gls-ch']);
-    // A caller's country only reorders the questions.
+    // A caller's country puts its network first, and marks it for settling.
     expect(recognitionAskedCarriers('12345678901', { countryHint: 'CH' })[0]).toBe('gls-ch');
+    const marks = (countryHint?: string) => Object.fromEntries(recognitionCandidates('12345678901', { countryHint })
+      .filter(({ carrier }) => carrier.startsWith('gls-')).map(({ carrier, countryMatch }) => [carrier, countryMatch]));
+    expect(marks('ch')).toEqual({ 'gls-ch': 'home', 'gls-de': undefined, 'gls-fr': undefined });
+    expect(marks('LI')).toEqual({ 'gls-ch': 'served', 'gls-de': undefined, 'gls-fr': undefined });
+    expect(marks()).toEqual({ 'gls-ch': undefined, 'gls-de': undefined, 'gls-fr': undefined });
+    expect(marks('XX')).toEqual(marks());
   });
 
   it('can ask bpost about an ambiguous numeric barcode without a recipient postcode', () => {
@@ -189,5 +195,39 @@ describe('settling on a carrier', () => {
       .toEqual({ choices: ['dpd', 'hermes-de'] });
     expect(settleRecognition([outcome('seur', 'known'), outcome('brt', 'known')], now))
       .toEqual({ choices: ['seur', 'brt'] });
+  });
+
+  it('settles one brand\'s networks on the one serving the caller\'s country, after any that needs no input', () => {
+    const postcode = { needsInput: 'postcode' } as const;
+    expect(settleRecognition([outcome('gls-ch', 'known', { ...postcode, countryMatch: 'home' }), outcome('gls-de', 'known', postcode)], now))
+      .toEqual({ carrier: 'gls-ch', choices: [] });
+    expect(settleRecognition([outcome('gls-ch', 'known', { ...postcode, countryMatch: 'served' }), outcome('gls-de', 'known', postcode)], now))
+      .toEqual({ carrier: 'gls-ch', choices: [] });
+    expect(settleRecognition([outcome('gls-ch', 'known', postcode), outcome('gls-de', 'known', { ...postcode, countryMatch: 'home' })], now))
+      .toEqual({ carrier: 'gls-de', choices: [] });
+    expect(settleRecognition([outcome('dpd', 'known'), outcome('dpd-de', 'known', { countryMatch: 'home' })], now))
+      .toEqual({ carrier: 'dpd-de', choices: [] });
+    // GLS France knowing the number makes it a French parcel, tracked without a postcode.
+    expect(settleRecognition([
+      outcome('gls-ch', 'known', { ...postcode, countryMatch: 'home' }), outcome('gls-de', 'known', postcode), outcome('gls-fr', 'known'),
+    ], now)).toEqual({ carrier: 'gls-fr', choices: [] });
+    // Number evidence still comes first, and unrelated carriers stay a choice.
+    expect(settleRecognition([outcome('dpd', 'known', { countryMatch: 'home' }), outcome('dpd-de', 'known', { preferred: true })], now))
+      .toEqual({ carrier: 'dpd-de', choices: [] });
+    expect(settleRecognition([outcome('dpd', 'known', { countryMatch: 'home' }), outcome('hermes-de', 'known')], now))
+      .toEqual({ choices: ['dpd', 'hermes-de'] });
+  });
+
+  it('carries the caller\'s country from the candidates to the settled network', async () => {
+    const settled = async (countryHint?: string) => settleRecognition(await recognizeAll(
+      recognitionCandidates('12345678901', { countryHint }),
+      async (carrier) => ({ known: carrier === 'gls-ch' || carrier === 'gls-de' }),
+      1_000,
+    ), now).carrier;
+    expect(await settled('CH')).toBe('gls-ch');
+    expect(await settled('LI')).toBe('gls-ch');
+    expect(await settled('DE')).toBe('gls-de');
+    expect(await settled()).toBe('gls-de');
+    expect(await settled('FR')).toBe('gls-de');
   });
 });

@@ -50,12 +50,14 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
 - Recognition cannot tell a German parcel from a Swiss one. The overview is one
   group-wide service whatever its country path (the path only sets the language),
   and its overview of a delivered parcel names no owner. When both networks
-  recognize a number, GLS Germany is chosen: it is the more common network, and
-  its tracker takes any country's postcode, so it reaches the history of either
-  network's parcel. Group-wide `/EU/` links come here too. GLS Switzerland is
-  reached through a `/CH/` link or by picking it. GLS France still comes first
-  when it knows the number: its own tracker answers only French parcels, with
-  the history and no postcode.
+  recognize a number, the caller's country decides: Switzerland or
+  Liechtenstein chooses GLS Switzerland. Otherwise GLS Germany is chosen: it is
+  the more common network, and its tracker takes any country's postcode, so it
+  reaches the history of either network's parcel. Group-wide `/EU/` links come
+  here too. GLS Switzerland is also reached through a `/CH/` link or by picking
+  it. GLS France still comes first when it knows the number, whatever the
+  caller's country: its own tracker answers only French parcels, with the
+  history and no postcode.
 
 ## Testing
 

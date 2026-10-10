@@ -25,13 +25,21 @@ export interface RecognitionCandidate {
   needsInput: CarrierInputField | null;
   /** A preferred detection rule backs it with number evidence. */
   preferred: boolean;
+  /**
+   * The caller's country hint is the carrier's home country, or one it also
+   * serves. Absent without a hint or a match.
+   */
+  countryMatch?: 'home' | 'served';
 }
 
 export interface RecognitionOptions {
   hint?: string;
   skip?: (carrier: string) => boolean;
   phase?: 'http' | 'browser';
-  /** A caller's country is a query-order hint, never carrier confirmation. */
+  /**
+   * A caller's country orders the queries, and settles between one brand's
+   * networks that all know the number. It never confirms a carrier.
+   */
   countryHint?: string | null;
   /** Caller-owned aggregate scores; larger finite, nonnegative values run first. */
   priorities?: Readonly<Record<string, number>>;
@@ -126,10 +134,11 @@ export function recognitionCandidates(
       }
       return 0;
     })
-    .map(({ carrier }) => ({
+    .map(({ carrier, score: [, , match] }): RecognitionCandidate => ({
       carrier,
       needsInput: requiredRequirements(carrier, number)[0]?.field ?? null,
       preferred: preferred.includes(carrier),
+      ...(match ? { countryMatch: match === 2 ? 'home' : 'served' } : {}),
     })).filter((candidate) => options.phase !== 'browser' || !candidate.needsInput);
 }
 

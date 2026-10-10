@@ -12,7 +12,7 @@
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
 import { carrierIdFromName } from '../../core/catalog/hints.js';
-import { ChallengeError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -69,9 +69,24 @@ function describeLookup(reason: string, providerCode: number, providerMessage?: 
   return `${SOURCE}: ${reason} (code ${providerCode}${providerMessage ? `: ${providerMessage}` : ''})`;
 }
 
+/**
+ * Shipment code 402, the cap 17TRACK puts on one address's USPS lookups. It
+ * answered, about no shipment and no other carrier, so it is no outage either:
+ * a host that cooled the provider down for it would lose it for every carrier.
+ */
+export class SeventeenTrackQuotaError extends IndeterminateError {
+  override readonly reason = 'usps_quota';
+  readonly providerCode = 402;
+  constructor() {
+    super(SOURCE, '17TRACK has spent its USPS lookups for this address');
+    this.name = 'SeventeenTrackQuotaError';
+  }
+}
+
 /** Structured replies without usable history; polling may still produce a later success. */
-export function isSeventeenTrackLookupError(error: unknown): error is SeventeenTrackLookupError | SeventeenTrackNoHistoryError | SeventeenTrackVerificationError {
-  return error instanceof SeventeenTrackLookupError || error instanceof SeventeenTrackNoHistoryError || error instanceof SeventeenTrackVerificationError;
+export function isSeventeenTrackLookupError(error: unknown): error is SeventeenTrackLookupError | SeventeenTrackNoHistoryError | SeventeenTrackQuotaError | SeventeenTrackVerificationError {
+  return error instanceof SeventeenTrackLookupError || error instanceof SeventeenTrackNoHistoryError
+    || error instanceof SeventeenTrackQuotaError || error instanceof SeventeenTrackVerificationError;
 }
 
 function lookupError(code: number, providerMessage?: string): Error {
@@ -145,7 +160,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       if (!postcode && requestsPostcode(matches[0])) throw new InputRequiredError(SOURCE, 'postcode');
       throw new SeventeenTrackNoHistoryError();
     }
-    // 402 is the cap 17TRACK puts on one address's USPS lookups: nothing about the shipment.
+    if (code === 402) throw new SeventeenTrackQuotaError();
     throw new SeventeenTrackLookupError(code === 100 ? 'lookup_pending' : 'lookup_unavailable', code);
   }
   if (matches.length !== 1 || !isRecord(matches[0]) || matches[0].code !== 200 || !isRecord(matches[0].shipment)) {

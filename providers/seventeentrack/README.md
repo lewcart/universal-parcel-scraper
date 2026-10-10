@@ -68,8 +68,9 @@ than asking again. A code-400 reply can list the carriers 17TRACK hesitates betw
 Shipment code 402 is 17TRACK's monthly cap on USPS lookups ("USPS tracking requests are
 limited due to policy changes"), and the page offers a paid plan. Once the browser
 service's address has spent it, every USPS number answers 402, while a fresh address still
-gets history. It stays lookup unavailable: it says nothing about the shipment, and other
-carriers are not capped.
+gets history. It is inconclusive (`IndeterminateError`, reason `usps_quota`), not lookup
+unavailable: it says nothing about the shipment, and other carriers are not capped, so a
+host that cooled 17TRACK down for a transport failure would lose it for every carrier.
 
 Routing needs these distinctions for its cooldowns. Sentry keeps `reason`,
 `providerCode` and `meta.message` (truncated to 120 characters), because code 400 is

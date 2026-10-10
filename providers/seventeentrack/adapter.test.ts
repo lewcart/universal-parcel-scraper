@@ -238,6 +238,9 @@ describe('17TRACK result parsing', () => {
       .toMatchObject({ name: 'SeventeenTrackLookupError', kind: 'transport', reason: 'lookup_unavailable', providerCode: 400 });
     expect(thrown(() => parse17TrackResponse({ meta: { code: 200 }, shipments: [{ number, code: 100, shipment: null }] }, number)))
       .toMatchObject({ name: 'SeventeenTrackLookupError', kind: 'transport', reason: 'lookup_pending', providerCode: 100 });
+    // The USPS cap is an answer, not an outage: a cooldown for it would cost every other carrier.
+    expect(thrown(() => parse17TrackResponse({ meta: { code: 200 }, shipments: [{ number, code: 402, shipment: null }] }, number)))
+      .toMatchObject({ name: 'SeventeenTrackQuotaError', kind: 'indeterminate', reason: 'usps_quota', providerCode: 402 });
   });
 
   it.each([

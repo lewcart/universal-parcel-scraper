@@ -28,7 +28,7 @@ import { adapter as ship24Adapter } from './ship24/adapter.js';
 import { adapter as upuAdapter } from './upu/adapter.js';
 import { numberOf, type UniversalSource as Source } from './shared/result.js';
 
-export { parse17TrackResponse, SeventeenTrackLookupError, SeventeenTrackNoHistoryError, SeventeenTrackVerificationError } from './seventeentrack/adapter.js';
+export { parse17TrackResponse, SeventeenTrackLookupError, SeventeenTrackNoHistoryError, SeventeenTrackQuotaError, SeventeenTrackVerificationError } from './seventeentrack/adapter.js';
 export { parseParcelsAppHtml, parseParcelsAppResponse } from './parcelsapp/adapter.js';
 export { parsePostalNinjaResponse } from './postal-ninja/adapter.js';
 export { parseShip24Response } from './ship24/adapter.js';

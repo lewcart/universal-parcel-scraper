@@ -14,13 +14,19 @@
  */
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
+import { carrierIdFromName } from '../../core/catalog/hints.js';
+import { carrierDefinition } from '../../core/catalog/index.js';
 import { IndeterminateError, NoHistoryError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
-import { canadaProvinceTimeZone, countryCode, countryTimeZone, regionHasTown, sharedClockZone, usStateTimeZone } from '../../core/time/index.js';
+import {
+  canadaProvinceTimeZone, countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, regionHasTown, sharedClockZone, timeZoneCountry,
+  usStateTimeZone,
+} from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
+import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { localEvent, numberOf, place, result, type UniversalSource } from '../shared/result.js';
@@ -63,11 +69,27 @@ function regionZone(location: string, northAmerican: boolean): string | null {
   return country || regionHasTown(code, town) || (northAmerican && !countryCode(code)) ? zone : null;
 }
 
+/** 4PX's way of writing a scan abroad: country, state and town ("US  NY  EXAMPLE TOWN 12345"). */
+const COUNTRY_STATE_TOWN = /^([A-Z]{2})\s{2,}([A-Z]{2})\s{2,}(\S.*)$/;
+
 /** A scan location's clock: the single clock of the country it names, else of its US state or Canadian province. */
 function locationZone(location: unknown, northAmerican: boolean): string | null {
   if (typeof location !== 'string' || !location.trim()) return null;
+  const parts = COUNTRY_STATE_TOWN.exec(location.trim());
+  if (parts) return countryTimeZone(parts[1]) ?? regionZone(`${parts[3]}, ${parts[2]}, ${parts[1]}`, northAmerican);
   const country = trackingPlace(location).country;
   return (country ? countryTimeZone(country) : null) ?? regionZone(location, northAmerican);
+}
+
+/** Whether a scan's courier works in the US or Canada only, so its state and province codes are theirs. */
+function northAmericanCourier(scan: Record<string, unknown>): boolean {
+  const courier = isRecord(scan.courier) ? scan.courier : {};
+  const country = replyCountry(courier.country_code);
+  if (country === 'US' || country === 'CA') return true;
+  const name = isRecord(courier.translation) ? courier.translation.name : null;
+  const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
+  const countries = carrier ? carrierDefinition(carrier).countries ?? [] : [];
+  return countries.length > 0 && countries.every((code) => code === 'US' || code === 'CA');
 }
 
 /** A country code Ship24 gives, which can be the retired "UK". */
@@ -112,6 +134,55 @@ interface Journey {
   fallback: string | null;
 }
 
+/**
+ * A courier feed Ship24 relays with an offset its scans never had, by Ship24's
+ * crawler code. The digits are the scan's wall clock, placed like an
+ * offset-less scan's. Checked against each carrier's own data (2026-10-10):
+ * - Canada Post's say -05:00 on every scan, where Canada Post says -04:00 for
+ *   Ottawa in October;
+ * - UniUni's say Z on the depot's clock, which UniUni's own `pathTime` does too;
+ * - GOFO's US feed puts GOFO's -07:00 on the station's clock (`processTimeZone`),
+ *   and names towns without their state;
+ * - PostNL's say Z on postnl.post's `datetime_local`;
+ * - Amazon UK's say Z on the marketplace's clock, which Amazon shows without one;
+ * - CTT's say Z, as CTT's own tracker does (carriers/ctt/clock.ts).
+ */
+interface Feed {
+  /** Ship24's crawler code, which keeps one feed's scans together. */
+  code: string;
+  /** The zone the feed read the wall clock in to make its instant: 4PX's `tkDate` reads it on China's. */
+  shift?: string;
+  /** The clock a scan's location names, before any other reading. */
+  place?: (location: string, journey: Journey) => string | null;
+  /** Where the feed's scans are, for a parcel that stays in one country, when nothing else places them. */
+  home?: (location: string) => string | null;
+  /** The carrier's own clock, a guess for a scan nothing else places: GOFO dates its scans on Los Angeles'. */
+  own?: string;
+}
+
+const RELABELLED_FEEDS: Readonly<Record<string, Omit<Feed, 'code'>>> = {
+  'canada-post-tracking': {},
+  'uniuni-tracking': {},
+  'gofo-express-tracking': { own: 'America/Los_Angeles' },
+  'postnl-tracking': {},
+  'amazon-uk-tracking': { home: () => 'Europe/London' },
+  'portugal-ctt-tracking': { place: (location, journey) => cttSiteZone(location, [journey.origin, journey.destination]), home: portugalZone },
+  '4px-tracking': { shift: 'Asia/Shanghai' },
+};
+
+function feedOf(scan: Record<string, unknown>): Feed | null {
+  const code = isRecord(scan.courier) ? scan.courier.crawler_code : null;
+  return typeof code === 'string' && Object.hasOwn(RELABELLED_FEEDS, code) ? { code, ...RELABELLED_FEEDS[code] } : null;
+}
+
+/** A relabelling feed's timestamp as the scan's wall clock; any other is left as Ship24 sent it. */
+function feedClock(timestamp: unknown, feed: Feed | null): unknown {
+  if (!feed || typeof timestamp !== 'string' || !EXPLICIT_OFFSET_PATTERN.test(timestamp)) return timestamp;
+  if (!feed.shift) return timestamp.replace(EXPLICIT_OFFSET_PATTERN, '');
+  const shifted = DateTime.fromISO(timestamp, { setZone: true }).setZone(feed.shift);
+  return shifted.isValid ? shifted.toISO({ includeOffset: false, suppressMilliseconds: true }) : timestamp;
+}
+
 function journeyOf(data: Record<string, unknown>, events: unknown[], number: string, couriers: string[], fallback: string | null): Journey {
   // An S10 item's suffix is its origin post's country.
   const suffix = /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(number) ? replyCountry(number.slice(-2)) : null;
@@ -136,25 +207,77 @@ function upuZone(journey: Journey, scan: Record<string, unknown>, wall: string):
 }
 
 /**
- * The zone of a scan whose timestamp names no offset: it is the scanning
- * carrier's wall clock. Its location's clock comes first, then the country of
- * a parcel that never leaves it, then the side of the border a UPU event's
- * words name. A courier name is the feed that relayed the scan, not where it
- * happened: a national post relays the destination's scans under its own
- * name. So for a parcel that crosses a border, those are all. Otherwise the
- * clock every courier the reply names keeps at that moment (La Poste and its
- * Chronopost leg) follows, else the zone routing passes for the parcel's
- * carrier. With none of them it stays a wall time, which the timeline cannot
- * place.
+ * The zone of a scan whose timestamp names no offset, or a relabelling
+ * feed's: it is the scanning carrier's wall clock. Its location's clock comes
+ * first (as the feed reads its own sites, then by the names it holds), then
+ * the country of a parcel that never leaves it, then the side of the border a
+ * UPU event's words name. A courier name is the feed that relayed the scan,
+ * not where it happened: a national post relays the destination's scans under
+ * its own name. So for a parcel that crosses a border, those are all.
+ * Otherwise the feed's home clock follows. Null when none of them places it.
  */
-function wallZone(journey: Journey, scan: Record<string, unknown>, wall: string): string | null {
-  const courier = isRecord(scan.courier) ? replyCountry(scan.courier.country_code) : null;
-  const located = locationZone(scan.location, journey.northAmerican || courier === 'US' || courier === 'CA')
+function placedZone(journey: Journey, scan: Record<string, unknown>, wall: string, feed: Feed | null): string | null {
+  const location = typeof scan.location === 'string' ? scan.location.trim() : '';
+  const located = feed?.place?.(location, journey)
+    ?? locationZone(location, journey.northAmerican || northAmericanCourier(scan))
     ?? (journey.domestic ? countryTimeZone(journey.domestic) : null) ?? upuZone(journey, scan, wall);
-  if (located || journey.international) return located;
+  return located || journey.international ? located : feed?.home?.(location) ?? null;
+}
+
+/**
+ * For a parcel that stays in one country, the clock every courier the reply
+ * names keeps at that moment (La Poste and its Chronopost leg), else the zone
+ * routing passes for the parcel's carrier.
+ */
+function namedZone(journey: Journey, wall: string): string | null {
+  if (journey.international) return null;
   const zones = journey.couriers.map((name) => courierZone(name, journey.number, wall));
   const named = zones.length && zones.every((zone): zone is string => zone !== null) ? sharedClockZone(zones, wall) : null;
   return named ?? journey.fallback;
+}
+
+/** The country a scan's location names ("USA", "US  NY  EXAMPLE TOWN"), or null. */
+function locationCountry(location: unknown): string | null {
+  if (typeof location !== 'string' || !location.trim()) return null;
+  return COUNTRY_STATE_TOWN.exec(location.trim())?.[1] ?? trackingPlace(location).country;
+}
+
+const CODES = Array.from({ length: 26 * 26 }, (_, index) => String.fromCharCode(65 + Math.floor(index / 26), 65 + (index % 26)));
+const US_ZONES = new Set(CODES.map(usStateTimeZone).filter(Boolean));
+const CANADA_ZONES = new Set(CODES.map(canadaProvinceTimeZone).filter(Boolean));
+
+/** The country whose clock a placed scan was read on, when only one keeps that zone. */
+function zoneCountry(zone: string): string | null {
+  return timeZoneCountry(zone) ?? (US_ZONES.has(zone) ? 'US' : CANADA_ZONES.has(zone) ? 'CA' : null);
+}
+
+/** A scan read so far: a wall clock, with its feed, the country it names and the zone that places it. */
+interface Reading { event: CarrierEvent; wall: string | null; feed: Feed | null; country: string | null; zone: string | null }
+
+/**
+ * The zone a relabelling feed's scan borrows when nothing places it, a guess:
+ * the zone of the nearest earlier scan of the same feed that is placed, else
+ * of the nearest later one. The scans of one feed are mostly one network's,
+ * which rarely changes clocks between two of them. A scan whose location
+ * names a country only borrows from one in the same: Canada Post relays
+ * USPS's scans ("CHICAGO,USA"), which a Toronto scan's clock does not place.
+ * On a parcel that crosses a border, a scan before every placed one only
+ * borrows from one in the origin country: the parcel may not have left it,
+ * and the destination's pre-advice (4PX's USPS label) can come first.
+ */
+function borrowedZone(readings: readonly Reading[], reading: Reading, journey: Journey): string | null {
+  let earlier: Reading | null = null, later: Reading | null = null;
+  for (const other of readings) {
+    if (!other.zone || !other.wall || other.feed?.code !== reading.feed?.code || !reading.wall) continue;
+    const country = other.country ?? zoneCountry(other.zone);
+    if (reading.country && country !== reading.country) continue;
+    if (other.wall <= reading.wall) {
+      if (!earlier || other.wall > earlier.wall!) earlier = other;
+    } else if ((reading.country || !journey.international || country === journey.origin) && (!later || other.wall < later.wall!)) {
+      later = other;
+    }
+  }
+  return earlier?.zone ?? later?.zone ?? null;
 }
 
 export function parseShip24Response(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
@@ -176,7 +299,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
   const names = universalCarrierHints(couriers.map((courier) =>
     isRecord(courier) && isRecord(courier.translation) ? courier.translation.name : undefined), number);
   const journey = journeyOf(data, data.events, number, names.reported_carriers, timezone);
-  const events: CarrierEvent[] = [];
+  const readings: Reading[] = [];
   for (const raw of data.events) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Ship24 returned an invalid event');
     // A scan dated without a time (GLS Italy's announcement) has no place
@@ -184,20 +307,28 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     if (typeof raw.timestamp === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.timestamp)) continue;
     // datetime can end in Z while still containing the carrier's local time.
     // timestamp carries the real offset (verified against the public web app),
-    // except for some carrier legs (Chronopost) that omit it entirely.
-    const parsed = localEvent(raw.timestamp, raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
+    // except for some carrier legs (Chronopost) that omit it entirely, and the
+    // feeds that relabel the carrier's wall clock.
+    const feed = feedOf(raw);
+    const parsed = localEvent(feedClock(raw.timestamp, feed), raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
     if (!parsed) continue;
     const location = place(raw.location);
     if (location) parsed.location = location;
     const wall = typeof parsed.local_time === 'string' ? parsed.local_time : null;
-    const zone = wall ? wallZone(journey, raw, wall) : null;
-    const instant = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
-    if (instant?.isValid) {
-      const timed: CarrierEvent = { ...parsed, time: instant.toUTC().toISO() };
-      delete timed.local_time;
-      events.push(timed);
-    } else events.push(parsed);
+    // Another feed's offset-less scan takes the parcel's named clock at once;
+    // a relabelling feed's first borrows from its neighbours (below).
+    readings.push({ event: parsed, wall, feed, country: locationCountry(raw.location),
+      zone: wall ? placedZone(journey, raw, wall, feed) ?? (feed ? null : namedZone(journey, wall)) : null });
   }
+  const events = readings.map((reading): CarrierEvent => {
+    const { event, wall, feed } = reading;
+    const zone = reading.zone ?? (wall && feed ? borrowedZone(readings, reading, journey) ?? namedZone(journey, wall) ?? feed.own ?? null : null);
+    const instant = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
+    if (!instant?.isValid) return event;
+    const timed: CarrierEvent = { ...event, time: instant.toUTC().toISO() };
+    delete timed.local_time;
+    return timed;
+  });
   return { ...result(events, SOURCE), ...names };
 }
 

@@ -149,6 +149,63 @@ describe('Ship24 result parsing', () => {
   });
 });
 
+describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
+  /** The clocks Ship24's `crawler` feed gives for scans `[timestamp, location]`, as the result keeps them. */
+  function feed(crawler: string, name: string, scans: [string, string | undefined][], data: Record<string, unknown> = {}, tracking = number) {
+    const courier = { crawler_code: crawler, translation: { name } };
+    return parseShip24Response({ data: { tracking_number: tracking, couriers: [{ translation: { name } }], ...data,
+      events: scans.map(([timestamp, location], index) => ({ timestamp, location, status: `Scan ${index}`, courier })) } }, tracking)
+      .events!.map((scan) => scan.time ?? `local ${String(scan.local_time)}`);
+  }
+
+  it('reads Canada Post\'s constant -05:00 as a label on the province\'s clock, which an unlocated scan borrows', () => {
+    expect(feed('canada-post-tracking', 'Canada Post', [['2026-10-10T12:43:21-05:00', 'EXAMPLE TOWN ON'],
+      ['2026-10-03T11:28:48-05:00', undefined]])).toEqual(['2026-10-10T16:43:21.000Z', '2026-10-03T15:28:48.000Z']);
+    // With no scan of the feed to borrow from, and no clock for the carrier, it stays a wall time.
+    expect(feed('canada-post-tracking', 'Canada Post', [['2026-10-03T11:28:48-05:00', undefined]])).toEqual(['local 2026-10-03T11:28:48']);
+  });
+
+  it('reads UniUni\'s Z as the depot\'s clock, in the states and provinces its catalog entry serves', () => {
+    expect(feed('uniuni-tracking', 'UniUni', [['2026-10-09T10:20:54Z', 'Example Town MI'], ['2026-10-01T08:21:40Z', 'Example Town ON'],
+      ['2026-09-30T13:02:00Z', 'EXAMPLE DATA CENTER']]))
+      .toEqual(['2026-10-09T14:20:54.000Z', '2026-10-01T12:21:40.000Z', '2026-09-30T17:02:00.000Z']);
+  });
+
+  it('reads GOFO\'s -07:00 as a label, and its scans at towns it cannot place on a neighbour\'s clock, else on GOFO\'s own', () => {
+    expect(feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', 'Example Town'],
+      ['2026-10-03T08:44:20-07:00', 'Example Town, FL']])).toEqual(['2026-10-03T20:01:13.000Z', '2026-10-03T12:44:20.000Z']);
+    expect(feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', 'Example Town']]))
+      .toEqual(['2026-10-03T23:01:13.000Z']);
+  });
+
+  it('reads PostNL\'s and Amazon UK\'s Z as the clock of the scan\'s country or of the marketplace', () => {
+    expect(feed('postnl-tracking', 'PostNL', [['2026-08-12T11:19:00Z', 'SWEDEN'], ['2026-08-06T16:56:00Z', 'THE NETHERLANDS']],
+      { destination_country_code: 'SE' })).toEqual(['2026-08-12T09:19:00.000Z', '2026-08-06T14:56:00.000Z']);
+    expect(feed('amazon-uk-tracking', 'Amazon UK', [['2026-09-28T17:35:52Z', undefined]])).toEqual(['2026-09-28T16:35:52.000Z']);
+  });
+
+  it('reads CTT\'s Z as the clock of its Portuguese sites, which an unlocated scan abroad borrows', () => {
+    expect(feed('portugal-ctt-tracking', 'Portugal CTT', [['2026-08-31T20:53:13Z', 'PTEXAA - (OUTRO) EXAMPLE'],
+      ['2026-08-29T11:46:23Z', 'Centro operacional Example'], ['2026-08-28T10:13:58Z', undefined]],
+    { origin_country_code: 'PT', destination_country_code: 'MX' }, 'ZZ123456785PT'))
+      .toEqual(['2026-08-31T19:53:13.000Z', '2026-08-29T10:46:23.000Z', '2026-08-28T09:13:58.000Z']);
+    expect(feed('portugal-ctt-tracking', 'Portugal CTT', [['2026-05-11T10:42:39Z', 'Centro operacional 9580 Example'],
+      ['2026-05-11T08:54:09Z', undefined]])).toEqual(['2026-05-11T10:42:39.000Z', '2026-05-11T07:54:09.000Z']);
+  });
+
+  it('turns 4PX\'s instant back into the wall clock it read on China\'s, then places it', () => {
+    expect(feed('4px-tracking', '4PX', [['2026-05-26T06:30:03+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-24T23:39:05+00:00', 'US     '],
+      ['2026-05-21T12:35:30+00:00', 'CN'], ['2026-05-21T09:08:01+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-21T09:04:13+00:00', undefined]],
+    { origin_country_code: 'CN', destination_country_code: 'US' })).toEqual(['2026-05-26T18:30:03.000Z', '2026-05-25T11:39:05.000Z',
+      // USPS's label comes before the pickup in China, so the first scan borrows the pickup's clock, not the label's.
+      '2026-05-21T21:08:01.000Z', '2026-05-21T12:35:30.000Z', '2026-05-21T09:04:13.000Z']);
+  });
+
+  it('takes the offset of any other feed as sent', () => {
+    expect(feed('example-tracking', 'Example Courier', [['2026-10-10T12:43:21-05:00', 'EXAMPLE TOWN ON']])).toEqual(['2026-10-10T17:43:21.000Z']);
+  });
+});
+
 describe('Ship24 anonymous HTTP tracking', () => {
   it('makes one signed JSON POST per lookup with no browser, bootstrap, cookie or login', async () => {
     const { tracker, fetcher, steps, lookups } = fixture();

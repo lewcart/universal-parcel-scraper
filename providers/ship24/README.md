@@ -58,20 +58,53 @@ No account, cookie, fingerprint or issued token is used.
   inconclusive.
 - Times come from `timestamp`, which carries the real offset. `datetime` can end in `Z`
   while holding the carrier's local time. Some legs (Chronopost, national posts, UPU
-  feeds) have no offset in `timestamp`: that is the scanning office's wall clock, read
-  in the first clock found among:
-  1. the scan location's: a country named at the end, after a dash, in brackets or in
-     Ukrainian ("Kuwait", "EXAMPLE - CHINA", "Pardubice (CZ)", "КИТАЙ"), when it keeps
-     one zone; else a US state or Canadian province, if the parcel starts or ends in
-     North America or the town lies in that state;
+  feeds) have no offset in `timestamp`: that is the scanning office's wall clock.
+- Some feeds relabel the carrier's wall clock with an offset it never had. By
+  `courier.crawler_code`, checked against each carrier's own data (2026-10-10):
+  - `canada-post-tracking` says `-05:00` on every scan; Canada Post says `-04:00` for
+    Ottawa in October;
+  - `uniuni-tracking` says `Z` on the depot's clock, as UniUni's own `pathTime` does;
+  - `gofo-express-tracking` puts GOFO's `-07:00` on the station's clock, which GOFO
+    names in `processTimeZone`;
+  - `postnl-tracking` says `Z` on postnl.post's `datetime_local`;
+  - `amazon-uk-tracking` says `Z` on the marketplace's clock, which Amazon shows with
+    none;
+  - `portugal-ctt-tracking` says `Z`, as CTT's own tracker does (see CTT's README);
+  - `4px-tracking` gives an instant 4PX made by reading the wall clock on China's:
+    `tkDate`. Read back on China's clock, it gives the wall clock.
+
+  Their offset is dropped and the wall clock read like an offset-less one.
+- A wall clock is read in the first clock found among:
+  1. the scan location's:
+     - CTT's offices of exchange (`PTLISA - …`) and own sites are on Portugal's clock,
+       the Azores' for their postcodes and towns;
+     - a country named at the end, after a dash, in brackets or in Ukrainian ("Kuwait",
+       "EXAMPLE - CHINA", "Pardubice (CZ)", "КИТАЙ"), when it keeps one zone;
+     - else a US state or Canadian province, if the parcel starts or ends in North
+       America, its courier works only there (UniUni, GOFO) or the town lies in that
+       state. 4PX writes them after the country: "US  NY  EXAMPLE TOWN 12345";
   2. the country of a parcel whose origin and destination are the same
      (`origin_country_code`, or an S10 number's suffix, and `destination_country_code`);
   3. for a parcel that crosses a border, the side a UPU event's words name ("Posting/
      Collection", "Arrival at inward office of exchange"), from any courier, until the
      item is returned to sender. The origin side needs an S10 suffix that agrees with
      the origin: Asendia's Swiss numbers are posted at offices of exchange abroad;
-  4. for a parcel not known to cross a border: the clock every courier the reply names
-     keeps at that moment, else the zone routing passes for the parcel's carrier.
+  4. for a parcel not known to cross a border, the feed's home clock (Amazon UK's
+     London, CTT's Portugal).
+
+  A scan of one of the relabelling feeds that none of these places borrows a zone, a
+  guess: the zone of the nearest earlier scan of the same feed that is placed, else of
+  the nearest later one. A scan whose location names a country borrows only from one in
+  that country, so Canada Post's relays of USPS scans ("CHICAGO,USA") never take a
+  Toronto scan's clock. On a cross-border parcel, a scan before every placed one borrows
+  only from one in the origin country: 4PX's feed lists USPS's label before the pickup
+  in China.
+
+  Then, for a parcel not known to cross a border: the clock every courier the reply
+  names keeps at that moment, else the zone routing passes for the parcel's carrier.
+  Last, a GOFO scan at towns that name no state ("Ocala") is read on GOFO's own Los
+  Angeles clock, a guess that is three hours late in the East: that is how Ship24
+  labels it, so the reply keeps the instants it had.
 
   A courier name is the feed that relayed a scan, not where it happened: national posts
   relay the destination's scans under their own name. So a cross-border parcel's

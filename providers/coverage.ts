@@ -9,8 +9,8 @@
  *   leg, undated), or missing a reference another provider knew;
  * - `unknown`: nothing conclusive (errors, challenges, unverified, or only
  *   negatives on references too old to say anything);
- * - `empty`: answered without history (no history, summary only, a sign-in or
- *   postcode prompt);
+ * - `empty`: answered without history the library can use (no history, summary
+ *   only, scans without an instant, a sign-in or postcode prompt);
  * - `excluded`: never history, and it answered with another carrier's parcel
  *   or refused the number format.
  *
@@ -21,7 +21,7 @@
 import data from './coverage.json' with { type: 'json' };
 import type { UniversalSource } from './types.js';
 
-export type CoverageAnswer = 'history' | 'no_history' | 'summary_only' | 'sign_in' | 'postcode_prompt'
+export type CoverageAnswer = 'history' | 'no_history' | 'summary_only' | 'undated' | 'sign_in' | 'postcode_prompt'
   | 'wrong_carrier' | 'refused' | 'error' | 'blocked' | 'unverified' | 'n/a';
 /** History rows, an answer, or history marked partial with the reason. */
 export type CoverageCell = number | CoverageAnswer | { rows: number; partial: string };
@@ -44,9 +44,9 @@ export interface CarrierCoverage {
 export type CoverageTier = 'full' | 'partial' | 'unknown' | 'empty' | 'excluded';
 
 export const COVERAGE_SOURCES: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU'];
-const ANSWERS = new Set<string>(['history', 'no_history', 'summary_only', 'sign_in', 'postcode_prompt',
+const ANSWERS = new Set<string>(['history', 'no_history', 'summary_only', 'undated', 'sign_in', 'postcode_prompt',
   'wrong_carrier', 'refused', 'error', 'blocked', 'unverified', 'n/a']);
-const EMPTY = new Set<CoverageCell>(['no_history', 'summary_only', 'sign_in', 'postcode_prompt']);
+const EMPTY = new Set<CoverageCell>(['no_history', 'summary_only', 'undated', 'sign_in', 'postcode_prompt']);
 
 export const CARRIER_COVERAGE: readonly CarrierCoverage[] = data.carriers as CarrierCoverage[];
 const BY_CARRIER = new Map(CARRIER_COVERAGE.map((entry) => [entry.carrier, entry]));

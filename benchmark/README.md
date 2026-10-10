@@ -54,7 +54,7 @@ node scripts/benchmark.mjs probe                          # every number through
 node scripts/benchmark.mjs probe --carriers dhl,ups       # some carriers
 node scripts/benchmark.mjs probe --unrun                  # numbers or sources never asked
 node scripts/benchmark.mjs probe --sources 17TRACK --retry  # errors and challenges again
-npm run generate                                          # tables below and README counts
+npm run generate                                          # tables below, provider order evidence, README counts
 ```
 
 Answers merge into [results.jsonl](results.jsonl), one line per number and source: the
@@ -68,9 +68,12 @@ the address and then answers `NO_DATA` to every number (see its
 [limitations](../providers/parcelsapp/README.md#limitations)). Ten of those in a row stop
 its lane and are recorded as blocked, which `--retry` asks again.
 
-Provider order does not read this file. It follows the routing evidence in
+Provider order follows the routing evidence in
 [providers/coverage.json](../providers/coverage.json), described in
-[COVERAGE.md](../providers/COVERAGE.md).
+[COVERAGE.md](../providers/COVERAGE.md). `npm run generate` copies each catalog carrier's
+provider answers there (`node scripts/benchmark.mjs routing`), one reference per number
+graded as the tables below grade it, replacing those an earlier run wrote. A number no
+source follows any more is marked stale there.
 
 ## Summary
 

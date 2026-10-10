@@ -3,6 +3,7 @@
  *
  *   node scripts/benchmark.mjs probe [--carriers a,b] [--sources direct,UPU] [--unrun] [--retry]
  *   node scripts/benchmark.mjs merge <results.jsonl>
+ *   node scripts/benchmark.mjs routing [--check]
  *
  * `probe` asks every source for every number of benchmark/carriers.json through
  * coverage-probe.run.ts, then merges the answers into benchmark/results.jsonl.
@@ -13,18 +14,25 @@
  *
  * The browser service is COVERAGE_PROBE_TRAWL_URL (17TRACK, Postal Ninja and the
  * browser-backed adapters need it) and TRACKING_CHROMIUM_PATH a local Chromium.
- * Run `npm run generate` after a merge to redraw the tables and the README counts.
+ * Run `npm run generate` after a merge to redraw the tables, the provider order evidence
+ * and the README counts.
+ *
+ * `routing` copies the providers' answers into providers/coverage.json, the evidence
+ * each catalog carrier's provider order follows: one reference per number, replacing
+ * the ones an earlier run wrote. `npm run generate` runs it; `--check` only fails when
+ * the file is behind.
  */
 
 import { spawnSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { INCONCLUSIVE, keyOf, loadBenchmark, readResults, SOURCES } from './benchmark-data.mjs';
+import { benchmarkReferences, BENCHMARK_NOTE, cellText, grade, INCONCLUSIVE, keyOf, loadBenchmark, readResults, SOURCES } from './benchmark-data.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const resultsPath = path.join(root, 'benchmark', 'results.jsonl');
+const coveragePath = path.join(root, 'providers', 'coverage.json');
 const [command, ...args] = process.argv.slice(2);
 const option = (name) => {
   const index = args.indexOf(`--${name}`);
@@ -55,6 +63,32 @@ function merge(file) {
   console.log(`Merged ${added} answers into benchmark/results.jsonl${dropped.length ? `, dropped ${dropped.length} for numbers no longer listed` : ''}.`);
 }
 
+function routing(check) {
+  const stored = readFileSync(coveragePath, 'utf8');
+  const coverage = JSON.parse(stored);
+  let written = 0;
+  for (const entry of loadBenchmark(root).filter((item) => item.catalog)) {
+    const references = benchmarkReferences(entry);
+    if (!references.length) continue;
+    let item = coverage.carriers.find((candidate) => candidate.carrier === entry.carrier);
+    if (!item) {
+      // A carrier with no evidence yet: its first number becomes the comparison reference.
+      const direct = cellText(grade(entry.numbers[0], 'direct'));
+      item = { carrier: entry.carrier, direct: entry.adapter ? 'Yes' : 'Link only', sample: direct, references: [] };
+      coverage.carriers.push(item);
+    }
+    item.references = [...item.references.filter((reference) => !reference.note?.startsWith(BENCHMARK_NOTE)), ...references];
+    written += references.length;
+  }
+  if (check) {
+    if (JSON.stringify(coverage) === JSON.stringify(JSON.parse(stored))) return;
+    console.error('providers/coverage.json is behind benchmark/results.jsonl. Run npm run generate.');
+    process.exit(1);
+  }
+  writeFileSync(coveragePath, `${JSON.stringify(coverage, null, 2)}\n`);
+  console.log(`Wrote ${written} benchmark references into providers/coverage.json.`);
+}
+
 function probe() {
   const carriers = option('carriers'), sources = option('sources') ?? SOURCES;
   const unknown = sources.filter((source) => !SOURCES.includes(source));
@@ -83,7 +117,8 @@ function probe() {
 
 if (command === 'probe') probe();
 else if (command === 'merge' && args[0]) merge(args[0]);
+else if (command === 'routing') routing(args.includes('--check'));
 else {
-  console.error('Usage: benchmark.mjs probe [--carriers a,b] [--sources direct,UPU] [--unrun] [--retry] | merge <results.jsonl>');
+  console.error('Usage: benchmark.mjs probe [--carriers a,b] [--sources direct,UPU] [--unrun] [--retry] | merge <results.jsonl> | routing [--check]');
   process.exit(1);
 }

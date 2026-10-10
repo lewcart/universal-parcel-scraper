@@ -36,8 +36,9 @@ export function loadBenchmark(root) {
       const answers = Object.fromEntries(SOURCES.map((source) => [source, results.get(keyOf({ carrier: entry.carrier, number: item.number, source }))]));
       return { ...item, source: item.source ?? record?.source ?? null, record: record ?? null, answers };
     });
-    const name = entry.name ?? (catalog ? read(`carriers/${entry.carrier}/carrier.json`).displayName : entry.carrier);
-    return { ...entry, name, catalog, numbers };
+    const definition = catalog ? read(`carriers/${entry.carrier}/carrier.json`) : null;
+    const name = entry.name ?? definition?.displayName ?? entry.carrier;
+    return { ...entry, name, catalog, adapter: definition?.tracking?.adapter ?? null, numbers };
   });
 }
 
@@ -76,6 +77,30 @@ export function carrierGrade(entry, source) {
 }
 
 export const hasHistory = (item) => item.outcome === 'history';
+
+/** How providers/coverage.json names the references `benchmark.mjs routing` writes. */
+export const BENCHMARK_NOTE = 'Benchmark number ';
+
+/**
+ * A carrier's numbers as providers/coverage.json references, graded as the tables
+ * grade them. A number no source has history for any more is stale: a provider's
+ * negative on it says nothing. A refusal there means a provider turned the number's
+ * format down, so only one set by review is kept.
+ */
+export function benchmarkReferences(entry) {
+  return entry.numbers.map((number) => {
+    const grades = Object.fromEntries(SOURCES.map((source) => [source, grade(number, source)]));
+    const results = Object.fromEntries(PROVIDERS.filter((source) => grades[source].outcome !== 'unrun').map((source) => {
+      const item = grades[source];
+      // The library refused to send the number, which says nothing about the provider.
+      if (item.outcome === 'refused' && !number.review?.[source]) return [source, 'n/a'];
+      if (item.outcome !== 'history') return [source, item.outcome];
+      return [source, item.partial.length ? { rows: item.rows, partial: item.partial.join(', ') } : item.rows];
+    }));
+    const stale = !Object.values(grades).some(hasHistory);
+    return { note: `${BENCHMARK_NOTE}${number.number}`, ...(stale ? { stale } : {}), results };
+  }).filter((reference) => Object.keys(reference.results).length);
+}
 export const cellText = (item) => item.outcome === 'history' ? `✓ ${item.rows}${item.partial.length ? ', partial' : ''}` : WORDS[item.outcome] ?? item.outcome;
 
 export function summarize(entries) {

@@ -14,7 +14,7 @@ const AGGREGATORS = COVERAGE_SOURCES.filter((source) => source !== 'UPU');
 const catalog = CARRIER_CATALOG as Record<string, { displayName: string }>;
 
 const WORDS: Record<string, string> = {
-  no_history: 'No history', summary_only: 'Summary only', sign_in: 'Sign-in', postcode_prompt: 'Postcode prompt',
+  no_history: 'No history', summary_only: 'Summary only', undated: 'Undated', sign_in: 'Sign-in', postcode_prompt: 'Postcode prompt',
   wrong_carrier: 'Wrong carrier', refused: 'Refused', error: 'Error', blocked: 'Blocked', unverified: 'Unverified', 'n/a': 'N/A',
 };
 function cellText(cell: CoverageCell | undefined): string {
@@ -99,17 +99,17 @@ describe('coverage evidence', () => {
   });
 
   it('grades each provider from all of a carrier\'s references', () => {
-    // The only aggregator with USPS history.
-    expect(coverageTiers('usps')).toMatchObject({ '17TRACK': 'full', ParcelsApp: 'empty', Ship24: 'empty', 'Postal Ninja': 'empty' });
+    // 17TRACK had every USPS history; ParcelsApp missed one it had.
+    expect(coverageTiers('usps')).toMatchObject({ '17TRACK': 'full', ParcelsApp: 'partial', Ship24: 'empty', 'Postal Ninja': 'empty' });
     // Label only for one reference.
     expect(coverageTiers('ups')).toMatchObject({ Ship24: 'partial', ParcelsApp: 'full' });
-    // 17TRACK held an old parcel but missed a September one the others knew.
-    expect(coverageTiers('mrw')).toMatchObject({ '17TRACK': 'partial', Ship24: 'full', ParcelsApp: 'full', 'Postal Ninja': 'full' });
+    // ParcelsApp missed an Express waybill Ship24 knew.
+    expect(coverageTiers('dhl-express')).toMatchObject({ Ship24: 'full', ParcelsApp: 'partial' });
     // A stranger's parcel or a refused format excludes a provider without history.
-    expect(coverageTiers('yamato')).toMatchObject({ ParcelsApp: 'excluded', Ship24: 'unknown' });
-    expect(coverageTiers('purolator')).toMatchObject({ 'Postal Ninja': 'excluded', ParcelsApp: 'full' });
-    // Negatives on a reference too old to say anything.
-    expect(coverageTiers('chronopost')).toMatchObject({ Ship24: 'unknown', ParcelsApp: 'unknown' });
+    expect(coverageTiers('yamato')).toMatchObject({ ParcelsApp: 'excluded', '17TRACK': 'full' });
+    expect(coverageTiers('purolator')).toMatchObject({ 'Postal Ninja': 'excluded', '17TRACK': 'full' });
+    // Negatives on references too old to say anything.
+    expect(coverageTiers('posti')).toMatchObject({ Ship24: 'unknown', ParcelsApp: 'unknown' });
     expect(coverageTiers('unknown')).toBeNull();
     expect(coverageTiers(null)).toBeNull();
   });

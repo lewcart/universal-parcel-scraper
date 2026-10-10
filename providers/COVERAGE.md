@@ -1,9 +1,11 @@
 # Carrier coverage by tracking source
 
 [coverage.json](coverage.json) is the evidence provider order follows: what each provider
-returned for references of a carrier. Most references were private numbers, which are not
-kept, so this table cannot be rerun as is. The README's figures come from
-[the benchmark](../benchmark/README.md), which runs public numbers and keeps every answer.
+returned for references of a carrier. Most comparison references were private numbers, which
+are not kept, so this table cannot be rerun as is. The README's figures come from
+[the benchmark](../benchmark/README.md), which runs public numbers and keeps every answer;
+its answers are references here too, noted "Benchmark number", which `npm run generate`
+rewrites.
 Provider results come from separate lookups on the same comparison reference;
 unverified cells have no established result.
 A direct sample names an alternative when that reference is outside the adapter's scope or
@@ -152,47 +154,62 @@ asked after the other aggregators whatever its count.
 | [CNE Express](../carriers/cne/README.md) | Yes | ✓ 9 | Unverified | Unverified | Unverified | Unverified | N/A |
 | [Sagawa Express](../carriers/sagawa/README.md) | Yes (status only) | Unverified; alternate summary only | Unverified | Unverified | Unverified | Unverified | N/A |
 | [Spee-Dee](../carriers/spee-dee/README.md) | Yes | Unverified; alternate ✓ 5 | Unverified | Unverified | Unverified | Unverified | N/A |
+| [GOFO France](../carriers/gofo-fr/README.md) | Yes | ✓ 7 | No history | No history | No history | No history | N/A |
+| [DHL eCommerce UK](../carriers/dhl-ecommerce-uk/README.md) | Yes | ✓ 4 | ✓ 4 | No history | ✓ 4 | No history | N/A |
+| [DHL eCommerce Netherlands](../carriers/dhl-ecommerce-nl/README.md) | Yes | ✓ 50 | ✓ 39 | ✓ 50 | ✓ 49 | Undated | N/A |
+| [DHL eCommerce Iberia](../carriers/dhl-ecommerce-es/README.md) | Yes | ✓ 10, partial | ✓ 11 | ✓ 20 | ✓ 11 | No history | No history |
+| [DPD Poland](../carriers/dpd-pl/README.md) | Yes | ✓ 8, partial | ✓ 1, partial | ✓ 12 | ✓ 8 | Undated | N/A |
+| [DHL eCommerce Poland](../carriers/dhl-ecommerce-pl/README.md) | Yes | Summary only | ✓ 12 | No history | ✓ 12 | No history | N/A |
+| [SunYou](../carriers/sunyou/README.md) | Yes | No history | No history | No history | No history | No history | N/A |
 <!-- /GENERATED:coverage -->
 
 <!-- GENERATED:lookup-order -->
 | Source | Carriers with history | Full | Partial | Only source |
 | --- | ---: | ---: | ---: | ---: |
-| Ship24 | 43 | 28 | 15 | 0 |
-| ParcelsApp | 54 | 48 | 6 | 5 |
-| 17TRACK | 43 | 39 | 4 | 4 |
-| Postal Ninja | 44 | 38 | 6 | 2 |
+| Ship24 | 61 | 21 | 40 | 0 |
+| ParcelsApp | 76 | 49 | 27 | 4 |
+| 17TRACK | 75 | 47 | 28 | 4 |
+| Postal Ninja | 50 | 9 | 41 | 0 |
 
 With Postal Ninja enabled, carriers without their own order use ParcelsApp → Ship24 → 17TRACK → Postal Ninja. These carriers have their own:
 
 | Carrier | Order |
 | --- | --- |
-| DHL Express | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
+| DHL Express | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
 | UPS | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | USPS | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | La Poste / Colissimo | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| DPD Switzerland | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | AliExpress / Cainiao | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | China Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| EMS | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | SF Express | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| GLS France | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Chronopost | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| InPost | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
 | PostNL | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
-| Japan Post | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Canada Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Japan Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | India Post | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
 | Correos Spain | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| bpost | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| bpost | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | Austrian Post | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| PostNord | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Aramex | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
+| PostNord | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| 4PX | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | Yanwen | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | JD Logistics | ParcelsApp → Ship24 → 17TRACK |
 | YTO Express | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Yamato Transport | Ship24 → 17TRACK → Postal Ninja |
-| Correios Brazil | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
-| Singapore Post | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Purolator | ParcelsApp → 17TRACK → Ship24 |
+| Yamato Transport | 17TRACK → Ship24 → Postal Ninja |
+| Singapore Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Korea Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Planzer | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Purolator | 17TRACK → ParcelsApp → Ship24 |
 | DTDC | ParcelsApp → Ship24 → 17TRACK |
-| Packeta | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
+| Packeta | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
+| Poczta Polska | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| BRT | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | SEUR | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Relais Colis | ParcelsApp → Ship24 → 17TRACK |
+| Relais Colis | ParcelsApp → 17TRACK → Ship24 |
+| Asendia | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | Pos Malaysia | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | Ukrposhta | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
 | Correos de Chile | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
@@ -202,6 +219,14 @@ With Postal Ninja enabled, carriers without their own order use ParcelsApp → S
 | C Chez Vous | ParcelsApp → Ship24 → 17TRACK |
 | Colisweb | ParcelsApp → 17TRACK |
 | SpeedX | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| DPD UK | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
+| Intelcom / Dragonfly | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Nova Poshta (Ukraine) | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| CNE Express | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
+| DHL eCommerce UK | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
+| DPD Poland | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| DHL eCommerce Poland | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
+| SunYou | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 <!-- /GENERATED:lookup-order -->
 
 ## Retrieval limits

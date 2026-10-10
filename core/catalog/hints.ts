@@ -32,15 +32,17 @@ const CATALOG_NAMES = new Set([
 // leaves the scans of mail from abroad undated, so it is not the hand-off for
 // mail to Malaysia. Poczta Polska dates scans at its
 // delivery office, and other inward scans when they name a Polish office; those
-// relayed from the origin keep its wall clock. Ukrposhta now dates its scans in
-// Ukraine, but its status API can miss mail from abroad, and its portal then
-// needs a browser session for every lookup. The host also checks adapter
-// availability and required inputs before making a request.
+// relayed from the origin keep its wall clock. Ukrposhta dates its scans in
+// Ukraine. Its status API misses some mail from abroad, and its portal then
+// needs a browser session, so a hand-off lookup there can hold a browser for
+// the rest of its budget: forty-five seconds by default, a minute at most. The
+// host also checks adapter availability and required inputs before making a
+// request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
   ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'],
   ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['SE', 'postnord'],
-  ['US', 'usps'],
+  ['UA', 'ukrposhta'], ['US', 'usps'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

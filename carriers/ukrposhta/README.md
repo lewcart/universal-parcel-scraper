@@ -53,6 +53,12 @@ Both sources read the same domestic records. When the status API does not know a
 domestic barcode the browser is not asked. An international reference still gets
 the portal, which also shows the destination post's scans.
 
+A postal item from abroad bound for Ukraine is also looked up at Ukrposhta when
+the sending carrier names no delivery partner; the host decides whether to adopt
+the answer. The status API misses some of that mail, and can say an item has no
+tracking service when the portal shows its journey, so such a lookup can start
+the browser. A lookup takes at most a minute.
+
 Recognition asks the status API alone, over plain HTTP. Its not-found reply makes
 a domestic barcode unknown to Ukrposhta; for an international reference the check
 stays unanswered, since the portal is not asked.

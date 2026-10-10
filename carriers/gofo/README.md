@@ -42,6 +42,11 @@ Detailed delivery prose and proof images are excluded. The weight has no
 verified unit, and estimates have no verified active-parcel provenance, so both
 are omitted. Proof lookup requires a postcode and is not queried.
 
+`clock.ts` lists the zone GOFO gave each station it named (`processLocation`) on the
+corpus's and benchmark's parcels, for relays that keep only the station's name and its
+wall clock (Ship24). A label is created on Pacific time wherever the parcel is, and a
+delivery round, named after the recipient's town, kept its delivery station's zone.
+
 ## Live test
 
 Set `GOFO_TRACKING_NUMBER` outside the repository and run

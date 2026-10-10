@@ -150,11 +150,11 @@ describe('Ship24 result parsing', () => {
 });
 
 describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
-  /** The clocks Ship24's `crawler` feed gives for scans `[timestamp, location]`, as the result keeps them. */
-  function feed(crawler: string, name: string, scans: [string, string | undefined][], data: Record<string, unknown> = {}, tracking = number) {
+  /** The clocks Ship24's `crawler` feed gives for scans `[timestamp, location, status]`, as the result keeps them. */
+  function feed(crawler: string, name: string, scans: [string, string | undefined, string?][], data: Record<string, unknown> = {}, tracking = number) {
     const courier = { crawler_code: crawler, translation: { name } };
     return parseShip24Response({ data: { tracking_number: tracking, couriers: [{ translation: { name } }], ...data,
-      events: scans.map(([timestamp, location], index) => ({ timestamp, location, status: `Scan ${index}`, courier })) } }, tracking)
+      events: scans.map(([timestamp, location, status], index) => ({ timestamp, location, status: status ?? `Scan ${index}`, courier })) } }, tracking)
       .events!.map((scan) => scan.time ?? `local ${String(scan.local_time)}`);
   }
 
@@ -171,11 +171,17 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
       .toEqual(['2026-10-09T14:20:54.000Z', '2026-10-01T12:21:40.000Z', '2026-09-30T17:02:00.000Z']);
   });
 
-  it('reads GOFO\'s -07:00 as a label, and its scans at towns it cannot place on a neighbour\'s clock, else on GOFO\'s own', () => {
+  it('reads GOFO\'s -07:00 as a label on its station\'s clock, which a delivery round and an unlocated scan borrow', () => {
+    // Ocala keeps New York's clock and Melrose Park Chicago's; GOFO dates a label on Pacific time.
     expect(feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', 'Example Town'],
-      ['2026-10-03T08:44:20-07:00', 'Example Town, FL']])).toEqual(['2026-10-03T20:01:13.000Z', '2026-10-03T12:44:20.000Z']);
-    expect(feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', 'Example Town']]))
-      .toEqual(['2026-10-03T23:01:13.000Z']);
+      ['2026-10-03T08:44:20-07:00', 'Ocala'], ['2026-09-25T16:46:27-07:00', undefined], ['2026-09-24T21:46:19-07:00', 'melrose park'],
+      ['2026-09-18T19:47:37-07:00', undefined, 'Shipping Label Created']])).toEqual(['2026-10-03T20:01:13.000Z',
+      '2026-10-03T12:44:20.000Z', '2026-09-25T21:46:27.000Z', '2026-09-25T02:46:19.000Z', '2026-09-19T02:47:37.000Z']);
+    // A town the stations do not list, with no station to borrow from, keeps Ship24's Pacific label, the last guess.
+    // A state still places it, and a town named like a country ("Holland") is in the US.
+    const alone = (location: string) => feed('gofo-express-tracking', 'GOFO Express', [['2026-10-03T16:01:13-07:00', location]]);
+    expect([alone('Example Town'), alone('Holland'), alone('Example Town, FL')])
+      .toEqual([['2026-10-03T23:01:13.000Z'], ['2026-10-03T23:01:13.000Z'], ['2026-10-03T20:01:13.000Z']]);
   });
 
   it('reads PostNL\'s and Amazon UK\'s Z as the clock of the scan\'s country or of the marketplace', () => {

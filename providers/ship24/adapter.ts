@@ -27,6 +27,7 @@ import {
 } from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
+import { gofoScanZone } from '../../carriers/gofo/clock.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { localEvent, numberOf, place, result, type UniversalSource } from '../shared/result.js';
@@ -72,13 +73,17 @@ function regionZone(location: string, northAmerican: boolean): string | null {
 /** 4PX's way of writing a scan abroad: country, state and town ("US  NY  EXAMPLE TOWN 12345"). */
 const COUNTRY_STATE_TOWN = /^([A-Z]{2})\s{2,}([A-Z]{2})\s{2,}(\S.*)$/;
 
-/** A scan location's clock: the single clock of the country it names, else of its US state or Canadian province. */
-function locationZone(location: unknown, northAmerican: boolean): string | null {
+/**
+ * A scan location's clock: the single clock of the country it names, else of
+ * its US state or Canadian province. A feed's one `country` stands for any
+ * country the words name.
+ */
+function locationZone(location: unknown, northAmerican: boolean, country: string | null = null): string | null {
   if (typeof location !== 'string' || !location.trim()) return null;
   const parts = COUNTRY_STATE_TOWN.exec(location.trim());
   if (parts) return countryTimeZone(parts[1]) ?? regionZone(`${parts[3]}, ${parts[2]}, ${parts[1]}`, northAmerican);
-  const country = trackingPlace(location).country;
-  return (country ? countryTimeZone(country) : null) ?? regionZone(location, northAmerican);
+  const named = country ?? trackingPlace(location).country;
+  return (named ? countryTimeZone(named) : null) ?? regionZone(location, northAmerican);
 }
 
 /** Whether a scan's courier works in the US or Canada only, so its state and province codes are theirs. */
@@ -141,8 +146,8 @@ interface Journey {
  * - Canada Post's say -05:00 on every scan, where Canada Post says -04:00 for
  *   Ottawa in October;
  * - UniUni's say Z on the depot's clock, which UniUni's own `pathTime` does too;
- * - GOFO's US feed puts GOFO's -07:00 on the station's clock (`processTimeZone`),
- *   and names towns without their state;
+ * - GOFO's US feed puts GOFO's -07:00 on the clock GOFO gives the scan
+ *   (`processTimeZone`), and names its station (`processLocation`) without a state;
  * - PostNL's say Z on postnl.post's `datetime_local`;
  * - Amazon UK's say Z on the marketplace's clock, which Amazon shows without one;
  * - CTT's say Z, as CTT's own tracker does (carriers/ctt/clock.ts).
@@ -152,18 +157,23 @@ interface Feed {
   code: string;
   /** The zone the feed read the wall clock in to make its instant: 4PX's `tkDate` reads it on China's. */
   shift?: string;
-  /** The clock a scan's location names, before any other reading. */
-  place?: (location: string, journey: Journey) => string | null;
+  /**
+   * The one country the feed's scans are in, whatever their locations' words:
+   * GOFO's US feed names towns without a state, and "Jamaica" is one.
+   */
+  country?: string;
+  /** The clock a scan's location and wording name, before any other reading. */
+  place?: (location: string, journey: Journey, status: string) => string | null;
   /** Where the feed's scans are, for a parcel that stays in one country, when nothing else places them. */
   home?: (location: string) => string | null;
-  /** The carrier's own clock, a guess for a scan nothing else places: GOFO dates its scans on Los Angeles'. */
+  /** The last guess for a scan nothing else places: Ship24's own label, Pacific time, for GOFO's. */
   own?: string;
 }
 
 const RELABELLED_FEEDS: Readonly<Record<string, Omit<Feed, 'code'>>> = {
   'canada-post-tracking': {},
   'uniuni-tracking': {},
-  'gofo-express-tracking': { own: 'America/Los_Angeles' },
+  'gofo-express-tracking': { country: 'US', place: (location, _journey, status) => gofoScanZone(location, status), own: 'America/Los_Angeles' },
   'postnl-tracking': {},
   'amazon-uk-tracking': { home: () => 'Europe/London' },
   'portugal-ctt-tracking': { place: (location, journey) => cttSiteZone(location, [journey.origin, journey.destination]), home: portugalZone },
@@ -209,7 +219,7 @@ function upuZone(journey: Journey, scan: Record<string, unknown>, wall: string):
 /**
  * The zone of a scan whose timestamp names no offset, or a relabelling
  * feed's: it is the scanning carrier's wall clock. Its location's clock comes
- * first (as the feed reads its own sites, then by the names it holds), then
+ * first (as the feed reads its own sites and stations, then by the names it holds), then
  * the country of a parcel that never leaves it, then the side of the border a
  * UPU event's words name. A courier name is the feed that relayed the scan,
  * not where it happened: a national post relays the destination's scans under
@@ -218,8 +228,8 @@ function upuZone(journey: Journey, scan: Record<string, unknown>, wall: string):
  */
 function placedZone(journey: Journey, scan: Record<string, unknown>, wall: string, feed: Feed | null): string | null {
   const location = typeof scan.location === 'string' ? scan.location.trim() : '';
-  const located = feed?.place?.(location, journey)
-    ?? locationZone(location, journey.northAmerican || northAmericanCourier(scan))
+  const located = feed?.place?.(location, journey, typeof scan.status === 'string' ? scan.status : '')
+    ?? locationZone(location, journey.northAmerican || northAmericanCourier(scan), feed?.country ?? null)
     ?? (journey.domestic ? countryTimeZone(journey.domestic) : null) ?? upuZone(journey, scan, wall);
   return located || journey.international ? located : feed?.home?.(location) ?? null;
 }
@@ -317,7 +327,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     const wall = typeof parsed.local_time === 'string' ? parsed.local_time : null;
     // Another feed's offset-less scan takes the parcel's named clock at once;
     // a relabelling feed's first borrows from its neighbours (below).
-    readings.push({ event: parsed, wall, feed, country: locationCountry(raw.location),
+    readings.push({ event: parsed, wall, feed, country: feed?.country ?? locationCountry(raw.location),
       zone: wall ? placedZone(journey, raw, wall, feed) ?? (feed ? null : namedZone(journey, wall)) : null });
   }
   const events = readings.map((reading): CarrierEvent => {

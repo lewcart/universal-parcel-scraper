@@ -19140,10 +19140,10 @@
   },
   {
     "input": "CC085829728EN",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "chronopost"
     ],
     "asked": [
       "chronopost"
@@ -25219,6 +25219,17 @@
   },
   {
     "input": "RR123456785CS",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR123456785EN",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [

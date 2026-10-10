@@ -114,6 +114,24 @@
       "note": "Invented number whose S10 check digit passes but whose CS suffix is a withdrawn country code no postal operator issues today, so it is not international mail."
     },
     {
+      "number": "RR123456785EN",
+      "role": "negative",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-10",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ],
+        "not": [
+          "intl-post"
+        ]
+      },
+      "note": "Invented number whose S10 check digit passes but whose EN suffix names no country, so it is not international mail."
+    },
+    {
       "number": "RO400351158EE",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -394,10 +412,13 @@
         "assessment": "review"
       },
       "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ]
       },
-      "note": "Archived ParcelsApp lookup. ParcelsApp does not attribute a carrier, and the EN suffix names no country, so the issuing post is not known."
+      "note": "Archived ParcelsApp lookup. ParcelsApp does not attribute a carrier, and the EN suffix names no country, so the issuer is not known. Cainiao's tracker and the UPU's do not find it."
     },
     {
       "number": "RL803613962MD",

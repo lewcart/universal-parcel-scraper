@@ -4,7 +4,7 @@ import { isCttExpressTrackingNumber } from './cttExpress.js';
 import { checksumRejections, detectCarrierMatch } from './index.js';
 
 describe('S10-shaped numbers', () => {
-  it.each(['RR123456785TY', 'RR123456785MI', 'RR123456785YW', 'RR123456785CS'])(
+  it.each(['RR123456785TY', 'RR123456785MI', 'RR123456785YW', 'RR123456785CS', 'RR123456785EN'])(
     'leaves %s out of international mail: its suffix names no issuing country',
     (number) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });

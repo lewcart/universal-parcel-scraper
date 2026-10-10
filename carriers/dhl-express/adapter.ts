@@ -26,6 +26,21 @@ export function normalizeNumber(raw: string): string {
   return number;
 }
 
+// The label's lower barcode, "(J)JD" and DHL's ISO piece identifier, in the JD01
+// range Express labels carry. DHL lists it without the (J) data identifier.
+const PIECE_ID = /^J?(JD01\d{16})$/;
+
+/** An Express piece identifier as DHL lists it. */
+export function normalizePieceId(raw: string): string {
+  const piece = PIECE_ID.exec(raw.toUpperCase().replace(/[\s.-]/g, ''))?.[1];
+  if (!piece) throw new InvalidInputError(PROVIDER, 'DHL Express piece identifiers are JD01 and 16 digits');
+  return piece;
+}
+
+function isPieceId(raw: string): boolean {
+  return PIECE_ID.test(raw.toUpperCase().replace(/[\s.-]/g, ''));
+}
+
 export function trackingUrl(raw: string): string {
   return `https://mydhl.express.dhl/gb/en/tracking.html#/results?id=${normalizeNumber(raw)}`;
 }
@@ -46,16 +61,53 @@ function clock(date: unknown, time: unknown, location: string): Pick<CarrierEven
   return instant ? { time: instant.iso } : { local_time: local.toFormat("yyyy-MM-dd'T'HH:mm:ss") };
 }
 
+interface UnifiedWording {
+  missing: string;
+  reused: string;
+}
+
+const WAYBILL_WORDING: UnifiedWording = { missing: 'DHL returned a different waybill', reused: 'DHL returned a reused waybill' };
+
+/**
+ * The one Express shipment of a public DHL web tracking reply that `matches` the query. With
+ * `preferExpress`, records of other divisions give way to an Express one that matches too.
+ */
+function unifiedShipment(payload: unknown, matches: (shipment: Record<string, unknown>) => boolean,
+  wording = WAYBILL_WORDING, preferExpress = false): Record<string, unknown> {
+  if (!isRecord(payload) || !Array.isArray(payload.shipments) || payload.shipments.length > 20
+    || payload.shipments.some((shipment) => !isRecord(shipment))) throw new SchemaError(PROVIDER, 'DHL returned invalid shipments');
+  let matching = payload.shipments.filter(isRecord).filter(matches);
+  if (!matching.length) throw new SchemaError(PROVIDER, wording.missing);
+  if (preferExpress && matching.some((shipment) => shipment.service === 'express')) {
+    matching = matching.filter((shipment) => shipment.service === 'express');
+  }
+  if (matching.length !== 1) throw new IndeterminateError(PROVIDER, wording.reused);
+  const shipment = matching[0]!;
+  if (shipment.service !== 'express') throw new IndeterminateError(PROVIDER, 'DHL returned a different division');
+  return shipment;
+}
+
 /** Public DHL web tracking: bind both the waybill and the Express division. */
 export function parseUnified(payload: unknown, raw: string): CarrierResult {
   const number = normalizeNumber(raw);
-  if (!isRecord(payload) || !Array.isArray(payload.shipments) || payload.shipments.length > 20
-    || payload.shipments.some((shipment) => !isRecord(shipment))) throw new SchemaError(PROVIDER, 'DHL returned invalid shipments');
-  const matching = payload.shipments.filter(isRecord).filter((shipment) => shipment.id === number);
-  if (!matching.length) throw new SchemaError(PROVIDER, 'DHL returned a different waybill');
-  if (matching.length !== 1) throw new IndeterminateError(PROVIDER, 'DHL returned a reused waybill');
-  const shipment = matching[0]!;
-  if (shipment.service !== 'express') throw new IndeterminateError(PROVIDER, 'DHL returned a different division');
+  return unifiedResult(unifiedShipment(payload, (shipment) => shipment.id === number));
+}
+
+/**
+ * A piece identifier's reply is its shipment: the piece must be one of the
+ * shipment's pieces, and the shipment's waybill becomes the canonical number.
+ */
+export function parseUnifiedPiece(payload: unknown, raw: string): CarrierResult {
+  const piece = normalizePieceId(raw);
+  // DHL Paket may add its record of the piece's last mile, under the piece itself, beside the Express shipment.
+  const shipment = unifiedShipment(payload, (candidate) => candidate.id === piece
+    || (isRecord(candidate.details) && Array.isArray(candidate.details.pieceIds) && candidate.details.pieceIds.includes(piece)),
+  { missing: 'DHL returned a shipment that does not list the piece', reused: 'DHL returned several shipments that list the piece' }, true);
+  if (typeof shipment.id !== 'string' || !isValidDhlExpressWaybill(shipment.id)) throw new SchemaError(PROVIDER, 'DHL returned no waybill for the piece');
+  return { ...unifiedResult(shipment), canonical_tracking_number: shipment.id };
+}
+
+function unifiedResult(shipment: Record<string, unknown>): CarrierResult {
   if (!Array.isArray(shipment.events) || shipment.events.length > 1000) throw new SchemaError(PROVIDER, 'DHL returned invalid events');
   if (!shipment.events.length) throw new IndeterminateError(PROVIDER, 'DHL has no shipment activity');
   const event = (row: unknown): CarrierEvent => {
@@ -146,11 +198,23 @@ export class DhlExpressTracker {
   }
 
   async browser(number: string, context?: TrackingContext): Promise<CarrierResult> {
+    const waybill = normalizeNumber(number);
+    return parseUnified(await this.capture(waybill, context), waybill);
+  }
+
+  /** The mobile API takes waybills only; DHL's global page resolves a piece to its waybill. */
+  async browserPiece(raw: string, context?: TrackingContext): Promise<CarrierResult> {
+    const piece = normalizePieceId(raw);
+    return parseUnifiedPiece(await this.capture(piece, context), piece);
+  }
+
+  /** The global page's own tracking reply for exactly this query, after its verification. */
+  private async capture(number: string, context?: TrackingContext): Promise<unknown> {
     const budget = lookupBudget(context, 45_000, PROVIDER);
     if (!this.environment.trawl) throw new ChallengeError(PROVIDER, 'DHL Express requires the browser tracking service');
     const timeoutMs = budget.remainingMs() - BROWSER_CLEANUP_ALLOWANCE_MS;
     if (timeoutMs < 1) throw new BudgetExceededError(PROVIDER, budget.budgetMs);
-    const page = await this.environment.trawl.scrape({ url: `https://www.dhl.com/global-en/home/tracking/tracking-parcel.html?submit=1&tracking-id=${normalizeNumber(number)}`, skipHttp: true, maxTier: 3,
+    const page = await this.environment.trawl.scrape({ url: `https://www.dhl.com/global-en/home/tracking/tracking-parcel.html?submit=1&tracking-id=${number}`, skipHttp: true, maxTier: 3,
       maxTimeout: timeoutMs, captureResponses: [BROWSER_API], settleTimeout: timeoutMs,
     }, { provider: PROVIDER, timeoutMs, signal: budget.signal, maxBytes: 6_000_000, requireSolved: false });
     budget.signal.throwIfAborted();
@@ -174,12 +238,18 @@ export class DhlExpressTracker {
     if (response.status >= 400) throw new UpstreamHttpError(PROVIDER, response.status);
     if (response.body === null) throw new TransportError(PROVIDER, 'DHL Express returned no complete matching browser response');
     if (response.status !== 200 || Buffer.byteLength(response.body) > MAX_BYTES) throw new SchemaError(PROVIDER, 'DHL Express returned invalid browser data');
-    return parseUnified(parseJsonBytes(new TextEncoder().encode(response.body), PROVIDER), number);
+    return parseJsonBytes(new TextEncoder().encode(response.body), PROVIDER);
   }
 
   fetch(raw: string, context?: TrackingContext): Promise<CarrierResult> {
+    const run = { carrier: 'dhl-express', budgetMs: context?.budgetMs ?? 45_000, signal: context?.signal, recorder: this.environment.recorder };
+    if (isPieceId(raw)) {
+      const piece = normalizePieceId(raw);
+      // Without the browser service the step reports that it needs one.
+      return runSteps(run, [{ id: 'trawl', run: ({ signal, remainingMs }) => this.browserPiece(piece, { signal, budgetMs: remainingMs }) }]);
+    }
     const number = normalizeNumber(raw);
-    return runSteps({ carrier: 'dhl-express', budgetMs: context?.budgetMs ?? 45_000, signal: context?.signal, recorder: this.environment.recorder }, [
+    return runSteps(run, [
       { id: 'direct', run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(remainingMs, 10_000) }) },
       { id: 'trawl', enabled: !!this.environment.trawl, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
     ]);
@@ -189,9 +259,13 @@ export class DhlExpressTracker {
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new DhlExpressTracker(environment);
   return { id: 'dhl-express', recordsSteps: true, steps: ['direct', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeNumber(number))),
+    recognize: async (number, context) => {
+      // Only the browser phase can resolve a piece; over HTTP it stays inconclusive.
+      if (isPieceId(number)) throw new IndeterminateError(PROVIDER, 'DHL Express resolves piece identifiers on its browser page only');
+      return recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeNumber(number)));
+    },
     recognizeWithBrowser: async (number, context, previousError) => {
       if (previousError instanceof RateLimitedError || previousError instanceof SchemaError || previousError instanceof NotFoundError) throw previousError;
-      return recognizeFromBrowserLookup(() => tracker.browser(normalizeNumber(number), context));
+      return recognizeFromBrowserLookup(() => isPieceId(number) ? tracker.browserPiece(number, context) : tracker.browser(normalizeNumber(number), context));
     } };
 };

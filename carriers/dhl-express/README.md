@@ -7,6 +7,16 @@ Detection shares the [MyDHL+ tracking page](https://mydhl.express.dhl/gb/en/trac
 waybill check with the adapter. A passing check prioritizes a candidate; it does
 not confirm the carrier or the existence of a shipment.
 
+An Express label's lower barcode, printed `(J)JD`, is DHL's piece identifier.
+Detection gives its `JD01` range to DHL Express; DHL Paket's tracker answers
+these numbers as another DHL service and sends them to DHL's global page. Only
+`JD0146` pieces have been confirmed on live Express shipments. Other `JD01`
+ranges appear on DHL's tracking pages but are no longer tracked; the rule covers
+them by inference, as DHL Paket's plates use other prefixes. Typed with its
+`(J)`, a piece of the `JD0146` range goes to DHL Express too. Other `JJD`
+numbers stay DHL Paket's licence plates, and the adapter reads any `(J)JD01`
+piece when DHL Express is named.
+
 ## Retrieval
 
 `direct` asks the mobile guest API for one waybill. It checks the application's
@@ -23,6 +33,12 @@ lets the page complete its verification and repeat tracking after an HTTP 428;
 the intermediate challenge is not a shipment answer. HTTP recognition never
 launches a browser; browser recognition is a separate opt-in phase and retains
 its history.
+
+A piece identifier goes straight to the global page, because the mobile API
+tracks waybills. The page resolves the piece to its shipment: the reply must
+list the piece among the shipment's pieces and name an Express waybill, which
+becomes `canonical_tracking_number`. Without the browser service a piece cannot
+be tracked, and HTTP recognition leaves it inconclusive.
 
 The global portal's SEC-CPT flow runs its own JavaScript proof of work before
 retrying `utapi`. Observe that exchange in the scoped browser helper before

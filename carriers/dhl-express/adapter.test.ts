@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
-import { adapter, DhlExpressTracker, normalizeNumber, parse, parseMobile, parseUnified } from './adapter.js';
+import { adapter, DhlExpressTracker, normalizeNumber, normalizePieceId, parse, parseMobile, parseUnified, parseUnifiedPiece } from './adapter.js';
 import { SETTINGS_TTL_MS } from './mobile.js';
 import { dhlExpressStage } from './status.js';
 
@@ -345,5 +345,72 @@ describe('DHL public browser API', () => {
     expect(await adapter(browser([captured(missing, 404)])).recognizeWithBrowser!(number)).toEqual({ known: false, lastActivityAt: null });
     await expect(new DhlExpressTracker(browser([captured({}, 404)])).browser(number)).rejects.not.toThrow(NotFoundError);
     await expect(new DhlExpressTracker(browser([captured(missing, 404, `https://www.dhl.com/utapi?trackingNumber=${number}&trackingNumber=1234567880`)])).browser(number)).rejects.toThrow('no complete matching');
+  });
+});
+
+describe('DHL Express piece identifiers', () => {
+  const piece = 'JD014600000000000001';
+  const piecePayload = () => {
+    const data = unifiedPayload();
+    data.shipments[0]!.details.pieceIds = [piece, 'JD014600000000000002'];
+    return data;
+  };
+  const pieceCapture = (body: unknown = piecePayload(), status = 200) => captured(body, status, `https://www.dhl.com/utapi?trackingNumber=${piece}&language=en`);
+  const browserEnvironment = (responses: ReturnType<typeof captured>[]) => {
+    const trawl = new TrawlClient('https://browser.example');
+    const scrape = vi.spyOn(trawl, 'scrape').mockResolvedValue({ url: '', html: '', cookies: [], userAgent: null, tier: 2, statusCode: 200, raw: {}, capturedResponses: responses });
+    const fetcher = vi.fn<typeof fetch>();
+    return { env: environment(fetcher, trawl), scrape, fetcher };
+  };
+
+  it('reads the piece as DHL lists it, with or without the label\'s data identifier', () => {
+    expect(normalizePieceId(piece)).toBe(piece);
+    expect(normalizePieceId('jjd0146 0000 0000 0000 01')).toBe(piece);
+    for (const other of ['JD024600000000000001', 'JD149000000000000001', 'JD01460000000000001', number]) {
+      expect(() => normalizePieceId(other)).toThrow(InvalidInputError);
+    }
+  });
+  it('tracks the shipment that lists the piece and reports its waybill as the canonical number', () => {
+    const result = parseUnifiedPiece(piecePayload(), piece);
+    expect(result).toMatchObject({ status: 'delivered', canonical_tracking_number: number, destination_country: 'CA',
+      events: [{ time: '2026-10-05T15:06:00-04:00', stage: 'delivered' }, { stage: 'out_for_delivery' }, { stage: 'accepted' }] });
+    expect(JSON.stringify(result)).not.toMatch(/PRIVATE|private|pieceIds|JD0146/);
+  });
+  it('rejects a reply without the piece, another division, a missing waybill and a reused piece', () => {
+    expect(() => parseUnifiedPiece(unifiedPayload(), piece)).toThrow('does not list the piece');
+    const parcel = piecePayload(); parcel.shipments[0]!.id = piece; parcel.shipments[0]!.service = 'parcel-de';
+    expect(() => parseUnifiedPiece(parcel, piece)).toThrow(IndeterminateError);
+    const noWaybill = piecePayload(); noWaybill.shipments[0]!.id = '1234567890';
+    expect(() => parseUnifiedPiece(noWaybill, piece)).toThrow(SchemaError);
+    const reused = piecePayload(); reused.shipments.push({ ...reused.shipments[0]!, id: '1234567902' });
+    expect(() => parseUnifiedPiece(reused, piece)).toThrow(new IndeterminateError('DHL Express', 'DHL returned several shipments that list the piece'));
+  });
+  it('tracks the Express shipment when DHL Paket adds its own record of the piece', () => {
+    const mixed = piecePayload();
+    mixed.shipments.push({ ...mixed.shipments[0]!, id: piece, service: 'parcel-de' });
+    expect(parseUnifiedPiece(mixed, piece)).toMatchObject({ status: 'delivered', canonical_tracking_number: number });
+    mixed.shipments.reverse();
+    expect(parseUnifiedPiece(mixed, piece)).toMatchObject({ canonical_tracking_number: number });
+  });
+  it('resolves a piece on the global page only, never through the mobile API', async () => {
+    const { env, scrape, fetcher } = browserEnvironment([pieceCapture({}, 428), pieceCapture()]);
+    const recorder = { ...NOOP_RECORDER, step: vi.fn() };
+    expect(await new DhlExpressTracker({ ...env, recorder }).fetch('JJD014600000000000001')).toMatchObject({ canonical_tracking_number: number, status: 'delivered' });
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(scrape).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
+      url: `https://www.dhl.com/global-en/home/tracking/tracking-parcel.html?submit=1&tracking-id=${piece}`, captureResponses: ['https://www.dhl.com/utapi'] }), expect.anything());
+    expect(recorder.step).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ step: 'trawl', outcome: 'ok', fallbackFrom: null }));
+    const missing = { status: 404, title: 'No result found', detail: 'No shipment with given tracking number found.' };
+    await expect(new DhlExpressTracker(browserEnvironment([pieceCapture(missing, 404)]).env).fetch(piece)).rejects.toThrow(NotFoundError);
+    await expect(new DhlExpressTracker(browserEnvironment([captured()]).env).fetch(piece)).rejects.toThrow('no complete matching');
+  });
+  it('needs the browser service for a piece and keeps HTTP recognition inconclusive', async () => {
+    const fetcher = vi.fn<typeof fetch>();
+    await expect(adapter(environment(fetcher)).track({ number: piece })).rejects.toThrow(ChallengeError);
+    await expect(adapter(environment(fetcher)).recognize!(piece, { budgetMs: 1000 })).rejects.toThrow(IndeterminateError);
+    expect(fetcher).not.toHaveBeenCalled();
+    const { env } = browserEnvironment([pieceCapture()]);
+    expect(await adapter(env).recognizeWithBrowser!(piece, { budgetMs: 20_000 }, new IndeterminateError('DHL Express', 'HTTP')))
+      .toMatchObject({ known: true, result: { canonical_tracking_number: number } });
   });
 });

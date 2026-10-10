@@ -76,3 +76,24 @@ describe('continental shipment candidates', () => {
     }
   });
 });
+
+describe('DHL piece identifiers', () => {
+  // Synthetic identifiers in the JD01 range Express labels print as "(J)JD".
+  it('gives an Express piece identifier to DHL Express, however the label is typed', () => {
+    for (const input of ['JD014600012345678901', 'jd0146 0001 2345 6789 01', '(J)JD014600012345678901', 'JJD014600012345678901',
+      'https://www.dhl.com/de-de/home/tracking.html?submit=1&tracking-id=JD014600012345678901']) {
+      expect(parseTrackingInput(input)).toMatchObject({ carrier: 'dhl-express', confidence: 'high', candidates: ['dhl-express'] });
+    }
+  });
+
+  it('offers DHL for a DHL Paket plate typed without its J, and keeps other JJD numbers with DHL', () => {
+    for (const plate of ['JD149000012345678901', 'JD000390012345678901']) {
+      expect(detectCarrierMatch(plate)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhl'] });
+    }
+    expect(detectCarrierMatch('JD0146000123456789012')).toMatchObject({ carrier: 'unknown', confidence: 'none' });
+    // Only the 0146 range is seen with its J. DHL Paket's plates, and JD01 ranges not seen with their J, stay with DHL.
+    for (const number of ['JJD000390012345678901', 'JJD149150012345678901', 'JJD012959123456789012', 'JJD01460001234567890123']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    }
+  });
+});

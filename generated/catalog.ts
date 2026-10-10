@@ -503,7 +503,7 @@ export const CARRIER_CATALOG = {
         "checksum": "s10"
       },
       {
-        "pattern": "^JJD(?!\\d{16}$)[A-Z0-9]{8,}$",
+        "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
         "confidence": "high"
       },
       {
@@ -511,12 +511,12 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^\\d{10}$",
+        "pattern": "^JD(?!01)\\d{18}$",
         "confidence": "low"
       },
       {
-        "pattern": "^JD\\d{18}$",
-        "confidence": "high"
+        "pattern": "^\\d{10}$",
+        "confidence": "low"
       },
       {
         "pattern": "^0034043[345]\\d{12}$",
@@ -5344,6 +5344,14 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "dhl-express",
         "preferred": true
+      },
+      {
+        "pattern": "^JD01\\d{16}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JJD0146\\d{14}$",
+        "confidence": "high"
       }
     ]
   },
@@ -8436,7 +8444,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "spring-gds": ["spring-gds-1","spring-gds-2","spring-gds-3"],
   "postlogistics": ["postlogistics-dashed-reference","postlogistics-compact-reference"],
   "dachser": [],
-  "dhl": ["dhl-1","dhl-2","dhl-8","dhl-3","dhl-4","dhl-5","dhl-6","dhl-7"],
+  "dhl": ["dhl-1","dhl-9","dhl-8","dhl-10","dhl-3","dhl-5","dhl-6","dhl-7"],
   "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5"],
   "ups": ["ups-1","ups-3","ups-2"],
   "amazon-logistics": ["amazon-logistics-1"],
@@ -8552,7 +8560,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-ecommerce-nl": ["dhl-ecommerce-nl-1","dhl-ecommerce-nl-2","dhl-ecommerce-nl-3"],
   "dhl-ecommerce-pl": ["dhl-ecommerce-pl-1"],
   "dhl-ecommerce-uk": ["dhl-ecommerce-uk-2","dhl-ecommerce-uk-1"],
-  "dhl-express": ["dhl-express-waybill"],
+  "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label"],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],

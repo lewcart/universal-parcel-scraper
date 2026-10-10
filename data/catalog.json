@@ -501,7 +501,7 @@
         "checksum": "s10"
       },
       {
-        "pattern": "^JJD(?!\\d{16}$)[A-Z0-9]{8,}$",
+        "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
         "confidence": "high"
       },
       {
@@ -509,12 +509,12 @@
         "confidence": "low"
       },
       {
-        "pattern": "^\\d{10}$",
+        "pattern": "^JD(?!01)\\d{18}$",
         "confidence": "low"
       },
       {
-        "pattern": "^JD\\d{18}$",
-        "confidence": "high"
+        "pattern": "^\\d{10}$",
+        "confidence": "low"
       },
       {
         "pattern": "^0034043[345]\\d{12}$",
@@ -5342,6 +5342,14 @@
         "confidence": "low",
         "checksum": "dhl-express",
         "preferred": true
+      },
+      {
+        "pattern": "^JD01\\d{16}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JJD0146\\d{14}$",
+        "confidence": "high"
       }
     ]
   },

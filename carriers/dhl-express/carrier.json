@@ -67,6 +67,16 @@
       "confidence": "low",
       "checksum": "dhl-express",
       "preferred": true
+    },
+    {
+      "id": "dhl-express-piece",
+      "pattern": "^JD01\\d{16}$",
+      "confidence": "high"
+    },
+    {
+      "id": "dhl-express-piece-label",
+      "pattern": "^JJD0146\\d{14}$",
+      "confidence": "high"
     }
   ]
 }

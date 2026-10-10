@@ -527,10 +527,96 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "dhl",
+        "carrier": "dhl-express",
         "confidence": "high"
       },
-      "note": "An Express piece identifier typed into DHL's tracking page, archived by the Wayback Machine. DHL's global tracking resolves it to the waybill of the Express shipment it belongs to; DHL Paket's page sends it there. The mobile API this adapter uses takes waybills only."
+      "note": "An Express piece identifier typed into DHL's tracking page, archived by the Wayback Machine. DHL's global tracking resolved it to the waybill of the Express shipment it belongs to; DHL Paket's page sends it there."
+    },
+    {
+      "number": "JD014600012767017138",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260803122756/https://www.dhl.com/nl-nl/home/tracking.html?submit=1&tracking-id=JD014600012767017138",
+        "date": "2026-08-03",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "reportedRole": "piece identifier",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "An Express piece identifier typed into DHL's tracking page, archived by the Wayback Machine. DHL's global tracking resolved it to the waybill of a delivered Express shipment, and resolves the same piece with the label's (J) data identifier too."
+    },
+    {
+      "number": "JD014600011678034918",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://marketplace.fnacdarty.com/s/article/Dois-je-obligatoirement-renseigner-un-num%C3%A9ro-de-suivi-tracking-pour-ma-commande?language=fr_BE"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "Published integration example, not a real shipment. The marketplace's DHL row pairs it with an Express waybill, and its DHL Express piece row gives the same format."
+    },
+    {
+      "number": "JD014600011699563274",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://marketplace.fnacdarty.com/s/article/Dois-je-obligatoirement-renseigner-un-num%C3%A9ro-de-suivi-tracking-pour-ma-commande?language=fr_BE"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "Published integration example for DHL Express piece identifiers, not a real shipment."
+    },
+    {
+      "number": "JJD014600012604633124",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260420073313/https://www.dhl.com/de-de/home/tracking.html?submit=1&tracking-id=JJD014600012604633124&tid=expresstracking-de-privatkunden",
+        "date": "2026-04-20",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "reportedRole": "piece identifier",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "An Express piece identifier with the label's (J) data identifier, typed into DHL's German Express tracking and archived by the Wayback Machine. DHL no longer knows it."
+    },
+    {
+      "number": "JJD014600012700678667",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260713100455/https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=JJD014600012700678667",
+        "date": "2026-07-13",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "reportedRole": "piece identifier",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "An Express piece identifier with the label's (J) data identifier, typed into DHL Paket's tracking page and archived by the Wayback Machine. DHL's global tracking resolved it to the waybill of an Express shipment that lists the piece without its J."
     }
   ]
 }

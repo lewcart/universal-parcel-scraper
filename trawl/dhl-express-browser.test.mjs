@@ -36,6 +36,14 @@ test('DHL runner requires the exact Express request and capture endpoint', () =>
   assert.equal(dhlExpressBrowserNumber(url, { captureResponses: [api, 'https://example.test'] }), null);
 });
 
+test('DHL runner accepts an Express piece identifier as DHL lists it', () => {
+  const piece = 'JD014600000000000001';
+  assert.equal(dhlExpressBrowserNumber(url.replace(number, piece), capture), piece);
+  for (const other of ['JJD014600000000000001', 'JD024600000000000001', 'JD01460000000000001', 'jd014600000000000001']) {
+    assert.equal(dhlExpressBrowserNumber(url.replace(number, other), capture), null);
+  }
+});
+
 test('waits through 428 without copying tokens, then captures decoded tracking bytes and closes', async () => {
   const { handlers, state, page, options } = fixture();
   page.goto = async () => {

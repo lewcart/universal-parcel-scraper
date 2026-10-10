@@ -90,8 +90,8 @@
       "checksum": "s10"
     },
     {
-      "id": "dhl-2",
-      "pattern": "^JJD(?!\\d{16}$)[A-Z0-9]{8,}$",
+      "id": "dhl-9",
+      "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
       "confidence": "high"
     },
     {
@@ -100,14 +100,14 @@
       "confidence": "low"
     },
     {
-      "id": "dhl-3",
-      "pattern": "^\\d{10}$",
+      "id": "dhl-10",
+      "pattern": "^JD(?!01)\\d{18}$",
       "confidence": "low"
     },
     {
-      "id": "dhl-4",
-      "pattern": "^JD\\d{18}$",
-      "confidence": "high"
+      "id": "dhl-3",
+      "pattern": "^\\d{10}$",
+      "confidence": "low"
     },
     {
       "id": "dhl-5",

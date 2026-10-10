@@ -26,11 +26,19 @@ once.
 
 - `JVGL` numbers belong to [DHL eCommerce Netherlands](../dhl-ecommerce-nl/README.md):
   this endpoint answers them as another DHL service.
+- `JD01` piece identifiers belong to [DHL Express](../dhl-express/README.md):
+  this endpoint answers them as another DHL service too. Typed with the
+  label's `(J)`, as `JJD0146`, they go to DHL Express as well: this endpoint
+  then shows only the last-mile scans DHL Paket adds when it delivers the piece.
 - `JJD` licence plates are shared by DHL's European parcel networks and detected
   as DHL Paket. The adapter of another network, such as
   [Poland's](../dhl-ecommerce-pl/README.md), reads one when its carrier is named.
   A plate of `JJD` and sixteen digits is the length Yodel, now InPost's UK
   network, prints, so it only suggests DHL beside [InPost](../inpost/README.md).
+- A plate typed without its `(J)`, as `JD` and eighteen digits outside the
+  `JD01` range, is still DHL Paket's: DHL's global tracking lists that form as
+  the piece of a DHL Paket shipment. It only suggests DHL, because this
+  endpoint's answer for that form is unconfirmed.
 - `0034043…` numbers are SSCCs. A failing GS1 check digit keeps one a suggestion.
 - Twelve-digit parcel numbers are Identcodes, closed by Deutsche Post's check
   digit (weights 4 and 9 from the left, mod 10). FedEx, Japan Post, Sagawa and

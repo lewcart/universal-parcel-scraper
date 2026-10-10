@@ -6,10 +6,12 @@ const MAX_BODY = 1_000_000;
 export function dhlExpressBrowserNumber(rawUrl, capture = {}) {
   let url;
   try { url = new URL(rawUrl); } catch { return null; }
-  const number = url.searchParams.get('tracking-id');
+  const number = url.searchParams.get('tracking-id') ?? '';
+  const waybill = /^\d{10}$/.test(number) && Number(number.slice(0, 9)) % 7 === Number(number[9]);
+  // An Express piece identifier, which the page resolves to its waybill.
+  const piece = /^JD01\d{16}$/.test(number);
   if (url.origin !== ORIGIN || url.username || url.password || url.pathname !== PAGE || url.hash
-    || [...url.searchParams].length !== 2 || url.searchParams.get('submit') !== '1'
-    || !/^\d{10}$/.test(number ?? '') || Number(number.slice(0, 9)) % 7 !== Number(number[9])
+    || [...url.searchParams].length !== 2 || url.searchParams.get('submit') !== '1' || !(waybill || piece)
     || capture.captureResponses?.length !== 1 || capture.captureResponses[0] !== API) return null;
   return number;
 }

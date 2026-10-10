@@ -30,9 +30,9 @@ One step, `trawl`, with a 30 s budget:
 6. 17TRACK picks the carrier from the number, and for some carriers it picks another one
    (GLS France's numbers read as GLS's group service, which shows one scan, DPD Poland's
    as DPD Germany) or none. When the parcel's carrier (`TrackingInput.carrier`) is listed
-   in [carriers.ts](carriers.ts) and the first answer has no history, or none from that
-   carrier, the page is loaded again with 17TRACK's key for it (`&fc={key}`), as a visitor
-   picks a carrier on the page. That answer is kept when it has at least as many dated
+   in [carriers.ts](carriers.ts) and the first answer has no history, is still polling when
+   the page settles, or has none from that carrier, the page is loaded again with 17TRACK's
+   key for it (`&fc={key}`), as a visitor picks a carrier on the page. That answer is kept when it has at least as many dated
    scans; otherwise the first one stands. It needs 5 s of the budget left.
 
 This needs the pinned TRAWL compatibility build ([ops/trawl](../../trawl/README.md)).

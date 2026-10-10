@@ -195,9 +195,16 @@ const settled = (outcome: Outcome): CarrierResult => {
 
 const datedScans = (result: CarrierResult): number => result.events?.filter((event) => event.time).length ?? 0;
 
-/** Whether 17TRACK's own detection left the carrier out: no history, or scans from other carriers only. */
+/**
+ * Whether 17TRACK's own detection left the carrier out: no history, still
+ * polling when the page settled, or scans from other carriers only.
+ */
 function missesCarrier(outcome: Outcome, keys: readonly number[]): boolean {
-  if ('error' in outcome) return outcome.error instanceof NotFoundError || outcome.error instanceof SeventeenTrackNoHistoryError;
+  if ('error' in outcome) {
+    const { error } = outcome;
+    return error instanceof NotFoundError || error instanceof SeventeenTrackNoHistoryError
+      || (error instanceof SeventeenTrackLookupError && error.reason === 'lookup_pending');
+  }
   return !outcome.result.events?.some(({ reporting_carrier_key: key }) => typeof key === 'number' && keys.includes(key));
 }
 
@@ -206,8 +213,8 @@ export class SeventeenTrackTracker {
 
   /**
    * `carrier` is the catalog carrier the parcel is filed under. When 17TRACK's own
-   * detection finds no history, or only another carrier's, the lookup is asked
-   * again for that carrier, as a visitor picks one on the page. That answer wins
+   * detection finds no history, is still polling, or finds only another carrier's,
+   * the lookup is asked again for that carrier, as a visitor picks one on the page. That answer wins
    * when it has at least as many dated scans.
    */
   async fetch(trackingNumber: string, budgetMs = this.options.timeoutMs ?? 30_000, signal?: AbortSignal, postcode: string | null = null,

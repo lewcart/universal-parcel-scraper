@@ -322,11 +322,14 @@ describe('17TRACK carrier choice', () => {
     await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({ reported_carriers: ['GLS'] });
   });
 
-  it('turns a detection without history into the carrier\'s history, and keeps the first answer when that has none', async () => {
+  it('turns a detection without history, or still polling, into the carrier\'s history, and keeps the first answer when that has none', async () => {
+    const polling = { meta: { code: 200 }, shipments: [{ number, code: 100, shipment: null }] };
+    for (const first of [noHistory(), polling]) {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(captured(first))
+        .mockResolvedValueOnce(captured(reply(GLS_FR, 'GLS (FR)', [20]), { url: chosen }));
+      await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({ current_stage: 'in_transit' });
+    }
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(captured(noHistory()))
-      .mockResolvedValueOnce(captured(reply(GLS_FR, 'GLS (FR)', [20]), { url: chosen }));
-    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({ current_stage: 'in_transit' });
-    fetcher.mockReset().mockResolvedValueOnce(captured(noHistory()))
       .mockResolvedValueOnce(captured(postalHistory([], 'NotFound'), { url: chosen }));
     await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).rejects.toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
     fetcher.mockReset().mockResolvedValueOnce(captured(noHistory())).mockRejectedValueOnce(new TypeError('fetch failed'));

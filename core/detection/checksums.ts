@@ -28,7 +28,7 @@ import {
   isValidTntConsignmentNumber,
   isValidUkrposhtaBarcode,
 } from './numericChecksums.js';
-import { isValidS10TrackingNumber } from './s10.js';
+import { isValidPosLajuConsignment, isValidS10TrackingNumber } from './s10.js';
 import { isValidSfExpressWaybill } from './sfExpress.js';
 import { isValidOnTracTrackingNumber, isValidUpsTrackingNumber } from './ups.js';
 import { isValidUspsPackageBarcode } from './usps.js';
@@ -60,4 +60,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   'fedex-ground-96': isValidFedExGround96Barcode,
   'fedex-1d': isValidFedEx1DBarcode,
   identcode: isValidDhlIdentcode,
+  'pos-laju': isValidPosLajuConsignment,
 };

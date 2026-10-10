@@ -449,7 +449,8 @@
             "sf-express",
             "fedex-ground-96",
             "fedex-1d",
-            "identcode"
+            "identcode",
+            "pos-laju"
           ]
         },
         "preferred": {

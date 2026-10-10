@@ -4052,7 +4052,8 @@
       },
       {
         "pattern": "^[A-Z]{3}\\d{9}MY$",
-        "confidence": "high"
+        "confidence": "high",
+        "checksum": "pos-laju"
       }
     ]
   },

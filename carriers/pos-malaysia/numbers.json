@@ -233,6 +233,26 @@
       "note": "A Pos Malaysia tracking link archived by the Wayback Machine. A Pos Laju consignment with the ERD prefix; the tracker echoes it with no history left."
     },
     {
+      "number": "EHE302555624MY",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260815233620/https://tracking.pos.com.my/tracking/EHE302555624MY",
+        "date": "2026-08-15",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "Pos Laju consignment",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "pos-malaysia",
+        "confidence": "high"
+      },
+      "note": "A Pos Malaysia tracking link archived by the Wayback Machine. Three letters, nine digits whose last is an S10 check digit, and MY; the tracker returns its history through delivery."
+    },
+    {
       "number": "EHE231870308MY",
       "role": "shipment",
       "evidence": "public_shipment_report",

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { recognitionAskedCarriers, recognitionCandidates } from '../catalog/recognition.js';
-import { detectCarrierMatch, parseTrackingInput } from './index.js';
+import { checksumRejections, detectCarrierMatch, parseTrackingInput } from './index.js';
 
 describe('prefixed Asian shipment references and shared numeric formats', () => {
   it('selects the documented SF waybill family without widening bare numeric attribution', () => {
@@ -73,6 +73,17 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     for (const number of ['SPXID000000000001', 'SPXMY00000000001C']) {
       expect(detectCarrierMatch(number).carrier).not.toBe('spx-ph');
       expect(detectCarrierMatch(number).candidates).not.toContain('spx-ph');
+    }
+  });
+
+  it('selects Pos Laju consignments only when their S10 check digit holds', () => {
+    // The ninth digit checks the eight before it; the third letter is outside the check.
+    for (const number of ['EHE000000005MY', 'ERA123456785MY', 'XYZ000000080MY', 'ehe 000000005 my']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'pos-malaysia', confidence: 'high' });
+    }
+    for (const number of ['EHE000000006MY', 'ERA123456780MY', 'XYZ000000085MY']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('pos-malaysia');
+      expect(checksumRejections(number)).toEqual([{ carrier: 'pos-malaysia', rule: 'pos-malaysia-4', checksum: 'pos-laju' }]);
     }
   });
 });

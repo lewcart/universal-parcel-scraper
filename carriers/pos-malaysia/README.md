@@ -2,7 +2,7 @@
 
 Tracks Pos Malaysia and Pos Laju items through the anonymous API used by the official tracking app.
 
-Besides MYPM barcodes and MY postal items, it takes Pos Laju consignments, three letters, nine digits and MY, whose ninth digit is an S10 check digit, and inbound postal items under their origin's S10 number, which the tracker follows to delivery in Malaysia.
+Besides MYPM barcodes and MY postal items, it takes Pos Laju consignments, three letters, nine digits and MY, whose ninth digit is the S10 check digit of the eight before it, and inbound postal items under their origin's S10 number, which the tracker follows to delivery in Malaysia. Detection names Pos Malaysia only when that check digit holds; the adapter still accepts a consignment whose digit fails.
 
 ## How it works
 

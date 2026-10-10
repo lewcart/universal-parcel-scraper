@@ -369,6 +369,23 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(completeBy(hasGs1CheckDigit, r.string(18)), completeBy(hasGs1CheckDigit, r.string(20)));
   },
 
+  'pos-laju'(r) {
+    // Three letters, nine digits whose last is the S10 check digit, then MY.
+    const valid = ['EHE', 'ERA', 'ENE', 'ERD', 'ENB', 'ERB', 'REL', 'XYZ'].map((letters) => r.complete(letters + r.string(8), 'MY'));
+    standard(r, valid, 11);
+    // 11 minus the sum mod 11: 10 becomes 0 and 11 becomes 5.
+    const ten = r.find(() => r.string(8), (serial) => weightedSum(serial, S10_WEIGHTS) % 11 === 1);
+    const eleven = r.find(() => r.string(8), (serial) => weightedSum(serial, S10_WEIGHTS) % 11 === 0);
+    r.add(`EHE${ten}0MY`, `EHE${ten}1MY`, `EHE${eleven}5MY`, `EHE${eleven}0MY`, `EHE${eleven}1MY`);
+    // Three letters before the digits and MY after them; the letters are outside the check.
+    const first = valid[0]!;
+    r.add(`ZZZ${first.slice(3)}`, first.slice(1), `E${first}`, `EH1${first.slice(3)}`);
+    r.add(`${first.slice(0, 12)}MX`, `${first.slice(0, 12)}SG`, `${first.slice(0, 12)}M`, `${first}Y`);
+    // The check takes a normalized number, as detection passes it.
+    r.add(`${first.slice(0, 3)} ${first.slice(3, 12)} MY`);
+    r.add('AAA000000005MY', 'ZZZ999999995MY');
+  },
+
   s10(r) {
     // Service letters, then the issuing country.
     const valid = ['RR CN', 'LX FR', 'CP GB', 'EE US', 'UA CH', 'LZ DE', 'RA NL', 'CY SE', 'LP JP', 'EA BR', 'XU ES', 'VV YP']

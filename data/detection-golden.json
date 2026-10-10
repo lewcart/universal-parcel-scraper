@@ -20606,6 +20606,14 @@
     ]
   },
   {
+    "input": "EHE302555624MY",
+    "carrier": "pos-malaysia",
+    "confidence": "high",
+    "candidates": [
+      "pos-malaysia"
+    ]
+  },
+  {
     "input": "EJ205870830AU",
     "carrier": "intl-post",
     "confidence": "high",

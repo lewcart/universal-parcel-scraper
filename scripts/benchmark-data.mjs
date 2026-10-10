@@ -56,10 +56,13 @@ export function grade(number, source) {
     .map((peer) => number.answers[peer]).filter((peer) => peer?.outcome === 'history');
   const most = Math.max(...peers.map((peer) => peer.rows));
   const newest = Math.max(...peers.map((peer) => Date.parse(peer.latest ?? '') || 0));
+  // A dedicated adapter's wall clocks are its carrier's own, shown as they are.
+  const undated = answer.undated - (source === 'direct' ? answer.wall ?? 0 : 0);
   const partial = [
     answer.rows * 3 <= most && peers.length > 1 ? 'a third of the rows or fewer' : null,
-    answer.undated * 2 > answer.rows ? 'undated rows' : null,
-    newest - (Date.parse(answer.latest ?? '') || 0) > DAY ? 'stops early' : null,
+    undated * 2 > answer.rows ? 'undated rows' : null,
+    // Wall clocks alone leave no instant to compare.
+    answer.latest && newest - Date.parse(answer.latest) > DAY ? 'stops early' : null,
   ].filter(Boolean);
   return { outcome: 'history', rows: answer.rows, partial };
 }

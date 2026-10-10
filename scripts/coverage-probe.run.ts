@@ -76,6 +76,8 @@ function summary(result: CarrierResult) {
     !best || Date.parse(event.time!) > Date.parse(best.time!) ? event : best, undefined);
   return {
     rows: events.length, undated: events.length - dated.length,
+    // Of those, the scans with the carrier's wall clock, whose zone the feed does not say.
+    wall: events.filter((event) => !dated.includes(event) && typeof event.local_time === 'string').length,
     latest: newest?.time ?? null, latestStage: newest?.stage ?? result.current_stage ?? null,
     reported: Array.isArray(result.reported_carriers) ? result.reported_carriers.slice(0, 6) : [],
   };

@@ -109,18 +109,23 @@ describe('Swiss Post historical event codes', () => {
       { eventCode: 'LETTER.*.82.813', timestamp: '2026-09-03T12:20:24+02:00', city: 'Example', zip: '000000', country: 'CH' },
     ];
     const clocks = (shipment: Record<string, unknown>) => parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', ...shipment }, history)
-      .events?.map((event) => event.time ?? `local ${String(event.local_time)}`);
+      .events?.map((event) => event.time);
     expect(clocks({ internationalExport: true, recipientCountry: 'SV' })).toEqual([
       '2026-10-08T12:26:00-06:00', '2026-10-06T06:45:39+02:00', '2026-09-24T15:30:00-06:00',
       '2026-09-03T22:19:00+02:00', '2026-09-03T12:20:24+02:00']);
-    // A destination with several clocks leaves them wall times, ordered among the instants by their digits.
+    // A destination with several clocks keeps Swiss Post's offset, the last guess.
     const several = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', internationalExport: true, recipientCountry: 'US' }, history);
-    expect(several.events?.map((event) => event.time ?? `local ${String(event.local_time)}`)).toEqual([
-      'local 2026-10-08T12:26:00', '2026-10-06T06:45:39+02:00', 'local 2026-09-24T15:30:00',
-      '2026-09-03T22:19:00+02:00', '2026-09-03T12:20:24+02:00']);
-    expect(several).toMatchObject({ last_update: null, last_update_local: '2026-10-08T12:26:00' });
+    expect(several.events?.map((event) => event.time)).toEqual(history.map((event) => event.timestamp));
+    expect(several).toMatchObject({ last_update: '2026-10-08T12:26:00+02:00' });
+    expect(several).not.toHaveProperty('last_update_local');
     // A parcel arriving in Switzerland keeps every offset as sent.
     expect(clocks({ internationalImport: true, recipientCountry: 'CH' })?.[0]).toBe('2026-10-08T12:26:00+02:00');
+    // China's customs scans too: UPU gives Beijing's office 11:05 and Hangzhou's 14:30.
+    const customs = parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED', internationalExport: true, recipientCountry: 'CN' }, [
+      { eventCode: 'LETTER.*.82.902', timestamp: '2026-08-09T14:30:00+02:00' },
+      { eventCode: 'LETTER.*.82.901', timestamp: '2026-08-07T11:05:00+02:00' },
+    ]);
+    expect(customs.events?.map((event) => event.time)).toEqual(['2026-08-09T14:30:00+08:00', '2026-08-07T11:05:00+08:00']);
   });
 
   it('falls back to the shipment summary when the newest scan has no stage', () => {

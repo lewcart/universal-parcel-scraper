@@ -71,12 +71,16 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
 - Timestamps are kept exactly as sent and parsed only to sort (offset-less
   values read as UTC for that comparison), but for the destination post's events.
 - On a parcel Swiss Post sends abroad (`internationalExport`), the destination post's
-  events (codes 909, 918–921, 923, 924, 926, 934, 938) come with no city, postcode or
-  country, and carry that office's wall clock under Swiss Post's offset: an El Salvador
-  delivery round at 12:26 local came as `12:26+02:00`, which Correos de El Salvador
-  dates 18:26 UTC (checked 2026-10-10). They are read on the clock of
-  `recipientCountry` when it keeps one, and stay wall times (`local_time`) otherwise.
-  Swiss Post's own unlocated events (813, 915) keep its offset.
+  events (codes 901, 902, 909, 918–921, 923, 924, 926, 934, 938) come with no city,
+  postcode or country, and carry that office's wall clock under Swiss Post's offset: an
+  El Salvador delivery round at 12:26 local came as `12:26+02:00`. UPU's record has the
+  same 12:26 at El Salvador's office, and Correos de El Salvador's own tracker dates it
+  18:26:18 UTC (checked 2026-10-11). On an item to China, customs (901, 902) came at the
+  11:05 and 14:30 UPU gives Beijing's and Hangzhou's offices. They are read on the clock
+  of `recipientCountry` when it keeps one. In a country with several, they keep Swiss
+  Post's offset, the last guess: hours off, but the reply keeps its instants. Swiss
+  Post's own unlocated events (813, 915) keep its offset. [clock.ts](clock.ts) lists
+  them, and their wording for relays that give no code.
 - Wording is only trimmed, not whitespace-collapsed, so `core/transport`'s
   `clean()` is not used.
 - Scan locations keep the facility's name and number as sent ("Zürich

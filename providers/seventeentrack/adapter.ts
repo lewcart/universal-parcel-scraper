@@ -21,6 +21,7 @@ import { countryTimeZone } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
@@ -98,11 +99,16 @@ function lookupError(code: number, providerMessage?: string): Error {
     : new SeventeenTrackLookupError('lookup_unavailable', code, providerMessage);
 }
 
-/** The offset-less clock of a scan whose offset 17TRACK added itself. */
-function facilityWall(raw: Record<string, unknown>): string | null {
-  const clock = isRecord(raw.time_raw) && raw.time_raw.timezone === null ? raw.time_raw : null;
+/** A scan's clock as the carrier wrote it, without any offset. */
+function rawClock(raw: Record<string, unknown>): string | null {
+  const clock = isRecord(raw.time_raw) ? raw.time_raw : null;
   return clock && typeof clock.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(clock.date)
     && typeof clock.time === 'string' && /^\d{2}:\d{2}:\d{2}$/.test(clock.time) ? `${clock.date}T${clock.time}` : null;
+}
+
+/** The offset-less clock of a scan whose offset 17TRACK added itself. */
+function facilityWall(raw: Record<string, unknown>): string | null {
+  return isRecord(raw.time_raw) && raw.time_raw.timezone === null ? rawClock(raw) : null;
 }
 
 /**
@@ -113,6 +119,33 @@ function facilityWall(raw: Record<string, unknown>): string | null {
  */
 function relaysUtcClock(key: unknown): boolean {
   return key === 100016;
+}
+
+/**
+ * 17TRACK's carrier 19031, Correo El Salvador, relays Correos de El Salvador's
+ * tracker, which dates its own scans in UTC and keeps the origin post's, which
+ * it receives by EDI and marks outbound, at that office's wall clock: its
+ * arrival in San Salvador at 21:30:17 is UPU's 15:30 local, and its copy of
+ * Swiss Post's departure from Geneva keeps Geneva's 12:20. 17TRACK labels them
+ * all with -05:00 (checked 2026-10-11). The copies are read on the clock of
+ * the origin an S10 suffix names; from a country on several clocks they keep
+ * 17TRACK's reading, the last guess.
+ */
+const CORREO_EL_SALVADOR = 19031;
+/** The origin post's scans, in Correos de El Salvador's words: "(salida)", "(recibido por EDI)". */
+const OUTBOUND = /\((?:salida|recibido por EDI)\)$/i;
+
+/**
+ * 17TRACK's carrier 19251, Swiss Post, whose leg relays the destination post's
+ * scans as Swiss Post does (carriers/swiss-post/clock.ts).
+ */
+const SWISS_POST = 19251;
+
+/** The recipient's country, the only field of the address read. */
+function recipientCountry(shipment: Record<string, unknown>): string | null {
+  const country = isRecord(shipment.shipping_info) && isRecord(shipment.shipping_info.recipient_address)
+    ? shipment.shipping_info.recipient_address.country : null;
+  return typeof country === 'string' && /^[A-Z]{2}$/.test(country) ? country : null;
 }
 
 /** 17TRACK's carrier 14061, NZ Post. */
@@ -172,9 +205,8 @@ function nzPostAbroad(events: unknown[], number: string, destination: string | n
  * Post's CN.
  */
 function nzPostDestination(shipment: Record<string, unknown>, providers: unknown[]): string | null {
-  const recipient = isRecord(shipment.shipping_info) && isRecord(shipment.shipping_info.recipient_address)
-    ? shipment.shipping_info.recipient_address.country : null;
-  if (typeof recipient === 'string' && /^[A-Z]{2}$/.test(recipient) && recipient !== 'NZ') return recipient;
+  const recipient = recipientCountry(shipment);
+  if (recipient && recipient !== 'NZ') return recipient;
   const others = new Set(providers.map((leg) => isRecord(leg) && isRecord(leg.provider) && leg.provider.key !== NZ_POST
     ? leg.provider.country : null).filter((country): country is string =>
     typeof country === 'string' && /^[A-Z]{2}$/.test(country) && country !== 'NZ'));
@@ -284,14 +316,20 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const abroad = nz && provider.events.length <= MAX_EVENTS
       ? nzPostAbroad(provider.events, number, nzPostDestination(shipment, tracking.providers)) : new Map<number, string | null>();
     const origin = reported.key === CHINA_POST ? originZone(number) : null;
+    const salvador = reported.key === CORREO_EL_SALVADOR;
+    const sender = salvador && isValidS10TrackingNumber(number) ? countryTimeZone(number.slice(-2)) : null;
+    const bound = reported.key === SWISS_POST ? recipientCountry(shipment) : null;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
       const exchange = origin !== null && ORIGIN_EXCHANGE.test(text(raw.description));
-      // A facility's clock, A1's UTC or NZ Post's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relaysFacilityClock(name) || utc || nz || exchange ? facilityWall(raw) : null;
-      const zone = !wall ? null : abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
-        : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location));
+      const own = !salvador ? null : OUTBOUND.test(text(raw.description)) ? sender : 'UTC';
+      // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset.
+      const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound) : null;
+      // A facility's clock, A1's UTC, NZ Post's or Correos de El Salvador's, on which 17TRACK puts one offset for the whole parcel.
+      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own ? facilityWall(raw) : null;
+      const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
+        : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location)));
       const placed = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }

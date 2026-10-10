@@ -210,6 +210,18 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
   it('takes the offset of any other feed as sent', () => {
     expect(feed('example-tracking', 'Example Courier', [['2026-10-10T12:43:21-05:00', 'EXAMPLE TOWN ON']])).toEqual(['2026-10-10T17:43:21.000Z']);
   });
+
+  it('reads the destination post\'s scans Swiss Post\'s feed relays on that office\'s clock, under Swiss Post\'s offset', () => {
+    // UPU has China's arrival at 08:15 in Beijing; Swiss Post's own scans keep their offset.
+    const scans: [string, string | undefined, string][] = [['2026-09-04T06:21:49+02:00', undefined, 'Enquiry initiated'],
+      ['2026-08-07T08:15:00+02:00', undefined, 'Arrival in destination country'],
+      ['2026-08-04T02:30:11+02:00', 'Example, CH', 'Forwarding abroad']];
+    expect(feed('swiss-post-tracking', 'Swiss Post', scans, { origin_country_code: 'CH', destination_country_code: 'CN' }, 'ZZ123456785CH'))
+      .toEqual(['2026-09-04T04:21:49.000Z', '2026-08-07T00:15:00.000Z', '2026-08-04T00:30:11.000Z']);
+    // A destination on several clocks keeps Swiss Post's offset, the last guess.
+    expect(feed('swiss-post-tracking', 'Swiss Post', scans, { origin_country_code: 'CH', destination_country_code: 'US' }, 'ZZ123456785CH')[1])
+      .toBe('2026-08-07T06:15:00.000Z');
+  });
 });
 
 describe('Ship24 anonymous HTTP tracking', () => {

@@ -47,8 +47,9 @@ describe('Postal Ninja result parsing', () => {
   });
 
   it('places a fixed clock\'s scans beside other services\', which borrow the carrier\'s zone or keep their wall times', () => {
-    // Swiss Post keeps Zurich time for its scans abroad; the other services relay
-    // the same scans at clocks of their own, unknown here.
+    // Swiss Post keeps Zurich time for its own scans, and the destination post's
+    // clock for those it relays from it; the other services relay the same scans
+    // at clocks of their own, unknown here.
     const item = 'RR123456785CH';
     const reply = postal(item, 'SV', [
       { ds: 'DHL Germany', dt: '2026-08-12T08:05:00', dsc: 'Posting/Collection' },
@@ -57,16 +58,39 @@ describe('Postal Ninja result parsing', () => {
       { ds: 'Example Post', dt: '2026-08-16T21:30:00', dsc: 'Receive shipment at exchange office' },
     ]);
     const unplaced = parsePostalNinjaResponse(reply, item);
-    expect(times(unplaced)).toEqual(['local 2026-08-16T21:30:00', '2026-08-16T13:30:00.000Z',
+    expect(times(unplaced)).toEqual(['local 2026-08-16T21:30:00', '2026-08-16T21:30:00.000Z',
       '2026-08-12T08:05:00.000Z', 'local 2026-08-12T08:05:00']);
     // The newest scan has no instant, so an older one does not stand in for it.
     expect(unplaced.last_update).toBeNull();
     // With the carrier's zone, the others' scans borrow it: a guess, two hours
     // early for DHL Germany's here.
-    expect(times(parsePostalNinjaResponse(reply, item, 'Europe/Zurich'))).toEqual(['2026-08-16T19:30:00.000Z', '2026-08-16T13:30:00.000Z',
+    expect(times(parsePostalNinjaResponse(reply, item, 'Europe/Zurich'))).toEqual(['2026-08-16T21:30:00.000Z', '2026-08-16T19:30:00.000Z',
       '2026-08-12T08:05:00.000Z', '2026-08-12T06:05:00.000Z']);
-    expect(parsePostalNinjaResponse(postal(item, 'SV', [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }]), item).last_update)
-      .toBe('2026-08-17T09:17:00.000Z');
+    // A destination on several clocks leaves Swiss Post's relays on Zurich time, the last guess.
+    const delivered = (destCn: string) => parsePostalNinjaResponse(postal(item, destCn, [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }]),
+      item).last_update;
+    expect([delivered('SV'), delivered('US')]).toEqual(['2026-08-17T17:17:00.000Z', '2026-08-17T09:17:00.000Z']);
+  });
+
+  it('reads Correos de El Salvador\'s scans in UTC, and its copies of the origin post\'s on that office\'s clock', () => {
+    // As its own tracker dates them: UPU has the delivery round at 12:26 in El Salvador, -06:00,
+    // and Swiss Post the departure from Geneva at 12:20 Zurich time.
+    const item = 'RR123456785CH';
+    const reply = postal(item, 'SV', [
+      { ds: 'Correos de El Salvador', dt: '2026-09-03T12:20:00', dsc: 'Receive shipment at exchange office (departure)', loc: 'CHGVAC' },
+      { ds: 'Swiss Post', dt: '2026-09-03T12:20:28', dsc: 'Forwarding abroad', loc: 'Example, 000000, Switzerland' },
+      { ds: 'Swiss Post', dt: '2026-10-06T06:45:39', dsc: 'Enquiry initiated', loc: 'Switzerland' },
+      { ds: 'Swiss Post', dt: '2026-10-08T12:26:00', dsc: 'Sorting - forwarding' },
+      { ds: 'Correos de El Salvador', dt: '2026-10-08T18:26:18', dsc: 'Transfer shipment to delivery agent (inbound)', loc: 'SAN BENEDICT' },
+    ]);
+    expect(times(parsePostalNinjaResponse(reply, item, 'Europe/Zurich'))).toEqual(['2026-10-08T18:26:18.000Z',
+      '2026-10-08T18:26:00.000Z', '2026-10-06T04:45:39.000Z', '2026-09-03T10:20:28.000Z', '2026-09-03T10:20:00.000Z']);
+    // From an origin on several clocks a copy borrows the carrier's zone, a guess, not the post's UTC.
+    const us = 'RR123456785US';
+    expect(times(parsePostalNinjaResponse(postal(us, 'SV', [
+      { ds: 'Correos de El Salvador', dt: '2026-09-03T12:20:00', dsc: 'Insert shipment into bag (output)', loc: 'USJFKA' },
+      { ds: 'Correos de El Salvador', dt: '2026-09-24T21:30:17', dsc: 'Receive shipment at exchange office (entrance)' },
+    ]), us, 'America/New_York'))).toEqual(['2026-09-24T21:30:17.000Z', '2026-09-03T16:20:00.000Z']);
   });
 
   it('orders scans by instant once every one has one', () => {

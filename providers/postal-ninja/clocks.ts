@@ -8,7 +8,9 @@
  * missing here has no known clock: its scans borrow a zone in the adapter, as
  * a guess, or keep their wall time.
  */
+import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { canadaProvinceTimeZone, countryCode, countryTimeZone, sharedClockZone, usStateTimeZone } from '../../core/time/index.js';
 import { courierZone } from '../shared/hints.js';
 
@@ -18,10 +20,22 @@ const FIXED_CLOCKS: ReadonlyMap<string, string> = new Map([
   ['Intelcom', 'UTC'],
   ['OnTrac', 'UTC'],
   ['Poste Italiane', 'UTC'],
-  // Also for their scans abroad: Swiss Post's in El Salvador and China, Singapore Post's in China.
+  // Also for their scans abroad: Singapore Post's in China. Swiss Post's own are in
+  // Switzerland; the destination post's it relays keep their office's clock (serviceZone).
   ['Singapore Post', 'Asia/Singapore'],
   ['Swiss Post', 'Europe/Zurich'],
 ]);
+
+/**
+ * Posts that date their own scans in UTC and keep the origin post's, which
+ * they receive by EDI and mark outbound, at that office's wall clock, as
+ * their own trackers do: Correos de El Salvador's arrival in San Salvador at
+ * 21:30:17 is UPU's 15:30 local, and its copy of Swiss Post's departure from
+ * Geneva keeps Geneva's 12:20 (checked 2026-10-11).
+ */
+const UTC_POSTS: ReadonlySet<string> = new Set(['Correos de El Salvador']);
+/** The origin post's scans, as Postal Ninja translates "(salida)" and "(recibido por EDI)". */
+const OUTBOUND = /\((?:outbound|output|departure|received by EDI)\)$/i;
 
 /** Services with one clock per network, by the parcel's destination: GOFO's US network keeps Los Angeles time in New York. */
 const NETWORK_CLOCKS: ReadonlyMap<string, ReadonlyMap<string, string>> = new Map([
@@ -102,15 +116,23 @@ function locationZone(location: string): string | null {
 export interface Scan {
   /** Postal Ninja's name for the service that reported it (`ds`). */
   service: string;
+  description: string;
   /** Its `dt`, without a zone. */
   wall: string;
   location: string;
   delivered: boolean;
 }
 
+/** Whether a scan is a UTC post's copy of the origin post's, on the origin office's clock. */
+export function originCopy({ service, description }: Pick<Scan, 'service' | 'description'>): boolean {
+  return UTC_POSTS.has(service) && OUTBOUND.test(description);
+}
+
 /**
  * The established zone of a scan's wall time, from the service that reported
- * it: its fixed or network clock in any history, else in a history it reports
+ * it: the destination post's clock for a scan Swiss Post relays from it, a UTC
+ * post's or the origin's that an S10 suffix names for its copies, its fixed
+ * or network clock in any history, else in a history it reports
  * alone its location's clock, or a local clock's country: the destination's,
  * else the service's (`courierZone`) or the carrier's. A destination on another
  * clock than the service's may be a parcel that crossed a border, so it
@@ -118,7 +140,14 @@ export interface Scan {
  * (a date written as midnight, UPS's 12:xx), so that no zone can place the
  * scan.
  */
-export function serviceZone({ service, wall, location, delivered }: Scan, journey: Journey): string | null | false {
+export function serviceZone(scan: Scan, journey: Journey): string | null | false {
+  const { service, description, wall, location, delivered } = scan;
+  const relayed = service === 'Swiss Post' ? swissPostDestinationZone(description, location, journey.destination) : null;
+  if (relayed) return relayed;
+  if (UTC_POSTS.has(service)) {
+    if (!originCopy(scan)) return 'UTC';
+    return isValidS10TrackingNumber(journey.number) ? countryTimeZone(journey.number.slice(-2)) : null;
+  }
   const fixed = FIXED_CLOCKS.get(service) ?? (journey.destination ? NETWORK_CLOCKS.get(service)?.get(journey.destination) : undefined);
   if (fixed) return fixed;
   if (MIDNIGHT.test(wall) || (TWELVE_HOUR_CLOCKS.has(service) && wall.slice(11, 13) === '12' && !delivered)) return false;

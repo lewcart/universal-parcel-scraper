@@ -74,6 +74,11 @@ No account, cookie, fingerprint or issued token is used.
     `tkDate`. Read back on China's clock, it gives the wall clock.
 
   Their offset is dropped and the wall clock read like an offset-less one.
+- `swiss-post-tracking` puts Swiss Post's offset on the destination post's scans it relays
+  (arrival, customs, sorting and delivery, with no location), which are at that office's
+  clock ([Swiss Post](../../carriers/swiss-post/README.md)). On a parcel to a country with
+  one clock, they are read on it (`destination_country_code`); elsewhere the offset stays,
+  the last guess.
 - A wall clock is read in the first clock found among:
   1. the scan location's:
      - CTT's offices of exchange (`PTLISA - …`) and own sites are on Portugal's clock,

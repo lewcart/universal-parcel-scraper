@@ -68,13 +68,21 @@ numbers or handles cannot end the lookup.
 
   | Clock | Services | Evidence |
   |---|---|---|
-  | UTC | Austrian Post, Intelcom, OnTrac, Poste Italiane | Austrian Post 9/9 scans, which post.at shows two hours later in summer; Poste Italiane 9/9 against its epoch times; OnTrac 14/14 on two parcels its API dates at −07:00 and −04:00; Intelcom 5/5 |
-  | One zone, wherever the scan happened | Swiss Post (Zurich), Singapore Post (Singapore) | Swiss Post 17/17 on two items, with their arrival scans in El Salvador and China; Singapore Post 9/9 on an item to China, with its Chinese scans |
+  | UTC | Austrian Post, Correos de El Salvador, Intelcom, OnTrac, Poste Italiane | Austrian Post 9/9 scans, which post.at shows two hours later in summer; Poste Italiane 9/9 against its epoch times; OnTrac 14/14 on two parcels its API dates at −07:00 and −04:00; Intelcom 5/5; Correos de El Salvador's own tracker gives the same digits in UTC, and its arrival in San Salvador at 21:30:17 is UPU's 15:30 local (checked 2026-10-11) |
+  | One zone, wherever the scan happened | Swiss Post (Zurich), Singapore Post (Singapore) | Swiss Post's own scans on two items, to El Salvador and China; Singapore Post 9/9 on an item to China, with its Chinese scans |
   | One zone per network, by destination | GOFO Express: US Los Angeles, FR Paris | 20/20 on two US parcels, with New Jersey and New York scans; 7/7 on a French parcel and the newest scan of a YunExpress parcel GOFO delivered in France |
   | The scanning office's | An Post Ireland, CTT Express, Correos de España, DHL Parcel Netherlands, DPD, DPD Poland, DPD UK, GLS, Hermes Germany, MRW, Nova Poshta, Packeta, Poczta Polska, PostNord, Posten Norge, UkrPoshta | Domestic parcels in their countries, `DPD` on the Polish, German and Spanish networks; UkrPoshta's Ukrainian scans of an item to China |
   | The scanning office's, named by its location | FedEx, UPS | UPS 12/12 on two parcels across Eastern, Central and Mountain time; FedEx 16/17 on two parcels from Washington to Florida and from Ohio to Kentucky |
 
-  Every other service's clock is unknown.
+  Every other service's clock is unknown. Two services also relay scans at another
+  clock. Swiss Post relays the destination post's arrival, customs, sorting and delivery
+  scans, which name no place, at that office's clock: a delivery round UPU and Correos de
+  El Salvador date 12:26 in San Salvador (18:26 UTC) comes as 12:26. They are read on the
+  destination's clock when it keeps one, else on Zurich's, the last guess. Correos de El
+  Salvador keeps its copies of the origin post's scans, marked "(outbound)" or "(received
+  by EDI)", at the origin office's clock (Geneva's departure at 12:20), read on the
+  clock of the country the S10 number ends with when it keeps one; otherwise they borrow
+  one, from its other copies first.
 - A fixed or network clock places its service's scans in any history. A local clock
   places them only in a full history that service reports alone, and for an S10 item
   one whose origin is its destination (`destCn`): beside other services, a service relays
@@ -105,9 +113,10 @@ numbers or handles cannot end the lookup.
   routing passes for the parcel's carrier, else, in a history the service reports alone,
   the one the service's name gives (`courierZone`). This is a guess. On the benchmark's
   parcels it was right for UPS's label scan, three hours off for FedEx's "Shipment
-  information sent", which is at the shipper's clock, and six hours late for Correos de El
-  Salvador's newest scan of a Swiss Post item, read in Zurich time. A scan with no zone to
-  borrow keeps its wall time as `local_time`; an explicit offset is kept as it is.
+  information sent", which is at the shipper's clock, and two hours early for DHL Germany's
+  copies of UPU's record of a Swiss Post item, which are in UTC, read in Zurich time. A
+  scan with no zone to borrow keeps its wall time as `local_time`; an explicit offset is
+  kept as it is.
 - A scan whose hour is unknown keeps its wall time whatever its zone. A scan dated
   without a time is written as midnight (FedEx's pickup, Geodis's departure). UPS dates
   its scans between midnight and 1 a.m. at 12:xx (its arrival in Lenexa at 00:25 is

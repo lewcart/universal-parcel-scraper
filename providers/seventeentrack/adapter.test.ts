@@ -251,6 +251,36 @@ describe('17TRACK result parsing', () => {
       .toBe('2026-08-05T22:09:00.000Z');
   });
 
+  it('reads Correos de El Salvador\'s scans in UTC, its copies of the origin post\'s and Swiss Post\'s relays on their offices\' clocks', () => {
+    const row = (date: string, time: string, offset: string | null, description: string, location: string | null = null) => ({
+      time_iso: `${date}T${time}${offset ?? '-05:00'}`, time_utc: null, time_raw: { date, time, timezone: offset },
+      description, location, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (requested: string, recipient: string | null) => ({ meta: { code: 200 }, shipments: [{ number: requested, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, shipping_info: { recipient_address: { country: recipient } }, tracking: { providers: [
+        { provider: { key: 19031, name: 'Correo El Salvador', country: 'SV' }, events: [
+          row('2026-10-08', '18:26:18', null, 'Transferir envío al agente de entrega (entrada)', 'SAN BENITO'),
+          row('2026-09-03', '12:20:00', null, 'Recibir envío en oficina de cambio (salida)', 'CHGVAC'),
+        ] },
+        { provider: { key: 19251, name: 'Swiss Post', country: 'CH' }, events: [
+          row('2026-10-08', '12:26:00', '+02:00', 'Sorting - forwarding'),
+          row('2026-10-06', '06:45:39', '+02:00', 'Enquiry initiated', 'CH'),
+          row('2026-09-03', '12:20:28', '+02:00', 'Forwarding abroad', 'Example, CH 000000'),
+        ] },
+      ] } } }] });
+    const times = (requested: string, recipient: string | null) => parse17TrackResponse(reply(requested, recipient), requested).events
+      ?.map(e => `${e.time} ${e.description}`);
+    // UPU has the delivery round at 12:26 in El Salvador, -06:00, and Geneva's departure at 12:20 Zurich time.
+    expect(times('ZZ123456785CH', 'SV')).toEqual([
+      '2026-10-08T18:26:18.000Z Transferir envío al agente de entrega (entrada)', '2026-10-08T18:26:00.000Z Sorting - forwarding',
+      '2026-10-06T04:45:39.000Z Enquiry initiated', '2026-09-03T10:20:28.000Z Forwarding abroad',
+      '2026-09-03T10:20:00.000Z Recibir envío en oficina de cambio (salida)']);
+    // From an origin on several clocks the copy keeps 17TRACK's reading; with no recipient named, so does Swiss Post's relay.
+    expect(times('ZZ123456785US', null)).toEqual([
+      '2026-10-08T18:26:18.000Z Transferir envío al agente de entrega (entrada)', '2026-10-08T10:26:00.000Z Sorting - forwarding',
+      '2026-10-06T04:45:39.000Z Enquiry initiated', '2026-09-03T17:20:00.000Z Recibir envío en oficina de cambio (salida)',
+      '2026-09-03T10:20:28.000Z Forwarding abroad']);
+  });
+
   it('reads the clock and offset 17TRACK shows when its UTC conversion disagrees', () => {
     // An India Post leg: the wall clock under India's offset, and a conversion 30 minutes after it.
     const scan = { time_iso: '2026-07-14T14:40:00+05:30', time_utc: '2026-07-14T09:40:00Z',

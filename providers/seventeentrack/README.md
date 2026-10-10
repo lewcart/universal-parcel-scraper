@@ -128,6 +128,16 @@ carrier.
   S10 number from a country on one clock, or from New Zealand (Auckland's), they are read on
   that clock. Elsewhere, and for its handover scans (`已送交承运商`), whose clock is unknown,
   17TRACK's reading stays.
+- Correos de El Salvador's leg (carrier key 19031) dates its own scans in UTC, as its own
+  tracker does, and its copies of the origin post's scans, marked `(salida)` or
+  `(recibido por EDI)`, at the origin office's wall clock; 17TRACK labels them all `-05:00`
+  (checked 2026-10-11). Its own scans are read as UTC, its copies on the clock of the
+  country an S10 number ends with. From a country with several clocks, 17TRACK's reading
+  stays, the last guess.
+- Swiss Post's leg (carrier key 19251) relays the destination post's arrival, customs,
+  sorting and delivery scans, with no location, at that office's clock under Swiss Post's
+  offset ([Swiss Post](../../carriers/swiss-post/README.md)). They are read on the clock of
+  the recipient's country (`shipping_info`) when it keeps one; else 17TRACK's reading stays.
 - India Post dates a take-off with the departure airport's wall clock labelled UTC, and
   17TRACK keeps the label: a Mumbai take-off showed 5.5 hours late, a Frankfurt one 2 hours
   late. India Post rows worded `Aircraft Departure` or `UPLIFT` are counted in
@@ -137,8 +147,8 @@ carrier.
 - Each scan keeps the `location` 17TRACK reports, unless it holds private delivery details or
   is Posti's "ULKOMAILLA" ("abroad"), which names no place.
 - At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
-  `shipping_info` only the recipient's country, for an NZ Post leg: the address can be the
-  recipient's street.
+  `shipping_info` only the recipient's country, for an NZ Post or Swiss Post leg: the
+  address can be the recipient's street.
 
 ## Rejected approaches
 

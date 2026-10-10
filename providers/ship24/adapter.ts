@@ -28,6 +28,7 @@ import {
 import { isRecord } from '../../core/types.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { gofoScanZone } from '../../carriers/gofo/clock.js';
+import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
 import { courierZone, universalCarrierHints } from '../shared/hints.js';
 import { localEvent, numberOf, place, result, type UniversalSource } from '../shared/result.js';
@@ -193,6 +194,17 @@ function feedClock(timestamp: unknown, feed: Feed | null): unknown {
   return shifted.isValid ? shifted.toISO({ includeOffset: false, suppressMilliseconds: true }) : timestamp;
 }
 
+/**
+ * The zone of a scan Swiss Post's feed relays from the destination post: the
+ * feed keeps Swiss Post's offset, on digits that are that office's wall clock
+ * (carriers/swiss-post/clock.ts). Null for any other scan.
+ */
+function swissPostRelayZone(scan: Record<string, unknown>, journey: Journey): string | null {
+  if (!isRecord(scan.courier) || scan.courier.crawler_code !== 'swiss-post-tracking') return null;
+  return swissPostDestinationZone(typeof scan.status === 'string' ? scan.status : '',
+    typeof scan.location === 'string' ? scan.location : '', journey.destination);
+}
+
 function journeyOf(data: Record<string, unknown>, events: unknown[], number: string, couriers: string[], fallback: string | null): Journey {
   // An S10 item's suffix is its origin post's country.
   const suffix = /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(number) ? replyCountry(number.slice(-2)) : null;
@@ -317,10 +329,12 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     if (typeof raw.timestamp === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.timestamp)) continue;
     // datetime can end in Z while still containing the carrier's local time.
     // timestamp carries the real offset (verified against the public web app),
-    // except for some carrier legs (Chronopost) that omit it entirely, and the
-    // feeds that relabel the carrier's wall clock.
+    // except for some carrier legs (Chronopost) that omit it entirely, the
+    // feeds that relabel the carrier's wall clock, and Swiss Post's relays.
     const feed = feedOf(raw);
-    const parsed = localEvent(feedClock(raw.timestamp, feed), raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
+    const relayed = swissPostRelayZone(raw, journey);
+    const clock = relayed && typeof raw.timestamp === 'string' ? raw.timestamp.replace(EXPLICIT_OFFSET_PATTERN, '') : feedClock(raw.timestamp, feed);
+    const parsed = localEvent(clock, raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
     if (!parsed) continue;
     const location = place(raw.location);
     if (location) parsed.location = location;
@@ -328,7 +342,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     // Another feed's offset-less scan takes the parcel's named clock at once;
     // a relabelling feed's first borrows from its neighbours (below).
     readings.push({ event: parsed, wall, feed, country: feed?.country ?? locationCountry(raw.location),
-      zone: wall ? placedZone(journey, raw, wall, feed) ?? (feed ? null : namedZone(journey, wall)) : null });
+      zone: wall ? relayed ?? placedZone(journey, raw, wall, feed) ?? (feed ? null : namedZone(journey, wall)) : null });
   }
   const events = readings.map((reading): CarrierEvent => {
     const { event, wall, feed } = reading;

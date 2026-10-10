@@ -22,7 +22,7 @@ import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
 import { courierZone } from '../shared/hints.js';
-import { carrierHomeZone, serviceZone } from './clocks.js';
+import { carrierHomeZone, originCopy, serviceZone } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
 const GET_API = 'https://postal.ninja/track/get';
@@ -78,7 +78,7 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   const journey = { number, destination, fallback: timezone ?? carrierHomeZone(carrier),
     alone: payload.track.events !== undefined && services.size === 1
       && (!isValidS10TrackingNumber(number) || number.slice(-2) === destination) };
-  const scans: { wall: string | null; service: string; zone: string | null | false; event: Omit<CarrierEvent, 'local_time'> }[] = [];
+  const scans: { wall: string | null; service: string; origin: boolean; zone: string | null | false; event: Omit<CarrierEvent, 'local_time'> }[] = [];
   for (const raw of rawEvents as unknown[]) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event');
     const description = text(raw.dsc);
@@ -87,14 +87,14 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
       || !DateTime.fromISO(raw.dt, { zone: 'UTC' }).isValid) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event date');
     if (/(?:Z|[+-]\d{2}:\d{2})$/.test(raw.dt)) {
       const parsed = event(raw.dt, description);
-      if (parsed) scans.push({ wall: null, service: text(raw.ds), zone: null, event: parsed });
+      if (parsed) scans.push({ wall: null, service: text(raw.ds), origin: false, zone: null, event: parsed });
     } else {
       const classified = classifyEvent(description);
       const { stage } = classified;
       if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
       // A scan's location (loc) is read only for its clock.
-      const scan = { service: text(raw.ds), wall: raw.dt, location: text(raw.loc), delivered: stage === 'delivered' };
-      scans.push({ wall: raw.dt, service: scan.service, zone: serviceZone(scan, journey),
+      const scan = { service: text(raw.ds), description, wall: raw.dt, location: text(raw.loc), delivered: stage === 'delivered' };
+      scans.push({ wall: raw.dt, service: scan.service, origin: originCopy(scan), zone: serviceZone(scan, journey),
         event: { description: stage === 'delivered' ? 'Delivered' : description, ...classified } });
     }
   }
@@ -105,9 +105,11 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   // dated when its newest scan names no place. A scan whose hour is unknown
   // (false) keeps its wall time.
   const zoneAt = (index: number, wall: string): string | null => {
-    const { zone, service } = scans[index]!;
+    const { zone, service, origin } = scans[index]!;
     if (zone !== null) return zone || null;
-    const established = (other: typeof scans[number]) => other.service === service && typeof other.zone === 'string' ? other.zone : null;
+    // A post's copies of the origin post's scans are on another clock than its own, and borrow among themselves.
+    const established = (other: typeof scans[number]) => other.service === service && other.origin === origin
+      && typeof other.zone === 'string' ? other.zone : null;
     for (let earlier = index - 1; earlier >= 0; earlier -= 1) { const borrowed = established(scans[earlier]!); if (borrowed) return borrowed; }
     for (let later = index + 1; later < scans.length; later += 1) { const borrowed = established(scans[later]!); if (borrowed) return borrowed; }
     return timezone ?? (journey.alone ? courierZone(service, number, wall) : null);

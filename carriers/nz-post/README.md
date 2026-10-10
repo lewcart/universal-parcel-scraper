@@ -31,11 +31,15 @@ local came as `00:47Z`, 12:47 in Auckland, where UPU dates it 12:47 at the
 Guangzhou office of exchange (checked 2026-10-10). So on an item NZ Post sends
 abroad (an S10 number ending `NZ`), each scan after the international departure
 gets its wall clock back on Auckland's. It is read on the clock of the country
-its depot names ("Hong Kong"). When the depot names a town ("GUANGZHOU") or a
-country with several clocks, it borrows a zone, a guess: that of the nearest
-earlier scan abroad that is placed, else of the nearest later one. With none,
-it stays a wall time (`local_time`). Airline scans
-("In transit with airline") are taken as sent: their clocks were not checked.
+its depot names ("Hong Kong"). When the depot names a town ("GUANGZHOU") or
+nothing, it borrows a country, a guess: that of the nearest earlier scan after
+the departure whose depot names one, an airline's included ("China"), else of
+the nearest later one. NZ Post names no destination. The borrowed country can
+be a transit hub's, but Hong Kong, Singapore and China all keep `+08:00`, and
+the guess beats Auckland's clock, 4 to 17 hours off abroad. When the country
+has several clocks, or none is named, the scan stays a wall time
+(`local_time`). Airline scans ("In transit with airline") are taken as sent:
+their clocks were not checked.
 Missing, malformed or offsetless clocks preserve the source order without
 borrowing an older scan's timestamp.
 See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for unresolved history handling.

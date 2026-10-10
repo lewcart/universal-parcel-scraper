@@ -95,10 +95,19 @@ describe('NZ Post exact-reference projection', () => {
     expect(result.events?.map(event => event.time ?? `local ${String(event.local_time)}`)).toEqual([
       '2026-08-14T12:47:00+08:00', '2026-08-09T09:05:00+08:00', '2026-08-07T10:23:00Z', '2026-08-07T09:23:00Z', '2026-08-06T01:55:10Z']);
     expect(result).toMatchObject({ last_update: '2026-08-14T12:47:00+08:00' });
-    // With no scan abroad placed, they stay wall times.
+    // A scan at a town borrows the country of the nearest earlier scan naming one, an airline's included.
     const towns = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' } : scan));
-    expect(towns.events?.slice(0, 2).map(event => event.local_time)).toEqual(['2026-08-14T12:47:00', '2026-08-09T09:05:00']);
-    expect(towns).toMatchObject({ last_update: null, last_update_local: '2026-08-14T12:47:00' });
+    expect(towns.events?.slice(0, 2).map(event => event.time)).toEqual(['2026-08-14T12:47:00+08:00', '2026-08-09T09:05:00+08:00']);
+    const china = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' }
+      : scan.edifact_code === '5283' ? { ...scan, depot_name: 'China' } : scan));
+    expect(china.events?.[0]?.time).toBe('2026-08-14T12:47:00+08:00');
+    // A country with several clocks, or none named after the departure, leaves wall times.
+    for (const depot of ['United States', undefined]) {
+      const unplaced = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' }
+        : scan.edifact_code.startsWith('5') && scan.edifact_code !== '5007' && scan.edifact_code !== '5019' ? { ...scan, depot_name: depot } : scan));
+      expect(unplaced.events?.slice(0, 2).map(event => event.local_time)).toEqual(['2026-08-14T12:47:00', '2026-08-09T09:05:00']);
+      expect(unplaced).toMatchObject({ last_update: null, last_update_local: '2026-08-14T12:47:00' });
+    }
     // An item arriving from abroad is scanned in New Zealand after its departure.
     const inbound = 'ZZ123456785CH';
     expect(parseNzPost({ success: true, status_code: 1, results: [{ tracking_reference: inbound, tracking_events: events }] }, inbound)

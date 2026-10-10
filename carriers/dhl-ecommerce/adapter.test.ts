@@ -140,15 +140,46 @@ describe('DHL eCommerce normalization', () => {
     expect(parseDHLEcommerceResponse(payload).expected_delivery).toBeNull();
   });
 
-  it('does not fabricate UTC timestamps for unknown localities, and honors explicit offsets', () => {
+  it('does not fabricate UTC timestamps for unknown localities, and honors explicit offsets within fourteen hours', () => {
+    const unknown = { addressLocality: 'Unknown' };
     const payload = shipment(); payload.shipments[0]!.events = [
-      event('EN ROUTE', 'transit', '2026-09-01T09:00:00', { addressLocality: 'Unknown' }),
-      event('PROCESSED', 'transit', '2026-09-01T09:00:00-05:00', { addressLocality: 'Unknown' }),
+      event('PROCESSED', 'transit', '2026-09-01T09:00:00-05:00', unknown),
+      event('ARRIVED', 'transit', '2026-09-01T10:00:00+02', unknown),
+      event('DEPARTED', 'transit', '2026-09-01T09:00:00+0200', unknown),
+      event('EN ROUTE', 'transit', '2026-09-01T09:00:00', unknown),
+      ...['+2500', '+0299', '+14:30', '+1', '+05:3'].map((offset) => event('SORTED', 'transit', `2026-09-01T08:00:00${offset}`, unknown)),
       event('EN ROUTE', 'transit', 'invalid'),
     ];
-    expect(parseDHLEcommerceResponse(payload).events).toEqual([
-      expect.objectContaining({ time: '2026-09-01T14:00:00.000Z' }),
+    expect(parseDHLEcommerceResponse(payload).events?.map((scan) => [scan.description, scan.time])).toEqual([
+      ['PROCESSED', '2026-09-01T14:00:00.000Z'], ['ARRIVED', '2026-09-01T08:00:00.000Z'], ['DEPARTED', '2026-09-01T07:00:00.000Z'],
     ]);
+  });
+
+  it('keeps a UTAPI wall clock local in an hour a clock change skips or repeats, and the reply\'s order with it', () => {
+    const zurich = { addressLocality: 'Zurich', countryCode: 'CH' };
+    const payload = shipment();
+    payload.shipments[0]!.status = event('Delivered', 'delivered', '2026-10-25T02:30:00', zurich);
+    payload.shipments[0]!.events = [
+      event('Delivered', 'delivered', '2026-10-25T02:30:00', zurich),
+      event('OUT FOR DELIVERY', 'transit', '2026-10-25T01:30:00', zurich),
+      event('PROCESSED', 'transit', '2026-10-24T09:00:00+0200', zurich),
+      event('PROCESSED', 'transit', '2026-03-29T02:30', zurich),
+      event('PROCESSED', 'transit', '2026-03-08T02:30:00', { addressLocality: 'Hebron, KY, US' }),
+      event('PROCESSED', 'transit', '2026-11-01T01:30:00', { addressLocality: 'Hebron, KY, US' }),
+    ];
+    const result = parseDHLEcommerceResponse(payload);
+    expect(result.events?.map((scan) => scan.time ?? `local ${String(scan.local_time)}`)).toEqual([
+      'local 2026-10-25T02:30:00', '2026-10-24T23:30:00.000Z', '2026-10-24T07:00:00.000Z',
+      'local 2026-03-29T02:30:00', 'local 2026-03-08T02:30:00', 'local 2026-11-01T01:30:00',
+    ]);
+    expect(result).toMatchObject({ current_stage: 'delivered', last_update: null, last_update_local: '2026-10-25T02:30:00' });
+    expect(result).not.toHaveProperty('delivered_at');
+    // Clocks that each have one instant are read as before, newest first.
+    payload.shipments[0]!.status = event('OUT FOR DELIVERY', 'transit', '2026-10-25T01:30:00', zurich);
+    payload.shipments[0]!.events = [payload.shipments[0]!.events[2]!, payload.shipments[0]!.events[1]!];
+    expect(parseDHLEcommerceResponse(payload)).toMatchObject({ last_update: '2026-10-24T23:30:00.000Z',
+      events: [{ time: '2026-10-24T23:30:00.000Z' }, { time: '2026-10-24T07:00:00.000Z' }] });
+    expect(parseDHLEcommerceResponse(payload)).not.toHaveProperty('last_update_local');
   });
 
   it('rejects ambiguous, malformed and other-division responses', () => {

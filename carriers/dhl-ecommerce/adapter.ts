@@ -80,22 +80,46 @@ const HUB_ZONES: Record<string, string> = {
   'lahr': 'Europe/Berlin', 'staufenberg': 'Europe/Berlin',
 };
 
+/** The offsets a wall clock has in a zone: none in a skipped hour, two in a repeated one. */
+function wallOffsets(raw: string, zone: string): number[] {
+  const parsed = DateTime.fromISO(raw, { zone });
+  if (!parsed.isValid || parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== raw.slice(0, 19)) return [];
+  return parsed.getPossibleOffsets().map((candidate) => candidate.offset);
+}
+
+/** A wall clock the zone skips or repeats at a clock change has no single instant. */
+function zonedInstant(raw: string, zone: string): string | null {
+  if (wallOffsets(raw, zone).length !== 1) return null;
+  const parsed = DateTime.fromISO(raw, { zone });
+  return parsed.isValid ? parsed.toUTC().toISO() : null;
+}
+
 /**
- * A local policy rather than one from `core/time`: the zone comes from the
- * event's own location, and every event is normalized to UTC because the
- * result declares `timezone: 'UTC'` for a carrier whose legs cross zones.
+ * A UTAPI clock: its own offset, else the wall clock read in the zone of the
+ * event's country or an identified hub, as an instant in UTC. A local policy
+ * rather than one from `core/time`, since UTAPI legs cross zones. A wall clock
+ * that zone skips or repeats at a clock change stays local, as Webtrack's do;
+ * one without a zone is null.
  */
-function eventTime(event: JsonObject): string | null {
+function utapiClock(event: JsonObject): { time?: string; local_time?: string } | null {
   const raw = clean(event.timestamp, 64);
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(raw)) return null;
+  // A wall clock, alone or with an offset of at most fourteen hours.
+  const match = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?(Z|[+-](0\d|1[0-4])(?::?([0-5]\d))?)?$/.exec(raw);
+  if (!match) return null;
+  if (match[1]) {
+    if (Number(match[2] ?? 0) * 60 + Number(match[3] ?? 0) > 840) return null;
+    const parsed = DateTime.fromISO(raw, { zone: 'UTC', setZone: true });
+    return parsed.isValid ? { time: parsed.toUTC().toISO() } : null;
+  }
   const place = address(event);
   const locality = clean(place.addressLocality, 160);
   const country = clean(place.countryCode).toUpperCase();
-  const zone = /(?:Z|[+-]\d{2}:\d{2})$/.test(raw) ? 'UTC'
-    : countryTimeZone(country) ?? countryTimeZone(locality) ?? HUB_ZONES[locality.toLowerCase()];
-  if (!zone) return null;
-  const parsed = DateTime.fromISO(raw, { zone, setZone: true });
-  return parsed.isValid ? parsed.toUTC().toISO() : null;
+  const zone = countryTimeZone(country) ?? countryTimeZone(locality) ?? HUB_ZONES[locality.toLowerCase()];
+  // UTC validates the digits only; the wall clock is then read in the place's zone.
+  const wall = DateTime.fromISO(raw, { zone: 'UTC' });
+  if (!zone || !wall.isValid) return null;
+  const instant = zonedInstant(wall.toISO({ includeOffset: false }), zone);
+  return instant ? { time: instant } : { local_time: wall.toISO({ includeOffset: false, suppressMilliseconds: true }) };
 }
 
 /** Only call for the response to the exact requested UTAPI URL. DHL can return
@@ -111,26 +135,31 @@ export function parseDHLEcommerceResponse(payload: unknown): CarrierResult {
   if (!isRecord(shipment.status) || !clean(shipment.status.description)) throw new SchemaError(PROVIDER, 'DHL eCommerce returned no tracking status');
   if (!Array.isArray(shipment.events) || shipment.events.length > 500) throw new SchemaError(PROVIDER, 'DHL eCommerce returned invalid tracking events');
   const events: CarrierEvent[] = shipment.events.filter(isRecord).flatMap((event) => {
-    const time = eventTime(event);
+    const clock = utapiClock(event);
     const description = clean(event.description);
-    if (!time || !description) return [];
+    if (!clock || !description) return [];
     const place = address(event);
     const stage = stageFor(event);
-    return [{ time, description: stage === 'delivered' ? 'Delivered' : description,
+    return [{ ...clock, description: stage === 'delivered' ? 'Delivered' : description,
       location: [...new Set([clean(place.addressLocality, 160), clean(place.countryCode, 2)].filter(Boolean))].join(', '),
       stage }];
-  }).sort((a, b) => b.time.localeCompare(a.time)).slice(0, 100);
+  });
+  // UTAPI lists scans newest first. Its order stands unless every scan has an instant.
+  if (events.every((event) => event.time)) events.sort((left, right) => right.time!.localeCompare(left.time!));
+  events.splice(100);
   const stage = shipment.returnFlag === true && shipment.status.statusCode === 'delivered'
     ? 'returned' : stageFor(shipment.status);
   const expected = clean(shipment.estimatedTimeOfDelivery, 64).slice(0, 10);
   const sender = clean(
     isRecord(shipment.sender) ? shipment.sender.name : shipment.senderName, 200,
   ) || null;
-  const deliveredAt = stage === 'delivered' ? eventTime(shipment.status) : null;
+  const current = utapiClock(shipment.status);
+  const deliveredAt = stage === 'delivered' ? current?.time : null;
   return {
     status: statusFor(stage), current_stage: stage,
     last_status_text: stage === 'delivered' ? 'Delivered' : clean(shipment.status.description),
-    last_update: eventTime(shipment.status),
+    last_update: current?.time ?? null,
+    ...(current?.local_time ? { last_update_local: current.local_time } : {}),
     expected_delivery: !['delivered', 'returned'].includes(stage) && /^\d{4}-\d{2}-\d{2}$/.test(expected)
       && DateTime.fromISO(expected).isValid ? expected : null,
     timezone: 'UTC', events,
@@ -194,13 +223,6 @@ function webtrackPlace(location: string, family: string): { state: string | null
   return { state: null, foreign: countryCode(last) !== null };
 }
 
-/** The offsets a wall clock has in a zone: none in a skipped hour, two in a repeated one. */
-function wallOffsets(raw: string, zone: string): number[] {
-  const parsed = DateTime.fromISO(raw, { zone });
-  if (!parsed.isValid || parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== raw.slice(0, 19)) return [];
-  return parsed.getPossibleOffsets().map((candidate) => candidate.offset);
-}
-
 /**
  * The zone of a US state: its own, or for a state split between zones the one the label
  * names there. Undefined when the label names none of the state's zones; null without a
@@ -240,13 +262,6 @@ function webtrackZone(label: unknown, location: string, raw: string): string | n
   if (offset) return `UTC${offset[1]}${Number(offset[2])}${offset[3] && offset[3] !== '00' ? `:${offset[3]}` : ''}`;
   const country = location.split(',').at(-1)?.trim() ?? '';
   return countryTimeZone(country) ?? countryTimeZone(location) ?? HUB_ZONES[location.toLowerCase()] ?? null;
-}
-
-/** A wall clock the zone skips or repeats at a clock change has no single instant. */
-function zonedInstant(raw: string, zone: string): string | null {
-  if (wallOffsets(raw, zone).length !== 1) return null;
-  const parsed = DateTime.fromISO(raw, { zone });
-  return parsed.isValid ? parsed.toUTC().toISO() : null;
 }
 
 function webtrackClock(event: JsonObject): { time?: string; local_time?: string } | null {

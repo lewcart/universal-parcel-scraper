@@ -47,11 +47,12 @@ and an abbreviation's offset must be one the place's clock has on that date, whi
 also settles a repeated hour. A code shared by a state and a country, such as `CA`, is read as the state
 when the label fits it. A clock that does not fit, falls in an hour a clock change
 skips, or falls in one it repeats without an abbreviation, remains `local_time`, as
-do other unresolved Webtrack clocks; unresolved UTAPI clocks are omitted. Converted
-instants use UTC. Scans keep Webtrack's newest-first order unless every one has an
-instant. The coarse status does not replace a more precise latest scan, and
-delivered descriptions omit signatures. Recipient addresses and customer references
-are excluded.
+do other unresolved Webtrack clocks. A UTAPI wall clock in an hour its place's clock
+change skips or repeats also remains `local_time`; UTAPI clocks without a zone, or
+with an offset beyond fourteen hours or otherwise malformed, are omitted. Converted instants use UTC. Scans keep each source's newest-first order
+unless every one has an instant. The coarse status does not replace a more precise
+latest scan, and delivered descriptions omit signatures. Recipient addresses and
+customer references are excluded.
 
 Webtrack also gives the product name, the weight in pounds, and the last-mile
 partner with its own number for the parcel. The partner is named from the label

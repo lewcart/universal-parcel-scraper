@@ -46,12 +46,26 @@ credentials. No account, cookie, fingerprint or issued token is used.
 
 - A reply counts only when `data.tracking_number` matches the requested number.
 - Times come from `timestamp`, which carries the real offset. `datetime` can end in `Z`
-  while holding the carrier's local time. Some legs (Chronopost, for example) have no
-  offset in `timestamp`: that is the scanning carrier's wall clock. It is read in the
-  clock every courier the reply names keeps at that moment, else the scan location's
-  country, else the zone routing passes for the parcel's carrier. With none of them the
-  scan stays a `local_time`, which the timeline cannot place, rather than a guessed
-  UTC instant. A reply made only of such scans is inconclusive.
+  while holding the carrier's local time. Some legs (Chronopost, national posts, UPU
+  feeds) have no offset in `timestamp`: that is the scanning office's wall clock, read
+  in the first clock found among:
+  1. the scan location's: a country named at the end, after a dash, in brackets or in
+     Ukrainian ("Kuwait", "EXAMPLE - CHINA", "Pardubice (CZ)", "КИТАЙ"), when it keeps
+     one zone; else a US state or Canadian province, if the parcel starts or ends in
+     North America or the town lies in that state;
+  2. the country of a parcel whose origin and destination are the same
+     (`origin_country_code`, or an S10 number's suffix, and `destination_country_code`);
+  3. for a parcel that crosses a border, the side a UPU event's words name ("Posting/
+     Collection", "Arrival at inward office of exchange"), from any courier, until the
+     item is returned to sender. The origin side needs an S10 suffix that agrees with
+     the origin: Asendia's Swiss numbers are posted at offices of exchange abroad;
+  4. for a parcel not known to cross a border: the clock every courier the reply names
+     keeps at that moment, else the zone routing passes for the parcel's carrier.
+
+  A courier name is the feed that relayed a scan, not where it happened: national posts
+  relay the destination's scans under their own name. So a cross-border parcel's
+  unlocated scan stays a `local_time`, which the timeline cannot place, rather than a
+  guessed UTC instant. A reply made only of such scans is inconclusive.
 - Each scan keeps its `location`, a town, region and country or a hub's code, unless it
   holds private delivery details or is Posti's "ULKOMAILLA" ("abroad"), which names no
   place. A hub's code such as "GOFO-PR" stays: the places module pins nothing for it, and

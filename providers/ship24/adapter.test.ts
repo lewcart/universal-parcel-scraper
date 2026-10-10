@@ -15,6 +15,13 @@ const history = { data: { tracking_number: number,
   events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Delivered', dispatch_code_id: 7 }] } };
 const reply = (data: unknown) => new Response(JSON.stringify(data), { status: 201 });
 
+/** The instant of one offset-less noon scan at `location`, or undefined when it stays a wall time. */
+function noonAt(location: string | undefined, data: Record<string, unknown> = {}, tracking = number, timezone: string | null = null) {
+  const [scan] = parseShip24Response({ data: { tracking_number: tracking, ...data,
+    events: [{ timestamp: '2026-09-20T12:00:00', status: 'In transit', location }] } }, tracking, timezone).events!;
+  return scan!.time;
+}
+
 function fixture(executablePath: string | null = '/test/chromium') {
   const steps: StepRecord[] = [];
   const lookups: LookupRecord[] = [];
@@ -78,6 +85,52 @@ describe('Ship24 result parsing', () => {
     const parse = () => parseShip24Response({ data: { tracking_number: number, events } }, number);
     expect(parse).toThrow(IndeterminateError);
     expect(parse).toThrow(expect.objectContaining({ kind: 'indeterminate', provider: 'Ship24', message: 'No usable tracking events' }));
+  });
+
+  it.each([
+    ['Kuwait', '2026-09-20T09:00:00.000Z'], ['Example Hub, Saudi Arabia', '2026-09-20T09:00:00.000Z'],
+    ['КИТАЙ', '2026-09-20T04:00:00.000Z'], ['Example (CZ)', '2026-09-20T10:00:00.000Z'],
+    ['EXAMPLE - CHINA', '2026-09-20T04:00:00.000Z'], ['Example Town, ON, Canada', '2026-09-20T16:00:00.000Z'],
+  ])('reads an offset-less scan at %s on that place\'s clock, whichever courier relayed it', (location, time) => {
+    expect(noonAt(location, { couriers: [{ translation: { name: 'Correos de España' } }] })).toBe(time);
+  });
+
+  it('reads a US state or Canadian province only for a parcel in North America or a town that lies there', () => {
+    expect(noonAt('Example Town, TX', { origin_country_code: 'CN', destination_country_code: 'US' })).toBe('2026-09-20T17:00:00.000Z');
+    expect(noonAt('Example Town, ON', { origin_country_code: 'CN', destination_country_code: 'CA' })).toBe('2026-09-20T16:00:00.000Z');
+    // An Italian province is no state.
+    expect(noonAt('MILANO MI', { origin_country_code: 'CN', destination_country_code: 'IT' })).toBeUndefined();
+  });
+
+  it('places an unlocated scan of a parcel that stays in one country there', () => {
+    expect(noonAt(undefined, { origin_country_code: 'PL', destination_country_code: 'PL' })).toBe('2026-09-20T10:00:00.000Z');
+    // An S10 item's suffix is its origin; Ship24 can still write the UK as "UK".
+    expect(noonAt(undefined, { destination_country_code: 'PL' }, 'ZZ123456785PL')).toBe('2026-09-20T10:00:00.000Z');
+    expect(noonAt(undefined, { origin_country_code: 'UK', destination_country_code: 'GB' })).toBe('2026-09-20T11:00:00.000Z');
+  });
+
+  it('places a cross-border item\'s UPU events on the side of the border their words name, until it is sent back', () => {
+    const upu = { translation: { name: 'UPU' } };
+    const walls = (origin: string) => parseShip24Response({ data: { tracking_number: 'ZZ123456785CH',
+      origin_country_code: origin, destination_country_code: 'CN', events: [
+        { timestamp: '2026-09-12T10:00:00', status: 'Departure from outward office of exchange', location: 'EXAMPLE 2', courier: upu },
+        { timestamp: '2026-09-10T10:00:00', status: 'Unsuccessful delivery, Incorrect Address/Item returned to sender', courier: upu },
+        { timestamp: '2026-09-08T10:00:00', status: 'Arrival at inward office of exchange', location: 'EXAMPLE', courier: upu },
+        { timestamp: '2026-09-06T10:00:00', status: 'In transit', courier: upu },
+        { timestamp: '2026-09-04T10:00:00', status: 'Posting/Collection', location: 'EXAMPLE 1', courier: upu },
+      ] } }, 'ZZ123456785CH').events!.map((scan) => scan.time ?? scan.local_time);
+    expect(walls('CH')).toEqual(['2026-09-12T10:00:00', '2026-09-10T02:00:00.000Z', '2026-09-08T02:00:00.000Z',
+      '2026-09-06T10:00:00', '2026-09-04T08:00:00.000Z']);
+    // A Swiss number posted in Germany was posted at an office of exchange abroad.
+    expect(walls('DE').at(-1)).toBe('2026-09-04T10:00:00');
+  });
+
+  it('leaves an unlocated scan of a cross-border parcel a wall time, not on its relay\'s or carrier\'s clock', () => {
+    const correos = { couriers: [{ translation: { name: 'Correos de España' } }] };
+    expect(noonAt(undefined, correos)).toBe('2026-09-20T10:00:00.000Z');
+    expect(noonAt(undefined, { ...correos, origin_country_code: 'ES', destination_country_code: 'CN' })).toBeUndefined();
+    expect(noonAt(undefined, { destination_country_code: 'SV' }, 'ZZ123456785CH', 'Europe/Zurich')).toBeUndefined();
+    expect(noonAt(undefined, {}, number, 'Europe/Zurich')).toBe('2026-09-20T10:00:00.000Z');
   });
 });
 

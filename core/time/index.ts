@@ -152,6 +152,7 @@ const COUNTRY_ZONES: Record<string, string> = {
   NL: 'Europe/Amsterdam', NO: 'Europe/Oslo', PL: 'Europe/Warsaw', PT: 'Europe/Lisbon',
   RO: 'Europe/Bucharest', SE: 'Europe/Stockholm', SI: 'Europe/Ljubljana', SK: 'Europe/Bratislava',
   TR: 'Europe/Istanbul', AE: 'Asia/Dubai', IL: 'Asia/Jerusalem', IN: 'Asia/Kolkata',
+  UA: 'Europe/Kyiv', KW: 'Asia/Kuwait', SA: 'Asia/Riyadh', SV: 'America/El_Salvador',
   CN: 'Asia/Shanghai', HK: 'Asia/Hong_Kong', JP: 'Asia/Tokyo', KR: 'Asia/Seoul',
   MY: 'Asia/Kuala_Lumpur', PH: 'Asia/Manila', SG: 'Asia/Singapore', TH: 'Asia/Bangkok',
   TW: 'Asia/Taipei', VN: 'Asia/Ho_Chi_Minh',

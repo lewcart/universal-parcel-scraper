@@ -88,6 +88,8 @@ describe('time policies', () => {
     expect(countryTimeZone(' switzerland ')).toBe('Europe/Zurich');
     expect(countryTimeZone('Schweiz')).toBe('Europe/Zurich');
     expect(countryTimeZone('India')).toBe('Asia/Kolkata');
+    expect(countryTimeZone('Kuwait')).toBe('Asia/Kuwait');
+    expect(countryTimeZone('UA')).toBe('Europe/Kyiv');
     expect(countryTimeZone('US')).toBeNull();
     expect(countryTimeZone('Canada')).toBeNull();
     expect(countryTimeZone('South Africa')).toBeNull();

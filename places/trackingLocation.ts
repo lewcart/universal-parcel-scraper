@@ -17,7 +17,7 @@ const dhlSpellings = new Map([
   ['ireland, republic of', 'IE'],
 ]);
 // Apple's ICU (Safari, iOS) calls CN "China mainland" in every language; carriers write "China".
-const chinaNames = new Map([['en', 'China'], ['de', 'China'], ['fr', 'Chine'], ['it', 'Cina'], ['es', 'China'], ['pt', 'China'], ['pl', 'Chiny']]);
+const chinaNames = new Map([['en', 'China'], ['de', 'China'], ['fr', 'Chine'], ['it', 'Cina'], ['es', 'China'], ['pt', 'China'], ['pl', 'Chiny'], ['uk', 'Китай']]);
 // "Mexico City" is a city, not Mexico followed by one.
 const settlementWords = new Set(['city', 'town', 'ville', 'stadt', 'ciudad', 'cidade', 'citta']);
 const normalized = (value: string) => value.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -27,7 +27,8 @@ const displayNames = new Map<string, Intl.DisplayNames>();
 function namedCountry(name: string, display: boolean): string | null {
   if (!countryNames) {
     countryNames = new Map([['usa', 'US'], ['uk', 'GB']]);
-    for (const language of ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl']) {
+    // Ukrposhta names countries in Ukrainian ("КИТАЙ", "Україна").
+    for (const language of ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl', 'uk']) {
       const names = new Intl.DisplayNames([language], { type: 'region' });
       for (const code of regionCodes) {
         const name = names.of(code) ?? code;

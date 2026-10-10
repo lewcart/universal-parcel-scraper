@@ -17,7 +17,7 @@ describe('tracking places', () => {
 
   it.each([
     ['France', 'FR'], ['DE', 'DE'], ['CH ', 'CH'], ['THE NETHERLANDS', 'NL'], ['Czech Republic', 'CZ'], ['Hong Kong', 'HK'],
-    ['DHL Netherlands', 'NL'],
+    ['DHL Netherlands', 'NL'], ['КИТАЙ', 'CN'], ['Україна', 'UA'],
   ])('leaves no place when %s is only a country', (location, country) => {
     expect(trackingPlace(location)).toEqual({ country, place: '' });
   });
@@ -60,6 +60,7 @@ describe('tracking places', () => {
     expect(fresh.trackingLocationCountry('Canton, Chine')).toBe('CN');
     expect(fresh.countryName('CN', 'en-GB')).toBe('China');
     expect(fresh.countryName('CN', 'fr')).toBe('Chine');
+    expect(fresh.trackingPlace('КИТАЙ')).toEqual({ country: 'CN', place: '' });
   });
 
   it('names the country in the reader’s language', () => {

@@ -66,6 +66,8 @@ credentials. No account, cookie, fingerprint or issued token is used.
   relay the destination's scans under their own name. So a cross-border parcel's
   unlocated scan stays a `local_time`, which the timeline cannot place, rather than a
   guessed UTC instant. A reply made only of such scans is inconclusive.
+- A scan dated without a time (GLS Italy's announcement) is left out: it has no place
+  among the others.
 - Each scan keeps its `location`, a town, region and country or a hub's code, unless it
   holds private delivery details or is Posti's "ULKOMAILLA" ("abroad"), which names no
   place. A hub's code such as "GOFO-PR" stays: the places module pins nothing for it, and

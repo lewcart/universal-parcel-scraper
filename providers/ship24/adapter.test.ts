@@ -73,6 +73,12 @@ describe('Ship24 result parsing', () => {
     expect(named('1234567891').discovered_carrier).toBe('dhl-express');
   });
 
+  it('leaves out a scan dated without a time instead of failing the history', () => {
+    const parsed = parseShip24Response({ data: { tracking_number: number, events: [...history.data.events,
+      { timestamp: '2026-09-08', status: 'The shipment has been created by the sender' }] } }, number);
+    expect(parsed.events?.map((scan) => scan.description)).toEqual(['Delivered']);
+  });
+
   it('rejects history that belongs to another shipment', () => {
     expect(() => parseShip24Response({ data: { tracking_number: 'OTHER123', events: [] } }, number))
       .toThrow('no matching shipment history');

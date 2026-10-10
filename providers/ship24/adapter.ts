@@ -166,6 +166,9 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
   const events: CarrierEvent[] = [];
   for (const raw of data.events) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Ship24 returned an invalid event');
+    // A scan dated without a time (GLS Italy's announcement) has no place
+    // among the others; it is left out rather than failing the history.
+    if (typeof raw.timestamp === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.timestamp)) continue;
     // datetime can end in Z while still containing the carrier's local time.
     // timestamp carries the real offset (verified against the public web app),
     // except for some carrier legs (Chronopost) that omit it entirely.

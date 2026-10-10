@@ -99,10 +99,24 @@ function misdatedTakeOff(carrierName: unknown, raw: Record<string, unknown>): bo
     && /^(?:aircraft departure|uplift)$/i.test(text(raw.description));
 }
 
+/** A field 17TRACK's form will not submit empty: its pattern, if any, rejects an empty value. */
+function requiresValue(pattern: unknown): boolean {
+  if (typeof pattern !== 'string') return true;
+  try { return !new RegExp(pattern).test(''); } catch { return true; }
+}
+
+/**
+ * The fields 17TRACK lists for the carrier it picked are that carrier's form,
+ * not a diagnosis: for PostNL it asks for a destination country, which its
+ * pattern requires, beside an optional postcode (checked 2026-10-10). A
+ * postcode alone cannot complete that form, so it is no postcode prompt.
+ */
 function requestsPostcode(shipment: Record<string, unknown>): boolean {
-  if (Array.isArray(shipment.params_v2)) return shipment.params_v2.some(p => isRecord(p) && p.key === 'postal_code');
-  return (isRecord(shipment.param) && shipment.param.type === 'PostalCode')
-    || (Array.isArray(shipment.params) && shipment.params.some(p => isRecord(p) && p.type === 'PostalCode'));
+  const fields = Array.isArray(shipment.params_v2)
+    ? shipment.params_v2.filter(isRecord).map(p => ({ postcode: p.key === 'postal_code', pattern: p.regex }))
+    : [shipment.param, ...Array.isArray(shipment.params) ? shipment.params as unknown[] : []].filter(isRecord)
+      .map(p => ({ postcode: p.type === 'PostalCode', pattern: p.format }));
+  return fields.some(field => field.postcode) && !fields.some(field => !field.postcode && requiresValue(field.pattern));
 }
 
 export function parse17TrackResponse(payload: unknown, trackingNumber: string, postcode: string | null = null): CarrierResult {

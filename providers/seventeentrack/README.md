@@ -51,8 +51,12 @@ out-for-delivery. The reported provider code is preserved.
 
 Codes -11, -13 and -14 mean interactive verification. Shipment code 100 means polling.
 A matching code-400/null-shipment reply means no history, unless its parameter metadata
-offers a postcode the caller has not supplied. Modern `params_v2` takes precedence over
-legacy `param` and `params`. Optional postcode metadata never suppresses usable history.
+offers a postcode the caller has not supplied. The metadata is the form of the carrier
+17TRACK picked, so a form that also requires another field is no postcode prompt: for
+PostNL, 17TRACK requires a destination country (its pattern rejects an empty value) beside
+an optional postcode, and a postcode alone cannot complete it. Modern `params_v2` takes
+precedence over legacy `param` and `params`. Optional postcode metadata never suppresses
+usable history.
 A completed postcode submission that still has no history stays `no_history` rather
 than asking again. A code-400 reply can list the carriers 17TRACK hesitates between
 (`extra[].multi`); it is still no history. Other non-200 codes, including envelope-level

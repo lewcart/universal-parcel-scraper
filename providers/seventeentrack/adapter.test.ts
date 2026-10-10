@@ -263,6 +263,20 @@ describe('17TRACK result parsing', () => {
     }
   });
 
+  it('asks for a postcode only when no other required field stands beside it', () => {
+    const country = { key: 'destination_country', input_type: 'Options', regex: '^([A-Z]{2})$' };
+    const postcode = { key: 'postal_code', input_type: 'Text', regex: '^(|[A-Z0-9\\- ]{4,9})$' };
+    const reply = (fields: Record<string, unknown>) => ({ meta: { code: 200 }, shipments: [{ number, code: 400, shipment: null, ...fields }] });
+    for (const fields of [{ params_v2: [country, postcode] }, { params_v2: [{ key: 'destination_country' }, postcode] },
+      { param: { type: 'DestCountry', format: '^([A-Z]{2})$' }, params: [{ type: 'DestCountry', format: '^([A-Z]{2})$' }, { type: 'PostalCode' }] }]) {
+      expect(thrown(() => parse17TrackResponse(reply(fields), number))).toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
+    }
+    // An optional field beside it leaves the postcode the only input to give.
+    for (const fields of [{ params_v2: [{ ...country, regex: '^(|[A-Z]{2})$' }, postcode] }, { params_v2: [postcode] }]) {
+      expect(thrown(() => parse17TrackResponse(reply(fields), number))).toMatchObject({ kind: 'input_required', field: 'postcode' });
+    }
+  });
+
   it('does not infer no history from another identity, ambiguity, an unknown code or an unexpected payload', () => {
     for (const payload of [noHistory('OTHER123'), { ...noHistory(), shipments: [noHistory().shipments[0], noHistory().shipments[0]] }]) {
       expect(thrown(() => parse17TrackResponse(payload, number))).toMatchObject({ kind: 'schema' });

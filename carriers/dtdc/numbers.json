@@ -259,6 +259,352 @@
       "note": "Z consignment number from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
     },
     {
+      "number": "A26344563",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130619013516/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=A26344563&trackIdType=awb_no",
+        "date": "2013-06-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered. It is the only DTDC reply known for an A waybill, a shape a Day & Ross sample shares, so no rule suggests DTDC for it."
+    },
+    {
+      "number": "B02708086",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130712104519/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=B02708086&trackIdType=awb_no",
+        "date": "2013-07-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "C46177877",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130612050759/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=C46177877&trackIdType=awb_no",
+        "date": "2013-06-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "D13097360",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130720034457/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=D13097360&trackIdType=awb_no",
+        "date": "2013-07-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "F07429859",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130704093930/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=F07429859&trackIdType=awb_no",
+        "date": "2013-07-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "H18246062",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130611095236/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=H18246062&trackIdType=awb_no",
+        "date": "2013-06-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "I00519027",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130710002712/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=I00519027&trackIdType=awb_no",
+        "date": "2013-07-10",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "K64224490",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130628142055/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=K64224490&trackIdType=awb_no",
+        "date": "2013-06-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "M89265730",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130625154511/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=M89265730&trackIdType=awb_no",
+        "date": "2013-06-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "N94437672",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130619013540/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=N94437672&trackIdType=awb_no",
+        "date": "2013-06-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dtdc",
+        "confidence": "high"
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "p23764763",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130614053838/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=p23764763&trackIdType=awb_no",
+        "date": "2013-06-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered. Preserve the published lowercase input; normalization uppercases the consignment number."
+    },
+    {
+      "number": "V12240261",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130614060340/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=V12240261&trackIdType=awb_no",
+        "date": "2013-06-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "X03206965",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130614053842/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=X03206965&trackIdType=awb_no",
+        "date": "2013-06-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "Z88704068",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20130711041145/http://www.dtdc.in/dtdc-corporate-web_liferay/trackingAction.do?method=submitTrackingIdsThroughRequestParameter&trackId=Z88704068&trackIdType=awb_no",
+        "date": "2013-07-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "DTDC's former tracking page, archived by the Wayback Machine, shows this waybill delivered."
+    },
+    {
+      "number": "B50502449",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/5a61d4786116dd0f10795363",
+        "date": "2018-01-19",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "Waybill from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
+    },
+    {
+      "number": "Z29527178",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/5e4656bd3c93ae0bc401af2f",
+        "date": "2020-02-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
+      },
+      "note": "Waybill from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
+    },
+    {
       "number": "W17514447",
       "role": "quarantined",
       "evidence": "public_shipment_report",
@@ -276,7 +622,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Archived DTDC tracking link with a W reference. A tracking link holds whatever was entered, so it does not show that DTDC issued the number, and detection does not know the shape."
+      "note": "Archived DTDC tracking link with a W reference of eight digits. A tracking link holds whatever was entered, so it does not show that DTDC issued the number, and no DTDC reply shows a W waybill of this shape, so detection does not know it."
     },
     {
       "number": "Z73449105",
@@ -294,9 +640,12 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
       },
-      "note": "Archived DTDC tracking link with a Z reference of eight digits. A tracking link holds whatever was entered, so it does not show that DTDC issued the number, and detection does not know the shape."
+      "note": "Archived DTDC tracking link with a Z reference of eight digits, a shape DTDC's former tracker answered. A tracking link holds whatever was entered, and no DTDC reply for this number is known, so it does not show that DTDC issued it."
     },
     {
       "number": "F32864330",
@@ -314,9 +663,12 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "dtdc"
+        ]
       },
-      "note": "Archived DTDC tracking link with an F reference. A tracking link holds whatever was entered, so it does not show that DTDC issued the number, and detection does not know the shape."
+      "note": "Archived DTDC tracking link with an F reference of eight digits, a shape DTDC's former tracker answered. A tracking link holds whatever was entered, and no DTDC reply for this number is known, so it does not show that DTDC issued it."
     },
     {
       "number": "USIN59020704001",

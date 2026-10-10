@@ -20,7 +20,11 @@ message does not prove that a number is unknown. Recipient details, addresses,
 booking information and unlabelled weight values are excluded.
 
 Published legacy references can suggest DTDC without establishing that the
-current feed retains their history. Detection keeps that distinction.
+current feed retains their history. Detection keeps that distinction for legacy
+waybills of one letter and eight digits: `N` waybills are selected, and the
+other letters DTDC's former tracker is known to have answered are only
+suggested. `A` waybills are left out: one DTDC reply shows one, and a Day & Ross
+sample shares the shape.
 
 ## Testing
 

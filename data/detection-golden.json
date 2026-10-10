@@ -18547,6 +18547,12 @@
     "candidates": []
   },
   {
+    "input": "A26344563",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "A7Z0364716",
     "carrier": "unknown",
     "confidence": "low",
@@ -18787,7 +18793,23 @@
     ]
   },
   {
+    "input": "B02708086",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "B5001412134",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
+    "input": "B50502449",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -19024,6 +19046,14 @@
       "gls-fr",
       "gls-ch",
       "gls-de"
+    ]
+  },
+  {
+    "input": "C46177877",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -20038,6 +20068,14 @@
     "confidence": "high",
     "candidates": [
       "ontrac"
+    ]
+  },
+  {
+    "input": "D13097360",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -21106,10 +21144,20 @@
     ]
   },
   {
+    "input": "F07429859",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "F32864330",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
   },
   {
     "input": "FGRC45BKLM",
@@ -21762,6 +21810,14 @@
     ]
   },
   {
+    "input": "H18246062",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "H5002649686",
     "carrier": "unknown",
     "confidence": "low",
@@ -21845,6 +21901,14 @@
     "confidence": "high",
     "candidates": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "I00519027",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -22614,6 +22678,14 @@
     "confidence": "low",
     "candidates": [
       "ups"
+    ]
+  },
+  {
+    "input": "K64224490",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -23847,6 +23919,14 @@
     "candidates": []
   },
   {
+    "input": "M89265730",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "ML545911751MH",
     "carrier": "intl-post",
     "confidence": "high",
@@ -23979,6 +24059,14 @@
     ],
     "asked": [
       "colis-prive"
+    ]
+  },
+  {
+    "input": "N94437672",
+    "carrier": "dtdc",
+    "confidence": "high",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -26829,6 +26917,14 @@
     ]
   },
   {
+    "input": "V12240261",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "VD2090015682",
     "carrier": "unknown",
     "confidence": "low",
@@ -26948,6 +27044,14 @@
     ],
     "asked": [
       "colis-prive"
+    ]
+  },
+  {
+    "input": "X03206965",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -27373,6 +27477,14 @@
     ]
   },
   {
+    "input": "Z29527178",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
+  },
+  {
     "input": "Z3110953842",
     "carrier": "packeta",
     "confidence": "high",
@@ -27445,8 +27557,10 @@
   {
     "input": "Z73449105",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
+    ]
   },
   {
     "input": "Z8328162946",
@@ -27470,6 +27584,14 @@
     "confidence": "high",
     "candidates": [
       "packeta"
+    ]
+  },
+  {
+    "input": "Z88704068",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {
@@ -27709,6 +27831,14 @@
     "confidence": "high",
     "candidates": [
       "ekart"
+    ]
+  },
+  {
+    "input": "p23764763",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dtdc"
     ]
   },
   {

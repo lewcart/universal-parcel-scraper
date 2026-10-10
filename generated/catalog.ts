@@ -3917,6 +3917,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^V\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[B-DFHIKMPXZ]\\d{8}$",
+        "confidence": "low"
       }
     ]
   },
@@ -7311,7 +7315,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "yamato": ["yamato-1"],
   "korea-post": ["korea-post-1","korea-post-2","korea-post-3"],
   "thailand-post": ["thailand-post-1"],
-  "dtdc": ["dtdc-1","dtdc-2","dtdc-3","dtdc-4"],
+  "dtdc": ["dtdc-1","dtdc-2","dtdc-3","dtdc-4","dtdc-5"],
   "australia-post": ["australia-post-article","australia-post-consignment","australia-post-consignment-10","australia-post-prepaid","australia-post-s10"],
   "hongkong-post": ["hongkong-post-1"],
   "pos-malaysia": ["pos-malaysia-1","pos-malaysia-2","pos-malaysia-3"],

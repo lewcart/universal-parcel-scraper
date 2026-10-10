@@ -219,6 +219,12 @@
   },
   {
     "carrier": "dtdc",
+    "pattern": "^A\\d{8}$",
+    "kind": "open",
+    "reason": "One archived DTDC reply shows an A waybill of eight digits, the shape of a Day & Ross sample; neither family is established."
+  },
+  {
+    "carrier": "dtdc",
     "pattern": "^Z\\d{10}$",
     "kind": "collision",
     "reason": "Reviews of DTDC cite Z waybills with ten digits, the shape of Packeta's Z barcodes, whose high-confidence rule takes them."

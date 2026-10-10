@@ -40,6 +40,22 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('V123456789').candidates).not.toContain('dtdc');
   });
 
+  it.each(['B12345678', 'f12345678', 'Z12345678'])('suggests DTDC for the legacy waybill %s without selecting it', (number) => {
+    expect(detectCarrierMatch(number)).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['dtdc'], preferred: [],
+    });
+  });
+
+  it('leaves letters no DTDC reply showed, and other lengths, out of the legacy waybill rule', () => {
+    for (const number of ['W12345678', 'E12345678', 'Z1234567', 'Z123456789']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('dtdc');
+    }
+    // One DTDC reply shows an A waybill, a shape a Day & Ross sample shares.
+    expect(detectCarrierMatch('A12345678').candidates).not.toContain('dtdc');
+    // Packeta keeps its ten-digit Z barcodes.
+    expect(detectCarrierMatch('Z1234567890')).toMatchObject({ carrier: 'packeta', confidence: 'high' });
+  });
+
   it('gives the JVGL family to the Benelux network without changing GM routing', () => {
     expect(detectCarrierMatch('JVGL01234567890123456789')).toMatchObject({
       carrier: 'dhl-ecommerce-nl', confidence: 'high', candidates: ['dhl-ecommerce-nl'],

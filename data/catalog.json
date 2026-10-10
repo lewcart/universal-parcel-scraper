@@ -3915,6 +3915,10 @@
       {
         "pattern": "^V\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[B-DFHIKMPXZ]\\d{8}$",
+        "confidence": "low"
       }
     ]
   },

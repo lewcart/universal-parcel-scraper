@@ -98,8 +98,8 @@ function zonedInstant(raw: string, zone: string): string | null {
  * A UTAPI clock: its own offset, else the wall clock read in the zone of the
  * event's country or an identified hub, as an instant in UTC. A local policy
  * rather than one from `core/time`, since UTAPI legs cross zones. A wall clock
- * that zone skips or repeats at a clock change stays local, as Webtrack's do;
- * one without a zone is null.
+ * without a zone, or one that zone skips or repeats at a clock change, stays
+ * local, as Webtrack's do.
  */
 function utapiClock(event: JsonObject): { time?: string; local_time?: string } | null {
   const raw = clean(event.timestamp, 64);
@@ -117,8 +117,8 @@ function utapiClock(event: JsonObject): { time?: string; local_time?: string } |
   const zone = countryTimeZone(country) ?? countryTimeZone(locality) ?? HUB_ZONES[locality.toLowerCase()];
   // UTC validates the digits only; the wall clock is then read in the place's zone.
   const wall = DateTime.fromISO(raw, { zone: 'UTC' });
-  if (!zone || !wall.isValid) return null;
-  const instant = zonedInstant(wall.toISO({ includeOffset: false }), zone);
+  if (!wall.isValid) return null;
+  const instant = zone ? zonedInstant(wall.toISO({ includeOffset: false }), zone) : null;
   return instant ? { time: instant } : { local_time: wall.toISO({ includeOffset: false, suppressMilliseconds: true }) };
 }
 

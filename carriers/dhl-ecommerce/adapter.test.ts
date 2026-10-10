@@ -140,19 +140,26 @@ describe('DHL eCommerce normalization', () => {
     expect(parseDHLEcommerceResponse(payload).expected_delivery).toBeNull();
   });
 
-  it('does not fabricate UTC timestamps for unknown localities, and honors explicit offsets within fourteen hours', () => {
+  it('keeps wall clocks at unknown places local, and honors explicit offsets within fourteen hours', () => {
     const unknown = { addressLocality: 'Unknown' };
-    const payload = shipment(); payload.shipments[0]!.events = [
+    const payload = shipment();
+    payload.shipments[0]!.status = event('EN ROUTE', 'transit', '2026-09-01T11:00', unknown);
+    payload.shipments[0]!.events = [
+      event('EN ROUTE', 'transit', '2026-09-01T11:00', unknown),
+      { ...event('SORTED', 'transit', '2026-09-01T10:30:00'), location: { address: {} } },
       event('PROCESSED', 'transit', '2026-09-01T09:00:00-05:00', unknown),
       event('ARRIVED', 'transit', '2026-09-01T10:00:00+02', unknown),
       event('DEPARTED', 'transit', '2026-09-01T09:00:00+0200', unknown),
-      event('EN ROUTE', 'transit', '2026-09-01T09:00:00', unknown),
       ...['+2500', '+0299', '+14:30', '+1', '+05:3'].map((offset) => event('SORTED', 'transit', `2026-09-01T08:00:00${offset}`, unknown)),
       event('EN ROUTE', 'transit', 'invalid'),
     ];
-    expect(parseDHLEcommerceResponse(payload).events?.map((scan) => [scan.description, scan.time])).toEqual([
-      ['PROCESSED', '2026-09-01T14:00:00.000Z'], ['ARRIVED', '2026-09-01T08:00:00.000Z'], ['DEPARTED', '2026-09-01T07:00:00.000Z'],
+    const result = parseDHLEcommerceResponse(payload);
+    expect(result.events?.map((scan) => [scan.description, scan.time ?? `local ${String(scan.local_time)}`, scan.location])).toEqual([
+      ['EN ROUTE', 'local 2026-09-01T11:00:00', 'Unknown'], ['SORTED', 'local 2026-09-01T10:30:00', ''],
+      ['PROCESSED', '2026-09-01T14:00:00.000Z', 'Unknown'], ['ARRIVED', '2026-09-01T08:00:00.000Z', 'Unknown'],
+      ['DEPARTED', '2026-09-01T07:00:00.000Z', 'Unknown'],
     ]);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-09-01T11:00:00' });
   });
 
   it('keeps a UTAPI wall clock local in an hour a clock change skips or repeats, and the reply\'s order with it', () => {

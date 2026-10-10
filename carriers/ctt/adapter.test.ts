@@ -112,13 +112,53 @@ describe('CTT response parsing', () => {
       status: 'delivered',
       current_stage: 'delivered',
       last_status_text: 'Delivered parcel',
-      last_update: '2026-01-04T14:46:00Z',
+      last_update: '2026-01-04T14:46:00+00:00',
       expected_delivery: null,
     });
     expect(result.events?.map((event) => [event.description, event.stage, event.time])).toEqual([
-      ['Delivered parcel', 'delivered', '2026-01-04T14:46:00Z'],
-      ['Shipment accepted', 'accepted', '2026-01-01T08:00:00Z'],
+      ['Delivered parcel', 'delivered', '2026-01-04T14:46:00+00:00'],
+      ['Shipment accepted', 'accepted', '2026-01-01T08:00:00+00:00'],
     ]);
+  });
+
+  describe('scan clocks', () => {
+    /** The clock of one scan of a parcel for `recipient`, as the result keeps it. */
+    function scanAt(DateTime: string, Local: string, EventCode = 'EMB', recipient = 'PT') {
+      const [scan] = parseCttTrackingResponse({ data: { ObjectEventsFromQuery: record({ RecipientCountryCode: recipient,
+        Events: { List: [{ DateTime, State: 'X', StateId: 11, Event: 'Wording', EventCode, Local }] } }) } }, TRACKING_NUMBER).events!;
+      return scan!.time ?? `local ${String(scan!.local_time)}`;
+    }
+
+    it("reads CTT's Z as the wall clock of the Portuguese site that scanned", () => {
+      expect(scanAt('2026-08-31T20:53:13Z', 'PTEXAA - (OUTRO) EXAMPLE')).toBe('2026-08-31T20:53:13+01:00');
+      expect(scanAt('2026-08-29T11:46:23Z', 'Centro operacional Example')).toBe('2026-08-29T11:46:23+01:00');
+      expect(scanAt('2026-08-28T10:34:52Z', '0000000 - (PC) Ponto CTT Example 2000')).toBe('2026-08-28T10:34:52+01:00');
+      // The Azores keep an hour less, by postcode or by a town only the islands have.
+      expect(scanAt('2026-08-28T10:34:52Z', 'Centro operacional 9580 Example')).toBe('2026-08-28T10:34:52+00:00');
+      expect(scanAt('2026-08-28T10:34:52Z', 'Loja CTT Ponta Delgada')).toBe('2026-08-28T10:34:52+00:00');
+      // An unlocated scan of a parcel that stays in Portugal is CTT's.
+      expect(scanAt('2026-08-28T10:13:58Z', '', 'EMO')).toBe('2026-08-28T10:13:58+01:00');
+    });
+
+    it("reads a partner post's scans of a parcel abroad on the destination's clock, or keeps their wall time", () => {
+      expect(scanAt('2026-08-04T13:29:00Z', '12345', 'EDG', 'IT')).toBe('2026-08-04T13:29:00+02:00');
+      expect(scanAt('2026-08-04T14:46:00Z', 'EX12345', 'EMI', 'IT')).toBe('2026-08-04T14:46:00+02:00');
+      expect(scanAt('2026-08-04T13:29:00Z', '12345', 'EDG', 'US')).toBe('local 2026-08-04T13:29:00');
+      // CTT's own scans of the same parcel stay on Portugal's clock.
+      expect(scanAt('2026-08-01T11:10:15Z', 'PTEXAA - (OUTRO) EXAMPLE', 'EMC', 'IT')).toBe('2026-08-01T11:10:15+01:00');
+      expect(scanAt('2026-08-01T10:13:58Z', '', 'EMO', 'IT')).toBe('2026-08-01T10:13:58+01:00');
+    });
+
+    it('takes any other offset as sent and orders wall times among instants', () => {
+      expect(scanAt('2026-08-01T10:00:00+02:00', '12345', 'EDG', 'US')).toBe('2026-08-01T10:00:00+02:00');
+      const result = parseCttTrackingResponse({ data: { ObjectEventsFromQuery: record({ RecipientCountryCode: 'US',
+        Events: { List: [
+          { DateTime: '2026-08-01T10:00:00Z', State: 'X', StateId: 2, Event: 'Accepted', EventCode: 'EMA', Local: 'Loja CTT Example' },
+          { DateTime: '2026-08-09T09:00:00Z', State: 'X', StateId: 12, Event: 'Delivered parcel', EventCode: 'EMI', Local: '' },
+        ] } }) } }, TRACKING_NUMBER);
+      expect(result).toMatchObject({ current_stage: 'delivered', last_update: null, last_update_local: '2026-08-09T09:00:00' });
+      expect(result.events?.map((event) => event.description)).toEqual(['Delivered parcel', 'Accepted']);
+    });
   });
 
   it('maps every documented StateId and reports unmapped ones as unknown', () => {

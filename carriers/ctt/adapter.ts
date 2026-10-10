@@ -4,7 +4,7 @@ import { IndeterminateError, InvalidInputError, MaintenanceError, NotFoundError,
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { isValidS10TrackingNumber } from '../../core/detection/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import {
   clean,
   decodeText,
@@ -13,6 +13,7 @@ import {
   parseJsonBytes,
 } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { cttSiteZone, portugalZone } from './clock.js';
 import { classifyCttStatus } from './status.js';
 
 // Protocol provenance:
@@ -100,6 +101,33 @@ function sessionFromSetCookie(response: Response): CttSession | null {
   return { cookie: `nr2Users=${value}`, csrfToken };
 }
 
+/** UPU events a destination post records: from arrival at its office of exchange to delivery. */
+const DESTINATION_EVENT = /^(?:EM[D-I]|ED[A-H])$/;
+const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(?:Z|\+00:?00)?$/i;
+
+/**
+ * A scan's clock. CTT's Z is no offset: the digits are the wall clock where
+ * the scan happened (see clock.ts). That is the destination's, for a
+ * partner post's scan of a parcel bound abroad (`abroad`), unless the
+ * location names an office or a site of CTT's; Portugal's otherwise. A
+ * destination with several zones leaves the scan a wall time. Any other
+ * offset is taken as sent.
+ */
+function scanClock(value: unknown, location: string, abroad: string | null):
+  { time?: string; local_time?: string; timestamp: number } | null {
+  const raw = typeof value === 'string' ? value.trim() : '';
+  const wall = WALL_CLOCK.exec(raw)?.[1];
+  if (!wall) {
+    const time = explicitOffsetTime(raw);
+    return time ? { time: time.iso, timestamp: time.timestamp } : null;
+  }
+  const zone = cttSiteZone(location, abroad ? [abroad] : []) ?? (abroad ? countryTimeZone(abroad) : portugalZone(location));
+  const placed = zone ? isoTime(wall, zone) : null;
+  if (placed) return { time: placed.iso, timestamp: placed.timestamp };
+  const read = Date.parse(`${wall}Z`);
+  return Number.isFinite(read) ? { local_time: wall, timestamp: read } : null;
+}
+
 export function parseCttTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const requested = normalizeCttTrackingNumber(trackingNumber);
   if (!isRecord(payload)) throw new SchemaError('CTT', 'CTT returned an invalid tracking response');
@@ -113,16 +141,18 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
   const rawEvents = record.Events;
   const eventsList = isRecord(rawEvents) && Array.isArray(rawEvents.List) ? rawEvents.List : null;
   if (eventsList === null) throw new SchemaError('CTT', 'CTT returned invalid tracking history');
+  // Only the recipient's country is read, to tell a parcel bound abroad.
+  const recipient = clean(record.RecipientCountryCode, 8).toUpperCase();
+  const abroad = /^[A-Z]{2}$/.test(recipient) && recipient !== 'PT' ? recipient : null;
   const parsed: Array<{ event: CarrierEvent; classified: ClassifiedStatus | undefined; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
   eventsList.filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const stateId = typeof rawEvent.StateId === 'number' ? rawEvent.StateId : Number.NaN;
     const description = clean(rawEvent.Event, 500) || clean(rawEvent.State, 200);
-    // Observed event datetimes carry explicit offsets; require them rather than
-    // stamping a zone onto a cross-border lane.
-    const time = explicitOffsetTime(rawEvent.DateTime);
-    if (!time || !description) return;
-    const identity = `${time.iso}\u0000${description}\u0000${Number.isSafeInteger(stateId) ? stateId : ''}`;
+    const location = clean(rawEvent.Local, 160);
+    const clock = scanClock(rawEvent.DateTime, location, abroad && DESTINATION_EVENT.test(clean(rawEvent.EventCode, 8)) ? abroad : null);
+    if (!clock || !description) return;
+    const identity = `${clock.time ?? clock.local_time}\u0000${description}\u0000${Number.isSafeInteger(stateId) ? stateId : ''}`;
     if (seen.has(identity)) return;
     seen.add(identity);
     const classified = classifyCttStatus(stateId);
@@ -133,14 +163,14 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
       // An unmapped state keeps no stage: the sync classifies the wording and
       // records where the stage came from instead of assuming movement here.
       event: {
-        time: time.iso,
-        location: clean(rawEvent.Local, 160),
+        ...(clock.time ? { time: clock.time } : { local_time: clock.local_time }),
+        location,
         description,
         ...(classified ? { stage: classified.stage } : {}),
         ...(Number.isSafeInteger(stateId) ? { provider_code: String(stateId) } : {}),
       },
       classified: classified ?? undefined,
-      timestamp: time.timestamp,
+      timestamp: clock.timestamp,
       index,
     });
   });
@@ -152,6 +182,7 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
       status: 'unknown',
       last_status_text: events[0]?.description ?? 'Tracking information received',
       last_update: events[0]?.time ?? null,
+      ...(events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
       expected_delivery: null,
       events,
     };
@@ -161,6 +192,7 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
     current_stage: latest.classified!.stage,
     last_status_text: latest.event.description,
     last_update: latest.event.time ?? null,
+    ...(latest.event.local_time ? { last_update_local: latest.event.local_time } : {}),
     expected_delivery: null,
     events,
   };

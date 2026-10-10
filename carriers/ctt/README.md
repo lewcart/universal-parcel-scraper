@@ -36,12 +36,24 @@ is a separate carrier.
 - Only the integer `StateId` is mapped, never the localized Portuguese `State` text. It is
   also returned as `provider_code`. An unmapped `StateId` gets no stage and the sync records
   the raw wording.
-- Timestamps carry offsets and are kept as sent. An offset-less value is dropped, not
-  stamped `Europe/Lisbon`, because lanes are cross-border.
+- A timestamp's `Z` is no offset: the digits are the wall clock where the scan happened
+  (`clock.ts`). The tracker is an OutSystems app whose DateTime values travel as UTC strings,
+  and its page shows the digits unconverted in any browser zone. UPU's tracking has the same
+  wall clocks for CTT's posting and dispatch, and 17TRACK reads them on Lisbon's clock
+  (checked 2026-10-10).
+  - A scan at an office of exchange (`PTLISA - …`) or one of CTT's own sites (`Centro
+    operacional`, `Loja CTT`, `Ponto CTT`, `(CDP)`) is on Portugal's clock. That is the
+    Azores' for a postcode from 9500 or a town only the islands have, and Lisbon's otherwise.
+  - On a parcel bound abroad (`RecipientCountryCode`), the destination post's events
+    (UPU `EMD`–`EMI`, `EDA`–`EDH`) keep that post's wall clock: they are read in the
+    destination's zone, and stay wall times (`local_time`) when it has several. CTT relays
+    them unconverted: an Italian delivery comes at the Italian office's time.
+  - Any other scan is CTT's, on Portugal's clock.
+  - Any other offset is taken as sent. Wall times sort among instants by their digits.
 - Event `Local` mixes depot codes and point names. It is kept as a coarse location and never
   refined into an address.
 - Sender and recipient names, contacts and addresses are on the record but never read; a
-  test asserts it.
+  test asserts it. Only the recipient's country is read, for the clocks above.
 - At most 20 events are returned, newest first.
 - The user-facing link is the legacy `objectSearch.jspx?objects=` page: CTT links it from
   its own site and it survives `appserver` host changes.

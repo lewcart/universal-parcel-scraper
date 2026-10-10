@@ -4705,7 +4705,7 @@ export const CARRIER_CATALOG = {
   },
   "allegro-one": {
     "displayName": "Allegro One",
-    "color": "#ff5a00",
+    "color": "#006d57",
     "aliases": [
       "Allegro Delivery",
       "Allegro One Box",

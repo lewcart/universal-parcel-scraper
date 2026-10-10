@@ -94,10 +94,21 @@ const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'e
  * for SpeedPAK; the EMS office clocks Parcelforce and NZ Post relay; Cainiao's
  * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; and 4PX's (below).
  * They are read in the state, province or single-clock country their location
- * names. A scan that none places has no instant: it is counted, and a reply
- * whose latest scan it is cannot say where the parcel is.
+ * names. A scan that none places borrows a clock (`borrowedZones`), a guess;
+ * one with none to borrow has no instant: it is counted, and a reply whose
+ * latest scan it is cannot say where the parcel is.
  */
 const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress']);
+/**
+ * Wall-clock networks whose scans with no place keep a clock their placed
+ * neighbours do not have, so they borrow none (checked 2026-10-10). GOFO's
+ * are its labels, which GOFO's feed dates on Pacific time wherever the parcel
+ * is injected (a Florida parcel's at -07:00). Cainiao's, in a reply another
+ * network delivers, are its origin leg on China time while its placed scans
+ * copy the delivery's: borrowed, a US parcel's put "Order received" 12 hours
+ * after GOFO's label, read on China time 19 seconds after it.
+ */
+const KEEPS_WALL_CLOCK = new Set(['gofoexpress', 'cainiao']);
 /**
  * Networks whose dates are their home clock wherever the scan was: their own
  * instants or labels shown on that clock, checked on 2026-10-10. Italy Post's
@@ -166,11 +177,12 @@ function regionClock(location: string): { zone: string; certain: boolean } | nul
 
 /**
  * The last part of a location that is not a bare postcode: "Example Town,
- * Denmark, 4600" is in Denmark. Orange Connex names China in full for SpeedPAK.
+ * Denmark, 4600" is in Denmark. Orange Connex names China and the United
+ * States in full for SpeedPAK, and Canada Post writes "USA".
  */
 function lastPlace(location: string): string | undefined {
   const place = location.split(',').map((part) => part.trim()).filter((part) => part && !/^\d[\d\s-]*$/.test(part)).at(-1);
-  return place && /^people['’]?s republic of china$/i.test(place) ? 'CN' : place;
+  return place && /^people['’]?s republic of china$/i.test(place) ? 'CN' : place && UNITED_STATES.test(place) ? 'US' : place;
 }
 
 /**
@@ -183,6 +195,25 @@ function scanLocation(name: unknown, location: unknown): string {
   if (nameKey(name) !== '4pxexpress' || !/^[A-Z]{2}(?:\s{2}|$)/.test(text)) return text;
   const [country, ...fields] = text.split(/\s{2}/).map((field) => field.trim());
   return [...fields.reverse(), country].filter(Boolean).join(', ');
+}
+
+// The countries of the US and Canadian zones a state or province gives.
+const NORTH_AMERICAN_ZONES: ReadonlyMap<string, string> = new Map([
+  ...[...US_STATE_NAMES.values()].map((code) => [usStateTimeZone(code)!, 'US'] as const),
+  ...['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'].map((code) => [canadaProvinceTimeZone(code)!, 'CA'] as const),
+]);
+
+/**
+ * A guessed zone, unless the location names a country it is not in: a guess
+ * cannot put a scan in "Example City, South Africa" on Paris time. Guesses
+ * from the name or from routing are single-clock countries' zones, so a
+ * location in the US or Canada rules them out too. A borrowed zone can be a
+ * state's or a province's, and must then be in the country the location names.
+ */
+function fitsPlace(zone: string | null, location: string, borrowed = false): string | null {
+  const country = countryCode(lastPlace(location));
+  const zoneCountry = zone ? timeZoneCountry(zone) ?? (borrowed ? NORTH_AMERICAN_ZONES.get(zone) : undefined) : undefined;
+  return zone && (!country || zoneCountry === country) ? zone : null;
 }
 
 /** Where a location puts a scan, for the reply-wide North America check. */
@@ -257,9 +288,7 @@ function scanZone(payload: Record<string, unknown>, state: Record<string, unknow
   // country, one with several clocks or none listed ("Example City, CA,
   // United States", "Example City, South Africa"), rules a guess out, and the
   // scan keeps its labeled instant.
-  const country = countryCode(place);
-  const guess = (candidate: string | null) =>
-    candidate && (!country || timeZoneCountry(candidate) === country) ? candidate : null;
+  const guess = (candidate: string | null) => fitsPlace(candidate, location);
   if (typeof name !== 'string') return guess(fallback);
   const nameZone = carrierNameCountryZone(name);
   const named = guess((nameZone && numberNetworkZone(carrier, number)) || nameZone || (HOME_COUNTRIES[key] ?? null));
@@ -288,16 +317,60 @@ function stateDate(name: unknown, date: unknown): unknown {
 /**
  * How to read a state: its date (4PX's wall clock), the zone that places it,
  * whether its state or province did, and whether, left without a zone, it is
- * a wall clock with no instant rather than a labeled one.
+ * a wall clock with no instant rather than a labeled one. A wall-clock
+ * network's scan takes routing's zone only after it has found no clock to
+ * borrow (`borrowedZones`), so that zone is kept apart, as `fallback`.
  */
 function readState(payload: Record<string, unknown>, raw: Record<string, unknown>, fallback: string | null, number: string, inNorthAmerica = false) {
   const name = stateCarrierName(payload, raw);
   const state = { ...raw, date: stateDate(name, raw.date) };
-  const zone = scanZone(payload, state, fallback, number, inNorthAmerica);
   const location = scanLocation(name, raw.location);
-  return { name, date: state.date, zone, offset: ownOffset(name, state.date),
+  const wall = WALL_CLOCKS.has(nameKey(name)) && !ownOffset(name, state.date);
+  const borrows = wall && !KEEPS_WALL_CLOCK.has(nameKey(name));
+  const zone = scanZone(payload, state, borrows ? null : fallback, number, inNorthAmerica);
+  return { name, date: state.date, zone, offset: ownOffset(name, state.date), location,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
-    wall: relaysFacilityClock(name) || (WALL_CLOCKS.has(nameKey(name)) && !ownOffset(name, state.date)) };
+    borrows, fallback: borrows ? fitsPlace(fallback, location) : null,
+    wall: relaysFacilityClock(name) || wall };
+}
+
+/**
+ * A guess for each wall-clock scan that nothing places (`zones[i]` null): the
+ * zone of the scan just before it, by wall clock, among the scans of the same
+ * network the reply does place, else of the one just after it, else the zone
+ * routing passes for the parcel. A zone the scan's location rules out is
+ * skipped ("USA" takes no Canadian zone). The guess holds when a scan with no
+ * place happens where its neighbours do, and is hours off when it does not.
+ * Checked on 2026-10-10 against the carriers' own clocks. Canada Post's
+ * first scan and one in Chicago took the right zone, and its last two, in
+ * Montana, the Chicago hub's, an hour off USPS's. SpeedPAK's four took the
+ * right one, and a Chinese system event the US one, 14 hours off.
+ * 4PX's nine did; its four between the departing flight and the first US scan
+ * took China's, and its first scan the US label's, 12 hours off. USPS's "In
+ * Transit to Next Facility" was not checked: no source gives its clock. A
+ * scan with none of these keeps its wall clock.
+ */
+function borrowedZones(entries: readonly { name: unknown; date: unknown; location: string; borrows: boolean; fallback: string | null }[],
+  zones: readonly (string | null | undefined)[]): (string | null)[] {
+  const walls = entries.map((entry) => mislabeledWallTime(entry.date) ?? '');
+  return entries.map((entry, index) => {
+    const own = zones[index];
+    if (own) return own;
+    if (!entry.borrows) return null;
+    const key = nameKey(entry.name);
+    const wall = walls[index]!;
+    let before: { wall: string; zone: string } | undefined;
+    let after: { wall: string; zone: string } | undefined;
+    entries.forEach((other, at) => {
+      const zone = zones[at];
+      const near = { wall: walls[at]!, zone: zone ?? '' };
+      if (at === index || !zone || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
+      if (near.wall <= wall) {
+        if (!before || near.wall > before.wall) before = near;
+      } else if (!after || near.wall < after.wall) after = near;
+    });
+    return (before ?? after)?.zone ?? entry.fallback;
+  });
 }
 
 /**
@@ -359,10 +432,12 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     ...entries.filter((entry) => entry.offset).map((entry) => [
       copyKey(entry, DateTime.fromISO(String(entry.date).trim(), { setZone: true }).toISO({ includeOffset: false })), `UTC${entry.offset}`] as const),
   ].filter(([key]) => key));
+  const zones = borrowedZones(entries, entries.map((entry) =>
+    (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone));
   const latest = new LatestScan(SOURCE);
-  for (const entry of entries) {
+  for (const [index, entry] of entries.entries()) {
     const { raw, name, scan, date } = entry;
-    const zone = (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone;
+    const zone = zones[index];
     const unplaced = !zone && entry.wall;
     const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
     if (parsed) latest.see(mislabeledWallTime(date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
@@ -463,10 +538,11 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     if (!labeled.isValid) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event date');
     const state = readState({ carriers }, { date: labeled.toISO(), ...(name ? { carrier: carriers.indexOf(name) } : {}) },
       timezone, numberOf(trackingNumber));
-    const { zone } = state;
-    const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
     // The page prints no location, so no DHL Express scan has a facility to
-    // read its clock in, and no other wall clock a place.
+    // read its clock in, and no other wall clock a place or a placed scan of
+    // its network to borrow from: routing's zone, if any, is its guess.
+    const zone = state.zone ?? state.fallback;
+    const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
     const unplaced = !zone && state.wall;
     latest.see(mislabeledWallTime(state.date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
     if (unplaced) {

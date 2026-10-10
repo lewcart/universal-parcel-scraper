@@ -89,11 +89,13 @@ step exists for future protocol changes.
      digits as the same instant;
   5. the zone routing passes for the parcel.
 
-  Steps 3 and 5 only guess where the scan was. A `location` ending with any other
-  country, by ISO code or by name in English, German, French, Italian, Spanish or Dutch
-  ("Example City, CA, US", "Example City, South Africa"), rules them out and the scan
-  stays as labeled. A location that names no country ("Example Hub", "Toronto, ON") rules
-  nothing out, and step 4 only reads scans without a location. A country added to
+  Steps 3 and 5 only guess where the scan was. A `location` ending with any other country,
+  by ISO code or by name in English, German, French, Italian, Spanish or Dutch ("Example
+  City, CA, US", "Example City, South Africa"), rules them out and the scan stays as
+  labeled. Canada Post's "USA" and Orange Connex's "United States of America" and
+  "People's Republic of China" name the US and China too; the last also places a scan on
+  China time in step 2. A location that names no country ("Example Hub", "Toronto, ON")
+  rules nothing out, and step 4 only reads scans without a location. A country added to
   `COUNTRY_ZONES`, or a country name `countryCode` newly reads, therefore moves the stored
   scans located in it, as a changed catalog `timezone` moves its carrier's, and so their
   event ids. So does a reported name newly mapped to a catalog carrier on a local clock
@@ -125,18 +127,40 @@ step exists for future protocol changes.
   Post relay; Cainiao's leg by leg, on GMT+8, +2 or +1, also under EcoScooting, whose
   Spanish and Portuguese scans differ by an hour). They are read in the state or province
   (North American scans below) or the single-clock country their location names, by a
-  copy (below), or by the guesses of steps 3 and 5. A scan none of these places is a wall
-  time, left out and counted as for DHL Express, and a reply whose latest scan it is is
-  inconclusive ("cannot place the latest scan"). With no zone from routing, a Canada Post
-  scan in "USA", a USPS scan with no location, an EMS scan at a bare ZIP code and a
-  Cainiao scan with no location all end there.
+  copy (below), or by the guess of step 3.
+- A wall-clock scan none of these places borrows a clock, a guess: the zone of the scan of
+  the same network just before it by wall clock that the reply does place, else of the one
+  just after it, else routing's zone (step 5). A zone its location rules out is skipped: a
+  scan in "USA" takes no Canadian or Chinese zone. The guess holds when the scan happens
+  where its neighbours do, and is hours off when it does not. Checked on 2026-10-10
+  against the carriers' own clocks: Canada Post's first scan and one in Chicago took the
+  right zone, and its last two, in Montana, the Chicago hub's, an hour off USPS's.
+  SpeedPAK's four took the right one, and a Chinese system event the US one, 14 hours off.
+  4PX's nine did; its four between the departing flight and the first US scan took
+  China's, and its first scan the US label's, 12 hours off. No source gives the clock of
+  USPS's "In Transit to Next Facility", which borrows its neighbours'.
+- GOFO's and Cainiao's scans borrow nothing: their placed neighbours keep another clock.
+  GOFO's with no place are its labels, which GOFO's feed dates on Pacific time wherever
+  the parcel is injected (a Florida parcel's at -07:00). Cainiao's, in a reply another
+  network delivers, are its origin leg on China time, while its placed scans copy the
+  delivery's: borrowed, a US parcel's "Order received" came 12 hours after GOFO's label,
+  and read on China time 19 seconds after it.
+- A wall-clock scan with no zone at all is a wall time, left out and counted as for DHL
+  Express, and a reply whose latest scan it is is inconclusive ("cannot place the latest
+  scan"). Routing passes no zone for a carrier on UTC in the catalog, as these are. So an
+  EMS, Cainiao or EcoScooting reply that places none of the network's scans ends there, as
+  does one whose latest scan is Cainiao's copy of another post's (bpost's, CTT's or Japan
+  Post's last mile, with no place), a Canada Post scan in "USA" after only Canadian ones,
+  or a USPS scan with no location after only other carriers' scans. Borrowing moves the
+  stored scans it now dates, and the names read as the US or China above move theirs: plan
+  a re-key.
 - 4PX's dates are the instants of 4PX's own feed, which reads every scan's wall clock on
   China time, its US scans too: 4PX's page shows a New York delivery at 14:30 with its
   -04:00 offset, and ParcelsApp has 06:30Z. The wall clock is that instant's Shanghai
   digits, read where the location places it. 4PX writes the country first, in fixed
   fields ("US  NY  EXAMPLE CITY 12345", "US    EXAMPLE CITY NY DISTRIBUTION CENTER"). An
   instant is right only for a scan on China time, so a scan with no place, or in "US"
-  alone, has none.
+  alone, borrows a clock as above.
 - GOFO France's dates carry real offsets ("+02:00"), the instants of GOFO France's own
   feed, and are taken as given. Other carriers' copies of the same scan (YTO's, Cirro's,
   EQuick China's) write its digits under a UTC label; a copy with the same digits and
@@ -204,8 +228,9 @@ step exists for future protocol changes.
   scan's carrier under its wording (`.event-content .carrier`), so it goes through the
   same steps and gives the same instants, and event ids, as the JSON reply. It shows no
   scan location, so step 2 never applies there and nothing rules out steps 3 and 5. A
-  wall-clock carrier's scan there has no place to be read in, and its UTC digits carry no
-  offset for GOFO France's copies to take. The server's timezone is never used. It prints
+  wall-clock carrier's scan there has no place to be read in and no placed scan to borrow
+  from, so only routing's zone, a guess, dates it, and its UTC digits carry no offset for
+  GOFO France's copies to take. The server's timezone is never used. It prints
   a state with no date as `aN Inv NaN` at `aN:aN`, which is counted the same way.
 - Cross-border replies stay uncertain: scans can be filed under the wrong operator (an
   India-to-France parcel listed La Poste scans under India Post).

@@ -465,7 +465,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A sports merchant's package reference that Landmark's tracking page resolves to an LTN parcel. The adapter takes only LTN references."
+      "note": "A sports merchant's reference that Landmark's tracking page resolves to an LTN parcel, as its order reference."
     },
     {
       "number": "LDLBUS030801974",
@@ -485,7 +485,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A shipper's reference that Landmark's tracking page resolves to an LTN parcel. The adapter takes only LTN references."
+      "note": "A shipper's reference that Landmark's tracking page resolves to an LTN parcel, as its package reference."
     }
   ]
 }

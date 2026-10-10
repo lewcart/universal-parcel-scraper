@@ -407,7 +407,7 @@
     "carrier": "landmark-global",
     "pattern": "^(?:PS\\d{6}[A-Z]\\d{10}|LDLBUS\\d{9})$",
     "kind": "by_design",
-    "reason": "Merchant and shipper references that Landmark's tracking page resolves to a parcel. They are not specific to Landmark, so the adapter takes only LTN references."
+    "reason": "Merchant and shipper references that Landmark's tracking page resolves to a parcel. They are not specific to Landmark, so detection leaves them out; the adapter takes them when the user picks Landmark or opens a Landmark link."
   },
   {
     "carrier": "lbc-express",

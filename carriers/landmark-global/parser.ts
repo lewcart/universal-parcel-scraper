@@ -10,9 +10,17 @@ import { landmarkStatus } from './status.js';
 
 const ABSENT = "We couldn't find a match for this value. Please try a different value.";
 
+const LTN = /^LTN\d{8,9}(?:N1)?$/;
+/**
+ * A merchant's or shipper's own reference, which the page also finds. The page searches every
+ * merchant, so a short value could be another merchant's order reference. One starting LTN
+ * must be a whole LTN.
+ */
+const MERCHANT_REFERENCE = /^(?!LTN)(?=[A-Z]*\d)[A-Z0-9]{8,40}$/;
+
 export function normalizeLandmarkNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^LTN\d{8,9}(?:N1)?$/.test(number)) throw new InvalidInputError('Landmark Global', 'Landmark requires an LTN parcel reference');
+  if (!LTN.test(number) && !MERCHANT_REFERENCE.test(number)) throw new InvalidInputError('Landmark Global', 'Landmark requires an LTN parcel reference or a merchant reference');
   return number;
 }
 
@@ -25,7 +33,7 @@ function clock(raw: string): Pick<CarrierEvent, 'time'> & { local_time?: string;
 
 export function parseLandmark(html: string, rawNumber: string): CarrierResult {
   const number = normalizeLandmarkNumber(rawNumber);
-  const canonical = number.replace(/N1$/, '');
+  const merchant = !LTN.test(number);
   const $ = load(html);
   if (/just a moment|verify.*human|captcha/i.test($('title').text()) || $('.g-recaptcha,.h-captcha').length) throw new ChallengeError('Landmark Global');
   $('script,style,noscript').remove();
@@ -33,8 +41,18 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
   const tables = $('.event-summary .event-table table');
   const errors = $('.error-text').map((_, node) => clean($(node).text())).get().filter(Boolean);
   if (!identities.length && !tables.length && $('#search').length === 1 && $('#search').val() === number
-    && errors.length && errors.every(error => error === ABSENT) && $('title').text().trim() === 'Landmark Global | Landmark Tracking') throw new NotFoundError('Landmark Global');
-  if (identities.length !== 1 || clean(identities.next('div').text()) !== canonical) throw new SchemaError('Landmark Global', 'Landmark returned a different or ambiguous parcel');
+    && errors.length && errors.every(error => error === ABSENT) && $('title').text().trim() === 'Landmark Global | Landmark Tracking') {
+    // A reference arrives without the spaces, dots and hyphens the user may have written, and the
+    // page found no parcel by an order reference holding a hyphen, as printed or without it.
+    if (merchant) throw new IndeterminateError('Landmark Global', 'Landmark found no parcel for this reference, but its search misses references written with punctuation');
+    throw new NotFoundError('Landmark Global');
+  }
+  const canonical = identities.length === 1 ? clean(identities.next('div').text(), 64) : '';
+  // A merchant reference must be the parcel's order or package reference; its LTN then names the parcel.
+  const references = $('.shipment-details-col h6').filter((_, node) => ['Order Reference', 'Package Reference'].includes(clean($(node).text())))
+    .map((_, node) => normalizeTrackingNumber(clean($(node).next('div').text(), 100))).get();
+  if (identities.length !== 1 || (merchant ? !/^LTN\d{8,9}$/.test(canonical) || !references.includes(number)
+    : canonical !== number.replace(/N1$/, ''))) throw new SchemaError('Landmark Global', 'Landmark returned a different or ambiguous parcel');
   if (tables.length !== 1 || tables.find('thead th').map((_, node) => clean($(node).text())).get().join('|') !== 'Description|Date/Time|Location') throw new SchemaError('Landmark Global');
   const rows = tables.find('tbody > tr');
   if (!rows.length) throw new IndeterminateError('Landmark Global', 'Landmark returned no parcel history');

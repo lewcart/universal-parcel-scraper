@@ -1,16 +1,26 @@
 # Landmark Global
 
 Tracks individual LTN references through the official anonymous portal,
-including the portal's canonical identity for references ending in N1.
+including the portal's canonical identity for references ending in N1. When the
+user picks Landmark, or opens a Landmark link carrying one, it also takes the merchant
+references the portal finds.
 
 ## How it works
 
 One bounded GET retrieves the complete server-rendered event table. The canonical parcel
-identity must match, and the latest summary must agree with the first scan: its clock always,
-its wording when it shows one. Before the first scan has wording, and once a parcel is sent
-back, the summary shows only the stage or a link to the return's own tracking.
+identity must match. A merchant reference must be the parcel's order or package reference,
+and the parcel's LTN becomes `canonical_tracking_number`. It needs at least eight
+letters and digits, one of them a digit: the page searches every merchant, so a shorter
+value could be another merchant's order reference. Detection leaves merchant references out, since nothing in
+them is Landmark's own. The latest summary must agree with the first scan: its clock
+always, its wording when it shows one. Before the first scan has wording, and once a parcel
+is sent back, the summary shows only the stage or a link to the return's own tracking.
 Multi-parcel pages are rejected. An exact absence message is accepted only when
-the requested reference is retained in the page's search field.
+the requested reference is retained in the page's search field, and only an LTN's
+absence is final. A merchant reference reaches the adapter upper-cased and without
+the spaces, dots and hyphens the user may have written. The page found a reference
+in lower case as well, but found no parcel by an order reference holding a hyphen,
+as printed or without it, so a merchant reference's absence stays inconclusive.
 
 ## Notes
 

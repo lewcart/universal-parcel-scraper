@@ -22,7 +22,8 @@
     "history",
     "location",
     "delivery_partner",
-    "delivery_tracking_number"
+    "delivery_tracking_number",
+    "canonical_tracking_number"
   ],
   "portal": {
     "url": "https://track.landmarkglobal.com/?search={trackingNumber}",

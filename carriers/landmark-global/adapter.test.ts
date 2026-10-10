@@ -37,7 +37,8 @@ describe('Landmark Global history', () => {
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|utc_server_offset|Australia"/);
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
     const evidence: Record<string, boolean> = { history: !!result.events?.length, location: !!result.events?.some(event => event.location),
-      delivery_partner: !!result.delivery_carrier, delivery_tracking_number: !!result.delivery_tracking_number };
+      delivery_partner: !!result.delivery_carrier, delivery_tracking_number: !!result.delivery_tracking_number,
+      canonical_tracking_number: !!result.canonical_tracking_number };
     for (const capability of metadata.capabilities) expect(evidence[capability], capability).toBe(true);
   });
   it.each(['-360', '-300', '0', '330', 'INVALID'])('does not turn a current server offset %s into a historical instant', offset => {
@@ -50,6 +51,25 @@ describe('Landmark Global history', () => {
     const duplicate = load(fixture()); duplicate('.delivery-details-col').append('<h6>Landmark Tracking Number</h6><div>LTN00000001</div>');
     const twoTables = load(fixture()); twoTables('.event-table').append(twoTables('.event-table table').clone());
     for (const html of [wrong.html(), duplicate.html(), twoTables.html()]) expect(() => parseLandmark(html, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+  it('binds a merchant reference to the parcel\'s order or package reference and reports its LTN', () => {
+    const order = load(fixture()); order('.shipment-details-col div').text('SHOP-000000001');
+    const byOrder = parseLandmark(order.html(), 'shop 000000001');
+    expect(byOrder).toMatchObject({ status: 'delivered', canonical_tracking_number: 'LTN00000001', delivery_tracking_number: 'AA000000005AU' });
+    expect(byOrder.events).toHaveLength(4);
+    expect(JSON.stringify(byOrder)).not.toMatch(/SHOP|PRIVATE/);
+    const pack = load(fixture()); pack('.shipment-details-col').append('<h6>Package Reference</h6><div class="text-truncate">PK000000002</div>');
+    expect(parseLandmark(pack.html(), 'PK000000002')).toMatchObject({ canonical_tracking_number: 'LTN00000001' });
+    const elsewhere = load(pack.html()); elsewhere('.shipment-details-col h6').last().text('Customer Reference');
+    const alias = load(pack.html()); alias('.delivery-details-col h6').last().next('div').text('LTN00000001N1');
+    const duplicate = load(pack.html()); duplicate('.delivery-details-col').append('<h6>Landmark Tracking Number</h6><div>LTN00000002</div>');
+    for (const html of [fixture(), elsewhere.html(), alias.html(), duplicate.html()]) {
+      expect(() => parseLandmark(html, 'PK000000002')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
+    // Only an LTN's absence is final: a reference may have lost punctuation the page needs.
+    for (const raw of ['PK000000002', 'pk-0000.00002']) {
+      expect(() => parseLandmark(negative('PK000000002'), raw)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    }
   });
   it('requires exact absence with the requested form identity and never treats challenges as not found', () => {
     expect(() => parseLandmark(negative(), NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));
@@ -157,6 +177,13 @@ describe('Landmark direct retrieval', () => {
       expect(patterns.some(pattern => pattern.test(number)), number).toBe(false);
       expect(() => normalizeLandmarkNumber(number)).toThrow(InvalidInputError);
     }
+    // Merchant references are the user's choice of carrier, never detection's.
+    for (const number of ['PS000000A0000000001', 'SHOP000000001', 'AB345678']) {
+      expect(patterns.some(pattern => pattern.test(number)), number).toBe(false);
+      expect(normalizeLandmarkNumber(number)).toBe(number);
+    }
+    // The page searches every merchant: a short value could be another merchant's reference.
+    for (const number of ['SHOPPINGS', 'AB34567', 'AB12', `A${'0'.repeat(40)}`, 'SHOP0001/2']) expect(() => normalizeLandmarkNumber(number)).toThrow(InvalidInputError);
   });
   it('forwards the full nine-digit reference and alias without truncating routing digits', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(nineDigitFixture()));
@@ -164,7 +191,11 @@ describe('Landmark direct retrieval', () => {
       await new LandmarkTracker({ fetcher }).fetch(number);
       expect(new URL(String(fetcher.mock.lastCall?.[0])).searchParams.get('search')).toBe(number);
     }
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    const reference = load(nineDigitFixture()); reference('.shipment-details-col div').text('SHOP000000001');
+    fetcher.mockImplementationOnce(async () => new Response(reference.html()));
+    await expect(new LandmarkTracker({ fetcher }).fetch('shop-000000001')).resolves.toMatchObject({ canonical_tracking_number: 'LTN000000009' });
+    expect(new URL(String(fetcher.mock.lastCall?.[0])).searchParams.get('search')).toBe('SHOP000000001');
+    expect(fetcher).toHaveBeenCalledTimes(3);
     for (const number of ['LTN0000000', 'LTN0000000000', 'LTN000000009N2', 'LTN000000009N11']) expect(() => normalizeLandmarkNumber(number)).toThrow(InvalidInputError);
     expect(normalizeLandmarkNumber('ltn-000000009 n1')).toBe('LTN000000009N1');
   });

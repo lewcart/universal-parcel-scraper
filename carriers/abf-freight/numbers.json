@@ -1,0 +1,42 @@
+{
+  "carrier": "abf-freight",
+  "records": [
+    {
+      "number": "094058593",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/abf-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "TrackingMore lists it as an example on its ABF Freight page; it is not described as a live shipment."
+    },
+    {
+      "number": "041258840",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/abf-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its ABF Freight page; it is not described as a live shipment."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "zeleris",
+  "displayName": "Zeleris",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#9be51b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.zeleris.com/detalle-de-envio?tracking_number={trackingNumber}",
+    "searchUrl": "https://www.zeleris.com/seguimiento-de-envios/",
+    "canaryUrl": "https://www.zeleris.com/seguimiento-de-envios/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "zeleris.com"
+      ],
+      "pathPattern": "^/detalle-de-envio/?$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "zeleris-1",
+      "pattern": "^[0-9A-F]{8}\\d{9}[A-Z]$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "latvijas-pasts",
+  "displayName": "Latvijas Pasts",
+  "aliases": [
+    "Latvian Post",
+    "Latvia Post"
+  ],
+  "region": {
+    "countries": [
+      "LV"
+    ]
+  },
+  "brand": {
+    "color": "#0c72ba"
+  },
+  "selectable": true,
+  "timezone": "Europe/Riga",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mans.pasts.lv/track?locale=lv-LV&id={trackingNumber}",
+    "searchUrl": "https://www.pasts.lv/izsekot-sutijumu",
+    "canaryUrl": "https://www.pasts.lv/izsekot-sutijumu",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mans.pasts.lv"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,45 @@
+{
+  "carrier": "xpo-ltl",
+  "records": [
+    {
+      "number": "356474510",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/xpoweb-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its XPO LTL page; it is not described as a live shipment."
+    },
+    {
+      "number": "992338535",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/xpoweb-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its XPO LTL page; it is not described as a live shipment."
+    }
+  ]
+}

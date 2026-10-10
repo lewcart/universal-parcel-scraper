@@ -1,0 +1,52 @@
+{
+  "id": "fan-courier",
+  "displayName": "FAN Courier",
+  "aliases": [
+    "FAN Courier Express",
+    "FANbox"
+  ],
+  "region": {
+    "countries": [
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#0f2345"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.fancourier.ro/awb-tracking/?tracking={trackingNumber}",
+    "searchUrl": "https://www.fancourier.ro/awb-tracking/",
+    "canaryUrl": "https://www.fancourier.ro/awb-tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fancourier.ro"
+      ],
+      "pathPattern": "^/awb-tracking/?$",
+      "params": [
+        "tracking",
+        "awb"
+      ]
+    },
+    {
+      "domains": [
+        "fancourier.ro"
+      ],
+      "path": "^/awb-tracking/(\\d{13})/?$"
+    }
+  ],
+  "detection": []
+}

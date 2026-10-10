@@ -1,0 +1,37 @@
+{
+  "id": "mng-kargo",
+  "displayName": "DHL eCommerce Türkiye",
+  "aliases": [
+    "MNG Kargo",
+    "MNG Cargo",
+    "DHL eCommerce Turkey",
+    "DHL eCommerce (MNG Kargo)"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#ffcc00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dhlecommerce.com.tr/gonderitakip",
+    "searchUrl": "https://www.dhlecommerce.com.tr/gonderitakip",
+    "canaryUrl": "https://www.dhlecommerce.com.tr/gonderitakip",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

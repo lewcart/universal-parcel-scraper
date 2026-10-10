@@ -1,0 +1,59 @@
+{
+  "carrier": "box-now",
+  "records": [
+    {
+      "number": "2042981700",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/69039bd94b21df2fc6ea3d99",
+        "date": "2025-10-30",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A review on BOX NOW Bulgaria's Trustpilot page gives it as the shipment number."
+    },
+    {
+      "number": "4090533096",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/69bee9c73c6a1d4d2174ae28",
+        "date": "2026-03-21",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A review on BOX NOW Greece's Trustpilot page gives it as the package number."
+    }
+  ]
+}

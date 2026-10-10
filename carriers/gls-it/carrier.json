@@ -1,0 +1,55 @@
+{
+  "id": "gls-it",
+  "displayName": "GLS Italy",
+  "aliases": [
+    "GLS Italia",
+    "General Logistics Systems Italy"
+  ],
+  "region": {
+    "countries": [
+      "IT",
+      "SM"
+    ]
+  },
+  "brand": {
+    "color": "#ffdd00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}",
+    "searchUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
+    "canaryUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gls-group.com",
+        "gls-group.eu"
+      ],
+      "pathPattern": "^/IT/",
+      "params": [
+        "match",
+        "parcelNumber",
+        "matchParcelNumber"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "gls-it-1",
+      "pattern": "^[A-Z]{2}\\d{9}$",
+      "confidence": "low"
+    }
+  ]
+}

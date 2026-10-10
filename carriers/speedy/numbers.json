@@ -1,0 +1,101 @@
+{
+  "carrier": "speedy",
+  "records": [
+    {
+      "number": "51963801171",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://api.speedy.bg/api/docs/examples/RoutingLabelSpecification_spd.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Speedy's routing-label specification uses it as the waybill printed under the barcode; not a real shipment."
+    },
+    {
+      "number": "68192388532",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ship24.com/couriers/speedy-tracking/speedy-tracking-number",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "60681943810",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ship24.com/couriers/speedy-tracking/speedy-tracking-number",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "60961651372",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ship24.com/couriers/speedy-tracking/speedy-tracking-number",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
+    }
+  ]
+}

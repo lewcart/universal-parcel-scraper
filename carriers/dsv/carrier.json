@@ -1,0 +1,50 @@
+{
+  "id": "dsv",
+  "displayName": "DSV",
+  "aliases": [
+    "DB Schenker",
+    "Schenker",
+    "DSV Road",
+    "DSV Schenker"
+  ],
+  "region": {
+    "countries": [
+      "DK",
+      "DE",
+      "SE",
+      "PL"
+    ]
+  },
+  "brand": {
+    "color": "#002664"
+  },
+  "selectable": true,
+  "timezone": "Europe/Copenhagen",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mydsv.com/track-shipment?query={trackingNumber}",
+    "searchUrl": "https://mydsv.com/track-shipment",
+    "canaryUrl": "https://mydsv.com/track-shipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mydsv.com"
+      ],
+      "pathPattern": "^/(?:new/tracking/)?track-shipment/?$",
+      "params": [
+        "query"
+      ]
+    }
+  ],
+  "detection": []
+}

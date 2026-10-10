@@ -1,0 +1,49 @@
+{
+  "carrier": "trans-o-flex",
+  "records": [
+    {
+      "number": "61433502195-4935014913467",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://hilfe.o2online.de/gadgets-zubehoer-smartwatches-mehr-30/xiaomi-roborock-2-saugroboter-weiss-noch-nicht-erhalten-488204",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "ciblex",
+          "inpost",
+          "bpost"
+        ]
+      },
+      "note": "A customer-support reply quoted on the O2 help forum gives it as the trans-o-flex tracking number."
+    },
+    {
+      "number": "61433502210-3443014913467",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://hilfe.o2online.de/gadgets-zubehoer-smartwatches-mehr-30/xiaomi-roborock-2-saugroboter-weiss-noch-nicht-erhalten-488204",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "ciblex",
+          "inpost",
+          "bpost"
+        ]
+      },
+      "note": "A customer-support reply quoted on the O2 help forum gives it as the trans-o-flex tracking number."
+    }
+  ]
+}

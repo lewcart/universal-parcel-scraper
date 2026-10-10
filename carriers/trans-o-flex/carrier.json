@@ -1,0 +1,34 @@
+{
+  "id": "trans-o-flex",
+  "displayName": "trans-o-flex",
+  "aliases": [
+    "trans o flex",
+    "TOF"
+  ],
+  "region": {
+    "countries": [
+      "DE",
+      "AT"
+    ]
+  },
+  "brand": {
+    "color": "#f37e00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.trans-o-flex.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

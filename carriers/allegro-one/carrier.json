@@ -1,0 +1,41 @@
+{
+  "id": "allegro-one",
+  "displayName": "Allegro One",
+  "aliases": [
+    "Allegro Delivery",
+    "Allegro One Box",
+    "Allegro One Kurier",
+    "Allegro One Punkt"
+  ],
+  "region": {
+    "countries": [
+      "PL"
+    ]
+  },
+  "brand": {
+    "color": "#ff5a00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Warsaw",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://allegro.pl/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "allegro-one-1",
+      "pattern": "^A[0D][0-9A-Z]{8}$",
+      "confidence": "high"
+    }
+  ]
+}

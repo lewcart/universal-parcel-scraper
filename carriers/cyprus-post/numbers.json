@@ -1,0 +1,22 @@
+{
+  "carrier": "cyprus-post",
+  "records": [
+    {
+      "number": "RQ035037099CY",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/cyprus-post-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "TrackingMore lists it as an example on its Cyprus Post page; it is not described as a live shipment."
+    }
+  ]
+}

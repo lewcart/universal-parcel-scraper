@@ -1,0 +1,34 @@
+{
+  "id": "cyprus-post",
+  "displayName": "Cyprus Post",
+  "aliases": [
+    "Κυπριακά Ταχυδρομεία",
+    "Kypriaka Tachydromeia"
+  ],
+  "region": {
+    "countries": [
+      "CY"
+    ]
+  },
+  "brand": {
+    "color": "#e4a50e"
+  },
+  "selectable": true,
+  "timezone": "Asia/Nicosia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.cypruspost.post/en/track-n-trace-results",
+    "canaryUrl": "https://www.cypruspost.post/en/track-n-trace-results",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,39 @@
+{
+  "id": "nationex",
+  "displayName": "Nationex",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#006736"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nationex.com/reperage/{trackingNumber}",
+    "searchUrl": "https://nationex.com/reperage",
+    "canaryUrl": "https://nationex.com/reperage",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nationex.com"
+      ],
+      "path": "^/(?:reperage|tracking)/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

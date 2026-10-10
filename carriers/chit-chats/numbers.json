@@ -1,0 +1,39 @@
+{
+  "carrier": "chit-chats",
+  "records": [
+    {
+      "number": "P4T2E74S5N",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/chitchats/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "ParcelPanel's Chit Chats app box offers it as a sample to try; it is not described as a live shipment."
+    },
+    {
+      "number": "AB1234C5D6",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://chitchats.com/tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Chit Chats' own tracking page prints it as the example shipment ID; not a real shipment."
+    }
+  ]
+}

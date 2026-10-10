@@ -1,0 +1,36 @@
+{
+  "id": "correos-de-mexico",
+  "displayName": "Correos de México",
+  "aliases": [
+    "Correos de Mexico",
+    "Mexico Post",
+    "Mexpost",
+    "SEPOMEX"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#ed007d"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
+    "canaryUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

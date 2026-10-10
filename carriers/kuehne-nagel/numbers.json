@@ -1,0 +1,126 @@
+{
+  "carrier": "kuehne-nagel",
+  "records": [
+    {
+      "number": "23A050751273",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230531231659/https://mykn.kuehne-nagel.com/public-tracking/shipments/295433488?query=23A050751273",
+        "date": "2023-05-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "colis-prive",
+          "kuehne-nagel"
+        ]
+      },
+      "note": "Kuehne+Nagel's public tracker, archived by the Wayback Machine, shows it as a road shipment's tracking number."
+    },
+    {
+      "number": "23A010828414",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230214174744/https://mykn.kuehne-nagel.com/public-tracking/shipments/280765392?query=23-01-0828414",
+        "date": "2023-02-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "colis-prive",
+          "kuehne-nagel"
+        ]
+      },
+      "note": "Kuehne+Nagel's public tracker, archived by the Wayback Machine, shows it as the tracking number behind a customer reference."
+    },
+    {
+      "number": "23-01-0828414",
+      "role": "order_reference",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230214174744/https://mykn.kuehne-nagel.com/public-tracking/shipments/280765392?query=23-01-0828414",
+        "date": "2023-02-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Kuehne+Nagel's public tracker, archived by the Wayback Machine, resolves this customer reference to 23A010828414."
+    },
+    {
+      "number": "RWM900446988",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221129083920/https://mykn.kuehne-nagel.com/public-tracking/shipments/273508708?query=RWM900446988",
+        "date": "2022-11-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "purolator",
+        "confidence": "high"
+      },
+      "note": "Kuehne+Nagel's public tracker, archived by the Wayback Machine, shows it as a road shipment's tracking number."
+    },
+    {
+      "number": "1063437835",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241205134030/https://mykn.kuehne-nagel.com/public-tracking/shipments/358589209?query=1063437835",
+        "date": "2024-12-05",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "Air freight",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Kuehne+Nagel's public tracker, archived by the Wayback Machine, shows it as the house air waybill of an air shipment."
+    }
+  ]
+}

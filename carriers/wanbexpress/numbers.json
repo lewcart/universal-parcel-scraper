@@ -1,0 +1,39 @@
+{
+  "carrier": "wanbexpress",
+  "records": [
+    {
+      "number": "WNBAA0260748097YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/wanbexpress-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "TrackingMore lists it as an example on its WanbExpress page; it is not described as a live shipment."
+    },
+    {
+      "number": "00340434664515067820",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/wanbexpress-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "TrackingMore lists it as an example on its WanbExpress page; it is not described as a live shipment."
+    }
+  ]
+}

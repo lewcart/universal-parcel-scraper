@@ -1,5 +1,17 @@
 [
   {
+    "carrier": "abf-freight",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to ABF Freight."
+  },
+  {
+    "carrier": "acs-courier",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to ACS Courier."
+  },
+  {
     "carrier": "aliexpress",
     "pattern": "^AP\\d{14}$",
     "kind": "open",
@@ -35,10 +47,22 @@
     "reason": "Amazon Logistics owns the shared Amazon pattern. A parcel moves here only after Amazon's public tracker answers for it."
   },
   {
+    "carrier": "apc-overnight",
+    "pattern": "^\\d{22}$",
+    "kind": "open",
+    "reason": "One APC Overnight consignment number of twenty-two digits; the family is not established."
+  },
+  {
     "carrier": "aramex",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Ten digits are shared by several carriers and nothing in the number points to Aramex."
+  },
+  {
+    "carrier": "aras-kargo",
+    "pattern": "^6[05]\\d{11,12}$",
+    "kind": "by_design",
+    "reason": "Aras Kargo numbers are plain digits; thirteen digits are shared by several posts and couriers."
   },
   {
     "carrier": "asendia",
@@ -71,14 +95,38 @@
     "reason": "A public Austrian parcel report uses fourteen digits; the national request builder does not establish this family."
   },
   {
+    "carrier": "box-now",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to BOX NOW."
+  },
+  {
     "carrier": "c-chez-vous",
     "kind": "by_design",
     "reason": "The printed composite carries the postcode after its dashes and is entered with the carrier chosen."
   },
   {
+    "carrier": "cdek",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to CDEK."
+  },
+  {
+    "carrier": "chit-chats",
+    "pattern": "^[0-9A-Z]{10}$",
+    "kind": "by_design",
+    "reason": "A Chit Chats shipment ID is ten letters and digits, a shape shared by several carriers."
+  },
+  {
     "carrier": "dachser",
     "kind": "by_design",
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
+  },
+  {
+    "carrier": "day-ross",
+    "pattern": "^A\\d{8}$",
+    "kind": "open",
+    "reason": "One Day & Ross sample of this shape; the family is not established."
   },
   {
     "carrier": "dhl",
@@ -165,10 +213,57 @@
     "reason": "Express piece identifiers resolve to their waybill on DHL's global tracking page, but the mobile API takes waybills only and DHL Paket's rule claims the shape."
   },
   {
+    "carrier": "dsv",
+    "kind": "by_design",
+    "reason": "DSV and former DB Schenker references publish no shape and range from airport-coded to purely numeric ones, so the user picks DSV."
+  },
+  {
     "carrier": "dtdc",
     "pattern": "^Z\\d{10}$",
     "kind": "collision",
     "reason": "Reviews of DTDC cite Z waybills with ten digits, the shape of Packeta's Z barcodes, whose high-confidence rule takes them."
+  },
+  {
+    "carrier": "dx",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to DX."
+  },
+  {
+    "carrier": "dynalogic",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Dynalogic."
+  },
+  {
+    "carrier": "dynalogic",
+    "pattern": "^\\d{5}EP\\d{6}$",
+    "kind": "open",
+    "reason": "One reported Dynalogic reference of this layout; the family is not established."
+  },
+  {
+    "carrier": "envialia",
+    "pattern": "^\\d{16}$",
+    "kind": "by_design",
+    "reason": "Sixteen digits are shared by several carriers and nothing in the number points to Envialia."
+  },
+  {
+    "carrier": "envialia",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Envialia."
+  },
+  {
+    "carrier": "estes",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Estes."
+  },
+  {
+    "carrier": "fan-courier",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by several posts and couriers and nothing in the number points to FAN Courier."
   },
   {
     "carrier": "fedex",
@@ -193,6 +288,48 @@
     "pattern": "^EM\\d{12}CA$",
     "kind": "by_design",
     "reason": "An Emile number on a parcel 4PX handed over to Emile. The shape is Emile's; 4PX's feed also knows the parcels it hands over."
+  },
+  {
+    "carrier": "gebrueder-weiss",
+    "pattern": "^[A-Z]{2}\\d{13}$",
+    "kind": "open",
+    "reason": "One Gebrüder Weiss sample of this shape; the family is not established."
+  },
+  {
+    "carrier": "geniki-taxydromiki",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Geniki Taxydromiki."
+  },
+  {
+    "carrier": "gls-es",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to GLS Spain."
+  },
+  {
+    "carrier": "gls-it",
+    "pattern": "^[A-Z][0-9]\\d{9}$",
+    "kind": "by_design",
+    "reason": "A depot code with a digit makes the number one letter and ten digits, a shape other carriers share."
+  },
+  {
+    "carrier": "gls-it",
+    "pattern": "^[A-Z]{2}\\d{10}$",
+    "kind": "open",
+    "reason": "One reported GLS Italy number with ten digits after the depot code; the family is not established."
+  },
+  {
+    "carrier": "gls-it",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to GLS Italy."
+  },
+  {
+    "carrier": "gls-it",
+    "pattern": "^\\d{15}GLS$",
+    "kind": "open",
+    "reason": "The long GLS parcel ID with its suffix was reported once; GLS publishes no rule for it."
   },
   {
     "carrier": "gofo",
@@ -243,6 +380,30 @@
     "reason": "One reported waybill starts 57; the rule covers the 20 prefix of every other report."
   },
   {
+    "carrier": "jitsu",
+    "pattern": "^[0-9A-Z]{16}$",
+    "kind": "open",
+    "reason": "One Jitsu tracking code of sixteen letters and digits; the family is not established."
+  },
+  {
+    "carrier": "kuehne-nagel",
+    "pattern": "^RWM\\d{9}$",
+    "kind": "collision",
+    "reason": "Three letters and nine digits belong to Purolator's high-confidence rule; one Kuehne+Nagel road number of this shape was found."
+  },
+  {
+    "carrier": "kuehne-nagel",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by several carriers and nothing in the number points to Kuehne+Nagel."
+  },
+  {
+    "carrier": "kuehne-nagel",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "A customer reference loses its dashes and becomes eleven digits, a shape shared by several carriers."
+  },
+  {
     "carrier": "landmark-global",
     "pattern": "^(?:PS\\d{6}[A-Z]\\d{10}|LDLBUS\\d{9})$",
     "kind": "by_design",
@@ -253,6 +414,30 @@
     "pattern": "^\\d{10,11}$",
     "kind": "by_design",
     "reason": "Ten and eleven digits are shared by several carriers and nothing in the number points to LBC."
+  },
+  {
+    "carrier": "magyar-posta",
+    "pattern": "^PB\\d{11}$",
+    "kind": "open",
+    "reason": "One MPL business-parcel sample of this shape; the family is not established."
+  },
+  {
+    "carrier": "meest",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "A hyphenated Meest sender number loses its dash and becomes ten digits, a shape shared by several carriers."
+  },
+  {
+    "carrier": "mng-kargo",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers and nothing in the number points to DHL eCommerce Türkiye."
+  },
+  {
+    "carrier": "nationex",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to Nationex."
   },
   {
     "carrier": "ninja-van",
@@ -313,6 +498,48 @@
     "reason": "A DPD parcel number that PostNord delivered. The shape is DPD's; PostNord's tracker also knows the parcel it delivers."
   },
   {
+    "carrier": "ptt",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by several posts and couriers and nothing in the number points to PTT."
+  },
+  {
+    "carrier": "redpack",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to Redpack."
+  },
+  {
+    "carrier": "rl-carriers",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to R+L Carriers."
+  },
+  {
+    "carrier": "russian-post",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "Fourteen digits are shared by several carriers and nothing in the number points to Russian Post."
+  },
+  {
+    "carrier": "saia",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers and nothing in the number points to Saia."
+  },
+  {
+    "carrier": "saia",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to Saia."
+  },
+  {
+    "carrier": "sameday",
+    "pattern": "^\\dTMB\\d{10}$",
+    "kind": "open",
+    "reason": "One Sameday AWB of this shape; the family is not established."
+  },
+  {
     "carrier": "seur",
     "pattern": "^\\d{15}$",
     "kind": "open",
@@ -322,6 +549,12 @@
     "carrier": "shipup",
     "kind": "by_design",
     "reason": "An invented shape check; ShipUp has no number shape of its own."
+  },
+  {
+    "carrier": "speedy",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared by several carriers and nothing in the number points to Speedy."
   },
   {
     "carrier": "spring-gds",
@@ -347,10 +580,57 @@
     "reason": "Short waybills are too generic for a rule."
   },
   {
+    "carrier": "trans-o-flex",
+    "pattern": "^\\d{24}$",
+    "kind": "by_design",
+    "reason": "Without its hyphen the number is twenty-four digits, a length shared by several carriers."
+  },
+  {
+    "carrier": "ubi-smart-parcel",
+    "pattern": "^[0-9A-Z]{23}$",
+    "kind": "collision",
+    "reason": "UBI hands Australian parcels to Australia Post, whose rule owns these twenty-three-character barcodes."
+  },
+  {
+    "carrier": "ubi-smart-parcel",
+    "pattern": "^\\d{16}$",
+    "kind": "by_design",
+    "reason": "Sixteen digits are shared by several carriers and nothing in the number points to UBI Smart Parcel."
+  },
+  {
     "carrier": "uniuni",
     "pattern": "^(?:BAUNI\\d{15}|UD\\d{14}|UR\\d{17})$",
     "kind": "open",
     "reason": "UniUni's tracker serves these Canadian parcels, one sample per shape; no family is established."
+  },
+  {
+    "carrier": "wanbexpress",
+    "pattern": "^WNB[A-Z]{2}\\d{10}YQ$",
+    "kind": "open",
+    "reason": "One WanbExpress sample of this shape; the family is not established."
+  },
+  {
+    "carrier": "wanbexpress",
+    "pattern": "^\\d{20}$",
+    "kind": "collision",
+    "reason": "A twenty-digit WanbExpress sample matches the DHL label shape; it is likely a handed-over parcel."
+  },
+  {
+    "carrier": "whistl",
+    "kind": "by_design",
+    "reason": "Whistl publishes no number shape; its references vary by client and service, so the user picks Whistl."
+  },
+  {
+    "carrier": "xdp",
+    "pattern": "^[0-9A-F]{12}$",
+    "kind": "open",
+    "reason": "One hexadecimal reference reported for an XDP delivery; its role is not established."
+  },
+  {
+    "carrier": "xpo-ltl",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are shared by several carriers and nothing in the number points to XPO."
   },
   {
     "carrier": "xpressbees",
@@ -381,6 +661,18 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "The customer attributes a numeric reference to YunExpress, but the dedicated adapter accepts YT identifiers and the report does not establish YunExpress issuance."
+  },
+  {
+    "carrier": "yurtici-kargo",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers and nothing in the number points to Yurtiçi Kargo."
+  },
+  {
+    "carrier": "zeleris",
+    "pattern": "^ES\\d{4}COM\\d{10}$",
+    "kind": "by_design",
+    "reason": "A sender-side shipment reference quoted to Zeleris, not its own number."
   },
   {
     "carrier": "zto",

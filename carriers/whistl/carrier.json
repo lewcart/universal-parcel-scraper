@@ -1,0 +1,48 @@
+{
+  "id": "whistl",
+  "displayName": "Whistl",
+  "aliases": [
+    "Whistl UK",
+    "TNT Post UK"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#fd4f00"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://web.parcelhub.net/Tracking/reference/{trackingNumber}",
+    "searchUrl": "https://web.parcelhub.net/Tracking",
+    "canaryUrl": "https://web.parcelhub.net/Tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "web.parcelhub.net"
+      ],
+      "path": "^/Tracking/reference/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "trackmyitem.whistl.co.uk"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

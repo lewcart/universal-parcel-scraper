@@ -1,0 +1,49 @@
+{
+  "id": "ceska-posta",
+  "displayName": "Česká pošta",
+  "aliases": [
+    "Czech Post",
+    "Ceska posta",
+    "Balíkovna"
+  ],
+  "region": {
+    "countries": [
+      "CZ"
+    ]
+  },
+  "brand": {
+    "color": "#002776"
+  },
+  "selectable": true,
+  "timezone": "Europe/Prague",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.postaonline.cz/trackandtrace/-/zasilka/{trackingNumber}",
+    "searchUrl": "https://www.postaonline.cz/trackandtrace",
+    "canaryUrl": "https://www.postaonline.cz/trackandtrace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "postaonline.cz"
+      ],
+      "path": "^/trackandtrace/-/zasilka/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "ceska-posta-1",
+      "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
+      "confidence": "high"
+    }
+  ]
+}

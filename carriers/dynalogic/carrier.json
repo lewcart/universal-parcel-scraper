@@ -1,0 +1,36 @@
+{
+  "id": "dynalogic",
+  "displayName": "Dynalogic",
+  "aliases": [
+    "DynaLogic",
+    "Dynalogic Benelux"
+  ],
+  "region": {
+    "countries": [
+      "NL",
+      "BE"
+    ]
+  },
+  "brand": {
+    "color": "#66839c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Amsterdam",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.mydynalogic.eu/track/login",
+    "searchUrl": "https://track.mydynalogic.eu/track/login",
+    "canaryUrl": "https://track.mydynalogic.eu/track/login",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,48 @@
+{
+  "id": "xpo-ltl",
+  "displayName": "XPO",
+  "aliases": [
+    "XPO LTL",
+    "XPO Logistics",
+    "Con-way Freight"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#cc0000"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://ext-web.ltl-xpo.com/public-app/shipments?referenceNumber={trackingNumber}",
+    "searchUrl": "https://www.xpo.com/",
+    "canaryUrl": "https://www.xpo.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ext-web.ltl-xpo.com"
+      ],
+      "pathPattern": "^/public-app/shipments/?$",
+      "params": [
+        "referenceNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

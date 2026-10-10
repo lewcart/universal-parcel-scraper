@@ -1,0 +1,37 @@
+{
+  "id": "ubi-smart-parcel",
+  "displayName": "UBI Smart Parcel",
+  "aliases": [
+    "UBI",
+    "UBI Logistics"
+  ],
+  "region": {
+    "countries": [
+      "CN",
+      "AU",
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#053c80"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://shipper.ubismartparcel.com/#/ubi?trackingNos={trackingNumber}",
+    "searchUrl": "https://shipper.ubismartparcel.com/#/ubi",
+    "canaryUrl": "https://shipper.ubismartparcel.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,35 @@
+{
+  "id": "sameday",
+  "displayName": "Sameday",
+  "aliases": [
+    "Sameday Courier",
+    "easybox"
+  ],
+  "region": {
+    "countries": [
+      "RO",
+      "HU",
+      "BG"
+    ]
+  },
+  "brand": {
+    "color": "#e92427"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://sameday.ro/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

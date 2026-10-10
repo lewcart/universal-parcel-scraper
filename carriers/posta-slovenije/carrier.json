@@ -1,0 +1,46 @@
+{
+  "id": "posta-slovenije",
+  "displayName": "Pošta Slovenije",
+  "aliases": [
+    "Posta Slovenije",
+    "Slovenian Post",
+    "Post of Slovenia"
+  ],
+  "region": {
+    "countries": [
+      "SI"
+    ]
+  },
+  "brand": {
+    "color": "#ffc600"
+  },
+  "selectable": true,
+  "timezone": "Europe/Ljubljana",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",
+    "searchUrl": "https://moja.posta.si/tracking",
+    "canaryUrl": "https://moja.posta.si/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "moja.posta.si"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

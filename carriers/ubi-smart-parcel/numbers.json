@@ -1,0 +1,114 @@
+{
+  "carrier": "ubi-smart-parcel",
+  "records": [
+    {
+      "number": "WC203026210GB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/ubi-logistics-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "royal-mail",
+        "confidence": "high"
+      },
+      "note": "TrackingMore lists it as an example on its UBI page; it is not described as a live shipment."
+    },
+    {
+      "number": "7321315200965868",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/ubi-logistics-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "correos-express",
+          "canada-post",
+          "tnt",
+          "evri-uk"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its UBI page; it is not described as a live shipment."
+    },
+    {
+      "number": "33XHG539672301000935101",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/ubi-logistics-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "australia-post",
+        "confidence": "high"
+      },
+      "note": "TrackingMore lists it as an example on its UBI page; it is not described as a live shipment."
+    },
+    {
+      "number": "3698K346543601000935103",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/ubi-logistics/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "australia-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's UBI page gives it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "33XJP685467601000931509",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/ubi-logistics/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "australia-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's UBI page gives it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "33XJN891549401000931505",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/ubi-logistics/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "australia-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's UBI page gives it as a sample; it is not described as a live shipment."
+    }
+  ]
+}

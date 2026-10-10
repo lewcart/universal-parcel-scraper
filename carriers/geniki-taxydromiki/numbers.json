@@ -1,0 +1,33 @@
+{
+  "carrier": "geniki-taxydromiki",
+  "records": [
+    {
+      "number": "4940110490",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/671b8c155b239c1364c5bb87",
+        "date": "2024-10-25",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A review on Geniki Taxydromiki's Trustpilot page gives it as the parcel number."
+    }
+  ]
+}

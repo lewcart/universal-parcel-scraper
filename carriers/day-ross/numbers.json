@@ -1,0 +1,86 @@
+{
+  "carrier": "day-ross",
+  "records": [
+    {
+      "number": "SML9464284",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dayross/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "day-ross"
+        ]
+      },
+      "note": "ParcelPanel's Day & Ross page gives it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "SML9951078",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dayross/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "day-ross"
+        ]
+      },
+      "note": "ParcelPanel's Day & Ross page gives it as a sample; it is not described as a live shipment."
+    },
+    {
+      "number": "MTN6260270",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dayross/",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "LTL / truckload",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "day-ross"
+        ]
+      },
+      "note": "ParcelPanel's Day & Ross page gives it as an LTL and truckload sample; it is not described as a live shipment."
+    },
+    {
+      "number": "A12332444",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dayross/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "ParcelPanel's Day & Ross app box offers it as a sample to try; it is not described as a live shipment."
+    }
+  ]
+}

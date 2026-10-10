@@ -1,0 +1,35 @@
+{
+  "id": "magyar-posta",
+  "displayName": "Magyar Posta",
+  "aliases": [
+    "Hungarian Post",
+    "Hungary Post",
+    "MPL"
+  ],
+  "region": {
+    "countries": [
+      "HU"
+    ]
+  },
+  "brand": {
+    "color": "#346631"
+  },
+  "selectable": true,
+  "timezone": "Europe/Budapest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
+    "canaryUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

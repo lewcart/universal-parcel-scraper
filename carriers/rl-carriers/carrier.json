@@ -1,0 +1,46 @@
+{
+  "id": "rl-carriers",
+  "displayName": "R+L Carriers",
+  "aliases": [
+    "R&L Carriers",
+    "R and L Carriers",
+    "RL Carriers"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#006647"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.rlcarriers.com/freight/shipping/shipment-tracing?pro={trackingNumber}&docType=PRO&source=web",
+    "searchUrl": "https://www.rlcarriers.com/freight/shipping/shipment-tracing",
+    "canaryUrl": "https://www.rlcarriers.com/freight/shipping/shipment-tracing",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "rlcarriers.com"
+      ],
+      "pathPattern": "^/freight/shipping/shipment-tracing/?$",
+      "params": [
+        "pro"
+      ]
+    }
+  ],
+  "detection": []
+}

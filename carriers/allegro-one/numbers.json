@@ -1,0 +1,195 @@
+{
+  "carrier": "allegro-one",
+  "records": [
+    {
+      "number": "A004U2GH32",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a415514fde587dcdd6b3434",
+        "date": "2026-06-28",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review gives it as the tracking number of an Allegro One parcel."
+    },
+    {
+      "number": "A000MFPFX6",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/allegro-one-box-one-kurier/m-p/789129",
+        "date": "2024-05-08",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum gives it as an Allegro One parcel number."
+    },
+    {
+      "number": "A0002383N8",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/allegro-one-box-krytyczna-ocena-pracy/m-p/675717",
+        "date": "2023-11-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum quotes it from an Allegro One Box shipment; the note beside it names UPS as the courier."
+    },
+    {
+      "number": "A0006X0K45",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/allegro-one-box-krytyczna-ocena-pracy/m-p/675717",
+        "date": "2023-11-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "Allegro's message quoted on its community forum names it as the missing parcel."
+    },
+    {
+      "number": "A000HFNRH9",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/gdzie-jest-kurier-allegro-one/m-p/756135",
+        "date": "2024-03-13",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum gives it as an Allegro One parcel number."
+    },
+    {
+      "number": "A000HRQGE7",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/gdzie-jest-kurier-allegro-one/m-p/756135",
+        "date": "2024-03-15",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum gives it as an Allegro One parcel number."
+    },
+    {
+      "number": "A000GZ5AE9",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-one-dla-sprzedawc%C3%B3w/gdzie-jest-kurier-allegro-one/m-p/756135",
+        "date": "2024-03-07",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum lists it among Allegro One parcels."
+    },
+    {
+      "number": "AD01EIJLQ4",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/zaawansowani-sprzedawcy/zaginiona-paczka/m-p/1127087",
+        "date": "2025-12-11",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A seller on Allegro's community forum gives it as an Allegro Delivery parcel number."
+    },
+    {
+      "number": "AD026EIDG0",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-delivery/problem-z-odbiorem-paczki-orlen-paczka/m-p/1174554",
+        "date": "2026-04-12",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A buyer on Allegro's community forum gives it as an Allegro Delivery parcel number."
+    },
+    {
+      "number": "AD01Y5XIX5",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://spolecznosc.allegro.pl/t5/allegro-delivery/orlen-podany-kod-jest-nieprawid%C5%82owy/m-p/1160837",
+        "date": "2026-03-02",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "allegro-one",
+        "confidence": "high"
+      },
+      "note": "A buyer on Allegro's community forum gives it as the parcel number of an Allegro Delivery parcel for an ORLEN Paczka locker."
+    }
+  ]
+}

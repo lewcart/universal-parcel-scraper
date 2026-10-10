@@ -1,0 +1,42 @@
+{
+  "carrier": "rl-carriers",
+  "records": [
+    {
+      "number": "823691187",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/rl-carriers-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "TrackingMore lists it as an example on its R+L Carriers page; it is not described as a live shipment."
+    },
+    {
+      "number": "427699311",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/rl-carriers-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its R+L Carriers page; it is not described as a live shipment."
+    }
+  ]
+}

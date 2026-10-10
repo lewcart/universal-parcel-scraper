@@ -1,0 +1,42 @@
+{
+  "id": "chit-chats",
+  "displayName": "Chit Chats",
+  "aliases": [
+    "ChitChats",
+    "Chit Chats Express"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#db2b35"
+  },
+  "selectable": true,
+  "timezone": "America/Vancouver",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://chitchats.com/tracking/{trackingNumber}",
+    "searchUrl": "https://chitchats.com/tracking",
+    "canaryUrl": "https://chitchats.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "chitchats.com"
+      ],
+      "path": "^/tracking/([0-9A-Za-z]{10})/?$"
+    }
+  ],
+  "detection": []
+}

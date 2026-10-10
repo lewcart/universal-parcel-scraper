@@ -1,0 +1,34 @@
+{
+  "id": "apc-overnight",
+  "displayName": "APC Overnight",
+  "aliases": [
+    "APC",
+    "APC Overnight Ltd"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#243269"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://apc.co.uk/",
+    "canaryUrl": "https://apc.co.uk/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

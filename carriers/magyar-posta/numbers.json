@@ -1,0 +1,44 @@
+{
+  "carrier": "magyar-posta",
+  "records": [
+    {
+      "number": "PB00010122727",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://parcelsapp.com/en/carriers/hungary-post",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "MPL Business Parcel",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste"
+        ]
+      },
+      "note": "ParcelsApp's Hungary Post page prints it as an MPL business-parcel number; it is not described as a live shipment."
+    },
+    {
+      "number": "EA004037757HU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://parcelsapp.com/en/carriers/hungary-post",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "EMS",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelsApp's Hungary Post page prints it as an EMS number; it is not described as a live shipment."
+    }
+  ]
+}

@@ -173,7 +173,8 @@ describe('zones implied by carrier names', () => {
     expect(carrierIdFromName('DHL Parcel Spain')).toBe('dhl-ecommerce-es');
     expect(carrierIdFromName('DHL Parcel UK')).toBe('dhl-ecommerce-uk');
     expect(carrierIdFromName('DHL Parcel Poland')).toBe('dhl-ecommerce-pl');
-    for (const name of ['GLS Italy', 'DHL Parcel Italy', 'DPD Group']) expect(carrierIdFromName(name)).toBeUndefined();
+    expect(carrierIdFromName('GLS Italy')).toBe('gls-it');
+    for (const name of ['GLS Poland', 'DHL Parcel Italy', 'DPD Group']) expect(carrierIdFromName(name)).toBeUndefined();
   });
 
   it('lists the zones of a bare brand only when all of its carriers keep a local clock', () => {
@@ -182,7 +183,8 @@ describe('zones implied by carrier names', () => {
     // London never shares the others' clock, so DPD's brand zone stays off whatever networks join.
     expect(new Set(brandTimeZones('DPD Group'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London']));
     expect(new Set(brandTimeZones('dpd'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London']));
-    expect(new Set(brandTimeZones('GLS'))).toEqual(new Set(['Europe/Zurich', 'Europe/Berlin', 'Europe/Paris']));
+    // GLS Italy and Spain keep the same clock as the other networks, so GLS scans keep their instants.
+    expect(new Set(brandTimeZones('GLS'))).toEqual(new Set(['Europe/Zurich', 'Europe/Berlin', 'Europe/Paris', 'Europe/Rome', 'Europe/Madrid']));
     expect(brandTimeZones('Hermes')).toEqual(['Europe/Berlin']);
     // DHL eCommerce is UTC, so the brand's clock is unknown.
     for (const name of ['DHL', 'DHL Group', 'DPD Local', 'DPD UK', 'Post', 'Example Parcel Co']) expect(brandTimeZones(name)).toEqual([]);

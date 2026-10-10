@@ -1,0 +1,40 @@
+{
+  "id": "meest",
+  "displayName": "Meest",
+  "aliases": [
+    "Meest Express",
+    "Meest Post",
+    "Meest Group",
+    "Міст Експрес"
+  ],
+  "region": {
+    "countries": [
+      "UA",
+      "PL",
+      "US",
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#0061af"
+  },
+  "selectable": true,
+  "timezone": "Europe/Kyiv",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://t.meest-group.com/n/",
+    "searchUrl": "https://t.meest-group.com/n/",
+    "canaryUrl": "https://t.meest-group.com/n/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

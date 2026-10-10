@@ -1,0 +1,37 @@
+{
+  "id": "box-now",
+  "displayName": "BOX NOW",
+  "aliases": [
+    "BoxNow",
+    "Box Now"
+  ],
+  "region": {
+    "countries": [
+      "GR",
+      "BG",
+      "HR",
+      "CY"
+    ]
+  },
+  "brand": {
+    "color": "#44d62c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://boxnow.cy/track",
+    "canaryUrl": "https://boxnow.cy/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

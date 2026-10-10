@@ -1,0 +1,25 @@
+{
+  "carrier": "nationex",
+  "records": [
+    {
+      "number": "518908681",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/nationex/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt"
+        ]
+      },
+      "note": "ParcelPanel's Nationex app box offers it as a sample to try; it is not described as a live shipment."
+    }
+  ]
+}

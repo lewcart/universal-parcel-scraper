@@ -1,0 +1,24 @@
+{
+  "carrier": "jitsu",
+  "records": [
+    {
+      "number": "bqh4fn5qaqyv3sdq",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/65de5f062ca939d22413538e",
+        "date": "2024-02-28",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A review on AxleHire's Trustpilot page gives it as the tracking code."
+    }
+  ]
+}

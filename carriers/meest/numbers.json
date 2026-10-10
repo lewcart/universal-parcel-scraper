@@ -1,0 +1,52 @@
+{
+  "carrier": "meest",
+  "records": [
+    {
+      "number": "RO319055313EE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20161219082852/https://t.meest-group.com/get.php?what=tracking&number=RO319055313EE&ext_track=",
+        "date": "2016-12-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Meest's own tracker, archived by the Wayback Machine, returns a record with it as the sender's shipment number."
+    },
+    {
+      "number": "001-0255371",
+      "role": "order_reference",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20211019081047/https://wiki.meest-group.com/uk/4-tracking-shipments?tmpl=component&print=1&page=",
+        "date": "2021-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "reportedRole": "sender's number",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Sample output of the tracking function in Meest's own API documentation, archived by the Wayback Machine; not a real shipment."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "carrier": "posta-slovenije",
+  "records": [
+    {
+      "number": "CZ000000014SI",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.posta.si/poslovno/logisticne-storitve/informacijske-resitve/sledenje-posiljk",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Pošta Slovenije's own tracking-service page uses it as the example of a tracking link; not a real shipment."
+    }
+  ]
+}

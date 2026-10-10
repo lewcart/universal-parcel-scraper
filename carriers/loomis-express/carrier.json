@@ -1,0 +1,45 @@
+{
+  "id": "loomis-express",
+  "displayName": "Loomis Express",
+  "aliases": [
+    "Loomis"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#004b8e"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://loomisexpress.com/loomship/Track",
+    "searchUrl": "https://loomisexpress.com/loomship/Track",
+    "canaryUrl": "https://loomisexpress.com/loomship/Track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "loomis-express-1",
+      "pattern": "^NET\\d{8}$",
+      "confidence": "high"
+    },
+    {
+      "id": "loomis-express-2",
+      "pattern": "^LSHP\\d{8}$",
+      "confidence": "high"
+    }
+  ]
+}

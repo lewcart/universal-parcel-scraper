@@ -1,0 +1,41 @@
+{
+  "id": "epost-global",
+  "displayName": "ePost Global",
+  "aliases": [
+    "ePostGlobal",
+    "EPG"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#27967a"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://epgtrack.com/",
+    "searchUrl": "https://epgtrack.com/",
+    "canaryUrl": "https://epgtrack.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "epost-global-1",
+      "pattern": "^EPG\\d{10,13}$",
+      "confidence": "high"
+    }
+  ]
+}

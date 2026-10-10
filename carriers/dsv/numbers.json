@@ -1,0 +1,130 @@
+{
+  "carrier": "dsv",
+  "records": [
+    {
+      "number": "HKG1132478",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/dsv-tracking/de.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its DSV page; it is not described as a live shipment."
+    },
+    {
+      "number": "6600700122591119",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/dsv-tracking/de.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "tnt",
+          "evri-uk"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its DSV page; it is not described as a live shipment."
+    },
+    {
+      "number": "40257145950217501184",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/dsv-tracking/de.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its DSV page; it is not described as a live shipment."
+    },
+    {
+      "number": "ERF26391597",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/dbschenker-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "TrackingMore lists it as an example on its DB Schenker page; it is not described as a live shipment."
+    },
+    {
+      "number": "IEG9246514",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/dbschenker-tracking.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its DB Schenker page; it is not described as a live shipment."
+    },
+    {
+      "number": "1806203236",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://glama.ai/mcp/servers/digitalxenon98/sendify-dbschenker-mcp/tools/track_shipment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Example value in the tool schema of an open-source DB Schenker tracking client; not a real shipment."
+    }
+  ]
+}

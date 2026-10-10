@@ -1,0 +1,38 @@
+{
+  "id": "abf-freight",
+  "displayName": "ABF Freight",
+  "aliases": [
+    "ABF",
+    "ArcBest",
+    "ABF Freight System"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#1e6630"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://view.arcb.com/nlo/tools/tracking#/{trackingNumber}",
+    "searchUrl": "https://view.arcb.com/nlo/tools/tracking",
+    "canaryUrl": "https://view.arcb.com/nlo/tools/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,63 @@
+{
+  "carrier": "russian-post",
+  "records": [
+    {
+      "number": "80510917745766",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://gdeposylka.ru/courier/russian-post",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "hermes-de",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "A user comment on gdeposylka's Russian Post page gives it as the parcel's tracking number."
+    },
+    {
+      "number": "40387973287255",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://gdeposylka.ru/courier/russian-post",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "hermes-de",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "A user comment on gdeposylka's Russian Post page gives it as the tracking number."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "carrier": "zeleris",
+  "records": [
+    {
+      "number": "16B3A750145070420N",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/entrega-no-realizada/41e5b9ba94766f0e53",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "zeleris",
+        "confidence": "high"
+      },
+      "note": "A public OCU complaint against Zeleris gives it as the shipment."
+    },
+    {
+      "number": "0E7A3EDC114701661K",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/referencia-zeleris-0e7a3edc114/2a7965794f44e2b643",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "zeleris",
+        "confidence": "high"
+      },
+      "note": "A public OCU complaint against Zeleris gives it as the shipment."
+    },
+    {
+      "number": "ES2024COM0000457118",
+      "role": "order_reference",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/no-entrega-de-paquetes/a1f839231396c4c1fa",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A public OCU complaint against Zeleris gives it as the shipment; a sender-side reference, not the Zeleris code."
+    }
+  ]
+}

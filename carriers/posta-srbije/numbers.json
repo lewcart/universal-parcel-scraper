@@ -1,0 +1,23 @@
+{
+  "carrier": "posta-srbije",
+  "records": [
+    {
+      "number": "ED485467211RS",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ordertracker.com/carriers/serbia-post",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "EMS",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "OrderTracker's Serbia Post page gives it as the example of an EMS item; it is not described as a live shipment."
+    }
+  ]
+}

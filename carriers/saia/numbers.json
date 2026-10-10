@@ -1,0 +1,60 @@
+{
+  "carrier": "saia",
+  "records": [
+    {
+      "number": "770585926102",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/saia-freight-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
+    },
+    {
+      "number": "12036953180",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/saia-freight-tracking",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
+    }
+  ]
+}

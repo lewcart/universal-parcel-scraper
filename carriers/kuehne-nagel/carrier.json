@@ -1,0 +1,57 @@
+{
+  "id": "kuehne-nagel",
+  "displayName": "Kuehne+Nagel",
+  "aliases": [
+    "Kuehne + Nagel",
+    "Kühne + Nagel",
+    "Kuehne Nagel",
+    "KN Road Logistics"
+  ],
+  "region": {
+    "countries": [
+      "CH",
+      "DE",
+      "FR",
+      "ES",
+      "BE"
+    ]
+  },
+  "brand": {
+    "color": "#003369"
+  },
+  "selectable": true,
+  "timezone": "Europe/Zurich",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mykn.kuehne-nagel.com/public-tracking/shipments?query={trackingNumber}",
+    "searchUrl": "https://www.kuehne-nagel.com/",
+    "canaryUrl": "https://mykn.kuehne-nagel.com/public-tracking/shipments",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mykn.kuehne-nagel.com"
+      ],
+      "pathPattern": "^/public-tracking/shipments/?$",
+      "params": [
+        "query"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "kuehne-nagel-1",
+      "pattern": "^\\d{2}A\\d{9}$",
+      "confidence": "low"
+    }
+  ]
+}

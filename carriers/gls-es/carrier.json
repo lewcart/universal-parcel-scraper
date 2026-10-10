@@ -1,0 +1,59 @@
+{
+  "id": "gls-es",
+  "displayName": "GLS Spain",
+  "aliases": [
+    "GLS España",
+    "ASM Transporte Urgente",
+    "General Logistics Systems Spain"
+  ],
+  "region": {
+    "countries": [
+      "ES",
+      "AD"
+    ]
+  },
+  "brand": {
+    "color": "#ffdd00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mygls.gls-spain.es/e/?codigo={trackingNumber}",
+    "searchUrl": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
+    "canaryUrl": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mygls.gls-spain.es"
+      ],
+      "pathPattern": "^/e/?$",
+      "params": [
+        "codigo"
+      ]
+    },
+    {
+      "domains": [
+        "gls-group.com",
+        "gls-group.eu"
+      ],
+      "pathPattern": "^/ES/",
+      "params": [
+        "match",
+        "parcelNumber",
+        "matchParcelNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

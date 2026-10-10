@@ -1,0 +1,34 @@
+{
+  "id": "aras-kargo",
+  "displayName": "Aras Kargo",
+  "aliases": [
+    "Aras Cargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#dc0812"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.araskargo.com.tr/",
+    "searchUrl": "https://www.araskargo.com.tr/",
+    "canaryUrl": "https://www.araskargo.com.tr/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

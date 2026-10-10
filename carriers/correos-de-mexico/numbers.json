@@ -1,0 +1,62 @@
+{
+  "carrier": "correos-de-mexico",
+  "records": [
+    {
+      "number": "MP532805604MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-correos-mexico/es.html?p=2",
+        "date": "2018-07-04",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A user comment on TrackingMore's Correos de México review page gives it as the tracking number."
+    },
+    {
+      "number": "RM012631300MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-correos-mexico/es.html",
+        "date": "2021-12-07",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A user comment on TrackingMore's Correos de México review page gives it as the tracking number."
+    },
+    {
+      "number": "RM011832659MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-correos-mexico/es.html",
+        "date": "2021-11-09",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A user comment on TrackingMore's Correos de México review page gives it as the tracking number."
+    }
+  ]
+}

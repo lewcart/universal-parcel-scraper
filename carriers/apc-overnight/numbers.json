@@ -1,0 +1,27 @@
+{
+  "carrier": "apc-overnight",
+  "records": [
+    {
+      "number": "2022012001915490000159",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://sellercentral-europe.amazon.com/seller-forums/discussions/t/c588cd5511243ae40915a43e9b8c748c?postId=227c9be5fdd0249216db3e50bb9f3491",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "austrian-post",
+          "usps",
+          "estafeta"
+        ]
+      },
+      "note": "A seller on Amazon's seller forum gives it as an APC Overnight consignment number."
+    }
+  ]
+}

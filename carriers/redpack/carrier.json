@@ -1,0 +1,33 @@
+{
+  "id": "redpack",
+  "displayName": "Redpack",
+  "aliases": [
+    "RedPack"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#e2211c"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.redpack.com.mx/es/inicio/",
+    "canaryUrl": "https://www.redpack.com.mx/es/inicio/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,57 @@
+{
+  "id": "xdp",
+  "displayName": "XDP",
+  "aliases": [
+    "XDP Express",
+    "XDP Couriers"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#53b6ed"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://xdp.co.uk/track/",
+    "searchUrl": "https://xdp.co.uk/track/",
+    "canaryUrl": "https://xdp.co.uk/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "xdp.co.uk"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "xdp.co.uk"
+      ],
+      "pathPattern": "^/track\\.php$",
+      "params": [
+        "c"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "xdp-1",
+      "pattern": "^0?ZDB[A-Z]{3}\\d{6}$",
+      "confidence": "high"
+    }
+  ]
+}

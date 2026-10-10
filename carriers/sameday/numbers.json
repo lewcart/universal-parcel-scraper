@@ -1,0 +1,24 @@
+{
+  "carrier": "sameday",
+  "records": [
+    {
+      "number": "1TMB2419700167",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a63496b21da8240b9ae2dc8",
+        "date": "2026-07-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A review on Sameday's Trustpilot page gives it as the AWB."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "gebrueder-weiss",
+  "displayName": "Gebrüder Weiss",
+  "aliases": [
+    "Gebrueder Weiss",
+    "Gebruder Weiss",
+    "GW"
+  ],
+  "region": {
+    "countries": [
+      "AT",
+      "DE",
+      "CH"
+    ]
+  },
+  "brand": {
+    "color": "#ff6600"
+  },
+  "selectable": true,
+  "timezone": "Europe/Vienna",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://my.gw-world.com/trackntrace/-/search/",
+    "canaryUrl": "https://my.gw-world.com/trackntrace/-/search/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

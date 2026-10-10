@@ -1,0 +1,24 @@
+{
+  "carrier": "latvijas-pasts",
+  "records": [
+    {
+      "number": "RS901829385LV",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/65e9702a170024ab196c93d2",
+        "date": "2024-03-07",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A review on Latvijas Pasts' Trustpilot page gives it as the parcel's tracking number."
+    }
+  ]
+}

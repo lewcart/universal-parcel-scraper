@@ -1,0 +1,39 @@
+{
+  "carrier": "redpack",
+  "records": [
+    {
+      "number": "083461007",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.redpack.com.mx/es/inicio/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The placeholder of Redpack's own tracking field gives it as an example guide number; not a real shipment."
+    },
+    {
+      "number": "083461076",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.redpack.com.mx/es/inicio/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The placeholder of Redpack's own tracking field gives it as an example guide number; not a real shipment."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "acs-courier",
+  "displayName": "ACS Courier",
+  "aliases": [
+    "ACS",
+    "ACS Courier S.A."
+  ],
+  "region": {
+    "countries": [
+      "GR",
+      "CY"
+    ]
+  },
+  "brand": {
+    "color": "#e42229"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?trackingNumber={trackingNumber}",
+    "searchUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
+    "canaryUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "acscourier.net"
+      ],
+      "pathPattern": "^/(?:el|en)/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

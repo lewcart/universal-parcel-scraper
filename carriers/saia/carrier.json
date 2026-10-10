@@ -1,0 +1,45 @@
+{
+  "id": "saia",
+  "displayName": "Saia",
+  "aliases": [
+    "Saia LTL Freight",
+    "Saia Inc"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#d52027"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.saia.com/track?pro={trackingNumber}",
+    "searchUrl": "https://www.saia.com/track",
+    "canaryUrl": "https://www.saia.com/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "saia.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "pro"
+      ]
+    }
+  ],
+  "detection": []
+}

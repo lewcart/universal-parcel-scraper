@@ -1,0 +1,45 @@
+{
+  "id": "estes",
+  "displayName": "Estes",
+  "aliases": [
+    "Estes Express Lines",
+    "Estes Express"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#ffd200"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.estes-express.com/myestes/shipment-tracking/?type=PRO&query={trackingNumber}",
+    "searchUrl": "https://www.estes-express.com/",
+    "canaryUrl": "https://www.estes-express.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "estes-express.com"
+      ],
+      "pathPattern": "^/myestes/shipment-tracking/?$",
+      "params": [
+        "query"
+      ]
+    }
+  ],
+  "detection": []
+}

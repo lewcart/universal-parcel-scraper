@@ -1,0 +1,24 @@
+{
+  "carrier": "gebrueder-weiss",
+  "records": [
+    {
+      "number": "BB18192-00309185",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://docs.retino.com/en/articles/12300996-gebruder-weiss",
+        "date": "2026-08-25",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Retino's help article for its Gebrüder Weiss connector gives it as an example number; it is not described as a live shipment."
+    }
+  ]
+}

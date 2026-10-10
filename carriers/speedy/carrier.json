@@ -1,0 +1,34 @@
+{
+  "id": "speedy",
+  "displayName": "Speedy",
+  "aliases": [
+    "Speedy AD",
+    "Speedy Bulgaria"
+  ],
+  "region": {
+    "countries": [
+      "BG",
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Sofia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.speedy.bg/bg",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

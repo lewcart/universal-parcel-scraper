@@ -1,0 +1,36 @@
+{
+  "id": "posta-srbije",
+  "displayName": "Pošta Srbije",
+  "aliases": [
+    "Posta Srbije",
+    "Serbian Post",
+    "Serbia Post",
+    "Post Express"
+  ],
+  "region": {
+    "countries": [
+      "RS"
+    ]
+  },
+  "brand": {
+    "color": "#fbba00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Belgrade",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
+    "canaryUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

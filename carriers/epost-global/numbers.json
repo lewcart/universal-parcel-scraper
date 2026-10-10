@@ -1,0 +1,294 @@
+{
+  "carrier": "epost-global",
+  "records": [
+    {
+      "number": "EPG01100001274",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110223001069",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110200001076",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011020001083",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011300001090",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011020001151",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011022301168",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0112300001175",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110001182",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110001205",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110201212",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110001229",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110001236",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011022001243",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG011020001250",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/seller-forums/discussions/t/d71821dc70218ca832b0b9b615ca394f",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG10223001274",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/forums/t/what-is-the-carrier-code-for-epost-global-i-tried-all-combinations-none-work-called-amazon-opened-case-no-one-helps/1132182?page=3",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    },
+    {
+      "number": "EPG0110200001274",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://sellercentral.amazon.com/forums/t/what-is-the-carrier-code-for-epost-global-i-tried-all-combinations-none-work-called-amazon-opened-case-no-one-helps/1132182?page=3",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "epost-global",
+        "confidence": "high"
+      },
+      "note": "An Amazon seller's forum post lists it among ePost Global numbers rejected by Amazon's carrier-code check."
+    }
+  ]
+}

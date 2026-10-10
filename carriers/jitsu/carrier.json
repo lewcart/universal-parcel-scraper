@@ -1,0 +1,43 @@
+{
+  "id": "jitsu",
+  "displayName": "Jitsu",
+  "aliases": [
+    "AxleHire",
+    "Axle Hire"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#4dc480"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://recipient.gojitsu.com/{trackingNumber}",
+    "searchUrl": "https://recipient.gojitsu.com/",
+    "canaryUrl": "https://recipient.gojitsu.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "recipient.gojitsu.com",
+        "recipient.axlehire.com"
+      ],
+      "path": "^/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

@@ -1,31 +1,29 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadBenchmark, renderBenchmark, summarize } from './benchmark-data.mjs';
 import { coverageChart, stagesFigure, terminal } from './readme-graphics.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = name => JSON.parse(readFileSync(path.join(root, name), 'utf8'));
 const documents = readdirSync(path.join(root, 'carriers'), { withFileTypes: true }).filter(entry => entry.isDirectory())
   .map(entry => read(`carriers/${entry.name}/carrier.json`));
-const coverage = read('providers/coverage.json').carriers;
+const benchmark = loadBenchmark(root);
+const measured = summarize(benchmark);
 const sources = ['ParcelsApp','Postal Ninja','17TRACK','Ship24','UPU'];
-const history = cell => typeof cell === 'number' && cell > 0 || cell === 'history'
-  || cell && typeof cell === 'object' && cell.rows > 0;
-// A leading check mark belongs to the comparison reference; later ones are alternates.
-const direct = entry => /^✓\s*\d+/.test(entry.sample);
-const counts = Object.fromEntries(sources.map(source => [source, coverage.filter(entry => history(entry.references[0].results[source])).length]));
-const union = coverage.filter(entry => direct(entry) || sources.some(source => history(entry.references[0].results[source]))).length;
+const counts = Object.fromEntries(sources.map(source => [source, measured.providers[source]]));
+const union = measured.combined;
 const activeAdapters = documents.filter(document => document.tracking.mode === 'automatic' && document.tracking.adapter === document.id
   && existsSync(path.join(root,'carriers',document.id,'adapter.ts'))).length;
 const countries = new Set(documents.flatMap(document => document.region.countries)).size;
-const summary = { catalog: documents.length, activeAdapters, countries, referenceCarriers: coverage.length,
-  comparison: { combined: union, direct: coverage.filter(direct).length, providers: counts } };
+const summary = { catalog: documents.length, activeAdapters, countries, referenceCarriers: benchmark.length,
+  comparison: { combined: union, direct: measured.direct, providers: counts } };
 const count = value => value.toLocaleString('en-US');
 // The fallbacks reach what the largest aggregator says it follows.
 const reach = Math.max(...Object.values(read('docs/reach.json')).map(provider => provider.carriers));
 const rows = [
   { label: 'This project, all fallbacks enabled', count: union, own: true },
   { label: 'This project, dedicated adapters alone', count: summary.comparison.direct, own: true },
-  ...sources.map(source => ({ label: source, count: counts[source], own: false })),
+  ...sources.map(source => ({ label: source, count: counts[source], own: false })).sort((a, b) => b.count - a.count),
 ];
 // Every status a carrier folder records, and one delivery round as six of them report it.
 const statuses = documents.flatMap(document => existsSync(path.join(root,'carriers',document.id,'statuses.json'))
@@ -45,6 +43,7 @@ const detected = JSON.stringify({ trackingNumber: sample.input, source: 'number'
   confidence: sample.confidence, candidates: sample.candidates, preferred: [] }, null, 2).split('\n');
 const picture = (name, alt) => `<img src="docs/assets/${name}.svg" alt="${alt}" width="760">`;
 const best = Math.max(...Object.values(counts));
+const undated = sources.filter(source => measured.undated[source] > 0);
 const blocks = {
   summary: [
     `**${count(reach)}+ carriers** through **${activeAdapters} dedicated adapters** and **${sources.length} universal fallbacks**`,
@@ -55,20 +54,24 @@ const blocks = {
     '', `The carrier folders record ${count(statuses.length)} such statuses, each filed under one stage.`,
   ].join('\n'),
   coverage: [
-    `In a curated benchmark of ${coverage.length} carriers, dedicated adapters return tracking history for **${summary.comparison.direct}**, rising to **${union}** with all fallbacks enabled. The best single aggregator returns ${best}.`,
+    `In a benchmark of ${benchmark.length} carriers picked for shoppers in Europe, run on public tracking numbers anyone can recheck, dedicated adapters return history for **${summary.comparison.direct}**, rising to **${union}** with all fallbacks enabled. The best single aggregator returns ${best}.${undated.length
+      ? ` Histories without scan times, which the library does not use, would add ${undated.map(source => `${measured.undated[source]} for ${source}`).join(' and ')}.` : ''}`,
     '', picture('coverage', `Carriers with tracking history: ${rows.map(row => `${row.label} ${row.count}`).join(', ')}.`),
   ].join('\n'),
 };
-const readme = path.join(root,'README.md');
-let next = readFileSync(readme,'utf8');
-for (const [name, content] of Object.entries(blocks)) {
-  const start = `<!-- GENERATED:${name} -->`, end = `<!-- /GENERATED:${name} -->`;
-  if (!next.includes(start) || !next.includes(end)) throw new Error(`Missing README ${name} markers`);
-  next = next.replace(new RegExp(`${start}[\\s\\S]*?${end}`), `${start}\n${content}\n${end}`);
-}
-const outputs = { 'README.md': next, 'data/coverage-summary.json': JSON.stringify(summary,null,2)+'\n',
+const fill = (name, blocks) => {
+  let text = readFileSync(path.join(root,name),'utf8');
+  for (const [block, content] of Object.entries(blocks)) {
+    const start = `<!-- GENERATED:${block} -->`, end = `<!-- /GENERATED:${block} -->`;
+    if (!text.includes(start) || !text.includes(end)) throw new Error(`Missing ${name} ${block} markers`);
+    text = text.replace(new RegExp(`${start}[\\s\\S]*?${end}`), () => `${start}\n${content}\n${end}`);
+  }
+  return text;
+};
+const outputs = { 'README.md': fill('README.md', blocks), 'benchmark/README.md': fill('benchmark/README.md', renderBenchmark(benchmark, root)),
+  'data/coverage-summary.json': JSON.stringify(summary,null,2)+'\n',
   'docs/assets/terminal.svg': terminal(`npx universal-parcel-scraper detect ${sample.input}`, detected),
-  'docs/assets/coverage.svg': coverageChart(rows, coverage.length),
+  'docs/assets/coverage.svg': coverageChart(rows, benchmark.length),
   'docs/assets/stages.svg': stagesFigure(samples, stage, read('data/stages.json')) };
 for (const [name, content] of Object.entries(outputs)) {
   const file = path.join(root,name);
@@ -76,4 +79,4 @@ for (const [name, content] of Object.entries(outputs)) {
     if (!existsSync(file) || readFileSync(file,'utf8') !== content) throw new Error(`${name} is stale; run npm run generate`);
   } else { mkdirSync(path.dirname(file), { recursive: true }); writeFileSync(file,content); }
 }
-console.log('The README counts and pictures are generated from the catalog, the status records and the comparison references.');
+console.log('The README counts and pictures are generated from the catalog, the status records and the benchmark.');

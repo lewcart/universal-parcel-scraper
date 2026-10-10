@@ -35,7 +35,7 @@ one way to do it.
 
 [reach.json](../docs/reach.json) records how many carriers an aggregator says it follows, with the
 page that says so. The README's headline uses the largest. It is the aggregator's own count,
-and [COVERAGE.md](COVERAGE.md) holds what was measured.
+and [the benchmark](../benchmark/README.md) holds what was measured.
 
 ## Shared behaviour
 
@@ -109,4 +109,6 @@ and [COVERAGE.md](COVERAGE.md) holds what was measured.
 - Add the provider's results to [coverage.json](coverage.json) with
   `scripts/coverage-probe.mjs`, then run `npm run generate` to rebuild the COVERAGE.md
   tables.
+- Add the name to `SOURCES` in `scripts/benchmark-data.mjs` and run the
+  [benchmark](../benchmark/README.md) for it: `node scripts/benchmark.mjs probe --sources <name>`.
 - Run the package checks.

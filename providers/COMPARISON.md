@@ -7,7 +7,7 @@ This page says how that evidence becomes an order.
 history tier, fuller history first. Within a tier, plain HTTP comes before a browser. Ties
 keep the default order. A source that was inconclusive or empty stays eligible. One that
 answered with the wrong carrier or refused the format is left out, as long as another usable
-source remains. Extra references inform the tiers without changing the README comparison.
+source remains. Extra references inform the tiers without changing the comparison table.
 
 Three rules sit on top. Validated China Post C/L postal numbers go to 17TRACK first. Postal
 Ninja, when enabled, comes after the other aggregators and never ranks above them, because

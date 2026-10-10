@@ -1,11 +1,13 @@
 # Carrier coverage by tracking source
 
-The carriers in [coverage.json](coverage.json) are a curated comparison set, not a
-market-share ranking. Provider results come from separate lookups on the same comparison reference;
+[coverage.json](coverage.json) is the evidence provider order follows: what each provider
+returned for references of a carrier. Most references were private numbers, which are not
+kept, so this table cannot be rerun as is. The README's figures come from
+[the benchmark](../benchmark/README.md), which runs public numbers and keeps every answer.
+Provider results come from separate lookups on the same comparison reference;
 unverified cells have no established result.
 A direct sample names an alternative when that reference is outside the adapter's scope or
-no longer available. The README counts only the direct cells that begin with a check mark and
-the first provider reference. It leaves alternate samples out.
+no longer available.
 
 When replacing a comparison reference, rerun the adapter and every provider on the same
 replacement. Keep other references as routing evidence. Adapter availability and successful

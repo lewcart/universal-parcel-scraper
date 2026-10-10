@@ -87,7 +87,8 @@ numbers in bug reports.
 ## Docs
 
 Keep carrier READMEs short: scope, retrieval, the reasons for non-obvious choices, limits and
-how to run the live test. Catalog facts belong in the JSON files and provider results in
+how to run the live test. Catalog facts belong in the JSON files, measured results in
+[the benchmark](benchmark/README.md) and the evidence provider order follows in
 [providers/COVERAGE.md](providers/COVERAGE.md).
 
 `npm run generate` writes the README's counts and its pictures in `docs/assets/`. Only

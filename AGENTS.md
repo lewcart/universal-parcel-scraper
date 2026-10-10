@@ -22,4 +22,4 @@
 
 Keep docs short, plain and current. No dates, verification logs, changelogs, one-off timings or hedging. Do not copy catalog, sample-number or status facts out of their machine-readable source. No status or field tables in READMEs.
 
-Carrier and provider READMEs cover scope, retrieval, non-obvious choices with their reasons, limitations and the live-test command. Follow `npm run carrier:new`. Provider evidence belongs in `providers/COVERAGE.md`; adapter and facade policy in `ARCHITECTURE.md`. Generate README counts with `npm run generate` and update docs in the same commit as behavior.
+Carrier and provider READMEs cover scope, retrieval, non-obvious choices with their reasons, limitations and the live-test command. Follow `npm run carrier:new`. Routing evidence belongs in `providers/COVERAGE.md` and measured coverage in `benchmark/`; adapter and facade policy in `ARCHITECTURE.md`. Generate README counts with `npm run generate` and update docs in the same commit as behavior.

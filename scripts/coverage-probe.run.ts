@@ -3,8 +3,9 @@
  * through every universal provider separately, with no stop at the first
  * success. Driven by coverage-probe.mjs, which documents the inputs.
  *
- * Records keep counts, times and stages only: no number, event text or
- * location, so a record cannot carry recipient data.
+ * Records keep counts, times and stages only: no event text or location, so
+ * a record cannot carry recipient data, and no number unless the case is a
+ * public one (the benchmark's).
  */
 import { appendFileSync, readFileSync } from 'node:fs';
 import { it } from 'vitest';
@@ -21,7 +22,13 @@ import { BROWSER_SOURCES, UniversalTracker } from '../providers/universal.js';
 import { COVERAGE_SOURCES } from '../providers/coverage.js';
 import type { UniversalSource } from '../providers/shared/result.js';
 
-interface ProbeCase { carrier: string; number: string; postcode?: string | null; reference?: number }
+interface ProbeCase {
+  carrier: string; number: string; postcode?: string | null; reference?: number;
+  /** A public number, kept in its records. */
+  public?: boolean;
+  /** Only these sources, for a recheck of some. */
+  sources?: Source[];
+}
 type Source = 'direct' | UniversalSource;
 
 const TRAWL_URL = process.env.COVERAGE_PROBE_TRAWL_URL ?? '';
@@ -44,9 +51,12 @@ function zoneOf(carrier: string): string | null {
 
 function answer(error: unknown): { outcome: string; error: string } {
   const kind = carrierErrorKind(error);
-  const outcome = kind === 'not_found' || error instanceof NoHistoryError ? 'no_history'
-    : kind === 'input_required' ? 'postcode_prompt'
-      : kind === 'challenge' ? 'blocked' : 'error';
+  // Scans without an instant: the provider has a history the library does not use.
+  const outcome = (error as { reason?: unknown }).reason === 'undated_history' ? 'undated'
+    : kind === 'not_found' || error instanceof NoHistoryError ? 'no_history'
+      : kind === 'input_required' ? 'postcode_prompt'
+        : kind === 'invalid_input' ? 'refused'
+          : kind === 'challenge' ? 'blocked' : 'error';
   const chain: string[] = [];
   for (let current = error, depth = 0; current instanceof Error && depth < 4; current = current.cause, depth++) {
     const reason = (current as Error & { reason?: unknown }).reason;
@@ -68,7 +78,8 @@ function summary(result: CarrierResult) {
 }
 
 async function probe(item: ProbeCase, source: Source, registry: AdapterRegistry, tracker: UniversalTracker) {
-  const base = { carrier: item.carrier, reference: item.reference ?? 0, source };
+  const base = { carrier: item.carrier, reference: item.reference ?? 0, ...(item.public ? { number: item.number } : {}),
+    source, checked: new Date().toISOString().slice(0, 10) };
   const started = Date.now();
   try {
     let result: CarrierResult;
@@ -99,7 +110,8 @@ it('probes every case through every source', async () => {
   const lane = async (browser: boolean) => {
     for (const item of cases) {
       for (const source of SOURCES) {
-        if ((only && !only.has(source)) || BROWSER_SOURCES.has(source as UniversalSource) !== browser) continue;
+        if ((only && !only.has(source)) || (item.sources && !item.sources.includes(source))
+          || BROWSER_SOURCES.has(source as UniversalSource) !== browser) continue;
         const record = await probe(item, source, registry, tracker);
         appendFileSync(output, `${JSON.stringify(record)}\n`);
         console.log(`${item.carrier} ${source} ${record.ms} ms ${record.outcome}${'rows' in record ? ` ${record.rows}` : ''}${'error' in record ? ` ${record.error}` : ''}`);

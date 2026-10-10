@@ -20,13 +20,17 @@ import type { TrawlClient, TrawlScrapeResponse } from '../../core/transport/inde
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
-import { courierZone } from '../shared/hints.js';
 import { classifyEvent, event, hasPrivateDeliveryDetails, isNotice, numberOf, result, text, type UniversalSource } from '../shared/result.js';
+import { carrierHomeZone, serviceZone } from './clocks.js';
 
 const SOURCE: UniversalSource = 'Postal Ninja';
 const GET_API = 'https://postal.ninja/track/get';
 const CHECK_API = 'https://postal.ninja/track/check';
 const MAX_EVENTS = 1000;
+/** How far a scan may run ahead of the reply's last read of the carrier: some scanners run early. */
+const CLOCK_SKEW_MS = 3_600_000;
+/** The furthest a wall clock runs ahead of UTC (UTC+14). */
+const EARLIEST_ZONE_MS = 14 * 3_600_000;
 /** The states whose history the provider considers established. */
 const TRACKED_STATES = ['TRACKING', 'FINISHED', 'STOPPED', 'ARCHIVED'];
 
@@ -42,7 +46,8 @@ function isMatchingResultPage(page: TrawlScrapeResponse, number: string): boolea
   });
 }
 
-export function parsePostalNinjaResponse(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
+export function parsePostalNinjaResponse(payload: unknown, trackingNumber: string, timezone: string | null = null,
+  carrier: string | null = null): CarrierResult {
   const number = numberOf(trackingNumber);
   if (!isRecord(payload) || payload.status !== 'FOUND' || !isRecord(payload.track)
     || payload.track.tc !== number || payload.track.hid !== payload.hid
@@ -58,18 +63,19 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   if (!Array.isArray(rawEvents) || rawEvents.length > MAX_EVENTS) throw new SchemaError(SOURCE, 'Postal Ninja returned invalid events');
   const events: CarrierEvent[] = [];
   // Postal Ninja supplies events oldest first. Its dt values are wall times
-  // without a zone, at the scanning office's clock even when another service
-  // relays them under its own name (ds): DHL Germany repeats China Post's
-  // export scans at Chinese times, and an international postal item's feed
-  // carries the other country's scans. So only a history one service reports
-  // alone, and for a postal item one that stays in its country, is placed: in
-  // that service's zone, else in the zone routing passes for the parcel's
-  // carrier. Other scans keep their wall time as local_time. Explicit offsets,
-  // when present, are persisted as they are.
+  // without a zone, on a clock that depends on the service that reports the
+  // scan (ds): UTC for some, the service's home zone wherever the scan
+  // happened for others, the scanning office's for most. Each scan is placed
+  // on its service's established clock (clocks.ts). The scanning office's
+  // counts only in a full history that service reports alone, and for a postal
+  // item one that stays in its country: beside other services, a service can
+  // relay their scans at their clocks or at none. Other scans keep their wall
+  // time as local_time. Explicit offsets, when present, are persisted as they are.
+  const destination = text(payload.track.destCn) || null;
   const services = new Set((rawEvents as unknown[]).map((raw) => isRecord(raw) ? text(raw.ds) : ''));
-  const [service] = services;
-  const placed = services.size === 1
-    && (!isValidS10TrackingNumber(number) || number.slice(-2) === text(payload.track.destCn));
+  const journey = { number, destination, fallback: timezone ?? carrierHomeZone(carrier),
+    alone: payload.track.events !== undefined && services.size === 1
+      && (!isValidS10TrackingNumber(number) || number.slice(-2) === destination) };
   for (const raw of [...rawEvents as unknown[]].reverse()) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'Postal Ninja returned an invalid event');
     const description = text(raw.dsc);
@@ -83,13 +89,24 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
       const classified = classifyEvent(description);
       const { stage } = classified;
       if (stage !== 'delivered' && hasPrivateDeliveryDetails(description)) continue;
-      const zone = placed ? (service ? courierZone(service, number, raw.dt) : null) ?? timezone : null;
+      // A scan's location (loc) is read only for its clock.
+      const zone = serviceZone(text(raw.ds), raw.dt, text(raw.loc), journey);
       const instant = zone ? DateTime.fromISO(raw.dt, { zone }) : null;
       events.push({ ...(instant?.isValid ? { time: instant.toUTC().toISO() } : { local_time: raw.dt }),
         description: stage === 'delivered' ? 'Delivered' : description, ...classified });
     }
   }
-  return result(events, SOURCE, true);
+  // Postal Ninja lists a pickup deadline among the scans ("Last day for
+  // retrieval"), dated after it last read the carrier (lastFetch). It is no
+  // scan, and placed it would be the parcel's newest instant. A wall time is
+  // after that read only when it is in every zone.
+  const readAt = Date.parse(text(payload.track.lastFetch));
+  const after = (scan: CarrierEvent) => (scan.time ? Date.parse(scan.time)
+    : Date.parse(`${String(scan.local_time)}Z`) - EARLIEST_ZONE_MS) > readAt + CLOCK_SKEW_MS;
+  const scans = events.filter((scan) => !after(scan));
+  // Services on different clocks interleave in Postal Ninja's order. Once
+  // every scan has an instant, they are ordered by it.
+  return result(scans, SOURCE, scans.some((scan) => !scan.time));
 }
 
 export interface PostalNinjaOptions extends Omit<UniversalBrowserOptions, 'signal'> {
@@ -101,7 +118,8 @@ export interface PostalNinjaOptions extends Omit<UniversalBrowserOptions, 'signa
 export class PostalNinjaTracker {
   constructor(readonly options: PostalNinjaOptions = {}) {}
 
-  async fetch(trackingNumber: string, budgetMs?: number, timezone: string | null = null, signal?: AbortSignal): Promise<CarrierResult> {
+  async fetch(trackingNumber: string, budgetMs?: number, timezone: string | null = null, signal?: AbortSignal,
+    carrier: string | null = null): Promise<CarrierResult> {
     const number = numberOf(trackingNumber);
     const timeoutMs = budgetMs ?? this.options.timeoutMs ?? 45_000;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) throw new TypeError('Postal Ninja timeout must be between 1 and 60000 ms');
@@ -151,7 +169,7 @@ export class PostalNinjaTracker {
           // TRAWL success must include the normal page's full history; otherwise
           // fallback providers should get a chance to return the missing scans.
           if (isRecord(payload) && isRecord(payload.track) && !Array.isArray(payload.track.events)) continue;
-          try { return parsePostalNinjaResponse(payload, number, timezone); }
+          try { return parsePostalNinjaResponse(payload, number, timezone, carrier); }
           catch (error) { if (error instanceof SchemaError) pending ??= error; else throw error; }
         }
         throw submissionError ?? pending ?? captureFailure(page, spec);
@@ -176,7 +194,7 @@ export class PostalNinjaTracker {
           if (await save.count()) await save.uncheck();
           await form.locator('button[type="submit"]').click();
         },
-      }, (payload) => parsePostalNinjaResponse(payload, number, timezone)),
+      }, (payload) => parsePostalNinjaResponse(payload, number, timezone, carrier)),
     }]);
   }
 }
@@ -190,6 +208,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: SOURCE,
     steps: [environment.trawl ? 'trawl' : 'browser'],
-    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, input.timezone ?? null, context?.signal),
+    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, input.timezone ?? null, context?.signal, input.carrier ?? null),
   };
 };

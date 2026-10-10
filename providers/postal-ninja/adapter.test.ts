@@ -28,17 +28,102 @@ describe('Postal Ninja result parsing', () => {
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
   });
 
-  it('reads a history one service reports on that service\'s clock, else on the carrier\'s', () => {
-    const scans = [{ ds: 'An Post Ireland', dt: '2026-08-17T07:22:00', dsc: 'Out for delivery' }, { ds: 'An Post Ireland', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
-    expect(parsePostalNinjaResponse(withEvents(scans), number, 'Europe/Rome').events?.map((scan) => scan.time))
-      .toEqual(['2026-08-17T10:17:00.000Z', '2026-08-17T06:22:00.000Z']);
-    const unknown = scans.map((scan) => ({ ...scan, ds: 'Example Express' }));
-    expect(parsePostalNinjaResponse(withEvents(unknown), number, 'Europe/Rome').events?.map((scan) => scan.time))
-      .toEqual(['2026-08-17T09:17:00.000Z', '2026-08-17T05:22:00.000Z']);
-    expect(parsePostalNinjaResponse(withEvents(unknown), number).last_update).toBeNull();
+  const times = (parsed: { events?: { time?: string | null; local_time?: string | null }[] }) =>
+    parsed.events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
+  const postal = (tc: string, destCn: string | undefined, events: unknown[]) =>
+    ({ ...found, track: { ...found.track, tc, ...(destCn ? { destCn } : {}), events } });
+
+  it('reads a service that Postal Ninja keeps on one clock in that clock, whatever the carrier\'s zone', () => {
+    // Austrian Post's and Poste Italiane's scans are UTC, not Vienna or Rome time.
+    for (const [ds, zone] of [['Austrian Post', 'Europe/Vienna'], ['Poste Italiane', 'Europe/Rome']]) {
+      const scans = [{ ds, dt: '2026-08-17T07:22:00', dsc: 'Out for delivery' }, { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
+      expect(times(parsePostalNinjaResponse(withEvents(scans), number, zone))).toEqual(['2026-08-17T11:17:00.000Z', '2026-08-17T07:22:00.000Z']);
+    }
+    // GOFO's clock follows its network, named by the destination.
+    const gofo = (destCn?: string) => postal(number, destCn, [{ ds: 'GOFO Express', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }]);
+    expect(parsePostalNinjaResponse(gofo('US'), number).last_update).toBe('2026-08-17T18:17:00.000Z');
+    expect(parsePostalNinjaResponse(gofo('FR'), number).last_update).toBe('2026-08-17T09:17:00.000Z');
+    expect(parsePostalNinjaResponse(gofo(), number).last_update).toBeNull();
   });
 
-  it('keeps wall times when services relay one another\'s scans or a postal item crosses a border', () => {
+  it('places a fixed clock\'s scans beside other services\' and keeps theirs as wall times', () => {
+    // Swiss Post keeps Zurich time for its scans abroad; the other services relay
+    // the same scans at clocks of their own.
+    const item = 'RR123456785CH';
+    const parsed = parsePostalNinjaResponse(postal(item, 'SV', [
+      { ds: 'DHL Germany', dt: '2026-08-12T08:05:00', dsc: 'Posting/Collection' },
+      { ds: 'Swiss Post', dt: '2026-08-12T10:05:00', dsc: 'Time at which your consignment was mailed' },
+      { ds: 'Swiss Post', dt: '2026-08-16T15:30:00', dsc: 'Arrival in destination country' },
+      { ds: 'Example Post', dt: '2026-08-16T21:30:00', dsc: 'Receive shipment at exchange office' },
+    ]), item, 'Europe/Zurich');
+    expect(times(parsed)).toEqual(['local 2026-08-16T21:30:00', '2026-08-16T13:30:00.000Z',
+      '2026-08-12T08:05:00.000Z', 'local 2026-08-12T08:05:00']);
+    // The newest scan has no instant, so an older one does not stand in for it.
+    expect(parsed.last_update).toBeNull();
+    expect(parsePostalNinjaResponse(postal(item, 'SV', [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }]), item).last_update)
+      .toBe('2026-08-17T09:17:00.000Z');
+  });
+
+  it('orders scans by instant once every one has one', () => {
+    // Postal Ninja orders wall times: 10:30 UTC sorts after 11:00 Zurich time.
+    const parsed = parsePostalNinjaResponse(withEvents([
+      { ds: 'Poste Italiane', dt: '2026-08-17T08:30:00', dsc: 'In transit' },
+      { ds: 'Swiss Post', dt: '2026-08-17T11:00:00', dsc: 'Sorting' },
+      { ds: 'Poste Italiane', dt: '2026-08-17T10:30:00', dsc: 'Delivered' },
+    ]), number);
+    expect(times(parsed)).toEqual(['2026-08-17T10:30:00.000Z', '2026-08-17T09:00:00.000Z', '2026-08-17T08:30:00.000Z']);
+    expect(parsed).toMatchObject({ current_stage: 'delivered', last_update: '2026-08-17T10:30:00.000Z' });
+  });
+
+  it('reads a local clock only in a history its service reports alone within one country', () => {
+    const scans = (ds: string) => [{ ds, dt: '2026-08-17T07:22:00', dsc: 'Out for delivery' }, { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
+    // The service's own zone, else the destination's, else the carrier's.
+    expect(times(parsePostalNinjaResponse(withEvents(scans('An Post Ireland')), number, 'Europe/Rome')))
+      .toEqual(['2026-08-17T10:17:00.000Z', '2026-08-17T06:22:00.000Z']);
+    expect(parsePostalNinjaResponse(postal(number, 'SE', scans('PostNord')), number).last_update).toBe('2026-08-17T09:17:00.000Z');
+    expect(parsePostalNinjaResponse(withEvents(scans('DPD')), number, 'Europe/London').last_update).toBe('2026-08-17T10:17:00.000Z');
+    // A carrier whose catalog zone is the UTC placeholder lends the clock of the
+    // one country it serves to a local clock, never to a fixed one.
+    expect(parsePostalNinjaResponse(withEvents(scans('DPD')), number, null, 'brt').last_update).toBe('2026-08-17T09:17:00.000Z');
+    expect(parsePostalNinjaResponse(withEvents(scans('Poste Italiane')), number, null, 'brt').last_update).toBe('2026-08-17T11:17:00.000Z');
+    expect(parsePostalNinjaResponse(withEvents(scans('DPD')), number, null, 'packeta').last_update).toBeNull();
+    // A destination on another clock than the service's may be a parcel that crossed a border.
+    expect(parsePostalNinjaResponse(postal(number, 'FR', scans('DPD UK')), number).last_update).toBeNull();
+    // A service whose clock is unknown keeps its wall times, whatever zone the carrier has.
+    expect(parsePostalNinjaResponse(withEvents(scans('Example Express')), number, 'Europe/Rome').last_update).toBeNull();
+  });
+
+  it('reads a carrier on the clock of each scan\'s office by the state or province its location names', () => {
+    const parsed = parsePostalNinjaResponse(withEvents([
+      // No state, or no country to say IL is one: the office's clock is unknown.
+      { ds: 'UPS', dt: '2026-08-15T09:00:00', dsc: 'Shipper created a label', loc: 'United States' },
+      { ds: 'UPS', dt: '2026-08-15T18:00:00', dsc: 'Origin Scan', loc: 'Chicago, IL' },
+      { ds: 'UPS', dt: '2026-08-15T21:40:00', dsc: 'Arrived at Facility', loc: 'Mississauga, ON, L5T 2N7, Canada' },
+      { ds: 'UPS', dt: '2026-08-16T08:05:00', dsc: 'Departed from Facility', loc: 'Atlanta, GA, United States' },
+      { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'TACOMA, WA, 98424, United States' },
+    ]), number, 'America/New_York');
+    expect(times(parsed)).toEqual(['2026-08-17T18:17:00.000Z', '2026-08-16T12:05:00.000Z', '2026-08-16T01:40:00.000Z',
+      'local 2026-08-15T18:00:00', 'local 2026-08-15T09:00:00']);
+    expect(parsed.last_update).toBe('2026-08-17T18:17:00.000Z');
+    // A pickup dated without a time is written as midnight, and UPS dates a scan
+    // between midnight and 1 a.m. at 12:xx: neither is a wall time to place.
+    const memphis = (ds: string, dt: string, dsc: string) => ({ ds, dt, dsc, loc: 'MEMPHIS, TN, United States' });
+    expect(times(parsePostalNinjaResponse(withEvents([
+      memphis('FedEx', '2026-08-16T00:00:00', 'Picked up'),
+      memphis('FedEx', '2026-08-16T12:25:00', 'Arrived at FedEx location'),
+    ]), number))).toEqual(['2026-08-16T17:25:00.000Z', 'local 2026-08-16T00:00:00']);
+    expect(times(parsePostalNinjaResponse(withEvents([
+      memphis('UPS', '2026-08-16T12:25:00', 'Arrived at Facility'),
+      memphis('UPS', '2026-08-16T13:25:00', 'Departed from Facility'),
+    ]), number))).toEqual(['2026-08-16T18:25:00.000Z', 'local 2026-08-16T12:25:00']);
+    // Beside another service, the office's clock is not read.
+    expect(parsePostalNinjaResponse(withEvents([
+      { ds: 'USPS', dt: '2026-08-17T10:00:00', dsc: 'Out for delivery', loc: 'ATLANTA, GA 30301' },
+      { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'Atlanta, GA, United States' },
+    ]), number).last_update).toBeNull();
+  });
+
+  it('keeps local clocks as wall times beside other services and when a postal item crosses a border', () => {
     // DHL Germany repeats the origin post's scans at the origin's clock.
     const relayed = parsePostalNinjaResponse(withEvents([
       { ds: 'Example Post', dt: '2026-08-12T20:05:00', dsc: 'Posting/Collection' },
@@ -47,11 +132,22 @@ describe('Postal Ninja result parsing', () => {
     ]), number, 'Europe/Dublin');
     expect(relayed.last_update).toBeNull();
     expect(relayed.events?.every((scan) => scan.local_time && !scan.time)).toBe(true);
-    const postal = 'RR123456785CH';
-    const item = (destCn: string) => ({ ...found, track: { ...found.track, tc: postal, destCn,
-      events: [{ ds: 'Swiss Post', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }] } });
-    expect(parsePostalNinjaResponse(item('SV'), postal).last_update).toBeNull();
-    expect(parsePostalNinjaResponse(item('CH'), postal).last_update).toBe('2026-08-17T09:17:00.000Z');
+    const item = 'RR123456785SE';
+    const delivered = [{ ds: 'PostNord', dt: '2026-08-17T11:17:00', dsc: 'Delivered' }];
+    expect(parsePostalNinjaResponse(postal(item, 'NO', delivered), item).last_update).toBeNull();
+    expect(parsePostalNinjaResponse(postal(item, 'SE', delivered), item).last_update).toBe('2026-08-17T09:17:00.000Z');
+  });
+
+  it('leaves out a deadline dated after Postal Ninja last read the carrier', () => {
+    const reply = (lastFetch?: string) => ({ ...found, track: { ...found.track, destCn: 'NO', ...(lastFetch ? { lastFetch } : {}), events: [
+      { ds: 'Posten Norge', dt: '2026-08-17T11:17:00', dsc: 'The parcel has arrived at the pickup point' },
+      { ds: 'Posten Norge', dt: '2026-08-24T00:00:00', dsc: 'Last day for retrieval' },
+    ] } });
+    const parsed = parsePostalNinjaResponse(reply('2026-08-17T12:00:00Z'), number);
+    expect(parsed.events?.map((scan) => scan.description)).toEqual(['The parcel has arrived at the pickup point']);
+    expect(parsed.last_update).toBe('2026-08-17T09:17:00.000Z');
+    // Without that time, nothing is left out.
+    expect(parsePostalNinjaResponse(reply(), number).events).toHaveLength(2);
   });
 
   it('accepts the widget compact response without inventing missing history', () => {
@@ -68,6 +164,11 @@ describe('Postal Ninja result parsing', () => {
       { local_time: '2026-08-01T10:00:00', description: 'Shipment information received', stage: 'registered', stage_source: 'wording:provider' },
     ]);
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
+    // Two scans cannot show that one service reports the whole history.
+    const compact = (ds: string) => parsePostalNinjaResponse({ ...found, track: { ...track, firstEv: { ds, dt: '2026-08-01T10:00:00', dsc: 'Accepted' },
+      lastEv: { ds, dt: '2026-08-17T11:17:00', dsc: 'Delivered' } } }, number, 'Europe/Rome').last_update;
+    expect(compact('DPD')).toBeNull();
+    expect(compact('Swiss Post')).toBe('2026-08-17T09:17:00.000Z');
   });
 
   it('deduplicates a compact single scan and rejects malformed compact data', () => {
@@ -124,6 +225,10 @@ describe('Postal Ninja TRAWL capture', () => {
     await expect(provider.track({number, postcode: null, timezone: 'Europe/Rome'}, {budgetMs: 30_000}))
       .resolves.toMatchObject({tracking_provider: 'Postal Ninja', current_stage: 'delivered', last_update: '2026-08-17T09:17:00.000Z'});
     expect(JSON.parse(String(fetcher.mock.calls[0]![1]?.body))).toMatchObject({url, skipHttp: true, maxTier: 3, captureResponses: [get, check]});
+    // The parcel's carrier reaches the parser too: BRT serves Italy alone.
+    const brt = adapter({trawl: setup(captured([entry(found)])).trawl, recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null});
+    await expect(brt.track({number, postcode: null, timezone: null, carrier: 'brt'}, {budgetMs: 30_000}))
+      .resolves.toMatchObject({last_update: '2026-08-17T09:17:00.000Z'});
     expect(scrapeUniversalPage).not.toHaveBeenCalled();
   });
 

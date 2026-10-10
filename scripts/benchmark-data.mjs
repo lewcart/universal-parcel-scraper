@@ -55,8 +55,11 @@ export function grade(number, source) {
   if (source === 'UPU') return { outcome: 'history', rows: answer.rows, partial: [] };
   const peers = SOURCES.filter((peer) => peer !== 'UPU' && !number.review?.[peer])
     .map((peer) => number.answers[peer]).filter((peer) => peer?.outcome === 'history');
-  const most = Math.max(...peers.map((peer) => peer.rows));
-  const newest = Math.max(...peers.map((peer) => Date.parse(peer.latest ?? '') || 0));
+  // Postal Ninja lists each relaying service's copy of a scan apart, so its rows set no bar.
+  const most = Math.max(...peers.filter((peer) => peer !== number.answers['Postal Ninja']).map((peer) => peer.rows));
+  // A scan after this answer was asked for cannot count against it.
+  const asked = Date.parse(answer.checked ?? '') + DAY || Infinity;
+  const newest = Math.max(...peers.map((peer) => Date.parse(peer.latest ?? '') || 0).filter((time) => time <= asked));
   // A dedicated adapter's wall clocks are its carrier's own, shown as they are. Its newest,
   // read as UTC, is within 14 hours of its instant: near enough to tell a day apart.
   const undated = answer.undated - (source === 'direct' ? answer.wall ?? 0 : 0);

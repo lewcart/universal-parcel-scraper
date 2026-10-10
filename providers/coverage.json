@@ -117,7 +117,7 @@
             "Ship24": 16,
             "ParcelsApp": 16,
             "17TRACK": 16,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 16,
             "UPU": "n/a"
           }
         },
@@ -127,7 +127,7 @@
             "Ship24": 7,
             "ParcelsApp": 7,
             "17TRACK": 7,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 7,
             "UPU": "n/a"
           }
         }
@@ -153,7 +153,7 @@
             "Ship24": "no_history",
             "ParcelsApp": 7,
             "17TRACK": "no_history",
-            "Postal Ninja": "undated",
+            "Postal Ninja": 7,
             "UPU": "n/a"
           }
         },
@@ -163,7 +163,7 @@
             "Ship24": "no_history",
             "ParcelsApp": 18,
             "17TRACK": 18,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 18,
             "UPU": "n/a"
           }
         }
@@ -340,7 +340,7 @@
             "Ship24": 7,
             "ParcelsApp": 20,
             "17TRACK": 20,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 27,
             "UPU": 7
           }
         },
@@ -350,7 +350,7 @@
             "Ship24": 13,
             "ParcelsApp": 13,
             "17TRACK": 22,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 13,
             "UPU": 5
           }
         }
@@ -922,7 +922,7 @@
             "Ship24": 17,
             "ParcelsApp": 17,
             "17TRACK": "no_history",
-            "Postal Ninja": "undated",
+            "Postal Ninja": 27,
             "UPU": "no_history"
           }
         }
@@ -945,9 +945,12 @@
         {
           "note": "Benchmark number 2010505799436494",
           "results": {
-            "Ship24": 1,
+            "Ship24": 2,
             "ParcelsApp": "no_history",
-            "17TRACK": 1,
+            "17TRACK": {
+              "rows": 1,
+              "partial": "a third of the rows or fewer, stops early"
+            },
             "Postal Ninja": "no_history",
             "UPU": "n/a"
           }
@@ -959,8 +962,8 @@
               "rows": 13,
               "partial": "undated rows, stops early"
             },
-            "ParcelsApp": 11,
-            "17TRACK": 28,
+            "ParcelsApp": 12,
+            "17TRACK": 30,
             "Postal Ninja": "undated",
             "UPU": 1
           }
@@ -1112,7 +1115,7 @@
             "Ship24": 9,
             "ParcelsApp": 9,
             "17TRACK": 9,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 9,
             "UPU": "n/a"
           }
         },
@@ -1152,7 +1155,7 @@
             "Ship24": "no_history",
             "ParcelsApp": 10,
             "17TRACK": 10,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 10,
             "UPU": "n/a"
           }
         },
@@ -1162,7 +1165,7 @@
             "Ship24": 9,
             "ParcelsApp": 9,
             "17TRACK": 9,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 9,
             "UPU": "no_history"
           }
         }
@@ -1245,7 +1248,7 @@
             "Ship24": 9,
             "ParcelsApp": 9,
             "17TRACK": 9,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 9,
             "UPU": "n/a"
           }
         },
@@ -1285,7 +1288,7 @@
             "Ship24": 7,
             "ParcelsApp": 7,
             "17TRACK": 7,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 7,
             "UPU": "no_history"
           }
         },
@@ -1295,7 +1298,7 @@
             "Ship24": 8,
             "ParcelsApp": "no_history",
             "17TRACK": 8,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 8,
             "UPU": "n/a"
           }
         }
@@ -1428,7 +1431,10 @@
             "Ship24": 33,
             "ParcelsApp": 21,
             "17TRACK": 26,
-            "Postal Ninja": "undated",
+            "Postal Ninja": {
+              "rows": 33,
+              "partial": "undated rows"
+            },
             "UPU": "n/a"
           }
         }
@@ -1771,7 +1777,7 @@
               "partial": "a third of the rows or fewer, stops early"
             },
             "17TRACK": 18,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 11,
             "UPU": 4
           }
         },
@@ -1787,7 +1793,10 @@
               "partial": "a third of the rows or fewer, stops early"
             },
             "17TRACK": 31,
-            "Postal Ninja": "undated",
+            "Postal Ninja": {
+              "rows": 13,
+              "partial": "stops early"
+            },
             "UPU": "no_history"
           }
         }
@@ -2079,7 +2088,7 @@
             "Ship24": 7,
             "ParcelsApp": "no_history",
             "17TRACK": 7,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 7,
             "UPU": "n/a"
           }
         },
@@ -2089,7 +2098,7 @@
             "Ship24": 7,
             "ParcelsApp": 7,
             "17TRACK": 7,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 7,
             "UPU": "n/a"
           }
         }
@@ -2314,7 +2323,7 @@
             "Ship24": 20,
             "ParcelsApp": 18,
             "17TRACK": 10,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 18,
             "UPU": "n/a"
           }
         }
@@ -2351,7 +2360,7 @@
             "Ship24": 8,
             "ParcelsApp": 8,
             "17TRACK": 8,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 10,
             "UPU": "n/a"
           }
         },
@@ -2436,7 +2445,7 @@
             "Ship24": 6,
             "ParcelsApp": 6,
             "17TRACK": "no_history",
-            "Postal Ninja": "undated",
+            "Postal Ninja": 6,
             "UPU": "no_history"
           }
         }
@@ -2548,7 +2557,10 @@
             "Ship24": "no_history",
             "ParcelsApp": 23,
             "17TRACK": 9,
-            "Postal Ninja": "undated",
+            "Postal Ninja": {
+              "rows": 5,
+              "partial": "a third of the rows or fewer"
+            },
             "UPU": "n/a"
           }
         },
@@ -2595,7 +2607,7 @@
             "Ship24": 4,
             "ParcelsApp": 5,
             "17TRACK": 5,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 5,
             "UPU": "n/a"
           }
         }
@@ -2689,7 +2701,7 @@
             "Ship24": 14,
             "ParcelsApp": 14,
             "17TRACK": 14,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 14,
             "UPU": "n/a"
           }
         }
@@ -2894,7 +2906,10 @@
             },
             "ParcelsApp": 25,
             "17TRACK": 18,
-            "Postal Ninja": "undated",
+            "Postal Ninja": {
+              "rows": 7,
+              "partial": "a third of the rows or fewer, stops early"
+            },
             "UPU": "no_history"
           }
         }
@@ -2957,11 +2972,11 @@
               "rows": 20,
               "partial": "undated rows, stops early"
             },
-            "ParcelsApp": 20,
-            "17TRACK": {
-              "rows": 16,
+            "ParcelsApp": {
+              "rows": 20,
               "partial": "stops early"
             },
+            "17TRACK": 28,
             "Postal Ninja": "undated",
             "UPU": 4
           }
@@ -2970,7 +2985,7 @@
           "note": "Benchmark number EP559083729NZ",
           "results": {
             "Ship24": "no_history",
-            "ParcelsApp": 41,
+            "ParcelsApp": 40,
             "17TRACK": 29,
             "Postal Ninja": "no_history",
             "UPU": "no_history"
@@ -3399,7 +3414,10 @@
             "Ship24": 12,
             "ParcelsApp": 27,
             "17TRACK": 12,
-            "Postal Ninja": "undated",
+            "Postal Ninja": {
+              "rows": 35,
+              "partial": "undated rows"
+            },
             "UPU": "n/a"
           }
         },
@@ -3409,7 +3427,7 @@
             "Ship24": 8,
             "ParcelsApp": 21,
             "17TRACK": 8,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 8,
             "UPU": "n/a"
           }
         }
@@ -3689,7 +3707,7 @@
             "Ship24": 5,
             "ParcelsApp": 5,
             "17TRACK": 5,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 5,
             "UPU": "n/a"
           }
         },
@@ -3903,16 +3921,10 @@
         {
           "note": "Benchmark number GFFR26162070068751",
           "results": {
-            "Ship24": {
-              "rows": 7,
-              "partial": "a third of the rows or fewer"
-            },
-            "ParcelsApp": 21,
-            "17TRACK": {
-              "rows": 7,
-              "partial": "a third of the rows or fewer"
-            },
-            "Postal Ninja": "undated",
+            "Ship24": 7,
+            "ParcelsApp": 7,
+            "17TRACK": 7,
+            "Postal Ninja": 7,
             "UPU": "n/a"
           }
         }
@@ -3956,7 +3968,7 @@
             "Ship24": 39,
             "ParcelsApp": 50,
             "17TRACK": 49,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 49,
             "UPU": "n/a"
           }
         },
@@ -4013,7 +4025,7 @@
             },
             "ParcelsApp": 12,
             "17TRACK": 8,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 5,
             "UPU": "n/a"
           }
         },
@@ -4023,7 +4035,7 @@
             "Ship24": "no_history",
             "ParcelsApp": 11,
             "17TRACK": 11,
-            "Postal Ninja": "undated",
+            "Postal Ninja": 11,
             "UPU": "n/a"
           }
         }

@@ -113,9 +113,20 @@ carrier.
   scans, when New Zealand kept `+12:00` (checked 2026-10-10). That leg's `time_raw` is read
   on Auckland's clock at the scan's own date. On an item NZ Post sends abroad (an S10
   number ending `NZ`), a scan after the international departure, but an airline's, shows
-  the clock where it happened ([NZ Post](../../carriers/nz-post/README.md)). The leg names
-  no place, so none of those scans is placed for another to borrow a zone from, and each
+  the clock where it happened ([NZ Post](../../carriers/nz-post/README.md)). The leg seldom
+  names a place, so such a scan borrows a country, a guess: the one its own location names,
+  else that of the nearest earlier scan after the departure that names one (an airline's
+  included), else the nearest later one's, else the destination the reply names: the
+  recipient's country, or the country of the one other post whose leg it carries (China
+  Post's `CN`). The guess can be a transit hub's country, but Hong Kong, Singapore and China
+  all keep `+08:00`. When that country has several clocks, or nothing names one, the scan
   stays a wall time (`local_time`). The reply stays conclusive.
+- China Post's leg mirrors the origin post's outward exchange scans (`到达境外出口互换局`,
+  `离开境外出口互换局`) on that post's wall clock, and 17TRACK labels them `+08:00`: an NZ
+  Post arrival at 06:09 Auckland time showed four hours late (checked 2026-10-10). On an
+  S10 number from a country on one clock, or from New Zealand (Auckland's), they are read on
+  that clock. Elsewhere, and for its handover scans (`已送交承运商`), whose clock is unknown,
+  17TRACK's reading stays.
 - India Post dates a take-off with the departure airport's wall clock labelled UTC, and
   17TRACK keeps the label: a Mumbai take-off showed 5.5 hours late, a Frankfurt one 2 hours
   late. India Post rows worded `Aircraft Departure` or `UPLIFT` are counted in
@@ -124,8 +135,9 @@ carrier.
 - Original scan text is kept. The English interface does not translate descriptions.
 - Each scan keeps the `location` 17TRACK reports, unless it holds private delivery details or
   is Posti's "ULKOMAILLA" ("abroad"), which names no place.
-- At most 20 carrier legs and 1000 events. `shipping_info` and per-event `address` are
-  never read: the address can be the recipient's street.
+- At most 20 carrier legs and 1000 events. Per-event `address` is never read, and of
+  `shipping_info` only the recipient's country, for an NZ Post leg: the address can be the
+  recipient's street.
 
 ## Rejected approaches
 

@@ -12,12 +12,15 @@
 import { DateTime } from 'luxon';
 import type { AdapterFactory } from '../../core/adapter/index.js';
 import { carrierIdFromName } from '../../core/catalog/hints.js';
+import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
+import { countryTimeZone } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { trackingPlace } from '../../places/trackingLocation.js';
 import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
@@ -117,6 +120,11 @@ const NZ_POST = 14061;
 const NZ_DEPARTURE = /^international departure\b/i;
 const NZ_AIRLINE = /^in transit with airline\b/i;
 
+/** The country a scan's location names, if any. */
+function locationCountry(location: unknown): string | null {
+  return typeof location === 'string' && location.trim() ? trackingPlace(location).country : null;
+}
+
 /**
  * NZ Post's leg shows NZ Post's wall clocks, and 17TRACK labels them with New
  * Zealand's offset on the day it looks: in October it put +13:00 on August
@@ -125,14 +133,69 @@ const NZ_AIRLINE = /^in transit with airline\b/i;
  * their own date. On an item NZ Post sends abroad (an S10 number ending NZ), a
  * scan after the international departure, but an airline's, shows the clock
  * where it happened: a Guangzhou customs scan at 12:47 local, which UPU dates
- * the same. The leg names no place, so such a scan stays a wall time.
- * Returns the wall clock of the leg's first departure, or null.
+ * the same. Such a scan is read in a borrowed country's zone, as a guess: the
+ * country its own location names, else that of the nearest earlier scan after
+ * the departure that names one (an airline's included), else the nearest
+ * later one's, else `destination`. The guess can be a transit hub's country;
+ * Hong Kong, Singapore and China all keep +08:00. A country on several clocks
+ * lends none, and with none the scan stays a wall time.
+ * Returns the zone, or null for a wall time, of each scan dated abroad, by its index in the leg.
  */
-function nzPostDeparture(events: unknown[], number: string): string | null {
-  if (!/^[A-Z]{2}\d{9}NZ$/.test(number)) return null;
-  const walls = events.filter(isRecord).filter(raw => NZ_DEPARTURE.test(text(raw.description)))
-    .map(facilityWall).filter((wall): wall is string => wall !== null).sort();
-  return walls[0] ?? null;
+function nzPostAbroad(events: unknown[], number: string, destination: string | null): Map<number, string | null> {
+  const abroad = new Map<number, string | null>();
+  if (!/^[A-Z]{2}\d{9}NZ$/.test(number)) return abroad;
+  const scans = events.map((raw, index) => isRecord(raw) ? { index, raw, wall: facilityWall(raw) } : null)
+    .filter((scan) => scan !== null);
+  const departure = scans.filter(({ raw, wall }) => wall && NZ_DEPARTURE.test(text(raw.description)))
+    .map(({ wall }) => wall!).sort()[0];
+  if (!departure) return abroad;
+  // A scan whose location names New Zealand is back home, on Auckland's clock.
+  const after = scans.map(({ index, raw, wall }) => ({ index, wall, airline: NZ_AIRLINE.test(text(raw.description)),
+    country: locationCountry(raw.location) }))
+    .filter((scan): scan is typeof scan & { wall: string } => scan.wall !== null && scan.wall > departure && scan.country !== 'NZ')
+    .sort((a, b) => a.wall < b.wall ? -1 : a.wall > b.wall ? 1 : 0);
+  after.forEach((scan, position) => {
+    if (scan.airline) return;
+    const country = scan.country ?? after.slice(0, position).reverse().find((other) => other.country)?.country
+      ?? after.slice(position + 1).find((other) => other.country)?.country ?? destination;
+    abroad.set(scan.index, country ? countryTimeZone(country) : null);
+  });
+  return abroad;
+}
+
+/**
+ * The country an NZ Post item is bound for, when the reply names one: the
+ * recipient's country (only that field of the address is read), else the
+ * country of the one other post whose leg the reply carries, such as China
+ * Post's CN.
+ */
+function nzPostDestination(shipment: Record<string, unknown>, providers: unknown[]): string | null {
+  const recipient = isRecord(shipment.shipping_info) && isRecord(shipment.shipping_info.recipient_address)
+    ? shipment.shipping_info.recipient_address.country : null;
+  if (typeof recipient === 'string' && /^[A-Z]{2}$/.test(recipient) && recipient !== 'NZ') return recipient;
+  const others = new Set(providers.map((leg) => isRecord(leg) && isRecord(leg.provider) && leg.provider.key !== NZ_POST
+    ? leg.provider.country : null).filter((country): country is string =>
+    typeof country === 'string' && /^[A-Z]{2}$/.test(country) && country !== 'NZ'));
+  return others.size === 1 ? [...others][0]! : null;
+}
+
+/** 17TRACK's carrier 3011, China Post. */
+const CHINA_POST = 3011;
+/** China Post's mirror of the origin post's outward exchange office: "arrived at" or "left the exchange office abroad". */
+const ORIGIN_EXCHANGE = /^(?:到达|离开)境外出口互换局/;
+
+/**
+ * China Post's leg mirrors the origin post's outward exchange scans on that
+ * post's wall clock (foreign posts scan on their own local time, see
+ * [China Post](../../carriers/china-post/README.md)), and 17TRACK labels them
+ * with China's +08:00: an NZ Post arrival at 06:09 Auckland time showed four
+ * hours late (checked 2026-10-10). On an S10 number from a country on one
+ * clock, or from New Zealand, whose exchange scans NZ Post dates on Auckland's
+ * clock, they are read on that clock; elsewhere 17TRACK's reading stays.
+ */
+function originZone(number: string): string | null {
+  const origin = isValidS10TrackingNumber(number) ? number.slice(-2) : null;
+  return origin === 'NZ' ? 'Pacific/Auckland' : origin && origin !== 'CN' ? countryTimeZone(origin) : null;
 }
 
 /**
@@ -216,21 +279,24 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       ...(typeof reported.key === 'number' && Number.isSafeInteger(reported.key) ? { reporting_carrier_key: reported.key } : {}) };
     const utc = relaysUtcClock(reported.key);
     const nz = reported.key === NZ_POST;
-    const departure = nz && provider.events.length <= MAX_EVENTS ? nzPostDeparture(provider.events, number) : null;
-    for (const raw of provider.events) {
+    const abroad = nz && provider.events.length <= MAX_EVENTS
+      ? nzPostAbroad(provider.events, number, nzPostDestination(shipment, tracking.providers)) : new Map<number, string | null>();
+    const origin = reported.key === CHINA_POST ? originZone(number) : null;
+    for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
+      const exchange = origin !== null && ORIGIN_EXCHANGE.test(text(raw.description));
       // A facility's clock, A1's UTC or NZ Post's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relaysFacilityClock(name) || utc || nz ? facilityWall(raw) : null;
-      const abroad = wall !== null && departure !== null && wall > departure && !NZ_AIRLINE.test(text(raw.description));
-      const zone = !wall || abroad ? null : utc ? 'UTC' : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location));
+      const wall = relaysFacilityClock(name) || utc || nz || exchange ? facilityWall(raw) : null;
+      const zone = !wall ? null : abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
+        : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location));
       const placed = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
-      if (abroad && wall) {
-        // A scan NZ Post dated abroad keeps its description as a wall time.
+      if (wall && abroad.has(index) && !zone) {
+        // A scan NZ Post dated abroad, with no country to borrow, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };
         delete local.time;
         events.push(local);

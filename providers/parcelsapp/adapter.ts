@@ -14,7 +14,7 @@ import timers from 'node:timers/promises';
 import type { AdapterFactory } from '../../core/adapter/index.js';
 import { isPostiAbroadLabel } from '../../carriers/posti/identity.js';
 import { carrierTimezone } from '../../core/catalog/index.js';
-import { brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
+import { brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { CarrierError, carrierErrorKind, ChallengeError, IndeterminateError, InputRequiredError, NoHistoryError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -27,7 +27,7 @@ import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
-import { universalCarrierHints } from '../shared/hints.js';
+import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
 import { event, isNotice, localEvent, numberOf, result, type UniversalSource } from '../shared/result.js';
 import { carrierScan, markReturnLeg, type CarrierScan } from '../shared/scans.js';
 import { PARCELSAPP_API, ParcelsAppHttpClient } from './http.js';
@@ -77,21 +77,71 @@ function stateCarrierName(payload: Record<string, unknown>, state: Record<string
 
 // The names ParcelsApp gives Asendia USA's scans.
 const ASENDIA_USA = /^asendia\s+(?:usa|united\s+states)$/i;
+/** A carrier name as the tables below key it: "GoFo Express" is "gofoexpress". */
+const nameKey = (name: unknown) => typeof name === 'string' ? name.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
 // Carriers whose ParcelsApp dates are a North American scan's local clock:
 // UPS's own instants, FedEx's own page, UniUni's own feed and Ship24's offsets
 // agree once they are read that way (checked 2026-09-30 on US scans; UPS's
 // also in Germany, the Netherlands and Spain). OnTrac's are UTC and
-// Landmark's keep one clock everywhere, so no other carrier gets this step.
-const LOCAL_CLOCK_CARRIERS = /^(?:ups|fedex|uniuni|uni express|easyship)$/i;
+// Landmark's keep one clock everywhere, so no other carrier gets this step
+// beyond the ones below.
+const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'easyship']);
+/**
+ * Carriers whose dates are each scan's local clock under a label that is
+ * never its instant, checked scan for scan on 2026-10-10: USPS's own page,
+ * and the "at 8:25 am" ParcelsApp relays in its text; Canada Post's digits;
+ * GOFO's US feed, which gives the offsets; Orange Connex's times and offsets
+ * for SpeedPAK; the EMS office clocks Parcelforce and NZ Post relay; Cainiao's
+ * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; and 4PX's (below).
+ * They are read in the state, province or single-clock country their location
+ * names. A scan that none places has no instant: it is counted, and a reply
+ * whose latest scan it is cannot say where the parcel is.
+ */
+const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress']);
+/**
+ * Networks whose dates are their home clock wherever the scan was: their own
+ * instants or labels shown on that clock, checked on 2026-10-10. Italy Post's
+ * are Poste Italiane's epoch milliseconds on Rome time. New Zealand Post's
+ * are NZ Post's UTC instants on Auckland time, also for the scans it relays
+ * from abroad ("Hong Kong"). Singapore Post's are SingPost's "+08:00" digits,
+ * also for its scans in China, and SunYou's those of its "+08:00" feed.
+ */
+const HOME_CLOCKS: Readonly<Record<string, string>> = {
+  italypost: 'Europe/Rome', newzealandpost: 'Pacific/Auckland', singaporepost: 'Asia/Singapore', sunyousytrack: 'Asia/Shanghai',
+};
+/**
+ * Networks whose dates are their scans' local clocks, checked at home only
+ * (2026-10-10): Korea Post's page, Bring's offsets (in Denmark too) and
+ * Parcelforce's for Royal Mail. Their home clock is a guess, which a location
+ * in another country rules out.
+ */
+const HOME_COUNTRIES: Readonly<Record<string, string>> = {
+  southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London',
+};
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
+// USPS facilities: "EXAMPLE CITY IL DISTRIBUTION CENTER", "ISC EXAMPLE CITY IL (USPS)".
+const US_FACILITY = /\s+(?:\(USPS\)|(?:(?:NETWORK|REGIONAL|INTERNATIONAL)\s+)?DISTRIBUTION\s+CENTER)$/i;
+// States written out, as Orange Connex does for SpeedPAK ("Example City Minnesota, United States").
+const US_STATE_NAMES: ReadonlyMap<string, string> = new Map(Object.entries({
+  alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA', colorado: 'CO', connecticut: 'CT',
+  delaware: 'DE', districtofcolumbia: 'DC', florida: 'FL', georgia: 'GA', hawaii: 'HI', idaho: 'ID', illinois: 'IL',
+  indiana: 'IN', iowa: 'IA', kansas: 'KS', kentucky: 'KY', louisiana: 'LA', maine: 'ME', maryland: 'MD',
+  massachusetts: 'MA', michigan: 'MI', minnesota: 'MN', mississippi: 'MS', missouri: 'MO', montana: 'MT',
+  nebraska: 'NE', nevada: 'NV', newhampshire: 'NH', newjersey: 'NJ', newmexico: 'NM', newyork: 'NY',
+  northcarolina: 'NC', northdakota: 'ND', ohio: 'OH', oklahoma: 'OK', oregon: 'OR', pennsylvania: 'PA',
+  rhodeisland: 'RI', southcarolina: 'SC', southdakota: 'SD', tennessee: 'TN', texas: 'TX', utah: 'UT',
+  vermont: 'VT', virginia: 'VA', washington: 'WA', westvirginia: 'WV', wisconsin: 'WI', wyoming: 'WY',
+}));
 
 /**
  * The zone of the US state or Canadian province a location names ("Riverside,
  * CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga,
  * ON, CA"). It is `certain` when the location names the country, the code is
  * no country's, or the town lies in that state or province ("Chicago, IL" is
- * not in Israel); "Atlanta, GA" could still be in Gabon.
+ * not in Israel); "Atlanta, GA" could still be in Gabon. A state written out
+ * counts only after the country ("Example City Minnesota, United States"):
+ * Georgia is a country too.
  */
 function regionClock(location: string): { zone: string; certain: boolean } | null {
   const parts = location.split(',').map((part) => part.trim()).filter(Boolean);
@@ -103,18 +153,43 @@ function regionClock(location: string): { zone: string; certain: boolean } | nul
   if (parts.length > 1 && !parts.at(-1)!.replace(POSTAL_CODE, '')) parts.pop();
   // "Example City, BE, NL": a region, then some other country.
   if (!country && parts.length > 2 && parts.slice(-2).every((part) => /^[A-Z]{2}$/i.test(part))) return null;
-  const words = (parts.at(-1) ?? '').replace(POSTAL_CODE, '').split(/\s+/);
+  const words = (parts.at(-1) ?? '').replace(POSTAL_CODE, '').replace(US_FACILITY, '').split(/\s+/);
+  if (country === 'US') {
+    const size = [3, 2, 1].find((count) => words.length >= count && US_STATE_NAMES.has(nameKey(words.slice(-count).join(''))));
+    if (size) return { zone: usStateTimeZone(US_STATE_NAMES.get(nameKey(words.slice(-size).join(''))))!, certain: true };
+  }
   const code = parts.length > 1 || words.length > 1 ? words.at(-1)! : '';
   const town = parts.length > 1 ? parts.at(-2)! : words.slice(0, -1).join(' ');
   const zone = (country === 'CA' ? null : usStateTimeZone(code)) ?? (country === 'US' ? null : canadaProvinceTimeZone(code));
   return zone ? { zone, certain: country !== null || !countryCode(code) || regionHasTown(code, town) } : null;
 }
 
+/**
+ * The last part of a location that is not a bare postcode: "Example Town,
+ * Denmark, 4600" is in Denmark. Orange Connex names China in full for SpeedPAK.
+ */
+function lastPlace(location: string): string | undefined {
+  const place = location.split(',').map((part) => part.trim()).filter((part) => part && !/^\d[\d\s-]*$/.test(part)).at(-1);
+  return place && /^people['’]?s republic of china$/i.test(place) ? 'CN' : place;
+}
+
+/**
+ * A scan's location as the zone steps read it. 4PX writes the country, state
+ * and town in fixed fields ("US  NY  EXAMPLE CITY 12345", "US    EXAMPLE CITY
+ * NY DISTRIBUTION CENTER"), read here as "EXAMPLE CITY 12345, NY, US".
+ */
+function scanLocation(name: unknown, location: unknown): string {
+  const text = typeof location === 'string' ? location.trim() : '';
+  if (nameKey(name) !== '4pxexpress' || !/^[A-Z]{2}(?:\s{2}|$)/.test(text)) return text;
+  const [country, ...fields] = text.split(/\s{2}/).map((field) => field.trim());
+  return [...fields.reverse(), country].filter(Boolean).join(', ');
+}
+
 /** Where a location puts a scan, for the reply-wide North America check. */
 function placeKind(location: string): 'certain' | 'region' | 'abroad' | null {
   const region = regionClock(location);
   if (region?.certain) return 'certain';
-  const place = location.split(',').at(-1);
+  const place = lastPlace(location);
   if (countryTimeZone(place)) return 'abroad';
   if (region) return 'region';
   const country = countryCode(place);
@@ -127,24 +202,50 @@ function placeKind(location: string): 'certain' | 'region' | 'abroad' | null {
  * America.
  */
 function regionScanZone(name: unknown, location: string, inNorthAmerica: boolean): { zone: string; certain: boolean } | null {
-  const region = typeof name === 'string' && LOCAL_CLOCK_CARRIERS.test(name.trim()) ? regionClock(location) : null;
+  const key = nameKey(name);
+  const region = LOCAL_CLOCK_CARRIERS.has(key) || WALL_CLOCKS.has(key) ? regionClock(location) : null;
   return region && (region.certain || inNorthAmerica) ? region : null;
+}
+
+/**
+ * The offset of a GOFO scan that carries one of its own: GOFO France's feed
+ * gives the same instants, "+02:00" in summer (checked 2026-10-10). Its US
+ * scans come labeled UTC, on their local clock.
+ */
+function ownOffset(name: unknown, date: unknown): string | null {
+  const offset = nameKey(name) === 'gofoexpress' && typeof date === 'string' ? /[+-]\d{2}:\d{2}$/.exec(date.trim())?.[0] : undefined;
+  return offset && !/^[+-]00:00$/.test(offset) ? offset : null;
+}
+
+/**
+ * The clock of the number's own network of a brand, when a country-qualified
+ * name gives another: the depot prefix of a DPD UK number outweighs "DPD
+ * France", the network ParcelsApp asked (checked 2026-10-10: DPD UK's own
+ * page, Ship24 and 17TRACK put such scans on London time).
+ */
+function numberNetworkZone(carrier: string | undefined, number: string): string | null {
+  const brand = carrier ? carrierBrand(carrier) : undefined;
+  const own = brand ? brandCarrierForNumber(brand, number) : undefined;
+  const zone = own && own !== carrier ? carrierTimezone(own) : 'UTC';
+  return zone === 'UTC' ? null : zone;
 }
 
 function scanZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string, inNorthAmerica = false): string | null {
   const name = stateCarrierName(payload, state);
+  const key = nameKey(name);
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
-  if (carrier === 'paack') return null;
+  if (carrier === 'paack' || ownOffset(name, state.date)) return null;
+  if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   const zone = carrier ? carrierTimezone(carrier) : 'UTC';
   // A country-qualified routing name can identify a branch rather than the
   // scan location. Keep its clock as a guess even when the alias is catalogued.
   if (zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name))) return zone;
-  const location = typeof state.location === 'string' ? state.location.trim() : '';
+  const location = scanLocation(name, state.location);
   // A facility's clock, whatever the label: no other step applies to it.
   if (relaysFacilityClock(name)) return facilityZone(location);
-  const place = location.split(',').at(-1);
+  const place = lastPlace(location);
   // A state or province the town confirms beats the country its code also
   // names ("Chicago, IL"); a merely possible one comes after ("Koeln, DE").
   const region = regionScanZone(name, location, inNorthAmerica);
@@ -160,13 +261,43 @@ function scanZone(payload: Record<string, unknown>, state: Record<string, unknow
   const guess = (candidate: string | null) =>
     candidate && (!country || timeZoneCountry(candidate) === country) ? candidate : null;
   if (typeof name !== 'string') return guess(fallback);
-  const named = guess(carrierNameCountryZone(name));
+  const nameZone = carrierNameCountryZone(name);
+  const named = guess((nameZone && numberNetworkZone(carrier, number)) || nameZone || (HOME_COUNTRIES[key] ?? null));
   if (named) return named;
   // A location with no single-clock country ("Toronto, ON", "Chicago, US")
   // can be a network of the brand outside the catalog, on another clock.
   const brand = location ? [] : brandTimeZones(name);
   const wall = brand.length ? mislabeledWallTime(state.date) : null;
   return (wall ? sharedClockZone(brand, wall) : null) ?? guess(fallback);
+}
+
+/**
+ * 4PX's dates are the instants of its own feed, which reads every scan's wall
+ * clock on China time, its US ones too: the wall clock is that instant's
+ * digits in Shanghai (checked 2026-10-10 against 4PX's page, which shows each
+ * with the offset of its place). An instant is right only for a scan on China
+ * time, which a scan with no place cannot show.
+ */
+function stateDate(name: unknown, date: unknown): unknown {
+  if (nameKey(name) !== '4pxexpress' || typeof date !== 'string') return date;
+  const instant = DateTime.fromISO(date.trim(), { setZone: true });
+  return instant.isValid && /(?:Z|[+-]\d{2}:\d{2})$/i.test(date.trim())
+    ? `${instant.setZone('Asia/Shanghai').toISO({ includeOffset: false })}Z` : date;
+}
+
+/**
+ * How to read a state: its date (4PX's wall clock), the zone that places it,
+ * whether its state or province did, and whether, left without a zone, it is
+ * a wall clock with no instant rather than a labeled one.
+ */
+function readState(payload: Record<string, unknown>, raw: Record<string, unknown>, fallback: string | null, number: string, inNorthAmerica = false) {
+  const name = stateCarrierName(payload, raw);
+  const state = { ...raw, date: stateDate(name, raw.date) };
+  const zone = scanZone(payload, state, fallback, number, inNorthAmerica);
+  const location = scanLocation(name, raw.location);
+  return { name, date: state.date, zone, offset: ownOffset(name, state.date),
+    local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
+    wall: relaysFacilityClock(name) || (WALL_CLOCKS.has(nameKey(name)) && !ownOffset(name, state.date)) };
 }
 
 /**
@@ -194,10 +325,12 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   let undated = 0;
   // The reply is in North America when a scan certainly is, or when a scan
   // names a state or province ("Atlanta, GA") and none names another country.
-  const kinds = payload.states.flatMap((raw: unknown) =>
-    isRecord(raw) && typeof raw.location === 'string' && raw.location.trim() ? [placeKind(raw.location)] : []);
+  const kinds = payload.states.flatMap((raw: unknown) => {
+    const location = isRecord(raw) ? scanLocation(stateCarrierName(payload, raw), raw.location) : '';
+    return location ? [placeKind(location)] : [];
+  });
   const inNorthAmerica = kinds.includes('certain') || (kinds.includes('region') && !kinds.includes('abroad'));
-  const entries: { raw: Record<string, unknown>; name: unknown; scan: CarrierScan | undefined; wording: string; zone: string | null; local: boolean }[] = [];
+  const entries: (ReturnType<typeof readState> & { raw: Record<string, unknown>; scan: CarrierScan | undefined; wording: string })[] = [];
   for (const raw of payload.states) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event');
     if (raw.require_fields || raw.error) continue;
@@ -207,30 +340,32 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       undated++;
       continue;
     }
-    const name = stateCarrierName(payload, raw);
+    const state = readState(payload, raw, timezone, number, inNorthAmerica);
     const status = relayedLabel(raw.status);
-    const scan = carrierScan(typeof name === 'string' ? carrierIdFromName(name) : undefined, status);
-    const zone = scanZone(payload, raw, timezone, number, inNorthAmerica);
-    const location = typeof raw.location === 'string' ? raw.location.trim() : '';
-    entries.push({ raw, name, scan, wording: scan?.wording ?? status, zone,
-      local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone });
+    const scan = carrierScan(typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined, status);
+    entries.push({ ...state, raw, scan, wording: scan?.wording ?? status });
   }
   // Another carrier's copy of such a scan (Cainiao relaying UniUni's "Delivered"
   // at the same minute, with no place) takes that scan's zone, so the two stay
-  // one scan.
-  const copyKey = ({ raw, wording }: typeof entries[number]) => {
-    const wall = mislabeledWallTime(raw.date);
-    const text = wall ? localEvent(raw.date, wording)?.description : undefined;
+  // one scan. A copy of a GOFO scan with an offset of its own writes the same
+  // digits under a UTC label (YTO's, Cirro's and EQuick's of GOFO France's),
+  // and takes that offset.
+  const copyKey = ({ date, wording }: typeof entries[number], wall = mislabeledWallTime(date)) => {
+    const text = wall ? localEvent(date, wording)?.description : undefined;
     return wall && text ? `${wall}|${text}` : '';
   };
-  const localClocks = new Map(entries.filter((entry) => entry.local).map((entry) => [copyKey(entry), entry.zone!] as const).filter(([key]) => key));
+  const localClocks = new Map([
+    ...entries.filter((entry) => entry.local).map((entry) => [copyKey(entry), entry.zone!] as const),
+    ...entries.filter((entry) => entry.offset).map((entry) => [
+      copyKey(entry, DateTime.fromISO(String(entry.date).trim(), { setZone: true }).toISO({ includeOffset: false })), `UTC${entry.offset}`] as const),
+  ].filter(([key]) => key));
   const latest = new LatestScan(SOURCE);
   for (const entry of entries) {
-    const { raw, name, scan } = entry;
-    const zone = (localClocks.size && !entry.local ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone;
-    const unplaced = !zone && relaysFacilityClock(name);
-    const parsed = localEvent((zone ? mislabeledLocalTime(raw.date, zone)?.iso : unplaced ? mislabeledWallTime(raw.date) : undefined) ?? raw.date, entry.wording);
-    if (parsed) latest.see(mislabeledWallTime(raw.date) ?? '', unplaced);
+    const { raw, name, scan, date } = entry;
+    const zone = (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone;
+    const unplaced = !zone && entry.wall;
+    const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
+    if (parsed) latest.see(mislabeledWallTime(date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
     // Nor has an offset-less date that no zone resolves: a wall time, not an instant.
     if (parsed && !parsed.time) {
       undated++;
@@ -326,12 +461,14 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     // scan's local clock.
     const labeled = DateTime.fromFormat(`${date} ${time}`, 'dd LLL yyyy HH:mm', { locale: 'en', zone: 'UTC' });
     if (!labeled.isValid) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event date');
-    const state = { date: labeled.toISO(), ...(name ? { carrier: carriers.indexOf(name) } : {}) };
-    const zone = scanZone({ carriers }, state, timezone, numberOf(trackingNumber));
+    const state = readState({ carriers }, { date: labeled.toISO(), ...(name ? { carrier: carriers.indexOf(name) } : {}) },
+      timezone, numberOf(trackingNumber));
+    const { zone } = state;
     const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
-    // The page prints no location, so no DHL Express scan has a facility to read its clock in.
-    const unplaced = !zone && relaysFacilityClock(name);
-    latest.see(mislabeledWallTime(state.date) ?? '', unplaced);
+    // The page prints no location, so no DHL Express scan has a facility to
+    // read its clock in, and no other wall clock a place.
+    const unplaced = !zone && state.wall;
+    latest.see(mislabeledWallTime(state.date) ?? '', unplaced, relaysFacilityClock(name) ? 'DHL Express scan' : 'scan');
     if (unplaced) {
       undated++;
       return;

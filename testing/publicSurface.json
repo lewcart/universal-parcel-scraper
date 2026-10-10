@@ -175,6 +175,7 @@
       "REGISTRY",
       "SeventeenTrackLookupError",
       "SeventeenTrackNoHistoryError",
+      "SeventeenTrackQuotaError",
       "SeventeenTrackVerificationError",
       "TRAWL_TRANSPORT_ALLOWANCE_MS",
       "TrackingCaptureError",

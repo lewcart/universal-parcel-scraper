@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { carrierErrorKind } from '../../core/errors/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { adapter, parse17TrackResponse, SeventeenTrackTracker } from './adapter.js';
 
@@ -294,6 +295,64 @@ describe('17TRACK result parsing', () => {
       .toMatchObject({ name: 'SeventeenTrackVerificationError', reason: 'verification_required', providerCode: -14, status: 403 });
     expect(thrown(() => parse17TrackResponse({ meta: { code: 200 }, shipments: [{ number, code: 100 }] }, number)))
       .toMatchObject({ name: 'SeventeenTrackLookupError', reason: 'lookup_pending', providerCode: 100 });
+  });
+});
+
+describe('17TRACK carrier choice', () => {
+  // GLS France's key in 17TRACK's carrier list; its detection reads such numbers as GLS's group service.
+  const GLS_FR = 101272;
+  const reply = (key: number, name: string, days: number[]): Payload => ({ meta: { code: 200 }, shipments: [{ number, code: 200, shipment: {
+    latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name }, events: days.map((day) => ({
+      time_iso: `2026-09-${String(day).padStart(2, '0')}T10:00:00+02:00`, time_utc: `2026-09-${String(day).padStart(2, '0')}T08:00:00Z`,
+      time_raw: { date: `2026-09-${String(day).padStart(2, '0')}`, time: '10:00:00', timezone: null },
+      description: 'Parcel in transit', stage: null, sub_status: 'InTransit_Other' })) }] } } }],
+  });
+  const chosen = `https://t.17track.net/en#nums=${number}&fc=${GLS_FR}`;
+  const lookups = (fetcher: ReturnType<typeof vi.fn<typeof fetch>>) => fetcher.mock.calls.map(([, init]) => JSON.parse(String(init!.body)).url);
+
+  it('asks again for the filed carrier when 17TRACK detects another one, and keeps the fuller answer', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(captured(reply(100005, 'GLS', [20])))
+      .mockResolvedValueOnce(captured(reply(GLS_FR, 'GLS (FR)', [20, 19, 18]), { url: chosen }));
+    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({
+      reported_carriers: ['GLS (FR)'], events: [{ reporting_carrier_key: GLS_FR }, {}, {}] });
+    expect(lookups(fetcher)).toEqual([`https://t.17track.net/en#nums=${number}`, chosen]);
+    // A carrier answer with fewer scans leaves the detected one.
+    fetcher.mockReset().mockResolvedValueOnce(captured(reply(100005, 'GLS', [20, 19])))
+      .mockResolvedValueOnce(captured(reply(GLS_FR, 'GLS (FR)', [20]), { url: chosen }));
+    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({ reported_carriers: ['GLS'] });
+  });
+
+  it('turns a detection without history into the carrier\'s history, and keeps the first answer when that has none', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(captured(noHistory()))
+      .mockResolvedValueOnce(captured(reply(GLS_FR, 'GLS (FR)', [20]), { url: chosen }));
+    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).resolves.toMatchObject({ current_stage: 'in_transit' });
+    fetcher.mockReset().mockResolvedValueOnce(captured(noHistory()))
+      .mockResolvedValueOnce(captured(postalHistory([], 'NotFound'), { url: chosen }));
+    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).rejects.toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
+    fetcher.mockReset().mockResolvedValueOnce(captured(noHistory())).mockRejectedValueOnce(new TypeError('fetch failed'));
+    await expect(tracker(fetcher).fetch(number, undefined, undefined, null, 'gls-fr')).rejects.toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
+  });
+
+  it('asks once when the detected carrier is the filed one, none is listed, or 17TRACK did not answer', async () => {
+    // Korea Post is asked for its domestic service; its international one is the same carrier.
+    for (const [data, carrier] of [[reply(GLS_FR, 'GLS (FR)', [20]), 'gls-fr'], [reply(11051, 'ePOST', [20]), 'korea-post'],
+      [noHistory(), null], [noHistory(), 'unknown'],
+      [{ meta: { code: -14 }, shipments: [] }, 'gls-fr'], [{ meta: { code: 200 }, shipments: [{ number, code: 402, shipment: null }] }, 'gls-fr'],
+    ] as const) {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => captured(data));
+      await tracker(fetcher).fetch(number, undefined, undefined, null, carrier).catch(() => null);
+      expect(fetcher).toHaveBeenCalledOnce();
+    }
+  });
+
+  it('forwards the filed carrier from the adapter input and leaves no time-starved second lookup', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => captured(noHistory()));
+    const provider = adapter({ trawl: new TrawlClient('http://browser.test', fetcher), recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
+    await expect(provider.track({ number, carrier: 'gls-fr' })).rejects.toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
+    expect(lookups(fetcher)).toEqual([`https://t.17track.net/en#nums=${number}`, chosen]);
+    fetcher.mockClear();
+    await expect(provider.track({ number, carrier: 'gls-fr' }, { budgetMs: 4_000 })).rejects.toMatchObject({ name: 'SeventeenTrackNoHistoryError' });
+    expect(fetcher).toHaveBeenCalledOnce();
   });
 });
 

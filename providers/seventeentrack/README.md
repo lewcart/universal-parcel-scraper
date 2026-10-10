@@ -27,6 +27,13 @@ One step, `trawl`, with a 30 s budget:
    `capture_missing` (nothing captured), `capture_unreadable` (unreadable body) or
    `history_missing` (replies without history). These are indeterminate and say nothing
    about the shipment.
+6. 17TRACK picks the carrier from the number, and for some carriers it picks another one
+   (GLS France's numbers read as GLS's group service, which shows one scan, DPD Poland's
+   as DPD Germany) or none. When the parcel's carrier (`TrackingInput.carrier`) is listed
+   in [carriers.ts](carriers.ts) and the first answer has no history, or none from that
+   carrier, the page is loaded again with 17TRACK's key for it (`&fc={key}`), as a visitor
+   picks a carrier on the page. That answer is kept when it has at least as many dated
+   scans; otherwise the first one stands. It needs 5 s of the budget left.
 
 This needs the pinned TRAWL compatibility build ([ops/trawl](../../trawl/README.md)).
 TRAWL 1.3.1 ignores capture requests. Stock 1.5.0 refuses compressed bodies and can
@@ -47,7 +54,15 @@ A matching code-400/null-shipment reply means no history, unless its parameter m
 offers a postcode the caller has not supplied. Modern `params_v2` takes precedence over
 legacy `param` and `params`. Optional postcode metadata never suppresses usable history.
 A completed postcode submission that still has no history stays `no_history` rather
-than asking again. Other non-200 codes, including envelope-level 400, mean lookup unavailable.
+than asking again. A code-400 reply can list the carriers 17TRACK hesitates between
+(`extra[].multi`); it is still no history. Other non-200 codes, including envelope-level
+400, mean lookup unavailable.
+
+Shipment code 402 is 17TRACK's monthly cap on USPS lookups ("USPS tracking requests are
+limited due to policy changes"), and the page offers a paid plan. Once the browser
+service's address has spent it, every USPS number answers 402, while a fresh address still
+gets history. It stays lookup unavailable: it says nothing about the shipment, and other
+carriers are not capped.
 
 Routing needs these distinctions for its cooldowns. Sentry keeps `reason`,
 `providerCode` and `meta.message` (truncated to 120 characters), because code 400 is

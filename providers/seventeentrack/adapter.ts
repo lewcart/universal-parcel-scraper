@@ -22,6 +22,7 @@ import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { numberOf, result, text, type UniversalSource } from '../shared/result.js';
+import { seventeenTrackCarrierKeys } from './carriers.js';
 import { seventeenTrackEvent, undatedScan } from './events.js';
 
 const SOURCE: UniversalSource = '17TRACK';
@@ -126,6 +127,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       if (!postcode && requestsPostcode(matches[0])) throw new InputRequiredError(SOURCE, 'postcode');
       throw new SeventeenTrackNoHistoryError();
     }
+    // 402 is the cap 17TRACK puts on one address's USPS lookups: nothing about the shipment.
     throw new SeventeenTrackLookupError(code === 100 ? 'lookup_pending' : 'lookup_unavailable', code);
   }
   if (matches.length !== 1 || !isRecord(matches[0]) || matches[0].code !== 200 || !isRecord(matches[0].shipment)) {
@@ -181,51 +183,92 @@ export interface SeventeenTrackOptions {
   timeoutMs?: number;
 }
 
+/** Below this, a second browser lookup cannot finish: one takes seconds even when 17TRACK answers at once. */
+const MIN_CARRIER_LOOKUP_MS = 5_000;
+
+type Outcome = { result: CarrierResult } | { error: unknown };
+
+const settled = (outcome: Outcome): CarrierResult => {
+  if ('error' in outcome) throw outcome.error;
+  return outcome.result;
+};
+
+const datedScans = (result: CarrierResult): number => result.events?.filter((event) => event.time).length ?? 0;
+
+/** Whether 17TRACK's own detection left the carrier out: no history, or scans from other carriers only. */
+function missesCarrier(outcome: Outcome, keys: readonly number[]): boolean {
+  if ('error' in outcome) return outcome.error instanceof NotFoundError || outcome.error instanceof SeventeenTrackNoHistoryError;
+  return !outcome.result.events?.some(({ reporting_carrier_key: key }) => typeof key === 'number' && keys.includes(key));
+}
+
 export class SeventeenTrackTracker {
   constructor(readonly options: SeventeenTrackOptions = {}) {}
 
-  async fetch(trackingNumber: string, budgetMs = this.options.timeoutMs ?? 30_000, signal?: AbortSignal, postcode: string | null = null): Promise<CarrierResult> {
+  /**
+   * `carrier` is the catalog carrier the parcel is filed under. When 17TRACK's own
+   * detection finds no history, or only another carrier's, the lookup is asked
+   * again for that carrier, as a visitor picks one on the page. That answer wins
+   * when it has at least as many dated scans.
+   */
+  async fetch(trackingNumber: string, budgetMs = this.options.timeoutMs ?? 30_000, signal?: AbortSignal, postcode: string | null = null,
+    carrier: string | null = null): Promise<CarrierResult> {
     const number = numberOf(trackingNumber);
     postcode = postcode?.trim().replace(/\s+/g, ' ').toUpperCase() || null;
     if (postcode && (postcode.length < 2 || postcode.length > 15 || !/^[A-Z0-9]+(?:[ -][A-Z0-9]+)*$/.test(postcode))) {
       throw new InvalidInputError(SOURCE, '17TRACK delivery postcode has an invalid format');
     }
-    const spec = (remainingMs: number, signal: AbortSignal): CaptureSpec => ({
-      source: SOURCE, url: `https://t.17track.net/en#nums=${number}${postcode ? `&trawl-postcode=${encodeURIComponent(postcode)}` : ''}`, apiUrl: API_URL,
-      budgetMs: remainingMs, fetcher: this.options.fetcher, signal,
-    });
+    const keys = seventeenTrackCarrierKeys(carrier);
     return runSteps({ carrier: SOURCE, budgetMs, signal, recorder: this.options.recorder }, [{
       id: 'trawl',
       run: async ({ remainingMs, signal }) => {
-        const capture = spec(remainingMs, signal);
-        const page = await loadCapture(this.options.trawl ?? null, capture);
-        let pending: Error | undefined;
-        for (const body of capturedBodies(page, capture)) {
-          try {
-            const payload: unknown = JSON.parse(body);
-            // Old browser-service builds ignore the private input marker. Never
-            // report that a supplied postcode was tried without a bound request.
-            const submitted = page.capturedResponses.some(entry => entry.body === body && entry.postcodeSubmitted === true);
-            if (postcode && !submitted) {
-              try { return parse17TrackResponse(payload, number); }
-              catch (error) {
-                if (error instanceof InputRequiredError || error instanceof SeventeenTrackNoHistoryError) {
-                  throw new TransportError(SOURCE, '17TRACK browser service did not submit the delivery postcode', { reason: 'postcode_not_submitted' });
-                }
-                throw error;
-              }
-            }
-            return parse17TrackResponse(payload, number, postcode);
-          } catch (error) {
-            // Continue past polling replies and unrelated/demo numbers, but retain
-            // the latest structured failure if no matching history follows.
-            if (isSeventeenTrackLookupError(error) || error instanceof NotFoundError || error instanceof SchemaError
-              || error instanceof InputRequiredError || error instanceof TransportError) pending ??= error;
-          }
+        const started = performance.now();
+        const detected: Outcome = await this.lookup(number, postcode, null, remainingMs, signal)
+          .then((result) => ({ result }), (error: unknown) => ({ error }));
+        const left = remainingMs - (performance.now() - started);
+        if (!keys || !missesCarrier(detected, keys) || left < MIN_CARRIER_LOOKUP_MS || signal.aborted) return settled(detected);
+        try {
+          const hinted = await this.lookup(number, postcode, keys[0], left, signal);
+          if (datedScans(hinted) > 0 && ('error' in detected || datedScans(hinted) >= datedScans(detected.result))) return hinted;
+        } catch {
+          // The carrier's own answer adds nothing; the first one stands.
         }
-        throw pending ?? captureFailure(page, capture);
+        return settled(detected);
       },
     }]);
+  }
+
+  /** One page load, with 17TRACK's carrier `key` chosen or left to its detection. */
+  private async lookup(number: string, postcode: string | null, key: number | null, remainingMs: number, signal: AbortSignal): Promise<CarrierResult> {
+    const capture: CaptureSpec = {
+      source: SOURCE, apiUrl: API_URL, budgetMs: remainingMs, fetcher: this.options.fetcher, signal,
+      url: `https://t.17track.net/en#nums=${number}${key ? `&fc=${key}` : ''}${postcode ? `&trawl-postcode=${encodeURIComponent(postcode)}` : ''}`,
+    };
+    const page = await loadCapture(this.options.trawl ?? null, capture);
+    let pending: Error | undefined;
+    for (const body of capturedBodies(page, capture)) {
+      try {
+        const payload: unknown = JSON.parse(body);
+        // Old browser-service builds ignore the private input marker. Never
+        // report that a supplied postcode was tried without a bound request.
+        const submitted = page.capturedResponses.some(entry => entry.body === body && entry.postcodeSubmitted === true);
+        if (postcode && !submitted) {
+          try { return parse17TrackResponse(payload, number); }
+          catch (error) {
+            if (error instanceof InputRequiredError || error instanceof SeventeenTrackNoHistoryError) {
+              throw new TransportError(SOURCE, '17TRACK browser service did not submit the delivery postcode', { reason: 'postcode_not_submitted' });
+            }
+            throw error;
+          }
+        }
+        return parse17TrackResponse(payload, number, postcode);
+      } catch (error) {
+        // Continue past polling replies and unrelated/demo numbers, but retain
+        // the latest structured failure if no matching history follows.
+        if (isSeventeenTrackLookupError(error) || error instanceof NotFoundError || error instanceof SchemaError
+          || error instanceof InputRequiredError || error instanceof TransportError) pending ??= error;
+      }
+    }
+    throw pending ?? captureFailure(page, capture);
   }
 }
 
@@ -236,6 +279,6 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: SOURCE,
     steps: ['trawl'],
-    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, context?.signal, input.postcode),
+    track: (input, context) => tracker.fetch(input.number, context?.budgetMs, context?.signal, input.postcode, input.carrier),
   };
 };

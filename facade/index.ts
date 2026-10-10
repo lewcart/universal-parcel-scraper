@@ -366,7 +366,7 @@ export function createTracker(options: TrackerOptions = {}) {
         const share = left - reserve;
         const cut = reserve ? AbortSignal.any([signal, AbortSignal.timeout(share)]) : signal;
         const answer = await attempt(candidate, () => provider(candidate, async () => resolveResult(await universal.fetchSource(candidate,
-          number, Math.min(share + DEADLINE_SLACK_MS, universalSourceBudget(candidate)), fields.postcode, zone, cut, input.countryHint)), cut), cut);
+          number, Math.min(share + DEADLINE_SLACK_MS, universalSourceBudget(candidate)), fields.postcode, zone, cut, input.countryHint, carrier)), cut), cut);
         if (answer && (!partial || fuller(answer, partial, owners))) {
           relayed = answer;
           result = partial ? withCarrierFacts(answer, partial) : answer;

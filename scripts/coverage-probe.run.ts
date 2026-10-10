@@ -90,7 +90,8 @@ async function probe(item: ProbeCase, source: Source, registry: AdapterRegistry,
     } else if (source === 'UPU' && !isValidS10TrackingNumber(item.number)) {
       return { ...base, outcome: 'n/a', ms: 0 };
     } else {
-      result = await tracker.fetchSource(source, item.number, source === 'UPU' ? undefined : 45_000, item.postcode ?? null, zoneOf(item.carrier));
+      result = await tracker.fetchSource(source, item.number, source === 'UPU' ? undefined : 45_000, item.postcode ?? null, zoneOf(item.carrier),
+        undefined, undefined, item.carrier);
     }
     const counted = summary(result);
     return { ...base, outcome: counted.rows ? 'history' : 'summary_only', ...counted, ms: Date.now() - started };

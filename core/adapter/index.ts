@@ -29,6 +29,12 @@ export interface TrackingInput {
    * confirmed for the same number. Never a guess: absent when neither has one.
    */
   timezone?: string | null;
+  /**
+   * The catalog id of the carrier the parcel is filed under, for universal
+   * providers that can be asked about one carrier when their own detection
+   * names another or none. A hint for the lookup, never proof of the carrier.
+   */
+  carrier?: string | null;
 }
 
 export interface TrackingContext {

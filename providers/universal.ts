@@ -95,10 +95,12 @@ export class UniversalTracker {
    * stored delivery postcode, if the user supplied one: it is forwarded into
    * every provider's track input. ParcelsApp submits it as extra[zipcode] on
    * its direct API request; 17TRACK submits it through the browser's postcode form.
-   * `countryHint` is accepted for compatibility and no longer read.
+   * `countryHint` is accepted for compatibility and no longer read. `carrier` is the
+   * catalog carrier the parcel is filed under, a hint for providers that can be
+   * asked about one carrier (see `TrackingInput.carrier`).
    * The caller's budget covers the whole chain and its signal ends it.
    */
-  async fetch(trackingNumber: string, postcode?: string | null, context: TrackingContext = {}, countryHint?: string | null): Promise<CarrierResult> {
+  async fetch(trackingNumber: string, postcode?: string | null, context: TrackingContext = {}, countryHint?: string | null, carrier?: string | null): Promise<CarrierResult> {
     numberOf(trackingNumber);
     context.signal?.throwIfAborted();
     const deadline = context.budgetMs === undefined ? Infinity : performance.now() + context.budgetMs;
@@ -112,7 +114,7 @@ export class UniversalTracker {
       }
       try {
         return await this.fetchSource(source, trackingNumber, Math.min(remaining, this.options.timeoutMs ?? universalSourceBudget(source)),
-          postcode, null, context.signal, countryHint);
+          postcode, null, context.signal, countryHint, carrier);
       } catch (error) {
         if (context.signal?.aborted) throw context.signal.reason;
         failures.push({ source, reason: 'history unavailable; try again later or open the tracking website', error });
@@ -121,7 +123,7 @@ export class UniversalTracker {
     throw new UniversalTrackingError(failures);
   }
 
-  async fetchSource(source: Source, trackingNumber: string, timeoutMs = this.options.timeoutMs ?? universalSourceBudget(source), postcode?: string | null, timezone?: string | null, signal?: AbortSignal, countryHint?: string | null): Promise<CarrierResult> {
+  async fetchSource(source: Source, trackingNumber: string, timeoutMs = this.options.timeoutMs ?? universalSourceBudget(source), postcode?: string | null, timezone?: string | null, signal?: AbortSignal, countryHint?: string | null, carrier?: string | null): Promise<CarrierResult> {
     const typed = numberOf(trackingNumber);
     // A USPS routing barcode opens with the recipient's ZIP code. Providers are
     // asked for the package identifier after it, the number USPS tracks, and
@@ -136,7 +138,8 @@ export class UniversalTracker {
     const number = pic ?? typed;
     const result = this.options.browserLookup && (source === 'Postal Ninja' || source === 'Ship24')
       ? await this.options.browserLookup(source, number)
-      : await this.provider(source).track({ number, postcode: postcode ?? null, timezone: timezone ?? null, countryHint: countryHint ?? null }, { budgetMs: timeoutMs, signal });
+      : await this.provider(source).track({ number, postcode: postcode ?? null, timezone: timezone ?? null, countryHint: countryHint ?? null,
+        carrier: carrier ?? null }, { budgetMs: timeoutMs, signal });
     // A history whose scans all lack an instant can't be placed on a timeline or weighed
     // against another provider's, so it isn't an answer. An answer without scans keeps
     // its stage and carrier as before. UPU's local clocks are by design.

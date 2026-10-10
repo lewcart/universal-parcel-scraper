@@ -442,16 +442,6 @@
           }
         },
         {
-          "note": "Benchmark number 420127019261290376171425385106",
-          "results": {
-            "Ship24": "no_history",
-            "ParcelsApp": 11,
-            "17TRACK": 11,
-            "Postal Ninja": "blocked",
-            "UPU": "n/a"
-          }
-        },
-        {
           "note": "Benchmark number 9261290316844317469885",
           "results": {
             "Ship24": "no_history",

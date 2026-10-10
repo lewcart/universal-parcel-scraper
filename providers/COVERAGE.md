@@ -176,7 +176,7 @@ is asked after the other aggregators whatever its count.
 | --- | ---: | ---: | ---: | ---: |
 | Ship24 | 63 | 24 | 39 | 0 |
 | ParcelsApp | 79 | 51 | 28 | 5 |
-| 17TRACK | 76 | 49 | 27 | 4 |
+| 17TRACK | 75 | 49 | 26 | 4 |
 | Postal Ninja | 58 | 19 | 39 | 0 |
 
 With Postal Ninja enabled, carriers without their own order use ParcelsApp → Ship24 → 17TRACK → Postal Ninja. These carriers have their own:

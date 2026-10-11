@@ -5071,7 +5071,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ceska-posta",
+      "recognitionRank": 760,
+      "localClocks": true
     },
     "canaryUrl": "https://www.postaonline.cz/trackandtrace",
     "trackingUrlTemplate": "https://www.postaonline.cz/trackandtrace/-/zasilka/{trackingNumber}",
@@ -5088,6 +5090,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -8818,7 +8826,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cargus": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],
-  "ceska-posta": ["ceska-posta-1"],
+  "ceska-posta": ["ceska-posta-1","ceska-posta-s10"],
   "chit-chats": ["chit-chats-1"],
   "cne": ["cne-1"],
   "correos-de-mexico": [],

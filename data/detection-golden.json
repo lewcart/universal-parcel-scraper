@@ -26852,6 +26852,18 @@
     ]
   },
   {
+    "input": "CS011354097CZ",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "ceska-posta",
+      "chronopost"
+    ]
+  },
+  {
     "input": "CT001362607SK",
     "carrier": "intl-post",
     "confidence": "high",
@@ -34165,6 +34177,18 @@
     "confidence": "high",
     "candidates": [
       "correos-chile"
+    ]
+  },
+  {
+    "input": "RR562174447CZ",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "ceska-posta",
+      "chronopost"
     ]
   },
   {

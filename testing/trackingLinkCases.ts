@@ -429,6 +429,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'omniva', number: 'CC900000019EE',
     route: /^https:\/\/minu\.omniva\.ee\/track\/CC900000019EE/,
     marker: /Jälgi oma saadetise teekonda|Sisesta oma jälgimisnumber|Track your shipment/i },
+  // The server renders the lookup for the number in the address.
+  { carrier: 'ceska-posta', number: 'DR9000000002U',
+    route: /^https:\/\/www\.postaonline\.cz\/trackandtrace\/-\/zasilka\/DR9000000002U/,
+    marker: /Sledování zásilek|není v evidenci/i },
   // The Cypriot tracker reads the number from its address and searches it on load.
   { carrier: 'acs-courier', number: '9000000063',
     route: /^https:\/\/cyp\.acscourier\.net\/en\/quick-access\/non-registered-users\/track-and-trace\/\?trackingNumber=/,

@@ -137,6 +137,46 @@
       "note": "Česká pošta's own Track & Trace result, archived by the Wayback Machine, shows the parcel on its way to the delivery office."
     },
     {
+      "number": "CS011354097CZ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240509144707/https://www.postaonline.cz/trackandtrace/-/zasilka/CS011354097CZ",
+        "date": "2024-05-09",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "Standardní balík do zahraničí",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Česká pošta's own Track & Trace result, archived by the Wayback Machine, shows the parcel bound abroad accepted, then returned to the sender."
+    },
+    {
+      "number": "RR562174447CZ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240324045242/https://www.postaonline.cz/trackandtrace/-/zasilka/RR562174447CZ",
+        "date": "2024-03-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "Doporučená zásilka standard",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Česká pošta's own Track & Trace result, archived by the Wayback Machine, shows the registered letter collected from a post office after a failed delivery."
+    },
+    {
       "number": "DR1234567890E",
       "role": "shipment",
       "evidence": "official_documentation_example",

@@ -18,18 +18,58 @@
   "timezone": "Europe/Prague",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ceska-posta",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 760
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.postaonline.cz/trackandtrace/-/zasilka/{trackingNumber}",
     "searchUrl": "https://www.postaonline.cz/trackandtrace",
     "canaryUrl": "https://www.postaonline.cz/trackandtrace",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "postcodes",
+      "pickup_point",
+      "weight",
+      "service_name",
+      "payment_details",
+      "parcel_count",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point",
+      "weight"
+    ],
+    "discarded": [
+      "postcodes",
+      "payment_details",
+      "parcel_count",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -44,6 +84,13 @@
       "id": "ceska-posta-1",
       "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
       "confidence": "high"
+    },
+    {
+      "id": "ceska-posta-s10",
+      "pattern": "^[A-Z]{2}\\d{9}CZ$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

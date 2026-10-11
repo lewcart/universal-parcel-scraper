@@ -289,6 +289,15 @@
     "reason": "The Polish issuer suffix suggests Poczta Polska but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}CZ with a valid S10 check digit",
+    "carriers": [
+      "ceska-posta",
+      "chronopost",
+      "intl-post"
+    ],
+    "reason": "The Czech issuer suffix suggests Česká pošta but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}TR with a valid S10 check digit",
     "carriers": [
       "chronopost",

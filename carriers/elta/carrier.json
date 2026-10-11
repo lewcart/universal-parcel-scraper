@@ -21,18 +21,43 @@
   "timezone": "Europe/Athens",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "elta",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 55
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.elta.gr/track?code={trackingNumber}",
     "searchUrl": "https://www.elta.gr/track",
     "canaryUrl": "https://www.elta.gr/track",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "location"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "pickup_point"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -63,5 +88,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "elta-s10",
+      "pattern": "^[A-Z]{2}\\d{9}GR$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

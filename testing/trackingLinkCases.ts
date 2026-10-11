@@ -408,6 +408,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'speedy', number: '69000000001',
     route: /^https:\/\/myspeedy\.speedy\.bg\/pub\/tracking\/69000000001/,
     marker: /Проследи пратка|Track shipment|Въведете номер на товарителница|Enter Tracking Number/i },
+  // The page fills its field in and looks the code up on load.
+  { carrier: 'elta', number: 'ZZ000000014GR',
+    route: /^https:\/\/www\.elta\.gr\/track\?code=/,
+    marker: /Track and Trace|Ιστορικό Μη Διαθέσιμο/ },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

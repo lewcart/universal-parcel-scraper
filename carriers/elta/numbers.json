@@ -221,13 +221,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on ELTA's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on ELTA's own tracker, as an archived address shows. ELTA's tracker returns its history; detection selects the generic postal carrier."
     }
   ]
 }

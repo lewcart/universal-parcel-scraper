@@ -5827,7 +5827,9 @@
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "elta",
+      "recognitionRank": 55,
+      "localClocks": true
     },
     "canaryUrl": "https://www.elta.gr/track",
     "trackingUrlTemplate": "https://www.elta.gr/track?code={trackingNumber}",
@@ -5861,7 +5863,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}GR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "emile": {
     "displayName": "Emile",

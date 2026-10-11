@@ -5829,7 +5829,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "elta",
+      "recognitionRank": 55,
+      "localClocks": true
     },
     "canaryUrl": "https://www.elta.gr/track",
     "trackingUrlTemplate": "https://www.elta.gr/track?code={trackingNumber}",
@@ -5863,7 +5865,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}GR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "emile": {
     "displayName": "Emile",
@@ -8653,7 +8662,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "early-bird": [],
   "econt": [],
   "ekart": ["ekart-ecommerce"],
-  "elta": [],
+  "elta": ["elta-s10"],
   "emile": ["emile-1"],
   "envialia": [],
   "epost-global": ["epost-global-1"],

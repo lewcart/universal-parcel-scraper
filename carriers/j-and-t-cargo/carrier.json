@@ -19,7 +19,7 @@
     "mode": "automatic",
     "adapter": "j-and-t-cargo",
     "steps": ["direct"],
-    "recognition": { "rank": 47 },
+    "recognition": { "rank": 470 },
     "localClocks": true
   },
   "capabilities": ["history", "location", "provider_code", "service_name"],

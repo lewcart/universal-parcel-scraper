@@ -24,10 +24,10 @@
       "browser"
     ],
     "recognition": {
-      "rank": 23
+      "rank": 230
     },
     "browserRecognition": {
-      "rank": 90
+      "rank": 900
     }
   },
   "capabilities": [

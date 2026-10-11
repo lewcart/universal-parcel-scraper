@@ -21,10 +21,10 @@
       "trawl"
     ],
     "recognition": {
-      "rank": 75
+      "rank": 750
     },
     "browserRecognition": {
-      "rank": 75
+      "rank": 750
     },
     "localClocks": true
   },

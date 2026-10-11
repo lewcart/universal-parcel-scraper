@@ -37,7 +37,7 @@
       "direct"
     ],
     "recognition": {
-      "rank": 50
+      "rank": 500
     },
     "refresh": {
       "minMinutes": 60,

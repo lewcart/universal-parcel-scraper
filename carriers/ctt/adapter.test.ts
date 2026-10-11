@@ -140,10 +140,12 @@ describe('CTT response parsing', () => {
       expect(scanAt('2026-08-28T10:13:58Z', '', 'EMO')).toBe('2026-08-28T10:13:58+01:00');
     });
 
-    it("reads a partner post's scans of a parcel abroad on the destination's clock, or keeps their wall time", () => {
+    it("reads a partner post's scans of a parcel abroad on the destination's clock, or keeps CTT's Z", () => {
       expect(scanAt('2026-08-04T13:29:00Z', '12345', 'EDG', 'IT')).toBe('2026-08-04T13:29:00+02:00');
       expect(scanAt('2026-08-04T14:46:00Z', 'EX12345', 'EMI', 'IT')).toBe('2026-08-04T14:46:00+02:00');
-      expect(scanAt('2026-08-04T13:29:00Z', '12345', 'EDG', 'US')).toBe('local 2026-08-04T13:29:00');
+      // In a destination with several clocks only a scan sent without Z stays a wall time.
+      expect(scanAt('2026-08-04T13:29:00Z', '12345', 'EDG', 'US')).toBe('2026-08-04T13:29:00Z');
+      expect(scanAt('2026-08-04T13:29:00', '12345', 'EDG', 'US')).toBe('local 2026-08-04T13:29:00');
       // CTT's own scans of the same parcel stay on Portugal's clock.
       expect(scanAt('2026-08-01T11:10:15Z', 'PTEXAA - (OUTRO) EXAMPLE', 'EMC', 'IT')).toBe('2026-08-01T11:10:15+01:00');
       expect(scanAt('2026-08-01T10:13:58Z', '', 'EMO', 'IT')).toBe('2026-08-01T10:13:58+01:00');
@@ -154,7 +156,7 @@ describe('CTT response parsing', () => {
       const result = parseCttTrackingResponse({ data: { ObjectEventsFromQuery: record({ RecipientCountryCode: 'US',
         Events: { List: [
           { DateTime: '2026-08-01T10:00:00Z', State: 'X', StateId: 2, Event: 'Accepted', EventCode: 'EMA', Local: 'Loja CTT Example' },
-          { DateTime: '2026-08-09T09:00:00Z', State: 'X', StateId: 12, Event: 'Delivered parcel', EventCode: 'EMI', Local: '' },
+          { DateTime: '2026-08-09T09:00:00', State: 'X', StateId: 12, Event: 'Delivered parcel', EventCode: 'EMI', Local: '' },
         ] } }) } }, TRACKING_NUMBER);
       expect(result).toMatchObject({ current_stage: 'delivered', last_update: null, last_update_local: '2026-08-09T09:00:00' });
       expect(result.events?.map((event) => event.description)).toEqual(['Delivered parcel', 'Accepted']);

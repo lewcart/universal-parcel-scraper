@@ -60,7 +60,8 @@ function abroadWall(clocked: ReturnType<typeof clock>): string | null {
  * an airline's included ("China"), else the nearest later one's. All of them
  * are the destination post's or the flight's to it; a transit hub's country
  * can be wrong, but Hong Kong, Singapore and China keep one clock. Null when
- * that country has several clocks or none is named: the scan stays a wall time.
+ * that country has several clocks or none is named: the scan keeps NZ Post's
+ * Auckland reading, the last guess.
  */
 function abroadZone(scans: readonly AfterDeparture[], position: number): string | null {
   const country = scans[position]!.country ?? scans.slice(0, position).reverse().find(other => other.country)?.country
@@ -116,20 +117,23 @@ export function parseNzPost(payload: unknown, number: string): CarrierResult {
     return { ...clocked, description, provider_code: code,
       ...(location ? { location } : {}), ...(mapped ? { stage: mapped.stage } : {}) };
   });
+  // A scan nothing places keeps NZ Post's Auckland reading, the last guess:
+  // hours off, but the reply keeps its instant.
+  let guessed = false;
   afterDeparture.forEach((scan, position) => {
     // An airline's scan only lends its country: its clock was not checked.
     if (!scan.wall) return;
     const zone = abroadZone(afterDeparture, position);
     const placed = zone ? isoTime(scan.wall, zone) : null;
-    const event: CarrierEvent = { ...projected[scan.index]!, ...placed ? { time: placed.iso } : { local_time: scan.wall } };
-    if (!placed) delete event.time;
-    projected[scan.index] = event;
+    if (placed) projected[scan.index] = { ...projected[scan.index]!, time: placed.iso };
+    else guessed = true;
   });
   if (!projected.length) throw new IndeterminateError('nz-post', 'NZ Post returned no parcel history');
   // The consumer client treats the last source row as current. Preserve that
-  // order if any clock is unresolved instead of promoting an older dated row.
+  // order if any clock is unresolved, or only guessed, instead of promoting an
+  // older dated row: a guessed clock can fall hours behind one placed abroad.
   projected.reverse();
-  if (projected.every(event => event.time)) projected.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
+  if (!guessed && projected.every(event => event.time)) projected.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
   const seen = new Set<string>();
   const events = projected.filter(event => {
     const key = JSON.stringify(event);

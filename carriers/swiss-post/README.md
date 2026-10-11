@@ -78,8 +78,11 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   18:26:18 UTC (checked 2026-10-11). On an item to China, customs (901, 902) came at the
   11:05 and 14:30 UPU gives Beijing's and Hangzhou's offices. They are read on the clock
   of `recipientCountry` when it keeps one. In a country with several, they keep Swiss
-  Post's offset, the last guess: hours off, but the reply keeps its instants. Swiss
-  Post's own unlocated events (813, 915) keep its offset. [clock.ts](clock.ts) lists
+  Post's offset, the last guess: hours off, but the reply keeps its instants. The app
+  identity policy in [app.ts](app.ts) (`relabelledFrom: 'Europe/Zurich'`) lets a scan
+  read on the destination's clock take over the row stored under Swiss Post's offset, by
+  wall clock, provider code and location. Swiss Post's own unlocated events (813, 915)
+  keep its offset. [clock.ts](clock.ts) lists
   them, and their wording for relays that give no code.
 - Wording is only trimmed, not whitespace-collapsed, so `core/transport`'s
   `clean()` is not used.

@@ -19,7 +19,9 @@ function matches(incoming: SameInstantScan, stored: SameInstantScan): boolean {
     && (location === savedLocation || (!location && isNzPostPlaceholderLocation(savedLocation)));
 }
 
+// Scans abroad were read on Auckland's clock until October 2026 and now show
+// the offset of the country they happened in, unless nothing places them.
 export const sameInstantIdentityPolicy: SameInstantIdentityPolicy = {
   sourceCarrierId: 'nz-post', storedSources: ['nz-post'], requireProviderCode: true,
-  matchEachScan: true, matches,
+  matchEachScan: true, matches, relabelledFrom: 'Pacific/Auckland',
 };

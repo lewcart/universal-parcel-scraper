@@ -102,8 +102,8 @@ step exists for future protocol changes.
   (by `countryCode` or here), therefore moves the stored scans located in it, as a changed
   catalog `timezone` moves its carrier's, and so their event ids. So does a reported name
   newly mapped to a catalog carrier on a local clock (`NAME_ALIASES` in
-  [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. Plan a re-key
-  of stored ParcelsApp rows with any of these changes.
+  [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. See Limitations
+  for what that does to stored rows.
 
   With no zone, an offset is taken as given, which for the carriers whose dates are never
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
@@ -187,7 +187,7 @@ step exists for future protocol changes.
   4PX's go through the steps like any, and EcoScooting's last mile takes Madrid's. Other
   scans of these networks with no place go through the steps like any.
 - Steps 1 to 5 move the stored scans they now date, and the names read as the US or China
-  above move theirs: plan a re-key. A copy merged into the scan it copies leaves one row
+  above move theirs (see Limitations). A copy merged into the scan it copies leaves one row
   where there were two.
 - ParcelsApp relays 4PX's feed two ways (checked 2026-10-11 against 4PX's page, which
   shows each scan's wall clock with its offset). Where it keeps 4PX's fixed fields, the
@@ -216,7 +216,7 @@ step exists for future protocol changes.
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
   times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
-  A name added here moves its stored scans: plan a re-key.
+  A name added here moves its stored scans (see Limitations).
 - TNT's international scans (9-digit numbers) skip these steps. tnt.com gives them
   offsets, and ParcelsApp's `date` is already their UTC instant.
 - So do scans named "Asendia United States" or "Asendia USA", wherever they happened.
@@ -252,8 +252,8 @@ step exists for future protocol changes.
   (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
   keep their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every
   country. UPS, FedEx, UniUni, EasyShip and DHL eCommerce scans that nothing places still
-  stay as labeled. Adding a carrier, a town or a province moves stored scans: plan a
-  re-key.
+  stay as labeled. Adding a carrier, a town or a province moves stored scans (see
+  Limitations).
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
@@ -266,7 +266,7 @@ step exists for future protocol changes.
   Group") would still be read as Central European time.
 - Brand zones follow the catalog. A new DPD, GLS or Hermes carrier, or a changed
   `timezone`, on another clock turns step 4 off for that brand and moves its stored scans,
-  and so their event ids: plan a re-key of stored ParcelsApp rows with such a change.
+  and so their event ids (see Limitations).
   `hints.test.ts` pins the current zone sets so the change cannot pass unnoticed.
 - The rendered page prints the same UTC digits (`dd LLL yyyy HH:mm`) and names each
   scan's carrier under its wording (`.event-content .carrier`), so it goes through the
@@ -296,6 +296,11 @@ step exists for future protocol changes.
 
 ## Limitations
 
+- A change that moves a scan's instant gives it a new event id. No identity policy can
+  relabel it: ParcelsApp's dates are UTC and carry no code. The app leaves out a scan moved
+  by whole quarter hours, up to 14 hours, with the same wording, as a copy of its stored
+  row, so nothing is stored or announced twice. That row keeps its old instant until a
+  re-key, and a scan moved any other way gets a row of its own.
 - Postcode unlock is unverified. For an invalid postcode, SEUR and bpost repeat
   `require_fields` instead of returning an explicit error, both in the real form and via
   HTTP. Verifying the unlock needs a known valid number and postcode pair.

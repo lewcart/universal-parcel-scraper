@@ -276,7 +276,9 @@ can distinguish scans sharing an instant. Conflicting locations stay separate, a
 apps that cannot compare scan evidence only use the policies that need no comparison. A
 policy's `relabelledFrom` names the zone a source once put on every wall clock: a scan
 whose wall clock now carries another offset takes over the row stored under the old label,
-by provider code and location.
+by provider code and location. A universal provider's scan has no code to relabel by: the
+app leaves it out as a copy of its stored row when its instant moved by whole quarter hours,
+up to 14 hours, with the same wording, and that row keeps the old instant until a re-key.
 
 ## Fallback providers
 

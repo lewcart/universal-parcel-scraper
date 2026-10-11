@@ -46,10 +46,14 @@ is a separate carrier.
     Azores' for a postcode from 9500 or a town only the islands have, and Lisbon's otherwise.
   - On a parcel bound abroad (`RecipientCountryCode`), the destination post's events
     (UPU `EMD`–`EMI`, `EDA`–`EDH`) keep that post's wall clock: they are read in the
-    destination's zone, and stay wall times (`local_time`) when it has several. CTT relays
-    them unconverted: an Italian delivery comes at the Italian office's time.
+    destination's zone. When it has several they keep CTT's `Z`, the last guess: hours off,
+    but the reply keeps its instants. CTT relays them unconverted: an Italian delivery
+    comes at the Italian office's time.
   - Any other scan is CTT's, on Portugal's clock.
   - Any other offset is taken as sent. Wall times sort among instants by their digits.
+- The app identity policy in [app.ts](app.ts) requires the same instant and `StateId` before
+  updating a stored scan. Its `relabelledFrom: 'UTC'` lets a scan on its own clock take over
+  the row stored under CTT's `Z`, by wall clock, provider code and location.
 - Event `Local` mixes depot codes and point names. It is kept as a coarse location and never
   refined into an address.
 - Sender and recipient names, contacts and addresses are on the record but never read; a

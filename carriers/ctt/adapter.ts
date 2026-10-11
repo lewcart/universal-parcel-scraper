@@ -109,9 +109,10 @@ const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(?:Z|\+0
  * A scan's clock. CTT's Z is no offset: the digits are the wall clock where
  * the scan happened (see clock.ts). That is the destination's, for a
  * partner post's scan of a parcel bound abroad (`abroad`), unless the
- * location names an office or a site of CTT's; Portugal's otherwise. A
- * destination with several zones leaves the scan a wall time. Any other
- * offset is taken as sent.
+ * location names an office or a site of CTT's; Portugal's otherwise. In a
+ * destination with several zones the scan keeps CTT's Z, the last guess:
+ * hours off, but the reply keeps its instant. Only a wall clock sent with no
+ * Z stays a wall time there. Any other offset is taken as sent.
  */
 function scanClock(value: unknown, location: string, abroad: string | null):
   { time?: string; local_time?: string; timestamp: number } | null {
@@ -124,6 +125,8 @@ function scanClock(value: unknown, location: string, abroad: string | null):
   const zone = cttSiteZone(location, abroad ? [abroad] : []) ?? (abroad ? countryTimeZone(abroad) : portugalZone(location));
   const placed = zone ? isoTime(wall, zone) : null;
   if (placed) return { time: placed.iso, timestamp: placed.timestamp };
+  const labelled = explicitOffsetTime(raw);
+  if (labelled) return { time: labelled.iso, timestamp: labelled.timestamp };
   const read = Date.parse(`${wall}Z`);
   return Number.isFinite(read) ? { local_time: wall, timestamp: read } : null;
 }

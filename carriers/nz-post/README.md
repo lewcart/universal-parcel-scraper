@@ -37,9 +37,13 @@ the departure whose depot names one, an airline's included ("China"), else of
 the nearest later one. NZ Post names no destination. The borrowed country can
 be a transit hub's, but Hong Kong, Singapore and China all keep `+08:00`, and
 the guess beats Auckland's clock, 4 to 17 hours off abroad. When the country
-has several clocks, or none is named, the scan stays a wall time
-(`local_time`). Airline scans ("In transit with airline") are taken as sent:
-their clocks were not checked.
+has several clocks, or none is named, the scan keeps NZ Post's Auckland
+reading, the last guess: hours off, but the reply keeps its instant, and the
+history keeps NZ Post's order. Airline scans ("In transit with airline") are
+taken as sent: their clocks were not checked. The app identity policy in
+[identity.ts](identity.ts) (`relabelledFrom: 'Pacific/Auckland'`) lets a scan
+on its own clock take over the row stored under Auckland's reading, by wall
+clock, provider code and location.
 Missing, malformed or offsetless clocks preserve the source order without
 borrowing an older scan's timestamp.
 See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for unresolved history handling.

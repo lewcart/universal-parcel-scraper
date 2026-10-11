@@ -101,12 +101,12 @@ describe('NZ Post exact-reference projection', () => {
     const china = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' }
       : scan.edifact_code === '5283' ? { ...scan, depot_name: 'China' } : scan));
     expect(china.events?.[0]?.time).toBe('2026-08-14T12:47:00+08:00');
-    // A country with several clocks, or none named after the departure, leaves wall times.
+    // A country with several clocks, or none named after the departure, keeps NZ Post's Auckland reading.
     for (const depot of ['United States', undefined]) {
       const unplaced = parse(events.map(scan => scan.edifact_code === '5015' ? { ...scan, depot_name: 'EXAMPLE CITY' }
         : scan.edifact_code.startsWith('5') && scan.edifact_code !== '5007' && scan.edifact_code !== '5019' ? { ...scan, depot_name: depot } : scan));
-      expect(unplaced.events?.slice(0, 2).map(event => event.local_time)).toEqual(['2026-08-14T12:47:00', '2026-08-09T09:05:00']);
-      expect(unplaced).toMatchObject({ last_update: null, last_update_local: '2026-08-14T12:47:00' });
+      expect(unplaced.events?.slice(0, 2).map(event => event.time)).toEqual(['2026-08-14T00:47:00Z', '2026-08-08T21:05:00Z']);
+      expect(unplaced).toMatchObject({ last_update: '2026-08-14T00:47:00Z' });
     }
     // An item arriving from abroad is scanned in New Zealand after its departure.
     const inbound = 'ZZ123456785CH';
@@ -170,7 +170,7 @@ describe('NZ Post courier labels and international mail', () => {
   it('lets a stored scan take its code\'s stage and lose the placeholder depot in place', () => {
     expect(sameInstantIdentityPolicy('nz-post')).toBeUndefined();
     const policy = sameInstantIdentityPolicy('nz-post', { supportsScanMatching: true });
-    expect(policy).toMatchObject({ storedSources: ['nz-post'], requireProviderCode: true, matchEachScan: true });
+    expect(policy).toMatchObject({ storedSources: ['nz-post'], requireProviderCode: true, matchEachScan: true, relabelledFrom: 'Pacific/Auckland' });
     const stored = { stage: 'in_transit', description: 'With border agency', location: 'EXAMPLE EMS', providerCode: '5016' };
     const incoming = { ...stored, stage: 'customs', description: ' with border agency ' };
     expect(policy?.matches?.(incoming, stored)).toBe(true);

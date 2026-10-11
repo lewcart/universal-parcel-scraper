@@ -183,16 +183,19 @@ describe('Canada Post clock and estimate boundaries', () => {
     const abroad = parse(p, MOVING_NUMBER);
     expect(abroad.last_update).toBe('2026-03-15T22:41:00-05:00');
     expect(abroad.events?.slice(-2).map(event => event.time)).toEqual(['2026-03-10T19:00:00+09:00', '2026-03-09T12:33:00+09:00']);
-    // A country with several clocks, or an exchange office with no province, keeps the wall clock.
+    // A country with several clocks, or an exchange office with no province, keeps Canada Post's offset.
     const out = moving();
     out.events.unshift({ cd: '0174', descEn: 'Item out for Delivery', type: 'Out',
       datetime: { date: '2026-03-17', time: '06:10:00', zoneOffset: '-05:00' }, locationAddr: { city: '', regionCd: '', countryCd: 'US' } });
     out.events.push(relayed('4310', '2026-03-11', '01:11:00', '-05:00', { city: 'CAEXAA', regionCd: '', countryCd: '' }));
     const result = parse(out, MOVING_NUMBER);
-    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-03-17T06:10:00' });
-    expect(result.events?.map(event => event.time ?? event.local_time)).toEqual([
-      '2026-03-17T06:10:00', '2026-03-15T22:41:00-05:00', '2026-03-12T09:30:00-05:00', '2026-03-11T01:11:00',
+    expect(result).toMatchObject({ last_update: '2026-03-17T06:10:00-05:00' });
+    expect(result.events?.map(event => event.time)).toEqual([
+      '2026-03-17T06:10:00-05:00', '2026-03-15T22:41:00-05:00', '2026-03-12T09:30:00-05:00', '2026-03-11T01:11:00-05:00',
     ]);
+    // Such a guess does not reorder the newest-first history.
+    out.events[0].datetime.date = '2026-03-15'; out.events[0].datetime.time = '22:00:00';
+    expect(parse(out, MOVING_NUMBER).events?.[0]?.provider_code).toBe('0174');
   });
 
   it.each(['+02:99', '+14:01', '+23:00', '-14:01'])('preserves invalid offset %s rather than accepting normalized time', offset => {

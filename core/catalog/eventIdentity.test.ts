@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { describe, expect, it } from 'vitest';
 import { sameInstantIdentityPolicy } from '../../app.js';
 
@@ -6,6 +7,32 @@ describe('same-instant identity policies', () => {
     expect(sameInstantIdentityPolicy('india-post')).toEqual({
       sourceCarrierId: 'india-post', storedSources: ['india-post'], requireProviderCode: true, relabelledFrom: 'Asia/Kolkata',
     });
+  });
+
+  it.each([
+    ['ctt', 'UTC'],
+    ['canada-post', 'Etc/GMT+5'],
+  ])('requires %s scans to retain their provider code, and lets a scan take its own offset', (source, zone) => {
+    expect(sameInstantIdentityPolicy(source)).toEqual({
+      sourceCarrierId: source, storedSources: [source], requireProviderCode: true, relabelledFrom: zone,
+    });
+  });
+
+  // The stored instant, read in the policy's zone, shows the wall clock the scan now carries.
+  it.each([
+    ['ctt', '2026-08-04T13:29:00Z', '2026-08-04T13:29:00+02:00'],
+    ['canada-post', '2026-03-10T19:00:00-05:00', '2026-03-10T19:00:00+09:00'],
+    ['canada-post', '2026-07-10T19:00:00-05:00', '2026-07-10T19:00:00-04:00'],
+    ['nz-post', '2026-08-14T00:47:00Z', '2026-08-14T12:47:00+08:00'],
+    ['nz-post', '2026-01-14T00:47:00Z', '2026-01-14T13:47:00+08:00'],
+    ['swiss-post', '2026-08-09T14:30:00+02:00', '2026-08-09T14:30:00+08:00'],
+    ['swiss-post', '2026-01-09T14:30:00+01:00', '2026-01-09T14:30:00-06:00'],
+  ])('reads a %s scan stored as %s on the clock it was labelled with', (source, stored, current) => {
+    const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
+    expect(policy?.requireProviderCode).toBe(true);
+    const wall = (time: string, zone?: string) =>
+      DateTime.fromISO(time, zone ? { zone } : { setZone: true }).toFormat("yyyy-MM-dd'T'HH:mm:ss");
+    expect(wall(stored, policy?.relabelledFrom)).toBe(wall(current));
   });
 
   it('requires Amazon Shipping scans to retain their event code', () => {

@@ -77,8 +77,9 @@ const EXCHANGE_SCANS = new Set(['4000', '4100', '4202', '4310', '4311', '4330', 
  * Post's own page, a Korean one is on Korea Post's clock, a Montana delivery
  * office's "05:05 -05:00" is 05:05 MDT on USPS's page, and the Toronto
  * exchange office's "01:11 -05:00" fell in summer time (checked 2026-10-10).
- * Such a scan is read on its country's single clock; elsewhere it stays a
- * wall clock. Null for a scan whose offset stands.
+ * Such a scan is read on its country's single clock; elsewhere it keeps
+ * Canada Post's offset, the last guess: hours off, but the reply keeps its
+ * instant. Null for a scan whose offset stands.
  */
 function relayedClock(code: string, country: string, region: string): { zone: string | null } | null {
   const abroad = country !== '' && country !== 'CA';
@@ -97,10 +98,10 @@ function eventClock(value: unknown, relayed: { zone: string | null } | null = nu
     const local = `${date}T${time.length === 5 ? `${time}:00` : time}`;
     const placed = relayed?.zone ? isoTime(local, relayed.zone) : null;
     if (placed) return { time: placed.iso };
-    if (!relayed && /^(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/i.test(offset)) {
+    if (/^(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/i.test(offset)) {
       const parsed = explicitOffsetTime(`${local}${offset}`);
       if (parsed) return { time: parsed.iso };
-    } else if (relayed || !offset) {
+    } else if (!offset) {
       // UTC validates the calendar only; no timezone is attached to local digits.
       const parsed = DateTime.fromISO(local, { zone: 'UTC' });
       const valid = parsed.isValid ? parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) : null;
@@ -173,14 +174,17 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     const location = isRecord(raw.locationAddr)
       ? [textField(raw.locationAddr, 'city', 160), region].filter(Boolean).join(', ') : '';
     const stage = type === 'Signature' || code === '20' ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
-    const event: CarrierEvent = { ...eventClock(raw.datetime, relayedClock(code, country, region)), description: stage === 'delivered' ? 'Delivered' : description,
+    const relayed = relayedClock(code, country, region);
+    const clock = eventClock(raw.datetime, relayed);
+    const event: CarrierEvent = { ...clock, description: stage === 'delivered' ? 'Delivered' : description,
       provider_code: code, ...(stage ? { stage } : {}), ...(location ? { location } : {}) };
     return { event, type, region, country, sourceDate: isRecord(raw.datetime) ? calendarDate(raw.datetime.date) : null,
-      returnCue: returnStarted(description) || type === 'RtsLabelProc' };
+      returnCue: returnStarted(description) || type === 'RtsLabelProc', guessed: relayed?.zone === null && 'time' in clock };
   });
   // Native detail history is newest first. Compare instants only when every
-  // row resolves; an unresolved latest row must not fall behind old scans.
-  if (rows.every(row => row.event.time)) rows.sort((a, b) => Date.parse(b.event.time!) - Date.parse(a.event.time!));
+  // row resolves, and none only by a guess; an unresolved latest row must not
+  // fall behind old scans, nor a guessed one behind a scan placed abroad.
+  if (rows.every(row => row.event.time && !row.guessed)) rows.sort((a, b) => Date.parse(b.event.time!) - Date.parse(a.event.time!));
   let returning = false;
   for (const row of [...rows].reverse()) {
     if (row.returnCue) returning = true;

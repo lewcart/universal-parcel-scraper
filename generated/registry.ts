@@ -83,6 +83,7 @@ import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
 import { adapter as oldDominion } from '../carriers/old-dominion/adapter.js';
 import { adapter as omgo } from '../carriers/omgo/adapter.js';
 import { adapter as ontrac } from '../carriers/ontrac/adapter.js';
+import { adapter as orlenPaczka } from '../carriers/orlen-paczka/adapter.js';
 import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
@@ -207,6 +208,7 @@ export const REGISTRY: RegistryDefinition = {
     "old-dominion": oldDominion,
     "omgo": omgo,
     "ontrac": ontrac,
+    "orlen-paczka": orlenPaczka,
     "paack": paack,
     "packeta": packeta,
     "planzer": planzer,
@@ -383,7 +385,7 @@ export const REGISTRY: RegistryDefinition = {
     "omgo": "omgo",
     "omniva": "universal",
     "ontrac": "ontrac",
-    "orlen-paczka": "universal",
+    "orlen-paczka": "orlen-paczka",
     "osm-worldwide": "universal",
     "paack": "paack",
     "packeta": "packeta",

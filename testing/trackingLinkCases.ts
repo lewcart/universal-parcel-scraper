@@ -392,6 +392,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'emile', number: 'EM000000000001CA',
     route: /^https:\/\/www\.emileps\.com\/tracking\?/,
     marker: /Track Your\s+Shipment|Enter tracking number/i },
+  // The page fills its field in and looks the number up on load.
+  { carrier: 'orlen-paczka', number: '2109999000003',
+    route: /^https:\/\/www\.orlenpaczka\.pl\/sledz-paczke\/\?numer=/,
+    marker: /Śledzę paczkę|przesyłki o tym numerze nie można śledzić/i },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

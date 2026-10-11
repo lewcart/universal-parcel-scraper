@@ -42,6 +42,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "nz-post": 32,
   "omgo": 1,
   "ontrac": 21,
+  "orlen-paczka": 49,
   "poczta-polska": 31,
   "poste-italiane": 46,
   "posti": 27,

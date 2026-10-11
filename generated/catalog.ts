@@ -7218,7 +7218,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "orlen-paczka",
+      "recognitionRank": 49
     },
     "canaryUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
     "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",

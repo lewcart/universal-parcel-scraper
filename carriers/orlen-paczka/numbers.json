@@ -259,7 +259,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -273,7 +273,7 @@
           "orlen-paczka"
         ]
       },
-      "note": "Looked up on ORLEN Paczka's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on ORLEN Paczka's own tracker, as an archived address shows; the tracker returns its history."
     }
   ]
 }

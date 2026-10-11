@@ -18,18 +18,47 @@
   "timezone": "Europe/Warsaw",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "orlen-paczka",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 49
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
     "searchUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
     "canaryUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "return_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "provider_code"
+    ],
+    "discarded": [
+      "return_number"
+    ],
+    "unavailable": [
+      "eta",
+      "pickup_point",
+      "weight",
+      "sender_name",
+      "recipient"
+    ]
   },
   "links": [
     {

@@ -18,25 +18,79 @@
   "timezone": "Europe/Athens",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "acs-courier",
+    "steps": [
+      "direct",
+      "refresh"
+    ],
+    "recognition": {
+      "rank": 57
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "pickup_point"
+  ],
   "portal": {
-    "url": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?trackingNumber={trackingNumber}",
-    "searchUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
-    "canaryUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/?trackingNumber={trackingNumber}",
+    "searchUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/",
+    "canaryUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "pickup_point",
+      "progress_rail",
+      "recipient_name",
+      "signatory",
+      "sender_name",
+      "delivery_comments",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "pickup_point"
+    ],
+    "discarded": [
+      "delivered_at",
+      "progress_rail",
+      "recipient_name",
+      "signatory",
+      "sender_name",
+      "delivery_comments",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
       "domains": [
         "acscourier.net"
       ],
-      "pathPattern": "^/(?:el|en)/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+      "pathPattern": "^/(?:(?:el|en)/)?grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    },
+    {
+      "domains": [
+        "acscourier.net"
+      ],
+      "pathPattern": "^/en/quick-access/non-registered-users/track-and-trace/?$",
       "params": [
         "trackingNumber"
       ]

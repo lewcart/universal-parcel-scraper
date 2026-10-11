@@ -2,6 +2,7 @@
 
 /** Carriers whose adapter can recognize a number, by popularity rank (carrier.json tracking.recognition). */
 export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
+  "acs-courier": 57,
   "aliexpress": 14,
   "australia-post": 6,
   "austrian-post": 39,

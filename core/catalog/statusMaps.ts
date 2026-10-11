@@ -10,6 +10,7 @@
  * universal providers, whose map is the reading they give a scan
  * (`providers/status.ts`).
  */
+import { statusMap as acsCourier } from '../../carriers/acs-courier/status.js';
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
@@ -52,9 +53,9 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  aliexpress, 'an-post': anPost, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain, 'dhl-express': dhlExpress,
-  dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier, foxpost, 'gofo-fr': gofoFr,
-  'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, 'old-dominion': oldDominion, omgo,
+  'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
+  'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier, foxpost,
+  'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, 'old-dominion': oldDominion, omgo,
   'orlen-paczka': orlenPaczka, postlogistics, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups,
   yunexpress,
 };

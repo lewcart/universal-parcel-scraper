@@ -4714,17 +4714,28 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "acs-courier",
+      "recognitionRank": 57,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
-    "trackingUrlTemplate": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?trackingNumber={trackingNumber}",
-    "trackingSearchUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/",
+    "canaryUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/",
+    "trackingUrlTemplate": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/",
     "linkRules": [
       {
         "domains": [
           "acscourier.net"
         ],
-        "pathPattern": "^/(?:el|en)/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+        "pathPattern": "^/(?:(?:el|en)/)?grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      },
+      {
+        "domains": [
+          "acscourier.net"
+        ],
+        "pathPattern": "^/en/quick-access/non-registered-users/track-and-trace/?$",
         "params": [
           "trackingNumber"
         ]

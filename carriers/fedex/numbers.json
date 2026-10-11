@@ -162,7 +162,7 @@
           "lbc-express"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 34-digit FedEx Express label barcode; the barcode is left out because it carries the destination ZIP code. FedEx stays one candidate among several."
+      "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 34-digit FedEx Express label barcode, which is a record of its own. FedEx stays one candidate among several."
     },
     {
       "number": "784917580286",
@@ -187,7 +187,7 @@
           "lbc-express"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 32-digit FedEx ASTRA label barcode; the barcode is left out because it carries the destination ZIP code. FedEx stays one candidate among several."
+      "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 32-digit FedEx ASTRA label barcode, which is a record of its own. FedEx stays one candidate among several."
     },
     {
       "number": "9611020987654312345672",
@@ -1300,6 +1300,35 @@
         ]
       },
       "note": "A Ground 96 label barcode archived from a FedEx tracking link. It carries a 15-digit tracking number."
+    },
+    {
+      "number": "1001921334250001000300779017972697",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/fedex.json"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fedex"
+        ]
+      },
+      "note": "Open-source project example, not a real shipment. Full 34-digit label barcode: its twelve-digit tracking number follows two zeros in positions 21–34 and passes its check, so detection prefers FedEx."
+    },
+    {
+      "number": "32971514560102447849175802862014",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/fedex.json"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to FedEx; no rule matches this shape."
     }
   ]
 }

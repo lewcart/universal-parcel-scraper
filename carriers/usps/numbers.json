@@ -195,7 +195,7 @@
         "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, which stay out of the corpus; the number passes the USPS check."
+      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, a barcode recorded separately; the number passes the USPS check."
     },
     {
       "number": "9261290113185417468510",
@@ -214,7 +214,7 @@
           "estafeta"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, which stay out of the corpus; the number passes the USPS check."
+      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, a barcode recorded separately; the number passes the USPS check."
     },
     {
       "number": "9101026837331000039521",
@@ -232,7 +232,7 @@
           "estafeta"
         ]
       },
-      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, which stay out of the corpus; the number passes the USPS check."
+      "note": "Open-source project example, not a real shipment. The source prints it behind the 420 routing code and a ZIP code, a barcode recorded separately; the number passes the USPS check."
     },
     {
       "number": "CH056695198US",
@@ -401,7 +401,7 @@
           "estafeta"
         ]
       },
-      "note": "Public sandbox example; not evidence of a consumer shipment. The source prints it behind the 420 routing code and a ZIP code, which stay out of the corpus."
+      "note": "Public sandbox example; not evidence of a consumer shipment. The source prints it behind the 420 routing code and a ZIP code, a barcode recorded separately."
     },
     {
       "number": "9205596900893430673167",
@@ -419,7 +419,7 @@
         "carrier": "usps",
         "confidence": "high"
       },
-      "note": "Public sandbox example; not evidence of a consumer shipment. The source prints it behind the 420 routing code and a ZIP code, which stay out of the corpus."
+      "note": "Public sandbox example; not evidence of a consumer shipment. The source prints it behind the 420 routing code and a ZIP code, a barcode recorded separately."
     },
     {
       "number": "9261290278831107521763",
@@ -965,6 +965,121 @@
         ]
       },
       "note": "Invented routing barcode: the 420 routing code and the placeholder ZIP code 00000 in front of a published example package number."
+    },
+    {
+      "number": "4201002334249200190132607600833457",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/usps.json"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to USPS; the tracking number after the routing code and ZIP passes the USPS check."
+    },
+    {
+      "number": "4201028200009261290113185417468510",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/usps.json"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps"
+        ]
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to USPS; the tracking number after the routing code and ZIP passes the USPS check."
+    },
+    {
+      "number": "420221539101026837331000039521",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/usps.json"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps"
+        ]
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The legacy 91 tracking number after the ZIP passes the USPS check."
+    },
+    {
+      "number": "420787459400111206206406260787",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/usps.json"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to USPS; the tracking number after the routing code and ZIP passes the USPS check."
+    },
+    {
+      "number": "420902459261290336128704042634",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/usps.json"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps",
+          "dhl-ecommerce"
+        ]
+      },
+      "note": "Open-source project example, not a real shipment. Full label barcode rather than the number a user types. The source attributes it to USPS; the tracking number after the routing code and ZIP passes the USPS check."
+    },
+    {
+      "number": "420117419361289691090029427113",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/USPS/api-examples/issues/34",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "USPS CAT sandbox",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps",
+          "dhl-ecommerce"
+        ]
+      },
+      "note": "Public sandbox example; not evidence of a consumer shipment."
+    },
+    {
+      "number": "4203278000009205596900893430673167",
+      "role": "full_barcode",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/USPS/api-examples/issues/34",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "USPS CAT sandbox",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Public sandbox example; not evidence of a consumer shipment."
     }
   ]
 }

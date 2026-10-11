@@ -81,8 +81,8 @@ Every adapter follows these rules:
 ## Keep parcels private
 
 This repository is public. Keep recipient details, capability links, private tracking
-numbers and postcodes out of Git, issues and logs. Fixtures are synthetic, and so are the
-numbers in bug reports.
+numbers and postcodes out of Git, issues and logs. A public sample number keeps a postcode it
+embeds. Fixtures are synthetic, and so are the numbers in bug reports.
 
 ## Docs
 

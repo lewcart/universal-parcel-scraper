@@ -375,6 +375,26 @@
         ]
       },
       "note": "Archived from a DHL eCommerce tracking link. Webtrack no longer lists it."
+    },
+    {
+      "number": "420127019261290376171425385106",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://webtrack.dhlglobalmail.com/?trackingnumber=420127019261290376171425385106"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "usps",
+          "dhl-ecommerce"
+        ]
+      },
+      "note": "Public tracking link; the tracking page returned the history."
     }
   ]
 }

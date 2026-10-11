@@ -76,3 +76,7 @@ has its own tests against audited histories.
 Private live-test numbers do not belong in the corpus. Provider and parser fixtures bind to
 synthetic identities, and leave out recipient details and access credentials. Opaque tracking
 page keys and capability URLs stay outside Git even when a search engine indexes them.
+
+A public number keeps a postcode it embeds, such as a USPS 420 routing barcode or a Russian
+Post domestic number, and so does a source address that only carries that number. A postcode
+anywhere else, such as a query parameter of its own or a note, stays out.

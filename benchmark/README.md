@@ -87,9 +87,9 @@ source follows any more is marked stale there.
 | This project, all fallbacks enabled | 89 | | | | |
 | This project, dedicated adapters alone | 79 | 75 | 4 | 0 | 0.5 s |
 | Ship24 | 57 | 48 | 9 | 3 | 0.9 s |
-| ParcelsApp | 71 | 69 | 2 | 0 | 1.6 s |
+| ParcelsApp | 71 | 69 | 2 | 0 | 1.7 s |
 | 17TRACK | 73 | 70 | 3 | 0 | 6.1 s |
-| Postal Ninja | 32 | 28 | 4 | 28 | 6.8 s |
+| Postal Ninja | 32 | 28 | 4 | 28 | 6.9 s |
 | UPU | 11 | 11 | 0 | 0 | 0.0 s |
 
 11 carriers have no number any source still follows.
@@ -121,7 +121,7 @@ source follows any more is marked stale there.
 | [Hermes Germany](../carriers/hermes-de/README.md) | ✓ 4, partial | ✓ 4, partial | ✓ 12 | ✓ 4, partial | ✓ 4, partial | N/A |
 | [DPD Germany](../carriers/dpd-de/README.md) | ✓ 14 | ✓ 12 | ✓ 5 | ✓ 5 | ✓ 5 | N/A |
 | [GLS Germany](../carriers/gls-de/README.md) | Postcode prompt | Refused | ✓ 3 | Refused | ✓ 4 | N/A |
-| [DHL eCommerce](../carriers/dhl-ecommerce/README.md) | ✓ 9 | No history | ✓ 9 | ✓ 7 | Blocked | N/A |
+| [DHL eCommerce](../carriers/dhl-ecommerce/README.md) | ✓ 11 | No history | ✓ 11 | ✓ 11 | Blocked | N/A |
 
 ### United Kingdom and Ireland
 
@@ -302,6 +302,7 @@ source follows any more is marked stale there.
 | DPD Germany | `01415130681967` | [2026-10-05](https://www.paketda.de/fragen-antworten.php?suche=01415130681967) | 2026-10-10 | ✓ 12 | ✓ 12 | ✓ 3, partial (a third of the rows or fewer) | ✓ 3, partial (a third of the rows or fewer) | ✓ 5 | N/A |
 | GLS Germany | `37390065090` | [2026-08-24](https://de.reclabox.com/beschwerde/254878-gls-neuenstein-paket-ohne-zustellversuch-im-paketshop-abgekippt) | 2026-10-10 | Postcode prompt | No history | ✓ 3 | No history | ✓ 4 | N/A |
 | GLS Germany | `AALZJR` | [2026-08-05](https://www.paketda.de/fragen-antworten.php?suche=AALZJR) | 2026-10-10 | Postcode prompt | Refused | Refused | Refused | Refused | N/A |
+| DHL eCommerce | `420127019261290376171425385106` | [undated](https://webtrack.dhlglobalmail.com/?trackingnumber=420127019261290376171425385106) | 2026-10-10 | ✓ 11 | No history | ✓ 11 | ✓ 11 | Blocked | N/A |
 | DHL eCommerce | `9261290316844317469885` | [undated](https://webtrack.dhlglobalmail.com/?trackingnumber=9261290316844317469885) | 2026-10-10 | ✓ 1 | No history | ✓ 1 | No history | Blocked | N/A |
 | DHL eCommerce | `9261290357482657956985` | [2026-09-27](https://web.archive.org/web/20260927160405/https://webtrack.dhlecs.com/?trackingnumber=9261290357482657956985) | 2026-10-11 | ✓ 9 | No history | ✓ 9 | ✓ 7 | Blocked | N/A |
 | Royal Mail | `MZ465962009GB` | [2026-03-16](https://web.archive.org/web/20260316193534/https://www.royalmail.com/portal/rm/track?trackNumber=MZ465962009GB) | 2026-10-10 | ✓ 5 | No history | No history | No history | No history | No history |

@@ -670,6 +670,73 @@
         ]
       },
       "note": "Shipment of the 9380 sender family looked up on the carrier's tracking page; the record has since expired from the tracker."
+    },
+    {
+      "number": "93005001081690801339400",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/problema-con-el-repartidor/e30b27faaae7c53755",
+        "date": "2025-02-25",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "correos-express"
+        ]
+      },
+      "note": "Customer sends this as the tracking number in a complaint to Correos Express, whose tracker takes 23-digit references whole."
+    },
+    {
+      "number": "63300084071073601363706",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/entrega-no-reliazada/8542f7d6b4f5c324da",
+        "date": "2025-03-31",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "correos-express"
+        ]
+      },
+      "note": "Customer gives this as the tracking number of an AliExpress order in a Correos Express complaint."
+    },
+    {
+      "number": "93333300545224001280445",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/pedido-direccion-incorrecta/8a6913b3112984d2b1",
+        "date": "2024-08-07",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "correos-express"
+        ]
+      },
+      "note": "Customer calls this the Correos Express tracking ID. The carrier's agent asked for the tracking number again, though its tracker takes 23-digit references."
     }
   ]
 }

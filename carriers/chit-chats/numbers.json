@@ -365,6 +365,103 @@
         ]
       },
       "note": "A search engine indexes Chit Chats' own tracking page under this shipment ID; the page was not opened."
+    },
+    {
+      "number": "4209811842289214490362894346802370",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260108010351/https://chitchats.com/tracking/4209811842289214490362894346802370",
+        "date": "2026-01-08",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Chit Chats' own tracking page, archived by the Wayback Machine, gives it as the USPS last-mile number of shipment J578X61C7E with its history; the 420 routing code and a ZIP+4 come before the USPS number."
+    },
+    {
+      "number": "J578X61C7E",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260108010351/https://chitchats.com/tracking/4209811842289214490362894346802370",
+        "date": "2026-01-08",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chit-chats"
+        ]
+      },
+      "note": "Chit Chats' own tracking page, archived by the Wayback Machine, shows it as the shipment id with a history from 30 Dec 2025 to 7 Jan 2026."
+    },
+    {
+      "number": "4203717220229214490374015200485460",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://chitchats.com/tracking/4203717220229214490374015200485460",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "A search index lists Chit Chats' own tracking page for it, titled with shipment Q4X5B5G4V0; the page was not opened. The 420 routing code and a ZIP+4 come before the USPS number."
+    },
+    {
+      "number": "Q4X5B5G4V0",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://chitchats.com/tracking/4203717220229214490374015200485460",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chit-chats"
+        ]
+      },
+      "note": "A search index titles Chit Chats' tracking page for a USPS last-mile number with this shipment id; the page was not opened."
+    },
+    {
+      "number": "420940899234690327908706209435",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241104225255/https://chitchats.com/tracking/a2h2u87f5t",
+        "date": "2024-11-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "usps",
+        "confidence": "high"
+      },
+      "note": "Chit Chats' own tracking page for shipment A2H2U87F5T, archived by the Wayback Machine, gives it as the USPS last-mile number; the 420 routing code and a ZIP come before the USPS number."
     }
   ]
 }

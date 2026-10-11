@@ -154,6 +154,18 @@
     "reason": "Chit Chats' tracking page prints AB1234C5D6 as its example; every real shipment ID seen starts with a letter and a digit, so the rule leaves this layout out."
   },
   {
+    "carrier": "chit-chats",
+    "pattern": "^420\\d{5}(?:\\d{4})?\\d{22}$",
+    "kind": "by_design",
+    "reason": "USPS delivers these Chit Chats parcels, and the 420 routing barcode is its own, so detection names USPS."
+  },
+  {
+    "carrier": "correos-spain",
+    "pattern": "^L[A-Z0-9]{22}$",
+    "kind": "open",
+    "reason": "A public report uses a checksum-valid L reference, but the service and complete family remain unconfirmed."
+  },
+  {
     "carrier": "dachser",
     "kind": "by_design",
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
@@ -336,6 +348,12 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Express One."
+  },
+  {
+    "carrier": "express-one",
+    "pattern": "^\\d{24}$",
+    "kind": "by_design",
+    "reason": "Twenty-four digits are shared by bpost, Ciblex and InPost, and the postcode the number ends in does not single out Express One."
   },
   {
     "carrier": "fan-courier",
@@ -724,6 +742,12 @@
     "pattern": "^I\\d{9}$",
     "kind": "open",
     "reason": "One archived R+L lookup, and a mock-up on R+L's own site, show I and nine digits; the family is not established."
+  },
+  {
+    "carrier": "russian-post",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "Fourteen digits are shared by several carriers and nothing in the number points to Russian Post."
   },
   {
     "carrier": "saia",

@@ -166,6 +166,12 @@
 {"carrier":"gls-de","number":"AALZJR","source":"17TRACK","checked":"2026-10-10","outcome":"refused","error":"InvalidInputError(invalid_input)","ms":0}
 {"carrier":"gls-de","number":"AALZJR","source":"Postal Ninja","checked":"2026-10-10","outcome":"refused","error":"InvalidInputError(invalid_input)","ms":0}
 {"carrier":"gls-de","number":"AALZJR","source":"UPU","checked":"2026-10-10","outcome":"n/a","ms":0}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"direct","checked":"2026-10-10","outcome":"history","rows":11,"undated":11,"wall":11,"wallLatest":"2026-08-31T14:46:00","latest":null,"latestStage":"delivered","reported":[],"ms":512}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"Ship24","checked":"2026-10-10","outcome":"no_history","error":"UpstreamHttpError(not_found)","ms":17323}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"ParcelsApp","checked":"2026-10-10","outcome":"history","rows":11,"undated":0,"latest":"2026-08-31T14:46:00.000Z","latestStage":"delivered","reported":["DHL eCommerce"],"ms":15115}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"17TRACK","checked":"2026-10-10","outcome":"history","rows":11,"undated":0,"latest":"2026-08-31T18:46:00.000Z","latestStage":"delivered","reported":["USPS"],"ms":5576}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"Postal Ninja","checked":"2026-10-10","outcome":"blocked","error":"ChallengeError(challenge)","ms":8185}
+{"carrier":"dhl-ecommerce","number":"420127019261290376171425385106","source":"UPU","checked":"2026-10-10","outcome":"n/a","ms":0}
 {"carrier":"dhl-ecommerce","number":"9261290316844317469885","source":"direct","checked":"2026-10-10","outcome":"history","rows":1,"undated":0,"wall":0,"wallLatest":null,"latest":"2026-06-04T19:13:00.000Z","latestStage":"delivered","reported":[],"ms":507}
 {"carrier":"dhl-ecommerce","number":"9261290316844317469885","source":"Ship24","checked":"2026-10-10","outcome":"no_history","error":"UpstreamHttpError(not_found)","ms":4335}
 {"carrier":"dhl-ecommerce","number":"9261290316844317469885","source":"ParcelsApp","checked":"2026-10-10","outcome":"history","rows":1,"undated":0,"wall":0,"wallLatest":null,"latest":"2026-06-04T19:13:00.000Z","latestStage":"delivered","reported":["USPS","DHL eCommerce"],"ms":157}

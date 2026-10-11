@@ -21,7 +21,7 @@ the label is accepted when the hidden field echoes it and the visible label
 shows the shipment it opens with, which becomes the canonical number. Several
 live replies bind this. A Portuguese label opened with another first digit than
 its shipment's, so only the next fourteen digits must agree. The postcode never
-leaves the label, and the corpus keeps only synthetic labels.
+leaves the label.
 
 Scans retain the carrier's newest-first order. Their clocks have no stated zone,
 so valid digits remain local time and unresolved labels remain provider text.

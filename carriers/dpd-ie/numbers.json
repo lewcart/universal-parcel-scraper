@@ -244,13 +244,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on DPD Ireland's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on DPD Ireland's own tracker, as an archived address shows. DPD Ireland's tracker returns its history."
     }
   ]
 }

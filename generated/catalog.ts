@@ -5482,7 +5482,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Dublin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-ie",
+      "recognitionRank": 62,
+      "localClocks": true
     },
     "canaryUrl": "https://www.dpd.ie/tracking/",
     "trackingUrlTemplate": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",

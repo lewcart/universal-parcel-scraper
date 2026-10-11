@@ -41,6 +41,7 @@ import { adapter as dhlExpress } from '../carriers/dhl-express/adapter.js';
 import { adapter as dpd } from '../carriers/dpd/adapter.js';
 import { adapter as dpdDe } from '../carriers/dpd-de/adapter.js';
 import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
+import { adapter as dpdIe } from '../carriers/dpd-ie/adapter.js';
 import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
@@ -176,6 +177,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd": dpd,
     "dpd-de": dpdDe,
     "dpd-fr": dpdFr,
+    "dpd-ie": dpdIe,
     "dpd-pl": dpdPl,
     "dpd-uk": dpdUk,
     "dtdc": dtdc,
@@ -326,7 +328,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd": "dpd",
     "dpd-de": "dpd-de",
     "dpd-fr": "dpd-fr",
-    "dpd-ie": "universal",
+    "dpd-ie": "dpd-ie",
     "dpd-pl": "dpd-pl",
     "dpd-uk": "dpd-uk",
     "dsv": "universal",

@@ -16,18 +16,50 @@
   "timezone": "Europe/Dublin",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dpd-ie",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 62
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",
     "searchUrl": "https://www.dpd.ie/tracking/",
     "canaryUrl": "https://www.dpd.ie/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "delivered_at"
+    ],
+    "discarded": [
+      "parcel_count"
+    ],
+    "unavailable": [
+      "weight",
+      "sender_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

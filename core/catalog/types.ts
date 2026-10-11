@@ -20,7 +20,8 @@ export type CarrierInputValidator =
   | 'germanyPostcode'
   | 'swissOrFrancePostcode'
   | 'internationalPostcode'
-  | 'paackPostcode';
+  | 'paackPostcode'
+  | 'colisPrivePostcode';
 
 /** What the "add a parcel" forms render for a carrier that needs extra input. */
 export interface CarrierInputRequirement {

@@ -3,7 +3,7 @@ import { activeRequirements, carrierDefinition, type CarrierRequirementRule } fr
 import { isValidMondialRelayBarcode } from '../detection/index.js';
 import { validateDachserTrackingUrl } from './urls.js';
 import { validatePlanzerSharedUrl } from './urls.js';
-import { DELIVERY_POSTCODE, deliveryPostcodeText } from './postcode.js';
+import { DELIVERY_POSTCODE, colisPrivePostcode, deliveryPostcodeText } from './postcode.js';
 
 export {
   AUTOMATIC_CARRIER_IDS,
@@ -52,7 +52,7 @@ export function normalizeCarrierInputs(
       if (field === 'trackingUrl') {
         throw new TypeError('A tracking URL is not used for this carrier or tracking number');
       }
-      throw new TypeError('A delivery postcode is not used for this carrier');
+      throw new TypeError('A delivery postcode is not used for this carrier or tracking number');
     }
   }
   for (const [field, requirement] of requirements) {
@@ -125,6 +125,14 @@ export function normalizeCarrierInputs(
           throw new TypeError('Paack requires a valid delivery postcode');
         }
         supplied[field] = rawPostcode.replace(/\s+/g, '');
+        break;
+      }
+      case 'colisPrivePostcode': {
+        const normalized = colisPrivePostcode(value);
+        if (!normalized) {
+          throw new TypeError(`${carrierDefinition(carrierId).displayName} requires a French, Belgian or Luxembourg delivery postcode`);
+        }
+        supplied[field] = normalized;
         break;
       }
       default:

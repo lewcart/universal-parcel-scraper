@@ -7,15 +7,17 @@
  * before any text is read, so nothing identifying a person can reach the result.
  *
  * The lookup credential is the 12-character shipment number followed by the
- * recipient's postcode: five digits in France, or B (Belgium) or L (Luxembourg)
- * and four digits. The postcode is what makes the page reachable,
- * so it is part of the tracking credential: it is never logged, put in an issue
- * or written into a fixture.
+ * recipient's postcode: five digits in France, four in Belgium, bare or after
+ * B, or L and four digits in Luxembourg. The postcode comes at the end of the
+ * number, as in Colis Privé's own links, or as a separate input. It is what
+ * makes the page reachable, so it is part of the tracking credential: it is
+ * never logged, put in an issue or written into a fixture.
  */
 
 import { load } from 'cheerio';
-import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { colisPrivePostcode } from '../../core/catalog/postcode.js';
+import { InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { UpstreamHttpError, clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { calendarDay } from '../../core/time/index.js';
@@ -29,6 +31,15 @@ const TIMEZONE = 'Europe/Paris';
 const MAX_RESPONSE_BYTES = 500_000;
 const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_EVENTS_TO_RETURN = 100;
+const CREDENTIAL_MESSAGE = 'Colis Privé tracking requires the 12-character shipment number and the recipient postcode '
+  + '(5 digits in France, 4 in Belgium, or L and 4 digits in Luxembourg)';
+const SHIPMENT = /^[A-Z0-9]{12}$/;
+
+/** The shipment with its postcode at the end, as Colis Privé's links carry it. */
+function combined(number: string): boolean {
+  const postcode = number.slice(12);
+  return SHIPMENT.test(number.slice(0, 12)) && colisPrivePostcode(postcode) === postcode;
+}
 
 function shipmentPart(credential: string): string {
   return credential.slice(0, 12);
@@ -69,12 +80,21 @@ export class ColisPriveTrackingError extends NotFoundError {
   }
 }
 
-export function normalizeColisPriveCredential(raw: string): string {
-  const credential = raw.trim().toLocaleUpperCase('en-US');
-  if (!/^[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\d|9[0-5]|97|98)\d{3}|[BL][1-9]\d{3})$/.test(credential)) {
-    throw new InvalidInputError(PROVIDER, 'Colis Privé tracking requires the 12-character shipment number followed by the recipient postcode (5 digits, or B or L and 4 digits)');
+/**
+ * The value the page is opened with: the shipment and the postcode, written
+ * after it or given apart. A bare shipment is a missing credential, as the
+ * page never opens without its postcode.
+ */
+export function normalizeColisPriveCredential(raw: string, rawPostcode = ''): string {
+  const number = raw.trim().toLocaleUpperCase('en-US');
+  if (rawPostcode.trim()) {
+    const postcode = colisPrivePostcode(rawPostcode);
+    if (!SHIPMENT.test(number) || !postcode) throw new InvalidInputError(PROVIDER, CREDENTIAL_MESSAGE);
+    return `${number}${postcode}`;
   }
-  return credential;
+  if (SHIPMENT.test(number)) throw new InputRequiredError(PROVIDER, 'the recipient postcode', CREDENTIAL_MESSAGE);
+  if (!combined(number)) throw new InvalidInputError(PROVIDER, CREDENTIAL_MESSAGE);
+  return number;
 }
 
 /** The day a row announces for a confirmed appointment or a relay drop-off: "… le DD/MM/YYYY". */
@@ -86,8 +106,8 @@ function plannedDay(description: string): string | null {
 
 const SETTLED: ReadonlySet<string> = new Set(['delivered', 'returned', 'exception', 'failed_attempt', 'ready_for_pickup']);
 
-export function colisPriveTrackingUrl(rawCredential: string): string {
-  const credential = normalizeColisPriveCredential(rawCredential);
+export function colisPriveTrackingUrl(rawCredential: string, rawPostcode = ''): string {
+  const credential = normalizeColisPriveCredential(rawCredential, rawPostcode);
   const url = new URL(TRACKING_ENDPOINT);
   url.searchParams.set('numColis', credential);
   url.searchParams.set('lang', 'fr');
@@ -196,8 +216,8 @@ export class ColisPriveTracker {
     this.#userAgent = userAgentOf(options.userAgent);
   }
 
-  async fetch(rawCredential: string, context: TrackingContext = {}): Promise<CarrierResult> {
-    const credential = normalizeColisPriveCredential(rawCredential);
+  async fetch(rawCredential: string, rawPostcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
+    const credential = normalizeColisPriveCredential(rawCredential, rawPostcode);
     const budget = lookupBudget(context, this.timeoutMs);
     const { response, bytes } = await fetchBounded(colisPriveTrackingUrl(credential), {
       signal: budget.signal,
@@ -231,9 +251,10 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'colis-prive',
     steps: ['direct'],
-    // The postcode is already part of the stored number for this carrier.
-    track: (input, context) => tracker.fetch(input.number, context),
-    // A bare 12-character number needs the postcode appended: it reads as unknown.
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeColisPriveCredential(number))),
+    // The postcode ends the number, or a bare number carries it apart.
+    track: (input, context) => tracker.fetch(input.number, input.postcode ?? '', context),
+    // Recognition gets no postcode, so a bare 12-character number reads as unknown.
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, '', context),
+      () => combined(number.trim().toLocaleUpperCase('en-US'))),
   };
 };

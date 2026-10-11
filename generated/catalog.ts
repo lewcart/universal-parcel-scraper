@@ -1314,6 +1314,21 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "colis-prive",
+      "requirements": [
+        {
+          "field": "postcode",
+          "whenTrackingNumber": "^[A-Z0-9]{12}$",
+          "validator": "colisPrivePostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "75001",
+          "help": "Colis Privé needs the recipient postcode with the 12-character number: 5 digits in France, 4 in Belgium, or L and 4 digits in Luxembourg.",
+          "pattern": "^(?:(?:0[1-9]|[1-8][0-9]|9[0-578])[0-9]{3}|(?:(?:[Bb][Ee]?|[Ll][Uu]?)[ \\-]?)?[1-9][0-9]{3})$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
       "recognitionRank": 30
     },
     "canaryUrl": "https://colisprive.com/moncolis/pages/DetailColis.aspx",

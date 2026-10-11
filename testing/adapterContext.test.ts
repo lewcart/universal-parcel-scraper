@@ -45,9 +45,8 @@ const BROWSER_USER_AGENT = /^Mozilla\/5\.0 \((?!compatible;)/;
 /** Carriers whose gateway answers only its own mobile app's HTTP client, with the client they name. */
 const APP_USER_AGENT: Readonly<Record<string, string>> = { 'australia-post': 'okhttp/4.12.0' };
 const BROWSER_SERVICE = 'http://trawl.invalid';
-/** Credentials the corpus does not hold: Colis Privé looks a number up only with its postcode appended. */
-const COMPOSITE: Readonly<Record<string, (number: string) => string>> = { 'colis-prive': (number) => `${number}75001` };
-
+/** Recognition gets no postcode: Colis Privé recognizes a number only with its postcode at the end, which the corpus does not hold. */
+const RECOGNIZED: Readonly<Record<string, (number: string) => string>> = { 'colis-prive': (number) => `${number}75001` };
 /** The browsers a host can configure besides plain HTTP. */
 interface Browsers { service: boolean; chromium: boolean }
 const ENVIRONMENTS: Readonly<Record<string, Browsers>> = {
@@ -73,7 +72,7 @@ const corpus = new Map(loadNumberCorpusFiles().map((file) => [file.carrier, file
 function credential(validator: string, number: string): string {
   switch (validator) {
     case 'swissPostcode': case 'swissOrFrancePostcode': case 'internationalPostcode': return '8000';
-    case 'francePostcode': return '75001';
+    case 'francePostcode': case 'colisPrivePostcode': return '75001';
     case 'germanyPostcode': return '00000';
     case 'paackPostcode': return '28001';
     case 'planzerSharedUrl':
@@ -87,7 +86,7 @@ function credential(validator: string, number: string): string {
 /** A carrier's corpus numbers, with synthetic credentials where the catalog asks for one. */
 function carrierInputs(carrier: string): TrackingInput[] {
   return (corpus.get(carrier) ?? []).filter((record) => !['negative', 'quarantined'].includes(record.role)).map((record) => {
-    const number = (COMPOSITE[carrier] ?? String)(normalizeTrackingNumber(record.number));
+    const number = normalizeTrackingNumber(record.number);
     const input: TrackingInput = { number };
     for (const requirement of activeRequirements(carrier, number)) {
       const value = credential(requirement.validator, number);
@@ -193,7 +192,7 @@ async function finish(controller: AbortController, pending: Promise<unknown>): P
  */
 function samples(subject: string, operation: Operation): TrackingInput[] {
   const inputs = SUBJECTS[subject]!.inputs();
-  const bare = inputs.map(({ number }) => ({ number }));
+  const bare = inputs.map(({ number }) => ({ number: operation === 'recognize' ? (RECOGNIZED[subject] ?? String)(number) : number }));
   return [...new Map((operation === 'track' ? [...inputs, ...bare] : bare).map((input) => [JSON.stringify(input), input])).values()];
 }
 

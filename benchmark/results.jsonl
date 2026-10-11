@@ -34,13 +34,13 @@
 {"carrier":"mondial-relay","number":"89112087","source":"17TRACK","checked":"2026-10-10","outcome":"no_history","error":"SeventeenTrackNoHistoryError(indeterminate)[no_history]","ms":2367}
 {"carrier":"mondial-relay","number":"89112087","source":"Postal Ninja","checked":"2026-10-10","outcome":"no_history","error":"NoHistoryError(indeterminate)","ms":8189}
 {"carrier":"mondial-relay","number":"89112087","source":"UPU","checked":"2026-10-10","outcome":"n/a","ms":0}
-{"carrier":"colis-prive","number":"431 001 411 698","source":"direct","checked":"2026-10-10","outcome":"refused","error":"InvalidInputError(invalid_input)","ms":0}
+{"carrier":"colis-prive","number":"431 001 411 698","source":"direct","checked":"2026-10-11","outcome":"postcode_prompt","error":"InputRequiredError(input_required)","ms":0}
 {"carrier":"colis-prive","number":"431 001 411 698","source":"Ship24","checked":"2026-10-10","outcome":"no_history","error":"UpstreamHttpError(not_found)","ms":9351}
 {"carrier":"colis-prive","number":"431 001 411 698","source":"ParcelsApp","checked":"2026-10-10","outcome":"no_history","error":"NoHistoryError(indeterminate)","ms":3410}
 {"carrier":"colis-prive","number":"431 001 411 698","source":"17TRACK","checked":"2026-10-10","outcome":"no_history","error":"SeventeenTrackNoHistoryError(indeterminate)[no_history]","ms":3032}
 {"carrier":"colis-prive","number":"431 001 411 698","source":"Postal Ninja","checked":"2026-10-10","outcome":"no_history","error":"NoHistoryError(indeterminate)","ms":19048}
 {"carrier":"colis-prive","number":"431 001 411 698","source":"UPU","checked":"2026-10-10","outcome":"n/a","ms":0}
-{"carrier":"colis-prive","number":"WT0004403087","source":"direct","checked":"2026-10-10","outcome":"refused","error":"InvalidInputError(invalid_input)","ms":0}
+{"carrier":"colis-prive","number":"WT0004403087","source":"direct","checked":"2026-10-11","outcome":"postcode_prompt","error":"InputRequiredError(input_required)","ms":0}
 {"carrier":"colis-prive","number":"WT0004403087","source":"Ship24","checked":"2026-10-10","outcome":"no_history","error":"UpstreamHttpError(not_found)","ms":1205}
 {"carrier":"colis-prive","number":"WT0004403087","source":"ParcelsApp","checked":"2026-10-10","outcome":"no_history","error":"NoHistoryError(indeterminate)","ms":59}
 {"carrier":"colis-prive","number":"WT0004403087","source":"17TRACK","checked":"2026-10-10","outcome":"no_history","error":"SeventeenTrackNoHistoryError(indeterminate)[no_history]","ms":3041}

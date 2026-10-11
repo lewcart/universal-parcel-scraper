@@ -73,3 +73,33 @@ describe('Mondial Relay numbers that need no postcode', () => {
     expect(() => normalizeCarrierInputs('mondial-relay', number, '', '12')).toThrow('requires a valid delivery postcode');
   });
 });
+
+describe('Colis Privé postcode', () => {
+  it('asks for it only beside a bare 12-character number', () => {
+    expect(carrierRequirements('colis-prive', '991122334455')).toMatchObject([{ field: 'postcode', validator: 'colisPrivePostcode' }]);
+    expect(() => normalizeCarrierInputs('colis-prive', '991122334455', '', '')).toThrow('Colis Privé requires the delivery postcode');
+    for (const number of ['99112233445575012', '991122334455B1000', '9911223344551000']) {
+      expect(carrierRequirements('colis-prive', number)).toEqual([]);
+      expect(normalizeCarrierInputs('colis-prive', number, '', '')).toEqual({ trackingUrl: null, postcode: null });
+      expect(() => normalizeCarrierInputs('colis-prive', number, '', '75012')).toThrow('not used');
+    }
+  });
+  it.each([
+    ['75012', '75012'], [' 75 012 ', '75012'], ['1000', '1000'], ['b1000', 'B1000'], ['B-1000', 'B1000'], ['be 1000', 'B1000'],
+    ['L-1234', 'L1234'], ['lu1234', 'L1234'],
+  ])('takes a French, Belgian or Luxembourg postcode: %s', (typed, stored) => {
+    expect(normalizeCarrierInputs('colis-prive', '991122334455', '', typed)).toEqual({ trackingUrl: null, postcode: stored });
+  });
+  it.each(['96000', '0999', '123', '750012', 'D1000', 'BL1000', 'SW1A 1AA'])('rejects what those countries do not write: %s', (postcode) => {
+    expect(() => normalizeCarrierInputs('colis-prive', '991122334455', '', postcode))
+      .toThrow('Colis Privé requires a French, Belgian or Luxembourg delivery postcode');
+  });
+  it('asks the form for the same shape', () => {
+    const [requirement] = carrierRequirements('colis-prive', '991122334455');
+    for (const value of ['75012', '1000', 'B1000', 'b-1000', 'BE 1000', 'L-1234', 'LU1234']) expect(requirementSatisfied(requirement!, value)).toBe(true);
+    for (const value of ['123', '750012', '00000', '96000', '99999', '0999', 'D1000', 'BL1000', 'SW1A 1AA']) {
+      expect(requirementSatisfied(requirement!, value)).toBe(false);
+    }
+    expect(() => new RegExp(requirement!.pattern!, 'v')).not.toThrow();
+  });
+});

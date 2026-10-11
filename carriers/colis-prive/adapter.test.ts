@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import {
+  adapter,
   ColisPriveTracker,
   ColisPriveTrackingError,
   colisPriveTrackingUrl,
@@ -67,10 +69,11 @@ describe('Colis Privé combined tracking credential', () => {
     expect(normalizeColisPriveCredential('ab123456789075001')).toBe('AB123456789075001');
     expect(normalizeColisPriveCredential('ab1234567890b1000')).toBe('AB1234567890B1000');
     expect(normalizeColisPriveCredential('AB1234567890L9999')).toBe('AB1234567890L9999');
+    // Colis Privé's own links also write a Belgian postcode without its letter.
+    expect(normalizeColisPriveCredential('9911223344557501')).toBe('9911223344557501');
 
     for (const value of [
-      '991122334455',
-      '9911223344557501',
+      '99112233445575',
       '991122334455750123',
       '991122334455ABCDE',
       '9911223344557501É',
@@ -84,8 +87,36 @@ describe('Colis Privé combined tracking credential', () => {
       '991122334455BE1000',
       '991122334455D1000',
     ]) {
+      expect(() => normalizeColisPriveCredential(value)).toThrow(InvalidInputError);
       expect(() => normalizeColisPriveCredential(value)).toThrow('12-character shipment number');
     }
+  });
+
+  it('takes the postcode apart from a bare shipment number', () => {
+    for (const [postcode, credential] of [
+      ['75012', '99112233445575012'],
+      [' 75 012 ', '99112233445575012'],
+      ['1000', '9911223344551000'],
+      ['b1000', '991122334455B1000'],
+      ['B-1000', '991122334455B1000'],
+      ['BE 1000', '991122334455B1000'],
+      ['L-1234', '991122334455L1234'],
+      ['LU1234', '991122334455L1234'],
+    ] as const) {
+      expect(normalizeColisPriveCredential(' 991122334455 ', postcode)).toBe(credential);
+    }
+    for (const postcode of ['96000', '0999', '123', '750012', 'D1000', 'BL1000', 'SW1A 1AA', '75012&admin=true']) {
+      expect(() => normalizeColisPriveCredential('991122334455', postcode)).toThrow(InvalidInputError);
+    }
+    // A number that already ends in its postcode takes no second one.
+    expect(() => normalizeColisPriveCredential(PUBLIC_SYNTHETIC_CREDENTIAL, '75012')).toThrow(InvalidInputError);
+  });
+
+  it('asks for the postcode when a bare shipment number has none', () => {
+    for (const postcode of ['', '  ']) {
+      expect(() => normalizeColisPriveCredential('991122334455', postcode)).toThrow(InputRequiredError);
+    }
+    expect(() => normalizeColisPriveCredential('991122334455')).toThrow('12-character shipment number');
   });
 
   it('builds the official detail URL without allowing parameter injection', () => {
@@ -251,6 +282,26 @@ describe('Colis Privé tracker', () => {
     const requested = new URL(String(fetcher.mock.calls[0]?.[0]));
     expect(requested.searchParams.get('numColis')).toBe(PUBLIC_SYNTHETIC_CREDENTIAL);
     expect(fetcher.mock.calls[0]?.[1]).toMatchObject({ cache: 'no-store', redirect: 'manual' });
+  });
+
+  it('tracks with the postcode at the end of the number or given apart, and recognizes only the first', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(trackingPage(), {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    }));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
+    const requested = () => new URL(String(fetcher.mock.calls.at(-1)?.[0])).searchParams.get('numColis');
+
+    await expect(instance.track({ number: '991122334455', postcode: '75012' })).resolves.toMatchObject({ status: 'exception' });
+    expect(requested()).toBe(PUBLIC_SYNTHETIC_CREDENTIAL);
+    await expect(instance.track({ number: '9911223344551000' })).resolves.toMatchObject({ status: 'exception' });
+    expect(requested()).toBe('9911223344551000');
+    await expect(instance.track({ number: '991122334455' })).rejects.toMatchObject({ kind: 'input_required' });
+
+    fetcher.mockClear();
+    await expect(instance.recognize!('991122334455')).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+    await expect(instance.recognize!(PUBLIC_SYNTHETIC_CREDENTIAL)).resolves.toMatchObject({ known: true });
+    expect(requested()).toBe(PUBLIC_SYNTHETIC_CREDENTIAL);
   });
 
   it('surfaces provider redirects and 404 responses as privacy-safe not-found errors', async () => {

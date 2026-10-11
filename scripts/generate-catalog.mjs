@@ -63,6 +63,7 @@ const carrierInputValidators = {
     'swissOrFrancePostcode',
     'internationalPostcode',
     'paackPostcode',
+    'colisPrivePostcode',
   ]),
 };
 

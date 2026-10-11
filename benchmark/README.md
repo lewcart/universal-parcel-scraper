@@ -105,7 +105,7 @@ source follows any more is marked stale there.
 | [La Poste / Colissimo](../carriers/la-poste/README.md) | ✓ 7 | ✓ 7 | ✓ 7 | ✓ 7 | No history | N/A |
 | [Chronopost](../carriers/chronopost/README.md) | ✓ 20 | No history | ✓ 25 | ✓ 20 | No history | No history |
 | [Mondial Relay](../carriers/mondial-relay/README.md) | ✓ 15 | No history | Postcode prompt | No history | No history | N/A |
-| [Colis Privé](../carriers/colis-prive/README.md) | Refused | No history | No history | No history | No history | N/A |
+| [Colis Privé](../carriers/colis-prive/README.md) | Postcode prompt | No history | No history | No history | No history | N/A |
 | [DPD France](../carriers/dpd-fr/README.md) | ✓ 10 | ✓ 10 | ✓ 5 | ✓ 5 | No history | N/A |
 | [GLS France](../carriers/gls-fr/README.md) | ✓ 15 | No history | ✓ 31 | ✓ 15 | ✓ 8 | N/A |
 | [Relais Colis](../carriers/relais-colis/README.md) | ✓ 4 | No history | ✓ 4 | ✓ 3 | No history | N/A |
@@ -280,8 +280,8 @@ source follows any more is marked stale there.
 | Chronopost | `015750676972097` | [2026-07-17](https://web.archive.org/web/20260717114015/https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumerosLT=015750676972097&langue=en) | 2026-10-10 | ✓ 20 | No history | ✓ 25 | ✓ 20 | No history | N/A |
 | Mondial Relay | `8565131824` | [2026-05-26](https://web.archive.org/web/20260526110712/https://www.mondialrelay.fr/suivi-de-colis?codeMarque=M1&numeroExpedition=8565131824&language=FR) | 2026-10-10 | ✓ 15 | No history | Postcode prompt | No history | No history | N/A |
 | Mondial Relay | `89112087` | [2026-07-27](https://web.archive.org/web/20260727103710/https://www.mondialrelay.fr/suivi-de-colis?codeMarque=MR&numeroExpedition=89112087&language=FR) | 2026-10-10 | Postcode prompt | No history | No history | No history | No history | N/A |
-| Colis Privé | `431 001 411 698` | [2026-09-25](https://www.trustpilot.com/reviews/6ab69eff549e166662e257d4) | 2026-10-10 | Refused | No history | No history | No history | No history | N/A |
-| Colis Privé | `WT0004403087` | [2026-09-23](https://www.trustpilot.com/reviews/6ab3c577c2d2ef2146c930ae) | 2026-10-10 | Refused | No history | No history | No history | No history | N/A |
+| Colis Privé | `431 001 411 698` | [2026-09-25](https://www.trustpilot.com/reviews/6ab69eff549e166662e257d4) | 2026-10-11 | Postcode prompt | No history | No history | No history | No history | N/A |
+| Colis Privé | `WT0004403087` | [2026-09-23](https://www.trustpilot.com/reviews/6ab3c577c2d2ef2146c930ae) | 2026-10-11 | Postcode prompt | No history | No history | No history | No history | N/A |
 | DPD France | `10084004615036` | [2026-08-26](https://www.trustpilot.com/reviews/6a8eff71916b1b8a60cbc2b4) | 2026-10-10 | ✓ 10 | ✓ 10 | ✓ 5 | ✓ 5 | No history | N/A |
 | DPD France | `250067589253957` | [2022-07-28](https://web.archive.org/web/20220728183621/https://trace.dpd.fr/en/trace/250067589253957) | 2026-10-10 | No history | No history | No history | No history | No history | N/A |
 | GLS France | `ZX678O9N` | [2026-10-05](https://fr.trustpilot.com/reviews/6ac419b6850d07587d737214) | 2026-10-10 | ✓ 15 | No history | ✓ 31 | ✓ 15 | ✓ 10, partial (a third of the rows or fewer) | N/A |

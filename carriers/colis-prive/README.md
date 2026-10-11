@@ -8,7 +8,7 @@ recipient's postcode.
 ## How it works
 
 1. `direct`: one GET of
-   `https://colisprive.com/moncolis/pages/DetailColis.aspx?numColis={credential}&lang=fr`
+   `https://colisprive.com/moncolis/pages/DetailColis.aspx?numColis={number}{postcode}&lang=fr`
    with `redirect: 'manual'`. No session, token or JSON feed: the page is
    server-rendered HTML.
    - A 404 or any 3xx is not-found (`ColisPriveTrackingError`): an unknown
@@ -20,11 +20,18 @@ recipient's postcode.
 
 ## Notes
 
-- The credential is 12 alphanumerics followed by the recipient's postcode,
-  stored as one value: five digits in France, or `B` (Belgium) or `L`
-  (Luxembourg) and four digits. The postcode is what opens the page, so treat
-  the whole value as a secret: never log it, quote it in an issue or put it in
-  a fixture.
+- The credential is 12 alphanumerics followed by the recipient's postcode:
+  five digits in France, four in Belgium, bare or after `B`, or `L` and four
+  digits in Luxembourg. Luxembourg's four digits without the `L` are passed on
+  but unconfirmed. Colis Privé's own links carry it as one value, and its search form
+  asks for the postcode in a separate field. The adapter takes either: the
+  postcode at the end of the number, or a bare 12-character number with the
+  `postcode` input. A written prefix such as `B-1000` or `LU 1234` becomes the
+  letter. The page never opens without the postcode, so a bare number with no
+  postcode is `input_required`.
+- The postcode is what opens the page, so treat the whole value as a secret:
+  never log it, quote it in an issue or put it in a fixture or `numbers.json`.
+  The corpus keeps bare 12-character numbers only.
 - Yanwen's US last-mile numbers, `YW` with a hub code and twelve digits, also
   end in five digits; detection does not read those as a postcode.
 - `.divDesti` is removed before any text is read, not filtered afterwards — a
@@ -46,9 +53,11 @@ recipient's postcode.
 
 ## Rejected approaches
 
-- Splitting the credential into `input.number` and `input.postcode`: the
-  combined value is what parcels store and what detection matches. Changing it
-  is a data migration.
+- Accepting the postcode only as a separate input: the combined value is what
+  stored parcels and Colis Privé's links hold, so both forms stay accepted.
+- Detecting the 12-plus-four-digit form from a typed number: any 16-character
+  number ending in four digits would suggest Colis Privé. It arrives through
+  Colis Privé's links or a chosen carrier instead.
 - Treating the 3xx bounce as a transport failure: it is the provider's stable
   not-found answer.
 

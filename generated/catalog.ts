@@ -8107,7 +8107,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vinted-go",
+      "recognitionRank": 72
     },
     "canaryUrl": "https://vintedgo.com/en/tracking",
     "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",

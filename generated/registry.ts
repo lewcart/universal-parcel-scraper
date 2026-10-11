@@ -134,6 +134,7 @@ import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
 import { adapter as ups } from '../carriers/ups/adapter.js';
 import { adapter as usps } from '../carriers/usps/adapter.js';
 import { adapter as venipak } from '../carriers/venipak/adapter.js';
+import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as xpressbees } from '../carriers/xpressbees/adapter.js';
 import { adapter as yamato } from '../carriers/yamato/adapter.js';
 import { adapter as yanwen } from '../carriers/yanwen/adapter.js';
@@ -277,6 +278,7 @@ export const REGISTRY: RegistryDefinition = {
     "ups": ups,
     "usps": usps,
     "venipak": venipak,
+    "vinted-go": vintedGo,
     "xpressbees": xpressbees,
     "yamato": yamato,
     "yanwen": yanwen,
@@ -479,7 +481,7 @@ export const REGISTRY: RegistryDefinition = {
     "ups": "ups",
     "usps": "usps",
     "venipak": "venipak",
-    "vinted-go": "universal",
+    "vinted-go": "vinted-go",
     "wanbexpress": "universal",
     "whistl": "universal",
     "xdp": "universal",

@@ -461,6 +461,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'helthjem', number: '370724769990000014',
     route: /^https:\/\/(?:www\.)?helthjem\.no\/sporing\/370724769990000014/,
     marker: /Vi finner ingen pakke med dette sporingsnummeret|Spor pakke/ },
+  // The page adds the visitor's country and region to its address. The number's
+  // label clock is years ahead, so it never reads as an expired history.
+  { carrier: 'vinted-go', number: '1890000000000001',
+    route: /^https:\/\/vintedgo\.com\/en\/tracking\/1890000000000001(?:\?|$)/,
+    marker: /We can.t find a parcel with this information|Shipping timeline/i },
 ];
 
 /**

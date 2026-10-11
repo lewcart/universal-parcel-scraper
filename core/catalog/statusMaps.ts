@@ -55,6 +55,7 @@ import { statusMap as thailandPost } from '../../carriers/thailand-post/status.j
 import { statusMap as tnt } from '../../carriers/tnt/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as venipak } from '../../carriers/venipak/status.js';
+import { statusMap as vintedGo } from '../../carriers/vinted-go/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
@@ -69,7 +70,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem,
   'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'old-dominion': oldDominion, omgo, omniva,
   'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost,
-  tnt, ups, venipak, yunexpress, 'yurtici-kargo': yurticiKargo,
+  tnt, ups, venipak, 'vinted-go': vintedGo, yunexpress, 'yurtici-kargo': yurticiKargo,
 };
 
 /** The carrier the app files the universal providers' scans under. */

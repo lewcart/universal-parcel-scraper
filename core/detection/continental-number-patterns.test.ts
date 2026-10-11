@@ -24,6 +24,29 @@ describe('continental shipment candidates', () => {
     }
   });
 
+  it('reads DHL eCommerce Iberia shipment links in each of the tracking page\'s languages', () => {
+    for (const page of ['ModificarEnvio', 'ModificarMeuEnvio', 'ModifyMyShipment']) {
+      for (const suffix of ['', '/', '/00000']) {
+        expect(parseTrackingInput(`https://clientesparcel.dhl.es/LiveTracking/${page}/0000000001${suffix}`))
+          .toMatchObject({ trackingNumber: '0000000001', carrier: 'dhl-ecommerce-es', confidence: 'high', source: 'link' });
+      }
+    }
+    expect(parseTrackingInput('https://clientesparcel.dhl.es/LiveTracking/SinDatos').source).toBe('none');
+  });
+
+  it('reads DPD Ireland links from its tracker host and any dpd.ie page', () => {
+    for (const link of [
+      'https://tracking.dpd.ie/?deviceType=5&consignmentNumber=',
+      'https://tracking.dpd.ie/?consignmentNumber=',
+      'https://www.dpd.ie/tracking/?consignmentNumber=',
+      'https://dpd.ie/tracking?deviceType=5&consignmentNumber=',
+      'https://www.dpd.ie/track-my-parcel/?consignmentNumber=',
+    ]) {
+      expect(parseTrackingInput(`${link}000000001`))
+        .toMatchObject({ trackingNumber: '000000001', carrier: 'dpd-ie', confidence: 'high', source: 'link' });
+    }
+  });
+
   it('lists Bring first for its GS1-checked parcel and consignment numbers and reads its tracking links', () => {
     for (const number of ['370000000000000004', '373000000000000005', '00370000000000000004', '70000000000000003']) {
       const detected = detectCarrierMatch(number);

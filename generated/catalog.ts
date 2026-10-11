@@ -5270,7 +5270,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "clientesparcel.dhl.es"
         ],
-        "path": "^/LiveTracking/ModificarEnvio/([^/?#]+)/?$"
+        "path": "^/LiveTracking/(?:ModificarEnvio|ModificarMeuEnvio|ModifyMyShipment)/([^/?#]+)(?:/[^/?#]+)?/?$"
       }
     ],
     "detectionRules": [
@@ -5554,7 +5554,6 @@ export const CARRIER_CATALOG = {
         "domains": [
           "dpd.ie"
         ],
-        "pathPattern": "^/tracking/?$",
         "params": [
           "consignmentNumber"
         ]

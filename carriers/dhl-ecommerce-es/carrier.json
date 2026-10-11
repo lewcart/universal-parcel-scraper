@@ -72,7 +72,7 @@
       "domains": [
         "clientesparcel.dhl.es"
       ],
-      "path": "^/LiveTracking/ModificarEnvio/([^/?#]+)/?$"
+      "path": "^/LiveTracking/(?:ModificarEnvio|ModificarMeuEnvio|ModifyMyShipment)/([^/?#]+)(?:/[^/?#]+)?/?$"
     }
   ],
   "detection": [

@@ -47,6 +47,10 @@ the gateway behind its customer tracking page. German DHL Paket is
   only suggests this carrier and the portal's answer attributes the parcel.
   Twelve and twenty-two digits, `JJD` plates and S10 numbers are accepted when
   the carrier is named and claimed by no rule here.
+- The tracking page's shipment links are `ModificarEnvio` in Spanish,
+  `ModificarMeuEnvio` in Portuguese and `ModifyMyShipment` in English. A pasted
+  one gives its number and this carrier, and leaves out the postcode a link can
+  carry after the number.
 
 ## Limitations
 

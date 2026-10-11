@@ -54,7 +54,8 @@ archived lookups uses the fourteen-digit parcel number of the other DPD networks
 DPD Ireland's tracking forms send the number as `consignmentNumber` to `www.dpd.ie/tracking/`,
 which shows the result from `tracking.dpd.ie` in a frame. Lookups archived from `dpd.ie` carry
 the same parameter in the address, so `www.dpd.ie/tracking/?consignmentNumber={number}` opens
-one consignment.
+one consignment. A pasted link from any `dpd.ie` page or host that carries `consignmentNumber`,
+such as `tracking.dpd.ie` or the `track-my-parcel` page, gives its number and DPD Ireland.
 
 ## Limitations
 

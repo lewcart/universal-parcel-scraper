@@ -5268,7 +5268,7 @@
         "domains": [
           "clientesparcel.dhl.es"
         ],
-        "path": "^/LiveTracking/ModificarEnvio/([^/?#]+)/?$"
+        "path": "^/LiveTracking/(?:ModificarEnvio|ModificarMeuEnvio|ModifyMyShipment)/([^/?#]+)(?:/[^/?#]+)?/?$"
       }
     ],
     "detectionRules": [
@@ -5552,7 +5552,6 @@
         "domains": [
           "dpd.ie"
         ],
-        "pathPattern": "^/tracking/?$",
         "params": [
           "consignmentNumber"
         ]

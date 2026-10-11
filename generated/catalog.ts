@@ -6329,10 +6329,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gls-it",
+      "recognitionRank": 59,
+      "localClocks": true
     },
     "canaryUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
-    "trackingUrlTemplate": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}",
+    "trackingUrlTemplate": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}&type=NAT",
     "trackingSearchUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
     "linkRules": [
       {

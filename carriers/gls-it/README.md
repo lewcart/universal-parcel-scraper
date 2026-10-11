@@ -1,18 +1,63 @@
 # GLS Italy
 
-GLS Italy parcels use enabled universal providers. There is no dedicated adapter.
+GLS Italy's national shipments, tracked through the national search of GLS's Italian
+tracking page.
+
+## How it works
+
+1. `direct`: one `GET https://gls-group.com/app/service/open/rest/IT/en/rstt030?match={number}&type=NAT&caller=witt002`,
+   the request the Italian tracking page makes for a national shipment, in its English
+   locale. The JSON reply carries the whole history. No cookie, token, postcode, account or
+   browser is needed.
+2. `retry`: one more try when the request fails to reach GLS or hangs. The first try gets
+   half of the budget.
+
+The GLS group tracker that GLS Switzerland and Germany use does not know Italian national
+numbers, so this adapter does not share their route.
+
+- The reply names its shipment with a space after the depot code; it must be the requested
+  number, otherwise `SchemaError`. A reply of several rows is read as the page reads it: the
+  shipment first, then its parcels.
+- A number the tracker does not know returns HTTP 404 with its "no results" notice, in
+  English or Italian: `NotFoundError`. Any other error reply or web page is inconclusive, and
+  a bot check is a challenge.
+- Recognition makes the same request; the not-found notice is the only unknown answer.
+
+## Notes
+
+- Scans carry a sentence and no code. The sentences are mapped whole in [status.ts](status.ts);
+  others go to the shared wording rules. When the newest sentence gives no stage, the
+  current step of the page's progress rail stands in. GLS's return flag makes the shipment
+  returned.
+- Clocks are wall clocks without an offset and stay local.
+- The weight is kept. The depots, the sender's and recipient's towns, the customer's
+  reference, the departure date, the signer and the masked name beside a delivery are never
+  read.
 
 ## Numbers
 
-GLS Italy numbers start with the two-character code of the depot, then nine digits. Public
-Altroconsumo complaints quote them, and `gls-it-1` suggests GLS Italy at low confidence when
-the code is two letters. A depot code with a digit, a tenth digit, the eleven-digit
-cross-border numbers and the long parcel IDs ending `GLS` stay unclaimed.
+A national shipment number is the two-character code of the sending depot, a letter then a
+letter or digit, followed by at most nine digits. The page prints it with a space after the
+code, and the service fails on that space, so the adapter sends the number without it.
+`gls-it-1` suggests GLS Italy at low confidence when the code is two letters and nine digits
+follow. A depot code with a digit, the eleven-digit cross-border numbers and the long parcel
+IDs ending `GLS` stay unclaimed.
 
 ## Links
 
-GLS Italy's search page reads a number from `?match=`, as the other GLS group trackers do.
+The Italian search page reads the number from `?match=` and the search type from `type`.
+Without `type=NAT` the page sends its search with an empty type, which the service
+rejects, so the catalog link carries it.
+
+## Limitations
+
+- Parcel numbers, delivery-note references and international searches are not supported.
+- A shipment forwarded or returned under a new number is not followed.
+- No delivery estimate, pickup point or sender name.
+- Older shipments drop out of the tracker and come back not found.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+```sh
+GLS_IT_TRACKING_NUMBER=... GLS_IT_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/gls-it
+```

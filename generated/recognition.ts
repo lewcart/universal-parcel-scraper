@@ -36,6 +36,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "gls-ch": 50,
   "gls-de": 60,
   "gls-fr": 61,
+  "gls-it": 59,
   "gofo-fr": 3,
   "gofo-it": 2,
   "hermes-de": 40,

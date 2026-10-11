@@ -18,18 +18,65 @@
   "timezone": "Europe/Rome",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gls-it",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 59
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight"
+  ],
   "portal": {
-    "url": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}",
+    "url": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}&type=NAT",
     "searchUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
     "canaryUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "progress_rail",
+      "parcel_count",
+      "volume",
+      "departure_date",
+      "depots",
+      "sender_town",
+      "recipient_address",
+      "customer_reference",
+      "recipient_name",
+      "signature"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "progress_rail"
+    ],
+    "discarded": [
+      "parcel_count",
+      "volume",
+      "departure_date",
+      "depots",
+      "sender_town",
+      "recipient_address",
+      "customer_reference",
+      "recipient_name",
+      "signature"
+    ],
+    "unavailable": [
+      "eta",
+      "pickup_point",
+      "sender_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

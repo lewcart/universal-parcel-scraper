@@ -34,7 +34,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -43,7 +43,7 @@
           "gls-it"
         ]
       },
-      "note": "A public Altroconsumo complaint addressed to GLS gives it as the shipment number."
+      "note": "A public Altroconsumo complaint addressed to GLS gives it as the shipment number; GLS Italy's tracking returns its history."
     },
     {
       "number": "UP640143796",

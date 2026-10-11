@@ -62,6 +62,7 @@ import { adapter as geodis } from '../carriers/geodis/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
 import { adapter as glsFr } from '../carriers/gls-fr/adapter.js';
+import { adapter as glsIt } from '../carriers/gls-it/adapter.js';
 import { adapter as gofo } from '../carriers/gofo/adapter.js';
 import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
@@ -196,6 +197,7 @@ export const REGISTRY: RegistryDefinition = {
     "gls-ch": glsCh,
     "gls-de": glsDe,
     "gls-fr": glsFr,
+    "gls-it": glsIt,
     "gofo": gofo,
     "gofo-fr": gofoFr,
     "gofo-it": gofoIt,
@@ -357,7 +359,7 @@ export const REGISTRY: RegistryDefinition = {
     "gls-de": "gls-de",
     "gls-es": "universal",
     "gls-fr": "gls-fr",
-    "gls-it": "universal",
+    "gls-it": "gls-it",
     "go-express": "universal",
     "gofo": "gofo",
     "gofo-fr": "gofo-fr",

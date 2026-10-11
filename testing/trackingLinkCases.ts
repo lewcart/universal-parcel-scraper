@@ -265,6 +265,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gls-de', number: '00000000000',
     route: /^https:\/\/gls-group\.eu\/EU\/en\/parcel-tracking\?/,
     marker: /Parcel tracking|Track your parcel/i },
+  // The national search type: without it the page searches with an empty type, which fails.
+  { carrier: 'gls-it', number: 'ZZ999999999',
+    route: /^https:\/\/gls-group\.com\/IT\/it\/servizi-online\/ricerca-spedizioni\/\?/,
+    marker: /Ricerca spedizion|Non sono stati trovati risultati/i },
   { carrier: 'ups', number: '1Z0000000000000000',
     route: /^https:\/\/(?:www\.)?ups\.com\/track(?:[/?]|$)/,
     marker: /tracking number|numéro de suivi|track a package/i },

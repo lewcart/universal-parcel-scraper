@@ -4903,6 +4903,39 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "cacesa": {
+    "displayName": "CACESA",
+    "color": "#C9032D",
+    "aliases": [
+      "CACESA Logistics",
+      "Cacesa Postal"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "cacesa"
+    },
+    "canaryUrl": "https://www.cacesa.com/en/tracking",
+    "trackingUrlTemplate": "https://www.cacesa.com/en/tracking?busqueda={trackingNumber}",
+    "trackingSearchUrl": "https://www.cacesa.com/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "cacesa.com"
+        ],
+        "pathPattern": "^/(?:es/seguimiento|en/tracking)/?$",
+        "params": [
+          "busqueda"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "cargus": {
     "displayName": "Cargus",
     "color": "#f68121",
@@ -8545,6 +8578,7 @@ export const CARRIER_IDS = [
   "apc-overnight",
   "aras-kargo",
   "box-now",
+  "cacesa",
   "cargus",
   "cdek",
   "cdl",
@@ -8757,6 +8791,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "apc-overnight": ["apc-overnight-1"],
   "aras-kargo": [],
   "box-now": [],
+  "cacesa": [],
   "cargus": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],

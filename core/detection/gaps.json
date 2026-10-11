@@ -88,6 +88,11 @@
     "reason": "The printed composite carries the postcode after its dashes and is entered with the carrier chosen."
   },
   {
+    "carrier": "cacesa",
+    "kind": "by_design",
+    "reason": "CACESA clears parcels through customs under the numbers of the platforms and carriers it works for, so it has no number format of its own. Cainiao's Spanish and Portuguese numbers belong to Ecoscooting, which delivers them."
+  },
+  {
     "carrier": "cargus",
     "pattern": "^\\d{10}$",
     "kind": "by_design",

@@ -26400,7 +26400,27 @@
     ]
   },
   {
+    "input": "CNES00628310493",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "CNES00710379392",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "CNESP00000123400000000001",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNESP28030123400048712663",
     "carrier": "ecoscooting",
     "confidence": "high",
     "candidates": [
@@ -26474,6 +26494,22 @@
   },
   {
     "input": "CNPRT19501971234009605248",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNPRT19580011234003703621",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNPRT26500711234003526999",
     "carrier": "ecoscooting",
     "confidence": "high",
     "candidates": [

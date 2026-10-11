@@ -16,6 +16,7 @@ import { adapter as bpost } from '../carriers/bpost/adapter.js';
 import { adapter as bringPosten } from '../carriers/bring-posten/adapter.js';
 import { adapter as brt } from '../carriers/brt/adapter.js';
 import { adapter as cChezVous } from '../carriers/c-chez-vous/adapter.js';
+import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
@@ -160,6 +161,7 @@ export const REGISTRY: RegistryDefinition = {
     "bring-posten": bringPosten,
     "brt": brt,
     "c-chez-vous": cChezVous,
+    "cacesa": cacesa,
     "canada-post": canadaPost,
     "canpar": canpar,
     "china-post": chinaPost,
@@ -308,6 +310,7 @@ export const REGISTRY: RegistryDefinition = {
     "bring-posten": "bring-posten",
     "brt": "brt",
     "c-chez-vous": "c-chez-vous",
+    "cacesa": "cacesa",
     "canada-post": "canada-post",
     "canpar": "canpar",
     "cargus": "universal",

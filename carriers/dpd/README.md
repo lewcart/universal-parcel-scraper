@@ -30,6 +30,11 @@ signal.
   a typo. The German, UK and Polish adapters do the same, and detection offers
   the DPD networks for that form only when the character matches. The fourteen
   digits carry no check of their own.
+- Fourteen digits is also the shape of other DPD networks and carriers. A
+  number starts with the depot that printed the label, and detection suggests
+  DPD Switzerland first from 0600 to 0619: DPD Switzerland's claim forms ask
+  for a parcel number starting with 060, and its depots run to 0619. DPD
+  Austria's begin at 0620. The suggestion never selects the carrier.
 - A delivery postcode is optional and sent only to DPD. It unlocks verified
   scans, places and the delivery window. A rejected postcode is retried once
   without verification, with `dpd_postcode_verified: false`.

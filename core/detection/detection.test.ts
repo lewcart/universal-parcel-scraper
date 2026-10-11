@@ -130,12 +130,16 @@ describe('the detection engine', () => {
   });
 
   it('lists the carrier a depot prefix points to first, without selecting it', () => {
-    // DPD numbers start with the depot that printed the label: 0606-0619 is
+    // DPD numbers start with the depot that printed the label: 0600-0619 is
     // DPD Switzerland, 10xx DPD France. Other 14-digit carriers stay candidates.
     expect(detectCarrierMatch('06080000000002')).toMatchObject({
       carrier: 'unknown', confidence: 'low', preferred: ['dpd'],
       candidates: ['dpd', 'dpd-fr', 'relais-colis', 'ciblex', 'seur', 'brt', 'delhivery', 'dhl-ecommerce-uk', 'dpd-de', 'dpd-uk'],
     });
+    // DPD Switzerland's forms ask for numbers starting with 060.
+    for (const number of ['06000000000003', '06030000000002', '06190000000001']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ confidence: 'low', preferred: ['dpd'] });
+    }
     expect(detectCarrierMatch('10000000000001')).toMatchObject({
       carrier: 'unknown', confidence: 'low', preferred: ['dpd-fr'],
     });

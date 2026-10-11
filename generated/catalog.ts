@@ -945,7 +945,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^06(?:0[6-9]|1\\d)\\d{10}$",
+        "pattern": "^06[01]\\d{11}$",
         "confidence": "low",
         "preferred": true
       },

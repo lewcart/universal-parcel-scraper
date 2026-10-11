@@ -22,8 +22,9 @@ afterEach(() => { vi.unstubAllGlobals(); });
 
 describe('carrier names reported by universal providers', () => {
   it('resolves a bare brand only when the number leaves one of its networks', () => {
-    // DPD's depot prefix: 0606-0619 Switzerland, 10xx France (ex-Exapaq).
+    // DPD's depot prefix: 0600-0619 Switzerland, 10xx France (ex-Exapaq).
     expect(brandCarrierForNumber('DPD Group', '06080000000002')).toBe('dpd');
+    expect(brandCarrierForNumber('DPD Group', '06030000000002')).toBe('dpd');
     expect(brandCarrierForNumber('dpd', '10000000000001')).toBe('dpd-fr');
     // A DPD France 250… number is its own high-confidence shape.
     expect(brandCarrierForNumber('DPD', '250000000000000')).toBe('dpd-fr');

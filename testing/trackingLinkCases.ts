@@ -269,6 +269,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gls-it', number: 'ZZ999999999',
     route: /^https:\/\/gls-group\.com\/IT\/it\/servizi-online\/ricerca-spedizioni\/\?/,
     marker: /Ricerca spedizion|Non sono stati trovati risultati/i },
+  // The form asks for the delivery postcode too, so the link carries no number.
+  { carrier: 'gls-es', number: '1000000001',
+    route: /^https:\/\/gls-group\.com\/ES\/es\/recibir-paquetes\/seguimiento-envio\/(?:\?|$)/,
+    marker: /Realiza el seguimiento de tu envío|código postal de destino/i, forwarding: 'none' },
   { carrier: 'ups', number: '1Z0000000000000000',
     route: /^https:\/\/(?:www\.)?ups\.com\/track(?:[/?]|$)/,
     marker: /tracking number|numéro de suivi|track a package/i },

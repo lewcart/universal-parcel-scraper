@@ -64,6 +64,7 @@ import { adapter as genikiTaxydromiki } from '../carriers/geniki-taxydromiki/ada
 import { adapter as geodis } from '../carriers/geodis/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
+import { adapter as glsEs } from '../carriers/gls-es/adapter.js';
 import { adapter as glsFr } from '../carriers/gls-fr/adapter.js';
 import { adapter as glsIt } from '../carriers/gls-it/adapter.js';
 import { adapter as gofo } from '../carriers/gofo/adapter.js';
@@ -209,6 +210,7 @@ export const REGISTRY: RegistryDefinition = {
     "geodis": geodis,
     "gls-ch": glsCh,
     "gls-de": glsDe,
+    "gls-es": glsEs,
     "gls-fr": glsFr,
     "gls-it": glsIt,
     "gofo": gofo,
@@ -378,7 +380,7 @@ export const REGISTRY: RegistryDefinition = {
     "geodis": "geodis",
     "gls-ch": "gls-ch",
     "gls-de": "gls-de",
-    "gls-es": "universal",
+    "gls-es": "gls-es",
     "gls-fr": "gls-fr",
     "gls-it": "gls-it",
     "go-express": "universal",

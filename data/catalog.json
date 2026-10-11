@@ -6376,10 +6376,23 @@
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gls-es",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "GLS Spain shows a shipment only with its delivery postcode.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "canaryUrl": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
-    "trackingUrlTemplate": "https://mygls.gls-spain.es/e/?codigo={trackingNumber}",
+    "trackingUrlTemplate": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
     "trackingSearchUrl": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
     "linkRules": [
       {
@@ -6390,6 +6403,12 @@
         "params": [
           "codigo"
         ]
+      },
+      {
+        "domains": [
+          "mygls.gls-spain.es"
+        ],
+        "path": "^/e/([A-Za-z0-9]{5,40})/[^/?#]+(?:/[a-z]{2})?/?$"
       },
       {
         "domains": [

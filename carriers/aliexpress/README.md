@@ -17,6 +17,12 @@ example SDA's thirteen-character waybills in Italy, and recognition asks Cainiao
 partner. The rules are in [`carrier.json`](carrier.json) and their evidence in
 [`numbers.json`](numbers.json).
 
+Once the parcel has crossed the border both know the number. It is one journey, so recognition
+files it under AliExpress, which holds the scans from before the border, instead of leaving the
+choice to the user. The result then proposes the partner as a hand-off: the one carrier at home
+in the destination country whose rule fits the number. A consumer adopts it when it reports the
+parcel.
+
 Cainiao's tracker also follows partner numbers in shapes no rule suggests it for: plain digits, or
 a format another carrier's rule claims with high confidence. For those the user picks AliExpress
 or pastes a `global.cainiao.com` link.

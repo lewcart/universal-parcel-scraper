@@ -197,6 +197,20 @@ describe('settling on a carrier', () => {
       .toEqual({ choices: ['seur', 'brt'] });
   });
 
+  it('files a number under the carrier that follows it for its delivery carrier', () => {
+    // AliExpress shows the buyer the delivery carrier's number; both know it once the parcel has crossed the border.
+    expect(settleRecognition([outcome('poste-italiane', 'known'), outcome('aliexpress', 'known')], now))
+      .toEqual({ carrier: 'aliexpress', choices: [] });
+    expect(settleRecognition([outcome('poste-italiane', 'known', { preferred: true }), outcome('aliexpress', 'known')], now))
+      .toEqual({ carrier: 'aliexpress', choices: [] });
+    expect(settleRecognition([outcome('poste-italiane', 'known'), outcome('aliexpress', 'unknown')], now))
+      .toEqual({ carrier: 'poste-italiane', choices: [] });
+    // An old AliExpress parcel that used the number says nothing about this one.
+    expect(settleRecognition([outcome('poste-italiane', 'known', { lastActivityAt: '2026-09-09T00:00:00Z' }),
+      outcome('aliexpress', 'known', { lastActivityAt: '2026-01-02T00:00:00Z' })], now))
+      .toEqual({ carrier: 'poste-italiane', choices: [] });
+  });
+
   it('settles one brand\'s networks on the one serving the caller\'s country, after any that needs no input', () => {
     const postcode = { needsInput: 'postcode' } as const;
     expect(settleRecognition([outcome('gls-ch', 'known', { ...postcode, countryMatch: 'home' }), outcome('gls-de', 'known', postcode)], now))

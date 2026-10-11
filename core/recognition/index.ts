@@ -1,6 +1,7 @@
 
 import type { Recognition, TrackingContext } from '../adapter/index.js';
 import { carrierBrand } from '../catalog/networks.js';
+import { followsPartnerNumbers } from '../catalog/partners.js';
 import type { RecognitionCandidate } from '../catalog/recognition.js';
 import { CARRIER_RECOGNITION_RANKS } from '../../generated/recognition.js';
 
@@ -86,20 +87,25 @@ function countryMatchScore(outcome: RecognitionOutcome): number {
 }
 
 /**
- * The carrier the answers settle on: the only recent one, else the only one
+ * The carrier the answers settle on: the only recent one, else the one that
+ * follows parcels under its delivery carrier's number, else the only one
  * number evidence backs, else, when every answer comes from one brand's
  * networks, one that tracks without the user's input, then the one serving the
  * caller's country (its home country first), then the most popular. The
  * caller's country is only a guess at where the parcel goes, so it never
  * outweighs a network that knows the number and can track it at once. The
  * country is the hint given to `recognitionCandidates`, carried on each
- * outcome. Unrelated carriers that all know the number stay a choice for the
- * user.
+ * outcome. Other unrelated carriers that all know the number stay a choice for
+ * the user.
  */
 export function settleRecognition(outcomes: readonly RecognitionOutcome[], now = new Date()): { carrier?: string; choices: string[] } {
   const known = outcomes.filter((outcome) => outcome.status === 'known' && recent(outcome, now));
   if (known.length === 0) return { choices: [] };
   if (known.length === 1) return { carrier: known[0]!.carrier, choices: [] };
+  // The other answers are the delivery leg of the journey this carrier started.
+  // It holds the scans before the border, and a hand-off brings the delivery carrier in.
+  const origins = known.filter((outcome) => followsPartnerNumbers(outcome.carrier));
+  if (origins.length === 1) return { carrier: origins[0]!.carrier, choices: [] };
   const backed = known.filter((outcome) => outcome.preferred);
   if (backed.length === 1) return { carrier: backed[0]!.carrier, choices: [] };
   const brands = new Set(known.map((outcome) => carrierBrand(outcome.carrier) ?? outcome.carrier));

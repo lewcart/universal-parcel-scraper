@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff, hasDirectHandoffAdapter } from './handoff.js';
+import { followsPartnerNumbers } from './partners.js';
 import { AdapterRegistry } from '../adapter/index.js';
 import { carrierErrorKind } from '../errors/index.js';
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
@@ -129,6 +130,42 @@ describe('general delivery handoff candidates', () => {
     expect(deliveryHandoff('la-poste', 'CW123456785FR', { delivery_carrier: 'posti', delivery_tracking_number: 'bad?number' })).toBeNull();
     expect(deliveryHandoff('la-poste', 'CW123456785FR', { delivery_carrier: 'bpost' }))
       .toEqual({ carrier: 'bpost', number: 'CW123456785FR', basis: 'partner' });
+  });
+});
+
+describe('an origin that follows the parcel under its delivery carrier\'s number', () => {
+  // AliExpress shows the buyer SDA's waybill, so Cainiao and Poste Italiane know the same number.
+  const waybill = '000D00000001F';
+
+  it('proposes the carrier of the destination country that issues the number', () => {
+    expect(followsPartnerNumbers('aliexpress')).toBe(true);
+    for (const destination of [{ destination_country_name: 'Italy' }, { destination_country: 'IT' }]) {
+      expect(deliveryHandoff('aliexpress', waybill, normalizeCarrierResult({ status: 'in_transit', ...destination })))
+        .toEqual({ carrier: 'poste-italiane', number: waybill, basis: 'reference' });
+    }
+  });
+  it('proposes nobody without that destination', () => {
+    for (const destination of [{}, { destination_country_name: 'France' }, { destination_country: 'CH' }]) {
+      expect(deliveryHandoff('aliexpress', waybill, destination)).toBeNull();
+    }
+  });
+  it('proposes nobody for a shape the origin is not known to show', () => {
+    // Other SDA shapes fit Poste Italiane alone, and a Cainiao number fits no Italian carrier.
+    for (const number of ['990001A000001', '3C9900A000001', 'LP00000000000001']) {
+      expect(deliveryHandoff('aliexpress', number, { destination_country: 'IT' })).toBeNull();
+    }
+  });
+  it('leaves carriers that track only their own numbers alone', () => {
+    for (const carrier of ['poste-italiane', 'four-px', 'la-poste']) {
+      expect(followsPartnerNumbers(carrier)).toBe(false);
+      expect(deliveryHandoff(carrier, waybill, { destination_country: 'IT' })).toBeNull();
+    }
+  });
+  it('keeps a partner or a second reference the origin names', () => {
+    expect(deliveryHandoff('aliexpress', waybill, { destination_country: 'IT', delivery_carrier: 'ups' }))
+      .toEqual({ carrier: 'ups', number: waybill, basis: 'partner' });
+    expect(deliveryHandoff('aliexpress', waybill, { destination_country: 'IT', delivery_tracking_number: '1Z1234567890123454' }))
+      .toEqual({ carrier: 'ups', number: '1Z1234567890123454', basis: 'reference' });
   });
 });
 

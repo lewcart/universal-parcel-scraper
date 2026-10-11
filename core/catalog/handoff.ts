@@ -1,8 +1,11 @@
 import type { CarrierResult } from '../result/index.js';
 import type { CarrierId } from '../../generated/catalog.js';
 import { activeRequirements, AUTOMATIC_CARRIER_IDS, carrierAdapter, requiredRequirements } from './index.js';
+import { CARRIER_DEFINITIONS } from './definitions.js';
 import { carrierIdsFromPartnerLinks, nationalPostCandidate } from './hints.js';
+import { followsPartnerNumbers } from './partners.js';
 import { detectCarrierMatch, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
+import { countryCode } from '../time/index.js';
 
 export interface DeliveryHandoff {
   carrier: string;
@@ -54,6 +57,16 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
     && supportsSwissPostHandoff(number) && (!destination || ['ch', 'switzerland'].includes(destination.trim().toLowerCase()))) {
     target = 'swiss-post';
     basis = 'reference';
+  }
+  // An origin that follows the parcel under its delivery carrier's number has
+  // no second reference to name. The catalog lists that carrier beside the
+  // origin for the shape; it has to be the only one at home where the parcel goes.
+  if (!target && !result.delivery_tracking_number && followsPartnerNumbers(carrier)) {
+    const candidates = detectCarrierMatch(number).candidates;
+    const country = countryCode(destination);
+    const local = country && candidates.includes(carrier as CarrierId) ? candidates.filter((candidate) => candidate !== carrier
+      && CARRIER_DEFINITIONS[candidate]?.countries?.[0] === country) : [];
+    if (local.length === 1) { target = local[0]; basis = 'reference'; }
   }
   if (!target || target === carrier || !/^[A-Z0-9]{4,40}$/.test(reference)
     || !hasDirectHandoffAdapter(target, reference)) return null;

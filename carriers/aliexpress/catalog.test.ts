@@ -61,11 +61,16 @@ describe('partner numbers Cainiao follows', () => {
   // AliExpress shows the buyer SDA's waybill while the parcel is still on Cainiao's leg.
   const waybill = '000D00000001F';
 
-  function fetcherKnownTo(cainiao: boolean) {
+  function fetcherKnownTo(cainiao: boolean, poste = false) {
     return vi.fn<typeof fetch>((input) => Promise.resolve(new Response(JSON.stringify(
       String(input).startsWith('https://global.cainiao.com/')
-        ? { ...inTransit, module: [cainiao ? { ...inTransit.module[0], mailNo: waybill } : { mailNo: waybill, mailNoSource: 'EXTERNAL', detailList: [] }] }
-        : { idTracciatura: waybill, esitoRicerca: '2', listaMovimenti: [] },
+        ? { ...inTransit, module: [cainiao ? { ...inTransit.module[0], mailNo: waybill, destCountry: 'Italy' }
+          : { mailNo: waybill, mailNoSource: 'EXTERNAL', detailList: [] }] }
+        : poste ? { idTracciatura: waybill, esitoRicerca: '3', tipoSpedizione: 'P', listaMovimenti: [{
+          statoLavorazione: 'la spedizione è in transito presso il Centro di lavorazione Internazionale',
+          dataOra: Date.now() - 3_600_000, luogo: 'Test Depot',
+        }] }
+          : { idTracciatura: waybill, esitoRicerca: '2', listaMovimenti: [] },
     ), { headers: { 'Content-Type': 'application/json' } })));
   }
 
@@ -82,6 +87,20 @@ describe('partner numbers Cainiao follows', () => {
     await expect(tracker.track({ number: waybill })).resolves.toMatchObject({
       carrier: 'aliexpress', source: 'aliexpress', result: { status: 'in_transit' },
     });
+  });
+
+  it('files a waybill both know under AliExpress and proposes Poste Italiane as its delivery carrier', async () => {
+    const tracker = createTracker({ fetcher: fetcherKnownTo(true, true), providers: [] });
+    await expect(tracker.recognize(waybill)).resolves.toMatchObject({ carrier: 'aliexpress', choices: [] });
+    await expect(tracker.track({ number: waybill })).resolves.toMatchObject({
+      carrier: 'aliexpress', source: 'aliexpress', result: { destination_country_name: 'Italy' },
+      handoff: { carrier: 'poste-italiane', number: waybill, basis: 'reference', confirmed: true, result: { status: 'in_transit' } },
+    });
+  });
+
+  it('files a waybill only Poste Italiane knows under Poste Italiane', async () => {
+    await expect(createTracker({ fetcher: fetcherKnownTo(false, true), providers: [] }).recognize(waybill))
+      .resolves.toMatchObject({ carrier: 'poste-italiane', choices: [] });
   });
 
   it('leaves the waybill without a carrier when neither knows it', async () => {

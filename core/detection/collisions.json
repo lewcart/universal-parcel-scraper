@@ -1076,7 +1076,7 @@
       "aliexpress",
       "poste-italiane"
     ],
-    "reason": "SDA numbers its parcels in this shape, and AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, before Poste Italiane knows it. Neither rule is preferred; the one that knows the number confirms it."
+    "reason": "SDA numbers its parcels in this shape, and AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, before Poste Italiane knows it. Neither rule is preferred; the one that knows the number confirms it. Once both know it, it is filed under AliExpress, which proposes Poste Italiane as the delivery carrier."
   },
   {
     "shape": "Fourteen digits and their DPD check character",

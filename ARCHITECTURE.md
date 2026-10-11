@@ -111,7 +111,9 @@ repeating at once.
 
 When a result names a delivery partner, the tracker also asks that partner's adapter. Its
 answer comes back separately, checked against the number on its own. Adopting it is the
-consumer's choice. When a partial carrier answer names the partner, the fallbacks leave that
+consumer's choice. AliExpress follows some parcels under the delivery carrier's own number and
+names no partner for them. The partner is then the one carrier at home in the destination
+country whose rule fits that number beside AliExpress's. When a partial carrier answer names the partner, the fallbacks leave that
 lookup a third of the budget, at most 30 seconds.
 
 A result's `service_name` is the carrier's own name for the shipping service the parcel
@@ -187,10 +189,12 @@ Callers can order eligible recognition candidates with a `countryHint` and aggre
 by the country (home before other served countries), aggregate scores, a passing check digit
 and catalog rank. These signals do not add candidates or confirm ownership.
 `recognitionAskedCarriers` is the first `MAX_RECOGNITIONS` of that order.
-`settleRecognition` takes the only carrier that knows the number, else the only one number
-evidence backs. When all that know it are one brand's networks, it takes one that tracks
-without the user's input, then the one serving the country hint (each candidate carries the
-match as `countryMatch`), then the highest rank. Unrelated carriers stay a choice.
+`settleRecognition` takes the only carrier that knows the number. When AliExpress and a
+delivery carrier both know it, the number is the delivery carrier's and AliExpress started
+the journey, so it takes AliExpress. Otherwise it takes the only one number evidence backs.
+When all that know it are one brand's networks, it takes one that tracks without the user's
+input, then the one serving the country hint (each candidate carries the match as
+`countryMatch`), then the highest rank. Other unrelated carriers stay a choice.
 `recognitionNumberShape` retains only character classes and run lengths for private
 aggregate analysis. Keep direct-confirmed live inputs outside Git; repeated observations
 of one number do not establish independent evidence.

@@ -32,6 +32,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "fan-courier": 51,
   "four-px": 13,
   "foxpost": 52,
+  "geniki-taxydromiki": 58,
   "gls-ch": 50,
   "gls-de": 60,
   "gls-fr": 61,

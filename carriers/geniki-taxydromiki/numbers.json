@@ -40,7 +40,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -55,7 +55,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5191585066",
@@ -68,7 +68,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -83,7 +83,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5191263103",
@@ -96,7 +96,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -111,7 +111,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5182618604",
@@ -124,7 +124,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -139,7 +139,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5191585011",
@@ -152,7 +152,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -167,7 +167,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5191590950",
@@ -180,7 +180,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -195,7 +195,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "5182251804",
@@ -208,7 +208,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -223,7 +223,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geniki Taxydromiki page offered it as a sample to try on 11 Oct 2026; Geniki Taxydromiki's tracking returns its history."
     },
     {
       "number": "2974623013",

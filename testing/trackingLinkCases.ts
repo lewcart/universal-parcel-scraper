@@ -420,6 +420,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ppl', number: '29000000001',
     route: /^https:\/\/www\.ppl\.cz\/vyhledat-zasilku\?shipmentId=/,
     marker: /Zásilka nenalezena|Shipment not found/i },
+  // The page fills its field in and looks the voucher up on load.
+  { carrier: 'geniki-taxydromiki', number: '9999999999',
+    route: /^https:\/\/taxydromiki\.com\/track\/9999999999\/?$/,
+    marker: /Ο αριθμός αποστολής που ζητήσατε δε βρέθηκε|Πορεία Αποστολής/ },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

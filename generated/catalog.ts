@@ -6251,7 +6251,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "geniki-taxydromiki",
+      "recognitionRank": 58,
+      "localClocks": true
     },
     "canaryUrl": "https://taxydromiki.com/track/",
     "trackingUrlTemplate": "https://taxydromiki.com/track/{trackingNumber}",

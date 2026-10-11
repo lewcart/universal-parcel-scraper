@@ -82,10 +82,12 @@ const nameKey = (name: unknown) => typeof name === 'string' ? name.toLowerCase()
 // Carriers whose ParcelsApp dates are a North American scan's local clock:
 // UPS's own instants, FedEx's own page, UniUni's own feed and Ship24's offsets
 // agree once they are read that way (checked 2026-09-30 on US scans; UPS's
-// also in Germany, the Netherlands and Spain). OnTrac's are UTC and
-// Landmark's keep one clock everywhere, so no other carrier gets this step
-// beyond the ones below.
-const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'easyship']);
+// also in Germany, the Netherlands and Spain). So does DHL eCommerce's
+// Webtrack, which names each scan's clock, on all 25 scans of three parcels
+// in seven states and the UK (2026-10-11). OnTrac's are UTC and Landmark's
+// keep one clock everywhere, so no other carrier gets this step beyond the
+// ones below.
+const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'easyship', 'dhlecommerce']);
 /**
  * Carriers whose dates are each scan's local clock under a label that is
  * never its instant, checked scan for scan on 2026-10-10: USPS's own page,

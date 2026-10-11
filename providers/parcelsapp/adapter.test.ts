@@ -588,6 +588,13 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-08T14:09:00.000Z', '2026-09-08T04:37:00.000Z']);
     expect(times(['FedEx'], [scan('2026-09-08T10:09:00Z', 'Example City, GA'), scan('2026-09-07T08:00:00Z', 'Example Hub, France')]))
       .toEqual(['2026-09-08T10:09:00.000Z', '2026-09-07T06:00:00.000Z']);
+    // DHL eCommerce's Webtrack names these clocks (2026-10-11): CT, ET, PT, and BST in the UK.
+    expect(times(['DHL eCommerce'], [
+      scan('2026-10-10T09:57:00Z', 'HEATHROW, GB'),
+      scan('2026-10-06T15:35:58Z', 'Example City, IL, US'),
+      scan('2026-10-02T14:56:49Z', 'Example City, KY, US'),
+      scan('2026-06-04T12:13:00Z', 'Example City, OR, US'),
+    ])).toEqual(['2026-10-10T08:57:00.000Z', '2026-10-06T20:35:58.000Z', '2026-10-02T18:56:49.000Z', '2026-06-04T19:13:00.000Z']);
     // OnTrac's dates are already UTC.
     expect(times(['OnTrac'], [scan('2026-09-25T21:49:19Z', 'EXAMPLE CITY, CA, 92000'), scan('2026-09-24T02:25:10Z', 'EXAMPLE CITY, NY, 10001')]))
       .toEqual(['2026-09-25T21:49:19.000Z', '2026-09-24T02:25:10.000Z']);

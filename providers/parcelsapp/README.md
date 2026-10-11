@@ -230,28 +230,30 @@ step exists for future protocol changes.
 - So do Paack's scans. Paack's timeline gives instants, not wall clocks, and ParcelsApp's
   `date` is their UTC instant: Paack's own lookup gives the same instants scan for scan.
   Read on Paack's Paris clock, they came out two hours early in summer.
-- North American scans: the dates of UPS, FedEx, UniUni and EasyShip are the scan's local
-  clock, as UPS's own instants, FedEx's own page, UniUni's own feed and Ship24's offsets
-  show on US scans (UPS's also in Germany, the Netherlands and Spain; no public Canadian
-  reference was found), and so are those of the wall-clock carriers above. Step 2 reads
-  them in the zone of the US state or Canadian province the location names ("Riverside,
-  CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga, ON, CA",
-  4PX's "EXAMPLE CITY, IN, US 12345", USPS's "EXAMPLE CITY IL DISTRIBUTION CENTER" and
-  "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as in the USPS
-  adapter. A state written out counts only after the country ("Example City Minnesota,
-  United States of America", as Orange Connex writes SpeedPAK's), since Georgia is a
-  country too. A code shared with a single-clock country (DE, IL, IN, MT, NL, SK) counts,
-  before that country, only for a town of the state or province: UPS writes both "Chicago,
-  IL" and "Koeln, DE". The town lists come from the server's GeoNames gazetteer, and a
-  name the country also has for more people stays the country's ("Salem, IN").
+- North American scans: the dates of UPS, FedEx, UniUni, EasyShip and DHL eCommerce are
+  the scan's local clock, as UPS's own instants, FedEx's own page, UniUni's own feed,
+  Ship24's offsets and DHL eCommerce's Webtrack, which names each scan's clock, show on US
+  scans (UPS's also in Germany, the Netherlands and Spain, DHL eCommerce's in the UK; no
+  public Canadian reference was found), and so are those of the wall-clock carriers above.
+  Step 2 reads them in the zone of the US state or Canadian province the location names
+  ("Riverside, CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga,
+  ON, CA", 4PX's "EXAMPLE CITY, IN, US 12345", USPS's "EXAMPLE CITY IL DISTRIBUTION
+  CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as
+  in the USPS adapter. A state written out counts only after the country ("Example City
+  Minnesota, United States of America", as Orange Connex writes SpeedPAK's), since Georgia
+  is a country too. A code shared with a single-clock country (DE, IL, IN, MT, NL, SK)
+  counts, before that country, only for a town of the state or province: UPS writes both
+  "Chicago, IL" and "Koeln, DE". The town lists come from the server's GeoNames gazetteer,
+  and a name the country also has for more people stays the country's ("Salem, IN").
   [generate-region-towns.mjs](../../scripts/generate-region-towns.mjs) writes them.
   Another shared code ("GA" is Gabon) counts only in a reply that is in North America: one
   scan certainly is, or one names a state or province and none names another country. A
   copy of such a scan from another carrier, at the same minute with the same wording
   (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
   keep their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every
-  country. UPS, FedEx, UniUni and EasyShip scans that nothing places still stay as
-  labeled. Adding a carrier, a town or a province moves stored scans: plan a re-key.
+  country. UPS, FedEx, UniUni, EasyShip and DHL eCommerce scans that nothing places still
+  stay as labeled. Adding a carrier, a town or a province moves stored scans: plan a
+  re-key.
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.

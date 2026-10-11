@@ -80,7 +80,7 @@ source follows any more is marked stale there.
 ## Summary
 
 <!-- GENERATED:summary -->
-100 carriers, 97 of them in the catalog, checked between 2026-10-10 and 2026-10-10.
+100 carriers, 97 of them in the catalog, checked between 2026-10-10 and 2026-10-11.
 
 | Source | Carriers with history | Full | Partial | Undated only | Median answer |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -88,8 +88,8 @@ source follows any more is marked stale there.
 | This project, dedicated adapters alone | 79 | 75 | 4 | 0 | 0.5 s |
 | Ship24 | 57 | 48 | 9 | 3 | 0.9 s |
 | ParcelsApp | 71 | 69 | 2 | 0 | 1.6 s |
-| 17TRACK | 72 | 69 | 3 | 0 | 6.1 s |
-| Postal Ninja | 32 | 28 | 4 | 28 | 6.9 s |
+| 17TRACK | 73 | 70 | 3 | 0 | 6.1 s |
+| Postal Ninja | 32 | 28 | 4 | 28 | 6.8 s |
 | UPU | 11 | 11 | 0 | 0 | 0.0 s |
 
 11 carriers have no number any source still follows.
@@ -121,7 +121,7 @@ source follows any more is marked stale there.
 | [Hermes Germany](../carriers/hermes-de/README.md) | ✓ 4, partial | ✓ 4, partial | ✓ 12 | ✓ 4, partial | ✓ 4, partial | N/A |
 | [DPD Germany](../carriers/dpd-de/README.md) | ✓ 14 | ✓ 12 | ✓ 5 | ✓ 5 | ✓ 5 | N/A |
 | [GLS Germany](../carriers/gls-de/README.md) | Postcode prompt | Refused | ✓ 3 | Refused | ✓ 4 | N/A |
-| [DHL eCommerce](../carriers/dhl-ecommerce/README.md) | ✓ 1 | No history | ✓ 1 | No history | Blocked | N/A |
+| [DHL eCommerce](../carriers/dhl-ecommerce/README.md) | ✓ 9 | No history | ✓ 9 | ✓ 7 | Blocked | N/A |
 
 ### United Kingdom and Ireland
 
@@ -234,7 +234,7 @@ source follows any more is marked stale there.
 | [China Post](../carriers/china-post/README.md) | ✓ 4, partial | ✓ 7, partial | ✓ 20 | ✓ 56 | Undated | ✓ 7 |
 | [Yanwen](../carriers/yanwen/README.md) | ✓ 19 | ✓ 20 | ✓ 24 | ✓ 19 | Undated | No history |
 | [YunExpress](../carriers/yunexpress/README.md) | ✓ 25 | ✓ 33 | ✓ 24 | ✓ 26 | ✓ 33, partial | N/A |
-| [4PX](../carriers/four-px/README.md) | ✓ 30 | ✓ 25 | ✓ 26 | ✓ 44 | Undated | N/A |
+| [4PX](../carriers/four-px/README.md) | ✓ 30 | ✓ 25 | ✓ 30 | ✓ 44 | Undated | N/A |
 | [CNE Express](../carriers/cne/README.md) | ✓ 21 | ✓ 21, partial | No history | ✓ 20 | Undated | N/A |
 | [SpeedPAK](../carriers/speedpak/README.md) | ✓ 14 | No history | ✓ 14 | No history | No history | N/A |
 | [SunYou](../carriers/sunyou/README.md) | ✓ 8 | No history | ✓ 8 | ✓ 8 | No history | N/A |
@@ -303,6 +303,7 @@ source follows any more is marked stale there.
 | GLS Germany | `37390065090` | [2026-08-24](https://de.reclabox.com/beschwerde/254878-gls-neuenstein-paket-ohne-zustellversuch-im-paketshop-abgekippt) | 2026-10-10 | Postcode prompt | No history | ✓ 3 | No history | ✓ 4 | N/A |
 | GLS Germany | `AALZJR` | [2026-08-05](https://www.paketda.de/fragen-antworten.php?suche=AALZJR) | 2026-10-10 | Postcode prompt | Refused | Refused | Refused | Refused | N/A |
 | DHL eCommerce | `9261290316844317469885` | [undated](https://webtrack.dhlglobalmail.com/?trackingnumber=9261290316844317469885) | 2026-10-10 | ✓ 1 | No history | ✓ 1 | No history | Blocked | N/A |
+| DHL eCommerce | `9261290357482657956985` | [2026-09-27](https://web.archive.org/web/20260927160405/https://webtrack.dhlecs.com/?trackingnumber=9261290357482657956985) | 2026-10-11 | ✓ 9 | No history | ✓ 9 | ✓ 7 | Blocked | N/A |
 | Royal Mail | `MZ465962009GB` | [2026-03-16](https://web.archive.org/web/20260316193534/https://www.royalmail.com/portal/rm/track?trackNumber=MZ465962009GB) | 2026-10-10 | ✓ 5 | No history | No history | No history | No history | No history |
 | Royal Mail | `IV745750017GB` | [2026-03-11](https://web.archive.org/web/20260311233047/https://www.royalmail.com/portal/rm/track?trackNumber=IV745750017GB) | 2026-10-10 | ✓ 5 | No history | No history | No history | No history | No history |
 | Evri UK | `H00RVD0551541466` | [2026-10-06](https://web.archive.org/web/20261006223411/https://www.evri.com/track/parcel/H00RVD0551541466/details) | 2026-10-10 | ✓ 7 | ✓ 16, partial (stops early) | ✓ 7 | ✓ 7 | No history | N/A |
@@ -413,7 +414,7 @@ source follows any more is marked stale there.
 | YunExpress | `YT2625900708886066` | [2026-09-30](https://web.archive.org/web/20260930131534/https://www.yuntrack.com/parcelTracking?id=YT2625900708886066) | 2026-10-10 | ✓ 24 | ✓ 31 | ✓ 24 | ✓ 25 | Undated | N/A |
 | YunExpress | `YT2625700706267305` | [2026-09-30](https://web.archive.org/web/20260930131023/https://www.yuntrack.com/parcelTracking?id=YT2625700706267305) | 2026-10-10 | ✓ 25 | ✓ 33 | ✓ 21 | ✓ 26 | ✓ 33, partial (undated rows) | N/A |
 | 4PX | `4PX3002790888841CN` | [2026-06-26](https://www.chinapostaltracking.com/qa/what-is-my-tracking-number-format-159483/) | 2026-10-10 | ✓ 26 | ✓ 25 | ✓ 26 | ✓ 26 | Undated | N/A |
-| 4PX | `4PX3002555003946CN` | [2026-03-13](https://web.archive.org/web/20260313001028/https://track.4px.com/query/4PX3002555003946CN) | 2026-10-10 | ✓ 30 | No history | Error | ✓ 44 | No history | N/A |
+| 4PX | `4PX3002555003946CN` | [2026-03-13](https://web.archive.org/web/20260313001028/https://track.4px.com/query/4PX3002555003946CN) | 2026-10-10 | ✓ 30 | No history | ✓ 30 | ✓ 44 | No history | N/A |
 | CNE Express | `3A5V913107080` | [2026-08-03](https://web.archive.org/web/20260803094553/https://www.cne.com/en/track?no=3A5V913107080) | 2026-10-10 | ✓ 21 | ✓ 21, partial (undated rows, stops early) | No history | ✓ 20 | Undated | N/A |
 | CNE Express | `3A5V640465958` | [2025-11-15](https://web.archive.org/web/20251115150544/https://www.cne.com/English/?no=3A5V640465958) | 2026-10-10 | ✓ 15, partial (undated rows) | No history | No history | ✓ 15 | No history | N/A |
 | SpeedPAK | `ES1003113494686UN0101240600N` | [undated](https://community.ebay.com/forum/shipping-57923/topic/speedpak-any-know-who-is-delivering-them-in-the-us-now-158487/?focus_post=506934) | 2026-10-10 | ✓ 14 | No history | ✓ 14 | No history | No history | N/A |

@@ -450,6 +450,16 @@
             "Postal Ninja": "blocked",
             "UPU": "n/a"
           }
+        },
+        {
+          "note": "Benchmark number 9261290357482657956985",
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": 9,
+            "17TRACK": 7,
+            "Postal Ninja": "blocked",
+            "UPU": "n/a"
+          }
         }
       ]
     },
@@ -1458,7 +1468,7 @@
           "note": "Benchmark number 4PX3002555003946CN",
           "results": {
             "Ship24": "no_history",
-            "ParcelsApp": "error",
+            "ParcelsApp": 30,
             "17TRACK": 44,
             "Postal Ninja": "no_history",
             "UPU": "n/a"

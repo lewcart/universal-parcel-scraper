@@ -2,12 +2,12 @@ import { load } from 'cheerio';
 import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
 import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
-import { NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import type { Stage } from '../../generated/catalog.js';
 import { countryCode, countryTimeZone, isoTime } from '../../core/time/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
-import { fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
+import { decodeText, fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import {
   FALLBACK_EVENT_LABELS, GLOBAL_STATUS_STAGE, STAGE_STATUS, STATUS_MAP, swissPostEventStage,
@@ -33,6 +33,26 @@ const HEADERS = {
   'Accept-Language': 'en-CH,en;q=0.9',
   Referer: 'https://service.post.ch/ekp-web/ui/',
 };
+
+/** The refresh on Swiss Post's outage page: to `sorry.post.ch`, its own page for an unplanned outage. */
+const OUTAGE_REFRESH = /^\s*\d+(?:\.\d*)?\s*[;,]\s*(?:url\s*=\s*)?(["']?)https?:\/\/sorry\.post\.ch\/?\1\s*$/i;
+
+/**
+ * A reply's JSON. While the service is down, any `ekp-web` URL can answer, even with HTTP 200,
+ * with Swiss Post's outage page, which only refreshes to `sorry.post.ch`. That says nothing
+ * about the shipment, so it is inconclusive; any other reply that does not parse stays malformed.
+ */
+function swissPostJson(bytes: Uint8Array): unknown {
+  try {
+    return parseJsonBytes(bytes, PROVIDER);
+  } catch (cause) {
+    const $ = load(decodeText(bytes));
+    const outage = $('meta').filter((_, meta) => /^\s*refresh\s*$/i.test($(meta).attr('http-equiv') ?? '')
+      && OUTAGE_REFRESH.test($(meta).attr('content') ?? '')).length > 0;
+    if (outage) throw new IndeterminateError(PROVIDER, 'Swiss Post returned its outage page instead of tracking data', { cause });
+    throw cause;
+  }
+}
 
 export interface SwissPostOptions {
   /** Test seam; production uses the global fetch. The cookie jar wraps it. */
@@ -322,7 +342,7 @@ export class SwissPostTracker {
       timeoutMs: Math.min(REQUEST_TIMEOUT_MS, timeoutMs, budget?.remainingMs() ?? REQUEST_TIMEOUT_MS),
       fetcher,
     });
-    return parseJsonBytes(bytes, PROVIDER);
+    return swissPostJson(bytes);
   }
 
   /**
@@ -376,7 +396,7 @@ export class SwissPostTracker {
       timeoutMs: Math.min(REQUEST_TIMEOUT_MS, timeoutMs),
       fetcher,
     }));
-    const userPayload = parseJsonBytes(userResult.bytes, PROVIDER);
+    const userPayload = swissPostJson(userResult.bytes);
     if (!isRecord(userPayload)) throw new SchemaError(PROVIDER, 'Swiss Post returned an invalid anonymous user response');
     const userId = text(userPayload.userIdentifier);
     if (!userId) throw new SchemaError(PROVIDER, 'Swiss Post did not return an anonymous user identifier');

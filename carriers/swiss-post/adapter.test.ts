@@ -1,13 +1,28 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { LookupBudget } from '../../core/adapter/index.js';
-import { NotFoundError } from '../../core/errors/index.js';
+import { carrierErrorKind, IndeterminateError, NotFoundError, UpstreamHttpError } from '../../core/errors/index.js';
 import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import type { JsonObject } from '../../core/types.js';
 import { parseSwissPostShipment, swissPostPickupPoint, SwissPostTracker } from './adapter.js';
 import { EVENT_STAGE_BY_CODE, swissPostEventStage } from './status.js';
 
 const WRONG_SWISS_POST_NUMBER = '989999999999999999';
+/** Swiss Post's public outage page, served in place of JSON, with HTTP 200, while its service is down. */
+const OUTAGE_PAGE = `<!--
+  ~ Copyright 2025 by Swiss Post, Information Technology
+  -->
+<!DOCTYPE html>
+<html>
+<head>
+\t<title>Die Schweizerische Post AG</title>
+\t<meta http-equiv="content-security-policy" content="default-src 'none'; base-uri 'none'; form-action 'none';">
+\t<meta http-equiv="refresh" content="0; url=https://sorry.post.ch">
+</head>
+<body>
+</body>
+</html>
+`;
 
 interface ShipmentFixture {
   shipment: JsonObject;
@@ -362,6 +377,7 @@ describe('Swiss Post pickup point', () => {
     ['an empty record', () => new Response('{}')],
     ['a blocked reply', () => new Response('<html>sorry</html>', { headers: { 'Content-Type': 'text/html' } })],
     ['an outage', () => new Response('', { status: 503 })],
+    ['the outage page', () => new Response(OUTAGE_PAGE, { headers: { 'Content-Type': 'text/html' } })],
   ])('keeps the parcel without a pickup point after %s', async (_, reply) => {
     const result = await lookup(waiting, [deposited], reply).tracker.fetch(WRONG_SWISS_POST_NUMBER);
     expect(result).toMatchObject({ current_stage: 'ready_for_pickup', events: [{ provider_code: 'PARCEL.*.1.2102' }] });
@@ -559,5 +575,93 @@ describe('Swiss Post network failure recovery', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe('Swiss Post outage page', () => {
+  const SHIPMENT = '993412345612345678';
+  const html = (body: string, status = 200) => new Response(body, { status, headers: { 'Content-Type': 'text/html' } });
+
+  /** A lookup whose calls matching `step` get `reply`; every other call answers as usual. */
+  function lookup(step: RegExp, reply: () => Response) {
+    const { shipment, events, translations } = outForDelivery();
+    const urls: string[] = [];
+    const fetcher: typeof fetch = async (input) => {
+      const url = String(input);
+      urls.push(url);
+      if (step.test(url)) return reply();
+      if (url.endsWith('/user')) {
+        return new Response(JSON.stringify({ userIdentifier: 'unit-test-user' }), { headers: { 'x-csrf-token': 'unit-test-csrf' } });
+      }
+      if (url.includes('/history?')) return Response.json({ hash: 'unit-test-hash' });
+      if (url.includes('/history/not-included/')) return Response.json([shipment]);
+      if (url.endsWith('/events')) return Response.json(events);
+      return Response.json({ 'shipment-text--': translations });
+    };
+    return { urls, tracker: new SwissPostTracker({ fetcher }) };
+  }
+
+  const failure = (promise: Promise<unknown>) => promise.then(() => expect.unreachable('the lookup succeeded'), (error: unknown) => error);
+
+  it.each([
+    ['the anonymous user', /\/user$/],
+    ['the search', /\/history\?/],
+    ['the search result', /\/history\/not-included\//],
+  ])('reads it in place of %s as inconclusive, not as a malformed reply or a missing parcel', async (_, step) => {
+    const app = lookup(step, () => html(OUTAGE_PAGE));
+    const error = await failure(app.tracker.fetch(SHIPMENT));
+    expect(error).toBeInstanceOf(IndeterminateError);
+    expect(error).not.toBeInstanceOf(NotFoundError);
+    expect(error).not.toBeInstanceOf(TypeError);
+    expect(error).toMatchObject({ kind: 'indeterminate', provider: 'Swiss Post', cause: expect.any(TypeError) });
+    expect(carrierErrorKind(error)).toBe('indeterminate');
+    // An answer, not a failure to reach Swiss Post: it is not asked again.
+    expect(app.urls.filter((url) => step.test(url))).toHaveLength(1);
+  });
+
+  it.each([
+    ['the bare refresh', '<meta http-equiv="refresh" content="0; url=https://sorry.post.ch">'],
+    ['upper case, single quotes, http and a trailing slash', `<META HTTP-EQUIV='Refresh' CONTENT='0;URL=http://sorry.post.ch/'>`],
+    ['attributes swapped, extra whitespace and a quoted address', `<meta content="5 ;\n  url = 'https://SORRY.post.ch/'" http-equiv=" refresh ">`],
+    ['unquoted attributes without url=', '<meta http-equiv=refresh content=0,https://sorry.post.ch/>'],
+    ['the indented 2024 page', OUTAGE_PAGE.replace('2025', '2024').replaceAll('\t', '  ')],
+  ])('knows it by its refresh to sorry.post.ch: %s', async (_, body) => {
+    await expect(lookup(/\/user$/, () => html(body)).tracker.fetch(SHIPMENT)).rejects.toBeInstanceOf(IndeterminateError);
+  });
+
+  it.each([
+    ['an unrelated page', '<html><body>sorry</body></html>'],
+    ['a refresh to another host', '<meta http-equiv="refresh" content="0; url=https://sorry.post.ch.example.test">'],
+    ['a refresh to another path', '<meta http-equiv="refresh" content="0; url=https://example.test/sorry.post.ch">'],
+    ['a refresh to a page of the outage site', '<meta http-equiv="refresh" content="0; url=https://sorry.post.ch/other">'],
+    ['a link to the outage site', '<html><body><a href="https://sorry.post.ch">sorry</a></body></html>'],
+    ['a named meta, not a refresh', '<meta name="refresh" content="0; url=https://sorry.post.ch">'],
+  ])('keeps %s a malformed reply', async (_, body) => {
+    const error = await failure(lookup(/\/history\/not-included\//, () => html(body)).tracker.fetch(SHIPMENT));
+    expect(error).toBeInstanceOf(TypeError);
+    expect(error).toMatchObject({ message: 'Swiss Post returned an invalid tracking response' });
+  });
+
+  it('keeps the HTTP 502 it comes with when the backend is degraded', async () => {
+    const error = await failure(lookup(/\/user$/, () => html(OUTAGE_PAGE, 502)).tracker.fetch(SHIPMENT));
+    expect(error).toBeInstanceOf(UpstreamHttpError);
+    expect(error).toMatchObject({ kind: 'indeterminate', status: 502 });
+  });
+
+  it('keeps the shipment summary when only the event call returns it', async () => {
+    await expect(lookup(/\/events$/, () => html(OUTAGE_PAGE)).tracker.fetch(SHIPMENT)).resolves.toMatchObject({
+      status: 'out_for_delivery', global_status: 'IN_DELIVERY', canonical_tracking_number: SHIPMENT, events: [],
+    });
+  });
+
+  it('keeps the scans in their own wording when the wording table returns it, and asks for the table later', async () => {
+    const app = lookup(/\/translations\//, () => html(OUTAGE_PAGE));
+    const first = await app.tracker.fetch(SHIPMENT);
+    const second = await app.tracker.fetch(SHIPMENT);
+    for (const result of [first, second]) {
+      expect(result).toMatchObject({ status: 'out_for_delivery' });
+      expect(result.events?.length).toBeGreaterThan(0);
+    }
+    expect(app.urls.filter((url) => url.includes('/translations/'))).toHaveLength(1);
   });
 });

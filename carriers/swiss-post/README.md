@@ -37,6 +37,10 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   licence and counter), so detection cannot reject a mistyped one.
 - One cookie jar per lookup — the user, CSRF token and hash are only valid
   together, and a shared jar could leak one search's hash into another.
+- During an outage any call can answer, even with HTTP 200, with Swiss Post's
+  outage page, which only refreshes to `sorry.post.ch`. That answer is
+  inconclusive, not a malformed reply or a missing parcel, and the call is not
+  repeated.
 - Exactly one result must match the number, on `shipmentNumber` or the echoed
   `internationalBarcode` — the endpoint is a search and can return neighbouring
   shipments. None or two matches are refused. Numbers are compared without

@@ -197,6 +197,16 @@ describe('evidence-backed tracking formats', () => {
     // A carrier's own link can carry one. GLS's group-wide links go to GLS Germany, its Swiss ones to GLS Switzerland.
     expect(parseTrackingInput('https://gls-group.eu/EU/en/parcel-tracking?match=AALZJR'))
       .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-de', source: 'link' });
+    expect(parseTrackingInput('https://gls-group.eu/GROUP/en/parcel-tracking?match=AALZJR'))
+      .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-de', confidence: 'high', source: 'link' });
+    expect(parseTrackingInput('https://gls-group.eu/GROUP/en/parcel-tracking?match=12345678901'))
+      .toMatchObject({ trackingNumber: '12345678901', carrier: 'gls-de', confidence: 'high', source: 'link' });
+    // GLS France's tracker forwards to GROUP links; a number only GLS France issues still names it there.
+    expect(parseTrackingInput('https://gls-group.eu/GROUP/fr/parcel-tracking?match=00AB12CD'))
+      .toMatchObject({ trackingNumber: '00AB12CD', carrier: 'gls-fr', confidence: 'high', source: 'link' });
+    // A GLS track ID that LSO's pattern also matches stays with GLS on a GLS Germany link.
+    expect(parseTrackingInput('https://gls-group.eu/EU/en/parcel-tracking?match=ZY0AB12C'))
+      .toMatchObject({ trackingNumber: 'ZY0AB12C', carrier: 'gls-de', source: 'link' });
     expect(parseTrackingInput('https://gls-group.eu/CH/de/paketverfolgung?match=AALZJR'))
       .toMatchObject({ trackingNumber: 'AALZJR', carrier: 'gls-ch', source: 'link' });
   });

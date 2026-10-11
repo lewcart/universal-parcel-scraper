@@ -1779,6 +1779,19 @@ export const CARRIER_CATALOG = {
       },
       {
         "domains": [
+          "gls-group.eu",
+          "gls-group.com"
+        ],
+        "pathPattern": "^/GROUP/",
+        "params": [
+          "match",
+          "parcelNumber",
+          "matchParcelNumber"
+        ],
+        "detectFromNumber": true
+      },
+      {
+        "domains": [
           "gls-pakete.de"
         ],
         "params": [

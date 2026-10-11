@@ -80,8 +80,9 @@ HTTP 400, 403 and 404 all mean "no such parcel" and raise
 - GLS Germany recognizes the same numbers through the same overview.
   Recognition chooses this network when the caller's country is Switzerland or
   Liechtenstein, and otherwise GLS Germany, whose tracker also takes postcodes
-  outside Switzerland. Group-wide `/EU/` links go there too. A Swiss parcel also
-  lands here through a `/CH/` link or by picking it.
+  outside Switzerland. Group-wide `/EU/` and `/GROUP/` links go there too,
+  this carrier's own portal links included. A Swiss parcel also lands here
+  through a `/CH/` link or by picking it.
 
 ## Testing
 

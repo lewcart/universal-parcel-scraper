@@ -71,6 +71,7 @@ describe('delivery partner evidence', () => {
     ['', 'https://www.gofo.com/usa/', undefined],
     ['', 'https://gls-group.eu/FR/fr/suivi-colis', 'gls-fr'],
     ['', 'https://gls-group.eu/EU/en/parcel-tracking', 'gls-de'],
+    ['', 'https://gls-group.eu/GROUP/en/parcel-tracking', 'gls-de'],
     ['', 'https://gls-group.eu/CH/de/paketverfolgung', 'gls-ch'],
     ['', 'https://gls-group.eu/', undefined],
     // A carrier's own host: its tracking pages and home page name it, its other pages none.

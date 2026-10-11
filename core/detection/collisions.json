@@ -253,6 +253,23 @@
     "reason": "The Greek issuer suffix suggests ELTA but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}EE with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "omniva"
+    ],
+    "reason": "The Estonian issuer suffix suggests Omniva but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
+    "shape": "PZ, XR, XT, XU, XW or XY then 9{9}EE with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "omniva"
+    ],
+    "reason": "Chronopost's high-confidence rule claims its own prefixes with any suffix and decides; Omniva's low-confidence Estonian rule only makes preflight ask it as well."
+  },
+  {
     "shape": "AA9{9}PL with a valid S10 check digit",
     "carriers": [
       "chronopost",

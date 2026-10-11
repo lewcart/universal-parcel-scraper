@@ -19,18 +19,54 @@
   "timezone": "Europe/Tallinn",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "omniva",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 64
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://minu.omniva.ee/track/{trackingNumber}",
     "searchUrl": "https://minu.omniva.ee/track",
     "canaryUrl": "https://minu.omniva.ee/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "pickup_point"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "pickup_point",
+      "destination_country"
+    ],
+    "discarded": [
+      "postcodes",
+      "event_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -65,6 +101,13 @@
       "id": "omniva-2",
       "pattern": "^JJEE[A-Z]{3}\\d{11}$",
       "confidence": "high"
+    },
+    {
+      "id": "omniva-s10",
+      "pattern": "^[A-Z]{2}\\d{9}EE$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

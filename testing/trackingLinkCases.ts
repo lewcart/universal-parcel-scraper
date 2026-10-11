@@ -416,6 +416,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'elta', number: 'ZZ000000014GR',
     route: /^https:\/\/www\.elta\.gr\/track\?code=/,
     marker: /Track and Trace|Ιστορικό Μη Διαθέσιμο/ },
+  // The page fills its field in and looks the number up once Turnstile lets it.
+  { carrier: 'omniva', number: 'CC900000019EE',
+    route: /^https:\/\/minu\.omniva\.ee\/track\/CC900000019EE/,
+    marker: /Jälgi oma saadetise teekonda|Sisesta oma jälgimisnumber|Track your shipment/i },
   // The Cypriot tracker reads the number from its address and searches it on load.
   { carrier: 'acs-courier', number: '9000000063',
     route: /^https:\/\/cyp\.acscourier\.net\/en\/quick-access\/non-registered-users\/track-and-trace\/\?trackingNumber=/,

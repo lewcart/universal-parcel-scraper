@@ -1,25 +1,61 @@
 # Omniva
 
-Omniva items use enabled universal providers. There is no dedicated adapter.
+Tracks Omniva items in Estonia, Latvia and Lithuania, parcel machine and courier parcels and
+postal items, through the guest lookup of Omniva's official app.
+
+## How it works
+
+The web trackers on `minu.omniva.ee`, `mana.omniva.lv` and `mano.omniva.lt` ask their own API,
+which wants a Cloudflare Turnstile token and refuses requests without one. Omniva's Android app
+looks a number up with `GET https://mobile-be.omniva.ee/api/v2/shipment/trackSingleShipment/{number}`,
+which answers JSON without an account, key, cookie or token. The adapter sends that one request; a
+request that fails to reach Omniva is sent once more within the budget.
+
+The reply must name the whole requested number. A number the service does not know comes back as
+an empty object, the same answer the web trackers' API gives, so it is not found. Block pages,
+HTTP errors and malformed replies keep their own failure kinds. Recognition uses the same lookup.
 
 ## Numbers
 
-Lookups archived from Omniva's trackers in Estonia, Latvia and Lithuania show the numbers
-Omniva issues in the UPU S10 layout, ending `EE`: parcels starting `CC`, `CE` or `CF`, and
-letters and registered items such as `LL` and `RO`. Omniva's help pages give the `CE` layout
-for the return code a business client registers in advance. These stay with the generic postal
-carrier, as do the foreign UPU numbers the trackers also answer. The lookups also show Omniva's
-own parcel IDs: `JJEE` and seventeen digits, or `JJEE`, three letters and eleven digits, which
-`omniva-1` and `omniva-2` claim. The Lithuanian tracker also answered `ZA` and eight digits, a
-layout Omniva does not document, so no rule claims it.
+Omniva tracks UPU S10 items, its own ending `EE` and those of other posts sent to the Baltics,
+and its parcel ids: `JJEE` and seventeen digits, or `JJEE`, three letters and eleven digits. Its
+Lithuanian tracker also answered `ZA` and eight digits with a history, a layout Omniva does not
+document. The adapter takes these and treats anything else as invalid without a request.
+
+`omniva-1` and `omniva-2` claim the parcel ids. A code ending `EE` is Omniva's, but the issuer of
+an S10 code does not establish who delivers it, so detection keeps such codes with the generic
+postal carrier, and a low-confidence rule makes preflight ask Omniva about them. No rule claims
+the `ZA` layout.
+
+## Notes
+
+Each scan carries an event code from the trackers' dictionary and its English wording. The adapter
+maps the codes, cross-border items' UPU events among them, and keeps the code. A message to the
+recipient keeps the stage of the scan before it, and a delivery after a return started reaches
+the sender, so it reads as returned. The reply lists scans in no set order; they are sorted by
+clock. Clocks are UTC instants, which the trackers show in Tallinn time.
+
+A scan's site is kept by its English name, else its own, only when it is one of Omniva's or its
+partners' sites, such as a parcel machine, post office or terminal. Sender and recipient
+addresses, postcodes, internal workstation codes and the event parameters, such as notification
+channels and failure reasons, are dropped. The pickup point is the parcel machine or post office
+an item waits at, or was collected from, else the recipient's chosen one while it waits. A reply
+without scans is read from the item's state as a summary.
+
+## Limitations
+
+The service trims an old item's history to its delivery, or to nothing but the state, so such a
+history is marked truncated. The reply has no delivery estimate. Codes whose meaning for the
+delivery is unclear, such as a hold at a depot or a returns centre, are left without a stage.
 
 ## Links
 
-Omniva's self-service trackers open one parcel at `/track/{number}` on `minu.omniva.ee`,
-`mana.omniva.lv` and `mano.omniva.lt`; archived lookups also used their former `minuold`,
-`manaold` and `manoold` hosts. Older tracking pages on `omniva.ee` and `omniva.lt` took the
-number as `barcode`.
+The trackers open one item at `/track/{number}`; archived lookups also used their former
+`minuold`, `manaold` and `manoold` hosts. Older tracking pages on `omniva.ee` and `omniva.lt`
+took the number as `barcode`.
 
-## Testing
+## Live test
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Set `OMNIVA_TRACKING_NUMBER` outside the repository and run
+`npm run test:carriers:live -- carriers/omniva/adapter.live.test.ts`.
+Optionally set `OMNIVA_UNKNOWN_NUMBER` to check a number the service does not know.

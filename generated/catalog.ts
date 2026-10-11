@@ -7196,7 +7196,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Tallinn",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "omniva",
+      "recognitionRank": 64
     },
     "canaryUrl": "https://minu.omniva.ee/track",
     "trackingUrlTemplate": "https://minu.omniva.ee/track/{trackingNumber}",
@@ -7232,6 +7233,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^JJEE[A-Z]{3}\\d{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}EE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -8720,7 +8727,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nationex": [],
   "nova-poshta": ["nova-poshta-domestic"],
   "omgo": ["omgo-1"],
-  "omniva": ["omniva-1","omniva-2"],
+  "omniva": ["omniva-1","omniva-2","omniva-s10"],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1"],
   "paquetexpress": [],

@@ -133,7 +133,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows; the capture was not opened. Omniva documents no layout of ten characters starting ZA."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows, and an archived reply of the tracker's API holds its history. Omniva documents no layout of ten characters starting ZA, so no rule claims it."
     },
     {
       "number": "CE213390194EE",
@@ -165,13 +165,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
     },
     {
       "number": "LL002789060EE",
@@ -184,13 +184,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Latvian tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Omniva's own Latvian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
     },
     {
       "number": "CC404213205EE",
@@ -203,13 +203,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service answers for it; detection selects the generic postal carrier."
     },
     {
       "number": "JJEE51086300000202035",
@@ -222,13 +222,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "omniva",
         "confidence": "high"
       },
-      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows. Omniva's tracking service returns its history."
     }
   ]
 }

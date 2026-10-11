@@ -38,5 +38,11 @@
       "path": "^/tracking/([0-9A-Za-z]{10})/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "chit-chats-1",
+      "pattern": "^[A-Z][1-9](?=(?:\\d*[A-Z]){2})[0-9A-Z]{8}$",
+      "confidence": "low"
+    }
+  ]
 }

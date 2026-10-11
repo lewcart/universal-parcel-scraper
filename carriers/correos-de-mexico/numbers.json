@@ -57,6 +57,139 @@
         "confidence": "high"
       },
       "note": "A user comment on TrackingMore's Correos de México review page gives it as the tracking number."
+    },
+    {
+      "number": "RI542209425MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LA000735038MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "RI046330431MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LA000730061MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LA000734718MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LA000734854MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "RM122827652MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

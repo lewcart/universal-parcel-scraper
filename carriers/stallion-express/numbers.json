@@ -88,6 +88,163 @@
         ]
       },
       "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "SE261007KL7A",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE261007SU0C",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE261009WFHD",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE2610098783",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "amazon-logistics",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE261009MRHK",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE261005NOJG",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "SE261008HSUT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/stallionexpress/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "stallion-express",
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

@@ -44,5 +44,12 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "xpo-ltl-1",
+      "pattern": "^\\d{9}$",
+      "confidence": "low",
+      "checksum": "mod7"
+    }
+  ]
 }

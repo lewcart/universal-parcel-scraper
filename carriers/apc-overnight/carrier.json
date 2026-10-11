@@ -30,5 +30,12 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "apc-overnight-1",
+      "pattern": "^20[12]\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{14}$",
+      "confidence": "low",
+      "preferred": true
+    }
+  ]
 }

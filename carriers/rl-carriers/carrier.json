@@ -42,5 +42,12 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "rl-carriers-1",
+      "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
+      "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$",
+      "confidence": "low"
+    }
+  ]
 }

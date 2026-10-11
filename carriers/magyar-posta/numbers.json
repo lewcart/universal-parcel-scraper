@@ -39,6 +39,42 @@
         "confidence": "high"
       },
       "note": "ParcelsApp's Hungary Post page prints it as an EMS number; it is not described as a live shipment."
+    },
+    {
+      "number": "PNAW250000715",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.posta.hu/static/internet/download/MPLAPI_push_tracking_hu.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "MPL parcel",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Magyar Posta's MPL push-tracking API guide shows it as a parcel's PackageId in its example reply; it is not described as a live shipment."
+    },
+    {
+      "number": "PNAW250000728",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.posta.hu/static/internet/download/MPLAPI_push_tracking_hu.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "MPL parcel",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Magyar Posta's MPL push-tracking API guide shows it as a parcel's PackageId in its example reply; it is not described as a live shipment."
     }
   ]
 }

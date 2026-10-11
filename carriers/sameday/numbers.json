@@ -16,9 +16,208 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
       },
       "note": "A review on Sameday's Trustpilot page gives it as the AWB."
+    },
+    {
+      "number": "1SDY241067423",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/sameday-courier/php-sdk/blob/master/tests/Responses/SamedayGetAwbStatusHistoryResponseTest.php",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "A unit-test fixture in Sameday's own PHP SDK on GitHub uses it as the AWB of a status-history reply; test data, not a real shipment."
+    },
+    {
+      "number": "1ONBLN542403427",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1ONBLN542412765",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1UKT24539785752",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1ONBLN542027516",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1ONBLN542507899",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1ONBLN542425395",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1ONBLN542406400",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1UKT24542815740",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/sameday/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

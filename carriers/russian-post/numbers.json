@@ -2,62 +2,116 @@
   "carrier": "russian-post",
   "records": [
     {
-      "number": "80510917745766",
+      "number": "EA222769728RU",
       "role": "shipment",
-      "evidence": "public_shipment_report",
+      "evidence": "open_source_example",
       "source": {
-        "url": "https://gdeposylka.ru/courier/russian-post",
+        "url": "https://github.com/dukei/any-balance-providers/wiki/TutorialTrackingRussianPost",
         "access": "full_page"
       },
       "context": {
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "dpd",
-          "relais-colis",
-          "ciblex",
-          "hermes-de",
-          "seur",
-          "brt",
-          "delhivery",
-          "dhl-ecommerce-uk",
-          "dpd-de",
-          "dpd-uk"
-        ]
+        "carrier": "intl-post",
+        "confidence": "high"
       },
-      "note": "A user comment on gdeposylka's Russian Post page gives it as the parcel's tracking number."
+      "note": "An AnyBalance tutorial for Russian Post's tracker uses it as its worked example and says it was found published online."
     },
     {
-      "number": "40387973287255",
+      "number": "RA055625916RU",
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://gdeposylka.ru/courier/russian-post",
+        "url": "https://web.archive.org/web/20080822001211/http://www.russianpost.ru:80/resp_engine.aspx?Path=portal/ru/home/postal/trackingpo&BarCode=RA055625916RU",
+        "date": "2008-08-22",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up on Russian Post's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "RA049086449RU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20080205013341/http://www.russianpost.ru:80/resp_engine.aspx?Path=portal/ru/home/postal/trackingpo&BarCode=RA049086449RU",
+        "date": "2008-02-05",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up on Russian Post's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "LS013640807RU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/russian-post/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
         "access": "full_page"
       },
       "context": {
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "dpd",
-          "relais-colis",
-          "ciblex",
-          "hermes-de",
-          "seur",
-          "brt",
-          "delhivery",
-          "dhl-ecommerce-uk",
-          "dpd-de",
-          "dpd-uk"
-        ]
+        "carrier": "intl-post",
+        "confidence": "high"
       },
-      "note": "A user comment on gdeposylka's Russian Post page gives it as the tracking number."
+      "note": "ParcelPanel's Russian Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LS013640798RU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/russian-post/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Russian Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "LS013640784RU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/russian-post/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Russian Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

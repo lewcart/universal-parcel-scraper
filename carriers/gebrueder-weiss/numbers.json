@@ -19,6 +19,25 @@
         "confidence": "none"
       },
       "note": "Retino's help article for its Gebrüder Weiss connector gives it as an example number; it is not described as a live shipment."
+    },
+    {
+      "number": "579027961",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/gw-world/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "ParcelPanel's Gebrüder Weiss Germany page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

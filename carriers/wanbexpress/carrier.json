@@ -30,5 +30,11 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "wanbexpress-1",
+      "pattern": "^WNB[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
 }

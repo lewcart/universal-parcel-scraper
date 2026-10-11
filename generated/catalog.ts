@@ -2872,7 +2872,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|LTN|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -4778,7 +4778,13 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://apc.co.uk/",
     "trackingSearchUrl": "https://apc.co.uk/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^20[12]\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{14}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
   },
   "aras-kargo": {
     "displayName": "Aras Kargo",
@@ -5005,7 +5011,12 @@ export const CARRIER_CATALOG = {
         "path": "^/tracking/([0-9A-Za-z]{10})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z][1-9](?=(?:\\d*[A-Z]){2})[0-9A-Z]{8}$",
+        "confidence": "low"
+      }
+    ]
   },
   "cne": {
     "displayName": "CNE Express",
@@ -5153,7 +5164,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?:SML|MTN)\\d{7}$",
+        "pattern": "^(?:MRO|MTN|SMI|SML|XTO)\\d{7}$",
         "confidence": "low"
       }
     ]
@@ -6707,6 +6718,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{2}A\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^RWM\\d{9}$",
+        "confidence": "high"
       }
     ]
   },
@@ -7520,7 +7535,13 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
+        "confidence": "low",
+        "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$"
+      }
+    ]
   },
   "russian-post": {
     "displayName": "Russian Post",
@@ -7631,7 +7652,12 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://sameday.ro/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^1[A-Z]{3,5}\\d{9,11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "slovak-parcel-service": {
     "displayName": "Slovak Parcel Service",
@@ -7882,6 +7908,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^SE2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },
@@ -8026,7 +8057,12 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://www.wanbexpress.com/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^WNB[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   },
   "whistl": {
     "displayName": "Whistl",
@@ -8139,7 +8175,13 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{9}$",
+        "confidence": "low",
+        "checksum": "mod7"
+      }
+    ]
   },
   "xpressbees": {
     "displayName": "Xpressbees",
@@ -8572,14 +8614,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "abf-freight": [],
   "acs-courier": [],
   "allegro-one": ["allegro-one-1"],
-  "apc-overnight": [],
+  "apc-overnight": ["apc-overnight-1"],
   "aras-kargo": [],
   "box-now": [],
   "cargus": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],
   "ceska-posta": ["ceska-posta-1"],
-  "chit-chats": [],
+  "chit-chats": ["chit-chats-1"],
   "cne": ["cne-1"],
   "correos-de-mexico": [],
   "cyprus-post": [],
@@ -8623,7 +8665,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "jitsu": [],
-  "kuehne-nagel": ["kuehne-nagel-1"],
+  "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "latvijas-pasts": [],
   "lbc-express": ["lbc-domestic"],
   "lietuvos-pastas": ["lietuvos-pastas-1"],
@@ -8648,25 +8690,25 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ppl": [],
   "ptt": ["ptt-1"],
   "redpack": [],
-  "rl-carriers": [],
+  "rl-carriers": ["rl-carriers-1"],
   "russian-post": [],
   "sagawa": ["sagawa-waybill"],
   "saia": [],
-  "sameday": [],
+  "sameday": ["sameday-1"],
   "slovak-parcel-service": ["slovak-parcel-service-1"],
   "slovenska-posta": [],
   "speedpak": ["speedpak-1"],
   "speedy": [],
   "spx-ph": ["spx-ph-prefixed","spx-ph-shopee-express","spx-ph-domestic"],
-  "stallion-express": ["stallion-express-1"],
+  "stallion-express": ["stallion-express-1","stallion-express-2"],
   "trans-o-flex": [],
   "ubi-smart-parcel": [],
   "venipak": ["venipak-1"],
   "vinted-go": ["vinted-go-1"],
-  "wanbexpress": [],
+  "wanbexpress": ["wanbexpress-1"],
   "whistl": [],
   "xdp": ["xdp-1"],
-  "xpo-ltl": [],
+  "xpo-ltl": ["xpo-ltl-1"],
   "xpressbees": ["xpressbees-awb"],
   "yurtici-kargo": [],
   "zeleris": ["zeleris-1"],

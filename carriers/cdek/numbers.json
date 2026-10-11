@@ -128,6 +128,216 @@
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the shipment number."
+    },
+    {
+      "number": "10306217602",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "date": "2026-08-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the order number."
+    },
+    {
+      "number": "10279018867",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the order number, with its status."
+    },
+    {
+      "number": "10207037299",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "date": "2025-12-27",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the order number."
+    },
+    {
+      "number": "10161255952",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "date": "2025-10-02",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the delivery number."
+    },
+    {
+      "number": "10148860801",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "date": "2025-08-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "old-dominion",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the order number."
+    },
+    {
+      "number": "10000578773",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://crmindex.ru/services/cdek",
+        "date": "2024-06-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A review on crmindex.ru's CDEK page gives it as the CDEK waybill of an AliExpress parcel."
+    },
+    {
+      "number": "1153800108",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://parcelsapp.com/carriers/cdek",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "ParcelsApp's CDEK page gives it as an example of a ten-digit CDEK tracking number; it is not described as a live shipment."
+    },
+    {
+      "number": "1458812484",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/cdek/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "ParcelPanel's CDEK page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

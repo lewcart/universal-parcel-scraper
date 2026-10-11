@@ -1919,14 +1919,6 @@
     "reason": "J&T Cargo piece identifiers overlap the broad BRT and Yunda formats. Direct tracking must confirm the carrier."
   },
   {
-    "shape": "SML or MTN followed by seven digits",
-    "carriers": [
-      "australia-post",
-      "day-ross"
-    ],
-    "reason": "Australia Post's ten-character consignment rule takes any three letters and seven digits; Day & Ross's prefixes are low-confidence too, so the number stays a suggestion."
-  },
-  {
     "shape": "C, L or W followed by seven digits",
     "carriers": [
       "dx",
@@ -2093,5 +2085,47 @@
       "vinted-go"
     ],
     "reason": "DHL eCommerce, Evri and TNT accept any sixteen digits, so they also take Vinted Go's parcel numbers; all are low-confidence, so the number stays a suggestion."
+  },
+  {
+    "shape": "Twenty-two digits starting with a 20YYMMDD date",
+    "carriers": [
+      "apc-overnight",
+      "austrian-post",
+      "estafeta",
+      "usps"
+    ],
+    "reason": "APC Overnight waybills start with their booking date. The date lists APC Overnight first among the carriers that accept any twenty-two digits, and the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "MRO, MTN, SMI, SML or XTO followed by seven digits",
+    "carriers": [
+      "australia-post",
+      "day-ross"
+    ],
+    "reason": "Australia Post's ten-character consignment rule takes any three letters and seven digits; Day & Ross's prefixes are low-confidence too, so the number stays a suggestion."
+  },
+  {
+    "shape": "RWM9{9}",
+    "carriers": [
+      "colis-prive",
+      "kuehne-nagel"
+    ],
+    "reason": "Kuehne+Nagel's RWM road numbers overlap Colis Privé's broad twelve-character rule; the specific Kuehne+Nagel rule decides, and Purolator excludes the RWM prefix."
+  },
+  {
+    "shape": "SE, a six-digit date and four letters or digits with at least one letter",
+    "carriers": [
+      "colis-prive",
+      "stallion-express"
+    ],
+    "reason": "Stallion Express's SE references have twelve characters, which Colis Privé's rule for any twelve letters or digits also takes. Stallion's rule follows the SE and date layout, so it is listed first, and both stay low-confidence."
+  },
+  {
+    "shape": "Nine digits that pass the mod 7 check",
+    "carriers": [
+      "tnt",
+      "xpo-ltl"
+    ],
+    "reason": "XPO's PRO numbers end in the remainder of their first eight digits divided by seven, a check TNT's nine-digit consignment numbers can also carry. Both rules are low-confidence, so the number stays a suggestion, TNT first."
   }
 ]

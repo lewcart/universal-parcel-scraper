@@ -31,5 +31,11 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "sameday-1",
+      "pattern": "^1[A-Z]{3,5}\\d{9,11}$",
+      "confidence": "low"
+    }
+  ]
 }

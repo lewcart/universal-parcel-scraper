@@ -144,7 +144,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "tnt"
+          "tnt",
+          "xpo-ltl"
         ]
       },
       "note": "Official Appendix I checksum example, not a real shipment."

@@ -52,6 +52,58 @@
         ]
       },
       "note": "Looked up on Early Bird's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "00373402216232626881",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/earlybird/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "swiss-post-cargo",
+          "postnord",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "ParcelPanel's Early Bird page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "00373402216215907075",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/earlybird/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "swiss-post-cargo",
+          "postnord",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "ParcelPanel's Early Bird page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

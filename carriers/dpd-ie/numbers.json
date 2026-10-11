@@ -45,7 +45,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "tnt"
+          "tnt",
+          "xpo-ltl"
         ]
       },
       "note": "Looked up on DPD Ireland's own tracker, as an archived address shows; the capture was not opened."

@@ -18,6 +18,25 @@
         "confidence": "high"
       },
       "note": "OrderTracker's Serbia Post page gives it as the example of an EMS item; it is not described as a live shipment."
+    },
+    {
+      "number": "LX000885412RS",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/serbia-post/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Serbia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

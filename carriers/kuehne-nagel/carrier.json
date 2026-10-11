@@ -52,6 +52,11 @@
       "id": "kuehne-nagel-1",
       "pattern": "^\\d{2}A\\d{9}$",
       "confidence": "low"
+    },
+    {
+      "id": "kuehne-nagel-2",
+      "pattern": "^RWM\\d{9}$",
+      "confidence": "high"
     }
   ]
 }

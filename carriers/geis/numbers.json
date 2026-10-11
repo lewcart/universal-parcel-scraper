@@ -108,6 +108,139 @@
         ]
       },
       "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2555000816708",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250930024553/https://www.geis-group.cz/en/detail-of-cargo?packNumber=2555000816708",
+        "date": "2025-09-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1502200028227",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260603042422/https://www.geis-group.sk/sk/detail-zasielky?packNumber=1502200028227",
+        "date": "2026-06-03",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "la-poste",
+          "ukrposhta",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1502200028318",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260627135420/https://www.geis-group.sk/sk/detail-zasielky?packNumber=1502200028318",
+        "date": "2026-06-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "15078164077",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20200407221237/https://www.geis-group.sk/sk/sledovanie-zasielok?p=15078164077",
+        "date": "2020-04-07",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2584500021846",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/geis-cz/",
+        "date": "2026-10-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "ParcelPanel's Geis CZ page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
     }
   ]
 }

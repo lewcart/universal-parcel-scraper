@@ -33,7 +33,7 @@
   "detection": [
     {
       "id": "day-ross-1",
-      "pattern": "^(?:SML|MTN)\\d{7}$",
+      "pattern": "^(?:MRO|MTN|SMI|SML|XTO)\\d{7}$",
       "confidence": "low"
     }
   ]

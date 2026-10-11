@@ -19,16 +19,44 @@
   "timezone": "Europe/Bucharest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sameday",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 53
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
+    "searchUrl": "https://sameday.ro/",
     "canaryUrl": "https://sameday.ro/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "provider_code"
+    ],
+    "discarded": [
+      "event_details"
+    ],
+    "unavailable": [
+      "eta",
+      "pickup_point",
+      "service_name"
+    ]
   },
   "links": [],
   "detection": [

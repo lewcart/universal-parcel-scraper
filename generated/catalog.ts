@@ -7654,9 +7654,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sameday",
+      "recognitionRank": 53
     },
     "canaryUrl": "https://sameday.ro/",
+    "trackingSearchUrl": "https://sameday.ro/",
     "linkRules": [],
     "detectionRules": [
       {

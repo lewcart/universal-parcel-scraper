@@ -1,12 +1,60 @@
 # Sameday
 
-Sameday parcels use enabled universal providers. There is no dedicated adapter.
+Tracks Sameday AWBs and their parcel numbers through the JSON service behind the tracker on
+the official country sites. No key, cookie, session or browser is needed.
 
-## Numbers
+## Scope
 
-A Trustpilot review gives a Sameday AWB of a digit, three letters and ten digits. One sample
-does not establish a rule.
+Sameday runs three networks, each with its own site and API host: `sameday.ro`, `sameday.hu`
+and `sameday.bg`. Each host knows only its own network's shipments. The adapter asks them in
+that order and keeps the first history. Romanian parcels are confirmed live. The Hungarian and
+Bulgarian hosts answer the same request in the same shape and return the same not-found
+reply, but no Hungarian or Bulgarian history has been checked.
 
-## Testing
+## How it works
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+`direct`: `GET https://api.sameday.<ro|hu|bg>/api/public/awb/<number>/awb-history?_locale=en`,
+the request the site's tracker makes, one country after another. A JSON 404 is that
+country's not-found. Only a not-found from all three is a missing parcel. A history from
+any host is the answer even when another host failed; otherwise the first failure stands.
+HTML, 403 and 429 replies and malformed JSON are never read as not found.
+
+## Notes
+
+- The number is checked the way the site checks it: 5 to 28 letters and digits, a leading
+  `#` dropped. A number without a digit is refused before any request.
+- The reply holds the AWB's own history, newest first, and each parcel's scans, oldest
+  first. A parcel number (the AWB and a three-digit suffix) is answered with the whole AWB:
+  the adapter reads that parcel's scans and reports the AWB as `canonical_tracking_number`.
+  An AWB with one parcel reads that parcel's scans, as the site shows them. An AWB with
+  several reads the AWB's history.
+- Clocks carry their offset. `provider_code` is the state, a slash and the status,
+  `statusStateId/statusId`. The stage comes from the state. The public reply does not list
+  the states; the official Android app's state enum names them, and its labels give their
+  meaning.
+- Redirection and postponement instructions can come before the pickup and say nothing about
+  where the parcel is: they keep the stage of the scan before them. A forward movement on the
+  return leg, the scan's `inReturn` flag, is filed under returned. The AWB's `isReturn` flag
+  applies to its newest scan, as the site reads it. Statuses 46 (returned) and 74 (refused by
+  the recipient) take their stage under any state. A state the map does not know goes to the
+  shared wording rules, first with the scan's wording, then with the state's.
+- `delivered_at` is the time of the newest delivery when the parcel's stage is delivered.
+- `statusMap` in [status.ts](status.ts) answers the app's review queue by state. Forward
+  states depend on the return flag and unlisted states on their wording, so it does not
+  answer them; the instructions are gaps on purpose.
+- The site replaces the wording of some scans with its own text for the scan's reason. The
+  adapter keeps the reply's wording and drops the reason, the next depot (`transitLocation`)
+  and the creator field.
+
+## Limitations
+
+There is no estimated delivery, pickup point name or service name in the reply. The Romanian
+site's result page, `sameday.ro/status-colet/?awb=<number>`, answers automated browsers with a
+Cloudflare check, so the catalog links only its home page tracker. The API hosts have no such
+check.
+
+## Live test
+
+Set `SAMEDAY_TRACKING_NUMBER` outside the repository and run
+`npm run test:carriers:live -- carriers/sameday/adapter.live.test.ts`.
+Optionally set `SAMEDAY_UNKNOWN_NUMBER` to check that a number no country knows is not found.

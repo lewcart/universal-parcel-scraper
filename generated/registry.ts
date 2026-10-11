@@ -59,6 +59,7 @@ import { adapter as ems } from '../carriers/ems/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
 import { adapter as evri } from '../carriers/evri/adapter.js';
 import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
+import { adapter as expressOne } from '../carriers/express-one/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
@@ -209,6 +210,7 @@ export const REGISTRY: RegistryDefinition = {
     "estafeta": estafeta,
     "evri": evri,
     "evri-uk": evriUk,
+    "express-one": expressOne,
     "fan-courier": fanCourier,
     "fedex": fedex,
     "four-px": fourPx,
@@ -377,7 +379,7 @@ export const REGISTRY: RegistryDefinition = {
     "estes": "universal",
     "evri": "evri",
     "evri-uk": "evri-uk",
-    "express-one": "universal",
+    "express-one": "express-one",
     "fan-courier": "fan-courier",
     "fedex": "fedex",
     "four-px": "four-px",

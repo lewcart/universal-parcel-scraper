@@ -6187,7 +6187,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Budapest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "express-one",
+      "recognitionRank": 780,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.expressone.hu/",
     "trackingUrlTemplate": "https://tracking.expressone.hu/?plc_number={trackingNumber}",

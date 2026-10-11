@@ -483,6 +483,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mng-kargo', number: '900000000001',
     route: /^https:\/\/www\.dhlecommerce\.com\.tr\/gonderitakip(?:[?#]|$)/,
     marker: /Gönderim Nerede\?|Gönderi Takip Numarası ile Sorgulama/, forwarding: 'none' },
+  // The server renders the page; an unknown parcel ID comes back in the form under a notice.
+  { carrier: 'express-one', number: '999999999999000000000000',
+    route: /^https:\/\/tracking\.expressone\.hu\/\?plc_number=999999999999000000000000$/,
+    marker: /Company ID \(5 digits\)|Cégkód \(5 jegyű\)/,
+    shipmentNotFound: { status: 404, marker: /The requested package is currently unavailable in our system|A keresett csomag jelenleg nem elérhető/ } },
 ];
 
 /**

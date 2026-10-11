@@ -26,6 +26,10 @@ time. Only
 visible office labels are retained from history rows; PointCorner map addresses
 and coordinates are excluded.
 
+The adapter queries www.mrw.es, which words statuses in Spanish. www.mrw.pt renders
+the same history in Portuguese; the status map reads both, so relayed Portuguese
+wording keeps its stage.
+
 ## Testing
 
 Set `MRW_TRACKING_NUMBER` to an authorized reference with history. Optionally

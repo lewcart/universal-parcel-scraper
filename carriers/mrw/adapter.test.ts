@@ -100,6 +100,20 @@ describe('MRW anonymous tracking', () => {
     expect(result.events?.[0]).toMatchObject({ description: 'Entrega concertada', stage: 'in_transit' });
   });
 
+  it('reads the Portuguese wordings www.mrw.pt renders', () => {
+    const portuguese = fixture('history').replace(/Envío entregado/g, 'Envio entregue')
+      .replace('Depositado en PointCorner destino', 'Depositado no PointCorner destino')
+      .replace('Destinatario ausente o cerrado', 'Destinatário ausente ou fechado')
+      .replace('En tránsito', 'Em tránsito').replace('Pendiente de recoger', 'Pendente de recolher');
+    const result = parseMrwHistory(portuguese, NUMBER, { ...summary(), status: 'Envio entregue' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Envio entregue' });
+    expect(result.events?.map(event => [event.description, event.stage])).toEqual([['Envio entregue', 'delivered'],
+      ['Depositado no PointCorner destino', 'ready_for_pickup'], ['Destinatário ausente ou fechado', 'failed_attempt'],
+      ['Em tránsito', 'in_transit'], ['Pendente de recolher', 'registered']]);
+    expect(classifyMrwStatus('Em trânsito')?.stage).toBe('in_transit');
+    expect(classifyMrwStatus('ACORDADA PRÓXIMA ENTREGA')?.stage).toBe('in_transit');
+  });
+
   it('rejects summary/history disagreement instead of promoting a stale terminal result', () => {
     for (const changed of [{ status: 'En tránsito' }, { date: '11/09/2026' }, { hour: '19:30' }]) {
       expect(() => parseMrwHistory(fixture('history'), NUMBER, { ...summary(), ...changed }))

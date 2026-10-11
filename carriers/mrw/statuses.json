@@ -9,6 +9,15 @@
     { "wording": "Entrega concertada", "language": "es", "stage": "in_transit", "confirmedBy": "live" },
     { "wording": "Depositado en punto MRW", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live" },
     { "wording": "Depositado en PointCorner destino", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live" },
-    { "wording": "Envío entregado", "language": "es", "stage": "delivered", "confirmedBy": "live" }
+    { "wording": "Envío entregado", "language": "es", "stage": "delivered", "confirmedBy": "live" },
+    { "wording": "Pendente de recolher", "language": "pt", "stage": "registered", "confirmedBy": "live" },
+    { "wording": "Envio recolhido na origem", "language": "pt", "stage": "accepted", "confirmedBy": "live" },
+    { "wording": "Em tránsito", "language": "pt", "stage": "in_transit", "confirmedBy": "live" },
+    { "wording": "Envio em distribuição", "language": "pt", "stage": "out_for_delivery", "confirmedBy": "live" },
+    { "wording": "Destinatário ausente ou fechado", "language": "pt", "stage": "failed_attempt", "confirmedBy": "live" },
+    { "wording": "Acordada próxima entrega", "language": "pt", "stage": "in_transit", "confirmedBy": "live" },
+    { "wording": "Depositado em MRW Point", "language": "pt", "stage": "ready_for_pickup", "confirmedBy": "live" },
+    { "wording": "Depositado no PointCorner destino", "language": "pt", "stage": "ready_for_pickup", "confirmedBy": "live" },
+    { "wording": "Envio entregue", "language": "pt", "stage": "delivered", "confirmedBy": "live" }
   ]
 }

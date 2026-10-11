@@ -13,6 +13,9 @@ Parcelforce numbers, so tracking runs through
   offer it.
 - Some domestic services, such as express48, use S10 ranges that read as
   Royal Mail. They track through the same tracker.
+- Royal Mail's tracking page is also Parcelforce's, so a `royalmail.com` link
+  with a number only Parcelforce issues names Parcelforce. A `parcelforce.com`
+  link names Parcelforce whatever its number.
 - Parcelforce lists 9, 11, 13, 14, 16 and 21-character numbers. The 16 and
   21-character ones are Royal Mail's domestic references; no 11-character
   number has been seen.

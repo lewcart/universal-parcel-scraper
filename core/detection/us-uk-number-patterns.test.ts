@@ -177,6 +177,25 @@ describe('JJD licence plates', () => {
   });
 });
 
+describe('Royal Mail and Parcelforce links', () => {
+  it('names Parcelforce for its numbers on Royal Mail\'s tracking page, which is also Parcelforce\'s', () => {
+    for (const number of ['CP000000005GB', 'EA000000005GB', 'PBZZ0000000001']) {
+      expect(parseTrackingInput(`https://www.royalmail.com/portal/rm/track?trackNumber=${number}`))
+        .toMatchObject({ trackingNumber: number, carrier: 'parcelforce', confidence: 'high', source: 'link' });
+    }
+  });
+
+  it('keeps Royal Mail for its own, foreign and unrecognized numbers there, and Parcelforce on its own links', () => {
+    for (const number of ['AA000000005GB', 'RR123456785FR', '0000000001']) {
+      expect(parseTrackingInput(`https://www.royalmail.com/portal/rm/track?trackNumber=${number}`))
+        .toMatchObject({ trackingNumber: number, carrier: 'royal-mail', source: 'link' });
+    }
+    // Some Parcelforce services use S10 ranges that read as Royal Mail.
+    expect(parseTrackingInput('https://www.parcelforce.com/track-trace?trackNumber=AA000000005GB'))
+      .toMatchObject({ trackingNumber: 'AA000000005GB', carrier: 'parcelforce', source: 'link' });
+  });
+});
+
 describe('UK fourteen-digit parcel numbers', () => {
   // Synthetic numbers in the ranges the carriers' own tracking pages show.
   it.each([['15500000000001', 'dpd-uk'], ['15500000000001M', 'dpd-uk'], ['60120000000000', 'dhl-ecommerce-uk']])(

@@ -3,7 +3,8 @@
 Swiss Post's logistics arm, now trading as Swiss Post Cargo. Its tracker moved
 from `tracking.postlogistics.ch` to `apv.swisspost-cargo.com`, and it is tracked
 through the keyless endpoint behind it. The old hosts answer 404; their links
-still identify this carrier. It accepts barcodes and customer references. A
+still identify this carrier, as does a printed reference in a link to the new
+tracker. It accepts barcodes and customer references. A
 printed eight-digit reference with a dashed three-digit suffix identifies this
 carrier. Compact 11-digit numbers are ambiguous; carrier recognition checks
 them when tracking has no confirmed carrier. Other identifier shapes need the

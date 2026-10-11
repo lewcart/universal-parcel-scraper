@@ -7,6 +7,8 @@
  * What it is not: it never fetches the pasted URL and performs no provider I/O;
  * every decision comes from the string and the catalog.
  */
+import type { CarrierId } from '../../generated/catalog.js';
+import { CARRIER_DEFINITIONS } from '../catalog/definitions.js';
 import { TRACKING_LINK_RULES, matchesDomain, type TrackingLinkRule } from '../catalog/linkRules.js';
 import { keywordNumberInText, recognizedNumberInText } from './candidates.js';
 import { detectCarrierMatch } from './detect.js';
@@ -38,6 +40,14 @@ function numberFromRule(url: URL, rule: TrackingLinkRule): string | undefined {
   return validTrackingNumber(candidate) ? candidate : undefined;
 }
 
+/** The rule's link covers the host of the carrier's own tracking page. */
+function coversTrackingPage(rule: TrackingLinkRule, carrier: CarrierId): boolean {
+  const template = CARRIER_DEFINITIONS[carrier].trackingUrlTemplate;
+  if (!template) return false;
+  const host = new URL(template).hostname;
+  return rule.domains.some((domain) => matchesDomain(host, domain));
+}
+
 function trackingMatch(
   trackingNumber: string,
   source: TrackingInputMatch['source'],
@@ -47,7 +57,9 @@ function trackingMatch(
 
 /**
  * Pull a tracking number and carrier out of a number, carrier URL, or pasted
- * shipping message. Number shape disambiguates links shared by multiple brands.
+ * shipping message. Number shape disambiguates links shared by multiple brands,
+ * and a link to the host of another carrier's tracking page names that carrier
+ * for a number only it issues.
  */
 export function parseTrackingInput(raw: string): TrackingInputMatch {
   const input = raw.trim();
@@ -86,11 +98,15 @@ export function parseTrackingInput(raw: string): TrackingInputMatch {
           const rule = detected.confidence === 'high'
             ? rules.find((candidate) => candidate.carrier === detected.carrier) ?? firstRule
             : suggestedCarriers.size === 1 ? suggestedRules[0]! : firstRule;
+          // A host that is also the number's carrier's tracking page, as Royal Mail's is Parcelforce's, names that carrier.
+          const carrier = detected.confidence === 'high' && coversTrackingPage(rule, detected.carrier)
+            ? detected.carrier
+            : rule.carrier;
           return {
             trackingNumber,
-            carrier: rule.carrier,
+            carrier,
             confidence: 'high',
-            candidates: [rule.carrier],
+            candidates: [carrier],
             preferred: [],
             trackingUrl: rule.keepsCapabilityUrl ? trackingUrl : undefined,
             source: 'link',

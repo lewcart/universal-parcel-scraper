@@ -226,6 +226,9 @@ describe('the detection engine', () => {
     expect(detectCarrier('12345678001')).not.toBe('postlogistics');
     expect(parseTrackingInput('https://tracking.postlogistics.ch/public/trackandtrace/12345678-001'))
       .toMatchObject({ trackingNumber: '12345678-001', carrier: 'postlogistics', source: 'link' });
+    // Its tracking page moved to Swiss Post Cargo's tracker, whose links keep the reference with it.
+    expect(parseTrackingInput('https://apv.swisspost-cargo.com/public/trackandtrace/12345678-001'))
+      .toMatchObject({ trackingNumber: '12345678-001', carrier: 'postlogistics', source: 'link' });
     expect(formatTrackingNumber('12345678001', 'postlogistics')).toBe('12345678-001');
     expect(formatTrackingNumber('12345678001')).toBe('12345678001');
   });

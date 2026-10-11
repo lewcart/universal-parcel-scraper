@@ -30,8 +30,8 @@
     "eta"
   ],
   "portal": {
-    "url": "https://tools.usps.com/go/TrackConfirmAction?tLabels={trackingNumber}",
-    "searchUrl": "https://tools.usps.com/go/TrackConfirmAction",
+    "url": "https://tools.usps.com/tracking/{trackingNumber}",
+    "searchUrl": "https://tools.usps.com/tracking/",
     "canaryUrl": "https://www.usps.com/",
     "shows": [
       "status",
@@ -60,7 +60,8 @@
       ],
       "params": [
         "tLabels"
-      ]
+      ],
+      "path": "^/tracking/(\\d{20}|\\d{22}|\\d{26}|[A-Z]{2}\\d{9}[A-Z]{2})/?$"
     }
   ],
   "detection": [

@@ -21,7 +21,7 @@ describe('USPS whole package barcodes', () => {
       const raw = `420${zip}${PIC}`;
       expect(uspsPackageIdentifier(raw)).toBe(PIC);
       expect(normalizeUSPSNumber(raw)).toBe(PIC);
-      expect(new URL(uspsTrackingUrl(raw)).searchParams.get('tLabels')).toBe(PIC);
+      expect(uspsTrackingUrl(raw)).toBe(`https://tools.usps.com/tracking/${PIC}`);
     }
   });
 
@@ -110,7 +110,7 @@ describe('USPS whole package barcodes', () => {
     expect(raw).toHaveLength(38);
     expect(uspsPackageIdentifier(raw)).toBe(PIC26);
     expect(normalizeUSPSNumber(raw)).toBe(PIC26);
-    expect(new URL(uspsTrackingUrl(raw)).searchParams.get('tLabels')).toBe(PIC26);
+    expect(uspsTrackingUrl(raw)).toBe(`https://tools.usps.com/tracking/${PIC26}`);
     expect(uspsPackageIdentifier(`420000000000${PIC26.slice(0, -1)}5`)).toBeNull();
   });
 

@@ -2704,8 +2704,8 @@ export const CARRIER_CATALOG = {
       "browserRecognitionRank": 65
     },
     "canaryUrl": "https://www.usps.com/",
-    "trackingUrlTemplate": "https://tools.usps.com/go/TrackConfirmAction?tLabels={trackingNumber}",
-    "trackingSearchUrl": "https://tools.usps.com/go/TrackConfirmAction",
+    "trackingUrlTemplate": "https://tools.usps.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://tools.usps.com/tracking/",
     "linkRules": [
       {
         "domains": [
@@ -2714,7 +2714,8 @@ export const CARRIER_CATALOG = {
         ],
         "params": [
           "tLabels"
-        ]
+        ],
+        "path": "^/tracking/(\\d{20}|\\d{22}|\\d{26}|[A-Z]{2}\\d{9}[A-Z]{2})/?$"
       }
     ],
     "detectionRules": [

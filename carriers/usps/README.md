@@ -32,7 +32,7 @@ fails at once with `ChallengeError('USPS challenged direct tracking; configure
 FLARESOLVERR_URL for browser fallback')`.
 
 1. `trawl`: the browser service loads
-   `https://tools.usps.com/go/TrackConfirmAction?tLabels=…`, runs the interstitial check, and
+   `https://tools.usps.com/tracking/…`, runs the interstitial check, and
    the rendered DOM is parsed. There is no tracking XHR to capture: the page carries its data
    as HTML.
 
@@ -65,6 +65,8 @@ Parsing, in order:
 - "Available for Pickup" and "Arrived at Post Office" are stage `ready_for_pickup` but result
   status `out_for_delivery`.
 - There is no direct step: it would only burn the budget on a 403.
+- The package path is loaded directly because the legacy query route can return only
+  the global header. Pasted legacy query links remain supported.
 
 ## Mobile API leads
 

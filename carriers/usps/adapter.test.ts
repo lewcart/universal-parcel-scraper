@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { StepRecorder } from '../../core/telemetry/index.js';
+import { parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeUSPSNumber, parseUSPSTrackingHtml, USPSTracker, uspsTrackingUrl } from './adapter.js';
 import { uspsStage, uspsStatus } from './status.js';
 
@@ -36,7 +37,7 @@ describe('USPS international numbers', () => {
     const raw = `lz 123.456-785 ${country.toLowerCase()}`;
     const expected = `LZ123456785${country}`;
     expect(normalizeUSPSNumber(raw)).toBe(expected);
-    expect(new URL(uspsTrackingUrl(raw)).searchParams.get('tLabels')).toBe(expected);
+    expect(uspsTrackingUrl(raw)).toBe(`https://tools.usps.com/tracking/${expected}`);
   });
 
   it.each(['LZ123456789CN', 'LZ123456789US', 'LZ12345678CN', 'LZ123456785C'])(
@@ -193,7 +194,7 @@ describe('USPS lookup steps', () => {
     expect(result.events?.length ?? 0).toBeGreaterThan(1);
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
-      url: uspsTrackingUrl(DELIVERED_NUMBER),
+      url: `https://tools.usps.com/tracking/${DELIVERED_NUMBER}`,
       skipHttp: true,
       maxTier: 3,
     });
@@ -239,6 +240,19 @@ describe('USPS lookup steps', () => {
   });
 
   it('builds the canonical tracking URL', () => {
-    expect(new URL(uspsTrackingUrl(DELIVERED_NUMBER)).searchParams.get('tLabels')).toBe(DELIVERED_NUMBER);
+    expect(uspsTrackingUrl(DELIVERED_NUMBER)).toBe(`https://tools.usps.com/tracking/${DELIVERED_NUMBER}`);
+  });
+
+  it.each([DELIVERED_NUMBER, '92000000000123456789012344', 'LZ123456785CN'])(
+    'recognizes current and legacy links for the whole identifier %s', (number) => {
+      for (const url of [uspsTrackingUrl(number), `${uspsTrackingUrl(number)}/`,
+        `https://tools.usps.com/go/TrackConfirmAction?tLabels=${number}`]) {
+        expect(parseTrackingInput(url)).toMatchObject({ trackingNumber: number, carrier: 'usps', confidence: 'high', source: 'link' });
+      }
+    },
+  );
+
+  it('does not claim a partial identifier in the tracking path', () => {
+    expect(parseTrackingInput(`https://tools.usps.com/tracking/${DELIVERED_NUMBER}EXTRA`).carrier).not.toBe('usps');
   });
 });

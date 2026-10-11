@@ -15,21 +15,12 @@ import { uspsStage, uspsStatus } from './status.js';
 /**
  * USPS, through the server-rendered tracking page.
  *
- * The page at `go/TrackConfirmAction?tLabels=` carries the verdict, the
- * status and the history in its own HTML: no tracking XHR exists to capture.
- * Plain HTTP probes returned 403. Browser checks on 2026-09-22 first returned
- * a challenge shell, then succeeded with matching shipment timelines. Access
- * can vary by session. The lookup has a single
- * step: the private browser service loads the page, and the rendered DOM is
- * parsed. Nothing is ever replayed over plain HTTP.
- *
- * Markup provenance: the live page shell (`.track-bar-container`,
- * `#trackingNum`, `.latest-update-banner-wrapper .banner-header`,
- * `.current-tracking-status-wrapper`), inspected 2026-09-20. Positive lookups
- * on 2026-09-22 use `.tb-step` timeline cards, including collapsed history.
- * The older table-shaped fixture remains a parsing fallback.
+ * The `/tracking/{number}` page carries the verdict and collapsed history
+ * in its HTML. The legacy query route can return only the global header,
+ * so load the package path directly. The browser handles verification;
+ * nothing is replayed over plain HTTP.
  */
-const TRACKING_BASE = 'https://tools.usps.com/go/TrackConfirmAction';
+const TRACKING_BASE = 'https://tools.usps.com/tracking/';
 const MAX_BYTES = 10_000_000;
 const DEFAULT_TIMEOUT_MS = 90_000;
 const MAX_EVENTS_TO_RETURN = 100;
@@ -52,9 +43,7 @@ export function normalizeUSPSNumber(raw: string): string {
 }
 
 export function uspsTrackingUrl(trackingNumber: string): string {
-  const url = new URL(TRACKING_BASE);
-  url.searchParams.set('tLabels', normalizeUSPSNumber(trackingNumber));
-  return url.toString();
+  return new URL(normalizeUSPSNumber(trackingNumber), TRACKING_BASE).toString();
 }
 
 const MONTHS = '(January|February|March|April|May|June|July|August|September|October|November|December)';

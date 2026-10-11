@@ -385,6 +385,205 @@
         "confidence": "high"
       },
       "note": "Archived lookup on the carrier's tracking link, which showed it delivered; the tracker no longer answers for it."
+    },
+    {
+      "number": "02695F393326",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-atraso-na-entrega-e-falta-de-informacao-sobre-encomenda-163605126",
+        "access": "full_page",
+        "date": "2026-10-02",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint naming MRW. MRW's tracker on www.mrw.pt returned its history in Portuguese, from a Spanish platform to a Portuguese delivery office; www.mrw.es returned the same rows in Spanish."
+    },
+    {
+      "number": "02680j313623",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-atraso-na-entrega-de-encomenda-e-dificuldade-de-contacto-numero-de-envio-02680j313623-162724226",
+        "access": "full_page",
+        "date": "2026-09-17",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint quoting the number in lower case. MRW's tracker on www.mrw.pt returned its history in Portuguese, ending at a Portuguese delivery office."
+    },
+    {
+      "number": "04316F631075",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-atraso-na-entrega-de-encomenda-e-falta-de-informacao-4-161417026",
+        "access": "full_page",
+        "date": "2026-08-26",
+        "dateKind": "comment"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Quoted in the complainant's follow-up on a Portal da Queixa complaint about MRW. MRW's tracker on www.mrw.pt returned a Portuguese history that ends returned to sender after a failed delivery in Portugal."
+    },
+    {
+      "number": "01613j353188",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-atraso-na-entrega-ou-sem-paradeiro-161254526",
+        "access": "full_page",
+        "date": "2026-08-26",
+        "dateKind": "comment"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Quoted in lower case in the complainant's follow-up on a Portal da Queixa complaint about MRW. MRW's tracker on www.mrw.pt returned its history in Portuguese, from a merchant's origin office to a Portuguese delivery office."
+    },
+    {
+      "number": "02680J332288",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-atraso-prolongado-na-entrega-de-encomenda-e-falta-de-atualizacao-do-estado-162929826",
+        "access": "full_page",
+        "date": "2026-09-21",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint naming MRW. MRW's tracker on www.mrw.pt returned its history in Portuguese, including a PointCorner deposit in Portugal."
+    },
+    {
+      "number": "08420F316215",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-entrega-de-encomenda-atrasada-e-falta-de-esclarecimentos-163001326",
+        "access": "full_page",
+        "date": "2026-09-22",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint naming MRW; the number starts with a Portuguese office code. MRW's tracker on www.mrw.pt returned its history in Portuguese, including an incomplete-address incident."
+    },
+    {
+      "number": "08080f060880",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-falta-de-aviso-previo-na-entrega-encomenda-mrw-08080f060880-160703126",
+        "access": "full_page",
+        "date": "2026-08-12",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint quoting the number in lower case; it starts with a Portuguese office code. MRW's tracker on www.mrw.pt returned a domestic Portuguese history in Portuguese, with a breakdown of each parcel's scans under some rows."
+    },
+    {
+      "number": "02692T001203",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-erro-na-morada-associada-a-entrega-161817826",
+        "access": "full_page",
+        "date": "2026-09-01",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint naming MRW; T series. MRW's tracker on www.mrw.pt returned a Portuguese history that ends returned to sender after an incomplete-address incident."
+    },
+    {
+      "number": "02692S954563",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/mrw/complaints/mrw-registo-indevido-de-ausencia-na-entrega-de-encomenda-161100726",
+        "access": "full_page",
+        "date": "2026-08-19",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "reported_shipment"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Portal da Queixa complaint naming MRW. MRW's tracker on www.mrw.pt returned its history in Portuguese, from a Spanish origin office to a Portuguese delivery office."
+    },
+    {
+      "number": "02692I374753",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260325153626/https://www.mrw.pt/seguimiento/track.asp?envio=02692I374753",
+        "access": "full_page",
+        "date": "2026-03-25",
+        "dateKind": "capture"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "mrw",
+        "confidence": "high"
+      },
+      "note": "Archived lookup on MRW Portugal's tracking link; MRW's tracker on www.mrw.pt returned its current status in Portuguese without a history."
     }
   ]
 }

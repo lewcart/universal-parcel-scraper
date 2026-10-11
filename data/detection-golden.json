@@ -2279,6 +2279,14 @@
     ]
   },
   {
+    "input": "01613j353188",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
     "input": "0162534770",
     "carrier": "unknown",
     "confidence": "low",
@@ -2621,6 +2629,30 @@
     ]
   },
   {
+    "input": "02680J332288",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "02680j313623",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "02692I374753",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
     "input": "02692M027981",
     "carrier": "mrw",
     "confidence": "high",
@@ -2638,6 +2670,30 @@
   },
   {
     "input": "02692S094204",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "02692S954563",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "02692T001203",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "02695F393326",
     "carrier": "mrw",
     "confidence": "high",
     "candidates": [
@@ -3019,6 +3075,14 @@
   },
   {
     "input": "04316F377803",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
+    "input": "04316F631075",
     "carrier": "mrw",
     "confidence": "high",
     "candidates": [
@@ -3708,6 +3772,14 @@
     ]
   },
   {
+    "input": "08080f060880",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
+    ]
+  },
+  {
     "input": "081730000038942441",
     "carrier": "unknown",
     "confidence": "low",
@@ -3807,6 +3879,14 @@
     "confidence": "high",
     "candidates": [
       "nacex"
+    ]
+  },
+  {
+    "input": "08420F316215",
+    "carrier": "mrw",
+    "confidence": "high",
+    "candidates": [
+      "mrw"
     ]
   },
   {

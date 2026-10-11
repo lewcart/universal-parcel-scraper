@@ -396,6 +396,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/foxpost\.hu\/csomagkovetes\/\?/,
     marker: /Csomagkövetés/,
     forwarding: { notFound: /A megadott csomag azonosító nem található a rendszerünkben/ } },
+  // A number the legacy tracker does not know stays on the lookup page with its notice alone.
+  { carrier: 'aras-kargo', number: '9900000000001',
+    route: /^https:\/\/kargotakip\.araskargo\.com\.tr\/mainpage\.aspx\?code=9900000000001$/,
+    marker: /Girdiğiniz bilgiler için bir sonuç bulunamamıştır/,
+    forwarding: { notFound: /Girdiğiniz bilgiler için bir sonuç bulunamamıştır/ } },
   // The international tracker is a POST-only form, so the link cannot carry the number.
   { carrier: 'evri', number: 'H000000000000001',
     route: /^https:\/\/globaleco\.app\/track\/?$/,

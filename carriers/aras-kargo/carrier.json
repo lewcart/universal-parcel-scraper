@@ -16,19 +16,78 @@
   "timezone": "Europe/Istanbul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "aras-kargo",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 67
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta"
+  ],
   "portal": {
-    "url": "https://www.araskargo.com.tr/",
+    "url": "https://kargotakip.araskargo.com.tr/mainpage.aspx?code={trackingNumber}",
     "searchUrl": "https://www.araskargo.com.tr/",
-    "canaryUrl": "https://www.araskargo.com.tr/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "canaryUrl": "https://kargotakip.araskargo.com.tr/mainpage.aspx",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "delivery_pin",
+      "recipient_verification",
+      "payment_details",
+      "invoice_reference",
+      "volume",
+      "parcel_count",
+      "progress_rail",
+      "delivery_comments",
+      "customer_messages"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "delivery_pin",
+      "recipient_verification",
+      "payment_details",
+      "invoice_reference",
+      "volume",
+      "parcel_count",
+      "progress_rail",
+      "delivery_comments",
+      "customer_messages"
+    ],
+    "unavailable": [
+      "pickup_point",
+      "offset_timestamps"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "kargotakip.araskargo.com.tr"
+      ],
+      "pathPattern": "^/mainpage\\.aspx$",
+      "params": [
+        "code"
+      ]
+    }
+  ],
   "detection": []
 }

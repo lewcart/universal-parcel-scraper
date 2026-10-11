@@ -4808,12 +4808,24 @@
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aras-kargo",
+      "recognitionRank": 67,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.araskargo.com.tr/",
-    "trackingUrlTemplate": "https://www.araskargo.com.tr/",
+    "canaryUrl": "https://kargotakip.araskargo.com.tr/mainpage.aspx",
+    "trackingUrlTemplate": "https://kargotakip.araskargo.com.tr/mainpage.aspx?code={trackingNumber}",
     "trackingSearchUrl": "https://www.araskargo.com.tr/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "kargotakip.araskargo.com.tr"
+        ],
+        "pathPattern": "^/mainpage\\.aspx$",
+        "params": [
+          "code"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "box-now": {

@@ -1,21 +1,59 @@
 # PPL
 
-PPL parcels use enabled universal providers. There is no dedicated adapter.
+PPL CZ's public parcel history, for its eleven-digit parcel numbers, including parcels sent to
+a ParcelShop or ParcelBox. DHL's other networks have their own carrier ids.
 
-## Numbers
+## How it works
 
-PPL's tracker takes the parcel number or a SmartPIN. Lookups archived from it between 2021 and
-2026 show eleven-digit parcel numbers, most starting `40`, `70` or `20` and others `21`, `41`,
-`44`, `45`, `60` or `80`. Numbers one apart both occur, so the last digit is no check digit,
-and none is an SSCC or a UPU S10 number. Eleven digits are shared by several carriers, so no
-rule claims them and the user picks PPL.
+1. `direct`: a POST with an empty JSON body to
+   `https://api.dhl.com/ecs/ppl/webapi/TrackAndTrace/{number}`, the search PPL's tracking
+   page runs, returns the parcel. It needs the page's key in a `dhl-api-key` header; no
+   account, cookie or browser. The page loads reCAPTCHA but sends no token with the search,
+   and the service asks for none.
+
+## Access
+
+The key comes from the widget configuration on `https://www.ppl.cz/vyhledat-zasilku`, the
+same for every visitor. DHL's gateway allows it only for PPL's tracking service. Node's fetch
+cannot read that page: its `Content-Security-Policy` header is folded over several lines,
+which the strict HTTP parser rejects. So the key is not read at run time; it is included with
+the maintainer's approval. `PPL_TRACKING_KEY` replaces it; an empty value turns the lookup
+off, which then fails as a challenge without a request. A rejected key is a challenge too.
+
+## Notes
+
+- The reply must name the whole requested number. Only the service's shipment-not-found
+  problem, for that number, makes a parcel unknown; any other rejection is inconclusive, and a
+  web page instead of JSON is a challenge.
+- The search asks for English wording. Every scan carries an event code, and the code alone
+  decides the stage: several codes share one wording. Cash-on-delivery payment steps move
+  nothing and are intentional gaps in the `statusMap`; unknown codes keep the stage before them.
+- From a return scan on, the parcel travels back to its sender, so a later delivery leaves it
+  returned.
+- The pickup point is named only while the parcel waits there, or once it was collected there.
+  Its name only: the reply's address, hours and position are not kept.
+- The expected day is kept only while the page itself shows it and the parcel is still on its
+  way, and is dropped when it falls before the latest scan.
+- Scan clocks carry their UTC offset. A clock without one stays unresolved text.
+- Numbers one apart both occur, so the last digit is no check digit and only the length is
+  checked. Eleven digits are shared with other carriers, so no detection rule claims them and
+  the user picks PPL. Recognition is not declared, since detection never offers PPL.
+
+## Limitations
+
+Scans carry no place, so events have no location. Once a parcel is handed to a partner abroad,
+the partner's own tracker is not asked. SmartPIN and other search forms are not supported. The
+sender, customer reference, delivery window, payment details and proof of delivery are not
+read.
 
 ## Links
 
 PPL's tracker opens one parcel at `www.ppl.cz/vyhledat-zasilku?shipmentId={number}`: the page
-reads the number from the address and runs the search itself. Lookups archived from the English
-site put the same parameter on `/en/track-a-shipment` and `/en/parcel-detail`.
+reads the number from the address and runs the search itself. The English site puts the same
+parameter on `/en/track-a-shipment` and `/en/parcel-detail`.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+```sh
+PPL_TRACKING_NUMBER=... PPL_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/ppl
+```

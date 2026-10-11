@@ -233,6 +233,17 @@ describe('status map answers', () => {
     expect(answer('old-dominion', null, 'Delivered')).toEqual(unknown);
   });
 
+  it("answers PPL by its event code alone, and leaves its cash-on-delivery steps out on purpose", () => {
+    expect(answer('ppl', 'Delivered.Parcelshop', 'We have delivered the shipment to the pick-up point')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('ppl', 'Delivered', 'Synthetic wording')).toEqual(mapped('delivered'));
+    // Several codes share one wording: the code decides.
+    expect(answer('ppl', 'PreparingForDelivery', 'The shipment is in transit')).toEqual(mapped('in_transit'));
+    expect(answer('ppl', 'BackToSender.Refused', 'Synthetic wording')).toEqual(mapped('returned'));
+    expect(answer('ppl', 'Cod.Completed', 'Synthetic wording')).toEqual(gap);
+    expect(answer('ppl', 'Synthetic.NewCode', 'We have delivered the shipment to the recipient')).toEqual(unknown);
+    expect(answer('ppl', null, 'We have delivered the shipment to the recipient')).toEqual(unknown);
+  });
+
   it.each(['app', '', 'hongkong-post', '__proto__', 'toString', 'Unknown'])('does not know %s', (carrier) => {
     expect(answer(carrier, 'DLO', 'Delivered')).toEqual(unknown);
   });

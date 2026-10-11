@@ -36,6 +36,7 @@ import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js'
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
+import { statusMap as ppl } from '../../carriers/ppl/status.js';
 import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
 import { statusMap as sameday } from '../../carriers/sameday/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
@@ -56,8 +57,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
   'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier, foxpost,
   'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, 'old-dominion': oldDominion, omgo,
-  'orlen-paczka': orlenPaczka, postlogistics, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups,
-  yunexpress,
+  'orlen-paczka': orlenPaczka, postlogistics, ppl, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt,
+  ups, yunexpress,
 };
 
 /** The carrier the app files the universal providers' scans under. */

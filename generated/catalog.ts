@@ -7464,7 +7464,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ppl"
     },
     "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
     "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",

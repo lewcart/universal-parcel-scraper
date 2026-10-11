@@ -16,18 +16,60 @@
   "timezone": "Europe/Prague",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ppl",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "eta",
+    "weight",
+    "delivered_at",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
     "searchUrl": "https://www.ppl.cz/vyhledat-zasilku",
     "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "eta_window",
+      "weight",
+      "sender_name",
+      "customer_reference",
+      "pickup_point",
+      "pickup_point_address",
+      "delivery_partner",
+      "delivery_partner_reference",
+      "payment_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "eta",
+      "weight",
+      "delivered_at",
+      "pickup_point"
+    ],
+    "discarded": [
+      "eta_window",
+      "sender_name",
+      "customer_reference",
+      "pickup_point_address",
+      "delivery_partner",
+      "delivery_partner_reference",
+      "payment_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "location"
+    ]
   },
   "links": [
     {

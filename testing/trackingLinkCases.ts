@@ -416,6 +416,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'acs-courier', number: '9000000063',
     route: /^https:\/\/cyp\.acscourier\.net\/en\/quick-access\/non-registered-users\/track-and-trace\/\?trackingNumber=/,
     marker: /Track and trace|Shipment not found/i },
+  // The page reads the number from its address and looks it up on load.
+  { carrier: 'ppl', number: '29000000001',
+    route: /^https:\/\/www\.ppl\.cz\/vyhledat-zasilku\?shipmentId=/,
+    marker: /Zásilka nenalezena|Shipment not found/i },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

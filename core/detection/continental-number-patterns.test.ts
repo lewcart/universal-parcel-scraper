@@ -31,6 +31,15 @@ describe('continental shipment candidates', () => {
     }
   });
 
+  it('names bpost for its JJBE licence plate in its letter and parcel lengths only', () => {
+    for (const number of ['JJBEA000000000000000001', 'JJBEA0000000000000000000001']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'bpost', confidence: 'high' });
+    }
+    for (const number of ['JJBEA000000000000000000001', 'JJBEA00000000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('bpost');
+    }
+  });
+
   it('reads DHL eCommerce Iberia shipment links in each of the tracking page\'s languages', () => {
     for (const page of ['ModificarEnvio', 'ModificarMeuEnvio', 'ModifyMyShipment']) {
       for (const suffix of ['', '/', '/00000']) {

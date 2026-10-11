@@ -24,7 +24,9 @@ clear customs and does not track them.
 bpost's licence plate, `JJBE`, a letter and eighteen digits, as on a
 registered letter, selects bpost: every JJBE plate found so far, in bpost
 tracking lookups archived by the Wayback Machine, was answered by bpost's
-tracker, and no other carrier is known to issue the prefix.
+tracker, and no other carrier is known to issue the prefix. The longer plate
+bpost's barcode page lists among its common parcel barcodes, the letter and
+twenty-two digits, selects bpost too.
 
 The receiver's country code becomes `destination_country`. The sender's
 barcode becomes `international_tracking_number` only when it is a valid S10

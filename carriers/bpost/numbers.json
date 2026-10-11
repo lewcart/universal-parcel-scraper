@@ -287,6 +287,20 @@
       "note": "Official documentation example, not a real shipment. The S10 check digit does not validate, so bpost is not named."
     },
     {
+      "number": "JJBEA2356412012365478896541",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.bpost.be/en/faq/what-does-barcode-look-and-where-can-i-find-it",
+        "access": "full_page"
+      },
+      "expect": {
+        "carrier": "bpost",
+        "confidence": "high"
+      },
+      "note": "Official parcel-barcode example of bpost's 27-character licence plate; the documented prefix and length select bpost without asserting shipment existence."
+    },
+    {
       "number": "CE642607416BE",
       "role": "shipment",
       "evidence": "public_shipment_report",

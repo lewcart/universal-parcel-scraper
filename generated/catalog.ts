@@ -2200,7 +2200,7 @@ export const CARRIER_CATALOG = {
         "checksum": "s10"
       },
       {
-        "pattern": "^JJBE[A-Z]\\d{18}$",
+        "pattern": "^JJBE[A-Z]\\d{18}(?:\\d{4})?$",
         "confidence": "high"
       }
     ]

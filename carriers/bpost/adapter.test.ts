@@ -214,7 +214,10 @@ describe('bpost anonymous batch request', () => {
 
   it('takes bpost\'s JJBE licence plate and no other licence plate', () => {
     expect(normalizeBpostNumber('jjbe a99 0000000000000001')).toBe('JJBEA990000000000000001');
-    for (const other of ['JJBEA99000000000000001', 'JJBEAB90000000000000001', 'JJFI61234500000000001', 'JJD0000000000000000000']) {
+    // The 27-character parcel form bpost's barcode page lists.
+    expect(normalizeBpostNumber('JJBEA0000000000000000000001')).toBe('JJBEA0000000000000000000001');
+    for (const other of ['JJBEA99000000000000001', 'JJBEAB90000000000000001', 'JJBEA000000000000000000001', 'JJBEA00000000000000000000001',
+      'JJFI61234500000000001', 'JJD0000000000000000000']) {
       expect(() => normalizeBpostNumber(other)).toThrow('bpost requires');
     }
   });

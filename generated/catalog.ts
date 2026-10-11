@@ -7524,7 +7524,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ptt",
+      "recognitionRank": 68,
+      "localClocks": true
     },
     "canaryUrl": "https://www.ptt.gov.tr/",
     "trackingUrlTemplate": "https://www.ptt.gov.tr/",
@@ -7534,6 +7536,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^KP\\d{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}TR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -8750,7 +8758,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posta-slovenije": [],
   "posta-srbije": [],
   "ppl": [],
-  "ptt": ["ptt-1"],
+  "ptt": ["ptt-1","ptt-s10"],
   "redpack": [],
   "rl-carriers": ["rl-carriers-1"],
   "russian-post": [],

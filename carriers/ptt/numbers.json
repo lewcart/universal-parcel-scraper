@@ -10,7 +10,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -23,7 +23,7 @@
           "korea-post"
         ]
       },
-      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number. PTT's shipment query returns its history; no rule claims thirteen digits."
     },
     {
       "number": "2719919119816",
@@ -99,13 +99,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ptt",
         "confidence": "high"
       },
-      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as the parcel's tracking number. PTT's shipment query returns its history."
     },
     {
       "number": "kp06294374750",
@@ -181,13 +181,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as a registered letter's tracking number to Spain."
+      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as a registered letter's tracking number to Spain. PTT's shipment query returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "CP078296555TR",
@@ -198,13 +198,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as an international parcel's tracking number."
+      "note": "A complaint on Şikayetvar's PTT Kargo page gives it as an international parcel's tracking number. PTT's shipment query returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "EM020412924TR",

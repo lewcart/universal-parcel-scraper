@@ -58,6 +58,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "posti": 27,
   "postlogistics": 26,
   "postnord": 7,
+  "ptt": 68,
   "purolator": 12,
   "relais-colis": 25,
   "sameday": 53,

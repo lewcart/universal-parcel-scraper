@@ -104,6 +104,7 @@ import { adapter as posti } from '../carriers/posti/adapter.js';
 import { adapter as postlogistics } from '../carriers/postlogistics/adapter.js';
 import { adapter as postnord } from '../carriers/postnord/adapter.js';
 import { adapter as ppl } from '../carriers/ppl/adapter.js';
+import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
@@ -244,6 +245,7 @@ export const REGISTRY: RegistryDefinition = {
     "postlogistics": postlogistics,
     "postnord": postnord,
     "ppl": ppl,
+    "ptt": ptt,
     "purolator": purolator,
     "relais-colis": relaisColis,
     "royal-mail": royalMail,
@@ -433,7 +435,7 @@ export const REGISTRY: RegistryDefinition = {
     "postlogistics": "postlogistics",
     "postnord": "postnord",
     "ppl": "ppl",
-    "ptt": "universal",
+    "ptt": "ptt",
     "purolator": "purolator",
     "quickpac": "planzer",
     "redpack": "universal",

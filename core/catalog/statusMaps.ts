@@ -42,6 +42,7 @@ import { statusMap as omniva } from '../../carriers/omniva/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as ppl } from '../../carriers/ppl/status.js';
+import { statusMap as ptt } from '../../carriers/ptt/status.js';
 import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
 import { statusMap as sameday } from '../../carriers/sameday/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
@@ -64,7 +65,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
   'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier,
   foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
-  'la-poste': laPoste, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics, ppl, sagawa, sameday, speedx, speedy,
+  'la-poste': laPoste, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa, sameday, speedx, speedy,
   sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, yunexpress, 'yurtici-kargo': yurticiKargo,
 };
 

@@ -7522,7 +7522,9 @@
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ptt",
+      "recognitionRank": 68,
+      "localClocks": true
     },
     "canaryUrl": "https://www.ptt.gov.tr/",
     "trackingUrlTemplate": "https://www.ptt.gov.tr/",
@@ -7532,6 +7534,12 @@
       {
         "pattern": "^KP\\d{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}TR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

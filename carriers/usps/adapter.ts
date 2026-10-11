@@ -153,6 +153,11 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
   const $ = load(page);
   $('script, style, noscript').remove();
   if ($('.track-bar-container').length === 0) {
+    // A completed USPS header without the tracking application is not a
+    // missing shipment. A second browser read can recover this partial page.
+    if ($('.Widgets_Container #g-navigation').length && /^USPS Tracking/.test($('title').text())) {
+      throw new ChallengeError('USPS', 'USPS returned an incomplete tracking page', { reason: 'incomplete_page' });
+    }
     throw new ChallengeError('USPS', 'USPS challenged the browser tracking session');
   }
   const echoed = clean($('#trackingNum').first().text()).toLocaleUpperCase('en-US');
@@ -256,6 +261,8 @@ export class USPSTracker {
       recorder: this.#recorder,
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'incomplete_page',
+        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package
     // identifier after it is the number USPS tracks, so consumers can keep that.

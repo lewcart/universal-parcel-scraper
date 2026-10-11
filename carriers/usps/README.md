@@ -66,7 +66,9 @@ Parsing, in order:
   status `out_for_delivery`.
 - There is no direct step: it would only burn the budget on a 403.
 - The package path is loaded directly because the legacy query route can return only
-  the global header. Pasted legacy query links remain supported.
+  the global header. A recognizable header-only reply gets one more browser read within
+  the same budget; telemetry retains the first failure. Other challenges, identity errors
+  and rate limits are not repeated. Pasted legacy query links remain supported.
 
 ## Mobile API leads
 

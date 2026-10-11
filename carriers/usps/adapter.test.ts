@@ -14,6 +14,7 @@ const TRAWL_URL = 'http://trawl.internal:8191';
 const DELIVERED_PAGE = readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
 const IN_TRANSIT_PAGE = readFileSync(new URL('./fixtures/in-transit.html', import.meta.url), 'utf8');
 const TIMELINE_PAGE = readFileSync(new URL('./fixtures/timeline.html', import.meta.url), 'utf8');
+const HEADER_ONLY_PAGE = '<html><head><title>USPS Tracking® | USPS</title></head><body><div class="Widgets_Container"><div id="g-navigation">Navigation</div></div></body></html>';
 const CAPABILITIES = (JSON.parse(
   readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'),
 ) as { capabilities: string[] }).capabilities;
@@ -199,6 +200,54 @@ describe('USPS lookup steps', () => {
       maxTier: 3,
     });
     expect(records).toEqual(['trawl:ok', 'lookup:trawl:ok']);
+  });
+
+  it('recovers one incomplete header-only page and retains the failed attempt', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(HEADER_ONLY_PAGE))
+      .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    const step = vi.fn();
+    const lookup = vi.fn();
+    const result = await new USPSTracker({ trawlUrl: TRAWL_URL, recorder: { step, lookup } }).fetch(DELIVERED_NUMBER);
+    expect(result.events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(step).toHaveBeenNthCalledWith(1, expect.objectContaining({ step: 'trawl', attempt: 1,
+      outcome: 'challenge', error: expect.objectContaining({ reason: 'incomplete_page' }) }));
+    expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', attempt: 2,
+      outcome: 'ok', fallbackFrom: 'trawl', fallbackReason: 'challenge',
+      fallbackError: expect.objectContaining({ reason: 'incomplete_page' }) }));
+    expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ attempts: 2, outcome: 'ok' }));
+  });
+
+  it('stops after two incomplete pages without claiming the shipment is missing', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => trawlReply(HEADER_ONLY_PAGE));
+    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+      .rejects.toMatchObject({ kind: 'challenge', reason: 'incomplete_page' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not repeat a challenge shell, wrong identity or rate limit', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(trawlReply('<html>Browser challenge</html>'));
+    const tracker = new USPSTracker({ trawlUrl: TRAWL_URL });
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    fetcher.mockClear().mockResolvedValue(trawlReply(IN_TRANSIT_PAGE));
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    fetcher.mockClear().mockImplementation(async () => new Response('Rate limited', { status: 429 }));
+    await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'rate_limited' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('stops recovery when the caller cancels', async () => {
+    const controller = new AbortController();
+    const reason = new Error('Cancelled');
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      controller.abort(reason);
+      return trawlReply(HEADER_ONLY_PAGE);
+    });
+    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER, { signal: controller.signal }))
+      .rejects.toBe(reason);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('retrieves incoming international mail under its original number and verifies the response identity', async () => {

@@ -7,15 +7,19 @@ import { clean, cleanScalar } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 
 // Evri's rail codes. A parcel's `trackingListV2` lists the rail it is on;
-// a customer return runs 0, 2, 4.
+// a customer return runs 0, 2, 4. A parcel sent to a ParcelShop or locker
+// waits on 4_SHOP or 4_LOCKER, which Evri's page calls awaiting collection,
+// and 5_SHOP is its collection.
 const STAGES = new Map<string, Stage>([
   ['0', 'registered'], ['1', 'registered'], ['2', 'in_transit'], ['3', 'in_transit'], ['4', 'returned'],
   ['4_COURIER', 'out_for_delivery'], ['5_COURIER', 'delivered'],
+  ['4_SHOP', 'ready_for_pickup'], ['4_LOCKER', 'ready_for_pickup'], ['5_SHOP', 'delivered'],
 ]);
 
 // Tracking points that their rail code files too broadly: a drop-off or
 // collection is the acceptance, and a courier's failed visit stays on the
-// out-for-delivery rail.
+// out-for-delivery rail. The collection rails are never refined: a
+// ParcelShop arrival there is the parcel waiting for its recipient.
 const POINTS = new Map<string, Stage>([
   ['ACCEPTED_BY_HERMES', 'accepted'], ['ARRIVED_PARCELSHOP', 'accepted'], ['COLLECTED_BY_EVRI', 'accepted'],
   ['QUADIENT_LOCKER_DROPOFF', 'accepted'], ['PROCESSING_RETURN', 'returned'],
@@ -25,6 +29,7 @@ const POINTS = new Map<string, Stage>([
 function stageOf(stageCode: string, pointCode: string): Stage | undefined {
   const rail = STAGES.get(stageCode);
   if (!rail) return undefined;
+  if (rail === 'ready_for_pickup' || stageCode === '5_SHOP') return rail;
   if (rail === 'out_for_delivery' && pointCode.startsWith('NOT_DELIVERED_')) return 'failed_attempt';
   return POINTS.get(pointCode) ?? rail;
 }

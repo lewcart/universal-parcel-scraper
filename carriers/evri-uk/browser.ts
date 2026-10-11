@@ -92,7 +92,7 @@ export async function requestEvriUkInPage({ number, budgetMs }: { number: string
       }
       const stageCode = event.trackingStage.trackingStageCode.trim();
       const description = event.trackingPoint.description;
-      const safeDescription = stageCode === '5_COURIER' ? 'Delivered'
+      const safeDescription = stageCode === '5_COURIER' || stageCode === '5_SHOP' ? 'Delivered'
         : /\b(?:delivered (?:to|by)|signed (?:for )?by)\b/i.test(description) ? 'Delivery update' : description;
       const eta = record(event.eta) && scalar(event.eta.start, 64) && scalar(event.eta.end, 64)
         ? { start: event.eta.start, end: event.eta.end } : undefined;

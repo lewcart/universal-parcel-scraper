@@ -77,6 +77,17 @@ describe('Evri UK anonymous history', () => {
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
   });
 
+  it("reads a ParcelShop collection as delivered without the collector's wording", () => {
+    const payload = history();
+    payload.results[0].trackingEvents = [
+      { trackingPoint: { trackingPointCode: 'SYNTHETIC_COLLECTED_POINT', description: 'Collected by PRIVATE RECIPIENT' },
+        trackingStage: { trackingStageCode: '5_SHOP' }, dateTime: '2026-01-03T19:00:00Z' },
+    ];
+    const result = parseEvriUk(payload, NUMBER, URN);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', delivered_at: '2026-01-03T19:00:00Z' });
+    expect(JSON.stringify(result)).not.toContain('PRIVATE');
+  });
+
   it('retains partial-clock provider order without assigning an overseas zone', () => {
     const payload = history();
     payload.results[0].trackingEvents.reverse();
@@ -121,7 +132,9 @@ describe('Evri UK anonymous history', () => {
     ['4_COURIER', 'REDELIVER_WORKDAY_COURIER', 'failed_attempt', 'exception'],
     ['4_COURIER', 'NOT_DELIVERED_BUSINESS_CLOSED', 'failed_attempt', 'exception'],
     ['4_COURIER', 'REDELIVERY_1300_1500', 'out_for_delivery', 'out_for_delivery'],
-    ['4_SHOP', 'ARRIVED_PARCELSHOP', undefined, 'unknown'],
+    ['4_SHOP', 'ARRIVED_PARCELSHOP', 'ready_for_pickup', 'out_for_delivery'],
+    ['4_LOCKER', 'SYNTHETIC_LOCKER_POINT', 'ready_for_pickup', 'out_for_delivery'],
+    ['5_SHOP', 'SYNTHETIC_COLLECTED_POINT', 'delivered', 'delivered'],
   ])('files rail %s point %s as %s', (stageCode, code, stage, status) => {
     const payload = history();
     payload.results[0].trackingEvents = [scan(stageCode, code, '2026-07-03T11:00:00Z')];

@@ -690,7 +690,7 @@ describe('DPD Germany tiers', () => {
 
     it.each([
       ['none', () => []],
-      ['only one past its renewal age', () => [{ token: SAVED, openedAt: Date.now() - 9 * HOUR }]],
+      ['only one past its renewal age', () => [{ token: SAVED, openedAt: Date.now() - 9 * HOUR, checkedAt: Date.now() }]],
     ])('asks the guest protocol beside the opening once the store gives back %s', async (_, sessions) => {
       vi.useFakeTimers();
       try {

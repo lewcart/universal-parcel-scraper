@@ -179,33 +179,37 @@ describe('DPD app service session', () => {
     expect(saves.filter(saved => saved.token === FIXTURE)).toEqual([{ token: FIXTURE, openedAt: start + 6 * HOUR }]);
     await lookup(shops);
     expect(tokenOf(calls.at(-1))).toBe(FIXTURE);
-    // The older one was followed from the start, and the one taken up once replaced.
-    expect(checks(calls).slice(0, 6)).toEqual(Array(6).fill(OLDER));
-    await vi.advanceTimersByTimeAsync(HOUR);
-    expect(checks(calls).slice(6)).toContain(SAVED);
+    // The older one, never checked, was checked at once and hourly since, and the one taken up once replaced.
+    expect(checks(calls).slice(0, 7)).toEqual(Array(7).fill(OLDER));
+    await vi.advanceTimersByTimeAsync(HOUR + 5_000);
+    expect(checks(calls).slice(7)).toEqual([OLDER, SAVED]);
   });
 
   it('checks a session no longer used every hour until the service refuses it twice, and saves what it finds', async () => {
     vi.useFakeTimers();
     const start = Date.now();
     const { calls, shops } = service({ getParcelShopByID: [unconfirmed, expired, unconfirmed, () => xml('', 503), expired, expired] });
-    const { saves, store } = memory([{ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start - 2 * HOUR }]);
+    const { saves, store } = memory([{ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start - 40 * MINUTE }]);
     shops.keep({ store });
     await vi.advanceTimersByTimeAsync(0);
     // Too old to take up: the next one opens, and the saved one is followed.
     expect(opened(calls)).toBe(1);
     expect(saves).toEqual([{ token: FIXTURE, openedAt: start }]);
-    await vi.advanceTimersByTimeAsync(HOUR);
+    // Its next check is an hour after the one saved before the restart, however recent the restart.
+    await vi.advanceTimersByTimeAsync(20 * MINUTE - 1);
+    expect(checks(calls)).toEqual([]);
+    await vi.advanceTimersByTimeAsync(1);
     expect(checks(calls)).toEqual([SAVED]);
-    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start + HOUR });
+    const first = start + 20 * MINUTE;
+    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first });
     // One refusal is not enough: while slow, the service refuses a session it accepts again later.
     await vi.advanceTimersByTimeAsync(2 * HOUR);
-    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start + 3 * HOUR });
+    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR });
     // A reply that is not about the session says nothing.
     await vi.advanceTimersByTimeAsync(HOUR);
     expect(saves).toHaveLength(3);
     await vi.advanceTimersByTimeAsync(2 * HOUR);
-    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start + 3 * HOUR, refusedAt: start + 5 * HOUR });
+    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR, refusedAt: first + 4 * HOUR });
     await vi.advanceTimersByTimeAsync(HOUR);
     expect(checks(calls)).toHaveLength(6);
   });
@@ -214,14 +218,15 @@ describe('DPD app service session', () => {
     vi.useFakeTimers();
     const start = Date.now();
     const { calls, shops } = service({ getSessionFullState: [session(SAVED)], getParcelShopByID: [expired] });
-    const { saves, store } = memory([{ token: OLDER, openedAt: start - 20 * HOUR }]);
+    const { saves, store } = memory([{ token: OLDER, openedAt: start - 20 * HOUR, checkedAt: start }]);
     shops.keep({ store });
     await vi.advanceTimersByTimeAsync(0);
-    await vi.advanceTimersByTimeAsync(10 * MINUTE);
     await expect(lookup(shops)).resolves.toMatchObject({ name: 'Kiosk Muster' });
     expect(opened(calls)).toBe(2);
     calls.length = 0;
-    await vi.advanceTimersByTimeAsync(HOUR - 10 * MINUTE);
+    await vi.advanceTimersByTimeAsync(HOUR - 1);
+    expect(checks(calls)).toEqual([]);
+    await vi.advanceTimersByTimeAsync(1);
     expect(checks(calls)).toEqual([OLDER]);
     await vi.advanceTimersByTimeAsync(5_000);
     expect(checks(calls)).toEqual([OLDER, SAVED]);

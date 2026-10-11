@@ -59,9 +59,10 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
 - The service takes tens of seconds to open a session, whatever the device
   data, language or user agent. Sending a session's token back to
   `getSessionFullState` takes as long and returns another token. The reply
-  gives no expiry. The service has accepted a session for over eighteen hours,
-  used once an hour after its first eight, and one left idle for four. While
-  slow, it can refuse a session that it accepts again later.
+  gives no expiry. The service has accepted a session for nearly twenty-seven
+  hours, used once an hour after its first eight, and one left idle for four,
+  and refused another from twenty-seven hours old. While slow, it can refuse a
+  session that it accepts again later.
 - One session serves the process for each transport and user agent, shared by
   DPD Germany and DPD Switzerland and by the adapters of every registry and
   tracker. A tracker's own fetcher only adds each lookup's signal, so the
@@ -93,7 +94,9 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
   eight hours is taken up again instead of opening one; lookups wait up to five
   seconds for the store. Every session lookups stop using, renewed or refused
   during a lookup, is then checked once an hour with a shop id no shop has: the
-  service answers it without a shop, or refuses the session. A refusal counts
+  service answers it without a shop, or refuses the session. A restart checks
+  each session an hour after its saved `checkedAt`, or at once if it has none,
+  so frequent deploys do not hold checks back. A refusal counts
   once the next check repeats it, and is saved as `refusedAt`; each acceptance
   is saved as `checkedAt`. `refusedAt - openedAt` is how long the service
   accepted the session, and checks stop a week after it opened. Checks of

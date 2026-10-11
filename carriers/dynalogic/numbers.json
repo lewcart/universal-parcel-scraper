@@ -100,6 +100,32 @@
         ]
       },
       "note": "A public Test-Aankoop complaint about a Dynalogic delivery gives it as the track & trace number."
+    },
+    {
+      "number": "1898800065396001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260609203048/https://track.mydynalogic.eu/api/transportorder/customer/logo/9126358a-27fb-42e0-be90-f4be26e2e62a?tracking_code=1898800065396001",
+        "date": "2026-06-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "correos-express",
+          "canada-post",
+          "tnt",
+          "evri-uk"
+        ]
+      },
+      "note": "Looked up on Dynalogic's own tracker as a tracking code, as an archived address shows; the capture was not opened."
     }
   ]
 }

@@ -278,6 +278,25 @@
         ]
       },
       "note": "A Redpack tracking page archived by the Wayback Machine shows the guide moving through Tultitlán to an office in León on its Express service."
+    },
+    {
+      "number": "082821142",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231130235756/https://www.redpack.com.mx/en/track-your-shipment/?guias=082821142",
+        "date": "2023-11-30",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Redpack's own tracker, archived by the Wayback Machine, shows it delivered on 14 June 2023."
     }
   ]
 }

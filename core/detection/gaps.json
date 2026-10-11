@@ -314,10 +314,22 @@
     "reason": "One reported Dynalogic reference of this layout; the family is not established."
   },
   {
+    "carrier": "dynalogic",
+    "pattern": "^\\d{16}$",
+    "kind": "by_design",
+    "reason": "Sixteen digits are shared by several carriers and nothing in the number points to Dynalogic."
+  },
+  {
     "carrier": "early-bird",
     "pattern": "^00\\d{18}$",
     "kind": "by_design",
     "reason": "An SSCC carries the GS1 company prefix of whoever issued it, not the carrier, so no rule can name Early Bird from it."
+  },
+  {
+    "carrier": "early-bird",
+    "pattern": "^999\\d{16}$",
+    "kind": "open",
+    "reason": "Three archived lookups on Early Bird's tracker use 999 and sixteen digits; the family is not established."
   },
   {
     "carrier": "econt",

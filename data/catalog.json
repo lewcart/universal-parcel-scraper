@@ -7028,7 +7028,9 @@
     "timezone": "Europe/Helsinki",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "matkahuolto",
+      "recognitionRank": 69,
+      "localClocks": true
     },
     "canaryUrl": "https://www.matkahuolto.fi/seuranta",
     "trackingUrlTemplate": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
@@ -7048,6 +7050,12 @@
       {
         "pattern": "^MA\\d{19}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^MH\\d{9}FI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

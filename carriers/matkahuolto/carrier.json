@@ -16,18 +16,54 @@
   "timezone": "Europe/Helsinki",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "matkahuolto",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 69
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "pickup_point",
+    "service_name"
+  ],
   "portal": {
     "url": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
     "searchUrl": "https://www.matkahuolto.fi/seuranta",
     "canaryUrl": "https://www.matkahuolto.fi/seuranta",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "service_name",
+      "additional_services",
+      "pickup_deadline",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "service_name"
+    ],
+    "discarded": [
+      "additional_services",
+      "pickup_deadline",
+      "postcodes"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "sender_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -45,6 +81,13 @@
       "id": "matkahuolto-1",
       "pattern": "^MA\\d{19}$",
       "confidence": "low"
+    },
+    {
+      "id": "matkahuolto-2",
+      "pattern": "^MH\\d{9}FI$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

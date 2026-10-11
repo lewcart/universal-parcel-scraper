@@ -879,6 +879,26 @@
     ]
   },
   {
+    "input": "00373325386135005969",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "bring-posten",
+      "swiss-post-cargo",
+      "postnord",
+      "usps",
+      "nz-post"
+    ],
+    "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
+      "swiss-post-cargo",
+      "postnord",
+      "nz-post"
+    ]
+  },
+  {
     "input": "00373402216033677037",
     "carrier": "unknown",
     "confidence": "low",
@@ -14302,6 +14322,22 @@
   },
   {
     "input": "373325386371062092",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "bring-posten",
+      "bpost",
+      "ecoscooting"
+    ],
+    "preferred": [
+      "bring-posten"
+    ],
+    "asked": [
+      "bpost"
+    ]
+  },
+  {
+    "input": "373325386445334247",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -31486,6 +31522,9 @@
     "confidence": "low",
     "candidates": [
       "matkahuolto"
+    ],
+    "asked": [
+      "matkahuolto"
     ]
   },
   {
@@ -31493,6 +31532,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "matkahuolto"
+    ],
+    "asked": [
       "matkahuolto"
     ]
   },
@@ -31502,6 +31544,9 @@
     "confidence": "low",
     "candidates": [
       "matkahuolto"
+    ],
+    "asked": [
+      "matkahuolto"
     ]
   },
   {
@@ -31509,6 +31554,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "matkahuolto"
+    ],
+    "asked": [
       "matkahuolto"
     ]
   },
@@ -31524,6 +31572,9 @@
     "confidence": "low",
     "candidates": [
       "matkahuolto"
+    ],
+    "asked": [
+      "matkahuolto"
     ]
   },
   {
@@ -31534,6 +31585,7 @@
       "intl-post"
     ],
     "asked": [
+      "matkahuolto",
       "posti",
       "chronopost"
     ]
@@ -31546,6 +31598,7 @@
       "intl-post"
     ],
     "asked": [
+      "matkahuolto",
       "posti",
       "chronopost"
     ]
@@ -31558,6 +31611,7 @@
       "intl-post"
     ],
     "asked": [
+      "matkahuolto",
       "posti",
       "chronopost"
     ]
@@ -31570,6 +31624,7 @@
       "intl-post"
     ],
     "asked": [
+      "matkahuolto",
       "posti",
       "chronopost"
     ]
@@ -36643,6 +36698,7 @@
       "intl-post"
     ],
     "asked": [
+      "matkahuolto",
       "posti",
       "chronopost"
     ]

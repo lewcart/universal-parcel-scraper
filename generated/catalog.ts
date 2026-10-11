@@ -7030,7 +7030,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Helsinki",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "matkahuolto",
+      "recognitionRank": 69,
+      "localClocks": true
     },
     "canaryUrl": "https://www.matkahuolto.fi/seuranta",
     "trackingUrlTemplate": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
@@ -7050,6 +7052,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^MA\\d{19}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^MH\\d{9}FI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -8743,7 +8751,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lso": ["lso-1"],
   "magyar-posta": [],
   "maltapost": [],
-  "matkahuolto": ["matkahuolto-1"],
+  "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "meest": [],
   "mng-kargo": [],
   "nationex": [],

@@ -36,6 +36,7 @@ import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
+import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as omniva } from '../../carriers/omniva/status.js';
@@ -62,11 +63,12 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
-  'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier,
-  foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
-  'la-poste': laPoste, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa, sameday, speedx, speedy,
-  sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, yunexpress, 'yurtici-kargo': yurticiKargo,
+  'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, 'china-post': chinaPost, chronopost,
+  'correos-spain': correosSpain, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta,
+  emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT,
+  'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics,
+  ppl, ptt, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, yunexpress,
+  'yurtici-kargo': yurticiKargo,
 };
 
 /** The carrier the app files the universal providers' scans under. */

@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Matkahuolto's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Matkahuolto's own tracker, as an archived address shows. Matkahuolto's tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "MH814995940FI",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Matkahuolto's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Matkahuolto's own tracker, as an archived address shows. Matkahuolto's tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "MA0093019200031906151",
@@ -255,6 +255,56 @@
         ]
       },
       "note": "Looked up on Matkahuolto's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "00373325386135005969",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251223045713/https://www.matkahuolto.fi/seuranta?parcelNumber=00373325386135005969",
+        "date": "2025-12-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "swiss-post-cargo",
+          "postnord",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "Looked up on Matkahuolto's own tracker, as an archived address shows. Matkahuolto's tracker returns its history."
+    },
+    {
+      "number": "373325386445334247",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260707050630/https://www.matkahuolto.fi/seuranta?parcelNumber=373325386445334247",
+        "date": "2026-07-07",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "bpost",
+          "ecoscooting"
+        ]
+      },
+      "note": "Looked up on Matkahuolto's own tracker without the SSCC's 00, as an archived address shows. Matkahuolto's tracker returns its history under the number with the 00."
     }
   ]
 }

@@ -453,6 +453,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'yurtici-kargo', number: '999999999999',
     route: /^https:\/\/www\.yurticikargo\.com\/tr\/online-servisler\/gonderi-sorgula\?code=999999999999$/,
     marker: /Gönderi Sorgula|bir kargo bulunamadı/ },
+  // The Finnish page fills its field in and asks the tracking service on load.
+  { carrier: 'matkahuolto', number: 'MH000000014FI',
+    route: /^https:\/\/www\.matkahuolto\.fi\/seuranta\?parcelNumber=MH000000014FI$/,
+    marker: /Syötä lähetystunnus|Antamallasi lähetystunnuksella ei löydy vielä tietoja/ },
 ];
 
 /**

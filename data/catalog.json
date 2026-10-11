@@ -6520,7 +6520,8 @@
     "timezone": "Europe/Oslo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "helthjem",
+      "recognitionRank": 71
     },
     "canaryUrl": "https://helthjem.no/sporing",
     "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
@@ -6542,7 +6543,20 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^37072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1",
+        "preferred": true
+      },
+      {
+        "pattern": "^0037072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ]
   },
   "hrvatska-posta": {
     "displayName": "Hrvatska pošta",

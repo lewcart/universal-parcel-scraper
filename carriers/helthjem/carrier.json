@@ -16,18 +16,65 @@
   "timezone": "Europe/Oslo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "helthjem",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 71
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point",
+    "sender_name",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://helthjem.no/sporing/{trackingNumber}",
     "searchUrl": "https://helthjem.no/sporing",
     "canaryUrl": "https://helthjem.no/sporing",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "sender_name",
+      "pickup_point",
+      "pickup_point_address",
+      "delivery_partner",
+      "delivery_photo",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "sender_name",
+      "pickup_point",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "eta",
+      "pickup_point_address",
+      "delivery_photo",
+      "postcodes",
+      "event_details"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "service_name"
+    ]
   },
   "links": [
     {
@@ -46,5 +93,20 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "helthjem-1",
+      "pattern": "^37072476\\d{10}$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "gs1"
+    },
+    {
+      "id": "helthjem-2",
+      "pattern": "^0037072476\\d{10}$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "sscc"
+    }
+  ]
 }

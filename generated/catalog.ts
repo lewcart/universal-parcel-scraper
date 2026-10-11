@@ -6522,7 +6522,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Oslo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "helthjem",
+      "recognitionRank": 71
     },
     "canaryUrl": "https://helthjem.no/sporing",
     "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
@@ -6544,7 +6545,20 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^37072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1",
+        "preferred": true
+      },
+      {
+        "pattern": "^0037072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ]
   },
   "hrvatska-posta": {
     "displayName": "Hrvatska pošta",
@@ -8737,7 +8751,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "go-express": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
-  "helthjem": [],
+  "helthjem": ["helthjem-1","helthjem-2"],
   "hrvatska-posta": [],
   "instabox": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],

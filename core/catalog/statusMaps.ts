@@ -33,6 +33,7 @@ import { statusMap as geniki } from '../../carriers/geniki-taxydromiki/status.js
 import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
 import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
+import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
@@ -65,10 +66,10 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, 'china-post': chinaPost, chronopost,
   'correos-spain': correosSpain, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta,
-  emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT,
-  'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics,
-  ppl, ptt, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, yunexpress,
-  'yurtici-kargo': yurticiKargo,
+  emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem,
+  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'old-dominion': oldDominion, omgo, omniva,
+  'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost,
+  tnt, ups, venipak, yunexpress, 'yurtici-kargo': yurticiKargo,
 };
 
 /** The carrier the app files the universal providers' scans under. */

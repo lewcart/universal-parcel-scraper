@@ -68,6 +68,7 @@ import { adapter as glsIt } from '../carriers/gls-it/adapter.js';
 import { adapter as gofo } from '../carriers/gofo/adapter.js';
 import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
+import { adapter as helthjem } from '../carriers/helthjem/adapter.js';
 import { adapter as heppner } from '../carriers/heppner/adapter.js';
 import { adapter as hermes } from '../carriers/hermes/adapter.js';
 import { adapter as hermesDe } from '../carriers/hermes-de/adapter.js';
@@ -210,6 +211,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo": gofo,
     "gofo-fr": gofoFr,
     "gofo-it": gofoIt,
+    "helthjem": helthjem,
     "heppner": heppner,
     "hermes": hermes,
     "hermes-de": hermesDe,
@@ -378,7 +380,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo": "gofo",
     "gofo-fr": "gofo-fr",
     "gofo-it": "gofo-it",
-    "helthjem": "universal",
+    "helthjem": "helthjem",
     "heppner": "heppner",
     "hermes": "hermes",
     "hermes-de": "hermes-de",

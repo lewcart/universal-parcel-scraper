@@ -19,6 +19,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "bpost",
           "ecoscooting"
         ]
@@ -43,6 +44,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "bpost",
           "ecoscooting"
         ]
@@ -67,6 +69,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "bpost",
           "ecoscooting"
         ]
@@ -91,6 +94,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "bpost",
           "ecoscooting"
         ]
@@ -108,18 +112,44 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "bpost",
           "ecoscooting"
         ]
       },
-      "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
+    },
+    {
+      "number": "370724763572871481",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261006162110/https://www.helthjem.no/sporing/370724763572871481",
+        "date": "2026-10-06",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bring-posten",
+          "helthjem",
+          "bpost",
+          "ecoscooting"
+        ]
+      },
+      "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
     },
     {
       "number": "373325385766370514",
@@ -189,6 +219,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -215,6 +246,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -241,6 +273,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -260,20 +293,21 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "helthjem",
           "swiss-post-cargo",
           "postnord",
           "usps",
           "nz-post"
         ]
       },
-      "note": "Looked up on Helthjem's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Helthjem's own tracker, as an archived address shows; Helthjem's tracking service answers for it."
     }
   ]
 }

@@ -457,6 +457,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'matkahuolto', number: 'MH000000014FI',
     route: /^https:\/\/www\.matkahuolto\.fi\/seuranta\?parcelNumber=MH000000014FI$/,
     marker: /Syötä lähetystunnus|Antamallasi lähetystunnuksella ei löydy vielä tietoja/ },
+  // The page asks its GraphQL service for the number in its address on load.
+  { carrier: 'helthjem', number: '370724769990000014',
+    route: /^https:\/\/(?:www\.)?helthjem\.no\/sporing\/370724769990000014/,
+    marker: /Vi finner ingen pakke med dette sporingsnummeret|Spor pakke/ },
 ];
 
 /**

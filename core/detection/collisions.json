@@ -1766,6 +1766,16 @@
     "reason": "Bring parcel SSCCs written without their 00 identifier fall in the 18-digit space bpost and Ecoscooting match broadly; Bring's rule lists it first and the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{18} starting with 37072476 that passes the GS1 check",
+    "carriers": [
+      "bpost",
+      "bring-posten",
+      "ecoscooting",
+      "helthjem"
+    ],
+    "reason": "Helthjem's own SSCCs written without their 00 identifier also fit Bring's 370 rule and the broad bpost and Ecoscooting shapes. Helthjem and Bring are both listed first, and recognition asks Helthjem."
+  },
+  {
     "shape": "9{17} starting with 70 that passes the GS1 check",
     "carriers": [
       "bring-posten",
@@ -1784,6 +1794,18 @@
       "usps"
     ],
     "reason": "A Bring parcel SSCC typed with its 00 identifier also fits PostNord's Nordic SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates; Bring's rule lists it first and the number stays a suggestion."
+  },
+  {
+    "shape": "9{20} starting with 0037072476 that passes the SSCC check",
+    "carriers": [
+      "bring-posten",
+      "helthjem",
+      "nz-post",
+      "postnord",
+      "swiss-post-cargo",
+      "usps"
+    ],
+    "reason": "Helthjem's own SSCCs typed with their 00 identifier also fit Bring's and PostNord's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Helthjem and Bring are both listed first, and recognition asks Helthjem."
   },
   {
     "shape": "PL followed by eight digits ending in 0",

@@ -41,6 +41,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "gls-it": 59,
   "gofo-fr": 3,
   "gofo-it": 2,
+  "helthjem": 71,
   "hermes-de": 40,
   "inpost": 38,
   "j-and-t": 9,

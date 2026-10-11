@@ -18,18 +18,53 @@
   "timezone": "Europe/Ljubljana",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "posta-slovenije",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 790
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",
     "searchUrl": "https://moja.posta.si/tracking",
     "canaryUrl": "https://moja.posta.si/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "pickup_point"
+    ],
+    "discarded": [
+      "postcodes",
+      "pickup_point_address",
+      "signatory",
+      "pickup_code"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -42,5 +77,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "posta-slovenije-s10",
+      "pattern": "^[A-Z]{2}\\d{9}SI$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

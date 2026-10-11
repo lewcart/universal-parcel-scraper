@@ -307,6 +307,15 @@
     "reason": "The Turkish issuer suffix suggests PTT but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}SI with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "posta-slovenije"
+    ],
+    "reason": "The Slovenian issuer suffix suggests Pošta Slovenije but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}AU with a valid S10 check digit",
     "carriers": [
       "australia-post",

@@ -7592,7 +7592,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Ljubljana",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-slovenije",
+      "recognitionRank": 790
     },
     "canaryUrl": "https://moja.posta.si/tracking",
     "trackingUrlTemplate": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",
@@ -7608,7 +7609,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-srbije": {
     "displayName": "Pošta Srbije",
@@ -8915,7 +8923,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "paquetexpress": [],
   "passport": ["passport-1"],
   "post-luxembourg": [],
-  "posta-slovenije": [],
+  "posta-slovenije": ["posta-slovenije-s10"],
   "posta-srbije": [],
   "ppl": [],
   "ptt": ["ptt-1","ptt-s10"],

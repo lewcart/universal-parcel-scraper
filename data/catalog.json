@@ -7590,7 +7590,8 @@
     "timezone": "Europe/Ljubljana",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-slovenije",
+      "recognitionRank": 790
     },
     "canaryUrl": "https://moja.posta.si/tracking",
     "trackingUrlTemplate": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",
@@ -7606,7 +7607,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-srbije": {
     "displayName": "Pošta Srbije",

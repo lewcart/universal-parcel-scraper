@@ -433,6 +433,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ceska-posta', number: 'DR9000000002U',
     route: /^https:\/\/www\.postaonline\.cz\/trackandtrace\/-\/zasilka\/DR9000000002U/,
     marker: /Sledování zásilek|není v evidenci/i },
+  // The MojaPošta page reads the number from its address and looks it up on load.
+  { carrier: 'posta-slovenije', number: 'ZZ000000014SI',
+    route: /^https:\/\/moja\.posta\.si\/tracking\?trackingNumber=ZZ000000014SI/,
+    marker: /Pošiljke s sprejemno številko nismo našli|Ustvarite račun MojaPošta/ },
   // The Cypriot tracker reads the number from its address and searches it on load.
   { carrier: 'acs-courier', number: '9000000063',
     route: /^https:\/\/cyp\.acscourier\.net\/en\/quick-access\/non-registered-users\/track-and-trace\/\?trackingNumber=/,

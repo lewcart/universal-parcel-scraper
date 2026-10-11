@@ -70,4 +70,5 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ukrposhta": 5,
   "uniuni": 33,
   "venipak": 63,
+  "yurtici-kargo": 66,
 };

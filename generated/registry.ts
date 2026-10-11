@@ -136,6 +136,7 @@ import { adapter as yanwen } from '../carriers/yanwen/adapter.js';
 import { adapter as yto } from '../carriers/yto/adapter.js';
 import { adapter as yunda } from '../carriers/yunda/adapter.js';
 import { adapter as yunexpress } from '../carriers/yunexpress/adapter.js';
+import { adapter as yurticiKargo } from '../carriers/yurtici-kargo/adapter.js';
 
 export const REGISTRY: RegistryDefinition = {
   factories: {
@@ -274,6 +275,7 @@ export const REGISTRY: RegistryDefinition = {
     "yto": yto,
     "yunda": yunda,
     "yunexpress": yunexpress,
+    "yurtici-kargo": yurticiKargo,
   },
   carriers: {
     "99minutos": "universal",
@@ -480,7 +482,7 @@ export const REGISTRY: RegistryDefinition = {
     "yto": "yto",
     "yunda": "yunda",
     "yunexpress": "yunexpress",
-    "yurtici-kargo": "universal",
+    "yurtici-kargo": "yurtici-kargo",
     "zeleris": "universal",
     "zto": "universal",
   },

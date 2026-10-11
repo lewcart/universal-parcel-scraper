@@ -444,6 +444,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'venipak', number: 'V00000E0000009',
     route: /^https:\/\/venipak\.com\/lt\/en\/tracking\/track\/V00000E0000009\/?$/,
     marker: /PAIEŠKOS RAKTAŽODIS|nebuvo rasta|Parcel tracking/i },
+  // The page fills its field in from its address and looks the code up on load.
+  { carrier: 'yurtici-kargo', number: '999999999999',
+    route: /^https:\/\/www\.yurticikargo\.com\/tr\/online-servisler\/gonderi-sorgula\?code=999999999999$/,
+    marker: /Gönderi Sorgula|bir kargo bulunamadı/ },
 ];
 
 /**

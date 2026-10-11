@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -30,7 +30,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "108886350393",
@@ -43,7 +43,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -61,7 +61,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "114011114595",
@@ -74,7 +74,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -92,7 +92,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "412078984222",
@@ -105,7 +105,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -122,7 +122,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "191329680164",
@@ -135,7 +135,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -153,7 +153,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "118977181376",
@@ -166,7 +166,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -187,7 +187,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "173962210543",
@@ -200,7 +200,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -219,7 +219,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "174361470154",
@@ -232,7 +232,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -250,7 +250,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "308377408751",
@@ -263,7 +263,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -280,7 +280,7 @@
           "lbc-express"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     },
     {
       "number": "104985633362",
@@ -293,7 +293,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -314,7 +314,7 @@
           "sagawa"
         ]
       },
-      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number."
+      "note": "A complaint on Şikayetvar's Yurtiçi Kargo page calls it the parcel's tracking number; Yurtiçi Kargo's tracking knows the shipment."
     }
   ]
 }

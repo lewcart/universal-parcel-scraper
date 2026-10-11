@@ -229,6 +229,54 @@
         "confidence": "low"
       },
       {
+        "pattern": "^AP\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNBR\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNMEX\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNUSUP\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CACAINIAO\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^RL[A-Z]{1,2}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^JNCN\\d{12}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^ECSC00AARO\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^PA0{2}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^F0{6}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^9C\\d{4}I\\d{6}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{3}[A-Z]\\d{8}[A-Z]$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}TY$",
         "confidence": "low",
         "checksum": "s10",

@@ -231,6 +231,54 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
+        "pattern": "^AP\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNBR\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNMEX\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CNUSUP\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^CACAINIAO\\d{11}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^RL[A-Z]{1,2}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^JNCN\\d{12}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^ECSC00AARO\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^PA0{2}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^F0{6}\\d{8}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^9C\\d{4}I\\d{6}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{3}[A-Z]\\d{8}[A-Z]$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}TY$",
         "confidence": "low",
         "checksum": "s10",
@@ -8602,7 +8650,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiss-post-cargo": ["swiss-post-cargo-sscc","swiss-post-cargo-pl-reference"],
   "quickpac": ["quickpac-1"],
   "planzer": ["planzer-1","planzer-2"],
-  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-lp-reference","aliexpress-ty","aliexpress-mi"],
+  "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-lp-reference","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi"],
   "sunyou": ["sunyou-1","sunyou-2","sunyou-3"],
   "hermes": [],
   "spring-gds": ["spring-gds-1","spring-gds-2","spring-gds-3"],

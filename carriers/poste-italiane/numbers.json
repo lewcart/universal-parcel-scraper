@@ -208,10 +208,11 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "aliexpress",
           "poste-italiane"
         ]
       },
-      "note": "Public report names this carrier; shipment identity remains unconfirmed."
+      "note": "Public report names this carrier; shipment identity remains unconfirmed. Detection also suggests AliExpress, which shows buyers numbers of this shape before SDA knows them."
     },
     {
       "number": "3UW1QJ9006998",

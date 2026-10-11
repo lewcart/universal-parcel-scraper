@@ -133,7 +133,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
       },
       "note": "Publicly reported shipment number. Cainiao returns matching shipment activity; this does not confirm the last-mile operator."
     },
@@ -153,7 +156,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
       },
       "note": "Publicly reported shipment number. Cainiao returns matching shipment activity; this does not confirm the last-mile operator."
     },
@@ -308,10 +314,11 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "aliexpress",
           "colis-prive"
         ]
       },
-      "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history; only Colis Privé's generic rule matches the shape."
+      "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history. Detection suggests AliExpress beside Colis Priv\u00e9's generic rule."
     },
     {
       "number": "CNBR00121186607",
@@ -329,7 +336,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
       },
       "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history."
     },
@@ -349,7 +359,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
       },
       "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history."
     },
@@ -472,6 +485,486 @@
         ]
       },
       "note": "Archived ParcelsApp lookup. ParcelsApp does not attribute a carrier, so this number ending in MI is not shown to be Cainiao's. Cainiao's tracker does not find it."
+    },
+    {
+      "number": "CNUSUP00035889455",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260330212511/https://global.cainiao.com/global/detail.json?mailNos=CNUSUP00035889455&lang=en-US&language=en-US",
+        "date": "2026-03-30",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "colis-prive"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to the United States."
+    },
+    {
+      "number": "CNBR00119503956",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251128143954/https://global.cainiao.com/global/detail.json?mailNos=CNBR00119503956&lang=en-US&language=en-US",
+        "date": "2025-11-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Brazil."
+    },
+    {
+      "number": "CNMEX1012833334",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241207160101/https://global.cainiao.com/global/detail.json?mailNos=CNMEX1012833334&lang=en-US&language=en-US",
+        "date": "2024-12-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Mexico."
+    },
+    {
+      "number": "CACAINIAO00008158948",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250727045845/https://global.cainiao.com/global/detail.json?mailNos=CACAINIAO00008158948&lang=en-US&language=en-US",
+        "date": "2025-07-27",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Canada."
+    },
+    {
+      "number": "CACAINIAO00007302751",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250416170042/https://global.cainiao.com/global/detail.json?mailNos=CACAINIAO00007302751&lang=en-US&language=en-US",
+        "date": "2025-04-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Canada."
+    },
+    {
+      "number": "RLV16180219",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260829103120/https://global.cainiao.com/global/detail.json?mailNos=RLV16180219&lang=en-US&language=en-US",
+        "date": "2026-08-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Russia."
+    },
+    {
+      "number": "RLJ08063446",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240828180712/https://global.cainiao.com/global/detail.json?mailNos=RLJ08063446&lang=en-US&language=en-US",
+        "date": "2024-08-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Russia."
+    },
+    {
+      "number": "RLDW01120764",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260112015406/https://global.cainiao.com/global/detail.json?mailNos=RLDW01120764&lang=en-US&language=en-US",
+        "date": "2026-01-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "colis-prive"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Russia."
+    },
+    {
+      "number": "RLFP00955135",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260129211955/https://global.cainiao.com/global/detail.json?mailNos=RLFP00955135&lang=en-US&language=en-US",
+        "date": "2026-01-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "colis-prive"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Russia."
+    },
+    {
+      "number": "JNCN000002500930",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230620100236/https://global.cainiao.com/global/detail.json?mailNos=JNCN000002500930&lang=en-US&language=en-US",
+        "date": "2023-06-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Singapore."
+    },
+    {
+      "number": "JNCN000002060976",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230421053842/https://global.cainiao.com/global/detail.json?mailNos=JNCN000002060976&lang=en-US&language=en-US",
+        "date": "2023-04-21",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Singapore."
+    },
+    {
+      "number": "ECSC00AARO01096011",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240225072250/https://global.cainiao.com/global/detail.json?mailNos=ECSC00AARO01096011&lang=en-US&language=en-US",
+        "date": "2024-02-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Romania."
+    },
+    {
+      "number": "ECSC00AARO00659141",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231113061500/http://global.cainiao.com/global/detail.json?mailNos=ECSC00AARO00659141&lang=en-US&language=en-US",
+        "date": "2023-11-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Romania."
+    },
+    {
+      "number": "PA0002499628",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231121125421/https://global.cainiao.com/global/detail.json?mailNos=PA0002499628&lang=en-US&language=en-US",
+        "date": "2023-11-21",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "colis-prive"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to the United States."
+    },
+    {
+      "number": "PA0000906429",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230828220737/https://global.cainiao.com/global/detail.json?mailNos=PA0000906429&lang=en-US&language=en-US",
+        "date": "2023-08-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "colis-prive"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to the United States."
+    },
+    {
+      "number": "F00000001648382",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240228092155/https://global.cainiao.com/global/detail.json?mailNos=F00000001648382&lang=en-US&language=en-US",
+        "date": "2024-02-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Australia."
+    },
+    {
+      "number": "F00000000399017",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20231008215546/https://global.cainiao.com/global/detail.json?mailNos=F00000000399017&lang=en-US&language=en-US",
+        "date": "2023-10-08",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Australia."
+    },
+    {
+      "number": "9C9762I290955",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250311101340/https://global.cainiao.com/global/detail.json?mailNos=9C9762I290955&lang=en-US&language=en-US",
+        "date": "2025-03-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Italy."
+    },
+    {
+      "number": "9C9431I611314",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240418170844/https://global.cainiao.com/global/detail.json?mailNos=9C9431I611314&lang=en-US&language=en-US",
+        "date": "2024-04-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Italy."
+    },
+    {
+      "number": "9C9026I782253",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240226053029/https://global.cainiao.com/global/detail.json?mailNos=9C9026I782253&lang=en-US&language=en-US",
+        "date": "2024-02-26",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Cainiao tracking leg"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Italy."
+    },
+    {
+      "number": "000D00000001F",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "observed_request",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress",
+          "poste-italiane"
+        ]
+      },
+      "note": "Synthetic waybill in a thirteen-character shape SDA uses in Italy. AliExpress shows the buyer such a number while the parcel is still on Cainiao's leg, and Cainiao's tracker returns its history before Poste Italiane knows the number."
     }
   ]
 }

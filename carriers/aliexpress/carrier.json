@@ -84,6 +84,66 @@
       "confidence": "low"
     },
     {
+      "id": "aliexpress-ap-reference",
+      "pattern": "^AP\\d{14}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-cnbr",
+      "pattern": "^CNBR\\d{11}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-cnmex",
+      "pattern": "^CNMEX\\d{10}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-cnusup",
+      "pattern": "^CNUSUP\\d{11}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-cacainiao",
+      "pattern": "^CACAINIAO\\d{11}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-rl",
+      "pattern": "^RL[A-Z]{1,2}\\d{8}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-jncn",
+      "pattern": "^JNCN\\d{12}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-ecsc-aaro",
+      "pattern": "^ECSC00AARO\\d{8}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-pa",
+      "pattern": "^PA0{2}\\d{8}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-f",
+      "pattern": "^F0{6}\\d{8}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-9c-i",
+      "pattern": "^9C\\d{4}I\\d{6}$",
+      "confidence": "low"
+    },
+    {
+      "id": "aliexpress-sda-waybill",
+      "pattern": "^\\d{3}[A-Z]\\d{8}[A-Z]$",
+      "confidence": "low"
+    },
+    {
       "id": "aliexpress-ty",
       "pattern": "^[A-Z]{2}\\d{9}TY$",
       "confidence": "low",

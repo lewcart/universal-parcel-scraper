@@ -3,11 +3,23 @@
 Cainiao is Alibaba's logistics network and carries the international leg of most AliExpress
 orders. It rarely does the last mile: it hands the parcel to a local post or courier and
 publishes that partner's number when it has one. The catalog recognizes Cainiao's `DOFR…HD` and
-`CNFR…HD` shipment numbers and suggests AliExpress for `CNG` and numeric `LP` references. It also
-suggests AliExpress first for a postal-format number ending in `TY` or `MI`, suffixes that name no
-country and that Cainiao gives AliExpress parcels. Other ambiguous formats, such as `AP`, `CNUSUP`,
-`CNBR` and `CNMEX` references, need the user to pick AliExpress or paste a `global.cainiao.com`
-link. Detection does not select the last-mile carrier.
+`CNFR…HD` shipment numbers. It suggests AliExpress for Cainiao's other references, such as `CNG`,
+`AP`, `CNUSUP` and numeric `LP` numbers, and suggests it first for a postal-format number ending in
+`TY` or `MI`, suffixes that name no country and that Cainiao gives AliExpress parcels. Detection
+does not select the last-mile carrier.
+
+## Partner numbers
+
+AliExpress often gives the buyer the delivery partner's number while the parcel is still on
+Cainiao's leg. The partner does not know the parcel yet, so only Cainiao's tracker answers for that
+number. Detection suggests AliExpress for the partner shapes with such a lookup on record, for
+example SDA's thirteen-character waybills in Italy, and recognition asks Cainiao beside the
+partner. The rules are in [`carrier.json`](carrier.json) and their evidence in
+[`numbers.json`](numbers.json).
+
+Cainiao's tracker also follows partner numbers in shapes no rule suggests it for: plain digits, or
+a format another carrier's rule claims with high confidence. For those the user picks AliExpress
+or pastes a `global.cainiao.com` link.
 
 ## How it works
 

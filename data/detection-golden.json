@@ -382,6 +382,19 @@
     ]
   },
   {
+    "input": "000D00000001F",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane",
+      "aliexpress"
+    ]
+  },
+  {
     "input": "001-0255371",
     "carrier": "unknown",
     "confidence": "low",
@@ -24104,10 +24117,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "aliexpress",
       "poste-italiane"
     ],
     "asked": [
-      "poste-italiane"
+      "poste-italiane",
+      "aliexpress"
     ]
   },
   {
@@ -24525,6 +24540,39 @@
     ]
   },
   {
+    "input": "9C9026I782253",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "9C9431I611314",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "9C9762I290955",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
     "input": "9L35756144302",
     "carrier": "la-poste",
     "confidence": "high",
@@ -24858,14 +24906,24 @@
   {
     "input": "AP00821064969338",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
   },
   {
     "input": "AP00822511080252",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
   },
   {
     "input": "AP010001174127",
@@ -25390,6 +25448,28 @@
     "confidence": "high",
     "candidates": [
       "dhl"
+    ]
+  },
+  {
+    "input": "CACAINIAO00007302751",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "CACAINIAO00008158948",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
     ]
   },
   {
@@ -26298,10 +26378,26 @@
     ]
   },
   {
+    "input": "CNBR00119503956",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
     "input": "CNBR00121186607",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
   },
   {
     "input": "CNESP00000123400000000001",
@@ -26347,10 +26443,26 @@
     ]
   },
   {
+    "input": "CNMEX1012833334",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
     "input": "CNMEX1040292876",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
   },
   {
     "input": "CNPRT00000001234000000001",
@@ -26377,14 +26489,29 @@
     ]
   },
   {
+    "input": "CNUSUP00035889455",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive",
+      "aliexpress"
+    ]
+  },
+  {
     "input": "CNUSUP00037458234",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "aliexpress",
       "colis-prive"
     ],
     "asked": [
-      "colis-prive"
+      "colis-prive",
+      "aliexpress"
     ]
   },
   {
@@ -27384,6 +27511,28 @@
     ]
   },
   {
+    "input": "ECSC00AARO00659141",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "ECSC00AARO01096011",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
     "input": "ED005806575GB",
     "carrier": "parcelforce",
     "confidence": "high",
@@ -28145,6 +28294,28 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "F00000000399017",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "F00000001648382",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
     ]
   },
   {
@@ -29595,6 +29766,28 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "JNCN000002060976",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "JNCN000002500930",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
     ]
   },
   {
@@ -32327,6 +32520,32 @@
     ]
   },
   {
+    "input": "PA0000906429",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive",
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "PA0002499628",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive",
+      "aliexpress"
+    ]
+  },
+  {
     "input": "PA001273079CO",
     "carrier": "unknown",
     "confidence": "low",
@@ -33467,6 +33686,54 @@
     "confidence": "high",
     "candidates": [
       "swiss-post"
+    ]
+  },
+  {
+    "input": "RLDW01120764",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive",
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "RLFP00955135",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive",
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "RLJ08063446",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
+    ]
+  },
+  {
+    "input": "RLV16180219",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress"
     ]
   },
   {

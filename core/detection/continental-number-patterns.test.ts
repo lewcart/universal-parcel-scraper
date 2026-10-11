@@ -42,11 +42,16 @@ describe('continental shipment candidates', () => {
   });
 
   it('sends whole SDA candidates through Poste recognition and rejects truncated families', () => {
-    for (const number of ['990001A000001', '3C9900A000001', '990A00000001A']) {
+    // AliExpress shows buyers the last shape while the parcel is on Cainiao's leg, so Cainiao is asked beside Poste.
+    for (const { number, candidates, asked } of [
+      { number: '990001A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
+      { number: '3C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
+      { number: '990A00000001A', candidates: ['aliexpress', 'poste-italiane'], asked: ['poste-italiane', 'aliexpress'] },
+    ]) {
       expect(isPosteItalianeTrackingNumber(number)).toBe(true);
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['poste-italiane'] });
-      expect(recognitionAskedCarriers(number)).toEqual(['poste-italiane']);
-      expect(parseTrackingInput(`Tracking number: ${number}`)).toMatchObject({ trackingNumber: number, carrier: 'unknown', candidates: ['poste-italiane'] });
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates });
+      expect(recognitionAskedCarriers(number)).toEqual(asked);
+      expect(parseTrackingInput(`Tracking number: ${number}`)).toMatchObject({ trackingNumber: number, carrier: 'unknown', candidates });
       expect(isPosteItalianeTrackingNumber(number.slice(1))).toBe(false);
     }
     expect(isPosteItalianeTrackingNumber('ABCDEF0000001')).toBe(false);

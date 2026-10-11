@@ -1,10 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { createTracker } from '../../facade/index.js';
 
 const number = 'DOFR0000000000001HD';
 const delivered: unknown = JSON.parse(readFileSync(new URL('./fixtures/delivered-dofr.json', import.meta.url), 'utf8'));
+const inTransit = JSON.parse(readFileSync(new URL('./fixtures/in-transit.json', import.meta.url), 'utf8')) as {
+  module: Record<string, unknown>[];
+};
 
 describe('Cainiao DOFR detection', () => {
   it('normalizes the complete identifier and routes it to Cainiao without a manual selection', async () => {
@@ -48,6 +52,53 @@ describe('Cainiao DOFR detection', () => {
   it.each(['DOFR000000000001HD', 'DOFR00000000000001HD', 'DOFR0000000000001HU', 'DOGB0000000000001HD',
     'CNFR000000000001HD', 'CNFR0000000000001HU'])(
     'leaves unsupported format %s unresolved', (value) => {
+      expect(detectCarrierMatch(value).candidates).not.toContain('aliexpress');
+    },
+  );
+});
+
+describe('partner numbers Cainiao follows', () => {
+  // AliExpress shows the buyer SDA's waybill while the parcel is still on Cainiao's leg.
+  const waybill = '000D00000001F';
+
+  function fetcherKnownTo(cainiao: boolean) {
+    return vi.fn<typeof fetch>((input) => Promise.resolve(new Response(JSON.stringify(
+      String(input).startsWith('https://global.cainiao.com/')
+        ? { ...inTransit, module: [cainiao ? { ...inTransit.module[0], mailNo: waybill } : { mailNo: waybill, mailNoSource: 'EXTERNAL', detailList: [] }] }
+        : { idTracciatura: waybill, esitoRicerca: '2', listaMovimenti: [] },
+    ), { headers: { 'Content-Type': 'application/json' } })));
+  }
+
+  it('asks Cainiao beside Poste Italiane about an SDA waybill and files it under the one that knows it', async () => {
+    expect(detectCarrierMatch(waybill)).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['aliexpress', 'poste-italiane'], preferred: [],
+    });
+    expect(recognitionAskedCarriers(waybill)).toEqual(['poste-italiane', 'aliexpress']);
+    const fetcher = fetcherKnownTo(true);
+    const tracker = createTracker({ fetcher, providers: [] });
+    await expect(tracker.recognize(waybill)).resolves.toMatchObject({
+      carrier: 'aliexpress', choices: [], asked: ['poste-italiane', 'aliexpress'], unanswered: [],
+    });
+    await expect(tracker.track({ number: waybill })).resolves.toMatchObject({
+      carrier: 'aliexpress', source: 'aliexpress', result: { status: 'in_transit' },
+    });
+  });
+
+  it('leaves the waybill without a carrier when neither knows it', async () => {
+    await expect(createTracker({ fetcher: fetcherKnownTo(false), providers: [] }).recognize(waybill)).resolves.toEqual({
+      choices: [], asked: ['poste-italiane', 'aliexpress'], unanswered: [],
+    });
+  });
+
+  it.each(['AP00000000000001', 'CNUSUP00000000001', 'CNBR00000000001', 'CNMEX0000000001', 'CACAINIAO00000000001',
+    'RLV00000001', 'RLDW00000001', 'JNCN000000000001', 'ECSC00AARO00000001', 'PA0000000001', 'F00000000000001',
+    '9C0000I000001'])('asks Cainiao about %s', (value) => {
+    expect(detectCarrierMatch(value)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
+    expect(recognitionAskedCarriers(value)).toContain('aliexpress');
+  });
+
+  it.each(['AP0000000000001', 'CNES00000000001', 'RL00000001', 'PA1000000001', 'F10000000000001', '9C0000A000001'])(
+    'does not suggest AliExpress for %s', (value) => {
       expect(detectCarrierMatch(value).candidates).not.toContain('aliexpress');
     },
   );

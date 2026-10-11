@@ -184,10 +184,10 @@
     },
     {
       "code": "DELIVERED_PARCELBOX",
-      "stage": "delivered",
+      "stage": "ready_for_pickup",
       "confirmedBy": "official-doc",
       "firstSeen": "2026-09-08",
-      "note": "Delivered to the parcel box"
+      "note": "Put into a Hermes Box, a pickup locker. Hermes's Hermes Box terms (myhermes.de/content/pdf/hermesbox_nutzungsbedingungen.pdf) have the recipient generate a pickup code on the tracking page and take the parcel out within 72 hours, or it goes back to the sender."
     },
     {
       "code": "PICKED_UP_BY_RECIPIENT",

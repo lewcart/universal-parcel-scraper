@@ -141,6 +141,35 @@ describe('Hermes Germany', () => {
     expect(result.current_stage).toBe('in_transit');
   });
 
+  it('keeps a parcel in a Hermes Box ready for pickup until the recipient takes it out', () => {
+    const inBox = (code: string, view?: Record<string, unknown>, extra: Array<Record<string, unknown>> = []) => [{
+      barcode: NUMBER,
+      parcelAttributes: { delivered: true },
+      ...(view ? { viewParameters: view } : {}),
+      parcelProgress: [
+        { parcelStatus: 'DELIVERY_TOUR_STARTED', timestamp: '2026-09-03T07:00:00Z' },
+        { parcelStatus: code, timestamp: '2026-09-03T09:00:00Z' },
+        ...extra,
+      ],
+    }];
+    const waiting = { status: 'out_for_delivery', current_stage: 'ready_for_pickup' };
+    expect(parseHermesGermanyResponse(inBox('DELIVERED_PARCELBOX'), NUMBER)).toMatchObject(waiting);
+    expect(parseHermesGermanyResponse(inBox('DELIVERED_PARCELBOX', { readyForParcelBoxCollection: true }), NUMBER)).toMatchObject(waiting);
+    const unflagged = parseHermesGermanyResponse(inBox('DELIVERED', { readyForParcelBoxCollection: true }), NUMBER);
+    expect(unflagged).toMatchObject(waiting);
+    expect(unflagged.events?.[0]?.stage).toBe('ready_for_pickup');
+    expect(unflagged).not.toHaveProperty('delivered_at');
+    // Taken out: the page no longer offers the pickup code, or a collection row follows.
+    expect(parseHermesGermanyResponse(inBox('DELIVERED_PARCELBOX', { readyForParcelBoxCollection: false }), NUMBER))
+      .toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-09-03T09:00:00.000Z' });
+    expect(parseHermesGermanyResponse(inBox('DELIVERED_PARCELBOX', undefined,
+      [{ parcelStatus: 'PICKED_UP_BY_RECIPIENT', timestamp: '2026-09-04T09:00:00Z' }]), NUMBER))
+      .toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    // A doorstep or neighbour delivery stays delivered, and the flag never hides a return.
+    expect(parseHermesGermanyResponse(inBox('DELIVERED_NEIGHBOUR'), NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    expect(parseHermesGermanyResponse(inBox('RETURN_TO_SENDER', { readyForParcelBoxCollection: true }), NUMBER).current_stage).toBe('returned');
+  });
+
   it('names the ParcelShop that holds the parcel or handed it over, and no other address', () => {
     expect(parseHermesGermanyResponse(atShop('PARCELSHOP_READY_FOR_COLLECTION'), NUMBER).pickup_point)
       .toBe('Example Kiosk\nBeispielweg 1\n10115 Beispielstadt');

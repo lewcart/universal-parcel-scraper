@@ -5,7 +5,7 @@ import { InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { COLLECTED_AT_PARCELSHOP, hermesGermanyMilestone, IGNORED_BOOKING_STATUS, type Milestone } from './status.js';
+import { COLLECTED_AT_PARCELSHOP, hermesGermanyMilestone, IGNORED_BOOKING_STATUS, IN_PARCELBOX, type Milestone } from './status.js';
 
 // Public recipient protocol inspected 2026-09-08:
 // https://gcp-prd.my-deliveries.de/tnt/bundle/tnt-bundle-v2.js
@@ -119,9 +119,24 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   const atg = isRecord(parcel.atg) ? parcel.atg : {};
   const sender = clean(atg.companyName) || null;
   const eta = etaDate(parcel.eta ?? parcel.deliveryForecast ?? attributes.deliveredTimestamp);
-  const deliveredByCode = latest.metadata?.status === 'delivered';
+  // The tracking page offers the Hermes Box pickup code while
+  // `readyForParcelBoxCollection` is true: the parcel waits in the locker,
+  // even when the newest row or the delivered flag reads as a delivery.
+  // Once Hermes clears it, a box delivery that is still the newest row has
+  // been taken out.
+  const view = isRecord(parcel.viewParameters) ? parcel.viewParameters : {};
+  const boxReady = view.readyForParcelBoxCollection;
+  const latestCode = latest.event.provider_code;
+  const readsDelivered = !latest.metadata || latest.metadata.stage === 'delivered';
+  const inBox = latestCode === IN_PARCELBOX ? boxReady !== false : boxReady === true && readsDelivered;
+  const takenOut = latestCode === IN_PARCELBOX && boxReady === false;
+  if (inBox) {
+    latest.metadata = hermesGermanyMilestone(IN_PARCELBOX);
+    latest.event.stage = 'ready_for_pickup';
+  }
+  const deliveredByCode = latest.metadata?.status === 'delivered' || takenOut;
   const deliveredByFlag = attributes.delivered === true;
-  const delivered = deliveredByCode || deliveredByFlag;
+  const delivered = !inBox && (deliveredByCode || deliveredByFlag);
   if (!latest.metadata && !delivered) {
     return {
       status: 'unknown',
@@ -134,7 +149,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     };
   }
   const status = delivered ? 'delivered' as const : latest.metadata!.status;
-  const stage = latest.metadata?.stage ?? (delivered ? 'delivered' : 'in_transit');
+  const stage = takenOut ? 'delivered' : latest.metadata?.stage ?? (delivered ? 'delivered' : 'in_transit');
   const deliveredAt = delivered ? latest.event.time : null;
   const pickupPoint = parcelShop(parcel, latest);
   return {

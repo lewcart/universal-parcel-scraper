@@ -53,11 +53,13 @@ export const STATUSES: Record<string, Milestone> = {
   DELIVERED_DROPOFF: milestone('delivered', 'delivered', 'Delivered to the agreed safe place'),
   DELIVERED_MAILBOX: milestone('delivered', 'delivered', 'Delivered to the mailbox'),
   DELIVERED_PARCELSHOP: milestone('delivered', 'delivered', 'Collected at the ParcelShop'),
-  DELIVERED_PARCELBOX: milestone('delivered', 'delivered', 'Delivered to the parcel box'),
   PICKED_UP_BY_RECIPIENT: milestone('delivered', 'delivered', 'Collected by the recipient'),
   COLLECTED: milestone('delivered', 'delivered', 'Collected by the recipient'),
   PARCELSHOP_COLLECTED_BY_CUSTOMER: milestone('delivered', 'delivered', 'Collected at the ParcelShop'),
   INTERNATIONAL_DELIVERED: milestone('delivered', 'delivered', 'Delivered'),
+  // A Hermes Box is a pickup locker: the recipient takes the parcel out with
+  // a pickup code within 72 hours, or it goes back to the sender.
+  DELIVERED_PARCELBOX: milestone('ready_for_pickup', 'out_for_delivery', 'Ready for collection from the Hermes Box'),
   READY_FOR_PICKUP: milestone('ready_for_pickup', 'out_for_delivery', 'Ready for collection'),
   PARCELSHOP_ITEMS_FOR_COLLECTION: milestone('ready_for_pickup', 'out_for_delivery', 'Ready for collection at the ParcelShop'),
   READY_FOR_COLLECTION: milestone('ready_for_pickup', 'out_for_delivery', 'Ready for collection'),
@@ -75,6 +77,9 @@ export const STATUSES: Record<string, Milestone> = {
 // Delivery preference bookings (a safe place, a ParcelShop) record the
 // recipient's wish, not a movement, and must never move the parcel backwards.
 export const IGNORED_BOOKING_STATUS = new Set(['EDL_BOOKED_DROPOFF', 'EDL_BOOKED_PARCELSHOP']);
+
+/** The code for a parcel put into a Hermes Box, which waits there for its recipient. */
+export const IN_PARCELBOX = 'DELIVERED_PARCELBOX';
 
 /** Codes for a parcel the recipient collected at a ParcelShop. */
 export const COLLECTED_AT_PARCELSHOP = new Set(['PARCELSHOP_COLLECTED_BY_CUSTOMER', 'DELIVERED_PARCELSHOP']);

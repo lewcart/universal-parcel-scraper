@@ -39,6 +39,15 @@ back to `Europe/Berlin`) and stored as UTC.
 - `EDL_BOOKED_DROPOFF` and `EDL_BOOKED_PARCELSHOP` are dropped: they are the
   recipient's delivery preference (a safe place, a ParcelShop), not a movement,
   and as the newest row they would move the parcel backwards.
+- A Hermes Box is a pickup locker: the recipient asks the tracking page for a
+  pickup code and takes the parcel out within 72 hours, as the
+  [Hermes Box terms](https://www.myhermes.de/content/pdf/hermesbox_nutzungsbedingungen.pdf)
+  say. `DELIVERED_PARCELBOX` is therefore ready for pickup, and so is any
+  newest row that reads as delivered while the reply's
+  `viewParameters.readyForParcelBoxCollection` is true, the flag the page
+  shows its pickup-code form for. The delivered flag does not override
+  either. A box delivery becomes delivered once a collection row follows it
+  or Hermes sets that flag to false.
 - `pickup_point` is the ParcelShop holding the parcel, or the one the recipient
   collected it from: the shop's name, street and town from the reply's
   `address` block, read only when its `addressType` is `PARCELSHOP` and the

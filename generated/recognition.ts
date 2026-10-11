@@ -5,6 +5,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "aliexpress": 14,
   "australia-post": 6,
   "austrian-post": 39,
+  "box-now": 48,
   "bpost": 37,
   "brt": 42,
   "canada-post": 15,

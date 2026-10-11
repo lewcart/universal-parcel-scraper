@@ -732,22 +732,99 @@ describe('ParcelsApp result parsing', () => {
   });
 
   it('reads 4PX scans on the wall clock its instants give on China time', () => {
-    // Live shape (2026-10-10): 4PX's own instants, which read each wall clock
-    // on China time, a US one too. 4PX's page gives the US offsets.
-    const result = parseParcelsAppResponse({ carriers: ['4PX Express'], states: [
+    // Live shape (2026-10-10): 4PX's fixed fields and its own instants, which
+    // read each wall clock on China time, a US one too. 4PX's page gives the
+    // offsets: its scans up to the departing flight on China time, the rest in
+    // the US.
+    const result = parseParcelsAppResponse({ carriers: ['4PX Express'], destinationCode: 'US', states: [
       { date: '2026-05-26T06:30:03Z', status: 'Delivered, in/at mailbox', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
       { date: '2026-05-25T01:36:43Z', status: 'Arrived at usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
-      { date: '2026-05-23T10:00:38Z', status: 'Customs clearance agent received the shipment', carrier: 0 },
+      { date: '2026-05-23T10:00:38Z', status: 'Customs clearance agent received the shipment in destnation country.\n', carrier: 0 },
+      { date: '2026-05-23T04:22:00Z', status: 'Arrival to the destination airport', carrier: 0 },
+      { date: '2026-05-22T17:27:00Z', status: 'Departure from the original airport', carrier: 0 },
       { date: '2026-05-21T12:35:30Z', status: 'Pickup scanned, in transit to warehouse', carrier: 0, location: 'CN' },
+      { date: '2026-05-21T09:08:01Z', status: 'Shipping label created, usps awaiting item', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
+      { date: '2026-05-21T09:04:13Z', status: 'Parcel information received', carrier: 0 },
     ] }, number, identity());
     expect(result.events?.map((scan) => [scan.time, scan.location])).toEqual([
       ['2026-05-26T18:30:03.000Z', 'US NY EXAMPLE CITY 10001'], // 14:30:03 in New York
       ['2026-05-25T13:36:43.000Z', 'US EXAMPLE CITY NY DISTRIBUTION CENTER'],
-      // Borrowed from the scan before it, a guess: 4PX's page has 18:00:38 in New York.
-      ['2026-05-23T10:00:38.000Z', undefined],
-      ['2026-05-21T12:35:30.000Z', 'CN'], // a scan on China time, as labeled
+      // In the US, from the US scans after them, as guesses: 18:00:38 and
+      // 12:22 in New York on 4PX's page.
+      ['2026-05-23T22:00:38.000Z', undefined],
+      ['2026-05-23T16:22:00.000Z', undefined],
+      ['2026-05-22T17:27:00.000Z', undefined], // China time, as labeled
+      ['2026-05-21T21:08:01.000Z', 'US NY EXAMPLE CITY 10001'], // the US label, 17:08:01 in New York
+      ['2026-05-21T12:35:30.000Z', 'CN'],
+      ['2026-05-21T09:04:13.000Z', undefined], // China time, not the label's US one after it
     ]);
     expect(result.undated_event_count).toBeUndefined();
+  });
+
+  it('reads 4PX scans whose places ParcelsApp rewrote on the wall clock of their dates', () => {
+    // Live shape (2026-10-11): "United States", "Hong Kong", "US 12345" in
+    // place of 4PX's fields, and dates that are the wall clocks themselves.
+    // 4PX's page gives the offsets.
+    const result = parseParcelsAppResponse({ carriers: ['4PX Express'], destination: 'United States', states: [
+      { date: '2026-03-23T13:49:00Z', status: 'Delivered, front door/porch', carrier: 0, location: 'EXAMPLE CITY, IN, US 12345' },
+      { date: '2026-03-21T09:40:00Z', status: 'Arrived at usps regional facility', carrier: 0,
+        location: 'EXAMPLE CITY IN DISTRIBUTION CENTER, US 12345' },
+      { date: '2026-03-19T21:35:00Z', status: 'Handed over to last mile', carrier: 0 },
+      { date: '2026-03-18T03:06:00Z', status: 'Hand over to airline', carrier: 0 },
+      { date: '2026-03-17T09:53:32Z', status: 'Depart from facility to service provider', carrier: 0, location: 'Hong Kong' },
+      { date: '2026-03-14T02:40:00Z', status: 'Picked up by shipping partner, usps awaiting item', carrier: 0, location: 'EXAMPLE CITY, IL, US 12345' },
+      { date: '2026-03-09T15:04:41Z', status: 'Parcel information received', carrier: 0 },
+    ] }, number, identity());
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-03-23T17:49:00.000Z', // 13:49 in Indiana
+      '2026-03-21T13:40:00.000Z',
+      '2026-03-20T02:35:00.000Z', // in the US: Illinois's clock, from the scan before it, a guess
+      '2026-03-17T19:06:00.000Z',
+      '2026-03-17T01:53:32.000Z',
+      '2026-03-14T07:40:00.000Z',
+      '2026-03-09T07:04:41.000Z',
+    ]);
+    expect(result.undated_event_count).toBeUndefined();
+  });
+
+  it('reads Cainiao\'s import customs and last mile on the destination\'s clock, the UK\'s last mile as labeled', () => {
+    // Cainiao's own feed (2026-10-11): its origin leg on China time, import
+    // customs and the last mile on the destination's clock, the UK's last mile
+    // on GMT in July.
+    const times = (destinationCode: string, states: Record<string, unknown>[]) =>
+      parseParcelsAppResponse({ carriers: ['Cainiao'], destinationCode, states }, number, identity()).events?.map((scan) => scan.time);
+    const scan = (date: string, status: string, location?: string) => ({ date, status, carrier: 0, ...(location ? { location } : {}) });
+    const states = [
+      scan('2026-07-10T14:00:00Z', 'Delivered'),
+      scan('2026-07-08T09:00:00Z', 'Import customs clearance complete'),
+      scan('2026-07-01T10:00:00Z', 'Leave the warehouse'),
+    ];
+    expect(times('BE', states)).toEqual(['2026-07-10T12:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T02:00:00.000Z']);
+    expect(times('GB', states)).toEqual(['2026-07-10T14:00:00.000Z', '2026-07-08T08:00:00.000Z', '2026-07-01T02:00:00.000Z']);
+    // A destination of several clocks lends only the clock of a scan placed
+    // there, as a guess, and none from outside it.
+    expect(times('US', [
+      scan('2026-10-03T16:01:13Z', 'In transit', 'Example City, FL'),
+      scan('2026-10-01T21:26:36Z', 'Leaving customs'),
+      scan('2026-09-30T08:00:00Z', 'In transit', 'Example City, China'),
+    ])).toEqual(['2026-10-03T20:01:13.000Z', '2026-10-02T01:26:36.000Z', '2026-09-30T00:00:00.000Z']);
+  });
+
+  it('reads EcoScooting\'s last mile in Portugal for a "CNPRT" reference, otherwise in Spain', () => {
+    // EcoScooting's own instants (2026-10-11): its China leg on China time, its
+    // order and Spanish sorting center on Madrid's, its last mile on the
+    // destination's.
+    const times = (trackingNumber: string) => parseParcelsAppResponse({ carriers: ['EcoScooting'], states: [
+      { date: '2026-07-10T09:00:00Z', status: 'Out for Delivery. Your shipment is out for delivery', carrier: 0 },
+      { date: '2026-07-08T09:00:00Z', status: 'Sorting Center Inbound. Your shipment has arrived at sorting center', carrier: 0 },
+      { date: '2026-07-01T09:00:00Z', status: 'Shipment is in transit to Cainiao Express', carrier: 0 },
+    ] }, trackingNumber, identity(trackingNumber)).events?.map((scan) => scan.time);
+    const reference = 'CNPRT00000000000000000001';
+    expect(times(reference)).toEqual(['2026-07-10T08:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T01:00:00.000Z']);
+    expect(times(number)).toEqual(['2026-07-10T07:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T01:00:00.000Z']);
+    const page = identity(reference).replace('</table>', `</table><ul class="events">${
+      carrierRow('10 Jul 2026', '09:00', 'Out for Delivery. Your shipment is out for delivery', 'EcoScooting')}</ul>`);
+    expect(parseParcelsAppHtml(page, reference).events?.[0]?.time).toBe('2026-07-10T08:00:00.000Z');
   });
 
   it('gives copies of a GOFO scan with an offset of its own that instant', () => {
@@ -782,6 +859,7 @@ describe('ParcelsApp result parsing', () => {
     expect(times(['Posten Norge - Norway Post'], [scan('2026-09-30T09:38:23Z'), scan('2026-09-30T06:17:37Z', 'Example Town, Denmark, 1000')]))
       .toEqual(['2026-09-30T07:38:23.000Z', '2026-09-30T04:17:37.000Z']);
     expect(times(['Royal Mail'], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
+    expect(times(['Japan Post'], [scan('2026-10-02T10:27:00Z', 'Example Town')])).toEqual(['2026-10-02T01:27:00.000Z']);
     // A DPD UK depot number named "DPD France": DPD UK's clock. A French one keeps Paris.
     const dpd = [scan('2026-07-22T14:17:00Z')];
     expect(times(['DPD France'], dpd, '15500000000000')).toEqual(['2026-07-22T13:17:00.000Z']);

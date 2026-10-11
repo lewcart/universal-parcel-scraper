@@ -92,15 +92,18 @@ step exists for future protocol changes.
   Steps 3 and 5 only guess where the scan was. A `location` ending with any other country,
   by ISO code or by name in English, German, French, Italian, Spanish or Dutch ("Example
   City, CA, US", "Example City, South Africa"), rules them out and the scan stays as
-  labeled. Canada Post's "USA" and Orange Connex's "United States of America" and
-  "People's Republic of China" name the US and China too; the last also places a scan on
-  China time in step 2. A location that names no country ("Example Hub", "Toronto, ON")
-  rules nothing out, and step 4 only reads scans without a location. A country added to
-  `COUNTRY_ZONES`, or a country name `countryCode` newly reads, therefore moves the stored
-  scans located in it, as a changed catalog `timezone` moves its carrier's, and so their
-  event ids. So does a reported name newly mapped to a catalog carrier on a local clock
-  (`NAME_ALIASES` in [hints.ts](../../core/catalog/hints.ts)), for the scans under that
-  name. Plan a re-key of stored ParcelsApp rows with any of these changes.
+  labeled. Canada Post's "USA", 4PX's "US 12345" and Orange Connex's "United States of
+  America" and "People's Republic of China" name the US and China too; the last also
+  places a scan on China time in step 2. "Hong Kong", which is not the name Intl gives it,
+  places a scan on Hong Kong time (2026-10-11): Dealer Send's and Japan Post's there have
+  the digits Cainiao dates +08:00, and 4PX's those of 4PX's page. A location that names no
+  country ("Example Hub", "Toronto, ON") rules nothing out, and step 4 only reads scans
+  without a location. A country added to `COUNTRY_ZONES`, or a country name newly read
+  (by `countryCode` or here), therefore moves the stored scans located in it, as a changed
+  catalog `timezone` moves its carrier's, and so their event ids. So does a reported name
+  newly mapped to a catalog carrier on a local clock (`NAME_ALIASES` in
+  [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. Plan a re-key
+  of stored ParcelsApp rows with any of these changes.
 
   With no zone, an offset is taken as given, which for the carriers whose dates are never
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
@@ -135,9 +138,11 @@ step exists for future protocol changes.
      as the same instant and merges into that scan's row. Two such scans on different
      clocks give no copy;
   3. a borrowed clock, a guess: the zone of the scan of the same network just before it by
-     wall clock that steps 1 or 2 place, else of the one just after it;
+     wall clock that steps 1 or 2 place, else of the one just after it; for a scan known
+     to be in the destination (Known clocks below), only of one placed there;
   4. the zone routing passes for the parcel (step 5 above), a guess;
-  5. the known clock of its network and wording (Known clocks below);
+  5. the known clock of its network and wording, or for a scan in the destination, that
+     country's single clock (Known clocks below);
   6. none: it keeps ParcelsApp's label, as it did before these steps, and reads as that
      label says, hours off unless the scan was on UTC. This last guess means no wall-clock
      scan is left without an instant, so none drops out or makes a reply inconclusive.
@@ -147,33 +152,55 @@ step exists for future protocol changes.
   off when it does not. Checked on 2026-10-10 against the carriers' own clocks: Canada
   Post's first scan and one in Chicago took the right zone, and its last two, in Montana,
   the Chicago hub's, an hour off USPS's. SpeedPAK's four took the right one, and a Chinese
-  system event the US one, 14 hours off. 4PX's nine did; its four between the departing
-  flight and the first US scan took China's, and its first scan the US label's, 12 hours
-  off. No source gives the clock of USPS's "In Transit to Next Facility", which borrows
-  its neighbours'. Routing passes no zone for a carrier on UTC in the catalog, as these
-  are, so step 4 rarely applies. Step 6 is reached by Cainiao's copies of another post's
-  last mile under other wording (bpost's, CTT's or Japan Post's, with no place), and by
-  EMS and EcoScooting scans in a reply that places none of their network's.
-- Known clocks (checked 2026-10-10): GOFO's feed dates its labels ("Shipping Label
-  Created") on Pacific time wherever the parcel is injected (a Florida parcel's at
-  -07:00). Cainiao's own feed dates its origin leg on China time, from "Order received
-  successfully" to "Arrived at linehaul office", in two parcels bound for the UK whose
-  later legs it dates on GMT+2, +1 and +0; in a US parcel, "Package finished" and
-  "Last-mile delivery forecast" fall minutes from scans of that leg. These scans skip step
-  3, since their neighbours keep another clock: borrowed from a GOFO parcel's Florida
-  scans, the label came 3 hours early and Cainiao's "Order received" 12 hours after it,
-  where China time puts it 19 seconds after. Other scans of these networks with no place
-  go through the steps like any.
+  system event the US one, 14 hours off. On 2026-10-11, with the known clocks below, all
+  26 scans of a 4PX parcel took 4PX's own offsets, and 27 of another's 30; the other three
+  are an hour off, where the parcel or 4PX's clock changed zones around them. No source
+  gives the clock of USPS's "In Transit to Next Facility", which borrows its neighbours'.
+  Routing passes no zone for a carrier on UTC in the catalog, as these are, so step 4
+  rarely applies. Step 6 is reached by Cainiao's last mile in the UK, which is on GMT, by
+  Cainiao scans of unlisted wording or in a reply that names no destination, and by EMS
+  scans in a reply that places none of EMS's: a cancelled export in China, and US scans
+  under a Chicago postcode in a reply that names neither the US nor a state.
+- Known clocks, from each carrier's own offsets. GOFO's feed dates its labels ("Shipping
+  Label Created") on Pacific time wherever the parcel is injected (a Florida parcel's at
+  -07:00; 2026-10-10). Cainiao's own feed (2026-10-11, parcels to the UK, Belgium, Spain,
+  Italy, Japan, Brazil and the US) dates its origin leg on China time, from "Order
+  received successfully" to "Left from departure country/region", and its return
+  warehouse too; it dates import customs ("Import clearance start" to "Leaving customs")
+  and the last mile ("Received by local delivery company", "Out for delivery",
+  "Delivered", and bpost's and CTT's wording) on the destination's clock, except the UK's
+  last mile, on GMT in July. Its transit hub, on GMT+2 for a UK parcel, and "Arrived at
+  linehaul office", on either side's clock, are not listed; that office stays on China
+  time, as it was checked first. 4PX's page (two parcels to the US) dates its scans up to
+  the departing flight on China time and the rest in the US. EcoScooting's own instants
+  (two parcels) put its China leg on China time, its order and its Spanish sorting
+  center on Madrid's, and its last mile on the destination's.
+
+  The destination is the country the reply names (`destinationCode` or `destination`),
+  else the one an EcoScooting reference names ("CNPRT" for Portugal, "CNESP" for Spain).
+  A scan on a fixed clock skips step 3, since its neighbours keep another clock: borrowed
+  from a GOFO parcel's Florida scans, the label came 3 hours early and Cainiao's "Order
+  received" 12 hours after it, where China time puts it 19 seconds after. A scan in the
+  destination borrows only from a scan placed there, so 4PX's arrival in the US takes a
+  US scan's clock, not that of the Chinese scan before it, and otherwise takes the
+  country's single clock. In a reply that names no destination, Cainiao's and
+  4PX's go through the steps like any, and EcoScooting's last mile takes Madrid's. Other
+  scans of these networks with no place go through the steps like any.
 - Steps 1 to 5 move the stored scans they now date, and the names read as the US or China
   above move theirs: plan a re-key. A copy merged into the scan it copies leaves one row
   where there were two.
-- 4PX's dates are the instants of 4PX's own feed, which reads every scan's wall clock on
-  China time, its US scans too: 4PX's page shows a New York delivery at 14:30 with its
-  -04:00 offset, and ParcelsApp has 06:30Z. The wall clock is that instant's Shanghai
-  digits, read where the location places it. 4PX writes the country first, in fixed
-  fields ("US  NY  EXAMPLE CITY 12345", "US    EXAMPLE CITY NY DISTRIBUTION CENTER"). An
-  instant is right only for a scan on China time, so a scan with no place, or in "US"
-  alone, goes through steps 2 to 6, and in step 6 keeps 4PX's instant.
+- ParcelsApp relays 4PX's feed two ways (checked 2026-10-11 against 4PX's page, which
+  shows each scan's wall clock with its offset). Where it keeps 4PX's fixed fields, the
+  country first ("US  NY  EXAMPLE CITY 12345", "US    EXAMPLE CITY NY DISTRIBUTION
+  CENTER", "CN"), its dates are the instants of 4PX's own feed, which reads every wall
+  clock on China time, the US ones too: 4PX's page shows a New York delivery at 14:30
+  with its -04:00 offset, and ParcelsApp has 06:30Z. The wall clock is that instant's
+  Shanghai digits, read where the location places it. Where it rewrites the places
+  ("United States", "Hong Kong", "EXAMPLE CITY, IN, US 12345"), its dates are the wall
+  clocks themselves under a UTC label, as other carriers' are. A reply whose 4PX scans
+  have places, none in 4PX's fields, is read the second way. An instant is right only for
+  a scan on China time, so a scan with no place, or in "US" alone, goes through steps 2
+  to 6, and in step 6 keeps its label.
 - GOFO France's dates carry real offsets ("+02:00"), the instants of GOFO France's own
   feed, and are taken as given. Other carriers' copies of the same scan (YTO's, Cirro's,
   EQuick China's) write its digits under a UTC label; a copy with the same digits and
@@ -187,7 +214,9 @@ step exists for future protocol changes.
   them on that clock. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
   Post" (Bring's offsets, in Denmark too) and "Royal Mail" (Parcelforce's offsets) were
   checked at home only, so their home clock is a step 3 guess that a location in another
-  country rules out. A name added here moves its stored scans: plan a re-key.
+  country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
+  times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
+  A name added here moves its stored scans: plan a re-key.
 - TNT's international scans (9-digit numbers) skip these steps. tnt.com gives them
   offsets, and ParcelsApp's `date` is already their UTC instant.
 - So do scans named "Asendia United States" or "Asendia USA", wherever they happened.
@@ -207,22 +236,22 @@ step exists for future protocol changes.
   reference was found), and so are those of the wall-clock carriers above. Step 2 reads
   them in the zone of the US state or Canadian province the location names ("Riverside,
   CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga, ON, CA",
-  USPS's "EXAMPLE CITY IL DISTRIBUTION CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the
-  majority zone where there are several, as in the USPS adapter. A state written out
-  counts only after the country ("Example City Minnesota, United States of America", as
-  Orange Connex writes SpeedPAK's), since Georgia is a country too. A code shared with a
-  single-clock country (DE, IL, IN, MT, NL, SK) counts, before that country, only for a
-  town of the state or province: UPS writes both "Chicago, IL" and "Koeln, DE". The town
-  lists come from the server's GeoNames gazetteer, and a name the country also has for
-  more people stays the country's ("Salem, IN").
-  [generate-region-towns.mjs](../../scripts/generate-region-towns.mjs) writes them. Another
-  shared code ("GA" is Gabon) counts only in a reply that is in North America: one scan
-  certainly is, or one names a state or province and none names another country. A copy
-  of such a scan from another carrier, at the same minute with the same wording (Cainiao
-  relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers keep
-  their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every country.
-  UPS, FedEx, UniUni and EasyShip scans that nothing places still stay as labeled. Adding
-  a carrier, a town or a province moves stored scans: plan a re-key.
+  4PX's "EXAMPLE CITY, IN, US 12345", USPS's "EXAMPLE CITY IL DISTRIBUTION CENTER" and
+  "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as in the USPS
+  adapter. A state written out counts only after the country ("Example City Minnesota,
+  United States of America", as Orange Connex writes SpeedPAK's), since Georgia is a
+  country too. A code shared with a single-clock country (DE, IL, IN, MT, NL, SK) counts,
+  before that country, only for a town of the state or province: UPS writes both "Chicago,
+  IL" and "Koeln, DE". The town lists come from the server's GeoNames gazetteer, and a
+  name the country also has for more people stays the country's ("Salem, IN").
+  [generate-region-towns.mjs](../../scripts/generate-region-towns.mjs) writes them.
+  Another shared code ("GA" is Gabon) counts only in a reply that is in North America: one
+  scan certainly is, or one names a state or province and none names another country. A
+  copy of such a scan from another carrier, at the same minute with the same wording
+  (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
+  keep their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every
+  country. UPS, FedEx, UniUni and EasyShip scans that nothing places still stay as
+  labeled. Adding a carrier, a town or a province moves stored scans: plan a re-key.
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
@@ -243,7 +272,8 @@ step exists for future protocol changes.
   scan location, so step 2 never applies there and nothing rules out steps 3 and 5. A
   wall-clock carrier's scan there has no place to be read in and no placed scan to copy or
   borrow from, so routing's zone, a guess, dates it, else its known clock, else its label,
-  and its UTC digits carry no offset for GOFO France's copies to take. The server's
+  and its UTC digits carry no offset for GOFO France's copies to take. The page names no
+  destination, so only an EcoScooting reference gives one there. The server's
   timezone is never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
   is counted the same way.
 - Cross-border replies stay uncertain: scans can be filed under the wrong operator (an

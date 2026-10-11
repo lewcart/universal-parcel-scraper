@@ -88,6 +88,7 @@ import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
+import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
 import { adapter as mrw } from '../carriers/mrw/adapter.js';
 import { adapter as nacex } from '../carriers/nacex/adapter.js';
@@ -235,6 +236,7 @@ export const REGISTRY: RegistryDefinition = {
     "landmark-global": landmarkGlobal,
     "lbc-express": lbcExpress,
     "matkahuolto": matkahuolto,
+    "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
     "mrw": mrw,
     "nacex": nacex,
@@ -418,7 +420,7 @@ export const REGISTRY: RegistryDefinition = {
     "maltapost": "universal",
     "matkahuolto": "matkahuolto",
     "meest": "universal",
-    "mng-kargo": "universal",
+    "mng-kargo": "mng-kargo",
     "mondial-relay": "mondial-relay",
     "mrw": "mrw",
     "nacex": "nacex",

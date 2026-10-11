@@ -475,6 +475,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'vinted-go', number: '1890000000000001',
     route: /^https:\/\/vintedgo\.com\/en\/tracking\/1890000000000001(?:\?|$)/,
     marker: /We can.t find a parcel with this information|Shipping timeline/i },
+  // The tracker is a form that posts the number; the link opens it empty.
+  { carrier: 'mng-kargo', number: '900000000001',
+    route: /^https:\/\/www\.dhlecommerce\.com\.tr\/gonderitakip(?:[?#]|$)/,
+    marker: /Gönderim Nerede\?|Gönderi Takip Numarası ile Sorgulama/, forwarding: 'none' },
 ];
 
 /**

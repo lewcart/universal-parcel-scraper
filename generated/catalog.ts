@@ -7219,7 +7219,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mng-kargo",
+      "recognitionRank": 740,
+      "localClocks": true
     },
     "canaryUrl": "https://www.dhlecommerce.com.tr/gonderitakip",
     "trackingUrlTemplate": "https://www.dhlecommerce.com.tr/gonderitakip",

@@ -431,7 +431,10 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const placed = placedZone(payload, state, number, inNorthAmerica);
   const zone = placed !== undefined ? placed : wallClock ? null : guessedZone(payload, state, fallback, number);
   const known = wallClock ? knownClock(name, status, destination) : null;
-  return { name, date: state.date, labeled: raw.date, zone, placed: placed ?? null, offset, location, wallClock,
+  // A local clock that nothing places, in the US or Canada alone ("US 12345").
+  const country = countryCode(lastPlace(location));
+  const nationwide = placed === undefined && zone === null && LOCAL_CLOCK_CARRIERS.has(nameKey(name)) && (country === 'US' || country === 'CA');
+  return { name, date: state.date, labeled: raw.date, zone, placed: placed ?? null, offset, location, wallClock, nationwide,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null };
 }
@@ -463,12 +466,20 @@ type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' 
  * first US scan took China's until they were known to be in the destination
  * (2026-10-11); its US scans with no state take the right zone, or one an
  * hour off when the parcel changed zones around them.
+ *
+ * A scan of a carrier with local clocks (`LOCAL_CLOCK_CARRIERS`) that its
+ * location places only in the US or Canada borrows as in step 3, from a scan
+ * of its network that a place gives a zone, and otherwise keeps its label.
+ * FedEx's "Shipment information sent to FedEx" under the shipper's ZIP code
+ * took the zone of the pickup's state after it, as FedEx's own page dates it
+ * (checked 2026-10-11).
  */
 function wallClockZones(entries: readonly {
-  name: unknown; date: unknown; location: string; zone: string | null; copy: string | undefined;
-  wallClock: boolean; fallback: string | null; known: string | null; arrival: string | null;
+  name: unknown; date: unknown; location: string; zone: string | null; placed: string | null; copy: string | undefined;
+  wallClock: boolean; nationwide: boolean; fallback: string | null; known: string | null; arrival: string | null;
 }[]): { zone: string | null; step: ZoneStep }[] {
-  const found = entries.map((entry): { zone: string | null; step: ZoneStep } | null => !entry.wallClock ? { zone: entry.zone, step: 'carrier' }
+  const found = entries.map((entry): { zone: string | null; step: ZoneStep } | null => !entry.wallClock
+    ? entry.zone || !entry.nationwide ? { zone: entry.zone, step: 'carrier' } : null
     : entry.zone ? { zone: entry.zone, step: 'place' } : entry.copy ? { zone: entry.copy, step: 'copy' } : null);
   const walls = entries.map((entry) => mislabeledWallTime(entry.date) ?? '');
   return entries.map((entry, index) => {
@@ -480,9 +491,9 @@ function wallClockZones(entries: readonly {
     let after: { wall: string; zone: string } | undefined;
     if (!entry.known || entry.arrival) {
       entries.forEach((other, at) => {
-        const zone = found[at]?.zone;
+        const zone = other.wallClock !== entry.wallClock ? null : entry.wallClock ? found[at]?.zone : other.placed;
         const near = { wall: walls[at]!, zone: zone ?? '' };
-        if (!zone || !other.wallClock || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
+        if (!zone || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
         if (entry.arrival && (timeZoneCountry(zone) ?? NORTH_AMERICAN_ZONES.get(zone)) !== entry.arrival) return;
         if (near.wall <= wall) {
           if (!before || near.wall > before.wall) before = near;

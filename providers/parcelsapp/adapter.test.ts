@@ -518,7 +518,7 @@ describe('ParcelsApp result parsing', () => {
     expect(result.events?.map((scan) => scan.time)).toEqual([
       '2026-03-19T21:40:00.000Z', // 06:40 in Tokyo
       '2026-03-12T04:20:00.000Z', // 05:20 in Zurich
-      '2026-03-05T18:45:10.000Z', // a US local clock with no state: as labeled
+      '2026-03-06T00:45:10.000Z', // the US alone: Illinois's clock, from the scan before it
       '2026-03-05T04:30:00.000Z', // 22:30 in Illinois
     ]);
   });
@@ -607,6 +607,33 @@ describe('ParcelsApp result parsing', () => {
       ['2026-09-05T19:10:54.000Z', 'Delivered'],
       ['2026-09-05T01:31:33.000Z', 'Gateway transit out'],
     ]);
+  });
+
+  it('lends a scan placed only in the US or Canada the clock of its network\'s nearest scan a state places', () => {
+    const times = (carriers: string[], states: Record<string, unknown>[]) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity()).events?.map((scan) => scan.time);
+    const scan = (date: string, location: string, status = 'In transit', carrier = 0) => ({ date, status, carrier, location });
+    // Live shape (2026-10-11): FedEx's own page dates the first scan, under the
+    // shipper's ZIP code, on the clock of the pickup's state.
+    expect(times(['FedEx'], [
+      scan('2026-10-07T12:17:00Z', 'Example City, TN, US 12345', 'Delivered'),
+      scan('2026-10-06T15:44:00Z', 'EXAMPLE CITY, TN, US 12345', 'Picked up'),
+      scan('2026-10-06T10:43:00Z', 'US 12345', 'Shipment information sent to FedEx'),
+    ])).toEqual(['2026-10-07T17:17:00.000Z', '2026-10-06T20:44:00.000Z', '2026-10-06T15:43:00.000Z']);
+    // The scan just before it by wall clock, in the country the location names.
+    expect(times(['UPS'], [
+      scan('2026-07-02T09:00:00Z', 'United States'),
+      scan('2026-07-01T22:10:00Z', 'Example City, CA, US'),
+      scan('2026-07-01T08:00:00Z', 'Canada'),
+      scan('2026-06-30T14:05:00Z', 'Example City, ON, CA'),
+    ])).toEqual(['2026-07-02T16:00:00.000Z', '2026-07-02T05:10:00.000Z', '2026-07-01T12:00:00.000Z', '2026-06-30T18:05:00.000Z']);
+    // No scan of its network in that country, another network's, or no place at all: as labeled.
+    expect(times(['FedEx'], [scan('2026-07-02T09:00:00Z', 'US 12345'), scan('2026-07-01T14:05:00Z', 'Example City, ON, CA')]))
+      .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-01T18:05:00.000Z']);
+    expect(times(['FedEx', 'UPS'], [scan('2026-07-02T09:00:00Z', 'US 12345'), scan('2026-07-01T22:10:00Z', 'Example City, NY', 'In transit', 1)]))
+      .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-02T02:10:00.000Z']);
+    expect(times(['FedEx'], [scan('2026-07-02T09:00:00Z', ''), scan('2026-07-01T22:10:00Z', 'Example City, NY')]))
+      .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-02T02:10:00.000Z']);
   });
 
   it('reads USPS, Canada Post, GOFO and SpeedPAK scans in the state, province or country their location names', () => {

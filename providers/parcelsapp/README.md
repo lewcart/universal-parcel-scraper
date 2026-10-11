@@ -226,7 +226,8 @@ step exists for future protocol changes.
   another name are not UTC: an eBay shipment's, under "EasyShip", carry local clocks
   (Ship24's instants and Swiss Post's own scan agree once they are read that way), so
   they go through the steps like any other scan, US ones included (below). Those that
-  name only the country stay as labeled, hours early.
+  name only the country borrow the clock of one of theirs that a state places, else stay
+  as labeled, hours early.
 - So do Paack's scans. Paack's timeline gives instants, not wall clocks, and ParcelsApp's
   `date` is their UTC instant: Paack's own lookup gives the same instants scan for scan.
   Read on Paack's Paris clock, they came out two hours early in summer.
@@ -251,7 +252,11 @@ step exists for future protocol changes.
   copy of such a scan from another carrier, at the same minute with the same wording
   (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
   keep their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every
-  country. UPS, FedEx, UniUni, EasyShip and DHL eCommerce scans that nothing places still
+  country. A scan of these carriers that its location places only in the US or Canada
+  ("US 12345", "United States") borrows like a wall-clock scan (step 3 above), from a scan
+  of its network that a place gives a zone: FedEx's "Shipment information sent to FedEx"
+  under the shipper's ZIP code took the zone of the pickup's state, as FedEx's own page
+  dates it. Their other scans that nothing places, and those with nothing to borrow, still
   stay as labeled. Adding a carrier, a town or a province moves stored scans (see
   Limitations).
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for

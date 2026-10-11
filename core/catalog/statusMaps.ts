@@ -23,6 +23,7 @@ import { statusMap as dpdFr } from '../../carriers/dpd-fr/status.js';
 import { statusMap as dpdPl } from '../../carriers/dpd-pl/status.js';
 import { statusMap as emile } from '../../carriers/emile/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
+import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
 import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
@@ -48,7 +49,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   aliexpress, 'an-post': anPost, 'box-now': boxNow, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain, 'dhl-express': dhlExpress,
-  dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-pl': dpdPl, emile, 'fan-courier': fanCourier, 'gofo-fr': gofoFr, 'gofo-it': gofoIt,
+  dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-pl': dpdPl, emile, 'fan-courier': fanCourier, foxpost, 'gofo-fr': gofoFr, 'gofo-it': gofoIt,
   'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, 'old-dominion': oldDominion, omgo, 'orlen-paczka': orlenPaczka,
   postlogistics, sagawa, speedx, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, yunexpress,
 };

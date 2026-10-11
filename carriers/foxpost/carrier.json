@@ -18,18 +18,51 @@
   "timezone": "Europe/Budapest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "foxpost",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 52
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "sender_name",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",
     "searchUrl": "https://foxpost.hu/csomagkovetes/",
     "canaryUrl": "https://foxpost.hu/csomagkovetes/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "sender_name",
+      "pickup_point",
+      "order_reference",
+      "payment_details",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "sender_name",
+      "pickup_point"
+    ],
+    "discarded": [
+      "order_reference",
+      "payment_details",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "eta",
+      "location",
+      "weight",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

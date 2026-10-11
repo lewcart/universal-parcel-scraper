@@ -387,6 +387,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fan-courier', number: '9999999999990',
     route: /^https:\/\/www\.fancourier\.ro\/awb-tracking\/\?tracking=/,
     marker: /AWB-ul nu a fost gasit|Detalii expediție/i },
+  // A number the tracker does not know comes back with an empty field and its notice.
+  { carrier: 'foxpost', number: 'CLFOX000000000000001',
+    route: /^https:\/\/foxpost\.hu\/csomagkovetes\/\?/,
+    marker: /Csomagkövetés/,
+    forwarding: { notFound: /A megadott csomag azonosító nem található a rendszerünkben/ } },
   // The international tracker is a POST-only form, so the link cannot carry the number.
   { carrier: 'evri', number: 'H000000000000001',
     route: /^https:\/\/globaleco\.app\/track\/?$/,

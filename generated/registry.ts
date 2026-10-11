@@ -53,6 +53,7 @@ import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
+import { adapter as foxpost } from '../carriers/foxpost/adapter.js';
 import { adapter as geodis } from '../carriers/geodis/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
@@ -179,6 +180,7 @@ export const REGISTRY: RegistryDefinition = {
     "fan-courier": fanCourier,
     "fedex": fedex,
     "four-px": fourPx,
+    "foxpost": foxpost,
     "geodis": geodis,
     "gls-ch": glsCh,
     "gls-de": glsDe,
@@ -332,7 +334,7 @@ export const REGISTRY: RegistryDefinition = {
     "fan-courier": "fan-courier",
     "fedex": "fedex",
     "four-px": "four-px",
-    "foxpost": "universal",
+    "foxpost": "foxpost",
     "gebrueder-weiss": "universal",
     "geis": "universal",
     "geniki-taxydromiki": "universal",

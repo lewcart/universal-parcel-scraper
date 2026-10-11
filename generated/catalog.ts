@@ -6113,7 +6113,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Budapest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "foxpost",
+      "recognitionRank": 52,
+      "localClocks": true
     },
     "canaryUrl": "https://foxpost.hu/csomagkovetes/",
     "trackingUrlTemplate": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",

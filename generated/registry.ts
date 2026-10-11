@@ -43,6 +43,7 @@ import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
 import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
+import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
 import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
@@ -173,6 +174,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-pl": dpdPl,
     "dpd-uk": dpdUk,
     "dtdc": dtdc,
+    "econt": econt,
     "ecoscooting": ecoscooting,
     "ekart": ekart,
     "elta": elta,
@@ -324,7 +326,7 @@ export const REGISTRY: RegistryDefinition = {
     "dx": "universal",
     "dynalogic": "universal",
     "early-bird": "universal",
-    "econt": "universal",
+    "econt": "econt",
     "ecoscooting": "ecoscooting",
     "ekart": "ekart",
     "elta": "elta",

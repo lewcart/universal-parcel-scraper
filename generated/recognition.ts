@@ -25,6 +25,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dpd": 70,
   "dpd-de": 65,
   "dpd-pl": 8,
+  "econt": 56,
   "elta": 55,
   "emile": 4,
   "fan-courier": 51,

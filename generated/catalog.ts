@@ -5748,7 +5748,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "econt",
+      "recognitionRank": 56,
+      "localClocks": true
     },
     "canaryUrl": "https://www.econt.com/services/track-shipment",
     "trackingUrlTemplate": "https://www.econt.com/services/track-shipment/{trackingNumber}",

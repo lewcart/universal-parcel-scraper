@@ -416,6 +416,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,
     marker: /Track & Trace Shipments|Enter up to 25 Tracking Numbers/i },
+  // The page header names the tracker; its frame posts the number to the trace service on load.
+  { carrier: 'econt', number: '9000000000001',
+    route: /^https:\/\/www\.econt\.com\/services\/track-shipment\/9000000000001$/,
+    marker: /Проследи пратка/ },
 ];
 
 /**

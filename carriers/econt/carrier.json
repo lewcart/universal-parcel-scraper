@@ -18,18 +18,56 @@
   "timezone": "Europe/Sofia",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "econt",
+    "steps": [
+      "direct",
+      "refresh"
+    ],
+    "recognition": {
+      "rank": 56
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.econt.com/services/track-shipment/{trackingNumber}",
     "searchUrl": "https://www.econt.com/services/track-shipment",
     "canaryUrl": "https://www.econt.com/services/track-shipment",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "parcel_count",
+      "driver_name",
+      "delivery_instructions"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "pickup_point"
+    ],
+    "discarded": [
+      "parcel_count",
+      "driver_name",
+      "order_references",
+      "recipient_name",
+      "sender_name"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

@@ -54,6 +54,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "relais-colis": 25,
   "sameday": 53,
   "seur": 43,
+  "speedy": 54,
   "sto": 10,
   "swiss-post-cargo": 11,
   "the-courier-guy": 29,

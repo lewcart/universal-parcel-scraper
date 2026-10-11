@@ -404,6 +404,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'orlen-paczka', number: '2109999000003',
     route: /^https:\/\/www\.orlenpaczka\.pl\/sledz-paczke\/\?numer=/,
     marker: /Śledzę paczkę|przesyłki o tym numerze nie można śledzić/i },
+  // MySpeedy's public tracker reads the number from its path and looks it up on load.
+  { carrier: 'speedy', number: '69000000001',
+    route: /^https:\/\/myspeedy\.speedy\.bg\/pub\/tracking\/69000000001/,
+    marker: /Проследи пратка|Track shipment|Въведете номер на товарителница|Enter Tracking Number/i },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

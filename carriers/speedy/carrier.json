@@ -18,16 +18,65 @@
   "timezone": "Europe/Sofia",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "speedy",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 54
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at",
+    "pickup_point",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
-    "canaryUrl": "https://www.speedy.bg/bg",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://myspeedy.speedy.bg/pub/tracking/{trackingNumber}",
+    "searchUrl": "https://myspeedy.speedy.bg/pub/tracking/",
+    "canaryUrl": "https://myspeedy.speedy.bg/pub/tracking/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "pickup_point",
+      "pickup_point_address",
+      "recipient_name",
+      "proof_of_delivery",
+      "delivery_partner",
+      "return_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "pickup_point",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "pickup_point_address",
+      "recipient_name",
+      "proof_of_delivery",
+      "return_number",
+      "facility_identifiers"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "service_name",
+      "sender_name"
+    ]
   },
   "links": [],
   "detection": []

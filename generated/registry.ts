@@ -106,6 +106,7 @@ import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js'
 import { adapter as speeDee } from '../carriers/spee-dee/adapter.js';
 import { adapter as speedpak } from '../carriers/speedpak/adapter.js';
 import { adapter as speedx } from '../carriers/speedx/adapter.js';
+import { adapter as speedy } from '../carriers/speedy/adapter.js';
 import { adapter as springGds } from '../carriers/spring-gds/adapter.js';
 import { adapter as spxPh } from '../carriers/spx-ph/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
@@ -234,6 +235,7 @@ export const REGISTRY: RegistryDefinition = {
     "spee-dee": speeDee,
     "speedpak": speedpak,
     "speedx": speedx,
+    "speedy": speedy,
     "spring-gds": springGds,
     "spx-ph": spxPh,
     "sto": sto,
@@ -429,7 +431,7 @@ export const REGISTRY: RegistryDefinition = {
     "spee-dee": "spee-dee",
     "speedpak": "speedpak",
     "speedx": "speedx",
-    "speedy": "universal",
+    "speedy": "speedy",
     "spring-gds": "spring-gds",
     "spx-ph": "spx-ph",
     "stallion-express": "universal",

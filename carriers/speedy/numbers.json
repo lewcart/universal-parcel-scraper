@@ -180,7 +180,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -193,7 +193,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63767149828",
@@ -206,7 +206,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -219,7 +219,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63772145315",
@@ -232,7 +232,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -245,7 +245,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63761508392",
@@ -258,7 +258,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -274,7 +274,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63776346767",
@@ -287,7 +287,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -301,7 +301,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63776269848",
@@ -314,7 +314,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -327,7 +327,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     },
     {
       "number": "63776356251",
@@ -340,7 +340,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -353,7 +353,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
     }
   ]
 }

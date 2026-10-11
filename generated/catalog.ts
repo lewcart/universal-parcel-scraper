@@ -7801,9 +7801,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speedy",
+      "recognitionRank": 54
     },
-    "canaryUrl": "https://www.speedy.bg/bg",
+    "canaryUrl": "https://myspeedy.speedy.bg/pub/tracking/",
+    "trackingUrlTemplate": "https://myspeedy.speedy.bg/pub/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://myspeedy.speedy.bg/pub/tracking/",
     "linkRules": [],
     "detectionRules": []
   },

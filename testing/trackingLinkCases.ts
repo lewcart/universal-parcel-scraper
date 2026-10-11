@@ -441,6 +441,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'geniki-taxydromiki', number: '9999999999',
     route: /^https:\/\/taxydromiki\.com\/track\/9999999999\/?$/,
     marker: /Ο αριθμός αποστολής που ζητήσατε δε βρέθηκε|Πορεία Αποστολής/ },
+  // The page looks the AWB up as it is served; an unknown one gets a notice without the number.
+  { carrier: 'cargus', number: '9999999999',
+    route: /^https:\/\/www\.cargus\.ro\/personal\/urmareste-coletul\/\?tracking_number=/,
+    marker: /Te rugăm să introduci numărul de tracking/i,
+    forwarding: { notFound: /Nu am gasit nici un colet/ } },
   // The page posts the PRO to its tracking service on load, verified or not.
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,

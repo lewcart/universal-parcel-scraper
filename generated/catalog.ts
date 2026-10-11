@@ -4951,7 +4951,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cargus",
+      "recognitionRank": 730,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
     "trackingUrlTemplate": "https://www.cargus.ro/personal/urmareste-coletul/?tracking_number={trackingNumber}",

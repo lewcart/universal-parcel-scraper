@@ -18,18 +18,48 @@
   "timezone": "Europe/Bucharest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cargus",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 730
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.cargus.ro/personal/urmareste-coletul/?tracking_number={trackingNumber}",
     "searchUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
     "canaryUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "signatory",
+      "delivery_pin",
+      "customer_reference",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "signatory",
+      "delivery_pin",
+      "customer_reference",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "eta",
+      "provider_code",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

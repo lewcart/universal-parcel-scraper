@@ -24,6 +24,13 @@ describe('continental shipment candidates', () => {
     }
   });
 
+  it('names bpost for its S10 numbers, but not for a U barcode, which bpost does not track', () => {
+    expect(detectCarrierMatch('CE123456785BE')).toMatchObject({ carrier: 'bpost', confidence: 'high' });
+    for (const number of ['UA123456785BE', 'UZ123456785BE']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('bpost');
+    }
+  });
+
   it('reads DHL eCommerce Iberia shipment links in each of the tracking page\'s languages', () => {
     for (const page of ['ModificarEnvio', 'ModificarMeuEnvio', 'ModifyMyShipment']) {
       for (const suffix of ['', '/', '/00000']) {

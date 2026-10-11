@@ -27595,6 +27595,17 @@
     ]
   },
   {
+    "input": "EE123456789BE",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "EE123456789PL",
     "carrier": "unknown",
     "confidence": "low",
@@ -35378,10 +35389,13 @@
   },
   {
     "input": "UI539489067BE",
-    "carrier": "bpost",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "bpost"
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {

@@ -19,6 +19,8 @@ inconclusive. The same cheap lookup lets carrier recognition resolve ambiguous
 numeric barcodes; only the batch service's explicit absence reply is negative.
 The [documented parcel prefixes](https://www.bpost.be/en/faq/what-does-barcode-look-and-where-can-i-find-it)
 prioritize recognition while retaining numeric ambiguity.
+bpost does not name a `U` barcode ending in `BE`: bpost issues those only to
+clear customs and does not track them.
 bpost's licence plate, `JJBE`, a letter and eighteen digits, as on a
 registered letter, selects bpost: every JJBE plate found so far, in bpost
 tracking lookups archived by the Wayback Machine, was answered by bpost's

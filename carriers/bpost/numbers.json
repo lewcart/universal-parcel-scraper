@@ -100,10 +100,16 @@
         "date": "2026-03-23"
       },
       "expect": {
-        "carrier": "bpost",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ],
+        "not": [
+          "bpost"
+        ]
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified."
+      "note": "Publicly reported number. bpost gives U barcodes only to clear customs and does not track them, so bpost is not named."
     },
     {
       "number": "RF038017031BE",
@@ -259,6 +265,26 @@
         ]
       },
       "note": "Official parcel-barcode example; the documented prefix prioritizes recognition without asserting shipment existence."
+    },
+    {
+      "number": "EE123456789BE",
+      "role": "negative",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.bpost.be/en/faq/what-does-barcode-look-and-where-can-i-find-it",
+        "access": "full_page"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ],
+        "not": [
+          "bpost"
+        ]
+      },
+      "note": "Official documentation example, not a real shipment. The S10 check digit does not validate, so bpost is not named."
     },
     {
       "number": "CE642607416BE",

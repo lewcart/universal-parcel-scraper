@@ -2195,7 +2195,7 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^[A-Z]{2}\\d{9}BE$",
+        "pattern": "^(?!U)[A-Z]{2}\\d{9}BE$",
         "confidence": "high",
         "checksum": "s10"
       },

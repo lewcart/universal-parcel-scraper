@@ -214,7 +214,7 @@ const US_STATE_NAMES: ReadonlyMap<string, string> = new Map(Object.entries({
 
 /**
  * The zone of the US state or Canadian province a location names ("Riverside,
- * CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga,
+ * CA, US", "Charlotte, NC", "Linden, NJ 12345", "Scranton PA", "Mississauga,
  * ON, CA", "Example City, IN, US 12345"). It is `certain` when the location
  * names the country, the code is no country's, or the town lies in that state
  * or province ("Chicago, IL" is not in Israel); "Atlanta, GA" could still be

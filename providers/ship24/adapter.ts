@@ -50,7 +50,7 @@ const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 
 /**
  * The clock of the US state or Canadian province a location names ("NORTH
- * YORK, ON", "Des Plaines, IL 60018", "Chicago, IL, US"). A code that is also
+ * YORK, ON", "Des Plaines, IL 12345", "Chicago, IL, US"). A code that is also
  * a country's ("IL" is Israel) needs the town to lie in the state, or the
  * country named after it. Any other code needs a scan in North America: an
  * Italian province ("MILANO MI") is no state.

@@ -100,7 +100,7 @@ export function carrierHomeZone(carrier: string | null): string | null {
 /**
  * The clock of a scan location that ends with its country: a US state or
  * Canadian province before it ("Atlanta, GA, United States", "TACOMA, WA,
- * 98424, United States"), or a country with one clock. A two-letter country
+ * 12345, United States"), or a country with one clock. A two-letter country
  * other than the US's could be a state ("Chicago, IL"), so it names none.
  */
 function locationZone(location: string): string | null {

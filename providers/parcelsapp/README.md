@@ -236,7 +236,7 @@ step exists for future protocol changes.
   scans (UPS's also in Germany, the Netherlands and Spain, DHL eCommerce's in the UK; no
   public Canadian reference was found), and so are those of the wall-clock carriers above.
   Step 2 reads them in the zone of the US state or Canadian province the location names
-  ("Riverside, CA, US", "Charlotte, NC", "Linden, NJ 07036", "Scranton PA", "Mississauga,
+  ("Riverside, CA, US", "Charlotte, NC", "Linden, NJ 12345", "Scranton PA", "Mississauga,
   ON, CA", 4PX's "EXAMPLE CITY, IN, US 12345", USPS's "EXAMPLE CITY IL DISTRIBUTION
   CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as
   in the USPS adapter. A state written out counts only after the country ("Example City

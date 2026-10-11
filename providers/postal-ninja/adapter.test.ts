@@ -133,7 +133,7 @@ describe('Postal Ninja result parsing', () => {
       { ds: 'UPS', dt: '2026-08-15T21:40:00', dsc: 'Arrived at Facility', loc: 'Mississauga, ON, L5T 2N7, Canada' },
       { ds: 'UPS', dt: '2026-08-16T08:05:00', dsc: 'Departed from Facility', loc: 'Atlanta, GA, United States' },
       { ds: 'UPS', dt: '2026-08-16T18:00:00', dsc: 'Departed from Facility', loc: 'Chicago, IL' },
-      { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'TACOMA, WA, 98424, United States' },
+      { ds: 'UPS', dt: '2026-08-17T11:17:00', dsc: 'Delivered', loc: 'TACOMA, WA, 12345, United States' },
     ]), number);
     expect(times(parsed)).toEqual(['2026-08-17T18:17:00.000Z', '2026-08-16T22:00:00.000Z', '2026-08-16T12:05:00.000Z',
       '2026-08-16T01:40:00.000Z', '2026-08-15T13:00:00.000Z']);

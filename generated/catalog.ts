@@ -6710,7 +6710,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Zagreb",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hrvatska-posta",
+      "recognitionRank": 810,
+      "localClocks": true
     },
     "canaryUrl": "https://posiljka.posta.hr/",
     "trackingUrlTemplate": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
@@ -6726,7 +6728,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}HR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "instabox": {
     "displayName": "Instabox",
@@ -8898,7 +8907,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
   "helthjem": ["helthjem-1","helthjem-2"],
-  "hrvatska-posta": [],
+  "hrvatska-posta": ["hrvatska-posta-s10"],
   "instabox": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],

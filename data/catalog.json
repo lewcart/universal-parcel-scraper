@@ -6708,7 +6708,9 @@
     "timezone": "Europe/Zagreb",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hrvatska-posta",
+      "recognitionRank": 810,
+      "localClocks": true
     },
     "canaryUrl": "https://posiljka.posta.hr/",
     "trackingUrlTemplate": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
@@ -6724,7 +6726,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}HR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "instabox": {
     "displayName": "Instabox",

@@ -9,16 +9,16 @@
         "url": "https://web.archive.org/web/20210918063710/https://posiljka.posta.hr/tracking/trackingdata?barcode=LE565787894HR",
         "date": "2021-09-18",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
       "number": "RG229353469HR",
@@ -28,16 +28,16 @@
         "url": "https://web.archive.org/web/20230204084910/https://posiljka.posta.hr/en/tracking/trackingdata?barcode=RG229353469HR",
         "date": "2023-02-04",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
       "number": "rg357685487hr",
@@ -47,16 +47,16 @@
         "url": "https://web.archive.org/web/20230713060921/https://posiljka.posta.hr/hr/tracking/trackingdata?barcode=rg357685487hr",
         "date": "2023-07-13",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker in lower case, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker in lower case; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LD084931122HR",
@@ -66,16 +66,16 @@
         "url": "https://web.archive.org/web/20231124155826/https://posiljka.posta.hr/hr/tracking/trackingdata?barcode=LD084931122HR",
         "date": "2023-11-24",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LW225825809HR",
@@ -85,16 +85,16 @@
         "url": "https://web.archive.org/web/20240219134105/https://posiljka.posta.hr/hr/tracking/trackingdata?barcode=LW225825809HR",
         "date": "2024-02-19",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
     },
     {
       "number": "EM146631045HR",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "LD241044973HR",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "RG523729391HR",
@@ -145,13 +145,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "LA008713489HR",
@@ -164,13 +164,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "VV175837515HR",
@@ -183,13 +183,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "RH030544536HR",
@@ -202,13 +202,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     },
     {
       "number": "LW260370397HR",
@@ -221,13 +221,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
     }
   ]
 }

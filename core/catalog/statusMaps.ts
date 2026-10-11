@@ -40,6 +40,7 @@ import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
 import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
+import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
@@ -76,8 +77,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus,
   'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe,
   'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,
-  'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'j-and-t': jAndT,
-  'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva,
+  'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem,
+  'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto, 'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva,
   'orlen-paczka': orlenPaczka, 'posta-slovenije': postaSlovenije, postlogistics, ppl, ptt, sagawa, sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost,
   tnt, ups, venipak, 'vinted-go': vintedGo, yunexpress, 'yurtici-kargo': yurticiKargo,
 };

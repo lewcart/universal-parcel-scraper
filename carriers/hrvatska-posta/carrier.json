@@ -20,18 +20,52 @@
   "timezone": "Europe/Zagreb",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "hrvatska-posta",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 810
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
     "searchUrl": "https://posiljka.posta.hr/",
     "canaryUrl": "https://posiljka.posta.hr/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "postcodes",
+      "delivery_unit_logo"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "pickup_point"
+    ],
+    "discarded": [
+      "postcodes",
+      "delivery_unit_logo"
+    ],
+    "unavailable": [
+      "eta",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -44,5 +78,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "hrvatska-posta-s10",
+      "pattern": "^[A-Z]{2}\\d{9}HR$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

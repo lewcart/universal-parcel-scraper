@@ -3,6 +3,7 @@
 import type { RegistryDefinition } from '../core/adapter/index.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
 import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
+import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
 import { adapter as amazonShipping } from '../carriers/amazon-shipping/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
 import { adapter as aramex } from '../carriers/aramex/adapter.js';
@@ -152,6 +153,7 @@ export const REGISTRY: RegistryDefinition = {
   factories: {
     "acs-courier": acsCourier,
     "aliexpress": aliexpress,
+    "allegro-one": allegroOne,
     "amazon-shipping": amazonShipping,
     "an-post": anPost,
     "aramex": aramex,
@@ -302,7 +304,7 @@ export const REGISTRY: RegistryDefinition = {
     "abf-freight": "universal",
     "acs-courier": "acs-courier",
     "aliexpress": "aliexpress",
-    "allegro-one": "universal",
+    "allegro-one": "allegro-one",
     "amazon-logistics": null,
     "amazon-shipping": "amazon-shipping",
     "an-post": "an-post",

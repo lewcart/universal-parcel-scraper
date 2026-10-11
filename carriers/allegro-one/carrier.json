@@ -19,18 +19,66 @@
   "timezone": "Europe/Warsaw",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "allegro-one",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 770
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "delivered_at"
+  ],
   "portal": {
-    "canaryUrl": "https://allegro.pl/",
-    "shows": [],
-    "scraped": [],
+    "url": "https://allegro.pl/allegrodelivery/sledzenie-paczki?numer={trackingNumber}",
+    "searchUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki",
+    "canaryUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki",
+    "shows": [
+      "status",
+      "history",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "delivered_at",
+      "offset_timestamps"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "pickup_point",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "delivery_partner"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "allegro.pl"
+      ],
+      "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
+      "params": [
+        "numer"
+      ]
+    },
+    {
+      "domains": [
+        "allegro.pl"
+      ],
+      "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
+      "params": [
+        "numer"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "allegro-one-1",

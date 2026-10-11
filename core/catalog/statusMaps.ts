@@ -12,6 +12,7 @@
  */
 import { statusMap as acsCourier } from '../../carriers/acs-courier/status.js';
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
+import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as arasKargo } from '../../carriers/aras-kargo/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
@@ -70,12 +71,12 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  'acs-courier': acsCourier, aliexpress, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus, 'ceska-posta': ceskaPosta,
-  'china-post': chinaPost, chronopost, 'correos-spain': correosSpain, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr,
-  'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-es': glsEs,
-  'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste, matkahuolto,
-  'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa, sameday, speedx,
-  speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, yunexpress,
+  'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus,
+  'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe,
+  'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki,
+  'gls-es': glsEs, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste,
+  matkahuolto, 'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, postlogistics, ppl, ptt, sagawa,
+  sameday, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, yunexpress,
   'yurtici-kargo': yurticiKargo,
 };
 

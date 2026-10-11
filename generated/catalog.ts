@@ -4807,10 +4807,32 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "allegro-one",
+      "recognitionRank": 770
     },
-    "canaryUrl": "https://allegro.pl/",
-    "linkRules": [],
+    "canaryUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki",
+    "trackingUrlTemplate": "https://allegro.pl/allegrodelivery/sledzenie-paczki?numer={trackingNumber}",
+    "trackingSearchUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki",
+    "linkRules": [
+      {
+        "domains": [
+          "allegro.pl"
+        ],
+        "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
+        "params": [
+          "numer"
+        ]
+      },
+      {
+        "domains": [
+          "allegro.pl"
+        ],
+        "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
+        "params": [
+          "numer"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^A[0D][0-9A-Z]{8}$",

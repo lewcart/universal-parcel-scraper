@@ -1,4 +1,29 @@
 {
   "carrier": "allegro-one",
-  "entries": []
+  "entries": [
+    {"wording": "Parcel has been prepared by the sender", "language": "en", "stage": "registered", "confirmedBy": "live", "note": "The sender made the label; Allegro One has not handled the parcel yet."},
+    {"wording": "Parcel has been dispatched", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The sender dropped the parcel off."},
+    {"wording": "Parcel has been dispatched at point", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The sender dropped the parcel off at a pickup point."},
+    {"wording": "Parcel has been picked up by the courier", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The courier collected the parcel from the sender."},
+    {"wording": "Parcel has been picked up from parcel locker by courier", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "A courier collected the sender's drop-off from a locker."},
+    {"wording": "Parcel has been picked up from point by courier", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "A courier collected the sender's drop-off from a pickup point."},
+    {"wording": "Courier has transferred the parcel to the warehouse", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Parcel has been dispatched to its destination point", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel left for the locker, point or branch serving the recipient."},
+    {"wording": "Parcel has been accepted at the sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Parcel has been accepted at the branch", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Parcel has been redirected to a different point", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Follows the recipient's choice of another point."},
+    {"wording": "Parcel may be delivered with delay", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "A notice; the parcel keeps moving."},
+    {"wording": "Parcel delivery time has been arranged with the recipient", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "A notice; the parcel keeps moving."},
+    {"wording": "Parcel has been released for delivery", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "note": "Also before a locker delivery."},
+    {"wording": "No space in the parcel locker", "language": "en", "stage": "failed_attempt", "confirmedBy": "live", "note": "The courier found the locker full and took the parcel back."},
+    {"wording": "Parcel is waiting for an alternative point indication", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "The recipient is asked to choose another point."},
+    {"wording": "Parcel is awaiting pick-up", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "live"},
+    {"wording": "Parcel is awaiting pick-up — pick-up deadline is about to expire", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "live"},
+    {"wording": "Time for pick-up has been extended", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "live"},
+    {"wording": "Time for parcel pick-up has expired", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "A return to the sender follows."},
+    {"wording": "No parcel", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "The parcel was not where a scan expected it; later scans can find it again."},
+    {"wording": "Parcel has been lost", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "Later scans can find the parcel again."},
+    {"wording": "Parcel has been returned to the sender", "language": "en", "stage": "returned", "confirmedBy": "live"},
+    {"wording": "Parcel has been delivered", "language": "en", "stage": "delivered", "confirmedBy": "live", "note": "Also when the recipient collects the parcel from a locker or point."}
+  ]
 }

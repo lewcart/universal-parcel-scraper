@@ -36,6 +36,12 @@ describe('tracking link page validation', () => {
   it.each([200, 403, 429])('reports a challenge (%s) as blocked, never healthy', (status) => {
     expect(trackingPageVerdict({ ...page, status, title: 'Just a moment...' }, route, marker)).toBe('blocked');
   });
+  it('reports Amazon\'s bot check, served on the requested route, as blocked', () => {
+    const signIn = /^https:\/\/www\.amazon\.com\/ap\/signin/;
+    const check = { status: 200, url: 'https://www.amazon.com/ap/signin?openid.mode=checkid_setup', title: 'Amazon.com',
+      text: 'Click the button below to continue shopping\nContinue shopping\nConditions of Use\nPrivacy Policy' };
+    expect(trackingPageVerdict(check, signIn, /Sign in|Your Orders/i)).toBe('blocked');
+  });
 });
 
 describe('search page validation', () => {

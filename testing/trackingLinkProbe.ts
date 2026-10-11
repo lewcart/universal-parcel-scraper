@@ -8,7 +8,9 @@ export interface TrackingPageSnapshot {
 
 export type TrackingPageVerdict = 'tracking-page' | 'blocked' | 'broken' | 'unverified';
 
-const CHALLENGE = /just a moment|un instant|access denied|attention required|verify you are human|vérification de sécurité|complete the captcha|captcha required|checking your browser/i;
+// Amazon's storefront bot check answers 200 in place of the requested page,
+// with a button or, in its older form, an image to read.
+const CHALLENGE = /just a moment|un instant|access denied|attention required|verify you are human|vérification de sécurité|complete the captcha|captcha required|checking your browser|click the button below to continue shopping|enter the characters you see below/i;
 const MISSING_PAGE = /page (?:not found|does not exist|cannot be found)|404 (?:error|not found)|seite nicht gefunden|page introuvable|pagina non trovata/i;
 
 export function trackingPageVerdict(

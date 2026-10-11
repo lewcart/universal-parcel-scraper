@@ -89,6 +89,20 @@ describe('shared local browser', () => {
     await expect(withLocalBrowser({ ...options, timeoutMs: 0 }, vi.fn())).rejects.toThrow(TypeError);
   });
 
+  it('sends the browser through a configured proxy and refuses a malformed one before launching', async () => {
+    browser();
+    await withLocalBrowser({ ...options, proxy: ' socks5://10.0.0.1:1080 ' }, async () => {});
+    expect(chromium.launch).toHaveBeenCalledWith(expect.objectContaining({ proxy: { server: 'socks5://10.0.0.1:1080' } }));
+    await withLocalBrowser({ ...options, proxy: null }, async () => {});
+    expect(vi.mocked(chromium.launch).mock.calls[1]![0]).not.toHaveProperty('proxy');
+    for (const proxy of ['ftp://10.0.0.1:21', 'socks5://user:PRIVATE@10.0.0.1:1080', 'PRIVATE', 'http://10.0.0.1:8080/PRIVATE']) {
+      const error = await withLocalBrowser({ ...options, proxy }, vi.fn()).catch((reason: unknown) => reason);
+      expect(error).toBeInstanceOf(TypeError);
+      expect(String(error)).not.toContain('PRIVATE');
+    }
+    expect(chromium.launch).toHaveBeenCalledTimes(2);
+  });
+
   it('reports a browser timeout that lands on the deadline as the budget running out', async () => {
     browser();
     const clock = vi.spyOn(performance, 'now').mockReturnValue(0);

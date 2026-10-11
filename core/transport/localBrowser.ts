@@ -16,6 +16,8 @@ export interface LocalBrowserOptions {
   timeoutMs: number;
   signal?: AbortSignal;
   args?: readonly string[];
+  /** An `http://` or `socks5://` host and port that carries all of the browser's traffic. */
+  proxy?: string | null;
 }
 
 export interface LocalBrowserSession {
@@ -31,11 +33,23 @@ const DEADLINE_SLACK_MS = 5;
 
 let tail: Promise<void> = Promise.resolve();
 
+/** The configured proxy as Chromium's server setting; the message never repeats the value, which may hold credentials. */
+function proxyServer(value: string): string {
+  let url: URL | undefined;
+  try { url = new URL(value.trim()); } catch { /* Reported below. */ }
+  if (!url || !['http:', 'socks5:'].includes(url.protocol) || !url.hostname || url.username || url.password
+    || !['', '/'].includes(url.pathname) || url.search || url.hash) {
+    throw new TypeError('Browser proxy must be an http:// or socks5:// host and port');
+  }
+  return `${url.protocol}//${url.host}`;
+}
+
 export async function withLocalBrowser<T>(options: LocalBrowserOptions, run: (session: LocalBrowserSession) => Promise<T>): Promise<T> {
   const { provider, timeoutMs } = options;
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) {
     throw new TypeError('Browser tracking timeout must be between 1 and 60000 ms');
   }
+  const proxy = options.proxy ? proxyServer(options.proxy) : null;
   options.signal?.throwIfAborted();
   const deadline = performance.now() + timeoutMs;
   const expiry = AbortSignal.timeout(Math.max(1, Math.floor(timeoutMs)));
@@ -79,7 +93,7 @@ export async function withLocalBrowser<T>(options: LocalBrowserOptions, run: (se
     if (signal.aborted) throw stopped();
     // Do not pass the application environment (database or API secrets) to Chromium.
     launching = chromium.launch({ executablePath: options.executablePath, headless: true, args: [...(options.args ?? [])],
-      timeout: Math.min(remainingMs(), 10_000),
+      timeout: Math.min(remainingMs(), 10_000), ...(proxy ? { proxy: { server: proxy } } : {}),
       env: { PATH: process.env.PATH ?? '', HOME: process.env.HOME ?? '/tmp', LANG: 'en_US.UTF-8' } });
     browser = await unlessStopped(launching);
     return await unlessStopped(run({ browser, signal, remainingMs }));

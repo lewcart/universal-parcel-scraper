@@ -16,8 +16,8 @@ function harness(phase: 'summary' | 'events' = 'summary') {
   const frame = {};
   const page = Object.assign(emitter, { mainFrame: () => frame }) as unknown as Page;
   const target = phase === 'summary' ? URL : royalMailEventsApiUrl(NUMBER);
-  const request = (url = target, method = 'GET', ownFrame = true) => ({ url: () => url, method: () => method,
-    resourceType: () => 'xhr', frame: () => ownFrame ? frame : {}, failure: () => ({ errorText: 'PRIVATE TOKEN in request URL' }) }) as Request;
+  const request = (url = target, method = 'GET', ownFrame = true, errorText = 'PRIVATE TOKEN in request URL') => ({ url: () => url,
+    method: () => method, resourceType: () => 'xhr', frame: () => ownFrame ? frame : {}, failure: () => ({ errorText }) }) as Request;
   const respond = async (data: unknown, options: { status?: number; headers?: Record<string, string>; url?: string;
     method?: string; ownFrame?: boolean; body?: () => Promise<Buffer> } = {}) => {
     emitter.emit('response', { request: () => request(options.url, options.method, options.ownFrame),
@@ -133,6 +133,13 @@ describe('Royal Mail browser response capture', () => {
     const result = h.capture(async () => { h.emitter.emit('requestfailed', h.request()); });
     await expect(result).rejects.toMatchObject({ kind: 'transport', message: 'Royal Mail tracking request failed' });
     await expect(result).rejects.not.toHaveProperty('cause');
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('reports the edge resetting the tracking request as a challenge', async () => {
+    const h = harness();
+    const result = h.capture(async () => { h.emitter.emit('requestfailed', h.request(URL, 'GET', true, 'net::ERR_HTTP2_PROTOCOL_ERROR')); });
+    await expect(result).rejects.toMatchObject({ kind: 'challenge', message: "Royal Mail's edge refused the tracking request" });
     expect(h.emitter.eventNames()).toEqual([]);
   });
 

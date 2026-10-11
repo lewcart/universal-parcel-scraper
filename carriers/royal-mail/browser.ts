@@ -30,7 +30,14 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
   void reply.catch(() => {});
   const matches = (request: Request) => active && request.url() === url && request.method() === 'GET'
     && ['xhr', 'fetch'].includes(request.resourceType()) && request.frame() === page.mainFrame();
-  const failed = (request: Request) => { if (matches(request)) reject(new TransportError(PROVIDER, 'Royal Mail tracking request failed')); };
+  // The edge refuses a session it scores as automated by resetting the request's
+  // stream, while the page and its scripts load normally.
+  const failed = (request: Request) => {
+    if (!matches(request)) return;
+    reject(request.failure()?.errorText === 'net::ERR_HTTP2_PROTOCOL_ERROR'
+      ? new ChallengeError(PROVIDER, "Royal Mail's edge refused the tracking request")
+      : new TransportError(PROVIDER, 'Royal Mail tracking request failed'));
+  };
   const aborted = () => reject(signal.aborted ? signal.reason : new TransportError(PROVIDER, 'Royal Mail tracking response timed out'));
   const received = (response: BrowserResponse) => {
     if (!matches(response.request())) return;
@@ -96,8 +103,8 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
 }
 
 export function fetchRoyalMailInBrowser(number: string, executablePath: string, signal: AbortSignal,
-  timeoutMs: number, fullHistory: boolean): Promise<CarrierResult> {
-  return withLocalBrowser({ provider: PROVIDER, executablePath, signal, timeoutMs,
+  timeoutMs: number, fullHistory: boolean, proxy: string | null = null): Promise<CarrierResult> {
+  return withLocalBrowser({ provider: PROVIDER, executablePath, signal, timeoutMs, proxy,
     args: ['--disable-blink-features=AutomationControlled'] }, async ({ browser, signal: session, remainingMs }) => {
     try {
       const platform = process.platform === 'darwin' ? 'Macintosh; Intel Mac OS X 10_15_7'

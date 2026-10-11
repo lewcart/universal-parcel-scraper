@@ -20,6 +20,8 @@ const MAX_CAPTURED = 20;
 export interface RoyalMailTrackerOptions {
   /** Fresh local Chromium; preferred when supplied. */
   executablePath?: string | null;
+  /** An `http://` or `socks5://` proxy for the local Chromium's traffic. */
+  browserProxy?: string | null;
   timeoutMs?: number;
   /** Legacy configuration seam; `trawl` is preferred. */
   trawlUrl?: string;
@@ -39,6 +41,7 @@ export class RoyalMailTracker {
   readonly #recorder: StepRecorder;
   readonly #fullHistory: boolean;
   readonly #executablePath: string | null;
+  readonly #browserProxy: string | null;
 
   constructor(options: RoyalMailTrackerOptions = {}) {
     if (options.timeoutMs !== undefined && (!Number.isFinite(options.timeoutMs) || options.timeoutMs <= 0)) {
@@ -51,6 +54,7 @@ export class RoyalMailTracker {
     this.#recorder = options.recorder ?? NOOP_RECORDER;
     this.#fullHistory = options.fullHistory ?? false;
     this.#executablePath = options.executablePath ?? null;
+    this.#browserProxy = options.browserProxy?.trim() || null;
   }
 
   /** The injected browser service, or one built from the configured URL. */
@@ -64,7 +68,8 @@ export class RoyalMailTracker {
     if (this.#executablePath) {
       return runSteps<CarrierResult>({ carrier: 'royal-mail', budgetMs: context.budgetMs ?? this.timeoutMs,
         signal: context.signal, recorder: this.#recorder }, [{ id: 'browser', run: ({ remainingMs, signal }) =>
-        fetchRoyalMailInBrowser(number, this.#executablePath!, signal, Math.min(60_000, remainingMs), this.#fullHistory) }]);
+        fetchRoyalMailInBrowser(number, this.#executablePath!, signal, Math.min(60_000, remainingMs), this.#fullHistory,
+          this.#browserProxy) }]);
     }
     // The legacy service remains available through explicit tracker instances.
     const trawl = this.#browserService();
@@ -186,7 +191,7 @@ export class RoyalMailTracker {
 
 export const adapter: AdapterFactory = environment => {
   const tracker = new RoyalMailTracker({ executablePath: environment.browserExecutablePath,
-    recorder: environment.recorder, fullHistory: true });
+    browserProxy: environment.env.ROYAL_MAIL_BROWSER_PROXY, recorder: environment.recorder, fullHistory: true });
   return {
     id: 'royal-mail', recordsSteps: true, steps: ['browser'],
     track: (input, context) => {

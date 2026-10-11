@@ -12,7 +12,13 @@ import {
   royalMailSummaryApiUrl,
   royalMailTrackingUrl,
 } from './adapter.js';
+import { fetchRoyalMailInBrowser } from './browser.js';
 import { royalMailStage, royalMailStatus } from './status.js';
+
+vi.mock(import('./browser.js'), async (importOriginal) => {
+  const actual = await importOriginal();
+  return { ...actual, fetchRoyalMailInBrowser: vi.fn(actual.fetchRoyalMailInBrowser) };
+});
 
 // SG999999999GB and SG999999998GB are made-up numbers in Royal Mail's
 // published S10 format. No real shipment, recipient or signatory appears in
@@ -335,6 +341,15 @@ describe('Royal Mail lookup steps', () => {
     expect(instance.steps).toEqual(['browser']);
     expect(() => instance.track({ number: DELIVERED_NUMBER })).toThrow('TRACKING_CHROMIUM_PATH');
     expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('hands the configured proxy to the local browser', async () => {
+    vi.mocked(fetchRoyalMailInBrowser).mockResolvedValueOnce({ events: [] });
+    const instance = adapter({ trawl: null, browserExecutablePath: '/test/chromium', recorder: NOOP_RECORDER,
+      env: { ROYAL_MAIL_BROWSER_PROXY: 'socks5://10.0.0.1:1080' } });
+    await instance.track({ number: DELIVERED_NUMBER });
+    expect(fetchRoyalMailInBrowser).toHaveBeenCalledWith(DELIVERED_NUMBER, '/test/chromium', expect.any(AbortSignal),
+      expect.any(Number), true, 'socks5://10.0.0.1:1080');
   });
 
   it.each([404, 410])('keeps an unrecognized HTTP %s outside parcel absence', async status => {

@@ -384,6 +384,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dpd-pl', number: '9999999999999U',
     route: /^https:\/\/tracktrace\.dpd\.com\.pl\/EN\/parcelDetails\?/,
     marker: /There is no trace for this parcel|Parcel history/ },
+  { carrier: 'fan-courier', number: '9999999999990',
+    route: /^https:\/\/www\.fancourier\.ro\/awb-tracking\/\?tracking=/,
+    marker: /AWB-ul nu a fost gasit|Detalii expediție/i },
   // The international tracker is a POST-only form, so the link cannot carry the number.
   { carrier: 'evri', number: 'H000000000000001',
     route: /^https:\/\/globaleco\.app\/track\/?$/,

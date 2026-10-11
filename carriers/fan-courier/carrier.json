@@ -17,18 +17,54 @@
   "timezone": "Europe/Bucharest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fan-courier",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 51
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://www.fancourier.ro/awb-tracking/?tracking={trackingNumber}",
     "searchUrl": "https://www.fancourier.ro/awb-tracking/",
     "canaryUrl": "https://www.fancourier.ro/awb-tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "milestones",
+      "awb_date",
+      "related_awb_numbers",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code"
+    ],
+    "discarded": [
+      "milestones",
+      "awb_date",
+      "related_awb_numbers",
+      "recipient_name",
+      "order_contents",
+      "weight",
+      "dimensions",
+      "payment_details",
+      "service_options"
+    ],
+    "unavailable": [
+      "eta",
+      "pickup_point",
+      "sender_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

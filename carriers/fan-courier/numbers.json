@@ -161,7 +161,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -174,7 +174,7 @@
           "korea-post"
         ]
       },
-      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
     },
     {
       "number": "7000025622933",
@@ -187,7 +187,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -199,7 +199,7 @@
           "yunda"
         ]
       },
-      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; the capture holds only the page shell."
+      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
     },
     {
       "number": "7000090535614",
@@ -212,7 +212,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -224,7 +224,7 @@
           "yunda"
         ]
       },
-      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on FAN Courier's own tracker, as an archived address shows; FAN Courier's tracking returns its history."
     }
   ]
 }

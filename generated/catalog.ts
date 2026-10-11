@@ -6071,7 +6071,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fan-courier",
+      "recognitionRank": 51,
+      "localClocks": true
     },
     "canaryUrl": "https://www.fancourier.ro/awb-tracking/",
     "trackingUrlTemplate": "https://www.fancourier.ro/awb-tracking/?tracking={trackingNumber}",

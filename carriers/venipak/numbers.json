@@ -131,7 +131,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -142,7 +142,7 @@
           "heppner"
         ]
       },
-      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened. The tracker returns its history."
     },
     {
       "number": "V25276E0339042",
@@ -155,13 +155,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "venipak",
         "confidence": "high"
       },
-      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened. The tracker returns its history."
     },
     {
       "number": "V25489E8377362",
@@ -174,13 +174,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "venipak",
         "confidence": "high"
       },
-      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened. The tracker returns its history."
     },
     {
       "number": "V34311E0003453",
@@ -193,13 +193,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "venipak",
         "confidence": "high"
       },
-      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Venipak's own tracker, as an archived address shows; the capture was not opened. The tracker returns its history."
     },
     {
       "number": "V29878E0228412",
@@ -212,13 +212,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "venipak",
         "confidence": "high"
       },
-      "note": "Looked up on Venipak's own Estonian tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Venipak's own Estonian tracker, as an archived address shows; the capture was not opened. The tracker returns its history."
     }
   ]
 }

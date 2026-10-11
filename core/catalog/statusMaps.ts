@@ -49,6 +49,7 @@ import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
 import { statusMap as tnt } from '../../carriers/tnt/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
+import { statusMap as venipak } from '../../carriers/venipak/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
 import { statusMap as universal } from '../../providers/status.js';
@@ -61,7 +62,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta, emile, 'fan-courier': fanCourier,
   foxpost, 'geniki-taxydromiki': geniki, 'gls-it': glsIt, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'la-poste': laPoste, 'old-dominion': oldDominion, omgo, 'orlen-paczka': orlenPaczka, postlogistics, ppl, sagawa, sameday, speedx, speedy, sto,
-  'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, yunexpress,
+  'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, yunexpress,
 };
 
 /** The carrier the app files the universal providers' scans under. */

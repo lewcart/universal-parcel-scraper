@@ -8012,7 +8012,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Vilnius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "venipak",
+      "recognitionRank": 63,
+      "localClocks": true
     },
     "canaryUrl": "https://venipak.com/lt/en/parcel-tracking/",
     "trackingUrlTemplate": "https://venipak.com/lt/en/tracking/track/{trackingNumber}",

@@ -16,18 +16,53 @@
   "timezone": "Europe/Vilnius",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "venipak",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 63
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "pickup_point",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://venipak.com/lt/en/tracking/track/{trackingNumber}",
     "searchUrl": "https://venipak.com/lt/en/parcel-tracking/",
     "canaryUrl": "https://venipak.com/lt/en/parcel-tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "coordinates",
+      "parcel_count",
+      "recipient_verification"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "pickup_point"
+    ],
+    "discarded": [
+      "coordinates",
+      "parcel_count",
+      "recipient_verification"
+    ],
+    "unavailable": [
+      "eta",
+      "sender_name",
+      "weight",
+      "service_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

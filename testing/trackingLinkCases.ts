@@ -436,6 +436,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'econt', number: '9000000000001',
     route: /^https:\/\/www\.econt\.com\/services\/track-shipment\/9000000000001$/,
     marker: /Проследи пратка/ },
+  // The tracking page asks the shipment service on load and words its notices in Lithuanian.
+  { carrier: 'venipak', number: 'V00000E0000009',
+    route: /^https:\/\/venipak\.com\/lt\/en\/tracking\/track\/V00000E0000009\/?$/,
+    marker: /PAIEŠKOS RAKTAŽODIS|nebuvo rasta|Parcel tracking/i },
 ];
 
 /**

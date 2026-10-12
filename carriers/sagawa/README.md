@@ -22,8 +22,7 @@ this adapter reads. The app shows history only by opening the suspended inquiry 
    is never sent. No account, session or device token is involved.
 2. The request carries the app's `X-Api-Key`. That key is compiled into the app, the same
    for every install, and is included with the maintainer's approval. Without it the edge
-   answers Access Denied. `SAGAWA_TRACKING_KEY` replaces it; an empty value disables the
-   lookup, which then fails as a challenge without a request.
+   answers Access Denied.
 3. The User-Agent is the host's own (`SCRAPER_USER_AGENT`, or the package default) unless
    it names a browser, in which case the app's `okhttp/3.10.0` is sent. The Akamai edge in
    front of the API has refused browser User-Agents with its Access Denied page, and the
@@ -62,8 +61,7 @@ this adapter reads. The app shows history only by opening the suspended inquiry 
   select Sagawa automatically; detection only suggests it, among others, for 12 digits
   whose last digit is the remainder of the first eleven divided by seven. Choose the
   carrier explicitly for a ten-digit waybill or to skip the other suggestions.
-- A revoked key needs a replacement through `SAGAWA_TRACKING_KEY`; there is no automatic
-  refresh.
+- A revoked key needs a new release; there is no automatic refresh.
 
 ## Testing
 

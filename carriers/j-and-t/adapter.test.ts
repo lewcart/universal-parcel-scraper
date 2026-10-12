@@ -23,8 +23,8 @@ const wire = (payload: Envelope | Record<string, unknown> = fixture()) =>
 const edited = (edit: (payload: Envelope) => void) => { const payload = fixture(); edit(payload); return payload; };
 const rows = (payload: Envelope) => payload.data.bills[0]!.details;
 const empty = { code: 200, data: '{"bills":[]}', desc: '成功', success: true, sessionid: null, sqlid: null, traceId: null };
-const instance = (fetcher: typeof fetch, env: Record<string, string> = {}) => adapter({
-  fetcher, env, browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
+const instance = (fetcher: typeof fetch) => adapter({
+  fetcher, env: {}, browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
 });
 const replying = (body: string, init?: ResponseInit) => vi.fn<typeof fetch>(async () => new Response(body, init));
 
@@ -205,19 +205,6 @@ describe('J&T Indonesia transport', () => {
     expect(JSON.parse(data.parameter)).toEqual({ billCodes: NUMBER, lang: 'en' });
   });
 
-  it('signs with a configured secret and turns tracking off with an empty one', async () => {
-    const fetcher = replying(wire());
-    await instance(fetcher, { J_AND_T_SIGNING_SECRET: ' SYNTHETIC_SIGNING_SECRET ' }).track({ number: NUMBER });
-    const headers = new Headers(fetcher.mock.calls[0]![1]?.headers);
-    expect(headers.get('sign')).toBe(createHash('md5')
-      .update(`interface:order.massOrderTrack,time:${headers.get('time')},billCodes:${NUMBER},secretKey:SYNTHETIC_SIGNING_SECRET`).digest('hex'));
-    for (const secret of ['', '   ']) {
-      const unused = vi.fn<typeof fetch>();
-      await expect(instance(unused, { J_AND_T_SIGNING_SECRET: secret }).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
-      expect(unused).not.toHaveBeenCalled();
-    }
-  });
-
   it('answers an unknown Indonesian waybill as not found', async () => {
     await expect(instance(replying(JSON.stringify(empty))).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'not_found' });
   });
@@ -242,21 +229,22 @@ describe('J&T Indonesia transport', () => {
   });
 
   it.each(['network', 'rate limit', 'server error', 'body read'])('drops the request, signature and waybill from a %s failure', async (mode) => {
-    const secret = 'SYNTHETIC_SIGNING_SECRET';
-    const privateData = `PRIVATE RECIPIENT ${NUMBER} ${secret}`;
+    const privateData = `PRIVATE RECIPIENT ${NUMBER} ${JNT_SIGNING_SECRET}`;
     const fetcher: typeof fetch = async () => {
       if (mode === 'network') throw new Error(privateData);
       if (mode === 'rate limit') return new Response(privateData, { status: 429, headers: { 'Retry-After': '60' } });
       if (mode === 'server error') return new Response(privateData, { status: 502 });
       return new Response(new ReadableStream({ start(controller) { controller.error(new Error(privateData)); } }));
     };
-    const error: unknown = await instance(fetcher, { J_AND_T_SIGNING_SECRET: secret }).track({ number: NUMBER }).catch((caught: unknown) => caught);
+    const error: unknown = await instance(fetcher).track({ number: NUMBER }).catch((caught: unknown) => caught);
     expect(error).toMatchObject({ kind: { network: 'transport', 'rate limit': 'rate_limited', 'server error': 'indeterminate', 'body read': 'transport' }[mode] });
     if (mode === 'rate limit') expect(error).toMatchObject({ status: 429, retryAfterMs: 60_000 });
     expect(error).not.toHaveProperty('request');
     expect(error).not.toHaveProperty('diagnostics');
     expect((error as Error).cause).toBeUndefined();
-    expect(`${String(error)} ${JSON.stringify(error)}`).not.toMatch(/PRIVATE|SYNTHETIC_SIGNING_SECRET|JX0000000001|sign/);
+    const visible = `${String(error)} ${JSON.stringify(error)}`;
+    expect(visible).not.toMatch(/PRIVATE|JX0000000001|sign/);
+    expect(visible).not.toContain(JNT_SIGNING_SECRET);
   });
 
   it('recognizes an Indonesian waybill by its history and its absence', async () => {

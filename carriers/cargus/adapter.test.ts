@@ -7,7 +7,7 @@ import { normalizeCarrierResult } from '../../core/result/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter } from './adapter.js';
-import { CARGUS_APP_API } from './app.js';
+import { CARGUS_APP_API, readCargusApp } from './app.js';
 import { normalizeCargusNumber, parseCargus } from './parser.js';
 import { cargusScanStage, cargusSummaryStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -16,8 +16,8 @@ const KEY = '00112233445566778899aabbccddeeff';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const json = (name: string) => JSON.parse(fixture(name)) as Record<string, unknown>;
 const PRIVATE = /Synthetic Signer|PIN|SYNTHETIC-REF|Ramburs|confirmedBy|responseCode/;
-const instance = (fetcher: typeof fetch, env: Record<string, string | undefined> = { CARGUS_TRACKING_KEY: KEY }) => adapter({
-  fetcher, env, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
+const instance = (fetcher: typeof fetch) => adapter({
+  fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
 });
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': 'application/json; charset=utf-8', ...init.headers } });
@@ -103,9 +103,9 @@ describe('Cargus app history', () => {
 describe('Cargus app service', () => {
   it("sends the app's encrypted proof with the AWB, fresh each time", async () => {
     const fetcher = service(() => reply(json('delivered.json')));
-    const tracker = instance(fetcher);
-    await tracker.track({ number: '1000000001' });
-    await tracker.track({ number: '1000000001' });
+    const read = () => readCargusApp('1000000001', { key: KEY, fetcher, userAgent: 'Host/1.0', signal: new AbortController().signal, timeoutMs: 5_000 });
+    await read();
+    await read();
     const [input, init] = fetcher.mock.calls[0]!;
     const url = new URL(String(input));
     expect(`${url.origin}${url.pathname}`).toBe(CARGUS_APP_API);
@@ -122,19 +122,13 @@ describe('Cargus app service', () => {
     expect(again.get('k')).not.toBe(headers.get('k'));
   });
 
-  it('uses the included key when the host sets none', async () => {
+  it('proves itself with the included key', async () => {
     const fetcher = service(() => reply(json('delivered.json')));
-    await instance(fetcher, {}).track({ number: '1000000001' });
-    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('k')).toBeTruthy();
-  });
-
-  it.each([
-    ['an empty key', { CARGUS_TRACKING_KEY: ' ' }], ['a key that is not the app key', { CARGUS_TRACKING_KEY: 'not-a-key' }],
-  ])('turns the lookup off as a challenge without a request with %s', async (_, env) => {
-    const fetcher = service(() => reply(json('delivered.json')));
-    await expect(instance(fetcher, env).track({ number: '1000000001' })).rejects.toMatchObject({ kind: 'challenge' });
-    await expect(instance(fetcher, env).recognize!('1000000001')).rejects.toMatchObject({ kind: 'challenge' });
-    expect(fetcher).not.toHaveBeenCalled();
+    await instance(fetcher).track({ number: '1000000001' });
+    const headers = new Headers(fetcher.mock.calls[0]![1]?.headers);
+    expect(headers.get('k')).toBeTruthy();
+    expect(headers.get('seed')).toMatch(/^[0-9a-f]{32}$/);
+    expect(headers.get('user-agent')).toBe('Host/1.0');
   });
 
   it('answers the empty reply for an unknown AWB as not found, and recognizes a known one', async () => {

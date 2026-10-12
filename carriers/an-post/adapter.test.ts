@@ -17,8 +17,8 @@ const OTHER = 'CP000000014IE';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const json = (name: string): unknown => JSON.parse(fixture(name));
 const PRIVATE = /SYNTHETIC (?:RECIPIENT|SIGNATORY|OFFICE|SUMMARY REASON|SCAN REASON)|PSS000000SYNTHETIC|IRELAND/;
-const instance = (fetcher: typeof fetch, env: Record<string, string | undefined> = {}) => adapter({
-  fetcher, env, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
+const instance = (fetcher: typeof fetch) => adapter({
+  fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
 });
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': 'application/json; charset=utf-8', ...init.headers } });
@@ -355,13 +355,13 @@ describe('An Post guest history', () => {
 });
 
 describe('An Post guest API transport', () => {
-  it('uses an overriding key, and a blank one turns the lookup off without a request', async () => {
+  it('sends the included key with each request', async () => {
     const fetcher = service();
-    await instance(fetcher, { AN_POST_TRACKING_KEY: 'SYNTHETIC_TRACKING_KEY' }).track({ number: NUMBER });
-    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('ocp-apim-subscription-key')).toBe('SYNTHETIC_TRACKING_KEY');
-    const unused = service();
-    expect(() => instance(unused, { AN_POST_TRACKING_KEY: ' ' }).track({ number: NUMBER })).toThrowError(expect.objectContaining({ kind: 'challenge' }));
-    expect(unused).not.toHaveBeenCalled();
+    await instance(fetcher).track({ number: NUMBER });
+    const keys = fetcher.mock.calls.map(call => new Headers(call[1]?.headers).get('ocp-apim-subscription-key'));
+    expect(keys).toHaveLength(2);
+    expect(keys[0]).toMatch(/^[a-f\d]{32}$/);
+    expect(keys[1]).toBe(keys[0]);
   });
 
   it.each([
@@ -404,11 +404,12 @@ describe('An Post guest API transport', () => {
   });
 
   it.each(['network', 'bare network', 'rate limit', 'server error', 'body read', 'bare body read'])('drops the key, number and body from a %s failure', async mode => {
-    const key = 'SYNTHETIC_TRACKING_KEY';
-    const privateData = `SYNTHETIC RECIPIENT ${NUMBER} ${key}`;
+    let key = '';
     // A failure without a reason leaves the transport error without a cause.
     const bare: unknown = undefined;
-    const fetcher: typeof fetch = async () => {
+    const fetcher: typeof fetch = async (_input, init) => {
+      key = new Headers(init?.headers).get('ocp-apim-subscription-key') ?? '';
+      const privateData = `SYNTHETIC RECIPIENT ${NUMBER} ${key}`;
       if (mode === 'network') throw new Error(privateData);
       if (mode === 'bare network') return Promise.reject(bare);
       if (mode === 'rate limit') return reply(privateData, { status: 429, headers: { 'Retry-After': '30' } });
@@ -416,13 +417,15 @@ describe('An Post guest API transport', () => {
       if (mode === 'bare body read') return new Response(new ReadableStream({ start(controller) { controller.error(); } }));
       return new Response(new ReadableStream({ start(controller) { controller.error(new Error(privateData)); } }));
     };
-    const error: unknown = await instance(fetcher, { AN_POST_TRACKING_KEY: key }).track({ number: NUMBER }).catch((caught: unknown) => caught);
+    const error: unknown = await instance(fetcher).track({ number: NUMBER }).catch((caught: unknown) => caught);
     expect(error).toMatchObject(mode === 'rate limit' ? { kind: 'rate_limited', status: 429, retryAfterMs: 30_000 }
       : mode === 'server error' ? { kind: 'indeterminate', status: 500 } : { kind: 'transport' });
     expect(error).not.toHaveProperty('request');
     expect(error).not.toHaveProperty('diagnostics');
     expect((error as Error).cause).toBeUndefined();
+    expect(key).not.toBe('');
     expect(`${JSON.stringify(error)} ${String(error)}`).not.toMatch(/SYNTHETIC|CP000000005IE/);
+    expect(`${JSON.stringify(error)} ${String(error)}`).not.toContain(key);
   });
 
   it('starts no request for an invalid number or an aborted lookup', async () => {

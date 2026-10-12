@@ -11,7 +11,6 @@ import { pplStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = '40000000001';
-const KEY = 'SyntheticPageKey0000000000000001';
 const API = `https://api.dhl.com/ecs/ppl/webapi/TrackAndTrace/${NUMBER}`;
 const read = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const delivered = JSON.parse(read('delivered.json'));
@@ -22,21 +21,21 @@ const row = (code: string, eventDate: string, eventText = 'Synthetic wording'): 
 const reply = (body: unknown, status = 200) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { status, headers: { 'Content-Type': 'application/json' } });
 const transport = (tracking: () => Response) => vi.fn<typeof fetch>().mockImplementation(async () => tracking());
-const carrier = (fetcher: typeof fetch, env: Record<string, string | undefined> = { PPL_TRACKING_KEY: KEY }) =>
-  adapter({ fetcher, recorder: NOOP_RECORDER, env, trawl: null, browserExecutablePath: null });
+const carrier = (fetcher: typeof fetch) =>
+  adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 
 describe('PPL tracking through its tracking page’s service', () => {
-  it('posts the page’s search with the supplied key through the supplied transport', async () => {
+  it('posts the page’s search with the included key through the supplied transport', async () => {
     const fetcher = transport(() => reply(delivered));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    await expect(new PplTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0', key: ` ${KEY} ` }).fetch(` ${NUMBER} `, { budgetMs: 1000.5 }))
+    await expect(new PplTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(` ${NUMBER} `, { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [[url, init]] = fetcher.mock.calls as [[string, RequestInit]];
     expect(url).toBe(API);
     expect(init).toMatchObject({ method: 'POST', body: '{}', signal: expect.any(AbortSignal), headers: {
       Accept: 'application/json', 'Accept-Language': 'en-US', 'Content-Type': 'application/json',
-      'dhl-api-key': KEY, 'User-Agent': 'SyntheticHost/1.0',
+      'dhl-api-key': expect.stringMatching(/^\w{32}$/), 'User-Agent': 'SyntheticHost/1.0',
     } });
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'ppl', step: 'direct', outcome: 'ok' }));
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
@@ -160,23 +159,6 @@ describe('PPL tracking through its tracking page’s service', () => {
       await expect(carrier(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind });
       expect(fetcher).toHaveBeenCalledTimes(1);
     });
-
-  it('sends the included key when the host sets none', async () => {
-    const fetcher = transport(() => reply(delivered));
-    await carrier(fetcher, {}).track({ number: NUMBER });
-    const key = new Headers(fetcher.mock.calls[0]?.[1]?.headers).get('dhl-api-key');
-    expect(key?.trim()).toBeTruthy();
-    expect(key).not.toBe(KEY);
-  });
-
-  it('turns the lookup off without a request when the key is set blank', async () => {
-    const fetcher = transport(() => reply(delivered));
-    for (const env of [{ PPL_TRACKING_KEY: '' }, { PPL_TRACKING_KEY: '  ' }]) {
-      await expect(carrier(fetcher, env).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
-    }
-    await expect(new PplTracker({ fetcher, key: null }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
-    expect(fetcher).not.toHaveBeenCalled();
-  });
 
   it('keeps a web page or broken JSON from the service apart from a missing parcel', async () => {
     for (const [body, kind] of [['<html><title>Request Rejected</title></html>', 'challenge'], ['{"shipmentId":', 'schema']] as const) {

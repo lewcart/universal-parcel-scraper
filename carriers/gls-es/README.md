@@ -16,9 +16,8 @@ a Portuguese postcode.
 - The page signs each request: `X-Timestamp` is the current instant and `X-Signature` the
   hex HMAC-SHA256 of `POST`, the path `/expeditions/find` and that timestamp, one per line.
   The key is a secret every visitor's page receives from Firebase Remote Config; the adapter
-  includes it with the maintainer's approval. `GLS_ES_SIGNING_SECRET` replaces it, and an
-  empty value turns the adapter off. The service refuses a timestamp minutes off its clock,
-  so every try signs anew.
+  includes it with the maintainer's approval. The service refuses a timestamp minutes off
+  its clock, so every try signs anew.
 - The postcode is required. The service looks up the whole number with it: a number or
   postcode one character off is not found.
 - A number GLS does not know with that postcode returns HTTP 404 with its `notFound` error:

@@ -16,10 +16,8 @@ is needed. The adapter includes the app's shared key.
 
 The app proves itself on every request: it encrypts a fresh random 12-character message
 with AES-128-CBC under a key compiled into the app, the same for every install, and sends
-the ciphertext in `k`, the IV in hex in `seed`, and `s: M`. `CARGUS_TRACKING_KEY` can
-replace the included key with 32 hexadecimal digits; an empty or malformed value fails as a
-challenge without a request. A missing or wrong key gets a bare HTTP 400, which is a challenge
-too.
+the ciphertext in `k`, the IV in hex in `seed`, and `s: M`. The key is included with the
+maintainer's approval. A missing or wrong key gets a bare HTTP 400, which is a challenge.
 
 ## Notes
 

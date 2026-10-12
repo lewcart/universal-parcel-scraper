@@ -15,7 +15,6 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new DPDTracker({
     country: 'DE',
     fetcher: environment.fetcher,
-    firebaseApiKey: environment.env.DPD_FIREBASE_API_KEY,
     recorder: environment.recorder,
     userAgent: environment.userAgent,
     app: {

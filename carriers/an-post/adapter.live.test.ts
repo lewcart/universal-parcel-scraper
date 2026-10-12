@@ -4,7 +4,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter } from './adapter.js';
 import corpus from './numbers.json' with { type: 'json' };
 
-const instance = () => adapter({ fetcher: fetch, env: process.env, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
+const instance = () => adapter({ fetcher: fetch, env: {}, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
 
 // Public reports An Post's own tracking knew. An unknown request also gets an
 // empty list, so a clean not-found alone would not show the route still works.

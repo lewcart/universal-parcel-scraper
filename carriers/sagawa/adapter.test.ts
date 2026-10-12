@@ -7,7 +7,7 @@ import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../../core/transport/index.js';
 import { adapter, SagawaTracker } from './adapter.js';
-import { SAGAWA_APP_USER_AGENT, SAGAWA_WIDGET_API, sagawaKey, sagawaUserAgent } from './app.js';
+import { SAGAWA_APP_KEY, SAGAWA_APP_USER_AGENT, SAGAWA_WIDGET_API, sagawaUserAgent } from './app.js';
 import { normalizeSagawaNumber, parseSagawaWidget, sagawaRejection } from './parser.js';
 import { sagawaState, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -18,7 +18,6 @@ const DELIVERED = fixture('delivered.json');
 const NO_DATA = fixture('no-data.json');
 const REFUSED = fixture('registration-refused.json');
 const DENIED = fixture('access-denied.html');
-const KEY = sagawaKey(undefined)!;
 const json = (body: string, status = 200, headers: Record<string, string> = {}) =>
   new Response(body, { status, headers: { 'Content-Type': 'application/json', ...headers } });
 const html = (status: number, headers: Record<string, string> = {}) =>
@@ -28,8 +27,8 @@ const widget = (change: (info: Record<string, unknown>) => void) => {
   change(payload.baggageInfo);
   return payload;
 };
-const environment = (fetcher: typeof fetch, env: Record<string, string> = {}, userAgent?: string) =>
-  ({ fetcher, env, userAgent, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
+const environment = (fetcher: typeof fetch, userAgent?: string) =>
+  ({ fetcher, env: {}, userAgent, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
 const track = (fetcher: typeof fetch, number = NUMBER) => adapter(environment(fetcher)).track({ number });
 
 describe('Sagawa Express waybill', () => {
@@ -130,7 +129,7 @@ describe('Sagawa Express app request', () => {
     expect(init).toMatchObject({ method: 'POST' });
     expect(JSON.parse(String(init?.body))).toEqual({ trackingNo: NUMBER, callType: '2' });
     const headers = new Headers(init?.headers);
-    expect(headers.get('x-api-key')).toBe(KEY);
+    expect(headers.get('x-api-key')).toBe(SAGAWA_APP_KEY);
     expect(headers.get('content-type')).toBe('application/json');
     expect(headers.get('user-agent')).toBe(DEFAULT_USER_AGENT);
   });
@@ -140,20 +139,8 @@ describe('Sagawa Express app request', () => {
     expect(sagawaUserAgent('ExampleHost/2.1')).toBe('ExampleHost/2.1');
     expect(sagawaUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')).toBe(SAGAWA_APP_USER_AGENT);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(DELIVERED));
-    await adapter(environment(fetcher, {}, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)')).track({ number: NUMBER });
+    await adapter(environment(fetcher, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)')).track({ number: NUMBER });
     expect(new Headers(fetcher.mock.calls[0]?.[1]?.headers).get('user-agent')).toBe(SAGAWA_APP_USER_AGENT);
-  });
-
-  it('sends a configured key, and an empty one disables the lookup', async () => {
-    expect(sagawaKey(' replacement-key ')).toBe('replacement-key');
-    for (const key of ['', '  ', null, 'bad key', 'k\r\nX-Injected: 1']) expect(sagawaKey(key)).toBeNull();
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(DELIVERED));
-    await adapter(environment(fetcher, { SAGAWA_TRACKING_KEY: 'replacement-key' })).track({ number: NUMBER });
-    expect(new Headers(fetcher.mock.calls[0]?.[1]?.headers).get('x-api-key')).toBe('replacement-key');
-    const disabled = vi.fn<typeof fetch>();
-    await expect(adapter(environment(disabled, { SAGAWA_TRACKING_KEY: '' })).track({ number: NUMBER }))
-      .rejects.toMatchObject({ kind: 'challenge' });
-    expect(disabled).not.toHaveBeenCalled();
   });
 
   it('turns the no-data refusal into not-found and other refusals into inconclusive answers', async () => {
@@ -203,7 +190,7 @@ describe('Sagawa Express app request', () => {
     const visible = `${(error as Error).message} ${JSON.stringify(error)}`;
     expect(visible).not.toContain(NUMBER);
     expect(visible).not.toMatch(/x-api-key|headers|https?:/i);
-    expect(visible.includes(KEY)).toBe(false);
+    expect(visible.includes(SAGAWA_APP_KEY)).toBe(false);
   });
 
   it('starts nothing after cancellation and stops the request when cancelled', async () => {

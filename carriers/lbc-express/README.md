@@ -1,6 +1,6 @@
 # LBC Express
 
-Tracks Philippine LBC shipments through the Android app's guest SOAP API. Domestic waybills have twelve digits, and only those suggest LBC; the tracker also answers for ten-, eleven- and fourteen-digit numbers, which many carriers share, so LBC tracks them when the caller names it. The shared subscription key is included; `LBC_TRACKING_KEY` overrides it, and an empty override disables the API tier. No account or browser setup is needed for this tier.
+Tracks Philippine LBC shipments through the Android app's guest SOAP API. Domestic waybills have twelve digits, and only those suggest LBC; the tracker also answers for ten-, eleven- and fourteen-digit numbers, which many carriers share, so LBC tracks them when the caller names it. The shared subscription key is included, so no account or browser setup is needed for this tier.
 
 A configured local Chromium browser recovers from a refused key, transport failure or inconclusive mobile response. It opens the public tracking form, submits the current anonymous search request, and follows the opaque handle returned by that request. Handles are never constructed or persisted. Rate limits and malformed or mismatched replies end the lookup.
 
@@ -33,7 +33,7 @@ separate local date and time fields without a UTC offset. Recipient and sender
 details must be discarded. The service also recognizes remittance identifiers;
 that response is not evidence that a parcel is missing. The adapter uses the
 included key rather than registering an installation for each lookup. A revoked
-key can be replaced through `LBC_TRACKING_KEY`; browser retrieval remains available.
+key needs a new release; browser retrieval remains available.
 
 ## Requirements
 

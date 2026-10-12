@@ -8,8 +8,8 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = '100000000001';
 const xml = () => readFileSync(new URL('./fixtures/mobile.xml', import.meta.url), 'utf8');
-const instance = (fetcher: typeof fetch, env = {}, browserExecutablePath: string | null = null) => adapter({
-  fetcher, env, browserExecutablePath, trawl: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
+const instance = (fetcher: typeof fetch) => adapter({
+  fetcher, env: {}, browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, userAgent: 'Host/1.0',
 });
 
 describe('LBC mobile history', () => {
@@ -117,11 +117,6 @@ describe('LBC direct transport', () => {
       expect(launch).not.toHaveBeenCalled();
     } finally { launch.mockRestore(); }
   });
-  it('supports an environment key override', async () => {
-    const fetcher = vi.fn<typeof fetch>(async () => new Response(xml()));
-    await instance(fetcher, { LBC_TRACKING_KEY: 'SYNTHETIC_TRACKING_KEY' }).track({ number: NUMBER });
-    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('lbcOAKey')).toBe('SYNTHETIC_TRACKING_KEY');
-  });
   it.each([401, 403, 404, 410, 429, 503])('keeps HTTP %s distinct from shipment absence', async status => {
     const fetcher: typeof fetch = async () => new Response('', { status });
     await expect(instance(fetcher).track({ number: NUMBER })).rejects.toMatchObject({ kind:
@@ -142,21 +137,24 @@ describe('LBC direct transport', () => {
     expect(JSON.stringify(error)).not.toMatch(/PRIVATE|tracking\.example/);
   });
   it.each(['network', 'rate limit', 'body read'])('sanitizes %s failure data while retaining its classification', async mode => {
-    const key = 'SYNTHETIC_TRACKING_KEY';
-    const privateData = `PRIVATE RECIPIENT ${NUMBER} ${key}`;
-    const fetcher: typeof fetch = async () => {
+    let key = '';
+    const fetcher: typeof fetch = async (_url, init) => {
+      key = new Headers(init?.headers).get('lbcOAKey') ?? '';
+      const privateData = `PRIVATE RECIPIENT ${NUMBER} ${key}`;
       if (mode === 'network') throw new Error(privateData);
       if (mode === 'rate limit') return new Response(privateData, { status: 429, headers: { 'Retry-After': '60' } });
       return new Response(new ReadableStream({ start(controller) { controller.error(new Error(privateData)); } }));
     };
-    const error: unknown = await instance(fetcher, { LBC_TRACKING_KEY: key }).track({ number: NUMBER }).catch(caught => caught);
+    const error: unknown = await instance(fetcher).track({ number: NUMBER }).catch(caught => caught);
     expect(error).toMatchObject({ kind: mode === 'rate limit' ? 'rate_limited' : 'transport',
       ...(mode === 'rate limit' ? { status: 429, retryAfterMs: 60_000 } : {}),
     });
     expect(error).not.toHaveProperty('request');
     expect(error).not.toHaveProperty('diagnostics');
     expect((error as Error).cause).toBeUndefined();
-    expect(JSON.stringify(error)).not.toMatch(/PRIVATE|SYNTHETIC_TRACKING_KEY|100000000001/);
+    expect(key).not.toBe('');
+    expect(JSON.stringify(error)).not.toMatch(/PRIVATE|100000000001/);
+    expect(JSON.stringify(error)).not.toContain(key);
   });
   it('starts no request for invalid or pre-aborted input', async () => {
     const fetcher = vi.fn<typeof fetch>();

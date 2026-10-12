@@ -20,19 +20,16 @@ export function stoSignature(timestamp: string, salt: string): string {
 }
 
 export class StoTracker {
-  /** `salt`: undefined uses the included salt; null disables the lookup. */
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; salt?: string | null } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeStoNumber(raw);
-    const salt = this.options.salt === undefined ? STO_SALT : this.options.salt;
-    if (!salt) throw new ChallengeError(STO_PROVIDER, 'STO tracking needs a request-signing salt');
     return runSteps({ carrier: 'sto', signal: context.signal, budgetMs: context.budgetMs ?? 15_000,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
       const timestamp = String(Date.now());
       try {
         const { bytes } = await fetchBounded(ENDPOINT + number, { signal, headers: {
-          Accept: 'application/json', source: STO_SOURCE, timestamp, safeToken: stoSignature(timestamp, salt),
+          Accept: 'application/json', source: STO_SOURCE, timestamp, safeToken: stoSignature(timestamp, STO_SALT),
           'User-Agent': userAgentOf(this.options.userAgent),
         } }, { provider: STO_PROVIDER, timeoutMs: Math.max(1, Math.floor(remainingMs)), maxBytes: 1_000_000, fetcher: this.options.fetcher });
         // An HTML page in place of the JSON reply is the gateway's block page.
@@ -51,9 +48,7 @@ export class StoTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
-  const salt = environment.env.STO_TRACKING_SALT;
-  const tracker = new StoTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent,
-    salt: salt === undefined ? undefined : salt.trim() || null });
+  const tracker = new StoTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return { id: 'sto', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeStoNumber(number))) };
 };

@@ -14,7 +14,6 @@ Ukrposhta.
 
 `direct` asks the status API that Ukrposhta's Android app uses, over plain HTTP.
 The app's shared application bearer is included; consumers need no key setup.
-`UKRPOSHTA_TRACKING_TOKEN` can replace it.
 The reply is a list of scans, each naming its barcode and its position in the
 history. Every row must name the requested barcode.
 

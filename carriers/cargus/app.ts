@@ -7,7 +7,6 @@ import { CARGUS, normalizeCargusNumber, parseCargus } from './parser.js';
 /** The guest parcel trace of the Cargus app (com.cargus.cma). */
 export const CARGUS_APP_API = 'https://cmacwabackend.azurewebsites.net/api/Awbs/ShortTrace';
 const MAX_BYTES = 256_000;
-const KEY = /^[0-9a-f]{32}$/i;
 
 /**
  * The app proves itself with a fresh random message encrypted under the key
@@ -24,7 +23,6 @@ export async function readCargusApp(raw: string, options: {
   key: string; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const number = normalizeCargusNumber(raw);
-  if (!KEY.test(options.key)) throw new ChallengeError(CARGUS, 'Cargus tracking key is unavailable');
   const deadline = performance.now() + options.timeoutMs;
   try {
     const url = new URL(CARGUS_APP_API);

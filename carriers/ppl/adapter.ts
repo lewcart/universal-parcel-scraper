@@ -17,21 +17,15 @@ function json(bytes: Uint8Array): unknown {
 }
 
 export class PplTracker {
-  constructor(private readonly options: {
-    fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string;
-    /** The tracking page's key. Omit for the included one; null or blank turns the lookup off. */
-    key?: string | null;
-  } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizePplNumber(raw);
-    const key = (this.options.key === undefined ? KEY : this.options.key ?? '').trim();
-    if (!key) throw new ChallengeError(PPL, 'PPL tracking key is disabled');
     return runSteps({ carrier: 'ppl', budgetMs: context.budgetMs ?? 15_000, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
       // The tracking page's own search: a POST with an empty body. English wording.
       const { response, bytes } = await fetchBounded(`${API}/${number}`, { method: 'POST', signal, headers: {
-        Accept: 'application/json', 'Accept-Language': 'en-US', 'Content-Type': 'application/json', 'dhl-api-key': key,
+        Accept: 'application/json', 'Accept-Language': 'en-US', 'Content-Type': 'application/json', 'dhl-api-key': KEY,
         'User-Agent': userAgentOf(this.options.userAgent),
       }, body: '{}' }, { provider: PPL, timeoutMs: remainingMs, maxBytes: 1_000_000, fetcher: this.options.fetcher,
         allowHttpStatuses: [400, 404, 410] });
@@ -43,7 +37,6 @@ export class PplTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
-  const tracker = new PplTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent,
-    key: environment.env.PPL_TRACKING_KEY });
+  const tracker = new PplTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return { id: 'ppl', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
 };

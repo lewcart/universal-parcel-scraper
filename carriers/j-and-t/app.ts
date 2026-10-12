@@ -188,18 +188,16 @@ export function parseJnt(payload: unknown, raw: string): CarrierResult {
 }
 
 export async function readJnt(raw: string, options: {
-  secret?: string | null; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
+  fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const number = normalizeJntNumber(raw);
-  const secret = options.secret === undefined ? JNT_SIGNING_SECRET : options.secret?.trim();
-  if (!secret || !/^[\x21-\x7e]{8,256}$/.test(secret)) throw new ChallengeError(PROVIDER, 'J&T Indonesia signing secret is unavailable');
   const time = String(Date.now());
   const body = new URLSearchParams({ method: METHOD, v: '1.0', format: 'json', sessionid: '',
     data: JSON.stringify({ parameter: JSON.stringify({ billCodes: number, lang: 'en' }) }) }).toString();
   try {
     const { response, bytes } = await fetchBounded(JNT_ROUTER, { method: 'POST', signal: options.signal, body, headers: {
       'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json;charset=utf-8', 'User-Agent': userAgentOf(options.userAgent),
-      sign: jntSign(number, time, secret), time, platform: 'Android', version: APP_VERSION, lang: 'en',
+      sign: jntSign(number, time, JNT_SIGNING_SECRET), time, platform: 'Android', version: APP_VERSION, lang: 'en',
     } }, { provider: PROVIDER, maxBytes: MAX_BYTES, timeoutMs: options.timeoutMs, fetcher: options.fetcher, allowHttpStatuses: [401, 403, 404, 410] });
     if ([401, 403].includes(response.status)) throw new ChallengeError(PROVIDER, 'J&T refused the tracking request');
     if ([404, 410].includes(response.status)) throw new TransportError(PROVIDER, 'J&T tracking router is unavailable', { status: response.status });

@@ -20,8 +20,7 @@ without an account, postcode or WAF token.
 
 The app receives that key from Firebase Remote Config, under
 `enterprise_tracking_api_key_android_string`. It is the same for every install
-and is included in the adapter. `EVRI_UK_TRACKING_KEY` replaces it after a
-rotation; an empty value disables this step.
+and is included in the adapter.
 
 `browser` uses a fresh local Chromium through `TRACKING_CHROMIUM_PATH` when the
 guest API is refused or unreachable. The official page's AWS WAF SDK obtains its

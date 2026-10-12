@@ -20,8 +20,6 @@ export function chinaPostSignature(path: string, body: string, key: string): str
 }
 
 export interface ChinaPostAppOptions {
-  /** Undefined uses the included key; null disables the API. */
-  key?: string | null;
   fetcher?: typeof fetch;
   userAgent: string;
   /** The lookup's budget; its signal joins the caller's. */
@@ -41,13 +39,13 @@ function json(bytes: Uint8Array): unknown {
   }
 }
 
-async function post(path: string, body: string, key: string, options: ChinaPostAppOptions): Promise<unknown> {
+async function post(path: string, body: string, options: ChinaPostAppOptions): Promise<unknown> {
   // When the budget ends before the request's own limit, the budget's signal
   // must abort first so the lookup reports the spent budget, not a timeout.
   const remainingMs = options.budget.remainingMs();
   const { response, bytes } = await fetchBounded(`${CHINA_POST_APP_API}${path}`, { method: 'POST', signal: options.budget.signal, body, headers: {
     'Content-Type': 'application/json;charset=UTF-8', Accept: 'application/json', 'USER-CHANNEL': 'APP', 'APP-VERSION': APP_VERSION,
-    'USER-SIGN': chinaPostSignature(path, body, key), 'User-Agent': options.userAgent,
+    'USER-SIGN': chinaPostSignature(path, body, APPLICATION_KEY), 'User-Agent': options.userAgent,
   } }, { provider: PROVIDER, maxBytes: MAX_BYTES, timeoutMs: remainingMs > MAX_REQUEST_MS ? MAX_REQUEST_MS : remainingMs + 1_000,
     fetcher: options.fetcher, allowHttpStatuses: [401, 403, 404, 405, 410] });
   if ([401, 403].includes(response.status)) throw new ChallengeError(PROVIDER, 'China Post refused the tracking request');
@@ -65,12 +63,10 @@ async function post(path: string, body: string, key: string, options: ChinaPostA
  * trace answers 600001 without it), then the trace returns the mail record.
  */
 export async function readChinaPostTraces(number: string, options: ChinaPostAppOptions): Promise<unknown> {
-  const key = options.key === undefined ? APPLICATION_KEY : options.key?.trim();
-  if (!key || !/^[\x21-\x7e]{8,256}$/.test(key)) throw new ChallengeError(PROVIDER, 'China Post tracking key is unavailable');
   const body = JSON.stringify({ mailNo: number });
   try {
-    checkChinaPostGate(await post(CHINA_POST_CHECK_PATH, body, key, options));
-    return await post(CHINA_POST_TRACE_PATH, body, key, options);
+    checkChinaPostGate(await post(CHINA_POST_CHECK_PATH, body, options));
+    return await post(CHINA_POST_TRACE_PATH, body, options);
   } catch (error) {
     options.callerSignal?.throwIfAborted();
     const { budget } = options;

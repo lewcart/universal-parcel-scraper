@@ -116,16 +116,14 @@ export function parseLbcMobile(xml: string, raw: string): CarrierResult {
 }
 
 export async function readLbcMobile(number: string, options: {
-  key?: string | null; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
+  fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const normalized = normalizeLbcNumber(number);
-  const key = options.key === undefined ? APPLICATION_KEY : options.key?.trim();
-  if (!key || !/^[\w.~+/=-]{8,512}$/.test(key)) throw new ChallengeError('lbc-express', 'LBC tracking API key is unavailable');
   const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="${SOAP}"><soap:Body><LBCTrackAndTrace xmlns="${SERVICE}"><TrackingNo>${normalized}</TrackingNo></LBCTrackAndTrace></soap:Body></soap:Envelope>`;
   try {
     const { response, bytes } = await fetchBounded(LBC_MOBILE_API, { method: 'POST', signal: options.signal, body,
       headers: { 'Content-Type': 'text/xml; charset=utf-8', SOAPAction: `${SERVICE}LBCTrackAndTrace`,
-        Accept: 'text/xml', lbcOAKey: key, 'User-Agent': userAgentOf(options.userAgent) } }, {
+        Accept: 'text/xml', lbcOAKey: APPLICATION_KEY, 'User-Agent': userAgentOf(options.userAgent) } }, {
       provider: 'lbc-express', maxBytes: MAX_BYTES, timeoutMs: options.timeoutMs, fetcher: options.fetcher,
       allowHttpStatuses: [401, 403, 404, 410],
     });

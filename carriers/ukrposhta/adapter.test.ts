@@ -155,10 +155,12 @@ function browserSeam(pair = fixture(), number = NUMBER) {
   return { page, context, browser, launch };
 }
 
-const TOKEN = 'synthetic-token-0001';
 const statuses = () => fixture('statuses');
 const statusApi = (body: unknown = statuses(), status = 200, headers: Record<string, string> = {}) =>
   vi.fn<typeof fetch>().mockImplementation(async () => new Response(typeof body === 'string' ? body : JSON.stringify(body), { status, headers }));
+// The status API refuses its credential, so the lookup goes on to the browser.
+const viaBrowser = (options: ConstructorParameters<typeof UkrposhtaTracker>[0] = {}) =>
+  new UkrposhtaTracker({ executablePath: '/synthetic/chromium', fetcher: statusApi('<html>403 Forbidden</html>', 403), ...options });
 
 describe('Ukrposhta status API projection', () => {
   it('reads the oldest-first reply as the portal history, with second precision', () => {
@@ -242,57 +244,33 @@ describe('Ukrposhta status API projection', () => {
 });
 
 describe('Ukrposhta direct status API retrieval', () => {
-  it('asks once with the configured bearer and starts no browser', async () => {
+  it("asks once with the app's bearer and starts no browser", async () => {
     const seam = browserSeam(), fetcher = statusApi(), recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, fetcher, userAgent: 'Host/1.0', env: { UKRPOSHTA_TRACKING_TOKEN: ` Bearer ${TOKEN} ` } });
+    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, fetcher, userAgent: 'Host/1.0', env: {} });
     await expect(instance.track({ number: NUMBER })).resolves.toMatchObject({ current_stage: 'returned' });
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(`${UKRPOSHTA_STATUS_API}?barcode=${NUMBER}&lang=en`);
-    expect(Object.fromEntries(new Headers(init!.headers))).toEqual({ accept: 'application/json', authorization: `Bearer ${TOKEN}`, 'user-agent': 'Host/1.0' });
+    expect(Object.fromEntries(new Headers(init!.headers))).toEqual({ accept: 'application/json',
+      authorization: expect.stringMatching(/^Bearer [\w-]{8,}$/), 'user-agent': 'Host/1.0' });
     expect(fetcher).toHaveBeenCalledOnce();
     expect(seam.launch).not.toHaveBeenCalled();
     expect(recorder.step).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ step: 'direct', outcome: 'ok' }));
   });
 
-  it("uses the app's own bearer unless the host supplies one", async () => {
-    browserSeam();
-    const sent = async (env: Record<string, string>) => {
-      const fetcher = statusApi();
-      await adapter({ browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, fetcher, env }).track({ number: NUMBER });
-      return new Headers(fetcher.mock.calls[0]![1]!.headers).get('authorization');
-    };
-    const builtIn = await sent({});
-    expect(builtIn).toMatch(/^Bearer \S{8,}$/);
-    expect(await sent({ UKRPOSHTA_TRACKING_TOKEN: '  ' })).toBe(builtIn);
-    expect(await sent({ UKRPOSHTA_TRACKING_TOKEN: TOKEN })).toBe(`Bearer ${TOKEN}`);
-  });
-
-  it('skips the API without a usable token', async () => {
-    const fetcher = statusApi(), launches: unknown[] = [];
-    for (const token of [undefined, '', 'short', 'two words here', 'line\nbreak-token']) {
-      launches.push(browserSeam().launch);
-      await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium', token, fetcher }).fetch(NUMBER)).resolves.toMatchObject({ current_stage: 'returned' });
-    }
-    expect(fetcher).not.toHaveBeenCalled();
-    expect(launches).toHaveLength(5);
-    for (const launch of launches) expect(launch).toHaveBeenCalled();
-    expect(() => new UkrposhtaTracker({ fetcher }).fetch(NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
-  });
-
   it.each([[401, 'challenge'], [403, 'challenge'], [500, 'indeterminate']] as const)('hands HTTP %s to the browser', async (status, kind) => {
     const seam = browserSeam(), recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    const tracker = new UkrposhtaTracker({ executablePath: '/synthetic/chromium', token: TOKEN, fetcher: statusApi('<html>403 Forbidden</html>', status), recorder });
+    const tracker = new UkrposhtaTracker({ executablePath: '/synthetic/chromium', fetcher: statusApi('<html>403 Forbidden</html>', status), recorder });
     await expect(tracker.fetch(NUMBER)).resolves.toMatchObject({ current_stage: 'returned' });
     expect(seam.launch).toHaveBeenCalledOnce();
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ step: 'direct', outcome: kind }));
-    await expect(new UkrposhtaTracker({ token: TOKEN, fetcher: statusApi('<html>403 Forbidden</html>', status) }).fetch(NUMBER)).rejects.toMatchObject({ kind });
+    await expect(new UkrposhtaTracker({ fetcher: statusApi('<html>403 Forbidden</html>', status) }).fetch(NUMBER)).rejects.toMatchObject({ kind });
   });
 
   it('leaves an unknown domestic barcode inconclusive and gives an international one its second source', async () => {
     const international = 'RR000000005UA';
     const seam = browserSeam({ overview: fixture('unknown'), history: fixture().history }, international);
     const unknown = () => statusApi({ message: 'Shipment not found' }, 404);
-    const options = { executablePath: '/synthetic/chromium', token: TOKEN };
+    const options = { executablePath: '/synthetic/chromium' };
     await expect(new UkrposhtaTracker({ ...options, fetcher: unknown() }).fetch(NUMBER))
       .rejects.toMatchObject({ kind: 'indeterminate', reason: 'status_api_not_found' });
     expect(seam.launch).not.toHaveBeenCalled();
@@ -322,7 +300,7 @@ describe('Ukrposhta direct status API retrieval', () => {
 
   it('keeps rate limits, a missing endpoint and changed replies apart from absence', async () => {
     browserSeam();
-    const run = (fetcher: typeof fetch) => new UkrposhtaTracker({ token: TOKEN, fetcher }).fetch(NUMBER);
+    const run = (fetcher: typeof fetch) => new UkrposhtaTracker({ fetcher }).fetch(NUMBER);
     await expect(run(statusApi('{}', 429, { 'retry-after': '20' }))).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 20_000 });
     await expect(run(statusApi({ message: 'no Route matched' }, 404))).rejects.toMatchObject({ kind: 'transport' });
     await expect(run(statusApi('<html></html>'))).rejects.toMatchObject({ kind: 'schema' });
@@ -345,7 +323,7 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
 
   it('stops after an inconclusive overview without requesting history', async () => {
     const seam = browserSeam({ overview: fixture('unknown'), history: fixture().history });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(seam.page.goto).toHaveBeenCalledOnce();
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
@@ -353,7 +331,7 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
   it('does not begin the second request after the lookup deadline', async () => {
     const seam = browserSeam(), clock = vi.spyOn(performance, 'now').mockReturnValue(0);
     seam.page.goto.mockImplementation(async () => { clock.mockReturnValue(5001); return { status: () => 200 }; });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER, { budgetMs: 5000 })).rejects.toMatchObject({ kind: 'budget' });
+    await expect(viaBrowser().fetch(NUMBER, { budgetMs: 5000 })).rejects.toMatchObject({ kind: 'budget' });
     expect(seam.page.goto).toHaveBeenCalledOnce();
   });
 
@@ -362,8 +340,9 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
     // The browser is handed the remaining budget rounded down, so its own timer fires just before the deadline.
     seam.page.goto.mockImplementation(async () => { clock.mockReturnValue(4998); throw new Error('page.goto: Timeout 4998ms exceeded.'); });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium', recorder }).fetch(NUMBER, { budgetMs: 5000 })).rejects.toMatchObject({ kind: 'budget' });
-    expect(recorder.step).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ step: 'browser', outcome: 'budget' }));
+    await expect(viaBrowser({ recorder }).fetch(NUMBER, { budgetMs: 5000 })).rejects.toMatchObject({ kind: 'budget' });
+    expect(recorder.step.mock.calls.map(call => call[0])).toEqual([expect.objectContaining({ step: 'direct', outcome: 'challenge' }),
+      expect.objectContaining({ step: 'browser', outcome: 'budget' })]);
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
 
@@ -371,19 +350,19 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     const seam = browserSeam();
     const original = await seam.page.waitForResponse();
     seam.page.waitForResponse.mockResolvedValue({ ...original, request: () => ({ ...original.request(), postDataJSON: () => ({ barcode: '0000000000092', lang: 'EN' }) }) });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
   });
 
   it.each([404, 410, 429])('keeps native API HTTP %s separate from parcel absence', async status => {
     const seam = browserSeam(), original = await seam.page.waitForResponse();
     seam.page.waitForResponse.mockResolvedValue({ ...original, status: () => status, headers: () => ({ 'retry-after': '7' }) });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ status,
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ status,
       kind: status === 429 ? 'rate_limited' : 'transport' });
   });
 
   it.each([404, 410])('treats tracking page HTTP %s as a transport failure', async status => {
     const seam = browserSeam(); seam.page.goto.mockResolvedValue({ status: () => status });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ status, kind: 'transport' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ status, kind: 'transport' });
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
 
@@ -392,7 +371,7 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     seam.page.waitForResponse.mockResolvedValue({ ...original,
       headers: () => mode === 'declared size' ? { 'content-length': '1000001' } : {},
       body: async () => mode === 'actual size' ? Buffer.alloc(1000001) : Buffer.from('invalid JSON') });
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
 
@@ -402,7 +381,7 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     const ready = new Promise<void>(resolve => { submitted = resolve; });
     seam.page.waitForResponse.mockImplementation(() => new Promise(() => {}));
     seam.page.goto.mockImplementation(async () => { submitted(); return { status: () => 200 }; });
-    const pending = new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER, { signal: controller.signal });
+    const pending = viaBrowser().fetch(NUMBER, { signal: controller.signal });
     await ready; controller.abort(new Error('Synthetic cancellation'));
     await expect(pending).rejects.toThrow('Synthetic cancellation');
     expect(seam.browser.close).toHaveBeenCalled();
@@ -414,7 +393,7 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     let resolveClose!: () => void;
     seam.launch.mockImplementation(() => new Promise(resolve => { resolveLaunch = resolve; }));
     seam.browser.close.mockImplementation(() => new Promise(resolve => { resolveClose = resolve; }));
-    const tracker = new UkrposhtaTracker({ executablePath: '/synthetic/chromium' });
+    const tracker = viaBrowser();
     const pending = tracker.fetch(NUMBER, { signal: controller.signal });
     await vi.waitFor(() => expect(seam.launch).toHaveBeenCalledOnce());
     controller.abort(new Error('Cancelled during launch'));
@@ -439,18 +418,17 @@ describe('Ukrposhta bounded anonymous browser retrieval', () => {
     const ready = new Promise<void>(resolve => { began = resolve; });
     if (phase === 'context') seam.browser.newContext.mockImplementation(() => { began(); return new Promise(() => {}); });
     else seam.context.newPage.mockImplementation(() => { began(); return new Promise(() => {}); });
-    const pending = new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER, { signal: controller.signal });
+    const pending = viaBrowser().fetch(NUMBER, { signal: controller.signal });
     await ready; controller.abort(new Error(`Cancelled during ${phase} setup`));
     await expect(pending).rejects.toThrow(`Cancelled during ${phase} setup`);
     expect(seam.browser.close).toHaveBeenCalledOnce();
     expect(seam.page.goto).not.toHaveBeenCalled();
   });
 
-  it('requires a configured runtime and performs no browser work for invalid or pre-aborted input', async () => {
+  it('performs no browser work for invalid or pre-aborted input', async () => {
     const seam = browserSeam();
-    expect(() => new UkrposhtaTracker().fetch(NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
-    expect(() => new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch('invalid')).toThrow(InvalidInputError);
-    await expect(new UkrposhtaTracker({ executablePath: '/synthetic/chromium' }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
+    expect(() => viaBrowser().fetch('invalid')).toThrow(InvalidInputError);
+    await expect(viaBrowser().fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     expect(seam.launch).not.toHaveBeenCalled();
   });
 });

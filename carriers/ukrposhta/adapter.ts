@@ -16,17 +16,11 @@ const DIRECT_TIMEOUT_MS = 10_000;
 // The Android app's shared application bearer is deliberately distributed with this adapter.
 const APPLICATION_BEARER = 'c3e02b53-3b1d-386e-b676-141ffa054c57';
 
-/** The API's bearer, or null when none is configured or the value could not be a header. */
-function bearer(value: string | null | undefined): string | null {
-  const token = value?.trim().replace(/^Bearer\s+/i, '') ?? '';
-  return /^[\w.~+/=-]{8,512}$/.test(token) ? token : null;
-}
-
-async function readStatuses(number: string, token: string, signal: AbortSignal, timeoutMs: number, userAgent = 'Mozilla/5.0', fetcher?: typeof fetch) {
+async function readStatuses(number: string, signal: AbortSignal, timeoutMs: number, userAgent = 'Mozilla/5.0', fetcher?: typeof fetch) {
   const url = new URL(UKRPOSHTA_STATUS_API);
   url.searchParams.set('barcode', number);
   url.searchParams.set('lang', 'en');
-  const { response, bytes } = await fetchBounded(url, { signal, headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, 'User-Agent': userAgent } }, {
+  const { response, bytes } = await fetchBounded(url, { signal, headers: { Accept: 'application/json', Authorization: `Bearer ${APPLICATION_BEARER}`, 'User-Agent': userAgent } }, {
     provider: 'ukrposhta', timeoutMs, maxBytes: MAX_BYTES, allowHttpStatuses: [401, 403, 404, 429], fetcher,
   });
   // The refusal of a credential is an HTML page; it says nothing about the parcel.
@@ -116,18 +110,16 @@ function localBrowser(number: string, executablePath: string, signal: AbortSigna
 }
 
 export class UkrposhtaTracker {
-  constructor(private readonly options: { executablePath?: string | null; token?: string | null; userAgent?: string; fetcher?: typeof fetch; recorder?: StepRecorder } = {}) {}
+  constructor(private readonly options: { executablePath?: string | null; userAgent?: string; fetcher?: typeof fetch; recorder?: StepRecorder } = {}) {}
 
   fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeUkrposhtaNumber(raw);
     const budgetMs = context.budgetMs ?? 45_000;
     if (!Number.isFinite(budgetMs) || budgetMs <= 0 || budgetMs > 60_000) throw new TypeError('Ukrposhta budget must be between 1 and 60000 ms');
-    const token = bearer(this.options.token);
     const executablePath = this.options.executablePath;
-    if (!token && !executablePath) throw new ChallengeError('ukrposhta', 'Ukrposhta requires a tracking API token or a configured tracking browser');
     return runSteps({ carrier: 'ukrposhta', budgetMs, signal: context.signal, recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', enabled: token !== null,
-        run: ({ signal, remainingMs }) => readStatuses(number, token!, signal, Math.max(1, Math.min(DIRECT_TIMEOUT_MS, Math.floor(remainingMs))), this.options.userAgent, this.options.fetcher) },
+      { id: 'direct',
+        run: ({ signal, remainingMs }) => readStatuses(number, signal, Math.max(1, Math.min(DIRECT_TIMEOUT_MS, Math.floor(remainingMs))), this.options.userAgent, this.options.fetcher) },
       // The portal reads the same domestic records, so it cannot improve on an unknown
       // domestic barcode. An international reference still gets its second source.
       { id: 'browser', enabled: Boolean(executablePath),
@@ -138,8 +130,7 @@ export class UkrposhtaTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
-  const options = { token: environment.env.UKRPOSHTA_TRACKING_TOKEN?.trim() || APPLICATION_BEARER,
-    userAgent: environment.userAgent, fetcher: environment.fetcher, recorder: environment.recorder };
+  const options = { userAgent: environment.userAgent, fetcher: environment.fetcher, recorder: environment.recorder };
   const tracker = new UkrposhtaTracker({ ...options, executablePath: environment.browserExecutablePath });
   // Recognition is plain HTTP: the status API alone. A recognition budget can be
   // longer than the minute a lookup takes at most.

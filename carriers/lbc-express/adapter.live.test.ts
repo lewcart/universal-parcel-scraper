@@ -4,7 +4,9 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter } from './adapter.js';
 
 const executablePath = process.env.TRACKING_CHROMIUM_PATH;
-const instance = () => adapter({ browserExecutablePath: executablePath ?? null, trawl: null, recorder: NOOP_RECORDER, env: { LBC_TRACKING_KEY: '' } });
+// The mobile API is refused here, so the browser answers.
+const instance = () => adapter({ browserExecutablePath: executablePath ?? null, trawl: null, recorder: NOOP_RECORDER, env: {},
+  fetcher: async () => new Response('', { status: 401 }) });
 
 describe('LBC mobile API live', () => {
   const direct = () => adapter({ browserExecutablePath: null, trawl: null, recorder: NOOP_RECORDER, env: {} });

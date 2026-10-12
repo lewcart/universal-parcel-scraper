@@ -5,8 +5,8 @@ import { carrierDefinition } from '../../core/catalog/index.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { REGISTRY } from '../../generated/registry.js';
-import { adapter, ChinaPostTracker } from './adapter.js';
-import { CHINA_POST_APP_API, CHINA_POST_CHECK_PATH, CHINA_POST_TRACE_PATH, chinaPostSignature } from './app.js';
+import { adapter } from './adapter.js';
+import { CHINA_POST_APP_API, CHINA_POST_CHECK_PATH, CHINA_POST_TRACE_PATH } from './app.js';
 import { chinaPostCodeStatus, chinaPostStateStatus } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -28,8 +28,8 @@ function transport(...replies: (() => Response)[]) {
 }
 
 const open = () => json(text('check-open'));
-const instance = (fetcher: typeof fetch, env: Record<string, string | undefined> = {}) =>
-  adapter({ fetcher, env, userAgent: HOST_USER_AGENT, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
+const instance = (fetcher: typeof fetch) =>
+  adapter({ fetcher, env: {}, userAgent: HOST_USER_AGENT, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
 
 describe('China Post adapter', () => {
   it('is the registered direct adapter for Chinese S10 numbers', () => {
@@ -54,7 +54,6 @@ describe('China Post adapter', () => {
       // The included key signs each path; the signer's vectors are in app.test.ts.
       const signature = headers.get('user-sign')!;
       expect(signature).toMatch(/^[A-Za-z0-9+/]{43}=$/);
-      expect(signature).not.toBe(chinaPostSignature(path, BODY, 'replacement-key'));
       signatures.add(signature);
       expect(headers.get('user-channel')).toBe('APP');
       expect(headers.get('content-type')).toBe('application/json;charset=UTF-8');
@@ -68,17 +67,6 @@ describe('China Post adapter', () => {
     const result = await instance(transport(open, () => json(text('returned')))).track({ number: NUMBER });
     expect(result).toMatchObject({ current_stage: 'returned', last_status_text: '已退回' });
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|10000000000|11183|0\.00000|example\.invalid|签收|快递员|电话/);
-  });
-
-  it('uses a replacement key and disables the lookup with an empty one', async () => {
-    const fetcher = transport(open, () => json(text('customs')));
-    await instance(fetcher, { CHINA_POST_TRACKING_KEY: ' replacement-key ' }).track({ number: NUMBER });
-    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('user-sign'))
-      .toBe(chinaPostSignature(CHINA_POST_CHECK_PATH, BODY, 'replacement-key'));
-    const disabled = transport();
-    await expect(instance(disabled, { CHINA_POST_TRACKING_KEY: '' }).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
-    await expect(new ChinaPostTracker({ key: 'short', fetcher: disabled }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
-    expect(disabled).not.toHaveBeenCalled();
   });
 
   it('rejects numbers outside its scope before any request', async () => {

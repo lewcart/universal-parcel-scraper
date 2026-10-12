@@ -16,15 +16,13 @@ function unconfirmed(): never {
 }
 
 export async function readEvriUkMobile(raw: string, options: {
-  key?: string | null; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
+  fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const number = normalizeEvriUkNumber(raw);
-  const key = options.key === undefined ? APPLICATION_KEY : options.key?.trim();
-  if (!key || !/^[\w.~+/=-]{8,512}$/.test(key)) throw new ChallengeError('Evri UK', 'Evri UK tracking API key is unavailable');
   const deadline = performance.now() + options.timeoutMs;
   const read = async (url: URL): Promise<{ status: number; payload: unknown }> => {
     const { response, bytes } = await fetchBounded(url, { signal: options.signal,
-      headers: { Accept: 'application/json', apiKey: key, 'User-Agent': userAgentOf(options.userAgent) } }, {
+      headers: { Accept: 'application/json', apiKey: APPLICATION_KEY, 'User-Agent': userAgentOf(options.userAgent) } }, {
       provider: 'Evri UK', maxBytes: MAX_BYTES, timeoutMs: Math.max(1, Math.floor(deadline - performance.now())),
       fetcher: options.fetcher, allowHttpStatuses: [400, 401, 403, 404, 410],
     });

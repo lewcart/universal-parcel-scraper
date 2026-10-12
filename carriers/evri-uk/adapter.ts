@@ -13,20 +13,16 @@ const DIRECT_TIMEOUT_MS = 10_000;
 export class EvriUkTracker {
   constructor(private readonly options: {
     executablePath?: string | null; recorder?: StepRecorder; fetcher?: typeof fetch; userAgent?: string;
-    /** Guest API key. Omit for the included key; null or blank leaves the page as the only tier. */
-    key?: string | null;
   } = {}) {}
 
   fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeEvriUkNumber(raw);
     const budgetMs = context.budgetMs ?? 45_000;
     if (!Number.isFinite(budgetMs) || budgetMs <= 0 || budgetMs > 60_000) throw new TypeError('Evri UK budget must be between 1 and 60000 ms');
-    const direct = this.options.key === undefined || Boolean(this.options.key?.trim());
     const browser = Boolean(this.options.executablePath);
-    if (!direct && !browser) throw new ChallengeError('Evri UK', 'Evri UK requires TRACKING_CHROMIUM_PATH');
     return runSteps({ carrier: 'evri-uk', budgetMs, signal: context.signal, recorder: this.options.recorder ?? NOOP_RECORDER }, [{
-      id: 'direct', enabled: direct, run: ({ signal, remainingMs }) => readEvriUkMobile(number, {
-        key: this.options.key, fetcher: this.options.fetcher, userAgent: this.options.userAgent, signal,
+      id: 'direct', run: ({ signal, remainingMs }) => readEvriUkMobile(number, {
+        fetcher: this.options.fetcher, userAgent: this.options.userAgent, signal,
         timeoutMs: browser ? Math.min(remainingMs, DIRECT_TIMEOUT_MS) : remainingMs,
       }),
     }, {
@@ -85,7 +81,7 @@ export class EvriUkTracker {
 export const adapter: AdapterFactory = environment => {
   const tracker = new EvriUkTracker({
     executablePath: environment.browserExecutablePath, recorder: environment.recorder, fetcher: environment.fetcher,
-    userAgent: environment.userAgent, key: environment.env.EVRI_UK_TRACKING_KEY,
+    userAgent: environment.userAgent,
   });
   return { id: 'evri-uk', recordsSteps: true, steps: ['direct', 'browser'], track: (input, context) => tracker.fetch(input.number, context) };
 };

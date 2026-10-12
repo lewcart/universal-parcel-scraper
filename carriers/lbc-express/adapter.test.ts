@@ -8,6 +8,9 @@ import { normalizeLbcNumber, parseLbc } from './parser.js';
 const NUMBER = '100000000001';
 const fixture = () => readFileSync(new URL('./fixtures/delivered.html', import.meta.url), 'utf8');
 const REDIRECT = { page_slug: 'track', hash: 'SYNTHETIC_OPAQUE_HANDLE' };
+// The mobile API refuses its key, so the lookup goes on to the browser.
+const refused: typeof fetch = async () => new Response('', { status: 401 });
+const viaBrowser = () => new LbcExpressTracker({ executablePath: '/synthetic/chromium', fetcher: refused });
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -104,8 +107,7 @@ describe('LBC bounded anonymous browser transport', () => {
   });
   it('recovers from a refused mobile key with browser history and records the refusal', async () => {
     const seam = browserSeam(), recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    const fetcher: typeof fetch = async () => new Response('', { status: 401 });
-    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, fetcher, env: {} });
+    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, fetcher: refused, env: {} });
     await expect(instance.track({ number: NUMBER }, { budgetMs: 5000 })).resolves.toMatchObject({ current_stage: 'delivered' });
     expect(recorder.step.mock.calls.map(call => call[0])).toEqual([
       expect.objectContaining({ step: 'direct', outcome: 'challenge' }),
@@ -115,7 +117,7 @@ describe('LBC bounded anonymous browser transport', () => {
   });
   it('uses a fresh session and the current returned handle inside one recorded lookup', async () => {
     const seam = browserSeam(), recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
-    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, env: { LBC_TRACKING_KEY: '' } });
+    const instance = adapter({ browserExecutablePath: '/synthetic/chromium', trawl: null, recorder, fetcher: refused, env: {} });
     await expect(instance.track({ number: NUMBER }, { budgetMs: 5000 })).resolves.toMatchObject({ current_stage: 'delivered' });
     expect(seam.page.goto.mock.calls.map(call => call[0])).toEqual(['https://www.lbcexpress.com/', 'https://www.lbcexpress.com/track/', lbcRedirectUrl(REDIRECT)]);
     expect(seam.page.evaluate.mock.calls[0]?.[1]).toMatchObject({ number: NUMBER, endpoint: LBC_SEARCH, maxBytes: 1_000_000 });
@@ -132,19 +134,19 @@ describe('LBC bounded anonymous browser transport', () => {
     if (mode === 'malformed escape') payload.hash = 'SYNTHETIC%XX';
     if (mode === 'encoded separator') payload.hash = 'SYNTHETIC%2FHANDLE';
     seam.page.evaluate.mockResolvedValue({ status: 200, oversized: false, body: JSON.stringify(payload) });
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
     expect(seam.page.goto).toHaveBeenCalledTimes(2);
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
   it.each([403, 404, 410, 429])('keeps search HTTP %s distinct from shipment absence', async status => {
     const seam = browserSeam(); seam.page.evaluate.mockResolvedValue({ status, oversized: false, body: '' });
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ status,
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ status,
       kind: status === 403 ? 'challenge' : status === 429 ? 'rate_limited' : 'transport' });
     expect(seam.page.goto).toHaveBeenCalledTimes(2);
   });
   it.each(['oversized', 'invalid JSON'])('rejects %s redirect data', async mode => {
     const seam = browserSeam(); seam.page.evaluate.mockResolvedValue({ status: 200, oversized: mode === 'oversized', body: 'not JSON' });
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
   });
   it('does not expose a capability URL from a failed browser navigation', async () => {
     const seam = browserSeam();
@@ -153,7 +155,7 @@ describe('LBC bounded anonymous browser transport', () => {
       if (url === lbcRedirectUrl(REDIRECT)) throw new Error(`page.goto failed ${url}`);
       return navigate(url);
     });
-    const error: unknown = await new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER).catch(caught => caught);
+    const error: unknown = await viaBrowser().fetch(NUMBER).catch(caught => caught);
     expect(error).toMatchObject({ kind: 'transport', message: 'LBC browser tracking failed' });
     expect((error as Error).cause).toBeUndefined();
     expect(String(error)).not.toContain(REDIRECT.hash);
@@ -161,14 +163,14 @@ describe('LBC bounded anonymous browser transport', () => {
   it('waits for the website’s automatic JavaScript reload after an initial challenge document', async () => {
     const seam = browserSeam(), navigate = seam.page.goto.getMockImplementation()!;
     seam.page.goto.mockImplementation(async url => { await navigate(url); return { status: () => 403 }; });
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
+    await expect(viaBrowser().fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
     expect(seam.page.waitForResponse).toHaveBeenCalledTimes(3);
   });
   it('keeps an unfinished website challenge distinct from shipment absence', async () => {
     const seam = browserSeam(), navigate = seam.page.goto.getMockImplementation()!;
     seam.page.goto.mockImplementation(async url => { await navigate(url); return { status: () => 403 }; });
     seam.page.waitForResponse.mockRejectedValue(new Error('Synthetic challenge timeout'));
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(viaBrowser().fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
     expect(seam.page.evaluate).not.toHaveBeenCalled();
     expect(seam.browser.close).toHaveBeenCalledOnce();
   });
@@ -177,17 +179,16 @@ describe('LBC bounded anonymous browser transport', () => {
     let entered!: () => void;
     const ready = new Promise<void>(resolve => { entered = resolve; });
     seam.page.evaluate.mockImplementation(() => { entered(); return new Promise(() => {}); });
-    const pending = new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER, { signal: controller.signal });
+    const pending = viaBrowser().fetch(NUMBER, { signal: controller.signal });
     await ready; controller.abort(new Error('Synthetic cancellation'));
     await expect(pending).rejects.toThrow('Synthetic cancellation');
     expect(seam.browser.close).toHaveBeenCalledOnce();
     expect(seam.page.goto).toHaveBeenCalledTimes(2);
   });
-  it('requires configuration and rejects invalid or pre-aborted input before browser work', async () => {
+  it('rejects invalid or pre-aborted input before browser work', async () => {
     const seam = browserSeam();
-    expect(() => new LbcExpressTracker({ key: null }).fetch(NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
-    expect(() => new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch('bad')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
-    await expect(new LbcExpressTracker({ key: null, executablePath: '/synthetic/chromium' }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
+    expect(() => viaBrowser().fetch('bad')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
+    await expect(viaBrowser().fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
     expect(seam.launch).not.toHaveBeenCalled();
   });
 });

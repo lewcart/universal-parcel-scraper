@@ -17,8 +17,7 @@ The key comes from the widget configuration on `https://www.ppl.cz/vyhledat-zasi
 same for every visitor. DHL's gateway allows it only for PPL's tracking service. Node's fetch
 cannot read that page: its `Content-Security-Policy` header is folded over several lines,
 which the strict HTTP parser rejects. So the key is not read at run time; it is included with
-the maintainer's approval. `PPL_TRACKING_KEY` replaces it; an empty value turns the lookup
-off, which then fails as a challenge without a request. A rejected key is a challenge too.
+the maintainer's approval. A rejected key is a challenge.
 
 ## Notes
 

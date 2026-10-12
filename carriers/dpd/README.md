@@ -85,8 +85,7 @@ signal.
 - `receiverName` and the `receiver` object are never read as the pickup
   point: they can name the recipient.
 - Public, app-restricted Firebase identifiers are part of the anonymous app
-  protocol. `DPD_FIREBASE_API_KEY` can override the key in the adapter
-  environment.
+  protocol and are included in the adapter.
 
 ## Limitations
 

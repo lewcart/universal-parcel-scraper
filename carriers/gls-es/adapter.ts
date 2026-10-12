@@ -30,22 +30,19 @@ export function glsSpainLookupBody(number: string, postcode: string): string {
 }
 
 export class GLSSpainTracker {
-  /** `secret` undefined uses the page's shared secret; null turns the lookup off. */
-  constructor(private readonly options: { secret?: string | null; fetcher?: typeof fetch; recorder?: StepRecorder;
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder;
     userAgent?: string; now?: () => Date } = {}) {}
 
   async fetch(raw: string, rawPostcode: string | null | undefined, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeGLSSpainNumber(raw);
     const postcode = normalizeGLSSpainPostcode(rawPostcode);
-    if (this.options.secret === null) throw new ChallengeError(PROVIDER, 'GLS Spain tracking is turned off by configuration');
-    const secret = this.options.secret ?? GLS_SPAIN_SIGNING_SECRET;
     const body = glsSpainLookupBody(number, postcode);
     const read = async (signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> => {
       // The service refuses a timestamp minutes away from its clock, so each try signs anew.
       const timestamp = (this.options.now?.() ?? new Date()).toISOString();
       const { response, bytes } = await fetchBounded(GLS_SPAIN_ENDPOINT, { method: 'POST', body, signal, headers: {
         Accept: 'application/json', 'Accept-Language': 'en_US', 'Content-Type': 'application/json; charset=utf-8',
-        'MyGls-Agent': 'pwa', 'X-Timestamp': timestamp, 'X-Signature': glsSpainSignature(timestamp, secret),
+        'MyGls-Agent': 'pwa', 'X-Timestamp': timestamp, 'X-Signature': glsSpainSignature(timestamp, GLS_SPAIN_SIGNING_SECRET),
         'User-Agent': userAgentOf(this.options.userAgent),
       } }, { provider: PROVIDER, timeoutMs: Math.max(1, Math.floor(timeoutMs)), maxBytes: MAX_BYTES,
         allowHttpStatuses: [404], fetcher: this.options.fetcher });
@@ -71,9 +68,7 @@ export class GLSSpainTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const secret = environment.env.GLS_ES_SIGNING_SECRET;
-  const tracker = new GLSSpainTracker({ secret: secret === undefined ? undefined : secret.trim() || null,
-    fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new GLSSpainTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   // The postcode is part of every lookup, so the adapter cannot recognize a number alone.
   return {
     id: 'gls-es', recordsSteps: true, steps: ['direct', 'retry'],

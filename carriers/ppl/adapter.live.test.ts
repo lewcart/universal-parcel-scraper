@@ -3,7 +3,7 @@ import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter } from './adapter.js';
 
-const instance = () => adapter({ trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: process.env });
+const instance = () => adapter({ trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
 
 describe('PPL live tracking', () => {
   it.skipIf(!process.env.PPL_TRACKING_NUMBER)('returns coded, dated history over anonymous HTTP', async () => {

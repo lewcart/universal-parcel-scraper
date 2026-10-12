@@ -1,8 +1,8 @@
 # STO Express
 
 Tracks Chinese domestic STO waybills through the trace behind STO's online customer-service
-page. The shared request-signing label and salt are included; `STO_TRACKING_SALT` replaces the
-salt, and an empty value disables the adapter. No account, cookie or browser is needed.
+page. The shared request-signing label and salt are included, so no account, cookie or browser
+is needed.
 
 ## How it works
 
@@ -52,9 +52,8 @@ merchant. The customer-service trace is the anonymous route left. The same backe
 
 An unknown waybill and an expired one get the same empty list, so tracking finds neither and
 recognition calls both unknown. Twelve- and thirteen-digit waybills are older formats. Other
-carriers' numbers share both detected lengths, so detection only suggests STO. A new salt in
-STO's page stops lookups until the constant or `STO_TRACKING_SALT` is updated; a new label
-needs a code change.
+carriers' numbers share both detected lengths, so detection only suggests STO. A new salt or
+label in STO's page stops lookups until the constants are updated.
 
 ## Testing
 

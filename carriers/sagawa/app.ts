@@ -9,15 +9,9 @@ export const SAGAWA_WIDGET_API = 'https://www.e-service.sagawa-exp.co.jp/o/wtx/r
 export const SAGAWA_APP_USER_AGENT = 'okhttp/3.10.0';
 const MAX_BYTES = 64_000;
 // Shared guest-tracking application key, distributed with the maintainer's approval.
-const APPLICATION_KEY = 'WTS';
+export const SAGAWA_APP_KEY = 'WTS';
 const BROWSER = /^Mozilla\/5\.0 \((?!compatible;)/;
 const timedOut = (reason: unknown) => reason instanceof DOMException && reason.name === 'TimeoutError';
-
-/** The key to send: the included one, an override, or null when an empty override disables the lookup. */
-export function sagawaKey(override: string | null | undefined): string | null {
-  const key = override === undefined ? APPLICATION_KEY : override?.trim() ?? '';
-  return /^[\w.~+/=-]{1,512}$/.test(key) ? key : null;
-}
 
 /** The Akamai edge in front of the app API has refused browser User-Agents. */
 export function sagawaUserAgent(configured: string | undefined): string {
@@ -32,17 +26,16 @@ function retryAfterMs(header: string | null): number | undefined {
 }
 
 export async function readSagawaWidget(raw: string, options: {
-  key: string | null; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
+  fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const number = normalizeSagawaNumber(raw);
-  if (!options.key) throw new ChallengeError(PROVIDER, 'Sagawa Express app key is unavailable');
   const userAgent = sagawaUserAgent(options.userAgent);
   let response: Response;
   let bytes: Uint8Array;
   try {
     // callType 2 is the widget's periodic refresh, which also answers for delivered parcels.
     ({ response, bytes } = await fetchBounded(SAGAWA_WIDGET_API, { method: 'POST', signal: options.signal,
-      body: JSON.stringify({ trackingNo: number, callType: '2' }), headers: { 'X-Api-Key': options.key,
+      body: JSON.stringify({ trackingNo: number, callType: '2' }), headers: { 'X-Api-Key': SAGAWA_APP_KEY,
         'Content-Type': 'application/json', Accept: 'application/json', 'User-Agent': userAgent } }, {
       provider: PROVIDER, maxBytes: MAX_BYTES, timeoutMs: options.timeoutMs, fetcher: options.fetcher, allowHttpError: true,
     }));

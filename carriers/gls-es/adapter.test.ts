@@ -20,7 +20,7 @@ const shipment = (change: (found: Found) => void = () => {}) => {
 };
 const reply = (body: unknown = fixture(), status = 200) =>
   new Response(typeof body === 'string' ? body : JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
-const environment = (fetcher: typeof fetch, env: Record<string, string> = {}) => ({ fetcher, env, trawl: null, browserExecutablePath: null,
+const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null,
   userAgent: 'HostAgent/1.0', recorder: { step() {}, lookup() {} } });
 
 describe('GLS Spain direct tracking', () => {
@@ -242,20 +242,6 @@ describe('GLS Spain direct tracking', () => {
     expect(instance).not.toHaveProperty('recognize');
     await expect(instance.track({ number: '1234', postcode: POSTCODE })).rejects.toMatchObject({ kind: 'invalid_input' });
     await expect(instance.track({ number: NUMBER })).rejects.toMatchObject({ kind: 'input_required', field: 'postcode' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
-  });
-
-  it('signs with a configured secret, and an empty one turns the adapter off', async () => {
-    const fetcher = vi.fn<typeof fetch>(async (_url, init) => {
-      const headers = new Headers(init?.headers);
-      expect(headers.get('x-signature')).toBe(glsSpainSignature(headers.get('x-timestamp')!, 'synthetic'));
-      return reply();
-    });
-    expect(await adapter(environment(fetcher, { GLS_ES_SIGNING_SECRET: ' synthetic ' })).track({ number: NUMBER, postcode: POSTCODE }))
-      .toMatchObject({ status: 'delivered' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
-    await expect(adapter(environment(fetcher, { GLS_ES_SIGNING_SECRET: ' ' })).track({ number: NUMBER, postcode: POSTCODE }))
-      .rejects.toMatchObject({ kind: 'challenge' });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 

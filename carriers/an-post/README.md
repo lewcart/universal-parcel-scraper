@@ -23,8 +23,6 @@ browser or device registration is needed.
 The subscription key is a constant compiled into the app
 (`BuildConfig.TT_AUTH_HEADER_KEY`), the same for every install and read only by the app's
 guest tracking client. It is included with the maintainer's approval.
-`AN_POST_TRACKING_KEY` replaces it; an empty value turns the lookup off, which then fails
-as a challenge without a request.
 
 ## Notes
 

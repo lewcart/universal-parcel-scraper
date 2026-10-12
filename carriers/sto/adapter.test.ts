@@ -14,8 +14,8 @@ const NUMBER = '777000000000001';
 const read = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 const fixture = () => read('delivered');
 const reply = (body: unknown = fixture()) => new Response(typeof body === 'string' ? body : JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } });
-const instance = (fetcher: typeof fetch, env: Record<string, string> = {}) =>
-  adapter({ fetcher, env, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null, userAgent: 'SyntheticHost/1.0' });
+const instance = (fetcher: typeof fetch) =>
+  adapter({ fetcher, env: {}, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null, userAgent: 'SyntheticHost/1.0' });
 const PRIVATE = /1300000000|0571-|0510-|示例快递员|示例收件人|示例揽收员|示例操作员|示例驿站|示例路|取件码|000001001/;
 
 describe('STO trace parser', () => {
@@ -189,19 +189,6 @@ describe('STO signed retrieval', () => {
     expect(headers.get('safeToken')).toBe(createHash('md5').update(STO_SOURCE + timestamp + STO_SALT).digest('hex'));
     expect(headers.get('User-Agent')).toBe('SyntheticHost/1.0');
     expect(headers.has('Cookie')).toBe(false);
-  });
-
-  it('uses a replacement salt and an empty one disables the lookup', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply());
-    await instance(fetcher, { STO_TRACKING_SALT: ' synthetic-salt ' }).track({ number: NUMBER });
-    const headers = new Headers(fetcher.mock.calls[0]![1]?.headers);
-    expect(headers.get('safeToken')).toBe(createHash('md5').update(STO_SOURCE + headers.get('timestamp') + 'synthetic-salt').digest('hex'));
-    fetcher.mockClear();
-    for (const salt of ['', '  ']) {
-      await expect(instance(fetcher, { STO_TRACKING_SALT: salt }).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
-      await expect(instance(fetcher, { STO_TRACKING_SALT: salt }).track({ number: '123' })).rejects.toMatchObject({ kind: 'invalid_input' });
-    }
-    expect(fetcher).not.toHaveBeenCalled();
   });
 
   it('recognizes a known waybill and a positively unknown one', async () => {

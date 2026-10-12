@@ -609,7 +609,6 @@ export interface DPDTrackerOptions {
   budgetMs?: number;
   /** Legacy configuration seam kept for tests; production passes `trawl`. */
   flaresolverrUrl?: string;
-  firebaseApiKey?: string;
   fetcher?: typeof fetch;
   trawl?: TrawlClient | null;
   recorder?: StepRecorder;
@@ -643,7 +642,6 @@ export class DPDTracker {
   readonly timeoutMs: number;
   readonly budgetMs: number;
   readonly flaresolverrUrl: string;
-  readonly firebaseApiKey: string;
   private readonly fetcher?: typeof fetch;
   private readonly trawl?: TrawlClient | null;
   private readonly recorder?: StepRecorder;
@@ -664,7 +662,6 @@ export class DPDTracker {
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.budgetMs = options.budgetMs ?? this.timeoutMs * 2 + SOLVER_ALLOWANCE_MS;
     this.flaresolverrUrl = (options.flaresolverrUrl ?? '').trim();
-    this.firebaseApiKey = (options.firebaseApiKey ?? FIREBASE_API_KEY).trim();
     this.fetcher = options.fetcher;
     this.trawl = options.trawl;
     this.recorder = options.recorder;
@@ -950,7 +947,6 @@ export class DPDTracker {
   }
 
   private async fetchBasicToken(lookup: LookupBudget): Promise<string> {
-    if (!this.firebaseApiKey) throw new DPDAPIError('DPD Firebase client configuration is missing');
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const [fid, installationToken] = await this.firebaseInstallation(lookup);
       try {
@@ -1012,7 +1008,7 @@ export class DPDTracker {
     return {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'X-Goog-Api-Key': this.firebaseApiKey,
+      'X-Goog-Api-Key': FIREBASE_API_KEY,
       'X-Android-Package': ANDROID_PACKAGE,
       'X-Android-Cert': ANDROID_CERT,
       'User-Agent': this.userAgent,
@@ -1133,8 +1129,6 @@ export const adapter: AdapterFactory = (environment) => {
     trawl: environment.trawl,
     recorder: environment.recorder,
     userAgent: environment.userAgent,
-    // A host can follow a rotated key without waiting for a release.
-    firebaseApiKey: environment.env.DPD_FIREBASE_API_KEY?.trim() || undefined,
     // The German DPD app's service holds the group's Pickup shops, Swiss ones included.
     // Its session is the process's, which DPD Germany shares.
     shops: sharedDpdAppService(environment),

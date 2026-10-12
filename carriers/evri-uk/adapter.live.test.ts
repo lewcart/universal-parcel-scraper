@@ -6,10 +6,6 @@ const executablePath = process.env.TRACKING_CHROMIUM_PATH;
 const number = process.env.EVRI_UK_TRACKING_NUMBER;
 
 describe('Evri UK live tracking', () => {
-  it('reports the missing browser when the guest API is disabled', () => {
-    expect(() => new EvriUkTracker({ key: '' }).fetch('H000000000000001')).toThrow('TRACKING_CHROMIUM_PATH');
-  });
-
   it('keeps a reference the guest API rejects inconclusive', async (context) => {
     const error: unknown = await new EvriUkTracker().fetch('H000000000000001', { budgetMs: 15_000 }).then(() => undefined, caught => caught);
     // Evri refuses some networks, GitHub runners included, while others get
@@ -27,7 +23,9 @@ describe('Evri UK live tracking', () => {
 
   it.runIf(Boolean(executablePath && number))('returns the same history through the page', async () => {
     const direct = await new EvriUkTracker().fetch(number!, { budgetMs: 15_000 });
-    const result = await new EvriUkTracker({ executablePath, key: '' }).fetch(number!, { budgetMs: 45_000 });
+    // The guest API is refused here, so the page answers.
+    const result = await new EvriUkTracker({ executablePath, fetcher: async () => new Response('', { status: 403 }) })
+      .fetch(number!, { budgetMs: 45_000 });
     expect(result.events?.length).toBeGreaterThan(0);
     expect(result.tracking_source).toBe('structured-web-response');
     expect(result.events).toEqual(direct.events);

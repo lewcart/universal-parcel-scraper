@@ -34,7 +34,6 @@ Each request carries `USER-CHANNEL: APP` and a `USER-SIGN` header: the Base64
 HMAC-SHA256 of the path after `/ect-web`, followed by `?json=` and the exact
 body. The key is compiled into the app's bundled web code and is the same for
 every install; it is included with the maintainer's approval.
-`CHINA_POST_TRACKING_KEY` replaces it, and an empty value disables the adapter.
 A refused signature (`签名验证失败`), a request to sign in (including the codes
 `200001` and `200002`, which the app reads as an expired login), the
 firewall's block page and a web page returned instead of JSON are reported as

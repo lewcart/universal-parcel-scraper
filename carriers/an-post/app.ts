@@ -11,11 +11,9 @@ const MAX_BYTES = 256_000;
 const APPLICATION_KEY = '71cb89d5d5c74cf49942cee3447f30f9';
 
 export async function readAnPostApp(raw: string, options: {
-  key?: string | null; fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
+  fetcher?: typeof fetch; userAgent?: string; signal: AbortSignal; timeoutMs: number;
 }): Promise<CarrierResult> {
   const number = normalizeAnPostNumber(raw);
-  const key = options.key === undefined ? APPLICATION_KEY : options.key?.trim();
-  if (!key || !/^[\w.~+/=-]{8,512}$/.test(key)) throw new ChallengeError(AN_POST, 'An Post tracking API key is unavailable');
   const deadline = performance.now() + options.timeoutMs;
   const post = async (operation: 'GetItemSummary' | 'GetEvents', body: unknown): Promise<unknown> => {
     const left = Math.floor(deadline - performance.now());
@@ -23,7 +21,7 @@ export async function readAnPostApp(raw: string, options: {
     const { response, bytes } = await fetchBounded(`${AN_POST_APP_API}/${operation}`, {
       method: 'POST', signal: options.signal, body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json; charset=UTF-8', Accept: 'application/json',
-        'Ocp-Apim-Subscription-Key': key, 'User-Agent': userAgentOf(options.userAgent) },
+        'Ocp-Apim-Subscription-Key': APPLICATION_KEY, 'User-Agent': userAgentOf(options.userAgent) },
     }, { provider: AN_POST, maxBytes: MAX_BYTES, timeoutMs: left, fetcher: options.fetcher, allowHttpStatuses: [401, 403, 404, 410] });
     const text = decodeText(bytes).replace(/^\uFEFF/, '');
     const page = /^\s*</.test(text) || /\bhtml\b/i.test(response.headers.get('content-type') ?? '');

@@ -18,8 +18,7 @@ network with its own site and carrier id.
 
 No account, session, device id, phone digits or CAPTCHA are involved. The signing secret is
 compiled into the app, the same in every install, and is included with the maintainer's
-approval. `J_AND_T_SIGNING_SECRET` replaces it after a rotation; an empty value turns J&T
-tracking off.
+approval.
 
 ## Notes
 

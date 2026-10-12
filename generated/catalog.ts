@@ -5246,12 +5246,21 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Nicosia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cyprus-post",
+      "recognitionRank": 890,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "trackingSearchUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "dao": {
     "displayName": "DAO",
@@ -8945,7 +8954,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chit-chats": ["chit-chats-1"],
   "cne": ["cne-1"],
   "correos-de-mexico": [],
-  "cyprus-post": [],
+  "cyprus-post": ["cyprus-post-s10"],
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],

@@ -21,6 +21,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "colis-prive": 300,
   "correos-express": 360,
   "ctt-express": 350,
+  "cyprus-post": 890,
   "dao": 850,
   "delhivery": 160,
   "dhl-ecommerce": 230,

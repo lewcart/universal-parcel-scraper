@@ -5244,12 +5244,21 @@
     "timezone": "Asia/Nicosia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cyprus-post",
+      "recognitionRank": 890,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "trackingSearchUrl": "https://www.cypruspost.post/en/track-n-trace-results",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "dao": {
     "displayName": "DAO",

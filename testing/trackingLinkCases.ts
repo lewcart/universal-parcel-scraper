@@ -543,6 +543,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/web\.parcelhub\.net\/Tracking\/reference\/WHI0000GB00000000001$/,
     marker: /Unable to find shipment|Postcode \(If applicable\)/,
     forwarding: { notFound: /Unable to find shipment/ } },
+  // The server renders the shipment into the page; an unknown waybill gets a notice that leaves the number out.
+  { carrier: 'go-express', number: '999999999999',
+    route: /^https:\/\/www\.general-overnight\.com\/deu_de\/versenden\/sendungsverfolgung\.html\?reference=999999999999$/,
+    marker: /Finden Sie Ihre Sendung mit der Sendungsverfolgung|Sendungsverfolgung/,
+    forwarding: { notFound: /Wir haben die Sendung mit der angegebenen Tracking-ID noch nicht erhalten/ } },
 ];
 
 /**

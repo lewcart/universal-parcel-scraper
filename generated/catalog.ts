@@ -6571,7 +6571,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "go-express",
+      "recognitionRank": 960,
+      "localClocks": true
     },
     "canaryUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
     "trackingUrlTemplate": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html?reference={trackingNumber}",

@@ -25,18 +25,48 @@
   "timezone": "Europe/Berlin",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "go-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 960
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html?reference={trackingNumber}",
     "searchUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
     "canaryUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "progress_rail",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

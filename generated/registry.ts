@@ -55,6 +55,7 @@ import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dsv } from '../carriers/dsv/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
+import { adapter as dynalogic } from '../carriers/dynalogic/adapter.js';
 import { adapter as earlyBird } from '../carriers/early-bird/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
@@ -231,6 +232,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-uk": dpdUk,
     "dsv": dsv,
     "dtdc": dtdc,
+    "dynalogic": dynalogic,
     "early-bird": earlyBird,
     "econt": econt,
     "ecoscooting": ecoscooting,
@@ -415,7 +417,7 @@ export const REGISTRY: RegistryDefinition = {
     "dsv": "dsv",
     "dtdc": "dtdc",
     "dx": "universal",
-    "dynalogic": "universal",
+    "dynalogic": "dynalogic",
     "early-bird": "early-bird",
     "econt": "econt",
     "ecoscooting": "ecoscooting",

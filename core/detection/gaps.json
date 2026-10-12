@@ -301,6 +301,12 @@
     "reason": "Sixteen digits are shared by several carriers and nothing in the number points to Dynalogic."
   },
   {
+    "carrier": "dynalogic",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "Fourteen digits are shared by several carriers and nothing in the number points to Dynalogic."
+  },
+  {
     "carrier": "early-bird",
     "pattern": "^00\\d{18}$",
     "kind": "by_design",

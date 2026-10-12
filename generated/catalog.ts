@@ -5867,10 +5867,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dynalogic",
+      "recognitionRank": 120
     },
     "canaryUrl": "https://track.mydynalogic.eu/track/login",
-    "trackingUrlTemplate": "https://track.mydynalogic.eu/track/login",
+    "trackingUrlTemplate": "https://track.mydynalogic.eu/track/login?ordernumber={trackingNumber}",
     "trackingSearchUrl": "https://track.mydynalogic.eu/track/login",
     "linkRules": [],
     "detectionRules": []

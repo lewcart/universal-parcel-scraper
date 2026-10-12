@@ -572,6 +572,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'loomis-express', number: 'LSHP99999999',
     route: /^https:\/\/loomisexpress\.com\/loomship\/Track\/TrackResults\?t=WAYBILL&s=LSHP99999999$/,
     marker: /Tracking Results|Below waybills are not available at this moment/ },
+  // The page fills its field in and looks the number up alone; an unknown one gets the number-and-postcode notice.
+  { carrier: 'dynalogic', number: '99999ZZ999999',
+    route: /^https:\/\/track\.mydynalogic\.eu\/track\/(?:login\?ordernumber=99999ZZ999999$|order$)/,
+    marker: /MyDynalogic|Track & Trace (?:nummer|number)|combinatie van track & trace nummer en postcode/i },
 ];
 
 /**

@@ -2,6 +2,7 @@ import { DateTime, IANAZone } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyCorreiosStatus } from './status.js';
@@ -29,7 +30,7 @@ function scanClock(value: unknown): Pick<CarrierEvent, 'time'> & { local_time?: 
   if (!zone || !IANAZone.isValidZone(zone)) return { local_time: local };
   // Use the explicit per-row zone only when its clock exists uniquely. Do not
   // silently shift a nonexistent DST clock or choose between repeated clocks.
-  const zoned = DateTime.fromFormat(digits!, 'yyyy-MM-dd HH:mm:ss', { zone });
+  const zoned = firstOccurrence(DateTime.fromFormat(digits!, 'yyyy-MM-dd HH:mm:ss', { zone }));
   if (!zoned.isValid || zoned.toFormat('yyyy-MM-dd HH:mm:ss') !== digits || zoned.getPossibleOffsets().length !== 1) {
     return { local_time: local };
   }

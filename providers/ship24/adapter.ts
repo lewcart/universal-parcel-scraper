@@ -22,8 +22,8 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
 import {
-  canadaProvinceTimeZone, countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, regionHasTown, sharedClockZone, timeZoneCountry,
-  usStateTimeZone,
+  canadaProvinceTimeZone, countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, firstOccurrence, regionHasTown, sharedClockZone,
+  timeZoneCountry, usStateTimeZone,
 } from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
@@ -347,7 +347,7 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
   const events = readings.map((reading): CarrierEvent => {
     const { event, wall, feed } = reading;
     const zone = reading.zone ?? (wall && feed ? borrowedZone(readings, reading, journey) ?? namedZone(journey, wall) ?? feed.own ?? null : null);
-    const instant = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
+    const instant = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
     if (!instant?.isValid) return event;
     const timed: CarrierEvent = { ...event, time: instant.toUTC().toISO() };
     delete timed.local_time;

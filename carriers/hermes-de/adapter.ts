@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { COLLECTED_AT_PARCELSHOP, hermesGermanyMilestone, IGNORED_BOOKING_STATUS, IN_PARCELBOX, type Milestone } from './status.js';
@@ -89,7 +90,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
       || typeof entry.parcelStatus !== 'string' || !/^[A-Z_]{1,64}$/.test(entry.parcelStatus)) {
       throw new SchemaError(CARRIER, 'Hermes Germany returned an invalid tracking event');
     }
-    const date = DateTime.fromISO(entry.timestamp, { zone: 'Europe/Berlin', setZone: true });
+    const date = firstOccurrence(DateTime.fromISO(entry.timestamp, { zone: 'Europe/Berlin', setZone: true }));
     if (!date.isValid) throw new SchemaError(CARRIER, 'Hermes Germany returned an invalid event date');
     const time = date.toUTC().toISO();
     const identity = `${time}|${entry.parcelStatus}`;

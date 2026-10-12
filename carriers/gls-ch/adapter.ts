@@ -6,6 +6,7 @@ import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/post
 import { InputRequiredError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyDescription, GLS_STATUSES, statusCode } from './status.js';
@@ -204,7 +205,7 @@ function parseEventTime(dateValue: unknown, timeValue: unknown): {
   const time = text(timeValue, 32);
   const joined = `${date} ${time}`.trim();
   if (!joined) return null;
-  let parsed = DateTime.fromISO(joined, { zone: 'Europe/Zurich' });
+  let parsed = firstOccurrence(DateTime.fromISO(joined, { zone: 'Europe/Zurich' }));
   if (!parsed.isValid) {
     for (const format of [
       'yyyy-MM-dd HH:mm:ss',
@@ -216,7 +217,7 @@ function parseEventTime(dateValue: unknown, timeValue: unknown): {
       'dd/MM/yyyy',
       'dd.MM.yyyy',
     ]) {
-      parsed = DateTime.fromFormat(joined, format, { zone: 'Europe/Zurich', locale: 'en' });
+      parsed = firstOccurrence(DateTime.fromFormat(joined, format, { zone: 'Europe/Zurich', locale: 'en' }));
       if (parsed.isValid) break;
     }
   }
@@ -313,7 +314,7 @@ function expectedDelivery(parcel: JsonObject): string | null {
   if (!match) return null;
   const raw = match[0];
   for (const format of ['d-MMM-yyyy', 'd/MM/yyyy', 'd.MM.yyyy']) {
-    const parsed = DateTime.fromFormat(raw, format, { zone: 'Europe/Zurich', locale: 'en' });
+    const parsed = firstOccurrence(DateTime.fromFormat(raw, format, { zone: 'Europe/Zurich', locale: 'en' }));
     if (parsed.isValid) return parsed.toISODate();
   }
   return null;

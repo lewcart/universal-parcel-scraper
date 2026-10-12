@@ -59,6 +59,7 @@
       "explicitOffsetTime",
       "failureHint",
       "failureKind",
+      "firstOccurrence",
       "formatTrackingNumber",
       "hasDirectHandoffAdapter",
       "inferStage",

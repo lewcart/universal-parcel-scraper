@@ -5,7 +5,7 @@ import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.j
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, firstOccurrence } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { japanPostStatus } from './status.js';
 
@@ -51,7 +51,7 @@ function wallTime(raw: string): string {
 function eventInstant(localTime: string, region: string): string | null {
   const zone = EVENT_ZONES[region.toUpperCase()];
   if (!zone || !localTime.includes('T')) return null;
-  const date = DateTime.fromISO(localTime, { zone });
+  const date = firstOccurrence(DateTime.fromISO(localTime, { zone }));
   // Luxon can shift a nonexistent spring clock forward or pick one side of
   // an autumn fold. Neither supplies an unambiguous carrier scan instant.
   if (!date.isValid || date.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== localTime

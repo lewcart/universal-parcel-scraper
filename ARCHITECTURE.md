@@ -270,8 +270,11 @@ physical handling rather than electronic pre-advice.
 `resolveResult()` exposes an `instant` only for a scan clock with a verified UTC offset.
 Local clocks keep their original fields. An adapter puts a clock whose zone the feed does
 not establish in `local_time`: a consumer reads an offset-less `time` in the result's zone,
-else in the carrier's catalog zone. More rows alone do not prove a fresher or more
-complete history.
+else in the carrier's catalog zone. A wall time the clocks repeat when they go back reads as
+its first occurrence in every season: Luxon would pick by the season the code runs in, so a
+parser reads a wall clock in a zone through `firstOccurrence()`, which lint enforces, unless
+it keeps that hour in `local_time`. More rows alone do not prove a fresher or more complete
+history.
 
 The app's scan-identity policies, one per source in `core/catalog/eventIdentity.ts`, say
 what identifies a stored scan that its source now reports at the same instant with a

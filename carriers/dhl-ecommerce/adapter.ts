@@ -13,7 +13,7 @@ import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detectio
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, type CarrierErrorOptions } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
-import { countryCode, countryTimeZone, usStateTimeZone } from '../../core/time/index.js';
+import { countryCode, countryTimeZone, firstOccurrence, usStateTimeZone } from '../../core/time/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { clean as cleanText, fetchBounded, parseJsonBytes, UpstreamHttpError, UpstreamNetworkError, userAgentOf } from '../../core/transport/index.js';
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
@@ -82,7 +82,7 @@ const HUB_ZONES: Record<string, string> = {
 
 /** The offsets a wall clock has in a zone: none in a skipped hour, two in a repeated one. */
 function wallOffsets(raw: string, zone: string): number[] {
-  const parsed = DateTime.fromISO(raw, { zone });
+  const parsed = firstOccurrence(DateTime.fromISO(raw, { zone }));
   if (!parsed.isValid || parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== raw.slice(0, 19)) return [];
   return parsed.getPossibleOffsets().map((candidate) => candidate.offset);
 }
@@ -90,7 +90,7 @@ function wallOffsets(raw: string, zone: string): number[] {
 /** A wall clock the zone skips or repeats at a clock change has no single instant. */
 function zonedInstant(raw: string, zone: string): string | null {
   if (wallOffsets(raw, zone).length !== 1) return null;
-  const parsed = DateTime.fromISO(raw, { zone });
+  const parsed = firstOccurrence(DateTime.fromISO(raw, { zone }));
   return parsed.isValid ? parsed.toUTC().toISO() : null;
 }
 
@@ -256,7 +256,7 @@ function webtrackZone(label: unknown, location: string, raw: string): string | n
     if (generic) return own ?? generic;
     const fixed = abbreviation![1];
     if (!own) return fixed;
-    return wallOffsets(raw, own).includes(DateTime.fromISO(raw, { zone: fixed }).offset) ? fixed : null;
+    return wallOffsets(raw, own).includes(firstOccurrence(DateTime.fromISO(raw, { zone: fixed })).offset) ? fixed : null;
   }
   const offset = /^([+-])(0\d|1[0-4])(?::?([0-5]\d))?$/.exec(code);
   if (offset) return `UTC${offset[1]}${Number(offset[2])}${offset[3] && offset[3] !== '00' ? `:${offset[3]}` : ''}`;

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyPocztaPolskaStatus, settlesPocztaPolskaDuty, startsPocztaPolskaReturn } from './status.js';
@@ -29,7 +29,7 @@ function polishOffice(office: unknown): boolean {
 // A Polish office dates its scans on Polish time. A wall clock the zone skips
 // or repeats stays local.
 function warsawTime(local: string): string | null {
-  const parsed = DateTime.fromISO(local, { zone: 'Europe/Warsaw' });
+  const parsed = firstOccurrence(DateTime.fromISO(local, { zone: 'Europe/Warsaw' }));
   if (!parsed.isValid || parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) !== local
     || parsed.getPossibleOffsets().length !== 1) return null;
   return parsed.toISO({ suppressMilliseconds: true });

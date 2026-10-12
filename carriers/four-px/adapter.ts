@@ -6,6 +6,7 @@ import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { fourPxStatus } from './status.js';
@@ -29,7 +30,7 @@ function eventTime(raw: Record<string, unknown>): Pick<CarrierEvent, 'time'> & {
   // The displayed time and offset form one pair. tkDate encodes different
   // clock digits and must not replace the portal's per-scan local timestamp.
   const wall = local.replace(' ', 'T');
-  const parsed = named ? DateTime.fromISO(wall, { zone: IANAZone.isValidZone(named) ? named : 'UTC' })
+  const parsed = named ? firstOccurrence(DateTime.fromISO(wall, { zone: IANAZone.isValidZone(named) ? named : 'UTC' }))
     : DateTime.fromISO(`${wall}${offset ?? (zone === 'UTC' ? 'Z' : '')}`, { setZone: true, zone: 'UTC' });
   if (!parsed.isValid) throw new SchemaError('4PX', '4PX returned an invalid scan time');
   // A zone name the clock database does not know leaves the scan's clock local.

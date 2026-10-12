@@ -5,6 +5,7 @@ import { amazonShippingOrigin, amazonShippingUrl } from '../../core/catalog/inde
 import { isAmazonTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyStatus, statusKey, type ClassifiedStatus } from './status.js';
@@ -92,17 +93,17 @@ function parseDate(value: unknown, zone: string | null): ParsedDate | null {
   const isoHasZone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(raw);
   if (!zone && !isoHasZone && !/[+-][0-9]{4}$|GMT|UTC/i.test(raw)) return null;
   const candidates = [
-    DateTime.fromISO(raw, { setZone: isoHasZone, zone: zone ?? 'UTC' }),
+    firstOccurrence(DateTime.fromISO(raw, { setZone: isoHasZone, zone: zone ?? 'UTC' })),
     DateTime.fromRFC2822(raw, { setZone: true }),
     ...[
       'LLL d, yyyy, h:mm:ss a',
       'LLL d, yyyy, h:mm a',
       'LLLL d, yyyy, h:mm:ss a',
       'LLLL d, yyyy, h:mm a',
-    ].map((format) => DateTime.fromFormat(raw, format, {
+    ].map((format) => firstOccurrence(DateTime.fromFormat(raw, format, {
       locale: 'en-US',
       zone: zone ?? 'UTC',
-    })),
+    }))),
   ];
   const parsed = candidates.find((candidate) => candidate.isValid);
   if (!parsed) return null;

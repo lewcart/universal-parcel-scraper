@@ -4,6 +4,7 @@ import { hasGs1CheckDigit } from '../../core/detection/numericChecksums.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { orlenPaczkaStage } from './status.js';
@@ -58,7 +59,7 @@ function clock(raw: unknown): { time?: string; local_time?: string; provider_tim
   const text = clean(raw, 32);
   const match = /^(\d{2})-(\d{2})-(\d{4}), (\d{2}):(\d{2})$/.exec(text);
   const local = match ? `${match[3]}-${match[2]}-${match[1]}T${match[4]}:${match[5]}:00` : '';
-  const parsed = local ? DateTime.fromISO(local, { zone: ZONE }) : null;
+  const parsed = local ? firstOccurrence(DateTime.fromISO(local, { zone: ZONE })) : null;
   if (!parsed?.isValid || parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) !== local) {
     return text ? { provider_time_text: text } : {};
   }

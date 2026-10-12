@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { InputRequiredError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { eventLabel, plainText, shipmentStatus } from './status.js';
@@ -65,10 +66,10 @@ export function dachserApiUrl(trackingUrl: string, trackingNumber: string): stri
 function parseDateTime(raw: unknown): DateTime | null {
   const value = typeof raw === 'string' ? raw.trim() : '';
   if (!value) return null;
-  let parsed = DateTime.fromISO(value, { zone: 'Europe/Madrid', setZone: true });
+  let parsed = firstOccurrence(DateTime.fromISO(value, { zone: 'Europe/Madrid', setZone: true }));
   if (!parsed.isValid) {
     for (const format of DATE_FORMATS) {
-      parsed = DateTime.fromFormat(value, format, { zone: 'Europe/Madrid' });
+      parsed = firstOccurrence(DateTime.fromFormat(value, format, { zone: 'Europe/Madrid' }));
       if (parsed.isValid) break;
     }
   }
@@ -98,7 +99,8 @@ export function parseDachserTrackingResponse(payload: unknown, trackingNumber: s
     seen.add(identity);
     events.push({ time: timestamp, location: '', ...label });
   }
-  events.sort((left, right) => right.time.localeCompare(left.time));
+  // By instant: in the repeated autumn hour a later wall time can be the earlier scan.
+  events.sort((left, right) => Date.parse(right.time) - Date.parse(left.time));
 
   const status = shipmentStatus(payload.estadoExpedicion, events.length > 0);
   const lastUpdate = parseDateTime(payload.fechaEstado) ?? parseDateTime(events[0]?.time);

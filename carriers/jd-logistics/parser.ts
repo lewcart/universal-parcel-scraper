@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus } from '../../core/status/index.js';
-import { countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, explicitOffsetTime, type ParsedTime } from '../../core/time/index.js';
+import { countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, explicitOffsetTime, firstOccurrence, type ParsedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { jdLogisticsStatus } from './status.js';
@@ -106,7 +106,7 @@ function scanInstant(node: Record<string, unknown>, wall: string): ParsedTime | 
     if (!code) continue;
     const zone = countryZone(code);
     if (!zone) return null;
-    const local = DateTime.fromISO(wall, { zone });
+    const local = firstOccurrence(DateTime.fromISO(wall, { zone }));
     if (!local.isValid || local.toMillis() !== instant.timestamp || local.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== wall.slice(0, 19)
       || local.getPossibleOffsets().length !== 1) return null;
   }

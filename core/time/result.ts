@@ -3,10 +3,12 @@
  * offset-less wall time is read in the result's declared zone, else its
  * carrier's catalog zone. Persisted events and the routing watermark share
  * this policy, so a naive local clock is never compared as if it were UTC.
+ * A wall time the clocks repeat reads as its first occurrence in any season.
  */
 import { DateTime, IANAZone } from 'luxon';
 import type { CarrierResult } from '../result/index.js';
 import { carrierTimezone } from '../catalog/index.js';
+import { firstOccurrence } from './index.js';
 
 export function resultTimezone(carrierId: string, result: CarrierResult): string {
   const declared = typeof result.timezone === 'string' ? result.timezone : '';
@@ -37,12 +39,12 @@ export function eventTimestamp(raw: unknown, assumedTimezone = 'UTC'): string | 
   let parsed = DateTime.fromISO(value, { setZone: true });
   if (parsed.isValid) {
     if (!/(?:Z|[+-]\d{2}:?\d{2})$/i.test(value)) {
-      parsed = DateTime.fromISO(value, { zone: assumedTimezone });
+      parsed = firstOccurrence(DateTime.fromISO(value, { zone: assumedTimezone }));
     }
     return parsed.toUTC().toISO({ suppressMilliseconds: true }) ?? null;
   }
   for (const format of EVENT_FORMATS) {
-    parsed = DateTime.fromFormat(value, format, { zone: assumedTimezone });
+    parsed = firstOccurrence(DateTime.fromFormat(value, format, { zone: assumedTimezone }));
     if (parsed.isValid) return parsed.toUTC().toISO({ suppressMilliseconds: true }) ?? null;
   }
   return null;

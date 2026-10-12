@@ -5,7 +5,8 @@
  * strings in a known zone, some send epoch milliseconds, some only a calendar
  * day. Each helper below implements one policy and documents its limits so an
  * adapter states which one applies instead of re-implementing the parsing.
- * Every helper returns `null` rather than guessing.
+ * Every helper returns `null` rather than guessing a zone. A wall time the
+ * clocks repeat when they go back reads as its first occurrence.
  */
 import { DateTime } from 'luxon';
 import { REGION_TOWNS } from '../../generated/regionTowns.js';
@@ -20,6 +21,17 @@ export interface ParsedTime {
 }
 
 export const EXPLICIT_OFFSET_PATTERN = /(?:Z|[+-]\d{2}:?\d{2})$/i;
+
+/**
+ * A wall-clock reading settled on the first of the two instants it names when
+ * the clocks go back, so the repeated hour reads the same in every season:
+ * Luxon otherwise picks by the offset the zone has when the code runs. Any
+ * other reading is returned as it is. Pass a time parsed from a wall clock,
+ * never an instant shown in a zone, whose second occurrence is no guess.
+ */
+export function firstOccurrence<Time extends DateTime>(wall: Time): Time {
+  return wall.getPossibleOffsets().reduce((first, other) => (other.toMillis() < first.toMillis() ? other : first));
+}
 
 function fromDateTime(parsed: DateTime): ParsedTime | null {
   const iso = parsed.isValid ? parsed.toISO({ suppressMilliseconds: true }) : null;
@@ -49,7 +61,7 @@ export function zonedTime(
 ): ParsedTime | null {
   const raw = clean(value, options.maxLength ?? 64);
   if (!raw) return null;
-  return fromDateTime(DateTime.fromFormat(raw, format, { zone, locale: options.locale }));
+  return fromDateTime(firstOccurrence(DateTime.fromFormat(raw, format, { zone, locale: options.locale })));
 }
 
 /** ISO strings that may or may not carry an offset; offset-less values are read in `zone`. */
@@ -58,7 +70,7 @@ export function isoTime(value: unknown, zone: string, maxLength = 64): ParsedTim
   if (!raw) return null;
   const parsed = EXPLICIT_OFFSET_PATTERN.test(raw)
     ? DateTime.fromISO(raw, { setZone: true })
-    : DateTime.fromISO(raw, { zone });
+    : firstOccurrence(DateTime.fromISO(raw, { zone }));
   return fromDateTime(parsed);
 }
 
@@ -82,7 +94,7 @@ export function mislabeledLocalTime(value: unknown, zone: string, maxLength = 64
   const labeled = labeledDigits(value, maxLength);
   if (!labeled) return null;
   const { year, month, day, hour, minute, second, millisecond } = labeled;
-  return fromDateTime(DateTime.fromObject({ year, month, day, hour, minute, second, millisecond }, { zone }));
+  return fromDateTime(firstOccurrence(DateTime.fromObject({ year, month, day, hour, minute, second, millisecond }, { zone })));
 }
 
 /** The wall clock `mislabeledLocalTime` re-reads, as an offset-less ISO string. */
@@ -99,7 +111,7 @@ export function mislabeledWallTime(value: unknown, maxLength = 64): string | nul
  */
 export function sharedClockZone(zones: readonly string[], wallIso: string): string | null {
   if (!zones.length || EXPLICIT_OFFSET_PATTERN.test(wallIso)) return null;
-  const instants = zones.map((zone) => DateTime.fromISO(wallIso, { zone }));
+  const instants = zones.map((zone) => firstOccurrence(DateTime.fromISO(wallIso, { zone })));
   const first = instants[0]!.toMillis();
   return instants.every((instant) => instant.isValid && instant.toMillis() === first) ? zones[0]! : null;
 }

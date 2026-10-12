@@ -20,7 +20,7 @@ import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.j
 import { DateTime } from 'luxon';
 import { IndeterminateError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { countryTimeZone, explicitOffsetTime, mislabeledWallTime, settleGuessedClocks, type FeedClock, type ParsedTime } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, firstOccurrence, mislabeledWallTime, settleGuessedClocks, type FeedClock, type ParsedTime } from '../../core/time/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { postNLStatus } from './status.js';
@@ -74,7 +74,7 @@ function eventCode(value: unknown): string | undefined {
 
 /** A wall clock read in `zone`, refusing DST gap shifts and repeated clocks rather than choosing an offset. */
 function wallInZone(wall: string, zone: string): ParsedTime | null {
-  const parsed = DateTime.fromISO(wall, { zone });
+  const parsed = firstOccurrence(DateTime.fromISO(wall, { zone }));
   if (!parsed.isValid || parsed.toISO({ includeOffset: false }) !== wall || parsed.getPossibleOffsets().length !== 1) return null;
   const iso = parsed.toISO({ suppressMilliseconds: true });
   return iso ? { iso, timestamp: parsed.toMillis() } : null;

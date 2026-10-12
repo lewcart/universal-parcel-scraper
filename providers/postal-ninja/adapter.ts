@@ -16,6 +16,7 @@ import { ChallengeError, NoHistoryError, SchemaError } from '../../core/errors/i
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient, TrawlScrapeResponse } from '../../core/transport/index.js';
 import { scrapeUniversalPage, type UniversalBrowserOptions } from '../../core/transport/browser.js';
 import { isRecord } from '../../core/types.js';
@@ -117,7 +118,7 @@ export function parsePostalNinjaResponse(payload: unknown, trackingNumber: strin
   const events = scans.map((scan, index): CarrierEvent => {
     if (scan.wall === null) return scan.event;
     const zone = zoneAt(index, scan.wall);
-    const instant = zone ? DateTime.fromISO(scan.wall, { zone }) : null;
+    const instant = zone ? firstOccurrence(DateTime.fromISO(scan.wall, { zone })) : null;
     return instant?.isValid ? { time: instant.toUTC().toISO(), ...scan.event } : { local_time: scan.wall, ...scan.event };
   }).reverse();
   // A deadline is no scan, and placed it would be the parcel's newest instant.

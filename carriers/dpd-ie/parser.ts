@@ -5,6 +5,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, 
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { DPD_IE_DRIVER_COLLECTION, DPD_IE_POINT_COLLECTION, DPD_IE_POINT_DROP_OFF, dpdIeScanStage, isDpdIeNotice } from './status.js';
 
@@ -75,7 +76,7 @@ function clockOf(text: string): Clock | null {
 }
 
 function irishTime(day: string, time: string): string | null {
-  const parsed = DateTime.fromISO(`${day}T${time}`, { zone: DPD_IE_ZONE });
+  const parsed = firstOccurrence(DateTime.fromISO(`${day}T${time}`, { zone: DPD_IE_ZONE }));
   return parsed.isValid ? parsed.toISO({ suppressMilliseconds: true }) : null;
 }
 

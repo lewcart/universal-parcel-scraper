@@ -4,7 +4,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type ClassifiedWording } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { glsSpainStage } from './status.js';
@@ -66,7 +66,7 @@ function scan(row: unknown): CarrierEvent & { description: string; provider_code
 function estimatedDay(state: JsonObject): string | null {
   const raw = text(state, 'estimatedDeliveryDate', 64);
   if (!raw) return null;
-  const day = /^\d{4}-\d{2}-\d{2}$/.test(raw) ? DateTime.fromISO(raw, { zone: 'Europe/Madrid' })
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(raw) ? firstOccurrence(DateTime.fromISO(raw, { zone: 'Europe/Madrid' }))
     : explicitOffsetTime(raw) ? DateTime.fromISO(raw, { setZone: true }).setZone('Europe/Madrid') : null;
   return day?.isValid ? day.toISODate() : null;
 }

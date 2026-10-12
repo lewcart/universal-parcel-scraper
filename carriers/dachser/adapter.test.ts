@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { Settings } from 'luxon';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NotFoundError } from '../../core/errors/index.js';
 import { DachserTracker, parseDachserTrackingResponse, validateDachserTrackingUrl } from './adapter.js';
@@ -76,6 +77,24 @@ describe('Dachser response normalization', () => {
       { time: '2026-09-11T09:05:00+02:00', location: '', stage: 'accepted', description: 'Shipment accepted by Dachser' },
       { time: '2026-09-10T16:00:00+02:00', location: '', stage: 'registered', description: 'Shipment registered by Dachser' },
     ]);
+  });
+
+  it('orders scans in the repeated autumn hour by instant', () => {
+    // Read in winter, when Luxon alone would take the second occurrence.
+    const now = Settings.now;
+    Settings.now = () => Date.UTC(2026, 0, 15);
+    try {
+      const result = parseDachserTrackingResponse({ ...inTransit(), incidenciaExpedicionData: [
+        { fechaIncidencia: '2025-10-26T02:40:00+02:00', descripcionIncidencia: 'LLEGADA A PLATAFORMA' },
+        // Without an offset, the first occurrence.
+        { fechaIncidencia: '26/10/2025 02:20', descripcionIncidencia: 'ENVIO ACEPTADO EN ORIGEN' },
+        { fechaIncidencia: '2025-10-26T02:10:00+01:00', descripcionIncidencia: 'SALIDA DE PLATAFORMA' },
+      ] }, SHIPMENT_NUMBER);
+      expect(result.events?.map((event) => event.time))
+        .toEqual(['2025-10-26T02:10:00+01:00', '2025-10-26T02:40:00+02:00', '2025-10-26T02:20:00+02:00']);
+    } finally {
+      Settings.now = now;
+    }
   });
 
   it('discards sender, recipient, contact, signature and internal notes', () => {

@@ -5,7 +5,7 @@ import { hasGs1CheckDigit } from '../../core/detection/numericChecksums.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN } from '../../core/time/index.js';
+import { countryCode, countryTimeZone, EXPLICIT_OFFSET_PATTERN, firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { geisQuiet, geisStage } from './status.js';
 
@@ -68,7 +68,7 @@ function clockOf(apidate: string, day: string, time: string, country: string | n
     const whole = labelled.startOf('second');
     const wall = whole.toFormat("yyyy-MM-dd'T'HH:mm:ss");
     const zone = country ? countryTimeZone(country) : null;
-    const local = zone ? DateTime.fromISO(wall, { zone }) : null;
+    const local = zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
     const at = local?.isValid && local.offset === whole.offset ? { time: whole.toISO({ suppressMilliseconds: true }) } : { local_time: wall };
     return { at, timestamp: whole.toMillis() };
   }

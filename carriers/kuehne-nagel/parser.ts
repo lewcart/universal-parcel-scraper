@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, firstOccurrence } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { kuehneNagelLabel, kuehneNagelStage } from './status.js';
@@ -82,7 +82,7 @@ function clock(value: unknown): Clock | null {
     return parsed ? { time: parsed.iso, order: parsed.timestamp } : null;
   }
   const wall = time ? `${date}T${time}` : date;
-  const read = DateTime.fromISO(wall, { zone: ORDER_ZONE });
+  const read = firstOccurrence(DateTime.fromISO(wall, { zone: ORDER_ZONE }));
   return read.isValid ? { local_time: wall, order: read.toMillis() } : null;
 }
 

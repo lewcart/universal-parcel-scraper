@@ -17,6 +17,17 @@ export default defineConfig(
       // An abort reason is the caller's own value, passed on as it is.
       '@typescript-eslint/prefer-promise-reject-errors': ['error', { allowThrowingAny: true, allowThrowingUnknown: true }],
     } },
+  // Luxon reads a wall time the clocks repeat by the season the code runs in.
+  { files: ['**/*.ts'], ignores: ['**/*.test.ts', 'core/time/**'], rules: {
+    'no-restricted-syntax': ['error', {
+      selector: "CallExpression[callee.object.name='DateTime'][callee.property.name=/^from(ISO|Format|Object|SQL|RFC2822|HTTP)$/]"
+        + ":has(ObjectExpression > Property[key.name='zone']:not([value.value=/^(UTC|utc)$/]))"
+        + ":not(CallExpression[callee.name='firstOccurrence'] > CallExpression)"
+        // Reading the possible offsets is how a parser declines the repeated hour.
+        + ":not(MemberExpression[property.name='getPossibleOffsets'] > CallExpression)",
+      message: 'Pass a wall clock read in a zone through firstOccurrence() from core/time.',
+    }],
+  } },
   // Scripts are outside the TypeScript project: syntax rules only.
   { files: ['**/*.mjs'], extends: [tseslint.configs.disableTypeChecked], languageOptions: { globals: globals.node } },
   { files: ['trawl/**/*.mjs'], languageOptions: { globals: globals.browser } },

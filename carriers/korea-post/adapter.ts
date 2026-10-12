@@ -5,6 +5,7 @@ import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.j
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { koreaPostStatus } from './status.js';
 
@@ -99,7 +100,7 @@ function parseDomestic(html: string, number: string): CarrierResult {
     const clock = `${clean(cells.eq(0).text(), 32)} ${clean(cells.eq(1).text(), 32)}`;
     // Every domestic scan happens at a Korean office, and Korea keeps one
     // offset all year.
-    const local = DateTime.fromFormat(clock, 'yyyy.MM.dd HH:mm', { zone: 'Asia/Seoul' });
+    const local = firstOccurrence(DateTime.fromFormat(clock, 'yyyy.MM.dd HH:mm', { zone: 'Asia/Seoul' }));
     if (!local.isValid || local.toFormat('yyyy.MM.dd HH:mm') !== clock) throw new SchemaError('Korea Post', 'Korea Post returned an invalid scan time');
     // The status cell goes on with the courier's name and phone or the
     // recipient, and the office cell with its phone. Read only the labels.

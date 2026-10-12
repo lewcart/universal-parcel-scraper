@@ -16,7 +16,7 @@ import { isValidGlsParcelNumber } from '../../core/detection/index.js';
 import { InvalidInputError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
-import { EXPLICIT_OFFSET_PATTERN, type ParsedTime } from '../../core/time/index.js';
+import { EXPLICIT_OFFSET_PATTERN, firstOccurrence, type ParsedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import {
@@ -67,10 +67,10 @@ function parsedTime(value: unknown): ParsedTime | null {
   // Empty timestamps arrive padded with year 1 instead of being omitted.
   if (!raw || raw.startsWith('0001-')) return null;
   let parsed = raw.includes('T')
-    ? DateTime.fromISO(raw, { setZone: EXPLICIT_OFFSET_PATTERN.test(raw), zone: TIMEZONE })
-    : DateTime.fromSQL(raw, { zone: TIMEZONE });
+    ? firstOccurrence(DateTime.fromISO(raw, { setZone: EXPLICIT_OFFSET_PATTERN.test(raw), zone: TIMEZONE }))
+    : firstOccurrence(DateTime.fromSQL(raw, { zone: TIMEZONE }));
   if (!parsed.isValid && /^\d{4}-\d{2}-\d{2}$/.test(raw)) {
-    parsed = DateTime.fromISO(raw, { zone: TIMEZONE });
+    parsed = firstOccurrence(DateTime.fromISO(raw, { zone: TIMEZONE }));
   }
   if (!parsed.isValid) return null;
   const iso = parsed.toISO({ suppressMilliseconds: true });

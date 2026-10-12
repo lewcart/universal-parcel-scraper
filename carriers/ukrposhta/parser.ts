@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { countryCode } from '../../core/time/index.js';
+import { countryCode, firstOccurrence } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { ukrposhtaReturnCue, ukrposhtaStatus } from './status.js';
@@ -46,7 +46,7 @@ export function ukrposhtaWallClock(value: string): string | null {
  */
 function kyivTime(local: string): string | null {
   const minute = `${local.slice(0, 16)}:00`;
-  const parsed = DateTime.fromISO(minute, { zone: 'Europe/Kyiv' });
+  const parsed = firstOccurrence(DateTime.fromISO(minute, { zone: 'Europe/Kyiv' }));
   if (!parsed.isValid || parsed.toISO({ includeOffset: false, suppressMilliseconds: true }) !== minute
     || parsed.getPossibleOffsets().length !== 1) return null;
   return parsed.toISO({ suppressMilliseconds: true });

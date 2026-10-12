@@ -1,6 +1,7 @@
+import { DateTime, Settings } from 'luxon';
 import { describe, expect, it } from 'vitest';
 import {
-  calendarDay, countryCode, countryTimeZone, epochMillisTime, epochSecondsTime, explicitOffsetTime, isoTime, mislabeledLocalTime,
+  calendarDay, countryCode, countryTimeZone, epochMillisTime, epochSecondsTime, explicitOffsetTime, firstOccurrence, isoTime, mislabeledLocalTime,
   mislabeledWallTime, canadaProvinceTimeZone, regionHasTown, settleGuessedClocks, sharedClockZone, timeZoneCountry, townKey,
   usStateTimeZone, zonedTime,
 } from './index.js';
@@ -23,6 +24,32 @@ describe('time policies', () => {
   it('reads ISO values with or without an offset', () => {
     expect(isoTime('2026-07-01T10:00:00', 'Europe/Zurich')?.iso).toBe('2026-07-01T10:00:00+02:00');
     expect(isoTime('2026-07-01T10:00:00-04:00', 'Europe/Zurich')?.iso).toBe('2026-07-01T10:00:00-04:00');
+  });
+
+  it('reads a wall time the clocks repeat as its first occurrence in every season', () => {
+    const now = Settings.now;
+    try {
+      // Luxon would otherwise take the offset the zone has when the code runs.
+      for (const season of [Date.UTC(2026, 0, 15), Date.UTC(2026, 6, 15)]) {
+        Settings.now = () => season;
+        expect(zonedTime('2025-10-26 02:30', 'yyyy-MM-dd HH:mm', 'Europe/Paris')?.iso).toBe('2025-10-26T02:30:00+02:00');
+        expect(isoTime('2025-11-02T01:30:00', 'America/New_York')?.iso).toBe('2025-11-02T01:30:00-04:00');
+        expect(mislabeledLocalTime('2025-10-26T02:30:00Z', 'Europe/Zurich')?.iso).toBe('2025-10-26T02:30:00+02:00');
+        expect(sharedClockZone(['Europe/Berlin', 'Europe/Paris'], '2025-10-26T02:30:00')).toBe('Europe/Berlin');
+        // The hour the spring change skips still reads an hour later.
+        expect(zonedTime('2026-03-29 02:30', 'yyyy-MM-dd HH:mm', 'Europe/Paris')?.iso).toBe('2026-03-29T03:30:00+02:00');
+      }
+    } finally {
+      Settings.now = now;
+    }
+  });
+
+  it('leaves a reading that names one instant as it is', () => {
+    for (const time of [
+      DateTime.fromISO('2025-10-26T02:30:00+01:00', { setZone: true }),
+      DateTime.fromISO('2026-07-01T10:00:00', { zone: 'Europe/Paris' }),
+      DateTime.fromISO('not a time', { zone: 'Europe/Paris' }),
+    ]) expect(firstOccurrence(time)).toBe(time);
   });
 
   it('re-reads a local time a provider labeled as UTC or with its own offset', () => {

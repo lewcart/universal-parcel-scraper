@@ -5,6 +5,7 @@ import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.j
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { yamatoStatus } from './status.js';
 
@@ -26,8 +27,8 @@ function eventDate(raw: string): Pick<CarrierEvent, 'time'> & { provider_time_te
   const [, year, month, day, hour, minute] = match;
   // A leap year validates month/day even when the carrier leaves the year out.
   // It is never used as an event year or as a freshness watermark.
-  const date = DateTime.fromObject({ year: year ? Number(year) : 2000,
-    month: Number(month), day: Number(day), hour: Number(hour), minute: Number(minute) }, { zone: ZONE });
+  const date = firstOccurrence(DateTime.fromObject({ year: year ? Number(year) : 2000,
+    month: Number(month), day: Number(day), hour: Number(hour), minute: Number(minute) }, { zone: ZONE }));
   if (!date.isValid) throw new SchemaError(PROVIDER, 'Yamato returned an invalid event date');
   return { provider_time_text: raw, ...(year ? { time: date.toUTC().toISO({ suppressMilliseconds: true }) } : {}) };
 }

@@ -17,7 +17,7 @@ import { ChallengeError, IndeterminateError, InputRequiredError, InvalidInputErr
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
-import { countryTimeZone } from '../../core/time/index.js';
+import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
@@ -330,7 +330,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own ? facilityWall(raw) : null;
       const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
         : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location)));
-      const placed = wall && zone ? DateTime.fromISO(wall, { zone }) : null;
+      const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }

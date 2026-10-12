@@ -1,6 +1,7 @@
 import { DateTime, IANAZone } from 'luxon';
 import { SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { normalizeUniuniNumber } from './parser.js';
@@ -36,7 +37,7 @@ type Estimate = Pick<CarrierResult, 'expected_delivery' | 'expected_delivery_fro
 function estimateClock(day: string, clock: string, zone: unknown): string {
   const local = `${day}T${clock}`;
   if (typeof zone !== 'string' || zone.length > 80 || !IANAZone.isValidZone(zone)) return local;
-  const value = DateTime.fromISO(local, { zone });
+  const value = firstOccurrence(DateTime.fromISO(local, { zone }));
   return value.isValid && value.toFormat("yyyy-MM-dd'T'HH:mm:ss") === local && value.getPossibleOffsets().length === 1
     ? value.toISO({ suppressMilliseconds: true }) : local;
 }

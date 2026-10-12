@@ -9,7 +9,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
+import { firstOccurrence, isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
 import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, TrawlClient, type TrawlScrapeRequest, type TrawlScrapeResponse } from '../../core/transport/index.js';
 import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
@@ -154,7 +154,7 @@ function eventTime(value: unknown): ParsedTime | null {
 function expectedDelivery(value: unknown): string | null {
   const raw = cleanScalar(value, 64);
   if (!raw || raw.startsWith('0001-01-01')) return null;
-  const date = DateTime.fromISO(raw, { zone: ZONE });
+  const date = firstOccurrence(DateTime.fromISO(raw, { zone: ZONE }));
   return date.isValid ? date.toISODate() : null;
 }
 

@@ -290,13 +290,21 @@ export function createTracker(options: TrackerOptions = {}) {
     // only while none asked so far knows the number and the budget lasts.
     const ask = () => lookupSignals.run(signal, async () => {
       const outcomes: RecognitionOutcome[] = [];
+      // A round's timer runs on the event loop's cached clock and can end it a little before
+      // `end`; a lookup still in flight when a round ends shows the budget is spent.
+      let inFlight = 0;
       for (let start = 0; start < candidates.length; start += MAX_RECOGNITIONS) {
-        // Rounded up, so a round never ends before the signal does.
         const left = Math.ceil(end - performance.now());
         const settled = settleRecognition(outcomes);
-        if (start > 0 && (left <= 0 || settled.carrier || settled.choices.length)) break;
-        outcomes.push(...await recognizeAll(candidates.slice(start, start + MAX_RECOGNITIONS), carrier =>
-          registry.for(carrier)!.recognize!(number, { signal, budgetMs: left }), left));
+        if (start > 0 && (inFlight > 0 || left <= 0 || settled.carrier || settled.choices.length)) break;
+        outcomes.push(...await recognizeAll(candidates.slice(start, start + MAX_RECOGNITIONS), async carrier => {
+          inFlight += 1;
+          try {
+            return await registry.for(carrier)!.recognize!(number, { signal, budgetMs: left });
+          } finally {
+            inFlight -= 1;
+          }
+        }, left));
       }
       return outcomes;
     });

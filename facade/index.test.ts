@@ -212,6 +212,15 @@ describe('standalone tracker', () => {
     await expect(tracker.recognize(number, { budgetMs: 30 }))
       .resolves.toEqual({ choices: [], asked: carriers.slice(0, 5), unanswered: carriers.slice(0, 5) });
     expect(rest).not.toHaveBeenCalled();
+    // So does a round its timer ends while the clock still shows time left.
+    const clock = vi.spyOn(performance, 'now').mockReturnValue(0);
+    try {
+      await expect(tracker.recognize(number, { budgetMs: 30 }))
+        .resolves.toEqual({ choices: [], asked: carriers.slice(0, 5), unanswered: carriers.slice(0, 5) });
+    } finally {
+      clock.mockRestore();
+    }
+    expect(rest).not.toHaveBeenCalled();
   });
 
   it('tracks with the carrier that answered once recognition has waited long enough for the others', async () => {

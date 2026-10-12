@@ -8415,10 +8415,25 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xdp",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery or collection postcode",
+          "type": "text",
+          "help": "XDP shows a consignment only with its delivery or collection postcode. Without it, other sources are asked.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
+      "localClocks": true
     },
     "canaryUrl": "https://xdp.co.uk/track/",
-    "trackingUrlTemplate": "https://xdp.co.uk/track/",
+    "trackingUrlTemplate": "https://xdp.co.uk/track/{trackingNumber}",
     "trackingSearchUrl": "https://xdp.co.uk/track/",
     "linkRules": [
       {

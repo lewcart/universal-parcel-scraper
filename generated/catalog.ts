@@ -5162,7 +5162,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Vancouver",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chit-chats",
+      "recognitionRank": 115,
+      "localClocks": true
     },
     "canaryUrl": "https://chitchats.com/tracking",
     "trackingUrlTemplate": "https://chitchats.com/tracking/{trackingNumber}",

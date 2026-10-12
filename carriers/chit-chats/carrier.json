@@ -17,18 +17,75 @@
   "timezone": "America/Vancouver",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "chit-chats",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 115
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "provider_code",
+    "weight",
+    "dimensions",
+    "service_name",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://chitchats.com/tracking/{trackingNumber}",
     "searchUrl": "https://chitchats.com/tracking",
     "canaryUrl": "https://chitchats.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "progress_rail",
+      "provider_code",
+      "weight",
+      "dimensions",
+      "service_name",
+      "destination_country",
+      "recipient_address",
+      "sender_town",
+      "postcodes",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "provider_code",
+      "offset_timestamps",
+      "weight",
+      "dimensions",
+      "service_name",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "delivered_at",
+      "progress_rail",
+      "recipient_address",
+      "sender_town",
+      "postcodes"
+    ],
+    "unavailable": [
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [
     {

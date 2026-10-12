@@ -19,9 +19,9 @@ const MAX_BYTES = 2_000_000;
 /** Opening a session has taken up to 75 seconds. */
 const SESSION_OPEN_MS = 120_000;
 /**
- * The service has accepted a session for nearly twenty-seven hours, used once an hour after its
- * first eight, and one left idle for four, and refused another from twenty-seven hours old. From
- * eight hours old the next one opens beside it, and replaces it once open.
+ * The service has accepted a session for over two days, used once an hour after its first eight,
+ * and one left idle for four. It refused another at twenty-seven hours old, in two checks an hour
+ * apart. From eight hours old the next one opens beside it, and replaces it once open.
  */
 const SESSION_RENEW_MS = 8 * 3_600_000;
 /** A kept session that failed to open is tried again after this long. */

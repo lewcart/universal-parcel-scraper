@@ -344,9 +344,11 @@ export function parseUPSTrackingResponse(
   }
   if (!Array.isArray(payload.trackDetails) || payload.trackDetails.length === 0) return notLocated();
   const expected = trackingNumber.toUpperCase();
-  const detail: unknown = payload.trackDetails.find((item) => isRecord(item)
-    && cleanScalar(item.trackingNumber ?? item.requestedTrackingNumber).toUpperCase() === expected)
-    ?? payload.trackDetails[0];
+  const named = payload.trackDetails.filter((item) => isRecord(item)
+    && cleanScalar(item.trackingNumber ?? item.requestedTrackingNumber).toUpperCase() === expected);
+  // One number was asked for: of several details, only the one that names it answers.
+  if (payload.trackDetails.length > 1 && named.length !== 1) throw new SchemaError('UPS', 'UPS did not return the requested parcel');
+  const detail: unknown = named[0] ?? payload.trackDetails[0];
   if (!isRecord(detail)) throw new SchemaError('UPS');
   // An outage is not about any parcel, whichever number the reply names.
   const errorCode = cleanScalar(detail.errorCode).toUpperCase();

@@ -389,6 +389,15 @@ describe('UPS structured response', () => {
     (other.trackDetails as Record<string, unknown>[])[0]!.trackingNumber = '1Z999AA10123456793';
     expect(() => parseUPSTrackingResponse(other, TRACKING_NUMBER, TODAY))
       .toThrow('UPS did not return the requested parcel');
+    // Of several details, only the one that names the number answers.
+    const [detail] = fixture().trackDetails as Record<string, unknown>[];
+    const unnamed = { ...detail, trackingNumber: undefined, requestedTrackingNumber: undefined };
+    expect(() => parseUPSTrackingResponse({ ...fixture(), trackDetails: [unnamed, unnamed] }, TRACKING_NUMBER, TODAY))
+      .toThrow('UPS did not return the requested parcel');
+    expect(() => parseUPSTrackingResponse({ ...fixture(), trackDetails: [detail, detail] }, TRACKING_NUMBER, TODAY))
+      .toThrow('UPS did not return the requested parcel');
+    expect(parseUPSTrackingResponse({ ...fixture(), trackDetails: [unnamed, detail] }, TRACKING_NUMBER, TODAY))
+      .toEqual(parseUPSTrackingResponse(fixture(), TRACKING_NUMBER, TODAY));
     expect(() => parseUPSTrackingResponse({ statusCode: '500', statusText: 'Unavailable' }, TRACKING_NUMBER))
       .toThrow('Unavailable');
     expect(() => parseUPSTrackingResponse('not an object', TRACKING_NUMBER))

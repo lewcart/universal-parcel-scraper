@@ -614,6 +614,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'estes', number: '9999999999',
     route: /^https:\/\/www\.estes-express\.com\/myestes\/shipment-tracking\/\?type=PRO&query=9999999999$/,
     marker: /Enter tracking numbers\. One per line|Not found or tracking information unavailable/ },
+  // ArcBest's tool moves the number from the address hash to the path and looks it up.
+  { carrier: 'abf-freight', number: '999999999',
+    route: /^https:\/\/view\.arcb\.com\/nlo\/tools\/tracking\/999999999$/,
+    marker: /Sorry, we didn.t find that shipment|did not return any valid results/ },
 ];
 
 /**

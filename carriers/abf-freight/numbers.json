@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "ParcelPanel's ABF Freight page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's ABF Freight page offered it as a sample to try on 11 Oct 2026. ArcBest's tracking service answers it as a delivered ABF Freight shipment."
     },
     {
       "number": "165982495",
@@ -227,13 +227,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on ArcBest's tracker, which serves ABF Freight, as an archived address shows; the capture was not opened."
+      "note": "Looked up on ArcBest's tracker, which serves ABF Freight, as an archived address shows. ArcBest's tracking service answers it as a delivered ABF Freight shipment."
     }
   ]
 }

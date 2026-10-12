@@ -10,6 +10,7 @@
  * universal providers, whose map is the reading they give a scan
  * (`providers/status.ts`).
  */
+import { statusMap as abfFreight } from '../../carriers/abf-freight/status.js';
 import { statusMap as acsCourier } from '../../carriers/acs-courier/status.js';
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
@@ -108,7 +109,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
+  'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, cdl, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv,
   dynalogic, 'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,

@@ -4743,12 +4743,23 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "abf-freight",
+      "recognitionRank": 10,
+      "localClocks": true
     },
     "canaryUrl": "https://view.arcb.com/nlo/tools/tracking",
     "trackingUrlTemplate": "https://view.arcb.com/nlo/tools/tracking#/{trackingNumber}",
     "trackingSearchUrl": "https://view.arcb.com/nlo/tools/tracking",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "view.arcb.com"
+        ],
+        "pathPattern": "^/nlo/tools/tracking(?:/\\d{9})?/?$",
+        "path": "^/nlo/tools/tracking/(\\d{9})/?$",
+        "fragment": "^/(\\d{9})(?:[/?]|$)"
+      }
+    ],
     "detectionRules": []
   },
   "acs-courier": {

@@ -27,7 +27,7 @@
       "retry"
     ],
     "recognition": {
-      "rank": 550
+      "rank": 150
     },
     "localClocks": true
   },

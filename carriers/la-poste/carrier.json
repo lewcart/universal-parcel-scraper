@@ -22,7 +22,7 @@
       "retry"
     ],
     "recognition": {
-      "rank": 800
+      "rank": 1000
     }
   },
   "capabilities": [

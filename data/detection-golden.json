@@ -20010,10 +20010,10 @@
     ],
     "asked": [
       "hermes-de",
-      "slovak-parcel-service",
       "dpd",
       "dpd-de",
-      "seur"
+      "seur",
+      "brt"
     ]
   },
   {
@@ -20051,11 +20051,11 @@
       "slovak-parcel-service"
     ],
     "asked": [
-      "slovak-parcel-service",
       "dpd",
       "dpd-de",
       "seur",
-      "brt"
+      "brt",
+      "relais-colis"
     ]
   },
   {
@@ -20077,10 +20077,10 @@
     ],
     "asked": [
       "hermes-de",
-      "slovak-parcel-service",
       "dpd",
       "dpd-de",
-      "seur"
+      "seur",
+      "brt"
     ]
   },
   {
@@ -20100,11 +20100,11 @@
       "slovak-parcel-service"
     ],
     "asked": [
-      "slovak-parcel-service",
       "dpd",
       "dpd-de",
       "seur",
-      "brt"
+      "brt",
+      "relais-colis"
     ]
   },
   {

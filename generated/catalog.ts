@@ -57,7 +57,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "swiss-post-cargo",
-      "recognitionRank": 110
+      "recognitionRank": 550
     },
     "canaryUrl": "https://apv.swisspost-cargo.com/public/trackandtrace",
     "trackingUrlTemplate": "https://apv.swisspost-cargo.com/public/trackandtrace/{trackingNumber}",
@@ -198,7 +198,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "aliexpress",
       "upstreamName": "AliExpress",
-      "recognitionRank": 140
+      "recognitionRank": 580
     },
     "canaryUrl": "https://global.cainiao.com/",
     "trackingUrlTemplate": "https://global.cainiao.com/detail.htm?mailNoList={trackingNumber}",
@@ -434,7 +434,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "postlogistics",
-      "recognitionRank": 260
+      "recognitionRank": 700
     },
     "canaryUrl": "https://apv.swisspost-cargo.com/public/trackandtrace",
     "trackingUrlTemplate": "https://apv.swisspost-cargo.com/public/trackandtrace/{trackingNumber}",
@@ -598,7 +598,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce",
-      "recognitionRank": 230,
+      "recognitionRank": 670,
       "browserRecognitionRank": 900
     },
     "canaryUrl": "https://www.dhl.com/ch-en/home/tracking.html",
@@ -903,7 +903,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 500,
+      "recognitionRank": 920,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -974,7 +974,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 700
+      "recognitionRank": 980
     },
     "canaryUrl": "https://www.dpdgroup.com/ch/mydpd/my-parcels/incoming",
     "trackingUrlTemplate": "https://www.dpdgroup.com/ch/mydpd/my-parcels/incoming?parcelNumber={trackingNumber}",
@@ -1128,7 +1128,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "relais-colis",
-      "recognitionRank": 250,
+      "recognitionRank": 690,
       "localClocks": true
     },
     "canaryUrl": "https://www.relaiscolis.com/colis/suivre",
@@ -1176,7 +1176,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "la-poste",
-      "recognitionRank": 800
+      "recognitionRank": 1000
     },
     "canaryUrl": "https://www.laposte.fr/outils/suivre-vos-envois",
     "trackingUrlTemplate": "https://www.laposte.fr/outils/suivre-vos-envois?code={trackingNumber}",
@@ -1241,7 +1241,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "chronopost",
-      "recognitionRank": 450,
+      "recognitionRank": 890,
       "localClocks": true
     },
     "canaryUrl": "https://www.chronopost.fr/tracking-no-cms/suivi-page",
@@ -1296,7 +1296,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gls-fr",
-      "recognitionRank": 610,
+      "recognitionRank": 950,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -1377,7 +1377,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 300
+      "recognitionRank": 740
     },
     "canaryUrl": "https://colisprive.com/moncolis/pages/DetailColis.aspx",
     "trackingUrlTemplate": "https://colisprive.com/moncolis/pages/DetailColis.aspx?numColis={trackingNumber}&lang=fr",
@@ -1559,7 +1559,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ciblex",
-      "recognitionRank": 200,
+      "recognitionRank": 640,
       "localClocks": true
     },
     "canaryUrl": "https://secure.extranet.ciblex.fr/extranet/client/corps.php",
@@ -1756,7 +1756,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "hermes-de",
-      "recognitionRank": 400
+      "recognitionRank": 840
     },
     "canaryUrl": "https://www.myhermes.de/empfangen/sendungsverfolgung/",
     "trackingUrlTemplate": "https://www.myhermes.de/empfangen/sendungsverfolgung/sendungsinformation#{trackingNumber}",
@@ -1818,7 +1818,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 600,
+      "recognitionRank": 940,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -2105,7 +2105,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "inpost",
-      "recognitionRank": 380
+      "recognitionRank": 820
     },
     "canaryUrl": "https://inposteasy.com/",
     "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek",
@@ -2177,7 +2177,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "bpost",
-      "recognitionRank": 370,
+      "recognitionRank": 810,
       "localClocks": true
     },
     "canaryUrl": "https://track.bpost.cloud/",
@@ -2220,7 +2220,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "austrian-post",
-      "recognitionRank": 390
+      "recognitionRank": 830
     },
     "canaryUrl": "https://www.post.at/en/s/track-and-trace-search",
     "trackingUrlTemplate": "https://www.post.at/en/s/track-and-trace-search",
@@ -2252,7 +2252,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "postnord",
-      "recognitionRank": 70
+      "recognitionRank": 510
     },
     "canaryUrl": "https://tracking.postnord.com/en/",
     "trackingUrlTemplate": "https://tracking.postnord.com/en/?id={trackingNumber}",
@@ -2302,7 +2302,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "posti",
-      "recognitionRank": 270
+      "recognitionRank": 710
     },
     "canaryUrl": "https://www.posti.fi/en/tracking",
     "trackingUrlTemplate": "https://www.posti.fi/en/tracking/{trackingNumber}",
@@ -2346,7 +2346,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-express",
-      "recognitionRank": 360,
+      "recognitionRank": 800,
       "localClocks": true
     },
     "canaryUrl": "https://s.correosexpress.com/",
@@ -2378,7 +2378,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "seur",
-      "recognitionRank": 430,
+      "recognitionRank": 870,
       "localClocks": true
     },
     "canaryUrl": "https://www.seur.com/miseur/mis-envios",
@@ -2453,7 +2453,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nacex",
-      "recognitionRank": 410,
+      "recognitionRank": 850,
       "localClocks": true
     },
     "canaryUrl": "https://www.nacex.es/irSeguimiento.do",
@@ -2527,7 +2527,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ctt-express",
-      "recognitionRank": 350,
+      "recognitionRank": 790,
       "localClocks": true
     },
     "canaryUrl": "https://shipping-tracking.production.cloud2.cttexpress.com/",
@@ -2574,7 +2574,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "poste-italiane",
-      "recognitionRank": 460
+      "recognitionRank": 900
     },
     "canaryUrl": "https://www.poste.it/",
     "trackingUrlTemplate": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",
@@ -2617,7 +2617,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
-      "recognitionRank": 420,
+      "recognitionRank": 860,
       "localClocks": true
     },
     "canaryUrl": "https://services.brt.it/en/tracking",
@@ -2698,7 +2698,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tipsa",
-      "recognitionRank": 240
+      "recognitionRank": 680
     },
     "canaryUrl": "https://dinapaqweb.tipsa-dinapaq.com/dinapaqweb/detalle_envio.php",
     "trackingUrlTemplate": "https://www.tip-sa.com/cliente/datos_env.php?id={trackingNumber}",
@@ -2737,7 +2737,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ukrposhta",
-      "recognitionRank": 50,
+      "recognitionRank": 490,
       "localClocks": true
     },
     "canaryUrl": "https://track.ukrposhta.ua/en/",
@@ -2853,7 +2853,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "canada-post",
-      "recognitionRank": 150,
+      "recognitionRank": 590,
       "localClocks": true
     },
     "canaryUrl": "https://www.canadapost-postescanada.ca/track-reperage/en/home",
@@ -2894,7 +2894,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "purolator",
-      "recognitionRank": 120,
+      "recognitionRank": 560,
       "localClocks": true
     },
     "canaryUrl": "https://www.purolator.com/en/shipping/tracker",
@@ -2940,7 +2940,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "canpar",
-      "recognitionRank": 340,
+      "recognitionRank": 780,
       "localClocks": true
     },
     "canaryUrl": "https://www.canpar.com/en/tracking/track.htm",
@@ -2975,7 +2975,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ontrac",
-      "recognitionRank": 210,
+      "recognitionRank": 650,
       "localClocks": true
     },
     "canaryUrl": "https://www.ontrac.com/tracking/",
@@ -3062,7 +3062,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "uniuni",
-      "recognitionRank": 330,
+      "recognitionRank": 770,
       "localClocks": true
     },
     "canaryUrl": "https://www.uniuni.com/tracking/",
@@ -3424,7 +3424,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "four-px",
-      "recognitionRank": 130,
+      "recognitionRank": 570,
       "localClocks": true
     },
     "canaryUrl": "https://track.4px.com/",
@@ -3495,7 +3495,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "delhivery",
-      "recognitionRank": 160,
+      "recognitionRank": 600,
       "localClocks": true
     },
     "canaryUrl": "https://www.delhivery.com/tracking",
@@ -3520,7 +3520,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nz-post",
-      "recognitionRank": 320,
+      "recognitionRank": 760,
       "localClocks": true
     },
     "canaryUrl": "https://www.nzpost.co.nz/tools/tracking",
@@ -3697,7 +3697,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sto",
-      "recognitionRank": 100,
+      "recognitionRank": 540,
       "localClocks": true
     },
     "canaryUrl": "https://page.sto.cn/ued-projects/sto-customer-onlinekf",
@@ -4027,7 +4027,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "australia-post",
-      "recognitionRank": 60
+      "recognitionRank": 500
     },
     "canaryUrl": "https://auspost.com.au/mypost/track/",
     "trackingUrlTemplate": "https://auspost.com.au/mypost/track/details/{trackingNumber}",
@@ -4164,7 +4164,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ninja-van",
-      "recognitionRank": 280,
+      "recognitionRank": 720,
       "localClocks": true
     },
     "canaryUrl": "https://www.ninjavan.co/en-my/tracking",
@@ -4281,7 +4281,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "poczta-polska",
-      "recognitionRank": 310,
+      "recognitionRank": 750,
       "localClocks": true
     },
     "canaryUrl": "https://emonitoring.poczta-polska.pl/",
@@ -4444,7 +4444,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tnt",
-      "recognitionRank": 440
+      "recognitionRank": 880
     },
     "canaryUrl": "https://www.tnt.fr/public/suivi_colis/recherche/index.do",
     "trackingUrlTemplate": "https://www.tnt.com/express/en_gb/site/shipping-tools/tracking.html?searchType=con&cons={trackingNumber}",
@@ -4568,7 +4568,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "the-courier-guy",
-      "recognitionRank": 290,
+      "recognitionRank": 730,
       "localClocks": true
     },
     "canaryUrl": "https://portal.thecourierguy.co.za/track",
@@ -4613,7 +4613,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "j-and-t",
-      "recognitionRank": 90,
+      "recognitionRank": 530,
       "localClocks": true
     },
     "canaryUrl": "https://customerapp.jntexpress.id/jandt-app-ifd-web/router.do",
@@ -4767,7 +4767,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "acs-courier",
-      "recognitionRank": 570,
+      "recognitionRank": 310,
       "localClocks": true
     },
     "canaryUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/",
@@ -4812,7 +4812,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "allegro-one",
-      "recognitionRank": 770
+      "recognitionRank": 390
     },
     "canaryUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki",
     "trackingUrlTemplate": "https://allegro.pl/allegrodelivery/sledzenie-paczki?numer={trackingNumber}",
@@ -4859,7 +4859,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "apc-overnight",
-      "recognitionRank": 870,
+      "recognitionRank": 220,
       "localClocks": true
     },
     "canaryUrl": "https://apc.co.uk/",
@@ -4898,7 +4898,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "aras-kargo",
-      "recognitionRank": 670,
+      "recognitionRank": 420,
       "localClocks": true
     },
     "canaryUrl": "https://kargotakip.araskargo.com.tr/mainpage.aspx",
@@ -4935,7 +4935,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "box-now",
-      "recognitionRank": 480
+      "recognitionRank": 250
     },
     "canaryUrl": "https://boxnow.cy/track",
     "trackingSearchUrl": "https://boxnow.cy/track",
@@ -4991,7 +4991,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "cargus",
-      "recognitionRank": 730,
+      "recognitionRank": 270,
       "localClocks": true
     },
     "canaryUrl": "https://www.cargus.ro/personal/urmareste-coletul/",
@@ -5037,7 +5037,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "cdek",
-      "recognitionRank": 950
+      "recognitionRank": 440
     },
     "canaryUrl": "https://my.cdek.ru/lkfl/",
     "trackingUrlTemplate": "https://my.cdek.ru/lkfl/order/{trackingNumber}",
@@ -5121,7 +5121,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ceska-posta",
-      "recognitionRank": 760,
+      "recognitionRank": 380,
       "localClocks": true
     },
     "canaryUrl": "https://www.postaonline.cz/trackandtrace",
@@ -5257,7 +5257,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "cyprus-post",
-      "recognitionRank": 890,
+      "recognitionRank": 60,
       "localClocks": true
     },
     "canaryUrl": "https://www.cypruspost.post/en/track-n-trace-results",
@@ -5288,7 +5288,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dao",
-      "recognitionRank": 850,
+      "recognitionRank": 515,
       "localClocks": true
     },
     "canaryUrl": "https://dao.as/find-din-pakke/",
@@ -5369,7 +5369,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-es",
-      "recognitionRank": 190,
+      "recognitionRank": 630,
       "localClocks": true
     },
     "canaryUrl": "https://clientesparcel.dhl.es/LiveTracking/",
@@ -5411,7 +5411,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-nl",
-      "recognitionRank": 220
+      "recognitionRank": 660
     },
     "canaryUrl": "https://my.dhlecommerce.nl/home/tracktrace",
     "trackingUrlTemplate": "https://my.dhlecommerce.nl/home/tracktrace/{trackingNumber}",
@@ -5458,7 +5458,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-pl",
-      "recognitionRank": 180
+      "recognitionRank": 620
     },
     "canaryUrl": "https://mojdhl.pl/tracking",
     "trackingUrlTemplate": "https://mojdhl.pl/tracking?paczki={trackingNumber}",
@@ -5504,7 +5504,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-uk",
-      "recognitionRank": 170
+      "recognitionRank": 610
     },
     "canaryUrl": "https://track.dhlecommerce.co.uk/",
     "trackingUrlTemplate": "https://track.dhlecommerce.co.uk/?con={trackingNumber}",
@@ -5545,7 +5545,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-express",
-      "recognitionRank": 750,
+      "recognitionRank": 990,
       "browserRecognitionRank": 750,
       "localClocks": true
     },
@@ -5606,7 +5606,7 @@ export const CARRIER_CATALOG = {
           "validator": "germanyPostcode"
         }
       ],
-      "recognitionRank": 650
+      "recognitionRank": 970
     },
     "canaryUrl": "https://tracking.dpd.de/status/en_US/parcel/",
     "trackingUrlTemplate": "https://tracking.dpd.de/status/en_US/parcel/{trackingNumber}",
@@ -5653,7 +5653,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-ie",
-      "recognitionRank": 620,
+      "recognitionRank": 960,
       "localClocks": true
     },
     "canaryUrl": "https://www.dpd.ie/tracking/",
@@ -5685,7 +5685,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pl",
-      "recognitionRank": 80
+      "recognitionRank": 520
     },
     "canaryUrl": "https://tracktrace.dpd.com.pl/EN/findParcel",
     "trackingUrlTemplate": "https://tracktrace.dpd.com.pl/EN/parcelDetails?typ=1&p1={trackingNumber}",
@@ -5931,7 +5931,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "econt",
-      "recognitionRank": 560,
+      "recognitionRank": 290,
       "localClocks": true
     },
     "canaryUrl": "https://www.econt.com/services/track-shipment",
@@ -6014,7 +6014,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "elta",
-      "recognitionRank": 550,
+      "recognitionRank": 150,
       "localClocks": true
     },
     "canaryUrl": "https://www.elta.gr/track",
@@ -6072,7 +6072,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "emile",
-      "recognitionRank": 40,
+      "recognitionRank": 480,
       "localClocks": true
     },
     "canaryUrl": "https://www.emileps.com/",
@@ -6233,7 +6233,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "express-one",
-      "recognitionRank": 780,
+      "recognitionRank": 190,
       "localClocks": true
     },
     "canaryUrl": "https://tracking.expressone.hu/",
@@ -6267,7 +6267,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "fan-courier",
-      "recognitionRank": 510,
+      "recognitionRank": 330,
       "localClocks": true
     },
     "canaryUrl": "https://www.fancourier.ro/awb-tracking/",
@@ -6309,7 +6309,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "foxpost",
-      "recognitionRank": 520,
+      "recognitionRank": 200,
       "localClocks": true
     },
     "canaryUrl": "https://foxpost.hu/csomagkovetes/",
@@ -6374,7 +6374,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "geis",
-      "recognitionRank": 970,
+      "recognitionRank": 90,
       "localClocks": true
     },
     "canaryUrl": "https://www.geis-group.cz/cs/detail-zasilky",
@@ -6436,7 +6436,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "geniki-taxydromiki",
-      "recognitionRank": 580,
+      "recognitionRank": 140,
       "localClocks": true
     },
     "canaryUrl": "https://taxydromiki.com/track/",
@@ -6533,7 +6533,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gls-it",
-      "recognitionRank": 590,
+      "recognitionRank": 930,
       "localClocks": true
     },
     "canaryUrl": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/",
@@ -6583,7 +6583,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "go-express",
-      "recognitionRank": 960,
+      "recognitionRank": 70,
       "localClocks": true
     },
     "canaryUrl": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html",
@@ -6617,7 +6617,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-fr",
-      "recognitionRank": 30,
+      "recognitionRank": 470,
       "localClocks": true
     },
     "canaryUrl": "https://www.gofo.com/fr/",
@@ -6668,7 +6668,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-it",
-      "recognitionRank": 20,
+      "recognitionRank": 460,
       "localClocks": true
     },
     "canaryUrl": "https://www.gofo.com/it/",
@@ -6714,7 +6714,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "helthjem",
-      "recognitionRank": 710
+      "recognitionRank": 210
     },
     "canaryUrl": "https://helthjem.no/sporing",
     "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
@@ -6769,7 +6769,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "hrvatska-posta",
-      "recognitionRank": 810,
+      "recognitionRank": 160,
       "localClocks": true
     },
     "canaryUrl": "https://posiljka.posta.hr/",
@@ -6878,7 +6878,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "j-and-t-cargo",
-      "recognitionRank": 470,
+      "recognitionRank": 910,
       "localClocks": true
     },
     "canaryUrl": "https://www.jtcargo.id/",
@@ -6999,7 +6999,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "latvijas-pasts",
-      "recognitionRank": 820,
+      "recognitionRank": 100,
       "localClocks": true
     },
     "canaryUrl": "https://www.pasts.lv/izsekot-sutijumu",
@@ -7076,7 +7076,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "lietuvos-pastas",
-      "recognitionRank": 860,
+      "recognitionRank": 895,
       "localClocks": true
     },
     "canaryUrl": "https://lpexpress.lt/track",
@@ -7233,7 +7233,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "maltapost",
-      "recognitionRank": 920,
+      "recognitionRank": 50,
       "localClocks": true
     },
     "canaryUrl": "https://www.maltapost.com/tracking",
@@ -7271,7 +7271,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "matkahuolto",
-      "recognitionRank": 690,
+      "recognitionRank": 715,
       "localClocks": true
     },
     "canaryUrl": "https://www.matkahuolto.fi/seuranta",
@@ -7321,7 +7321,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "meest",
-      "recognitionRank": 940,
+      "recognitionRank": 340,
       "localClocks": true
     },
     "canaryUrl": "https://t.meest-group.com/n/",
@@ -7375,7 +7375,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mng-kargo",
-      "recognitionRank": 740,
+      "recognitionRank": 360,
       "localClocks": true
     },
     "canaryUrl": "https://www.dhlecommerce.com.tr/gonderitakip",
@@ -7458,7 +7458,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "omgo",
-      "recognitionRank": 10,
+      "recognitionRank": 450,
       "localClocks": true
     },
     "canaryUrl": "https://omgoexpress.cn/",
@@ -7489,7 +7489,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "omniva",
-      "recognitionRank": 640
+      "recognitionRank": 300
     },
     "canaryUrl": "https://minu.omniva.ee/track",
     "trackingUrlTemplate": "https://minu.omniva.ee/track/{trackingNumber}",
@@ -7550,7 +7550,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "orlen-paczka",
-      "recognitionRank": 490
+      "recognitionRank": 495
     },
     "canaryUrl": "https://www.orlenpaczka.pl/sledz-paczke/",
     "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
@@ -7694,7 +7694,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "post-luxembourg",
-      "recognitionRank": 910,
+      "recognitionRank": 80,
       "localClocks": true
     },
     "canaryUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
@@ -7746,7 +7746,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "posta-slovenije",
-      "recognitionRank": 790,
+      "recognitionRank": 130,
       "localClocks": true
     },
     "canaryUrl": "https://moja.posta.si/tracking",
@@ -7789,7 +7789,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "posta-srbije",
-      "recognitionRank": 930,
+      "recognitionRank": 110,
       "localClocks": true
     },
     "canaryUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
@@ -7863,7 +7863,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ptt",
-      "recognitionRank": 680,
+      "recognitionRank": 400,
       "localClocks": true
     },
     "canaryUrl": "https://www.ptt.gov.tr/",
@@ -8048,7 +8048,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sameday",
-      "recognitionRank": 530
+      "recognitionRank": 370
     },
     "canaryUrl": "https://sameday.ro/",
     "trackingSearchUrl": "https://sameday.ro/",
@@ -8074,7 +8074,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "slovak-parcel-service",
-      "recognitionRank": 830,
+      "recognitionRank": 180,
       "localClocks": true
     },
     "canaryUrl": "https://www.sps-sro.sk/moja-zasielka/",
@@ -8113,7 +8113,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "slovenska-posta",
-      "recognitionRank": 840,
+      "recognitionRank": 170,
       "localClocks": true
     },
     "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
@@ -8206,7 +8206,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "speedy",
-      "recognitionRank": 540
+      "recognitionRank": 280
     },
     "canaryUrl": "https://myspeedy.speedy.bg/pub/tracking/",
     "trackingUrlTemplate": "https://myspeedy.speedy.bg/pub/tracking/{trackingNumber}",
@@ -8399,7 +8399,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "venipak",
-      "recognitionRank": 630,
+      "recognitionRank": 240,
       "localClocks": true
     },
     "canaryUrl": "https://venipak.com/lt/en/parcel-tracking/",
@@ -8445,7 +8445,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "vinted-go",
-      "recognitionRank": 720
+      "recognitionRank": 410
     },
     "canaryUrl": "https://vintedgo.com/en/tracking",
     "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
@@ -8509,7 +8509,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "whistl",
-      "recognitionRank": 880,
+      "recognitionRank": 320,
       "localClocks": true
     },
     "canaryUrl": "https://web.parcelhub.net/Tracking",
@@ -8688,7 +8688,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "yurtici-kargo",
-      "recognitionRank": 660,
+      "recognitionRank": 430,
       "localClocks": true
     },
     "canaryUrl": "https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula",

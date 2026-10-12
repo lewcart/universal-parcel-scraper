@@ -383,6 +383,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'jd-logistics', number: 'JD0000000000001',
     route: /^https:\/\/www\.jingdonglogistics\.com\/Tracking(?:\?|$)/,
     marker: /Track your shipment|Tracking your waybill/i },
+  // The tracker looks the code up, then moves an unknown one to its own
+  // not-found page, which no longer shows the number.
+  { carrier: 'jitsu', number: 'ZZ00ZZ00ZZ00ZZ01',
+    route: /^https:\/\/recipient\.gojitsu\.com\/(?:noredirect\/ZZ00ZZ00ZZ00ZZ01|404)$/,
+    marker: /Sorry, tracking ID not found!/,
+    forwarding: { notFound: /Sorry, tracking ID not found!/ } },
   { carrier: 'dpd-de', number: '01000000000001',
     route: /^https:\/\/my\.dpd\.de\/myparcels\/dataprotection-tracking\.aspx(?:\?|$)/,
     marker: /Paketnummer|Leider können wir.*keine Daten zu Ihrem Paket/i },

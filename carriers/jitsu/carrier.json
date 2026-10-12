@@ -17,18 +17,70 @@
   "timezone": "America/Los_Angeles",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "jitsu",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 85
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
-    "url": "https://recipient.gojitsu.com/{trackingNumber}",
+    "url": "https://recipient.gojitsu.com/noredirect/{trackingNumber}",
     "searchUrl": "https://recipient.gojitsu.com/",
     "canaryUrl": "https://recipient.gojitsu.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "sender_name",
+      "coordinates",
+      "proof_of_delivery",
+      "signature",
+      "driver_name",
+      "delivery_instructions"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "provider_code",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "sender_name",
+      "coordinates",
+      "proof_of_delivery",
+      "signature",
+      "driver_name",
+      "delivery_instructions",
+      "recipient_address",
+      "postcodes",
+      "contact_details",
+      "remarks",
+      "customer_reference",
+      "service_name"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions"
+    ]
   },
   "links": [
     {
@@ -38,7 +90,7 @@
         "tracking.gojitsu.com",
         "tracking.axlehire.com"
       ],
-      "path": "^/([^/?#]+)/?$"
+      "path": "^/(?:noredirect/)?([^/?#]+)/?$"
     }
   ],
   "detection": []

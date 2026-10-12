@@ -518,6 +518,12 @@
   },
   {
     "carrier": "jitsu",
+    "pattern": "^[0-9A-Z]{12}$",
+    "kind": "collision",
+    "reason": "Twelve letters and digits are the shape of Colis Privé's numbers, which its rule offers; Jitsu publishes no layout for its twelve-character codes."
+  },
+  {
+    "carrier": "jitsu",
     "pattern": "^SCD\\d{4}[0-9A-Z]\\d{11}$",
     "kind": "by_design",
     "reason": "Jitsu publishes no layout for numbers starting SCD, which may be one shipper's own."

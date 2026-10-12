@@ -6956,10 +6956,11 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jitsu",
+      "recognitionRank": 85
     },
     "canaryUrl": "https://recipient.gojitsu.com/",
-    "trackingUrlTemplate": "https://recipient.gojitsu.com/{trackingNumber}",
+    "trackingUrlTemplate": "https://recipient.gojitsu.com/noredirect/{trackingNumber}",
     "trackingSearchUrl": "https://recipient.gojitsu.com/",
     "linkRules": [
       {
@@ -6969,7 +6970,7 @@ export const CARRIER_CATALOG = {
           "tracking.gojitsu.com",
           "tracking.axlehire.com"
         ],
-        "path": "^/([^/?#]+)/?$"
+        "path": "^/(?:noredirect/)?([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

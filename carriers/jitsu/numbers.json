@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A review on AxleHire's Trustpilot page gives it as the tracking code."
+      "note": "A review on AxleHire's Trustpilot page gives it as the tracking code. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0970110404013031",
@@ -31,13 +31,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0000015902735263",
@@ -50,13 +50,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0000F00200029177",
@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0000H00500673206",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "lyqnxet59476nx3e",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on AxleHire's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "2f9es65v3g4gt72z",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0000H00411947817",
@@ -145,13 +145,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
     },
     {
       "number": "SCD0000F00410922107",
@@ -164,13 +164,35 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Jitsu's own tracker, as an archived address shows; the capture was not opened. Jitsu's tracking service knows it."
+    },
+    {
+      "number": "4AUMF4FWVRB5",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/axlehire/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's AxleHire page offered it as a sample to try. Jitsu's tracking service knows it."
     }
   ]
 }

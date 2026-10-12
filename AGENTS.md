@@ -6,6 +6,7 @@
 - Never import from an app or framework. Browser exports must remain free of Node runtime imports. Resolve assets against their module, not the consumer's working directory.
 - Public exports, result fields, error kinds, carrier ids, provider names and data schemas follow semver. Fixes are patches; additive changes are minor; removals, renames and new stages are major. Until 1.0.0 breaking changes raise the minor version. Do not rename ids or stages in place.
 - `/app` contains helpers coupled to the parcel app's data model or behavior. It has no backward-compatibility guarantee; coordinate breaking changes with the app. General-purpose tracking and catalog APIs belong in the stable entry points.
+- A push that changes the package is published and adopted by [Peek](https://github.com/plhery/peek-delivery-tracker). Peek stops adopting releases while its database lacks a migration one of them needs, for a new carrier id or a changed carrier input for instance ([database gate](https://github.com/plhery/peek-delivery-tracker/blob/main/docs/SCRAPER.md)). When a change needs one, write the migration in the app and apply it to production as the app's instructions describe, then rerun the adoption with `database_ready=true`. Do this as part of the change, without asking for separate permission. Never leave an adoption blocked.
 - Commercial universal providers are opt-in. Consumers own polling and persistence.
 
 ## Scraper investigations

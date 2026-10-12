@@ -34,10 +34,14 @@ deadline and cancellation signal, and the browser closes after each lookup.
   destination country becomes `destination_country`.
 - Scan places lose the postcode Royal Mail appends to a Post Office branch,
   and a place given only as a postcode is dropped.
-- Offset-free or invalid clocks remain in `provider_time_text`; sorting
-  requires every event clock to resolve.
-- Delivered wording is reduced to `Delivered`. Recipient, signature, photo,
-  address, GPS and issued credentials are discarded.
+- A scan abroad names its country after the place, and Royal Mail labels that
+  office's wall clock with the UK's offset. The clock is read in that country's
+  zone, or kept in `local_time` when the country has several; the summary's
+  copy of the newest scan follows it. Offset-free or invalid clocks remain in
+  `provider_time_text`; sorting requires every event clock to resolve.
+- Markdown emphasis is removed from summary and scan wording. Delivered wording
+  is reduced to `Delivered`. Recipient, signature, photo, address, GPS and
+  issued credentials are discarded.
 - An unable-to-confirm response remains inconclusive. A generic HTTP 404
   does not establish parcel absence.
 
@@ -71,8 +75,10 @@ tokens stay outside Git.
 Akamai or an interactive CAPTCHA can block anonymous retrieval. Browser build
 and network affect access; enabled universal providers can handle a failed
 direct lookup. The edge resetting the tracking request is reported as a
-challenge. `ROYAL_MAIL_BROWSER_PROXY` sends the browser's traffic through an
-`http://` or `socks5://` proxy when the edge refuses the host's own address. Domestic 2D references have 21 characters (two hexadecimal, seven digits,
+challenge, and it also refuses lookups that follow each other closely, so the
+catalog asks for at most one refresh an hour. `ROYAL_MAIL_BROWSER_PROXY` sends
+the browser's traffic through an `http://` or `socks5://` proxy when the edge
+refuses the host's own address. Domestic 2D references have 21 characters (two hexadecimal, seven digits,
 twelve hexadecimal) or 16 hexadecimal ones. They remain low-confidence candidates because their
 shape can overlap unrelated identifiers. Printed spaces and hyphens are stripped
 before submission. Other barcode formats and postcode-gated delivery options are

@@ -12,6 +12,7 @@ describe('same-instant identity policies', () => {
   it.each([
     ['ctt', 'UTC'],
     ['canada-post', 'Etc/GMT+5'],
+    ['royal-mail', 'Europe/London'],
   ])('requires %s scans to retain their provider code, and lets a scan take its own offset', (source, zone) => {
     expect(sameInstantIdentityPolicy(source)).toEqual({
       sourceCarrierId: source, storedSources: [source], requireProviderCode: true, relabelledFrom: zone,
@@ -27,6 +28,8 @@ describe('same-instant identity policies', () => {
     ['nz-post', '2026-01-14T00:47:00Z', '2026-01-14T13:47:00+08:00'],
     ['swiss-post', '2026-08-09T14:30:00+02:00', '2026-08-09T14:30:00+08:00'],
     ['swiss-post', '2026-01-09T14:30:00+01:00', '2026-01-09T14:30:00-06:00'],
+    ['royal-mail', '2026-10-10T20:51:00Z', '2026-10-10T21:51:00+02:00'],
+    ['royal-mail', '2026-01-10T21:51:00Z', '2026-01-10T21:51:00+01:00'],
   ])('reads a %s scan stored as %s on the clock it was labelled with', (source, stored, current) => {
     const policy = sameInstantIdentityPolicy(source, { supportsScanMatching: true });
     expect(policy?.requireProviderCode).toBe(true);

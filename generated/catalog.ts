@@ -1985,7 +1985,11 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
-      "browserRecognitionRank": 900
+      "browserRecognitionRank": 900,
+      "refresh": {
+        "minMinutes": 60
+      },
+      "localClocks": true
     },
     "canaryUrl": "https://www.royalmail.com/track-your-item",
     "trackingUrlTemplate": "https://www.royalmail.com/portal/rm/track?trackNumber={trackingNumber}",

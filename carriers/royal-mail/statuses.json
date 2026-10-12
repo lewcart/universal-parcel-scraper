@@ -257,6 +257,24 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": "Same notice as EVAIP."
+    },
+    {
+      "code": "EVJOE",
+      "wording": "Item Received",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-12",
+      "note": "Arrival at the destination country's office of exchange; the shared wording alone would read as acceptance."
+    },
+    {
+      "code": "EVJDU",
+      "wording": "Item has left the overseas International Processing Centre",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-12",
+      "note": "Departure from the destination country's office of exchange."
     }
   ]
 }

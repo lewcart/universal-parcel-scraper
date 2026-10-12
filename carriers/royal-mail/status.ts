@@ -41,6 +41,8 @@ const EVENT_STAGES = new Map<string, Stage>([
   ['EVHOE', 'in_transit'],
   ['EVIIS', 'in_transit'],
   ['EVBAH', 'in_transit'],
+  ['EVJOE', 'in_transit'],
+  ['EVJDU', 'in_transit'],
   ['EVCAD', 'accepted'],
   ['EVPPA', 'accepted'],
   ['EVAIP', 'registered'],

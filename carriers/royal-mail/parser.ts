@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { ChallengeError, IndeterminateError, InvalidInputError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { countryCode, countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { isRecord } from '../../core/types.js';
 import { isRoyalMailDomesticReference } from '../../core/detection/royalMail.js';
 import { isValidS10TrackingNumber } from '../../core/detection/s10.js';
@@ -48,6 +48,21 @@ function eventTime(value: unknown): string | null {
   return explicitOffsetTime(raw)?.iso ?? null;
 }
 
+/**
+ * A scan abroad names its country after the place, and Royal Mail labels that
+ * office's wall clock with the UK's offset. The clock is read in the country's
+ * zone, or kept as a wall clock when the country has several; null at home.
+ */
+function abroadClock(raw: string, location: string): { time: string } | { local_time: string } | null {
+  const country = countryCode(/,\s*([^,]+)$/.exec(location)?.[1]);
+  if (!country || country === 'GB' || !eventTime(raw)) return null;
+  const wall = DateTime.fromISO(raw, { setZone: true }).toISO({ includeOffset: false, suppressMilliseconds: true });
+  if (!wall) return null;
+  const zone = countryTimeZone(country);
+  const placed = zone ? isoTime(wall, zone) : null;
+  return placed ? { time: placed.iso } : { local_time: wall };
+}
+
 // Royal Mail appends a Post Office branch's postcode in brackets, and an
 // overseas partner can report a delivery office by postcode alone.
 const POSTCODE = /^(?:[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|\d{3,10}(?:-\d{3,4})?)$/i;
@@ -85,13 +100,14 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     throw new SchemaError('Royal Mail', 'Royal Mail did not return the requested parcel');
   }
   const summary = mailpiece.summary;
-  const summaryText = cleanScalar(summary.statusDescription);
+  const summaryText = cleanScalar(summary.statusDescription).replace(/\*\*/g, '').trim();
   if (mailpiece.events !== undefined && !Array.isArray(mailpiece.events)) {
     throw new SchemaError('Royal Mail', 'Royal Mail returned invalid tracking events');
   }
   const scans = Array.isArray(mailpiece.events) ? mailpiece.events : [];
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
+  const abroad = new Map<string, { time: string } | { local_time: string }>();
   for (const raw of scans.slice(0, MAX_EVENTS_TO_INSPECT)) {
     if (!isRecord(raw)) throw new SchemaError('Royal Mail', 'Royal Mail returned invalid tracking events');
     // The website returns Markdown emphasis, including "**Delivered by**".
@@ -101,12 +117,14 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     const code = cleanScalar(raw.eventCode, 64);
     const mapped = royalMailEventStage(code);
     const stage = mapped ?? royalMailStage(description) ?? undefined;
-    const time = eventTime(raw.eventDateTime);
     const timeText = cleanScalar(raw.eventDateTime, 64);
     const location = placeName(raw.locationName);
+    const clock = abroadClock(timeText, location);
+    if (clock && !abroad.has(timeText)) abroad.set(timeText, clock);
+    const time = clock ? ('time' in clock ? clock.time : null) : eventTime(raw.eventDateTime);
     const event: CarrierEvent = {
-      ...(time ? { time } : {}),
-      ...(!time && timeText ? { provider_time_text: timeText } : {}),
+      ...(clock ?? (time ? { time } : {})),
+      ...(!time && !clock && timeText ? { provider_time_text: timeText } : {}),
       ...(location ? { location } : {}),
       description: stage === 'delivered' ? 'Delivered' : description,
       ...(stage ? { stage } : {}),
@@ -130,15 +148,19 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   if (!statusText) throw new SchemaError('Royal Mail', 'Royal Mail returned no usable tracking status');
   const stage = royalMailSummaryStage(summaryCategory, statusText) ?? undefined;
   const delivered = stage === 'delivered';
+  // The summary repeats the newest scan's label, which a scan abroad corrects.
+  const lastText = cleanScalar(summary.lastEventDateTime, 64);
+  const lastClock = abroad.get(lastText);
+  const lastTime = lastClock ? ('time' in lastClock ? lastClock.time : null) : eventTime(lastText);
   const deliveredAt = !delivered ? null : trimmed.find(event => event.stage === 'delivered' && event.time)?.time
-    ?? (royalMailEventStage(cleanScalar(summary.lastEventCode, 64)) === 'delivered' ? eventTime(summary.lastEventDateTime) : null);
+    ?? (royalMailEventStage(cleanScalar(summary.lastEventCode, 64)) === 'delivered' ? lastTime : null);
   // Only the full-history reply names the destination.
   const destination = cleanScalar(summary.destinationCountryCode, 8);
   return {
     status: stage ? statusForStage(stage) : 'unknown',
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: delivered ? 'Delivered' : statusText,
-    last_update: eventTime(summary.lastEventDateTime) || trimmed[0]?.time || null,
+    last_update: lastClock ? lastTime : lastTime || trimmed[0]?.time || null,
     expected_delivery: delivered || !isRecord(mailpiece.estimatedDelivery)
       ? null : expectedDelivery(mailpiece.estimatedDelivery.date),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),

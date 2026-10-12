@@ -20,7 +20,11 @@
     ],
     "browserRecognition": {
       "rank": 900
-    }
+    },
+    "refresh": {
+      "minMinutes": 60
+    },
+    "localClocks": true
   },
   "capabilities": [
     "history",

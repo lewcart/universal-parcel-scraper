@@ -176,10 +176,50 @@ describe('Royal Mail structured response', () => {
     expect(result.events?.map(event => event.stage)).toEqual([
       'delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'accepted', 'accepted', 'registered',
     ]);
-    expect(result).toMatchObject({ status: 'delivered', delivered_at: '2026-01-09T15:24:00+01:00', destination_country: 'US' });
+    // The delivery abroad names a country of several zones, so its wall clock dates nothing.
+    expect(result).toMatchObject({ status: 'delivered', destination_country: 'US' });
+    expect(result).not.toHaveProperty('delivered_at');
+    expect(result.events?.[0]).toMatchObject({ local_time: '2026-01-09T15:24:00' });
+    expect(result.events?.[0]).not.toHaveProperty('time');
+    expect(result.events?.[1]).toMatchObject({ time: '2026-01-09T13:10:00+01:00' });
     expect(result.events?.map(event => event.location)).toEqual([
       'Exampleville, United States of America', undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'Example Post Office', 'Example DO [Main]', undefined,
     ]);
+  });
+
+  it('reads scans abroad on their country\'s clock instead of the UK label', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: '**In Transit**', lastEventCode: 'EVJDU',
+        lastEventDateTime: '2026-10-10T21:51:00+01:00', destinationCountryCode: 'FR' },
+      events: [
+        { eventCode: 'EVJDU', eventName: '**Item has left the overseas International Processing Centre**', eventDateTime: '2026-10-10T21:51:00+01:00', locationName: 'Example IPC, France' },
+        { eventCode: 'EVJOE', eventName: '**Item Received**', eventDateTime: '2026-10-10T19:08:00+01:00', locationName: 'Example IPC, France' },
+        { eventCode: 'EVHOE', eventName: '**Item Leaving the UK**', eventDateTime: '2026-10-10T03:31:09+01:00', locationName: 'Example HWDC' },
+        { eventCode: 'EVDAC', eventName: '**Item Received**', eventDateTime: '2026-10-09T19:28:24+01:00', locationName: 'Example MC, United Kingdom' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(result.events?.map(event => [event.time, event.stage])).toEqual([
+      ['2026-10-10T21:51:00+02:00', 'in_transit'],
+      ['2026-10-10T19:08:00+02:00', 'in_transit'],
+      ['2026-10-10T03:31:09+01:00', 'in_transit'],
+      ['2026-10-09T19:28:24+01:00', 'in_transit'],
+    ]);
+    expect(result).toMatchObject({ last_status_text: 'In Transit', last_update: '2026-10-10T21:51:00+02:00', destination_country: 'FR' });
+  });
+
+  it('keeps a scan abroad on a clock of several zones out of last_update', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit', lastEventDateTime: '2026-10-11T08:00:00+01:00' },
+      events: [
+        { eventCode: 'EVIIS', eventName: 'Item received at Sorting Office', eventDateTime: '2026-10-11T08:00:00+01:00', locationName: 'Exampleville, United States of America' },
+        { eventCode: 'EVHOE', eventName: 'Item Leaving the UK', eventDateTime: '2026-10-10T03:31:09+01:00' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(result.events?.[0]).toMatchObject({ local_time: '2026-10-11T08:00:00' });
+    expect(result.events?.[0]).not.toHaveProperty('time');
+    expect(result.last_update).toBeNull();
   });
 
   it('dates a summary-only delivery from its last event and ignores an unusable destination', () => {

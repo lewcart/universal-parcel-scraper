@@ -18,7 +18,9 @@ other HTTP errors keep their own failure kinds. Recognition uses the same lookup
 
 ## Numbers
 
-The tracker takes six to forty letters and digits. Parcels to Canada carry a sixteen-digit Canada
+The tracker takes six to forty letters and digits. UBI's own numbers for Australia are `AU` and
+thirteen digits, issued in one dense run; `ubi-smart-parcel-1` offers that shape at low
+confidence, so recognition asks UBI about it. Parcels to Canada carry a sixteen-digit Canada
 Post number from the start, a length several carriers share. The tracker also finds a parcel by
 its partner's number, such as an Australia Post barcode: those numbers stay with the partner, and
 recognition never claims a parcel found that way.

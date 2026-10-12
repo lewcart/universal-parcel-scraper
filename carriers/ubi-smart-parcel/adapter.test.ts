@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { parseTrackingInput } from '../../core/detection/index.js';
+import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -280,6 +281,19 @@ describe('UBI Smart Parcel tracking adapter', () => {
       .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
+  });
+
+  it('offers UBI its own Australian numbers for recognition and leaves partner numbers to the partner', () => {
+    for (const number of [DELIVERED, LINEHAUL, ABSENT]) {
+      expect(detectCarrierMatch(number), number).toEqual({ carrier: 'unknown', confidence: 'low', candidates: ['ubi-smart-parcel'],
+        preferred: ['ubi-smart-parcel'] });
+      expect(recognitionAskedCarriers(number), number).toContain('ubi-smart-parcel');
+    }
+    for (const number of ['AU000000000001', 'AU00000000000170', 'AX0000000000017']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('ubi-smart-parcel');
+    }
+    expect(detectCarrierMatch(PARTNER)).toMatchObject({ carrier: 'australia-post', confidence: 'high' });
+    for (const number of [PARTNER, CANADA, ARAMEX]) expect(recognitionAskedCarriers(number), number).not.toContain('ubi-smart-parcel');
   });
 
   it('reads tracker links, the first of several numbers included', () => {

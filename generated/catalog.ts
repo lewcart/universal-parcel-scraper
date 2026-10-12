@@ -8474,7 +8474,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ubi-smart-parcel",
-      "recognitionRank": 99,
+      "recognitionRank": 45,
       "localClocks": true
     },
     "canaryUrl": "https://shipper.ubismartparcel.com/",
@@ -8489,7 +8489,13 @@ export const CARRIER_CATALOG = {
         "fragment": "^/ubi\\?(?:.*&)?trackingNos=([^&]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AU\\d{13}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
   },
   "venipak": {
     "displayName": "Venipak",
@@ -9261,7 +9267,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "spx-ph": ["spx-ph-prefixed","spx-ph-shopee-express","spx-ph-domestic"],
   "stallion-express": ["stallion-express-1","stallion-express-2"],
   "trans-o-flex": [],
-  "ubi-smart-parcel": [],
+  "ubi-smart-parcel": ["ubi-smart-parcel-1"],
   "venipak": ["venipak-1"],
   "vinted-go": ["vinted-go-1"],
   "wanbexpress": ["wanbexpress-1"],

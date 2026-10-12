@@ -8472,7 +8472,7 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "ubi-smart-parcel",
-      "recognitionRank": 99,
+      "recognitionRank": 45,
       "localClocks": true
     },
     "canaryUrl": "https://shipper.ubismartparcel.com/",
@@ -8487,7 +8487,13 @@
         "fragment": "^/ubi\\?(?:.*&)?trackingNos=([^&]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AU\\d{13}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
   },
   "venipak": {
     "displayName": "Venipak",

@@ -25153,6 +25153,76 @@
     ]
   },
   {
+    "input": "AU0000005887447",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ubi-smart-parcel"
+    ],
+    "preferred": [
+      "ubi-smart-parcel"
+    ],
+    "asked": [
+      "ubi-smart-parcel"
+    ]
+  },
+  {
+    "input": "AU0000005889264",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ubi-smart-parcel"
+    ],
+    "preferred": [
+      "ubi-smart-parcel"
+    ],
+    "asked": [
+      "ubi-smart-parcel"
+    ]
+  },
+  {
+    "input": "AU0000005891434",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ubi-smart-parcel"
+    ],
+    "preferred": [
+      "ubi-smart-parcel"
+    ],
+    "asked": [
+      "ubi-smart-parcel"
+    ]
+  },
+  {
+    "input": "AU0000005891692",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ubi-smart-parcel"
+    ],
+    "preferred": [
+      "ubi-smart-parcel"
+    ],
+    "asked": [
+      "ubi-smart-parcel"
+    ]
+  },
+  {
+    "input": "AU0000005893179",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ubi-smart-parcel"
+    ],
+    "preferred": [
+      "ubi-smart-parcel"
+    ],
+    "asked": [
+      "ubi-smart-parcel"
+    ]
+  },
+  {
     "input": "AUBBH2530249138622692881125015",
     "carrier": "unknown",
     "confidence": "none",

@@ -4854,11 +4854,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "apc-overnight",
+      "recognitionRank": 870,
+      "localClocks": true
     },
     "canaryUrl": "https://apc.co.uk/",
+    "trackingUrlTemplate": "https://apcchoice.apc-overnight.com/track-parcel?id={trackingNumber}",
     "trackingSearchUrl": "https://apc.co.uk/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "apcchoice.apc-overnight.com"
+        ],
+        "pathPattern": "^/track-parcel/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^20[12]\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{14}$",

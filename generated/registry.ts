@@ -6,6 +6,7 @@ import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
 import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
 import { adapter as amazonShipping } from '../carriers/amazon-shipping/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
+import { adapter as apcOvernight } from '../carriers/apc-overnight/adapter.js';
 import { adapter as aramex } from '../carriers/aramex/adapter.js';
 import { adapter as arasKargo } from '../carriers/aras-kargo/adapter.js';
 import { adapter as asendia } from '../carriers/asendia/adapter.js';
@@ -164,6 +165,7 @@ export const REGISTRY: RegistryDefinition = {
     "allegro-one": allegroOne,
     "amazon-shipping": amazonShipping,
     "an-post": anPost,
+    "apc-overnight": apcOvernight,
     "aramex": aramex,
     "aras-kargo": arasKargo,
     "asendia": asendia,
@@ -324,7 +326,7 @@ export const REGISTRY: RegistryDefinition = {
     "amazon-logistics": null,
     "amazon-shipping": "amazon-shipping",
     "an-post": "an-post",
-    "apc-overnight": "universal",
+    "apc-overnight": "apc-overnight",
     "aramex": "aramex",
     "aras-kargo": "aras-kargo",
     "asendia": "asendia",

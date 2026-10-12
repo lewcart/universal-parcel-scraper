@@ -10,7 +10,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -22,7 +22,7 @@
           "estafeta"
         ]
       },
-      "note": "A seller on Amazon's seller forum gives it as an APC Overnight consignment number."
+      "note": "A seller on Amazon's seller forum gives it as an APC Overnight consignment number. APC's tracker returns its history."
     },
     {
       "number": "2026100902014380018924",
@@ -35,7 +35,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -47,7 +47,7 @@
           "estafeta"
         ]
       },
-      "note": "ParcelPanel's APC Overnight page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's APC Overnight page offered it as a sample to try on 11 Oct 2026. APC's tracker returns its history."
     },
     {
       "number": "2026090302014380017949",
@@ -60,7 +60,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -72,7 +72,7 @@
           "estafeta"
         ]
       },
-      "note": "ParcelPanel's APC Overnight page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's APC Overnight page offered it as a sample to try on 11 Oct 2026. APC's tracker returns its history."
     },
     {
       "number": "2018041910099660000599",
@@ -95,7 +95,7 @@
           "estafeta"
         ]
       },
-      "note": "The Glama listing of an open-source MCP server for APC Overnight's booking API uses it as the waybill in an example prompt; it is not described as a live shipment."
+      "note": "The Glama listing of an open-source MCP server for APC Overnight's booking API uses it as the waybill in an example prompt; it is not described as a live shipment. APC's tracker no longer finds it."
     }
   ]
 }

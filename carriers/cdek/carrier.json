@@ -20,17 +20,74 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cdek",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 950
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "canonical_tracking_number"
+  ],
   "portal": {
-    "canaryUrl": "https://www.cdek.ru/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://my.cdek.ru/lkfl/order/{trackingNumber}",
+    "searchUrl": "https://my.cdek.ru/lkfl/",
+    "canaryUrl": "https://my.cdek.ru/lkfl/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "pickup_point_address",
+      "office_contact_details",
+      "office_opening_hours",
+      "coordinates",
+      "pickup_deadline",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at"
+    ],
+    "discarded": [
+      "destination",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "pickup_point_address",
+      "office_contact_details",
+      "office_opening_hours",
+      "coordinates",
+      "pickup_deadline",
+      "payment_details"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "my.cdek.ru"
+      ],
+      "path": "^/lkfl/order/([^/?#]+)/?$"
+    }
+  ],
   "detection": []
 }

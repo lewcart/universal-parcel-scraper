@@ -5036,10 +5036,20 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cdek",
+      "recognitionRank": 950
     },
-    "canaryUrl": "https://www.cdek.ru/",
-    "linkRules": [],
+    "canaryUrl": "https://my.cdek.ru/lkfl/",
+    "trackingUrlTemplate": "https://my.cdek.ru/lkfl/order/{trackingNumber}",
+    "trackingSearchUrl": "https://my.cdek.ru/lkfl/",
+    "linkRules": [
+      {
+        "domains": [
+          "my.cdek.ru"
+        ],
+        "path": "^/lkfl/order/([^/?#]+)/?$"
+      }
+    ],
     "detectionRules": []
   },
   "cdl": {

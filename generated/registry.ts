@@ -22,6 +22,7 @@ import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as cargus } from '../carriers/cargus/adapter.js';
+import { adapter as cdek } from '../carriers/cdek/adapter.js';
 import { adapter as ceskaPosta } from '../carriers/ceska-posta/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chronopost } from '../carriers/chronopost/adapter.js';
@@ -188,6 +189,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": canadaPost,
     "canpar": canpar,
     "cargus": cargus,
+    "cdek": cdek,
     "ceska-posta": ceskaPosta,
     "china-post": chinaPost,
     "chronopost": chronopost,
@@ -356,7 +358,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": "canada-post",
     "canpar": "canpar",
     "cargus": "cargus",
-    "cdek": "universal",
+    "cdek": "cdek",
     "cdl": "universal",
     "ceska-posta": "ceska-posta",
     "china-post": "china-post",

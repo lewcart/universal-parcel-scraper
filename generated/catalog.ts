@@ -7918,7 +7918,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slovak-parcel-service",
+      "recognitionRank": 830,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sps-sro.sk/moja-zasielka/",
     "trackingUrlTemplate": "https://www.sps-sro.sk/moja-zasielka/?shipment_id={trackingNumber}",

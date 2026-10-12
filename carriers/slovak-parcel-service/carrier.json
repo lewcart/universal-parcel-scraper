@@ -16,18 +16,59 @@
   "timezone": "Europe/Bratislava",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "slovak-parcel-service",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 830
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.sps-sro.sk/moja-zasielka/?shipment_id={trackingNumber}",
     "searchUrl": "https://www.sps-sro.sk/moja-zasielka/",
     "canaryUrl": "https://www.sps-sro.sk/moja-zasielka/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "postcodes",
+      "customer_reference",
+      "tracking_alias",
+      "delivery_partner_reference",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "weight"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "postcodes",
+      "customer_reference",
+      "tracking_alias",
+      "delivery_partner_reference",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

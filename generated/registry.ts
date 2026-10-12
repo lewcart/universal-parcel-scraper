@@ -125,6 +125,7 @@ import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
 import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
+import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as speeDee } from '../carriers/spee-dee/adapter.js';
 import { adapter as speedpak } from '../carriers/speedpak/adapter.js';
 import { adapter as speedx } from '../carriers/speedx/adapter.js';
@@ -279,6 +280,7 @@ export const REGISTRY: RegistryDefinition = {
     "seur": seur,
     "sf-express": sfExpress,
     "singapore-post": singaporePost,
+    "slovak-parcel-service": slovakParcelService,
     "spee-dee": speeDee,
     "speedpak": speedpak,
     "speedx": speedx,
@@ -477,7 +479,7 @@ export const REGISTRY: RegistryDefinition = {
     "sf-express": "sf-express",
     "shipup": "universal",
     "singapore-post": "singapore-post",
-    "slovak-parcel-service": "universal",
+    "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "universal",
     "spee-dee": "spee-dee",
     "speedpak": "speedpak",

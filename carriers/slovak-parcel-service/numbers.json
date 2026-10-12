@@ -26,7 +26,7 @@
           "evri-uk"
         ]
       },
-      "note": "Looked up on SPS's own tracker, as an archived address shows; the capture was not opened. It carries two digits more than SPS's parcel numbers, and the next address shows the tracker answering with the parcel of those first fourteen digits."
+      "note": "Looked up on SPS's own tracker, as an archived address shows; the capture was not opened. It carries two digits more than SPS's parcel numbers, and the next address shows the tracker answering with the parcel of those first fourteen digits. SPS's tracker accepts that longer form, which its tracking service also uses to name parcels, but no longer knows this one, so no reply ties it to SPS."
     },
     {
       "number": "703-010-30781471",
@@ -58,7 +58,7 @@
           "slovak-parcel-service"
         ]
       },
-      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows; the capture was not opened."
+      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows; the capture was not opened. SPS's tracking service no longer knows it, which can mean its records expired."
     },
     {
       "number": "030-43181455",
@@ -71,7 +71,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -87,7 +87,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the parcel's history for this form too."
     },
     {
       "number": "703-030-43181455",
@@ -100,7 +100,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -118,7 +118,7 @@
           "slovak-parcel-service"
         ]
       },
-      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows; the capture was not opened."
+      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows. SPS's tracking service returns its history."
     },
     {
       "number": "030-43181927",
@@ -131,7 +131,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -144,7 +144,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPS's own tracker without the 703 country prefix, as an archived address shows. SPS's tracking service returns the history of the parcel with that prefix."
     },
     {
       "number": "703-030-43181927",
@@ -157,7 +157,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -176,7 +176,7 @@
           "slovak-parcel-service"
         ]
       },
-      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows; the capture was not opened."
+      "note": "Named as the parcel of a shipment looked up on SPS's own tracker, as an archived result address shows. SPS's tracking service returns its history."
     },
     {
       "number": "703-030-44933746",
@@ -189,7 +189,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -207,7 +207,7 @@
           "slovak-parcel-service"
         ]
       },
-      "note": "Looked up on SPS's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPS's own tracker, as an archived address shows. SPS's tracking service returns its history."
     }
   ]
 }

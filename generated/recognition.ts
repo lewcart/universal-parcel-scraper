@@ -98,4 +98,5 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "vinted-go": 410,
   "whistl": 320,
   "yurtici-kargo": 430,
+  "zeleris": 230,
 };

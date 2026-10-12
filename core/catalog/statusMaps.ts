@@ -83,6 +83,7 @@ import { statusMap as whistl } from '../../carriers/whistl/status.js';
 import { statusMap as xdp } from '../../carriers/xdp/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
+import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
 import { statusMap as universal } from '../../providers/status.js';
 import { normalizeStatusWording, type CarrierStatusMap } from '../status/statusMap.js';
@@ -99,7 +100,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,
   'posta-srbije': postaSrbije, postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak,
-  'vinted-go': vintedGo, whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo,
+  'vinted-go': vintedGo, whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo, zeleris,
 };
 
 /** The carrier the app files the universal providers' scans under. */

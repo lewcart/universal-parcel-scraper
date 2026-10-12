@@ -552,6 +552,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'geis', number: '9999999999999',
     route: /^https:\/\/www\.geis-group\.cz\/cs\/detail-zasilky\?packNumber=9999999999999$/,
     marker: /nebyla nalezena|nebo nebyla předána k přepravě|Historie zásilky/i },
+  // The site sends an unknown code back to its search page, which fills its field in under a notice.
+  { carrier: 'zeleris', number: 'FFFFFFFF999999999Z',
+    route: /^https:\/\/www\.zeleris\.com\/seguimiento-de-envios\/\?tracking_number=FFFFFFFF999999999Z&not_found=1$/,
+    marker: /Sigue tu envío|El envío no existe/ },
 ];
 
 /**

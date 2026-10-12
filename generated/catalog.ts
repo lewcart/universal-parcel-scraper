@@ -8717,10 +8717,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zeleris",
+      "recognitionRank": 230,
+      "localClocks": true
     },
     "canaryUrl": "https://www.zeleris.com/seguimiento-de-envios/",
-    "trackingUrlTemplate": "https://www.zeleris.com/detalle-de-envio?tracking_number={trackingNumber}",
+    "trackingUrlTemplate": "https://www.zeleris.com/detalle-de-envio/?tracking_number={trackingNumber}",
     "trackingSearchUrl": "https://www.zeleris.com/seguimiento-de-envios/",
     "linkRules": [
       {

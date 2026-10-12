@@ -14,18 +14,47 @@
   "timezone": "Europe/Madrid",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "zeleris",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 230
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "canonical_tracking_number"
+  ],
   "portal": {
-    "url": "https://www.zeleris.com/detalle-de-envio?tracking_number={trackingNumber}",
+    "url": "https://www.zeleris.com/detalle-de-envio/?tracking_number={trackingNumber}",
     "searchUrl": "https://www.zeleris.com/seguimiento-de-envios/",
     "canaryUrl": "https://www.zeleris.com/seguimiento-de-envios/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "canonical_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "progress_rail",
+      "canonical_tracking_number"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "pickup_point",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

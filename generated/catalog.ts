@@ -8349,7 +8349,17 @@ export const CARRIER_CATALOG = {
       "adapter": "universal"
     },
     "canaryUrl": "https://www.trans-o-flex.com/",
-    "linkRules": [],
+    "trackingUrlTemplate": "https://www.trans-o-flex.com/sendungsverfolgung/tracking?ref={trackingNumber}&type=barcode",
+    "trackingSearchUrl": "https://www.trans-o-flex.com/sendungsverfolgung/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "trans-o-flex.com"
+        ],
+        "pathPattern": "^/sendungsverfolgung/tracking/?$",
+        "query": "(?:^|&)ref=(\\d{11}-?\\d{13})(?:&|$)"
+      }
+    ],
     "detectionRules": []
   },
   "ubi-smart-parcel": {

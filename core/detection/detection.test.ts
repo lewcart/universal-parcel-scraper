@@ -176,6 +176,19 @@ describe('the detection engine', () => {
     }
   });
 
+  it('reads a trans-o-flex barcode, but no shipper reference, from a guest tracker link', () => {
+    for (const query of [
+      'type=barcode&ref=100000000000000004900000',
+      'ref=100000000000000004900000&type=barcode&zip=00000&streetno=0',
+    ]) {
+      expect(parseTrackingInput(`https://www.trans-o-flex.com/sendungsverfolgung/tracking?${query}`)).toMatchObject({
+        trackingNumber: '100000000000000004900000', carrier: 'trans-o-flex', source: 'link',
+      });
+    }
+    expect(parseTrackingInput('https://www.trans-o-flex.com/sendungsverfolgung/tracking?ref=ABC-0001&type=ref').carrier)
+      .not.toBe('trans-o-flex');
+  });
+
   it('binds Nova Poshta through the current official tracking path', () => {
     expect(parseTrackingInput('https://novaposhta.ua/en/tracking/59000000000001/')).toMatchObject({
       trackingNumber: '59000000000001', carrier: 'nova-poshta', confidence: 'high', source: 'link',

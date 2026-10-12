@@ -66,9 +66,8 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
 - One session serves the process for each transport and user agent, shared by
   DPD Germany and DPD Switzerland and by the adapters of every registry and
   tracker. A tracker's own fetcher only adds each lookup's signal, so the
-  session is that of the fetcher the host gave it. It is replaced when the
-  service refuses it. From eight hours old it keeps serving while a lookup
-  opens the next one beside it.
+  session is that of the fetcher the host gave it. It serves, whatever its
+  age, until the service refuses it.
 - Lookups share the opening, which can take two minutes and runs while a
   lookup that asked for it is still running. Ahead of the guest API, a lookup
   waits for it while keeping 20 seconds for the guest API, and asks the guest
@@ -87,20 +86,23 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
   at start, with the `fetcher` and `userAgent` it gives `createTracker` or its
   adapter environment, if it sets them. The session then opens in the
   background and stays open: openings run to their end without a lookup, the
-  next one opens eight hours after the last, and a failed one is tried again a
-  quarter of an hour later. The timers do not keep the process alive.
+  next one opens once the service refuses the session, and a failed one is
+  tried again a quarter of an hour later. The timers do not keep the process
+  alive.
 - The host can also pass a `DpdSessionStore` as `{ store }`, which loads and
-  saves `DpdSession` records. At start, the newest saved session younger than
-  eight hours is taken up again instead of opening one; lookups wait up to five
-  seconds for the store. Every session lookups stop using, renewed or refused
-  during a lookup, is then checked once an hour with a shop id no shop has: the
-  service answers it without a shop, or refuses the session. A restart checks
-  each session an hour after its saved `checkedAt`, or at once if it has none,
-  so frequent deploys do not hold checks back. A refusal counts
-  once the next check repeats it, and is saved as `refusedAt`; each acceptance
-  is saved as `checkedAt`. `refusedAt - openedAt` is how long the service
-  accepted the session, and checks stop a week after it opened. Checks of
-  several sessions are five seconds apart. A failing store leaves lookups as
+  saves `DpdSession` records. At start, the newest saved session is taken up
+  again, whatever its age, instead of opening one; lookups wait up to five
+  seconds for the store. The current session is then checked once an hour
+  with a shop id no shop has: the service answers it without a shop, or
+  refuses the session, which opens the next one at once rather than when a
+  lookup meets the refusal. Each session lookups stop using is checked once an
+  hour too, until a check repeats a refusal, and for a week after it opened.
+  A restart checks each session an hour after its saved `checkedAt`, or at
+  once if it has none, so frequent deploys do not hold checks back. Each
+  acceptance is saved as `checkedAt`, and a refusal the next check repeats as
+  `refusedAt`: `checkedAt - openedAt` is how long the service has accepted a
+  session, and `refusedAt - openedAt` how long it accepted one it refuses.
+  Checks of several sessions are five seconds apart. A failing store leaves lookups as
   they are without one, once it has failed: one that does not answer holds the
   lookups that arrive meanwhile for those five seconds, and only then do they
   ask the guest API.
@@ -108,9 +110,9 @@ with [DPD Switzerland](../dpd/README.md), whose Pickup shops
   `DpdSessionEvent` when a saved one is taken up at start (`taken_up`, with
   its `ageMs` and the store's load time as `durationMs`), and when an opening
   ends (`opened` or `failed`, with its `durationMs` and, for a failure, an
-  `errorKind`). Its `trigger` says what began the opening: `start`, `renewal`,
-  `retry` after a failed one, `refused` after the service refused the session,
-  or `lookup` when a lookup found none open. It never receives a token, runs
+  `errorKind`). Its `trigger` says what began the opening: `start`, `retry`
+  after a failed one, `refused` after a lookup or a check found the service
+  refusing the session, or `lookup` when a lookup found none open. It never receives a token, runs
   apart from lookups, and what it throws or rejects is ignored.
 - `getTrackingData` and `getTrackingScanList` take the postcode as
   `DeliveryZipCode`. A matching one returns `DataViewStatus`

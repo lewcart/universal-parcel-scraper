@@ -18,23 +18,18 @@ const SERVICE = 'https://cloud.dpd.com/';
 const MAX_BYTES = 2_000_000;
 /** Opening a session has taken up to 75 seconds. */
 const SESSION_OPEN_MS = 120_000;
-/**
- * The service has accepted a session for over two days, used once an hour after its first eight,
- * and one left idle for four. It refused another at twenty-seven hours old, in two checks an hour
- * apart. From eight hours old the next one opens beside it, and replaces it once open.
- */
-const SESSION_RENEW_MS = 8 * 3_600_000;
 /** A kept session that failed to open is tried again after this long. */
 const SESSION_RETRY_MS = 15 * 60_000;
 /** A host's store has this long to give back its sessions before the service opens one. */
 const STORE_LOAD_MS = 5_000;
 /**
- * With a store, a session lookups no longer use is checked once it was last asked about this
- * long ago, counting a check saved before a restart, until the service refuses it twice in a row:
- * while slow, it can refuse a session it accepts again later.
+ * With a store, the current session and those lookups no longer use are checked once they were
+ * last asked about this long ago, counting a check saved before a restart. One no longer used is
+ * checked until the service refuses it twice in a row: while slow, it can refuse a session it
+ * accepts again later.
  */
 const CHECK_EVERY_MS = 3_600_000;
-/** And for at most this long after it opened. */
+/** One lookups no longer use is checked for at most this long after it opened, unless a refusal waits for the next check. */
 const CHECK_FOR_MS = 7 * 24 * 3_600_000;
 /** A check takes a fraction of a second, and checks of several sessions are this far apart. */
 const CHECK_TIMEOUT_MS = 30_000;
@@ -106,7 +101,7 @@ interface Opening { token: Promise<string>; holders: Set<AbortSignal>; release: 
 export interface DpdSession {
   token: string;
   openedAt: number;
-  /** The last time a check found the service accepting it, once lookups no longer used it. */
+  /** The last time an hourly check found the service accepting it. */
   checkedAt?: number;
   /** When the service began refusing it, once a second check confirmed it. */
   refusedAt?: number;
@@ -114,11 +109,12 @@ export interface DpdSession {
 
 /**
  * Where a long-lived host keeps the sessions, so that a restart takes the current one up again
- * instead of opening another, and so that how long the service accepts one can be read back
- * from `refusedAt - openedAt`. The service carries on without a store that fails.
+ * instead of opening another, and so that how long the service accepts one can be read back:
+ * `refusedAt - openedAt` once it refused it, and `checkedAt - openedAt` until then. The service
+ * carries on without a store that fails.
  */
 export interface DpdSessionStore {
-  /** The sessions saved that the service has not refused, in any order. */
+  /** The sessions saved that the service has not refused, in any order, the newest whatever its age. */
   load(): Promise<readonly DpdSession[]>;
   /** Saves a session, replacing what was saved for the same token. */
   save(session: DpdSession): Promise<void>;
@@ -131,12 +127,11 @@ export interface DpdSessionStore {
 export interface DpdSessionEvent {
   outcome: 'taken_up' | 'opened' | 'failed';
   /**
-   * What began the opening: `start` when the host kept the service, `renewal` when the current
-   * session reached its renewal age, `retry` a quarter of an hour after a failed opening,
-   * `refused` when the service no longer accepted the session, and `lookup` when a lookup found
-   * none open. A session taken up is always `start`.
+   * What began the opening: `start` when the host kept the service, `retry` a quarter of an hour
+   * after a failed opening, `refused` when a lookup or a check found the service refusing the
+   * session, and `lookup` when a lookup found none open. A session taken up is always `start`.
    */
-  trigger: 'start' | 'renewal' | 'retry' | 'refused' | 'lookup';
+  trigger: 'start' | 'retry' | 'refused' | 'lookup';
   /** How long the opening took, or the store's load for a session taken up. */
   durationMs: number;
   /** For a session taken up: how long ago it opened. */
@@ -152,8 +147,8 @@ interface KeepOptions {
   onSession?: (event: DpdSessionEvent) => void | Promise<void>;
 }
 
-/** A session lookups no longer use, checked until the service refuses it. */
-interface Retired { session: DpdSession; askedAt: number; refusedSince?: number }
+/** A session the service is asked about: the current one, or one lookups no longer use until the service refuses it. */
+interface Followed { session: DpdSession; askedAt: number; refusedSince?: number }
 
 /** The promise's outcome, or the signal's reason once it aborts first. */
 async function until<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
@@ -167,9 +162,11 @@ async function until<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
 
 /**
  * The service needs an anonymous device session, which it takes tens of seconds to open and then
- * accepts for hours. One is kept per instance, and `sharedDpdAppService` gives the process one
- * instance per transport. The opening runs on its own clock, so a lookup that stops waiting
- * leaves it to the next. A session past its renewal age serves while the next one opens.
+ * accepts for days: it has accepted one for over two days, and refused another at twenty-seven
+ * hours old, in two checks an hour apart, though it accepted others for longer. One is kept per
+ * instance until the service refuses it, and `sharedDpdAppService` gives the process one instance
+ * per transport. The opening runs on its own clock, so a lookup that stops waiting leaves it to
+ * the next.
  */
 export class DpdAppService {
   readonly #partner: DpdDePartner;
@@ -186,7 +183,7 @@ export class DpdAppService {
   /** The service refused the last session, and none has opened since. */
   #refused = false;
   #loading: Promise<void> | null = null;
-  readonly #retired = new Map<string, Retired>();
+  readonly #followed = new Map<string, Followed>();
 
   constructor(options: { partner?: DpdDePartner; fetcher?: typeof fetch; userAgent?: string; now?: () => number } = {}) {
     this.#partner = options.partner ?? PARTNER;
@@ -227,18 +224,19 @@ export class DpdAppService {
   /** Forgets a session the service refused, unless another lookup already replaced it. */
   expire(session: string): void {
     if (this.#session?.token !== session) return;
-    this.#retire(this.#session, this.#now());
+    this.#track(this.#session, this.#now());
     this.#session = null;
     this.#refused = true;
   }
 
   /**
    * Keeps a session open from now on, for a long-lived host: one opens at once if there is none,
-   * and the next before the current one lapses. Openings then run whether or not a lookup waits
-   * for them. With a store, the current session saved there is taken up again instead, and the
-   * sessions lookups no longer use are checked until the service refuses them. `onSession` hears
-   * of each session taken up or opening that ends. The timers do not keep the process alive.
-   * Only the first call counts.
+   * and the next once the service refuses it. Openings then run whether or not a lookup waits
+   * for them. With a store, the newest session saved there is taken up again instead, whatever
+   * its age, and checked every hour, so that a refusal opens the next one before a lookup meets
+   * it. The sessions lookups no longer use are checked until the service refuses them.
+   * `onSession` hears of each session taken up or opening that ends. The timers do not keep the
+   * process alive. Only the first call counts.
    */
   keep(options: KeepOptions = {}): void {
     if (this.#kept) return;
@@ -246,10 +244,10 @@ export class DpdAppService {
     const { store, onSession } = options;
     this.#store = store;
     this.#onSession = onSession;
-    if (!store) return this.#renew('start');
+    if (!store) return this.#ensure('start');
     this.#loading = this.#load(store).finally(() => {
       this.#loading = null;
-      this.#renew('start');
+      this.#ensure('start');
       this.#follow();
     });
   }
@@ -260,7 +258,7 @@ export class DpdAppService {
     if (observer) void Promise.resolve().then(() => observer(event)).catch(() => undefined);
   }
 
-  /** Takes up the newest saved session while it is younger than the renewal age, and follows the others. */
+  /** Takes up the newest saved session, and follows it and the others under a week old. */
   async #load(store: DpdSessionStore): Promise<void> {
     const started = this.#now();
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -272,15 +270,18 @@ export class DpdAppService {
     const now = this.#now();
     const sessions = (Array.isArray(saved) ? saved as readonly unknown[] : [])
       .filter((session): session is DpdSession => isRecord(session) && typeof session.token === 'string' && TOKEN.test(session.token)
-        && typeof session.openedAt === 'number' && session.openedAt <= now && now - session.openedAt < CHECK_FOR_MS
-        && session.refusedAt == null)
+        && typeof session.openedAt === 'number' && session.openedAt <= now && session.refusedAt == null)
       .sort((left, right) => right.openedAt - left.openedAt);
-    const [newest, ...older] = sessions;
-    if (newest && !this.#session && now - newest.openedAt < SESSION_RENEW_MS) {
+    const [newest] = sessions;
+    if (newest && !this.#session) {
       this.#session = { token: newest.token, openedAt: newest.openedAt };
       this.#report({ outcome: 'taken_up', trigger: 'start', durationMs: Math.max(0, now - started), ageMs: now - newest.openedAt });
-    } else if (newest) older.unshift(newest);
-    for (const session of older) this.#retired.set(session.token, { session: { ...session }, askedAt: session.checkedAt ?? session.openedAt });
+    }
+    for (const session of sessions) {
+      if (session.token !== this.#session?.token && now - session.openedAt >= CHECK_FOR_MS) continue;
+      this.#followed.set(session.token, { session: { ...session }, askedAt: session.checkedAt ?? session.openedAt });
+    }
+    if (this.#session) this.#track(this.#session);
   }
 
   /** Saves a session's state in the host's store, if there is one, without waiting for it. */
@@ -289,35 +290,45 @@ export class DpdAppService {
     if (store) void Promise.resolve().then(() => store.save({ ...session })).catch(() => undefined);
   }
 
-  /** Follows a session lookups no longer use, when a store keeps what its checks find. */
-  #retire(session: { token: string; openedAt: number }, refusedAt?: number): void {
-    if (this.#store && !this.#retired.has(session.token)) {
-      this.#retired.set(session.token, { session: { ...session }, askedAt: this.#now(), refusedSince: refusedAt });
+  /**
+   * Follows a session when a store keeps what its checks find. One the service refused is checked
+   * an hour after the refusal, which counts once that check repeats it.
+   */
+  #track(session: { token: string; openedAt: number }, refusedAt?: number): void {
+    if (!this.#store) return;
+    const followed = this.#followed.get(session.token);
+    if (!followed) this.#followed.set(session.token, { session: { ...session }, askedAt: this.#now(), refusedSince: refusedAt });
+    else if (refusedAt !== undefined && followed.refusedSince === undefined) {
+      followed.askedAt = this.#now();
+      followed.refusedSince = refusedAt;
     }
   }
 
-  /** Checks the sessions lookups no longer use when the first of them is due. */
+  /** Checks the sessions followed when the first of them is due. */
   #follow(): void {
     let due = this.#now() + CHECK_EVERY_MS;
-    for (const retired of this.#retired.values()) due = Math.min(due, retired.askedAt + CHECK_EVERY_MS);
+    for (const followed of this.#followed.values()) due = Math.min(due, followed.askedAt + CHECK_EVERY_MS);
     const timer = setTimeout(() => void this.#check().finally(() => this.#follow()), Math.max(0, due - this.#now()));
     timer.unref?.();
   }
 
   /**
    * Asks the service once for each followed session that is due whether it still accepts it. A
-   * refusal confirmed by the next check is saved as the time it began; a reply that is not about
-   * the session says nothing.
+   * refusal of the current session opens the next one at once. A refusal confirmed by the next
+   * check is saved as the time it began; a reply that is not about the session says nothing.
    */
   async #check(): Promise<void> {
     let first = true;
-    for (const [token, retired] of [...this.#retired]) {
+    for (const [token, followed] of [...this.#followed]) {
       const now = this.#now();
-      if (now - retired.session.openedAt >= CHECK_FOR_MS) { this.#retired.delete(token); continue; }
-      if (now - retired.askedAt < CHECK_EVERY_MS) continue;
+      if (token !== this.#session?.token && followed.refusedSince === undefined && now - followed.session.openedAt >= CHECK_FOR_MS) {
+        this.#followed.delete(token);
+        continue;
+      }
+      if (now - followed.askedAt < CHECK_EVERY_MS) continue;
       if (!first) await new Promise<void>((resolve) => { setTimeout(resolve, CHECK_GAP_MS).unref?.(); });
       first = false;
-      retired.askedAt = this.#now();
+      followed.askedAt = this.#now();
       let accepted: boolean;
       try {
         await this.call('getParcelShopByID', { SessionToken: token, ParcelShopID: '0', PudoID: CHECK_PUDO_ID, ParcelShopOnly: 'false' },
@@ -329,31 +340,33 @@ export class DpdAppService {
         else continue;
       }
       if (accepted) {
-        retired.refusedSince = undefined;
-        retired.session.checkedAt = this.#now();
-        this.#save(retired.session);
-      } else if (retired.refusedSince === undefined) {
-        retired.refusedSince = this.#now();
+        followed.refusedSince = undefined;
+        followed.session.checkedAt = this.#now();
+        this.#save(followed.session);
+      } else if (followed.refusedSince === undefined) {
+        followed.refusedSince = this.#now();
+        if (this.#session?.token === token) {
+          this.expire(token);
+          this.#ensure('refused');
+        }
       } else {
-        retired.session.refusedAt = retired.refusedSince;
-        this.#retired.delete(token);
-        this.#save(retired.session);
+        followed.session.refusedAt = followed.refusedSince;
+        this.#followed.delete(token);
+        this.#save(followed.session);
       }
     }
   }
 
-  /** Opens the next session if the current one is due, or waits until it is. */
-  #renew(trigger: DpdSessionEvent['trigger']): void {
-    if (this.#opening) return;
-    const age = this.#session ? this.#now() - this.#session.openedAt : Infinity;
-    if (age < SESSION_RENEW_MS) this.#schedule(SESSION_RENEW_MS - age, 'renewal');
-    else this.#opening = this.#open(trigger);
+  /** Opens a session if none is open or opening. */
+  #ensure(trigger: DpdSessionEvent['trigger']): void {
+    if (!this.#session && !this.#opening) this.#opening = this.#open(trigger);
   }
 
-  #schedule(ms: number, trigger: DpdSessionEvent['trigger']): void {
+  /** Tries a kept service's opening again a quarter of an hour after one failed. */
+  #retry(): void {
     if (!this.#kept) return;
     clearTimeout(this.#timer);
-    this.#timer = setTimeout(() => this.#renew(trigger), ms);
+    this.#timer = setTimeout(() => this.#ensure('retry'), SESSION_RETRY_MS);
     this.#timer.unref?.();
   }
 
@@ -367,9 +380,10 @@ export class DpdAppService {
     } }, controller.signal, SESSION_OPEN_MS).then(result => {
       const value = scalar(one(result, 'SessionFullState'), 'SessionToken', 600);
       if (!TOKEN.test(value)) invalid();
-      if (this.#session) this.#retire(this.#session);
+      if (this.#session) this.#track(this.#session);
       this.#session = { token: value, openedAt: this.#now() };
       this.#refused = false;
+      this.#track(this.#session);
       this.#save(this.#session);
       return value;
     });
@@ -381,10 +395,9 @@ export class DpdAppService {
     const durationMs = () => Math.max(0, this.#now() - started);
     void token.then(() => {
       this.#report({ outcome: 'opened', trigger, durationMs: durationMs() });
-      this.#schedule(SESSION_RENEW_MS, 'renewal');
     }, (error: unknown) => {
       this.#report({ outcome: 'failed', trigger, durationMs: durationMs(), errorKind: carrierErrorKind(error) ?? errorTypeOf(error) });
-      this.#schedule(SESSION_RETRY_MS, 'retry');
+      this.#retry();
     }).finally(() => {
       if (this.#opening === opening) this.#opening = null;
       for (const holder of holders) holder.removeEventListener('abort', release);
@@ -395,23 +408,20 @@ export class DpdAppService {
   /**
    * One session for every lookup. The opening runs while a lookup that asked for it is still
    * running, even one that stopped waiting; each lookup waits until its signal or `waitMs` ends.
-   * A session past its renewal age answers at once while the next one opens. `waiting` is called
-   * when the lookup starts waiting for an opening, once a host's store has given back its sessions.
-   * A lookup whose `stop` aborts stops waiting with its reason, and still holds the opening.
+   * `waiting` is called when the lookup starts waiting for an opening, once a host's store has
+   * given back its sessions. A lookup whose `stop` aborts stops waiting with its reason, and still
+   * holds the opening.
    */
   async session(signal: AbortSignal, waitMs: number, options: { waiting?: () => void; stop?: AbortSignal } = {}): Promise<string> {
     if (this.#loading) await until(this.#loading, signal);
-    const current = this.#session;
-    const due = !current || this.#now() - current.openedAt >= SESSION_RENEW_MS;
-    if (current && !due) return current.token;
+    if (this.#session) return this.#session.token;
     signal.throwIfAborted();
-    const opening = this.#opening ??= this.#open(current ? 'renewal' : this.#refused ? 'refused' : 'lookup');
+    const opening = this.#opening ??= this.#open(this.#refused ? 'refused' : 'lookup');
     const { token, holders, release } = opening;
     if (!holders.has(signal)) {
       holders.add(signal);
       signal.addEventListener('abort', release, { once: true });
     }
-    if (current) return current.token;
     options.waiting?.();
     const ended = options.stop ? AbortSignal.any([signal, options.stop]) : signal;
     ended.throwIfAborted();
@@ -476,11 +486,12 @@ export function sharedDpdAppService(options: Pick<AdapterEnvironment, 'fetcher' 
  * Opens the session DPD Germany and DPD Switzerland read the German DPD app's service with, in the
  * background, and keeps one open for the life of the process, so that no lookup waits the tens of
  * seconds an opening takes. For a long-lived host, with the `fetcher` and `userAgent` it gives
- * `createTracker` or its adapter environment. With a `store`, a restart takes the saved session up
- * again, and the sessions no longer used are checked every hour, also across restarts, until the
- * service refuses them, which the store records. `onSession` hears of each session taken up and
- * each opening that ends, so the host can tell how long openings take and when one fails. The
- * timers do not keep the process alive.
+ * `createTracker` or its adapter environment. With a `store`, a restart takes the newest saved
+ * session up again, and the sessions are checked every hour, also across restarts: the current
+ * one, which a refusal replaces at once, and the ones no longer used until the service refuses
+ * them, which the store records. `onSession` hears of each session taken up and each opening that
+ * ends, so the host can tell how long openings take and when one fails. The timers do not keep
+ * the process alive.
  */
 export function warmDpdSession(environment: Pick<AdapterEnvironment, 'fetcher' | 'userAgent'> = {},
   options: { store?: DpdSessionStore; onSession?: (event: DpdSessionEvent) => void | Promise<void> } = {}): void {

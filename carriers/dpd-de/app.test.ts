@@ -628,8 +628,8 @@ describe('DPD Germany tiers', () => {
       await vi.advanceTimersByTimeAsync(60_000);
       open();
       await vi.advanceTimersByTimeAsync(0);
-      // Only the renewal waits on a timer.
-      expect(vi.getTimerCount()).toBe(1);
+      // Nothing waits on a timer.
+      expect(vi.getTimerCount()).toBe(0);
       expect((await tracking.track({ number: NUMBER })).events).toHaveLength(5);
       expect(steps.at(-1)).toEqual(['app', 'ok']);
       expect(guestCalls).toHaveLength(4);
@@ -690,7 +690,7 @@ describe('DPD Germany tiers', () => {
 
     it.each([
       ['none', () => []],
-      ['only one past its renewal age', () => [{ token: SAVED, openedAt: Date.now() - 9 * HOUR, checkedAt: Date.now() }]],
+      ['only one the service refused', () => [{ token: SAVED, openedAt: Date.now() - 9 * HOUR, checkedAt: Date.now() - 2 * HOUR, refusedAt: Date.now() - HOUR }]],
     ])('asks the guest protocol beside the opening once the store gives back %s', async (_, sessions) => {
       vi.useFakeTimers();
       try {

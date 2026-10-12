@@ -21,14 +21,17 @@ const expired = () => xml('<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org
 
 interface Call { operation: string; body: string; signal?: AbortSignal | null }
 
-/** Answers each operation from its queue, then with a session or the Swiss shop. */
+const tokenOf = (call: Call | undefined) => /<SessionToken>([^<]*)</.exec(call?.body ?? '')?.[1];
+
+/** Answers each operation from its queue for the session, then from its own, then with a session or the Swiss shop. */
 function service(replies: Record<string, Array<() => Response | Promise<Response>>> = {}) {
   const calls: Call[] = [];
   const fetcher = ((url: string | URL, init?: RequestInit) => {
     expect(String(url)).toBe(DPD_DE_APP_API);
     const operation = /^"https:\/\/cloud\.dpd\.com\/(\w+)"$/.exec(new Headers(init?.headers).get('SOAPAction') ?? '')?.[1] ?? '';
-    calls.push({ operation, body: String(init?.body), signal: init?.signal });
-    const queued = replies[operation]?.shift();
+    const call = { operation, body: String(init?.body), signal: init?.signal };
+    calls.push(call);
+    const queued = replies[`${operation} ${tokenOf(call)}`]?.shift() ?? replies[operation]?.shift();
     if (queued) return Promise.resolve(queued());
     if (operation === 'getSessionFullState') return Promise.resolve(xml(fixture('session')));
     return operation === 'getParcelShopByID' ? Promise.resolve(swissShop()) : Promise.reject(new Error('Unexpected operation'));
@@ -38,10 +41,12 @@ function service(replies: Record<string, Array<() => Response | Promise<Response
 
 const MINUTE = 60_000;
 const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
 /** A session reply with its own token. */
 const session = (token: string) => () => xml(fixture('session').replace(/<SessionToken>[^<]*/, `<SessionToken>${token}`));
 const opened = (calls: Call[]) => calls.filter(call => call.operation === 'getSessionFullState').length;
-const tokenOf = (call: Call | undefined) => /<SessionToken>([^<]*)</.exec(call?.body ?? '')?.[1];
+const FIRST = 'U0VTU0lPTl9GSVJTVF9PTkU=';
+const SECOND = 'U0VTU0lPTl9TRUNPTkRfT05F';
 
 describe('DPD app service shop lookup', () => {
   it('reads a shop by its PUDO id, as the app asks for it', async () => {
@@ -85,36 +90,25 @@ describe('DPD app service session', () => {
   afterEach(() => { vi.useRealTimers(); });
   const lookup = (shops: DpdAppService, signal = new AbortController().signal) => shops.parcelShop('CH00001', { signal, timeoutMs: 1_000 });
 
-  it('renews a session used past eight hours, answering with the current one meanwhile', async () => {
+  it('keeps a session however old until the service refuses it', async () => {
     vi.useFakeTimers();
-    let open!: () => void;
-    const { calls, shops } = service({ getSessionFullState: [session('U0VTU0lPTl9GSVJTVF9PTkU='),
-      () => new Promise<Response>((resolve) => { open = () => resolve(session('U0VTU0lPTl9TRUNPTkRfT05F')()); })] });
+    const { calls, shops } = service({ getSessionFullState: [session(FIRST), session(SECOND)], getParcelShopByID: [swissShop, expired] });
     await lookup(shops);
-    await vi.advanceTimersByTimeAsync(8 * HOUR - 1);
-    await lookup(shops);
-    expect(opened(calls)).toBe(1);
-    await vi.advanceTimersByTimeAsync(1);
+    await vi.advanceTimersByTimeAsync(30 * DAY);
     await expect(lookup(shops)).resolves.toMatchObject({ name: 'Kiosk Muster' });
-    expect(opened(calls)).toBe(2);
-    expect(tokenOf(calls.at(-1))).toBe('U0VTU0lPTl9GSVJTVF9PTkU=');
-    open();
-    await vi.advanceTimersByTimeAsync(0);
-    await lookup(shops);
-    expect(opened(calls)).toBe(2);
-    expect(tokenOf(calls.at(-1))).toBe('U0VTU0lPTl9TRUNPTkRfT05F');
+    expect(calls.map(call => [call.operation, tokenOf(call)])).toEqual([['getSessionFullState', ''], ['getParcelShopByID', FIRST],
+      ['getParcelShopByID', FIRST], ['getSessionFullState', ''], ['getParcelShopByID', SECOND]]);
     // Without `keep`, nothing waits on a timer.
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('keeps a session open without a lookup, and opens the next before it lapses', async () => {
+  it('keeps a session open without a lookup, and opens the next once the service refuses it', async () => {
     vi.useFakeTimers();
-    const timers = vi.spyOn(globalThis, 'setTimeout');
     let open!: () => void;
     const { calls, shops } = service({ getSessionFullState: [
-      () => new Promise<Response>((resolve) => { open = () => resolve(session('U0VTU0lPTl9GSVJTVF9PTkU=')()); }),
-      session('U0VTU0lPTl9TRUNPTkRfT05F'),
-    ] });
+      () => new Promise<Response>((resolve) => { open = () => resolve(session(FIRST)()); }),
+      session(SECOND),
+    ], getParcelShopByID: [swissShop, expired] });
     shops.keep();
     expect(opened(calls)).toBe(1);
     // A lookup that stops waiting leaves the opening running.
@@ -127,21 +121,19 @@ describe('DPD app service session', () => {
     await vi.advanceTimersByTimeAsync(0);
     await lookup(shops);
     expect(calls.map(call => call.operation)).toEqual(['getSessionFullState', 'getParcelShopByID']);
-    await vi.advanceTimersByTimeAsync(8 * HOUR);
-    expect(opened(calls)).toBe(2);
+    await vi.advanceTimersByTimeAsync(30 * DAY);
+    expect(opened(calls)).toBe(1);
     await lookup(shops);
-    expect(tokenOf(calls.at(-1))).toBe('U0VTU0lPTl9TRUNPTkRfT05F');
-    // The renewal timer never holds the process open.
-    const renewals = timers.mock.calls.flatMap(([, ms], index) => (ms ?? 0) > 2 * MINUTE
-      ? [timers.mock.results[index]!.value as ReturnType<typeof setTimeout>] : []);
-    expect(renewals.length).toBeGreaterThan(0);
-    expect(renewals.every(timer => !timer.hasRef())).toBe(true);
-    // Without a store, the session it replaced is not checked.
-    expect(calls.filter(call => call.operation === 'getParcelShopByID')).toHaveLength(2);
+    expect(opened(calls)).toBe(2);
+    expect(tokenOf(calls.at(-1))).toBe(SECOND);
+    // Without a store, no session is checked, and nothing waits on a timer.
+    expect(calls.filter(call => call.operation === 'getParcelShopByID')).toHaveLength(3);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('tries a kept session again a quarter of an hour after a failed opening', async () => {
     vi.useFakeTimers();
+    const timers = vi.spyOn(globalThis, 'setTimeout');
     const { calls, shops } = service({ getSessionFullState: [() => xml('', 503)] });
     shops.keep();
     await vi.advanceTimersByTimeAsync(15 * MINUTE - 1);
@@ -150,6 +142,11 @@ describe('DPD app service session', () => {
     expect(opened(calls)).toBe(2);
     await lookup(shops);
     expect(calls.map(call => call.operation)).toEqual(['getSessionFullState', 'getSessionFullState', 'getParcelShopByID']);
+    // The retry timer never holds the process open.
+    const retries = timers.mock.calls.flatMap(([, ms], index) => ms === 15 * MINUTE
+      ? [timers.mock.results[index]!.value as ReturnType<typeof setTimeout>] : []);
+    expect(retries).toHaveLength(1);
+    expect(retries[0]!.hasRef()).toBe(false);
   });
 
   const SAVED = 'U0FWRURfU0VTU0lPTl9PTkU=';
@@ -160,41 +157,58 @@ describe('DPD app service session', () => {
     const saves: DpdSession[] = [];
     return { saves, store: { load: vi.fn(async () => sessions), save: vi.fn(async (session: DpdSession) => { saves.push(session); }) } };
   };
-  const checks = (calls: Call[]) => calls.filter(call => call.body.includes('<PudoID>XX0000</PudoID>')).map(tokenOf);
+  const checks = (calls: Call[], token?: string) => calls.filter(call => call.body.includes('<PudoID>XX0000</PudoID>'))
+    .map(tokenOf).filter(checked => !token || checked === token);
+  const savesOf = (saves: DpdSession[], token: string) => saves.filter(saved => saved.token === token);
 
-  it('takes up the saved session after a restart, until it is eight hours old', async () => {
+  it('takes up the newest saved session after a restart, whatever its age, and checks it every hour', async () => {
     vi.useFakeTimers();
     const start = Date.now();
     const { calls, shops } = service();
-    const { saves, store } = memory([{ token: SAVED, openedAt: start - 2 * HOUR }, { token: OLDER, openedAt: start - 30 * HOUR }]);
+    const { saves, store } = memory([{ token: OLDER, openedAt: start - 31 * DAY }, { token: SAVED, openedAt: start - 30 * DAY, checkedAt: start - 20 * MINUTE }]);
     shops.keep({ store });
     // A lookup waits for the store rather than opening a session of its own.
     await lookup(shops);
-    expect(opened(calls)).toBe(0);
     expect(tokenOf(calls.at(-1))).toBe(SAVED);
-    await vi.advanceTimersByTimeAsync(6 * HOUR - 1);
-    expect(opened(calls)).toBe(0);
+    // Its next check is an hour after its last; an older one is checked for a week after it opened.
+    await vi.advanceTimersByTimeAsync(40 * MINUTE - 1);
+    expect(checks(calls)).toEqual([]);
     await vi.advanceTimersByTimeAsync(1);
+    expect(checks(calls)).toEqual([SAVED]);
+    expect(saves).toEqual([{ token: SAVED, openedAt: start - 30 * DAY, checkedAt: start + 40 * MINUTE }]);
+    // It is checked for as long as the service accepts it.
+    await vi.advanceTimersByTimeAsync(30 * DAY);
+    expect(checks(calls)).toEqual(Array(30 * 24 + 1).fill(SAVED));
+    expect(opened(calls)).toBe(0);
+  });
+
+  it('opens the next session once a check finds the current one refused, and saves the refusal the next check repeats', async () => {
+    vi.useFakeTimers();
+    const start = Date.now();
+    const { calls, shops } = service({ [`getParcelShopByID ${SAVED}`]: [expired, expired] });
+    const { saves, store } = memory([{ token: SAVED, openedAt: start - 3 * DAY, checkedAt: start - HOUR }]);
+    shops.keep({ store });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(checks(calls)).toEqual([SAVED]);
     expect(opened(calls)).toBe(1);
-    expect(saves.filter(saved => saved.token === FIXTURE)).toEqual([{ token: FIXTURE, openedAt: start + 6 * HOUR }]);
     await lookup(shops);
     expect(tokenOf(calls.at(-1))).toBe(FIXTURE);
-    // The older one, never checked, was checked at once and hourly since, and the one taken up once replaced.
-    expect(checks(calls).slice(0, 7)).toEqual(Array(7).fill(OLDER));
     await vi.advanceTimersByTimeAsync(HOUR + 5_000);
-    expect(checks(calls).slice(7)).toEqual([OLDER, SAVED]);
+    expect(checks(calls)).toEqual([SAVED, SAVED, FIXTURE]);
+    expect(savesOf(saves, SAVED)).toEqual([{ token: SAVED, openedAt: start - 3 * DAY, checkedAt: start - HOUR, refusedAt: start }]);
+    expect(savesOf(saves, FIXTURE)).toEqual([{ token: FIXTURE, openedAt: start }, { token: FIXTURE, openedAt: start, checkedAt: start + HOUR + 5_000 }]);
   });
 
   it('checks a session no longer used every hour until the service refuses it twice, and saves what it finds', async () => {
     vi.useFakeTimers();
     const start = Date.now();
-    const { calls, shops } = service({ getParcelShopByID: [unconfirmed, expired, unconfirmed, () => xml('', 503), expired, expired] });
-    const { saves, store } = memory([{ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start - 40 * MINUTE }]);
+    const { calls, shops } = service({ [`getParcelShopByID ${SAVED}`]: [unconfirmed, expired, unconfirmed, () => xml('', 503), expired, expired] });
+    const { saves, store } = memory([{ token: OLDER, openedAt: start - HOUR, checkedAt: start },
+      { token: SAVED, openedAt: start - 9 * HOUR, checkedAt: start - 40 * MINUTE }]);
     shops.keep({ store });
     await vi.advanceTimersByTimeAsync(0);
-    // Too old to take up: the next one opens, and the saved one is followed.
-    expect(opened(calls)).toBe(1);
-    expect(saves).toEqual([{ token: FIXTURE, openedAt: start }]);
+    // The newest is taken up, and the older one followed.
+    expect(opened(calls)).toBe(0);
     // Its next check is an hour after the one saved before the restart, however recent the restart.
     await vi.advanceTimersByTimeAsync(20 * MINUTE - 1);
     expect(checks(calls)).toEqual([]);
@@ -204,14 +218,16 @@ describe('DPD app service session', () => {
     expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first });
     // One refusal is not enough: while slow, the service refuses a session it accepts again later.
     await vi.advanceTimersByTimeAsync(2 * HOUR);
-    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR });
+    expect(savesOf(saves, SAVED).at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR });
     // A reply that is not about the session says nothing.
     await vi.advanceTimersByTimeAsync(HOUR);
-    expect(saves).toHaveLength(3);
+    expect(savesOf(saves, SAVED)).toHaveLength(2);
     await vi.advanceTimersByTimeAsync(2 * HOUR);
-    expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR, refusedAt: first + 4 * HOUR });
+    expect(savesOf(saves, SAVED).at(-1)).toEqual({ token: SAVED, openedAt: start - 9 * HOUR, checkedAt: first + 2 * HOUR, refusedAt: first + 4 * HOUR });
     await vi.advanceTimersByTimeAsync(HOUR);
-    expect(checks(calls)).toHaveLength(6);
+    expect(checks(calls, SAVED)).toHaveLength(6);
+    // The current one, accepted throughout, stays.
+    expect(opened(calls)).toBe(0);
   });
 
   it('follows a session the service refused during a lookup, and checks several sessions apart', async () => {
@@ -222,15 +238,16 @@ describe('DPD app service session', () => {
     shops.keep({ store });
     await vi.advanceTimersByTimeAsync(0);
     await expect(lookup(shops)).resolves.toMatchObject({ name: 'Kiosk Muster' });
-    expect(opened(calls)).toBe(2);
+    expect(opened(calls)).toBe(1);
     calls.length = 0;
     await vi.advanceTimersByTimeAsync(HOUR - 1);
     expect(checks(calls)).toEqual([]);
     await vi.advanceTimersByTimeAsync(1);
     expect(checks(calls)).toEqual([OLDER]);
+    // The swiss shop answers the check: the service accepts the refused session after all.
+    expect(saves.at(-1)).toEqual({ token: OLDER, openedAt: start - 20 * HOUR, checkedAt: start + HOUR });
     await vi.advanceTimersByTimeAsync(5_000);
     expect(checks(calls)).toEqual([OLDER, SAVED]);
-    // The swiss shop answers the check: the service accepts the session after all.
     expect(saves.at(-1)).toEqual({ token: SAVED, openedAt: start, checkedAt: start + HOUR + 5_000 });
   });
 
@@ -270,13 +287,14 @@ describe('DPD app service session', () => {
       () => new Promise<Response>((resolve) => { setTimeout(() => resolve(session(SAVED)()), 42_000); }),
       unreachable,
       session(OLDER),
-    ] });
+    ], getParcelShopByID: [expired] });
     const { events, onSession } = observer();
     shops.keep({ onSession });
     await vi.advanceTimersByTimeAsync(42_000);
     expect(events).toEqual([{ outcome: 'opened', trigger: 'start', durationMs: 42_000 }]);
-    await vi.advanceTimersByTimeAsync(8 * HOUR);
-    expect(events.at(-1)).toEqual({ outcome: 'failed', trigger: 'renewal', durationMs: 0, errorKind: 'transport' });
+    await expect(lookup(shops)).resolves.toBeUndefined();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(events.at(-1)).toEqual({ outcome: 'failed', trigger: 'refused', durationMs: 0, errorKind: 'transport' });
     await vi.advanceTimersByTimeAsync(15 * MINUTE);
     expect(events.at(-1)).toEqual({ outcome: 'opened', trigger: 'retry', durationMs: 0 });
     expect(opened(calls)).toBe(3);
@@ -311,11 +329,11 @@ describe('DPD app service session', () => {
   it('keeps lookups and openings going when the observer fails', async () => {
     vi.useFakeTimers();
     for (const onSession of [() => { throw new Error('Observer failed'); }, () => Promise.reject(new Error('Observer failed'))]) {
-      const { calls, shops } = service({ getSessionFullState: [unreachable] });
+      const { calls, shops } = service({ getSessionFullState: [unreachable], getParcelShopByID: [swissShop, expired] });
       shops.keep({ onSession });
       await vi.advanceTimersByTimeAsync(0);
       await expect(lookup(shops)).resolves.toMatchObject({ name: 'Kiosk Muster' });
-      await vi.advanceTimersByTimeAsync(8 * HOUR);
+      await expect(lookup(shops)).resolves.toMatchObject({ name: 'Kiosk Muster' });
       expect(opened(calls)).toBe(3);
     }
   });

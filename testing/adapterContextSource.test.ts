@@ -36,12 +36,12 @@ const WITHOUT_SIGNAL: Readonly<Record<string, string>> = {
   'carriers/correios-br/ocr.ts solve': 'The timer closes the OCR worker once it is idle: no lookup waits on it.',
   'carriers/mondial-relay/app.ts #renew': 'One token renewal serves every lookup waiting for it; each stops waiting on its own signal, '
     + 'and the request keeps its timeout.',
-  'carriers/dpd-de/service.ts #schedule': 'Renews the DPD app session a long-lived host keeps open: no lookup waits on the timer, '
-    + 'which does not keep the process alive.',
+  'carriers/dpd-de/service.ts #retry': 'Opens again the DPD app session a long-lived host keeps open after a failed opening: no '
+    + 'lookup waits on the timer, which does not keep the process alive.',
   'carriers/dpd-de/service.ts #load': 'Bounds the wait for a long-lived host\'s session store at start; a lookup waits for the '
     + 'load on its own signal.',
-  'carriers/dpd-de/service.ts #follow': 'Checks the DPD app sessions a long-lived host no longer uses every hour: no lookup waits '
-    + 'on the timer, which does not keep the process alive.',
+  'carriers/dpd-de/service.ts #follow': 'Checks the DPD app sessions of a long-lived host every hour: no lookup waits on the '
+    + 'timer, which does not keep the process alive.',
   'carriers/dpd-de/service.ts #check': 'Spaces those checks apart: no lookup waits on them.',
 };
 

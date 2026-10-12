@@ -50,7 +50,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -59,7 +59,7 @@
           "tnt"
         ]
       },
-      "note": "ParcelPanel's R+L Carriers page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's R+L Carriers page offered it as a sample to try on 11 Oct 2026. R+L's tracer returns its history."
     },
     {
       "number": "AM363452-4",
@@ -72,7 +72,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -81,7 +81,29 @@
           "rl-carriers"
         ]
       },
-      "note": "ParcelPanel's R+L Carriers page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's R+L Carriers page offered it as a sample to try on 11 Oct 2026. R+L's tracer returns its history."
+    },
+    {
+      "number": "49842074-7",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/rl-carriers/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "rl-carriers"
+        ]
+      },
+      "note": "ParcelPanel's R+L Carriers page offered it as a sample to try on 13 Oct 2026. R+L's tracer returns its history."
     },
     {
       "number": "723587724",
@@ -94,13 +116,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     },
     {
       "number": "723593997",
@@ -113,13 +135,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     },
     {
       "number": "264387006",
@@ -132,13 +154,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     },
     {
       "number": "045338454",
@@ -201,7 +223,7 @@
           "rl-carriers"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer no longer has a record of it."
     },
     {
       "number": "558 265 735",
@@ -246,7 +268,7 @@
           "australia-post"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer no longer has a record of it."
     },
     {
       "number": "WA5047893",
@@ -265,7 +287,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer answers it with the shipment of another PRO, without saying why."
     },
     {
       "number": "CN6732792",
@@ -284,7 +306,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer no longer has a record of it."
     },
     {
       "number": "AF037866-6",
@@ -297,7 +319,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -306,7 +328,7 @@
           "rl-carriers"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     },
     {
       "number": "955311993",
@@ -338,7 +360,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -347,7 +369,7 @@
           "rl-carriers"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     },
     {
       "number": "499465278",
@@ -379,7 +401,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -388,7 +410,7 @@
           "rl-carriers"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows; the capture was not opened."
+      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer still returns its history."
     }
   ]
 }

@@ -11478,6 +11478,9 @@
     "confidence": "low",
     "candidates": [
       "rl-carriers"
+    ],
+    "asked": [
+      "rl-carriers"
     ]
   },
   {
@@ -16689,6 +16692,17 @@
     ]
   },
   {
+    "input": "49842074-7",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "rl-carriers"
+    ],
+    "asked": [
+      "rl-carriers"
+    ]
+  },
+  {
     "input": "499465278",
     "carrier": "unknown",
     "confidence": "none",
@@ -17878,6 +17892,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "rl-carriers"
+    ],
+    "asked": [
       "rl-carriers"
     ]
   },
@@ -22779,6 +22796,9 @@
     "confidence": "low",
     "candidates": [
       "rl-carriers"
+    ],
+    "asked": [
+      "rl-carriers"
     ]
   },
   {
@@ -25019,6 +25039,9 @@
     "confidence": "low",
     "candidates": [
       "rl-carriers"
+    ],
+    "asked": [
+      "rl-carriers"
     ]
   },
   {
@@ -25048,6 +25071,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "rl-carriers"
+    ],
+    "asked": [
       "rl-carriers"
     ]
   },
@@ -25100,6 +25126,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "rl-carriers"
+    ],
+    "asked": [
       "rl-carriers"
     ]
   },

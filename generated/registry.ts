@@ -146,6 +146,7 @@ import { adapter as ppl } from '../carriers/ppl/adapter.js';
 import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
+import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
@@ -334,6 +335,7 @@ export const REGISTRY: RegistryDefinition = {
     "ptt": ptt,
     "purolator": purolator,
     "relais-colis": relaisColis,
+    "rl-carriers": rlCarriers,
     "royal-mail": royalMail,
     "sagawa": sagawa,
     "sameday": sameday,
@@ -535,7 +537,7 @@ export const REGISTRY: RegistryDefinition = {
     "quickpac": "planzer",
     "redpack": "universal",
     "relais-colis": "relais-colis",
-    "rl-carriers": "universal",
+    "rl-carriers": "rl-carriers",
     "royal-mail": "royal-mail",
     "russian-post": "universal",
     "sagawa": "sagawa",

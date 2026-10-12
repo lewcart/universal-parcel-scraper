@@ -618,6 +618,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'abf-freight', number: '999999999',
     route: /^https:\/\/view\.arcb\.com\/nlo\/tools\/tracking\/999999999$/,
     marker: /Sorry, we didn.t find that shipment|did not return any valid results/ },
+  // The tracer looks the number up from its address and shows its notice for an unknown PRO.
+  { carrier: 'rl-carriers', number: 'ZZ9999999',
+    route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,
+    marker: /No records found for Number/ },
 ];
 
 /**

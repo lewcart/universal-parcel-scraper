@@ -8024,7 +8024,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rl-carriers",
+      "recognitionRank": 5,
+      "localClocks": true
     },
     "canaryUrl": "https://www.rlcarriers.com/freight/shipping/shipment-tracing",
     "trackingUrlTemplate": "https://www.rlcarriers.com/freight/shipping/shipment-tracing?pro={trackingNumber}&docType=PRO&source=web",

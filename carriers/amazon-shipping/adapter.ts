@@ -142,7 +142,8 @@ function optionalSerializedRecord(value: unknown, field: string): JsonObject | n
 function isNotFoundError(value: unknown): boolean {
   if (!isRecord(value)) return false;
   const key = `${statusKey(value.errorCode)} ${statusKey(value.errorMessage)}`;
-  return key.includes('trackingidnotfound') || key.includes('invalidtrackingid');
+  // An Amazon retail order: the public tracker knows it but only the buyer's account may read it.
+  return key.includes('trackingidnotfound') || key.includes('invalidtrackingid') || key.includes('invalidoffamazonorder');
 }
 
 /** City, region and country only; the same object also carries the street and postcode. */

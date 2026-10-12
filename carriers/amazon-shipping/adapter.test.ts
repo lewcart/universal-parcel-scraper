@@ -270,6 +270,17 @@ describe('Amazon Shipping France response normalization', () => {
     }
   });
 
+  it('treats an Amazon retail order the public tracker refuses as not found', () => {
+    expect(() => parseAmazonShippingTrackingResponse({
+      progressTracker: JSON.stringify({
+        trackerSource: 'SWA',
+        summary: { status: null, metadata: {} },
+        errors: [{ errorCode: 'ERROR_INVALID_OFF_AMAZON_ORDER', errorMessage: 'INVALID OFF AMAZON ORDER' }],
+      }),
+      eventHistory: null,
+    })).toThrow(AmazonShippingNotFoundError);
+  });
+
   it('rejects malformed and status-free responses instead of inventing a state', () => {
     expect(() => parseAmazonShippingTrackingResponse([]))
       .toThrow('invalid tracking response');

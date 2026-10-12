@@ -17,6 +17,8 @@ Checks, before any history is read:
 
 - `TRACKING_ID_NOT_FOUND` or `INVALID_TRACKING_ID` in `progressTracker.errors`:
   `AmazonShippingNotFoundError`. The tracker answers unknown ids with HTTP 200, not 404.
+- `ERROR_INVALID_OFF_AMAZON_ORDER`: not found. The id belongs to an Amazon retail order that
+  only the buyer's account can track, so the parcel stays with `amazon-logistics`.
 - A tracking id echoed anywhere in the payload that differs from the request: `SchemaError`.
 - `trackerSource` other than `SWA` or `MCF`: not found. A generic page proves nothing.
 - Only `SHIPMENT_OLDER_THAN_SUPPORTED_AGE`: `AmazonShippingHistoryExpiredError`. The shipment

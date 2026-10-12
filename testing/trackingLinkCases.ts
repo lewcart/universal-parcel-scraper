@@ -560,6 +560,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'zeleris', number: 'FFFFFFFF999999999Z',
     route: /^https:\/\/www\.zeleris\.com\/seguimiento-de-envios\/\?tracking_number=FFFFFFFF999999999Z&not_found=1$/,
     marker: /Sigue tu envío|El envío no existe/ },
+  // The server sends a found shipment on to its page by id and renders the search page for an unknown number.
+  { carrier: 'kuehne-nagel', number: 'RWM999000099',
+    route: /^https:\/\/mykn\.kuehne-nagel\.com\/public-tracking\/shipments\?query=RWM999000099$/,
+    marker: /We could find no match|Track your Shipment/ },
 ];
 
 /**

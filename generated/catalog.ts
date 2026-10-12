@@ -6958,7 +6958,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Zurich",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kuehne-nagel",
+      "recognitionRank": 435,
+      "localClocks": true
     },
     "canaryUrl": "https://mykn.kuehne-nagel.com/public-tracking/shipments",
     "trackingUrlTemplate": "https://mykn.kuehne-nagel.com/public-tracking/shipments?query={trackingNumber}",
@@ -6968,7 +6970,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "mykn.kuehne-nagel.com"
         ],
-        "pathPattern": "^/public-tracking/shipments/?$",
+        "pathPattern": "^/public-tracking/shipments(?:/\\d+)?/?$",
         "params": [
           "query"
         ]

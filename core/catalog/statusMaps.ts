@@ -50,6 +50,7 @@ import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
+import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
@@ -97,6 +98,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, econt, elta,
   emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
+  'kuehne-nagel': kuehneNagel,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,
   'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,
   'posta-srbije': postaSrbije, postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService,

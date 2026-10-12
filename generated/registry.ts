@@ -114,6 +114,7 @@ import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
+import { adapter as postLuxembourg } from '../carriers/post-luxembourg/adapter.js';
 import { adapter as postaSlovenije } from '../carriers/posta-slovenije/adapter.js';
 import { adapter as posteItaliane } from '../carriers/poste-italiane/adapter.js';
 import { adapter as posti } from '../carriers/posti/adapter.js';
@@ -276,6 +277,7 @@ export const REGISTRY: RegistryDefinition = {
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
     "pos-malaysia": posMalaysia,
+    "post-luxembourg": postLuxembourg,
     "posta-slovenije": postaSlovenije,
     "poste-italiane": posteItaliane,
     "posti": posti,
@@ -470,7 +472,7 @@ export const REGISTRY: RegistryDefinition = {
     "planzer": "planzer",
     "poczta-polska": "poczta-polska",
     "pos-malaysia": "pos-malaysia",
-    "post-luxembourg": "universal",
+    "post-luxembourg": "post-luxembourg",
     "posta-slovenije": "posta-slovenije",
     "posta-srbije": "universal",
     "poste-italiane": "poste-italiane",

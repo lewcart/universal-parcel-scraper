@@ -7631,12 +7631,42 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Luxembourg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "post-luxembourg",
+      "recognitionRank": 910,
+      "localClocks": true
     },
     "canaryUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
+    "trackingUrlTemplate": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace#/search?numero={trackingNumber}",
     "trackingSearchUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "post.lu"
+        ],
+        "pathPattern": "^/(?:(?:en|fr|de|lb)/)?particuliers/colis-courrier/track-and-trace/?$",
+        "params": [
+          "numero"
+        ],
+        "fragment": "[?&]numero=([^&]+)"
+      },
+      {
+        "domains": [
+          "trackandtrace.lu"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "numero"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-slovenije": {
     "displayName": "Pošta Slovenije",
@@ -9015,7 +9045,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "osm-worldwide": ["osm-worldwide-1"],
   "paquetexpress": [],
   "passport": ["passport-1"],
-  "post-luxembourg": [],
+  "post-luxembourg": ["post-luxembourg-s10"],
   "posta-slovenije": ["posta-slovenije-s10"],
   "posta-srbije": [],
   "ppl": [],

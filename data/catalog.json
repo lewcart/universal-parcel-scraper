@@ -7629,12 +7629,42 @@
     "timezone": "Europe/Luxembourg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "post-luxembourg",
+      "recognitionRank": 910,
+      "localClocks": true
     },
     "canaryUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
+    "trackingUrlTemplate": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace#/search?numero={trackingNumber}",
     "trackingSearchUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "post.lu"
+        ],
+        "pathPattern": "^/(?:(?:en|fr|de|lb)/)?particuliers/colis-courrier/track-and-trace/?$",
+        "params": [
+          "numero"
+        ],
+        "fragment": "[?&]numero=([^&]+)"
+      },
+      {
+        "domains": [
+          "trackandtrace.lu"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "numero"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-slovenije": {
     "displayName": "Pošta Slovenije",

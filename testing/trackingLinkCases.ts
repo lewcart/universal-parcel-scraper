@@ -520,6 +520,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'slovenska-posta', number: 'ZZ000000014SK',
     route: /^https:\/\/www\.posta\.sk\/sledovanie-zasielok/,
     marker: /Sledovanie zásielok|Zásielka s uvedeným podacím číslom neexistuje/ },
+  // The tracker reads the number from its address fragment, asks its service and moves to its
+  // result view, which leaves the number out for an unknown item.
+  { carrier: 'post-luxembourg', number: 'ZZ999999995LU',
+    route: /^https:\/\/www\.post\.lu\/en\/particuliers\/colis-courrier\/track-and-trace(?:[?#]|$)/,
+    marker: /Track your shipments, parcels and registered mail/, renderTimeoutMs: 20_000,
+    forwarding: { notFound: /No sent items match your search/ } },
   // The server renders the page; an unknown waybill comes back in the search form under a notice.
   { carrier: 'apc-overnight', number: '2026030599999999999991',
     route: /^https:\/\/apcchoice\.apc-overnight\.com\/track-parcel\?id=2026030599999999999991$/,

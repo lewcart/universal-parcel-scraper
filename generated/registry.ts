@@ -90,6 +90,7 @@ import { adapter as jdLogistics } from '../carriers/jd-logistics/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
+import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js';
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
@@ -243,6 +244,7 @@ export const REGISTRY: RegistryDefinition = {
     "korea-post": koreaPost,
     "la-poste": laPoste,
     "landmark-global": landmarkGlobal,
+    "latvijas-pasts": latvijasPasts,
     "lbc-express": lbcExpress,
     "matkahuolto": matkahuolto,
     "mng-kargo": mngKargo,
@@ -421,7 +423,7 @@ export const REGISTRY: RegistryDefinition = {
     "kuehne-nagel": "universal",
     "la-poste": "la-poste",
     "landmark-global": "landmark-global",
-    "latvijas-pasts": "universal",
+    "latvijas-pasts": "latvijas-pasts",
     "lbc-express": "lbc-express",
     "lietuvos-pastas": "universal",
     "loomis-express": "universal",

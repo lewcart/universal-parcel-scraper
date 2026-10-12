@@ -6940,7 +6940,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Riga",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "latvijas-pasts",
+      "recognitionRank": 820,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pasts.lv/izsekot-sutijumu",
     "trackingUrlTemplate": "https://mans.pasts.lv/track?locale=lv-LV&id={trackingNumber}",
@@ -6956,7 +6958,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LV$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "lbc-express": {
     "displayName": "LBC Express",
@@ -8913,7 +8922,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "jitsu": [],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
-  "latvijas-pasts": [],
+  "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
   "lietuvos-pastas": ["lietuvos-pastas-1"],
   "loomis-express": ["loomis-express-1","loomis-express-2"],

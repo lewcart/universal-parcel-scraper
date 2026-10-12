@@ -52,6 +52,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "j-and-t": 90,
   "j-and-t-cargo": 470,
   "la-poste": 800,
+  "latvijas-pasts": 820,
   "matkahuolto": 690,
   "mng-kargo": 740,
   "nacex": 410,

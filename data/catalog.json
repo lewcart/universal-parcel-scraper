@@ -6938,7 +6938,9 @@
     "timezone": "Europe/Riga",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "latvijas-pasts",
+      "recognitionRank": 820,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pasts.lv/izsekot-sutijumu",
     "trackingUrlTemplate": "https://mans.pasts.lv/track?locale=lv-LV&id={trackingNumber}",
@@ -6954,7 +6956,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LV$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "lbc-express": {
     "displayName": "LBC Express",

@@ -70,6 +70,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "poczta-polska": 310,
   "post-luxembourg": 910,
   "posta-slovenije": 790,
+  "posta-srbije": 930,
   "poste-italiane": 460,
   "posti": 270,
   "postlogistics": 260,

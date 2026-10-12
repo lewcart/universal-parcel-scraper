@@ -58,6 +58,7 @@ import { statusMap as omniva } from '../../carriers/omniva/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/status.js';
+import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as ppl } from '../../carriers/ppl/status.js';
 import { statusMap as ptt } from '../../carriers/ptt/status.js';
@@ -91,9 +92,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
   'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste,
   'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, 'mng-kargo': mngKargo, 'old-dominion': oldDominion,
-  omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, postlogistics, ppl, ptt, sagawa,
-  sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy, sto, 'swiss-post': swissPost,
-  'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo,
+  omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije,
+  postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy,
+  sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress,
+  'yurtici-kargo': yurticiKargo,
 };
 
 /** The carrier the app files the universal providers' scans under. */

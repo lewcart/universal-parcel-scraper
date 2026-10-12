@@ -7735,12 +7735,31 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-srbije",
+      "recognitionRank": 930,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
     "trackingSearchUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "posta.rs"
+        ],
+        "pathPattern": "^/(?:cir|lat|eng)/alati/pracenje-posiljke\\.aspx$",
+        "params": [
+          "broj"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RS$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "ppl": {
     "displayName": "PPL",
@@ -9056,7 +9075,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "passport": ["passport-1"],
   "post-luxembourg": ["post-luxembourg-s10"],
   "posta-slovenije": ["posta-slovenije-s10"],
-  "posta-srbije": [],
+  "posta-srbije": ["posta-srbije-s10"],
   "ppl": [],
   "ptt": ["ptt-1","ptt-s10"],
   "redpack": [],

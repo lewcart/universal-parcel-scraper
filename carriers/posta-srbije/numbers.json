@@ -30,13 +30,32 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Serbia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Serbia Post page offered it as a sample to try on 11 Oct 2026. Pošta Srbije's app tracking service lists it as a parcel sent abroad from Serbia in 2026."
+    },
+    {
+      "number": "RR313231213RS",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250528074402/https://www.posta.rs/eng/alati/pracenje-posiljke.aspx?broj=RR313231213RS",
+        "date": "2025-05-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up on Pošta Srbije's own tracker, as an archived address shows; the capture holds only the search form. The app's tracking service lists it as a registered letter sent abroad from Serbia in 2025."
     }
   ]
 }

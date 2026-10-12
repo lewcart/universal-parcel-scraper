@@ -27668,6 +27668,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },
@@ -31605,6 +31606,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },
@@ -34259,6 +34261,18 @@
     ]
   },
   {
+    "input": "RR313231213RS",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "posta-srbije",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR314584512RS",
     "carrier": "intl-post",
     "confidence": "high",
@@ -34266,6 +34280,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },

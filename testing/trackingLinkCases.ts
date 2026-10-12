@@ -602,6 +602,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'osm-worldwide', number: 'OSM000000ZZ9999ZZ',
     route: /^https:\/\/www\.osmworldwide\.com\/tracking\/\?trackingIds=OSM000000ZZ9999ZZ$/,
     marker: /Tracking is not available for this item/, shadowHost: 'tracking-component' },
+  // The page reads the number from its path and posts it to the site's lookup on load.
+  { carrier: 'epost-global', number: 'EPG999999999999999',
+    route: /^https:\/\/epgtrack\.com\/EPG999999999999999$/,
+    marker: /We haven.t received any tracking updates|Track your shipments here/ },
 ];
 
 /**

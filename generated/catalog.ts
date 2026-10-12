@@ -6143,15 +6143,33 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "epost-global",
+      "recognitionRank": 65,
+      "localClocks": true
     },
     "canaryUrl": "https://epgtrack.com/",
-    "trackingUrlTemplate": "https://epgtrack.com/",
+    "trackingUrlTemplate": "https://epgtrack.com/{trackingNumber}",
     "trackingSearchUrl": "https://epgtrack.com/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "epgtrack.com"
+        ],
+        "path": "^/(EPG\\d{10,15})/?$"
+      },
+      {
+        "domains": [
+          "epgtrack.com"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": [
       {
-        "pattern": "^EPG\\d{10,13}$",
+        "pattern": "^EPG\\d{10,15}$",
         "confidence": "high"
       }
     ]

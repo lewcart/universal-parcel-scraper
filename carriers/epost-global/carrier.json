@@ -17,24 +17,85 @@
   "timezone": "America/Los_Angeles",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "epost-global",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 65
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
-    "url": "https://epgtrack.com/",
+    "url": "https://epgtrack.com/{trackingNumber}",
     "searchUrl": "https://epgtrack.com/",
     "canaryUrl": "https://epgtrack.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "destination_country",
+      "postcodes",
+      "related_awb_numbers",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "postcodes",
+      "related_awb_numbers"
+    ],
+    "unavailable": [
+      "eta",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "epgtrack.com"
+      ],
+      "path": "^/(EPG\\d{10,15})/?$"
+    },
+    {
+      "domains": [
+        "epgtrack.com"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "epost-global-1",
-      "pattern": "^EPG\\d{10,13}$",
+      "pattern": "^EPG\\d{10,15}$",
       "confidence": "high"
     }
   ]

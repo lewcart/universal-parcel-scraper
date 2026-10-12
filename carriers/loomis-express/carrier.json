@@ -16,20 +16,74 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "loomis-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 285
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta"
+  ],
   "portal": {
-    "url": "https://loomisexpress.com/loomship/Track",
+    "url": "https://loomisexpress.com/loomship/Track/TrackResults?t=WAYBILL&s={trackingNumber}",
     "searchUrl": "https://loomisexpress.com/loomship/Track",
     "canaryUrl": "https://loomisexpress.com/loomship/Track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "progress_rail",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta"
+    ],
+    "discarded": [
+      "progress_rail",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "service_name",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "provider_code",
+      "offset_timestamps"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "loomisexpress.com"
+      ],
+      "pathPattern": "^/loomship/(?:fr/)?Track/TrackResults/?$",
+      "params": [
+        "s"
+      ]
+    },
+    {
+      "domains": [
+        "loomisexpress.com"
+      ],
+      "pathPattern": "^/loomship/Track/TrackStatus/?$",
+      "params": [
+        "wbs"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "loomis-express-1",

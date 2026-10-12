@@ -7160,12 +7160,33 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "loomis-express",
+      "recognitionRank": 285,
+      "localClocks": true
     },
     "canaryUrl": "https://loomisexpress.com/loomship/Track",
-    "trackingUrlTemplate": "https://loomisexpress.com/loomship/Track",
+    "trackingUrlTemplate": "https://loomisexpress.com/loomship/Track/TrackResults?t=WAYBILL&s={trackingNumber}",
     "trackingSearchUrl": "https://loomisexpress.com/loomship/Track",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "loomisexpress.com"
+        ],
+        "pathPattern": "^/loomship/(?:fr/)?Track/TrackResults/?$",
+        "params": [
+          "s"
+        ]
+      },
+      {
+        "domains": [
+          "loomisexpress.com"
+        ],
+        "pathPattern": "^/loomship/Track/TrackStatus/?$",
+        "params": [
+          "wbs"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^NET\\d{8}$",

@@ -103,6 +103,7 @@ import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.j
 import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js';
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
+import { adapter as loomisExpress } from '../carriers/loomis-express/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
 import { adapter as meest } from '../carriers/meest/adapter.js';
@@ -277,6 +278,7 @@ export const REGISTRY: RegistryDefinition = {
     "latvijas-pasts": latvijasPasts,
     "lbc-express": lbcExpress,
     "lietuvos-pastas": lietuvosPastas,
+    "loomis-express": loomisExpress,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
     "meest": meest,
@@ -466,7 +468,7 @@ export const REGISTRY: RegistryDefinition = {
     "latvijas-pasts": "latvijas-pasts",
     "lbc-express": "lbc-express",
     "lietuvos-pastas": "lietuvos-pastas",
-    "loomis-express": "universal",
+    "loomis-express": "loomis-express",
     "lso": "universal",
     "magyar-posta": "universal",
     "maltapost": "maltapost",

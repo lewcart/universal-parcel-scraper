@@ -564,6 +564,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'kuehne-nagel', number: 'RWM999000099',
     route: /^https:\/\/mykn\.kuehne-nagel\.com\/public-tracking\/shipments\?query=RWM999000099$/,
     marker: /We could find no match|Track your Shipment/ },
+  // The server renders the results page; an unknown waybill is listed under a notice that names it.
+  { carrier: 'loomis-express', number: 'LSHP99999999',
+    route: /^https:\/\/loomisexpress\.com\/loomship\/Track\/TrackResults\?t=WAYBILL&s=LSHP99999999$/,
+    marker: /Tracking Results|Below waybills are not available at this moment/ },
 ];
 
 /**

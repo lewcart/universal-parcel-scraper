@@ -7,6 +7,7 @@
  * What it is not: no provider I/O, no HTTP, no application or framework code.
  * Everything here is a pure function of the catalog and its arguments.
  */
+import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
 import type { CarrierId } from '../../generated/catalog.js';
@@ -36,6 +37,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
     if (product) return normalizeCourierGuyNumber(normalized);
   }
   if (carrierId === 'postlogistics') return postlogisticsIdentifier(raw);
+  // CDL's page finds an order number only with the hyphen before its last digit.
+  if (carrierId === 'cdl' && /^\d{10}$/.test(normalized)) return cdlRequestNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
   return raw;
 }

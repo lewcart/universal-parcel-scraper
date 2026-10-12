@@ -52,6 +52,9 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('the-courier-guy', 'TESTA1')).toBe('TESTA1');
     expect(trackingNumberForLink('swiss-post', 'RA123456785CH')).toBe('RA123456785CH');
     expect(trackingNumberForLink('postlogistics', '12345678001')).toBe('12345678-001');
+    expect(trackingNumberForLink('cdl', '1000000010')).toBe('100000001-0');
+    expect(trackingNumberForLink('cdl', '100000001-0')).toBe('100000001-0');
+    expect(trackingNumberForLink('cdl', 'CDL00000000001')).toBe('CDL00000000001');
     expect(CARRIERS.postlogistics.trackingUrl?.('12345678001'))
       .toBe('https://apv.swisspost-cargo.com/public/trackandtrace/12345678-001');
     expect(trackingNumberForLink('gofo-fr', 'PK00000000000000000001'))

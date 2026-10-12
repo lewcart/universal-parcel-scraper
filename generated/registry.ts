@@ -23,6 +23,7 @@ import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as cargus } from '../carriers/cargus/adapter.js';
 import { adapter as cdek } from '../carriers/cdek/adapter.js';
+import { adapter as cdl } from '../carriers/cdl/adapter.js';
 import { adapter as ceskaPosta } from '../carriers/ceska-posta/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
@@ -203,6 +204,7 @@ export const REGISTRY: RegistryDefinition = {
     "canpar": canpar,
     "cargus": cargus,
     "cdek": cdek,
+    "cdl": cdl,
     "ceska-posta": ceskaPosta,
     "china-post": chinaPost,
     "chit-chats": chitChats,
@@ -385,7 +387,7 @@ export const REGISTRY: RegistryDefinition = {
     "canpar": "canpar",
     "cargus": "cargus",
     "cdek": "cdek",
-    "cdl": "universal",
+    "cdl": "cdl",
     "ceska-posta": "ceska-posta",
     "china-post": "china-post",
     "chit-chats": "chit-chats",

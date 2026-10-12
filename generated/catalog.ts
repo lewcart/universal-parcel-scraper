@@ -5067,7 +5067,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cdl",
+      "recognitionRank": 95
     },
     "canaryUrl": "https://apps.cdldelivers.com/Tracking-Page/track",
     "trackingUrlTemplate": "https://apps.cdldelivers.com/Tracking-Page/track?id={trackingNumber}",

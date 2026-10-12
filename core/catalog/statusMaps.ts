@@ -42,6 +42,7 @@ import { statusMap as elta } from '../../carriers/elta/status.js';
 import { statusMap as emile } from '../../carriers/emile/status.js';
 import { statusMap as envialia } from '../../carriers/envialia/status.js';
 import { statusMap as epostGlobal } from '../../carriers/epost-global/status.js';
+import { statusMap as estes } from '../../carriers/estes/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
 import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
@@ -110,7 +111,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, cdl, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv,
-  dynalogic, 'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,
+  dynalogic, 'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress,
   'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu,
   'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas,

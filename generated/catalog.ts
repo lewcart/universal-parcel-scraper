@@ -6188,7 +6188,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "estes",
+      "recognitionRank": 20
     },
     "canaryUrl": "https://www.estes-express.com/",
     "trackingUrlTemplate": "https://www.estes-express.com/myestes/shipment-tracking/?type=PRO&query={trackingNumber}",

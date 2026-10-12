@@ -68,6 +68,7 @@ import { adapter as ems } from '../carriers/ems/adapter.js';
 import { adapter as envialia } from '../carriers/envialia/adapter.js';
 import { adapter as epostGlobal } from '../carriers/epost-global/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
+import { adapter as estes } from '../carriers/estes/adapter.js';
 import { adapter as evri } from '../carriers/evri/adapter.js';
 import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
 import { adapter as expressOne } from '../carriers/express-one/adapter.js';
@@ -254,6 +255,7 @@ export const REGISTRY: RegistryDefinition = {
     "envialia": envialia,
     "epost-global": epostGlobal,
     "estafeta": estafeta,
+    "estes": estes,
     "evri": evri,
     "evri-uk": evriUk,
     "express-one": expressOne,
@@ -446,7 +448,7 @@ export const REGISTRY: RegistryDefinition = {
     "envialia": "envialia",
     "epost-global": "epost-global",
     "estafeta": "estafeta",
-    "estes": "universal",
+    "estes": "estes",
     "evri": "evri",
     "evri-uk": "evri-uk",
     "express-one": "express-one",

@@ -6,7 +6,7 @@ import { deliveryHandoff, type DeliveryHandoff } from '../core/catalog/handoff.j
 import { detectCarrierMatch, isValidS10TrackingNumber, normalizeTrackingNumber, parseTrackingInput, validTrackingNumber } from '../core/detection/index.js';
 import { BudgetExceededError, IndeterminateError, InputRequiredError, type CarrierErrorKind } from '../core/errors/index.js';
 import { failureHint, failureKind, type FailureHint } from '../core/errors/hint.js';
-import { recognitionCandidates, recognizeAll, settleRecognition } from '../core/recognition/index.js';
+import { MAX_RECOGNITIONS, recognitionCandidates, recognizeAll, settleRecognition, type RecognitionOutcome } from '../core/recognition/index.js';
 import { deliveredToDoor } from '../core/result/pickup.js';
 import { resolveResult, resultHasUpdate, type ResolvedEvent, type ResolvedResult } from '../core/result/resolve.js';
 import { runSteps } from '../core/runner/index.js';
@@ -283,12 +283,25 @@ export function createTracker(options: TrackerOptions = {}) {
     // The budget cancels what is still in flight and ends the wait: carriers that have not
     // answered by then are reported as unanswered. Only the caller's own signal rejects.
     const signal = context.signal ? AbortSignal.any([context.signal, AbortSignal.timeout(ms)]) : AbortSignal.timeout(ms);
+    const end = performance.now() + ms;
     // Candidates come from the number as printed: a rule can need its separators.
     const candidates = recognitionCandidates(raw).filter(candidate => typeof registry.for(candidate.carrier)?.recognize === 'function');
-    const ask = () => lookupSignals.run(signal, () => recognizeAll(candidates, carrier =>
-      registry.for(carrier)!.recognize!(number, { signal, budgetMs: ms }), ms));
+    // The carriers `recognitionAskedCarriers` names are asked first; the next MAX_RECOGNITIONS
+    // only while none asked so far knows the number and the budget lasts.
+    const ask = () => lookupSignals.run(signal, async () => {
+      const outcomes: RecognitionOutcome[] = [];
+      for (let start = 0; start < candidates.length; start += MAX_RECOGNITIONS) {
+        // Rounded up, so a round never ends before the signal does.
+        const left = Math.ceil(end - performance.now());
+        const settled = settleRecognition(outcomes);
+        if (start > 0 && (left <= 0 || settled.carrier || settled.choices.length)) break;
+        outcomes.push(...await recognizeAll(candidates.slice(start, start + MAX_RECOGNITIONS), carrier =>
+          registry.for(carrier)!.recognize!(number, { signal, budgetMs: left }), left));
+      }
+      return outcomes;
+    });
     const outcomes = await (context.signal ? bounded(ask, context.signal) : ask());
-    return { ...settleRecognition(outcomes), asked: candidates.map(candidate => candidate.carrier),
+    return { ...settleRecognition(outcomes), asked: outcomes.map(outcome => outcome.carrier),
       unanswered: outcomes.filter(outcome => outcome.status === 'failed').map(outcome => outcome.carrier) };
   }
 

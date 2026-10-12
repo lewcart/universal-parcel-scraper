@@ -191,7 +191,9 @@ Callers can order eligible recognition candidates with a `countryHint` and aggre
 `priorities`. A provider's carrier hint and preferred number evidence come first, followed
 by the country (home before other served countries), aggregate scores, a passing check digit
 and catalog rank. These signals do not add candidates or confirm ownership.
-`recognitionAskedCarriers` is the first `MAX_RECOGNITIONS` of that order.
+`recognitionAskedCarriers` is the first `MAX_RECOGNITIONS` of that order. `createTracker()`
+asks those first, and the next `MAX_RECOGNITIONS` only while none asked so far knows the
+number and the budget lasts.
 `settleRecognition` takes the only carrier that knows the number. When AliExpress and a
 delivery carrier both know it, the number is the delivery carrier's and AliExpress started
 the journey, so it takes AliExpress. Otherwise it takes the only one number evidence backs.

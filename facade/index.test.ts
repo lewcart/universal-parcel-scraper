@@ -189,6 +189,31 @@ describe('standalone tracker', () => {
     await expect(tracker.recognize(ambiguous, { budgetMs: 30, signal: new AbortController().signal })).resolves.toEqual(answer);
   });
 
+  it('asks the next five carriers only when none of the first five knows the number', async () => {
+    // A 14-digit number nine carriers can be asked about, best first.
+    const number = '12345678901231';
+    const carriers = ['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery'];
+    const unknown = async () => ({ known: false });
+    const knows = async () => ({ known: true });
+    let tracker = createTracker({ providers: [], registry: recognizers({
+      ...Object.fromEntries(carriers.map(id => [id, unknown])), 'relais-colis': knows,
+    }) });
+    await expect(tracker.recognize(number)).resolves.toEqual({ carrier: 'relais-colis', choices: [], asked: carriers, unanswered: [] });
+    const rest = vi.fn<NonNullable<CarrierAdapter['recognize']>>().mockImplementation(knows);
+    tracker = createTracker({ providers: [], registry: recognizers({
+      ...Object.fromEntries(carriers.map((id, index) => [id, index < 5 ? unknown : rest])), dpd: knows,
+    }) });
+    await expect(tracker.recognize(number)).resolves.toEqual({ carrier: 'dpd', choices: [], asked: carriers.slice(0, 5), unanswered: [] });
+    expect(rest).not.toHaveBeenCalled();
+    // A budget the first five spend leaves the rest unasked.
+    tracker = createTracker({ providers: [], registry: recognizers({
+      ...Object.fromEntries(carriers.map((id, index) => [id, index < 5 ? hung : rest])),
+    }) });
+    await expect(tracker.recognize(number, { budgetMs: 30 }))
+      .resolves.toEqual({ choices: [], asked: carriers.slice(0, 5), unanswered: carriers.slice(0, 5) });
+    expect(rest).not.toHaveBeenCalled();
+  });
+
   it('tracks with the carrier that answered once recognition has waited long enough for the others', async () => {
     vi.useFakeTimers();
     // Put the budget signals on the same faked clock as the recognition deadline.

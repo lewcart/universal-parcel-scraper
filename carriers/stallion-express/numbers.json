@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -21,7 +21,7 @@
           "stallion-express"
         ]
       },
-      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened. Stallion Express's tracker knows it."
     },
     {
       "number": "240915P11U",
@@ -34,7 +34,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -43,7 +43,7 @@
           "stallion-express"
         ]
       },
-      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened. Stallion Express's tracker knows it."
     },
     {
       "number": "2409229H96",
@@ -56,7 +56,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -65,7 +65,7 @@
           "stallion-express"
         ]
       },
-      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened. Stallion Express's tracker knows it."
     },
     {
       "number": "2609226XH5",
@@ -78,7 +78,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -87,7 +87,7 @@
           "stallion-express"
         ]
       },
-      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Stallion Express's own tracker, as an archived address shows; the capture was not opened. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261007KL7A",
@@ -100,7 +100,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -110,7 +110,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261007SU0C",
@@ -123,7 +123,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -133,7 +133,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261009WFHD",
@@ -146,7 +146,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -156,7 +156,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE2610098783",
@@ -169,13 +169,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "amazon-logistics",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261009MRHK",
@@ -188,7 +188,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -198,7 +198,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261005NOJG",
@@ -211,7 +211,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -221,7 +221,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     },
     {
       "number": "SE261008HSUT",
@@ -234,7 +234,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -244,7 +244,7 @@
           "colis-prive"
         ]
       },
-      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Stallion Express page offered it as a sample to try on 11 Oct 2026. Stallion Express's tracker knows it."
     }
   ]
 }

@@ -94,6 +94,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "slovak-parcel-service": 180,
   "slovenska-posta": 170,
   "speedy": 280,
+  "stallion-express": 105,
   "sto": 540,
   "swiss-post-cargo": 550,
   "the-courier-guy": 730,

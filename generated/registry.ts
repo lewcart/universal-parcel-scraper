@@ -153,6 +153,7 @@ import { adapter as speedx } from '../carriers/speedx/adapter.js';
 import { adapter as speedy } from '../carriers/speedy/adapter.js';
 import { adapter as springGds } from '../carriers/spring-gds/adapter.js';
 import { adapter as spxPh } from '../carriers/spx-ph/adapter.js';
+import { adapter as stallionExpress } from '../carriers/stallion-express/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
 import { adapter as sunyou } from '../carriers/sunyou/adapter.js';
 import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
@@ -332,6 +333,7 @@ export const REGISTRY: RegistryDefinition = {
     "speedy": speedy,
     "spring-gds": springGds,
     "spx-ph": spxPh,
+    "stallion-express": stallionExpress,
     "sto": sto,
     "sunyou": sunyou,
     "swiss-post": swissPost,
@@ -535,7 +537,7 @@ export const REGISTRY: RegistryDefinition = {
     "speedy": "speedy",
     "spring-gds": "spring-gds",
     "spx-ph": "spx-ph",
-    "stallion-express": "universal",
+    "stallion-express": "stallion-express",
     "sto": "sto",
     "sunyou": "sunyou",
     "swiss-post": "swiss-post",

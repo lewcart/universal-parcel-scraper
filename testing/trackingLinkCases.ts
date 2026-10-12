@@ -584,6 +584,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chit-chats', number: 'Z9Z9Z9Z9Z9',
     route: /^https:\/\/chitchats\.com\/tracking$/,
     marker: /Track your shipment|Nothing found for shipment ID/ },
+  // The page reads the number from its address and posts it to the site's tracking action on load.
+  { carrier: 'stallion-express', number: 'SE991231ZZZZ',
+    route: /^https:\/\/stallion\.ca\/track\/\?tracking=SE991231ZZZZ$/,
+    marker: /No shipment found|Shipped an order with us\? Add your tracking number/ },
 ];
 
 /**

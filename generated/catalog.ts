@@ -8356,7 +8356,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "stallion-express",
+      "recognitionRank": 105
     },
     "canaryUrl": "https://stallion.ca/track/",
     "trackingUrlTemplate": "https://stallion.ca/track/?tracking={trackingNumber}",

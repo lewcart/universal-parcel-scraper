@@ -81,6 +81,7 @@ import { statusMap as slovakParcelService } from '../../carriers/slovak-parcel-s
 import { statusMap as slovenskaPosta } from '../../carriers/slovenska-posta/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
 import { statusMap as speedy } from '../../carriers/speedy/status.js';
+import { statusMap as stallionExpress } from '../../carriers/stallion-express/status.js';
 import { statusMap as sto } from '../../carriers/sto/status.js';
 import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
@@ -109,9 +110,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas,
   'loomis-express': loomisExpress, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo, nationex, 'old-dominion': oldDominion, omgo, omniva,
   'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
-  ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy, sto,
-  'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress,
-  'yurtici-kargo': yurticiKargo, zeleris,
+  ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy,
+  'stallion-express': stallionExpress, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo,
+  whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo, zeleris,
 };
 
 /** The carrier the app files the universal providers' scans under. */

@@ -548,6 +548,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.general-overnight\.com\/deu_de\/versenden\/sendungsverfolgung\.html\?reference=999999999999$/,
     marker: /Finden Sie Ihre Sendung mit der Sendungsverfolgung|Sendungsverfolgung/,
     forwarding: { notFound: /Wir haben die Sendung mit der angegebenen Tracking-ID noch nicht erhalten/ } },
+  // The server renders the page; an unknown consignment comes back under a heading that names it.
+  { carrier: 'geis', number: '9999999999999',
+    route: /^https:\/\/www\.geis-group\.cz\/cs\/detail-zasilky\?packNumber=9999999999999$/,
+    marker: /nebyla nalezena|nebo nebyla předána k přepravě|Historie zásilky/i },
 ];
 
 /**

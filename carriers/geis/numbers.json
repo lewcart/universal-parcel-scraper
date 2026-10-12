@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -25,34 +25,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
-    },
-    {
-      "number": "44122521167",
-      "role": "quarantined",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20221121123633/https://www.geis-group.cz/cs/detail-zasilky?packNumber=44122521167",
-        "date": "2022-11-21",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "quarantine": true,
-      "context": {
-        "assessment": "review"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "postlogistics",
-          "gls-ch",
-          "gls-fr",
-          "gls-de",
-          "dhl-ecommerce-pl"
-        ]
-      },
-      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened. It sits in the ascending 441 series of PPL parcel numbers looked up on PPL's tracker in 2024, so it may be a PPL parcel searched on Geis's site."
+      "note": "Looked up on Geis's own tracker, as an archived address shows. The capture shows a parcel's history from when Geis still ran a parcel service; the tracker now takes thirteen-digit consignment numbers only."
     },
     {
       "number": "05082566005",
@@ -81,7 +54,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture shows the tracker not finding it."
     },
     {
       "number": "12060138459",
@@ -107,7 +80,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture shows the tracker not finding it."
     },
     {
       "number": "2555000816708",
@@ -133,7 +106,7 @@
           "korea-post"
         ]
       },
-      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own tracker, as an archived address shows; the capture could not be opened. Geis's tracker no longer knows it."
     },
     {
       "number": "1502200028227",
@@ -146,7 +119,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -161,7 +134,7 @@
           "korea-post"
         ]
       },
-      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows. The capture shows its history, which the Slovak tracker still returns."
     },
     {
       "number": "1502200028318",
@@ -174,7 +147,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -188,7 +161,7 @@
           "korea-post"
         ]
       },
-      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows. The capture shows its history, which the Slovak tracker still returns."
     },
     {
       "number": "15078164077",
@@ -201,7 +174,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -214,7 +187,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Geis's own Slovak tracker, as an archived address shows. The capture shows a parcel's history from when Geis still ran a parcel service; the tracker now takes thirteen-digit consignment numbers only."
     },
     {
       "number": "2584500021846",
@@ -227,7 +200,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -240,7 +213,7 @@
           "korea-post"
         ]
       },
-      "note": "ParcelPanel's Geis CZ page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Geis CZ page offered it as a sample to try on 11 Oct 2026; Geis's tracker returns its history."
     }
   ]
 }

@@ -15891,25 +15891,6 @@
     ]
   },
   {
-    "input": "44122521167",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "postlogistics",
-      "gls-ch",
-      "gls-fr",
-      "gls-de",
-      "dhl-ecommerce-pl"
-    ],
-    "asked": [
-      "gls-fr",
-      "gls-de",
-      "gls-ch",
-      "postlogistics",
-      "dhl-ecommerce-pl"
-    ]
-  },
-  {
     "input": "44504594603882",
     "carrier": "unknown",
     "confidence": "low",

@@ -19,18 +19,60 @@
   "timezone": "Europe/Prague",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "geis",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 970
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.geis-group.cz/cs/detail-zasilky?packNumber={trackingNumber}",
     "searchUrl": "https://www.geis-group.cz/cs/detail-zasilky",
     "canaryUrl": "https://www.geis-group.cz/cs/detail-zasilky",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "weight",
+      "progress_rail",
+      "service_name",
+      "signatory",
+      "customer_reference",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "weight"
+    ],
+    "discarded": [
+      "progress_rail",
+      "service_name",
+      "signatory",
+      "customer_reference",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "eta",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -55,9 +97,18 @@
       "domains": [
         "geis-group.sk"
       ],
-      "pathPattern": "^/sk/detail-zasielky/?$",
+      "pathPattern": "^/(?:sk/detail-zasielky|en/detail-of-cargo)/?$",
       "params": [
         "packNumber"
+      ]
+    },
+    {
+      "domains": [
+        "geis-group.sk"
+      ],
+      "pathPattern": "^/sk/sledovanie-zasielok/?$",
+      "params": [
+        "p"
       ]
     }
   ],

@@ -38,6 +38,7 @@ import { statusMap as emile } from '../../carriers/emile/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
 import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
+import { statusMap as geis } from '../../carriers/geis/status.js';
 import { statusMap as geniki } from '../../carriers/geniki-taxydromiki/status.js';
 import { statusMap as glsEs } from '../../carriers/gls-es/status.js';
 import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
@@ -92,7 +93,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta,
-  emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
+  emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,
   'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,

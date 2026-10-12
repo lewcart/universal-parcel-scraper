@@ -6373,7 +6373,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "geis",
+      "recognitionRank": 970,
+      "localClocks": true
     },
     "canaryUrl": "https://www.geis-group.cz/cs/detail-zasilky",
     "trackingUrlTemplate": "https://www.geis-group.cz/cs/detail-zasilky?packNumber={trackingNumber}",
@@ -6401,9 +6403,18 @@ export const CARRIER_CATALOG = {
         "domains": [
           "geis-group.sk"
         ],
-        "pathPattern": "^/sk/detail-zasielky/?$",
+        "pathPattern": "^/(?:sk/detail-zasielky|en/detail-of-cargo)/?$",
         "params": [
           "packNumber"
+        ]
+      },
+      {
+        "domains": [
+          "geis-group.sk"
+        ],
+        "pathPattern": "^/sk/sledovanie-zasielok/?$",
+        "params": [
+          "p"
         ]
       }
     ],

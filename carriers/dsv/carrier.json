@@ -22,18 +22,51 @@
   "timezone": "Europe/Copenhagen",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dsv",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta"
+  ],
   "portal": {
     "url": "https://mydsv.com/track-shipment?query={trackingNumber}",
     "searchUrl": "https://mydsv.com/track-shipment",
     "canaryUrl": "https://mydsv.com/track-shipment",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "progress_rail",
+      "service_name",
+      "sender_town",
+      "recipient_address",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "provider_code"
+    ],
+    "discarded": [
+      "progress_rail",
+      "service_name",
+      "sender_town",
+      "recipient_address",
+      "postcodes"
+    ],
+    "unavailable": [
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

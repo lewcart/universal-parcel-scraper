@@ -32,6 +32,7 @@ import { statusMap as dpdDe } from '../../carriers/dpd-de/status.js';
 import { statusMap as dpdFr } from '../../carriers/dpd-fr/status.js';
 import { statusMap as dpdIe } from '../../carriers/dpd-ie/status.js';
 import { statusMap as dpdPl } from '../../carriers/dpd-pl/status.js';
+import { statusMap as dsv } from '../../carriers/dsv/status.js';
 import { statusMap as econt } from '../../carriers/econt/status.js';
 import { statusMap as elta } from '../../carriers/elta/status.js';
 import { statusMap as emile } from '../../carriers/emile/status.js';
@@ -93,7 +94,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
-  'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta,
+  'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, econt, elta,
   emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,

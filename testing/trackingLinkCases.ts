@@ -543,6 +543,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/web\.parcelhub\.net\/Tracking\/reference\/WHI0000GB00000000001$/,
     marker: /Unable to find shipment|Postcode \(If applicable\)/,
     forwarding: { notFound: /Unable to find shipment/ } },
+  // The page moves to its new route in the browser, searches the number and repeats it in the notice it shows when nothing matches.
+  { carrier: 'dsv', number: 'ZZ99999999',
+    route: /^https:\/\/mydsv\.com\/(?:new\/tracking\/)?track-shipment\?query=ZZ99999999$/,
+    marker: /Public track and trace|did not match any results/ },
   // The server renders the shipment into the page; an unknown waybill gets a notice that leaves the number out.
   { carrier: 'go-express', number: '999999999999',
     route: /^https:\/\/www\.general-overnight\.com\/deu_de\/versenden\/sendungsverfolgung\.html\?reference=999999999999$/,

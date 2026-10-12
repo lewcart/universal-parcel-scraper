@@ -53,6 +53,7 @@ import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
 import { adapter as dpdIe } from '../carriers/dpd-ie/adapter.js';
 import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
+import { adapter as dsv } from '../carriers/dsv/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
@@ -223,6 +224,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-ie": dpdIe,
     "dpd-pl": dpdPl,
     "dpd-uk": dpdUk,
+    "dsv": dsv,
     "dtdc": dtdc,
     "econt": econt,
     "ecoscooting": ecoscooting,
@@ -400,7 +402,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-ie": "dpd-ie",
     "dpd-pl": "dpd-pl",
     "dpd-uk": "dpd-uk",
-    "dsv": "universal",
+    "dsv": "dsv",
     "dtdc": "dtdc",
     "dx": "universal",
     "dynalogic": "universal",

@@ -10,7 +10,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -19,7 +19,7 @@
           "australia-post"
         ]
       },
-      "note": "TrackingMore lists it as an example on its DSV page; it is not described as a live shipment."
+      "note": "TrackingMore lists it as an example on its DSV page. myDSV's public search knows it as the house bill of a DSV air shipment."
     },
     {
       "number": "6600700122591119",

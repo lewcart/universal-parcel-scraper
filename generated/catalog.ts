@@ -5793,7 +5793,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dsv",
+      "localClocks": true
     },
     "canaryUrl": "https://mydsv.com/track-shipment",
     "trackingUrlTemplate": "https://mydsv.com/track-shipment?query={trackingNumber}",

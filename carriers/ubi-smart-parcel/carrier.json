@@ -19,19 +19,69 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ubi-smart-parcel",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 99
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "provider_code",
+    "delivery_partner",
+    "delivery_tracking_number",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://shipper.ubismartparcel.com/#/ubi?trackingNos={trackingNumber}",
     "searchUrl": "https://shipper.ubismartparcel.com/#/ubi",
     "canaryUrl": "https://shipper.ubismartparcel.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "progress_rail",
+      "delivery_partner",
+      "office_opening_hours"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivery_partner"
+    ],
+    "discarded": [
+      "progress_rail",
+      "office_opening_hours"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "dimensions",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "proof_of_delivery"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "shipper.ubismartparcel.com"
+      ],
+      "pathPattern": "^/$",
+      "fragment": "^/ubi\\?(?:.*&)?trackingNos=([^&]+)"
+    }
+  ],
   "detection": []
 }

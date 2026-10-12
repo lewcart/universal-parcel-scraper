@@ -167,6 +167,7 @@ import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
 import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
+import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.js';
 import { adapter as ukrposhta } from '../carriers/ukrposhta/adapter.js';
 import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
 import { adapter as ups } from '../carriers/ups/adapter.js';
@@ -352,6 +353,7 @@ export const REGISTRY: RegistryDefinition = {
     "the-courier-guy": theCourierGuy,
     "tipsa": tipsa,
     "tnt": tnt,
+    "ubi-smart-parcel": ubiSmartParcel,
     "ukrposhta": ukrposhta,
     "uniuni": uniuni,
     "ups": ups,
@@ -557,7 +559,7 @@ export const REGISTRY: RegistryDefinition = {
     "tipsa": "tipsa",
     "tnt": "tnt",
     "trans-o-flex": "universal",
-    "ubi-smart-parcel": "universal",
+    "ubi-smart-parcel": "ubi-smart-parcel",
     "ukrposhta": "ukrposhta",
     "uniuni": "uniuni",
     "unknown": "universal",

@@ -8471,12 +8471,22 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ubi-smart-parcel",
+      "recognitionRank": 99,
+      "localClocks": true
     },
     "canaryUrl": "https://shipper.ubismartparcel.com/",
     "trackingUrlTemplate": "https://shipper.ubismartparcel.com/#/ubi?trackingNos={trackingNumber}",
     "trackingSearchUrl": "https://shipper.ubismartparcel.com/#/ubi",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "shipper.ubismartparcel.com"
+        ],
+        "pathPattern": "^/$",
+        "fragment": "^/ubi\\?(?:.*&)?trackingNos=([^&]+)"
+      }
+    ],
     "detectionRules": []
   },
   "venipak": {

@@ -389,6 +389,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/recipient\.gojitsu\.com\/(?:noredirect\/ZZ00ZZ00ZZ00ZZ01|404)$/,
     marker: /Sorry, tracking ID not found!/,
     forwarding: { notFound: /Sorry, tracking ID not found!/ } },
+  // A hash-routed tracker: it lists an unknown number with its own notice.
+  { carrier: 'ubi-smart-parcel', number: 'AU9999999999999',
+    route: /^https:\/\/shipper\.ubismartparcel\.com\/#\/ubi\?trackingNos=AU9999999999999$/,
+    marker: /UBI SmartParcel PACKAGE TRACKING|No event found/i },
   { carrier: 'dpd-de', number: '01000000000001',
     route: /^https:\/\/my\.dpd\.de\/myparcels\/dataprotection-tracking\.aspx(?:\?|$)/,
     marker: /Paketnummer|Leider können wir.*keine Daten zu Ihrem Paket/i },

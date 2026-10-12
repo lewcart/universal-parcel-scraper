@@ -598,6 +598,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'cdl', number: 'CDL99999999999',
     route: /^https:\/\/apps\.cdldelivers\.com\/Tracking-Page\/track\?id=CDL99999999999$/,
     marker: /Enter your CDL Tracking ID|Unable To Find Tracking Details/i },
+  // The tracking component looks the number up when the page opens and shows its notice for an unknown one.
+  { carrier: 'osm-worldwide', number: 'OSM000000ZZ9999ZZ',
+    route: /^https:\/\/www\.osmworldwide\.com\/tracking\/\?trackingIds=OSM000000ZZ9999ZZ$/,
+    marker: /Tracking is not available for this item/, shadowHost: 'tracking-component' },
 ];
 
 /**

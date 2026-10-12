@@ -116,6 +116,44 @@
       "note": "Looked up on OSM Worldwide's own tracker, as an archived address shows; the capture was not opened."
     },
     {
+      "number": "OSM000000LM00B0LO",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/osmworldwide/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "osm-worldwide",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's OSM Worldwide page offered it as a sample to try on 12 Oct 2026. OSM Worldwide's tracking service answers it as its own package id, with scans from the label to the delivery."
+    },
+    {
+      "number": "OSM000000LM0060VO",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/osmworldwide/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "osm-worldwide",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's OSM Worldwide page offered it as a sample to try on 12 Oct 2026; OSM Worldwide's tracking service no longer knows it."
+    },
+    {
       "number": "BBSIPA00031503",
       "role": "shipment",
       "evidence": "public_shipment_report",

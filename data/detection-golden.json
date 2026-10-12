@@ -32842,6 +32842,22 @@
     "candidates": []
   },
   {
+    "input": "OSM000000LM0060VO",
+    "carrier": "osm-worldwide",
+    "confidence": "high",
+    "candidates": [
+      "osm-worldwide"
+    ]
+  },
+  {
+    "input": "OSM000000LM00B0LO",
+    "carrier": "osm-worldwide",
+    "confidence": "high",
+    "candidates": [
+      "osm-worldwide"
+    ]
+  },
+  {
     "input": "P2Q5J87J96",
     "carrier": "unknown",
     "confidence": "low",

@@ -7651,7 +7651,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "osm-worldwide",
+      "recognitionRank": 75,
+      "localClocks": true
     },
     "canaryUrl": "https://www.osmworldwide.com/tracking/",
     "trackingUrlTemplate": "https://www.osmworldwide.com/tracking/?trackingIds={trackingNumber}",
@@ -7671,6 +7673,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^A\\d{10}[A-Z]{3}\\d{8}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^OSM[0-9A-Z]{14}$",
         "confidence": "high"
       }
     ]
@@ -9199,7 +9205,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "omgo": ["omgo-1"],
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
   "orlen-paczka": ["orlen-paczka-1"],
-  "osm-worldwide": ["osm-worldwide-1"],
+  "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
   "paquetexpress": [],
   "passport": ["passport-1"],
   "post-luxembourg": ["post-luxembourg-s10"],

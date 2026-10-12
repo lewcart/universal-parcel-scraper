@@ -7649,7 +7649,9 @@
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "osm-worldwide",
+      "recognitionRank": 75,
+      "localClocks": true
     },
     "canaryUrl": "https://www.osmworldwide.com/tracking/",
     "trackingUrlTemplate": "https://www.osmworldwide.com/tracking/?trackingIds={trackingNumber}",
@@ -7669,6 +7671,10 @@
     "detectionRules": [
       {
         "pattern": "^A\\d{10}[A-Z]{3}\\d{8}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^OSM[0-9A-Z]{14}$",
         "confidence": "high"
       }
     ]

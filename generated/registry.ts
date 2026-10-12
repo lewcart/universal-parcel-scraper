@@ -125,6 +125,7 @@ import { adapter as omgo } from '../carriers/omgo/adapter.js';
 import { adapter as omniva } from '../carriers/omniva/adapter.js';
 import { adapter as ontrac } from '../carriers/ontrac/adapter.js';
 import { adapter as orlenPaczka } from '../carriers/orlen-paczka/adapter.js';
+import { adapter as osmWorldwide } from '../carriers/osm-worldwide/adapter.js';
 import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
@@ -307,6 +308,7 @@ export const REGISTRY: RegistryDefinition = {
     "omniva": omniva,
     "ontrac": ontrac,
     "orlen-paczka": orlenPaczka,
+    "osm-worldwide": osmWorldwide,
     "paack": paack,
     "packeta": packeta,
     "planzer": planzer,
@@ -501,7 +503,7 @@ export const REGISTRY: RegistryDefinition = {
     "omniva": "omniva",
     "ontrac": "ontrac",
     "orlen-paczka": "orlen-paczka",
-    "osm-worldwide": "universal",
+    "osm-worldwide": "osm-worldwide",
     "paack": "paack",
     "packeta": "packeta",
     "paquetexpress": "universal",

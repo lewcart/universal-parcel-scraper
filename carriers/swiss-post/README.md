@@ -2,8 +2,10 @@
 
 Swiss Post domestic parcels and inbound international letter-post (`…CH` S10
 numbers), tracked through the anonymous API behind the public `service.post.ch`
-tracker. AliExpress/Cainiao letter-post that ends in Switzerland is handed off
-here (`src/server/carrierHandoff.ts`). Freight goes to
+tracker. A postal item from abroad is handed off here under its own S10 number
+when its carrier reports Switzerland as the destination, as is AliExpress/Cainiao
+letter-post with a Swiss-issued `L…CH` number
+([handoff.ts](../../core/catalog/handoff.ts)). Freight goes to
 [swiss-post-cargo](../swiss-post-cargo/README.md) and PostLogistics
 track-and-trace to [postlogistics](../postlogistics/README.md).
 

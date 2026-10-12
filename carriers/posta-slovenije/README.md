@@ -31,7 +31,15 @@ Each scan has a code of Pošta Slovenije's own, Slovenian and English wording, a
 after a failed delivery, the next step. The adapter maps the codes, keeps the code and reads the
 English wording, else the Slovenian. A failed pickup whose next step sends the item back to its
 sender is an exception, and a delivery after it reaches the sender, so it reads as returned.
-Clocks are UTC instants.
+
+Pošta Slovenije's own scans carry UTC instants. A foreign post's events reach it as UPU events
+with that post's wall clock, which the service reads as Ljubljana time before labelling it UTC.
+Such an event names a foreign office of exchange, or only the postcode of a post office on the
+foreign side of the border. The adapter reads its wall clock in that country's zone, or keeps it
+without an offset when the country has several zones or the reply does not tell which it is. The
+app identity policy in [identity.ts](identity.ts) (`relabelledFrom: 'Europe/Ljubljana'`) lets such
+an event take over the row stored under the Ljubljana reading, by wall clock, provider code and
+location.
 
 A scan's place is the post office's name; its number, a postcode, is dropped. The pickup point is
 the post office an item waits at, or was collected from. The recipient, the signatory, the scan's

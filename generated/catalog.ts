@@ -7654,7 +7654,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "posta-slovenije",
-      "recognitionRank": 790
+      "recognitionRank": 790,
+      "localClocks": true
     },
     "canaryUrl": "https://moja.posta.si/tracking",
     "trackingUrlTemplate": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",

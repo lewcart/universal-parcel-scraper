@@ -13,6 +13,7 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = 'CF900000019SI';
 const RETURNED = 'CF900000022SI';
 const WAITING = 'CF900000036SI';
+const ABROAD = 'RR900000040LT';
 const ABSENT = 'ZZ999999995SI';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
 const fixture = (name: string): unknown => JSON.parse(text(name));
@@ -78,6 +79,56 @@ describe('Pošta Slovenije tracking adapter', () => {
         expect(serialized, `${name} ${hidden}`).not.toContain(hidden);
       }
     }
+  });
+
+  it('reads a foreign post’s relayed events on that post’s clock, and Pošta Slovenije’s own scans as UTC instants', () => {
+    const result = parsePostaSlovenije(fixture('abroad'), ABROAD);
+    expect(result).toMatchObject({ status: 'delivered', last_update: '2026-03-06T08:15:20Z', delivered_at: '2026-03-06T08:15:20Z' });
+    // The service labels Lithuania's wall clock with Ljubljana's offset: 14:48 in Vilnius reads 13:48Z.
+    expect(rows(result).map(row => [row[0], row[1]])).toEqual([['2026-03-06T08:15:20Z', 'VL'], ['2026-03-06T05:10:42.083Z', 'N'],
+      ['2026-03-05T17:21:30Z', 'EMF'], ['2026-03-05T17:20:56Z', 'EMD'], ['2026-03-04T14:48:00+02:00', 'EMC'],
+      ['2026-03-04T00:44:00+02:00', 'EMB'], ['2026-03-02T17:07:00+02:00', 'EMA']]);
+    expect(result.events!.every(event => event.local_time === undefined)).toBe(true);
+    expect(JSON.stringify(result)).not.toContain('99001');
+
+    // A country with several zones keeps the wall clock, and the newest one stands in for the last update.
+    const american = edited('abroad', payload => {
+      payload.result.parcel.trackingNumber = 'RR900000053US';
+      payload.result.statuses = payload.result.statuses.slice(0, 3);
+      for (const row of payload.result.statuses.slice(1)) row.postalId = 'USSMPA';
+    });
+    const far = parsePostaSlovenije(american, 'RR900000053US');
+    expect(far).toMatchObject({ last_update: null, last_update_local: '2026-03-04T14:48:00' });
+    expect(far.events!.map(event => [event.time, event.local_time])).toEqual([[undefined, '2026-03-04T14:48:00'],
+      [undefined, '2026-03-04T00:44:00'], [undefined, '2026-03-02T17:07:00']]);
+
+    // Before any office of exchange, the S10 code names the origin of a posting abroad.
+    const posted = parsePostaSlovenije(edited('abroad', payload => { payload.result.statuses = payload.result.statuses.slice(0, 1); }), ABROAD);
+    expect(posted).toMatchObject({ last_update: '2026-03-02T17:07:00+02:00' });
+
+    // A Slovenian item abroad: events past the inward office are the destination's, on its clock.
+    const outbound = edited('abroad', payload => {
+      payload.result.parcel.trackingNumber = 'CF900000053SI';
+      const [posting, , departure, arrival] = payload.result.statuses;
+      Object.assign(posting!, { postalId: '9001', postalName: 'Primerno', statusDateTime: '2026-03-02T09:12:31Z' });
+      Object.assign(departure!, { postalId: 'SISMPA', statusDateTime: '2026-03-03T14:05:12Z' });
+      Object.assign(arrival!, { postalId: 'HRSMPA', statusDateTime: '2026-03-04T07:30:00Z' });
+      const delivered = { ...arrival!, code: 'EMI', codeDescriptionEN: 'Final delivery', postalId: '99002', statusDateTime: '2026-03-05T09:00:00Z' };
+      payload.result.statuses = [posting!, departure!, arrival!, delivered];
+    });
+    expect(rows(parsePostaSlovenije(outbound, 'CF900000053SI')).map(row => [row[0], row[1]])).toEqual([
+      ['2026-03-05T10:00:00+01:00', 'EMI'], ['2026-03-04T08:30:00+01:00', 'EMD'], ['2026-03-03T14:05:12Z', 'EMC'],
+      ['2026-03-02T09:12:31Z', 'EMA']]);
+
+    // Sent back: inward offices in two countries leave a delivery at a bare postcode on its wall clock.
+    const back = edited('abroad', payload => {
+      const arrival = { ...payload.result.statuses[3]!, postalId: 'LTSMPA', statusDateTime: '2026-03-20T08:00:00Z' };
+      const delivered = { ...arrival, code: 'EMI', codeDescriptionEN: 'Final delivery', postalId: '99001', statusDateTime: '2026-03-21T09:00:00Z' };
+      payload.result.statuses.push(arrival, delivered);
+    });
+    expect(rows(parsePostaSlovenije(back, ABROAD)).slice(0, 2).map(row => row[1])).toEqual(['EMI', 'EMD']);
+    expect(parsePostaSlovenije(back, ABROAD).events!.slice(0, 2).map(event => [event.time, event.local_time])).toEqual([
+      [undefined, '2026-03-21T10:00:00'], ['2026-03-20T09:00:00+02:00', undefined]]);
   });
 
   it('reads an item sent back after a missed locker pickup as an exception, and its later delivery as a return', () => {

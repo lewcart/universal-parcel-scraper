@@ -6109,7 +6109,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "envialia",
+      "recognitionRank": 260
     },
     "canaryUrl": "https://www.envialia.com/",
     "linkRules": [],

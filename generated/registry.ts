@@ -61,6 +61,7 @@ import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
 import { adapter as emile } from '../carriers/emile/adapter.js';
 import { adapter as ems } from '../carriers/ems/adapter.js';
+import { adapter as envialia } from '../carriers/envialia/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
 import { adapter as evri } from '../carriers/evri/adapter.js';
 import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
@@ -234,6 +235,7 @@ export const REGISTRY: RegistryDefinition = {
     "elta": elta,
     "emile": emile,
     "ems": ems,
+    "envialia": envialia,
     "estafeta": estafeta,
     "evri": evri,
     "evri-uk": evriUk,
@@ -417,7 +419,7 @@ export const REGISTRY: RegistryDefinition = {
     "elta": "elta",
     "emile": "emile",
     "ems": "ems",
-    "envialia": "universal",
+    "envialia": "envialia",
     "epost-global": "universal",
     "estafeta": "estafeta",
     "estes": "universal",

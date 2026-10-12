@@ -36,6 +36,7 @@ import { statusMap as dsv } from '../../carriers/dsv/status.js';
 import { statusMap as econt } from '../../carriers/econt/status.js';
 import { statusMap as elta } from '../../carriers/elta/status.js';
 import { statusMap as emile } from '../../carriers/emile/status.js';
+import { statusMap as envialia } from '../../carriers/envialia/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
 import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
@@ -97,9 +98,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, econt, elta,
-  emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki,
-  'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta,
-  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'kuehne-nagel': kuehneNagel,
+  emile, envialia, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'gebrueder-weiss': gebruederWeiss, geis,
+  'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem,
+  'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'kuehne-nagel': kuehneNagel,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,
   'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,
   'posta-srbije': postaSrbije, postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService,

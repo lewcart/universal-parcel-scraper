@@ -38,6 +38,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "econt": 290,
   "elta": 150,
   "emile": 480,
+  "envialia": 260,
   "express-one": 190,
   "fan-courier": 330,
   "four-px": 570,

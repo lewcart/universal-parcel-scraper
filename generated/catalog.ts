@@ -7209,7 +7209,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maltapost",
+      "recognitionRank": 920,
+      "localClocks": true
     },
     "canaryUrl": "https://www.maltapost.com/tracking",
     "trackingUrlTemplate": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
@@ -7223,7 +7225,14 @@ export const CARRIER_CATALOG = {
         "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "matkahuolto": {
     "displayName": "Matkahuolto",
@@ -9033,7 +9042,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lso": ["lso-1"],
   "magyar-posta": [],
-  "maltapost": [],
+  "maltapost": ["maltapost-s10"],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "meest": [],
   "mng-kargo": [],

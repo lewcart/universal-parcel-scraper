@@ -17,18 +17,58 @@
   "timezone": "Europe/Malta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "maltapost",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 920
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
     "searchUrl": "https://www.maltapost.com/tracking",
     "canaryUrl": "https://www.maltapost.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "event_details",
+      "progress_rail",
+      "tracking_alias",
+      "payment_details",
+      "recipient_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "event_details",
+      "provider_code",
+      "pickup_point"
+    ],
+    "discarded": [
+      "progress_rail",
+      "tracking_alias",
+      "payment_details",
+      "recipient_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "proof_of_delivery",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -39,5 +79,13 @@
       "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "maltapost-s10",
+      "pattern": "^[A-Z]{2}\\d{9}MT$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

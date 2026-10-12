@@ -7207,7 +7207,9 @@
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maltapost",
+      "recognitionRank": 920,
+      "localClocks": true
     },
     "canaryUrl": "https://www.maltapost.com/tracking",
     "trackingUrlTemplate": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
@@ -7221,7 +7223,14 @@
         "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "matkahuolto": {
     "displayName": "Matkahuolto",

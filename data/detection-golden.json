@@ -5171,34 +5171,6 @@
     ]
   },
   {
-    "input": "10884000425364",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "dpd-fr",
-      "dpd",
-      "relais-colis",
-      "ciblex",
-      "seur",
-      "brt",
-      "delhivery",
-      "dhl-ecommerce-uk",
-      "dpd-de",
-      "dpd-uk",
-      "xpressbees"
-    ],
-    "preferred": [
-      "dpd-fr"
-    ],
-    "asked": [
-      "seur",
-      "brt",
-      "relais-colis",
-      "ciblex",
-      "dhl-ecommerce-uk"
-    ]
-  },
-  {
     "input": "10886531800",
     "carrier": "unknown",
     "confidence": "low",
@@ -34835,6 +34807,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },
@@ -34846,6 +34819,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },
@@ -35097,6 +35071,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },

@@ -486,6 +486,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'hrvatska-posta', number: 'RR000000005HR',
     route: /^https:\/\/posiljka\.posta\.hr\/hr\/tracking\/trackingdata\?barcode=RR000000005HR$/,
     marker: /Broj pošiljke|Nema podataka za uneseni prijamni broj pošiljke/ },
+  // The tracker reads the number from the address fragment and asks its service.
+  { carrier: 'dao', number: '00057999999999999992',
+    route: /^https:\/\/dao\.as\/find-din-pakke\/#q=00057999999999999992$/,
+    marker: /Vi fandt desværre ikke pakkenummer|Find din pakke/ },
   // The page adds the visitor's country and region to its address. The number's
   // label clock is years ahead, so it never reads as an expired history.
   { carrier: 'vinted-go', number: '1890000000000001',

@@ -162,14 +162,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -181,14 +184,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -200,14 +206,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -219,14 +228,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -238,14 +250,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -257,14 +272,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -276,14 +294,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -295,14 +316,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -314,14 +338,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"
@@ -333,14 +360,17 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "dao",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "dao"
     ],
     "asked": [
+      "dao",
       "postnord",
       "swiss-post-cargo",
       "nz-post"

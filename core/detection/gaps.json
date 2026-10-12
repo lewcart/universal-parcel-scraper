@@ -158,12 +158,6 @@
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
   },
   {
-    "carrier": "dao",
-    "pattern": "^00057\\d{15}$",
-    "kind": "by_design",
-    "reason": "DAO's twenty-digit numbers are SSCCs under a Danish GS1 prefix, which names whoever issued them rather than the carrier, so no rule claims them."
-  },
-  {
     "carrier": "day-ross",
     "pattern": "^A\\d{8}$",
     "kind": "open",

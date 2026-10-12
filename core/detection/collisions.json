@@ -1861,6 +1861,17 @@
     "reason": "Helthjem's own SSCCs typed with their 00 identifier also fit Bring's and PostNord's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Helthjem and Bring are both listed first, and recognition asks Helthjem."
   },
   {
+    "shape": "9{20} starting with 0005712696 or 0005715127 that passes the SSCC check",
+    "carriers": [
+      "dao",
+      "nz-post",
+      "postnord",
+      "swiss-post-cargo",
+      "usps"
+    ],
+    "reason": "DAO's own SSCCs typed with their 00 identifier also fit PostNord's Danish SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and DAO are both listed first, and recognition asks DAO."
+  },
+  {
     "shape": "PL followed by eight digits ending in 0",
     "carriers": [
       "dhl-ecommerce-es",

@@ -19,6 +19,7 @@
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -44,6 +45,7 @@
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -62,13 +64,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -94,6 +97,7 @@
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -112,13 +116,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -137,13 +142,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -162,13 +168,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -187,13 +194,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -212,13 +220,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"
@@ -237,13 +246,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "postnord",
+          "dao",
           "swiss-post-cargo",
           "usps",
           "nz-post"

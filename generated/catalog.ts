@@ -5251,7 +5251,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dao",
+      "recognitionRank": 850,
+      "localClocks": true
     },
     "canaryUrl": "https://dao.as/find-din-pakke/",
     "trackingUrlTemplate": "https://dao.as/find-din-pakke/#q={trackingNumber}",
@@ -5278,7 +5280,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^000(?:5712696|5715127)\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ]
   },
   "day-ross": {
     "displayName": "Day & Ross",
@@ -8892,7 +8901,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cne": ["cne-1"],
   "correos-de-mexico": [],
   "cyprus-post": [],
-  "dao": [],
+  "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],
   "dhl-ecommerce-nl": ["dhl-ecommerce-nl-1","dhl-ecommerce-nl-2","dhl-ecommerce-nl-3"],

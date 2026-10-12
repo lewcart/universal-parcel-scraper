@@ -1,7 +1,13 @@
 import { createHash } from 'node:crypto';
-import { describe, expect, it } from 'vitest';
+import { EventEmitter } from 'node:events';
+import { request } from 'node:https';
+import { describe, expect, it, vi } from 'vitest';
+import { sendsThrough } from '../../core/transport/transportOf.js';
 import { MondialRelayTracker } from './adapter.js';
 import { MONDIAL_RELAY_APP_API, MondialRelayAppClient, parseMondialRelayApp } from './app.js';
+
+// The app client's own HTTP/1.1 transport; no test here reaches the network through it.
+vi.mock('node:https', async (importOriginal) => ({ ...await importOriginal<typeof import('node:https')>(), request: vi.fn() }));
 
 // All identifiers, tokens, clocks, places and barcodes here are invented.
 const SHIPMENT = '12345678';
@@ -231,6 +237,25 @@ describe('Mondial Relay app step', () => {
       .resolves.toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response' });
     const search = calls.find(call => call.url.pathname.endsWith('search'))!;
     expect(Object.fromEntries(search.url.searchParams)).toEqual({ shipmentUid: uid });
+  });
+
+  it('builds its app client on the host\'s fetcher under the tracker\'s wrapper, else on its HTTP/1.1 transport', async () => {
+    const wrapper = vi.fn<typeof fetch>(() => Promise.reject(new Error('wrapper used')));
+    const host = service();
+    await expect(new MondialRelayTracker({ appRefreshToken: REFRESH, fetcher: sendsThrough(wrapper, host.fetcher), trawl: null })
+      .fetch(SHIPMENT, POSTCODE)).resolves.toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response' });
+    expect(host.calls.map(call => call.url.pathname)).toEqual(['/oauth2/token', '/api/parcels-search', '/api/parcels-detail']);
+    expect(request).not.toHaveBeenCalled();
+
+    // A wrapper over the global fetch would meet the bot screen's refusal of HTTP/2.
+    vi.mocked(request).mockImplementation((() => {
+      const outgoing = new EventEmitter();
+      return Object.assign(outgoing, { end: () => outgoing.emit('error', new Error('offline')) });
+    }) as unknown as typeof request);
+    await expect(new MondialRelayTracker({ appRefreshToken: REFRESH, fetcher: sendsThrough(wrapper, undefined), trawl: null })
+      .fetch(SHIPMENT, POSTCODE)).rejects.toMatchObject({ kind: 'transport' });
+    expect(vi.mocked(request).mock.calls[0]?.[0]).toBe(TOKEN_URL);
+    expect(wrapper).not.toHaveBeenCalled();
   });
 
   it('hands every app failure to the website', async () => {

@@ -174,7 +174,7 @@ Wording nobody recorded yet goes through a classifier that reads seven European 
 ## Privacy and limits
 
 - A lookup sends the number to the carrier, with the postcode or tracking link when the
-  carrier requires one. Enabled fallbacks receive the number too.
+  carrier requires one. Enabled fallbacks receive the number too, and any postcode you supply.
 - No telemetry. Server logs hold route names and outcomes, never parcel inputs.
 - This is scraping: carriers change their sites and turn away automated requests. Keep to the
   catalog's refresh limits and to the retry advice in errors.

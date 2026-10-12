@@ -260,6 +260,8 @@ export function parseUPSTrackingHtml(page: string, trackingNumber: string): Carr
     last_status_text: statusText,
     last_update: null,
     expected_delivery: null,
+    // The banner is the status alone, so an enabled provider may still hold the history.
+    summary_only: true,
     events,
   };
 }

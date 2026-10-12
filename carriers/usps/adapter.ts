@@ -59,8 +59,8 @@ function eventTime(dateText: string, timeText: string, location: string): { iso:
   const zone = usStateTimeZone(STATE_PATTERN.exec(location)?.[1]);
   if (!zone) return null;
   const date = DateTime.fromFormat(dateMatch[0], 'MMMM d, yyyy', { locale: 'en-US', zone });
-  const time = DateTime.fromFormat(timeMatch[0].replace(/\./g, '').toLowerCase(), 'h:mm a', { locale: 'en-US', zone })
-    ?? DateTime.fromFormat(timeMatch[0].replace(/\./g, '').toLowerCase(), 'h:mm:ss a', { locale: 'en-US', zone });
+  const clock = timeMatch[0].replace(/\./g, '').toLowerCase();
+  const time = DateTime.fromFormat(clock, /:\d{2}:\d{2}/.test(clock) ? 'h:mm:ss a' : 'h:mm a', { locale: 'en-US', zone });
   if (!date.isValid || !time.isValid) return null;
   const at = date.set({ hour: time.hour, minute: time.minute, second: time.second });
   const iso = at.toISO({ suppressMilliseconds: true });

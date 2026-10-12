@@ -81,7 +81,10 @@ time left, so the retry fits in the budget. An HTTP status or a reply is never s
 `createTracker()` validates the input. A number is four to forty letters and digits and
 normally holds a digit. Without one it must be six to ten unbroken letters that a carrier's
 detection rule claims, as on a GLS notification card. Such a number is never read out of
-pasted text, and the universal providers refuse it.
+pasted text, and the universal providers refuse it. Detection and recognition read the number
+as typed, so a separator a rule needs, such as the dash in a PostLogistics reference, still
+counts; adapters and providers get the normalized number. A postcode the carrier does not read
+goes to the enabled fallbacks only, since ParcelsApp and 17TRACK can ask for one.
 A number whose shape fits several carriers, or only
 identifies an international postal item, is settled by asking the carriers that can recognize
 it cheaply. A postal issuer is a lookup candidate, not proof of the delivery carrier.
@@ -300,8 +303,9 @@ request limits and optional bearer authentication. It has no database.
 A failed lookup is held too, for at least `failureCacheMs` and longer when the upstream or
 the carrier's own after-failure interval asks for it. `Retry-After` says when the server will
 ask again. A failure on a caller's own `budgetMs` is never held, nor is an answer whose
-sources that budget cut short. Limits count the socket address unless `trustedProxies` says
-how many proxies append to `X-Forwarded-For`.
+sources that budget cut short. Only requests on the same budget share a lookup in progress.
+`maxConcurrent` counts recognitions and tracking lookups together. Limits count the socket
+address unless `trustedProxies` says how many proxies append to `X-Forwarded-For`.
 
 Its logs carry route names, status codes and durations only. Library consumers connect their
 own observability through `StepRecorder`. The routes are in [openapi.json](server/openapi.json).

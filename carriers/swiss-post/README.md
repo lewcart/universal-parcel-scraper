@@ -19,7 +19,7 @@ the retry fits in the rest.
 3. `GET /history/not-included/{hash}?userId=…` returns matching shipments.
    An empty array is the clean not-found.
 4. `GET /shipment/id/{identity}/events` returns the scans. Optional: if it fails,
-   the shipment summary is still returned.
+   the shipment summary is still returned, marked `summary_only`.
 5. `GET /autocomplete/postoffice/id/{site}` returns the record of the office or
    My Post 24 terminal holding the parcel, only while it waits there. Optional:
    if it fails, the parcel has no pickup point.

@@ -229,12 +229,53 @@ describe('standalone tracker', () => {
     }
   });
 
+  it('tracks a PostLogistics reference printed with its dash without asking any carrier to recognize it', async () => {
+    const lookup = vi.fn().mockResolvedValue({ status: 'delivered', events: [
+      { time: '2026-01-02T12:00:00Z', description: 'Delivered', stage: 'delivered' },
+    ] });
+    const asked = vi.fn().mockResolvedValue({ known: false });
+    const tracker = createTracker({ providers: [], registry: recognizers({
+      postlogistics: asked, 'gls-fr': asked, 'gls-de': asked, 'gls-ch': asked, 'dhl-ecommerce-pl': asked,
+    }, lookup) });
+    await expect(tracker.recognize('12345678-001')).resolves.toMatchObject({ asked: [] });
+    await expect(tracker.track({ number: '12345678-001' })).resolves.toMatchObject({
+      carrier: 'postlogistics', source: 'postlogistics', attempts: [{ source: 'postlogistics', kind: 'ok' }],
+    });
+    expect(asked).not.toHaveBeenCalled();
+    expect(lookup.mock.calls[0]![0]).toMatchObject({ number: '12345678001' });
+    // The compact digits fit other carriers too, and are asked about.
+    expect((await tracker.recognize('12345678001')).asked).toContain('postlogistics');
+    expect(asked).toHaveBeenCalled();
+  });
+
   it('validates carrier-specific credentials before any lookup', async () => {
     const lookup = vi.fn();
     const tracker = createTracker({ registry: registry(lookup) });
     await expect(tracker.track({ number, trackingUrl: 'https://private.invalid/secret' })).rejects.toBeInstanceOf(TypeError);
     await expect(tracker.track({ number, postcode: 'secret' })).rejects.toBeInstanceOf(TypeError);
     expect(lookup).not.toHaveBeenCalled();
+  });
+
+  it('gives a postcode a provider asks for to the providers only, when the carrier reads none', async () => {
+    // ParcelsApp relays a postcode gate until its request carries one; UPS's own lookup finds nothing.
+    const lookup = vi.fn().mockRejectedValue(new NotFoundError('UPS'));
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => Response.json({
+      states: new URLSearchParams(String(init!.body)).has('extra[zipcode]')
+        ? [{ date: '2026-01-02T12:00:00Z', status: 'Delivered' }]
+        : [{ date: '2026-01-01T00:00:00', status: 'Enter recipient details', require_fields: [{ name: 'zipcode', type: 'text' }] }],
+    }));
+    const tracker = createTracker({ registry: registry(lookup), fetcher, providers: ['ParcelsApp'] });
+    await expect(tracker.track({ number, carrier: 'ups' })).rejects.toMatchObject({ hint: { kind: 'input_required' },
+      attempts: [{ source: 'ups', kind: 'not_found' }, { source: 'ParcelsApp', kind: 'input_required' }] });
+    await expect(tracker.track({ number, carrier: 'ups', postcode: ' 01234 ' })).resolves.toMatchObject({ source: 'ParcelsApp',
+      result: { status: 'delivered' }, attempts: [{ source: 'ups', kind: 'not_found' }, { source: 'ParcelsApp', kind: 'ok' }] });
+    expect(new URLSearchParams(String(fetcher.mock.calls[1]![1]!.body)).get('extra[zipcode]')).toBe('01234');
+    // UPS reads no postcode, so its adapter is not given one.
+    expect(lookup.mock.calls.map(([input]) => input.postcode)).toEqual([null, null]);
+    // A postcode no provider could take is still refused before any lookup.
+    await expect(tracker.track({ number, carrier: 'ups', postcode: 'secret' })).rejects.toBeInstanceOf(TypeError);
+    expect(lookup).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
   it('reports a spent deadline as a budget failure when the source ends on the same budget, and asks no fallback', async () => {

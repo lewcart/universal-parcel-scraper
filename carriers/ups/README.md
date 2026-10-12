@@ -17,7 +17,8 @@ from the left); a mismatch stays a suggestion.
    and parses the latest matching reply the page itself received. A refusal or malformed
    final reply overrides older successful replies. With no matching capture, or a final
    HTTP 428 verification response, it parses the rendered page instead: current status
-   and, once delivered, where, with no history.
+   and, once delivered, where, with no history. That answer is marked `summary_only`, so
+   an enabled provider can supply the history.
    Its ship-to town is the recipient's, never the banner's place.
 2. `direct` (only without a browser service): plain HTTP with an in-memory cookie jar.
    - Fetch the tracking page, check it set the `X-XSRF-TOKEN-ST` cookie, then POST

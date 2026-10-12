@@ -117,7 +117,8 @@ by an InPost authorization-code sign-in with PKCE (client
   and an empty list otherwise. A 10-digit UID (brand and shipment) is found
   without a postcode; a 26-digit barcode is rejected with a 400.
 - Cloudflare refuses Node's built-in fetch with a 403 page and answers the same
-  request over HTTP/1.1 (`node:https`), so the app client uses that transport.
+  request over HTTP/1.1 (`node:https`), so the app client uses that transport. A tracker's
+  fetch wrapper does not replace it; a fetcher the host supplies does.
 
 `GET /api/parcel-detail-not-migrated?shipmentUid=…` accepts the app signature
 without an account JWT or postcode. The app uses it for non-exported sent

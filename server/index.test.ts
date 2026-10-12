@@ -21,7 +21,8 @@ const post = (url: string, value: Record<string, unknown> = input, token?: strin
   headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify(value) });
 const failed = (kind: CarrierErrorKind, retryAfterMs?: number, source = 'ups') =>
   new TrackingError([{ source, kind, durationMs: 1 }], { kind, ...(retryAfterMs === undefined ? {} : { retryAfterMs }) });
-afterEach(async () => { await Promise.all(servers.splice(0).map(server => new Promise<void>(resolve => server.close(() => resolve())))); });
+// A test that fails while a lookup is held leaves its requests open; dropping them lets the server close.
+afterEach(async () => { await Promise.all(servers.splice(0).map(server => new Promise<void>(resolve => { server.close(() => resolve()); server.closeAllConnections(); }))); });
 
 describe('tracking HTTP API', () => {
   it('authenticates before starting a lookup and leaves health accessible', async () => {
@@ -47,6 +48,55 @@ describe('tracking HTTP API', () => {
     track.mockResolvedValue(answer);
     expect((await post(url, { ...input, postcode: '0000' })).status).toBe(200);
     expect(track).toHaveBeenCalledTimes(2);
+  });
+
+  it('waits on a running lookup only when it runs on the same budget', async () => {
+    const finish: ((result: TrackingResponse) => void)[] = [], fail: ((error: unknown) => void)[] = [];
+    const track = vi.fn().mockImplementation(() => new Promise<TrackingResponse>((resolve, reject) => { finish.push(resolve); fail.push(reject); }));
+    const url = await started({ tracker: tracker(track) });
+    const budgets = () => track.mock.calls.map(([, options]) => options.budgetMs);
+    // A caller with a budget of its own does not wait on a lookup that runs on the server's.
+    const first = post(url);
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(1));
+    const own = post(url, { ...input, budgetMs: 5 });
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(2));
+    expect(budgets()).toEqual([undefined, 5]);
+    finish[1]!(answer);
+    expect((await own).status).toBe(200);
+    finish[0]!(answer);
+    expect((await first).status).toBe(200);
+    // Nor does a caller on the server's budget get the failure a shorter budget ended in.
+    const parcel = { ...input, postcode: '0000' };
+    const leader = post(url, { ...parcel, budgetMs: 5 });
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(3));
+    const follower = post(url, parcel);
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(4));
+    expect(budgets().slice(2)).toEqual([5, undefined]);
+    fail[2]!(failed('budget'));
+    expect((await leader).status).toBe(502);
+    finish[3]!(answer);
+    expect(await (await follower).json()).toEqual(answer);
+    // Callers on the same budget still share one lookup.
+    const repeated = { ...input, postcode: '1111', budgetMs: 5 };
+    const one = post(url, repeated), two = post(url, repeated);
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(5));
+    finish[4]!(answer);
+    expect((await Promise.all([one, two])).map(response => response.status)).toEqual([200, 200]);
+    expect(track).toHaveBeenCalledTimes(5);
+  });
+
+  it('detects the carrier on the number as printed and shares the answer by the normalized number', async () => {
+    const track = vi.fn().mockResolvedValue({ ...answer, carrier: 'postlogistics', source: 'postlogistics' });
+    const url = await started({ tracker: tracker(track) });
+    // The dash makes the reference PostLogistics's own; the tracker gets it as printed.
+    expect((await post(url, { number: '12345678-001' })).status).toBe(200);
+    expect(track.mock.calls[0]![0]).toMatchObject({ number: '12345678-001', carrier: 'postlogistics' });
+    expect((await post(url, { number: ' 12345678-001 ' })).status).toBe(200);
+    expect(track).toHaveBeenCalledTimes(1);
+    // Compact, the same digits leave the carrier open and are a lookup of their own.
+    expect((await post(url, { number: '12345678001' })).status).toBe(200);
+    expect(track).toHaveBeenCalledTimes(2);
+    expect(track.mock.calls[1]![0]).toMatchObject({ number: '12345678001', carrier: undefined });
   });
 
   it('keeps country hints in the cache identity and forwards them to the tracker', async () => {
@@ -82,6 +132,36 @@ describe('tracking HTTP API', () => {
     const limited = await post(url);
     expect(limited.status).toBe(429);
     expect(limited.headers.get('retry-after')).toBe('60');
+  });
+
+  it('counts recognitions and trackings against one concurrency limit', async () => {
+    let running = 0, peak = 0, release!: () => void;
+    // A held lookup runs until the test releases it; any other answers at once.
+    const lookup = (value: unknown, held = false) => async () => {
+      peak = Math.max(peak, ++running);
+      try { if (held) await new Promise<void>(resolve => { release = resolve; }); return value; }
+      finally { running--; }
+    };
+    const recognition = { carrier: 'ups', choices: [], asked: ['ups'], unanswered: [] };
+    const track = vi.fn().mockImplementation(lookup(answer)), recognize = vi.fn().mockImplementation(lookup(recognition));
+    const url = await started({ tracker: { ...tracker(track), recognize }, maxConcurrent: 1 });
+    const recognized = () => fetch(`${url}/v1/recognize`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ number: input.number }) });
+    recognize.mockImplementationOnce(lookup(recognition, true));
+    const recognizing = recognized();
+    await vi.waitFor(() => expect(recognize).toHaveBeenCalledTimes(1));
+    expect((await recognized()).status).toBe(429);
+    expect((await post(url)).status).toBe(429);
+    release();
+    expect(await (await recognizing).json()).toEqual(recognition);
+    track.mockImplementationOnce(lookup(answer, true));
+    const tracking = post(url);
+    await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(1));
+    expect((await recognized()).status).toBe(429);
+    release();
+    expect((await tracking).status).toBe(200);
+    expect((await recognized()).status).toBe(200);
+    expect((await post(url, { ...input, postcode: '0000' })).status).toBe(200);
+    expect([recognize.mock.calls.length, track.mock.calls.length, peak]).toEqual([2, 2, 1]);
   });
 
   it('counts clients behind trusted proxies separately and ignores the header otherwise', async () => {

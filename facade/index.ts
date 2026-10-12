@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { AdapterRegistry, type AdapterEnvironment, type TrackingContext } from '../core/adapter/index.js';
 import { carrierDefinition, carrierTimezone } from '../core/catalog/index.js';
-import { normalizeCarrierInputs } from '../core/catalog/inputs.js';
+import { carrierTakesPostcode, normalizeCarrierInputs, normalizeDeliveryPostcode } from '../core/catalog/inputs.js';
 import { deliveryHandoff, type DeliveryHandoff } from '../core/catalog/handoff.js';
 import { detectCarrierMatch, isValidS10TrackingNumber, normalizeTrackingNumber, parseTrackingInput, validTrackingNumber } from '../core/detection/index.js';
 import { BudgetExceededError, IndeterminateError, InputRequiredError, type CarrierErrorKind } from '../core/errors/index.js';
@@ -283,7 +283,8 @@ export function createTracker(options: TrackerOptions = {}) {
     // The budget cancels what is still in flight and ends the wait: carriers that have not
     // answered by then are reported as unanswered. Only the caller's own signal rejects.
     const signal = context.signal ? AbortSignal.any([context.signal, AbortSignal.timeout(ms)]) : AbortSignal.timeout(ms);
-    const candidates = recognitionCandidates(number).filter(candidate => typeof registry.for(candidate.carrier)?.recognize === 'function');
+    // Candidates come from the number as printed: a rule can need its separators.
+    const candidates = recognitionCandidates(raw).filter(candidate => typeof registry.for(candidate.carrier)?.recognize === 'function');
     const ask = () => lookupSignals.run(signal, () => recognizeAll(candidates, carrier =>
       registry.for(carrier)!.recognize!(number, { signal, budgetMs: ms }), ms));
     const outcomes = await (context.signal ? bounded(ask, context.signal) : ask());
@@ -299,12 +300,13 @@ export function createTracker(options: TrackerOptions = {}) {
     const end = Date.now() + ms;
     const signal = context.signal ? AbortSignal.any([context.signal, AbortSignal.timeout(ms)]) : AbortSignal.timeout(ms);
     signal.throwIfAborted();
-    let carrier = input.carrier || detectCarrierMatch(number).carrier;
+    // Detection reads the number as printed: a dashed PostLogistics reference is its own evidence.
+    let carrier = input.carrier || detectCarrierMatch(input.number).carrier;
     if (typeof carrier !== 'string') throw new TypeError('Invalid carrier');
     carrierDefinition(carrier);
-    if (!input.carrier && recognitionCandidates(number).length > 0) {
+    if (!input.carrier && recognitionCandidates(input.number).length > 0) {
       try {
-        const answer = await recognize(number, { signal, budgetMs: Math.min(10_000, ms) });
+        const answer = await recognize(input.number, { signal, budgetMs: Math.min(10_000, ms) });
         if (answer.carrier) carrier = answer.carrier;
         else if (answer.choices.length) throw new InputRequiredError('Tracking', 'carrier', 'Choose a carrier for this number');
       } catch (error) {
@@ -317,7 +319,11 @@ export function createTracker(options: TrackerOptions = {}) {
     if (input.countryHint != null && typeof input.countryHint !== 'string') throw new TypeError('Invalid country hint');
     if (input.postcode != null && typeof input.postcode !== 'string') throw new TypeError('Invalid postcode');
     if (input.trackingUrl != null && typeof input.trackingUrl !== 'string') throw new TypeError('Invalid tracking URL');
-    const fields = normalizeCarrierInputs(carrier, number, input.trackingUrl ?? '', input.postcode ?? '');
+    // A provider can ask for a delivery postcode the carrier does not read; only the providers then get it.
+    const postcode = input.postcode ?? '';
+    const carrierPostcode = carrierTakesPostcode(carrier, number);
+    const fields = normalizeCarrierInputs(carrier, number, input.trackingUrl ?? '', carrierPostcode ? postcode : '');
+    const providerPostcode = carrierPostcode || !postcode.trim() ? fields.postcode : normalizeDeliveryPostcode(postcode);
     const attempts: TrackingAttempt[] = [];
     let lastError: unknown = new IndeterminateError('Tracking', 'No configured source accepts this parcel');
     const remaining = () => Math.max(1, end - Date.now());
@@ -366,7 +372,7 @@ export function createTracker(options: TrackerOptions = {}) {
         const share = left - reserve;
         const cut = reserve ? AbortSignal.any([signal, AbortSignal.timeout(share)]) : signal;
         const answer = await attempt(candidate, () => provider(candidate, async () => resolveResult(await universal.fetchSource(candidate,
-          number, Math.min(share + DEADLINE_SLACK_MS, universalSourceBudget(candidate)), fields.postcode, zone, cut, input.countryHint, carrier)), cut), cut);
+          number, Math.min(share + DEADLINE_SLACK_MS, universalSourceBudget(candidate)), providerPostcode, zone, cut, input.countryHint, carrier)), cut), cut);
         if (answer && (!partial || fuller(answer, partial, owners))) {
           relayed = answer;
           result = partial ? withCarrierFacts(answer, partial) : answer;

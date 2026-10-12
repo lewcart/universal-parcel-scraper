@@ -654,6 +654,16 @@ describe('Swiss Post outage page', () => {
     });
   });
 
+  it('marks the summary as summary only when the event call fails, so a provider may still supply the history', async () => {
+    await expect(lookup(/\/events$/, () => new Response('unavailable', { status: 500 })).tracker.fetch(SHIPMENT)).resolves.toMatchObject({
+      status: 'out_for_delivery', global_status: 'IN_DELIVERY', canonical_tracking_number: SHIPMENT, summary_only: true, events: [],
+    });
+    // No call matches the step, so the shipment comes with its events.
+    const answered = await lookup(/^$/, () => html(OUTAGE_PAGE)).tracker.fetch(SHIPMENT);
+    expect(answered.events?.length).toBeGreaterThan(0);
+    expect(answered).not.toHaveProperty('summary_only');
+  });
+
   it('keeps the scans in their own wording when the wording table returns it, and asks for the table later', async () => {
     const app = lookup(/\/translations\//, () => html(OUTAGE_PAGE));
     const first = await app.tracker.fetch(SHIPMENT);

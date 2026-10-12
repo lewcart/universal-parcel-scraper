@@ -823,6 +823,12 @@ describe('UPS rendered page', () => {
       .toThrow('UPS did not return the requested parcel');
   });
 
+  it('marks the banner as a summary, so a provider may still supply the history', () => {
+    const result = parseUPSTrackingHtml(RENDERED_PAGE, TRACKING_NUMBER);
+    expect(result).toMatchObject({ status: 'delivered', last_update: null, summary_only: true });
+    expect(result.events).toEqual([{ location: 'ZUERICH CH', description: 'Delivered', stage: 'delivered' }]);
+  });
+
   it('never places the banner in the ship-to town', () => {
     const result = parseUPSTrackingHtml(`
       <html><head><meta name="stapp-tracknum" content="${TRACKING_NUMBER}"></head>

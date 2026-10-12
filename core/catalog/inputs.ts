@@ -19,6 +19,21 @@ export {
   supportsSwissPostHandoff,
 } from '../detection/index.js';
 
+/**
+ * Older clients may still supply a postcode for Mondial Relay numbers that
+ * need none: label barcodes and the 10- and 12-digit forms. It is validated
+ * when present, while they work without one.
+ */
+function mondialWithoutPostcode(carrierId: string, trackingNumber: string): boolean {
+  return carrierId === 'mondial-relay' && /^(?:\d{10}|\d{12}|\d{26})$/.test(trackingNumber);
+}
+
+/** Whether the carrier reads a delivery postcode for this number, required or optional. */
+export function carrierTakesPostcode(carrierId: string, trackingNumber: string): boolean {
+  return mondialWithoutPostcode(carrierId, trackingNumber)
+    || activeRequirements(carrierId, trackingNumber).some((item) => item.field === 'postcode');
+}
+
 export function normalizeCarrierInputs(
   carrierId: string,
   trackingNumber: string,
@@ -36,12 +51,7 @@ export function normalizeCarrierInputs(
   const requirements = new Map<'trackingUrl' | 'postcode', CarrierRequirementRule>(
     activeRequirements(carrierId, trackingNumber).map((item) => [item.field, item]),
   );
-  // Older clients may still supply a postcode for Mondial Relay numbers that
-  // need none: label barcodes and the 10- and 12-digit forms. Validate it when
-  // present, while allowing them to work without one.
-  const mondialWithoutPostcode = mondialBarcode
-    || (carrierId === 'mondial-relay' && /^(?:\d{10}|\d{12})$/.test(trackingNumber));
-  if (mondialWithoutPostcode && supplied.postcode) {
+  if (mondialWithoutPostcode(carrierId, trackingNumber) && supplied.postcode) {
     requirements.set('postcode', { field: 'postcode', validator: 'internationalPostcode' });
   }
   for (const [field, value] of Object.entries(supplied) as Array<[

@@ -316,6 +316,8 @@ export function parseSwissPostShipment(
       ? { international_tracking_number: comparableShipmentNumber(item.internationalBarcode) } : {}),
     delivery_range: item.deliveryRange,
     delivery_time_interval: item.deliveryTimeInterval,
+    // The summary without its events, as when their optional call fails; a provider may hold them.
+    ...(events.length ? {} : { summary_only: true }),
     events,
   };
 }

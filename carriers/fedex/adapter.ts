@@ -231,7 +231,8 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     seen.add(identity);
     events.push(event);
   }
-  events.sort((left, right) => String(right.time ?? '').localeCompare(String(left.time ?? '')));
+  // Scans carry their own offsets, so their text does not sort by instant.
+  events.sort((left, right) => (Date.parse(right.time || '') || 0) - (Date.parse(left.time || '') || 0));
   const trimmed = events.slice(0, MAX_EVENTS_TO_RETURN);
   const statusText = keyStatus || trimmed[0]?.description || 'Tracking information received';
   const stage = FEDEX_CODE_STAGE[keyStatusCD.toUpperCase()]

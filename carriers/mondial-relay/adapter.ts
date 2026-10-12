@@ -11,6 +11,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
 import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, TrawlClient, type TrawlScrapeRequest, type TrawlScrapeResponse } from '../../core/transport/index.js';
+import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { MondialRelayAppClient } from './app.js';
 import { classifyScan, classifyStatus, milestoneNumberStatus, scanSite } from './status.js';
@@ -381,7 +382,9 @@ export class MondialRelayTracker {
     this.trawlUrl = (options.trawlUrl ?? '').trim();
     this.#trawl = options.trawl;
     this.#app = options.app !== undefined ? options.app : options.appRefreshToken?.trim()
-      ? new MondialRelayAppClient({ refreshToken: options.appRefreshToken, fetcher: options.fetcher, userAgent: options.userAgent })
+      // A tracker's wrapper only adds the lookup's signal, which the client passes itself; without
+      // a host fetcher under it, the client keeps its HTTP/1.1 transport.
+      ? new MondialRelayAppClient({ refreshToken: options.appRefreshToken, fetcher: transportOf(options.fetcher), userAgent: options.userAgent })
       : null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;

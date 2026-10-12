@@ -382,7 +382,10 @@ async function currentParcel(http: Ship24HttpClient, number: string, budgetMs: n
   const scanned = Array.isArray(data.events) && data.events.length > 0;
   try {
     const fresh = await http.refresh(data._id, number, scanned ? Math.min(left(), REFRESH_MS) : left(), signal);
-    return isRecord(fresh) && isRecord(fresh.data) && fresh.data.tracking_number === number ? fresh : stored;
+    const current = isRecord(fresh) && isRecord(fresh.data) && fresh.data.tracking_number === number ? fresh.data : null;
+    // A refresh that brings back no scans, or an error, does not unsay the stored ones.
+    const usable = current && (!scanned || (!current.error && Array.isArray(current.events) && current.events.length > 0));
+    return usable ? fresh : stored;
   } catch (error) {
     if (signal?.aborted || !scanned) throw error;
     return stored;

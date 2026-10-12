@@ -328,6 +328,18 @@ describe('Ship24 anonymous HTTP tracking', () => {
     expect(scrapeUniversalPage).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ['no scans', { events: [] }],
+    ['an error', { error: 'Synthetic failure', events: history.data.events }],
+    ['scans that are not a list', { events: {} }],
+  ])('keeps a stored history when its refresh succeeds with %s', async (_, data) => {
+    const { tracker, fetcher } = fixture();
+    fetcher.mockResolvedValueOnce(reply(stale())).mockResolvedValueOnce(reply({ data: { tracking_number: number, ...data } }));
+    await expect(tracker.fetch(number)).resolves.toMatchObject({ current_stage: 'delivered', tracking_source: 'structured-web-response' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(scrapeUniversalPage).not.toHaveBeenCalled();
+  });
+
   it('reports a parcel Ship24 still has no scans for after the refresh, without the browser', async () => {
     const { tracker, fetcher, steps } = fixture();
     fetcher.mockResolvedValueOnce(reply(stale([]))).mockResolvedValueOnce(reply({ data: { tracking_number: number, events: [] } }));

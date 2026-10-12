@@ -99,6 +99,12 @@ describe('USPS rendered page', () => {
     expect(result.last_update).toBeNull();
   });
 
+  it('reads a clock time with seconds on the state\'s zone', () => {
+    const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'March 14, 2025 12:17:35 pm'), DELIVERED_NUMBER);
+    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', time: '2025-03-14T12:17:35-04:00' });
+    expect(result.last_update).toBe('2025-03-14T12:17:35-04:00');
+  });
+
   it('projects the delivered history with state-zone timestamps', () => {
     const result = parseUSPSTrackingHtml(DELIVERED_PAGE, DELIVERED_NUMBER);
     expect(result).toMatchObject({

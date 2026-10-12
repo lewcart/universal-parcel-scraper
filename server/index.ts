@@ -155,22 +155,33 @@ export function createTrackingServer(options: TrackingServerOptions = {}) {
     return ++window.count > rateLimit;
   }
 
+  /** One online lookup, a tracking or a recognition, within the server's concurrency. */
+  async function admitted<T>(run: () => Promise<T>): Promise<T> {
+    if (active >= maxConcurrent) throw new HttpError(429, 'Tracking is busy; retry later');
+    active++;
+    try { return await run(); }
+    finally { active--; }
+  }
+
   async function tracked(input: ParcelInput, budgetMs?: number): Promise<TrackingResponse> {
     if (typeof input.number !== 'string' || input.number.length > 80 || !validTrackingNumber(input.number)) throw new TypeError('Invalid tracking number');
     if (input.carrier !== undefined && (typeof input.carrier !== 'string' || !input.carrier)) throw new TypeError('Invalid carrier');
     const number = normalizeTrackingNumber(input.number);
-    const detected = detectCarrierMatch(number);
-    input = { ...input, number, carrier: input.carrier ?? (detected.confidence === 'high' ? detected.carrier : undefined) };
-    const key = createHash('sha256').update(JSON.stringify([input.number, input.carrier, input.postcode, input.trackingUrl, input.countryHint])).digest('hex');
+    // Detection reads the number as printed, and so does the tracker's recognition of it.
+    const detected = detectCarrierMatch(input.number);
+    input = { ...input, carrier: input.carrier ?? (detected.confidence === 'high' ? detected.carrier : undefined) };
+    // Without a carrier, the printed form decides which carriers recognition asks.
+    const key = createHash('sha256').update(JSON.stringify([number, input.carrier ?? detected.candidates, input.postcode, input.trackingUrl, input.countryHint])).digest('hex');
     const previous = cache.get(key);
     if (previous && previous.until > now()) {
       if (previous.error) throw previous.error;
       return previous.value!;
     }
     if (previous) cache.delete(key);
-    const inFlight = pending.get(key);
+    // A caller waits on a lookup already running only when it runs on the same budget.
+    const flight = `${key}:${budgetMs ?? ''}`;
+    const inFlight = pending.get(flight);
     if (inFlight) return await inFlight;
-    if (active >= maxConcurrent) throw new HttpError(429, 'Tracking is busy; retry later');
     const remember = (entry: Remembered) => {
       if (cache.size >= 1_000) {
         // Entries past their time go first; a live one is given up only when none is.
@@ -180,8 +191,7 @@ export function createTrackingServer(options: TrackingServerOptions = {}) {
       }
       cache.set(key, entry);
     };
-    const operation = (async () => {
-      active++;
+    const operation = admitted(async () => {
       try {
         const value = await tracker.track(input, { budgetMs });
         const refresh = (carrierDefinition(value.carrier).tracking as { refresh?: { minMinutes: number } }).refresh;
@@ -209,11 +219,11 @@ export function createTrackingServer(options: TrackingServerOptions = {}) {
           remember({ until: now() + failureCacheMs, error });
         }
         throw error;
-      } finally { active--; }
-    })();
-    pending.set(key, operation);
+      }
+    });
+    pending.set(flight, operation);
     try { return await operation; }
-    finally { pending.delete(key); }
+    finally { pending.delete(flight); }
   }
 
   async function handleRequest(request: IncomingMessage, response: ServerResponse): Promise<void> {
@@ -249,7 +259,7 @@ export function createTrackingServer(options: TrackingServerOptions = {}) {
       if (Object.keys(input).some(key => !allowed.includes(key))) throw new HttpError(400, 'Unknown request field');
       if (path === '/v1/detect') { json(response, 200, tracker.detect(input.text as string)); return; }
       if (input.budgetMs !== undefined && (typeof input.budgetMs !== 'number' || !Number.isInteger(input.budgetMs) || input.budgetMs < 1 || input.budgetMs > 120_000)) throw new HttpError(400, 'Invalid lookup budget');
-      if (path === '/v1/recognize') { json(response, 200, await tracker.recognize(input.number as string, { budgetMs: input.budgetMs })); return; }
+      if (path === '/v1/recognize') { json(response, 200, await admitted(() => tracker.recognize(input.number as string, { budgetMs: input.budgetMs as number | undefined }))); return; }
       const result = await tracked({ number: input.number as string, carrier: input.carrier as string | undefined,
         postcode: input.postcode as string | null | undefined, trackingUrl: input.trackingUrl as string | null | undefined, countryHint: input.countryHint as string | null | undefined }, input.budgetMs);
       json(response, 200, result);

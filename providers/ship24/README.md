@@ -14,7 +14,8 @@ Both steps share one budget: 45 s standalone, 30 s inside the chain.
    ([http.ts](http.ts)). That is the parcel as Ship24 stored it. When it says
    `to_updated`, a second signed `POST .../api/parcels/update/{_id}/mainTN/{number}`
    has Ship24 query the carriers again and returns the current history, as the web app
-   does. A stored history stands if that refresh fails or takes over 15 s. Result
+   does. A stored history stands if that refresh fails, takes over 15 s or returns no
+   scans. Result
    labelled `tracking_source: structured-web-response`.
 2. `browser`: the public tracking page in a fresh local Chromium
    (`TRACKING_CHROMIUM_PATH`), reading the stored-parcel response from the page. Result

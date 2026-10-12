@@ -150,6 +150,24 @@ describe('FedEx structured response', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it('orders scans by their instant, not by their local date, and an undated scan last', () => {
+    const payload = inTransitFixture();
+    const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;
+    const scan = (date: string, time: string, gmtOffset: string, scanLocation: string, status: string, statusCD: string) =>
+      ({ date, time, gmtOffset, scanLocation, status, statusCD, scanDetails: '' });
+    shipment.scanEventList = [
+      scan('', '', '', 'EXAMPLE CITY, TN', 'Shipment information sent to FedEx', 'OC'),
+      // 14:00 UTC, the older scan despite its later local date.
+      scan('2026-09-11', '00:00:00', '+10:00', 'SYDNEY, AU', 'Departed FedEx location', 'DP'),
+      // 15:00 UTC.
+      scan('2026-09-10', '05:00:00', '-10:00', 'HONOLULU, HI', 'Arrived at FedEx location', 'AR'),
+    ];
+    const result = parseFedExTrackingResponse(payload, IN_TRANSIT_NUMBER);
+    expect(result.events?.map((event) => event.time))
+      .toEqual(['2026-09-10T05:00:00-10:00', '2026-09-11T00:00:00+10:00', undefined]);
+    expect(result.last_update).toBe('2026-09-10T05:00:00-10:00');
+  });
+
   it('keeps the recipient, shipper and service blocks out of the result', () => {
     const serialized = JSON.stringify(parseFedExTrackingResponse(deliveredFixture(), DELIVERED_NUMBER));
     for (const value of [

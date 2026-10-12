@@ -520,6 +520,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'apc-overnight', number: '2026030599999999999991',
     route: /^https:\/\/apcchoice\.apc-overnight\.com\/track-parcel\?id=2026030599999999999991$/,
     marker: /Your consignment could not be found|CONSIGNMENT SUMMARY/ },
+  // The server renders the page; an unknown reference comes back under a heading, with the form empty.
+  { carrier: 'whistl', number: 'WHI0000GB00000000001',
+    route: /^https:\/\/web\.parcelhub\.net\/Tracking\/reference\/WHI0000GB00000000001$/,
+    marker: /Unable to find shipment|Postcode \(If applicable\)/,
+    forwarding: { notFound: /Unable to find shipment/ } },
 ];
 
 /**

@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A review on Whistl's Trustpilot page gives it as the tracking number."
+      "note": "A review on Whistl's Trustpilot page gives it as the tracking number. Whistl's Parcelhub tracker knows it as a shipment reference whose one parcel another carrier delivers under its own number."
     },
     {
       "number": "L1213411000055365001",

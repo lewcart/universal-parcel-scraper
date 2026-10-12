@@ -7957,7 +7957,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slovenska-posta",
+      "recognitionRank": 840,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
     "trackingUrlTemplate": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
@@ -7986,7 +7988,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "speedpak": {
     "displayName": "SpeedPAK",
@@ -8954,7 +8963,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "saia": [],
   "sameday": ["sameday-1"],
   "slovak-parcel-service": ["slovak-parcel-service-1"],
-  "slovenska-posta": [],
+  "slovenska-posta": ["slovenska-posta-s10"],
   "speedpak": ["speedpak-1"],
   "speedy": [],
   "spx-ph": ["spx-ph-prefixed","spx-ph-shopee-express","spx-ph-domestic"],

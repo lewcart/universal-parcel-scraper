@@ -17,18 +17,72 @@
   "timezone": "Europe/Bratislava",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "slovenska-posta",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 840
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point",
+    "weight",
+    "delivered_at",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
     "searchUrl": "https://www.posta.sk/sledovanie-zasielok",
     "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "pickup_point_address",
+      "pickup_deadline",
+      "weight",
+      "destination_country",
+      "origin_country",
+      "service_name",
+      "additional_services",
+      "payment_details",
+      "parcel_count",
+      "payment_documents",
+      "delivery_options"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point",
+      "weight",
+      "delivered_at",
+      "destination_country"
+    ],
+    "discarded": [
+      "pickup_point_address",
+      "pickup_deadline",
+      "origin_country",
+      "service_name",
+      "additional_services",
+      "payment_details",
+      "parcel_count",
+      "payment_documents",
+      "delivery_options"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -54,5 +108,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "slovenska-posta-s10",
+      "pattern": "^[A-Z]{2}\\d{9}SK$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

@@ -7955,7 +7955,9 @@
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slovenska-posta",
+      "recognitionRank": 840,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.sk/sledovanie-zasielok",
     "trackingUrlTemplate": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
@@ -7984,7 +7986,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "speedpak": {
     "displayName": "SpeedPAK",

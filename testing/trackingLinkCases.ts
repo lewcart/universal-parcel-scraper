@@ -504,6 +504,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'slovak-parcel-service', number: '70399999999999',
     route: /^https:\/\/www\.sps-sro\.sk\/moja-zasielka\/\?shipment_id=70399999999999$/,
     marker: /Hľadanie podľa čísla balíka|Sledovanie zásielky/ },
+  // The page reads the number from its address fragment, fills its field in and looks it up on load.
+  { carrier: 'slovenska-posta', number: 'ZZ000000014SK',
+    route: /^https:\/\/www\.posta\.sk\/sledovanie-zasielok/,
+    marker: /Sledovanie zásielok|Zásielka s uvedeným podacím číslom neexistuje/ },
 ];
 
 /**

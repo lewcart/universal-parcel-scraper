@@ -183,13 +183,127 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "passport",
         "confidence": "high"
       },
-      "note": "Looked up on Passport's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Passport's own tracker, as an archived address shows. The tracker still returns its history, delivered by Intelcom."
+    },
+    {
+      "number": "PG6255087480AU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. Parcel Right delivers it in Australia."
+    },
+    {
+      "number": "PG18272609183GB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. Royal Mail delivers it under an S10 number of its own."
+    },
+    {
+      "number": "PG7230048929CA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. UniUni delivers it in Canada under this number."
+    },
+    {
+      "number": "PG16153149815AT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. Eleven digits; Austrian Post delivers it after PostNL."
+    },
+    {
+      "number": "PG7237729986CA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. UniUni delivers it in Canada under this number."
+    },
+    {
+      "number": "PG16107427306DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/passport-shipping/",
+        "date": "2026-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "passport",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Passport page offered it as a sample to try on 12 Oct 2026. Passport's tracker returns its history. Eleven digits, before Passport received the parcel."
     }
   ]
 }

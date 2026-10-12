@@ -82,6 +82,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ontrac": 650,
   "orlen-paczka": 495,
   "osm-worldwide": 75,
+  "passport": 55,
   "poczta-polska": 750,
   "post-luxembourg": 80,
   "posta-slovenije": 130,

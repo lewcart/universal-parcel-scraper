@@ -129,6 +129,7 @@ import { adapter as orlenPaczka } from '../carriers/orlen-paczka/adapter.js';
 import { adapter as osmWorldwide } from '../carriers/osm-worldwide/adapter.js';
 import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
+import { adapter as passport } from '../carriers/passport/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
@@ -313,6 +314,7 @@ export const REGISTRY: RegistryDefinition = {
     "osm-worldwide": osmWorldwide,
     "paack": paack,
     "packeta": packeta,
+    "passport": passport,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
     "pos-malaysia": posMalaysia,
@@ -510,7 +512,7 @@ export const REGISTRY: RegistryDefinition = {
     "packeta": "packeta",
     "paquetexpress": "universal",
     "parcelforce": "royal-mail",
-    "passport": "universal",
+    "passport": "passport",
     "planzer": "planzer",
     "poczta-polska": "poczta-polska",
     "pos-malaysia": "pos-malaysia",

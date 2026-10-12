@@ -22,19 +22,109 @@
   "timezone": "Europe/Kyiv",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "meest",
+    "steps": [
+      "direct",
+      "refresh"
+    ],
+    "recognition": {
+      "rank": 940
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
-    "url": "https://t.meest-group.com/n/",
+    "url": "https://t.meest-group.com/n/{trackingNumber}",
     "searchUrl": "https://t.meest-group.com/n/",
     "canaryUrl": "https://t.meest-group.com/n/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "parcel_count",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "contact_details",
+      "recipient_address",
+      "pickup_point",
+      "pickup_point_address",
+      "postcodes",
+      "office_opening_hours",
+      "pickup_deadline",
+      "payment_details",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "parcel_count",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "contact_details",
+      "recipient_address",
+      "pickup_point",
+      "pickup_point_address",
+      "postcodes",
+      "office_opening_hours",
+      "pickup_deadline",
+      "payment_details"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "signature",
+      "proof_of_delivery",
+      "dimensions"
+    ]
   },
-  "links": [],
-  "detection": []
+  "links": [
+    {
+      "domains": [
+        "t.meest-group.com"
+      ],
+      "path": "^/n/([A-Za-z0-9-]{4,40})/?$"
+    },
+    {
+      "domains": [
+        "meest.com"
+      ],
+      "pathPattern": "^/(?:[a-z]{2}/)?parcel-track/?$",
+      "params": [
+        "parcel_number"
+      ]
+    },
+    {
+      "domains": [
+        "tracking-iframe.meest.com"
+      ],
+      "path": "^/t/[a-z]{2}/([A-Za-z0-9-]{4,40})/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "meest-1",
+      "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
+      "confidence": "low",
+      "preferred": true
+    }
+  ]
 }

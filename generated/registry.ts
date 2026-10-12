@@ -98,6 +98,7 @@ import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
+import { adapter as meest } from '../carriers/meest/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
 import { adapter as mrw } from '../carriers/mrw/adapter.js';
@@ -263,6 +264,7 @@ export const REGISTRY: RegistryDefinition = {
     "lietuvos-pastas": lietuvosPastas,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
+    "meest": meest,
     "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
     "mrw": mrw,
@@ -453,7 +455,7 @@ export const REGISTRY: RegistryDefinition = {
     "magyar-posta": "universal",
     "maltapost": "maltapost",
     "matkahuolto": "matkahuolto",
-    "meest": "universal",
+    "meest": "meest",
     "mng-kargo": "mng-kargo",
     "mondial-relay": "mondial-relay",
     "mrw": "mrw",

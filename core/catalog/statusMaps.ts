@@ -51,6 +51,7 @@ import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
 import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
+import { statusMap as meest } from '../../carriers/meest/status.js';
 import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
@@ -91,11 +92,11 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, econt, elta,
   emile, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt,
   'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'la-poste': laPoste,
-  'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, 'mng-kargo': mngKargo, 'old-dominion': oldDominion,
-  omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije,
-  postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy,
-  sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress,
-  'yurtici-kargo': yurticiKargo,
+  'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,
+  'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,
+  'posta-srbije': postaSrbije, postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService,
+  'slovenska-posta': slovenskaPosta, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak,
+  'vinted-go': vintedGo, whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo,
 };
 
 /** The carrier the app files the universal providers' scans under. */

@@ -7297,13 +7297,43 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "meest",
+      "recognitionRank": 940,
+      "localClocks": true
     },
     "canaryUrl": "https://t.meest-group.com/n/",
-    "trackingUrlTemplate": "https://t.meest-group.com/n/",
+    "trackingUrlTemplate": "https://t.meest-group.com/n/{trackingNumber}",
     "trackingSearchUrl": "https://t.meest-group.com/n/",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "t.meest-group.com"
+        ],
+        "path": "^/n/([A-Za-z0-9-]{4,40})/?$"
+      },
+      {
+        "domains": [
+          "meest.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?parcel-track/?$",
+        "params": [
+          "parcel_number"
+        ]
+      },
+      {
+        "domains": [
+          "tracking-iframe.meest.com"
+        ],
+        "path": "^/t/[a-z]{2}/([A-Za-z0-9-]{4,40})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
   },
   "mng-kargo": {
     "displayName": "DHL eCommerce Türkiye",
@@ -9063,7 +9093,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "magyar-posta": [],
   "maltapost": ["maltapost-s10"],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
-  "meest": [],
+  "meest": ["meest-1"],
   "mng-kargo": [],
   "nationex": [],
   "nova-poshta": ["nova-poshta-domestic"],

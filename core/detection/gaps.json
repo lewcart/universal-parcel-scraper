@@ -601,12 +601,6 @@
     "reason": "One Meest number of this shape; the family is not established."
   },
   {
-    "carrier": "meest",
-    "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
-    "kind": "open",
-    "reason": "Two Meest Express numbers of this shape, both from one source; the family is not established."
-  },
-  {
     "carrier": "mng-kargo",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

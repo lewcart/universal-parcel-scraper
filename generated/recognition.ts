@@ -59,6 +59,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "lietuvos-pastas": 860,
   "maltapost": 920,
   "matkahuolto": 690,
+  "meest": 940,
   "mng-kargo": 740,
   "nacex": 410,
   "ninja-van": 280,

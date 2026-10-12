@@ -308,7 +308,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -317,7 +317,7 @@
           "chronopost"
         ]
       },
-      "note": "On vidhuk.ua's Meest page, a reviewer gives it as their parcel number in reply to Meest's support."
+      "note": "On vidhuk.ua's Meest page, a reviewer gives it as their parcel number in reply to Meest's support. Meest's tracker knows it as a parcel from the United States delivered in Ukraine."
     },
     {
       "number": "CV928043601EE",
@@ -387,13 +387,16 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "meest"
+        ]
       },
-      "note": "ParcelPanel's Meest Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Meest Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment. Meest's tracker knows it as a parcel from China that a partner delivers."
     },
     {
       "number": "UA3382591GP00110G",
@@ -406,13 +409,60 @@
         "access": "full_page"
       },
       "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "meest"
+        ]
+      },
+      "note": "ParcelPanel's Meest Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment. Meest's tracker knows it as a parcel from China."
+    },
+    {
+      "number": "UA3200617NN00030G",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230714170330/https://t.meest-group.com/n/UA3200617NN00030G",
+        "date": "2023-07-14",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
         "assessment": "candidate"
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "meest"
+        ]
       },
-      "note": "ParcelPanel's Meest Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "Looked up on Meest's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "UA3930795MT00050G",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240503114802/https://t.meest-group.com/n/UA3930795MT00050G",
+        "date": "2024-05-03",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "meest"
+        ]
+      },
+      "note": "Looked up on Meest's own tracker, as an archived address shows; the capture was not opened."
     }
   ]
 }

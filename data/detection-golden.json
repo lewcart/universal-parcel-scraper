@@ -25190,8 +25190,16 @@
   {
     "input": "BG4211888QV00010G",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
   },
   {
     "input": "BGSP1004431163",
@@ -35481,10 +35489,46 @@
     ]
   },
   {
+    "input": "UA3200617NN00030G",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
+  },
+  {
     "input": "UA3382591GP00110G",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
+  },
+  {
+    "input": "UA3930795MT00050G",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
   },
   {
     "input": "UA523765527VU",

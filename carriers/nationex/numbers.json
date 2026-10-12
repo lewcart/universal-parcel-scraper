@@ -10,7 +10,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -20,7 +20,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "ParcelPanel's Nationex app box offers it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Nationex app box offers it as a sample to try. Nationex's tracking service knows it."
     },
     {
       "number": "518950615",
@@ -33,13 +33,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026. Nationex's tracking service knows it."
     },
     {
       "number": "518951842",
@@ -52,13 +52,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026. Nationex's tracking service knows it."
     },
     {
       "number": "518915234",
@@ -71,13 +71,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026. Nationex's tracking service knows it."
     },
     {
       "number": "518952636",
@@ -90,13 +90,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Nationex page offered it as a sample to try on 11 Oct 2026. Nationex's tracking service knows it."
     },
     {
       "number": "515895618",
@@ -109,13 +109,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened. Nationex's tracking service still knows it."
     },
     {
       "number": "517047995",
@@ -128,13 +128,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened. Nationex's tracking service still knows it."
     },
     {
       "number": "76460485101",
@@ -147,7 +147,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -160,7 +160,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened. Nationex's tracking service still knows it."
     },
     {
       "number": "508580055",
@@ -173,13 +173,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Nationex's own tracker, as an archived address shows; the capture was not opened. Nationex's tracking service still knows it."
     },
     {
       "number": "504011349",

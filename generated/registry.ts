@@ -113,6 +113,7 @@ import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
 import { adapter as mrw } from '../carriers/mrw/adapter.js';
 import { adapter as nacex } from '../carriers/nacex/adapter.js';
+import { adapter as nationex } from '../carriers/nationex/adapter.js';
 import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
 import { adapter as novaPoshta } from '../carriers/nova-poshta/adapter.js';
 import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
@@ -290,6 +291,7 @@ export const REGISTRY: RegistryDefinition = {
     "mondial-relay": mondialRelay,
     "mrw": mrw,
     "nacex": nacex,
+    "nationex": nationex,
     "ninja-van": ninjaVan,
     "nova-poshta": novaPoshta,
     "nz-post": nzPost,
@@ -482,7 +484,7 @@ export const REGISTRY: RegistryDefinition = {
     "mondial-relay": "mondial-relay",
     "mrw": "mrw",
     "nacex": "nacex",
-    "nationex": "universal",
+    "nationex": "nationex",
     "ninja-van": "ninja-van",
     "nova-poshta": "nova-poshta",
     "nz-post": "nz-post",

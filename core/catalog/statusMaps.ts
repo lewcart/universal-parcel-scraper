@@ -63,6 +63,7 @@ import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as meest } from '../../carriers/meest/status.js';
 import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
+import { statusMap as nationex } from '../../carriers/nationex/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as omniva } from '../../carriers/omniva/status.js';
@@ -105,7 +106,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress,
   'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas,
-  'loomis-express': loomisExpress, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva,
+  'loomis-express': loomisExpress, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo, nationex, 'old-dominion': oldDominion, omgo, omniva,
   'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy, sto,
   'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress,

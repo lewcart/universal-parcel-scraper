@@ -7451,7 +7451,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nationex",
+      "recognitionRank": 125,
+      "localClocks": true
     },
     "canaryUrl": "https://nationex.com/reperage",
     "trackingUrlTemplate": "https://nationex.com/reperage/{trackingNumber}",

@@ -70,6 +70,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "meest": 340,
   "mng-kargo": 360,
   "nacex": 850,
+  "nationex": 125,
   "ninja-van": 720,
   "nz-post": 760,
   "omgo": 450,

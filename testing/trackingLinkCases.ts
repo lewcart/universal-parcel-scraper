@@ -576,6 +576,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dynalogic', number: '99999ZZ999999',
     route: /^https:\/\/track\.mydynalogic\.eu\/track\/(?:login\?ordernumber=99999ZZ999999$|order$)/,
     marker: /MyDynalogic|Track & Trace (?:nummer|number)|combinatie van track & trace nummer en postcode/i },
+  // The tracker's script sends an unknown number on to its search page, which names the number it could not find.
+  { carrier: 'nationex', number: '900000009',
+    route: /^https:\/\/nationex\.com\/reperage(?:\/900000009|\?error=true&searchId=900000009)$/,
+    marker: /Aucun résultat trouvé pour le numéro de suivi|Numéro d’envoi \(9 chiffres\)/ },
 ];
 
 /**

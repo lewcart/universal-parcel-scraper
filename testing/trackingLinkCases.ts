@@ -498,6 +498,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dao', number: '00057999999999999992',
     route: /^https:\/\/dao\.as\/find-din-pakke\/#q=00057999999999999992$/,
     marker: /Vi fandt desværre ikke pakkenummer|Find din pakke/ },
+  // The page reads the number from its address and asks its tracking service on load.
+  { carrier: 'early-bird', number: '00373402216999999990',
+    route: /^https:\/\/earlybird\.se\/spara-och-hjalp\?id=00373402216999999990$/,
+    marker: /Vi kunde inte hitta någon försändelse med det spårningsnumret|Var är mitt paket\?/ },
   // The page adds the visitor's country and region to its address. The number's
   // label clock is years ahead, so it never reads as an expired history.
   { carrier: 'vinted-go', number: '1890000000000001',

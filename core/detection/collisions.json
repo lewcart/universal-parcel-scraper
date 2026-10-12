@@ -1908,6 +1908,29 @@
     "reason": "DAO's own SSCCs typed with their 00 identifier also fit PostNord's Danish SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and DAO are both listed first, and recognition asks DAO."
   },
   {
+    "shape": "9{20} starting with 0037340221 that passes the SSCC check",
+    "carriers": [
+      "bring-posten",
+      "early-bird",
+      "nz-post",
+      "postnord",
+      "swiss-post-cargo",
+      "usps"
+    ],
+    "reason": "Early Bird's own SSCCs typed with their 00 identifier and extension digit 3 also fit Bring's and PostNord's SSCC rules and the broad Swiss Post Cargo, NZ Post and USPS candidates. Bring and Early Bird are both listed first, and recognition asks Early Bird."
+  },
+  {
+    "shape": "9{20} starting with 00, another extension digit than 3 and 73402216, that passes the SSCC check",
+    "carriers": [
+      "early-bird",
+      "nz-post",
+      "postnord",
+      "swiss-post-cargo",
+      "usps"
+    ],
+    "reason": "Early Bird's own SSCCs with another extension digit fall outside Bring's rule but still fit PostNord's SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and Early Bird are both listed first, and recognition asks both."
+  },
+  {
     "shape": "PL followed by eight digits ending in 0",
     "carriers": [
       "dhl-ecommerce-es",

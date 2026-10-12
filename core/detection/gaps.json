@@ -304,7 +304,7 @@
     "carrier": "early-bird",
     "pattern": "^00\\d{18}$",
     "kind": "by_design",
-    "reason": "An SSCC carries the GS1 company prefix of whoever issued it, not the carrier, so no rule can name Early Bird from it."
+    "reason": "Early Bird's rule covers the one GS1 company prefix a dense run of its parcels shares. An SSCC under another prefix names whoever issued it, such as a sender, not the carrier, so no rule can name Early Bird from it."
   },
   {
     "carrier": "early-bird",

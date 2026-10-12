@@ -5889,7 +5889,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Stockholm",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "early-bird",
+      "recognitionRank": 350,
+      "localClocks": true
     },
     "canaryUrl": "https://earlybird.se/spara-och-hjalp",
     "trackingUrlTemplate": "https://earlybird.se/spara-och-hjalp?id={trackingNumber}",
@@ -5899,7 +5901,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "earlybird.se"
         ],
-        "pathPattern": "^/(?:tracking|spara-och-hjalp)/?$",
+        "pathPattern": "^/(?:tracking|spara-och-hjalp|en/track-and-help)/?$",
         "params": [
           "id"
         ]
@@ -5914,7 +5916,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^00\\d73402216\\d{9}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ]
   },
   "econt": {
     "displayName": "Econt",
@@ -9140,7 +9149,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dsv": [],
   "dx": ["dx-1"],
   "dynalogic": [],
-  "early-bird": [],
+  "early-bird": ["early-bird-1"],
   "econt": [],
   "ekart": ["ekart-ecommerce"],
   "elta": ["elta-s10"],

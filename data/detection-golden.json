@@ -959,15 +959,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -979,15 +982,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -999,15 +1005,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1019,15 +1028,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1039,15 +1051,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1059,15 +1074,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1079,15 +1097,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1099,15 +1120,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1119,15 +1143,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1139,15 +1166,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1159,15 +1189,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1179,15 +1212,18 @@
     "confidence": "low",
     "candidates": [
       "bring-posten",
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "bring-posten"
+      "bring-posten",
+      "early-bird"
     ],
     "asked": [
+      "early-bird",
       "swiss-post-cargo",
       "postnord",
       "nz-post"
@@ -1712,15 +1748,18 @@
     "confidence": "low",
     "candidates": [
       "postnord",
+      "early-bird",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
     "preferred": [
-      "postnord"
+      "postnord",
+      "early-bird"
     ],
     "asked": [
       "postnord",
+      "early-bird",
       "swiss-post-cargo",
       "nz-post"
     ]

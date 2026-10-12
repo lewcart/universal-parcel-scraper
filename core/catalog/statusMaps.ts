@@ -33,6 +33,7 @@ import { statusMap as dpdFr } from '../../carriers/dpd-fr/status.js';
 import { statusMap as dpdIe } from '../../carriers/dpd-ie/status.js';
 import { statusMap as dpdPl } from '../../carriers/dpd-pl/status.js';
 import { statusMap as dsv } from '../../carriers/dsv/status.js';
+import { statusMap as earlyBird } from '../../carriers/early-bird/status.js';
 import { statusMap as econt } from '../../carriers/econt/status.js';
 import { statusMap as elta } from '../../carriers/elta/status.js';
 import { statusMap as emile } from '../../carriers/emile/status.js';
@@ -98,15 +99,16 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, chronopost, 'correos-spain': correosSpain,
-  'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, econt, elta,
-  emile, envialia, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost, 'gebrueder-weiss': gebruederWeiss, geis,
-  'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem,
-  'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, 'kuehne-nagel': kuehneNagel,
-  'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, 'loomis-express': loomisExpress, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo,
-  'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije,
-  'posta-srbije': postaSrbije, postlogistics, ppl, ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService,
-  'slovenska-posta': slovenskaPosta, speedx, speedy, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak,
-  'vinted-go': vintedGo, whistl, xdp, yunexpress, 'yurtici-kargo': yurticiKargo, zeleris,
+  'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv,
+  'early-bird': earlyBird, econt, elta, emile, envialia, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,
+  'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress,
+  'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
+  'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas,
+  'loomis-express': loomisExpress, maltapost, matkahuolto, meest, 'mng-kargo': mngKargo, 'old-dominion': oldDominion, omgo, omniva,
+  'orlen-paczka': orlenPaczka, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
+  ptt, sagawa, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy, sto,
+  'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, ups, venipak, 'vinted-go': vintedGo, whistl, xdp, yunexpress,
+  'yurtici-kargo': yurticiKargo, zeleris,
 };
 
 /** The carrier the app files the universal providers' scans under. */

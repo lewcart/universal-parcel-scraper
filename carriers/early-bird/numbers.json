@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -45,6 +45,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -64,13 +65,14 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -90,13 +92,14 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -142,7 +145,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -175,6 +178,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -201,6 +205,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -220,13 +225,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -253,6 +259,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -272,13 +279,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -305,6 +313,7 @@
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -324,13 +333,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -350,13 +360,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -376,13 +387,14 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
           "bring-posten",
+          "early-bird",
           "swiss-post-cargo",
           "postnord",
           "usps",
@@ -409,6 +421,7 @@
         "confidence": "low",
         "candidates": [
           "postnord",
+          "early-bird",
           "swiss-post-cargo",
           "usps",
           "nz-post"

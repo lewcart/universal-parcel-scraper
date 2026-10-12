@@ -6,10 +6,11 @@ gateway.
 
 ## How it works
 
-1. `direct`: one `GET https://edge.allegro.pl/one/tracking?packageNo={number}` with
-   `Accept: application/vnd.allegro.internal.v1+json` and `Accept-Language: en-US`. Allegro
-   One's tracking page asks this service; it needs no cookies, key, account or browser. The reply
-   lists the parcel's scans, each a UTC instant and a wording.
+1. `direct`: one `GET https://edge.allegro.pl/ad/tracking?packageNo={number}` with
+   `Accept: application/vnd.allegro.internal.v1+json` and `Accept-Language: en-US`. The Allegro
+   Delivery tracking page, which the links open, asks this service; it needs no cookies, key,
+   account or browser. The reply lists the parcel's scans, each a UTC instant and a wording: an
+   older parcel's newest first, a newer one's oldest first.
 2. `retry`: one more try when the request fails to reach Allegro or hangs. The first try gets
    half of the budget.
 
@@ -31,7 +32,8 @@ gateway.
   which Node's fetch sends by default. The stage map reads the English wording.
 - The service sends no status code, so the map stages each wording. A scan the map does not know
   is left to the shared wording rules.
-- The Allegro Delivery tracking page asks `/ad/tracking` instead, which answers the same lists.
+- The older Allegro One page asked `/one/tracking`, which answers the same numbers but leaves out
+  a newer parcel's sorting-centre scans, so it is not used.
 
 ## Numbers
 

@@ -7,8 +7,9 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { ALLEGRO_ONE_MAX_BYTES, normalizeAllegroOneNumber, parseAllegroOne, PROVIDER } from './parser.js';
 
-// The service Allegro's tracking page asks through its edge gateway.
-export const ALLEGRO_ONE_ENDPOINT = 'https://edge.allegro.pl/one/tracking';
+// The service the Allegro Delivery tracking page asks through its edge gateway.
+// `/one/tracking`, which the older Allegro One page asked, leaves out sorting-centre scans.
+export const ALLEGRO_ONE_ENDPOINT = 'https://edge.allegro.pl/ad/tracking';
 // The gateway answers only the media type Allegro's own pages ask for.
 const MEDIA_TYPE = 'application/vnd.allegro.internal.v1+json';
 const REDIRECTS = [301, 302, 303, 307, 308];

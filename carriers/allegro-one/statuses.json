@@ -10,6 +10,7 @@
     {"wording": "Courier has transferred the parcel to the warehouse", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"wording": "Parcel has been dispatched to its destination point", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel left for the locker, point or branch serving the recipient."},
     {"wording": "Parcel has been accepted at the sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Dispatched from sorting center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Listed by /ad/tracking; /one/tracking leaves it out."},
     {"wording": "Parcel has been accepted at the branch", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"wording": "Parcel has been redirected to a different point", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Follows the recipient's choice of another point."},
     {"wording": "Parcel may be delivered with delay", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "A notice; the parcel keeps moving."},

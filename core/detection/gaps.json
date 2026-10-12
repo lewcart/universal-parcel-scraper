@@ -24,6 +24,12 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to ACS Courier."
   },
   {
+    "carrier": "allegro-one",
+    "pattern": "^ALE\\d{12}$",
+    "kind": "by_design",
+    "reason": "Allegro One's older number form. The tracker still answers it, but every recent label seen carries an A0 number, so detection offers only those."
+  },
+  {
     "carrier": "amazon-logistics",
     "pattern": "^ZZ\\d{10}$",
     "kind": "by_design",

@@ -48,7 +48,7 @@ function projectScan(row: unknown, index: number): Scan {
 }
 
 /**
- * The reply of `GET /one/tracking?packageNo={number}` on Allegro's edge
+ * The reply of `GET /ad/tracking?packageNo={number}` on Allegro's edge
  * gateway: `{ "status": [...] }`, each scan a UTC instant and a wording. It
  * does not echo the number: the scans are those of the number in the request.
  * An empty or null list is what the tracker shows as "not found". Every A0
@@ -77,9 +77,11 @@ export function parseAllegroOne(payload: unknown, raw: string): CarrierResult {
     seen.add(key);
     scans.push(scan);
   });
-  // The reply lists scans newest first and the tracker sorts them so too.
-  // Instants order them; equal ones keep the reply's order.
-  scans.sort((left, right) => right.at - left.at || left.index - right.index);
+  // The reply lists an older parcel's scans newest first and a newer one's
+  // oldest first; the tracker shows them newest first. Instants order them,
+  // and equal ones keep the order in which the reply logged them.
+  const oldestFirst = scans.length > 1 && scans[0]!.at < scans.at(-1)!.at;
+  scans.sort((left, right) => right.at - left.at || (oldestFirst ? right.index - left.index : left.index - right.index));
   const newest = scans[0]!.event;
   const current = newest.stage
     ? { stage: newest.stage as Stage, source: 'carrier_map' }

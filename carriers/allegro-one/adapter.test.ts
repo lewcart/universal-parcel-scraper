@@ -12,6 +12,7 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = 'A0ZZ000001';
 const READY = 'A0ZZ000002';
 const RETURNED = 'A0ZZ000003';
+const TRANSIT = 'A0ZZ000004';
 const DELIVERY = 'ADZZ000001';
 const OLDER = 'ALE900000000001';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
@@ -29,7 +30,7 @@ describe('Allegro One HTTP adapter', () => {
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]!;
-    expect(String(url)).toBe(`https://edge.allegro.pl/one/tracking?packageNo=${DELIVERED}`);
+    expect(String(url)).toBe(`https://edge.allegro.pl/ad/tracking?packageNo=${DELIVERED}`);
     expect(init).toMatchObject({ redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Accept: MEDIA_TYPE, 'Accept-Language': 'en-US', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(init?.method ?? 'GET').toBe('GET');
@@ -68,14 +69,29 @@ describe('Allegro One HTTP adapter', () => {
       'out_for_delivery', 'in_transit', 'accepted', 'accepted', 'registered']);
   });
 
-  it('orders scans by instant, keeps the reply order for equal ones and leaves unknown wording to the shared rules', () => {
-    const payload = fixture('ready');
-    payload.status.reverse();
-    payload.status.push({ eventTimestamp: '2026-10-02T11:20:07.345Z', description: 'Parcel has been weighed' });
-    const result = parseAllegroOne(payload, READY);
+  it('reads a newer parcel, listed oldest first, with its sorting-centre scans', () => {
+    const result = parseAllegroOne(fixture('in-transit'), TRANSIT);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      last_status_text: 'Parcel has been accepted at the branch', last_update: '2026-10-06T04:52:36.512Z' });
+    expect(result.delivered_at).toBeUndefined();
+    expect(result.events!.map((event) => event.description)).toEqual(fixture('in-transit').status.map((row) => row.description).reverse());
+    expect(result.events![3]).toEqual({ time: '2026-10-05T21:30:05.777Z', description: 'Dispatched from sorting center',
+      stage: 'in_transit', stage_source: 'carrier_map' });
+  });
+
+  it('orders scans by instant, keeps equal ones in the order they were logged and leaves unknown wording to the shared rules', () => {
+    const weighed = { eventTimestamp: '2026-10-02T11:20:07.345Z', description: 'Parcel has been weighed' };
+    const extended = { time: '2026-10-02T11:20:07.345Z', description: 'Time for pick-up has been extended', stage: 'ready_for_pickup', stage_source: 'carrier_map' };
+    const newestFirst = fixture('ready');
+    newestFirst.status.splice(1, 0, weighed);
+    expect(parseAllegroOne(newestFirst, READY).events!.slice(0, 2)).toEqual([extended, { time: weighed.eventTimestamp, description: weighed.description }]);
+    const oldestFirst = fixture('ready');
+    oldestFirst.status.reverse();
+    oldestFirst.status.push(weighed);
+    const result = parseAllegroOne(oldestFirst, READY);
     expect(result.events!.slice(0, 3)).toEqual([
-      { time: '2026-10-02T11:20:07.345Z', description: 'Time for pick-up has been extended', stage: 'ready_for_pickup', stage_source: 'carrier_map' },
-      { time: '2026-10-02T11:20:07.345Z', description: 'Parcel has been weighed' },
+      { time: weighed.eventTimestamp, description: weighed.description },
+      extended,
       { time: '2026-10-02T11:19:55Z', description: 'Parcel is awaiting pick-up', stage: 'ready_for_pickup', stage_source: 'carrier_map' },
     ]);
     const unknown = parseAllegroOne({ status: [{ eventTimestamp: '2026-10-03T08:00:00Z', description: 'Parcel has been weighed' }] }, READY);

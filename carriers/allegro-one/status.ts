@@ -19,6 +19,7 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'Courier has transferred the parcel to the warehouse': 'in_transit',
   'Parcel has been dispatched to its destination point': 'in_transit',
   'Parcel has been accepted at the sorting center': 'in_transit',
+  'Dispatched from sorting center': 'in_transit',
   'Parcel has been accepted at the branch': 'in_transit',
   'Parcel has been redirected to a different point': 'in_transit',
   // Notices while the parcel is on its way; neither stops it.

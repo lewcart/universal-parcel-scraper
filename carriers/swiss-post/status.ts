@@ -133,6 +133,9 @@ export const GLOBAL_STATUS_STAGE: Record<string, Stage> = {
   CUSTOMS: 'customs',
 };
 
+/** The `globalStatus` codes with a known meaning. A status-only answer carries its code as the status text. */
+export const SWISS_POST_GLOBAL_STATUSES: readonly string[] = Object.freeze(Object.keys(GLOBAL_STATUS_STAGE));
+
 /**
  * What the map says about one scan. The map reads the last segment of the
  * dotted event code. A revoked scan's wording ends with its sub-event's label,

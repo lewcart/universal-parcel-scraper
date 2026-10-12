@@ -103,7 +103,8 @@ against another stage, or another stage of the same rank, needs a newest scan th
 at every reading. Two exceptions can be two problems, so the provider's must be no earlier at
 every reading, as when it relays the carrier's own. The winner takes the carrier's own facts
 it lacks, such as the estimate, destination or weight, and `direct` keeps the carrier's answer
-as it came. Otherwise, even when every fallback fails, the carrier's answer stands.
+as it came. Otherwise, even when every fallback fails, the carrier's answer stands. Hosts that
+route lookups themselves apply the same rule with `isPartialAnswer` and `fillPartialAnswer`.
 The `countryHint` input is still accepted but no longer affects a lookup.
 One deadline and one cancellation signal cover the whole call. The answer lists every
 attempt with its source and outcome.

@@ -59,11 +59,13 @@
       "explicitOffsetTime",
       "failureHint",
       "failureKind",
+      "fillPartialAnswer",
       "firstOccurrence",
       "formatTrackingNumber",
       "hasDirectHandoffAdapter",
       "inferStage",
       "isAmazonTrackingNumber",
+      "isPartialAnswer",
       "isPlanzerSharedTrackingNumber",
       "isValidCorreosSpainCheckLetter",
       "isValidDhlExpressWaybill",
@@ -256,6 +258,7 @@
   },
   "./app": {
     "values": [
+      "SWISS_POST_GLOBAL_STATUSES",
       "activeTrackingCarrierId",
       "brandCarrierIds",
       "brandTimeZones",

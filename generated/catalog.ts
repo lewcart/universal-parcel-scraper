@@ -7026,7 +7026,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Vilnius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lietuvos-pastas",
+      "recognitionRank": 860,
+      "localClocks": true
     },
     "canaryUrl": "https://lpexpress.lt/track",
     "trackingUrlTemplate": "https://lpexpress.lt/track?parcel={trackingNumber}",
@@ -7061,6 +7063,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -8944,7 +8952,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
-  "lietuvos-pastas": ["lietuvos-pastas-1"],
+  "lietuvos-pastas": ["lietuvos-pastas-1","lietuvos-pastas-s10"],
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lso": ["lso-1"],
   "magyar-posta": [],

@@ -2128,13 +2128,13 @@
     "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps LP Express numbers that carry no valid S10 check digit; both stay low-confidence suggestions."
   },
   {
-    "shape": "CC, CH or HC, nine digits and LT with a valid S10 check digit",
+    "shape": "AA9{9}LT with a valid S10 check digit",
     "carriers": [
       "chronopost",
       "intl-post",
       "lietuvos-pastas"
     ],
-    "reason": "With a valid check digit the number is a Lithuanian UPU S10 item; the postal fallback's high-confidence rule decides and the LP Express suggestion stays hidden."
+    "reason": "The Lithuanian issuer suffix, LP Express's CC, CH and HC included, suggests Lietuvos paštas but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
     "shape": "210 and ten digits that pass the GS1 check and fail the Ukrposhta check",

@@ -24785,6 +24785,7 @@
       "intl-post"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -25654,6 +25655,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -25666,6 +25668,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -25677,6 +25680,19 @@
       "intl-post"
     ],
     "asked": [
+      "lietuvos-pastas",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "CC929125681LT",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -26052,6 +26068,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -26064,6 +26081,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -26088,6 +26106,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -27580,6 +27599,7 @@
       "intl-post"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -29161,6 +29181,20 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "HC019942965LT",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost",
+      "lietuvos-pastas"
+    ],
+    "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -29173,6 +29207,7 @@
       "lietuvos-pastas"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -33473,6 +33508,7 @@
       "intl-post"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },
@@ -33930,6 +33966,7 @@
       "intl-post"
     ],
     "asked": [
+      "lietuvos-pastas",
       "chronopost"
     ]
   },

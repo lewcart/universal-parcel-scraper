@@ -466,6 +466,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'econt', number: '9000000000001',
     route: /^https:\/\/www\.econt\.com\/services\/track-shipment\/9000000000001$/,
     marker: /Проследи пратка/ },
+  // The tracker reads the number from its address and asks the self-service API on load.
+  { carrier: 'lietuvos-pastas', number: 'ZZ999999995LT',
+    route: /^https:\/\/lpexpress\.lt\/track\?parcel=ZZ999999995LT/,
+    marker: /Sekti siuntą|Jūsų siuntos nepavyko rasti|Track (?:a )?parcel/i },
   // The tracking page asks the shipment service on load and words its notices in Lithuanian.
   { carrier: 'venipak', number: 'V00000E0000009',
     route: /^https:\/\/venipak\.com\/lt\/en\/tracking\/track\/V00000E0000009\/?$/,

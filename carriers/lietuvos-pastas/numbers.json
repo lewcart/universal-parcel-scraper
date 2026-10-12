@@ -155,19 +155,38 @@
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20250421183500/https://lpexpress.lt/track?parcel=CC928806445LT",
+        "url": "https://web.archive.org/web/20250421183509/https://api-esavitarna.post.lt/tracking/CC928806445LT/events",
         "date": "2025-04-21",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on LP Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel posted at a parcel locker and collected from it."
+    },
+    {
+      "number": "CC929125681LT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250423151126/https://api-esavitarna.post.lt/tracking/CC929125681LT/events",
+        "date": "2025-04-23",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel collected from the sender's parcel locker and at a sorting centre."
     },
     {
       "number": "CH800300288LT",
@@ -191,6 +210,29 @@
         ]
       },
       "note": "Looked up on LP Express's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "HC019942965LT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251104001421/https://api-esavitarna.post.lt/tracking/HC019942965LT/events",
+        "date": "2025-11-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost",
+          "lietuvos-pastas"
+        ]
+      },
+      "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel through three sorting centres to a parcel locker, then collected."
     },
     {
       "number": "CC800855513LT",
@@ -220,13 +262,13 @@
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20260706093449/https://lpexpress.lt/track?parcel=HC025271224LT",
-        "date": "2026-07-06",
+        "url": "https://web.archive.org/web/20260707135945/https://api-esavitarna.post.lt/tracking/HC025271224LT/events",
+        "date": "2026-07-07",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -236,7 +278,7 @@
           "lietuvos-pastas"
         ]
       },
-      "note": "Looked up on LP Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Lietuvos paštas's own tracking service reply, archived by the Wayback Machine, shows the parcel accepted and moving between sorting centres."
     }
   ]
 }

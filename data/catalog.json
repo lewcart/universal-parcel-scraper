@@ -7024,7 +7024,9 @@
     "timezone": "Europe/Vilnius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lietuvos-pastas",
+      "recognitionRank": 860,
+      "localClocks": true
     },
     "canaryUrl": "https://lpexpress.lt/track",
     "trackingUrlTemplate": "https://lpexpress.lt/track?parcel={trackingNumber}",
@@ -7059,6 +7061,12 @@
       {
         "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

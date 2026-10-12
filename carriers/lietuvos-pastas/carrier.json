@@ -19,18 +19,56 @@
   "timezone": "Europe/Vilnius",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "lietuvos-pastas",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 860
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://lpexpress.lt/track?parcel={trackingNumber}",
     "searchUrl": "https://lpexpress.lt/track",
     "canaryUrl": "https://lpexpress.lt/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "pickup_point",
+      "pickup_point_address",
+      "postcodes",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "pickup_point"
+    ],
+    "discarded": [
+      "pickup_point_address",
+      "postcodes",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -63,6 +101,13 @@
       "id": "lietuvos-pastas-1",
       "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
       "confidence": "low"
+    },
+    {
+      "id": "lietuvos-pastas-s10",
+      "pattern": "^[A-Z]{2}\\d{9}LT$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

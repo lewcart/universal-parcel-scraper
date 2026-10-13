@@ -1,8 +1,8 @@
 # C Chez Vous
 
-Bulky retail orders delivered in France on a booked appointment. Tracked through the public
-order page, which shows an order (one or more parcels on a five-step progress bar), not a
-parcel journey.
+Bulky retail orders delivered in France on a booked appointment or to a pickup point. Tracked
+through the public order page, which shows an order (one or more parcels on a progress bar),
+not a parcel journey.
 
 ## How it works
 
@@ -29,10 +29,16 @@ Accepted references, uppercased with spaces removed:
   order.
 - The order's step is the least advanced of its parcels. Reporting a half-delivered order as
   delivered would stop notifications for the rest.
-- A `parcelStep` outside 1–5 makes the whole order `unknown` with no stage, so the sync
-  records it for review. Clamping it to step 1 would claim the order has not started.
-- Step 2 ("Prise de rendez-vous") is still `registered`: the appointment is being booked,
-  nothing has shipped.
+- The page's script titles and explains each step. A home delivery has five. Step 4, titled
+  "En livraison", is the trip to the regional platform before the appointment, so it is
+  `in_transit`, not out for delivery. Step 2 ("Prise de rendez-vous") is still `registered`:
+  the appointment is being booked, nothing has shipped.
+- A pickup-point order (`delivery_type` `EMP`) has no appointment step and six steps: step 5 is
+  the order waiting at the point (`ready_for_pickup`) and step 6 its collection. Reading its
+  step 5 as a home delivery's would report it delivered before it is collected.
+- A `parcelStep` its order's set does not list makes the whole order `unknown` with no stage,
+  so the sync records it for review. Clamping it to step 1 would claim the order has not
+  started.
 - The estimate is the latest parcel appointment day, dropped once delivered. The time window
   (`dateMessage`) is discarded on purpose.
 - `history` is not declared: the page has no scan history and the single event restates the
@@ -40,8 +46,8 @@ Accepted references, uppercased with spaces removed:
 - `pickupName` is the person receiving the order, not a parcel shop, so `pickup_point` is not
   declared.
 - The record also carries shop, recipient name, address, phone, e-mail and ordered articles.
-  Only the step and appointment date are read; a test asserts none of the rest reaches the
-  result.
+  Only the delivery type, the step and the appointment date are read; a test asserts none of
+  the rest reaches the result.
 
 ## Limitations
 

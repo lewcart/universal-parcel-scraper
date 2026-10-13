@@ -9,7 +9,7 @@ import {
   normalizeCChezVousCredential,
   parseCChezVousTrackingHtml,
 } from './adapter.js';
-import { parcelStep, stepDetails } from './status.js';
+import { deliveryKind, parcelStep, stepDetails } from './status.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 // C Chez Vous publishes this identifier as an example on its official tracking
@@ -32,7 +32,7 @@ const PRIVATE_PLACEHOLDERS = [
 
 function trackingPage(overrides: Record<string, unknown> = {}): string {
   const base = JSON.parse(
-    readFileSync(path.join(here, 'fixtures', 'out-for-delivery.json'), 'utf8'),
+    readFileSync(path.join(here, 'fixtures', 'regional-transit.json'), 'utf8'),
   ) as Record<string, unknown>;
   const payload = { ...base, ...overrides };
   const encoded = JSON.stringify(payload).replaceAll('&', '&amp;').replaceAll('"', '&quot;');
@@ -73,12 +73,26 @@ describe('C Chez Vous combined tracking credential', () => {
 });
 
 describe('C Chez Vous step map', () => {
-  it('reads the five documented steps and nothing else', () => {
+  it('reads the five steps of a home delivery and nothing else', () => {
     expect(stepDetails(parcelStep(5))).toMatchObject({ stage: 'delivered' });
     expect(stepDetails(parcelStep(1))).toMatchObject({ stage: 'registered' });
     for (const value of [0, 6, 4.5, '4', null]) {
       expect(stepDetails(parcelStep(value))).toBeNull();
     }
+  });
+
+  it('reads "En livraison" as the trip to the regional platform, not the delivery round', () => {
+    expect(stepDetails(parcelStep(4))).toEqual({ status: 'in_transit', stage: 'in_transit',
+      description: 'Commande en route vers la plateforme régionale' });
+  });
+
+  it("reads a pickup-point order's own steps", () => {
+    expect(deliveryKind('EMP')).toBe('pickup');
+    for (const value of ['LAD', 'R2C', undefined, null]) expect(deliveryKind(value)).toBe('home');
+    expect(stepDetails(parcelStep(4, 'pickup'), 'pickup')).toMatchObject({ stage: 'in_transit' });
+    expect(stepDetails(parcelStep(5, 'pickup'), 'pickup')).toMatchObject({ status: 'out_for_delivery', stage: 'ready_for_pickup' });
+    expect(stepDetails(parcelStep(6, 'pickup'), 'pickup')).toMatchObject({ status: 'delivered', stage: 'delivered' });
+    for (const value of [0, 2, 7]) expect(stepDetails(parcelStep(value, 'pickup'), 'pickup')).toBeNull();
   });
 });
 
@@ -87,13 +101,13 @@ describe('C Chez Vous response normalization', () => {
     const result = parseCChezVousTrackingHtml(trackingPage(), OFFICIAL_EXAMPLE_NUMBER);
 
     expect(result).toEqual({
-      status: 'out_for_delivery',
-      current_stage: 'out_for_delivery',
-      last_status_text: 'Commande en livraison',
+      status: 'in_transit',
+      current_stage: 'in_transit',
+      last_status_text: 'Commande en route vers la plateforme régionale',
       last_update: null,
       expected_delivery: '2024-01-02',
       timezone: 'Europe/Paris',
-      events: [{ description: 'Commande en livraison', stage: 'out_for_delivery' }],
+      events: [{ description: 'Commande en route vers la plateforme régionale', stage: 'in_transit' }],
     });
     const serialized = JSON.stringify(result);
     for (const privateValue of PRIVATE_PLACEHOLDERS) {
@@ -132,6 +146,25 @@ describe('C Chez Vous response normalization', () => {
       parcels: [{ parcelStep: 5, date: '2024-01-02T07:00:00Z' }],
     }), OFFICIAL_EXAMPLE_NUMBER);
     expect(delivered).toMatchObject({ status: 'delivered', expected_delivery: null });
+  });
+
+  it('keeps a pickup-point order waiting at the point until it is collected', () => {
+    const waiting = parseCChezVousTrackingHtml(trackingPage({
+      delivery_type: 'EMP',
+      parcels: [{ parcelStep: 5, date: '2024-01-02T07:00:00Z' }],
+    }), OFFICIAL_EXAMPLE_NUMBER);
+    expect(waiting).toMatchObject({
+      status: 'out_for_delivery',
+      current_stage: 'ready_for_pickup',
+      last_status_text: 'Commande disponible au point retrait',
+      expected_delivery: '2024-01-02',
+    });
+
+    const collected = parseCChezVousTrackingHtml(trackingPage({
+      delivery_type: 'EMP',
+      parcels: [{ parcelStep: 6, date: '2024-01-02T07:00:00Z' }],
+    }), OFFICIAL_EXAMPLE_NUMBER);
+    expect(collected).toMatchObject({ status: 'delivered', current_stage: 'delivered', expected_delivery: null });
   });
 
   it('reports an order with an unknown step without a stage', () => {
@@ -175,7 +208,7 @@ describe('C Chez Vous tracker', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(trackingPage()));
 
     await expect(new CChezVousTracker({ timeoutMs: 1_000 }).fetch(OFFICIAL_EXAMPLE_NUMBER))
-      .resolves.toMatchObject({ status: 'out_for_delivery' });
+      .resolves.toMatchObject({ status: 'in_transit' });
     expect(fetcher.mock.calls[0]?.[0]).toBe(cChezVousTrackingUrl(OFFICIAL_EXAMPLE_NUMBER));
     expect(fetcher.mock.calls[0]?.[1]).toMatchObject({
       cache: 'no-store',

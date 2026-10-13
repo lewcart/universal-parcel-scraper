@@ -4,8 +4,8 @@
  * One bounded GET per lookup ('direct' step). The page embeds its whole order
  * record as JSON in a `<tracking :tracking-results="…">` attribute: the shop,
  * the recipient's name, address, phone and e-mail, the ordered articles and the
- * booked time window sit next to the per-parcel step. `parse()` reads the step
- * and the delivery date and nothing else.
+ * booked time window sit next to the per-parcel step. `parse()` reads the
+ * delivery type, the step and the delivery date and nothing else.
  *
  * The order reference alone opens that page, so it is part of the tracking
  * credential: never log it, quote it in an issue, or put a real one in a
@@ -18,7 +18,7 @@ import { InvalidInputError, NotFoundError, SchemaError } from '../../core/errors
 import type { CarrierResult } from '../../core/result/index.js';
 import { UpstreamHttpError, clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { UNKNOWN_STEP, UNKNOWN_STEP_DESCRIPTION, parcelStep, stepDetails } from './status.js';
+import { UNKNOWN_STEP, UNKNOWN_STEP_DESCRIPTION, deliveryKind, parcelStep, stepDetails } from './status.js';
 
 export { STEP_DETAILS, stepDetails } from './status.js';
 
@@ -124,11 +124,12 @@ export function parseCChezVousTrackingHtml(
   if (parcels.length === 0) {
     throw new SchemaError(PROVIDER, 'C Chez Vous returned incomplete tracking details');
   }
-  const steps = parcels.map((parcel) => parcelStep(parcel.parcelStep));
+  const kind = deliveryKind(payload.delivery_type);
+  const steps = parcels.map((parcel) => parcelStep(parcel.parcelStep, kind));
   // A multi-parcel order is complete only when its least-advanced parcel is complete,
   // and a parcel on a step we do not know makes the whole order unknown.
   const currentStep = steps.includes(UNKNOWN_STEP) ? UNKNOWN_STEP : Math.min(...steps);
-  const current = stepDetails(currentStep);
+  const current = stepDetails(currentStep, kind);
   const deliveryDates = parcels
     .map((parcel) => normalizedIsoDate(parcel.date))
     .filter((date): date is string => date !== null)

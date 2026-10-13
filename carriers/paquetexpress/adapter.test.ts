@@ -275,10 +275,16 @@ describe('Paquetexpress tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
-  it('routes a number to the adapter when the caller names Paquetexpress, which detection never offers', async () => {
-    for (const number of [DELIVERED, PICKUP, REQUEST, GUIA]) {
-      expect(detectCarrierMatch(number)?.carrier).not.toBe('paquetexpress');
-      expect(recognitionAskedCarriers(number)).not.toContain('paquetexpress');
+  it('asks Paquetexpress about a guía and routes a tracking code to it when the caller names the carrier', async () => {
+    for (const number of [GUIA, 'syn01we10002', 'SYN01WE1000002']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['paquetexpress']) });
+      expect(recognitionAskedCarriers(number), number).toContain('paquetexpress');
+    }
+    // Tracking codes share their lengths with other carriers, and a guía's sequence is five to seven digits.
+    for (const number of [DELIVERED, PICKUP, REQUEST, 'SYN01WE1000', 'SYN01WE10000002', 'SYN1WE100002']) {
+      expect(detectCarrierMatch(number)?.carrier, number).not.toBe('paquetexpress');
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('paquetexpress');
+      expect(recognitionAskedCarriers(number), number).not.toContain('paquetexpress');
     }
     for (const link of [`https://www.paquetexpress.com.mx/rastreo/${DELIVERED}`, `https://www.paquetexpress.com.mx/en/rastreo/${DELIVERED}/`]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: DELIVERED, carrier: 'paquetexpress', source: 'link' });

@@ -22,11 +22,14 @@ the history alone, as the adapter does, since its rows carry the same fields.
 
 ## Numbers
 
-Tracking codes are eleven to thirteen digits, and the adapter takes ten to fourteen; a guía is the
-issuing branch's code, two letters and a sequence. Paquetexpress publishes no layout or check digit, and eleven
-digits are shared with GLS, PostLogistics and several other carriers, so detection offers no
-Paquetexpress rule and recognition is not asked for them; Paquetexpress tracking runs when the
-caller names the carrier. Other shapes are invalid without a request.
+Tracking codes are eleven to thirteen digits, and the adapter takes ten to fourteen.
+Paquetexpress publishes no layout or check digit for them, and other carriers share each of those
+lengths, GLS and PostLogistics among them, so detection does not offer Paquetexpress for a code;
+tracking one runs when the caller names the carrier. A guía is the issuing branch's code, three
+letters and two digits as the service names its branches, then two letters and a sequence.
+`paquetexpress-1` offers Paquetexpress for a guía at low confidence, so preflight asks
+recognition. The rule takes the five to seven digits seen in sequences, the adapter four to nine.
+Other shapes are invalid without a request.
 
 The service also matches shippers' references and answers with the parcels they belong to. Rows
 count only when their tracking code, or their guía, is the number asked; any other parcel is

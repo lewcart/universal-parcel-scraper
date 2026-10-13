@@ -552,6 +552,14 @@
     "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps GEODIS letter-and-digit references; the specific high-confidence rule decides."
   },
   {
+    "shape": "Three letters, two digits, two letters and five digits",
+    "carriers": [
+      "colis-prive",
+      "paquetexpress"
+    ],
+    "reason": "A Paquetexpress guía with a five-digit sequence is twelve characters, which Colis Privé's catch-all rule also takes; both are low-confidence, so recognition decides."
+  },
+  {
     "shape": "AA9{10}",
     "carriers": [
       "colis-prive",

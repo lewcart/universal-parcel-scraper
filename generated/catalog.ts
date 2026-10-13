@@ -7769,7 +7769,12 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}[A-Z]{2}\\d{5,7}$",
+        "confidence": "low"
+      }
+    ]
   },
   "passport": {
     "displayName": "Passport",
@@ -9298,7 +9303,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
-  "paquetexpress": [],
+  "paquetexpress": ["paquetexpress-1"],
   "passport": ["passport-1"],
   "post-luxembourg": ["post-luxembourg-s10"],
   "posta-slovenije": ["posta-slovenije-s10"],

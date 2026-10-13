@@ -89,5 +89,11 @@
       "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "paquetexpress-1",
+      "pattern": "^[A-Z]{3}\\d{2}[A-Z]{2}\\d{5,7}$",
+      "confidence": "low"
+    }
+  ]
 }

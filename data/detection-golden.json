@@ -2960,6 +2960,152 @@
     ]
   },
   {
+    "input": "031168321009",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "031254036273",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "031254206027",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "purolator",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "purolator",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "031254206073",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "031254268564",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "031254351998",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "0316/11189371",
     "carrier": "nacex",
     "confidence": "high",
@@ -4645,6 +4791,29 @@
     ]
   },
   {
+    "input": "102161766907",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "1022755012554320168504",
     "carrier": "unknown",
     "confidence": "low",
@@ -4789,6 +4958,33 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "103163443850",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "fedex",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "preferred": [
+      "fedex"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -10525,6 +10721,28 @@
     ]
   },
   {
+    "input": "211205090473",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "2113678564",
     "carrier": "unknown",
     "confidence": "low",
@@ -12945,6 +13163,28 @@
       "seur",
       "brt",
       "relais-colis"
+    ]
+  },
+  {
+    "input": "321237219326",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -22719,6 +22959,21 @@
     ]
   },
   {
+    "input": "9014254368769",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "asked": [
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
     "input": "90247642",
     "carrier": "unknown",
     "confidence": "low",
@@ -25137,6 +25392,17 @@
     ]
   },
   {
+    "input": "AGU01WE524776",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paquetexpress"
+    ],
+    "asked": [
+      "paquetexpress"
+    ]
+  },
+  {
     "input": "AH992514975FR",
     "carrier": "la-poste",
     "confidence": "high",
@@ -26238,6 +26504,19 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "CEN01WE90539",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "paquetexpress"
+    ],
+    "asked": [
+      "colis-prive",
+      "paquetexpress"
     ]
   },
   {
@@ -29036,6 +29315,17 @@
     "confidence": "high",
     "candidates": [
       "canada-post"
+    ]
+  },
+  {
+    "input": "GDL02WW4861663",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paquetexpress"
+    ],
+    "asked": [
+      "paquetexpress"
     ]
   },
   {
@@ -32483,6 +32773,17 @@
     ]
   },
   {
+    "input": "MEX01WW4512652",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paquetexpress"
+    ],
+    "asked": [
+      "paquetexpress"
+    ]
+  },
+  {
     "input": "MH337895169FI",
     "carrier": "intl-post",
     "confidence": "high",
@@ -32603,6 +32904,17 @@
     ],
     "asked": [
       "australia-post"
+    ]
+  },
+  {
+    "input": "MTY01WW3809008",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paquetexpress"
+    ],
+    "asked": [
+      "paquetexpress"
     ]
   },
   {

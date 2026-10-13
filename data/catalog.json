@@ -7767,7 +7767,12 @@
         "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}[A-Z]{2}\\d{5,7}$",
+        "confidence": "low"
+      }
+    ]
   },
   "passport": {
     "displayName": "Passport",

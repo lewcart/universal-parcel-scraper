@@ -344,6 +344,21 @@ describe('PostNL ambiguity and clock safety', () => {
     expect(summer).toMatchObject({ last_update: '2026-09-14T15:20:00+02:00', current_stage: 'registered' });
   });
 
+  it('reads the label\'s creation and the processing record without a country as UTC', () => {
+    const result = parsePostNLTrackingResponse(payload([
+      { category: 'Transit', country_code: 'NL', status: 101, datetime_local: '2026-03-12T16:12:00Z', status_description: 'The item is processed at the PostNL sorting center' },
+      { category: 'Transit', country_code: null, status: 3033, datetime_local: '2026-03-12T09:58:00Z', status_description: 'The item is being processed' },
+      { category: 'Transit', country_code: 'NL', status: 173, datetime_local: '2026-03-12T10:53:00Z', status_description: 'Consignment received at the PostNL Acceptance Centre' },
+      { category: 'Pre-advised', country_code: null, status: 1233, datetime_local: '2026-03-06T02:31:00Z', status_description: 'The item is pre-advised to PostNL' },
+      { category: 'Pre-advised', country_code: null, status: 2001, datetime_local: '2026-03-01T18:13:00Z', status_description: 'The shipping label has been created' },
+    ]), number);
+    // On Amsterdam time the processing record would come before the acceptance listed under it.
+    expect(result.events?.map((event) => event.time)).toEqual([
+      '2026-03-12T16:12:00+01:00', '2026-03-12T09:58:00Z', '2026-03-12T10:53:00+01:00',
+      '2026-03-06T02:31:00+01:00', '2026-03-01T18:13:00Z',
+    ]);
+  });
+
   it.each([
     ['one of its dated neighbours', '2026-03-05T12:30:00Z', new Date('2026-03-12T00:00:00Z')],
     ['the lookup, beyond an hour of clock skew', '2026-03-05T12:01:00Z', new Date('2026-03-05T09:59:00Z')],

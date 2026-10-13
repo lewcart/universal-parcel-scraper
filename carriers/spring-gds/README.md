@@ -36,8 +36,11 @@ native catalog all carry it; everything user-facing says PostNL.
 - Scans without a country are PostNL's own records (pre-advice, the shipper's data) and are
   read on Amsterdam time. Only that reading keeps them in PostNL's newest-first order among
   the customs stamps of a delivered parcel, and Swiss Post's copy of a pre-advice shows the
-  same clock as `+02:00`. It stays a guess: it is dropped when it breaks the order of the
-  dated scans around it or lands after the lookup.
+  same clock as `+02:00`. The label's creation and the processing record without a country
+  are read as UTC instead: shippers' own copies of the label stamp show UTC, and only that
+  reading fits the processing record between its dated neighbours. Each reading stays a
+  guess: it is dropped when it breaks the order of the dated scans around it or lands after
+  the lookup.
 - Stamps with seven fraction digits (customs, bagging) carry a real `Z`: read as local
   times, they would break the list's order.
 - Categories supply the status. Exact English labels refine the categories that cover

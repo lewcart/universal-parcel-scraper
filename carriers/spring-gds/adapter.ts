@@ -36,6 +36,9 @@ const NOT_FOUND_MESSAGE = /barcode was not found/i;
 // PostNL's own records (the pre-advice, the shipper's data) name no country and
 // keep Amsterdam time. See this folder's README for the evidence.
 const HOME_ZONE = 'Europe/Amsterdam';
+// Except the label's creation and the processing record without a country,
+// which keep UTC.
+const UTC_RECORDS = new Set(['2001', '3033']);
 // Customs and bagging records carry seven fraction digits and a real "Z".
 const PRECISE_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{4,7}Z$/;
 
@@ -85,8 +88,8 @@ type ScanClock = FeedClock & { local_time?: string; provider_time_text?: string 
 /**
  * `datetime_local` is the scan's local time although PostNL appends "Z": a
  * Swiss scan at 09:15 local arrives as "09:15Z". Each scan names its country,
- * except PostNL's own records: their Amsterdam reading is a guess, kept only
- * where it fits among the dated scans around it.
+ * except PostNL's own records: their Amsterdam (or UTC) reading is a guess,
+ * kept only where it fits among the dated scans around it.
  */
 function scanClock(event: JsonObject): ScanClock {
   const raw = text(event.datetime_local).trim().slice(0, 64);
@@ -98,7 +101,7 @@ function scanClock(event: JsonObject): ScanClock {
   if (!wall) return { provider_time_text: raw };
   const local = { local_time: wall.replace(/\.000$/, '') };
   const country = text(event.country_code).trim() || text(event.country_name).trim();
-  if (!country) return { ...local, guesses: [wallInZone(wall, HOME_ZONE)] };
+  if (!country) return { ...local, guesses: [wallInZone(wall, UTC_RECORDS.has(eventCode(event.status) ?? '') ? 'UTC' : HOME_ZONE)] };
   const zone = countryTimeZone(country);
   // A country alone cannot distinguish mainland clocks from island clocks.
   return zone && !['Europe/Madrid', 'Europe/Lisbon'].includes(zone) ? { ...local, known: wallInZone(wall, zone) } : local;

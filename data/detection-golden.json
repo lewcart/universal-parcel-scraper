@@ -30814,6 +30814,30 @@
     ]
   },
   {
+    "input": "LA000601098MX",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "correos-de-mexico",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "LA000708580MX",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "correos-de-mexico",
+      "chronopost"
+    ]
+  },
+  {
     "input": "LA000730061MX",
     "carrier": "intl-post",
     "confidence": "high",
@@ -30821,6 +30845,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -30832,6 +30857,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -30843,6 +30869,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -30854,6 +30881,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -32490,6 +32518,18 @@
     "candidates": []
   },
   {
+    "input": "MP472495528MX",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "correos-de-mexico",
+      "chronopost"
+    ]
+  },
+  {
     "input": "MP532805604MX",
     "carrier": "intl-post",
     "confidence": "high",
@@ -32497,6 +32537,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -34236,6 +34277,18 @@
     ]
   },
   {
+    "input": "RI038605443MX",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "correos-de-mexico",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RI046330431MX",
     "carrier": "intl-post",
     "confidence": "high",
@@ -34243,6 +34296,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -34265,6 +34319,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -34434,6 +34489,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -34445,6 +34501,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },
@@ -34456,6 +34513,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-de-mexico",
       "chronopost"
     ]
   },

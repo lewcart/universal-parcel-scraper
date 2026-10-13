@@ -5248,12 +5248,32 @@
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-de-mexico",
+      "recognitionRank": 30,
+      "localClocks": true
     },
     "canaryUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
+    "trackingUrlTemplate": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx?guia={trackingNumber}",
     "trackingSearchUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "correosdemexico.gob.mx"
+        ],
+        "pathPattern": "^/SSLServicios/SeguimientoEnvio/(?:Seguimiento|seguimientoportal2)\\.aspx$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MX$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "cyprus-post": {
     "displayName": "Cyprus Post",

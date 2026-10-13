@@ -36,6 +36,7 @@ import { adapter as colisPrive } from '../carriers/colis-prive/adapter.js';
 import { adapter as colisweb } from '../carriers/colisweb/adapter.js';
 import { adapter as correiosBr } from '../carriers/correios-br/adapter.js';
 import { adapter as correosChile } from '../carriers/correos-chile/adapter.js';
+import { adapter as correosDeMexico } from '../carriers/correos-de-mexico/adapter.js';
 import { adapter as correosExpress } from '../carriers/correos-express/adapter.js';
 import { adapter as correosSpain } from '../carriers/correos-spain/adapter.js';
 import { adapter as ctt } from '../carriers/ctt/adapter.js';
@@ -228,6 +229,7 @@ export const REGISTRY: RegistryDefinition = {
     "colisweb": colisweb,
     "correios-br": correiosBr,
     "correos-chile": correosChile,
+    "correos-de-mexico": correosDeMexico,
     "correos-express": correosExpress,
     "correos-spain": correosSpain,
     "ctt": ctt,
@@ -420,7 +422,7 @@ export const REGISTRY: RegistryDefinition = {
     "colisweb": "colisweb",
     "correios-br": "correios-br",
     "correos-chile": "correos-chile",
-    "correos-de-mexico": "universal",
+    "correos-de-mexico": "correos-de-mexico",
     "correos-express": "correos-express",
     "correos-spain": "correos-spain",
     "ctt": "ctt",

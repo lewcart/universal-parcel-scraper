@@ -505,6 +505,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'hrvatska-posta', number: 'RR000000005HR',
     route: /^https:\/\/posiljka\.posta\.hr\/hr\/tracking\/trackingdata\?barcode=RR000000005HR$/,
     marker: /Broj pošiljke|Nema podataka za uneseni prijamni broj pošiljke/ },
+  // The WebForms page looks up the number in its address for the current year and shows it in its field.
+  { carrier: 'correos-de-mexico', number: 'RR000000005MX',
+    route: /^https:\/\/www\.correosdemexico\.gob\.mx\/SSLServicios\/SeguimientoEnvio\/Seguimiento\.aspx\?guia=RR000000005MX$/,
+    marker: /No se encontró información relacionada con\s?la guía|Total de eventos/ },
   // The single-page tracker fills its field from the address fragment and asks its service.
   { carrier: 'maltapost', number: 'RR000000005MT',
     route: /^https:\/\/www\.maltapost\.com\/tracking#\/tracking\?barcode=RR000000005MT$/,

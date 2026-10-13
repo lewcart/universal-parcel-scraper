@@ -5250,12 +5250,32 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-de-mexico",
+      "recognitionRank": 30,
+      "localClocks": true
     },
     "canaryUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
+    "trackingUrlTemplate": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx?guia={trackingNumber}",
     "trackingSearchUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "correosdemexico.gob.mx"
+        ],
+        "pathPattern": "^/SSLServicios/SeguimientoEnvio/(?:Seguimiento|seguimientoportal2)\\.aspx$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MX$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "cyprus-post": {
     "displayName": "Cyprus Post",
@@ -9206,7 +9226,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ceska-posta": ["ceska-posta-1","ceska-posta-s10"],
   "chit-chats": ["chit-chats-1"],
   "cne": ["cne-1"],
-  "correos-de-mexico": [],
+  "correos-de-mexico": ["correos-de-mexico-s10"],
   "cyprus-post": ["cyprus-post-s10"],
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],

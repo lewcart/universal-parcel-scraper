@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LA000735038MX",
@@ -88,13 +88,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "RI046330431MX",
@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LA000730061MX",
@@ -183,13 +183,89 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Mexico Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
+    },
+    {
+      "number": "LA000601098MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
+    },
+    {
+      "number": "LA000708580MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/correos-mexico/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Mexico Post page offered it as a sample to try; Correos de México's own tracker returns its history. Detection selects the generic postal carrier."
+    },
+    {
+      "number": "RI038605443MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250926150255/https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/seguimientoportal2.aspx?guia=RI038605443MX",
+        "date": "2025-09-26",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "An archived capture of Correos de México's tracker shows its history; the tracker still returns it, filed under two years. Detection selects the generic postal carrier."
+    },
+    {
+      "number": "MP472495528MX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241231082731/https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/seguimientoportal2.aspx?guia=MP472495528MX",
+        "date": "2024-12-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "An archived capture of Correos de México's tracker shows its history; the tracker still returns it under an older year, without its earliest events. Detection selects the generic postal carrier."
     }
   ]
 }

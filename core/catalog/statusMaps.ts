@@ -27,6 +27,7 @@ import { statusMap as ceskaPosta } from '../../carriers/ceska-posta/status.js';
 import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
+import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
 import { statusMap as correosSpain } from '../../carriers/correos-spain/status.js';
 import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
@@ -115,7 +116,8 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost,
   'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
-  'box-now': boxNow, cacesa, cargus, cdek, cdl, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'correos-spain': correosSpain,
+  'box-now': boxNow, cacesa, cargus, cdek, cdl, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'correos-de-mexico': correosDeMexico,
+  'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv,
   dynalogic, 'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier, foxpost,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'gls-es': glsEs, 'gls-it': glsIt, 'go-express': goExpress,

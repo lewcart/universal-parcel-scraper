@@ -1,3 +1,4 @@
+import { setTimeout as delay } from 'node:timers/promises';
 import type { Page, Request, Response as BrowserResponse } from 'playwright-core';
 import { carrierErrorKind, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
@@ -8,6 +9,8 @@ import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummary
 const PROVIDER = 'Royal Mail';
 const ORIGIN = 'https://www.royalmail.com';
 const MAX_BYTES = 2_000_000;
+// The page keeps this frame hidden off-screen until hCaptcha wants a person to solve it.
+const CAPTCHA_CHALLENGE = 'iframe[src*="hcaptcha.com"][src*="frame=challenge"]:visible';
 
 /** The destination the full-history reply adds to the summary, and nothing else from it. */
 export function royalMailDestination(summary: unknown): { summary?: { destinationCountryCode: string } } {
@@ -87,11 +90,22 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
           ...(isRecord(piece.estimatedDelivery) ? { estimatedDelivery: { date: piece.estimatedDelivery.date } } : {}) });
     })().catch(error => { if (active) reject(carrierErrorKind(error) ? error : new TransportError(PROVIDER)); });
   };
+  // A visible CAPTCHA waits for a person, and the page sends no request until it is solved.
+  const watchChallenge = async () => {
+    while (active && !deadline.aborted) {
+      if (await page.locator(CAPTCHA_CHALLENGE).count().catch(() => 0)) {
+        if (active) reject(new ChallengeError(PROVIDER, 'Royal Mail asked for an interactive CAPTCHA'));
+        return;
+      }
+      await delay(500, undefined, { signal: deadline });
+    }
+  };
   page.on('response', received);
   page.on('requestfailed', failed);
   deadline.addEventListener('abort', aborted, { once: true });
   try {
     deadline.throwIfAborted();
+    void watchChallenge().catch(() => {});
     await Promise.race([trigger(), reply.then(() => {})]);
     return await reply;
   } finally {

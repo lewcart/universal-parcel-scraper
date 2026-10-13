@@ -14,7 +14,9 @@ const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 function harness(phase: 'summary' | 'events' = 'summary') {
   const emitter = new EventEmitter();
   const frame = {};
-  const page = Object.assign(emitter, { mainFrame: () => frame }) as unknown as Page;
+  const captcha = { visible: false };
+  const page = Object.assign(emitter, { mainFrame: () => frame,
+    locator: (selector: string) => ({ count: async () => captcha.visible && selector.includes('hcaptcha') ? 1 : 0 }) }) as unknown as Page;
   const target = phase === 'summary' ? URL : royalMailEventsApiUrl(NUMBER);
   const request = (url = target, method = 'GET', ownFrame = true, errorText = 'PRIVATE TOKEN in request URL') => ({ url: () => url,
     method: () => method, resourceType: () => 'xhr', frame: () => ownFrame ? frame : {}, failure: () => ({ errorText }) }) as Request;
@@ -29,7 +31,7 @@ function harness(phase: 'summary' | 'events' = 'summary') {
   const controller = new AbortController();
   const capture = (trigger: () => Promise<void>, timeout = 1000) =>
     captureRoyalMailReply(page, target, NUMBER, phase, controller.signal, timeout, trigger);
-  return { emitter, respond, request, controller, capture };
+  return { emitter, respond, request, controller, capture, captcha };
 }
 
 describe('Royal Mail browser response capture', () => {
@@ -140,6 +142,13 @@ describe('Royal Mail browser response capture', () => {
     const h = harness();
     const result = h.capture(async () => { h.emitter.emit('requestfailed', h.request(URL, 'GET', true, 'net::ERR_HTTP2_PROTOCOL_ERROR')); });
     await expect(result).rejects.toMatchObject({ kind: 'challenge', message: "Royal Mail's edge refused the tracking request" });
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('reports a visible CAPTCHA challenge instead of waiting for the reply', async () => {
+    const h = harness();
+    const result = h.capture(async () => { h.captcha.visible = true; }, 5000);
+    await expect(result).rejects.toMatchObject({ kind: 'challenge', message: 'Royal Mail asked for an interactive CAPTCHA' });
     expect(h.emitter.eventNames()).toEqual([]);
   });
 

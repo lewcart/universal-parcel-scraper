@@ -14,7 +14,9 @@ settles. The navigation link can be covered by the site's fixed header;
 the adapter follows its validated destination in the same context.
 
 The page obtains its own CAPTCHA token for the microsummary, then `Get more
-details` uses the issued API session for history. The application can refresh
+details` uses the issued API session for history. When hCaptcha shows its
+visible challenge instead, the page sends no request until a person solves
+it, so the lookup ends at once as a challenge. The application can refresh
 an expired session itself. Tokens and cookies stay inside the browser. Opt-in browser recognition uses
 the same lookup, requires dated activity and returns the history for reuse.
 The carrier's launch settings and installed-version User-Agent are scoped to

@@ -411,9 +411,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.fancourier\.ro\/awb-tracking\/\?tracking=/,
     marker: /AWB-ul nu a fost gasit|Detalii expediție/i },
   // A number the tracker does not know comes back with an empty field and its notice.
+  // The page's styles show its heading in uppercase.
   { carrier: 'foxpost', number: 'CLFOX000000000000001',
     route: /^https:\/\/foxpost\.hu\/csomagkovetes\/\?/,
-    marker: /Csomagkövetés/,
+    marker: /Csomagkövetés/i,
     forwarding: { notFound: /A megadott csomag azonosító nem található a rendszerünkben/ } },
   // A number the legacy tracker does not know stays on the lookup page with its notice alone.
   { carrier: 'aras-kargo', number: '9900000000001',
@@ -524,10 +525,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'early-bird', number: '00373402216999999990',
     route: /^https:\/\/earlybird\.se\/spara-och-hjalp\?id=00373402216999999990$/,
     marker: /Vi kunde inte hitta någon försändelse med det spårningsnumret|Var är mitt paket\?/ },
-  // The page adds the visitor's country and region to its address. The number's
-  // label clock is years ahead, so it never reads as an expired history.
+  // The link names the European region, which has the tracker; the page adds a
+  // country to its address. The number's label clock is years ahead, so it
+  // never reads as an expired history.
   { carrier: 'vinted-go', number: '1890000000000001',
-    route: /^https:\/\/vintedgo\.com\/en\/tracking\/1890000000000001(?:\?|$)/,
+    route: /^https:\/\/vintedgo\.com\/en\/tracking\/1890000000000001\?(?:[^#]*&)?region=europe(?:&|$)/,
     marker: /We can.t find a parcel with this information|Shipping timeline/i },
   // The tracker is a form that posts the number; the link opens it empty.
   { carrier: 'mng-kargo', number: '900000000001',

@@ -40,8 +40,8 @@
     "delivery_tracking_number"
   ],
   "portal": {
-    "url": "https://vintedgo.com/en/tracking/{trackingNumber}",
-    "searchUrl": "https://vintedgo.com/en/tracking",
+    "url": "https://vintedgo.com/en/tracking/{trackingNumber}?region=europe",
+    "searchUrl": "https://vintedgo.com/en/tracking?region=europe",
     "canaryUrl": "https://vintedgo.com/en/tracking",
     "shows": [
       "status",

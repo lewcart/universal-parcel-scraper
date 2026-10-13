@@ -57,7 +57,8 @@ sixteen digits.
 Vinted Go's tracker at `vintedgo.com/{language}/tracking` moves to
 `vintedgo.com/{language}/tracking/{number}` when a search finds the parcel, so that address
 opens one parcel. The page adds the visitor's `country` and `region` to its address. The United
-States region has no tracking page.
+States region has no tracking page, and a visitor placed in it lands on the homepage. The links
+name `region=europe`, which opens the tracker from any country.
 
 ## Limitations
 

@@ -8742,8 +8742,8 @@
       "recognitionRank": 410
     },
     "canaryUrl": "https://vintedgo.com/en/tracking",
-    "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
-    "trackingSearchUrl": "https://vintedgo.com/en/tracking",
+    "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}?region=europe",
+    "trackingSearchUrl": "https://vintedgo.com/en/tracking?region=europe",
     "linkRules": [
       {
         "domains": [

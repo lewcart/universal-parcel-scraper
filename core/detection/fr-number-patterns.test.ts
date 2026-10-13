@@ -34,6 +34,15 @@ describe('French carrier number candidates', () => {
     expect(detectCarrierMatch('XWLAX000000075001').candidates).toEqual(['colis-prive']);
   });
 
+  it("does not read a postcode into GOFO's 13-digit numbers", () => {
+    // GF or CI, a country code and thirteen digits: the last five look like a French postcode.
+    for (const number of ['GFUS0000000075001', 'GFNL0000000075001', 'GFES0000000075001', 'CIDE0000000075001']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('colis-prive');
+    }
+    expect(detectCarrierMatch('GFFR0000000075001')).toMatchObject({ carrier: 'gofo-fr', candidates: ['gofo-fr'] });
+    expect(detectCarrierMatch('GFUSA000000075001').candidates).toEqual(['colis-prive']);
+  });
+
   it('offers GLS France to HTTP recognition for shared numeric and alpha references', () => {
     for (const number of ['36631000001', '366310000017', 'A1B2C3D4']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });

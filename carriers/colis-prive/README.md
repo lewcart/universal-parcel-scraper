@@ -32,8 +32,9 @@ recipient's postcode.
 - The postcode is what opens the page, so treat the whole value as a secret:
   never log it, quote it in an issue or put it in a fixture or `numbers.json`.
   The corpus keeps bare 12-character numbers only.
-- Yanwen's US last-mile numbers, `YW` with a hub code and twelve digits, also
-  end in five digits; detection does not read those as a postcode.
+- Yanwen's US last-mile numbers, `YW` with a hub code and twelve digits, and
+  GOFO's numbers, `GF` or `CI` with a country code and thirteen digits, also end
+  in five digits; detection does not read those as a postcode.
 - `.divDesti` is removed before any text is read, not filtered afterwards — a
   later selector can forget a filter, not a removal.
 - A page for another shipment is a schema error, never a result.

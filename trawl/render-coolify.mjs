@@ -1,21 +1,17 @@
-// Produce a self-contained Dockerfile for Coolify's Dockerfile application type.
-// Source remains reviewable here; Coolify stores the generated build definition.
+// Embed the reviewable source in one compressed payload so Coolify's base64
+// SSH command stays below Linux's per-argument limit as helpers grow.
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-const read = name => readFileSync(new URL(name, import.meta.url));
-const encoded = name => gzipSync(read(name), { level: 9 }).toString('base64');
-const base = read('Dockerfile').toString().split('\n')[0];
-const license = encoded('LICENSE');
-const helpers = [
-  'tracking-capture.mjs', 'royal-mail-history.mjs', 'fedex-session.mjs',
-  'australia-post-browser.mjs', 'dhl-express-browser.mjs', 'wanbexpress-browser.mjs', 'xpo-browser.mjs',
-  'asendia-browser.mjs',
-  'sf-express-session.mjs', 'sf-express-gap.mjs',
-];
-const install = encoded('install.mjs');
-const copies = helpers.map(name => `printf '%s' '${encoded(name)}' | base64 -d | gzip -d > /app/packages/tiers/src/utils/${name}`);
-console.log(`${base}
-LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parcel-scraper" org.opencontainers.image.licenses="AGPL-3.0-only"
-RUN mkdir -p /usr/share/licenses/trawl && printf '%s' '${license}' | base64 -d | gzip -d > /usr/share/licenses/trawl/LICENSE
-RUN ${copies.join(' \\\n && ')} \\\n && printf '%s' '${install}' | base64 -d | gzip -d > /tmp/install-tracking-capture.mjs \\
- && bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs`);
+const read = name => readFileSync(new URL(name, import.meta.url), 'utf8');
+const dockerfile = read('Dockerfile');
+const copies = [...dockerfile.matchAll(/^COPY (\S+) (\S+)$/gm)];
+const sources = Object.fromEntries(copies.map(([, name, target]) => [target, read(name)]));
+const payload = gzipSync(JSON.stringify(sources), { level: 9 }).toString('base64');
+const header = dockerfile.slice(0, dockerfile.indexOf('\nCOPY '));
+const commands = dockerfile.slice(dockerfile.indexOf('\nRUN ') + 5).trim();
+if (!copies.length || !commands.startsWith('bun install ')) throw new Error('Review the TRAWL Dockerfile before rendering');
+console.log(`${header}
+RUN printf '%s' '${payload}' | base64 -d | gzip -d > /tmp/upc-trawl-sources.json \\
+ && bun -e 'import{readFileSync,writeFileSync,mkdirSync}from"node:fs";import{dirname}from"node:path";for(const[path,text]of Object.entries(JSON.parse(readFileSync("/tmp/upc-trawl-sources.json","utf8")))){mkdirSync(dirname(path),{recursive:true});writeFileSync(path,text)}' \\
+ && rm /tmp/upc-trawl-sources.json \\
+ && ${commands}`);

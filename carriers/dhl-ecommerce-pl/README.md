@@ -1,56 +1,48 @@
 # DHL eCommerce Poland
 
-DHL's domestic parcel network in Poland, formerly DHL Parcel Polska, through
-the guest lookup of its consumer portal. German DHL Paket is
-[dhl](../dhl/README.md) and the Benelux network is
+DHL's domestic parcel network in Poland, formerly DHL Parcel Polska. German
+DHL Paket is [dhl](../dhl/README.md); the Benelux network is
 [dhl-ecommerce-nl](../dhl-ecommerce-nl/README.md).
 
-## How it works
+## Retrieval
 
-1. `direct`: `GET mojdhl.pl/api/dhl/public/auth/captcha/challenge`, then
-   `POST …/shipment/status` with the number and the solved challenge, the two
-   requests `mojdhl.pl/tracking` makes for a visitor who is not signed in. The
-   answer is one entry for the number with the current status of its shipment.
-   An entry without a number type and without a shipment is the only answer
-   read as a missing parcel.
+The guest API at `mojdhl.pl/api/dhl/public` issues a request challenge, then
+accepts the number and its proof at `shipment/status`. The response must name
+the whole requested number and contain one shipment. An empty shipment list
+without a number type confirms absence; several shipments are ambiguous.
 
-A connection failure can retry the complete lookup within its budget. The retry obtains
-a fresh challenge and proof; it never replays a proof that the service may have spent.
-HTTP refusals are not retried. Known block pages retain the challenge failure kind,
-and failure diagnostics exclude the signed proof.
+With the optional TRAWL service, the adapter uses that shipment's confirmed
+waybill to request scan history from `sprawdz.dhl.com.pl`. A fresh context
+rejects optional cookies, completes the page's reCAPTCHA flow, and submits
+its form. The captured POST and the returned history must both name the
+waybill. Recipient acknowledgements, form tokens and self-service links are
+excluded before the browser response leaves the service.
 
-## Notes
+The browser step includes the API confirmation. If history retrieval fails,
+`direct` returns the confirmed summary with the browser failure recorded.
+Without TRAWL, `direct` asks only the API. A connection failure can retry the
+complete HTTP lookup with a fresh proof. HTTP recognition always uses this
+HTTP-only path.
 
-- The portal gives the current status and no scan history, so the result is a
-  summary without events. It carries a time only for a delivery, to the
-  recipient or back to the sender, the one status the portal times.
-- The national page with the full history, `sprawdz.dhl.com.pl`, sits behind a
-  reCAPTCHA and is not used.
-- The challenge is a proof of work the page computes on its own for every
-  visitor: a number below a stated limit whose SHA-256 with a salt matches. It
-  is solved once per lookup, inside the lookup's budget. A proof the portal
-  refuses is an inconclusive answer.
-- The answer names the sender, usually the shop, and that name is kept. The
-  waybill alias and the self-service links are discarded.
-- A code in [statuses.json](statuses.json) has the meaning the page script or
-  a live answer gives it. Any other code takes the stage of the timeline step
-  sent with it.
-- The portal recognizes Allegro Delivery numbers and sends their owner to
-  Allegro. The adapter refuses `AD` numbers and leaves them to Allegro.
-- The posting date is local midnight written in UTC. It is a day and is not
-  emitted as a scan time.
-- An answer with several shipments under one number is inconclusive: nothing
-  says which one was asked for.
+## Data and limitations
 
-## Limitations
+The API supplies the current status, sender and delivery estimate. Its receipt
+time is an instant; posting dates are calendar days. History rows retain
+facility-local clocks without an invented offset, including international
+scans. Unknown history wording remains unclassified.
 
-- No history and no location. Detection suggests the carrier for eleven-digit
-  waybills only, a shape other carriers share.
-- German DHL Paket shapes, `JJD` licence plates included, are detected as DHL.
-  They are read here only when the carrier is named.
+The DHL-specific helper solves supported reCAPTCHA image grids with a local
+CPU classifier. Unsupported challenges and failed verification retain the API
+summary. A solved checkbox alone is insufficient:
+tracking requires a matching, nonempty history response. No recipient
+postcode is needed for scan history.
+
+Detection suggests eleven-digit waybills. Other accepted references, including
+JJD licence plates, require the carrier to be named. Allegro Delivery numbers
+are rejected because that service is tracked by Allegro.
 
 ## Testing
 
-`npm run test:carriers:live -- carriers/dhl-ecommerce-pl` checks that a
-synthetic number gets a clean not-found. Set
-`DHL_ECOMMERCE_PL_TRACKING_NUMBER` outside the repository to read a real parcel.
+`npm run test:carriers:live -- carriers/dhl-ecommerce-pl` checks a synthetic
+missing number. Set `DHL_ECOMMERCE_PL_TRACKING_NUMBER` privately to test a real
+shipment. Also set `FLARESOLVERR_URL` to test full history through TRAWL.

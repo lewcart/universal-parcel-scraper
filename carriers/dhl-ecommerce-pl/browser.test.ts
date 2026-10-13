@@ -1,0 +1,57 @@
+import { describe, expect, it } from 'vitest';
+import { TrawlClient } from '../../core/transport/trawl.js';
+import { dhlPolandBrowser, parseDhlPolandHistory } from './browser.js';
+
+const WAYBILL = '99999999990';
+const ENDPOINT = 'https://sprawdz.dhl.com.pl/';
+const history = () => ({ number: WAYBILL, events: [
+  { date: '04.03.2026', time: '10:15', location: 'Example delivery depot', description: 'Delivered to customer. The shipment received by PRIVATE' },
+  { date: '04.03.2026', time: '08:30', location: 'Example delivery depot', description: 'With delivery courier' },
+  { date: '03.03.2026', time: '15:20', location: 'Example foreign depot', description: 'The shipment is handled in Sorting Center' },
+] });
+const capture = () => ({ url: ENDPOINT, status: 200, trackingNumberSubmitted: WAYBILL, headers: {}, body: JSON.stringify(history()),
+  truncated: false, base64Encoded: false, error: null });
+const service = (responses = [capture()], statusCode = 200) => new TrawlClient('https://browser.example.test', async () =>
+  Response.json({ success: true, tier: 2, statusCode, html: '', capturedResponses: responses }));
+
+describe('DHL Poland browser history', () => {
+  it('keeps facility clocks local, maps observed wording and excludes recipient names', () => {
+    const result = parseDhlPolandHistory(history(), WAYBILL);
+    expect(result.summary_only).toBe(false);
+    expect(result.last_update_local).toBe('2026-03-04T10:15:00');
+    expect(result.events?.map(event => [event.local_time, event.stage])).toEqual([
+      ['2026-03-04T10:15:00', 'delivered'], ['2026-03-04T08:30:00', 'out_for_delivery'], ['2026-03-03T15:20:00', 'in_transit'],
+    ]);
+    expect(result.events?.every(event => !event.time)).toBe(true);
+    expect(result).not.toHaveProperty('timezone');
+    expect(JSON.stringify(result)).not.toContain('PRIVATE');
+    const polish = history();
+    polish.events[0]!.description = 'Przesyłka doręczona do Odbiorcy. Przesyłka odebrana przez PRIVATE';
+    expect(parseDhlPolandHistory(polish, WAYBILL).events?.[0]?.stage).toBe('delivered');
+    expect(JSON.stringify(parseDhlPolandHistory(polish, WAYBILL))).not.toContain('PRIVATE');
+  });
+  it('requires the complete waybill and valid rows, dates and clock readings', () => {
+    for (const payload of [{ ...history(), number: '0' + WAYBILL }, { ...history(), number: Number(WAYBILL) },
+      { ...history(), events: [null] }, { ...history(), events: [{ ...history().events[0], date: '31.02.2026' }] },
+      { ...history(), events: [{ ...history().events[0], time: '24:00' }] }]) {
+      expect(() => parseDhlPolandHistory(payload, WAYBILL)).toThrowError(expect.objectContaining({ kind: 'schema' }));
+    }
+    expect(() => parseDhlPolandHistory({ challenge: true }, WAYBILL)).toThrowError(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseDhlPolandHistory({ number: WAYBILL, events: [] }, WAYBILL)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+  it('keeps unknown and informational wording without guessing a stage', () => {
+    const payload = history(); payload.events[0]!.description = 'The recipient was informed about the date of delivery.';
+    expect(parseDhlPolandHistory(payload, WAYBILL).events?.[0]).not.toHaveProperty('stage');
+  });
+  it('requires request binding and lets the latest refusal override an earlier success', async () => {
+    const signal = new AbortController().signal;
+    await expect(dhlPolandBrowser(service(), WAYBILL, signal, 5000)).resolves.toMatchObject({ summary_only: false });
+    await expect(dhlPolandBrowser(service([{ ...capture(), trackingNumberSubmitted: '99999999991' }]), WAYBILL, signal, 5000))
+      .rejects.toMatchObject({ kind: 'schema' });
+    await expect(dhlPolandBrowser(service([capture(), { ...capture(), status: 429, body: '' }]), WAYBILL, signal, 5000))
+      .rejects.toMatchObject({ kind: 'rate_limited' });
+    await expect(dhlPolandBrowser(service([]), WAYBILL, signal, 5000)).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(dhlPolandBrowser(service([{ ...capture(), truncated: true }]), WAYBILL, signal, 5000))
+      .rejects.toMatchObject({ kind: 'transport' });
+  });
+});

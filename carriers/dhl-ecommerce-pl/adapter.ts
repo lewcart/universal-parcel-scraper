@@ -1,10 +1,14 @@
 import { createHash } from 'node:crypto';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
-import { runSteps } from '../../core/runner/index.js';
+import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
+import type { CarrierResult } from '../../core/result/index.js';
+import { isRecord } from '../../core/types.js';
+import { dhlPolandBrowser } from './browser.js';
 import { normalizeDhlEcommercePlNumber, parseDhlEcommercePl, parseDhlEcommercePlChallenge, parseDhlEcommercePlRejection,
   type DhlEcommercePlChallenge } from './parser.js';
 
@@ -34,11 +38,13 @@ export async function solveDhlEcommercePlChallenge(task: DhlEcommercePlChallenge
 }
 
 export class DhlEcommercePlTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeDhlEcommercePlNumber(raw);
-    const budgetMs = context.budgetMs ?? 15_000;
+    const budgetMs = context.budgetMs ?? (this.options.trawl ? 65_000 : 15_000);
+    let confirmed: CarrierResult | undefined;
+    let waybill: string | undefined;
     const read = async (signal: AbortSignal, remainingMs: number) => {
       signal.throwIfAborted();
       // One deadline covers the challenge, its solution and the lookup.
@@ -81,19 +87,37 @@ export class DhlEcommercePlTracker {
       if (response.status === 422) return parseDhlEcommercePlRejection(json(bytes));
       // A 400 is the portal refusing the proof: nothing was looked up.
       if (response.status !== 200) throw new IndeterminateError(PROVIDER, 'DHL eCommerce Poland returned an inconclusive tracking response');
-      return parseDhlEcommercePl(json(bytes), number);
+      const payload = json(bytes);
+      const result = parseDhlEcommercePl(payload, number);
+      // Parsing first establishes the whole submitted number and one shipment.
+      const entry: unknown = Array.isArray(payload) ? payload[0] : undefined;
+      const shipment: unknown = isRecord(entry) && Array.isArray(entry.shipments) ? entry.shipments[0] : undefined;
+      const alias = isRecord(shipment) ? shipment.shipmentNumber : undefined;
+      waybill = typeof alias === 'string' && /^\d{11}$/.test(alias) ? alias : /^\d{11}$/.test(number) ? number : undefined;
+      confirmed = result;
+      return result;
     };
     return runSteps({ carrier: 'dhl-ecommerce-pl', budgetMs, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
+      { id: 'trawl', enabled: !!this.options.trawl, run: async ({ signal, remainingMs }) => {
+        const started = performance.now();
+        const summary = await read(signal, Math.min(15_000, firstAttemptMs(remainingMs)));
+        if (!waybill) throw new IndeterminateError(PROVIDER, 'DHL Poland returned no waybill for its history page');
+        const history = await dhlPolandBrowser(this.options.trawl!, waybill, signal, remainingMs - (performance.now() - started) - 500);
+        return { ...summary, ...history };
+      } },
+      { id: 'direct', recovers: error => confirmed !== undefined || recoverableByDefault(error),
+        run: async ({ signal, remainingMs }) => confirmed ?? read(signal, firstAttemptMs(remainingMs)) },
       networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new DhlEcommercePlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'dhl-ecommerce-pl', recordsSteps: true, steps: ['direct', 'retry'], track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+  const options = { fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent };
+  const tracker = new DhlEcommercePlTracker({ ...options, trawl: environment.trawl });
+  const http = new DhlEcommercePlTracker(options);
+  return { id: 'dhl-ecommerce-pl', recordsSteps: true, steps: ['trawl', 'direct', 'retry'], track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => http.fetch(number, context),
       () => accepted(() => normalizeDhlEcommercePlNumber(number))) };
 };

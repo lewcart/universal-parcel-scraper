@@ -72,7 +72,7 @@ export function parseDhlEcommercePl(payload: unknown, rawNumber: string): Carrie
   if (!isRecord(shipment) || typeof shipment.status !== 'string' || !/^[A-Z][A-Z0-9_]{0,39}$/.test(shipment.status)) {
     throw new SchemaError(PROVIDER, 'DHL eCommerce Poland returned an invalid shipment status');
   }
-  // The sender is the name the portal shows; the waybill alias and the self-service links are not read.
+  // The sender is the name the portal shows; self-service links stay out of results.
   const sender = clean(shipment.sender, 200);
   const { description, stage } = dhlEcommercePlStatus(shipment.status, shipment.timelineStep, clean(shipment.title, 200) || clean(shipment.step, 200));
   // Only a receipt is timed, by the recipient or by the sender a return reached. The posting

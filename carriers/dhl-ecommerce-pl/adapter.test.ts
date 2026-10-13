@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { STAGES } from '../../core/status/index.js';
+import { TrawlClient } from '../../core/transport/trawl.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import fixture from './fixtures/delivered.json' with { type: 'json' };
 import statuses from './statuses.json' with { type: 'json' };
@@ -221,5 +222,63 @@ describe('DHL eCommerce Poland adapter', () => {
     await expect(issuing(() => Response.json(challenge(5_000, 3_000)))).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(issuing(() => new Response('<html>Request Rejected</html>'))).rejects.toMatchObject({ kind: 'challenge' });
     expect(calls).toBe(3);
+  });
+});
+
+
+describe('DHL Poland optional history enrichment', () => {
+  const endpoint = 'https://sprawdz.dhl.com.pl/';
+  const history = { number: WAYBILL, events: [{ date: '04.03.2026', time: '10:15', location: 'Example depot', description: 'Delivered to customer.' }] };
+  const capture = { url: endpoint, status: 200, trackingNumberSubmitted: WAYBILL, body: JSON.stringify(history) };
+  const browser = (responses = [capture], requests: unknown[] = []) => new TrawlClient('https://browser.example.test', async (_url, init) => {
+    requests.push(JSON.parse(String(init?.body)));
+    return Response.json({ success: true, tier: 2, statusCode: 200, html: '', capturedResponses: responses });
+  });
+
+  it('uses a validated waybill alias, enriches the summary and keeps HTTP recognition cheap', async () => {
+    const requests: unknown[] = [];
+    const client = adapter({ ...environment(portal(() => Response.json(clone()))), trawl: browser([capture], requests) });
+    await expect(client.recognize?.(NUMBER)).resolves.toMatchObject({ known: true });
+    expect(requests).toEqual([]);
+    const result = await client.track({ number: NUMBER });
+    expect(result).toMatchObject({ summary_only: false, current_stage: 'delivered', sender_name: 'Example Sender',
+      last_update: '2026-03-04T09:15:00Z', delivered_at: '2026-03-04T09:15:00Z', events: [{ local_time: '2026-03-04T10:15:00' }] });
+    expect(requests).toHaveLength(1);
+    expect(requests[0]).toMatchObject({ url: `${endpoint}?sn=${WAYBILL}&lang=en-gb`, skipHttp: true, captureResponses: [endpoint] });
+  });
+
+  it('returns the already-confirmed summary with challenge provenance and no second proof', async () => {
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    const result = await new DhlEcommercePlTracker({ fetcher: portal(() => Response.json(clone()), calls), trawl: browser([]), recorder }).fetch(NUMBER);
+    expect(result).toMatchObject({ summary_only: true, events: [], current_stage: 'delivered' });
+    expect(calls).toHaveLength(2);
+    expect(recorder.step.mock.calls.map(([event]) => [event.step, event.outcome, event.fallbackReason]))
+      .toEqual([['trawl', 'challenge', null], ['direct', 'ok', 'challenge']]);
+  });
+
+  it('does not trust a history for another shipment or erase its schema failure', async () => {
+    const recorder = { ...NOOP_RECORDER, step: vi.fn() };
+    const trawl = browser([{ ...capture, body: JSON.stringify({ ...history, number: '99999999991' }) }]);
+    const result = await new DhlEcommercePlTracker({ fetcher: portal(() => Response.json(clone())), trawl, recorder }).fetch(NUMBER);
+    expect(result.summary_only).toBe(true);
+    expect(result.events).toEqual([]);
+    expect(recorder.step.mock.calls[1]?.[0]).toMatchObject({ step: 'direct', fallbackReason: 'schema' });
+  });
+
+  it('does not start the browser for absent, ambiguous or rejected HTTP identities', async () => {
+    for (const payload of [[{ number: NUMBER, shipments: [] }], [...clone(), ...clone()], [{ ...clone()[0], number: '99999999991' }]]) {
+      const requests: unknown[] = [];
+      const tracker = new DhlEcommercePlTracker({ fetcher: portal(() => Response.json(payload)), trawl: browser([capture], requests) });
+      await expect(tracker.fetch(NUMBER)).rejects.toMatchObject({ kind: expect.stringMatching(/not_found|schema/) });
+      expect(requests).toEqual([]);
+    }
+  });
+
+  it('falls back inside a small budget without launching a browser request', async () => {
+    const requests: unknown[] = [];
+    const tracker = new DhlEcommercePlTracker({ fetcher: portal(() => Response.json(clone())), trawl: browser([capture], requests) });
+    await expect(tracker.fetch(NUMBER, { budgetMs: 1000 })).resolves.toMatchObject({ summary_only: true });
+    expect(requests).toEqual([]);
   });
 });

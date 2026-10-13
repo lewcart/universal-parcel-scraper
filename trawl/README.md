@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO and Asendia. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia and DHL Poland. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
@@ -15,7 +15,11 @@ documentation describes the verification flows.
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
-DHL Express, SF Express, WanbExpress, XPO and Asendia use fresh contexts.
+DHL Express, SF Express, WanbExpress, XPO, Asendia and DHL Poland use fresh contexts.
+DHL Poland submits its history form after reCAPTCHA verification and returns only
+the waybill and scan fields, excluding recipient acknowledgements and verification tokens.
+Its [image classifier](dhl-poland-model/README.md) runs locally in a bounded worker;
+no paid CAPTCHA service or model API is required.
 Asendia waits for its own Turnstile callback to enable search and binds the captured POST
 to one whole identifier; recipient verification can leave it with current status only. XPO scopes the checkbox
 solver to its visible widget while the public client completes verification and tracking.

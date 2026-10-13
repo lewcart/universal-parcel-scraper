@@ -20,17 +20,21 @@
     "mode": "automatic",
     "adapter": "dhl-ecommerce-pl",
     "steps": [
+      "trawl",
       "direct",
       "retry"
     ],
     "recognition": {
       "rank": 620
-    }
+    },
+    "localClocks": true
   },
   "capabilities": [
     "eta",
     "delivered_at",
-    "sender_name"
+    "sender_name",
+    "history",
+    "location"
   ],
   "portal": {
     "url": "https://mojdhl.pl/tracking?paczki={trackingNumber}",
@@ -41,21 +45,24 @@
       "eta",
       "delivered_at",
       "sender_name",
-      "tracking_alias"
+      "tracking_alias",
+      "history",
+      "location",
+      "recipient_name"
     ],
     "scraped": [
       "status",
       "eta",
       "delivered_at",
-      "sender_name"
-    ],
-    "discarded": [
-      "tracking_alias"
-    ],
-    "unavailable": [
+      "sender_name",
       "history",
       "location"
-    ]
+    ],
+    "discarded": [
+      "tracking_alias",
+      "recipient_name"
+    ],
+    "unavailable": []
   },
   "links": [
     {

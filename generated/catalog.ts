@@ -5599,7 +5599,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-pl",
-      "recognitionRank": 620
+      "recognitionRank": 620,
+      "localClocks": true
     },
     "canaryUrl": "https://mojdhl.pl/tracking",
     "trackingUrlTemplate": "https://mojdhl.pl/tracking?paczki={trackingNumber}",

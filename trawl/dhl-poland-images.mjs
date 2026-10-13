@@ -99,7 +99,20 @@ export async function solveDhlPolandImages(page, maxTimeout, createWorker = () =
           pending.set(id, { resolve, reject });
           worker.postMessage({ id, bytes, tiles: meta.tiles, viewportWidth: meta.width });
         });
-        let reloads = 0, submissions = 0;
+        let reloads = 0, submissions = 0, rejected = null;
+        const generation = meta => JSON.stringify([meta.target, meta.tiles.map(tile => [tile.src, tile.selected])]);
+        const refresh = async meta => {
+          if (reloads >= 1) return false;
+          reloads++;
+          phase = 'refresh';
+          emit('refresh');
+          const before = meta.tiles.map(tile => tile.src);
+          await frame.locator('#recaptcha-reload-button').click({ timeout: left() });
+          await frame.waitForFunction(previous => [...document.querySelectorAll('.rc-imageselect-tile img')].some((image, i) => image.src !== previous[i]),
+            before, { timeout: Math.min(5000, left()) });
+          rejected = null;
+          return true;
+        };
         for (let round = 0; round < 16 && !expired; round++) {
           if (await verified()) return finish('verified');
           phase = 'images_ready';
@@ -116,14 +129,14 @@ export async function solveDhlPolandImages(page, maxTimeout, createWorker = () =
           }));
           emit('grid', { round, target: targetLabel(meta.target) ?? 'unsupported', tiles: meta.tiles.length, dynamic: meta.dynamic,
             selected: meta.tiles.filter(tile => tile.selected).length });
+          // Re-running a deterministic model on identical, already-rejected
+          // images cannot improve its answer. Use the single refresh allowance.
+          if (rejected === generation(meta)) {
+            if (!await refresh(meta)) return finish('rejected_unchanged');
+            continue;
+          }
           if (meta.tiles.length !== 9 || !targetLabel(meta.target)) {
-            if (reloads++ > 0) return finish(meta.tiles.length !== 9 ? 'unsupported_grid' : 'unsupported_target');
-            phase = 'refresh';
-            emit('refresh');
-            const before = meta.tiles.map(tile => tile.src);
-            await frame.locator('#recaptcha-reload-button').click({ timeout: left() });
-            await frame.waitForFunction(previous => [...document.querySelectorAll('.rc-imageselect-tile img')].some((image, i) => image.src !== previous[i]),
-              before, { timeout: Math.min(5000, left()) });
+            if (!await refresh(meta)) return finish(meta.tiles.length !== 9 ? 'unsupported_grid' : 'unsupported_target');
             continue;
           }
           phase = 'screenshot';
@@ -182,6 +195,8 @@ export async function solveDhlPolandImages(page, maxTimeout, createWorker = () =
             emit('verification', { submission: submissions, verified: accepted,
               feedback: ['provider_block', 'incorrect', 'select_more', 'dynamic_more', 'select_something', 'none'].includes(feedback) ? feedback : 'unknown' });
             if (accepted) return finish('verified');
+            if (feedback === 'provider_block') return finish('provider_block');
+            if (['incorrect', 'select_more', 'dynamic_more', 'select_something'].includes(feedback)) rejected = generation(meta);
           }
         }
         return finish(await verified() ? 'verified' : 'round_limit');

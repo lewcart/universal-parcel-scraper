@@ -30,16 +30,19 @@ test('loaded dynamic tiles must finish fading and remain stable before inference
   tile.opacity = '0.01'; classes.add('rc-imageselect-tileselected');
   assert.equal(ready(), false); assert.equal(ready(), false); assert.equal(ready(), true);
 });
-function fixture({ dynamic = false, changed = false, fail = false, stall = false, count = 9, target = 'bicycles' } = {}) {
+function fixture({ dynamic = false, changed = false, fail = false, stall = false, count = 9, target = 'bicycles', feedback = 'none', rejects = 0 } = {}) {
   const state = { terminated: 0, clicks: [], verify: 0, inferences: 0, reads: 0, solved: false, reloads: 0 };
   let tiles = initial().slice(0, count);
   const frame = {
     url: () => `https://www.google.com/recaptcha/api2/bframe?k=${key}`,
     waitForFunction: async () => {},
-    evaluate: async (_fn, previous) => previous ? !changed : { target, dynamic, width: 400, tiles: structuredClone(tiles) },
+    evaluate: async (fn, previous) => fn.toString().includes('rc-doscaptcha') ? feedback
+      : previous ? !changed : { target, dynamic, width: 400, tiles: structuredClone(tiles) },
     locator: selector => {
-      if (selector === '#recaptcha-reload-button') return { click: async () => { state.reloads++; } };
-      if (selector === '#recaptcha-verify-button') return { click: async () => { state.verify++; state.solved = true; } };
+      if (selector === '#recaptcha-reload-button') return { click: async () => {
+        state.reloads++; tiles = tiles.map(tile => ({ ...tile, src: tile.src + '-refreshed', selected: false }));
+      } };
+      if (selector === '#recaptcha-verify-button') return { click: async () => { state.verify++; state.solved = state.verify > rejects; } };
       return { nth: index => ({ click: async () => {
         state.clicks.push(index);
         if (dynamic) tiles[index].src += '-new'; else tiles[index].selected = true;
@@ -97,6 +100,19 @@ test('unsupported grids refresh once and never trigger guesses', async () => {
   const active = fixture({ count: 4 });
   assert.equal(await solveDhlPolandImages(active.page, 1000, active.createWorker), false);
   assert.equal(active.state.reloads, 1); assert.equal(active.state.inferences, 0);
+});
+test('an unchanged rejected grid refreshes once instead of resubmitting the same answer', async () => {
+  for (const rejects of [1, 10]) {
+    const active = fixture({ feedback: 'dynamic_more', rejects }), records = [];
+    assert.equal(await solveDhlPolandImages(active.page, 1000, active.createWorker, record => records.push(record)), rejects === 1);
+    assert.equal(active.state.reloads, 1);
+    assert.equal(active.state.verify, 2);
+    assert.equal(records.at(-1).reason, rejects === 1 ? 'verified' : 'rejected_unchanged');
+  }
+  const blocked = fixture({ feedback: 'provider_block', rejects: 10 }), records = [];
+  assert.equal(await solveDhlPolandImages(blocked.page, 1000, blocked.createWorker, record => records.push(record)), false);
+  assert.equal(blocked.state.reloads, 0);
+  assert.equal(records.at(-1).reason, 'provider_block');
 });
 test('failed and stalled inference releases the worker without submitting', async () => {
   for (const options of [{ fail: true }, { stall: true }]) {

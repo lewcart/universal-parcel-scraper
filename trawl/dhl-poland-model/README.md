@@ -8,7 +8,8 @@ and a `1 × 3 × 128 × 128` tensor. Weights stay out of Git and the npm package
 
 Only supported three-by-three image grids are classified. Tile answers are
 bound to their current image URLs, dynamic replacements must finish loading and fading in,
-and the page must confirm verification. Other grids may be refreshed once;
+and the page must confirm verification. Unsupported grids or an unchanged,
+rejected answer share one refresh allowance;
 unsupported or unsuccessful challenges leave the API summary available.
 Workers are bounded by the browser deadline and limited to two per process.
 

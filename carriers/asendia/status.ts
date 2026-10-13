@@ -169,7 +169,7 @@ const PARTNER_WORDING: Readonly<Record<string, ClassifiedAsendiaStatus>> = {
   'customs released': IN_TRANSIT,
   // USPS before it holds the item: a label, not a scan.
   'pre shipment usps awaiting item': REGISTERED,
-  // DAI Post, Aramex's partner for Australia.
+  // DAI Post, which delivers cross-border parcels in Australia, New Zealand and Singapore.
   'your parcel is ready for pick up': READY_FOR_PICKUP,
   'it s happening your parcel will be delivered today get ready': OUT_FOR_DELIVERY,
 };

@@ -141,9 +141,16 @@ function scanRows(rows: unknown[]) {
 // scans name mainland depots, so a scan naming the Chathams keeps its clock local.
 const LANE_ZONES: Readonly<Record<string, string>> = { NZ: 'Pacific/Auckland' };
 
-/** The zone of a scan's country when it keeps one clock; null for Australia, the US and unplaced scans. */
-function scanZone(country: string, city: string): string | null {
-  if (country === 'NZ') return /\bchatham/i.test(city) ? null : LANE_ZONES.NZ!;
+/**
+ * The zone a DAI Post scan's wall clock is read in: its country's, when it keeps
+ * one clock. Null keeps the clock local: for Australia, the US and unplaced
+ * scans, and for the label data (CI02), whose clock matched a shipper's UTC
+ * dispatch for some parcels and the origin hub's for others. Asendia relays
+ * these clocks too.
+ */
+export function daiPostScanZone(code: string, country: string, place: string): string | null {
+  if (code === 'CI02' || !country) return null;
+  if (country === 'NZ') return /\bchatham/i.test(place) ? null : LANE_ZONES.NZ!;
   return countryTimeZone(country);
 }
 
@@ -170,10 +177,8 @@ function projectScan(row: unknown): Scan {
   const country = /^[A-Z]{2}$/.test(field(row, 'country', 8)) ? field(row, 'country', 8) : '';
   const city = field(row, 'city', 120);
   const location = [city && city.toUpperCase() !== country ? city : '', country].filter(Boolean).join(', ');
-  // The tracker shows every clock as the scan's local time. The label data
-  // (CI02) keeps its own: some match the shipper's dispatch in UTC, others the
-  // origin hub's clock, so it stays local everywhere.
-  const zone = code === 'CI02' || !country ? null : scanZone(country, city);
+  // The tracker shows every clock as the scan's local time.
+  const zone = daiPostScanZone(code, country, city);
   const instant = zone ? isoTime(wall, zone) : null;
   const mapped = daiPostStage(code || null);
   const worded = mapped ? null : classifyWording(description, 'in_transit');

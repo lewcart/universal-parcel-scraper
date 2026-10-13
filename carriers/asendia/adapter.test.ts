@@ -243,6 +243,48 @@ describe('Asendia A1 reply projection', () => {
     expect(result.events?.at(-1)).toMatchObject({ provider_code: 'MA', time: '2026-03-27T00:00:00Z' });
   });
 
+  it("reads DAI Post's relayed clocks as the scan's local time and Asendia's own as labelled", () => {
+    const result = parseAsendiaA1TrackingResponse(delivered('a1-dai-leg.json'), 'SYNTHETICORDER000002');
+    expect(result).toMatchObject({
+      status: 'delivered', destination_country: 'NZ', last_update: '2026-07-14T10:41:27+12:00',
+      delivery_tracking_number: '00393580949999999992',
+    });
+    expect(result.last_update_local).toBeUndefined();
+    // A1 labels DAI Post's wall clocks UTC; they keep A1's order.
+    expect(result.events?.map((event) => [event.provider_code, event.time ?? `local ${String(event.local_time)}`])).toEqual([
+      ['FD02', '2026-07-14T10:41:27+12:00'],
+      ['FP05', '2026-07-14T07:52:10+12:00'],
+      ['OP07', 'local 2026-07-13T15:18:00'],
+      ['DC01', 'local 2026-07-13T15:17:00'],
+      ['DH01', '2026-07-13T15:16:00+12:00'],
+      ['DA01', '2026-07-12T06:25:00+12:00'],
+      ['OU01', '2026-07-09T21:05:00+01:00'],
+      ['OP01', '2026-07-08T13:12:44+01:00'],
+      ['OA01', '2026-07-07T08:31:00+01:00'],
+      ['2.3', '2026-07-03T17:44:51.204Z'],
+      ['2.2', '2026-07-03T17:36:02.817Z'],
+      // DAI Post's label data stays local, as DAI Post's adapter keeps it.
+      ['CI02', 'local 2026-07-03T17:35:58'],
+      ['2.1', '2026-06-30T19:02:13.440Z'],
+      ['2', '2026-06-29T21:47:30.118Z'],
+      ['1', '2026-06-27T14:09:41.520Z'],
+    ]);
+    expect(JSON.stringify(result)).not.toMatch(/Private Facility Road|A0A 0A0|Exampleford, NZ/);
+  });
+
+  it('keeps a newest local DAI Post clock as the local update, and a DAI Post offset other than UTC as sent', () => {
+    const payload = delivered('a1-dai-leg.json');
+    payload.trackingBrandedDetail.splice(0, 2);
+    expect(parseAsendiaA1TrackingResponse(payload, 'SYNTHETICORDER000002'))
+      .toMatchObject({ last_update: null, last_update_local: '2026-07-13T15:18:00' });
+    // The Chatham Islands keep their own clock.
+    (payload.trackingBrandedDetail[3]!.eventLocationDetails as Record<string, unknown>).province = 'Chatham Islands';
+    payload.trackingBrandedDetail[0]!.eventOn = '2026-07-13T15:18:00+12:00';
+    const events = parseAsendiaA1TrackingResponse(payload, 'SYNTHETICORDER000002').events;
+    expect(events?.find((event) => event.provider_code === 'OP07')).toMatchObject({ time: '2026-07-13T15:18:00+12:00' });
+    expect(events?.find((event) => event.provider_code === 'DA01')).toMatchObject({ local_time: '2026-07-12T06:25:00' });
+  });
+
   it.each(carrier.capabilities)('declares %s and the fixture proves it', (capability) => {
     const result = parseAsendiaA1TrackingResponse(delivered(), NUMBER);
     const checks: Record<string, (value: CarrierResult) => boolean> = {

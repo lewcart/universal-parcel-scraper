@@ -44,10 +44,11 @@ import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { languageStageStatus, wordingStage, type Stage } from '../../core/status/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { explicitOffsetTime, mislabeledLocalTime, mislabeledWallTime, type ParsedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { classifyAsendiaA1Event, type ClassifiedAsendiaStatus } from './status.js';
+import { daiPostScanZone } from '../dai-post/parser.js';
+import { classifyAsendiaA1Event, comparableText, type ClassifiedAsendiaStatus } from './status.js';
 import { AsendiaUkTracker } from './uk.js';
 import { asendiaBrowser } from './browser.js';
 import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
@@ -70,6 +71,8 @@ const MAX_RESPONSE_BYTES = 1_000_000;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
 const POUNDS_TO_KG = 0.453_592_37;
+/** DAI Post's relayed scans, compared with `comparableText`. */
+const DAI_SOURCE = 'dai api';
 
 export interface AsendiaA1PublicConfig {
   /** The API origin, e.g. https://a1reportapi.asendiaprod.com. */
@@ -185,29 +188,51 @@ interface ParsedEvent {
   sourceIndex: number;
 }
 
+/**
+ * The clock of one event, as A1 labels it, unless DAI Post relayed it: its
+ * scans carry the wall clock DAI Post's own tracker shows, the scan's local
+ * time, labelled UTC. They are read as DAI Post's adapter reads them, in the
+ * scan country's zone or kept local.
+ */
+function eventClock(raw: JsonObject, labelled: ParsedTime, source: string, code: string): (Pick<CarrierEvent, 'time'> & { local_time?: string }) | null {
+  if (comparableText(source) !== DAI_SOURCE || !labelled.iso.endsWith('Z')) return { time: labelled.iso };
+  const details = record(raw.eventLocationDetails);
+  const country = clean(details.countryIso2, 2).toUpperCase();
+  const zone = daiPostScanZone(code, /^[A-Z]{2}$/.test(country) ? country : '', eventLocation(details));
+  const zoned = zone ? mislabeledLocalTime(raw.eventOn, zone) : null;
+  if (zoned) return { time: zoned.iso };
+  const wall = mislabeledWallTime(raw.eventOn)?.replace(/\.\d+$/, '');
+  return wall ? { local_time: wall } : null;
+}
+
 function parseEvents(details: JsonObject[]): ParsedEvent[] {
   const parsed: ParsedEvent[] = [];
   const seen = new Set<string>();
   details.slice(0, MAX_EVENTS_TO_INSPECT).forEach((raw, sourceIndex) => {
     // A1 stamps every event with an explicit offset; an offset-less value is
     // dropped rather than guessed as UTC.
-    const time = explicitOffsetTime(raw.eventOn);
+    const labelled = explicitOffsetTime(raw.eventOn);
     const description = clean(raw.eventDescription, 300);
-    if (!time || !description) return;
+    if (!labelled || !description) return;
+    const source = clean(raw.eventSource, 80);
     const code = eventCode(raw.eventCode);
+    const clock = eventClock(raw, labelled, source, code);
+    if (!clock) return;
     const location = eventLocation(raw.eventLocationDetails);
-    const identity = JSON.stringify([time.iso, code, description, location]);
+    const identity = JSON.stringify([clock.time ?? clock.local_time, code, description, location]);
     if (seen.has(identity)) return;
     seen.add(identity);
     // Codes are only meaningful per source: USPS and other partners reuse
     // short codes such as "10" or "B1" for unrelated scans.
-    const classified = classifyAsendiaA1Event(clean(raw.eventSource, 80), code, description);
+    const classified = classifyAsendiaA1Event(source, code, description);
     parsed.push({
       sourceIndex,
       classified,
-      timestamp: time.timestamp,
+      // Events sort on A1's labels, as A1 orders them, so a relayed local
+      // clock keeps its place.
+      timestamp: labelled.timestamp,
       event: {
-        time: time.iso,
+        ...clock,
         location,
         description,
         ...(classified ? { stage: classified.stage } : {}),
@@ -254,6 +279,7 @@ export function parseAsendiaA1TrackingResponse(payload: unknown, rawTrackingNumb
     ...(explicit ? { current_stage: explicit.stage } : {}),
     last_status_text: latest?.description ?? null,
     last_update: latest?.time ?? null,
+    ...(latest?.local_time ? { last_update_local: latest.local_time } : {}),
     expected_delivery: null,
     ...(weight !== null ? { weight_kg: weight } : {}),
     ...(/^[A-Z]{2}$/.test(destination) ? { destination_country: destination } : {}),

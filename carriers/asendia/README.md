@@ -75,6 +75,11 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
     [status.ts](status.ts)). Consumer-return `RET*` and inquiry `CLAIM*` codes are unmapped.
   - Partners (`USPS TrackV2 API`, `BROADREACH API`, `DAI API`, …): exact wording, else the
     shared rules.
+- DAI Post's relayed scans (`DAI API`) carry the wall clock DAI Post's own tracker shows, the
+  scan's local time, labelled UTC. They are read as DAI Post's adapter reads them: in the
+  country's zone when it keeps one clock, such as New Zealand or the United Kingdom.
+  Australian scans, scans without a country and the label-data scan (`CI02`) keep a
+  `local_time`. They keep A1's order.
 - A1's declared final-mile link becomes `delivery_carrier` only through catalog link rules; the
   vendor reference becomes `delivery_tracking_number`, so the host can propose one
   confirmation lookup with that operator.
@@ -121,7 +126,7 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
   delivers carry no recipient record there, and no postcode opens them.
 - Asendia UK drops parcels some months after posting, then answers not-found.
 - No delivery estimate.
-- A1 dates partners' scans in true UTC: a Swiss Post scan at 18:20 `+02:00` is A1's 16:20
+- A1 dates other partners' scans in true UTC: a Swiss Post scan at 18:20 `+02:00` is A1's 16:20
   `+00:00`, and a German delivery round UPU shows at 09:07 local is A1's 07:07. USPS scans were
   not checked against USPS, and one `A1 Processed Data` scan looked like a California wall
   clock labelled UTC: 22:04 `+00:00`, seven hours before its 05:04 check-in, at the minute UPU

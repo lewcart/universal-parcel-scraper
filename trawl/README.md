@@ -61,6 +61,13 @@ the replies already captured are still returned.
 running browser service and references supplied through the environment. Browser challenges
 and upstream limits can still prevent retrieval.
 
+## Upstream releases
+
+A nightly workflow builds this image on each new TRAWL release and reports in an issue
+whether the patches still apply. `node scripts/trawl-upstream.mjs --write` moves the pins
+to that release. Compare the service's answers with the pinned release before deploying:
+a build does not show a changed deadline or a field missing from a reply.
+
 ## License
 
 This derivative is [AGPL-3.0](LICENSE), separate from the core package's Apache license.

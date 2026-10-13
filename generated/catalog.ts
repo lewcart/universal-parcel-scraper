@@ -2615,6 +2615,11 @@ export const CARRIER_CATALOG = {
   "brt": {
     "displayName": "BRT",
     "color": "#dc0032",
+    "aliases": [
+      "BRT Bartolini",
+      "BRT Bartolini (Parcel ID)",
+      "BRT Bartolini (DPD)"
+    ],
     "countries": [
       "IT"
     ],

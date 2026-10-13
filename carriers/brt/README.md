@@ -2,6 +2,8 @@
 
 Tracks shipment numbers, BRTcodes and BRT parcel IDs through BRT's anonymous
 detailed event portal. Other shipment references use universal providers.
+Universal providers call it BRT Bartolini, its former company name, with the
+identifier type in brackets; those names are its aliases.
 
 ## How it works
 

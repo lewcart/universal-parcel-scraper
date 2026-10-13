@@ -1,7 +1,11 @@
 {
   "id": "brt",
   "displayName": "BRT",
-  "aliases": [],
+  "aliases": [
+    "BRT Bartolini",
+    "BRT Bartolini (Parcel ID)",
+    "BRT Bartolini (DPD)"
+  ],
   "region": {
     "countries": [
       "IT"

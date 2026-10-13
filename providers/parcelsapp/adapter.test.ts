@@ -894,6 +894,8 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-30T07:38:23.000Z', '2026-09-30T04:17:37.000Z']);
     expect(times(['Royal Mail'], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
     expect(times(['Japan Post'], [scan('2026-10-02T10:27:00Z', 'Example Town')])).toEqual(['2026-10-02T01:27:00.000Z']);
+    expect(times(['Pekaes'], [scan('2026-10-14T09:00:00Z', 'Example City, Latvia'), scan('2026-10-13T07:39:54Z', 'EXAMPLE TOWN'), scan('2026-10-13T05:10:00Z')]))
+      .toEqual(['2026-10-14T06:00:00.000Z', '2026-10-13T05:39:54.000Z', '2026-10-13T03:10:00.000Z']);
     // A DPD UK depot number named "DPD France": DPD UK's clock. A French one keeps Paris.
     const dpd = [scan('2026-07-22T14:17:00Z')];
     expect(times(['DPD France'], dpd, '15500000000000')).toEqual(['2026-07-22T13:17:00.000Z']);

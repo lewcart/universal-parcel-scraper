@@ -58,8 +58,9 @@ function trackingMatch(
 /**
  * Pull a tracking number and carrier out of a number, carrier URL, or pasted
  * shipping message. Number shape disambiguates links shared by multiple brands,
- * and a link to the host of another carrier's tracking page names that carrier
- * for a number only it issues.
+ * a link to the host of another carrier's tracking page names that carrier for
+ * a number only it issues, and a link marked `ownNumbersOnly` names its
+ * carrier only for that carrier's own numbers.
  */
 export function parseTrackingInput(raw: string): TrackingInputMatch {
   const input = raw.trim();
@@ -98,6 +99,9 @@ export function parseTrackingInput(raw: string): TrackingInputMatch {
           const rule = detected.confidence === 'high'
             ? rules.find((candidate) => candidate.carrier === detected.carrier) ?? firstRule
             : suggestedCarriers.size === 1 ? suggestedRules[0]! : firstRule;
+          if (rule.ownNumbersOnly && !detected.candidates.includes(rule.carrier)) {
+            return { trackingNumber, ...detected, source: 'link' };
+          }
           // A host that is also the number's carrier's tracking page, as Royal Mail's is Parcelforce's, names that carrier.
           const carrier = detected.confidence === 'high' && coversTrackingPage(rule, detected.carrier)
             ? detected.carrier

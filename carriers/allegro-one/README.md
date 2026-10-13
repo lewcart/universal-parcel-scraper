@@ -46,6 +46,8 @@ offer. Allegro publishes no check digit.
 
 `allegro.pl/allegrodelivery/sledzenie-paczki?numer={number}` and the older
 `allegro.pl/kampania/one/kurier/sledzenie-paczki?numer={number}` open the tracker with the number.
+These links name Allegro One only for a number `allegro-one-1` claims (`ownNumbersOnly`). Any
+other number they hold, the `ALE` form included, is detected on its own.
 
 ## Limitations
 

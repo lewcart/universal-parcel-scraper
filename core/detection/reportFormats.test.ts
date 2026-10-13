@@ -69,6 +69,19 @@ describe('evidence-backed tracking formats', () => {
     expect(detectCarrierMatch('GM1234567890123456')).toMatchObject({ carrier: 'dhl-ecommerce', confidence: 'high' });
   });
 
+  it.each([
+    ['https://allegro.pl/allegrodelivery/sledzenie-paczki?numer=', 'A0000000A1', 'allegro-one'],
+    ['https://allegro.pl/kampania/one/kurier/sledzenie-paczki?numer=', 'AD00000000', 'allegro-one'],
+    ['https://www.orangeconnex.com/tracking?trackingNumber=', 'EE000000000000000000000000AB', 'speedpak'],
+  ])('names the carrier of a tracker that shows other numbers only for its own: %s', (link, own, carrier) => {
+    expect(parseTrackingInput(`${link}${own}`))
+      .toMatchObject({ trackingNumber: own, carrier, confidence: 'high', candidates: [carrier], source: 'link' });
+    for (const other of ['1Z999AA10123456784', 'XYZ12345']) {
+      expect(parseTrackingInput(`${link}${other}`))
+        .toEqual({ ...parseTrackingInput(other), source: 'link' });
+    }
+  });
+
   it.each(['GM1234567890123456', '1234567890', '9261290100130412345678'])('reads a DHL eCommerce tracking page link like the global one: %s', (number) => {
     expect(parseTrackingInput(`https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html?submit=1&tracking-id=${number}`))
       .toEqual(parseTrackingInput(`https://www.dhl.com/us-en/home/tracking.html?submit=1&tracking-id=${number}`));

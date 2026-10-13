@@ -4839,7 +4839,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -4848,7 +4849,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -8312,7 +8314,8 @@ export const CARRIER_CATALOG = {
         "params": [
           "trackingNumber",
           "trackingNumbers"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

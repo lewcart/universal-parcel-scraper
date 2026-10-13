@@ -18,6 +18,7 @@ export interface TrackingLinkRule {
   pathPattern?: RegExp;
   fragment?: RegExp;
   detectFromNumber?: boolean;
+  ownNumbersOnly?: boolean;
   keepsCapabilityUrl?: boolean;
 }
 
@@ -31,6 +32,7 @@ export const TRACKING_LINK_RULES: TrackingLinkRule[] = Object.entries(CARRIER_DE
     pathPattern: rule.pathPattern ? new RegExp(rule.pathPattern, 'i') : undefined,
     fragment: rule.fragment ? new RegExp(rule.fragment, 'i') : undefined,
     detectFromNumber: rule.detectFromNumber,
+    ownNumbersOnly: rule.ownNumbersOnly,
     keepsCapabilityUrl: rule.keepsCapabilityUrl,
   })));
 

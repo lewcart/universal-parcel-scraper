@@ -181,7 +181,9 @@ Consumers can ask enabled universal providers during preflight and reuse those r
 when saving, while retaining direct confirmation for carrier identity.
 Shared tracking portals marked `detectFromNumber` preserve ambiguity when the
 number suggests several divisions served by the URL. A country-specific portal
-can still identify its own operation.
+can still identify its own operation. A link marked `ownNumbersOnly` names its carrier
+only for a number that carrier's detection rules offer; any other number it holds
+is detected on its own.
 Consumers bound concurrency, cache answers and
 decide when another check is due. `recognizeAll` passes cancellation and its budget to each
 callback and discards late answers.

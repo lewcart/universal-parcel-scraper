@@ -393,6 +393,9 @@
         },
         "detectFromNumber": {
           "type": "boolean"
+        },
+        "ownNumbersOnly": {
+          "type": "boolean"
         }
       }
     },

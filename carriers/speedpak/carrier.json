@@ -64,7 +64,8 @@
       "params": [
         "trackingNumber",
         "trackingNumbers"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

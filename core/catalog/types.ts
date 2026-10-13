@@ -101,6 +101,11 @@ export interface RawTrackingLinkRule {
   pathPattern?: string;
   fragment?: string;
   detectFromNumber?: boolean;
+  /**
+   * Name the carrier only for a number its own detection rules offer. Any other
+   * number the link holds is detected on its own.
+   */
+  ownNumbersOnly?: boolean;
   keepsCapabilityUrl?: boolean;
 }
 

@@ -4837,7 +4837,8 @@
         "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -4846,7 +4847,8 @@
         "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -8310,7 +8312,8 @@
         "params": [
           "trackingNumber",
           "trackingNumbers"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

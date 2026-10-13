@@ -67,7 +67,8 @@
       "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
       "params": [
         "numer"
-      ]
+      ],
+      "ownNumbersOnly": true
     },
     {
       "domains": [
@@ -76,7 +77,8 @@
       "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
       "params": [
         "numer"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

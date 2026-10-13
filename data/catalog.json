@@ -8076,6 +8076,10 @@
         "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
         "confidence": "low",
         "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$"
+      },
+      {
+        "pattern": "^I\\d{9}$",
+        "confidence": "low"
       }
     ]
   },

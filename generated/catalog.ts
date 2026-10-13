@@ -8078,6 +8078,10 @@ export const CARRIER_CATALOG = {
         "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
         "confidence": "low",
         "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$"
+      },
+      {
+        "pattern": "^I\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -9302,7 +9306,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ppl": [],
   "ptt": ["ptt-1","ptt-s10"],
   "redpack": [],
-  "rl-carriers": ["rl-carriers-1"],
+  "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
   "russian-post": [],
   "sagawa": ["sagawa-waybill"],
   "saia": [],

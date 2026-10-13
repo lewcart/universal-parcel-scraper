@@ -265,10 +265,11 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "australia-post"
+          "australia-post",
+          "rl-carriers"
         ]
       },
-      "note": "Looked up on R+L Carriers' own PRO tracer, as an archived address shows. The tracer no longer has a record of it."
+      "note": "Looked up on R+L Carriers' own PRO tracer in the form the tracer writes, with an I in front, as an archived address shows. The tracer no longer has a record of it."
     },
     {
       "number": "WA5047893",

@@ -262,6 +262,9 @@ describe('R+L Carriers tracking adapter', () => {
     })));
     await expect(carrier(alias).track({ number: DELIVERED })).resolves.toMatchObject({ canonical_tracking_number: '900000002' });
     await expect(carrier(alias).recognize!(DELIVERED)).rejects.toMatchObject({ kind: 'indeterminate' });
+    // The tracer's own form of that PRO, with an I in front, is the PRO itself.
+    await expect(carrier(alias).recognize!('I900000002')).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(String(alias.mock.lastCall![0])).toBe(rlTracingUrl('900000002'));
     const none = vi.fn<typeof fetch>();
     for (const number of ['ZZ12345678', '12345678', 'ABC']) await expect(carrier(none).recognize!(number), number).resolves.toEqual({ known: false });
     await expect(carrier(none).track({ number: '12345678' })).rejects.toMatchObject({ kind: 'invalid_input' });
@@ -308,12 +311,16 @@ describe('R+L Carriers tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
-  it('is asked about the dashed PRO numbers detection offers it, and reads tracer links', () => {
-    for (const number of ['ZZ123456-7', '90000000-1']) {
+  it('is asked about the dashed and I-prefixed PRO numbers detection offers it, and reads tracer links', () => {
+    for (const number of ['ZZ123456-7', '90000000-1', `I${DELAYED}`, `i ${DELAYED}`]) {
       expect(detectCarrierMatch(number), number).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['rl-carriers']) });
       expect(recognitionAskedCarriers(number), number).toContain('rl-carriers');
     }
-    expect(recognitionAskedCarriers(DELIVERED)).not.toContain('rl-carriers');
+    // Other references share three letters and seven digits.
+    for (const number of [DELIVERED, `I${DELIVERED}`, `I${DELAYED}0`, `J${DELAYED}`]) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('rl-carriers');
+      expect(recognitionAskedCarriers(number), number).not.toContain('rl-carriers');
+    }
     expect(rlTracingUrl('zz123456-7')).toBe(`${RL_TRACING_URL}?pro=${DELIVERED}&docType=PRO&source=web`);
     expect(parseTrackingInput(rlTracingUrl(DELIVERED))).toMatchObject({ trackingNumber: DELIVERED, carrier: 'rl-carriers', source: 'link' });
   });

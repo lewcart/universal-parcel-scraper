@@ -737,12 +737,6 @@
     "reason": "Without a hyphen before the last digit, two letters and seven digits are a shape Parcelforce and others share, so only the hyphenated form suggests R+L Carriers."
   },
   {
-    "carrier": "rl-carriers",
-    "pattern": "^I\\d{9}$",
-    "kind": "open",
-    "reason": "One archived R+L lookup, and a mock-up on R+L's own site, show I and nine digits; the family is not established."
-  },
-  {
     "carrier": "russian-post",
     "pattern": "^\\d{14}$",
     "kind": "by_design",

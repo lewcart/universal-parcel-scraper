@@ -181,6 +181,11 @@ describe('Ecoscooting parcel history', () => {
     for (const value of [{ success: 'false', errorCode: 'P-011-0201-00-00-502', errorMsg: 'query logisticOrder by mailNo error' }, { success: true }, {}]) {
       expect(() => parseEcoscooting(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
+    // Only the order query names the reason: a label not yet announced gets it too.
+    expect(() => parseEcoscooting({ success: 'false', errorCode: 'P-011-0201-00-00-502', errorMsg: 'query logisticOrder by mailNo error' }, NUMBER))
+      .toThrow(expect.objectContaining({ reason: 'portal_not_found' }));
+    expect(() => parseEcoscooting({ success: 'false', errorCode: 'S99', errorMsg: 'gateway error' }, NUMBER))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
   });
   it('reads a parcel listed without scans as having no history yet', () => {
     const announced = fixture(); announced.statuses = []; announced.packageParam.dimWeight = {};

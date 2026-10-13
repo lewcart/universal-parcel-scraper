@@ -24,6 +24,6 @@ describe('Ecoscooting live tracking', () => {
     expect(result.pickup_point).toBeTruthy();
   });
   it.skipIf(!process.env.ECOSCOOTING_UNKNOWN_NUMBER)('preserves the observed unknown-number semantics', async () => {
-    await expect(instance().track({ number: process.env.ECOSCOOTING_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(instance().track({ number: process.env.ECOSCOOTING_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
   });
 });

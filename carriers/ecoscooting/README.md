@@ -8,7 +8,8 @@ anonymous tracking client.
 One bounded form POST uses the Cainiao gateway configuration published in the
 website. No account or session bootstrap is needed. The response must identify
 the requested parcel. The gateway's query error also occurs for unavailable
-orders and remains inconclusive rather than proving absence. A parcel announced
+orders and remains inconclusive rather than proving absence, with the reason
+`portal_not_found`: a label is unknown until the sender announces it. A parcel announced
 but not yet handed over is listed without scans, which reads as no history yet
 rather than a failure.
 

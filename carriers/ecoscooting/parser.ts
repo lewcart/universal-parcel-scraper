@@ -31,7 +31,8 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
   if (!isRecord(payload)) throw new SchemaError('Ecoscooting');
   // The same query error is returned for absent and unavailable orders. It
   // neither identifies a parcel nor proves that Ecoscooting does not know it.
-  if (payload.success !== 'true') throw new IndeterminateError('Ecoscooting', 'Ecoscooting could not complete the tracking query');
+  if (payload.success !== 'true') throw new IndeterminateError('Ecoscooting', 'Ecoscooting could not complete the tracking query',
+    payload.errorMsg === 'query logisticOrder by mailNo error' ? { reason: 'portal_not_found' } : {});
   if (!isRecord(payload.packageParam) || payload.packageParam.trackingNumber !== number) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
   if (!Array.isArray(payload.statuses) || payload.statuses.length > 500 || !payload.statuses.every(isRecord)) throw new SchemaError('Ecoscooting');
   // A parcel announced to Ecoscooting but not yet handed over is listed without scans.

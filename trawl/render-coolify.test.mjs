@@ -7,9 +7,11 @@ import { gunzipSync } from 'node:zlib';
 test('Coolify installs every Dockerfile source with identical bytes and build steps', () => {
   const dockerfile = readFileSync(new URL('./Dockerfile', import.meta.url), 'utf8');
   const rendered = execFileSync(process.execPath, [new URL('./render-coolify.mjs', import.meta.url).pathname], { encoding: 'utf8', cwd: '/tmp' });
-  const match = /printf '%s' '([^']+)' \| base64 -d \| gzip -d > \/tmp\/upc-trawl-sources.json/.exec(rendered);
+  const match = /printf '%s' ([\s\S]+?) \| base64 -d \| gzip -d > \/tmp\/upc-trawl-sources.json/.exec(rendered);
   assert.ok(match);
-  const sources = JSON.parse(gunzipSync(Buffer.from(match[1], 'base64')).toString('utf8'));
+  const chunks = [...match[1].matchAll(/'([A-Za-z0-9+/=]+)'/g)].map(row => row[1]);
+  assert.ok(chunks.length > 1);
+  const sources = JSON.parse(gunzipSync(Buffer.from(chunks.join(''), 'base64')).toString('utf8'));
   const copies = [...dockerfile.matchAll(/^COPY (\S+) (\S+)$/gm)];
   assert.equal(Object.keys(sources).length, copies.length);
   for (const [, file, target] of copies) assert.equal(sources[target], readFileSync(new URL(file, import.meta.url), 'utf8'), file);
@@ -18,4 +20,5 @@ test('Coolify installs every Dockerfile source with identical bytes and build st
   // Coolify embeds the Dockerfile in one base64 SSH argument. Leave room for
   // its wrapper beneath Linux's 128 KiB per-argument limit.
   assert.ok(Buffer.byteLength(Buffer.from(rendered).toString('base64')) < 100_000);
+  assert.ok(rendered.split('\n').every(line => Buffer.byteLength(line) < 65_535));
 });

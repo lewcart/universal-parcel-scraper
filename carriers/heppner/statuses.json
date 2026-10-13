@@ -7,7 +7,55 @@
       "stage": "returned",
       "confirmedBy": "fixture",
       "firstSeen": "2026-09-12",
-      "note": "Milestone (step). Event codes prefixed SOL_ or RET_ map here too."
+      "note": "Milestone (step). Event codes SOL_REI and SOL_REO, and codes prefixed RET_, map here too."
+    },
+    {
+      "code": "SOL_RXI",
+      "language": "fr",
+      "stage": "in_transit",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; the portal's label: delivered to a new address under a new reference. Shown as \"Forwarded to a new address under a new reference\"."
+    },
+    {
+      "code": "SOL_REI",
+      "language": "fr",
+      "stage": "returned",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; returned to the sender on the shipper's instructions."
+    },
+    {
+      "code": "SOL_REO",
+      "language": "fr",
+      "stage": "returned",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; returned to the sender automatically."
+    },
+    {
+      "code": "SOL_ANN",
+      "language": "fr",
+      "stage": "exception",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; shipment cancelled. SOL_MAR and SOL_MQD carry the same label. Shown as \"Shipment cancelled\"."
+    },
+    {
+      "code": "SOL_MAR",
+      "language": "fr",
+      "stage": "exception",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; shipment cancelled."
+    },
+    {
+      "code": "SOL_MQD",
+      "language": "fr",
+      "stage": "exception",
+      "confirmedBy": "bundle",
+      "firstSeen": "2026-10-13",
+      "note": "Event code; shipment cancelled."
     },
     {
       "code": "LIVREE",

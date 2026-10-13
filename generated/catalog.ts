@@ -1512,7 +1512,9 @@ export const CARRIER_CATALOG = {
     ],
     "countries": [
       "FR",
-      "CH"
+      "CH",
+      "BE",
+      "LU"
     ],
     "selectable": true,
     "timezone": "Europe/Paris",
@@ -1526,7 +1528,7 @@ export const CARRIER_CATALOG = {
           "label": "Delivery postcode",
           "type": "text",
           "placeholder": "75001",
-          "help": "Heppner uses the recipient postcode to verify the shipment in France or Switzerland.",
+          "help": "Heppner uses the recipient postcode to verify the shipment in France, Switzerland, Belgium or Luxembourg.",
           "pattern": "^[0-9]{4,5}$",
           "maxLength": 5,
           "inputMode": "numeric",

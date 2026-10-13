@@ -39,11 +39,19 @@ const MAX_RESPONSE_BYTES = 1_000_000;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
 
+type HeppnerCountry = 'FR' | 'CH' | 'BE' | 'LU';
+
 interface HeppnerCredential {
   trackingNumber: string;
   postcode: string;
-  countryCode: 'CH' | 'FR';
+  /** The countries whose postcodes have this shape, in the order the portal is asked. */
+  countries: readonly HeppnerCountry[];
 }
+
+// Switzerland, Belgium and Luxembourg all write four digits. The search names
+// the country and answers 404 for a shipment it holds under another, so each
+// is asked in turn.
+const FOUR_DIGIT_COUNTRIES = ['CH', 'BE', 'LU'] as const;
 
 interface ParsedEvent {
   event: CarrierEvent;
@@ -80,36 +88,43 @@ export function normalizeHeppnerCredential(
   const trackingNumber = normalizeHeppnerTrackingNumber(rawTrackingNumber);
   const postcode = rawPostcode.trim();
   if (!/^\d{4,5}$/.test(postcode)) {
-    throw new InvalidInputError('Heppner', 'Heppner requires a four-digit Swiss or five-digit French delivery postcode');
+    throw new InvalidInputError('Heppner', 'Heppner requires a four-digit Swiss, Belgian or Luxembourg delivery postcode, or a five-digit French one');
   }
   return {
     trackingNumber,
     postcode,
-    countryCode: postcode.length === 4 ? 'CH' : 'FR',
+    countries: postcode.length === 4 ? FOUR_DIGIT_COUNTRIES : ['FR'],
   };
 }
 
-export function heppnerSearchUrl(rawTrackingNumber: string, rawPostcode: string): string {
+function searchCountry(credential: HeppnerCredential, country: HeppnerCountry | undefined): HeppnerCountry {
+  if (country === undefined) return credential.countries[0]!;
+  if (!credential.countries.includes(country)) {
+    throw new InvalidInputError('Heppner', 'Heppner postcode does not match the country');
+  }
+  return country;
+}
+
+/** The search for one country; the first whose postcodes have this shape by default. */
+export function heppnerSearchUrl(rawTrackingNumber: string, rawPostcode: string, country?: HeppnerCountry): string {
   const credential = normalizeHeppnerCredential(rawTrackingNumber, rawPostcode);
   const url = new URL(SEARCH_ENDPOINT);
   url.search = new URLSearchParams({
     zipCode: credential.postcode,
     receipt: credential.trackingNumber,
-    countryCode: credential.countryCode,
+    countryCode: searchCountry(credential, country),
   }).toString();
   return url.toString();
-}
-
-function expectedCapabilityValue(credential: HeppnerCredential): string {
-  return `${credential.trackingNumber}&${credential.postcode}&${credential.countryCode}`;
 }
 
 export function parseHeppnerCapability(
   rawCapability: string,
   rawTrackingNumber: string,
   rawPostcode: string,
+  country?: HeppnerCountry,
 ): string {
   const credential = normalizeHeppnerCredential(rawTrackingNumber, rawPostcode);
+  const expected = `${credential.trackingNumber}&${credential.postcode}&${searchCountry(credential, country)}`;
   const capability = cleanScalar(rawCapability, 512);
   if (
     !capability
@@ -123,7 +138,7 @@ export function parseHeppnerCapability(
   } catch (error) {
     throw new SchemaError('Heppner', 'Heppner returned an invalid tracking capability', { cause: error });
   }
-  if (decoded !== expectedCapabilityValue(credential)) {
+  if (decoded !== expected) {
     throw new SchemaError('Heppner', 'Heppner returned a capability for a different shipment');
   }
   return capability;
@@ -262,27 +277,41 @@ export class HeppnerTracker {
     context: TrackingContext = {},
   ): Promise<CarrierResult> {
     const credential = normalizeHeppnerCredential(rawTrackingNumber, rawPostcode);
-    const budget = lookupBudget(context, 2 * this.timeoutMs);
-    const search = await fetchBounded(
-      heppnerSearchUrl(credential.trackingNumber, credential.postcode),
-      { signal: budget.signal, headers: requestHeaders(this.userAgent, 'text/plain,*/*;q=0.8') },
-      {
-        provider: 'Heppner shipment search',
-        timeoutMs: Math.min(this.timeoutMs, budget.remainingMs()),
-        maxBytes: 2_048,
-        fetcher: this.fetcher,
-        allowHttpError: true,
-      },
-    );
-    if (search.response.status === 404) throw new NotFoundError('Heppner');
-    if (!search.response.ok) {
-      throw new UpstreamHttpError('Heppner shipment search', search.response.status);
+    const budget = lookupBudget(context, (credential.countries.length + 1) * this.timeoutMs);
+    // Only every country's 404 is a missing shipment; any other failure leaves
+    // the answer open.
+    let capability: string | undefined;
+    let failure: Error | undefined;
+    for (const country of credential.countries) {
+      try {
+        const search = await fetchBounded(
+          heppnerSearchUrl(credential.trackingNumber, credential.postcode, country),
+          { signal: budget.signal, headers: requestHeaders(this.userAgent, 'text/plain,*/*;q=0.8') },
+          {
+            provider: 'Heppner shipment search',
+            timeoutMs: Math.min(this.timeoutMs, budget.remainingMs()),
+            maxBytes: 2_048,
+            fetcher: this.fetcher,
+            allowHttpError: true,
+          },
+        );
+        if (search.response.status === 404) continue;
+        if (!search.response.ok) {
+          throw new UpstreamHttpError('Heppner shipment search', search.response.status);
+        }
+        capability = parseHeppnerCapability(
+          decodeText(search.bytes),
+          credential.trackingNumber,
+          credential.postcode,
+          country,
+        );
+        break;
+      } catch (error) {
+        if (!(error instanceof Error) || budget.signal.aborted) throw error;
+        failure ??= error;
+      }
     }
-    const capability = parseHeppnerCapability(
-      decodeText(search.bytes),
-      credential.trackingNumber,
-      credential.postcode,
-    );
+    if (!capability) throw failure ?? new NotFoundError('Heppner');
 
     const detail = await fetchBounded(heppnerDetailUrl(capability), {
       signal: budget.signal,

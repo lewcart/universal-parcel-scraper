@@ -11,6 +11,12 @@
  * each mapped entry also supplies the English description we display. Anything
  * unmapped keeps a neutral description and no explicit stage assignment beyond
  * the transit default the previous implementation used.
+ *
+ * The `SOL_` codes close the shipment for different reasons, which the portal's
+ * own labels (`event_libelle_tracking` in its i18n files) spell out: REI and REO
+ * return it to the sender, RXI sends it to a new address under a new
+ * reference, and ANN, MAR and MQD cancel it. They are read one by one, before
+ * the milestone, rather than by their prefix.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
@@ -41,7 +47,13 @@ export function classifyHeppnerEvent(
   const state = heppnerCode(stateValue);
   const providerCode = heppnerCode(codeValue);
 
-  if (step === 'MARCHANDISE_RETOURNEE' || /^(?:SOL|RET)_/.test(providerCode)) {
+  if (providerCode === 'SOL_RXI') {
+    return { status: 'in_transit', stage: 'in_transit', description: 'Forwarded to a new address under a new reference' };
+  }
+  if (/^SOL_(?:ANN|MAR|MQD)$/.test(providerCode)) {
+    return { status: 'exception', stage: 'exception', description: 'Shipment cancelled' };
+  }
+  if (step === 'MARCHANDISE_RETOURNEE' || /^SOL_RE[IO]$/.test(providerCode) || providerCode.startsWith('RET_')) {
     return { status: 'exception', stage: 'returned', description: 'Returned to sender' };
   }
   if (step === 'LIVREE' || /^(?:LIV|POD)_/.test(providerCode)) {

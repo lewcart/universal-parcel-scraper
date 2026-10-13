@@ -36,18 +36,19 @@ function trackingPayload(receipt: string | number = TEST_TRACKING_NUMBER): unkno
 afterEach(() => vi.restoreAllMocks());
 
 describe('Heppner anonymous tracking input', () => {
-  it('normalizes the current eight-digit form and infers France or Switzerland from postcode length', () => {
+  it('normalizes the current eight-digit form and infers the countries from postcode length', () => {
     expect(normalizeHeppnerTrackingNumber('23 456 789')).toBe(TEST_TRACKING_NUMBER);
     expect(normalizeHeppnerCredential(TEST_TRACKING_NUMBER, TEST_POSTCODE)).toEqual({
       trackingNumber: TEST_TRACKING_NUMBER,
       postcode: TEST_POSTCODE,
-      countryCode: 'FR',
+      countries: ['FR'],
     });
     expect(normalizeHeppnerCredential(TEST_TRACKING_NUMBER, '1201')).toEqual({
       trackingNumber: TEST_TRACKING_NUMBER,
       postcode: '1201',
-      countryCode: 'CH',
+      countries: ['CH', 'BE', 'LU'],
     });
+    expect(() => heppnerSearchUrl(TEST_TRACKING_NUMBER, TEST_POSTCODE, 'BE')).toThrow('does not match the country');
   });
 
   it('rejects unsupported identifiers, postcodes, and parameter injection', () => {
@@ -86,6 +87,10 @@ describe('Heppner anonymous tracking input', () => {
     const wrong = Buffer.from('99999999&75001&FR').toString('base64');
     expect(() => parseHeppnerCapability(wrong, TEST_TRACKING_NUMBER, TEST_POSTCODE))
       .toThrow('different shipment');
+    const belgian = Buffer.from(`${TEST_TRACKING_NUMBER}&1000&BE`).toString('base64');
+    expect(parseHeppnerCapability(belgian, TEST_TRACKING_NUMBER, '1000', 'BE')).toBe(belgian);
+    expect(() => parseHeppnerCapability(belgian, TEST_TRACKING_NUMBER, '1000', 'CH'))
+      .toThrow('different shipment');
     expect(() => parseHeppnerCapability('not-a-capability', TEST_TRACKING_NUMBER, TEST_POSTCODE))
       .toThrow(SchemaError);
     expect(() => parseHeppnerCapability('not-a-capability', TEST_TRACKING_NUMBER, TEST_POSTCODE))
@@ -105,6 +110,21 @@ describe('Heppner status vocabulary', () => {
     });
     expect(heppnerCode('<script>alert(1)</script>')).toBe('');
     expect(heppnerCode(' pch_cfm ')).toBe('PCH_CFM');
+  });
+
+  it('reads each closing SOL_ code by its own meaning', () => {
+    for (const code of ['SOL_REI', 'SOL_REO']) {
+      expect(classifyHeppnerEvent('', 'EXPE_EN_COURS', code)).toMatchObject({ stage: 'returned' });
+    }
+    // A new address under a new reference: the goods go on, they are not returned.
+    for (const step of ['MARCHANDISE_REEXPEDIEE', 'MARCHANDISE_RETOURNEE', '']) {
+      expect(classifyHeppnerEvent(step, 'EXPE_EN_COURS', 'SOL_RXI')).toEqual({ status: 'in_transit', stage: 'in_transit',
+        description: 'Forwarded to a new address under a new reference' });
+    }
+    for (const code of ['SOL_ANN', 'SOL_MAR', 'SOL_MQD']) {
+      expect(classifyHeppnerEvent('', 'EXPE_EN_COURS', code)).toMatchObject({ stage: 'exception', description: 'Shipment cancelled' });
+    }
+    expect(classifyHeppnerEvent('ACHEMINEMENT', 'EXPE_EN_COURS', 'SOL_REC')).toMatchObject({ stage: 'in_transit' });
   });
 });
 
@@ -216,6 +236,34 @@ describe('Heppner tracker', () => {
     expect(String(fetcher.mock.calls[1]?.[0])).toBe(heppnerDetailUrl(TEST_CAPABILITY));
     expect(new Headers(fetcher.mock.calls[1]?.[1]?.headers).get('Referer'))
       .toBe(heppnerTrackingPageUrl(TEST_CAPABILITY));
+  });
+
+  it('asks each four-digit country in turn and keeps the one that holds the shipment', async () => {
+    const belgian = Buffer.from(`${TEST_TRACKING_NUMBER}&1000&BE`).toString('base64');
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('NOT_FOUND', { status: 404 }))
+      .mockResolvedValueOnce(new Response(belgian))
+      .mockResolvedValueOnce(new Response(JSON.stringify(trackingPayload())));
+
+    await expect(new HeppnerTracker({ fetcher, timeoutMs: 1_000 }).fetch(TEST_TRACKING_NUMBER, '1000'))
+      .resolves.toMatchObject({ status: 'exception' });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).searchParams.get('countryCode')))
+      .toEqual(['CH', 'BE', null]);
+    expect(String(fetcher.mock.calls[2]?.[0])).toBe(heppnerDetailUrl(belgian));
+  });
+
+  it('reports a missing shipment only when every country says so', async () => {
+    const missing = vi.fn<typeof fetch>().mockImplementation(async () => new Response('NOT_FOUND', { status: 404 }));
+    await expect(new HeppnerTracker({ fetcher: missing, timeoutMs: 1_000 }).fetch(TEST_TRACKING_NUMBER, '1000'))
+      .rejects.toBeInstanceOf(NotFoundError);
+    expect(missing).toHaveBeenCalledTimes(3);
+
+    const blocked = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('Busy', { status: 503 }))
+      .mockImplementation(async () => new Response('NOT_FOUND', { status: 404 }));
+    await expect(new HeppnerTracker({ fetcher: blocked, timeoutMs: 1_000 }).fetch(TEST_TRACKING_NUMBER, '1000'))
+      .rejects.not.toBeInstanceOf(NotFoundError);
+    expect(blocked).toHaveBeenCalledTimes(3);
   });
 
   it('turns the official wrong-number response into a clean privacy-safe 404', async () => {

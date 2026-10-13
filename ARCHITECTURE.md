@@ -54,6 +54,8 @@ one adapter per process, on first use, so a carrier that fails to load cannot ta
 down with it.
 
 Shared text helpers accept strings and, for scalar codes and identifiers, finite numbers.
+Provider identifiers are normalized whole before comparison; display-text limits must not
+erase a different identifier's suffix. Numeric identifiers require an exact, nonnegative integer.
 Adapters check required payload fields before projecting them; objects and arrays cannot
 supply shipment identity, scan text or status codes.
 

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -96,8 +97,8 @@ function rowOf(item: XmlNode, index: number): Row {
     code,
     description,
     location: [city, country].filter(Boolean).join(', '),
-    own: ['ShipmentNumber', 'ShipmentNumberSender', 'Barcode'].map(name => normalizeTrackingNumber(clean(field(item, name), 64))),
-    transit: normalizeTrackingNumber(clean(field(item, 'ShipmentNumberTransit'), 64)),
+    own: ['ShipmentNumber', 'ShipmentNumberSender', 'Barcode'].map(name => returnedTrackingNumber(field(item, name))),
+    transit: returnedTrackingNumber(field(item, 'ShipmentNumberTransit')),
     destination: clean(field(item, 'CountryDel'), 8),
     // The page hides these, and the Chinese consolidator's own registration before Meest's.
     hidden: code === HIDDEN_CODE || (clean(field(item, 'AgentCode'), 40) === 'MCHINA' && field(item, 'ActionMessages').trim() === 'Зареєстровано'),

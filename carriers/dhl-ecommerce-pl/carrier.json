@@ -20,7 +20,8 @@
     "mode": "automatic",
     "adapter": "dhl-ecommerce-pl",
     "steps": [
-      "direct"
+      "direct",
+      "retry"
     ],
     "recognition": {
       "rank": 620

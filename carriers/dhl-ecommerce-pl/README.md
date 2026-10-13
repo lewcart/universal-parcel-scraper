@@ -14,6 +14,11 @@ the guest lookup of its consumer portal. German DHL Paket is
    An entry without a number type and without a shipment is the only answer
    read as a missing parcel.
 
+A connection failure can retry the complete lookup within its budget. The retry obtains
+a fresh challenge and proof; it never replays a proof that the service may have spent.
+HTTP refusals are not retried. Known block pages retain the challenge failure kind,
+and failure diagnostics exclude the signed proof.
+
 ## Notes
 
 - The portal gives the current status and no scan history, so the result is a

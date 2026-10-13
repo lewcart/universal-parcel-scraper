@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type ClassifiedWording } from '../../core/status/index.js';
@@ -32,7 +33,7 @@ function records(value: unknown): JsonObject[] {
 }
 
 function shipmentNumber(row: JsonObject): string {
-  return typeof row.tuNo === 'string' ? normalizeTrackingNumber(clean(row.tuNo, 40)) : '';
+  return typeof row.tuNo === 'string' ? returnedTrackingNumber(row.tuNo) : '';
 }
 
 /** The row's own count of parcels: the first row of a several-row reply is the shipment the page shows above its parcels. */

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -85,7 +86,7 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
   if (header.length !== 1 || named.length !== 1 || label !== NUMBER_LABEL) {
     throw new SchemaError(PROVIDER, 'Hrvatska pošta did not answer in English');
   }
-  if (normalizeTrackingNumber(clean(named.text(), 80)) !== number) {
+  if (returnedTrackingNumber(named.text()) !== number) {
     throw new SchemaError(PROVIDER, 'Hrvatska pošta answered for a different number');
   }
 

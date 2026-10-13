@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -71,7 +72,7 @@ export function normalizeGebruederWeissPostcode(raw: string | null | undefined):
 function carries(order: Record<string, unknown>, number: string): boolean {
   const references: unknown[] = Array.isArray(order.customer_reference) ? order.customer_reference : [];
   return [order.order_id, order.request_order_id, ...references]
-    .some((value) => normalizeTrackingNumber(cleanScalar(value, 100)) === number);
+    .some((value) => returnedTrackingNumber(value, true) === number);
 }
 
 /** The branch a scan happened at, as "Town, AT", and its country. */

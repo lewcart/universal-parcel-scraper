@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load } from 'cheerio';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
@@ -152,7 +153,7 @@ export function readCorreosDeMexicoPage(html: string, rawNumber: string, askedYe
 
   const guia = form.find('input#Guia[name="Guia"]');
   if (guia.length !== 1) throw new SchemaError(PROVIDER, 'Correos de México tracking form changed');
-  if (normalizeTrackingNumber(clean(guia.attr('value'), 80)) !== number) {
+  if (returnedTrackingNumber(guia.attr('value')) !== number) {
     throw new SchemaError(PROVIDER, 'Correos de México answered for a different number');
   }
   const options = form.find('select#Periodo[name="Periodo"] > option');

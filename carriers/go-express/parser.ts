@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -55,7 +56,7 @@ function linkedNumber($: CheerioAPI): string | null {
   if (links.length !== 1) return null;
   try {
     const reference = new URL(links.attr('data-link') ?? '').searchParams.getAll('reference');
-    return reference.length === 1 ? normalizeTrackingNumber(clean(reference[0], 80)) : null;
+    return reference.length === 1 ? returnedTrackingNumber(reference[0]) : null;
   } catch {
     return null;
   }

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -59,7 +60,7 @@ function searchPage($: CheerioAPI, html: string, number: string): never {
   const notice = notices.length === 1 ? clean(notices.text(), 200) : '';
   // The page puts the identifier it was asked for back into its search field.
   const fields = $('input#ConsignmentNumber');
-  const echoed = fields.length === 1 ? normalizeTrackingNumber(clean(fields.attr('value'), 80)) : '';
+  const echoed = fields.length === 1 ? returnedTrackingNumber(fields.attr('value')) : '';
   if (notice === NOT_FOUND || notice === INVALID) {
     if (echoed !== number) throw new SchemaError(PROVIDER, 'APC Overnight answered for a different number');
     if (notice === NOT_FOUND) throw new NotFoundError(PROVIDER);

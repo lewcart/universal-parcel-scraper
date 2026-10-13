@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -59,7 +60,7 @@ function shipmentOf(html: string, number: string): Shipment {
   if (!isRecord(shipment) || typeof shipment.tracking_code !== 'string') {
     throw new SchemaError(PROVIDER, 'Passport returned a shipment without its tracking number');
   }
-  if (normalizeTrackingNumber(clean(shipment.tracking_code, 64)) !== number) {
+  if (returnedTrackingNumber(shipment.tracking_code) !== number) {
     throw new SchemaError(PROVIDER, 'Passport returned another shipment');
   }
   const bought = shipment.time_bought;

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -121,7 +122,7 @@ export function parseExpressOne(html: string, raw: string, status = 200): Carrie
   if (status === 404 || !blocks.length) {
     const notice = clean(notices.find('p b').first().text(), 200);
     if (status === 404 && !blocks.length && notices.length === 1 && ABSENT.has(notice)
-      && normalizeTrackingNumber(clean($('input#plc_number').val(), 64)) === number) throw new NotFoundError(PROVIDER);
+      && returnedTrackingNumber($('input#plc_number').val()) === number) throw new NotFoundError(PROVIDER);
     throw new IndeterminateError(PROVIDER, 'Express One did not return the parcel');
   }
   if (status !== 200) throw new IndeterminateError(PROVIDER, 'Express One did not return the parcel');

@@ -22,6 +22,7 @@
  * event from an explicit allowlist (time, harmonized wording, scanning
  * location, harmonized code) and copies nothing else.
  */
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { createHash } from 'node:crypto';
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
@@ -177,7 +178,7 @@ function parseTenantConfig(payload: unknown): AsendiaTenantConfig {
 function responseIdentifier(parcel: JsonObject): string {
   for (const value of [parcel.tracking_id, parcel.upper_tracking_id]) {
     try {
-      return normalizeAsendiaTrackingNumber(cleanScalar(value, 64));
+      return normalizeAsendiaTrackingNumber(returnedTrackingNumber(value, true));
     } catch {
       // Try the alternate provider field.
     }

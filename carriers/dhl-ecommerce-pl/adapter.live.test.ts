@@ -13,6 +13,7 @@ describe('DHL eCommerce Poland live tracking', () => {
   it.skipIf(!process.env.DHL_ECOMMERCE_PL_TRACKING_NUMBER)('returns the identity-bound current status', async () => {
     const result = normalizeCarrierResult(await instance().track({ number: process.env.DHL_ECOMMERCE_PL_TRACKING_NUMBER! }));
     expect(result.current_stage).toBeDefined();
-    expect(result.events).toHaveLength(1);
+    expect(result.summary_only).toBe(true);
+    expect(result.events).toEqual([]);
   });
 });

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
@@ -56,7 +57,7 @@ export function parseDynalogic(payload: unknown, rawNumber: string): CarrierResu
     throw new SchemaError(PROVIDER, 'Dynalogic returned an invalid order reply');
   }
   const order = payload.data;
-  const answered = typeof order.TrackAndTraceNumber === 'string' ? normalizeTrackingNumber(clean(order.TrackAndTraceNumber, 64)) : '';
+  const answered = typeof order.TrackAndTraceNumber === 'string' ? returnedTrackingNumber(order.TrackAndTraceNumber) : '';
   if (!answered) throw new SchemaError(PROVIDER, 'Dynalogic returned an order without its number');
   // The service also finds an order by the merchant's order number or its end;
   // only the whole track & trace number identifies the parcel asked for.

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { STAGES } from '../../core/status/index.js';
@@ -148,6 +148,38 @@ describe('DHL eCommerce Poland request challenge', () => {
 });
 
 describe('DHL eCommerce Poland adapter', () => {
+  it('restarts the read with a fresh proof after a connection failure and records recovery', async () => {
+    const requests: { url: string; init?: RequestInit }[] = [];
+    let issued = 0;
+    let lookedUp = 0;
+    const fetcher: typeof fetch = async (url, init) => {
+      requests.push({ url: String(url), init });
+      if (String(url).endsWith('/auth/captcha/challenge')) return Response.json(challenge(++issued));
+      if (++lookedUp === 1) throw new TypeError('Connection reset');
+      return Response.json(clone());
+    };
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    await expect(new DhlEcommercePlTracker({ fetcher, recorder }).fetch(NUMBER, { budgetMs: 5000 }))
+      .resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(issued).toBe(2);
+    const proofs = requests.filter(row => row.init?.method === 'POST')
+      .map(row => JSON.parse(String(row.init?.body))['captcha-payload']);
+    expect(proofs[0]).not.toBe(proofs[1]);
+    expect(recorder.step.mock.calls.map(([event]) => [event.step, event.outcome]))
+      .toEqual([['direct', 'transport'], ['retry', 'ok']]);
+  });
+
+  it('keeps rate limits definitive and removes proof material from failed requests', async () => {
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const error = await new DhlEcommercePlTracker({ fetcher: portal(() => new Response('refused', { status: 429 }), calls) })
+      .fetch(NUMBER).catch((value: unknown) => value);
+    expect(error).toMatchObject({ kind: 'rate_limited' });
+    expect(calls).toHaveLength(2);
+    expect((error as { request?: unknown }).request).toBeUndefined();
+    expect((error as { diagnostics?: unknown }).diagnostics).toBeUndefined();
+    expect(JSON.stringify(error)).not.toContain(SALT);
+  });
+
   it('solves the challenge, asks for the one number and returns a normalized parcel', async () => {
     const seen: { url: string; init?: RequestInit }[] = [];
     const result = normalizeCarrierResult(await new DhlEcommercePlTracker({ fetcher: portal(() => Response.json(clone()), seen) }).fetch(NUMBER.toLowerCase()));
@@ -176,7 +208,7 @@ describe('DHL eCommerce Poland adapter', () => {
     await expect(answers(() => Response.json([{ number: WAYBILL, numberType: 'AllegroDelivery', shipments: [] }]))).rejects.toMatchObject({ kind: 'invalid_input' });
     await expect(answers(() => Response.json({ errors: { number1: ['invalid'] }, code: 422 }, { status: 422 }))).rejects.toMatchObject({ kind: 'invalid_input' });
     await expect(answers(() => Response.json({ code: 400, message: 'Challenge has been verified before.' }, { status: 400 }))).rejects.toMatchObject({ kind: 'indeterminate' });
-    await expect(answers(() => new Response('<html><body>Request Rejected</body></html>', { headers: { 'Content-Type': 'text/html' } }))).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(answers(() => new Response('<html><body>Request Rejected</body></html>', { headers: { 'Content-Type': 'text/html' } }))).rejects.toMatchObject({ kind: 'challenge' });
     await expect(answers(() => new Response('<html>Unprocessable</html>', { status: 422 }))).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(answers(() => Response.json([{ number: '99999999991', shipments: [] }]))).rejects.toMatchObject({ kind: 'schema' });
     await expect(answers(() => new Response('', { status: 429 }))).rejects.toMatchObject({ kind: 'rate_limited' });
@@ -187,7 +219,7 @@ describe('DHL eCommerce Poland adapter', () => {
     const issuing = (body: () => Response) => adapter(environment(async () => { calls += 1; return body(); })).track({ number: WAYBILL });
     await expect(issuing(() => Response.json({ ...challenge(), algorithm: 'SHA-1' }))).rejects.toMatchObject({ kind: 'schema' });
     await expect(issuing(() => Response.json(challenge(5_000, 3_000)))).rejects.toMatchObject({ kind: 'indeterminate' });
-    await expect(issuing(() => new Response('<html>Request Rejected</html>'))).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(issuing(() => new Response('<html>Request Rejected</html>'))).rejects.toMatchObject({ kind: 'challenge' });
     expect(calls).toBe(3);
   });
 });

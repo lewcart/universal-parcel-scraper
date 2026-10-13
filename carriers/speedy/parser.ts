@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, InvalidInputError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -72,7 +73,7 @@ function partnerOf(mappings: unknown, number: string): Pick<CarrierResult, 'deli
   for (const mapping of mappings.slice(0, 10)) {
     if (!isRecord(mapping) || mapping.mappingFor !== 'RECEIVER') continue;
     const carrier = PARTNERS[clean(mapping.externalCarrier, 32)];
-    const reference = normalizeTrackingNumber(cleanScalar(mapping.barcode, 64));
+    const reference = returnedTrackingNumber(mapping.barcode, true);
     if (carrier && /^[A-Z0-9]{4,40}$/.test(reference) && reference !== number) {
       return { delivery_carrier: carrier, delivery_tracking_number: reference };
     }

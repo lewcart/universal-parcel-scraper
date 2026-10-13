@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -76,7 +77,7 @@ export function parseFoxpost(html: string, raw: string): CarrierResult {
     throw new IndeterminateError(PROVIDER, 'Foxpost returned a notice instead of the parcel');
   }
   if (!shown.length && !rows.length) throw new IndeterminateError(PROVIDER, 'Foxpost did not return a parcel');
-  if (shown.length !== 1 || normalizeTrackingNumber(clean(shown.text(), 80)) !== number) {
+  if (shown.length !== 1 || returnedTrackingNumber(shown.text()) !== number) {
     throw new SchemaError(PROVIDER, 'Foxpost returned a different parcel');
   }
   if ($('ul.parcel-status-items__list').length !== 1) throw new SchemaError(PROVIDER, 'Foxpost parcel history changed');

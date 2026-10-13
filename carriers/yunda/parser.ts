@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -57,7 +58,7 @@ export function parseYunda(payload: unknown, trackingNumber: string): CarrierRes
   const events: CarrierEvent[] = [];
   let returning = false;
   for (const raw of history.gn) {
-    if (!isRecord(raw) || normalizeTrackingNumber(clean(raw.mailNo, 64)) !== number) {
+    if (!isRecord(raw) || returnedTrackingNumber(raw.mailNo) !== number) {
       throw new SchemaError(PROVIDER, 'Yunda returned mixed or incomplete scan identities');
     }
     const label = clean(raw.status, 100);

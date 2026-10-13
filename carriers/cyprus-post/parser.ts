@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
@@ -200,7 +201,7 @@ function itemFor($: CheerioAPI, html: string, number: string) {
   const panel = panels.first();
   const titles = panel.find('.panel-heading .panel-title a');
   const bodies = panel.children('.panel-collapse');
-  if (titles.length !== 1 || normalizeTrackingNumber(clean(titles.text(), 80)) !== number
+  if (titles.length !== 1 || returnedTrackingNumber(titles.text()) !== number
     || bodies.length !== 1 || bodies.attr('id') !== `collapse_${number}`) {
     throw new SchemaError(PROVIDER, 'Cyprus Post answered for a different item');
   }

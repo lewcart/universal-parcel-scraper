@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { isValidSscc, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -43,7 +44,7 @@ export function normalizeDaoNumber(raw: string): DaoNumber {
 
 /** The parcel number the reply names, in the forms DAO issues. */
 function issued(value: unknown): string {
-  const barcode = normalizeTrackingNumber(cleanScalar(value, 40));
+  const barcode = returnedTrackingNumber(value, true);
   return /^(?:00\d{18}|7\d{12}|\d{9})$/.test(barcode) ? barcode : '';
 }
 
@@ -88,7 +89,7 @@ function scanOf(row: unknown, index: number): Scan {
 
 /** The partner and number a parcel sent abroad is tracked under, as the page links them. */
 function abroad(parcel: Record<string, unknown>, number: string): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
-  const partnerNumber = normalizeTrackingNumber(clean(parcel.dist_barcode, 64));
+  const partnerNumber = returnedTrackingNumber(parcel.dist_barcode);
   if (!/^[A-Z0-9]{4,40}$/.test(partnerNumber) || partnerNumber === number) return {};
   const partner = carrierIdFromPartner('', clean(parcel.external_tracking, 500));
   return { delivery_tracking_number: partnerNumber, ...(partner && partner !== 'dao' ? { delivery_carrier: partner } : {}) };

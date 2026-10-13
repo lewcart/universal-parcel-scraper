@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
@@ -50,7 +51,7 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
   const canonical = identities.length === 1 ? clean(identities.next('div').text(), 64) : '';
   // A merchant reference must be the parcel's order or package reference; its LTN then names the parcel.
   const references = $('.shipment-details-col h6').filter((_, node) => ['Order Reference', 'Package Reference'].includes(clean($(node).text())))
-    .map((_, node) => normalizeTrackingNumber(clean($(node).next('div').text(), 100))).get();
+    .map((_, node) => returnedTrackingNumber($(node).next('div').text())).get();
   if (identities.length !== 1 || (merchant ? !/^LTN\d{8,9}$/.test(canonical) || !references.includes(number)
     : canonical !== number.replace(/N1$/, ''))) throw new SchemaError('Landmark Global', 'Landmark returned a different or ambiguous parcel');
   if (tables.length !== 1 || tables.find('thead th').map((_, node) => clean($(node).text())).get().join('|') !== 'Description|Date/Time|Location') throw new SchemaError('Landmark Global');

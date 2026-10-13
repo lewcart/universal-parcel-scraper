@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
@@ -164,7 +165,7 @@ function partnerOf(payload: Record<string, unknown>): { delivery_carrier: string
     if (!Array.isArray(references)) continue;
     for (const reference of references) {
       if (!isRecord(reference) || typeof reference.name !== 'string' || !Object.hasOwn(PARTNERS, reference.name)) continue;
-      const number = normalizeTrackingNumber(clean(reference.number, 64));
+      const number = returnedTrackingNumber(reference.number);
       if (/^[A-Z0-9]{8,40}$/.test(number)) return { delivery_carrier: PARTNERS[reference.name]!, delivery_tracking_number: number };
     }
   }

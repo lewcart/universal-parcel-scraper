@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -75,8 +76,8 @@ export function parseCdek(payload: unknown, raw: string): CarrierResult {
   if (payload.type !== 'CDEK') throw new IndeterminateError(PROVIDER, 'CDEK answered with tracking from another service');
   const data = payload.data;
   if (!isRecord(data)) throw new SchemaError(PROVIDER, 'CDEK did not return an order');
-  const order = normalizeTrackingNumber(clean(data.orderNumber, 40));
-  const outer = payload.orderNumber === undefined ? order : normalizeTrackingNumber(clean(payload.orderNumber, 40));
+  const order = returnedTrackingNumber(data.orderNumber);
+  const outer = payload.orderNumber === undefined ? order : returnedTrackingNumber(payload.orderNumber);
   if (!ISSUED.test(order) || outer !== order) throw new SchemaError(PROVIDER, 'CDEK returned an order without its number');
   // CDEK finds an order by a number it links to it and answers with the order's own number.
   if (order !== number && ORDER.test(number)) throw new SchemaError(PROVIDER, 'CDEK answered for a different order');

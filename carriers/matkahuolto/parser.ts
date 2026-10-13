@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber, isValidSscc, normalizeTrackingNumber } from '../../core/detection/index.js';
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
@@ -122,7 +123,7 @@ export function parseMatkahuolto(reply: unknown, raw: string): CarrierResult {
     if (reply.notFound === true && Object.keys(reply).length === 1) throw new NotFoundError(PROVIDER);
     throw new IndeterminateError(PROVIDER, 'Matkahuolto returned an unexpected not-found reply');
   }
-  if (typeof reply.parcelNumber !== 'string' || !sameNumber(normalizeTrackingNumber(clean(reply.parcelNumber, 60)), number)) {
+  if (typeof reply.parcelNumber !== 'string' || !sameNumber(returnedTrackingNumber(reply.parcelNumber), number)) {
     throw new SchemaError(PROVIDER, 'Matkahuolto answered for a different consignment');
   }
   const rows = reply.trackingEvents;

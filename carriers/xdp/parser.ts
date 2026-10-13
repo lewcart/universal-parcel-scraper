@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
@@ -110,7 +111,7 @@ export function parseXdp(html: string, raw: string): CarrierResult {
   $('#leftCol br').replaceWith(' ');
   const field = $('form#trackform input#c');
   if (field.length !== 1) throw new IndeterminateError(PROVIDER, 'XDP did not return its tracking page');
-  if (normalizeTrackingNumber(clean(field.attr('value'), 64)) !== number) {
+  if (returnedTrackingNumber(field.attr('value')) !== number) {
     throw new SchemaError(PROVIDER, 'XDP answered for a different consignment');
   }
 

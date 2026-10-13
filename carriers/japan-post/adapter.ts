@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
@@ -73,7 +74,7 @@ export function parse(html: string, trackingNumber: string): CarrierResult {
     const rows = result.find('tr').filter((_, row) => $(row).children('td').length > 0);
     const cells = rows.children('td');
     if (!details.length && !history.length && result.length === 1 && rows.length === 1 && cells.length === 2
-      && normalizeTrackingNumber(clean(cells.eq(0).text())) === number
+      && returnedTrackingNumber(cells.eq(0).text()) === number
       && clean(cells.eq(1).text()) === '** Your item was not found. Confirm your item number and ask at your local office.') {
       throw new NotFoundError(PROVIDER);
     }

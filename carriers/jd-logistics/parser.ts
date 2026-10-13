@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
@@ -127,7 +128,7 @@ export function parseJdLogistics(payload: unknown, raw: string): CarrierResult {
   }
   if (!payload.data.length) throw new IndeterminateError(PROVIDER, 'JD Logistics returned no international history');
   if (payload.data.length !== 1 || !isRecord(payload.data[0])
-    || normalizeTrackingNumber(clean(payload.data[0].waybillNo, 64)) !== number) {
+    || returnedTrackingNumber(payload.data[0].waybillNo) !== number) {
     throw new SchemaError(PROVIDER, 'JD Logistics returned a different or ambiguous shipment');
   }
   const item = payload.data[0];

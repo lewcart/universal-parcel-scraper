@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -48,7 +49,7 @@ function clockOf(value: unknown): { wall: string; key: string } | null {
 function barcodeOf(value: unknown): string {
   if (value === undefined || value === null) return '';
   if (typeof value !== 'string') throw new SchemaError(PROVIDER, 'MaltaPost returned an invalid barcode');
-  return normalizeTrackingNumber(clean(value, 80));
+  return returnedTrackingNumber(value);
 }
 
 /** The scan's wording, its reason and the action that follows, as the tracking page lists them. */

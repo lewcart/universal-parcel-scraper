@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
@@ -35,7 +36,7 @@ function ownIds(shipment: Record<string, unknown>): Set<string> {
   const ids = new Set<string>();
   const calculated: unknown[] = Array.isArray(shipment.calculatedShipmentId) ? shipment.calculatedShipmentId : [];
   for (const value of [shipment.mainTmsShipmentId, shipment.shipmentId, shipment.bookingId, ...calculated]) {
-    const id = normalizeTrackingNumber(cleanScalar(value, 80));
+    const id = returnedTrackingNumber(value, true);
     if (id) ids.add(id);
   }
   return ids;
@@ -50,7 +51,7 @@ export interface DsvShipment {
 }
 
 function shipmentOf(entry: Record<string, unknown>, own: boolean): DsvShipment {
-  const key = clean(entry.randomIdentifier, 80);
+  const key = typeof entry.randomIdentifier === 'string' ? entry.randomIdentifier : '';
   if (!KEY.test(key)) throw new SchemaError(PROVIDER, 'myDSV returned a shipment without its key');
   return { key, mode: clean(entry.modeOfTransport, 40).toUpperCase(), own };
 }
@@ -71,7 +72,7 @@ export function pickDsvShipment(payload: unknown, rawNumber: string): DsvShipmen
   if (!entries.length) throw new IndeterminateError(PROVIDER, 'myDSV\'s public search does not know the number', { reason: 'portal_not_found' });
   const own = new Map<string, Record<string, unknown>>();
   for (const entry of entries) {
-    if (ownIds(entry).has(number)) own.set(clean(entry.randomIdentifier, 80), entry);
+    if (ownIds(entry).has(number)) own.set(shipmentOf(entry, true).key, entry);
   }
   if (own.size === 1) return shipmentOf([...own.values()][0]!, true);
   if (own.size > 1) throw new IndeterminateError(PROVIDER, 'myDSV found several shipments for the number', { reason: 'several_parcels' });
@@ -89,7 +90,7 @@ export function pickDsvShipment(payload: unknown, rawNumber: string): DsvShipmen
 export function confirmDsvShipment(payload: unknown, rawNumber: string): void {
   const number = normalizeDsvNumber(rawNumber);
   if (!isRecord(payload)) throw new SchemaError(PROVIDER, 'myDSV did not return the shipment');
-  if (ownIds(payload).has(number) || normalizeTrackingNumber(cleanScalar(payload.houseBillNumber, 80)) === number) return;
+  if (ownIds(payload).has(number) || returnedTrackingNumber(payload.houseBillNumber, true) === number) return;
   throw new IndeterminateError(PROVIDER, 'The number matched only a reference of a DSV shipment', { reason: 'reference_only' });
 }
 

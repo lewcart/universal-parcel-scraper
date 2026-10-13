@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -134,8 +135,8 @@ export function parseKuehneNagelSearch(payload: unknown, rawNumber: string): Kue
     const kind = clean(group.kind, 60);
     for (const shipment of group.shipments as unknown[]) {
       const id = isRecord(shipment) ? cleanScalar(shipment.id, 20) : '';
-      const trackingNumber = isRecord(shipment) ? normalizeTrackingNumber(clean(shipment.trackingNumber, 40)) : '';
-      if (!isRecord(shipment) || !ID.test(id) || !trackingNumber) {
+      const trackingNumber = isRecord(shipment) ? returnedTrackingNumber(shipment.trackingNumber) : '';
+      if (!isRecord(shipment) || !ID.test(id) || !trackingNumber || trackingNumber.length > 40) {
         throw new SchemaError(PROVIDER, 'Kuehne+Nagel returned a shipment without its id or tracking number');
       }
       const exact = kind === TRACKING_NUMBER && trackingNumber === number;

@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -123,7 +124,7 @@ function scanRows(rows: unknown[]) {
       if (props && typeof props.children === 'string' && clean(props.children, 200) === ABSENT) absent = true;
       if (props && node[1] === 'input' && props.name === 'tracknbr' && typeof props.defaultValue === 'string') {
         const value = flightText(props.defaultValue);
-        if (value !== undefined) echoed.add(normalizeTrackingNumber(clean(value, 200)));
+        if (value !== undefined) echoed.add(returnedTrackingNumber(value));
       }
       for (const child of node) stack.push(child);
     } else if (isRecord(node)) {

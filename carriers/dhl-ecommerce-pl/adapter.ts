@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { BudgetExceededError, IndeterminateError } from '../../core/errors/index.js';
+import { BudgetExceededError, ChallengeError, IndeterminateError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
+import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
+import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { normalizeDhlEcommercePlNumber, parseDhlEcommercePl, parseDhlEcommercePlChallenge, parseDhlEcommercePlRejection,
   type DhlEcommercePlChallenge } from './parser.js';
 
@@ -38,8 +39,7 @@ export class DhlEcommercePlTracker {
   fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeDhlEcommercePlNumber(raw);
     const budgetMs = context.budgetMs ?? 15_000;
-    return runSteps({ carrier: 'dhl-ecommerce-pl', budgetMs, signal: context.signal,
-      recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
+    const read = async (signal: AbortSignal, remainingMs: number) => {
       signal.throwIfAborted();
       // One deadline covers the challenge, its solution and the lookup.
       const deadline = performance.now() + remainingMs;
@@ -51,15 +51,30 @@ export class DhlEcommercePlTracker {
       // A page in place of JSON is a block, whatever its status says.
       const json = (bytes: Uint8Array): unknown => {
         try { return parseJsonBytes(bytes, PROVIDER); }
-        catch (cause) { throw new IndeterminateError(PROVIDER, 'DHL eCommerce Poland returned a page instead of tracking JSON', { cause }); }
+        catch {
+          if (/Request Rejected|The requested URL was rejected|Access Denied|cf-chl-|_cf_chl_opt|cf-turnstile|Incapsula incident|<title>\s*(?:Just a moment|Attention Required)/i.test(decodeText(bytes.subarray(0, 64000)))) {
+            throw new ChallengeError(PROVIDER, 'DHL eCommerce Poland returned a browser challenge');
+          }
+          throw new IndeterminateError(PROVIDER, 'DHL eCommerce Poland returned a page instead of tracking JSON');
+        }
+      };
+      // The signed per-request proof stays out of failure diagnostics. Each
+      // retry obtains a fresh challenge rather than replaying a spent proof.
+      const request = async (url: string, init: RequestInit, options: Parameters<typeof fetchBounded>[2]) => {
+        try { return await fetchBounded(url, { ...init, signal }, options); }
+        catch (error) {
+          if (error instanceof UpstreamHttpError) throw new UpstreamHttpError(PROVIDER, error.status, error.retryAfterMs);
+          if (error instanceof UpstreamNetworkError) throw new UpstreamNetworkError(PROVIDER, new Error('DHL eCommerce Poland tracking request failed'));
+          throw error;
+        }
       };
       const headers = { Accept: 'application/json', 'Accept-Language': 'en', 'User-Agent': userAgentOf(this.options.userAgent) };
-      const issued = await fetchBounded(`${BASE}/auth/captcha/challenge`, { signal, headers }, {
+      const issued = await request(`${BASE}/auth/captcha/challenge`, { signal, headers }, {
         provider: PROVIDER, timeoutMs: left(), maxBytes: 20_000, fetcher: this.options.fetcher,
       });
       const proof = await solveDhlEcommercePlChallenge(parseDhlEcommercePlChallenge(json(issued.bytes)), signal, deadline, budgetMs);
       signal.throwIfAborted();
-      const { response, bytes } = await fetchBounded(`${BASE}/shipment/status`, { method: 'POST', signal,
+      const { response, bytes } = await request(`${BASE}/shipment/status`, { method: 'POST', signal,
         headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify({ number1: number, 'captcha-payload': proof }) }, {
         provider: PROVIDER, timeoutMs: left(), maxBytes: 500_000, allowHttpStatuses: [400, 422], fetcher: this.options.fetcher,
       });
@@ -67,13 +82,18 @@ export class DhlEcommercePlTracker {
       // A 400 is the portal refusing the proof: nothing was looked up.
       if (response.status !== 200) throw new IndeterminateError(PROVIDER, 'DHL eCommerce Poland returned an inconclusive tracking response');
       return parseDhlEcommercePl(json(bytes), number);
-    } }]);
+    };
+    return runSteps({ carrier: 'dhl-ecommerce-pl', budgetMs, signal: context.signal,
+      recorder: this.options.recorder ?? NOOP_RECORDER }, [
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+    ]);
   }
 }
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new DhlEcommercePlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'dhl-ecommerce-pl', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
+  return { id: 'dhl-ecommerce-pl', recordsSteps: true, steps: ['direct', 'retry'], track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
       () => accepted(() => normalizeDhlEcommercePlNumber(number))) };
 };

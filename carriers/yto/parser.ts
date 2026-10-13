@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -22,7 +23,7 @@ export function parseYto(payload: unknown, trackingNumber: string): CarrierResul
   const number = normalizeYtoNumber(trackingNumber);
   if (!Array.isArray(payload)) throw new SchemaError(PROVIDER, 'YTO returned an invalid shipment list');
   if (!payload.length) throw new IndeterminateError(PROVIDER, 'YTO returned no shipment details');
-  if (payload.length !== 1 || !isRecord(payload[0]) || normalizeTrackingNumber(clean(payload[0].waybillNo, 64)) !== number) {
+  if (payload.length !== 1 || !isRecord(payload[0]) || returnedTrackingNumber(payload[0].waybillNo) !== number) {
     throw new SchemaError(PROVIDER, 'YTO returned missing or ambiguous shipment identity');
   }
   const item = payload[0];
@@ -38,7 +39,7 @@ export function parseYto(payload: unknown, trackingNumber: string): CarrierResul
   // The official client uses the first row as current. Read oldest first to
   // preserve a return leg when later scans use ordinary movement/signature codes.
   for (const raw of [...history].reverse()) {
-    if (!isRecord(raw) || normalizeTrackingNumber(clean(raw.waybillNo, 64)) !== number) {
+    if (!isRecord(raw) || returnedTrackingNumber(raw.waybillNo) !== number) {
       throw new SchemaError(PROVIDER, 'YTO returned mixed or incomplete shipment history');
     }
     const code = clean(raw.opCode, 32);

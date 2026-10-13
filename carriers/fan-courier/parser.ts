@@ -1,3 +1,4 @@
+import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -44,13 +45,13 @@ export function parseFanCourier(payload: unknown, raw: string): CarrierResult {
     // and the page's message.
     const message = clean(payload.message, 200).toLowerCase().replace(/\.$/, '');
     if (!ABSENT.has(message)) throw new IndeterminateError(PROVIDER, 'FAN Courier did not return the AWB');
-    if (normalizeTrackingNumber(cleanScalar(payload.content, 64)) !== number) {
+    if (returnedTrackingNumber(payload.content, true) !== number) {
       throw new SchemaError(PROVIDER, 'FAN Courier answered for a different number');
     }
     throw new NotFoundError(PROVIDER);
   }
   if (typeof payload.awbNumber !== 'string' && typeof payload.awbNumber !== 'number') throw new SchemaError(PROVIDER);
-  if (normalizeTrackingNumber(cleanScalar(payload.awbNumber, 64)) !== number) {
+  if (returnedTrackingNumber(payload.awbNumber, true) !== number) {
     throw new SchemaError(PROVIDER, 'FAN Courier answered for a different AWB');
   }
   const rows = payload.events;

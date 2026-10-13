@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { runInNewContext } from 'node:vm';
-import { attachTrackingCapture, requestAustraliaPostInPage } from './tracking-capture.mjs';
+import { attachTrackingCapture, requestAustraliaPostInPage, reserveDeadline } from './tracking-capture.mjs';
 const api = 'https://t.17track.net/track/restapi';
 const number = 'ZZ12345678900';
 const reply = code => JSON.stringify({ meta: { code: 200 }, shipments: [{ number, code }] });
@@ -922,4 +922,20 @@ test('Royal Mail ends repeated challenge failures and other final errors promptl
     const rows = (await capture.drain()).capturedResponses;
     assert.equal(rows.at(-1).body, body);
   }
+});
+
+test('a capture ends its waits before the service deadline and keeps its other methods', async () => {
+  const waits = [];
+  const capture = reserveDeadline({ prepare: async budgetMs => { waits.push(['prepare', budgetMs]); },
+    settle: async budgetMs => { waits.push(['settle', budgetMs]); }, drain: async () => 'drained', hasResponse: () => true }, 2500);
+  await capture.prepare(10_000);
+  await capture.settle(4000);
+  await capture.settle(1000);
+  assert.deepEqual(waits, [['prepare', 7500], ['settle', 1500], ['settle', 0]]);
+  assert.equal(await capture.drain(), 'drained');
+  assert.equal(capture.hasResponse(), true);
+  assert.equal(capture.archive('https://example.test/', ''), undefined);
+  const stock = reserveDeadline({ settle: async () => {}, drain: async () => ({}), archive: () => 'archive' }, 2500);
+  assert.equal(stock.prepare, undefined);
+  assert.equal(stock.archive(), 'archive');
 });

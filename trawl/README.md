@@ -48,6 +48,13 @@ separate local Chromium transport.
 `REDIS_URL` configures the session cache. `AUSTRALIA_POST_BROWSER_LOCALE` overrides the
 browser locale for Australia Post, and `FFMPEG_PATH` selects SF Express's PNG decoder.
 
+The image sets `LOG_LEVEL=warn`. TRAWL's request log includes the page path, where some
+carriers put the parcel number; `LOG_LEVEL=info` turns that log on.
+
+TRAWL drops a reply that reaches its request deadline. The image ends its own waits and
+TRAWL's CAPTCHA solvers 2.5 seconds before it, so a page behind an unsolved widget and
+the replies already captured are still returned.
+
 ## Tests
 
 `npm run test:scripts` runs the offline capture and session tests. Live adapter tests need a

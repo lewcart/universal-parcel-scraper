@@ -1,6 +1,8 @@
-FROM ghcr.io/germondai/trawl:1.5.0@sha256:9cf6668dc5e7160d739991ca1edfe308c48638696571d9413a18399696586698
+FROM ghcr.io/germondai/trawl:1.8.0@sha256:44091fc0af5f9a0190d4cb23d944f69207684a28382a921800dda5b73b41ba2f
 LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parcel-scraper" \
       org.opencontainers.image.licenses="AGPL-3.0-only"
+# TRAWL's request log includes the page path, where some carriers put the parcel number.
+ENV LOG_LEVEL=warn
 COPY LICENSE /usr/share/licenses/trawl/LICENSE
 COPY tracking-capture.mjs /app/packages/tiers/src/utils/tracking-capture.mjs
 COPY royal-mail-history.mjs /app/packages/tiers/src/utils/royal-mail-history.mjs

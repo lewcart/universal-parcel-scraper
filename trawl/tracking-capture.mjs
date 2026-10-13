@@ -1,8 +1,19 @@
-// TRAWL 1.5.0 skips compressed bodies and settles on the first polling reply.
+// Stock TRAWL skips compressed bodies and settles on the first polling reply.
 // This compatibility adapter observes the browser's own reply for a few exact
 // tracking endpoints, each on its public page with one valid number. Every
 // other capture request keeps TRAWL's stock behaviour.
 import { attachRoyalMailHistoryCapture, ROYAL_MAIL_OPT_OUT } from './royal-mail-history.mjs';
+
+// TRAWL drops a result that arrives at its request deadline. End a capture's
+// waits before it, so the replies already observed are still returned.
+export function reserveDeadline(capture, reserveMs) {
+  const early = budgetMs => Math.max(0, budgetMs - reserveMs);
+  return { ...capture,
+    // TRAWL asks every capture for a page archive; these keep none.
+    archive: capture.archive ?? (() => undefined),
+    ...(capture.prepare ? { prepare: budgetMs => capture.prepare(early(budgetMs)) } : {}),
+    settle: budgetMs => capture.settle(early(budgetMs)) };
+}
 
 // Run inside the carrier page: its anonymous tracking API is independent of
 // the optional account iframe, which can be challenged while tracking works.

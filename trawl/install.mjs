@@ -1,61 +1,44 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-// Both fresh and cached browser sessions must use the same capture semantics.
-for (const tier of [2, 3]) {
-  const path = `/app/packages/tiers/src/tiers/${tier}.ts`;
+// TRAWL drops a result that arrives at its request deadline. Helpers, capture
+// waits and CAPTCHA solvers end this long before it, which leaves time to close
+// a context and return what was observed.
+const reserveMs = 2_500;
+// Tier 2 reuses a cached session; tiers 3 and 4 share one fresh-context task.
+// Both must use the same capture semantics.
+for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', true]]) {
+  const path = `/app/packages/tiers/src/tiers/${file}`;
   const source = readFileSync(path, 'utf8');
   const needle = 'const pageCapture = attachPageCapture(page, capture)';
   if (source.split(needle).length !== 2) throw new Error('TRAWL source changed: review the tracking capture integration');
   const solverGuard = 'if (solveRemaining > 5000)';
   if (source.split(solverGuard).length !== 2) throw new Error('TRAWL solver guard changed');
-  const beforeSolve = 'const solveRemaining = maxTimeout - (Date.now() - start)';
+  const beforeSolve = 'const solveRemaining = budget.remaining()';
   if (source.split(beforeSolve).length !== 2) throw new Error('TRAWL solver integration changed');
-  const start = 'const start = Date.now()';
-  if (source.split(start).length !== 2) throw new Error('TRAWL tier entry changed');
-  const carrierRunners = `if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && dhlPolandBrowserNumber(url, capture)) {
-    return await runDhlPolandBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      solveCaptcha: solveDhlPolandImages,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  // The helpers open their own context, so they run before the tier opens one.
+  const entry = 'if (!budget) throw new Error("Browser task requires an operation budget")';
+  if (source.split(entry).length !== 2) throw new Error('TRAWL tier entry changed');
+  const carrierRunners = `${entry}
+  const carrierPage = ${fresh ? '!proxyUrl && !capture.sessionContext && ' : ''}!screenshot && (!method || method === "GET")
+    && !body && !Object.keys(extraHeaders ?? {}).length
+  const carrierRun = { url, handle, tier: ${tier}, maxTimeout: budget.remaining() - ${reserveMs}, capture,
+    installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) }
+  if (carrierPage && dhlPolandBrowserNumber(url, capture)) {
+    return await runDhlPolandBrowser({ ...carrierRun, solveCaptcha: solveDhlPolandImages })
   }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && asendiaBrowserNumber(url, capture)) {
-    return await runAsendiaBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  if (carrierPage && asendiaBrowserNumber(url, capture)) return await runAsendiaBrowser(carrierRun)
+  if (carrierPage && dhlExpressBrowserNumber(url, capture)) return await runDhlExpressBrowser(carrierRun)
+  if (carrierPage && sfExpressSessionNumber(url, capture)) {
+    return await sfExpressSessions.run({ ...carrierRun, signal: budget.signal })
   }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && dhlExpressBrowserNumber(url, capture)) {
-    return await runDhlExpressBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  if (carrierPage && australiaPostBrowserRequest(url, capture)) return await runAustraliaPostBrowser(carrierRun)
+  if (carrierPage && fedexSessionNumber(url, capture)) return await fedexSessions.run(carrierRun)
+  if (carrierPage && wanbBrowserNumber(url, capture)) {
+    return await runWanbBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
   }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && sfExpressSessionNumber(url, capture)) {
-    return await sfExpressSessions.run({ url, handle, tier: ${tier}, maxTimeout, capture,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
-  }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && australiaPostBrowserRequest(url, capture)) {
-    return await runAustraliaPostBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
-  }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && fedexSessionNumber(url, capture)) {
-    return await fedexSessions.run({ url, handle, tier: ${tier}, maxTimeout, capture,
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
-  }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && wanbBrowserNumber(url, capture)) {
-    return await runWanbBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout),
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
-  }
-  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
-    && !body && !Object.keys(extraHeaders ?? {}).length && xpoBrowserNumber(url, capture)) {
-    return await runXpoBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
-      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout),
-      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
-  }
-  ${start}`;
-  writeFileSync(path, 'import { attachTrackingCapture } from "../utils/tracking-capture.mjs"\n'
+  if (carrierPage && xpoBrowserNumber(url, capture)) {
+    return await runXpoBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
+  }`;
+  writeFileSync(path, 'import { attachTrackingCapture, reserveDeadline } from "../utils/tracking-capture.mjs"\n'
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
@@ -66,11 +49,23 @@ for (const tier of [2, 3]) {
     + 'import { australiaPostBrowserRequest, runAustraliaPostBrowser } from "../utils/australia-post-browser.mjs"\n'
     + 'import { sfExpressSessionNumber, sfExpressSessions } from "../utils/sf-express-session.mjs"\n'
     + 'import { fedexSessions, fedexSessionNumber } from "../utils/fedex-session.mjs"\n'
-    + source.replace(start, carrierRunners)
-      .replace(needle, 'const pageCapture = await attachTrackingCapture(page, url, capture) ?? attachPageCapture(page, capture)')
+    + source.replace(entry, carrierRunners)
+      .replace(needle, 'const pageCapture = reserveDeadline(await attachTrackingCapture(page, url, capture)'
+        + ` ?? attachPageCapture(page, capture), ${reserveMs})`)
       .replace(solverGuard, 'if (solveRemaining > 5000 && !pageCapture.hasResponse?.() && !pageCapture.hasTrackingRequest?.())')
-      .replace(beforeSolve, 'await pageCapture.prepare?.(maxTimeout - (Date.now() - start))\n    ' + beforeSolve));
+      // A widget the solver cannot pass must not cost the page behind it.
+      .replace(beforeSolve, 'await pageCapture.prepare?.(budget.remaining())\n    '
+        + `${beforeSolve} - ${reserveMs}`));
 }
+
+// The client classifies an HTTP-only failure by the page's own status and
+// headers, which TRAWL leaves out of its attempt history.
+const orchestratorPath = '/app/packages/tiers/src/orchestrator.ts';
+const orchestrator = readFileSync(orchestratorPath, 'utf8');
+const attempt = '      ...(r.reason === undefined ? {} : { reason: r.reason }),';
+if (orchestrator.split(attempt).length !== 2) throw new Error('TRAWL attempt history changed');
+writeFileSync(orchestratorPath, orchestrator.replace(attempt, attempt + '\n      ...(r.status === "success"'
+  + ' || r.statusCode === undefined ? {} : { statusCode: r.statusCode, responseHeaders: r.responseHeaders }),'));
 
 // Retention only helps if the next pool lease returns to the working browser.
 // The helper has no dependency on BrowserPool and shares the tier singleton.

@@ -9,11 +9,12 @@ last mile. It runs three public trackers:
   page with no challenge, for parcels Asendia UK carries, whichever post or courier delivers
   them. [uk.ts](uk.ts) reads it.
 - **Global portal** `track.asendia.com`, which serves the other European subsidiaries. Every
-  search needs a Cloudflare Turnstile token, so it is not a sync path. [probe.ts](probe.ts)
-  keeps its protocol and parser for the Turnstile canary.
+  search needs a fresh Cloudflare Turnstile token. The optional `trawl` step submits its
+  browser form after verification; [probe.ts](probe.ts) keeps the HTTP protocol canary.
 
-A number neither A1 nor Asendia UK knows is not-found for this adapter only; routing then tries
-the universal providers in the same check (see [routing](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md)).
+Without a browser service, a number neither A1 nor Asendia UK knows is not-found for these
+trackers only. With one configured, the adapter also asks the global portal. Peek can enrich
+a summary through universal providers (see [routing](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md)).
 
 ## How it works
 
@@ -38,6 +39,20 @@ the universal providers in the same check (see [routing](https://github.com/plhe
      most, for Asendia UK.
    - Not-found means both trackers said so. Otherwise A1's failure is reported, or Asendia UK's
      when A1 said not-found.
+
+2. `trawl`, when both HTTP trackers miss the number or retrieval fails:
+   - Requires `FLARESOLVERR_URL` or the library's `trawlUrl`, running this repository's TRAWL image.
+   - Uses a fresh browser context, waits for the portal's CAPTCHA configuration and its
+     verified search button, then submits the whole number. The page owns its token; the
+     hidden input and the generic solver's result do not establish verification.
+   - Captures only a search request containing that one identifier and projects the response
+     onto tracking fields. A refusal remains a challenge or rate limit, never not-found.
+   - The portal can expose current status while requiring the recipient's name or postcode
+     for history. Such an answer is `summary_only`, with no invented scan or update clock.
+     The adapter does not request or guess recipient identity.
+   - A successful A1 or UK result stands. A global not-found cannot erase an HTTP failure.
+   - Default lookup budget with a browser service is 65 seconds; HTTP gets at most 25 seconds,
+     and browser cleanup has reserved time.
 
 ## Notes
 
@@ -85,9 +100,10 @@ the universal providers in the same check (see [routing](https://github.com/plhe
 
 ## Rejected approaches
 
-- Solving or skipping Turnstile on `track.asendia.com`: out of scope and against the portal's
-  intent. Its search refuses a request without a token (HTTP 400 "Turnstile token is
-  required.").
+- Calling the global search without browser verification: it requires a fresh Turnstile token.
+- [SendNow](https://send.asendia.com/es-en/tracking/) has a separate public tracking API at
+  `/.api/tracking/ASENDIA.ES.LIVE/tracking/<number>`. It searches SendNow bookings, not the
+  global portal's parcel corpus, so it is not used as a replacement for European tracking.
 - Older group trackers: `tracking.asendia.com`, with its `alliot` API, redirects to the portal;
   `m-tracking`, `trackandtrace` and `etracking` no longer resolve.
 - Asendia Sync and MyAsendia need an account. Asendia has no consumer tracking app.
@@ -96,9 +112,9 @@ the universal providers in the same check (see [routing](https://github.com/plhe
 
 ## Limitations
 
-- Parcels of Asendia's other European subsidiaries (Germany, France, Switzerland, Spain, Italy)
-  and Asia are on neither tracker unless A1 carries them; they depend on the universal
-  providers.
+- Parcels outside A1 and Asendia UK need the optional browser service. Turnstile can still
+  refuse a browser; that failure remains a challenge. Full global history may require
+  recipient verification even after Turnstile succeeds.
 - Asendia UK drops parcels some months after posting, then answers not-found.
 - No delivery estimate.
 - A1 dates partners' scans in true UTC: a Swiss Post scan at 18:20 `+02:00` is A1's 16:20
@@ -117,4 +133,6 @@ unknown number on A1, after validating the page's public key, and on Asendia UK.
 check matching history; those tests are skipped without them because both trackers drop old
 public examples. Offline fixtures cover history parsing. `probe.live.test.ts` checks that the
 portal still rejects an invalid Turnstile token. The probe reads a real token from
-`ASENDIA_TURNSTILE_TOKEN` for manual runs.
+`ASENDIA_TURNSTILE_TOKEN` for manual runs. Set `FLARESOLVERR_URL` and
+`ASENDIA_GLOBAL_LIVE_NUMBER` to check the global browser response against an authorized parcel;
+its history can remain locked while its current status is returned.

@@ -9,6 +9,7 @@ const license = encoded('LICENSE');
 const helpers = [
   'tracking-capture.mjs', 'royal-mail-history.mjs', 'fedex-session.mjs',
   'australia-post-browser.mjs', 'dhl-express-browser.mjs', 'wanbexpress-browser.mjs', 'xpo-browser.mjs',
+  'asendia-browser.mjs',
   'sf-express-session.mjs', 'sf-express-gap.mjs',
 ];
 const install = encoded('install.mjs');

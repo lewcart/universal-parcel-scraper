@@ -29,8 +29,8 @@
  * then asks Asendia UK's tracker (uk.ts), which serves parcels Asendia UK
  * carries, when A1 does not know the number, fails, or holds its registration
  * alone. Asendia's global portal track.asendia.com, which serves the
- * other subsidiaries, needs a Cloudflare Turnstile token for every search and
- * is not used here (see probe.ts). A number neither tracker knows is a
+ * other subsidiaries, uses an optional browser recovery step (browser.ts).
+ * Without that service, a number neither HTTP tracker knows is a
  * not-found for this adapter only; routing then tries the universal providers
  * in the same check.
  *
@@ -49,6 +49,8 @@ import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgent
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyAsendiaA1Event, type ClassifiedAsendiaStatus } from './status.js';
 import { AsendiaUkTracker } from './uk.js';
+import { asendiaBrowser } from './browser.js';
+import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
 
 const PROVIDER = 'Asendia';
 const PAGE_URL = 'https://a1.asendiausa.com/tracking/';
@@ -538,8 +540,26 @@ export const adapter: AdapterFactory = (environment) => {
   const uk = new AsendiaUkTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   return {
     id: 'asendia',
-    // Plain HTTP against two public trackers' own requests; no second tier.
-    steps: ['direct'],
-    track: (input, context) => trackEverywhere(a1, uk, input.number, context),
+    recordsSteps: true,
+    steps: ['direct', 'trawl'],
+    track: (input, context) => {
+      const number = normalizeAsendiaA1TrackingNumber(input.number);
+      const browserEligible = !!environment.trawl && /^[A-Z0-9]{8,40}$/.test(number) && /\d/.test(number);
+      return runSteps({ carrier: 'asendia', signal: context?.signal,
+        budgetMs: context?.budgetMs ?? (browserEligible ? 65_000 : DEFAULT_BUDGET_MS), recorder: environment.recorder }, [
+      { id: 'direct', run: ({ signal, remainingMs }) => trackEverywhere(a1, uk, number,
+        { signal, budgetMs: Math.min(DEFAULT_BUDGET_MS, browserEligible ? Math.max(1, Math.floor(remainingMs * 0.4)) : remainingMs) }) },
+      { id: 'trawl', enabled: browserEligible,
+        recovers: error => error instanceof NotFoundError || recoverableByDefault(error),
+        run: async ({ signal, remainingMs, previousError }) => {
+          try { return await asendiaBrowser(environment.trawl!, number, signal, remainingMs); }
+          catch (error) {
+            // The global portal cannot erase a failure from either HTTP source.
+            if (error instanceof NotFoundError && !(previousError instanceof NotFoundError)) throw previousError;
+            throw error;
+          }
+        } },
+      ]);
+    },
   };
 };

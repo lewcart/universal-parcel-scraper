@@ -12,6 +12,11 @@ for (const tier of [2, 3]) {
   const start = 'const start = Date.now()';
   if (source.split(start).length !== 2) throw new Error('TRAWL tier entry changed');
   const carrierRunners = `if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
+    && !body && !Object.keys(extraHeaders ?? {}).length && asendiaBrowserNumber(url, capture)) {
+    return await runAsendiaBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
+      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  }
+  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
     && !body && !Object.keys(extraHeaders ?? {}).length && dhlExpressBrowserNumber(url, capture)) {
     return await runDhlExpressBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
       installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
@@ -48,6 +53,7 @@ for (const tier of [2, 3]) {
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
+    + 'import { asendiaBrowserNumber, runAsendiaBrowser } from "../utils/asendia-browser.mjs"\n'
     + 'import { dhlExpressBrowserNumber, runDhlExpressBrowser } from "../utils/dhl-express-browser.mjs"\n'
     + 'import { australiaPostBrowserRequest, runAustraliaPostBrowser } from "../utils/australia-post-browser.mjs"\n'
     + 'import { sfExpressSessionNumber, sfExpressSessions } from "../utils/sf-express-session.mjs"\n'

@@ -36,6 +36,8 @@ export interface TrawlCapturedResponse {
   error: string | null;
   /** 17TRACK's matching browser request included the supplied delivery postcode. */
   postcodeSubmitted?: boolean;
+  /** A carrier helper bound this response's request to one whole tracking number. */
+  trackingNumberSubmitted?: string;
 }
 
 export interface TrawlScrapeResponse {
@@ -132,6 +134,8 @@ function captured(value: unknown, window: 'first' | 'last' = 'first'): TrawlCapt
     base64Encoded: entry.base64Encoded === true,
     error: typeof entry.error === 'string' ? entry.error : entry.error ? 'error' : null,
     ...(entry.postcodeSubmitted === true ? { postcodeSubmitted: true } : {}),
+    ...(typeof entry.trackingNumberSubmitted === 'string' && /^[A-Z0-9]{6,40}$/.test(entry.trackingNumberSubmitted)
+      ? { trackingNumberSubmitted: entry.trackingNumberSubmitted } : {}),
   }));
 }
 

@@ -40,6 +40,13 @@ describe('TrawlClient.scrape', () => {
     expect(JSON.parse(String(init.body))).toMatchObject({ url: 'https://example.test/track', skipHttp: true, maxTier: 3 });
   });
 
+  it('retains a carrier helper’s whole-number request binding across the service boundary', async () => {
+    const client = new TrawlClient('http://trawl:8191', jsonFetcher({ html: '', body: [], tier: 3, statusCode: 200,
+      capturedResponses: [{ url: 'https://example.test/api', status: 200, body: '{}', trackingNumberSubmitted: 'ASE00000000' }] }));
+    const result = await client.scrape({ url: 'https://example.test/track' }, { ...options, requireSolved: false });
+    expect(result.capturedResponses[0]).toMatchObject({ trackingNumberSubmitted: 'ASE00000000' });
+  });
+
   it('can retain the latest bounded capture sequence without changing the default window or service request', async () => {
     const captures = Array.from({ length: 60 }, (_, index) => ({ url: 'https://example.test/api', status: index === 59 ? 429 : 200,
       headers: index === 59 ? { 'retry-after': '60' } : {}, body: String(index) }));

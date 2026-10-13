@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { AsendiaA1Tracker } from './adapter.js';
 import { AsendiaUkTracker } from './uk.js';
+import { asendiaBrowser } from './browser.js';
+import { TrawlClient } from '../../core/transport/trawl.js';
 
 // Valid shape, never issued.
 const UNKNOWN_NUMBER = 'AS000000000US';
@@ -24,6 +26,16 @@ describe('Asendia A1 live lookup', () => {
       kind: 'not_found',
       message: 'Asendia could not locate the shipment',
     });
+  });
+});
+
+describe('Asendia global browser lookup', () => {
+  it.skipIf(!process.env.FLARESOLVERR_URL || !process.env.ASENDIA_GLOBAL_LIVE_NUMBER)('retrieves an identity-bound public status', async () => {
+    const result = await asendiaBrowser(TrawlClient.fromEnvironment()!, process.env.ASENDIA_GLOBAL_LIVE_NUMBER!,
+      AbortSignal.timeout(45_000), 45_000);
+    expect(result.tracking_source).toBe('structured-web-response');
+    expect(result.last_status_text).toBeTruthy();
+    if (!result.events?.length) expect(result.summary_only).toBe(true);
   });
 });
 

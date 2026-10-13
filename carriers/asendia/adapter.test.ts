@@ -13,6 +13,8 @@ import {
   parseAsendiaA1TrackingResponse,
 } from './adapter.js';
 import { classifyAsendiaA1Event } from './status.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
+import { asendiaTrackingApiUrl } from './probe.js';
 
 // Published on https://www.ship24.com/couriers/asendia-tracking as an Asendia
 // example; each fixture's other references are synthetic.
@@ -458,7 +460,7 @@ describe('Asendia A1 lookup flow', () => {
       'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(delivered())],
     });
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} }, env: {} });
-    expect(instance.steps).toEqual(['direct']);
+    expect(instance.steps).toEqual(['direct', 'trawl']);
     await expect(instance.track({ number: NUMBER })).resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
@@ -484,6 +486,32 @@ describe('Asendia lookup across A1 and Asendia UK', () => {
       name: 'NotFoundError', kind: 'not_found', message: 'Asendia could not locate the shipment',
     });
     expect(paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
+  });
+
+  it('recovers an HTTP miss through an identity-bound global summary and records both attempts', async () => {
+    const { fetcher } = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-not-found.html')] });
+    const step = vi.fn();
+    const scrape = vi.fn(async () => ({ capturedResponses: [{ url: asendiaTrackingApiUrl(), status: 200,
+      trackingNumberSubmitted: UK_NUMBER, body: JSON.stringify({ context_code: 1000,
+        data: [{ tracking_id: UK_NUMBER, status: 'In transit' }] }), error: null, truncated: false, base64Encoded: false }] }));
+    const instance = adapter({ ...environment(fetcher), trawl: { scrape } as unknown as TrawlClient, recorder: { step, lookup() {} } });
+    await expect(instance.track({ number: UK_NUMBER })).resolves.toMatchObject({ status: 'in_transit', summary_only: true, events: [] });
+    expect(scrape.mock.calls[0]).toBeDefined();
+    expect(step).toHaveBeenCalledWith(expect.objectContaining({ step: 'direct', outcome: 'not_found' }));
+    expect(step).toHaveBeenCalledWith(expect.objectContaining({ step: 'trawl', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'not_found' }));
+  });
+
+  it('preserves an HTTP failure when the global portal also misses, and never replaces a complete HTTP result', async () => {
+    const scrape = vi.fn(async () => ({ capturedResponses: [{ url: asendiaTrackingApiUrl(), status: 200,
+      trackingNumberSubmitted: UK_NUMBER, body: JSON.stringify({ context_code: 1000, data: [] }), error: null, truncated: false, base64Encoded: false }] }));
+    const missing = upstream({ 'main.js': [new Response('', { status: 500 })], 'tracking.php': [ukPage('uk-not-found.html')] });
+    await expect(adapter({ ...environment(missing.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: UK_NUMBER }))
+      .rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
+    expect(scrape).toHaveBeenCalledTimes(1);
+    const known = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-delivered.html')] });
+    await expect(adapter({ ...environment(known.fetcher), trawl: { scrape } as unknown as TrawlClient }).track({ number: UK_NUMBER }))
+      .resolves.toMatchObject({ status: 'delivered', tracking_source: 'rendered-page' });
+    expect(scrape).toHaveBeenCalledTimes(1);
   });
 
   it('keeps an A1 failure when Asendia UK does not know the number', async () => {

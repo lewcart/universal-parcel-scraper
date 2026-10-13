@@ -24,7 +24,8 @@
     "mode": "automatic",
     "adapter": "asendia",
     "steps": [
-      "direct"
+      "direct",
+      "trawl"
     ],
     "localClocks": true
   },

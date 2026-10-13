@@ -23,7 +23,8 @@
       "retry"
     ],
     "recognition": {
-      "rank": 12
+      "rank": 12,
+      "pattern": "^\\d{11}$"
     },
     "localClocks": true
   },
@@ -105,5 +106,12 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "saia-1",
+      "pattern": "^\\d{10}0\\d$",
+      "confidence": "low",
+      "checksum": "saia"
+    }
+  ]
 }

@@ -150,6 +150,11 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 1000
+            },
+            "pattern": {
+              "description": "Regular expression for the normalized numbers recognize() can answer. Recognition is only asked about those; a number another rule offers stays a suggestion. Absent: every number the carrier's rules offer.",
+              "type": "string",
+              "minLength": 1
             }
           }
         },
@@ -454,7 +459,8 @@
             "fedex-1d",
             "identcode",
             "fedex-ground-economy",
-            "pos-laju"
+            "pos-laju",
+            "saia"
           ]
         },
         "preferred": {

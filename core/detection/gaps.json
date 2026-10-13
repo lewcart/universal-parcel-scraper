@@ -1404,12 +1404,6 @@
   },
   {
     "carrier": "saia",
-    "pattern": "^\\d{12}$",
-    "kind": "by_design",
-    "reason": "Twelve digits are shared by several carriers and nothing in the number points to Saia."
-  },
-  {
-    "carrier": "saia",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
     "reason": "Eleven digits are shared by several carriers and nothing in the number points to Saia."

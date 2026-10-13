@@ -24,6 +24,7 @@ import {
   isValidDhlExpressWaybill,
   isValidFedExTrackingNumber,
   isValidPocztaPolskaBarcode,
+  isValidSaiaPro,
   isValidSscc,
   isValidTntConsignmentNumber,
   isValidUkrposhtaBarcode,
@@ -62,4 +63,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   identcode: isValidDhlIdentcode,
   'fedex-ground-economy': isValidFedExGroundEconomyNumber,
   'pos-laju': isValidPosLajuConsignment,
+  saia: isValidSaiaPro,
 };

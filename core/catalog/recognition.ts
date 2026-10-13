@@ -68,7 +68,8 @@ function checked(carrier: string, normalized: string, printed: string): boolean 
  * country hint, caller-owned priorities, a passing check digit and the
  * catalog's popularity rank. These hints only order existing candidates. HTTP is the default; `phase: 'browser'` selects
  * the separate opt-in browser catalog. A high-confidence dedicated carrier needs no recognition; the
- * unknown postal carrier still needs a direct carrier to confirm it.
+ * unknown postal carrier still needs a direct carrier to confirm it. A carrier whose catalog
+ * entry names the numbers its HTTP recognition answers is asked only about those.
  */
 export function recognitionCandidates(
   number: string,
@@ -113,6 +114,12 @@ export function recognitionCandidates(
     const priority = options.priorities?.[carrier];
     return typeof priority === 'number' && Number.isFinite(priority) && priority >= 0 ? priority : 0;
   };
+  // A carrier whose recognition answers fewer numbers than its rules offer is
+  // only suggested for the rest: Saia's reply cannot bind a twelfth digit.
+  const answers = (carrier: string) => {
+    const pattern = options.phase === 'browser' ? undefined : CARRIER_DEFINITIONS[carrier as CarrierId]?.tracking.recognitionPattern;
+    return pattern === undefined || new RegExp(pattern).test(normalized);
+  };
   const printed = number.trim().toUpperCase();
   const score = (carrier: string) => [
     carrier === options.hint ? 1 : 0,
@@ -124,7 +131,7 @@ export function recognitionCandidates(
   ];
   return candidates
     .filter((carrier) => ranks[carrier] !== undefined && AUTOMATIC_CARRIER_IDS.has(carrier)
-      && carrierAdapter(carrier) !== 'universal' && !shadowed.has(carrierBrand(carrier)) && !options.skip?.(carrier))
+      && carrierAdapter(carrier) !== 'universal' && answers(carrier) && !shadowed.has(carrierBrand(carrier)) && !options.skip?.(carrier))
     .map((carrier) => ({ carrier, score: score(carrier) }))
     // Array#sort is stable: equal scores keep the catalog order.
     .sort((left, right) => {

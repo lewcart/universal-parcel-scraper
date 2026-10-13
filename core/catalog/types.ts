@@ -85,7 +85,7 @@ export interface DetectionRule {
   checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia';
   /** Low confidence only: number evidence that lists this carrier first among suggestions. */
   preferred?: boolean;
 }
@@ -128,6 +128,8 @@ export interface CarrierDefinition {
     requirements?: readonly CarrierCatalogRequirement[];
     /** Present when the adapter can recognize a number; higher is asked first. */
     recognitionRank?: number;
+    /** The normalized numbers recognition can answer; others the carrier's rules offer are not asked. */
+    recognitionPattern?: string;
     /** Opt-in browser confirmation; higher is asked first after HTTP is inconclusive. */
     browserRecognitionRank?: number;
     refresh?: { minMinutes: number; afterFailureMinutes?: number };

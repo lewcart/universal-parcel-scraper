@@ -424,6 +424,21 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(`${first.slice(0, 2)}.${first.slice(2, 5)}.${first.slice(5, 8)}.${first.slice(8, 11)}-${first.slice(11)}`);
   },
 
+  saia(r) {
+    // Ten digits, a 0, then the remainder of the ten divided by seven.
+    const valid = Array.from({ length: 8 }, () => r.complete(`${r.string(10)}0`));
+    standard(r, valid);
+    const first = valid[0]!;
+    const ten = first.slice(0, 10);
+    // A remainder is never 7, 8 or 9, and any other eleventh digit is not checked.
+    r.add(`${ten}07`, `${ten}08`, `${ten}09`);
+    for (const digit of ['1', '5', '9']) r.add(`${ten}${digit}${first[11]}`, ...r.completions(`${ten}${digit}`).map((last) => `${ten}${digit}${last}`));
+    // The eleven digits before the check, divided by seven, do not close it.
+    const whole = r.find(() => r.string(10), (digits) => Number(`${digits}0`) % 7 !== Number(digits) % 7);
+    r.add(`${whole}0${Number(`${whole}0`) % 7}`, `${whole}0${Number(whole) % 7}`);
+    r.add(r.complete('00000000000'), r.complete('99999999990'), r.complete('00000000070'));
+  },
+
   'sf-express'(r) {
     const valid = [
       ...Array.from({ length: 6 }, () => r.complete(r.string(11))),

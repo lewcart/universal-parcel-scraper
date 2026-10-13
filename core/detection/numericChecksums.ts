@@ -16,6 +16,15 @@ export function hasMod7CheckDigit(value: string): boolean {
   return /^\d{2,15}$/.test(value) && Number(value.slice(0, -1)) % 7 === Number(value.at(-1));
 }
 
+/**
+ * Saia's tracker calls the twelfth digit of a PRO a check digit. On every public twelve-digit
+ * PRO the eleventh digit is 0 and the twelfth is the remainder of the first ten divided by seven,
+ * which is inferred, not published; a PRO with another eleventh digit is not checked.
+ */
+export function isValidSaiaPro(value: string): boolean {
+  return /^\d{10}0[0-6]$/.test(value) && Number(value.slice(0, 10)) % 7 === Number(value[11]);
+}
+
 /** TNT ExpressConnect supports Mod 7 and Mod 11 for international consignments. */
 export function isValidTntConsignmentNumber(value: string): boolean {
   if (value.length !== 9 || !/^\d{9}$/.test(value)) return false;

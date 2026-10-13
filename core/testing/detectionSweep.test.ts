@@ -41,6 +41,7 @@ import {
   hasLuhnCheckDigit,
   hasMod7CheckDigit,
   isValidFedExTrackingNumber,
+  isValidSaiaPro,
   isValidUkrposhtaBarcode,
 } from '../detection/numericChecksums.js';
 import { isValidPosLajuConsignment } from '../detection/s10.js';
@@ -65,7 +66,7 @@ interface DetectionRule {
   readonly checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia';
   readonly preferred?: true;
 }
 
@@ -123,6 +124,7 @@ function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
   if (rule.checksum === 'identcode') return isValidDhlIdentcode(value);
   if (rule.checksum === 'fedex-ground-economy') return isValidFedExGroundEconomyNumber(value);
   if (rule.checksum === 'pos-laju') return isValidPosLajuConsignment(value);
+  if (rule.checksum === 'saia') return isValidSaiaPro(value);
   return true;
 }
 

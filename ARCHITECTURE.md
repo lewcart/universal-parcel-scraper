@@ -174,7 +174,9 @@ as typed: outside that PIC rule, a bare identifier also fits other carriers' for
 Recognition uses HTTP by default. Consumers can request `recognitionCandidates` with
 `phase: 'browser'` after HTTP is inconclusive, then call the adapter's
 `recognizeWithBrowser` under a separate budget. The catalog declares eligibility and rank;
-recipient inputs exclude a candidate. Browser confirmation requires dated shipment activity
+recipient inputs exclude a candidate. A carrier whose HTTP recognition cannot bind every number
+its rules offer names the ones it can, and is only suggested for the rest: Saia's service never
+sees a PRO's twelfth digit. Browser confirmation requires dated shipment activity
 and returns its tracking result for reuse, normalized like any other. An ambiguous ten-digit number includes DHL Express among its direct candidates when its waybill check passes. Its
 facility clocks are dated where the scan's location settles a zone and stay unresolved
 elsewhere; Ship24 relays them with DHL's own offsets.

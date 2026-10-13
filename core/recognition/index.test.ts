@@ -101,6 +101,15 @@ describe('recognition candidates', () => {
     expect(marks('XX')).toEqual(marks());
   });
 
+  it('only suggests a carrier for a number its recognition cannot answer', () => {
+    // Saia's check digit passes, but Saia's reply binds only the eleven digits before it.
+    const number = '900000000005';
+    expect(detectCarrierMatch(number).candidates).toContain('saia');
+    for (const options of [{}, { hint: 'saia' }, { countryHint: 'US', priorities: { saia: 1e6 } }]) {
+      expect(recognitionCandidates(number, options).map(({ carrier }) => carrier)).not.toContain('saia');
+    }
+  });
+
   it('can ask bpost about an ambiguous numeric barcode without a recipient postcode', () => {
     expect(recognitionCandidates('000000000000000000000001')).toEqual(expect.arrayContaining([
       { carrier: 'bpost', needsInput: null, preferred: false },

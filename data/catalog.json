@@ -11710,6 +11710,7 @@
       "mode": "automatic",
       "adapter": "saia",
       "recognitionRank": 12,
+      "recognitionPattern": "^\\d{11}$",
       "localClocks": true
     },
     "canaryUrl": "https://www.saia.com/track",
@@ -11736,7 +11737,13 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}0\\d$",
+        "confidence": "low",
+        "checksum": "saia"
+      }
+    ]
   },
   "sameday": {
     "displayName": "Sameday",

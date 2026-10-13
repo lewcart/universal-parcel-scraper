@@ -11712,6 +11712,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "saia",
       "recognitionRank": 12,
+      "recognitionPattern": "^\\d{11}$",
       "localClocks": true
     },
     "canaryUrl": "https://www.saia.com/track",
@@ -11738,7 +11739,13 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}0\\d$",
+        "confidence": "low",
+        "checksum": "saia"
+      }
+    ]
   },
   "sameday": {
     "displayName": "Sameday",
@@ -14117,7 +14124,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "roadrunner": [],
   "russian-post": [],
   "sagawa": ["sagawa-waybill"],
-  "saia": [],
+  "saia": ["saia-1"],
   "sameday": ["sameday-1"],
   "saudi-post": ["saudi-post-1"],
   "seino": [],

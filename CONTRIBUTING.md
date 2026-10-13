@@ -73,7 +73,8 @@ Every adapter follows these rules:
   and `testing/adapterContextSource.test.ts` check both for every registered adapter.
 - A number the carrier does not issue is an `InvalidInputError`.
 - It declares recognition only when a cheap anonymous HTTP lookup can positively tell a known
-  parcel from an unknown one.
+  parcel from an unknown one. When its rules offer numbers that lookup cannot bind as a whole,
+  `tracking.recognition.pattern` names the ones it can.
 
 [CORPUS.md](CORPUS.md) describes the sample numbers and status records, and
 [ARCHITECTURE.md](ARCHITECTURE.md) the rest of what an adapter lives by.

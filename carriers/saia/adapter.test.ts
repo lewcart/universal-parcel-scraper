@@ -1,14 +1,16 @@
 import { createDecipheriv } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { accepted } from '../../core/adapter/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { recognitionAskedCarriers, recognitionCandidates } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
+import { detectCarrierMatch, normalizeTrackingNumber, parseTrackingInput } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, SAIA_API, SAIA_API_KEY, SAIA_CIPHER_KEY, saiaEncryptedPro, SaiaTracker } from './adapter.js';
-import { isSaiaNotFound, normalizeSaiaNumber, parseSaia, saiaPro, saiaTrackingUrl } from './parser.js';
+import { isSaiaNotFound, normalizeSaiaNumber, normalizeSaiaRecognitionNumber, parseSaia, saiaPro, saiaTrackingUrl } from './parser.js';
 import { saiaShipmentStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -336,11 +338,28 @@ describe('Saia tracking adapter', () => {
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
   });
 
-  it('routes a PRO to the adapter when the caller names Saia, which detection never offers, and reads the tracker’s links', async () => {
+  it('suggests Saia for a checked twelve-digit PRO without asking recognition, which answers only eleven digits', async () => {
+    // The first ten digits leave 2 when divided by seven.
+    const checked = `${IN_TRANSIT}2`;
+    expect(detectCarrierMatch(checked)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['saia']) });
     for (const number of [IN_TRANSIT, `${IN_TRANSIT}4`]) {
-      expect(detectCarrierMatch(number)?.carrier).not.toBe('saia');
-      expect(recognitionAskedCarriers(number)).not.toContain('saia');
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('saia');
     }
+    for (const number of [IN_TRANSIT, `${IN_TRANSIT}4`, checked]) {
+      expect(recognitionAskedCarriers(number), number).not.toContain('saia');
+      expect(recognitionCandidates(number, { hint: 'saia' }).map(({ carrier }) => carrier), number).not.toContain('saia');
+    }
+    // The catalog asks recognition about exactly the numbers it accepts.
+    const pattern = new RegExp(CARRIER_DEFINITIONS.saia.tracking.recognitionPattern!);
+    const idle = vi.fn<typeof fetch>();
+    for (const number of [IN_TRANSIT, ABSENT, `${IN_TRANSIT}4`, checked, '9990000001', '999000000102 3']) {
+      expect(pattern.test(normalizeTrackingNumber(number)), number).toBe(accepted(() => normalizeSaiaRecognitionNumber(number)));
+    }
+    await expect(carrier(idle).recognize!(checked)).resolves.toEqual({ known: false });
+    expect(idle).not.toHaveBeenCalled();
+  });
+
+  it('routes a PRO to the adapter when the caller names Saia and reads the tracker’s links', async () => {
     for (const link of [`https://www.saia.com/track/details;pro=${IN_TRANSIT}`, `https://saia.com/track/details?pro=${IN_TRANSIT}`,
       `https://www.saia.com/track?pro=${IN_TRANSIT}`]) {
       expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: IN_TRANSIT, carrier: 'saia', source: 'link' });

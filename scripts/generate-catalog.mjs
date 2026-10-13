@@ -140,6 +140,7 @@ function validateCarrierSemantics(carrier, adapterFolders) {
     if (requirement.whenTrackingNumber) new RegExp(requirement.whenTrackingNumber);
     if (requirement.pattern) new RegExp(requirement.pattern);
   }
+  if (tracking.recognition?.pattern) new RegExp(tracking.recognition.pattern);
   for (const rule of carrier.detection) {
     new RegExp(rule.pattern);
     if (rule.rawPattern) new RegExp(rule.rawPattern);
@@ -188,6 +189,7 @@ function contractTracking(tracking) {
   if (tracking.requirements !== undefined) contractValue.requirements = tracking.requirements;
   // Clients predict which carriers the Add sheet's recognition asks.
   if (tracking.recognition !== undefined) contractValue.recognitionRank = tracking.recognition.rank;
+  if (tracking.recognition?.pattern !== undefined) contractValue.recognitionPattern = tracking.recognition.pattern;
   if (tracking.browserRecognition !== undefined) contractValue.browserRecognitionRank = tracking.browserRecognition.rank;
   if (tracking.refresh !== undefined) contractValue.refresh = tracking.refresh;
   if (tracking.localClocks !== undefined) contractValue.localClocks = tracking.localClocks;

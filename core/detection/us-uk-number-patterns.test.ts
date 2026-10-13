@@ -269,3 +269,24 @@ describe('FedEx Ground Economy numbers', () => {
     }
   });
 });
+
+describe('Saia twelve-digit PRO numbers', () => {
+  // Made-up PROs: ten digits, a 0, then the remainder of the ten divided by seven.
+  it('suggests Saia when the twelfth digit checks the first ten', () => {
+    for (const number of ['900000000005', '999999999903', '1234 5678 9003']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['saia']) });
+      expect(checksumRejections(number).map(({ carrier }) => carrier), number).not.toContain('saia');
+    }
+  });
+
+  it('leaves Saia out for a failing check digit, another eleventh digit or an eleven-digit PRO', () => {
+    for (const number of ['900000000006', '900000000007', '999999999900']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('saia');
+      expect(checksumRejections(number), number).toContainEqual({ carrier: 'saia', rule: 'saia-1', checksum: 'saia' });
+    }
+    for (const number of ['900000000015', '999999999913', '90000000000']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('saia');
+      expect(checksumRejections(number).map(({ carrier }) => carrier), number).not.toContain('saia');
+    }
+  });
+});

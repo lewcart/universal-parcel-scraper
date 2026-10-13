@@ -2227,6 +2227,58 @@
     "reason": "A passing check digit adds Purolator to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
   {
+    "shape": "Twelve digits with a 0 before the last that pass the Saia check",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "A passing Saia check digit adds Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "Twelve digits starting with 0, 1 or 250, with a 0 before the last, that pass the Saia check",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "A passing Saia check digit adds Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "Twelve digits starting with 0, 1 or 250, with a 0 before the last, that pass the FedEx, Identcode and Saia checks",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "dpd-fr",
+      "fedex",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "Passing check digits add FedEx, DHL and Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "CC, CH or HC, nine digits and LT",
     "carriers": [
       "chronopost",
@@ -2540,7 +2592,7 @@
     "reason": "trackon numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   },
   {
-    "shape": "^\\d{12}$",
+    "shape": "Twelve digits starting with 0, 1 or 250, with a 0 before the last, that pass the GLS, Purolator and Saia checks",
     "carriers": [
       "brt",
       "colis-prive",
@@ -2553,11 +2605,12 @@
       "mondial-relay",
       "mrw",
       "purolator",
+      "saia",
       "sf-express",
       "sto",
       "zto"
     ],
-    "reason": "trackon numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+    "reason": "Passing check digits add GLS, Purolator and Saia to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
   },
   {
     "shape": "^\\d{13}$",

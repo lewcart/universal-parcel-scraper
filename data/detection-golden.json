@@ -836,7 +836,8 @@
       "sto",
       "zto",
       "j-and-t",
-      "lbc-express"
+      "lbc-express",
+      "saia"
     ],
     "asked": [
       "brt",
@@ -1987,6 +1988,35 @@
       "j-and-t",
       "lbc-express",
       "sagawa"
+    ],
+    "preferred": [
+      "fedex"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "006484045501",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "fedex",
+      "dhl",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "saia"
     ],
     "preferred": [
       "fedex"
@@ -6154,7 +6184,8 @@
       "sto",
       "zto",
       "j-and-t",
-      "lbc-express"
+      "lbc-express",
+      "saia"
     ],
     "asked": [
       "gls-fr",
@@ -6630,6 +6661,33 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "101280319202",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "saia"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -30778,7 +30836,8 @@
       "sto",
       "zto",
       "j-and-t",
-      "lbc-express"
+      "lbc-express",
+      "saia"
     ],
     "asked": [
       "brt",
@@ -36431,7 +36490,8 @@
       "sto",
       "zto",
       "j-and-t",
-      "lbc-express"
+      "lbc-express",
+      "saia"
     ],
     "asked": [
       "brt",

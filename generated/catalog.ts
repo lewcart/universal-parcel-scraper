@@ -8171,7 +8171,6 @@ export const CARRIER_CATALOG = {
     ],
     "countries": [
       "RO",
-      "HU",
       "BG"
     ],
     "selectable": true,

@@ -193,13 +193,13 @@ describe('Sameday retrieval', () => {
       .mockResolvedValueOnce(Response.json(NOT_FOUND, { status: 404 }))
       .mockResolvedValueOnce(Response.json(fixture()));
     await expect(new SamedayTracker({ fetcher }).fetch(AWB)).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).host)).toEqual(['api.sameday.ro', 'api.sameday.hu']);
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).host)).toEqual(['api.sameday.ro', 'api.sameday.bg']);
   });
 
   it('reports a missing parcel only when every country says so', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => Response.json(NOT_FOUND, { status: 404 }));
     await expect(new SamedayTracker({ fetcher }).fetch(AWB)).rejects.toMatchObject({ kind: 'not_found' });
-    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).host)).toEqual(['api.sameday.ro', 'api.sameday.hu', 'api.sameday.bg']);
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).host)).toEqual(['api.sameday.ro', 'api.sameday.bg']);
     await expect(adapter(environment(fetcher)).recognize!(AWB)).resolves.toEqual({ known: false });
   });
 
@@ -211,16 +211,15 @@ describe('Sameday retrieval', () => {
       .mockResolvedValueOnce(new Response(body, { status }))
       .mockImplementation(async () => Response.json(NOT_FOUND, { status: 404 }));
     await expect(new SamedayTracker({ fetcher }).fetch(AWB)).rejects.toMatchObject({ kind });
-    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
   it('still finds a parcel in another country after a failure', async () => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(new Response('Forbidden', { status: 403 }))
-      .mockResolvedValueOnce(Response.json(NOT_FOUND, { status: 404 }))
       .mockResolvedValueOnce(Response.json(fixture()));
     await expect(new SamedayTracker({ fetcher }).fetch(PARCEL)).resolves.toMatchObject({ canonical_tracking_number: AWB });
-    expect(String(fetcher.mock.calls[2]![0])).toBe(`https://api.sameday.bg/api/public/awb/${PARCEL}/awb-history?_locale=en`);
+    expect(String(fetcher.mock.calls[1]![0])).toBe(`https://api.sameday.bg/api/public/awb/${PARCEL}/awb-history?_locale=en`);
   });
 
   it('rejects invalid inputs before I/O and bounds cancellation, elapsed time and response size', async () => {

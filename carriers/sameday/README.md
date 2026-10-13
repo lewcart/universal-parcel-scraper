@@ -5,17 +5,20 @@ the official country sites. No key, cookie, session or browser is needed.
 
 ## Scope
 
-Sameday runs three networks, each with its own site and API host: `sameday.ro`, `sameday.hu`
-and `sameday.bg`. Each host knows only its own network's shipments. The adapter asks them in
-that order and keeps the first history. Romanian parcels are confirmed live. The Hungarian and
-Bulgarian hosts answer the same request in the same shape and return the same not-found
-reply, but no Hungarian or Bulgarian history has been checked.
+Sameday runs two networks, each with its own site and API host: `sameday.ro` and
+`sameday.bg`. Each host knows only its own network's shipments. The adapter asks them in that
+order and keeps the first history. Romanian parcels are confirmed live. The Bulgarian host
+answers the same request in the same shape and returns the same not-found reply, but no
+Bulgarian history has been checked.
+
+Sameday stopped operating in Hungary, as `sameday.hu` announces. The adapter does not ask its
+host, so a failure there cannot turn the other countries' not-found into an error.
 
 ## How it works
 
-`direct`: `GET https://api.sameday.<ro|hu|bg>/api/public/awb/<number>/awb-history?_locale=en`,
+`direct`: `GET https://api.sameday.<ro|bg>/api/public/awb/<number>/awb-history?_locale=en`,
 the request the site's tracker makes, one country after another. A JSON 404 is that
-country's not-found. Only a not-found from all three is a missing parcel. A history from
+country's not-found. Only a not-found from both is a missing parcel. A history from
 any host is the answer even when another host failed; otherwise the first failure stands.
 HTML, 403 and 429 replies and malformed JSON are never read as not found.
 

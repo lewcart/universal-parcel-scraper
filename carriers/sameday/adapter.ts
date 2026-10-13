@@ -7,8 +7,9 @@ import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/inde
 import { normalizeSamedayNumber, parseSamedayReply, PROVIDER } from './parser.js';
 
 // Each country site's tracker asks its own API host, and each host knows only
-// its own network's shipments. Romania, the largest, goes first.
-const COUNTRIES = ['ro', 'hu', 'bg'] as const;
+// its own network's shipments. Romania, the largest, goes first. Sameday left
+// Hungary, so its host is not asked.
+const COUNTRIES = ['ro', 'bg'] as const;
 
 /** The history request the country sites' tracker makes, with English wording. */
 export function samedayHistoryUrl(country: (typeof COUNTRIES)[number], number: string): string {

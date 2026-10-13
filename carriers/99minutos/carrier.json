@@ -21,18 +21,68 @@
   "timezone": "America/Mexico_City",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "99minutos",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 40
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "eta",
+    "delivered_at",
+    "provider_code",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://tracking.99minutos.com/search/{trackingNumber}",
     "searchUrl": "https://tracking.99minutos.com/",
     "canaryUrl": "https://tracking.99minutos.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "eta",
+      "eta_window",
+      "remarks",
+      "proof_of_delivery",
+      "coordinates",
+      "origin",
+      "recipient_address",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "recipient_verification"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta",
+      "delivered_at",
+      "provider_code",
+      "offset_timestamps",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta_window",
+      "remarks",
+      "proof_of_delivery",
+      "coordinates",
+      "origin",
+      "recipient_address",
+      "recipient_verification"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [
     {

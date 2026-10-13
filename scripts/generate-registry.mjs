@@ -30,7 +30,9 @@ const recognitionPath = path.join(packageRoot, 'generated', 'recognition.ts');
 
 function importName(id) {
   const words = id.split(/[^a-z0-9]+/i).filter(Boolean);
-  return words.map((word, index) => (index === 0 ? word : word[0].toUpperCase() + word.slice(1))).join('');
+  const name = words.map((word, index) => (index === 0 ? word : word[0].toUpperCase() + word.slice(1))).join('');
+  // An identifier cannot start with a digit, as 99minutos does.
+  return /^\d/.test(name) ? `carrier${name}` : name;
 }
 
 const folders = readdirSync(carriersRoot, { withFileTypes: true })

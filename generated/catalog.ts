@@ -4704,7 +4704,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "99minutos",
+      "recognitionRank": 40
     },
     "canaryUrl": "https://tracking.99minutos.com/",
     "trackingUrlTemplate": "https://tracking.99minutos.com/search/{trackingNumber}",

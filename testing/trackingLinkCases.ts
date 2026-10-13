@@ -622,6 +622,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,
     marker: /No records found for Number/ },
+  // The page asks the service for the number's summary on load and goes back to its search for an unknown one.
+  { carrier: '99minutos', number: '9999999999',
+    route: /^https:\/\/tracking\.99minutos\.com\/(?:search\/9999999999)?$/,
+    marker: /Rastrea aquí tu pedido|Número de guía/ },
 ];
 
 /**

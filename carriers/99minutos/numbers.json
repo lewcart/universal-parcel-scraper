@@ -278,13 +278,13 @@
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20250213014109/https://tracking.99minutos.com/search/1438744595",
+        "url": "https://web.archive.org/web/20250213014119id_/https://livetracking.99minutos.com/api/v1/tracking/1438744595/track",
         "date": "2025-02-13",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -298,7 +298,61 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on 99minutos's own tracker, as an archived address shows; the capture was not opened."
+      "note": "99minutos's own tracking service answered for it, as an archived reply shows: a Colombian shipment between stations."
+    },
+    {
+      "number": "3264610748",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241119002557id_/https://livetracking.99minutos.com/api/v1/tracking/3264610748/track",
+        "date": "2024-11-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "99minutos's own tracking service answered for it, as an archived reply shows: a Mexican shipment on its way to the recipient."
+    },
+    {
+      "number": "4123114562",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241231185447id_/https://livetracking.99minutos.com/api/v1/tracking/4123114562/track",
+        "date": "2024-12-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "99minutos's own tracking service answered for it, as an archived reply shows: a Colombian shipment on its way to the recipient."
     }
   ]
 }

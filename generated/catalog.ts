@@ -8024,7 +8024,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redpack",
+      "recognitionRank": 15
     },
     "canaryUrl": "https://www.redpack.com.mx/es/inicio/",
     "trackingSearchUrl": "https://www.redpack.com.mx/es/inicio/",

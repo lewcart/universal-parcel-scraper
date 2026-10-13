@@ -1,4 +1,13 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dhlPolandNativeSources } from '/app/packages/tiers/src/utils/dhl-poland-native.mjs';
+
+const nativeDir = '/app/packages/tiers/src/utils/dhl-poland-native';
+const nativeSources = dhlPolandNativeSources(
+  readFileSync('/app/packages/tiers/src/solvers/recaptcha.ts', 'utf8'),
+  readFileSync('/app/packages/tiers/src/solvers/stt.ts', 'utf8'));
+mkdirSync(nativeDir, { recursive: true });
+writeFileSync(`${nativeDir}/recaptcha.ts`, nativeSources.recaptcha);
+writeFileSync(`${nativeDir}/stt.ts`, nativeSources.stt);
 // TRAWL drops a result that arrives at its request deadline. Helpers, capture
 // waits and CAPTCHA solvers end this long before it, which leaves time to close
 // a context and return what was observed.
@@ -23,7 +32,8 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   const carrierRun = { url, handle, tier: ${tier}, maxTimeout: budget.remaining() - ${reserveMs}, capture,
     installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) }
   if (carrierPage && dhlPolandBrowserNumber(url, capture)) {
-    return await runDhlPolandBrowser({ ...carrierRun, solveCaptcha: solveDhlPolandImages })
+    return await runDhlPolandBrowser({ ...carrierRun, solveCaptcha: solveDhlPolandImages,
+      solveNativeCaptcha: (page, timeout, report) => solveDhlPolandNative(page, timeout, budget.signal, report) })
   }
   if (carrierPage && asendiaBrowserNumber(url, capture)) return await runAsendiaBrowser(carrierRun)
   if (carrierPage && dhlExpressBrowserNumber(url, capture)) return await runDhlExpressBrowser(carrierRun)
@@ -43,6 +53,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
     + 'import { solveDhlPolandImages } from "../utils/dhl-poland-images.mjs"\n'
+    + 'import { solveRecaptchaV2 as solveDhlPolandNative } from "../utils/dhl-poland-native/recaptcha"\n'
     + 'import { dhlPolandBrowserNumber, runDhlPolandBrowser } from "../utils/dhl-poland-browser.mjs"\n'
     + 'import { asendiaBrowserNumber, runAsendiaBrowser } from "../utils/asendia-browser.mjs"\n'
     + 'import { dhlExpressBrowserNumber, runDhlExpressBrowser } from "../utils/dhl-express-browser.mjs"\n'

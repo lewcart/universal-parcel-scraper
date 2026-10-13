@@ -1,6 +1,7 @@
 # DHL Poland image verification
 
-The DHL-specific browser helper uses the CPU classifier from
+After TRAWL's native checkbox and audio flow, the DHL-specific browser helper can
+fall back to the CPU classifier from
 [cateyelow/recaptcha_ia_solver](https://github.com/cateyelow/recaptcha_ia_solver/tree/b8049e7243f6f1e6f7d4c6e9e4eb4befc0eaab21).
 The build downloads its ONNX weights and checks their SHA-256 before installation.
 The model is YOLOv8s-cls with fourteen classes, RGB float inputs in `[0, 1]`,
@@ -14,7 +15,7 @@ unsupported or unsuccessful challenges leave the API summary available.
 Workers are bounded by the browser deadline and limited to two per process.
 
 The browser service writes one bounded JSON diagnostic per lookup under
-`dhl-poland-browser`. Its attempt ID, phase, outcome, grid type, model scores,
+`dhl-poland-browser`. Its attempt ID, phase, outcome, native solver events, grid type, model scores,
 verification feedback and cleanup state distinguish classification failures
 from unsupported grids and timeouts. Logs exclude tracking numbers, page text,
 image URLs, screenshots, tokens and recipient details.

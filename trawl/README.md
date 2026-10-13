@@ -16,7 +16,9 @@ documentation describes the verification flows.
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
 DHL Express, SF Express, WanbExpress, XPO, Asendia and DHL Poland use fresh contexts.
-DHL Poland submits its history form after reCAPTCHA verification and returns only
+DHL Poland tries TRAWL's native checkbox and audio solver before its image fallback.
+Its scoped native modules replace upstream raw debug logs with fixed events.
+It submits its history form after reCAPTCHA verification and returns only
 the waybill and scan fields, excluding recipient acknowledgements and verification tokens.
 Its [image classifier](dhl-poland-model/README.md) runs locally in a bounded worker;
 no paid CAPTCHA service or model API is required.

@@ -37,12 +37,18 @@ export function dhlPolandHistory(html) {
 
 /** DHL's own form owns the verification token and submits the verified waybill. */
 export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeout, installPolicy, solveCaptcha,
+  solveNativeCaptcha,
   logDiagnostic = record => console.info(JSON.stringify(record)) }) {
   const number = dhlPolandBrowserNumber(url, capture);
   if (!number) return undefined;
   const start = Date.now();
   const attemptId = randomUUID();
   const imageDiagnostics = [];
+  const nativeDiagnostics = [];
+  const recordNative = event => {
+    if (nativeDiagnostics.length < 16 && ['checkbox_started', 'checkbox_verified', 'challenge_missing', 'audio_started',
+      'audio_blocked', 'audio_verified', 'native_failed'].includes(event)) nativeDiagnostics.push(event);
+  };
   let phase = 'context', outcome = 'browser_error', cleanup = 'not_created', verification = 'unverified', failure = null, widget = null;
   const httpOutcome = status => status === 429 ? 'rate_limit' : [401, 403, 428].includes(status) ? 'challenge' : 'http_error';
   const recordImage = record => {
@@ -118,14 +124,26 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
           await reject.evaluate(element => element.click());
         }
         await page.locator('#sn').fill(number, { timeout: remaining() });
-        phase = 'checkbox';
-        // Use the visible checkbox's normal actionability checks after consent.
-        // A forced click beneath an overlay can leave the generic solver waiting
-        // for a challenge frame that the browser never opened.
-        await page.frameLocator('iframe[src*="recaptcha"][src*="anchor"]').first().locator('#recaptcha-anchor').click({ timeout: Math.min(10000, remaining()) });
-        const checked = await page.waitForFunction(() => document.querySelector('#g-recaptcha-response')?.value.length > 0,
-          null, { timeout: Math.min(5000, remaining()) }).then(() => true, () => false);
-        verification = checked ? 'checkbox' : 'images';
+        phase = solveNativeCaptcha ? 'native' : 'checkbox';
+        let checked;
+        if (solveNativeCaptcha) {
+          // The upstream solver owns the first checkbox click and audio flow.
+          // Leave time for the matching form response and an image fallback.
+          await solveNativeCaptcha(page, Math.max(1, Math.min(30000, remaining() - 5000)), recordNative);
+          if (expired) return result();
+          checked = await page.locator('#g-recaptcha-response').inputValue({ timeout: remaining() }).then(value => value.length > 0, () => false);
+          if (!checked && remaining() > 5000) {
+            const imageButton = page.frameLocator('iframe[src*="recaptcha"][src*="bframe"]').first().locator('#recaptcha-image-button');
+            if (await imageButton.isVisible().catch(() => false)) await imageButton.click({ timeout: Math.min(2500, remaining()) });
+          }
+        } else {
+          // A forced click beneath an overlay can leave the image solver
+          // waiting for a challenge frame that the browser never opened.
+          await page.frameLocator('iframe[src*="recaptcha"][src*="anchor"]').first().locator('#recaptcha-anchor').click({ timeout: Math.min(10000, remaining()) });
+          checked = await page.waitForFunction(() => document.querySelector('#g-recaptcha-response')?.value.length > 0,
+            null, { timeout: Math.min(5000, remaining()) }).then(() => true, () => false);
+        }
+        verification = checked ? solveNativeCaptcha ? 'native' : 'checkbox' : 'images';
         phase = 'images';
         if (!checked && remaining() > 5000) await solveCaptcha?.(page, Math.min(45000, remaining()), undefined, recordImage);
         if (expired) return result();
@@ -172,7 +190,7 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
     try {
       logDiagnostic({ event: 'dhl-poland-browser', attemptId, tier, phase, outcome, failure, widget, cleanup, verification, durationMs: Date.now() - start,
         statusCode, captures: entries.map(entry => ({ status: entry.status, truncated: entry.truncated, readFailed: !!entry.error })),
-        images: imageDiagnostics });
+        native: nativeDiagnostics, images: imageDiagnostics });
     } catch { /* Telemetry cannot change the tracking result. */ }
   }
 }

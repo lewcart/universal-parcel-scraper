@@ -14,10 +14,12 @@ const response = (status = 200, body = html, submitted = number) => ({ url: () =
   headers: () => ({ 'content-type': 'text/html', 'set-cookie': 'PRIVATE' }), body: async () => Buffer.from(body) });
 function fixture() {
   const diagnostics = [];
+  const interactions = { checkbox: 0, imageButton: 0 };
   const handlers = {}, state = { closed: 0, submitted: 0, policy: 0, solved: 0 };
   const page = { on: (event, fn) => { handlers[event] = fn; }, off: event => { delete handlers[event]; },
     goto: async () => ({ status: () => 200 }), waitForTimeout: async () => {},
-    frameLocator: () => ({ first: () => ({ locator: () => ({ click: async () => {} }) }) }),
+    frameLocator: () => ({ first: () => ({ locator: selector => ({ isVisible: async () => true,
+      click: async () => { interactions[selector === '#recaptcha-anchor' ? 'checkbox' : 'imageButton']++; } }) }) }),
     waitForFunction: async () => {},
     locator: selector => {
       if (selector === '#onetrust-reject-all-handler') return { waitFor: async () => {}, evaluate: async () => {} };
@@ -31,7 +33,7 @@ function fixture() {
     handle: { browser: { newContext: async () => ({ newPage: async () => page, close: async () => { state.closed++; } }) } },
     solveCaptcha: async () => { state.solved++; }, installPolicy: async () => { state.policy++; },
   };
-  return { options, handlers, state, page, diagnostics };
+  return { options, handlers, state, page, diagnostics, interactions };
 }
 test('only the exact carrier URL, canonical waybill and capture endpoint select the helper', () => {
   assert.equal(dhlPolandBrowserNumber(url, capture), number);
@@ -39,6 +41,48 @@ test('only the exact carrier URL, canonical waybill and capture endpoint select 
     url.replace('sprawdz.dhl.com.pl', 'other.test'), url.replace('sprawdz.dhl.com.pl', 'user@sprawdz.dhl.com.pl')]) {
     assert.equal(dhlPolandBrowserNumber(candidate, capture), null);
   }
+});
+test('native verification owns the initial checkbox and requires the page proof before submitting', async () => {
+  const active = fixture(); active.options.maxTimeout = 60000;
+  let proof = '';
+  const original = active.page.locator;
+  active.page.locator = selector => selector === '#g-recaptcha-response' ? { inputValue: async () => proof } : original(selector);
+  active.options.solveNativeCaptcha = async (_page, budget, report) => {
+    assert.ok(budget > 0 && budget <= 30000);
+    report('audio_started'); report('PRIVATE'); report('audio_verified'); proof = 'PRIVATE';
+    return true;
+  };
+  const result = await runDhlPolandBrowser(active.options);
+  assert.equal(result.capturedResponses.length, 1);
+  assert.equal(active.interactions.checkbox, 0);
+  assert.equal(active.state.solved, 0);
+  assert.deepEqual(active.diagnostics[0].native, ['audio_started', 'audio_verified']);
+  assert.equal(active.diagnostics[0].verification, 'native');
+  assert.equal(JSON.stringify(active.diagnostics).includes('PRIVATE'), false);
+  proof = '';
+  active.options.solveNativeCaptcha = async () => true;
+  await runDhlPolandBrowser(active.options);
+  assert.equal(active.state.submitted, 1);
+});
+test('failed native solving switches back to images inside the remaining budget', async () => {
+  const active = fixture(); active.options.maxTimeout = 15000;
+  let proof = '';
+  const original = active.page.locator;
+  active.page.locator = selector => selector === '#g-recaptcha-response' ? { inputValue: async () => proof } : original(selector);
+  active.options.solveNativeCaptcha = async (_page, _budget, report) => { report('audio_blocked'); return false; };
+  active.options.solveCaptcha = async (_page, budget) => { assert.ok(budget < 15000); proof = 'PRIVATE'; };
+  const result = await runDhlPolandBrowser(active.options);
+  assert.equal(result.capturedResponses.length, 1);
+  assert.deepEqual(active.interactions, { checkbox: 0, imageButton: 1 });
+  assert.equal(active.diagnostics[0].verification, 'images');
+  assert.deepEqual(active.diagnostics[0].native, ['audio_blocked']);
+});
+test('a stalled native solver is stopped by the browser deadline and closes its context', async () => {
+  const active = fixture(); active.options.maxTimeout = 30;
+  active.options.solveNativeCaptcha = () => new Promise(() => {});
+  await runDhlPolandBrowser(active.options);
+  assert.equal(active.state.closed, 1); assert.equal(active.state.submitted, 0);
+  assert.equal(active.diagnostics[0].outcome, 'deadline');
 });
 test('extracts only safe history fields and identifies an unresolved verification form', () => {
   assert.deepEqual(dhlPolandHistory(html), { number, events: [{ date: '04.03.2026', time: '10:15',

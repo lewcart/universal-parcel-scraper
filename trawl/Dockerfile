@@ -12,6 +12,7 @@ COPY wanbexpress-browser.mjs /app/packages/tiers/src/utils/wanbexpress-browser.m
 COPY xpo-browser.mjs /app/packages/tiers/src/utils/xpo-browser.mjs
 COPY asendia-browser.mjs /app/packages/tiers/src/utils/asendia-browser.mjs
 COPY dhl-poland-images.mjs /app/packages/tiers/src/utils/dhl-poland-images.mjs
+COPY dhl-poland-native.mjs /app/packages/tiers/src/utils/dhl-poland-native.mjs
 COPY dhl-poland-model/package.json /app/packages/tiers/src/utils/dhl-poland-model/package.json
 COPY dhl-poland-model/bun.lock /app/packages/tiers/src/utils/dhl-poland-model/bun.lock
 COPY dhl-poland-model/worker.mjs /app/packages/tiers/src/utils/dhl-poland-model/worker.mjs

@@ -2,12 +2,34 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { readFileSync } from 'node:fs';
-import { dhlPolandImageAnswers, solveDhlPolandImages } from './dhl-poland-images.mjs';
+import { runInNewContext } from 'node:vm';
+import { dhlPolandGridReady, dhlPolandImageAnswers, solveDhlPolandImages } from './dhl-poland-images.mjs';
 
 const key = 'SYNTHETIC_SITE_KEY_00000000';
 const tile = (src, selected = false) => ({ src, selected, left: 0, top: 0, width: 128, height: 128 });
 const initial = () => Array.from({ length: 9 }, (_, i) => tile(`synthetic-image-${i}`));
 const scores = matches => Array.from({ length: 9 }, (_, i) => ({ label: matches.includes(i) ? 'bicycle' : 'other', confidence: 0.95 }));
+test('loaded dynamic tiles must finish fading and remain stable before inference', () => {
+  const image = { complete: true, naturalWidth: 100, naturalHeight: 100, src: 'new-image', opacity: '1', getClientRects: () => [1] };
+  const classes = new Set();
+  const tile = { opacity: '0.01', querySelector: () => image, classList: { contains: value => classes.has(value) }, getClientRects: () => [1] };
+  const context = { previous: { before: [{ src: 'old-image' }], indices: [0] },
+    document: { querySelectorAll: () => [tile], querySelector: () => ({ textContent: 'bicycles' }) },
+    getComputedStyle: element => ({ opacity: element.opacity, visibility: 'visible' }),
+  };
+  const predicate = runInNewContext(`(${dhlPolandGridReady.toString()})`, context);
+  const ready = () => predicate(context.previous);
+  assert.equal(ready(), false);
+  tile.opacity = '1'; image.opacity = '0.01'; assert.equal(ready(), false);
+  image.opacity = '1'; image.naturalWidth = 1; assert.equal(ready(), false);
+  image.naturalWidth = 100; classes.add('rc-imageselect-dynamic-selected'); assert.equal(ready(), false);
+  classes.clear(); image.src = 'old-image'; assert.equal(ready(), false);
+  image.src = 'new-image'; assert.equal(ready(), false); assert.equal(ready(), false); assert.equal(ready(), true);
+  tile.opacity = '0.01'; assert.equal(ready(), false);
+  tile.opacity = '1'; assert.equal(ready(), false); assert.equal(ready(), false); assert.equal(ready(), true);
+  tile.opacity = '0.01'; classes.add('rc-imageselect-tileselected');
+  assert.equal(ready(), false); assert.equal(ready(), false); assert.equal(ready(), true);
+});
 function fixture({ dynamic = false, changed = false, fail = false, stall = false, count = 9, target = 'bicycles' } = {}) {
   const state = { terminated: 0, clicks: [], verify: 0, inferences: 0, reads: 0, solved: false, reloads: 0 };
   let tiles = initial().slice(0, count);
@@ -82,6 +104,19 @@ test('failed and stalled inference releases the worker without submitting', asyn
     assert.equal(await solveDhlPolandImages(active.page, 20, active.createWorker), false);
     assert.deepEqual(active.state.clicks, []); assert.equal(active.state.terminated, 1);
   }
+});
+test('diagnostics distinguish unsupported grids, worker failure and inference deadlines without private data', async () => {
+  for (const [options, expected, phase] of [[{ count: 4 }, 'unsupported_grid', 'images_ready'],
+    [{ fail: true }, 'worker_error', 'inference'], [{ stall: true }, 'deadline', 'inference'],
+    [{ target: 'PRIVATE' }, 'unsupported_target', 'images_ready']]) {
+    const active = fixture(options), records = [];
+    assert.equal(await solveDhlPolandImages(active.page, 30, active.createWorker, value => records.push(value)), false);
+    assert.equal(records.at(-1).reason, expected);
+    assert.equal(records.at(-1).phase, phase);
+    for (const secret of ['PRIVATE', key, 'synthetic-image', 'google.com']) assert.equal(JSON.stringify(records).includes(secret), false);
+  }
+  const active = fixture();
+  assert.equal(await solveDhlPolandImages(active.page, 1000, active.createWorker, () => { throw new Error('PRIVATE'); }), true);
 });
 test('a challenge frame from another widget cannot be solved', async () => {
   const active = fixture(); const frames = active.page.frames();

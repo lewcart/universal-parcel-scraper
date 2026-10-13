@@ -7,10 +7,16 @@ The model is YOLOv8s-cls with fourteen classes, RGB float inputs in `[0, 1]`,
 and a `1 × 3 × 128 × 128` tensor. Weights stay out of Git and the npm package.
 
 Only supported three-by-three image grids are classified. Tile answers are
-bound to their current image URLs, dynamic replacements must finish loading,
+bound to their current image URLs, dynamic replacements must finish loading and fading in,
 and the page must confirm verification. Other grids may be refreshed once;
 unsupported or unsuccessful challenges leave the API summary available.
 Workers are bounded by the browser deadline and limited to two per process.
+
+The browser service writes one bounded JSON diagnostic per lookup under
+`dhl-poland-browser`. Its attempt ID, phase, outcome, grid type, model scores,
+verification feedback and cleanup state distinguish classification failures
+from unsupported grids and timeouts. Logs exclude tracking numbers, page text,
+image URLs, screenshots, tokens and recipient details.
 
 The weights declare AGPL-3.0 and use
 [Ultralytics](https://github.com/ultralytics/ultralytics/tree/dc824b40bf01ecfd2f535be41691a704bc496674).

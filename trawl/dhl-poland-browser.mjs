@@ -1,4 +1,5 @@
 import { parseHTML } from 'linkedom';
+import { randomUUID } from 'node:crypto';
 
 const ORIGIN = 'https://sprawdz.dhl.com.pl';
 const ENDPOINT = `${ORIGIN}/`;
@@ -35,11 +36,21 @@ export function dhlPolandHistory(html) {
 }
 
 /** DHL's own form owns the verification token and submits the verified waybill. */
-export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeout, installPolicy, solveCaptcha }) {
+export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeout, installPolicy, solveCaptcha,
+  logDiagnostic = record => console.info(JSON.stringify(record)) }) {
   const number = dhlPolandBrowserNumber(url, capture);
   if (!number) return undefined;
   const start = Date.now();
+  const attemptId = randomUUID();
+  const imageDiagnostics = [];
+  let phase = 'context', outcome = 'browser_error', cleanup = 'not_created', verification = 'unverified', failure = null, widget = null;
+  const httpOutcome = status => status === 429 ? 'rate_limit' : [401, 403, 428].includes(status) ? 'challenge' : 'http_error';
+  const recordImage = record => {
+    if (imageDiagnostics.length < 64) imageDiagnostics.push(record);
+    else if (record.event === 'end') imageDiagnostics[63] = record;
+  };
   const cleanupMs = Math.min(1500, Math.max(1, Math.floor(maxTimeout / 5)));
+  const diagnosticMs = Math.min(100, Math.floor(cleanupMs / 4));
   const deadline = start + maxTimeout - cleanupMs;
   const remaining = () => Math.max(1, Math.floor(deadline - Date.now()));
   let context, page, timer, onResponse;
@@ -49,9 +60,10 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
     let closed = false, cleanupTimer;
     try {
       await Promise.race([Promise.resolve().then(() => target.close()).then(() => { closed = true; }).catch(() => {}),
-        new Promise(resolve => { cleanupTimer = setTimeout(resolve, cleanupMs); })]);
+        new Promise(resolve => { cleanupTimer = setTimeout(resolve, cleanupMs - diagnosticMs); })]);
     } finally {
       clearTimeout(cleanupTimer);
+      cleanup = closed ? 'closed' : 'failed';
       if (!closed) handle.requestBrowserReplacement?.('DHL Poland context cleanup failed');
     }
   };
@@ -97,37 +109,70 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
           pending.add(read);
         };
         page.on('response', onResponse);
+        phase = 'navigation';
         statusCode = (await page.goto(`${ENDPOINT}?lang=en-gb`, { waitUntil: 'domcontentloaded', timeout: remaining() }))?.status() ?? 0;
-        if (statusCode >= 400) return result();
+        if (statusCode >= 400) { outcome = httpOutcome(statusCode); return result(); }
+        phase = 'consent';
         const reject = page.locator('#onetrust-reject-all-handler');
         if (await reject.waitFor({ state: 'visible', timeout: Math.min(5000, remaining()) }).then(() => true, () => false)) {
           await reject.evaluate(element => element.click());
         }
         await page.locator('#sn').fill(number, { timeout: remaining() });
+        phase = 'checkbox';
         // Use the visible checkbox's normal actionability checks after consent.
         // A forced click beneath an overlay can leave the generic solver waiting
         // for a challenge frame that the browser never opened.
         await page.frameLocator('iframe[src*="recaptcha"][src*="anchor"]').first().locator('#recaptcha-anchor').click({ timeout: Math.min(10000, remaining()) });
         const checked = await page.waitForFunction(() => document.querySelector('#g-recaptcha-response')?.value.length > 0,
           null, { timeout: Math.min(5000, remaining()) }).then(() => true, () => false);
-        if (!checked && remaining() > 5000) await solveCaptcha?.(page, Math.min(45000, remaining()));
+        verification = checked ? 'checkbox' : 'images';
+        phase = 'images';
+        if (!checked && remaining() > 5000) await solveCaptcha?.(page, Math.min(45000, remaining()), undefined, recordImage);
         if (expired) return result();
+        phase = 'verification';
         const verified = await page.locator('#g-recaptcha-response').inputValue({ timeout: remaining() }).then(value => value.length > 0, () => false);
-        if (!verified) return result();
+        if (!verified) { outcome = 'challenge'; return result(); }
+        phase = 'submit';
         await page.locator('#searchSubmit').click({ timeout: remaining() });
+        phase = 'response';
         await terminal;
         await page.waitForTimeout(Math.min(300, remaining()));
         await Promise.allSettled([...pending]);
+        const last = entries.at(-1);
+        let history;
+        try { history = JSON.parse(last?.body ?? 'null'); } catch { /* Classified below. */ }
+        outcome = last?.status !== 200 ? httpOutcome(last?.status) : last.error || last.truncated ? 'capture_error'
+          : history?.challenge ? 'challenge' : history?.number === number && history.events?.length > 0 ? 'history' : 'invalid_history';
         return result();
       })(),
-      new Promise((_, reject) => { timer = setTimeout(() => { expired = true; reject(new Error('Browser deadline')); }, remaining()); }),
+      new Promise((_, reject) => { timer = setTimeout(() => { outcome = 'deadline'; expired = true; reject(new Error('Browser deadline')); }, remaining()); }),
     ]);
-  } catch {
+  } catch (error) {
+    failure = error?.name === 'TimeoutError' || /\b(?:Timeout|timed out)\b/i.test(error?.message ?? '') ? 'timeout'
+      : /(?:Target|context|browser|page).*closed/i.test(error?.message ?? '') ? 'closed' : 'browser_error';
     if (statusCode || entries.length) return result();
     return { tier, status: 'error', durationMs: Date.now() - start, reason: 'DHL Poland browser retrieval failed' };
   } finally {
     accepting = false; expired = true; clearTimeout(timer);
+    if (page && outcome !== 'history' && diagnosticMs > 0) {
+      let diagnosticTimer;
+      try {
+        widget = await Promise.race([page.evaluate(() => {
+          const visible = element => !!element?.getClientRects().length && getComputedStyle(element).visibility !== 'hidden';
+          return { formVisible: visible(document.querySelector('#sn')),
+            consentVisible: visible(document.querySelector('#onetrust-reject-all-handler')),
+            anchors: document.querySelectorAll('iframe[src*="recaptcha"][src*="anchor"]').length,
+            challenges: document.querySelectorAll('iframe[src*="recaptcha"][src*="bframe"]').length };
+        }).catch(() => null), new Promise(resolve => { diagnosticTimer = setTimeout(() => resolve(null), diagnosticMs); })]);
+      } catch { /* Context may already be closed. */ }
+      finally { clearTimeout(diagnosticTimer); }
+    }
     if (page && onResponse) page.off('response', onResponse);
     if (context) await close(context);
+    try {
+      logDiagnostic({ event: 'dhl-poland-browser', attemptId, tier, phase, outcome, failure, widget, cleanup, verification, durationMs: Date.now() - start,
+        statusCode, captures: entries.map(entry => ({ status: entry.status, truncated: entry.truncated, readFailed: !!entry.error })),
+        images: imageDiagnostics });
+    } catch { /* Telemetry cannot change the tracking result. */ }
   }
 }

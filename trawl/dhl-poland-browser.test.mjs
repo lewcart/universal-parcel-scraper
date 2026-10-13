@@ -13,6 +13,7 @@ const response = (status = 200, body = html, submitted = number) => ({ url: () =
   request: () => ({ method: () => 'POST', postData: () => `SearchMode=Shipment&ShipmentNumbers=${submitted}&g-recaptcha-response=PRIVATE` }),
   headers: () => ({ 'content-type': 'text/html', 'set-cookie': 'PRIVATE' }), body: async () => Buffer.from(body) });
 function fixture() {
+  const diagnostics = [];
   const handlers = {}, state = { closed: 0, submitted: 0, policy: 0, solved: 0 };
   const page = { on: (event, fn) => { handlers[event] = fn; }, off: event => { delete handlers[event]; },
     goto: async () => ({ status: () => 200 }), waitForTimeout: async () => {},
@@ -26,11 +27,11 @@ function fixture() {
       return { click: async () => { state.submitted++; handlers.response(response()); } };
     },
   };
-  const options = { url, capture, tier: 3, maxTimeout: 1000,
+  const options = { url, capture, tier: 3, maxTimeout: 1000, logDiagnostic: record => diagnostics.push(record),
     handle: { browser: { newContext: async () => ({ newPage: async () => page, close: async () => { state.closed++; } }) } },
     solveCaptcha: async () => { state.solved++; }, installPolicy: async () => { state.policy++; },
   };
-  return { options, handlers, state, page };
+  return { options, handlers, state, page, diagnostics };
 }
 test('only the exact carrier URL, canonical waybill and capture endpoint select the helper', () => {
   assert.equal(dhlPolandBrowserNumber(url, capture), number);
@@ -52,6 +53,46 @@ test('observes before navigation, submits through the verified form and closes i
   assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
   assert.deepEqual(active.state, { closed: 1, submitted: 1, policy: 1, solved: 0 });
   assert.deepEqual(active.handlers, {});
+  assert.equal(active.diagnostics.length, 1);
+  assert.equal(active.diagnostics[0].outcome, 'history');
+  assert.equal(active.diagnostics[0].cleanup, 'closed');
+  for (const privateValue of ['PRIVATE', number, endpoint, 'Example depot']) assert.equal(JSON.stringify(active.diagnostics).includes(privateValue), false);
+});
+test('diagnostics retain the failure phase and never propagate observer failures', async () => {
+  const active = fixture();
+  active.page.goto = async () => { throw new Error('PRIVATE'); };
+  await runDhlPolandBrowser(active.options);
+  assert.equal(active.diagnostics[0].phase, 'navigation');
+  assert.equal(active.diagnostics[0].outcome, 'browser_error');
+  assert.equal(JSON.stringify(active.diagnostics).includes('PRIVATE'), false);
+  active.options.logDiagnostic = () => { throw new Error('PRIVATE'); };
+  assert.equal((await runDhlPolandBrowser(active.options)).status, 'error');
+});
+test('image traces are bounded but retain the terminal reason', async () => {
+  const active = fixture(); active.options.maxTimeout = 10000;
+  active.page.waitForFunction = async () => { throw new Error('PRIVATE'); };
+  const original = active.page.locator;
+  active.page.locator = selector => selector === '#g-recaptcha-response' ? { inputValue: async () => '' } : original(selector);
+  active.options.solveCaptcha = async (_page, _budget, _worker, report) => {
+    for (let i = 0; i < 100; i++) report({ event: 'stale' });
+    report({ event: 'end', reason: 'round_limit' });
+  };
+  await runDhlPolandBrowser(active.options);
+  const record = active.diagnostics[0];
+  assert.equal(record.images.length, 64);
+  assert.equal(record.images.at(-1).reason, 'round_limit');
+  assert.equal(record.outcome, 'challenge');
+});
+test('failed widget diagnostics cannot delay context cleanup beyond the budget', async () => {
+  const active = fixture(); active.options.maxTimeout = 30;
+  active.page.goto = async () => { const error = new Error('PRIVATE'); error.name = 'TimeoutError'; throw error; };
+  active.page.evaluate = () => new Promise(() => {});
+  const started = performance.now();
+  await runDhlPolandBrowser(active.options);
+  assert.ok(performance.now() - started < 150);
+  assert.equal(active.state.closed, 1);
+  assert.equal(active.diagnostics[0].failure, 'timeout');
+  assert.equal(active.diagnostics[0].widget, null);
 });
 test('rejects prefix matches and repeated form fields, keeping a later rejection', async () => {
   const active = fixture(); const original = active.page.locator;
@@ -62,6 +103,7 @@ test('rejects prefix matches and repeated form fields, keeping a later rejection
   } };
   const result = await runDhlPolandBrowser(active.options);
   assert.deepEqual(result.capturedResponses.map(row => row.status), [200, 403]);
+  assert.equal(active.diagnostics[0].outcome, 'challenge');
   assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
 });
 test('retains oversized or repeated response failures without their content', async () => {

@@ -78,6 +78,11 @@ describe('locatePlace', () => {
     // Cainiao's sorting centre in Fenggang, Dongguan, which GeoNames gives no population; not Fenggang in Jiangxi.
     expect(place('Fenggang Town')).toEqual({ precision: 'city', country: 'CN', name: 'Fenggang Town', latitude: 22.757, longitude: 114.149 });
     expect(place('FENGGANG TOWN', ['FR'])).toMatchObject({ country: 'CN', name: 'Fenggang', latitude: 22.757 });
+    // Royal Mail's international hub by Heathrow, in a Langley the gazetteer does not list; not Langley in Canada.
+    expect(place('LANGLEY HWDC')).toEqual({ precision: 'city', country: 'GB', name: 'Langley', latitude: 51.497, longitude: -0.532 });
+    expect(place('LANGLEY', ['GB'])).toMatchObject({ country: 'GB', latitude: 51.497 });
+    expect(place('LANGLEY BC')).toMatchObject({ country: 'CA', name: 'Langley' });
+    expect(place('KINGS LANGLEY', ['GB'])).toMatchObject({ country: 'GB', name: 'Kings Langley', latitude: 51.714 });
     // Mondial Relay's agency in Terrasson-Lavilledieu, under the town's short name.
     expect(place('TERRASSON', ['FR'])).toEqual({ precision: 'city', country: 'FR', name: 'Terrasson-Lavilledieu', latitude: 45.129, longitude: 1.32 });
     expect(place('Agence de Terrasson')).toMatchObject({ country: 'FR', latitude: 45.129, longitude: 1.32 });

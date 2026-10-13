@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AsendiaA1Tracker } from './adapter.js';
+import { AsendiaUkTracker } from './uk.js';
 
 // Valid shape, never issued.
 const UNKNOWN_NUMBER = 'AS000000000US';
@@ -22,6 +23,27 @@ describe('Asendia A1 live lookup', () => {
       name: 'NotFoundError',
       kind: 'not_found',
       message: 'Asendia could not locate the shipment',
+    });
+  });
+});
+
+describe('Asendia UK live lookup', () => {
+  // The tracker drops parcels some months after posting. Positive retrieval
+  // needs a current shipment the operator is authorized to query, supplied
+  // outside the repository.
+  it.skipIf(!process.env.ASENDIA_UK_LIVE_NUMBER)('retrieves a matching history with wall clocks', async () => {
+    const started = performance.now();
+    const result = await new AsendiaUkTracker().fetch(process.env.ASENDIA_UK_LIVE_NUMBER!);
+    expect(result).toMatchObject({ tracking_source: 'rendered-page', last_update: null });
+    expect(result.events!.length).toBeGreaterThan(0);
+    expect(result.events!.every((event) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/.test(String(event.local_time)))).toBe(true);
+    expect(performance.now() - started).toBeLessThan(10_000);
+  });
+
+  it('reports an unknown number as not found', async () => {
+    await expect(new AsendiaUkTracker().fetch(UNKNOWN_NUMBER)).rejects.toMatchObject({
+      name: 'NotFoundError',
+      kind: 'not_found',
     });
   });
 });

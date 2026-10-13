@@ -1653,7 +1653,8 @@ export const CARRIER_CATALOG = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "asendia"
+      "adapter": "asendia",
+      "localClocks": true
     },
     "canaryUrl": "https://a1.asendiausa.com/tracking/",
     "trackingUrlTemplate": "https://track.asendia.com/track/{trackingNumber}",

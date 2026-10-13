@@ -7,3 +7,5 @@ Shaped after live replies. Only published numbers are real; every other referenc
 - `a1-usps-leg.json`: A1 reply with USPS scans, a Canada Post final-mile link and a date-only pre-shipment scan.
 - `delivered-parcel.json`: global portal `branded-parcel-search` reply (probe) with `Private …` recipient placeholders.
 - `tenant-config.json`: global portal `get-config-data` reply for the public tenant.
+- `uk-delivered.html`: Asendia UK tracker page for a Colissimo delivery, with notices, an exact duplicate scan and the same customs scan an hour apart. Every value is synthetic.
+- `uk-not-found.html`: Asendia UK tracker page with its not-found notice.

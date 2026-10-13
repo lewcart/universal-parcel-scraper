@@ -25,7 +25,8 @@
     "adapter": "asendia",
     "steps": [
       "direct"
-    ]
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",

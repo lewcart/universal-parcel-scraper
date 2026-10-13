@@ -1,6 +1,6 @@
 
 /**
- * Asendia tracking through Asendia USA's A1 platform.
+ * Asendia tracking through Asendia USA's A1 platform, then Asendia UK's tracker.
  *
  * Protocol provenance (inspected 2026-09-22):
  * - The official public page https://a1.asendiausa.com/tracking/ (the same
@@ -25,18 +25,21 @@
  *   backend/src/sources/implementations/asendia.ts) and deingithub/beanstalk
  *   (beanstalk/parcel.py).
  *
- * Coverage: parcels on the A1 platform only. Asendia's global portal
- * track.asendia.com, which serves the other subsidiaries, needs a Cloudflare
- * Turnstile token for every search and is not used here (see probe.ts). A
- * number A1 does not know is a not-found for this adapter only; routing then
- * tries the universal providers in the same check.
+ * Coverage: A1 answers for parcels on Asendia USA's platform. The adapter
+ * then asks Asendia UK's tracker (uk.ts), which serves parcels Asendia UK
+ * carries, when A1 does not know the number, fails, or holds its registration
+ * alone. Asendia's global portal track.asendia.com, which serves the
+ * other subsidiaries, needs a Cloudflare Turnstile token for every search and
+ * is not used here (see probe.ts). A number neither tracker knows is a
+ * not-found for this adapter only; routing then tries the universal providers
+ * in the same check.
  *
  * Privacy: events keep their time, wording, code and city, province and
  * country. Address lines and postal codes in `eventLocationDetails` are never
  * read, and nothing else from the summary is copied except the destination
  * country, weight and the declared last-mile reference.
  */
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
@@ -45,6 +48,7 @@ import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyAsendiaA1Event, type ClassifiedAsendiaStatus } from './status.js';
+import { AsendiaUkTracker } from './uk.js';
 
 const PROVIDER = 'Asendia';
 const PAGE_URL = 'https://a1.asendiausa.com/tracking/';
@@ -478,12 +482,64 @@ interface RequestBudget {
   budgetBound?: boolean;
 }
 
+/** The part of a lookup's budget kept for Asendia UK's tracker, at most a third. */
+const UK_RESERVE_MS = 8_000;
+
+/** Whether a result shows the parcel past its registration. */
+function progressed(result: CarrierResult): boolean {
+  return result.status !== 'pending' && result.status !== 'unknown';
+}
+
+/**
+ * A1 first, then Asendia UK. A1 can hold a UK parcel's registration alone
+ * while Asendia UK's tracker shows its progress, so a parcel A1 has not seen
+ * past registration is also looked up there, and the UK history is returned
+ * when it has progressed further. A not-found means both said so: any other
+ * A1 failure is reported instead when the UK tracker does not know the number
+ * either, and the first failure is the one reported when both fail.
+ */
+async function trackEverywhere(
+  a1: AsendiaA1Tracker,
+  uk: AsendiaUkTracker,
+  rawTrackingNumber: string,
+  context: TrackingContext = {},
+): Promise<CarrierResult> {
+  const trackingNumber = normalizeAsendiaA1TrackingNumber(rawTrackingNumber);
+  const budget = lookupBudget(context, DEFAULT_BUDGET_MS, PROVIDER);
+  const reserve = Math.min(UK_RESERVE_MS, Math.floor(budget.remainingMs() / 3));
+  let failure: Error | null = null;
+  let registered: CarrierResult | null = null;
+  try {
+    const result = await a1.fetch(trackingNumber, { signal: budget.signal, budgetMs: Math.max(1, budget.remainingMs() - reserve) });
+    if (progressed(result)) return result;
+    registered = result;
+  } catch (error) {
+    if (context.signal?.aborted || !(error instanceof Error)) throw error;
+    if (!(error instanceof NotFoundError)) failure = error;
+  }
+  if (budget.signal.aborted) {
+    if (registered) return registered;
+    throw failure ?? new BudgetExceededError(PROVIDER, budget.budgetMs);
+  }
+  try {
+    const result = await uk.fetch(trackingNumber, { signal: budget.signal, budgetMs: budget.remainingMs() });
+    return registered && !progressed(result) ? registered : result;
+  } catch (error) {
+    if (context.signal?.aborted) throw error;
+    // A1's answer stands whatever the UK tracker says.
+    if (registered) return registered;
+    if (error instanceof NotFoundError) throw failure ?? new NotFoundError(PROVIDER);
+    throw failure ?? error;
+  }
+}
+
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new AsendiaA1Tracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const a1 = new AsendiaA1Tracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
+  const uk = new AsendiaUkTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   return {
     id: 'asendia',
-    // Plain HTTP against the public page's own API; no second tier.
+    // Plain HTTP against two public trackers' own requests; no second tier.
     steps: ['direct'],
-    track: (input, context) => tracker.fetch(input.number, context),
+    track: (input, context) => trackEverywhere(a1, uk, input.number, context),
   };
 };

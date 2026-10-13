@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -19,6 +19,12 @@ const reply = (name: string) => new Response(text(name), { headers: { 'Content-T
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const rows = (payload: Record<string, unknown>) => payload.events as Record<string, unknown>[];
 const details = (payload: Record<string, unknown>) => payload.details as Record<string, unknown>;
+const throttle = (seconds?: number) => new Response(JSON.stringify({ message: 'Too many requests', rateLimit: 120,
+  ...(seconds === undefined ? {} : { retryAfterSeconds: seconds }) }), { headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('Stallion Express HTTP adapter', () => {
   it('posts the whole number to the tracking page’s action once, through the supplied transport', async () => {
@@ -139,7 +145,10 @@ describe('Stallion Express HTTP adapter', () => {
   it('keeps an unknown number, the site’s throttle and other replies apart', async () => {
     const lookup = (response: Response) => carrier(vi.fn<typeof fetch>().mockResolvedValue(response)).track({ number: INTELCOM });
     await expect(lookup(reply('not-found'))).rejects.toMatchObject({ kind: 'not_found' });
-    await expect(lookup(reply('rate-limited'))).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 11_000 });
+    // Too long a wait for the budget left: the throttle is the answer at once.
+    const limited = vi.fn<typeof fetch>().mockResolvedValue(reply('rate-limited'));
+    await expect(carrier(limited).track({ number: INTELCOM }, { budgetMs: 12_000 })).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 11_000 });
+    expect(limited).toHaveBeenCalledOnce();
     for (const body of ['{"success":false,"errors":["Something went wrong"]}', '{"success":false,"errors":["No shipment found","Try again"]}',
       '{"message":""}', '0', '{"success":"true"}']) {
       await expect(lookup(new Response(body))).rejects.toMatchObject({ kind: 'indeterminate' });
@@ -184,6 +193,51 @@ describe('Stallion Express HTTP adapter', () => {
     const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply('usps-held'));
     await expect(carrier(fetcher).track({ number: USPS_CODE }, { budgetMs: 5000 })).resolves.toMatchObject({ current_stage: 'ready_for_pickup' });
     expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends a throttled lookup once more when the wait the site names is over', async () => {
+    vi.useFakeTimers();
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(throttle(2)).mockResolvedValueOnce(reply('intelcom-delivered'));
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    const answer = new StallionTracker({ fetcher, recorder }).fetch(INTELCOM, { budgetMs: 8_000 });
+    // The named seconds and one more for their rounding.
+    await vi.advanceTimersByTimeAsync(2_999);
+    expect(fetcher).toHaveBeenCalledOnce();
+    await vi.advanceTimersByTimeAsync(1);
+    await expect(answer).resolves.toMatchObject({ status: 'delivered' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(String(fetcher.mock.calls[1]![1]!.body)).toBe(`tracking_number=${INTELCOM}&action=se_track_form_submission`);
+    expect(recorder.step).toHaveBeenLastCalledWith(expect.objectContaining({ step: 'retry', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'rate_limited' }));
+  });
+
+  it('keeps the throttle when the lookup sent again is throttled too', async () => {
+    vi.useFakeTimers();
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(throttle(0)).mockResolvedValueOnce(throttle(4)).mockResolvedValue(reply('intelcom-delivered'));
+    const failure = expect(carrier(fetcher).track({ number: INTELCOM }, { budgetMs: 15_000 })).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 4_000 });
+    await vi.advanceTimersByTimeAsync(10_000);
+    await failure;
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('answers a throttle at once when it names no wait, a long one or one past the budget', async () => {
+    for (const [response, budgetMs] of [[throttle(), 60_000], [throttle(61), 600_000], [throttle(5), 7_000]] as const) {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(response).mockResolvedValue(reply('intelcom-delivered'));
+      await expect(carrier(fetcher).track({ number: INTELCOM }, { budgetMs })).rejects.toMatchObject({ kind: 'rate_limited' });
+      expect(fetcher).toHaveBeenCalledOnce();
+    }
+  });
+
+  it('stops waiting out the throttle when the caller cancels', async () => {
+    vi.useFakeTimers();
+    const controller = new AbortController();
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(throttle(3)).mockResolvedValue(reply('intelcom-delivered'));
+    const failure = expect(carrier(fetcher).track({ number: INTELCOM }, { signal: controller.signal, budgetMs: 10_000 }))
+      .rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 3_000 });
+    await vi.advanceTimersByTimeAsync(1_000);
+    controller.abort(new Error('cancelled'));
+    await failure;
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('ends a hanging read inside the caller’s budget', async () => {

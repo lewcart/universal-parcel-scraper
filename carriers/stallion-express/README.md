@@ -10,8 +10,8 @@ as Intelcom, USPS and PostNL for delivery. Tracked through the lookup its tracki
    same request; it needs no cookie, nonce, key, account or browser. The reply is JSON served as
    HTML: the shipment's code, service, ship-to place, tracking number and partner link, then its
    scans.
-2. `retry`: one more try when the request fails to reach the site or hangs. The first try gets
-   half of the budget.
+2. `retry`: one more try when the request fails to reach the site or hangs, the first having
+   had half of the budget, or when the site throttled it, once the wait it named is over.
 
 - The tracker finds a shipment by Stallion's code or by the number its partner tracks it under.
   A reply counts only when its shipment code is the one asked for, and an SE number only when it
@@ -20,9 +20,13 @@ as Intelcom, USPS and PostNL for delivery. Tracked through the lookup its tracki
   stay with their carriers.
 - "No shipment found" alone is the unknown-number answer. Any other error list, an empty reply
   or WordPress's `0` for a missing action is inconclusive.
-- The site throttles the lookups of all its visitors together and answers "Too many requests"
-  with HTTP 200 and the seconds to wait, which can come on the first request. That is
-  `RateLimitedError` with its delay; the adapter does not send the lookup again.
+- The site throttles the lookups of all its visitors together, so a lookup's first request can
+  meet it however slowly this adapter asks. It answers "Too many requests" with HTTP 200, its
+  limit and the seconds to wait in the JSON; no header carries them. The wait is a few seconds,
+  and a lookup sent once it is over is answered. The adapter waits the named seconds and one
+  more, for their rounding, then sends the lookup once again, when that leaves two seconds of
+  the budget for the request. Otherwise, and when the lookup sent again is throttled too, the
+  answer is `RateLimitedError` with the site's delay.
 - Recognition makes the same request. `stallion-express-1` and `stallion-express-2` offer
   Stallion Express, so preflight asks this adapter.
 

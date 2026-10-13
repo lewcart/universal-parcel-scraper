@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { parseTrackingInput } from '../../core/detection/index.js';
 import { NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { carrierScan } from '../../providers/shared/scans.js';
@@ -637,5 +638,25 @@ describe('Paack tracker', () => {
     await expect(new PaackTracker().fetch(LABEL_BARCODE, LABEL_POSTCODE))
       .rejects.toMatchObject({ kind: 'indeterminate' });
     expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('Paack links', () => {
+  it('reads the order number from a tracker link on either host and keeps neither the link nor its postcode', () => {
+    for (const page of [
+      'https://mydeliveries.paack.app/tracking',
+      'https://paack.co/shipments/tracking',
+      'https://www.paack.co/shipments/tracking/order',
+    ]) {
+      const match = parseTrackingInput(`${page}?tracking_number=${LABEL_BARCODE}&postal_code=${LABEL_POSTCODE}`);
+      expect(match, page).toMatchObject({ trackingNumber: LABEL_BARCODE, carrier: 'paack', source: 'link' });
+      expect(JSON.stringify(match), page).not.toContain(LABEL_POSTCODE);
+    }
+  });
+
+  it('leaves the rest of paack.co, the company site, alone', () => {
+    for (const page of ['https://paack.co/contact', 'https://paack.co/shipments/trackings']) {
+      expect(parseTrackingInput(`${page}?tracking_number=${LABEL_BARCODE}`).carrier, page).not.toBe('paack');
+    }
   });
 });

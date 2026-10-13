@@ -1630,6 +1630,15 @@ export const CARRIER_CATALOG = {
         "params": [
           "tracking_number"
         ]
+      },
+      {
+        "domains": [
+          "paack.co"
+        ],
+        "pathPattern": "^/shipments/tracking(?:/|$)",
+        "params": [
+          "tracking_number"
+        ]
       }
     ],
     "detectionRules": []

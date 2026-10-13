@@ -28,7 +28,8 @@ postcode.
 
 - Numbers are retailer order numbers or label barcodes with no stable shape, so there is no
   detection rule: a rule would cost precision for every other carrier. Paack is picked
-  manually or through a `mydeliveries.paack.app` link.
+  manually or through a link to its tracker, on `mydeliveries.paack.app` or under
+  `paack.co/shipments/tracking`. The rest of `paack.co` is the company site.
 - The postcode is half of the lookup key, so it is a credential: never log it, commit it or
   put it in an issue.
 - Stages come from each entry's stable `id` and `label` (a translation key), never from the

@@ -81,6 +81,15 @@
       "params": [
         "tracking_number"
       ]
+    },
+    {
+      "domains": [
+        "paack.co"
+      ],
+      "pathPattern": "^/shipments/tracking(?:/|$)",
+      "params": [
+        "tracking_number"
+      ]
     }
   ],
   "detection": []

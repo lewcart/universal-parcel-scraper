@@ -3,8 +3,9 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 
 /**
  * The tracker's English status wordings. The service sends no status code, so
- * each scan is staged by its wording. A parcel goes to a One Box locker, a One
- * Punkt pickup point or the recipient's door; the history does not say which.
+ * each scan is staged by its wording. A parcel goes to a locker, a pickup point
+ * or the recipient's door, Allegro's own or, for Allegro Delivery, a partner
+ * network's; the history does not say which.
  */
 export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   // The sender made the label; Allegro One has not handled the parcel yet.
@@ -19,6 +20,8 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'Courier has transferred the parcel to the warehouse': 'in_transit',
   'Parcel has been dispatched to its destination point': 'in_transit',
   'Parcel has been accepted at the sorting center': 'in_transit',
+  'Parcel has been accepted at the delivery center': 'in_transit',
+  'Parcel has been accepted at the destination center': 'in_transit',
   'Dispatched from sorting center': 'in_transit',
   'Parcel has been accepted at the branch': 'in_transit',
   'Parcel has been redirected to a different point': 'in_transit',
@@ -28,6 +31,10 @@ export const ALLEGRO_ONE_SCANS: Readonly<Record<string, Stage>> = {
   'Parcel has been released for delivery': 'out_for_delivery',
   // The courier found the locker full and keeps the parcel.
   'No space in the parcel locker': 'failed_attempt',
+  // The courier could not leave the parcel at the chosen point and takes it back.
+  'Destination pick-up point is not available': 'failed_attempt',
+  // "Awizo": nobody took the parcel at the door and a notice was left.
+  Notice: 'failed_attempt',
   // The recipient is asked to choose another point.
   'Parcel is waiting for an alternative point indication': 'exception',
   'Parcel is awaiting pick-up': 'ready_for_pickup',

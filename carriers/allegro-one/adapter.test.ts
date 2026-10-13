@@ -14,6 +14,8 @@ const READY = 'A0ZZ000002';
 const RETURNED = 'A0ZZ000003';
 const TRANSIT = 'A0ZZ000004';
 const DELIVERY = 'ADZZ000001';
+const PARTNER = 'AD0ZZZZZZZZZZ0001';
+const SENT_BACK = 'AD0ZZZZZZZZZZ0002';
 const OLDER = 'ALE900000000001';
 const text = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
 const fixture = (name: string): { status: Record<string, unknown>[] } => JSON.parse(text(name));
@@ -79,6 +81,41 @@ describe('Allegro One HTTP adapter', () => {
       stage: 'in_transit', stage_source: 'carrier_map' });
   });
 
+  it('reads an Allegro Delivery parcel under its seventeen-character number', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(text('delivery')));
+    const result = await carrier(fetcher).track({ number: 'ad0z-zzzz-zzzz-z0001' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe(`${ALLEGRO_ONE_ENDPOINT}?packageNo=${PARTNER}`);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Parcel has been delivered',
+      delivered_at: '2026-10-01T15:55:02Z' });
+    expect(result.events!.map((event) => [event.description, event.stage])).toEqual([
+      ['Parcel has been delivered', 'delivered'],
+      ['Parcel is awaiting pick-up', 'ready_for_pickup'],
+      ['Parcel has been accepted at the branch', 'in_transit'],
+      ['Notice', 'failed_attempt'],
+      ['Parcel has been released for delivery', 'out_for_delivery'],
+      ['Parcel has been accepted at the destination center', 'in_transit'],
+      ['Parcel has been accepted at the delivery center', 'in_transit'],
+      ['Parcel has been picked up from point by courier', 'accepted'],
+      ['Parcel has been dispatched at point', 'accepted'],
+      ['Parcel has been prepared by the sender', 'registered'],
+    ]);
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map')).toBe(true);
+  });
+
+  it('reads the scans after a return to the sender as the way back', () => {
+    const result = parseAllegroOne(fixture('sent-back'), SENT_BACK);
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',
+      last_status_text: 'Parcel has been released for delivery', last_update: '2026-09-28T05:50:33.164Z' });
+    expect(result.events!.map((event) => event.stage)).toEqual(['returned', 'returned', 'returned', 'returned', 'returned',
+      'failed_attempt', 'out_for_delivery', 'in_transit', 'failed_attempt', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted',
+      'accepted', 'registered']);
+    const back = fixture('sent-back');
+    back.status.push({ eventTimestamp: '2026-09-28T12:14:51Z', description: 'Parcel has been delivered' });
+    const delivered = parseAllegroOne(back, SENT_BACK);
+    expect(delivered).toMatchObject({ current_stage: 'returned', last_status_text: 'Parcel has been delivered' });
+    expect(delivered.delivered_at).toBeUndefined();
+  });
+
   it('orders scans by instant, keeps equal ones in the order they were logged and leaves unknown wording to the shared rules', () => {
     const weighed = { eventTimestamp: '2026-10-02T11:20:07.345Z', description: 'Parcel has been weighed' };
     const extended = { time: '2026-10-02T11:20:07.345Z', description: 'Time for pick-up has been extended', stage: 'ready_for_pickup', stage_source: 'carrier_map' };
@@ -126,11 +163,12 @@ describe('Allegro One HTTP adapter', () => {
     }
   });
 
-  it('reads an empty list as not found for A0 numbers and as no history for the others', async () => {
+  it('reads an empty list as not found for A0 and AD numbers and as no history for the older form', async () => {
     const lookup = (number: string, body = '{"status":[]}') => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body))).track({ number });
     await expect(lookup(DELIVERED)).rejects.toMatchObject({ kind: 'not_found' });
     await expect(lookup(DELIVERED, '{"status":null}')).rejects.toMatchObject({ kind: 'not_found' });
-    await expect(lookup(DELIVERY)).rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
+    await expect(lookup(DELIVERY)).rejects.toMatchObject({ kind: 'not_found' });
+    await expect(lookup(PARTNER)).rejects.toMatchObject({ kind: 'not_found' });
     await expect(lookup(OLDER)).rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
     await expect(lookup(OLDER, text('delivered'))).resolves.toMatchObject({ current_stage: 'delivered' });
   });
@@ -174,13 +212,15 @@ describe('Allegro One HTTP adapter', () => {
 
   it('rejects numbers Allegro One does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['A1ZZ000001', 'A0ZZ00001', 'A0ZZ0000011', 'AEZZ000001', 'ALE90000000001', 'ALE9000000000A1', 'A0ZZ_00001']) {
+    for (const number of ['A1ZZ000001', 'A0ZZ00001', 'A0ZZ0000011', 'AEZZ000001', 'ALE90000000001', 'ALE9000000000A1', 'A0ZZ_00001',
+      'AD0ZZZZZZZZZZ000', 'AD0ZZZZZZZZZZ00011', 'A0ZZZZZZZZZZZ0001', 'AD900000000001']) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeAllegroOneNumber('a0zz 0000.01')).toBe(DELIVERED);
     expect(normalizeAllegroOneNumber(OLDER.toLowerCase())).toBe(OLDER);
+    expect(normalizeAllegroOneNumber('AD0AEIOUY00000001')).toBe('AD0AEIOUY00000001');
   });
 
   it('sends a read that failed to reach Allegro once more', async () => {
@@ -205,11 +245,17 @@ describe('Allegro One HTTP adapter', () => {
   });
 
   it('routes a detected number and a pasted tracking link to the adapter', async () => {
-    expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'allegro-one', confidence: 'high' });
+    for (const number of [DELIVERED, PARTNER]) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'allegro-one', confidence: 'high' });
+    }
+    // Seventeen-character numbers seen use digits and consonants after AD0.
+    expect(detectCarrierMatch('AD0AZZZZZZZZZ0001').carrier).not.toBe('allegro-one');
     for (const link of [`https://allegro.pl/allegrodelivery/sledzenie-paczki?numer=${DELIVERED}`,
       `https://allegro.pl/kampania/one/kurier/sledzenie-paczki?numer=${DELIVERED}`]) {
       expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: DELIVERED, carrier: 'allegro-one', source: 'link' });
     }
+    expect(parseTrackingInput(`https://allegro.pl/allegrodelivery/sledzenie-paczki?numer=${PARTNER}`))
+      .toMatchObject({ trackingNumber: PARTNER, carrier: 'allegro-one', source: 'link' });
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(text('delivered')));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'allegro-one' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'allegro-one', source: 'allegro-one', result: { current_stage: 'delivered' } });

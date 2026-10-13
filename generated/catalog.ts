@@ -4857,6 +4857,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^A[0D][0-9A-Z]{8}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^AD0[0-9B-DF-HJ-NP-TV-XZ]{14}$",
+        "confidence": "high"
       }
     ]
   },
@@ -9220,7 +9224,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "99minutos": [],
   "abf-freight": [],
   "acs-courier": [],
-  "allegro-one": ["allegro-one-1"],
+  "allegro-one": ["allegro-one-1","allegro-one-2"],
   "apc-overnight": ["apc-overnight-1"],
   "aras-kargo": [],
   "box-now": [],

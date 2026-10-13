@@ -1,8 +1,9 @@
 # Allegro One
 
-Allegro's own delivery network in Poland: One Box lockers, One Punkt pickup points and One
-Kurier couriers. Tracked through the service Allegro's tracking page asks on Allegro's edge
-gateway.
+Allegro's own delivery network in Poland, with One Box lockers, One Punkt pickup points and One
+Kurier couriers, and Allegro Delivery, the service under which partner networks such as DPD,
+DHL eCommerce and ORLEN Paczka carry parcels for Allegro under Allegro's own number. Tracked
+through the service Allegro's tracking page asks on Allegro's edge gateway.
 
 ## How it works
 
@@ -15,13 +16,16 @@ gateway.
    half of the budget.
 
 - The reply does not echo the number: the scans are those of the number in the request.
-- An empty or null list is what the tracker shows as not found. Every A0 number seen lists scans
-  from its label on, so an empty list for an A0 number is `NotFoundError`. Every real AD number
-  seen got an empty list, so for AD numbers and the older ALE form it is `NoHistoryError`.
+- An empty or null list is what the tracker shows as not found. Every fresh A0 and AD number
+  seen lists scans from its label on, so an empty list for them is `NotFoundError`. Older
+  Allegro Delivery parcels drop out of the service, so an old AD number reads as not found too.
+  For the older ALE form an empty list is `NoHistoryError`.
+- Once a scan says the parcel went back to the sender, the later scans are its way back and are
+  staged `returned`, a delivery to the sender included.
 - A refused request (HTTP 400 or 406), the gateway's "Feature unavailable" 404 for a retired
   route, a redirect, a bot check and malformed replies keep their own kinds; none is not found.
-- Recognition makes the same request. `allegro-one-1` claims these numbers at high confidence,
-  so preflight does not ask it.
+- Recognition makes the same request. `allegro-one-1` and `allegro-one-2` claim these numbers
+  at high confidence, so preflight does not ask it.
 
 ## Notes
 
@@ -34,25 +38,30 @@ gateway.
   is left to the shared wording rules.
 - The older Allegro One page asked `/one/tracking`, which answers the same numbers but leaves out
   a newer parcel's sorting-centre scans, so it is not used.
+- Allegro Delivery's partner scans come through the same service, in the same wording.
 
 ## Numbers
 
-Allegro One numbers are ten letters and digits starting `A0`; Allegro Delivery numbers start
-`AD`. `allegro-one-1` claims `A0` or `AD` followed by eight letters and digits. The tracker also
-answers an older form, `ALE` and twelve digits, which the adapter takes but detection does not
-offer. Allegro publishes no check digit.
+Allegro One numbers are ten letters and digits starting `A0`. Allegro Delivery numbers start
+`AD` and have seventeen characters: `AD0` and fourteen digits and consonants. Earlier Allegro
+Delivery numbers, and some returns, have ten characters like Allegro One's. `allegro-one-1`
+claims `A0` or `AD` followed by eight letters and digits, `allegro-one-2` the seventeen-character
+form. The adapter takes `AD` and any fifteen letters and digits. Allegro's courier pickup orders,
+`AD` and twelve digits, are not parcels. The tracker also answers an older form, `ALE` and twelve
+digits, which the adapter takes but detection does not offer. Allegro publishes no check digit.
 
 ## Links
 
 `allegro.pl/allegrodelivery/sledzenie-paczki?numer={number}` and the older
 `allegro.pl/kampania/one/kurier/sledzenie-paczki?numer={number}` open the tracker with the number.
-These links name Allegro One only for a number `allegro-one-1` claims (`ownNumbersOnly`). Any
+These links name Allegro One only for a number its detection rules claim (`ownNumbersOnly`). Any
 other number they hold, the `ALE` form included, is detected on its own.
 
 ## Limitations
 
 - No location, pickup point, delivery estimate, weight, service, sender or recipient.
-- Allegro Delivery's AD numbers get an empty list.
+- The reply names neither the partner carrying an Allegro Delivery parcel nor that partner's
+  number.
 
 ## Testing
 

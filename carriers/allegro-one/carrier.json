@@ -86,6 +86,11 @@
       "id": "allegro-one-1",
       "pattern": "^A[0D][0-9A-Z]{8}$",
       "confidence": "high"
+    },
+    {
+      "id": "allegro-one-2",
+      "pattern": "^AD0[0-9B-DF-HJ-NP-TV-XZ]{14}$",
+      "confidence": "high"
     }
   ]
 }

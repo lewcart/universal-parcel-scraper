@@ -25042,6 +25042,38 @@
     ]
   },
   {
+    "input": "AD02Q8B1A9",
+    "carrier": "allegro-one",
+    "confidence": "high",
+    "candidates": [
+      "allegro-one"
+    ]
+  },
+  {
+    "input": "AD03W23ZL2L6HG4L5",
+    "carrier": "allegro-one",
+    "confidence": "high",
+    "candidates": [
+      "allegro-one"
+    ]
+  },
+  {
+    "input": "AD0JX72613SBJPHS7",
+    "carrier": "allegro-one",
+    "confidence": "high",
+    "candidates": [
+      "allegro-one"
+    ]
+  },
+  {
+    "input": "AD0LQ4BXVVM7783F2",
+    "carrier": "allegro-one",
+    "confidence": "high",
+    "candidates": [
+      "allegro-one"
+    ]
+  },
+  {
     "input": "AD794706068BR",
     "carrier": "correios-br",
     "confidence": "high",

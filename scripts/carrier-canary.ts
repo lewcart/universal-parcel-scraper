@@ -1,3 +1,4 @@
+import { request } from 'node:https';
 import { isIP } from 'node:net';
 import { pathToFileURL } from 'node:url';
 import catalog from '../data/catalog.json' with { type: 'json' };
@@ -15,6 +16,15 @@ const ERROR_NAMES = new Set([
   'Error', 'TypeError', 'AggregateError', 'AbortError', 'TimeoutError',
   'ConnectTimeoutError', 'HeadersTimeoutError', 'BodyTimeoutError', 'SocketError',
 ]);
+const PROBE_HEADERS = {
+  Accept: 'text/html,application/json;q=0.8,*/*;q=0.5',
+  // A browser names a language. WanbExpress answers Node's default `*` with a 500.
+  'Accept-Language': 'en',
+  'User-Agent': DEFAULT_USER_AGENT,
+};
+// The server sends its own certificate and leaves the rest of the chain to the
+// client. A browser fetches the missing certificate; Node does not.
+const INCOMPLETE_CHAIN = 'UNABLE_TO_VERIFY_LEAF_SIGNATURE';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -112,16 +122,53 @@ export function automaticCanaryTargets(
   return targets;
 }
 
-export async function requestCanaryStatus(url: string, timeoutMs: number): Promise<number> {
-  const response = await fetch(url, {
-    headers: {
-      Accept: 'text/html,application/json;q=0.8,*/*;q=0.5',
-      'User-Agent': DEFAULT_USER_AGENT,
-    },
-    cache: 'no-store',
-    redirect: 'manual',
-    signal: AbortSignal.timeout(timeoutMs),
+/** A reply a browser reads and Node refuses: an incomplete certificate chain or a malformed header. */
+function refusedByNodeOnly(error: unknown): boolean {
+  const cause = isRecord(error) ? error.cause : undefined;
+  return isRecord(cause) && (cause.code === INCOMPLETE_CHAIN || cause.name === 'HTTPParserError');
+}
+
+/**
+ * Reads the status of a front door whose reply only Node refuses. The probe
+ * sends no secret and reads no body, so it can skip the chain check and parse
+ * headers loosely; any other certificate fault still fails.
+ */
+function requestLenientCanaryStatus(url: string, timeoutMs: number): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const lookup = request(url, {
+      headers: PROBE_HEADERS,
+      rejectUnauthorized: false,
+      insecureHTTPParser: true,
+      signal: AbortSignal.timeout(timeoutMs),
+    }, (response) => {
+      // Node sets the verification error's code here, not an Error.
+      const fault: unknown = (response.socket as { authorizationError?: unknown }).authorizationError;
+      const status = response.statusCode;
+      response.destroy();
+      if (status === undefined || (fault && fault !== INCOMPLETE_CHAIN)) {
+        reject(Object.assign(new Error('Unreadable front door'), { code: fault }));
+      } else {
+        resolve(status);
+      }
+    });
+    lookup.on('error', reject);
+    lookup.end();
   });
+}
+
+export async function requestCanaryStatus(url: string, timeoutMs: number): Promise<number> {
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: PROBE_HEADERS,
+      cache: 'no-store',
+      redirect: 'manual',
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+  } catch (error) {
+    if (!refusedByNodeOnly(error)) throw error;
+    return requestLenientCanaryStatus(url, timeoutMs);
+  }
   try {
     await response.body?.cancel();
   } catch {

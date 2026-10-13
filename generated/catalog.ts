@@ -8343,7 +8343,7 @@ export const CARRIER_CATALOG = {
       "recognitionRank": 370
     },
     "canaryUrl": "https://sameday.ro/",
-    "trackingSearchUrl": "https://sameday.ro/",
+    "trackingSearchUrl": "https://sameday.ro/status-colet/",
     "linkRules": [],
     "detectionRules": [
       {

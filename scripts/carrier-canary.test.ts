@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { request } from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -8,10 +9,25 @@ import {
   carrierCanaryMain,
   probeCanaryTarget,
   recheckUnanswered,
+  requestCanaryStatus,
   runCanaries,
   type CanaryResult,
   type CanaryTarget,
 } from './carrier-canary.js';
+
+vi.mock('node:https', () => ({ request: vi.fn() }));
+
+/** The loose read's reply: a status, and the certificate fault Node found, if any. */
+function answerLooseRead(statusCode: number, authorizationError: string | null): void {
+  vi.mocked(request).mockImplementation(((_url: string, _options: object, onResponse: (response: object) => void) => ({
+    on: vi.fn(),
+    end: () => { onResponse({ statusCode, socket: { authorizationError }, destroy: vi.fn() }); },
+  })) as never);
+}
+
+function fetchFailure(cause: { code?: string; name?: string }): TypeError {
+  return new TypeError('fetch failed', { cause: Object.assign(new Error('private-token'), cause) });
+}
 
 describe('carrier front-door canaries', () => {
   afterEach(() => {
@@ -253,5 +269,33 @@ describe('carrier front-door canaries', () => {
     expect(results.map((result) => result.target.carrierId))
       .toEqual(targets.map((item) => item.carrierId));
     expect(maximum).toBeLessThanOrEqual(6);
+  });
+
+  it('reads the status of a front door whose reply only Node refuses', async () => {
+    vi.stubGlobal('fetch', vi.fn()
+      .mockRejectedValueOnce(fetchFailure({ code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' }))
+      .mockRejectedValueOnce(fetchFailure({ name: 'HTTPParserError' })));
+
+    answerLooseRead(200, 'UNABLE_TO_VERIFY_LEAF_SIGNATURE');
+    expect(await requestCanaryStatus(target.url, 1000)).toBe(200);
+    expect(request).toHaveBeenCalledWith(target.url,
+      expect.objectContaining({ rejectUnauthorized: false, insecureHTTPParser: true }), expect.any(Function));
+
+    // The status still decides: a missing page fails the probe.
+    answerLooseRead(404, null);
+    expect(await requestCanaryStatus(target.url, 1000)).toBe(404);
+  });
+
+  it('keeps every other certificate fault and connection failure unanswered', async () => {
+    vi.mocked(request).mockClear();
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(fetchFailure({ code: 'CERT_HAS_EXPIRED' })));
+    await expect(requestCanaryStatus(target.url, 1000)).rejects.toThrow(TypeError);
+    expect(request).not.toHaveBeenCalled();
+
+    // An incomplete chain can sit in front of another fault.
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(fetchFailure({ code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' })));
+    answerLooseRead(200, 'ERR_TLS_CERT_ALTNAME_INVALID');
+    await expect(requestCanaryStatus(target.url, 1000)).rejects.toMatchObject({ code: 'ERR_TLS_CERT_ALTNAME_INVALID' });
+    expect(await probeCanaryTarget(target, { attempts: 1 })).toEqual({ target, status: null, error: 'Error' });
   });
 });

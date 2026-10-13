@@ -311,8 +311,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ciblex', number: '000000000000000000000001',
     route: /^https:\/\/secure\.extranet\.ciblex\.fr\/extranet\/client\/corps\.php\?/,
     marker: /SUIVI DE VOS COLIS|SUIVI COLIS/i },
+  // The tracker is moving to paack.co/shipments, and the old host forwards some visits there.
   { carrier: 'paack', number: 'EXCHANGE000001D',
-    route: /^https:\/\/mydeliveries\.paack\.app\/tracking\?/,
+    route: /^https:\/\/(?:mydeliveries\.paack\.app|paack\.co\/shipments)\/tracking\?/,
     marker: /Track your order|Track My Order|Order number/i },
   { carrier: 'asendia', number: 'ASE00000000',
     route: /^https:\/\/track\.asendia\.com\/track\//,

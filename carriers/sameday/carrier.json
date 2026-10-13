@@ -33,7 +33,7 @@
     "provider_code"
   ],
   "portal": {
-    "searchUrl": "https://sameday.ro/",
+    "searchUrl": "https://sameday.ro/status-colet/",
     "canaryUrl": "https://sameday.ro/",
     "shows": [
       "status",

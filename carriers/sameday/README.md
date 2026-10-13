@@ -53,8 +53,8 @@ HTML, 403 and 429 replies and malformed JSON are never read as not found.
 
 There is no estimated delivery, pickup point name or service name in the reply. The Romanian
 site's result page, `sameday.ro/status-colet/?awb=<number>`, answers automated browsers with a
-Cloudflare check, so the catalog links only its home page tracker. The API hosts have no such
-check.
+Cloudflare check, so the catalog links that page without a number. The home page hides its own
+tracker and sends visitors there. The API hosts have no such check.
 
 ## Live test
 

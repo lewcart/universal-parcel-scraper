@@ -38,6 +38,32 @@ describe('locatePlace', () => {
     expectPlace('OTTAWA, ON', { country: 'CA', name: 'Ottawa', latitude: 45.41, longitude: -75.7 });
     expectPlace('Sausheim 68 (68)', { country: 'FR', name: 'Sausheim', latitude: 47.79, longitude: 7.37 });
     expectPlace('Buchs AG', { country: 'CH', name: 'Buchs', latitude: 47.39, longitude: 8.08 }, ['CH']);
+    // A state the text gives holds: Earth City in Missouri, not Earth in Texas.
+    expectPlace('Earth City, MO, United States', { country: 'US', name: 'Earth City', latitude: 38.77, longitude: -90.47 });
+    expectPlace('Earth, TX', { country: 'US', name: 'Earth', latitude: 34.23, longitude: -102.41 });
+  });
+
+  it('tells a province or an office code from a country', () => {
+    // Royal Mail ends its mail centres with MC and its delivery offices with DO: not Monaco, nor the Dominican Republic.
+    expectPlace('Norwich MC', { country: 'GB', name: 'Norwich', latitude: 52.63, longitude: 1.3 });
+    expectPlace('Coventry South DO', { country: 'GB', name: 'Coventry', latitude: 52.41, longitude: -1.51 });
+    // A town of the code's country keeps it.
+    expectPlace('MONTE CARLO MC', { country: 'MC', name: 'Monte-Carlo', latitude: 43.74, longitude: 7.43 });
+    expectPlace('SANTO DOMINGO DO', { country: 'DO', name: 'Santo Domingo', latitude: 18.47, longitude: -69.89 });
+    // Turin's province in brackets, not Tonga; the state of Bahia, not the Bahamas.
+    expectPlace('PINEROLO (TO)', { country: 'IT', name: 'Pinerolo', latitude: 44.89, longitude: 7.33 });
+    expectPlace('SALVADOR, BA', { country: 'BR', name: 'Salvador', latitude: -12.98, longitude: -38.49 });
+    // Spain, unless the parcel is in Brazil, where ES is Espírito Santo.
+    expect(place('VITORIA, ES')).toMatchObject({ precision: 'city', country: 'ES' });
+    expect(place('VITORIA, ES', ['BR'])).toMatchObject({ precision: 'city', country: 'BR' });
+    // A state the lookup has no code for, on a parcel in its country.
+    expectPlace('MUMBAI, MH', { country: 'IN', name: 'Mumbai', latitude: 19.07, longitude: 72.88 }, ['IN']);
+    // No town before the code, on a parcel known elsewhere: no country either.
+    expect(place('Home Counties North MC', ['GB'])).toBeNull();
+    expect(place('UFFICIO POSTALE (TO)', ['IT'])).toBeNull();
+    // The parcel's own country is one.
+    expect(place('MOKRONOS DOLNY (PL)', ['PL'])).toMatchObject({ precision: 'country', country: 'PL' });
+    expect(place('Example Hub, CH', ['FR'])).toMatchObject({ precision: 'country', country: 'CH' });
   });
 
   it('reads DHL Express lines that end in a state or a country after a dash', () => {
@@ -86,6 +112,10 @@ describe('locatePlace', () => {
     // Mondial Relay's agency in Terrasson-Lavilledieu, under the town's short name.
     expect(place('TERRASSON', ['FR'])).toEqual({ precision: 'city', country: 'FR', name: 'Terrasson-Lavilledieu', latitude: 45.129, longitude: 1.32 });
     expect(place('Agence de Terrasson')).toMatchObject({ country: 'FR', latitude: 45.129, longitude: 1.32 });
+    // Royal Mail's mail centres named after an area, and Cainiao's warehouse in Shatian, Dongguan.
+    expect(place('South Midlands MC')).toEqual({ precision: 'city', country: 'GB', name: 'Northampton', site: 'South Midlands Mail Centre', latitude: 52.216, longitude: -0.953 });
+    expect(place('Princess Royal Parcel Hub')).toMatchObject({ country: 'GB', name: 'London', site: 'Princess Royal Distribution Centre', latitude: 51.541 });
+    expect(place('Shatian Town')).toEqual({ precision: 'city', country: 'CN', name: 'Shatian Town', latitude: 22.923, longitude: 113.613 });
     // A longer name that contains a hub's is that place.
     expect(place('Terrasson-Lavilledieu', ['FR'])).toMatchObject({ country: 'FR', name: 'Terrasson-Lavilledieu' });
     expect(place('Terrasson-Lavilledieu', ['FR'])!.longitude).toBeCloseTo(1.3, 2);
@@ -94,6 +124,16 @@ describe('locatePlace', () => {
     expect(place('Roissy-en-Brie')).toMatchObject({ country: 'FR', name: 'Roissy-en-Brie' });
     // A country or a region in the text names no airport.
     for (const location of ['Cuernavaca, Mexico', 'HSINCHU - TAIWAN', 'Soyapango, San Salvador']) expect(place(location)?.site, location).toBeUndefined();
+  });
+
+  it("knows a carrier's own hub by the name the carrier gives it", () => {
+    // DPD's Swiss depot is in Buchs in the canton of Zurich; any other Buchs still has to say so.
+    expect(locatePlace('Buchs, CH', { carriers: ['dpd'] })).toMatchObject({ country: 'CH', name: 'Buchs', latitude: 47.452, longitude: 8.43 });
+    expect(locatePlace('Buchs SG', { carriers: ['dpd'] })).toMatchObject({ latitude: 47.167, longitude: 9.478 });
+    expect(place('Buchs, CH')).toMatchObject({ latitude: 47.167, longitude: 9.478 });
+    // DHL's parcel centre is in Staufenberg in Lower Saxony, not the town in Hesse.
+    expect(locatePlace('Staufenberg', { countries: ['DE'], carriers: ['dhl-ecommerce'] })).toMatchObject({ country: 'DE', latitude: 51.372, longitude: 9.634 });
+    expect(place('Staufenberg', ['DE'])).toMatchObject({ country: 'DE', latitude: 50.662, longitude: 8.732 });
   });
 
   it('reads Chinese, Japanese and Korean names', () => {
@@ -220,5 +260,37 @@ describe('placesForEvents', () => {
     expect(placesForEvents(['Dintikon'], { carrierCountries: ['CH', 'LI'] })[0]?.name).toBe('Dintikon');
     expect(placesForEvents(['Emmen'], { destinationCountry: 'CH' })[0]?.country).toBe('CH');
     expect(placesForEvents(['Dintikon'])[0]).toBeNull();
+  });
+
+  const route = (locations: string[], options?: Parameters<typeof placesForEvents>[1]) =>
+    placesForEvents(locations, options).map((found) => found && `${found.name}, ${found.country}`);
+
+  it("takes a carrier's countries and hubs from the catalog", () => {
+    expect(route(['Dintikon'], { carriers: ['swiss-post'] })).toEqual(['Dintikon, CH']);
+    // Royal Mail is British, whatever clock its scans keep: Langley by Heathrow, not Langley in Canada.
+    expect(route(['Norwich MC', 'LANGLEY', 'Roissy'], { carriers: ['royal-mail'] })).toEqual(['Norwich, GB', 'Langley, GB', 'Roissy, FR']);
+    expect(placesForEvents(['Rothenburg, CH', 'Buchs, CH'], { carriers: ['dpd'] })[1]).toMatchObject({ latitude: 47.452, longitude: 8.43 });
+    // A carrier the catalog does not know adds nothing.
+    expect(route(['Dintikon'], { carriers: ['example-carrier'] })).toEqual([null]);
+  });
+
+  it('gives a namesake far off the way of the parcel no place', () => {
+    const royalMail = { carriers: ['royal-mail'] };
+    // The mail centre for Cornwall is not in Cornwall, Ontario, and the next scan is not in Nova Scotia after it.
+    expect(route(['Plymouth MC', 'Cornwall MC', 'Truro DO'], royalMail)).toEqual(['Plymouth, GB', null, 'Truro, GB']);
+    expect(route(['FR', 'Cornwall', 'GB'])).toEqual(['France, FR', null, 'United Kingdom, GB']);
+    // Where the scans stop there is no way to be off, only a distance: a name several towns share is not enough.
+    expect(route(['Plymouth MC', 'Cornwall MC'], royalMail)).toEqual(['Plymouth, GB', null]);
+    expect(route(['Mount Pleasant MC'], royalMail)).toEqual([null]);
+    // Its own text, the destination or a scan nearby keeps the town.
+    expect(route(['Plymouth MC', 'Cornwall, ON'], royalMail)).toEqual(['Plymouth, GB', 'Cornwall, CA']);
+    expect(route(['Plymouth MC', 'Cornwall'], { ...royalMail, destinationCountry: 'CA' })).toEqual(['Plymouth, GB', 'Cornwall, CA']);
+    expect(route(['Heathrow', 'Mississauga', 'Cornwall'], royalMail)).toEqual(['Heathrow, GB', 'Mississauga, CA', 'Cornwall, CA']);
+    // So does a name no other town has, or a world city's.
+    expect(route(['Xiaoshan District'], { carriers: ['ecoscooting'] })).toEqual(['Xiaoshan, CN']);
+    expect(route(['Heathrow', 'Chicago'], royalMail)).toEqual(['Heathrow, GB', 'Chicago, US']);
+    // A hub on the way is no detour, and a parcel nothing is known about keeps what its scans say.
+    expect(route(['Shenzhen', 'Liège', 'Paris'], { carriers: ['la-poste'] })).toEqual(['Shenzhen, CN', 'Liège, BE', 'Paris, FR']);
+    expect(route(['Mount Pleasant MC'])).toEqual(['Mount Pleasant, US']);
   });
 });

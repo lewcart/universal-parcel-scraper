@@ -1,6 +1,8 @@
 
 import { readFileSync } from 'node:fs';
 import { brotliDecompressSync } from 'node:zlib';
+import { CARRIER_DEFINITIONS } from '../core/catalog/definitions.js';
+import { timeZoneCountry } from '../core/time/index.js';
 import { ambiguousAddressCodes, trackingPlace } from './trackingLocation.js';
 import facilityList from './facilities.json' with { type: 'json' };
 import hubList from './hubs.json' with { type: 'json' };
@@ -27,6 +29,8 @@ export interface EventPoint {
 export interface PlaceHints {
   /** Countries the parcel is likely in, strongest first: neighbouring scans, destination, carrier. */
   countries?: readonly string[];
+  /** The parcel's carriers, by catalog id: a hub of their own is known by the name they give it. */
+  carriers?: readonly string[];
 }
 
 interface Airport { code: string; country: string; latitude: number; longitude: number; name: string; town: string }
@@ -53,6 +57,8 @@ interface Gazetteer {
   regionNames: Map<string, string[]>;
   /** Airports with scheduled flights, by IATA code. */
   airports: Map<string, Airport>;
+  /** The places of each country, filled when first asked for. */
+  byCountry: Map<string, number[]>;
 }
 
 const DATA = new URL('./places.tsv.br', import.meta.url);
@@ -100,14 +106,37 @@ const POINT_MAX_KM = 30;
 const AIRPORT_MAX_KM = 60;
 // A hub's name ranks like a town of this many thousand people.
 const HUB_THOUSANDS = 50;
+// A carrier that delivers in more countries than this is at home in none of them.
+const HOME_COUNTRIES_MAX = 6;
+// A town only its name places is a namesake when it takes the parcel this far off its way,
+const DETOUR_MAX_KM = 6000;
+// or, where the scans stop, when it is this far from them and from the parcel's countries.
+const LEAP_MAX_KM = 3000;
+// There, a city of this many thousand people is known wherever it is written.
+const WORLD_CITY_THOUSANDS = 1000;
 /** The city a region is named after ("Santo Domingo Province") has at least this many thousand people. */
 const NAMESAKE_THOUSANDS = 100;
 
 // Swiss Post scans end in the site's six-digit number: "Zürich Briefzentrum 801050".
 const FACILITIES = new Map(facilityList.map((facility) => [`${facility.country}:${facility.code}`, facility]));
+interface Hub {
+  country: string;
+  names: string[];
+  town: string;
+  /** The state, province or canton, where carriers write one after the town. */
+  admin1?: string;
+  /** The facility's own name, when the carrier's words are not the town's. */
+  site?: string;
+  airport?: string;
+  latitude?: number;
+  longitude?: number;
+  /** The carriers whose hub this is; any carrier's when absent. */
+  carriers?: string[];
+}
 // Names carriers give a hub instead of its town ("ROISSY" is Paris-Charles de Gaulle, not
 // Roissy-en-Brie), and hubs the gazetteer cannot place by name ("SEKOCIN STARY", "Fenggang Town", "TERRASSON").
-const HUBS = new Map(hubList.flatMap((hub) => hub.names.map((name) => [nameKey(name), hub])));
+const HUBS = new Map<string, Hub[]>();
+for (const hub of hubList as Hub[]) for (const name of hub.names) HUBS.set(nameKey(name), [...HUBS.get(nameKey(name)) ?? [], hub]);
 
 let loaded: Gazetteer | null = null;
 
@@ -138,7 +167,7 @@ function gazetteer(): Gazetteer {
     names: [], codes: [],
     country: new Uint16Array(count), admin1: new Uint16Array(count), admin2: new Uint16Array(count),
     latitude: new Float32Array(count), longitude: new Float32Array(count), population: new Uint32Array(count),
-    keys: new Map(), postcodes: new Map(), countries: new Map(), regions: new Map(), regionNames: new Map(), airports: new Map(),
+    keys: new Map(), postcodes: new Map(), countries: new Map(), regions: new Map(), regionNames: new Map(), airports: new Map(), byCountry: new Map(),
   };
   const codeIndex = new Map<string, number>();
   const code = (value: string) => {
@@ -199,6 +228,24 @@ function distanceKm(latitude1: number, longitude1: number, latitude2: number, lo
   const a = Math.sin((latitude2 - latitude1) * radians / 2) ** 2
     + Math.cos(latitude1 * radians) * Math.cos(latitude2 * radians) * Math.sin((longitude2 - longitude1) * radians / 2) ** 2;
   return 12742 * Math.asin(Math.sqrt(a));
+}
+
+/** How far a point is from a country: from the nearest of its towns. */
+function countryDistanceKm(country: string, latitude: number, longitude: number): number {
+  const data = gazetteer();
+  if (!data.byCountry.size) {
+    data.country.forEach((code, index) => {
+      const name = data.codes[code]!;
+      const list = data.byCountry.get(name);
+      if (list) list.push(index);
+      else data.byCountry.set(name, [index]);
+    });
+  }
+  let nearest = Infinity;
+  for (const index of data.byCountry.get(country) ?? []) {
+    nearest = Math.min(nearest, distanceKm(latitude, longitude, data.latitude[index]!, data.longitude[index]!));
+  }
+  return nearest;
 }
 
 interface Token { key: string; start: number; end: number }
@@ -283,18 +330,26 @@ interface Candidate {
   name: string;
   site?: string;
   hub?: boolean;
+  /** A hub of one of the parcel's carriers. */
+  own?: boolean;
+  /** The name is the town's whatever the carrier wrote: its words are the facility's. */
+  named?: boolean;
 }
 
-/** The places a phrase can name. A hub's name replaces the towns of its country that share it. */
-function candidates(data: Gazetteer, key: string): Candidate[] {
-  const hub = HUBS.get(key);
+/**
+ * The places a phrase can name. A hub's name replaces the towns of its country that share
+ * it; a hub of the parcel's carrier stands beside them, ahead ("Buchs" is DPD's depot in
+ * Buchs ZH on a DPD parcel, and still the town of St. Gallen or Aargau that says so).
+ */
+function candidates(data: Gazetteer, key: string, carriers: readonly string[]): Candidate[] {
+  const hub = HUBS.get(key)?.find((entry) => !entry.carriers || entry.carriers.some((carrier) => carriers.includes(carrier)));
   // At its airport, or at its own point when its village is too small for the gazetteer.
   const airport = hub?.airport ? data.airports.get(hub.airport) : undefined;
   const point = airport ?? (hub?.latitude !== undefined && hub.longitude !== undefined ? { latitude: hub.latitude, longitude: hub.longitude } : undefined);
   const towns = [data.keys.get(key) ?? []].flat().flatMap((entry): Candidate[] => {
     const index = entry < 0 ? ~entry : entry;
     const country = data.codes[data.country[index]!]!;
-    if (point && country === hub!.country) return [];
+    if (point && country === hub!.country && !hub!.carriers) return [];
     return [{
       country, admin1: data.codes[data.admin1[index]!] ?? '', admin2: data.codes[data.admin2[index]!] ?? '',
       latitude: data.latitude[index]!, longitude: data.longitude[index]!, thousands: data.population[index]!,
@@ -303,10 +358,18 @@ function candidates(data: Gazetteer, key: string): Candidate[] {
   });
   if (!hub || !point) return towns;
   return [...towns, {
-    country: hub.country, admin1: '', admin2: '', latitude: point.latitude, longitude: point.longitude,
-    thousands: HUB_THOUSANDS, alternate: false, name: hub.town, ...(airport ? { site: airport.name } : {}), hub: true,
+    country: hub.country, admin1: hub.admin1 ?? '', admin2: '', latitude: point.latitude, longitude: point.longitude,
+    thousands: HUB_THOUSANDS, alternate: false, name: hub.town, hub: true,
+    ...(airport ? { site: airport.name } : hub.site ? { site: hub.site, named: true } : {}),
+    ...(hub.carriers ? { own: true } : {}),
   }];
 }
+
+/**
+ * A place, and whether the scan's own text says where it is rather than the town's name
+ * alone. For a town: how many thousand people it has, and whether other towns share its name.
+ */
+interface Located { place: EventPlace; text: boolean; thousands?: number; shared?: boolean }
 
 /**
  * Turns one carrier location ("ZUERICH, CH", "Härkingen 4622", "Agence DPD de
@@ -314,17 +377,29 @@ function candidates(data: Gazetteer, key: string): Candidate[] {
  * place we can be confident about. A wrong dot is worse than no dot.
  */
 export function locatePlace(location: string | null | undefined, hints: PlaceHints = {}): EventPlace | null {
+  return locate(location, hints)?.place ?? null;
+}
+
+function locate(location: string | null | undefined, hints: PlaceHints): Located | null {
   const text = location?.trim();
   if (!text) return null;
   const facility = facilityPlace(text);
-  if (facility) return facility;
+  if (facility) return { place: facility, text: true };
   const data = gazetteer();
   const explicit = trackingPlace(text);
   let country = explicit.country && data.countries.has(explicit.country) ? explicit.country : null;
   let rest = explicit.country ? explicit.place : text;
-  const hinted = [...(hints.countries ?? [])];
+  const context = hints.countries ?? [];
+  const carriers = hints.carriers ?? [];
+  const hinted = [...context];
   const admin: string[] = [];
   const postcodes: string[] = [];
+  // How the country is written after the place, when it is: "(TO)", ", CH", " - CANADA".
+  const written = country && rest && text.startsWith(rest) ? text.slice(rest.length) : '';
+  // As its two-letter code, which a province can share: "PINEROLO (TO)" is in Turin's, not Tonga.
+  const coded = country !== null && /[A-Z]/.test(written) && written.split(/[^A-Za-z]+/).filter(Boolean).every((word) => word === country);
+  const bracketed = coded && written.includes('(');
+  if (coded) admin.push(country!);
   // A code that ends the text without a comma is the country, unless the town
   // before it is in a state or province of that code: "CURITIBA - PR" is Paraná.
   let looseCountry = false;
@@ -345,6 +420,9 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
   for (const match of rest.matchAll(/(?:\b[A-Z]{1,2}-)?\b(\d{4,5})\b/g)) postcodes.push(match[1]!);
   // French departments and Italian provinces in brackets: "Sausheim 68 (68)", "Cologne (BS)".
   for (const match of rest.matchAll(/\((\d{2}|[A-Z]{2})\)|(?:^|\s)(\d{2})(?=\s|$)/g)) admin.push(match[1] ?? match[2]!);
+  // A state, province or canton written where one belongs, as a field of its own or at the
+  // end of one ("Earth City, MO", "Buchs AG", "LAUREL, MD 20707"): the town is in it.
+  const stated = text.split(/[,;|()]/).flatMap((field) => /(?:^|\s)([A-Z]{2})(?:\s+\d{4,5}(?:-\d{4})?)?$/.exec(field.trim())?.[1] ?? []);
 
   // Postcodes only confirm a name, and only in a country the scan or the parcel
   // names: on its own, "2024" is more likely a year than a village.
@@ -375,7 +453,7 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
   const outer = regions.filter((region) => !regions.some((other) => other.field === region.field
     && other.start < region.end && other.end > region.start && other.end - other.start > region.end - region.start));
 
-  let best: { place: Candidate; score: number; text: string; field: number } | null = null;
+  let best: { place: Candidate; score: number; text: string; field: number; backed: boolean; shared: boolean } | null = null;
   // Whether the text names a town at all, even one nothing confirms.
   let namesTown = false;
   for (const [fieldIndex, list] of fieldPhrases.entries()) {
@@ -396,7 +474,7 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
       // is a village, not the agency at Terrasson, and "Roissy-en-Brie" is no airport.
       const partOfName = list.some((other) => other.start <= phrase.start && other.end >= phrase.end
         && other.key.length > phrase.key.length && data.keys.has(other.key));
-      const towns = candidates(data, phrase.key).filter((place) => !place.hub || !partOfName);
+      const towns = candidates(data, phrase.key, carriers).filter((place) => !place.hub || !partOfName);
       namesTown ||= towns.length > 0;
       for (const place of towns) {
         // A town may still be named like the region it lies in: Moscow in "…, Moscow",
@@ -415,8 +493,10 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
         const adminMatch = admin.some((code) => adminCodes.includes(code) || ADMIN_CODES[place.country]?.[code] === place.admin1)
           || regions.some((region) => region.country === place.country && region.admin1 === place.admin1
             && (region.field !== fieldIndex || region.end <= phrase.start || region.start >= phrase.end));
+        // "Earth City, MO" is not Earth in Texas: a state its country has, and the town is not in.
+        if (!adminMatch && stated.some((code) => data.regionNames.has(`${place.country}.${ADMIN_CODES[place.country]?.[code] ?? code}`))) continue;
         const inCountry = place.country === country;
-        if (country && !inCountry && !(looseCountry && adminMatch)) continue;
+        if (country && !inCountry && !((looseCountry || coded) && adminMatch)) continue;
         const hint = hinted.indexOf(place.country);
         const postcodeMatch = postcode !== null && postcode.country === place.country
           && distanceKm(postcode.latitude, postcode.longitude, place.latitude, place.longitude) < 30;
@@ -425,34 +505,54 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
         const score = Math.log10(Math.max(place.thousands, .3) * 1000)
           + (place.alternate ? 0 : 1.8)
           + (inCountry ? 4 : hint >= 0 ? 2.5 - Math.min(hint, 3) * .4 : 0)
-          + (adminMatch ? 3 : 0) + (postcodeMatch ? 3 : 0)
+          + (adminMatch ? 3 : 0) + (postcodeMatch ? 3 : 0) + (place.own ? 3 : 0)
           - phrase.rank * .3 - fieldIndex * .5;
-        if (!best || score > best.score) best = { place, score, text: phrase.text, field: fieldIndex };
+        if (!best || score > best.score) {
+          best = { place, score, text: phrase.text, field: fieldIndex, backed: inCountry || adminMatch || postcodeMatch, shared: towns.length > 1 };
+        }
       }
     }
   }
 
   if (best) {
-    const { place, text: written } = best;
-    const airport = place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, place, written, country);
+    const { place, text: carrierWords } = best;
+    const airport = place.hub ? null : airportFor(data, rest, fields[best.field] ?? rest, place, carrierWords, country);
     return {
-      latitude: round(airport?.latitude ?? place.latitude),
-      longitude: round(airport?.longitude ?? place.longitude),
-      precision: 'city',
-      country: place.country,
-      // Keep the carrier's spelling unless it is shouting: "La Crau", but "Köln" for "KOELN".
-      name: /\p{Ll}/u.test(written) ? written : place.name,
-      ...(place.site ? { site: place.site } : airport ? { site: airport.name } : {}),
+      text: best.backed,
+      thousands: place.thousands,
+      shared: best.shared,
+      place: {
+        latitude: round(airport?.latitude ?? place.latitude),
+        longitude: round(airport?.longitude ?? place.longitude),
+        precision: 'city',
+        country: place.country,
+        // Keep the carrier's spelling unless it is shouting: "La Crau", but "Köln" for "KOELN".
+        name: !place.named && /\p{Ll}/u.test(carrierWords) ? carrierWords : place.name,
+        ...(place.site ? { site: place.site } : airport ? { site: airport.name } : {}),
+      },
     };
+  }
+  // A two-letter code with no town of its country before it, on a parcel nothing else puts
+  // there, may be no country at all: Royal Mail ends its mail centres with MC and its
+  // delivery offices with DO, India's states are written like countries. A town the text
+  // names where the parcel is settles it; so does any town, for a code no comma or bracket
+  // sets apart. A code of that kind with no town at all is then no place either.
+  if (rest && (looseCountry || coded) && !context.includes(country!)) {
+    // Past a comma or a bracket, only a town known on its own: no hamlet where the parcel is.
+    const town = locate(rest, looseCountry ? hints : { carriers });
+    if (town?.place.precision === 'city' && (looseCountry || context.includes(town.place.country))) return town;
+    if ((looseCountry || bracketed) && context.length) return null;
   }
   // India Post ends an office's name with its PIN code, and abbreviates some names
   // past reading ("KOL AP TMO 700052"): the PIN's town places a scan that names no
   // town, when the scan or the parcel is in India. A town nothing confirmed is no
   // abbreviation, and its six digits may be a Swiss Post site ("Daillens … 131070").
   const pin = !namesTown && (country === 'IN' || (!country && hinted.includes('IN'))) ? pinPlace(data, rest) : null;
-  if (pin) return pin;
+  if (pin) return { place: pin, text: true };
   // A region alone places its country: "Guangdong Province", or "Santa Catarina"
   // on a Brazilian parcel, though Cape Verde has one too.
+  // A code nothing backs is a guess: it tells the scans around it nothing.
+  const guessed = Boolean(rest) && (looseCountry || bracketed) && !context.includes(country!);
   if (!country) {
     const named = fieldPhrases.flatMap((list) => list.filter((phrase) => phrase.whole && phrase.key.length >= 4
       && !VAGUE_REGIONS.has(phrase.key)).map((phrase) => {
@@ -463,7 +563,9 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
     country = named.find((set) => set.size === 1)?.values().next().value ?? null;
   }
   const area = country ? data.countries.get(country) : null;
-  return area && country ? { latitude: area.latitude, longitude: area.longitude, precision: 'country', country, name: area.name } : null;
+  return area && country
+    ? { text: !guessed, place: { latitude: area.latitude, longitude: area.longitude, precision: 'country', country, name: area.name } }
+    : null;
 }
 
 /**
@@ -541,51 +643,112 @@ function atPoint(place: EventPlace | null, point: EventPoint | null | undefined)
   return { ...place, latitude: point.latitude, longitude: point.longitude };
 }
 
-const cache = new Map<string, EventPlace | null>();
+const cache = new Map<string, Located | null>();
 const CACHE_SIZE = 20_000;
 
-function cachedPlace(location: string | null | undefined, countries: readonly string[]): EventPlace | null {
-  const key = `${countries.join(',')}|${location ?? ''}`;
+function cachedPlace(location: string | null | undefined, countries: readonly string[], carriers: readonly string[]): Located | null {
+  const key = `${countries.join(',')}|${carriers.join(',')}|${location ?? ''}`;
   if (cache.has(key)) return cache.get(key)!;
-  const place = locatePlace(location, { countries });
+  const place = locate(location, { countries, carriers });
   if (cache.size >= CACHE_SIZE) cache.clear();
   cache.set(key, place);
   return place;
 }
 
+/** The countries a carrier delivers in under its own name, home first, and its clock's. */
+function carrierHomes(carrier: string): string[] {
+  const definition = (CARRIER_DEFINITIONS as Record<string, { countries?: readonly string[]; timezone?: string } | undefined>)[carrier];
+  if (!definition) return [];
+  const countries = definition.countries ?? [];
+  const clock = definition.timezone ? timeZoneCountry(definition.timezone) : null;
+  return [...(countries.length <= HOME_COUNTRIES_MAX ? countries : []), ...(clock ? [clock] : [])];
+}
+
 /**
  * Places for a parcel's scans, oldest first. A scan that names no country
  * borrows one from the scans around it, then the destination and the
- * carrier's home countries, so "Buchs" after "Zürich" stays in Switzerland.
- * A carrier's own point for a scan, or for another scan with the same text,
- * moves it from the town's centre to the facility, if the two are within
- * 30 km of each other.
+ * carriers' home countries, so "Buchs" after "Zürich" stays in Switzerland.
+ * A town only its name places, in a country nothing else puts the parcel in,
+ * is a namesake and gets no place when it is thousands of kilometres off the
+ * way between the scans around it, or, where the scans stop, that far from
+ * them and from the parcel's countries, under a name other towns share,
+ * without being a world city. A carrier's own point for a scan, or for
+ * another scan with the same text, moves it from the town's centre to the
+ * facility, if the two are within 30 km of each other.
  */
 export function placesForEvents(
   locations: readonly (string | null | undefined)[],
-  { destinationCountry, carrierCountries = [], points = [] }: {
+  { destinationCountry, carrierCountries = [], carriers = [], points = [] }: {
     destinationCountry?: string | null;
     carrierCountries?: readonly string[];
+    /** The parcel's carriers by catalog id, the one delivering now first: their countries and their own hubs. */
+    carriers?: readonly string[];
     /** The carrier's own point for each scan, where it gave one. */
     points?: readonly (EventPoint | null | undefined)[];
   } = {},
 ): (EventPlace | null)[] {
-  const base = [...new Set([destinationCountry, ...carrierCountries].filter((code): code is string => Boolean(code)))];
-  const first = locations.map((location) => cachedPlace(location, base));
+  const base = [...new Set([destinationCountry, ...carrierCountries, ...carriers.flatMap(carrierHomes)].filter((code): code is string => Boolean(code)))];
+  const first = locations.map((location) => cachedPlace(location, base, carriers));
   // A carrier can place some scans of an office and not others: they all share it.
   const pointAt = new Map<string, EventPoint>();
   locations.forEach((location, index) => {
     const point = points[index];
     if (location && point && !pointAt.has(location.trim())) pointAt.set(location.trim(), point);
   });
-  return locations.map((location, index) => {
+  // What holds a scan where it is: its own text, or a country the parcel is known to be in.
+  const anchored = (found: Located | null): boolean => found !== null && (found.text || base.includes(found.place.country));
+  const reach = (from: EventPlace, to: EventPlace) => from.precision === 'country'
+    ? countryDistanceKm(from.country, to.latitude, to.longitude)
+    : distanceKm(from.latitude, from.longitude, to.latitude, to.longitude);
+  // The nearest scan before (`step` -1) or after another that `holds`.
+  const nearest = (list: readonly (Located | null)[], index: number, step: number, holds: (entry: Located | null, at: number) => boolean): Located | null => {
+    for (let at = index + step; at >= 0 && at < list.length; at += step) if (holds(list[at]!, at)) return list[at]!;
+    return null;
+  };
+  // The scans a town's name alone places, where the scans around them say it is a namesake.
+  const namesakes = (list: readonly (Located | null)[]): Set<number> => {
+    const found = new Set<number>();
+    const lone = list.flatMap((entry, index) => entry && !anchored(entry) && entry.place.precision === 'city' ? [{ ...entry, index }] : []);
+    // A name says where a town is when no other town shares it, or when it is a world city's.
+    const known = (entry: { thousands?: number; shared?: boolean }) => !entry.shared || (entry.thousands ?? 0) >= WORLD_CITY_THOUSANDS;
+    const judge = (entries: typeof lone, holds: (entry: Located | null, index: number) => boolean) => {
+      for (const { place, index, ...entry } of entries) {
+        const before = nearest(list, index, -1, holds)?.place;
+        const after = nearest(list, index, 1, holds)?.place;
+        const around = [before, after].filter((other): other is EventPlace => Boolean(other));
+        if (around.some((other) => other.country === place.country)) continue;
+        if (before && after) {
+          const detour = reach(before, place) + reach(after, place) - distanceKm(before.latitude, before.longitude, after.latitude, after.longitude);
+          if (detour > DETOUR_MAX_KM) found.add(index);
+        } else if (base.length && !known(entry) && around.every((other) => reach(other, place) > LEAP_MAX_KM)
+          && base.every((code) => countryDistanceKm(code, place.latitude, place.longitude) > LEAP_MAX_KM)) {
+          found.add(index);
+        }
+      }
+    };
+    // Such a town stands among the scans that hold, and the towns around it are judged by it too.
+    judge(lone.filter(known), anchored);
+    judge(lone.filter((entry) => !known(entry)), (entry, index) => entry !== null
+      && (anchored(entry) || (entry.place.precision === 'city' && known(entry) && !found.has(index))));
+    return found;
+  };
+  // A namesake tells its neighbours nothing, and neither does a country guessed from a code nothing backs.
+  const doubtful = namesakes(first);
+  const telling = (found: Located | null, index: number): boolean =>
+    found !== null && !doubtful.has(index) && (found.text || found.place.precision === 'city');
+  const settled = locations.map((location, index) => {
     if (!location?.trim()) return null;
-    const before = first.slice(0, index).reverse().find(Boolean)?.country;
-    const after = first.slice(index + 1).find(Boolean)?.country;
+    const before = nearest(first, index, -1, telling)?.place.country;
+    const after = nearest(first, index, 1, telling)?.place.country;
     const neighbours = [...new Set([before, after].filter((code): code is string => Boolean(code)))];
-    const place = !neighbours.length || neighbours.every((code) => base.includes(code))
-      ? first[index]!
-      : cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))]) ?? first[index]!;
-    return atPoint(place, points[index] ?? pointAt.get(location.trim()));
+    if (!neighbours.length || neighbours.every((code) => base.includes(code))) return first[index]!;
+    return cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers)
+      ?? (telling(first[index]!, index) ? first[index]! : null);
+  });
+  const dropped = namesakes(settled);
+  return locations.map((location, index) => {
+    const found = settled[index];
+    if (!found || !location || dropped.has(index)) return null;
+    return atPoint(found.place, points[index] ?? pointAt.get(location.trim()));
   });
 }

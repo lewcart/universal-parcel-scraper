@@ -8,7 +8,7 @@ or `null` when it cannot place the scan confidently.
 import { locatePlace, placesForEvents } from 'universal-parcel-scraper/places';
 
 locatePlace('LEIPZIG - DE');
-placesForEvents(['Härkingen', 'Zürich'], { carrierCountries: ['CH'] });
+placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 ```
 
 ## How a place is chosen
@@ -23,7 +23,18 @@ placesForEvents(['Härkingen', 'Zürich'], { carrierCountries: ['CH'] });
 - Bigger towns win, and context breaks ties: a country written in the text, a state,
   province or canton, by code or by name ("STERLING - Virginia - USA", "CURITIBA - PR"), a
   Swiss postcode, then the countries of neighbouring scans, the parcel's destination and
-  the carrier's home country.
+  its carriers' countries. `placesForEvents` reads those from the catalog for the carrier
+  ids in `carriers`: the countries a carrier delivers in, unless they are more than six, and
+  the country of its clock. `carrierCountries` adds countries by code.
+- A state, province or canton written after the town holds: "Earth City, MO" is not Earth
+  in Texas.
+- Two letters after the town are a country when a town of that name is there ("MONTE CARLO
+  MC"), or when the parcel is. Otherwise they may be a province or an office: "PINEROLO
+  (TO)" is in the province of Turin, not Tonga, and Royal Mail's "Norwich MC" is a mail
+  centre, not Monaco. The town's own province settles it, then a town of that name where the
+  parcel is, then, for a code no comma or bracket sets apart, any town of that name. With no
+  town at all, a code in brackets or after a space is no country on a parcel known to be
+  elsewhere, and the scan gets no place.
 - A field that only names a region is that region: it places a town of that name only if
   the town lies in it, and otherwise places the region's country ("Guangdong Province").
   The words of a region's name are not towns elsewhere: "Cabo Delgado" is in Mozambique,
@@ -31,6 +42,12 @@ placesForEvents(['Härkingen', 'Zürich'], { carrierCountries: ['CH'] });
   abroad.
 - A town nothing confirms needs 15,000 people. Otherwise the scan gets no place: a wrong
   dot is worse than none. Postcodes only confirm a name, never stand in for one.
+- A town only its name places, in a country nothing else puts the parcel in, is a namesake
+  when it is far from the other scans: more than 6,000 km off the way between the scans
+  around it that hold ("Cornwall" in Ontario between two scans in England), or, where the
+  scans stop, more than 3,000 km from them and from the parcel's countries. It gets no
+  place, and tells the scans around it nothing. Where the scans stop, a name no other town
+  has and a city of a million people stay: nothing says the parcel did not go there.
 - India Post ends an office's name with its PIN code, and abbreviates some names past
   reading ("KOL AP TMO 700052"). Text that names no town, not even one nothing confirms, is
   placed in the PIN's town from `pincodes.json` when the scan or the parcel is in India. A
@@ -68,8 +85,13 @@ Swiss Post's "Zürich Briefzentrum" is in Mülligen.
   too small for it ("SEKOCIN STARY", by Warsaw), in a district it leaves out (Royal Mail's
   "LANGLEY HWDC" by Heathrow, which would otherwise be Langley in Canada), in a town GeoNames gives no population
   (Cainiao's "Fenggang Town" is in Dongguan, not the Fenggang of Jiangxi), or under a short
-  name ("TERRASSON", Mondial Relay's agency in Terrasson-Lavilledieu). A longer place name
-  that contains a hub's ("Beauregard-de-Terrasson", "Roissy-en-Brie") is that place.
+  name ("TERRASSON", Mondial Relay's agency in Terrasson-Lavilledieu), in the wrong one of
+  two towns ("Shatian Town" is Cainiao's warehouse in Dongguan), or named after an area
+  (Royal Mail's "South Midlands MC" is in Northampton: `site` then holds the facility's
+  name). A longer place name that contains a hub's ("Beauregard-de-Terrasson",
+  "Roissy-en-Brie") is that place. A hub with `carriers` counts only on their parcels,
+  ahead of the towns of its name, which still win when the text says which one: on a DPD
+  parcel "Buchs, CH" is the depot in Buchs ZH, and "Buchs SG" the town in St. Gallen.
 - A carrier's own coordinates, supplied through the `points` option, move a scan
   to the facility when they are within 30 km of the town its text names. Scans with the same
   text share a point, so a carrier that places some scans of an office keeps them together.

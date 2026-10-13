@@ -4,6 +4,8 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
+
+type TrawlPage = Awaited<ReturnType<TrawlClient['scrape']>>;
 import { isRecord } from '../../core/types.js';
 import { asendiaTrackingApiUrl, asendiaTrackingUrl, normalizeAsendiaTrackingNumber } from './probe.js';
 import { classifyAsendiaStatus } from './status.js';
@@ -63,18 +65,10 @@ export function parseAsendiaGlobalResponse(payload: unknown, raw: string): Carri
   };
 }
 
-export async function asendiaBrowser(trawl: TrawlClient, raw: string, signal: AbortSignal, remainingMs: number): Promise<CarrierResult> {
-  const number = normalizeAsendiaTrackingNumber(raw);
-  const endpoint = asendiaTrackingApiUrl();
-  const timeoutMs = Math.floor(remainingMs - 2000);
-  if (timeoutMs < 1) throw new BudgetExceededError(PROVIDER, remainingMs);
-  const page = await trawl.scrape({ url: asendiaTrackingUrl(number), skipHttp: true, maxTier: 3,
-    captureResponses: [endpoint], maxTimeout: timeoutMs, settleTimeout: timeoutMs },
-  { provider: PROVIDER, timeoutMs, signal, requireSolved: false, captureWindow: 'last', maxBytes: 6 * MAX_BYTES });
-  signal.throwIfAborted();
-  const responses = page.capturedResponses.filter(row => row.url === endpoint && row.trackingNumberSubmitted === number);
-  const response = responses.at(-1);
-  if (!response || responses.length > 10) throw new ChallengeError(PROVIDER, 'Asendia returned no matching verified tracking response');
+type Captured = TrawlPage['capturedResponses'][number];
+
+function captured(response: Captured | undefined): unknown {
+  if (!response) throw new ChallengeError(PROVIDER, 'Asendia returned no matching verified tracking response');
   if (response.status === 429) throw new RateLimitedError(PROVIDER);
   if ([400, 401, 403].includes(response.status)) throw new ChallengeError(PROVIDER, 'Asendia rejected browser verification');
   if (response.status >= 400) throw new UpstreamHttpError(PROVIDER, response.status);
@@ -82,7 +76,32 @@ export async function asendiaBrowser(trawl: TrawlClient, raw: string, signal: Ab
     throw new TransportError(PROVIDER, 'Asendia returned an incomplete browser response');
   }
   if (Buffer.byteLength(response.body) > MAX_BYTES) throw new SchemaError(PROVIDER, 'Asendia returned excessive browser data');
-  let payload: unknown;
-  try { payload = JSON.parse(response.body); } catch { throw new SchemaError(PROVIDER, 'Asendia returned invalid browser JSON'); }
-  return parseAsendiaGlobalResponse(payload, number);
+  try { return JSON.parse(response.body); } catch { throw new SchemaError(PROVIDER, 'Asendia returned invalid browser JSON'); }
+}
+
+export async function asendiaBrowser(trawl: TrawlClient, raw: string, signal: AbortSignal, remainingMs: number,
+  postcode: string | null = null): Promise<CarrierResult> {
+  const number = normalizeAsendiaTrackingNumber(raw);
+  const endpoint = asendiaTrackingApiUrl();
+  const timeoutMs = Math.floor(remainingMs - 2000);
+  if (timeoutMs < 1) throw new BudgetExceededError(PROVIDER, remainingMs);
+  const url = `${asendiaTrackingUrl(number)}${postcode ? `#trawl-postcode=${encodeURIComponent(postcode)}` : ''}`;
+  const page = await trawl.scrape({ url, skipHttp: true, maxTier: 3,
+    captureResponses: [endpoint], maxTimeout: timeoutMs, settleTimeout: timeoutMs },
+  { provider: PROVIDER, timeoutMs, signal, requireSolved: false, captureWindow: 'last', maxBytes: 6 * MAX_BYTES });
+  signal.throwIfAborted();
+  const responses = page.capturedResponses.filter(row => row.url === endpoint && row.trackingNumberSubmitted === number);
+  if (responses.length > 10) throw new ChallengeError(PROVIDER, 'Asendia returned no matching verified tracking response');
+  const open = responses.filter(row => row.postcodeSubmitted !== true).at(-1);
+  const verified = postcode ? responses.filter(row => row.postcodeSubmitted === true).at(-1) : undefined;
+  if (!verified) return parseAsendiaGlobalResponse(captured(open ?? responses.at(-1)), number);
+  // The status shown before the postcode stands when the portal refuses the postcode or its answer.
+  const summary = open ? parseAsendiaGlobalResponse(captured(open), number) : null;
+  try {
+    const result = parseAsendiaGlobalResponse(captured(verified), number);
+    return result.events?.length || !summary ? result : summary;
+  } catch (error) {
+    if (!summary) throw error;
+    return summary;
+  }
 }

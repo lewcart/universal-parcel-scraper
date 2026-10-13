@@ -47,9 +47,12 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
      hidden input and the generic solver's result do not establish verification.
    - Captures only a search request containing that one identifier and projects the response
      onto tracking fields. A refusal remains a challenge or rate limit, never not-found.
-   - The portal can expose current status while requiring the recipient's name or postcode
-     for history. Such an answer is `summary_only`, with no invented scan or update clock.
-     The adapter does not request or guess recipient identity.
+   - The portal shows the current status to anyone and the scans only against the recipient's
+     name or delivery postcode. With the optional postcode, the helper opens the page's own
+     dialog and submits it with a fresh token; the reply counts only when its request carried
+     that postcode and the whole number. The name is never asked.
+   - Without a postcode, or when the portal refuses it (`context_code` 1100 inside an HTTP
+     200), the answer is `summary_only`, with no invented scan or update clock.
    - A successful A1 or UK result stands. A global not-found cannot erase an HTTP failure.
    - Default lookup budget with a browser service is 65 seconds; HTTP gets at most 25 seconds,
      and browser cleanup has reserved time.
@@ -113,8 +116,9 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
 ## Limitations
 
 - Parcels outside A1 and Asendia UK need the optional browser service. Turnstile can still
-  refuse a browser; that failure remains a challenge. Full global history may require
-  recipient verification even after Turnstile succeeds.
+  refuse a browser; that failure remains a challenge.
+- Global scans need the delivery postcode as Asendia recorded it. Some parcels a partner
+  delivers carry no recipient record there, and no postcode opens them.
 - Asendia UK drops parcels some months after posting, then answers not-found.
 - No delivery estimate.
 - A1 dates partners' scans in true UTC: a Swiss Post scan at 18:20 `+02:00` is A1's 16:20
@@ -135,4 +139,5 @@ public examples. Offline fixtures cover history parsing. `probe.live.test.ts` ch
 portal still rejects an invalid Turnstile token. The probe reads a real token from
 `ASENDIA_TURNSTILE_TOKEN` for manual runs. Set `FLARESOLVERR_URL` and
 `ASENDIA_GLOBAL_LIVE_NUMBER` to check the global browser response against an authorized parcel;
-its history can remain locked while its current status is returned.
+add `ASENDIA_GLOBAL_LIVE_POSTCODE` to open its scans. Without a matching postcode the history
+stays locked while the current status is returned.

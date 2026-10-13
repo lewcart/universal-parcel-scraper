@@ -21,7 +21,7 @@ the waybill and scan fields, excluding recipient acknowledgements and verificati
 Its [image classifier](dhl-poland-model/README.md) runs locally in a bounded worker;
 no paid CAPTCHA service or model API is required.
 Asendia waits for its own Turnstile callback to enable search and binds the captured POST
-to one whole identifier; recipient verification can leave it with current status only. XPO scopes the checkbox
+to one whole identifier. Given a delivery postcode in the fragment, it opens the scans through the page's dialog; otherwise recipient verification leaves the current status only. XPO scopes the checkbox
 solver to its visible widget while the public client completes verification and tracking.
 DHL Express waits for the public
 page to complete verification and repeat tracking after an intermediate HTTP 428.

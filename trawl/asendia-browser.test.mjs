@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { asendiaBrowserNumber, runAsendiaBrowser } from './asendia-browser.mjs';
+import { asendiaBrowserNumber, asendiaBrowserPostcode, runAsendiaBrowser } from './asendia-browser.mjs';
 
 const number = 'ASE00000000';
 const endpoint = 'https://track.asendia.com/api/1.0/branded-url/branded-parcel-search?sort=shipment_date';
@@ -32,7 +32,10 @@ function fixture() {
 }
 test('accepts only the whole identifier on the official page and exact API', () => {
   assert.equal(asendiaBrowserNumber(url, capture), number);
-  for (const candidate of [url + '?extra=1', url + '#extra', url + '/extra', url.replace(number, 'ONLYLETTERS'),
+  assert.equal(asendiaBrowserNumber(url + '#trawl-postcode=AB1%202CD', capture), number);
+  assert.equal(asendiaBrowserPostcode(url + '#trawl-postcode=AB1%202CD'), 'AB1 2CD');
+  for (const candidate of [url + '?extra=1', url + '#extra', url + '#trawl-postcode=', url + '#trawl-postcode=1000&trawl-postcode=2000',
+    url + '#trawl-postcode=1000&extra=1', url + '/extra', url.replace(number, 'ONLYLETTERS'),
     url.replace('track.asendia.com', 'example.test'), url.replace('track.asendia.com', 'user@track.asendia.com')]) {
     assert.equal(asendiaBrowserNumber(candidate, capture), null);
   }
@@ -99,4 +102,41 @@ test('preserves a refused configuration instead of calling it a missing parcel',
   const result = await runAsendiaBrowser(active.options);
   assert.equal(result.statusCode, 429); assert.equal(active.state.clicked, 0);
   assert.deepEqual(result.capturedResponses, []);
+});
+test('opens the scans through the page dialog with the supplied postcode only when the portal offers it', async () => {
+  const locked = JSON.stringify({ context_code: 1000, verification_methods: { postal_code: true, first_name_match: true },
+    data: [{ tracking_id: number, status: 'Delivered', recipient_name: 'PRIVATE' }] });
+  const verification = (value, postal_code) => ({ ...response(200, value), request: () => ({ method: () => 'POST',
+    postDataJSON: () => ({ ids: [number], tracking_id: number, postal_code, turnstile_token: 'PRIVATE' }) }) });
+  const run = async (fragment, answer, first = locked) => {
+    const active = fixture(); const steps = [];
+    active.options.url = url + fragment;
+    active.page.goto = (goto => async target => { steps.push(target); return goto(); })(active.page.goto);
+    active.page.getByRole = role => role === 'textbox' ? { inputValue: async () => number } : {
+      isEnabled: async () => true, click: async () => { active.handlers.response(response(200, first)); },
+    };
+    active.page.locator = selector => ({ count: async () => 1,
+      first() { return this; }, last() { return this; },
+      click: async () => { steps.push(selector); if (selector.includes('unlockBtn')) active.handlers.response(answer(steps)); },
+      fill: async value => { steps.push(value); } });
+    active.page.waitForTimeout = ms => new Promise(resolve => setTimeout(resolve, Math.min(ms, 1)));
+    return { result: await runAsendiaBrowser(active.options), steps, state: active.state };
+  };
+  const opened = await run('#trawl-postcode=AB1%202CD', () => verification(body, 'AB1 2CD'));
+  assert.deepEqual(opened.steps, [url, '[class*="ctaActionCell"]', 'AB1 2CD', '[class*="VerifyIdentityModal_unlockBtn"]']);
+  assert.deepEqual(opened.result.capturedResponses.map(row => row.postcodeSubmitted === true), [false, true]);
+  assert.equal(opened.result.effectiveUrl, url);
+  assert.deepEqual(JSON.parse(opened.result.capturedResponses[0].body).verification_methods, { postal_code: true });
+  assert.equal(JSON.stringify(opened.result).includes('PRIVATE'), false);
+  assert.equal(JSON.stringify(opened.result).includes('AB1'), false);
+  assert.equal(opened.state.closed, 1);
+  // A request carrying another postcode is not this lookup's verification.
+  const other = await run('#trawl-postcode=1000', () => verification(body, '2000'));
+  assert.deepEqual(other.result.capturedResponses.map(row => row.postcodeSubmitted === true), [false, false]);
+  const refused = await run('#trawl-postcode=1000', () => verification(JSON.stringify({ context_code: 1100, data: null, summary: 'PRIVATE' }), '1000'));
+  assert.equal(refused.result.capturedResponses[1].body, '{"context_code":1100,"data":null}');
+  for (const [fragment, first] of [['', locked], ['#trawl-postcode=1000', body]]) {
+    const plain = await run(fragment, () => { throw new Error('unexpected dialog'); }, first);
+    assert.deepEqual(plain.steps, [url]); assert.equal(plain.result.capturedResponses.length, 1);
+  }
 });

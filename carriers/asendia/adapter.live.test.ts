@@ -32,10 +32,11 @@ describe('Asendia A1 live lookup', () => {
 describe('Asendia global browser lookup', () => {
   it.skipIf(!process.env.FLARESOLVERR_URL || !process.env.ASENDIA_GLOBAL_LIVE_NUMBER)('retrieves an identity-bound public status', async () => {
     const result = await asendiaBrowser(TrawlClient.fromEnvironment()!, process.env.ASENDIA_GLOBAL_LIVE_NUMBER!,
-      AbortSignal.timeout(45_000), 45_000);
+      AbortSignal.timeout(45_000), 45_000, process.env.ASENDIA_GLOBAL_LIVE_POSTCODE || null);
     expect(result.tracking_source).toBe('structured-web-response');
     expect(result.last_status_text).toBeTruthy();
     if (!result.events?.length) expect(result.summary_only).toBe(true);
+    if (process.env.ASENDIA_GLOBAL_LIVE_POSTCODE && !result.summary_only) expect(result.events!.length).toBeGreaterThan(0);
   });
 });
 

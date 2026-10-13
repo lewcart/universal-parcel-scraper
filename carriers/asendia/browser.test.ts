@@ -47,4 +47,24 @@ describe('Asendia global portal', () => {
       await expect(asendiaBrowser(trawl, number, signal, 5000)).rejects.toMatchObject({ kind });
     }
   });
+  it('opens the scans with the delivery postcode and keeps the status when the portal refuses it', async () => {
+    const signal = new AbortController().signal;
+    const entry = (body: unknown, postcodeSubmitted?: boolean) => ({ url: asendiaTrackingApiUrl(), status: 200, body: JSON.stringify(body),
+      trackingNumberSubmitted: number, truncated: false, base64Encoded: false, error: null, ...(postcodeSubmitted ? { postcodeSubmitted } : {}) });
+    const locked = entry({ ...payload(), verification_methods: { postal_code: true } });
+    const scans = { context_code: 1000, data: [{ ...parcel(), events: [{ event_time: '2026-01-02T11:00:00', harmonized_label: 'Delivered' }] }] };
+    const urls: string[] = [];
+    const trawl = (rows: unknown[]) => ({ scrape: async (request: { url: string }) => { urls.push(request.url); return { capturedResponses: rows }; } }) as unknown as TrawlClient;
+    await expect(asendiaBrowser(trawl([locked, entry(scans, true)]), number, signal, 5000, 'AB1 2CD'))
+      .resolves.toMatchObject({ status: 'delivered', events: [{ local_time: '2026-01-02T11:00:00' }] });
+    expect(urls[0]).toBe(`https://track.asendia.com/track/${number}#trawl-postcode=AB1%202CD`);
+    for (const refusal of [entry({ context_code: 1100, data: null }, true), { ...entry(scans, true), status: 403, body: null }]) {
+      await expect(asendiaBrowser(trawl([locked, refusal]), number, signal, 5000, '00000'))
+        .resolves.toMatchObject({ status: 'delivered', summary_only: true, events: [] });
+    }
+    // Scans captured without a supplied postcode are not this lookup's answer.
+    await expect(asendiaBrowser(trawl([locked, entry(scans, true)]), number, signal, 5000))
+      .resolves.toMatchObject({ summary_only: true });
+    expect(urls.at(-1)).toBe(`https://track.asendia.com/track/${number}`);
+  });
 });

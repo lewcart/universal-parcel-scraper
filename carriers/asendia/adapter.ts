@@ -552,7 +552,7 @@ export const adapter: AdapterFactory = (environment) => {
       { id: 'trawl', enabled: browserEligible,
         recovers: error => error instanceof NotFoundError || recoverableByDefault(error),
         run: async ({ signal, remainingMs, previousError }) => {
-          try { return await asendiaBrowser(environment.trawl!, number, signal, remainingMs); }
+          try { return await asendiaBrowser(environment.trawl!, number, signal, remainingMs, input.postcode?.trim() || null); }
           catch (error) {
             // The global portal cannot erase a failure from either HTTP source.
             if (error instanceof NotFoundError && !(previousError instanceof NotFoundError)) throw previousError;

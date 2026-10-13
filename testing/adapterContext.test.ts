@@ -79,6 +79,8 @@ function credential(validator: string, number: string): string {
       return `https://trackandtrace.planzergroup.com/shared/sendungen/${number}?accessKey=${'A'.repeat(32)}`;
     case 'dachserCapabilityUrl':
       return `https://customeriberia.dachser.com/customerarea/utilidades/seguimiento-publico/detalle?numeroUnico=${number}&hash=AAAAAAAA`;
+    case 'instaboxCapabilityUrl':
+      return `https://track.instabox.com/sv/${number}?authCode=${'A'.repeat(32)}`;
     default: throw new Error(`No synthetic credential for ${validator}`);
   }
 }

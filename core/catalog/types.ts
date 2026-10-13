@@ -15,6 +15,7 @@ export type CarrierInputField = 'trackingUrl' | 'postcode';
 export type CarrierInputValidator =
   | 'planzerSharedUrl'
   | 'dachserCapabilityUrl'
+  | 'instaboxCapabilityUrl'
   | 'swissPostcode'
   | 'francePostcode'
   | 'germanyPostcode'

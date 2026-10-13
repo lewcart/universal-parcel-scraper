@@ -17,18 +17,72 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "saia",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 12
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "provider_code",
+    "weight",
+    "canonical_tracking_number"
+  ],
   "portal": {
-    "url": "https://www.saia.com/track?pro={trackingNumber}",
+    "url": "https://www.saia.com/track/details;pro={trackingNumber}",
     "searchUrl": "https://www.saia.com/track",
     "canaryUrl": "https://www.saia.com/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "weight",
+      "parcel_count",
+      "volume",
+      "sender_details",
+      "recipient_address",
+      "customer_reference",
+      "signature",
+      "delivery_partner",
+      "office_contact_details",
+      "canonical_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "eta",
+      "eta_window",
+      "weight",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "delivered_at",
+      "parcel_count",
+      "volume",
+      "sender_details",
+      "recipient_address",
+      "customer_reference",
+      "signature",
+      "delivery_partner",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -36,6 +90,16 @@
         "saia.com"
       ],
       "pathPattern": "^/track/?$",
+      "params": [
+        "pro"
+      ]
+    },
+    {
+      "domains": [
+        "saia.com"
+      ],
+      "pathPattern": "^/track/details(?:/|;|$)",
+      "path": "^/track/details;pro=(\\d+)",
       "params": [
         "pro"
       ]

@@ -1,7 +1,9 @@
 {
   "id": "parcelforce",
   "displayName": "Parcelforce Worldwide",
-  "aliases": [],
+  "aliases": [
+    "Parcelforce"
+  ],
   "region": {
     "countries": [
       "GB"

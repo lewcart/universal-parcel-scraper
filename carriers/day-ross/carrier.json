@@ -18,16 +18,50 @@
   "timezone": "America/Moncton",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "day-ross",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 38
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "service_name"
+  ],
   "portal": {
-    "canaryUrl": "https://dayross.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "canaryUrl": "https://dayross.com/track-shipments",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "recipient_address",
+      "sender_name",
+      "signature",
+      "weight",
+      "eta"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name"
+    ],
+    "discarded": [
+      "recipient_address",
+      "sender_name",
+      "signature",
+      "weight",
+      "eta"
+    ],
+    "unavailable": [],
+    "searchUrl": "https://dayross.com/track-shipments"
   },
   "links": [],
   "detection": [

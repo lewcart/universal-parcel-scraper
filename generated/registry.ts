@@ -46,6 +46,7 @@ import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
 import { adapter as dachser } from '../carriers/dachser/adapter.js';
 import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
+import { adapter as dayRoss } from '../carriers/day-ross/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
 import { adapter as dhl } from '../carriers/dhl/adapter.js';
 import { adapter as dhlEcommerce } from '../carriers/dhl-ecommerce/adapter.js';
@@ -102,6 +103,7 @@ import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
 import { adapter as inpost } from '../carriers/inpost/adapter.js';
+import { adapter as instabox } from '../carriers/instabox/adapter.js';
 import { adapter as intelcom } from '../carriers/intelcom/adapter.js';
 import { adapter as jAndT } from '../carriers/j-and-t/adapter.js';
 import { adapter as jAndTCargo } from '../carriers/j-and-t-cargo/adapter.js';
@@ -155,6 +157,7 @@ import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
+import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
 import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
@@ -183,6 +186,7 @@ import { adapter as ups } from '../carriers/ups/adapter.js';
 import { adapter as usps } from '../carriers/usps/adapter.js';
 import { adapter as venipak } from '../carriers/venipak/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
+import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
 import { adapter as xdp } from '../carriers/xdp/adapter.js';
 import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
@@ -242,6 +246,7 @@ export const REGISTRY: RegistryDefinition = {
     "dachser": dachser,
     "dai-post": daiPost,
     "dao": dao,
+    "day-ross": dayRoss,
     "delhivery": delhivery,
     "dhl": dhl,
     "dhl-ecommerce": dhlEcommerce,
@@ -298,6 +303,7 @@ export const REGISTRY: RegistryDefinition = {
     "hrvatska-posta": hrvatskaPosta,
     "india-post": indiaPost,
     "inpost": inpost,
+    "instabox": instabox,
     "intelcom": intelcom,
     "j-and-t": jAndT,
     "j-and-t-cargo": jAndTCargo,
@@ -351,6 +357,7 @@ export const REGISTRY: RegistryDefinition = {
     "rl-carriers": rlCarriers,
     "royal-mail": royalMail,
     "sagawa": sagawa,
+    "saia": saia,
     "sameday": sameday,
     "seur": seur,
     "sf-express": sfExpress,
@@ -379,6 +386,7 @@ export const REGISTRY: RegistryDefinition = {
     "usps": usps,
     "venipak": venipak,
     "vinted-go": vintedGo,
+    "wanbexpress": wanbexpress,
     "whistl": whistl,
     "xdp": xdp,
     "xpo-ltl": xpoLtl,
@@ -438,7 +446,7 @@ export const REGISTRY: RegistryDefinition = {
     "dachser": "dachser",
     "dai-post": "dai-post",
     "dao": "dao",
-    "day-ross": "universal",
+    "day-ross": "day-ross",
     "delhivery": "delhivery",
     "delivengo": "la-poste",
     "dhl": "dhl",
@@ -497,7 +505,7 @@ export const REGISTRY: RegistryDefinition = {
     "hrvatska-posta": "hrvatska-posta",
     "india-post": "india-post",
     "inpost": "inpost",
-    "instabox": "universal",
+    "instabox": "instabox",
     "intelcom": "intelcom",
     "intl-post": "universal",
     "j-and-t": "j-and-t",
@@ -557,7 +565,7 @@ export const REGISTRY: RegistryDefinition = {
     "royal-mail": "royal-mail",
     "russian-post": "universal",
     "sagawa": "sagawa",
-    "saia": "universal",
+    "saia": "saia",
     "sameday": "sameday",
     "seur": "seur",
     "sf-express": "sf-express",
@@ -589,7 +597,7 @@ export const REGISTRY: RegistryDefinition = {
     "usps": "usps",
     "venipak": "venipak",
     "vinted-go": "vinted-go",
-    "wanbexpress": "universal",
+    "wanbexpress": "wanbexpress",
     "whistl": "whistl",
     "xdp": "xdp",
     "xpo-ltl": "xpo-ltl",

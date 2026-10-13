@@ -3,6 +3,7 @@ import { activeRequirements, carrierDefinition, type CarrierRequirementRule } fr
 import { isValidMondialRelayBarcode } from '../detection/index.js';
 import { validateDachserTrackingUrl } from './urls.js';
 import { validatePlanzerSharedUrl } from './urls.js';
+import { validateInstaboxTrackingUrl } from './urls.js';
 import { DELIVERY_POSTCODE, colisPrivePostcode, deliveryPostcodeText } from './postcode.js';
 
 export {
@@ -99,6 +100,9 @@ export function normalizeCarrierInputs(
         break;
       case 'dachserCapabilityUrl':
         supplied[field] = validateDachserTrackingUrl(value, trackingNumber);
+        break;
+      case 'instaboxCapabilityUrl':
+        supplied[field] = validateInstaboxTrackingUrl(value, trackingNumber);
         break;
       case 'swissPostcode':
         if (!/^\d{4}$/.test(value)) {

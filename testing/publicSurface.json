@@ -122,6 +122,7 @@
       "uspsPackageIdentifier",
       "validTrackingNumber",
       "validateDachserTrackingUrl",
+      "validateInstaboxTrackingUrl",
       "validatePlanzerSharedUrl",
       "wordingStage",
       "zonedTime"

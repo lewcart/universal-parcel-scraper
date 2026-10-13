@@ -5,6 +5,7 @@ const PLANZER_SHARED_PATH = /^\/shared\/sendungen\/([^/]+)\/?$/;
 const PLANZER_ACCESS_KEY = /^[A-Za-z0-9_-]{32,256}$/;
 const DACHSER_HOST = 'customeriberia.dachser.com';
 const DACHSER_PAGE_PATH = '/customerarea/utilidades/seguimiento-publico/detalle';
+const INSTABOX_PATH = /^\/[a-z]{2}(?:-[A-Z]{2})?\/([A-Z0-9]{4,40})(?:\/locker-to-locker-recipient)?\/?$/i;
 const CAPABILITY_VALUE = /^[A-Za-z0-9_-]{4,256}$/;
 // eslint-disable-next-line no-control-regex -- control characters are what this rejects
 const CONTROL_CHARACTER = /[\x00-\x1f\x7f]/;
@@ -23,6 +24,32 @@ const ALLOWED_QUERY_KEYS = new Set([
   'origen',
   'usuario',
 ]);
+
+/** An Instabox recipient's notification link, bound to its complete parcel identifier. */
+export function validateInstaboxTrackingUrl(rawUrl: string, trackingNumber: string): string {
+  let url: URL;
+  try { url = new URL(rawUrl.trim()); } catch { throw new TypeError('Paste the complete Instabox notification URL'); }
+  if (rawUrl.length > 4096 || url.protocol !== 'https:' || url.hostname !== 'track.instabox.com'
+    || url.username || url.password || (url.port && url.port !== '443') || url.hash) {
+    throw new TypeError('Instabox notification links must use https://track.instabox.com');
+  }
+  const match = INSTABOX_PATH.exec(url.pathname);
+  if (!match || match[1]!.toUpperCase() !== normalizeTrackingNumber(trackingNumber)) {
+    throw new TypeError('The Instabox URL must name this complete parcel identifier');
+  }
+  const codes = [...url.searchParams].filter(([key]) => key === 'authCode' || key === 'c');
+  if (codes.length !== 1 || !/^[A-Za-z0-9_-]{16,160}$/.test(codes[0]![1])) {
+    throw new TypeError('The Instabox notification URL must include its verification code');
+  }
+  for (const [key, value] of url.searchParams) {
+    if (!['authCode', 'c'].includes(key) && (!/^utm_(?:source|medium|campaign|content|term)$/.test(key) || value.length > 256)) {
+      throw new TypeError('The Instabox URL contains an unsupported parameter');
+    }
+  }
+  url.pathname = url.pathname.replace(match[1]!, normalizeTrackingNumber(trackingNumber));
+  url.search = new URLSearchParams([codes[0]!]).toString();
+  return url.toString();
+}
 
 export function validatePlanzerSharedUrl(rawUrl: string, trackingNumber: string): string {
   const value = rawUrl.trim();

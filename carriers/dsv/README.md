@@ -26,9 +26,11 @@ pages and malformed replies keep their own failure kinds; a missing route is a t
 DSV tracks former DB Schenker shipments on a separate tracker, `www.dsv.com/mydsv/tracking-public`,
 which `dbschenker.com` redirects to. Its API under `/nges-portal/api/public/tracking-public/`, on
 `www.dsv.com` and `mydsv.dsv.com`, answers every lookup with HTTP 429 and a `Captcha-Puzzle`
-header, a signed proof-of-work puzzle the client must solve and send back. The official DSV
-Tracking app (`com.dbschenker.mobile.connect2schenker`) calls the same API. The adapter does not
-solve it, so those shipments stay with the universal providers.
+header, a signed proof-of-work puzzle the client must solve and send back. The public browser
+client solves it and repeats the lookup. The official DSV Tracking app
+(`com.dbschenker.mobile.connect2schenker`) calls the same API. A dedicated route still needs
+a matching shipment response to establish its history and clocks, so those shipments
+stay with the universal providers.
 
 ## Notes
 

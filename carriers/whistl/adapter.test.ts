@@ -100,6 +100,8 @@ describe('Whistl tracking adapter', () => {
     const parcel = parseWhistl(page('partner'), PARTNER);
     expect(parcel).toMatchObject({ delivery_carrier: 'royal-mail' });
     expect(parcel).not.toHaveProperty('delivery_tracking_number');
+    expect(parseWhistl(page('partner').replace('<b>Carrier:</b> Royal Mail', '<b>Carrier:</b> Parcelforce'), SHIPMENT))
+      .toMatchObject({ delivery_carrier: 'parcelforce' });
     // A carrier name the catalog cannot place keeps only its number.
     const unnamed = parseWhistl(page('partner').replace('<b>Carrier:</b> Royal Mail', '<b>Carrier:</b> Example Couriers'), SHIPMENT);
     expect(unnamed).toMatchObject({ delivery_tracking_number: PARTNER });

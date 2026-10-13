@@ -1,8 +1,10 @@
-import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { NotFoundError } from '../../core/errors/index.js';
+import { accepted, recognizeFromBrowserLookup, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { BudgetExceededError, ChallengeError, NotFoundError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
+import type { TrawlClient } from '../../core/transport/trawl.js';
+import { xpoBrowser } from './browser.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import {
@@ -24,7 +26,7 @@ export function xpoLtlHistoryUrl(number: string, mexico = false): string {
 }
 
 export class XpoLtlTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; trawl?: TrawlClient | null } = {}) {}
 
   /** The summary, then its history unless `history` is false, which gives a summary-only result. */
   async fetch(raw: string, context: TrackingContext = {}, { history = true }: { history?: boolean } = {}): Promise<CarrierResult> {
@@ -47,10 +49,11 @@ export class XpoLtlTracker {
     };
     // A request that fails to reach the site, or hangs, gets one more try: the
     // first gets half of the budget, so the retry fits in the rest.
-    return runSteps({ carrier: 'xpo-ltl', budgetMs: context.budgetMs ?? 20_000, signal: context.signal,
+    return runSteps({ carrier: 'xpo-ltl', budgetMs: context.budgetMs ?? (this.options.trawl ? 50_000 : 20_000), signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, this.options.trawl ? Math.min(10_000, firstAttemptMs(remainingMs)) : firstAttemptMs(remainingMs)) },
+      networkRetryStep(({ signal, remainingMs }) => read(signal, this.options.trawl ? Math.min(5000, remainingMs) : remainingMs)),
+      { id: 'trawl', enabled: history && !!this.options.trawl, run: ({ signal, remainingMs }) => xpoBrowser(this.options.trawl!, number, signal, remainingMs) },
     ]);
   }
 
@@ -66,12 +69,21 @@ export class XpoLtlTracker {
 }
 
 export const adapter: AdapterFactory = (environment) => {
-  const tracker = new XpoLtlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
+  const tracker = new XpoLtlTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent, trawl: environment.trawl });
   return {
-    id: 'xpo-ltl', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'xpo-ltl', recordsSteps: true, steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
     // The summary alone tells a known PRO from an unknown one.
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context, { history: false }),
       () => accepted(() => normalizeXpoLtlNumber(number))),
+    recognizeWithBrowser: (number, context, previous) => {
+      if (previous instanceof RateLimitedError || previous instanceof SchemaError || previous instanceof NotFoundError) return Promise.reject(previous);
+      if (!environment.trawl) return Promise.reject(new ChallengeError(PROVIDER));
+      if ((context?.budgetMs ?? 45000) <= 2000) return Promise.reject(new BudgetExceededError(PROVIDER, context?.budgetMs ?? 0));
+      return recognizeFromBrowserLookup(() => runSteps({ carrier: 'xpo-ltl', budgetMs: context?.budgetMs ?? 45000,
+        signal: context?.signal, recorder: environment.recorder }, [
+        { id: 'trawl', run: ({ signal, remainingMs }) => xpoBrowser(environment.trawl!, number, signal, remainingMs) },
+      ]));
+    },
   };
 };

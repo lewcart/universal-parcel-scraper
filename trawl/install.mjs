@@ -31,8 +31,23 @@ for (const tier of [2, 3]) {
     return await fedexSessions.run({ url, handle, tier: ${tier}, maxTimeout, capture,
       installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
   }
+  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
+    && !body && !Object.keys(extraHeaders ?? {}).length && wanbBrowserNumber(url, capture)) {
+    return await runWanbBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
+      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout),
+      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  }
+  if (${tier === 3 ? '!proxyUrl && ' : ''}!screenshot && (!method || method === "GET")
+    && !body && !Object.keys(extraHeaders ?? {}).length && xpoBrowserNumber(url, capture)) {
+    return await runXpoBrowser({ url, handle, tier: ${tier}, maxTimeout, capture,
+      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout),
+      installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) })
+  }
   ${start}`;
   writeFileSync(path, 'import { attachTrackingCapture } from "../utils/tracking-capture.mjs"\n'
+    + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
+    + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
+    + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
     + 'import { dhlExpressBrowserNumber, runDhlExpressBrowser } from "../utils/dhl-express-browser.mjs"\n'
     + 'import { australiaPostBrowserRequest, runAustraliaPostBrowser } from "../utils/australia-post-browser.mjs"\n'
     + 'import { sfExpressSessionNumber, sfExpressSessions } from "../utils/sf-express-session.mjs"\n'

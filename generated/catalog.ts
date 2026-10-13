@@ -2026,6 +2026,9 @@ export const CARRIER_CATALOG = {
   "parcelforce": {
     "displayName": "Parcelforce Worldwide",
     "color": "#9d0f11",
+    "aliases": [
+      "Parcelforce"
+    ],
     "countries": [
       "GB"
     ],
@@ -5467,9 +5470,12 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Moncton",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "day-ross",
+      "recognitionRank": 38,
+      "localClocks": true
     },
-    "canaryUrl": "https://dayross.com/",
+    "canaryUrl": "https://dayross.com/track-shipments",
+    "trackingSearchUrl": "https://dayross.com/track-shipments",
     "linkRules": [],
     "detectionRules": [
       {
@@ -6990,11 +6996,31 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Stockholm",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "instabox",
+      "requirements": [
+        {
+          "field": "trackingUrl",
+          "validator": "instaboxCapabilityUrl",
+          "optional": true,
+          "label": "Instabox notification URL",
+          "type": "url",
+          "placeholder": "https://track.instabox.com/…",
+          "help": "The complete notification link opens your parcel history. Without it, other sources are asked."
+        }
+      ]
     },
-    "canaryUrl": "https://track.instabox.com/en",
+    "canaryUrl": "https://track.instabox.com/",
     "trackingSearchUrl": "https://track.instabox.com/en",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "track.instabox.com"
+        ],
+        "pathPattern": "^/[a-z]{2}(?:-[A-Z]{2})?/[A-Za-z0-9]{4,40}(?:/locker-to-locker-recipient)?/?$",
+        "path": "^/[a-z]{2}(?:-[A-Z]{2})?/([A-Za-z0-9]{4,40})(?:/locker-to-locker-recipient)?/?$",
+        "keepsCapabilityUrl": true
+      }
+    ],
     "detectionRules": []
   },
   "intelcom": {
@@ -8245,10 +8271,12 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "saia",
+      "recognitionRank": 12,
+      "localClocks": true
     },
     "canaryUrl": "https://www.saia.com/track",
-    "trackingUrlTemplate": "https://www.saia.com/track?pro={trackingNumber}",
+    "trackingUrlTemplate": "https://www.saia.com/track/details;pro={trackingNumber}",
     "trackingSearchUrl": "https://www.saia.com/track",
     "linkRules": [
       {
@@ -8256,6 +8284,16 @@ export const CARRIER_CATALOG = {
           "saia.com"
         ],
         "pathPattern": "^/track/?$",
+        "params": [
+          "pro"
+        ]
+      },
+      {
+        "domains": [
+          "saia.com"
+        ],
+        "pathPattern": "^/track/details(?:/|;|$)",
+        "path": "^/track/details;pro=(\\d+)",
         "params": [
           "pro"
         ]
@@ -8730,9 +8768,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "wanbexpress",
+      "recognitionRank": 33,
+      "browserRecognitionRank": 33
     },
-    "canaryUrl": "https://www.wanbexpress.com/",
+    "canaryUrl": "https://tracking.wanbexpress.com/",
     "linkRules": [],
     "detectionRules": [
       {
@@ -8858,6 +8898,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "xpo-ltl",
       "recognitionRank": 25,
+      "browserRecognitionRank": 25,
       "localClocks": true
     },
     "canaryUrl": "https://www.xpo.com/",

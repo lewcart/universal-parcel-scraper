@@ -1,0 +1,81 @@
+import { describe, expect, it, vi } from 'vitest';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/trawl.js';
+import { adapter } from './adapter.js';
+import { API, normalizeWanbNumber, parseWanb } from './parser.js';
+
+const number = 'WNBZZ9990000001YQ';
+const unknown = 'WNBZZ9999999999YQ';
+const found = () => ({ Succeeded: true, Data: { TrackingNumber: number, Match: 'ParcelId', Status: 'Delivered',
+  Metadata: { OriginCountryCode: 'CN', DestinationCountryCode: 'US', ShippingAddress: 'PRIVATE' },
+  TrackPoints: [
+    { Time: '2031-04-16T10:00:00Z', TimeZone: 8, Content: 'Parcel Data Received', Status: 'DataReceived', Location: '' },
+    { Time: '2031-04-18T19:30:00Z', TimeZone: -4, Content: 'Parcel has been delivered.', Status: 'LastMileDelivered', Location: 'Example City' },
+  ] } });
+const challenge = { Succeeded: false, Error: { Code: '0x110012', Message: 'Verification failed' } };
+const missing = { Succeeded: true, Data: { TrackingNumber: unknown, Match: 'Unknown', Status: null, Metadata: null, TrackPoints: [] } };
+const reply = (value: unknown) => new Response(JSON.stringify(value), { headers: { 'Content-Type': 'application/json' } });
+const capture = (value: unknown, status = 200, id = number) => ({ url: `${API}?TrackingNumber=${id}`, status,
+  headers: { 'content-type': 'application/json' }, body: JSON.stringify(value), truncated: false, base64Encoded: false, error: null });
+
+describe('WanbExpress', () => {
+  it('binds the complete parcel id and trusts UTC instead of applying the display offset again', () => {
+    const result = parseWanb(found(), number);
+    expect(result).toMatchObject({ current_stage: 'delivered', status: 'delivered', origin_country: 'CN', destination_country: 'US',
+      last_update: '2031-04-18T19:30:00Z', events: [{ time: '2031-04-18T19:30:00Z', stage: 'delivered' }, { stage: 'registered' }] });
+    expect(JSON.stringify(result)).not.toContain('PRIVATE');
+    expect(normalizeWanbNumber(number.toLowerCase())).toBe(number);
+    for (const input of ['1234567890', 'WNBZZ999000000YQ', number + '0', 'WNB/ZZ9990000001YQ']) {
+      expect(() => normalizeWanbNumber(input)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
+    }
+    const other = found(); other.Data.TrackingNumber = unknown;
+    expect(() => parseWanb(other, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const reference = found(); reference.Data.Match = 'TrackingNumber';
+    expect(() => parseWanb(reference, number)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  it('keeps verification, missing parcels and changed schemas distinct', () => {
+    expect(() => parseWanb(challenge, number)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseWanb(missing, unknown)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    const falseMissing = { ...missing, Data: { ...missing.Data, Metadata: {} } };
+    expect(() => parseWanb(falseMissing, unknown)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    for (const value of [null, [], {}, { Succeeded: true, Data: {} }]) expect(() => parseWanb(value, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const invalid = found(); invalid.Data.TrackPoints[0]!.Time = '2031-04-16T10:00:00';
+    expect(() => parseWanb(invalid, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('recovers in TRAWL while retaining the initial challenge and using the final bound response', async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => reply(challenge));
+    const browserFetcher = vi.fn<typeof fetch>(async (_url, init) => {
+      const request = JSON.parse(String(init?.body));
+      expect(request).toMatchObject({ skipHttp: true, maxTier: 3, captureResponses: [API] });
+      expect(request.maxTimeout).toBeLessThan(8000);
+      expect(init?.signal).toBeDefined();
+      return reply({ tier: 3, statusCode: 200, html: '', capturedResponses: [capture(challenge), capture(found())] });
+    });
+    const recorded: unknown[] = [];
+    const carrier = adapter({ env: {}, fetcher, trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null,
+      recorder: { ...NOOP_RECORDER, step: event => { recorded.push(event); } } });
+    await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(recorded).toMatchObject([{ step: 'direct', outcome: 'challenge' }, { step: 'trawl', outcome: 'ok' }]);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(browserFetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('never launches a browser during HTTP recognition and refuses unmatched, truncated and finally challenged captures', async () => {
+    const trawl = new TrawlClient('http://browser.test', vi.fn<typeof fetch>());
+    const environment = { env: {}, fetcher: vi.fn<typeof fetch>(async () => reply(challenge)), trawl, browserExecutablePath: null, recorder: NOOP_RECORDER };
+    await expect(adapter(environment).recognize!(number)).rejects.toMatchObject({ kind: 'challenge' });
+    for (const [captures, kind] of [
+      [[capture(found(), 200, unknown)], 'challenge'],
+      [[capture(found()), capture(challenge)], 'challenge'],
+      [[{ ...capture(found()), truncated: true }], 'transport'],
+      [[capture(found(), 429)], 'rate_limited'],
+      [[capture(found(), 403)], 'challenge'],
+    ] as const) {
+      const browser = new TrawlClient('http://browser.test', async () => reply({ tier: 3, statusCode: 200, html: '', capturedResponses: captures }));
+      await expect(adapter({ ...environment, trawl: browser }).track({ number }, { budgetMs: 8000 })).rejects.toMatchObject({ kind });
+    }
+    await expect(adapter(environment).track({ number }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
+  });
+});

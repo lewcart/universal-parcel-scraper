@@ -10,7 +10,7 @@ export * from './core/errors/hint.js';
 export * from './core/recognition/index.js';
 export * from './core/catalog/handoff.js';
 export { normalizeCarrierInputs, normalizeDeliveryPostcode } from './core/catalog/inputs.js';
-export { validateDachserTrackingUrl, validatePlanzerSharedUrl } from './core/catalog/urls.js';
+export { validateDachserTrackingUrl, validatePlanzerSharedUrl, validateInstaboxTrackingUrl } from './core/catalog/urls.js';
 export { CARRIER_CATALOG, CARRIER_IDS, type CarrierId } from './generated/catalog.js';
 export * from './providers/plan.js';
 export type { UniversalSource } from './providers/types.js';

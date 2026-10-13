@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK and SF Express. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress and XPO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
@@ -15,7 +15,9 @@ documentation describes the verification flows.
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
-DHL Express and SF Express use fresh contexts. DHL Express waits for the public
+DHL Express, SF Express, WanbExpress and XPO use fresh contexts. XPO scopes the checkbox
+solver to its visible widget while the public client completes verification and tracking.
+DHL Express waits for the public
 page to complete verification and repeat tracking after an intermediate HTTP 428.
 17TRACK submits a supplied postcode through the site's form and binds the capture to
 the number and postcode in its outgoing request.

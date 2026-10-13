@@ -18,15 +18,51 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "wanbexpress",
+    "steps": [
+      "direct",
+      "trawl"
+    ],
+    "recognition": {
+      "rank": 33
+    },
+    "browserRecognition": {
+      "rank": 33
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "origin_country",
+    "destination_country"
+  ],
   "portal": {
-    "canaryUrl": "https://www.wanbexpress.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
+    "canaryUrl": "https://tracking.wanbexpress.com/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "origin_country",
+      "destination_country",
+      "delivery_photos",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "origin_country",
+      "destination_country"
+    ],
+    "discarded": [
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivery_photos",
+      "recipient_address"
+    ],
     "unavailable": []
   },
   "links": [],

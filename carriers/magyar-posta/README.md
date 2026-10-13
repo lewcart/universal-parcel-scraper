@@ -29,7 +29,9 @@ through the checked request.
 The previous app's `PostaWeb/TrackingInfo` read is now refused by the site's firewall, and its
 copy on `postamobil.eu` no longer answers. The MPL tracking API on `core.api.posta.hu` needs a
 business client id. Every route that looks up a new number is behind a reCAPTCHA or an
-account, so Magyar Posta stays on universal providers.
+account. TRAWL's checkbox solver can complete the web search, but the available
+references return the unknown-item page. A dedicated adapter still needs a matching
+shipment response to establish its identity, history and clocks.
 
 ## Testing
 

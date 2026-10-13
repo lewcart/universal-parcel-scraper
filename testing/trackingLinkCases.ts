@@ -474,6 +474,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     marker: /Te rugăm să introduci numărul de tracking/i,
     forwarding: { notFound: /Nu am gasit nici un colet/ } },
   // The page posts the PRO to its tracking service on load, verified or not.
+  { carrier: 'saia', number: '99999999990',
+    route: /^https:\/\/www\.saia\.com\/track\/details;pro=99999999990$/,
+    marker: /The Shipment was not found for PRO Number: 99999999990/ },
   { carrier: 'old-dominion', number: '7200000001',
     route: /^https:\/\/www\.odfl\.com\/us\/en\/tools\/trace-track-ltl-freight\.html\?proNumbers=/,
     marker: /Track & Trace Shipments|Enter up to 25 Tracking Numbers/i },

@@ -1,35 +1,22 @@
 # Instabox
 
-Instabox parcels use enabled universal providers. There is no dedicated adapter.
+Tracks a parcel through the recipient's complete notification link on `track.instabox.com`.
+The link's verification code is an optional tracking-URL input; without it, enabled universal
+providers are asked. No phone number, email address, account or CAPTCHA is submitted.
 
-## Numbers
+The tracking page renders the complete parcel journey as literal React Flight records. The
+adapter parses those records without executing scripts, reads the `ParcelJourneyItems`
+component and requires the displayed parcel ID to match the request. Component ids and bundle
+names can change without changing that contract. Scan timestamps are explicit UTC instants;
+recipient contacts, collection codes, dimensions and delivery actions are excluded.
 
-Instabox parcel IDs looked up through its former tracking API are two letters and ten or twelve
-digits, the digits starting `01` or `02`; the letters vary between parcels. Two letters and ten
-digits are already shapes of Amazon, J&T, Relais Colis and Colis Privé numbers, so no rule
-claims the layout and the user picks Instabox.
+Links are restricted to the carrier's HTTPS host, one parcel and one verification code. Older
+notification addresses can redirect to the current recipient page on that host. A rejected or
+expired link stays inconclusive: it does not prove that a parcel is missing. Request and
+response diagnostics are excluded because they can carry the notification's capability.
 
-## Links
+Only the current recipient page's server-rendered journey is supported. A page that needs
+recipient verification or returns a different data layout passes to enabled universal providers.
 
-Instabox's tracker at `track.instabox.com` asks for the parcel ID together with the recipient's
-email address or phone number, so no link opens one parcel.
-
-## Why there is no adapter
-
-The tracker is the Instabee group's consumer web app, which also serves Budbee at
-`track.budbee.com`. Every parcel address leads to a verification page. The parcel opens only
-after a search that names the recipient's email address or phone number, or through the
-`authCode` in the recipient's notification link. The search gives an unknown parcel and a wrong
-email or phone the same notice.
-
-The Instabox app (`io.instabox.consumer`) reads orders from `tracking-api.instabee.com`, which
-answers an order lookup only with that `authCode` or for a signed-in user who owns the order.
-Budbee's earlier tracker at `tracking.budbee.com` reads orders by the token in the recipient's
-link, and its order search also needs the email address or phone number. Archived lookups went
-to an unauthenticated tracking API on `tracking-api.instabox.se`, a host that no longer resolves.
-
-A lookup takes no email address or phone number, so Instabox stays on universal providers.
-
-## Testing
-
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Set `INSTABOX_TRACKING_NUMBER` and `INSTABOX_TRACKING_URL` outside the repository and run
+`npm run test:carriers:live -- carriers/instabox/adapter.live.test.ts`.

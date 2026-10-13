@@ -148,7 +148,7 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
       new Promise((_, reject) => { timer = setTimeout(() => { outcome = 'deadline'; expired = true; reject(new Error('Browser deadline')); }, remaining()); }),
     ]);
   } catch (error) {
-    failure = error?.name === 'TimeoutError' || /\b(?:Timeout|timed out)\b/i.test(error?.message ?? '') ? 'timeout'
+    failure = outcome === 'deadline' || error?.name === 'TimeoutError' || /\b(?:Timeout|timed out)\b/i.test(error?.message ?? '') ? 'timeout'
       : /(?:Target|context|browser|page).*closed/i.test(error?.message ?? '') ? 'closed' : 'browser_error';
     if (statusCode || entries.length) return result();
     return { tier, status: 'error', durationMs: Date.now() - start, reason: 'DHL Poland browser retrieval failed' };

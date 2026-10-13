@@ -124,5 +124,6 @@ test('an unsolved or stalled CAPTCHA cannot submit and cleanup stays within the 
     const result = await runDhlPolandBrowser(active.options);
     assert.equal(active.state.submitted, 0); assert.equal(active.state.closed, 1);
     assert.deepEqual(result.capturedResponses, []);
+    if (stall) assert.equal(active.diagnostics[0].failure, 'timeout');
   }
 });

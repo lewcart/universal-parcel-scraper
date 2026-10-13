@@ -32,7 +32,7 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   const carrierRun = { url, handle, tier: ${tier}, maxTimeout: budget.remaining() - ${reserveMs}, capture,
     installPolicy: page => installOutboundPolicy(page, validateOutboundUrl) }
   if (carrierPage && dhlPolandBrowserNumber(url, capture)) {
-    return await runDhlPolandBrowser({ ...carrierRun, solveCaptcha: solveDhlPolandImages,
+    return await runDhlPolandBrowser({ ...carrierRun,
       solveNativeCaptcha: (page, timeout, report) => solveDhlPolandNative(page, timeout, budget.signal, report) })
   }
   if (carrierPage && asendiaBrowserNumber(url, capture)) return await runAsendiaBrowser(carrierRun)
@@ -52,7 +52,6 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
-    + 'import { solveDhlPolandImages } from "../utils/dhl-poland-images.mjs"\n'
     + 'import { solveRecaptchaV2 as solveDhlPolandNative } from "../utils/dhl-poland-native/recaptcha"\n'
     + 'import { dhlPolandBrowserNumber, runDhlPolandBrowser } from "../utils/dhl-poland-browser.mjs"\n'
     + 'import { asendiaBrowserNumber, runAsendiaBrowser } from "../utils/asendia-browser.mjs"\n'

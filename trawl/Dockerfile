@@ -11,18 +11,10 @@ COPY australia-post-browser.mjs /app/packages/tiers/src/utils/australia-post-bro
 COPY wanbexpress-browser.mjs /app/packages/tiers/src/utils/wanbexpress-browser.mjs
 COPY xpo-browser.mjs /app/packages/tiers/src/utils/xpo-browser.mjs
 COPY asendia-browser.mjs /app/packages/tiers/src/utils/asendia-browser.mjs
-COPY dhl-poland-images.mjs /app/packages/tiers/src/utils/dhl-poland-images.mjs
 COPY dhl-poland-native.mjs /app/packages/tiers/src/utils/dhl-poland-native.mjs
-COPY dhl-poland-model/package.json /app/packages/tiers/src/utils/dhl-poland-model/package.json
-COPY dhl-poland-model/bun.lock /app/packages/tiers/src/utils/dhl-poland-model/bun.lock
-COPY dhl-poland-model/worker.mjs /app/packages/tiers/src/utils/dhl-poland-model/worker.mjs
-COPY dhl-poland-model/UPSTREAM-LICENSE /app/packages/tiers/src/utils/dhl-poland-model/UPSTREAM-LICENSE
-COPY install-dhl-poland-model.mjs /app/packages/tiers/src/utils/install-dhl-poland-model.mjs
 COPY dhl-poland-browser.mjs /app/packages/tiers/src/utils/dhl-poland-browser.mjs
 COPY dhl-express-browser.mjs /app/packages/tiers/src/utils/dhl-express-browser.mjs
 COPY sf-express-session.mjs /app/packages/tiers/src/utils/sf-express-session.mjs
 COPY sf-express-gap.mjs /app/packages/tiers/src/utils/sf-express-gap.mjs
 COPY install.mjs /tmp/install-tracking-capture.mjs
-RUN bun install --cwd /app/packages/tiers/src/utils/dhl-poland-model --frozen-lockfile --production --ignore-scripts \
- && bun /app/packages/tiers/src/utils/install-dhl-poland-model.mjs \
- && bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs
+RUN bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs

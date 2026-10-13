@@ -31,12 +31,10 @@ time is an instant; posting dates are calendar days. History rows retain
 facility-local clocks without an invented offset, including international
 scans. Unknown history wording remains unclassified.
 
-The DHL-specific helper first uses TRAWL's native checkbox and audio solver.
+The DHL-specific helper uses TRAWL's native checkbox and audio solver.
 A carrier-scoped copy retains the upstream algorithm and replaces its raw debug
-output with fixed diagnostic events. If verification fails, the helper switches
-back to supported image grids and uses a local CPU classifier within the remaining
-budget. Unsupported challenges and failed verification retain the API
-summary. A solved checkbox alone is insufficient:
+output with fixed diagnostic events. Unsupported challenges and failed
+verification retain the API summary. A solved checkbox alone is insufficient:
 tracking requires a matching, nonempty history response. No recipient
 postcode is needed for scan history.
 

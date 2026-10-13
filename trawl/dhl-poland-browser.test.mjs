@@ -14,12 +14,12 @@ const response = (status = 200, body = html, submitted = number) => ({ url: () =
   headers: () => ({ 'content-type': 'text/html', 'set-cookie': 'PRIVATE' }), body: async () => Buffer.from(body) });
 function fixture() {
   const diagnostics = [];
-  const interactions = { checkbox: 0, imageButton: 0 };
-  const handlers = {}, state = { closed: 0, submitted: 0, policy: 0, solved: 0 };
+  const interactions = { checkbox: 0 };
+  const handlers = {}, state = { closed: 0, submitted: 0, policy: 0 };
   const page = { on: (event, fn) => { handlers[event] = fn; }, off: event => { delete handlers[event]; },
     goto: async () => ({ status: () => 200 }), waitForTimeout: async () => {},
-    frameLocator: () => ({ first: () => ({ locator: selector => ({ isVisible: async () => true,
-      click: async () => { interactions[selector === '#recaptcha-anchor' ? 'checkbox' : 'imageButton']++; } }) }) }),
+    frameLocator: () => ({ first: () => ({ locator: selector => ({
+      click: async () => { assert.equal(selector, '#recaptcha-anchor'); interactions.checkbox++; } }) }) }),
     waitForFunction: async () => {},
     locator: selector => {
       if (selector === '#onetrust-reject-all-handler') return { waitFor: async () => {}, evaluate: async () => {} };
@@ -31,7 +31,7 @@ function fixture() {
   };
   const options = { url, capture, tier: 3, maxTimeout: 1000, logDiagnostic: record => diagnostics.push(record),
     handle: { browser: { newContext: async () => ({ newPage: async () => page, close: async () => { state.closed++; } }) } },
-    solveCaptcha: async () => { state.solved++; }, installPolicy: async () => { state.policy++; },
+    installPolicy: async () => { state.policy++; },
   };
   return { options, handlers, state, page, diagnostics, interactions };
 }
@@ -55,7 +55,6 @@ test('native verification owns the initial checkbox and requires the page proof 
   const result = await runDhlPolandBrowser(active.options);
   assert.equal(result.capturedResponses.length, 1);
   assert.equal(active.interactions.checkbox, 0);
-  assert.equal(active.state.solved, 0);
   assert.deepEqual(active.diagnostics[0].native, ['audio_started', 'audio_verified']);
   assert.equal(active.diagnostics[0].verification, 'native');
   assert.equal(JSON.stringify(active.diagnostics).includes('PRIVATE'), false);
@@ -64,17 +63,19 @@ test('native verification owns the initial checkbox and requires the page proof 
   await runDhlPolandBrowser(active.options);
   assert.equal(active.state.submitted, 1);
 });
-test('failed native solving switches back to images inside the remaining budget', async () => {
+test('failed native solving retains a challenge without submitting the form', async () => {
   const active = fixture(); active.options.maxTimeout = 15000;
   let proof = '';
   const original = active.page.locator;
   active.page.locator = selector => selector === '#g-recaptcha-response' ? { inputValue: async () => proof } : original(selector);
   active.options.solveNativeCaptcha = async (_page, _budget, report) => { report('audio_blocked'); return false; };
-  active.options.solveCaptcha = async (_page, budget) => { assert.ok(budget < 15000); proof = 'PRIVATE'; };
   const result = await runDhlPolandBrowser(active.options);
-  assert.equal(result.capturedResponses.length, 1);
-  assert.deepEqual(active.interactions, { checkbox: 0, imageButton: 1 });
-  assert.equal(active.diagnostics[0].verification, 'images');
+  assert.equal(result.capturedResponses.length, 0);
+  assert.equal(active.state.submitted, 0);
+  assert.equal(active.state.closed, 1);
+  assert.deepEqual(active.interactions, { checkbox: 0 });
+  assert.equal(active.diagnostics[0].outcome, 'challenge');
+  assert.equal(active.diagnostics[0].verification, 'unverified');
   assert.deepEqual(active.diagnostics[0].native, ['audio_blocked']);
 });
 test('a stalled native solver is stopped by the browser deadline and closes its context', async () => {
@@ -95,7 +96,7 @@ test('observes before navigation, submits through the verified form and closes i
   const active = fixture(); const result = await runDhlPolandBrowser(active.options);
   assert.equal(result.capturedResponses[0].trackingNumberSubmitted, number);
   assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
-  assert.deepEqual(active.state, { closed: 1, submitted: 1, policy: 1, solved: 0 });
+  assert.deepEqual(active.state, { closed: 1, submitted: 1, policy: 1 });
   assert.deepEqual(active.handlers, {});
   assert.equal(active.diagnostics.length, 1);
   assert.equal(active.diagnostics[0].outcome, 'history');
@@ -112,19 +113,18 @@ test('diagnostics retain the failure phase and never propagate observer failures
   active.options.logDiagnostic = () => { throw new Error('PRIVATE'); };
   assert.equal((await runDhlPolandBrowser(active.options)).status, 'error');
 });
-test('image traces are bounded but retain the terminal reason', async () => {
+test('native traces are bounded and contain only fixed diagnostic events', async () => {
   const active = fixture(); active.options.maxTimeout = 10000;
-  active.page.waitForFunction = async () => { throw new Error('PRIVATE'); };
   const original = active.page.locator;
   active.page.locator = selector => selector === '#g-recaptcha-response' ? { inputValue: async () => '' } : original(selector);
-  active.options.solveCaptcha = async (_page, _budget, _worker, report) => {
-    for (let i = 0; i < 100; i++) report({ event: 'stale' });
-    report({ event: 'end', reason: 'round_limit' });
+  active.options.solveNativeCaptcha = async (_page, _budget, report) => {
+    for (let i = 0; i < 100; i++) { report('PRIVATE'); report('audio_started'); }
   };
   await runDhlPolandBrowser(active.options);
   const record = active.diagnostics[0];
-  assert.equal(record.images.length, 64);
-  assert.equal(record.images.at(-1).reason, 'round_limit');
+  assert.equal(record.native.length, 16);
+  assert.ok(record.native.every(event => event === 'audio_started'));
+  assert.equal(JSON.stringify(record).includes('PRIVATE'), false);
   assert.equal(record.outcome, 'challenge');
 });
 test('failed widget diagnostics cannot delay context cleanup beyond the budget', async () => {

@@ -8,6 +8,3 @@ and [source archive](https://github.com/germondai/trawl/archive/bbd908bf8256eb64
 The patches, installation script and build instructions live in this folder and are distributed
 under [AGPL-3.0](LICENSE). Release builds attach the matching upstream and patch source archives.
 Keep that source available with any redistributed image.
-
-DHL Poland image verification includes a separately pinned classifier in the AGPL image.
-Its [model and runtime sources](dhl-poland-model/README.md) accompany release artifacts.

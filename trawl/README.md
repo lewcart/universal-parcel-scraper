@@ -16,12 +16,10 @@ documentation describes the verification flows.
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
 DHL Express, SF Express, WanbExpress, XPO, Asendia and DHL Poland use fresh contexts.
-DHL Poland tries TRAWL's native checkbox and audio solver before its image fallback.
+DHL Poland uses TRAWL's native checkbox and audio solver.
 Its scoped native modules replace upstream raw debug logs with fixed events.
 It submits its history form after reCAPTCHA verification and returns only
 the waybill and scan fields, excluding recipient acknowledgements and verification tokens.
-Its [image classifier](dhl-poland-model/README.md) runs locally in a bounded worker;
-no paid CAPTCHA service or model API is required.
 Asendia waits for its own Turnstile callback to enable search and binds the captured POST
 to one whole identifier. Given a delivery postcode in the fragment, it opens the scans through the page's dialog; otherwise recipient verification leaves the current status only. XPO scopes the checkbox
 solver to its visible widget while the public client completes verification and tracking.

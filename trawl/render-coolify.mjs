@@ -12,7 +12,9 @@ const payload = gzipSync(JSON.stringify(sources), { level: 9 }).toString('base64
 const chunks = payload.match(/.{1,16000}/g).map(chunk => `'${chunk}'`).join(' \\\n    ');
 const header = dockerfile.slice(0, dockerfile.indexOf('\nCOPY '));
 const commands = dockerfile.slice(dockerfile.indexOf('\nRUN ') + 5).trim();
-if (!copies.length || !commands.startsWith('bun install ')) throw new Error('Review the TRAWL Dockerfile before rendering');
+if (!copies.length || commands !== 'bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs') {
+  throw new Error('Review the TRAWL Dockerfile before rendering');
+}
 console.log(`${header}
 RUN printf '%s' ${chunks} | base64 -d | gzip -d > /tmp/upc-trawl-sources.json \\
  && bun -e 'import{readFileSync,writeFileSync,mkdirSync}from"node:fs";import{dirname}from"node:path";for(const[path,text]of Object.entries(JSON.parse(readFileSync("/tmp/upc-trawl-sources.json","utf8")))){mkdirSync(dirname(path),{recursive:true});writeFileSync(path,text)}' \\

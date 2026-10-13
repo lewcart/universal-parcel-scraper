@@ -34,7 +34,7 @@ Tracked through the lookup its tracking page makes.
 - The delivering partner is named for Spring's PostNL service, which spring-gds tracks under the
   same number, and for partners the catalog knows by name whose link, if any, is their own. The
   partner's number is the delivery tracking number. GLS's European network is not named, since
-  the reply does not say which national GLS company delivers, and DAI Post has no catalog entry.
+  the reply does not say which national GLS company delivers.
 - Places are cut at their first word holding a digit, where partners put postcodes, depot
   numbers or street addresses. The recipient's postcode, the scans' ZIP codes, the master air
   waybill and the shipper's reference are never read.

@@ -2924,7 +2924,7 @@
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|LTN|NZC|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -5309,6 +5309,49 @@
         "pattern": "^[A-Z]{2}\\d{9}CY$",
         "confidence": "low",
         "checksum": "s10",
+        "preferred": true
+      }
+    ]
+  },
+  "dai-post": {
+    "displayName": "DAI Post",
+    "color": "#008faf",
+    "countries": [
+      "AU",
+      "NZ",
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dai-post",
+      "recognitionRank": 62,
+      "localClocks": true
+    },
+    "canaryUrl": "https://daipost.com/track",
+    "trackingUrlTemplate": "https://daipost.com/track?tracknbr={trackingNumber}",
+    "trackingSearchUrl": "https://daipost.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "daipost.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracknbr"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^NZC\\d{9}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^0039358094\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
         "preferred": true
       }
     ]

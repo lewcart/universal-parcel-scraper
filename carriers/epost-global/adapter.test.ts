@@ -114,13 +114,15 @@ describe('ePost Global HTTP adapter', () => {
       details.VendorTrackingUrl = 'https://postnl.post/track?barcodes=GB000000005GB';
     }), ROYAL);
     expect(elsewhere.delivery_carrier).toBeUndefined();
-    for (const [vendor, url, base] of [['GLSEU', '', 'https://gls-group.com/GROUP/en/parcel-tracking'], ['DAI POST', 'https://daipost.com/track?tracknbr=X', '']]) {
-      const result = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => {
-        Object.assign(details, { Vendor: vendor, VendorTrackingUrl: url, VendorBaseUrl: base });
-      }), ROYAL);
-      expect(result.delivery_carrier, vendor).toBeUndefined();
-      expect(result.delivery_tracking_number).toBe('GB000000005GB');
-    }
+    const gls = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => {
+      Object.assign(details, { Vendor: 'GLSEU', VendorTrackingUrl: '', VendorBaseUrl: 'https://gls-group.com/GROUP/en/parcel-tracking' });
+    }), ROYAL);
+    expect(gls.delivery_carrier).toBeUndefined();
+    expect(gls.delivery_tracking_number).toBe('GB000000005GB');
+    const dai = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => {
+      Object.assign(details, { Vendor: 'DAI POST', VendorTrackingUrl: 'https://daipost.com/track?tracknbr=NZC999999999', VendorBaseUrl: '' });
+    }), ROYAL);
+    expect(dai.delivery_carrier).toBe('dai-post');
     const own = parseEpostGlobal(rewrite('royal-mail-in-transit', (details) => { details.Track = ROYAL; }), ROYAL);
     expect(own.delivery_tracking_number).toBeUndefined();
   });

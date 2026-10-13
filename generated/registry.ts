@@ -43,6 +43,7 @@ import { adapter as ctt } from '../carriers/ctt/adapter.js';
 import { adapter as cttExpress } from '../carriers/ctt-express/adapter.js';
 import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
 import { adapter as dachser } from '../carriers/dachser/adapter.js';
+import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
 import { adapter as dhl } from '../carriers/dhl/adapter.js';
@@ -237,6 +238,7 @@ export const REGISTRY: RegistryDefinition = {
     "ctt-express": cttExpress,
     "cyprus-post": cyprusPost,
     "dachser": dachser,
+    "dai-post": daiPost,
     "dao": dao,
     "delhivery": delhivery,
     "dhl": dhl,
@@ -431,6 +433,7 @@ export const REGISTRY: RegistryDefinition = {
     "ctt-express": "ctt-express",
     "cyprus-post": "cyprus-post",
     "dachser": "dachser",
+    "dai-post": "dai-post",
     "dao": "dao",
     "day-ross": "universal",
     "delhivery": "delhivery",

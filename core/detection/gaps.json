@@ -158,6 +158,12 @@
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
   },
   {
+    "carrier": "dai-post",
+    "pattern": "^WMG\\d{11}$",
+    "kind": "by_design",
+    "reason": "WMG and eleven digits is a shipper's own numbering, which DAI Post tracks for the parcels it delivers; nothing in it points to DAI Post."
+  },
+  {
     "carrier": "day-ross",
     "pattern": "^A\\d{8}$",
     "kind": "open",

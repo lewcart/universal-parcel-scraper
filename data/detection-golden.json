@@ -1276,11 +1276,73 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dai-post",
       "swiss-post-cargo",
       "usps",
       "nz-post"
     ],
+    "preferred": [
+      "dai-post"
+    ],
     "asked": [
+      "dai-post",
+      "swiss-post-cargo",
+      "nz-post"
+    ]
+  },
+  {
+    "input": "00393580940185715150",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dai-post",
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "preferred": [
+      "dai-post"
+    ],
+    "asked": [
+      "dai-post",
+      "swiss-post-cargo",
+      "nz-post"
+    ]
+  },
+  {
+    "input": "00393580940186597045",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dai-post",
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "preferred": [
+      "dai-post"
+    ],
+    "asked": [
+      "dai-post",
+      "swiss-post-cargo",
+      "nz-post"
+    ]
+  },
+  {
+    "input": "00393580940186672087",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dai-post",
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "preferred": [
+      "dai-post"
+    ],
+    "asked": [
+      "dai-post",
       "swiss-post-cargo",
       "nz-post"
     ]
@@ -33346,6 +33408,14 @@
     ]
   },
   {
+    "input": "NZC999999999",
+    "carrier": "dai-post",
+    "confidence": "high",
+    "candidates": [
+      "dai-post"
+    ]
+  },
+  {
     "input": "OD3289740150013",
     "carrier": "unknown",
     "confidence": "none",
@@ -37271,6 +37341,12 @@
     "asked": [
       "colis-prive"
     ]
+  },
+  {
+    "input": "WMG00000872725",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "WNBAA0260748097YQ",

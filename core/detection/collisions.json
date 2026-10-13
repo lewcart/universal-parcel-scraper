@@ -608,6 +608,14 @@
     "reason": "Landmark's nine-digit LTN references overlap Colis Privé's broad twelve-character rule; the specific Landmark rule decides, and Purolator excludes the LTN prefix."
   },
   {
+    "shape": "NZC9{9}",
+    "carriers": [
+      "colis-prive",
+      "dai-post"
+    ],
+    "reason": "DAI Post's New Zealand numbers overlap Colis Privé's broad twelve-character rule; the specific DAI Post rule decides, and Purolator excludes the NZC prefix."
+  },
+  {
     "shape": "A{3}9{9}",
     "carriers": [
       "colis-prive",
@@ -1946,6 +1954,16 @@
       "usps"
     ],
     "reason": "Early Bird's own SSCCs with another extension digit fall outside Bring's rule but still fit PostNord's SSCC rule and the broad Swiss Post Cargo, NZ Post and USPS candidates. PostNord and Early Bird are both listed first, and recognition asks both."
+  },
+  {
+    "shape": "9{20} starting with 0039358094 that passes the SSCC check",
+    "carriers": [
+      "dai-post",
+      "nz-post",
+      "swiss-post-cargo",
+      "usps"
+    ],
+    "reason": "DAI Post's own SSCCs typed with their 00 identifier and extension digit 3 also fit Swiss Post Cargo's SSCC candidate and the broad NZ Post and USPS 20-digit candidates. DAI Post's rule lists it first, and recognition asks DAI Post."
   },
   {
     "shape": "PL followed by eight digits ending in 0",

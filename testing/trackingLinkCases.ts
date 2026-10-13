@@ -635,6 +635,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: '99minutos', number: '9999999999',
     route: /^https:\/\/tracking\.99minutos\.com\/(?:search\/9999999999)?$/,
     marker: /Rastrea aquí tu pedido|Número de guía/ },
+  // The server renders the lookup for the number in its address; an unknown one gets the absence heading.
+  { carrier: 'dai-post', number: 'NZC999999999',
+    route: /^https:\/\/daipost\.com\/track\?tracknbr=NZC999999999$/,
+    marker: /Sorry, we couldn.t find your parcel|Where it.s at/ },
 ];
 
 /**

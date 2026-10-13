@@ -225,6 +225,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dai-post",
           "swiss-post-cargo",
           "usps",
           "nz-post"

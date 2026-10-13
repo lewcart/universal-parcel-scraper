@@ -2926,7 +2926,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|LTN|NZC|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -5311,6 +5311,49 @@ export const CARRIER_CATALOG = {
         "pattern": "^[A-Z]{2}\\d{9}CY$",
         "confidence": "low",
         "checksum": "s10",
+        "preferred": true
+      }
+    ]
+  },
+  "dai-post": {
+    "displayName": "DAI Post",
+    "color": "#008faf",
+    "countries": [
+      "AU",
+      "NZ",
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dai-post",
+      "recognitionRank": 62,
+      "localClocks": true
+    },
+    "canaryUrl": "https://daipost.com/track",
+    "trackingUrlTemplate": "https://daipost.com/track?tracknbr={trackingNumber}",
+    "trackingSearchUrl": "https://daipost.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "daipost.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracknbr"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^NZC\\d{9}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^0039358094\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
         "preferred": true
       }
     ]
@@ -9033,6 +9076,7 @@ export const CARRIER_IDS = [
   "cne",
   "correos-de-mexico",
   "cyprus-post",
+  "dai-post",
   "dao",
   "day-ross",
   "dhl-ecommerce-es",
@@ -9246,6 +9290,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cne": ["cne-1"],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "cyprus-post": ["cyprus-post-s10"],
+  "dai-post": ["dai-post-1","dai-post-2"],
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],

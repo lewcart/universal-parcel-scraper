@@ -163,6 +163,8 @@ describe('Asendia A1 reply projection', () => {
     const payload = delivered();
     payload.trackingBrandedSummary.finalMileTrackingLink = 'https://www.canadapost-postescanada.ca/track-reperage/en#/search?searchFor=1234567890123456';
     expect(parseAsendiaA1TrackingResponse(payload, NUMBER).delivery_carrier).toBe('canada-post');
+    payload.trackingBrandedSummary.finalMileTrackingLink = 'https://daipost.com/track?tracknbr=00393580949999999992';
+    expect(parseAsendiaA1TrackingResponse(payload, NUMBER).delivery_carrier).toBe('dai-post');
     payload.trackingBrandedSummary.finalMileTrackingLink = 'https://www.canadapost-postescanada.ca.evil.test/';
     expect(parseAsendiaA1TrackingResponse(payload, NUMBER).delivery_carrier).toBeUndefined();
   });

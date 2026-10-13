@@ -124,7 +124,9 @@ describe('UBI Smart Parcel tracking adapter', () => {
     expect(before).toMatchObject({ status: 'in_transit', last_status_text: 'EXPORT CUSTOMS CLEARED', last_update: '2026-03-21T12:50:00+08:00',
       delivery_tracking_number: ARAMEX, destination_country: 'AU' });
     expect(before.events!.some((event) => event.provider_code === 'LHL')).toBe(false);
-    expect(before.delivery_carrier).toBeUndefined();
+    // UBI links Aramex Australia's home page for the parcel.
+    expect(before.delivery_carrier).toBe('aramex-au');
+    expect(deliveryHandoff('ubi-smart-parcel', LINEHAUL, before)).toEqual({ carrier: 'aramex-au', number: ARAMEX, basis: 'partner' });
     expect(parseUbi(fixture('aramex-linehaul'), LINEHAUL, Date.parse('2026-03-21T14:30:00Z')))
       .toMatchObject({ last_status_text: 'UPLIFTED FROM TRANSSHIPMENT HUB', last_update: '2026-03-21T22:30:00+08:00' });
 
@@ -148,6 +150,7 @@ describe('UBI Smart Parcel tracking adapter', () => {
     };
     expect(sites([{ webSite: 'https://auspost.com.au/' }, { webSite: 'https://auspost.com.au/mypost/track' }])).toBe('australia-post');
     expect(sites([{ webSite: 'https://auspost.com.au/' }, { webSite: 'https://www.aramex.com.au/' }])).toBeUndefined();
+    expect(sites([{ webSite: 'https://www.aramex.com.au/' }])).toBe('aramex-au');
     expect(sites([{ webSite: 'https://www.canadapost-postescanada.ca/' }])).toBe('canada-post');
     for (const value of [[], null, undefined, [{ webSite: 'not a link' }], [{}]]) expect(sites(value), JSON.stringify(value)).toBeUndefined();
     expect(() => sites({ webSite: 'https://auspost.com.au/' })).toThrow('invalid partner links');

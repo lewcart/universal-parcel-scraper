@@ -48,9 +48,8 @@ recognition never claims a parcel found that way.
 
 ## Limitations
 
-The tracker gives no delivery estimate. It names no partner site for parcels to Canada, and the
-catalog has no carrier for Aramex Australia's site. UBI no longer knows older parcels, which come
-back like unknown ones.
+The tracker gives no delivery estimate, and it names no partner site for parcels to Canada. UBI no
+longer knows older parcels, which come back like unknown ones.
 
 ## Links
 

@@ -18,7 +18,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -40,7 +41,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -62,7 +64,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -84,7 +87,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -106,7 +110,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -147,7 +152,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
@@ -188,7 +194,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."

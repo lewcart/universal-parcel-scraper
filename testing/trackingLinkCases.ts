@@ -603,6 +603,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chit-chats', number: 'Z9Z9Z9Z9Z9',
     route: /^https:\/\/chitchats\.com\/tracking$/,
     marker: /Track your shipment|Nothing found for shipment ID/ },
+  // The page reads the label from its address and asks the tracking service on load.
+  { carrier: 'aramex-au', number: 'QX9999999990',
+    route: /^https:\/\/www\.aramex\.com\.au\/tools\/track\/?\?l=QX9999999990$/,
+    marker: /Parcel Journey|Tracking results not displayed\?/ },
   // The page reads the number from its address and posts it to the site's tracking action on load.
   { carrier: 'stallion-express', number: 'SE991231ZZZZ',
     route: /^https:\/\/stallion\.ca\/track\/\?tracking=SE991231ZZZZ$/,

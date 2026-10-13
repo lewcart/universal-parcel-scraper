@@ -8,6 +8,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "aliexpress": 580,
   "allegro-one": 390,
   "apc-overnight": 220,
+  "aramex-au": 445,
   "aras-kargo": 420,
   "australia-post": 500,
   "austrian-post": 830,

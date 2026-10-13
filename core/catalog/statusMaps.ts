@@ -17,6 +17,7 @@ import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as apcOvernight } from '../../carriers/apc-overnight/status.js';
+import { statusMap as aramexAu } from '../../carriers/aramex-au/status.js';
 import { statusMap as arasKargo } from '../../carriers/aras-kargo/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
 import { statusMap as cacesa } from '../../carriers/cacesa/status.js';
@@ -117,7 +118,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress, 'allegro-one': allegroOne, 'an-post': anPost,
-  'apc-overnight': apcOvernight, 'aras-kargo': arasKargo,
+  'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, cdl, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'correos-de-mexico': correosDeMexico,
   'correos-spain': correosSpain,
   'cyprus-post': cyprusPost, 'dai-post': daiPost, dao, 'dhl-express': dhlExpress, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv,

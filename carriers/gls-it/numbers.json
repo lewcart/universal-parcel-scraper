@@ -103,7 +103,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "A public Altroconsumo complaint about a GLS delivery gives it as the shipment number."

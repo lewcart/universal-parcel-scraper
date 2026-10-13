@@ -807,7 +807,8 @@
         "confidence": "low",
         "candidates": [
           "aliexpress",
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to the United States."
@@ -831,7 +832,8 @@
         "confidence": "low",
         "candidates": [
           "aliexpress",
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to the United States."

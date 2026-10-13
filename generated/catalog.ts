@@ -4904,6 +4904,46 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "aramex-au": {
+    "displayName": "Aramex Australia",
+    "color": "#dc291e",
+    "aliases": [
+      "Aramex AU",
+      "Fastway Australia",
+      "Fastway Couriers Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "aramex-au",
+      "recognitionRank": 445,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.aramex.com.au/tools/track/",
+    "trackingUrlTemplate": "https://www.aramex.com.au/tools/track?l={trackingNumber}",
+    "trackingSearchUrl": "https://www.aramex.com.au/tools/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "aramex.com.au",
+          "fastway.com.au"
+        ],
+        "params": [
+          "l"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:[A-Z]{2}|\\d[A-Z])\\d{10}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "aras-kargo": {
     "displayName": "Aras Kargo",
     "color": "#dc0812",
@@ -9065,6 +9105,7 @@ export const CARRIER_IDS = [
   "acs-courier",
   "allegro-one",
   "apc-overnight",
+  "aramex-au",
   "aras-kargo",
   "box-now",
   "cacesa",
@@ -9279,6 +9320,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "acs-courier": [],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
   "apc-overnight": ["apc-overnight-1"],
+  "aramex-au": ["aramex-au-1"],
   "aras-kargo": [],
   "box-now": [],
   "cacesa": [],

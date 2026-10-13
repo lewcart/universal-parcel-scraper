@@ -307,7 +307,8 @@
         "confidence": "low",
         "candidates": [
           "relais-colis",
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "The customer identifies this parcel and quotes transit between Relais Colis sites. Its complete reference fits the official recipient form; Colis Privé overlaps the shape."

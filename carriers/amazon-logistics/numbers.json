@@ -256,7 +256,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "colis-prive"
+          "colis-prive",
+          "aramex-au"
         ]
       },
       "note": "Invented placeholder used as a shape check. Filed under Amazon Logistics, which no rule claims."

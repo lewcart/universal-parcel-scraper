@@ -57,9 +57,10 @@
     "shape": "AA9{10}",
     "carriers": [
       "amazon-logistics",
-      "colis-prive"
+      "colis-prive",
+      "aramex-au"
     ],
-    "reason": "Amazon marketplace numbers are 12 characters, which Colis Privé also accepts; the Amazon rule is the only high-confidence one."
+    "reason": "Amazon marketplace numbers have twelve characters, which Colis Privé also accepts, and two letters and ten digits are Aramex Australia's label shape; the Amazon rule is the only high-confidence one."
   },
   {
     "shape": "AA9{9}AA",
@@ -563,9 +564,10 @@
     "shape": "AA9{10}",
     "carriers": [
       "colis-prive",
-      "j-and-t"
+      "j-and-t",
+      "aramex-au"
     ],
-    "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps J&T Indonesia JY and JD numbers; the JY rule decides, JD numbers stay a suggestion."
+    "reason": "Colis Privé accepts any 12-character alphanumeric and Aramex Australia any two letters and ten digits, so both overlap J&T Indonesia JY and JD numbers; the JY rule decides, JD numbers stay a suggestion."
   },
   {
     "shape": "9{5}A9{6}",
@@ -587,9 +589,10 @@
     "shape": "AA9{10}",
     "carriers": [
       "colis-prive",
-      "poczta-polska"
+      "poczta-polska",
+      "aramex-au"
     ],
-    "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps Poczta Polska PX numbers; the specific high-confidence rule decides."
+    "reason": "Colis Privé accepts any 12-character alphanumeric and Aramex Australia any two letters and ten digits, so both overlap Poczta Polska PX numbers; the specific high-confidence rule decides."
   },
   {
     "shape": "A{3}9{9}",
@@ -1177,6 +1180,15 @@
     "reason": "Colis Privé accepts generic twelve- and seventeen-character composites, so it overlaps references Cainiao's tracker follows; both stay suggestions."
   },
   {
+    "shape": "PA followed by ten digits",
+    "carriers": [
+      "aliexpress",
+      "colis-prive",
+      "aramex-au"
+    ],
+    "reason": "Cainiao's PA references have twelve characters, which Colis Privé accepts, in Aramex Australia's label shape of two letters and ten digits; all three stay suggestions."
+  },
+  {
     "shape": "9{3}A9{8}A",
     "carriers": [
       "aliexpress",
@@ -1297,12 +1309,13 @@
     "reason": "The complete identifier matches overlapping catalog formats. Direct tracking must confirm its service and network; a matching shape or checksum alone does not establish ownership."
   },
   {
-    "shape": "12-character alphanumeric identifier",
+    "shape": "Two letters and ten digits",
     "carriers": [
       "colis-prive",
-      "relais-colis"
+      "relais-colis",
+      "aramex-au"
     ],
-    "reason": "The complete identifier matches overlapping catalog formats. Direct tracking must confirm its service and network; a matching shape or checksum alone does not establish ownership."
+    "reason": "The complete identifier matches overlapping catalog formats, Aramex Australia's two letters and ten digits among them. Direct tracking must confirm its service and network; a matching shape or checksum alone does not establish ownership."
   },
   {
     "shape": "Twelve digits starting with 0, 1 or 250 that pass the FedEx and Purolator checks",
@@ -2360,5 +2373,13 @@
       "xpo-ltl"
     ],
     "reason": "XPO's PRO numbers end in the remainder of their first eight digits divided by seven, a check TNT's nine-digit consignment numbers can also carry. Both rules are low-confidence, so the number stays a suggestion, TNT first."
+  },
+  {
+    "shape": "Two letters, or a digit and a letter, followed by ten digits",
+    "carriers": [
+      "colis-prive",
+      "aramex-au"
+    ],
+    "reason": "Aramex Australia's labels have twelve characters, which Colis Privé's rule for any twelve letters or digits also takes. Both are low-confidence, so the number stays a suggestion that direct tracking must confirm."
   }
 ]

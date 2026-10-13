@@ -18,18 +18,68 @@
   "timezone": "America/Mexico_City",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "paquetexpress",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 35
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://www.paquetexpress.com.mx/rastreo/{trackingNumber}",
     "searchUrl": "https://www.paquetexpress.com.mx/rastreo",
     "canaryUrl": "https://www.paquetexpress.com.mx/rastreo",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "estimated_delivery",
+      "service_type",
+      "origin",
+      "destination",
+      "customer_reference",
+      "signature",
+      "proof_of_delivery",
+      "branch_addresses",
+      "recipient_name",
+      "sender_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "estimated_delivery",
+      "delivered_at",
+      "provider_code",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "service_type",
+      "origin",
+      "destination",
+      "customer_reference",
+      "signature",
+      "proof_of_delivery",
+      "branch_addresses",
+      "recipient_name",
+      "sender_name"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "service_name"
+    ]
   },
   "links": [
     {

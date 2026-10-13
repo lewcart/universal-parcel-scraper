@@ -246,7 +246,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -259,7 +259,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
+      "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened. Paquetexpress's history service knows it."
     },
     {
       "number": "01161858191",
@@ -272,7 +272,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -288,7 +288,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened. Paquetexpress's history service knows it."
     },
     {
       "number": "01149934532",
@@ -301,7 +301,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -314,7 +314,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Paquetexpress's own tracker, as an archived address shows; the capture was not opened. Paquetexpress's history service knows it."
     }
   ]
 }

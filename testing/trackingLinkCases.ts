@@ -57,6 +57,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/cs\.estafeta\.com\/es\/Tracking\/searchByGet/,
     marker: /Código de rastreo|Número de guía|no se encontró información|Rastrear Envío/i,
     forwarding: { notFound: /Lo sentimos, no se encontró información/i } },
+  // The page looks the number up on load and clears it when Paquetexpress does not know it.
+  { carrier: 'paquetexpress', number: '999999999999',
+    route: /^https:\/\/www\.paquetexpress\.com\.mx\/rastreo\/999999999999$/,
+    marker: /Oops! Wrong tracking number, please check your info and try again\./,
+    forwarding: { notFound: /Oops! Wrong tracking number, please check your info and try again\./ } },
   { carrier: 'nacex', number: '9900/99000002',
     route: /^https:\/\/www\.nacex\.es\/seguimientoFormularioExterno\.do(?:\?|$)/,
     marker: /Formulario de Seguimiento|Formulaire de Suivi|Track and trace form/,

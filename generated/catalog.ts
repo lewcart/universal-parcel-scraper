@@ -7727,7 +7727,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "paquetexpress",
+      "recognitionRank": 35
     },
     "canaryUrl": "https://www.paquetexpress.com.mx/rastreo",
     "trackingUrlTemplate": "https://www.paquetexpress.com.mx/rastreo/{trackingNumber}",

@@ -25,7 +25,9 @@ parcel.
 
 Cainiao's tracker also follows partner numbers in shapes no rule suggests it for: plain digits, or
 a format another carrier's rule claims with high confidence. For those the user picks AliExpress
-or pastes a `global.cainiao.com` link.
+or pastes a `global.cainiao.com` link. A high-confidence format, such as Ecoscooting's `CNPRT`
+references, names the hand-off partner when that carrier delivers in the destination country, so
+a consumer can keep a parcel filed under it and show Cainiao's answer as the earlier leg.
 
 ## How it works
 

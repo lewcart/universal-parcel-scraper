@@ -118,8 +118,10 @@ repeating at once.
 When a result names a delivery partner, the tracker also asks that partner's adapter. Its
 answer comes back separately, checked against the number on its own. Adopting it is the
 consumer's choice. AliExpress follows some parcels under the delivery carrier's own number and
-names no partner for them. The partner is then the one carrier at home in the destination
-country whose rule fits that number beside AliExpress's. When a partial carrier answer names the partner, the fallbacks leave that
+names no partner for them. The partner is then the carrier that delivers in the destination
+country Cainiao reports: the one whose high-confidence rule claims the number, unless it is an
+S10 number, else the one carrier at home there whose rule fits the number beside AliExpress's.
+When a partial carrier answer names the partner, the fallbacks leave that
 lookup a third of the budget, at most 30 seconds.
 
 A result's `service_name` is the carrier's own name for the shipping service the parcel

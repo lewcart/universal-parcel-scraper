@@ -155,6 +155,18 @@ describe('an origin that follows the parcel under its delivery carrier\'s number
       expect(deliveryHandoff('aliexpress', number, { destination_country: 'IT' })).toBeNull();
     }
   });
+  it('proposes the carrier that alone issues the number, where it delivers', () => {
+    // Cainiao also follows Ecoscooting's Portuguese references before Ecoscooting has the parcel.
+    const reference = 'CNPRT00000001234000000001';
+    for (const destination of [{ destination_country_name: 'Portugal' }, { destination_country: 'ES' }]) {
+      expect(deliveryHandoff('aliexpress', reference, destination))
+        .toEqual({ carrier: 'ecoscooting', number: reference, basis: 'reference' });
+    }
+    for (const destination of [{}, { destination_country_name: 'France' }]) {
+      expect(deliveryHandoff('aliexpress', reference, destination)).toBeNull();
+    }
+    expect(deliveryHandoff('aliexpress', 'DOFR0000000000001HD', { destination_country: 'FR' })).toBeNull();
+  });
   it('leaves carriers that track only their own numbers alone', () => {
     for (const carrier of ['poste-italiane', 'four-px', 'la-poste']) {
       expect(followsPartnerNumbers(carrier)).toBe(false);

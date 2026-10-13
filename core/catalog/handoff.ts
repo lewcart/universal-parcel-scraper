@@ -59,13 +59,19 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
     basis = 'reference';
   }
   // An origin that follows the parcel under its delivery carrier's number has
-  // no second reference to name. The catalog lists that carrier beside the
-  // origin for the shape; it has to be the only one at home where the parcel goes.
+  // no second reference to name. That carrier delivers where the parcel goes:
+  // the one carrier that issues the shape (an S10's issuer does not deliver
+  // it), else the only one at home there that the catalog lists beside the
+  // origin for the shape.
   if (!target && !result.delivery_tracking_number && followsPartnerNumbers(carrier)) {
-    const candidates = detectCarrierMatch(number).candidates;
+    const detected = detectCarrierMatch(number);
     const country = countryCode(destination);
-    const local = country && candidates.includes(carrier as CarrierId) ? candidates.filter((candidate) => candidate !== carrier
-      && CARRIER_DEFINITIONS[candidate]?.countries?.[0] === country) : [];
+    const issuer = detected.confidence === 'high' && detected.carrier !== carrier && !isValidS10TrackingNumber(number)
+      ? detected.carrier : null;
+    const local = !country ? []
+      : issuer ? [issuer].filter((candidate) => CARRIER_DEFINITIONS[candidate]?.countries?.includes(country))
+      : detected.candidates.includes(carrier as CarrierId) ? detected.candidates.filter((candidate) => candidate !== carrier
+        && CARRIER_DEFINITIONS[candidate]?.countries?.[0] === country) : [];
     if (local.length === 1) { target = local[0]; basis = 'reference'; }
   }
   if (!target || target === carrier || !/^[A-Z0-9]{4,40}$/.test(reference)

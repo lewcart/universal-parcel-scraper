@@ -7,7 +7,7 @@ import { normalizeEcoscootingNumber, parseEcoscooting } from './parser.js';
 import { ecoscootingStatus } from './status.js';
 import metadata from './carrier.json' with { type: 'json' };
 import statuses from './statuses.json' with { type: 'json' };
-import { InvalidInputError } from '../../core/errors/index.js';
+import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
 const NUMBER = '000000000000000001';
 const OTHER = '000000000000000002';
@@ -177,12 +177,16 @@ describe('Ecoscooting parcel history', () => {
     const malformed = fixture(); malformed.statuses[1] = null;
     for (const value of [null, wrong, scan, excessive, malformed]) expect(() => parseEcoscooting(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
-  it('keeps query errors, failures and empty histories inconclusive instead of claiming absence', () => {
+  it('keeps query errors and failures inconclusive instead of claiming absence', () => {
     for (const value of [{ success: 'false', errorCode: 'P-011-0201-00-00-502', errorMsg: 'query logisticOrder by mailNo error' }, { success: true }, {}]) {
       expect(() => parseEcoscooting(value, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     }
-    const empty = fixture(); empty.statuses = [];
-    expect(() => parseEcoscooting(empty, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+  it('reads a parcel listed without scans as having no history yet', () => {
+    const announced = fixture(); announced.statuses = []; announced.packageParam.dimWeight = {};
+    expect(() => parseEcoscooting(announced, NUMBER)).toThrow(NoHistoryError);
+    const other = fixture(); other.statuses = []; other.packageParam.trackingNumber = OTHER;
+    expect(() => parseEcoscooting(other, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
   it.each(['1767553200', 1767553200000, '0', '-1767553200000', '1767553200000.5', 'not a clock'])('rejects wrong epoch units or shape %s', opTimestamp => {
     const value = fixture(); value.statuses[0].opTimestamp = opTimestamp;

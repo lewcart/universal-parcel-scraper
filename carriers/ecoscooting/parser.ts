@@ -1,5 +1,5 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { epochMillisTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
@@ -34,7 +34,8 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
   if (payload.success !== 'true') throw new IndeterminateError('Ecoscooting', 'Ecoscooting could not complete the tracking query');
   if (!isRecord(payload.packageParam) || payload.packageParam.trackingNumber !== number) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
   if (!Array.isArray(payload.statuses) || payload.statuses.length > 500 || !payload.statuses.every(isRecord)) throw new SchemaError('Ecoscooting');
-  if (!payload.statuses.length) throw new IndeterminateError('Ecoscooting', 'Ecoscooting returned no parcel history');
+  // A parcel announced to Ecoscooting but not yet handed over is listed without scans.
+  if (!payload.statuses.length) throw new NoHistoryError('Ecoscooting', 'Ecoscooting lists the parcel without scans');
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   for (const row of payload.statuses) {

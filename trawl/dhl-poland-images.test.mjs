@@ -8,13 +8,13 @@ const key = 'SYNTHETIC_SITE_KEY_00000000';
 const tile = (src, selected = false) => ({ src, selected, left: 0, top: 0, width: 128, height: 128 });
 const initial = () => Array.from({ length: 9 }, (_, i) => tile(`synthetic-image-${i}`));
 const scores = matches => Array.from({ length: 9 }, (_, i) => ({ label: matches.includes(i) ? 'bicycle' : 'other', confidence: 0.95 }));
-function fixture({ dynamic = false, changed = false, fail = false, stall = false, count = 9 } = {}) {
+function fixture({ dynamic = false, changed = false, fail = false, stall = false, count = 9, target = 'bicycles' } = {}) {
   const state = { terminated: 0, clicks: [], verify: 0, inferences: 0, reads: 0, solved: false, reloads: 0 };
   let tiles = initial().slice(0, count);
   const frame = {
     url: () => `https://www.google.com/recaptcha/api2/bframe?k=${key}`,
     waitForFunction: async () => {},
-    evaluate: async (_fn, previous) => previous ? !changed : { target: 'bicycles', dynamic, width: 400, tiles: structuredClone(tiles) },
+    evaluate: async (_fn, previous) => previous ? !changed : { target, dynamic, width: 400, tiles: structuredClone(tiles) },
     locator: selector => {
       if (selector === '#recaptcha-reload-button') return { click: async () => { state.reloads++; } };
       if (selector === '#recaptcha-verify-button') return { click: async () => { state.verify++; state.solved = true; } };
@@ -47,8 +47,15 @@ test('answers require the supported target, confidence and an unselected current
   assert.deepEqual(dhlPolandImageAnswers('bicycles', tiles, scores([0, 3])), [0]);
   assert.deepEqual(dhlPolandImageAnswers('unknown', tiles, scores([0])), []);
   assert.deepEqual(dhlPolandImageAnswers('bus', tiles, scores([0]).map(score => ({ ...score, label: score.label === 'bicycle' ? 'bus' : score.label }))), [0]);
+  assert.deepEqual(dhlPolandImageAnswers('a fire hydrant', tiles, scores([0]).map(score => ({ ...score, label: score.label === 'bicycle' ? 'hydrant' : score.label }))), [0]);
   const low = scores([0]); low[0].confidence = 0.1;
   assert.deepEqual(dhlPolandImageAnswers('bicycles', tiles, low), []);
+});
+test('article-prefixed prompts reach inference without consuming the refresh allowance', async () => {
+  const active = fixture({ target: 'a bicycle' });
+  assert.equal(await solveDhlPolandImages(active.page, 1000, active.createWorker), true);
+  assert.equal(active.state.reloads, 0);
+  assert.deepEqual(active.state.clicks, [0, 3]);
 });
 test('static and dynamic grids require backend verification and worker cleanup', async () => {
   for (const dynamic of [false, true]) {

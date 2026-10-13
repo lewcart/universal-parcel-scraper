@@ -7,8 +7,13 @@ const TARGETS = { bicycles: 'bicycle', bridges: 'bridge', buses: 'bus', cars: 'c
 for (const label of Object.values(TARGETS)) TARGETS[label] = label;
 let active = 0;
 
+function targetLabel(value) {
+  const target = typeof value === 'string' ? value.trim().toLowerCase().replace(/^(?:a|an)\s+/, '') : '';
+  return Object.hasOwn(TARGETS, target) ? TARGETS[target] : null;
+}
+
 export function dhlPolandImageAnswers(target, tiles, scores) {
-  const label = Object.hasOwn(TARGETS, target) ? TARGETS[target] : null;
+  const label = targetLabel(target);
   if (!label || tiles.length !== 9 || scores.length !== 9) return [];
   return scores.flatMap((score, index) => !tiles[index].selected && score?.label === label
     && Number.isFinite(score.confidence) && score.confidence >= 0.35 && score.confidence <= 1 ? [index] : []);
@@ -67,7 +72,7 @@ export async function solveDhlPolandImages(page, maxTimeout, createWorker = () =
                 left: box.left, top: box.top, width: box.width, height: box.height };
             }),
           }));
-          if (meta.tiles.length !== 9 || !Object.hasOwn(TARGETS, meta.target)) {
+          if (meta.tiles.length !== 9 || !targetLabel(meta.target)) {
             if (reloads++ > 0) return false;
             const before = meta.tiles.map(tile => tile.src);
             await frame.locator('#recaptcha-reload-button').click({ timeout: left() });

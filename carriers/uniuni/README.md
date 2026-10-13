@@ -1,6 +1,8 @@
 # UniUni
 
 Tracks individual parcels recognized by the official anonymous tracking page.
+Universal providers name the carrier by its former company name, UNI Express,
+which is its alias.
 
 ## How it works
 

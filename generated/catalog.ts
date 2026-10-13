@@ -3059,6 +3059,9 @@ export const CARRIER_CATALOG = {
   "uniuni": {
     "displayName": "UniUni",
     "color": "#f68841",
+    "aliases": [
+      "UNI Express"
+    ],
     "countries": [
       "CA",
       "US"

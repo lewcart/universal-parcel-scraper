@@ -1,7 +1,9 @@
 {
   "id": "uniuni",
   "displayName": "UniUni",
-  "aliases": [],
+  "aliases": [
+    "UNI Express"
+  ],
   "region": {
     "countries": [
       "CA",

@@ -22,8 +22,10 @@ Scan comments, names, contact details, QR codes, delivery PINs and driver
 coordinates are excluded. Shipment weight uses the portal's kilogram label.
 
 The no-history error also covers recent or out-of-range identifiers and remains
-inconclusive. Empty replies, redirects and generic HTTP errors do too. The
-firewall's script page is a challenge, never a missing parcel.
+inconclusive, with the reason `portal_not_found` so a consumer can tell it from
+an outage. Empty replies, redirects and generic HTTP errors are inconclusive
+without a reason. The firewall's script page is a challenge, never a missing
+parcel.
 
 Links to seur.com's home page, its `miseur/mis-envios` pages, in Spanish or
 English, and its `livetracking` page name SEUR; its other pages name none.

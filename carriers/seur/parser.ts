@@ -37,8 +37,10 @@ export function parseSeur(value: unknown, raw: string): CarrierResult {
   const number = normalizeSeurNumber(raw);
   if (!isRecord(value) || !Object.hasOwn(value, 'codigo_error')) throw new SchemaError('SEUR', 'SEUR tracking response changed');
   // The same lookup error covers absent, recent and out-of-range histories.
-  // It does not establish that the requested parcel never existed.
-  if (value.codigo_error != null) throw new IndeterminateError('SEUR', 'SEUR did not locate usable shipment history');
+  // It does not establish that the requested parcel never existed. The reason
+  // marks the known code as an answer about the number, not an outage.
+  if (value.codigo_error != null) throw new IndeterminateError('SEUR', 'SEUR did not locate usable shipment history',
+    value.codigo_error === 'ERR_CNSPLI_002' && value.situaciones == null ? { reason: 'portal_not_found' } : {});
   if (value.identificador_busqueda !== number || typeof value.clave_envio !== 'string'
     || !value.clave_envio || value.clave_envio.length > 80) throw new SchemaError('SEUR', 'SEUR returned a different or incomplete shipment');
   if (!Array.isArray(value.situaciones)) throw new SchemaError('SEUR', 'SEUR tracking scans changed');

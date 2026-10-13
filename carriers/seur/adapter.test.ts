@@ -74,6 +74,13 @@ describe('SEUR simplified anonymous tracking', () => {
     }
   });
 
+  it('names only the known lookup error as a number the portal does not know', () => {
+    expect(() => parseSeur(noHistory, NUMBER)).toThrowError(expect.objectContaining({ reason: 'portal_not_found' }));
+    for (const body of [{ ...noHistory, codigo_error: 'NEW_ERROR' }, { ...fixture, codigo_error: 'ERR_CNSPLI_002' }, { ...noHistory, codigo_error: '' }]) {
+      expect(() => parseSeur(body, NUMBER)).not.toThrowError(expect.objectContaining({ reason: 'portal_not_found' }));
+    }
+  });
+
   it('does not infer completed delivery from planned wording, changed groups or arbitrary codes', () => {
     for (const change of [{ cod_situacion: 'ZZ999' }, { descripcion_situacion: 'EL ENVÍO SERÁ ENTREGADO MAÑANA.' },
       { grupo_situacion: 'ENTREGA PREVISTA' }, { descripcion_situacion: 'EL ENVÍO NO HA SIDO ENTREGADO.' }]) {
@@ -141,7 +148,7 @@ describe('SEUR simplified anonymous tracking', () => {
     const offset = vi.fn<typeof fetch>().mockResolvedValue(response(body0));
     expect(await adapter(environment(offset)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-23T12:13:05.000Z' });
     const unresolved = vi.fn<typeof fetch>().mockResolvedValue(response(noHistory));
-    await expect(adapter(environment(unresolved)).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(adapter(environment(unresolved)).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
     const body = copy(); body.situaciones.forEach(scan => { scan.fecha = ''; }); const undated = vi.fn<typeof fetch>().mockResolvedValue(response(body));
     expect(await adapter(environment(undated)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
   });

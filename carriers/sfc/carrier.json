@@ -1,0 +1,44 @@
+{
+  "id": "sfc",
+  "displayName": "SFC Service",
+  "aliases": [
+    "SFC",
+    "Sendfromchina",
+    "Send From China",
+    "SFC Express",
+    "三态速递",
+    "深圳三态现代物流有限公司"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#ff8100"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.sendfromchina.com/track",
+    "canaryUrl": "https://www.sendfromchina.com/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "sfc-1",
+      "pattern": "^SFC\\d[A-Z]{2}\\d{13,14}$",
+      "confidence": "high"
+    }
+  ]
+}

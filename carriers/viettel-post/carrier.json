@@ -1,0 +1,63 @@
+{
+  "id": "viettel-post",
+  "displayName": "Viettel Post",
+  "aliases": [
+    "ViettelPost",
+    "Viettel Post Corporation",
+    "Bưu chính Viettel",
+    "VTP"
+  ],
+  "region": {
+    "countries": [
+      "VN"
+    ]
+  },
+  "brand": {
+    "color": "#ee0033"
+  },
+  "selectable": true,
+  "timezone": "Asia/Ho_Chi_Minh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
+    "canaryUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "viettelpost.vn"
+      ],
+      "pathPattern": "^/thong-tin-don-hang/?$",
+      "params": [
+        "orderNumber"
+      ]
+    },
+    {
+      "domains": [
+        "viettelpost.com.vn"
+      ],
+      "pathPattern": "^/[Tt]racking/?$",
+      "params": [
+        "KEY",
+        "Key",
+        "id"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "viettel-post-1",
+      "pattern": "^V\\d{11}$",
+      "confidence": "low"
+    }
+  ]
+}

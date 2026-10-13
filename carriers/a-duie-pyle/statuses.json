@@ -1,0 +1,8 @@
+{
+  "carrier": "a-duie-pyle",
+  "entries": [
+    {"wording": "PICKED UP", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "An event description the shipment status page's script looks for to show the pickup; not seen in a captured history."},
+    {"wording": "DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "An event description the shipment status page's script looks for to show the delivery; not seen in a captured history."},
+    {"wording": "ETA WINDOW", "language": "en", "confirmedBy": "portal", "note": "An event carrying the expected delivery window, which the page's script shows as the estimate; not a movement."}
+  ]
+}

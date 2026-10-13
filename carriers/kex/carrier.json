@@ -1,0 +1,49 @@
+{
+  "id": "kex",
+  "displayName": "KEX Express (Thailand)",
+  "aliases": [
+    "KEX Express",
+    "KEX Thailand",
+    "Kerry Express Thailand",
+    "Kerry Express (Thailand)",
+    "Kerry Express TH"
+  ],
+  "region": {
+    "countries": [
+      "TH"
+    ]
+  },
+  "brand": {
+    "color": "#f36f21"
+  },
+  "selectable": true,
+  "timezone": "Asia/Bangkok",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://th.kex-express.com/en/track/?track={trackingNumber}",
+    "searchUrl": "https://th.kex-express.com/en/track-parcel",
+    "canaryUrl": "https://th.kex-express.com/en/track-parcel",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "th.kex-express.com",
+        "th.kerryexpress.com"
+      ],
+      "pathPattern": "^/(?:en|th)/track(?:/v2)?/?$",
+      "params": [
+        "track"
+      ]
+    }
+  ],
+  "detection": []
+}

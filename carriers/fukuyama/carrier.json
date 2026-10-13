@@ -1,0 +1,44 @@
+{
+  "id": "fukuyama",
+  "displayName": "Fukuyama Transporting",
+  "aliases": [
+    "福山通運",
+    "Fukuyama Tsuun",
+    "Fukutsu",
+    "フクツー"
+  ],
+  "region": {
+    "countries": [
+      "JP"
+    ]
+  },
+  "brand": {
+    "color": "#e70128"
+  },
+  "selectable": true,
+  "timezone": "Asia/Tokyo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/{trackingNumber}",
+    "searchUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
+    "canaryUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "corp.fukutsu.co.jp"
+      ],
+      "path": "^/situation/tracking_no_hunt/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

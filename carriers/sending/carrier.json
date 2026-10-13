@@ -1,0 +1,35 @@
+{
+  "id": "sending",
+  "displayName": "Sending",
+  "aliases": [
+    "Sending Transporte Urgente",
+    "Sending Transporte Urgente y Logística",
+    "Sending by InPost"
+  ],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#e52021"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.sending.es/localiza-tu-envio/",
+    "canaryUrl": "https://www.sending.es/localiza-tu-envio/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

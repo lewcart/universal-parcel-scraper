@@ -1,0 +1,42 @@
+{
+  "id": "hepsijet",
+  "displayName": "HepsiJET",
+  "aliases": [
+    "hepsiJET",
+    "Hepsijet",
+    "HepsiJet Kargo",
+    "Hepsijet Kargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#562898"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.hepsijet.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "hepsijet.com"
+      ],
+      "path": "^/(?:coklu-)?gonderi-takibi/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

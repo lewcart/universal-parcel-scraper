@@ -1,0 +1,10 @@
+{
+  "carrier": "citylink-express",
+  "entries": [
+    {"wording": "Shipment Collected", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "A Lowyat forum post pastes it from City-Link's tracker."},
+    {"wording": "Shipment Bound for RAWANG, MALAYSIA", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Sorted for the named destination hub. A Lowyat forum post pastes it from City-Link's tracker."},
+    {"wording": "Depart to SHAH ALAM, MALAYSIA", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Left for the named hub. A Lowyat forum post pastes it from City-Link's tracker."},
+    {"wording": "Received by", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Received at a hub; the location is in its own column. A Lowyat forum post pastes it from City-Link's tracker."},
+    {"wording": "UNABLE TO ACCESS", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "The courier could not reach the premises. A Lowyat forum post pastes it from City-Link's tracker."}
+  ]
+}

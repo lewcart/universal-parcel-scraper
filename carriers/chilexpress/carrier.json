@@ -1,0 +1,50 @@
+{
+  "id": "chilexpress",
+  "displayName": "Chilexpress",
+  "aliases": [
+    "Chile Express"
+  ],
+  "region": {
+    "countries": [
+      "CL"
+    ]
+  },
+  "brand": {
+    "color": "#ffb81c"
+  },
+  "selectable": true,
+  "timezone": "America/Santiago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA={trackingNumber}",
+    "searchUrl": "https://www.chilexpress.cl/",
+    "canaryUrl": "https://www.chilexpress.cl/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "chilexpress.cl"
+      ],
+      "pathPattern": "^/Views/ChilexpressCL/Resultado-busqueda\\.aspx$",
+      "params": [
+        "DATA"
+      ]
+    },
+    {
+      "domains": [
+        "centrodeayuda.chilexpress.cl"
+      ],
+      "path": "^/seguimiento/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

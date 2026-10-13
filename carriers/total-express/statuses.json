@@ -1,0 +1,12 @@
+{
+  "carrier": "total-express",
+  "entries": [
+    {"wording": "RECEBIDO NO CENTRO DE DISTRIBUIÇÃO", "stage": "in_transit", "language": "pt", "confirmedBy": "source", "note": "Can name the centre's city after the wording. Shown in the example output of tex-tracker, an open-source scraper of Total Express's tracker, for one parcel."},
+    {"wording": "TRANSFERENCIA PARA", "stage": "in_transit", "language": "pt", "confirmedBy": "source", "note": "Followed by the destination centre, which can be empty. Shown in the example output of tex-tracker, an open-source scraper of Total Express's tracker, for one parcel."},
+    {"wording": "SEPARADO PARA O ROTEIRO DE ENTREGA", "stage": "in_transit", "language": "pt", "confirmedBy": "source", "note": "Sorted onto a delivery round. Shown in the example output of tex-tracker, an open-source scraper of Total Express's tracker, for one parcel."},
+    {"wording": "PROCESSO DE ENTREGA", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "source", "note": "Shown in the example output of tex-tracker, an open-source scraper of Total Express's tracker, for one parcel."},
+    {"wording": "ENTREGA REALIZADA", "stage": "delivered", "language": "pt", "confirmedBy": "source", "note": "Shown in the example output of tex-tracker, an open-source scraper of Total Express's tracker, for one parcel."},
+    {"wording": "Coletado", "stage": "accepted", "language": "pt", "confirmedBy": "source", "note": "Picked up from the sender. Quoted in Digitei's guide to Total Express tracking."},
+    {"wording": "Em rota para entrega", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "source", "note": "Quoted in Digitei's guide to Total Express tracking."}
+  ]
+}

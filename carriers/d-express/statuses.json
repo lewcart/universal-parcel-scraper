@@ -1,0 +1,7 @@
+{
+  "carrier": "d-express",
+  "entries": [
+    {"wording": "Pošiljka je isporučena", "stage": "delivered", "language": "sr", "confirmedBy": "portal", "note": "Status line of the former tracker page."},
+    {"wording": "Pošiljka isporučena", "stage": "delivered", "language": "sr", "confirmedBy": "portal", "note": "Where the shipment is, on the former tracker page."}
+  ]
+}

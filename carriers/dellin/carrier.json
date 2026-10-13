@@ -1,0 +1,56 @@
+{
+  "id": "dellin",
+  "displayName": "Delovye Linii",
+  "aliases": [
+    "Деловые Линии",
+    "Dellin",
+    "DL",
+    "Business Lines",
+    "ГК Деловые Линии"
+  ],
+  "region": {
+    "countries": [
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#fcaf17"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dellin.ru/tracker/orders/{trackingNumber}/",
+    "searchUrl": "https://www.dellin.ru/tracker/",
+    "canaryUrl": "https://www.dellin.ru/tracker/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dellin.ru",
+        "www.dellin.ru"
+      ],
+      "path": "^/tracker/orders/(\\d{2}-?\\d{11})/?$"
+    },
+    {
+      "domains": [
+        "dellin.ru",
+        "www.dellin.ru"
+      ],
+      "pathPattern": "^/tracker/?$",
+      "params": [
+        "rwID"
+      ]
+    }
+  ],
+  "detection": []
+}

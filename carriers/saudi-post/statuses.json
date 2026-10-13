@@ -1,0 +1,20 @@
+{
+  "carrier": "saudi-post",
+  "entries": [
+    {"wording": "Received from the customer", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "استلام من المرسل", "stage": "accepted", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. Arabic form of the received-from-customer label."},
+    {"wording": "Under Process", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "Under delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "جاري التوزيع", "stage": "out_for_delivery", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. Arabic form of the under-delivery label."},
+    {"wording": "Ready for pickup", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "جاهزة للاستلام", "stage": "ready_for_pickup", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "تم التسليم", "stage": "delivered", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "return to origin", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "اعيدت إلى المصدر", "stage": "returned", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script."},
+    {"wording": "Bill issued", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. A customs or duty bill was issued and must be paid."},
+    {"wording": "صدرت الفاتورة", "stage": "customs", "language": "ar", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. A customs or duty bill was issued."},
+    {"wording": "Seized", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. Held by the authorities."},
+    {"wording": "Waiting customer", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "A progress label in the SPL tracker's script. Waiting for the customer to act."}
+  ]
+}

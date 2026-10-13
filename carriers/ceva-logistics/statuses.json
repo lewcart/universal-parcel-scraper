@@ -1,0 +1,19 @@
+{
+  "carrier": "ceva-logistics",
+  "entries": [
+    {"code": "HAWBCR", "wording": "Booking Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "PICKUP", "wording": "Pickup", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "CHKINT", "wording": "Check In", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A trailer scanned in at a CEVA terminal. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "CHKOUT", "wording": "Check Out", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A trailer scanned out of a CEVA terminal. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "PKU", "wording": "In Transit From Shipper", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "A progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "OHO", "wording": "On Hand At Origin", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Both an event and a progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "ATD", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "OHD", "wording": "On Hand At Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "OFD", "wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "POD", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A progress milestone of the tracker's status bar. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "APPOFR", "wording": "Appointment Offered", "language": "en", "confirmedBy": "portal", "note": "A delivery appointment was proposed to the consignee. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "APPSET", "wording": "Appointment Set", "language": "en", "confirmedBy": "portal", "note": "A delivery appointment was agreed. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "CEVRES", "wording": "Ceva Requested Reset", "language": "en", "confirmedBy": "portal", "note": "CEVA moved the delivery appointment. Seen in an archived reply of the tracking service behind CEVA's tracker."},
+    {"code": "EDELDT", "wording": "Estimated Delivery Date", "language": "en", "confirmedBy": "portal", "note": "An estimate, not an event. Seen in an archived reply of the tracking service behind CEVA's tracker."}
+  ]
+}

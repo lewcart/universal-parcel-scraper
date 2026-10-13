@@ -1,0 +1,49 @@
+{
+  "id": "naqel",
+  "displayName": "Naqel Express",
+  "aliases": [
+    "Naqel",
+    "NAQEL Express",
+    "ناقل",
+    "ناقل إكسبرس"
+  ],
+  "region": {
+    "countries": [
+      "SA",
+      "AE",
+      "BH",
+      "OM",
+      "KW"
+    ]
+  },
+  "brand": {
+    "color": "#06205c"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.naqelexpress.com/en/Track/TrackShipment/{trackingNumber}",
+    "searchUrl": "https://www.naqelexpress.com/en/sa/tracking/",
+    "canaryUrl": "https://www.naqelexpress.com/en/sa/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "naqelexpress.com",
+        "www.naqelexpress.com"
+      ],
+      "path": "^/(?:(?:en|ar)/)?Track/TrackShipment/(\\d+)/?$"
+    }
+  ],
+  "detection": []
+}

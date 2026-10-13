@@ -1,0 +1,44 @@
+{
+  "id": "d-express",
+  "displayName": "D Express",
+  "aliases": [
+    "DExpress",
+    "D-Express",
+    "Daily Express",
+    "Daily Express d.o.o."
+  ],
+  "region": {
+    "countries": [
+      "RS"
+    ]
+  },
+  "brand": {
+    "color": "#ff0000"
+  },
+  "selectable": true,
+  "timezone": "Europe/Belgrade",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dexpress.rs/rs/pracenje-posiljaka/{trackingNumber}",
+    "searchUrl": "https://www.dexpress.rs/rs/pracenje-posiljaka",
+    "canaryUrl": "https://www.dexpress.rs/rs/pracenje-posiljaka",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dexpress.rs"
+      ],
+      "path": "^/rs/pracenje-posiljaka/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

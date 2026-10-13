@@ -1,0 +1,14 @@
+{
+  "carrier": "danske-fragtmaend",
+  "entries": [
+    {"code": "DAT", "wording": "Vi har modtaget information om din forsendelse fra afsender, men den er dog endnu ikke i Danske Fragtmænds varetægt. Du vil snart kunne følge din forsendelse her.", "stage": "registered", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker. The sender booked the consignment; Danske Fragtmænd does not have it yet."},
+    {"code": "DAT", "wording": "Vi har modtaget information om din forsendelse fra afsender.", "stage": "registered", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker."},
+    {"code": "AFH", "wording": "Afhentet hos afsender", "stage": "accepted", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker. Collected from the sender."},
+    {"code": "AFH", "wording": "Forsendelsen er afhentet hos afsender", "stage": "accepted", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker. Collected from the sender."},
+    {"code": "ANK", "wording": "Danske Fragtmænd Sjælland behandler forsendelsen.", "stage": "in_transit", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker. A terminal is handling the consignment; the wording names the terminal."},
+    {"code": "OMX", "wording": "Afgået fra Danske Fragtmænd til levering hos modtager.", "stage": "out_for_delivery", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker."},
+    {"code": "FIH", "wording": "Levering forgæves forsøgt - Ingen hjemme. Returneret til Danske Fragtmænd.", "stage": "failed_attempt", "language": "da", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker. Nobody was home; the consignment went back to the terminal."},
+    {"wording": "Forsendelsen er annulleret", "stage": "exception", "language": "da", "confirmedBy": "official-doc", "note": "A notice in the tracker's Danish text file: the consignment was cancelled."},
+    {"wording": "Leveret i restanteboksen", "stage": "ready_for_pickup", "language": "da", "confirmedBy": "official-doc", "note": "Danske Fragtmænd's FAQ explains it: the consignment was left at the nearest freight terminal for the recipient to collect."}
+  ]
+}

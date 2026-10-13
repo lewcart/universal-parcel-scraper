@@ -1,0 +1,12 @@
+{
+  "carrier": "ram-hand-to-hand",
+  "entries": [
+    {"wording": "CONSIGNED IN", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of RAM's tracker, where a place name follows."},
+    {"wording": "INTO CONTAINER IN", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of RAM's tracker, where a place name follows."},
+    {"wording": "DEPARTED BY ROAD TO", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination hub follows, then FROM and the origin. Seen in an archived capture of RAM's tracker."},
+    {"wording": "ARRIVED BY ROAD FROM", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The origin follows, then TO and the hub reached. Seen in an archived capture of RAM's tracker."},
+    {"wording": "OUT OF CONTAINER IN", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of RAM's tracker, where a place name follows."},
+    {"wording": "OUT FOR DELIVERY IN", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of RAM's tracker, where a place name follows."},
+    {"wording": "UNSUCCESSFULL DELIVERY IN", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Spelled so on the tracker; the place and the reason follow. Seen in an archived capture of RAM's tracker."}
+  ]
+}

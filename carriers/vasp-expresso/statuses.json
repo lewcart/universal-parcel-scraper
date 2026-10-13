@@ -1,0 +1,13 @@
+{
+  "carrier": "vasp-expresso",
+  "entries": [
+    {"code": "1", "wording": "Criado em sistema", "stage": "registered", "language": "pt", "confirmedBy": "portal", "note": "Seen in an archived reply of the Track and Trace API; the English text is Created in system."},
+    {"code": "10", "wording": "No centro de distribuição", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "Seen in an archived reply of the Track and Trace API; the English text is At depot."},
+    {"wording": "CARREGADO NA VIATURA", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "source", "note": "Loaded on the delivery vehicle. Quoted from the tracker in a Portal da Queixa complaint, which also writes it as Carregada na viatura."},
+    {"wording": "Em distribuição", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "source", "note": "Quoted from the tracker in Portal da Queixa complaints."},
+    {"wording": "Incidência de distribuição – Morada insuficiente", "stage": "failed_attempt", "language": "pt", "confirmedBy": "source", "note": "Delivery incident, address insufficient. Quoted from the tracker in a Portal da Queixa complaint."},
+    {"wording": "Sem Condições de Carga/Descarga", "stage": "failed_attempt", "language": "pt", "confirmedBy": "source", "note": "The reason shown with a delivery incident: no conditions to load or unload. Quoted in a Portal da Queixa complaint."},
+    {"wording": "Entrega reagendada", "stage": "failed_attempt", "language": "pt", "confirmedBy": "source", "note": "Delivery rescheduled, shown while the parcel waits for a new attempt. Quoted in a Portal da Queixa complaint."},
+    {"wording": "Encomenda entregue ao cliente", "stage": "delivered", "language": "pt", "confirmedBy": "source", "note": "Quoted from the tracker in a Portal da Queixa complaint."}
+  ]
+}

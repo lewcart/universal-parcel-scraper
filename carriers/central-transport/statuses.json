@@ -1,0 +1,6 @@
+{
+  "carrier": "central-transport",
+  "entries": [
+    {"wording": "Attempted to deliver", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "A Trustpilot review of Central Transport quotes it as the status the tracker shows when a delivery was not made."}
+  ]
+}

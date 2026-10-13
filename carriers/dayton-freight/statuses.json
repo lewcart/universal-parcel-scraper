@@ -1,0 +1,11 @@
+{
+  "carrier": "dayton-freight",
+  "entries": [
+    {"wording": "FREIGHT BILL ADDED", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced."},
+    {"wording": "LOADED ON OUTBOUND TRUCK FROM MAN", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced. The wording ends with the terminal's code."},
+    {"wording": "UNLOADED AT TOL", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced. The wording ends with the terminal's code."},
+    {"wording": "ARRIVED AT DESTINATION TERMINAL.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced."},
+    {"wording": "OUT FOR DELIVERY FROM MDW", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced. The wording ends with the terminal's code."},
+    {"wording": "DELIVERED TO DESTINATION", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dayton Freight's former status page, which the current tracker replaced."}
+  ]
+}

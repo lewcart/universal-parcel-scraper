@@ -1,0 +1,10 @@
+{
+  "carrier": "cj-packet",
+  "entries": [
+    {"wording": "Label created. Warehouse is processing this order. Please wait in patience.", "stage": "registered", "language": "en", "confirmedBy": "source", "note": "Quoted with its timestamp from the history of a CJP number in a TrackingMore review."},
+    {"wording": "SHIPPING INFORMATION RECEIVED", "stage": "registered", "language": "en", "confirmedBy": "source", "note": "Quoted with its timestamp from the history of a CJP number in a TrackingMore review."},
+    {"wording": "item processed", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Quoted by a customer as the latest status of a CJP number in a TrackingMore review."},
+    {"wording": "Arrived at FedEx location", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Quoted by a customer for a CJP number in a TrackingMore review; the last-mile carrier's scan shown in the CJ Packet history."},
+    {"wording": "delivered to customer in hand", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Quoted by a customer as the status of a CJ Packet number in a TrackingMore review."}
+  ]
+}

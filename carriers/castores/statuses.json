@@ -1,0 +1,9 @@
+{
+  "carrier": "castores",
+  "entries": [
+    {"wording": "ENTREGADO: La mercancía ha sido entregada al cliente.", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Shown under the origin details of a delivered carta porte on the talón tracker."},
+    {"wording": "DOCUMENTADO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "First event of the status list: the carta porte was documented at the origin branch. The 2017 tracker kept this list in its page source."},
+    {"wording": "EN TRAYECTO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in the status list of the 2017 talón tracker."},
+    {"wording": "ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Seen in the status list of the 2017 talón tracker."}
+  ]
+}

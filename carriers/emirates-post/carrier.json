@@ -1,0 +1,56 @@
+{
+  "id": "emirates-post",
+  "displayName": "Emirates Post",
+  "aliases": [
+    "Emirates Post Group",
+    "بريد الإمارات"
+  ],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#004a98"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.emiratespost.ae/all-services/track-a-package/step-two?q={trackingNumber}",
+    "searchUrl": "https://www.emiratespost.ae/all-services/track-a-package",
+    "canaryUrl": "https://www.emiratespost.ae/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "emiratespost.ae",
+        "www.emiratespost.ae"
+      ],
+      "pathPattern": "^/(?:(?:en|ar)/)?all-services/track-a-package/step-two/?$",
+      "params": [
+        "q"
+      ]
+    },
+    {
+      "domains": [
+        "emiratespost.ae",
+        "www.emiratespost.ae"
+      ],
+      "pathPattern": "^/Portal/Track/?$",
+      "params": [
+        "TrackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

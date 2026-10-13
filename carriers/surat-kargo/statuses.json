@@ -1,0 +1,11 @@
+{
+  "carrier": "surat-kargo",
+  "entries": [
+    {"wording": "Teslimat Şubesinde", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "At the delivery branch. Seen as the last status in an archived capture of the tracker; whether the parcel can be collected there is not stated."},
+    {"wording": "araca yüklendi", "stage": "in_transit", "language": "tr", "confirmedBy": "source", "note": "Loaded onto a vehicle. Quoted in a Şikayetvar complaint."},
+    {"wording": "dağıtıma çıkarıldı", "stage": "out_for_delivery", "language": "tr", "confirmedBy": "source", "note": "Quoted in a Şikayetvar complaint."},
+    {"wording": "dağıtıma çıktı", "stage": "out_for_delivery", "language": "tr", "confirmedBy": "source", "note": "Quoted in a Şikayetvar complaint."},
+    {"wording": "teslim edildi", "stage": "delivered", "language": "tr", "confirmedBy": "source", "note": "Quoted in Şikayetvar complaints."},
+    {"wording": "Kargo Araçtan İndirildi", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "Unloaded from the vehicle. Seen as the last status in an archived capture of the tracker."}
+  ]
+}

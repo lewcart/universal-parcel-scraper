@@ -1,0 +1,442 @@
+{
+  "carrier": "chilexpress",
+  "records": [
+    {
+      "number": "189101913420",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20170324212339/http://www.chilexpress.cl:80/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=189101913420",
+        "date": "2017-03-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The archived Chilexpress tracking page shows this transport order with its delivery history. Twelve digits."
+    },
+    {
+      "number": "2234262601",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20161210201440/http://www.chilexpress.cl:80/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=2234262601",
+        "date": "2016-12-10",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The archived Chilexpress tracking page shows this transport order. Ten digits."
+    },
+    {
+      "number": "99675191766",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20180209101637/http://www.chilexpress.cl:80/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=99675191766",
+        "date": "2018-02-09",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "consolidated"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "The archived Chilexpress tracking page shows this number as a consolidated transport order (Orden de Transporte Consolidado). Eleven digits."
+    },
+    {
+      "number": "857100032040",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/lgaticaq/chilexpress/blob/bfc40bae8f57a7390f150e5dcb714f2ec544d370/test/valid.html",
+        "date": "2015-12-28",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An open-source Chilexpress scraper keeps a saved copy of the tracker's result page for this number as its test fixture."
+    },
+    {
+      "number": "712046157583",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/lgaticaq/chilexpress/blob/f2873cf6e83ce07ae95ad8e59154da24cc0c648e/test/valid.html",
+        "date": "2019-11-19",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A later fixture of the same open-source scraper, a saved copy of the tracker's result page for this number."
+    },
+    {
+      "number": "696374458813",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20170706230304/http://www.chilexpress.cl:80/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=696374458813",
+        "date": "2017-07-06",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "purolator",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "712012178264",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20190415120050/http://chilexpress.cl:80/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=712012178264",
+        "date": "2019-04-15",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "21201052176",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20210302113812/https://chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=21201052176",
+        "date": "2021-03-02",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "614100018781",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240101203149/https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=614100018781",
+        "date": "2024-01-01",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2160855970",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240410005018/https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=2160855970",
+        "date": "2024-04-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "99683861410",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240624183622/https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=99683861410",
+        "date": "2024-06-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "1560126466",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250609164041/https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA=1560126466",
+        "date": "2025-06-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "535401009581",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220722163344/https://centrodeayuda.chilexpress.cl/seguimiento/535401009581",
+        "date": "2022-07-22",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "Looked up on Chilexpress's help-centre tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "13808284711",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250814184757/https://centrodeayuda.chilexpress.cl/seguimiento/13808284711",
+        "date": "2025-08-14",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Looked up on Chilexpress's help-centre tracking page, as an archived address shows; the capture was not opened."
+    }
+  ]
+}

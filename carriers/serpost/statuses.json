@@ -1,0 +1,17 @@
+{
+  "carrier": "serpost",
+  "entries": [
+    {"code": "012", "wording": "ENVÍO ADMITIDO.", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "A message of the tracking page's script."},
+    {"code": "024", "wording": "ENVÍO LLEGÓ A SERPOST. NO DISPONIBLE PARA ENTREGA.", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "An item handed to Serpost, usually an inbound item reaching Peru. A message of the tracking page's script."},
+    {"code": "025", "wording": "ENVÍO EN TRÁNSITO HACIA DESTINO. NO DISPONIBLE PARA ENTREGA.", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A message of the tracking page's script."},
+    {"code": "067", "wording": "ENVÍO SALIÓ DE PERÚ.", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "The item left Peru. A message of the tracking page's script."},
+    {"wording": "ENVÍO EN TRÁNSITO AL AEROPUERTO INTERNACIONAL JORGE CHÁVEZ.", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "On the way to the Lima airport. A message of the tracking page's script."},
+    {"wording": "ENVÍO SUJETO A TRÁMITE ANTE ADUANA. NO DISPONIBLE PARA ENTREGA.", "stage": "customs", "language": "es", "confirmedBy": "official-doc", "note": "Held for customs formalities. A message of the tracking page's script; it covers several event codes (005, 016, 031, 040)."},
+    {"wording": "ENVÍO DISPONIBLE PARA ENTREGA O RECOJO.", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "official-doc", "note": "Available for delivery or collection at an office. A message of the tracking page's script; it covers event codes 035 and 066."},
+    {"wording": "INTENTO FALLIDO DE ENTREGA.", "stage": "failed_attempt", "language": "es", "confirmedBy": "official-doc", "note": "A message of the tracking page's script; it covers event codes 008 and 019."},
+    {"code": "020", "wording": "ENTREGADO.", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "A message of the tracking page's script."},
+    {"wording": "SALIO A DISTRIBUCION", "stage": "out_for_delivery", "language": "es", "confirmedBy": "source", "note": "Shown in the Serpost tracker output quoted by an open-source client's README."},
+    {"wording": "SE INTENTO ENTREGAR PERO FUE IMPOSIBLE", "stage": "failed_attempt", "language": "es", "confirmedBy": "source", "note": "Shown in the Serpost tracker output quoted by an open-source client's README."},
+    {"wording": "FUE ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "source", "note": "Shown in the Serpost tracker output quoted by an open-source client's README."}
+  ]
+}

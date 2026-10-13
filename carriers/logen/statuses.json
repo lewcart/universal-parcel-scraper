@@ -1,0 +1,13 @@
+{
+  "carrier": "logen",
+  "entries": [
+    {"wording": "집하출고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Left the pickup branch for a hub (\"…(으)로 출발하였습니다\")."},
+    {"wording": "터미널입고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Arrived at a hub terminal."},
+    {"wording": "터미널출고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Left a hub terminal for the next hub or the delivery branch."},
+    {"wording": "배송입고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Arrived at the delivery branch."},
+    {"wording": "배송출고", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "Out for delivery; the line reads 고객님께 물품을 배달 준비 중입니다 and gives a delivery window."},
+    {"wording": "배송완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Delivered; the line reads 고객님께 물품을 전달하였습니다."},
+    {"wording": "고객님께 물품을 전달하였습니다.", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Detail text of the 배송완료 scan."},
+    {"wording": "운송장이 출력되지 않았습니다.", "language": "ko", "confirmedBy": "official-doc", "note": "Message in the tracker's own script when no slip exists for the number yet; not an event."}
+  ]
+}

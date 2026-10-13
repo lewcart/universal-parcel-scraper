@@ -1,0 +1,24 @@
+{
+  "carrier": "anjun",
+  "entries": [
+    {"wording": "运输途中", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Em trânsito", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "到达待取", "stage": "ready_for_pickup", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Arrived but not claimed", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Chegando para ser pego", "stage": "ready_for_pickup", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "投递失败", "stage": "failed_attempt", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Delivery failed", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Entrega falhada", "stage": "failed_attempt", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "成功签收", "stage": "delivered", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Signed in", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Entrega bem-sucedida", "stage": "delivered", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "航空起飞", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Air take off", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Decolagem aérea", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "到达目的国机场", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Arrival at destination airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "Chegada ao aeroporto de destino", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "A status group label in the tracker's own script (anjuntrack.com), not an event text."},
+    {"wording": "已预报", "stage": "registered", "language": "zh", "confirmedBy": "portal", "note": "Status group label in the tracker's script; English 'forecast': data received before the parcel."}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "carrier": "oca",
+  "entries": [
+    {"code": "3", "wording": "En proceso de Retiro", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "The pickup from the sender is scheduled. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "67", "wording": "Retirado en Origen", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Picked up from the sender. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "7", "wording": "En Proceso en OCA", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "9", "wording": "Procesado en OCA", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "En viaje a Sucursal de Destino", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "12", "wording": "En Tránsito a Suc. de Destino", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "Programado para visita a domicilio", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Scheduled for a home delivery visit. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "Visita a Domicilio en Curso", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "No entregado (No Visitado)", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "The scheduled visit did not happen. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "Reprogramado para nueva visita", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Rescheduled after a visit that did not deliver. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "23", "wording": "En Espera de Retiro por Sucursal", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "portal", "note": "Waiting at a branch for the recipient. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "15", "wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"code": "97", "wording": "Acuse digitalizado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The proof of delivery was scanned, after the delivery. Seen in an archived capture of OCA's tracker; the tracker appends the branch after a dash."},
+    {"wording": "Retirado", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "A step of the tracking service's summary timeline, not a history row. Seen in an archived capture of OCA's tracker."},
+    {"wording": "Llegó a nuestra sucursal", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "A step of the summary timeline. Seen in an archived capture of OCA's tracker."},
+    {"wording": "Disponible para que lo retires en tu Sucursal", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "portal", "note": "A step of the summary timeline. Seen in an archived capture of OCA's tracker."}
+  ]
+}

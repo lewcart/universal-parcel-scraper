@@ -1,0 +1,16 @@
+{
+  "carrier": "chilexpress",
+  "entries": [
+    {"wording": "Pieza retirada por Chilexpress", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Chilexpress collected the piece from the sender. Seen in an archived tracking page."},
+    {"wording": "Pieza recibida en Chilexpress", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived tracking page."},
+    {"wording": "Envío recepcionado por Chilexpress", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Seen in a saved copy of the tracker's result page kept by an open-source scraper."},
+    {"wording": "Pieza en tránsito al destino", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived tracking page, followed by the name of the next facility."},
+    {"wording": "En Proceso De Despacho", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in a saved copy of the tracker's result page kept by an open-source scraper; the step precedes the delivery route."},
+    {"wording": "Pieza en ruta al DESTINATARIO", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived tracking page."},
+    {"wording": "Envío en tránsito al Destinatario", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in a saved copy of the tracker's result page kept by an open-source scraper."},
+    {"wording": "Primer Intento De Entrega: Domicilio Cerrado", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "The first delivery attempt found the address closed. Seen in a saved copy of the tracker's result page kept by an open-source scraper."},
+    {"wording": "Disponible en oficina para retiro", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived tracking page."},
+    {"wording": "Pieza ENTREGADA A DESTINATARIO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived tracking page."},
+    {"wording": "Envío Entregada a Destinatario", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Seen in a saved copy of the tracker's result page kept by an open-source scraper."}
+  ]
+}

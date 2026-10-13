@@ -1,0 +1,12 @@
+{
+  "carrier": "imile",
+  "entries": [
+    {"code": "1001", "wording": "Order submitted, pending to receive.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Order Creation."},
+    {"code": "1003", "wording": "Parcel is currently being processed.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivery, at the last-mile centre."},
+    {"code": "1003", "wording": "Your order has assigned delivery drvier.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivery; the misspelling is iMile's."},
+    {"code": "1003", "wording": "Our delivery associate is out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivery."},
+    {"code": "1003", "wording": "The driver failed to deliver due to shop(building) closure, we will try to deliver again.", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivery."},
+    {"code": "1003", "wording": "Delivery attempt finished,return to Local logistics company warehouse.", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivery; the parcel goes back to the local depot after the last attempt."},
+    {"code": "2060", "wording": "Your order has been delivered successfully.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Event text in iMile's tracking service reply captured with archived lookups on its own tracker. Stage Delivered."}
+  ]
+}

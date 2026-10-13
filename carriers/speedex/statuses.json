@@ -1,0 +1,22 @@
+{
+  "carrier": "speedex",
+  "entries": [
+    {"wording": "ΑΝΑΜΟΝΗ ΑΝΑΘΕΣΗΣ ΑΠΟ ΑΠΟΣΤΟΛΕΑ", "stage": "registered", "language": "el", "confirmedBy": "portal", "note": "Registered and waiting for the sender to hand the parcel over."},
+    {"wording": "Η αποστολή παρελήφθη από τον αποστολέα", "stage": "accepted", "language": "el", "confirmedBy": "portal", "note": "Picked up from the sender. Older tracker page."},
+    {"wording": "Η αποστολή (δέμα) αναχώρησε από το Σταθμό", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Left a station. Older tracker page."},
+    {"wording": "Η αποστολή έχει άφιξη στο Σταθμό", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Arrived at a station. Older tracker page."},
+    {"wording": "Η αποστολή έχει άφιξη σε διαφορετικό Σταθμό", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Arrived at a station other than the planned one. Older tracker page."},
+    {"wording": "Η αποστολή παραμένει στο Σταθμό", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Held at the station. Older tracker page."},
+    {"wording": "Η αποστολή βρίσκεται σε διανομέα προς παράδοση", "stage": "out_for_delivery", "language": "el", "confirmedBy": "portal", "note": "With the courier for delivery. Older tracker page."},
+    {"wording": "Άρνηση παραλαβής από τον Παραλήπτη", "stage": "failed_attempt", "language": "el", "confirmedBy": "portal", "note": "The recipient refused the parcel. Older tracker page."},
+    {"wording": "Ενημέρωση Απαράδοτης Αποστολής", "stage": "exception", "language": "el", "confirmedBy": "portal", "note": "Report of an undelivered parcel, after a refusal in the capture. Older tracker page."},
+    {"wording": "Η αποστολή παραδόθηκε στον παραλήπτη", "stage": "delivered", "language": "el", "confirmedBy": "portal", "note": "Older tracker page."},
+    {"wording": "ΑΝΑΜΟΝΗ ΑΝΑΘΕΣΗΣ ΑΠΟ ΑΠΟΣΤΟΛΕΑ", "stage": "registered", "language": "el", "confirmedBy": "portal", "note": "The sender created the voucher and has not handed the parcel over."},
+    {"wording": "ΠΑΡΑΛΑΒΗ ΑΠΟ ΑΠΟΣΤΟΛΕΑ", "stage": "accepted", "language": "el", "confirmedBy": "portal", "note": "Picked up from the sender."},
+    {"wording": "ΠΑΡΑΛΑΒΗ ΣΤΟ ΚΑΤΑΣΤΗΜΑ", "stage": "accepted", "language": "el", "confirmedBy": "portal", "note": "Received at a Speedex shop, the sender's drop-off or the pickup's first scan."},
+    {"wording": "ΕΞΑΓΩΓΗ ΑΠΟ ΚΑΤΑΣΤΗΜΑ", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Left a shop."},
+    {"wording": "ΕΙΣΑΓΩΓΗ ΣΕ Δ/Κ", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Entered a distribution centre (Δ/Κ)."},
+    {"wording": "ΕΞΑΓΩΓΗ ΑΠΌ Δ/Κ", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Left a distribution centre (Δ/Κ)."},
+    {"wording": "ΕΙΣΑΓΩΓΗ ΣΕ ΚΑΤΑΣΤΗΜΑ", "stage": "in_transit", "language": "el", "confirmedBy": "portal", "note": "Entered the destination shop."}
+  ]
+}

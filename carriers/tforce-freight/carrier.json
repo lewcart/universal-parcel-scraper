@@ -1,0 +1,56 @@
+{
+  "id": "tforce-freight",
+  "displayName": "TForce Freight",
+  "aliases": [
+    "UPS Freight",
+    "TForce"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#0053a1"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.tforcefreight.com/ltl/apps/Tracking?proNumbers={trackingNumber}",
+    "searchUrl": "https://www.tforcefreight.com/ltl/apps/tracking",
+    "canaryUrl": "https://www.tforcefreight.com/ltl/apps/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tforcefreight.com"
+      ],
+      "pathPattern": "^/ltl/apps/[Tt]racking/?$",
+      "params": [
+        "proNumbers"
+      ]
+    },
+    {
+      "domains": [
+        "ltl.upsfreight.com"
+      ],
+      "pathPattern": "^/shipping/tracking/TrackingDetail\\.aspx$",
+      "params": [
+        "TrackProNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

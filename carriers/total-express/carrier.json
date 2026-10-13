@@ -1,0 +1,34 @@
+{
+  "id": "total-express",
+  "displayName": "Total Express",
+  "aliases": [
+    "Total Express Tex Courier",
+    "TEX Courier",
+    "Total Express Brasil"
+  ],
+  "region": {
+    "countries": [
+      "BR"
+    ]
+  },
+  "brand": {
+    "color": "#e11e25"
+  },
+  "selectable": true,
+  "timezone": "America/Sao_Paulo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://totalexpress.com.br/rastrear-um-produto/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,48 @@
+{
+  "id": "posta-north-macedonia",
+  "displayName": "Pošta na Severna Makedonija",
+  "aliases": [
+    "Posta na Severna Makedonija",
+    "Пошта на Северна Македонија",
+    "North Macedonia Post",
+    "Macedonian Post",
+    "Makedonska Pošta"
+  ],
+  "region": {
+    "countries": [
+      "MK"
+    ]
+  },
+  "brand": {
+    "color": "#ffde21"
+  },
+  "selectable": true,
+  "timezone": "Europe/Skopje",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.posta.com.mk/Tracking/index.html?tn={trackingNumber}",
+    "searchUrl": "https://www.posta.com.mk/Tracking/index.html",
+    "canaryUrl": "https://www.posta.com.mk/Tracking/index.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posta.com.mk"
+      ],
+      "pathPattern": "^/Tracking/index(-en)?\\.html$",
+      "params": [
+        "tn"
+      ]
+    }
+  ],
+  "detection": []
+}

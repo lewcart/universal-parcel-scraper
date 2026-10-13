@@ -1,0 +1,13 @@
+{
+  "carrier": "kex",
+  "entries": [
+    {"wording": "Shipment Drop off", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup. The sender handed the parcel in at a shop or drop-off point."},
+    {"wording": "Shipment picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup."},
+    {"wording": "Arrived at origin station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup."},
+    {"wording": "Arrived at Hub/Transit station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup."},
+    {"wording": "Arrived at destination station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup."},
+    {"wording": "Call not answered", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup. The courier could not reach the recipient by phone."},
+    {"wording": "Delivery Successful", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Event wording on Kerry Express Thailand's tracker in an archived lookup. Followed by the name of the person who signed."}
+  ]
+}

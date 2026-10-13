@@ -1,0 +1,9 @@
+{
+  "carrier": "better-trucks",
+  "entries": [
+    {"wording": "Shipment Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "A label in the tracker's own script, compared against the event wording; not seen in a captured history."},
+    {"wording": "Picked up by driver", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The tracker shows it in place of an event worded \"picked up\"; from its script, not a captured history."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The tracker also shows it for an OUT_FOR_DELIVERY event; from its script, not a captured history."},
+    {"code": "RTS_RETURNED_TO_STATION", "wording": "Return To Station", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "The parcel went back to the delivery station, which follows a failed delivery; the tracker shows it in lower case. From its script, not a captured history."}
+  ]
+}

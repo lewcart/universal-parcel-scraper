@@ -1,0 +1,53 @@
+{
+  "id": "imile",
+  "displayName": "iMile",
+  "aliases": [
+    "iMile Delivery",
+    "iMile Express"
+  ],
+  "region": {
+    "countries": [
+      "AE",
+      "SA",
+      "AU",
+      "BR",
+      "MX",
+      "CO",
+      "IT",
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#0032a0"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.imile.com/en/track?waybillNo={trackingNumber}",
+    "searchUrl": "https://www.imile.com/en/track",
+    "canaryUrl": "https://www.imile.com/en/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "imile.com",
+        "www.imile.com"
+      ],
+      "pathPattern": "^/[^/]+/track/?$",
+      "params": [
+        "waybillNo"
+      ]
+    }
+  ],
+  "detection": []
+}

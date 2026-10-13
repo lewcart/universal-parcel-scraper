@@ -1,0 +1,47 @@
+{
+  "carrier": "anjun",
+  "records": [
+    {
+      "number": "AJ260917112216701",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/anjun/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "ParcelPanel's Anjun Logistics page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "NC969823125BR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240728180636/https://pu.anjuntrack.com/trackQuery?t=NC969823125BR",
+        "date": "2024-07-28",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "correios-br",
+        "confidence": "high"
+      },
+      "note": "Looked up on Anjun's Portuguese tracker, as an archived address shows; the capture was not opened. A Correios number, likely the Brazilian last-mile number of an Anjun parcel."
+    }
+  ]
+}

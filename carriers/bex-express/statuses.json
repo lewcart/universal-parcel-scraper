@@ -1,0 +1,28 @@
+{
+  "carrier": "bex-express",
+  "entries": [
+    {"code": "1", "wording": "Evidentirano", "stage": "registered", "language": "sr", "confirmedBy": "portal", "note": "Status code 1, as the tracking service names it."},
+    {"code": "11", "wording": "Preuzeto", "stage": "accepted", "language": "sr", "confirmedBy": "portal", "note": "Status code 11, collected from the sender."},
+    {"wording": "Pošiljka je preuzeta, dostavu možete očekivati narednog radnog dana do 16h.", "language": "sr", "confirmedBy": "portal", "note": "Delivery estimate the service adds after collection; not an event."},
+    {"code": "-51", "wording": "Evidentirano – Ino tranzit", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "Status -51: registered while in international transit. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Evidentirano - Stiglo na carinu", "stage": "customs", "language": "sr", "confirmedBy": "official-doc", "note": "Status -51, scan 103. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Evidentirano - U procesu carinjenja", "stage": "customs", "language": "sr", "confirmedBy": "official-doc", "note": "Status -51, scan 104. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Evidentirano - Ocarinjeno", "stage": "customs", "language": "sr", "confirmedBy": "official-doc", "note": "Cleared customs; status -51 or 1, scan 105. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Evidentirano - Predato Bex-u sa carine", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "Handed to BEX by customs; status 1, scan 51. Label the tracking page's script shows for this status and scan code."},
+    {"code": "-21", "wording": "Evidentirano - na proveri podataka", "stage": "exception", "language": "sr", "confirmedBy": "official-doc", "note": "Status -21: data under review. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Tranzitira ka centru dostave", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "Status 11, scan 11. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Pošiljka je u tranzitu do centra dostave", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "Status 11, scan 8. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Pošiljka u centru dostave", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "At the delivery centre; status 11, scan 10 or 15. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Pošiljka preuzeta iz carine i Bex-u", "stage": "in_transit", "language": "sr", "confirmedBy": "official-doc", "note": "Status 11, scan 51. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Kod kurira na dostavi", "stage": "out_for_delivery", "language": "sr", "confirmedBy": "official-doc", "note": "Status 11, scan 3. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Neuspela dostava", "stage": "failed_attempt", "language": "sr", "confirmedBy": "official-doc", "note": "Status 11, scan 100. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Kurir vratio Pošiljku u centar dostave", "stage": "failed_attempt", "language": "sr", "confirmedBy": "official-doc", "note": "The courier brought it back to the delivery centre; status 11, scan 4. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Preuzeto - Pošiljka u Paket Šopu", "stage": "ready_for_pickup", "language": "sr", "confirmedBy": "official-doc", "note": "In a Paket Shop; status 11, scan 46. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Reklamacija - Izgubljena pošiljka", "stage": "exception", "language": "sr", "confirmedBy": "official-doc", "note": "Claim for a lost parcel; status 11, scan 101. Label the tracking page's script shows for this status and scan code."},
+    {"code": "21", "wording": "Dostavljena pošiljka", "stage": "delivered", "language": "sr", "confirmedBy": "official-doc", "note": "Status code 21. Label the tracking page's script shows for this status and scan code."},
+    {"code": "25", "wording": "Vratiti pošiljaocu", "stage": "returned", "language": "sr", "confirmedBy": "official-doc", "note": "To be returned to the sender; status code 25. Label the tracking page's script shows for this status and scan code."},
+    {"code": "30", "wording": "Vraćena pošiljka", "stage": "returned", "language": "sr", "confirmedBy": "official-doc", "note": "Returned; status code 30. Label the tracking page's script shows for this status and scan code."},
+    {"code": "31", "wording": "Isplaćena otkupnina", "language": "sr", "confirmedBy": "official-doc", "note": "Cash on delivery paid out; status code 31, not a movement. Label the tracking page's script shows for this status and scan code."},
+    {"wording": "Otkazano", "stage": "exception", "language": "sr", "confirmedBy": "official-doc", "note": "Cancelled, for a status named Stornirana. Label the tracking page's script shows for this status and scan code."}
+  ]
+}

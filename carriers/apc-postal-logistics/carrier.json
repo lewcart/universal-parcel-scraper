@@ -1,0 +1,54 @@
+{
+  "id": "apc-postal-logistics",
+  "displayName": "APC Postal Logistics",
+  "aliases": [
+    "APC",
+    "APC PLI",
+    "APC Postal Logistics LLC"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#2e2d77"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.apc-pli.com/{trackingNumber}",
+    "searchUrl": "https://tracking.apc-pli.com/",
+    "canaryUrl": "https://tracking.apc-pli.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.apc-pli.com"
+      ],
+      "path": "^/([0-9A-Z]{10,})/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "apc-postal-logistics-1",
+      "pattern": "^\\d{5}P\\d{16}$",
+      "confidence": "high"
+    },
+    {
+      "id": "apc-postal-logistics-2",
+      "pattern": "^\\d{5}A\\d{9,10}$",
+      "confidence": "high"
+    }
+  ]
+}

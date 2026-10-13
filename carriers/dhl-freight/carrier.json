@@ -1,0 +1,64 @@
+{
+  "id": "dhl-freight",
+  "displayName": "DHL Freight",
+  "aliases": [
+    "DHL Freight GmbH",
+    "DHL ActiveTracing",
+    "DHL Active Tracing",
+    "DHL Frachtverfolgung"
+  ],
+  "region": {
+    "countries": [
+      "DE",
+      "SE",
+      "AT",
+      "PL",
+      "NL",
+      "BE",
+      "FR",
+      "IT",
+      "ES",
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#ffcc00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://activetracing.dhl.com/DatPublic/datSelection.do?autoSearch=true&search=consignmentId&l=DE&a={trackingNumber}",
+    "searchUrl": "https://activetracing.dhl.com/",
+    "canaryUrl": "https://activetracing.dhl.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "activetracing.dhl.com"
+      ],
+      "pathPattern": "^/DatPublic/datSelection\\.do$",
+      "params": [
+        "a",
+        "valuePackageField",
+        "valueShipmentOrderField"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "dhl-freight-2",
+      "pattern": "^JND\\d{17}$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "carrier": "emirates-post",
+  "entries": [
+    {"wording": "Yet To Be Received By Emirates Post.", "stage": "registered", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Arrived at the sorting center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Shipped to the main sorting center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Arrived at main sorting center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Shipped to the delivery center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Arrived at the delivery center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Delivered to the delivery center.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen. TrackingMore explains it as received at the local delivery centre, not yet out for delivery."},
+    {"wording": "Ready for collection by customer.", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Delivered to the recipient.", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen."},
+    {"wording": "Customer Advised To Pick Up Mail.", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "source", "note": "Listed as an Emirates Post status by TrackingMore's Emirates Post page; the tracker's own wording was not seen. TrackingMore explains it as the recipient being asked to collect the item."}
+  ]
+}

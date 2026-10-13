@@ -1,0 +1,18 @@
+{
+  "carrier": "smsa-express",
+  "entries": [
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's English tracker."},
+    {"wording": "Arrived HUB Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's English tracker."},
+    {"wording": "Departed HUB Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's English tracker."},
+    {"wording": "Arrived Delivery Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's English tracker."},
+    {"wording": "Delivered, Signed by:", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's English tracker. The tracker follows it with the signer's text, which is not kept."},
+    {"wording": "تم استلام الشحنة", "stage": "accepted", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. The shipment was collected."},
+    {"wording": "وصلت محور الفرز", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Arrived at the sorting hub."},
+    {"wording": "غادرت محور الفرز", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Left the sorting hub."},
+    {"wording": "غادرت مكتب المصدر", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Left the origin office."},
+    {"wording": "وصلت محطة التوزيع", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Arrived at the delivery station."},
+    {"wording": "تحت المعالجة لإستلام العميل", "stage": "ready_for_pickup", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Being prepared for collection by the customer."},
+    {"wording": "بانتظار العميل للاستلام", "stage": "ready_for_pickup", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Waiting for the customer to collect."},
+    {"wording": "بانتظار العميل للاستلام من الفرع", "stage": "ready_for_pickup", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of SMSA's Arabic tracker. Waiting for the customer to collect it from the branch; repeated daily."}
+  ]
+}

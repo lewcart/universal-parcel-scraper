@@ -1,0 +1,8 @@
+{
+  "carrier": "team-global-express",
+  "entries": [
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Named as a tracking stage on Team Global Express's help page."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Named as a tracking stage on Team Global Express's help page."},
+    {"wording": "We were unable to deliver your parcel", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Start of a delivery notice quoted in a ProductReview review of Team Global Express."}
+  ]
+}

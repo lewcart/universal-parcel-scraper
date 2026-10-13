@@ -1,0 +1,60 @@
+{
+  "id": "arrow-xl",
+  "displayName": "ArrowXL",
+  "aliases": [
+    "Arrow XL",
+    "AskAxl",
+    "ArrowXL by JP Home"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#57328a"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://askaxl.co.uk/tracking",
+    "canaryUrl": "https://askaxl.co.uk/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "askaxl.co.uk"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "upi"
+      ]
+    },
+    {
+      "domains": [
+        "arrowxl.co.uk"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "upi"
+      ]
+    },
+    {
+      "domains": [
+        "askaxl.co.uk"
+      ],
+      "path": "^/trk/([^/?#]+)/[^/?#]+/?$"
+    }
+  ],
+  "detection": []
+}

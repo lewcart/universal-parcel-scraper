@@ -1,0 +1,15 @@
+{
+  "carrier": "shadowfax",
+  "entries": [
+    {"wording": "Order received", "stage": "registered", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses. The merchant shared the order with Shadowfax."},
+    {"wording": "Pick up unsuccessful", "stage": "exception", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses. Shadowfax could not collect the order from the merchant."},
+    {"wording": "Item picked", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses. Collected from the merchant."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses."},
+    {"wording": "Near you", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses. The vehicle carrying the parcel is nearing the recipient."},
+    {"wording": "Delivery failed", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses."},
+    {"wording": "Order delivered", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Shadowfax tracking statuses."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Quoted in a Voxya complaint against Shadowfax as the status sent each morning."},
+    {"wording": "Could not attempt delivery due to uncontrollable circumstances.", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Quoted in a Voxya complaint against Shadowfax as the status set in the evening when no attempt was made."},
+    {"wording": "customer not contactable", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Quoted in lower case in a Voxya complaint against Shadowfax as the tracking status of an undelivered parcel."}
+  ]
+}

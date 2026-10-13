@@ -1,0 +1,43 @@
+{
+  "id": "correo-argentino",
+  "displayName": "Correo Argentino",
+  "aliases": [
+    "Correo Oficial de la República Argentina",
+    "Argentina Post",
+    "Correo Argentino S.A."
+  ],
+  "region": {
+    "countries": [
+      "AR"
+    ]
+  },
+  "brand": {
+    "color": "#ffce00"
+  },
+  "selectable": true,
+  "timezone": "America/Argentina/Buenos_Aires",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.correoargentino.com.ar/formularios/e-commerce",
+    "canaryUrl": "https://www.correoargentino.com.ar/formularios/e-commerce",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.correoargentino.com.ar",
+        "correoargentino.com.ar"
+      ],
+      "path": "^/seguimiento_envios/consultar/oidn/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

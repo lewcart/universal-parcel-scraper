@@ -1,0 +1,47 @@
+{
+  "id": "a-duie-pyle",
+  "displayName": "A. Duie Pyle",
+  "aliases": [
+    "A Duie Pyle",
+    "Pyle",
+    "A. Duie Pyle, Inc."
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#f27629"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://aduiepyle.com/resources/shipment-status/?tracking={trackingNumber}",
+    "searchUrl": "https://aduiepyle.com/resources/shipment-status/",
+    "canaryUrl": "https://aduiepyle.com/resources/shipment-status/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "aduiepyle.com",
+        "www.aduiepyle.com"
+      ],
+      "pathPattern": "^/resources/shipment-status/?$",
+      "params": [
+        "tracking"
+      ]
+    }
+  ],
+  "detection": []
+}

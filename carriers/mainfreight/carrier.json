@@ -1,0 +1,56 @@
+{
+  "id": "mainfreight",
+  "displayName": "Mainfreight",
+  "aliases": [
+    "Mainfreight Group",
+    "Mainfreight Transport",
+    "Mainfreight Air & Ocean"
+  ],
+  "region": {
+    "countries": [
+      "NZ",
+      "AU",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#005eb8"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mainfreight.com/tracking?trackingnumber={trackingNumber}",
+    "searchUrl": "https://www.mainfreight.com/tracking",
+    "canaryUrl": "https://www.mainfreight.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.mainfreight.com",
+        "mainfreight.com"
+      ],
+      "path": "^/track/[A-Za-z]+/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "www.mainfreight.com",
+        "mainfreight.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackingnumber"
+      ]
+    }
+  ],
+  "detection": []
+}

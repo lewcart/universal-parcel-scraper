@@ -1,0 +1,52 @@
+{
+  "id": "egypt-post",
+  "displayName": "Egypt Post",
+  "aliases": [
+    "Egyptian National Post Organization",
+    "ENPO",
+    "البريد المصري"
+  ],
+  "region": {
+    "countries": [
+      "EG"
+    ]
+  },
+  "brand": {
+    "color": "#007f3e"
+  },
+  "selectable": true,
+  "timezone": "Africa/Cairo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://egyptpost.gov.eg/en-us/home/",
+    "canaryUrl": "https://egyptpost.gov.eg/en-us/home/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "egyptpost.org",
+        "www.egyptpost.org"
+      ],
+      "pathPattern": "^/(?:enpo/(?:en|ar)/)?track-details/?$",
+      "params": [
+        "itemReference"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "egypt-post-1",
+      "pattern": "^(?:ENO|EXP|RCC)\\d{8}EG$",
+      "confidence": "low"
+    }
+  ]
+}

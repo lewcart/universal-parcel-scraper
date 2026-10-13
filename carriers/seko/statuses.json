@@ -1,0 +1,24 @@
+{
+  "carrier": "seko",
+  "entries": [
+    {"code": "OP-1", "wording": "Tracking number allocated & order ready", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Created but not yet dispatched. Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-3", "wording": "Processed through Export Hub", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-4", "wording": "International transit to destination country", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-5", "wording": "Customs cleared", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "Cleared for delivery. Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-6", "wording": "Customs held for inspection and clearance", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-10", "wording": "Received by carrier", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "The final-mile carrier received the parcel. Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-21", "wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-25", "wording": "Customer to collect from carrier", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-28", "wording": "Attempted Delivery - Refused by customer", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-29", "wording": "Return to sender", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-42", "wording": "Awaiting collection", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-45", "wording": "Attempted delivery", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-72", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-74", "wording": "Delivered - Authority to Leave / Safe Drop", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "OP-76", "wording": "Delivered to locker/collection point", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "The parcel waits in a locker or collection point for the receiver. Listed with this OmniParcel code in SEKO's tracking code list."},
+    {"code": "WH-1", "wording": "Received at Origin Warehouse - Received at warehouse", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "An event in the example reply of SEKO's OmniParcel tracking API."},
+    {"code": "TD-4", "wording": "Flight - Freight departed to destination", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "An event in the example reply of SEKO's OmniParcel tracking API."},
+    {"wording": "Received by Destination Customs", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "An event in the example reply of SEKO's OmniParcel tracking API."},
+    {"code": "RC-1", "wording": "Received by Last Mile Provider", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Handed to the final-mile carrier. An event in the example reply of SEKO's OmniParcel tracking API."}
+  ]
+}

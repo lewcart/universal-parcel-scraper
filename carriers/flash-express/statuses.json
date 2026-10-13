@@ -1,0 +1,15 @@
+{
+  "carrier": "flash-express",
+  "entries": [
+    {"wording": "Your parcel has been picked up by our courier.", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Your parcel has been picked up by our logistics partner.", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Parcel has arrived at the sorting facility.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Parcel has departed from the sorting facility.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Your parcel is being transported.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Your parcel has arrived at the delivery hub.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Parcel is out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Delivery attempt was unsuccessful.", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Your parcel has been delivered and signed by the recipient.", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows."},
+    {"wording": "Your parcel information has been modified.", "language": "en", "confirmedBy": "source", "note": "Listed on TrackingMore's Flash Express page as a status description the tracker shows. An information update, not a movement."}
+  ]
+}

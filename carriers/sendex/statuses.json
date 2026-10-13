@@ -1,0 +1,10 @@
+{
+  "carrier": "sendex",
+  "entries": [
+    {"wording": "EN TRÁNSITO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "A movement at a branch or operations centre. Seen in archived captures of Sendex's former tracker at sendex.mx."},
+    {"wording": "EN RUTA PARA ENTREGA", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in archived captures of Sendex's former tracker at sendex.mx."},
+    {"wording": "ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The delivery movement. Seen in archived captures of Sendex's former tracker at sendex.mx."},
+    {"wording": "ENTREGADA", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The guía's overall status once delivered, not a movement. Seen in archived captures of Sendex's former tracker at sendex.mx."},
+    {"wording": "PENDIENTE", "language": "es", "confirmedBy": "portal", "note": "The guía's overall status before delivery, not a movement. Seen in archived captures of Sendex's former tracker at sendex.mx."}
+  ]
+}

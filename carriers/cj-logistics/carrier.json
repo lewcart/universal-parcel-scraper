@@ -1,0 +1,57 @@
+{
+  "id": "cj-logistics",
+  "displayName": "CJ Logistics",
+  "aliases": [
+    "CJ대한통운",
+    "CJ Korea Express",
+    "CJ Daehan Tongun",
+    "CJ GLS",
+    "대한통운"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#ef151e"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.cjlogistics.com/ko/tool/parcel/newTracking?gnbInvcNo={trackingNumber}",
+    "searchUrl": "https://www.cjlogistics.com/ko/tool/parcel/tracking",
+    "canaryUrl": "https://www.cjlogistics.com/ko/tool/parcel/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "cjlogistics.com"
+      ],
+      "pathPattern": "^/ko/tool/parcel/(?:tracking|newTracking)$",
+      "params": [
+        "gnbInvcNo"
+      ]
+    },
+    {
+      "domains": [
+        "doortodoor.co.kr"
+      ],
+      "pathPattern": "^/parcel/doortodoor\\.do$",
+      "params": [
+        "invc_no"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,9 @@
+{
+  "carrier": "gati",
+  "entries": [
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Status column of Gati's former tracker at gati.com in an archived lookup."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Gati KWE statuses."},
+    {"wording": "Arrived at destination", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Gati KWE statuses: at the destination branch."},
+    {"wording": "Docket detained - connection missed", "stage": "exception", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Gati KWE statuses: held after missing a connection."}
+  ]
+}

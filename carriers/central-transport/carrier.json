@@ -1,0 +1,45 @@
+{
+  "id": "central-transport",
+  "displayName": "Central Transport",
+  "aliases": [
+    "Central Transport International",
+    "CTII"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#fae800"
+  },
+  "selectable": true,
+  "timezone": "America/Detroit",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.centraltransport.com/tools/track-shipment.aspx",
+    "canaryUrl": "https://www.centraltransport.com/tools/track-shipment.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.centraltransport.com",
+        "centraltransport.com"
+      ],
+      "pathPattern": "^/confirm/trace\\.aspx$",
+      "params": [
+        "pro"
+      ]
+    }
+  ],
+  "detection": []
+}

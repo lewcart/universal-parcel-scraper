@@ -1,0 +1,46 @@
+{
+  "id": "vasp-expresso",
+  "displayName": "Vasp Expresso",
+  "aliases": [
+    "VASP Expresso",
+    "Vasp",
+    "VASP"
+  ],
+  "region": {
+    "countries": [
+      "PT"
+    ]
+  },
+  "brand": {
+    "color": "#02518a"
+  },
+  "selectable": true,
+  "timezone": "Europe/Lisbon",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/?search={trackingNumber}",
+    "searchUrl": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/",
+    "canaryUrl": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "vaspexpresso.pt"
+      ],
+      "pathPattern": "^/pt/geral/track-and-trace/?$",
+      "params": [
+        "search"
+      ]
+    }
+  ],
+  "detection": []
+}

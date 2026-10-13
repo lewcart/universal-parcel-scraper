@@ -1,0 +1,48 @@
+{
+  "id": "toptrans",
+  "displayName": "TOPTRANS",
+  "aliases": [
+    "TOPTRANS EU",
+    "TOPTRANS EU a.s.",
+    "Toptrans"
+  ],
+  "region": {
+    "countries": [
+      "CZ",
+      "SK"
+    ]
+  },
+  "brand": {
+    "color": "#005daa"
+  },
+  "selectable": true,
+  "timezone": "Europe/Prague",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://apis.toptrans.cz/tracking?parcel_number={trackingNumber}",
+    "searchUrl": "https://www.toptrans.cz/preprava/en/sledovani-zasilky",
+    "canaryUrl": "https://www.toptrans.cz/preprava/en/sledovani-zasilky",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "apis.toptrans.cz"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "parcel_number",
+        "item_number"
+      ]
+    }
+  ],
+  "detection": []
+}

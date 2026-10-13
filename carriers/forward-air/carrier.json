@@ -1,0 +1,47 @@
+{
+  "id": "forward-air",
+  "displayName": "Forward Air",
+  "aliases": [
+    "Forward",
+    "Forward Air Corporation",
+    "Forward Expedited LTL"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#c8102e"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.forwardair.com/tracking?numbers={trackingNumber}",
+    "searchUrl": "https://www.forwardair.com/tracking",
+    "canaryUrl": "https://www.forwardair.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.forwardair.com",
+        "forwardair.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "numbers"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,60 @@
+{
+  "id": "pos-indonesia",
+  "displayName": "Pos Indonesia",
+  "aliases": [
+    "PT Pos Indonesia",
+    "POS Indonesia",
+    "Posindo",
+    "Indonesia Post",
+    "PosAja"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#1b2c5a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.posindonesia.co.id/id/tracking/{trackingNumber}",
+    "searchUrl": "https://www.posindonesia.co.id/id/tracking",
+    "canaryUrl": "https://www.posindonesia.co.id/id/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posindonesia.co.id"
+      ],
+      "path": "^/(?:id|en)/tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "posindonesia.co.id"
+      ],
+      "pathPattern": "^/(?:id|en)/tracking/?$",
+      "params": [
+        "resi"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "pos-indonesia-1",
+      "pattern": "^P\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{7}$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "lotte-global",
+  "displayName": "Lotte Global Logistics",
+  "aliases": [
+    "롯데택배",
+    "롯데글로벌로지스",
+    "Lotte Logistics",
+    "Lotte Parcel",
+    "Hyundai Logistics",
+    "현대택배"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#da291c"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.lotteglogis.com/open/tracking?invno={trackingNumber}",
+    "searchUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
+    "canaryUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "lotteglogis.com"
+      ],
+      "pathPattern": "^/open/tracking$",
+      "params": [
+        "invno"
+      ]
+    },
+    {
+      "domains": [
+        "lotteglogis.com"
+      ],
+      "pathPattern": "^/(?:home|mobile)/reservation/tracking/linkView(?:\\.jsp)?$",
+      "params": [
+        "InvNo"
+      ]
+    }
+  ],
+  "detection": []
+}

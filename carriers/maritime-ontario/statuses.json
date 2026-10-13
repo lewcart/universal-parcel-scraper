@@ -1,0 +1,29 @@
+{
+  "carrier": "maritime-ontario",
+  "entries": [
+    {"code": "COMPLETE", "wording": "THE TRIP IS DONE", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide. Last event once the freight is delivered."},
+    {"code": "DEPCONS", "wording": "DEPART CONSIGNEE", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide. The truck leaves the consignee after unloading."},
+    {"code": "ARRCONS", "wording": "ARRIVE CONSIGNEE", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide. The truck reaches the consignee before unloading."},
+    {"code": "INTRANSIT", "wording": "INTRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide."},
+    {"code": "DISP", "wording": "DISPATCHED", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide. Dispatched from the terminal toward the consignee."},
+    {"code": "DOCKED", "wording": "DOCKED FOR MANIFESTING", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status history in the detail screenshot of M-O's Track and Trace customer guide."},
+    {"wording": "Scheduled", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Order Received", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Scheduled for Pickup", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Pickup Attempted", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status. A pickup try, not a delivery attempt."},
+    {"wording": "Out for Pickup", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "At Pickup Location", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Arrived at Destination", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status. Shown for ARRIVE CONSIGNEE, the truck at the consignee."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Cancelled", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Exception — Please Contact Us", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Ramassé", "stage": "accepted", "language": "fr", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "En transit", "stage": "in_transit", "language": "fr", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "En route pour la livraison", "stage": "out_for_delivery", "language": "fr", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Livré", "stage": "delivered", "language": "fr", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."},
+    {"wording": "Annulé", "stage": "exception", "language": "fr", "confirmedBy": "official-doc", "note": "Label the quick-track widget on m-o.com shows for the current status."}
+  ]
+}

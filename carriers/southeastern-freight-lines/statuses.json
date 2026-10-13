@@ -1,0 +1,18 @@
+{
+  "carrier": "southeastern-freight-lines",
+  "entries": [
+    {"wording": "Shipment Pickup using Trailer 535253", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The trailer number varies. Seen in an archived capture of Southeastern Freight Lines' tracker."},
+    {"wording": "Dispatched Trailer 286611L", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Departed a service centre; the trailer number varies. Seen in an archived capture of Southeastern Freight Lines' tracker."},
+    {"wording": "Arrive Trailer 286611L", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Arrived at a service centre; the trailer number varies. Seen in an archived capture of Southeastern Freight Lines' tracker."},
+    {"wording": "Closed Trailer 286611L to AUSTIN service center", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Loaded and closed for the named service centre; the trailer number varies. Seen in an archived capture of Southeastern Freight Lines' tracker."},
+    {"wording": "Hold for Appointment", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Held at the destination service centre until the delivery appointment. Seen in an archived capture of Southeastern Freight Lines' tracker."},
+    {"wording": "Enroute to Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Arrived at Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Appointment Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Delayed/Potentially Late", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Shortage/Damage Delivered Exception", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Delivered with a shortage or damage. A status event the tracker offers for e-mail and text updates; seen in an archived capture."},
+    {"wording": "Delivered to Customer", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The shipment's location field once delivered. Seen in an archived capture of Southeastern Freight Lines' tracker."}
+  ]
+}

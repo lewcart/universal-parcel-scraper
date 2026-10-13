@@ -1,0 +1,9 @@
+{
+  "carrier": "hepsijet",
+  "entries": [
+    {"wording": "transfer sürecinde", "stage": "in_transit", "language": "tr", "confirmedBy": "source", "note": "Between transfer hubs. Quoted in Şikayetvar complaints."},
+    {"wording": "kargonuz teslim edilemedi", "stage": "failed_attempt", "language": "tr", "confirmedBy": "source", "note": "A notification quoted in a Şikayetvar complaint."},
+    {"wording": "yetersiz adres", "stage": "failed_attempt", "language": "tr", "confirmedBy": "source", "note": "Insufficient address. Quoted in a Şikayetvar complaint as the reason entered for a failed delivery."},
+    {"wording": "kişi imza vermedi", "stage": "failed_attempt", "language": "tr", "confirmedBy": "source", "note": "The person did not sign. Quoted in a Şikayetvar complaint as the reason a parcel was sent back."}
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "carrier": "raben",
+  "records": [
+    {
+      "number": "276634000122953",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240424120611/https://myraben.com/link/ShipmentInformation?ShipmentNumber=276634000122953&Language=EN",
+        "date": "2024-04-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fedex",
+          "brt",
+          "yunda"
+        ]
+      },
+      "note": "Looked up on Raben's own myRaben shipment page, as an archived address shows; the capture was not opened and only records a redirect."
+    },
+    {
+      "number": "276634000129494",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240610140643/https://myraben.com/link/ShipmentInformation?ShipmentNumber=276634000129494&Language=EN",
+        "date": "2024-06-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "brt",
+          "yunda"
+        ]
+      },
+      "note": "Looked up on Raben's own myRaben shipment page, as an archived address shows; the capture was not opened and only records a redirect."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "seko",
+  "displayName": "SEKO Logistics",
+  "aliases": [
+    "SEKO",
+    "SEKO Omni",
+    "OmniParcel",
+    "SEKO OmniParcel"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "GB",
+      "AU",
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#ef3e42"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.sekologistics.com/en/track/?trackingNumbers={trackingNumber}",
+    "searchUrl": "https://www.sekologistics.com/en/track/",
+    "canaryUrl": "https://www.sekologistics.com/en/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "sekologistics.com"
+      ],
+      "pathPattern": "^/en/track/?$",
+      "params": [
+        "trackingNumbers"
+      ]
+    },
+    {
+      "domains": [
+        "track.omniparcel.com"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "id"
+      ]
+    },
+    {
+      "domains": [
+        "track.omniparcel.com"
+      ],
+      "path": "^/([A-Z0-9]+)/?$"
+    },
+    {
+      "domains": [
+        "track.omniparcel.com"
+      ],
+      "path": "^/\\d+-([A-Z0-9]+)/?$"
+    }
+  ],
+  "detection": []
+}

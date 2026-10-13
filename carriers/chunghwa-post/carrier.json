@@ -1,0 +1,45 @@
+{
+  "id": "chunghwa-post",
+  "displayName": "Chunghwa Post",
+  "aliases": [
+    "中華郵政",
+    "Taiwan Post",
+    "郵局",
+    "Chunghwa Post Co."
+  ],
+  "region": {
+    "countries": [
+      "TW"
+    ]
+  },
+  "brand": {
+    "color": "#e8171f"
+  },
+  "selectable": true,
+  "timezone": "Asia/Taipei",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://postserv.post.gov.tw/pstmail/main_mail.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "postserv.post.gov.tw"
+      ],
+      "pathPattern": "^/webpost/CSController$",
+      "params": [
+        "MAILNO"
+      ]
+    }
+  ],
+  "detection": []
+}

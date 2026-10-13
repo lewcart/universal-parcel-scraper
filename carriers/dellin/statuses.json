@@ -1,0 +1,7 @@
+{
+  "carrier": "dellin",
+  "entries": [
+    {"wording": "Груз выдан.", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Shown under the order's completion date in an archived capture of the tracker."},
+    {"wording": "Заказ завершен", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "The order heading once the cargo was handed out, seen in an archived capture of the tracker."}
+  ]
+}

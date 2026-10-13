@@ -1,0 +1,12 @@
+{
+  "carrier": "pitt-ohio",
+  "entries": [
+    {"wording": "Arrived at shipper pickup location in Albany, NY.", "stage": "registered", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Pickup - Departure in Albany, NY.", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Shipment arrived at Pitt Ohio origin terminal in Albany, NY.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Shipment in transit to destination terminal.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Shipment arrived at Pitt Ohio destination terminal in Allentown, PA.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Shipment out for delivery to consignee in Clifton, NJ.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."},
+    {"wording": "Delivered at consignee location in Clifton, NJ.", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "TrackingMore's Pitt Ohio page quotes it as a tracking status; the place names vary."}
+  ]
+}

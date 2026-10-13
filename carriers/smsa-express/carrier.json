@@ -1,0 +1,57 @@
+{
+  "id": "smsa-express",
+  "displayName": "SMSA Express",
+  "aliases": [
+    "SMSA",
+    "سمسا",
+    "سمسا إكسبرس"
+  ],
+  "region": {
+    "countries": [
+      "SA"
+    ]
+  },
+  "brand": {
+    "color": "#fc671a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.smsaexpress.com/",
+    "canaryUrl": "https://www.smsaexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "smsaexpress.com",
+        "www.smsaexpress.com"
+      ],
+      "pathPattern": "^/(?:[a-z]{2}/){0,2}trackingdetails/?$",
+      "params": [
+        "tracknumbers",
+        "tracknumbers[0]"
+      ]
+    },
+    {
+      "domains": [
+        "smsaexpress.com",
+        "www.smsaexpress.com"
+      ],
+      "pathPattern": "^/(?:Track|arabic/TrackAr)\\.aspx$",
+      "params": [
+        "tracknumbers"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,8 @@
+{
+  "carrier": "fukuyama",
+  "entries": [
+    {"wording": "配達中", "stage": "out_for_delivery", "language": "ja", "confirmedBy": "source", "note": "A guide to Fukuyama's tracker explains it as the driver carrying the parcel on the delivery round."},
+    {"wording": "持戻", "stage": "failed_attempt", "language": "ja", "confirmedBy": "source", "note": "Taken back to the branch, typically because nobody was in."},
+    {"wording": "配達完了", "stage": "delivered", "language": "ja", "confirmedBy": "source", "note": "Handed to the recipient or the agreed place."}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "nipost",
+  "displayName": "NIPOST",
+  "aliases": [
+    "Nigerian Postal Service",
+    "Nigeria Post",
+    "Nigerian Post",
+    "NiPost",
+    "NIPOST EMS"
+  ],
+  "region": {
+    "countries": [
+      "NG"
+    ]
+  },
+  "brand": {
+    "color": "#010f69"
+  },
+  "selectable": true,
+  "timezone": "Africa/Lagos",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.nipost.gov.ng/{trackingNumber}",
+    "searchUrl": "https://tracking.nipost.gov.ng/",
+    "canaryUrl": "https://tracking.nipost.gov.ng/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.nipost.gov.ng"
+      ],
+      "path": "^/([A-Za-z0-9]{13,16})/?$"
+    }
+  ],
+  "detection": []
+}

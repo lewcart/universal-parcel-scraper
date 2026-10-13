@@ -1,0 +1,58 @@
+{
+  "id": "roadrunner",
+  "displayName": "Roadrunner",
+  "aliases": [
+    "Roadrunner Freight",
+    "Roadrunner Transportation Systems",
+    "RRTS",
+    "Roadrunner LTL"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#e5481c"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://freight.rrts.com/Tools/Tracking/Pages/MultipleResults.aspx?PROS={trackingNumber}",
+    "searchUrl": "https://freight.rrts.com/Tools/Tracking/Pages/default.aspx",
+    "canaryUrl": "https://freight.rrts.com/Tools/Tracking/Pages/default.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "freight.rrts.com",
+        "www.rrts.com",
+        "rrts.com"
+      ],
+      "pathPattern": "^/Tools/Tracking/Pages/MultipleResults\\.aspx$",
+      "params": [
+        "PROS"
+      ]
+    },
+    {
+      "domains": [
+        "tools.rrts.com"
+      ],
+      "pathPattern": "^/LTLTrack/?$",
+      "params": [
+        "searchValues"
+      ]
+    }
+  ],
+  "detection": []
+}

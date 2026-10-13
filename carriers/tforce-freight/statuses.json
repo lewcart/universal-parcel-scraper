@@ -1,0 +1,15 @@
+{
+  "carrier": "tforce-freight",
+  "entries": [
+    {"wording": "SHIPMENT HAS BEEN PICKED-UP.", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "SHIPMENT IS AT A UPS FREIGHT LOCATION", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "DEPARTURE", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Left a service centre. Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "SHIPMENT HAS ARRIVED AT A SERVICE CENTER.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "A DELIVERY APPOINTMENT HAS BEEN SCHEDULED WITH THE CONSIGNEE.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "On Vehicle For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The shipment's summary status. Seen in an archived capture of the tracker of UPS Freight, TForce Freight's former name."},
+    {"wording": "Delivery Appointment Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."},
+    {"wording": "Shipment Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."},
+    {"wording": "Delivery Exceptions", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "A current-status option on TForce Freight's tracking page."}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "saudi-post",
+  "displayName": "Saudi Post",
+  "aliases": [
+    "SPL",
+    "Saudi Post and Logistics",
+    "Saudi Post Corporation",
+    "البريد السعودي",
+    "سبل"
+  ],
+  "region": {
+    "countries": [
+      "SA"
+    ]
+  },
+  "brand": {
+    "color": "#146e82"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://splonline.com.sa/en/shipmentdetailsstatic/?tid={trackingNumber}",
+    "searchUrl": "https://splonline.com.sa/en/",
+    "canaryUrl": "https://splonline.com.sa/en/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "splonline.com.sa"
+      ],
+      "pathPattern": "^/(?:en|ar)/shipmentdetailsstatic/?$",
+      "params": [
+        "tid"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "saudi-post-1",
+      "pattern": "^CRDSAL\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

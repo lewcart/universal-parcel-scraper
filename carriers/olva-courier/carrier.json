@@ -1,0 +1,51 @@
+{
+  "id": "olva-courier",
+  "displayName": "Olva Courier",
+  "aliases": [
+    "Olva",
+    "OLVA"
+  ],
+  "region": {
+    "countries": [
+      "PE"
+    ]
+  },
+  "brand": {
+    "color": "#fcb414"
+  },
+  "selectable": true,
+  "timezone": "America/Lima",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.olvacourier.com/?q={trackingNumber}",
+    "searchUrl": "https://tracking.olvacourier.com/",
+    "canaryUrl": "https://tracking.olvacourier.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.olvacourier.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "olva-courier-3",
+      "pattern": "^ALIOLVA\\d{8}$",
+      "confidence": "high"
+    }
+  ]
+}

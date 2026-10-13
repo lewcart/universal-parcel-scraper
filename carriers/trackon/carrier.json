@@ -1,0 +1,47 @@
+{
+  "id": "trackon",
+  "displayName": "Trackon Couriers",
+  "aliases": [
+    "Trackon",
+    "Trackon Courier",
+    "Trackon Couriers Pvt Ltd",
+    "Trackon Courier Pvt Ltd"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#981e21"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.trackon.in/courier-tracking?awb={trackingNumber}",
+    "searchUrl": "https://www.trackon.in/",
+    "canaryUrl": "https://www.trackon.in/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "trackon.in"
+      ],
+      "pathPattern": "^/courier-tracking/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

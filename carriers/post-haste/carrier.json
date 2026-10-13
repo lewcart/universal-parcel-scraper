@@ -1,0 +1,47 @@
+{
+  "id": "post-haste",
+  "displayName": "Post Haste",
+  "aliases": [
+    "Post Haste Couriers",
+    "Posthaste",
+    "PostHaste"
+  ],
+  "region": {
+    "countries": [
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#24b2d8"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://posthaste.co.nz/track?query={trackingNumber}",
+    "searchUrl": "https://posthaste.co.nz/tools/track/",
+    "canaryUrl": "https://posthaste.co.nz/tools/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posthaste.co.nz",
+        "www.posthaste.co.nz"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "query"
+      ]
+    }
+  ],
+  "detection": []
+}

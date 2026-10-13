@@ -1,0 +1,56 @@
+{
+  "id": "shadowfax",
+  "displayName": "Shadowfax",
+  "aliases": [
+    "Shadow Fax",
+    "Shadowfax Technologies",
+    "Shadowfax Technologies Limited",
+    "Shadowfax Courier"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#008a71"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracker.shadowfax.in/#/awb/{trackingNumber}",
+    "searchUrl": "https://www.shadowfax.in/track",
+    "canaryUrl": "https://www.shadowfax.in/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracker.shadowfax.in"
+      ],
+      "pathPattern": "^/?$",
+      "fragment": "^/awb/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "shadowfax-1",
+      "pattern": "^SF\\d{9,12}[A-Z]{3}$",
+      "confidence": "high"
+    },
+    {
+      "id": "shadowfax-2",
+      "pattern": "^R\\d{10}[A-Z]{3}$",
+      "confidence": "low"
+    }
+  ]
+}

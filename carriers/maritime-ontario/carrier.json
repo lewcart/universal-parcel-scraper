@@ -1,0 +1,35 @@
+{
+  "id": "maritime-ontario",
+  "displayName": "Maritime-Ontario",
+  "aliases": [
+    "M-O",
+    "Maritime Ontario",
+    "M-O Freight Lines"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#0064b1"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.m-o.com/quick-track-form/",
+    "canaryUrl": "https://www.m-o.com/quick-track-form/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

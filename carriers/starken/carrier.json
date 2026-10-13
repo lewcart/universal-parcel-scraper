@@ -1,0 +1,50 @@
+{
+  "id": "starken",
+  "displayName": "Starken",
+  "aliases": [
+    "Starken Chile"
+  ],
+  "region": {
+    "countries": [
+      "CL"
+    ]
+  },
+  "brand": {
+    "color": "#009f3e"
+  },
+  "selectable": true,
+  "timezone": "America/Santiago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.starken.cl/seguimiento?codigo={trackingNumber}",
+    "searchUrl": "https://www.starken.cl/seguimiento",
+    "canaryUrl": "https://www.starken.cl/seguimiento",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "starken.cl"
+      ],
+      "pathPattern": "^/seguimiento/?$",
+      "params": [
+        "codigo"
+      ]
+    },
+    {
+      "domains": [
+        "starken.cl"
+      ],
+      "path": "^/seguimiento/(\\d+)/?$"
+    }
+  ],
+  "detection": []
+}

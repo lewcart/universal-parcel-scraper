@@ -1,0 +1,50 @@
+{
+  "id": "belpost",
+  "displayName": "Belpost",
+  "aliases": [
+    "Белпочта",
+    "Belpochta",
+    "РУП Белпочта",
+    "Belarus Post",
+    "Belarusian Post",
+    "Почта Беларуси"
+  ],
+  "region": {
+    "countries": [
+      "BY"
+    ]
+  },
+  "brand": {
+    "color": "#005aa8"
+  },
+  "selectable": true,
+  "timezone": "Europe/Minsk",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://belpost.by/Otsleditotpravleniye?number={trackingNumber}",
+    "searchUrl": "https://belpost.by/Otsleditotpravleniye",
+    "canaryUrl": "https://belpost.by/Otsleditotpravleniye",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "belpost.by",
+        "www.belpost.by"
+      ],
+      "pathPattern": "^/Otsleditotpravleniye/?$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": []
+}

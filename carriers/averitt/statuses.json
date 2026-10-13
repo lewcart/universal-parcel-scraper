@@ -1,0 +1,6 @@
+{
+  "carrier": "averitt",
+  "entries": [
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "The shipment status in the example reply of Averitt's PRO Tracking API: collected from the shipper."}
+  ]
+}

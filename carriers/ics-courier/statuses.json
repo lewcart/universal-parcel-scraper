@@ -1,0 +1,14 @@
+{
+  "carrier": "ics-courier",
+  "entries": [
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The tracker appends the pickup company and address. Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "At ICS Branch OTTAWA, ON for processing", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The wording names the branch, padded with spaces on some pages. Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "At ICS Branch DORVAL, PQ for processing", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "In Sort Process", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Sorted at the delivery branch before going out. Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "Delivery Attempt: Consignee Not Available", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "At SMARTSpot for pickup", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "portal", "note": "Left at a pickup point after a failed attempt; the tracker appends the point's name and address. Seen in archived captures of ICS Courier's tracker."},
+    {"wording": "Delivered at  :", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The tracker appends the delivery address after the colon. Seen in archived captures of ICS Courier's tracker."}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "carrier": "posta-romana",
+  "entries": [
+    {"wording": "Expediat din România", "stage": "in_transit", "language": "ro", "confirmedBy": "official-doc", "note": "Left Romania for the destination country; Romanian tracking ends here. Quoted in the Track&Trace guide."},
+    {"wording": "În prelucrare – BSI București", "stage": "in_transit", "language": "ro", "confirmedBy": "official-doc", "note": "Being processed at the Bucharest international exchange office, before customs or onward distribution. Quoted in the Track&Trace guide."},
+    {"wording": "Programat pentru predare începând cu această dată – Subunitatea poștală", "stage": "ready_for_pickup", "language": "ro", "confirmedBy": "official-doc", "note": "A notice follows and the item can be collected at the post office from that date; the tracker names the office after the dash. Quoted in the Track&Trace guide."}
+  ]
+}

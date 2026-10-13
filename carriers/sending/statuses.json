@@ -1,0 +1,8 @@
+{
+  "carrier": "sending",
+  "entries": [
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "source", "note": "Quoted from Sending's tracking in an OCU complaint."},
+    {"wording": "Ausente", "stage": "failed_attempt", "language": "es", "confirmedBy": "source", "note": "Quoted from Sending's tracking in an OCU complaint: recipient absent at the delivery attempt."},
+    {"wording": "en reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "source", "note": "Quoted from Sending's tracking in an OCU complaint."}
+  ]
+}

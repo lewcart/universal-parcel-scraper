@@ -1,0 +1,57 @@
+{
+  "id": "south-african-post-office",
+  "displayName": "South African Post Office",
+  "aliases": [
+    "SAPO",
+    "SA Post Office",
+    "Post Office South Africa",
+    "South Africa Post"
+  ],
+  "region": {
+    "countries": [
+      "ZA"
+    ]
+  },
+  "brand": {
+    "color": "#c12026"
+  },
+  "selectable": true,
+  "timezone": "Africa/Johannesburg",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://trackingnew.postoffice.co.za/?ParcelId={trackingNumber}",
+    "searchUrl": "https://trackingnew.postoffice.co.za/",
+    "canaryUrl": "https://trackingnew.postoffice.co.za/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "trackingnew.postoffice.co.za"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "ParcelId"
+      ]
+    },
+    {
+      "domains": [
+        "tracking.postoffice.co.za"
+      ],
+      "pathPattern": "^/TrackNTrace/TrackNTrace\\.aspx$",
+      "params": [
+        "id",
+        "ID"
+      ]
+    }
+  ],
+  "detection": []
+}

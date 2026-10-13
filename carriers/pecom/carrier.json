@@ -1,0 +1,50 @@
+{
+  "id": "pecom",
+  "displayName": "PEC",
+  "aliases": [
+    "ПЭК",
+    "PEK",
+    "Pecom",
+    "ТК ПЭК",
+    "Первая экспедиционная компания"
+  ],
+  "region": {
+    "countries": [
+      "RU",
+      "KZ",
+      "BY"
+    ]
+  },
+  "brand": {
+    "color": "#242265"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pecom.ru/services-are/order-status/?code={trackingNumber}",
+    "searchUrl": "https://pecom.ru/services-are/order-status/",
+    "canaryUrl": "https://pecom.ru/services-are/order-status/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pecom.ru"
+      ],
+      "pathPattern": "^/services-are/order-status/?$",
+      "params": [
+        "code"
+      ]
+    }
+  ],
+  "detection": []
+}

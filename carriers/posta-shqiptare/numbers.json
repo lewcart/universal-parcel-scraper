@@ -1,0 +1,111 @@
+{
+  "carrier": "posta-shqiptare",
+  "records": [
+    {
+      "number": "CP214220554AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20210921063156/https://eposta.postashqiptare.al/tracking/CP214220554AL",
+        "date": "2021-09-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up on Posta Shqiptare's e-Posta tracker; the opened capture holds only the app shell, which loads the history by script."
+    },
+    {
+      "number": "EE200190509AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "EMS",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+    },
+    {
+      "number": "CP339538880AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "Parcel",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+    },
+    {
+      "number": "LG014636582AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+    },
+    {
+      "number": "LG014771021AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+    },
+    {
+      "number": "LG010568652AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "loggi",
+  "displayName": "Loggi",
+  "aliases": [
+    "Loggi Tecnologia",
+    "Loggi Express"
+  ],
+  "region": {
+    "countries": [
+      "BR"
+    ]
+  },
+  "brand": {
+    "color": "#00baff"
+  },
+  "selectable": true,
+  "timezone": "America/Sao_Paulo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.loggi.com/rastreador/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "app.loggi.com"
+      ],
+      "path": "^/rastreador/([A-Za-z0-9]{8})/?$"
+    }
+  ],
+  "detection": []
+}

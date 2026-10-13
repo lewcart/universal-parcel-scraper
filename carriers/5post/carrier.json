@@ -1,0 +1,47 @@
+{
+  "id": "5post",
+  "displayName": "5Post",
+  "aliases": [
+    "5Пост",
+    "5 Post",
+    "FivePost"
+  ],
+  "region": {
+    "countries": [
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#64b441"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://fivepost.ru/tracking?id={trackingNumber}",
+    "searchUrl": "https://fivepost.ru/",
+    "canaryUrl": "https://fivepost.ru/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fivepost.ru",
+        "www.fivepost.ru"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,51 @@
+{
+  "id": "gdex",
+  "displayName": "GDEX",
+  "aliases": [
+    "GD Express",
+    "GDex",
+    "GD Express Sdn Bhd",
+    "GDEX Malaysia"
+  ],
+  "region": {
+    "countries": [
+      "MY"
+    ]
+  },
+  "brand": {
+    "color": "#d71921"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kuala_Lumpur",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://my.gdexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "web2.gdexpress.com"
+      ],
+      "pathPattern": "^/official/iframe/etracking(?:2|_v2)\\.php$",
+      "params": [
+        "capture"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "gdex-1",
+      "pattern": "^MY\\d{11}$",
+      "confidence": "high"
+    }
+  ]
+}

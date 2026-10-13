@@ -1,0 +1,47 @@
+{
+  "id": "kazpost",
+  "displayName": "Kazpost",
+  "aliases": [
+    "Казпочта",
+    "Kazpochta",
+    "Qazpost",
+    "Казпошта",
+    "Kazakhstan Post",
+    "AO Kazpost"
+  ],
+  "region": {
+    "countries": [
+      "KZ"
+    ]
+  },
+  "brand": {
+    "color": "#fed201"
+  },
+  "selectable": true,
+  "timezone": "Asia/Almaty",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://post.kz/mail/search/track/{trackingNumber}/detail",
+    "searchUrl": "https://post.kz/",
+    "canaryUrl": "https://post.kz/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "post.kz",
+        "www.post.kz"
+      ],
+      "path": "^/mail/search/track/([A-Za-z]{2}\\d{9}[A-Za-z]{2})(?:/detail)?/?$"
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,59 @@
+{
+  "id": "raben",
+  "displayName": "Raben",
+  "aliases": [
+    "Raben Group",
+    "Raben Logistics",
+    "Raben Logistics Polska"
+  ],
+  "region": {
+    "countries": [
+      "PL",
+      "DE",
+      "CZ",
+      "SK",
+      "HU",
+      "NL",
+      "IT",
+      "LT",
+      "LV",
+      "EE",
+      "UA",
+      "RO",
+      "BG"
+    ]
+  },
+  "brand": {
+    "color": "#df0020"
+  },
+  "selectable": true,
+  "timezone": "Europe/Warsaw",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://oftc.myraben.com/link/ShipmentInformation?ShipmentNumber={trackingNumber}&Language=EN",
+    "searchUrl": "https://www.raben-group.com/",
+    "canaryUrl": "https://www.raben-group.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "myraben.com",
+        "oftc.myraben.com"
+      ],
+      "pathPattern": "^/link/ShipmentInformation/?$",
+      "params": [
+        "ShipmentNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

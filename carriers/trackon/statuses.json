@@ -1,0 +1,11 @@
+{
+  "carrier": "trackon",
+  "entries": [
+    {"wording": "Shipment Booked", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses."},
+    {"wording": "Shipment Arrived", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses. Arrived at a Trackon hub or branch."},
+    {"wording": "Arrived at Destination", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses. At the destination branch."},
+    {"wording": "Delivery Manifest Prepared", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses. Put on a delivery run sheet."},
+    {"wording": "Delivered with Signature", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed in TrackingMore's table of Trackon statuses."}
+  ]
+}

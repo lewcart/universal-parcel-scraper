@@ -2381,5 +2381,193 @@
       "aramex-au"
     ],
     "reason": "Aramex Australia's labels have twelve characters, which Colis Privé's rule for any twelve letters or digits also takes. Both are low-confidence, so the number stays a suggestion that direct tracking must confirm."
+  },
+  {
+    "shape": "Five digits, A and ten digits",
+    "carriers": [
+      "apc-postal-logistics",
+      "royal-mail"
+    ],
+    "reason": "APC's A numbers of sixteen characters fit Royal Mail's broad low-confidence hexadecimal shape; the APC rule decides."
+  },
+  {
+    "shape": "CP and fifteen letters and digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "couriersplease"
+    ],
+    "reason": "Colis Privé's low-confidence rule takes any seventeen characters ending like a postcode range; the CouriersPlease prefix rule decides."
+  },
+  {
+    "shape": "MY and eleven digits",
+    "carriers": [
+      "gdex",
+      "la-poste"
+    ],
+    "reason": "La Poste's low-confidence rule takes any two characters and eleven digits; GDEX's MY prefix decides."
+  },
+  {
+    "shape": "JT and eleven digits",
+    "carriers": [
+      "jne",
+      "la-poste"
+    ],
+    "reason": "La Poste's low-confidence rule takes any two characters and eleven digits; JNE Trucking's JT prefix decides."
+  },
+  {
+    "shape": "V and eleven digits",
+    "carriers": [
+      "viettel-post",
+      "colis-prive"
+    ],
+    "reason": "Colis Privé's broad twelve-character rule also matches; the V prefix decides for Viettel Post."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "dpd-fr",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "courier-center numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{15}$",
+    "carriers": [
+      "brt",
+      "chronopost",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "yunda"
+    ],
+    "reason": "jne numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "lotte-global numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "fedex",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "shree-maruti numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "skynet-worldwide numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "dpd-fr",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "trackon numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "trackon numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{13}$",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "dpd-fr",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "vasp-expresso numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

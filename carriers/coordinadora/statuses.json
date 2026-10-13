@@ -1,0 +1,15 @@
+{
+  "carrier": "coordinadora",
+  "entries": [
+    {"wording": "A RECIBIR POR COORDINADORA", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "The guide exists and Coordinadora has not received the parcel. Seen on a tracker printout."},
+    {"wording": "A recibir", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "En terminal origen", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "En transporte", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "En terminal destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "En reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "En Punto Droop", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "official-doc", "note": "Waiting at a pickup point. A step label of the tracker's script."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."},
+    {"wording": "CERRADO POR INCIDENCIA, VER CAUSA", "stage": "exception", "language": "es", "confirmedBy": "portal", "note": "The guide was closed by an incident whose cause is shown. Seen on a tracker printout."},
+    {"wording": "Cerrado por incidencia", "stage": "exception", "language": "es", "confirmedBy": "official-doc", "note": "A step label of the tracker's script."}
+  ]
+}

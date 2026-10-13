@@ -1,0 +1,50 @@
+{
+  "id": "sendex",
+  "displayName": "Sendex",
+  "aliases": [
+    "SendEx",
+    "Sendex by Coordi"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#de172e"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://sendex.coordi.com/rastreo/",
+    "canaryUrl": "https://sendex.coordi.com/rastreo/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "sendex.mx"
+      ],
+      "pathPattern": "^/Home/RastreoRapido/?$",
+      "params": [
+        "guias"
+      ]
+    },
+    {
+      "domains": [
+        "sendex.mx"
+      ],
+      "path": "^/Rastreo/Rastreo/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

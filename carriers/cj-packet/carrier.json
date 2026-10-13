@@ -1,0 +1,52 @@
+{
+  "id": "cj-packet",
+  "displayName": "CJ Packet",
+  "aliases": [
+    "CJPacket",
+    "CJ Dropshipping",
+    "CJ Packet Ordinary"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#ff7700"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.cjpacket.com/?trackingNumber={trackingNumber}",
+    "searchUrl": "https://www.cjpacket.com/",
+    "canaryUrl": "https://www.cjpacket.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "cjpacket.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "cj-packet-1",
+      "pattern": "^CJP[A-Z]{2,3}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

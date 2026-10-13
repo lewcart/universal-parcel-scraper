@@ -1,0 +1,67 @@
+{
+  "id": "castores",
+  "displayName": "Transportes Castores",
+  "aliases": [
+    "Castores",
+    "Grupo Castores",
+    "Transportes Castores de Baja California"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#c72628"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.castores.com.mx/rastrear.html?guide_numbers={trackingNumber}",
+    "searchUrl": "https://www.castores.com.mx/rastrear.html",
+    "canaryUrl": "https://www.castores.com.mx/rastrear.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "castores.com.mx"
+      ],
+      "pathPattern": "^/rastrear\\.html$",
+      "params": [
+        "guide_numbers"
+      ]
+    },
+    {
+      "domains": [
+        "castores.com.mx"
+      ],
+      "pathPattern": "^/rastreo/?$",
+      "params": [
+        "talon"
+      ]
+    },
+    {
+      "domains": [
+        "castores.com.mx"
+      ],
+      "path": "^/rastreo/(\\d{11})/?$"
+    },
+    {
+      "domains": [
+        "tomcat2.castores.com.mx"
+      ],
+      "path": "^/WSPortal/app/rastreo/rastrear/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

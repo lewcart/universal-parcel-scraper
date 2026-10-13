@@ -1,0 +1,13 @@
+{
+  "carrier": "gdex",
+  "entries": [
+    {"wording": "Picked up by courier", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Outbound from SIN station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Left the named GDEX station."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Inbound to SDG station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Arrived at the named delivery station."},
+    {"wording": "Inbound to RWG station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Arrived at the named delivery station."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Undelivered due to Customer Requests OC", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Not delivered because the customer asked for another arrangement."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal"}
+  ]
+}

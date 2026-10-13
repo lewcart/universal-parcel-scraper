@@ -1,0 +1,46 @@
+{
+  "id": "nz-couriers",
+  "displayName": "New Zealand Couriers",
+  "aliases": [
+    "NZ Couriers",
+    "NZCouriers",
+    "NZC"
+  ],
+  "region": {
+    "countries": [
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#ffc900"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nzcouriers.co.nz/track?query={trackingNumber}",
+    "searchUrl": "https://nzcouriers.co.nz/tools/track-a-parcel/",
+    "canaryUrl": "https://nzcouriers.co.nz/tools/track-a-parcel/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nzcouriers.co.nz"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "query"
+      ]
+    }
+  ],
+  "detection": []
+}

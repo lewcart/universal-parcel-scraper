@@ -1,0 +1,46 @@
+{
+  "id": "surat-kargo",
+  "displayName": "Sürat Kargo",
+  "aliases": [
+    "Surat Kargo",
+    "SuratKargo",
+    "Surat Cargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#03387b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.suratkargo.com.tr/KargoTakip/?kargotakipno={trackingNumber}",
+    "searchUrl": "https://www.suratkargo.com.tr/KargoTakip/",
+    "canaryUrl": "https://www.suratkargo.com.tr/KargoTakip/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "suratkargo.com.tr"
+      ],
+      "pathPattern": "^/(?:KargoTakip|kargotakip)/?$",
+      "params": [
+        "kargotakipno"
+      ]
+    }
+  ],
+  "detection": []
+}

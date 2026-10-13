@@ -1,0 +1,17 @@
+{
+  "carrier": "posturinn",
+  "entries": [
+    {"wording": "Væntanleg frá sendanda", "stage": "registered", "language": "is", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker's API. Expected from the sender: announced, not yet handed in."},
+    {"wording": "Póstlagt", "stage": "accepted", "language": "is", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker's API. Posted."},
+    {"wording": "Skannað í búr/poka/hillu", "stage": "in_transit", "language": "is", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker's API. Scanned into a cage, bag or shelf."},
+    {"wording": "Í vinnslu", "stage": "in_transit", "language": "is", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracker's API. The parcel's status message: being processed."},
+    {"wording": "Waiting for shipment to arrive", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page."},
+    {"wording": "In transit to Iceland", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page. Still in the country of origin."},
+    {"wording": "Left the country", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page. An outbound item has left Iceland."},
+    {"wording": "Arrived to Iceland", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page."},
+    {"wording": "In customs", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page."},
+    {"wording": "Waiting for documents", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page. Customs is waiting for documents from the recipient."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page."},
+    {"wording": "Returned", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "A progress step label in the script of Pósturinn's tracking page."}
+  ]
+}

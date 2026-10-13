@@ -1,0 +1,62 @@
+{
+  "id": "israel-post",
+  "displayName": "Israel Post",
+  "aliases": [
+    "Israel Postal Company",
+    "דואר ישראל"
+  ],
+  "region": {
+    "countries": [
+      "IL"
+    ]
+  },
+  "brand": {
+    "color": "#ca151d"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jerusalem",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
+    "searchUrl": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D",
+    "canaryUrl": "https://israelpost.co.il/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "israelpost.co.il",
+        "www.israelpost.co.il"
+      ],
+      "pathPattern": "^/(?:%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D|מעקב-משלוחים)/?$",
+      "params": [
+        "itemcode"
+      ]
+    },
+    {
+      "domains": [
+        "israelpost.co.il",
+        "www.israelpost.co.il"
+      ],
+      "pathPattern": "^/(?:en/)?itemtrace\\.nsf/mainsearch(?:NOHE)?$",
+      "params": [
+        "itemcode"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "israel-post-1",
+      "pattern": "^\\d{11}IL$",
+      "confidence": "high"
+    }
+  ]
+}

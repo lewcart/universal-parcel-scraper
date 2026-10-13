@@ -1,0 +1,45 @@
+{
+  "id": "ids-logistik",
+  "displayName": "IDS Logistik",
+  "aliases": [
+    "IDS",
+    "IDS Logistik GmbH",
+    "IDS Germany"
+  ],
+  "region": {
+    "countries": [
+      "DE"
+    ]
+  },
+  "brand": {
+    "color": "#006bab"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.ids-logistik.de/de/sendungsverfolgung",
+    "canaryUrl": "https://www.ids-logistik.de/de/sendungsverfolgung",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ids-logistik.de"
+      ],
+      "pathPattern": "^/de/sendungsverfolgung/?$",
+      "params": [
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

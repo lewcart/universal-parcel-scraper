@@ -1,0 +1,10 @@
+{
+  "carrier": "forward-air",
+  "entries": [
+    {"wording": "Received", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Listed in Forward Air's Fast Track help page among an airbill's possible statuses; not seen in a captured history. Received at a Forward Air station."},
+    {"wording": "Enroute", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in Forward Air's Fast Track help page among an airbill's possible statuses; not seen in a captured history."},
+    {"wording": "Arrived at Destination", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in Forward Air's Fast Track help page among an airbill's possible statuses; not seen in a captured history. Arrived at the destination station."},
+    {"wording": "Recovered", "language": "en", "confirmedBy": "official-doc", "note": "Listed in Forward Air's Fast Track help page among an airbill's possible statuses; not seen in a captured history. The freight was taken from the destination station; whether that is the final delivery depends on the service, so no stage."},
+    {"wording": "Invoiced", "language": "en", "confirmedBy": "official-doc", "note": "Listed in Forward Air's Fast Track help page among an airbill's possible statuses; not seen in a captured history. Billing after the movement ended; not a movement."}
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "citylink-express",
+  "displayName": "City-Link Express",
+  "aliases": [
+    "City Link Express",
+    "CityLink Express",
+    "Citylink",
+    "City-Link Express Malaysia"
+  ],
+  "region": {
+    "countries": [
+      "MY"
+    ]
+  },
+  "brand": {
+    "color": "#00a551"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kuala_Lumpur",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.citylinkexpress.com/tracking-result/?track0={trackingNumber}",
+    "searchUrl": "https://www.citylinkexpress.com/track-your-shipment/",
+    "canaryUrl": "https://www.citylinkexpress.com/track-your-shipment/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "citylinkexpress.com"
+      ],
+      "pathPattern": "^/tracking-result/?$",
+      "params": [
+        "track0"
+      ]
+    },
+    {
+      "domains": [
+        "citylinkexpress.com"
+      ],
+      "pathPattern": "^/MY/en-US/ShipmentTracking_Details\\.aspx$",
+      "params": [
+        "cno"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,8 @@
+{
+  "carrier": "nipost",
+  "entries": [
+    {"wording": "Receive item at office of exchange (Otb)", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Received at the outward office of exchange. Seen in an archived capture of NIPOST's former IPS web tracker at ips.nipost.gov.ng, for an item sent from the Netherlands to Lagos; the events are the sending post's, relayed by UPU messages."},
+    {"wording": "Insert item into bag (Otb)", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Bagged for dispatch abroad. Seen in an archived capture of NIPOST's former IPS web tracker at ips.nipost.gov.ng, for an item sent from the Netherlands to Lagos; the events are the sending post's, relayed by UPU messages."},
+    {"wording": "Send item abroad (EDI-received)", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Dispatched to the destination country. Seen in an archived capture of NIPOST's former IPS web tracker at ips.nipost.gov.ng, for an item sent from the Netherlands to Lagos; the events are the sending post's, relayed by UPU messages."}
+  ]
+}

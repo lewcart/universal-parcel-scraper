@@ -1,0 +1,49 @@
+{
+  "id": "posturinn",
+  "displayName": "Pósturinn",
+  "aliases": [
+    "Íslandspóstur",
+    "Iceland Post",
+    "Posturinn",
+    "Islandspostur"
+  ],
+  "region": {
+    "countries": [
+      "IS"
+    ]
+  },
+  "brand": {
+    "color": "#ff0000"
+  },
+  "selectable": true,
+  "timezone": "Atlantic/Reykjavik",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/?q={trackingNumber}",
+    "searchUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
+    "canaryUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posturinn.is",
+        "www.posturinn.is"
+      ],
+      "pathPattern": "^/(?:einstaklingar/mottaka/(?:finna-sendingu|fylgstu-med-sendingunni-thinni)|en/individuals/receiving/(?:track-shipment|track-your-shipment))/?$",
+      "params": [
+        "q",
+        "TrackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

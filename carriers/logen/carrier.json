@@ -1,0 +1,63 @@
+{
+  "id": "logen",
+  "displayName": "Logen",
+  "aliases": [
+    "로젠택배",
+    "로젠",
+    "LOGEN",
+    "Logen Korea",
+    "iLogen"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#ffa200"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.ilogen.com/web/personal/trace/{trackingNumber}",
+    "searchUrl": "https://www.ilogen.com/web",
+    "canaryUrl": "https://www.ilogen.com/web",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ilogen.com"
+      ],
+      "path": "^/(?:web|m)/personal/trace(?:\\.pop)?/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "ilogen.com"
+      ],
+      "pathPattern": "^/iLOGEN\\.Web\\.New/TRACE/Trace(?:No)?View\\.aspx$",
+      "params": [
+        "slipno"
+      ]
+    },
+    {
+      "domains": [
+        "d2d.ilogen.com"
+      ],
+      "pathPattern": "^/d2d/delivery/invoice_tracesearch_(?:quick|link_detail|link_view)\\.jsp$",
+      "params": [
+        "slipno"
+      ]
+    }
+  ],
+  "detection": []
+}

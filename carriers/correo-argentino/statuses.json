@@ -1,0 +1,12 @@
+{
+  "carrier": "correo-argentino",
+  "entries": [
+    {"wording": "INGRESO AL CORREO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Posted at a branch. Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "EN PROCESO DE CLASIFICACIÓN", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Sorting at a branch or processing centre. Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "LLEGADA AL CENTRO DE PROCESAMIENTO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "SALIDA DEL PAÍS", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "An outbound international item left Argentina; the destination post tracks it from there. Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "EN PODER DEL CARTERO", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "With the postman for delivery. Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "INTENTO DE ENTREGA", "language": "es", "confirmedBy": "portal", "note": "The history column of a delivery visit; its status column says whether it was delivered, so the wording alone has no stage. Seen in an archived capture of Correo Argentino's former tracker."},
+    {"wording": "ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The status column next to a delivery visit. Seen in an archived capture of Correo Argentino's former tracker."}
+  ]
+}

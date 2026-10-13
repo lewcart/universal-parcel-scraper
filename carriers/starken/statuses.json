@@ -1,0 +1,18 @@
+{
+  "carrier": "starken",
+  "entries": [
+    {"code": "EMITIDO", "wording": "Solicitud de Envío Creado", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "The sender created the shipment, which Starken has not received yet. Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "ORIGEN", "wording": "Recibido por Starken", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "TRANSITO", "wording": "En tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "DESTINO", "wording": "Listo para retiro", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "official-doc", "note": "At the destination branch for a shipment collected there. Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "DESTINO", "wording": "En sucursal destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "At the destination branch for a home delivery. Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "EN REPARTO", "wording": "En reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "ENTREGADO", "wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"code": "DEVUELTO", "wording": "Devuelto al remitente", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"wording": "Pedido recibido en Starken Box", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "The first steps of an international Starken Box order. Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"wording": "Pedido recibido por Starken Chile", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "An international Starken Box order received in Chile. Starken's tracking page script labels this step of its progress rail so; the code is the step's status code."},
+    {"wording": "En origen", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "The shipment is in the city of origin. Listed in the status glossary of Starken's former tracking page, seen in an archived capture."},
+    {"wording": "En Transito", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Listed in the status glossary of Starken's former tracking page, seen in an archived capture."},
+    {"wording": "En Destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Received at the destination warehouse; for collection at a branch it is then ready to collect. Listed in the status glossary of Starken's former tracking page, seen in an archived capture."}
+  ]
+}

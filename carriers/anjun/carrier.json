@@ -1,0 +1,62 @@
+{
+  "id": "anjun",
+  "displayName": "Anjun Logistics",
+  "aliases": [
+    "Anjun",
+    "AnJun",
+    "SZ Anjun",
+    "Shenzhen Anjun Logistics",
+    "安骏物流",
+    "深圳市安骏物流有限公司",
+    "Anjun Express"
+  ],
+  "region": {
+    "countries": [
+      "CN",
+      "BR"
+    ]
+  },
+  "brand": {
+    "color": "#009944"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://anjuntrack.com/trackQuery?t={trackingNumber}",
+    "searchUrl": "https://anjuntrack.com/trajectory",
+    "canaryUrl": "https://anjuntrack.com/trajectory",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "anjuntrack.com",
+        "pu.anjuntrack.com"
+      ],
+      "pathPattern": "^/trackQuery/?$",
+      "params": [
+        "t"
+      ]
+    },
+    {
+      "domains": [
+        "anjuntrack.com",
+        "pu.anjuntrack.com"
+      ],
+      "pathPattern": "^/trajectory/?$",
+      "params": [
+        "orderNum"
+      ]
+    }
+  ],
+  "detection": []
+}

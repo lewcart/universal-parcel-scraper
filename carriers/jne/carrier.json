@@ -1,0 +1,43 @@
+{
+  "id": "jne",
+  "displayName": "JNE",
+  "aliases": [
+    "JNE Express",
+    "Jalur Nugraha Ekakurir",
+    "PT Tiki Jalur Nugraha Ekakurir",
+    "JNE Trucking",
+    "JTR"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#1e3378"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.jne.co.id/",
+    "canaryUrl": "https://www.jne.co.id/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "jne-1",
+      "pattern": "^JT\\d{11}$",
+      "confidence": "high"
+    }
+  ]
+}

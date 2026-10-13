@@ -1,0 +1,259 @@
+{
+  "carrier": "imile",
+  "records": [
+    {
+      "number": "3781052124989",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250624012318/https://www.imile.com/AU-en/track?waybillNo=3781052124989",
+        "date": "2025-06-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Australian history from order creation to a failed delivery attempt."
+    },
+    {
+      "number": "6091326033397",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260927230938/https://www.imile.com/AU-en/track?waybillNo=6091326033397",
+        "date": "2026-09-27",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Australian history up to out for delivery."
+    },
+    {
+      "number": "6061325954939",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250619061150/https://www.imile.com/AE-en/track/?waybillNo=6061325954939",
+        "date": "2025-06-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows an Australian history (order created, received and arrived at a centre), though looked up from the AE-en page."
+    },
+    {
+      "number": "6120924763844",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250528181621/https://www.imile.com/BR-pt/track?waybillNo=6120924763844",
+        "date": "2025-05-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Brazilian history through to delivery."
+    },
+    {
+      "number": "6071726007641",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260727074006/https://www.imile.com/IT-it/track?waybillNo=6071726007641",
+        "date": "2026-07-27",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows its Italian history (order created, received at a centre)."
+    },
+    {
+      "number": "6031125571417",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250321053715/https://www.imile.com/AE-en/track?waybillNo=6031125571417",
+        "date": "2025-03-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the capture was not opened."
+    },
+    {
+      "number": "6011426838568",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260128123856/https://www.imile.com/SA-ar/track?waybillNo=6011426838568",
+        "date": "2026-01-28",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's Saudi tracker page; the capture was not opened."
+    },
+    {
+      "number": "3671050443743",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260727222312/https://www.imile.com/CO-es/track?waybillNo=3671050443743",
+        "date": "2026-07-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Archived lookup on iMile's Colombian tracker page; the capture was not opened."
+    },
+    {
+      "number": "CNBR00073258992",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250529162607/https://www.imile.com/BR-pt/track?waybillNo=CNBR00073258992",
+        "date": "2025-05-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Archived lookup on iMile's own tracker; the tracking service reply captured with the page shows a Brazilian history, but the CNBR prefix is an AliExpress/Cainiao order reference that iMile accepts as a partner number."
+    },
+    {
+      "number": "AP00808868960945",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260416111801/https://www.imile.com/AU-en/track?waybillNo=AP00808868960945",
+        "date": "2026-04-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "aliexpress"
+        ]
+      },
+      "note": "Archived lookup on iMile's tracker; the service reply captured with it is empty, and the AP prefix is a Cainiao partner reference."
+    }
+  ]
+}

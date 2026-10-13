@@ -1,0 +1,11 @@
+{
+  "carrier": "jersey-post",
+  "entries": [
+    {"wording": "Awaiting Item from sender", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. The item is announced but not yet handed in."},
+    {"wording": "Outbound Item Despatched", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. The item has left Jersey."},
+    {"wording": "Item Received", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. Relayed from the post abroad, which received the item."},
+    {"wording": "Item Held By Customs", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. Relayed from the post abroad."},
+    {"wording": "Item being sent to customer", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. Relayed from the post abroad; a later delivery attempt followed, so it is not the delivery round itself."},
+    {"wording": "Unsuccessful Delivery Attempt", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on Jersey Post's own tracker. Relayed from the post abroad."}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "pilot-freight",
+  "displayName": "Pilot Freight Services",
+  "aliases": [
+    "Pilot",
+    "Pilot - A Maersk Company",
+    "Maersk Ground Freight",
+    "Pilot Delivers"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#42b0d5"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://delivers.maersk.com/tracking/{trackingNumber}",
+    "searchUrl": "https://delivers.maersk.com/tracking/",
+    "canaryUrl": "https://delivers.maersk.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "delivers.maersk.com"
+      ],
+      "path": "^/tracking/(\\d{9})/?$"
+    },
+    {
+      "domains": [
+        "pilotdelivers.com"
+      ],
+      "pathPattern": "^/quicktrack\\.aspx$",
+      "params": [
+        "Pro",
+        "pro"
+      ]
+    }
+  ],
+  "detection": []
+}

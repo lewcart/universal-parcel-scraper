@@ -1,0 +1,55 @@
+{
+  "id": "danske-fragtmaend",
+  "displayName": "Danske Fragtmænd",
+  "aliases": [
+    "Danske Fragtmaend",
+    "Danske Fragt",
+    "DF"
+  ],
+  "region": {
+    "countries": [
+      "DK"
+    ]
+  },
+  "brand": {
+    "color": "#009ada"
+  },
+  "selectable": true,
+  "timezone": "Europe/Copenhagen",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://trace.fragt.dk/{trackingNumber}",
+    "searchUrl": "https://trace.fragt.dk/",
+    "canaryUrl": "https://trace.fragt.dk/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "trace.fragt.dk"
+      ],
+      "path": "^/(?!colli/)([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "trace.fragt.dk"
+      ],
+      "path": "^/colli/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "danske-fragtmaend-1",
+      "pattern": "^\\d{20}[A-Z]{2}\\d{6}$",
+      "confidence": "high"
+    }
+  ]
+}

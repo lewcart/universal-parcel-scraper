@@ -1,0 +1,75 @@
+{
+  "id": "oca",
+  "displayName": "OCA",
+  "aliases": [
+    "OCA Argentina",
+    "Organización Coordinadora Argentina",
+    "OCA e-Pak"
+  ],
+  "region": {
+    "countries": [
+      "AR"
+    ]
+  },
+  "brand": {
+    "color": "#592c82"
+  },
+  "selectable": true,
+  "timezone": "America/Argentina/Buenos_Aires",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.oca.com.ar/Seguimiento/Paquetes/{trackingNumber}",
+    "searchUrl": "https://www.oca.com.ar/Seguimiento/BuscarEnvio",
+    "canaryUrl": "https://www.oca.com.ar/Seguimiento/BuscarEnvio",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.oca.com.ar",
+        "oca.com.ar"
+      ],
+      "path": "^/Seguimiento/Paquetes/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "www1.oca.com.ar",
+        "www9.oca.com.ar"
+      ],
+      "pathPattern": "^/OEPTrackingWeb/detalleenviore\\.asp$",
+      "params": [
+        "numero"
+      ]
+    },
+    {
+      "domains": [
+        "www1.oca.com.ar",
+        "www9.oca.com.ar"
+      ],
+      "pathPattern": "^/OEPTrackingWeb/trackingenvio\\.asp$",
+      "params": [
+        "numero1"
+      ]
+    },
+    {
+      "domains": [
+        "www1.oca.com.ar",
+        "www4.oca.com.ar",
+        "www5.oca.com.ar"
+      ],
+      "pathPattern": "^/ocaepakNet/Views/ConsultaTracking/TrackingConsult\\.aspx$",
+      "params": [
+        "numberTracking"
+      ]
+    }
+  ],
+  "detection": []
+}

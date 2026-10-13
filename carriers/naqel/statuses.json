@@ -1,0 +1,23 @@
+{
+  "carrier": "naqel",
+  "entries": [
+    {"wording": "Waybill created. Shipment has not been received from the retailer", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Parcel Locker Request Created", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker. A delivery option recorded by the system, not a movement."},
+    {"wording": "Picked up by Naqel", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Shipment Picked Up by Naqel", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Load to Trip :", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker. Followed by a trip code."},
+    {"wording": "Arrived at : Delivery Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Out For Delivery with Courier", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Delivery attempted – Consignee not answered", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker."},
+    {"wording": "Shipment Returned to Warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker. Back at the delivery warehouse after a failed attempt; not a return to the sender."},
+    {"wording": "On Hold : Technical :", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker. Followed by a date."},
+    {"wording": "Shipment Delivered – signed by", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Naqel's tracker. Followed by the signer's name, which is not kept."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."},
+    {"wording": "تم الاستلام", "stage": "accepted", "language": "ar", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."},
+    {"wording": "في الطريق", "stage": "in_transit", "language": "ar", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."},
+    {"wording": "تم التوصيل", "stage": "delivered", "language": "ar", "confirmedBy": "official-doc", "note": "A step of the progress rail in the template of Naqel's tracking page."}
+  ]
+}

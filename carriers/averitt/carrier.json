@@ -1,0 +1,45 @@
+{
+  "id": "averitt",
+  "displayName": "Averitt Express",
+  "aliases": [
+    "Averitt",
+    "AVERITT Express"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#c21f38"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tools.averitt.com/servlet/rsoLTLtrack?Type=PN&Number={trackingNumber}",
+    "searchUrl": "https://www.averitt.com/",
+    "canaryUrl": "https://www.averitt.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tools.averitt.com"
+      ],
+      "pathPattern": "^/servlet/rsoLTLtrack$",
+      "params": [
+        "Number"
+      ]
+    }
+  ],
+  "detection": []
+}

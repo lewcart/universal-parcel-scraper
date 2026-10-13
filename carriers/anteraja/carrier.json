@@ -1,0 +1,43 @@
+{
+  "id": "anteraja",
+  "displayName": "Anteraja",
+  "aliases": [
+    "AnterAja",
+    "Anter Aja",
+    "Anteraja Express"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#ed0677"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://anteraja.id/tracking/{trackingNumber}",
+    "searchUrl": "https://anteraja.id/id/tracking",
+    "canaryUrl": "https://anteraja.id/id/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "anteraja.id"
+      ],
+      "path": "^/(?:id/|en/)?tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

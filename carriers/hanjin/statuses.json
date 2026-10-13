@@ -1,0 +1,15 @@
+{
+  "carrier": "hanjin",
+  "entries": [
+    {"wording": "고객님 상품을 접수 하였습니다.", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "Followed by the courier's name in brackets."},
+    {"wording": "배송원이 배송준비중 입니다.", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "At the delivery terminal, before the courier sets out."},
+    {"wording": "배송출발 하였습니다.", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "Followed by the courier's name in brackets."},
+    {"wording": "배송완료 되었습니다.", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Also the summary line next to the number once delivered."},
+    {"wording": "상품 접수", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "STEP1 of the tracker's progress rail."},
+    {"wording": "터미널 입고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "STEP2 of the progress rail; the event text names the terminal."},
+    {"wording": "상품 이동중", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "STEP3 of the progress rail."},
+    {"wording": "배송 터미널 도착", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "STEP4 of the progress rail."},
+    {"wording": "배송 출발", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "STEP5 of the progress rail."},
+    {"wording": "배송 완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "STEP6 of the progress rail."}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "carrier": "ids-logistik",
+  "entries": [
+    {"wording": "Die Daten zu Ihrer Sendung wurden an uns übermittelt. Die Weiterverarbeitung folgt.", "stage": "registered", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. IDS has the order data; the pickup from the seller follows."},
+    {"wording": "Ihre Sendung wurde abgeholt und befindet sich in unserem Versanddepot.", "stage": "accepted", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. Picked up from the seller and held at the collecting IDS partner's depot."},
+    {"wording": "Ihre Sendung befindet sich auf dem Weg zum Zustelldepot.", "stage": "in_transit", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. On its way to the delivering IDS partner's depot."},
+    {"wording": "Ihre Sendung ist im Zustelldepot eingetroffen und wird für die Zustellung vorbereitet.", "stage": "in_transit", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. At the delivering partner's depot; a delivery appointment notice follows."},
+    {"wording": "Die Zustellung der Sendung ist zum angekündigten Zustelltermin geplant.", "stage": "in_transit", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. Delivery is scheduled for the announced date; it is not yet on the vehicle."},
+    {"wording": "Ihre Sendung befindet sich in der Zustellung.", "stage": "out_for_delivery", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. Loaded on the delivery vehicle."},
+    {"wording": "Ihre Sendung wurde zugestellt.", "stage": "delivered", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. Delivered to the recipient, a neighbour or the agreed place."},
+    {"wording": "Wir konnten Sie leider nicht antreffen oder Ihre Warenannahme war bereits geschlossen. Bei Sendungen mit vereinbartem Liefertermin melden wir uns erneut bei Ihnen.", "stage": "failed_attempt", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. The driver could not deliver; IDS arranges a new date."},
+    {"wording": "Es sind leider unvorhersehbare Verzögerungen aufgetreten. Bei Sendungen mit vereinbartem Liefertermin melden wir uns erneut bei Ihnen.", "stage": "exception", "language": "de", "confirmedBy": "official-doc", "note": "IDS's FAQ quotes it as a tracking status and explains it. The announced delivery date cannot be kept; IDS arranges a new one."}
+  ]
+}

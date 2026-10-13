@@ -1,0 +1,46 @@
+{
+  "id": "trendyol-express",
+  "displayName": "Trendyol Express",
+  "aliases": [
+    "Trendyol Ekspres",
+    "TEX",
+    "Trendyol Express Kargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#f16623"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://kargotakip.trendyol.com/?orderNumber={trackingNumber}",
+    "searchUrl": "https://trendyolexpress.com/",
+    "canaryUrl": "https://trendyolexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "kargotakip.trendyol.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "orderNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

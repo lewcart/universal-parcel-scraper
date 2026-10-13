@@ -1,0 +1,16 @@
+{
+  "carrier": "lotte-global",
+  "entries": [
+    {"wording": "인수/상품접수", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "Step name of the pickup scan."},
+    {"wording": "보내시는 고객님으로부터 상품을 인수했습니다.", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "Event text of the pickup scan."},
+    {"wording": "터미널 입고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Step of the tracker's progress rail."},
+    {"wording": "상품 이동중", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Step name; the event text names the terminal reached."},
+    {"wording": "배달지 도착", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Step of the tracker's progress rail."},
+    {"wording": "배송 출발", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "Step name; the event text gives the delivery window and the courier's contact."},
+    {"wording": "배달 완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Step name; also the 배달결과 summary as 배달완료."},
+    {"wording": "배달 완료하였습니다.", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Followed by the courier's name and phone in brackets."},
+    {"wording": "고객 물품을 받으셨습니다.", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "A second delivered row without a time."},
+    {"wording": "셔틀발송", "stage": "in_transit", "language": "ko", "confirmedBy": "source", "note": "A blog on reading Lotte's tracker explains it as a shuttle run between local branch and terminal."},
+    {"wording": "간선상차", "stage": "in_transit", "language": "ko", "confirmedBy": "source", "note": "Loaded onto a trunk truck between hubs."}
+  ]
+}

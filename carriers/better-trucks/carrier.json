@@ -1,0 +1,52 @@
+{
+  "id": "better-trucks",
+  "displayName": "Better Trucks",
+  "aliases": [
+    "Better Trucks Last Mile"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#218cee"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.bettertrucks.com/tracking?trackingNumber={trackingNumber}",
+    "searchUrl": "https://tracking.bettertrucks.com/",
+    "canaryUrl": "https://tracking.bettertrucks.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.bettertrucks.com"
+      ],
+      "pathPattern": "^/[Tt]racking/?$",
+      "params": [
+        "trackingNumber",
+        "ShipmentId",
+        "ShipmentID"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "better-trucks-1",
+      "pattern": "^BTPA[0-9A-Z]{11}$",
+      "confidence": "low"
+    }
+  ]
+}

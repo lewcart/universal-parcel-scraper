@@ -1,0 +1,55 @@
+{
+  "id": "gati",
+  "displayName": "AllcargoGATI",
+  "aliases": [
+    "Gati",
+    "Gati-KWE",
+    "Gati KWE",
+    "Gati Express",
+    "GATI Courier",
+    "Allcargo Gati",
+    "Allcargo Logistics"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#1781a4"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.allcargologistics.com/track-shipment",
+    "canaryUrl": "https://www.allcargologistics.com/track-shipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gati.com"
+      ],
+      "pathPattern": "^/single_dkt_track_int\\.jsp$",
+      "params": [
+        "dktNo"
+      ]
+    },
+    {
+      "domains": [
+        "gati.com"
+      ],
+      "path": "^/track-by-docket/(\\d{9})/?$"
+    }
+  ],
+  "detection": []
+}

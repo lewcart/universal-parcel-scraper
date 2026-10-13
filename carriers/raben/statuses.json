@@ -1,0 +1,7 @@
+{
+  "carrier": "raben",
+  "entries": [
+    {"wording": "not delivered - delivery refused", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "The recipient refused the delivery. Quoted from the tracker in a Trustpilot review."},
+    {"wording": "nie dostarczono - odbiorca nieosiagalny", "stage": "failed_attempt", "language": "pl", "confirmedBy": "source", "note": "Not delivered, recipient unreachable. Quoted from the tracker in a Polish Trustpilot review."}
+  ]
+}

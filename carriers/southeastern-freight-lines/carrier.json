@@ -1,0 +1,45 @@
+{
+  "id": "southeastern-freight-lines",
+  "displayName": "Southeastern Freight Lines",
+  "aliases": [
+    "SEFL",
+    "Southeastern"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#c41230"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.sefl.com/webconnect/tracing?Type=PN&RefNum1={trackingNumber}",
+    "searchUrl": "https://www.sefl.com/Tracing/index.jsp",
+    "canaryUrl": "https://www.sefl.com/Tracing/index.jsp",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "sefl.com"
+      ],
+      "pathPattern": "^/webconnect/tracing/?$",
+      "params": [
+        "RefNum1"
+      ]
+    }
+  ],
+  "detection": []
+}

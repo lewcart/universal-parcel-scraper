@@ -1,0 +1,45 @@
+{
+  "id": "jersey-post",
+  "displayName": "Jersey Post",
+  "aliases": [
+    "Jersey Post International",
+    "Jersey Post Group"
+  ],
+  "region": {
+    "countries": [
+      "JE"
+    ]
+  },
+  "brand": {
+    "color": "#e72b37"
+  },
+  "selectable": true,
+  "timezone": "Europe/Jersey",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.jerseypost.com/tools/track-trace/?tq={trackingNumber}",
+    "searchUrl": "https://www.jerseypost.com/tools/track-trace/",
+    "canaryUrl": "https://www.jerseypost.com/tools/track-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "jerseypost.com"
+      ],
+      "pathPattern": "^/tools/track-trace/?$",
+      "params": [
+        "tq"
+      ]
+    }
+  ],
+  "detection": []
+}

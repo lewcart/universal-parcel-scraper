@@ -1,0 +1,12 @@
+{
+  "carrier": "nz-couriers",
+  "entries": [
+    {"wording": "Pickup", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Event heading on the tracker; the help centre calls it the Pickup scan, the time the parcel was collected."},
+    {"wording": "Status", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "The help centre's Status scan: a stage of the journey such as a depot scan."},
+    {"wording": "On Board", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Event heading on the tracker; the help centre's On Board scan, onto the delivery driver's vehicle."},
+    {"wording": "Delivery", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Event heading on the tracker followed by 'Delivered in area …'."},
+    {"wording": "Delivered by courier or branch", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "For a rural delivery the help centre says this means the parcel was handed to the rural partner, with two to three more days to delivery."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Event status the current tracker page's script looks for to draw its first milestone."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Event status the current tracker page's script uses for the delivered milestone."}
+  ]
+}

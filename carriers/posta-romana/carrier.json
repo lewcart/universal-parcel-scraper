@@ -1,0 +1,48 @@
+{
+  "id": "posta-romana",
+  "displayName": "Poșta Română",
+  "aliases": [
+    "Posta Romana",
+    "Romania Post",
+    "Romanian Post",
+    "Compania Națională Poșta Română",
+    "CNPR"
+  ],
+  "region": {
+    "countries": [
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#ea0029"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.posta-romana.ro/track-trace.html?awb={trackingNumber}",
+    "searchUrl": "https://www.posta-romana.ro/track-trace.html",
+    "canaryUrl": "https://www.posta-romana.ro/track-trace.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "posta-romana.ro"
+      ],
+      "pathPattern": "^/track-trace\\.html$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

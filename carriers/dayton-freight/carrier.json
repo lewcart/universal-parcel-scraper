@@ -1,0 +1,61 @@
+{
+  "id": "dayton-freight",
+  "displayName": "Dayton Freight",
+  "aliases": [
+    "Dayton Freight Lines",
+    "Dayton Freight Lines, Inc."
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#1c3f94"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tools.daytonfreight.com/tracking/detail/{trackingNumber}",
+    "searchUrl": "https://tools.daytonfreight.com/tracking/bynumber",
+    "canaryUrl": "https://tools.daytonfreight.com/tracking/bynumber",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tools.daytonfreight.com"
+      ],
+      "path": "^/tracking/detail/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "tools.daytonfreight.com"
+      ],
+      "pathPattern": "^/tracking/detail/?$",
+      "params": [
+        "id"
+      ]
+    },
+    {
+      "domains": [
+        "www.daytonfreight.com",
+        "daytonfreight.com"
+      ],
+      "pathPattern": "^/scripts/(?:prostatus|statusdetail)\\.asp$",
+      "params": [
+        "pro"
+      ]
+    }
+  ],
+  "detection": []
+}

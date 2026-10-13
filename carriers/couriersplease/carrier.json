@@ -1,0 +1,52 @@
+{
+  "id": "couriersplease",
+  "displayName": "CouriersPlease",
+  "aliases": [
+    "Couriers Please",
+    "Couriers Please Pty Ltd"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#c21e36"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.couriersplease.com.au/tools-track?no={trackingNumber}",
+    "searchUrl": "https://www.couriersplease.com.au/tools-track",
+    "canaryUrl": "https://www.couriersplease.com.au/tools-track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "couriersplease.com.au"
+      ],
+      "pathPattern": "^/tools-track/?$",
+      "params": [
+        "no",
+        "trackingCode"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "couriersplease-1",
+      "pattern": "^CP[A-Z][A-Z0-9]{5,10}\\d{6}$",
+      "confidence": "high"
+    }
+  ]
+}

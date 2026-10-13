@@ -1,0 +1,58 @@
+{
+  "id": "hanjin",
+  "displayName": "Hanjin",
+  "aliases": [
+    "한진택배",
+    "한진",
+    "Hanjin Express",
+    "Hanjin Transportation",
+    "Hanjin Parcel"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#051469"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum={trackingNumber}&schLang=KR",
+    "searchUrl": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do",
+    "canaryUrl": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "hanjin.com"
+      ],
+      "pathPattern": "^/kor/CMS/DeliveryMgr/WaybillResult\\.do$",
+      "params": [
+        "wblnum"
+      ]
+    },
+    {
+      "domains": [
+        "hanjin.co.kr",
+        "hanjin.com"
+      ],
+      "pathPattern": "^/[Dd]elivery_html/inquiry/result_waybill\\.jsp$",
+      "params": [
+        "wbl_num"
+      ]
+    }
+  ],
+  "detection": []
+}

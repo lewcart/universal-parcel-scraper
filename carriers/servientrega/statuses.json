@@ -1,0 +1,9 @@
+{
+  "carrier": "servientrega",
+  "entries": [
+    {"wording": "Recibido en centro operativo", "stage": "accepted", "language": "es", "confirmedBy": "source", "note": "Named as a Servientrega tracking state in a merchant guide."},
+    {"wording": "En ruta para entrega", "stage": "out_for_delivery", "language": "es", "confirmedBy": "source", "note": "Named as a Servientrega tracking state in a merchant guide."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "source", "note": "Named as a Servientrega tracking state in a merchant guide."},
+    {"wording": "Novedad", "stage": "exception", "language": "es", "confirmedBy": "source", "note": "An incident that holds the delivery. Named as a Servientrega tracking state in a merchant guide."}
+  ]
+}

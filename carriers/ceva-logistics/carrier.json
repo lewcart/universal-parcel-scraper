@@ -1,0 +1,64 @@
+{
+  "id": "ceva-logistics",
+  "displayName": "CEVA Logistics",
+  "aliases": [
+    "CEVA",
+    "CEVA Trak",
+    "CEVA Home Delivery"
+  ],
+  "region": {
+    "countries": [
+      "FR"
+    ]
+  },
+  "brand": {
+    "color": "#1d2546"
+  },
+  "selectable": true,
+  "timezone": "Europe/Paris",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.cevalogistics.com/en/ceva-trak?reference_query={trackingNumber}",
+    "searchUrl": "https://www.cevalogistics.com/en/ceva-trak",
+    "canaryUrl": "https://www.cevalogistics.com/en/ceva-trak",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "cevalogistics.com"
+      ],
+      "pathPattern": "^/[a-z]{2}(?:-[a-z]+)?/ceva-trak/?$",
+      "params": [
+        "reference_query"
+      ]
+    },
+    {
+      "domains": [
+        "homedelivery.cevalogistics.com"
+      ],
+      "pathPattern": "^/Track(?:\\.aspx)?/?$",
+      "params": [
+        "trackingID"
+      ]
+    },
+    {
+      "domains": [
+        "etracking.cevalogistics.com"
+      ],
+      "pathPattern": "^/eTrackResultsMulti\\.aspx$",
+      "params": [
+        "sv"
+      ]
+    }
+  ],
+  "detection": []
+}

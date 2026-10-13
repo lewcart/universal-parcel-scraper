@@ -1,0 +1,32 @@
+{
+  "carrier": "total-express",
+  "records": [
+    {
+      "number": "0560554727",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/ivmelo/tex-tracker",
+        "date": "2016-11-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The README of tex-tracker, an open-source scraper of Total Express's tracker, shows it as the AWB of a parcel with its full history."
+    }
+  ]
+}

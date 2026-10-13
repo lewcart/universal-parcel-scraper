@@ -1,0 +1,17 @@
+{
+  "carrier": "roadrunner",
+  "entries": [
+    {"wording": "Pickup Request Received.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time."},
+    {"code": "PU", "wording": "Shipment was picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time."},
+    {"code": "CLO", "wording": "Trailer Closed - ready for dispatch", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time."},
+    {"code": "DSP", "wording": "Trailer dispatched from LOS ANGELES, CA to KANSAS CITY, MO.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. The wording names the two terminals."},
+    {"code": "ARV", "wording": "Trailer arrived at terminal in KANSAS CITY, MO", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. The wording names the terminal."},
+    {"code": "UNL", "wording": "Trailer unloaded at terminal in KANSAS CITY, MO", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. The wording names the terminal."},
+    {"code": "ARQ", "wording": "Appointment Pending", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. A delivery appointment is to be arranged."},
+    {"wording": "Attempting to set Delivery Appointment", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time."},
+    {"wording": "Phone Number Not Available", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. The terminal could not reach the consignee to book delivery; not a movement."},
+    {"wording": "Shipment out for delivery from KANSAS CITY, MO", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time. The wording names the delivering terminal."},
+    {"code": "OFD", "wording": "Shipment out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "From the sample reply in Roadrunner's tracking API guide."},
+    {"code": "DEL", "wording": "Shipment delivered to consignee", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Roadrunner's tracking portal, after the event's date and time."}
+  ]
+}

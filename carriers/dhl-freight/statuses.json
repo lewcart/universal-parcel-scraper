@@ -1,0 +1,20 @@
+{
+  "carrier": "dhl-freight",
+  "entries": [
+    {"wording": "Auftrag erfasst", "stage": "registered", "language": "de", "confirmedBy": "portal", "note": "The order was entered; no goods handed over yet."},
+    {"wording": "Abholung", "stage": "accepted", "language": "de", "confirmedBy": "portal", "note": "Collected from the shipper."},
+    {"wording": "Empfangen im Terminal", "stage": "in_transit", "language": "de", "confirmedBy": "portal"},
+    {"wording": "Verladen", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "Loaded onto the next linehaul."},
+    {"wording": "Avisierung", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "The delivery terminal notified the consignee to agree delivery; it precedes delivery."},
+    {"wording": "Avisierung beim Empfänger", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "The consignee was notified of the coming delivery."},
+    {"wording": "In Zustellung", "stage": "out_for_delivery", "language": "de", "confirmedBy": "portal"},
+    {"wording": "Zugestellt", "stage": "delivered", "language": "de", "confirmedBy": "portal"},
+    {"wording": "Consignment created", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Shipment in warehouse - Awaiting delivery appointment", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Held at the delivery terminal until a delivery appointment is agreed."},
+    {"wording": "Collected", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Listed in DHL Freight's ActiveTracing user manual (consignment details screen)."},
+    {"wording": "Received at terminal", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in DHL Freight's ActiveTracing user manual (consignment details screen)."},
+    {"wording": "Shipped from terminal", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in DHL Freight's ActiveTracing user manual (consignment details screen)."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Listed in DHL Freight's ActiveTracing user manual (consignment details screen)."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Listed in DHL Freight's ActiveTracing user manual (consignment details screen)."}
+  ]
+}

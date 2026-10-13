@@ -1,0 +1,15 @@
+{
+  "carrier": "andreani",
+  "entries": [
+    {"code": "OrdenDeEnvioCreada", "wording": "Aún no recibimos tu envío. Suscribite al servicio de notificaciones y te enviaremos las novedades por e-mail", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "The sender created the shipment; Andreani does not have it yet. Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "AltaAutomatica", "wording": "Ya tenemos tu envío. Lo estamos preparando para enviarlo a la sucursal a cargo de la entrega", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "AltaAutomatica", "wording": "Envío ingresado al circuito operativo", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "An older wording of the same event. Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "ExpedicionHojaDeRutaDeViaje", "wording": "El envío está viajando a la sucursal responsable de la entrega", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "RecepcionEnSucursalDestino", "wording": "Tu envío llegó a la sucursal a cargo de la entrega. Suscribite al servicio de notificaciones y te enviaremos novedades por e-mail", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "Distribucion", "wording": "En el día de hoy estaremos visitando el domicilio de entrega", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"code": "EnvioEntregado", "wording": "El envío fue entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Its reason says where: at the recipient's address or at an Andreani branch. Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"wording": "Aún no recibimos tu envío, seguramente lo recibiremos en las próximas 72 horas. Suscribite al servicio de notificaciones y te enviaremos las novedades por e-mail", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "An older wording of the shipment-created event. Seen in an archived capture of Andreani's former tracker page."},
+    {"wording": "Entregado en Domicilio de Destinatario", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The reason detail of a delivery. Seen in an archived reply of the tracking service behind Andreani's tracker."},
+    {"wording": "Entregado en Sucursal Andreani", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The reason detail of a delivery collected at a branch. Seen in an archived reply of the tracking service behind Andreani's tracker."}
+  ]
+}

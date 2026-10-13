@@ -1,0 +1,59 @@
+{
+  "id": "barid-al-maghrib",
+  "displayName": "Barid Al-Maghrib",
+  "aliases": [
+    "Poste Maroc",
+    "Morocco Post",
+    "Amana",
+    "Barid Al Maghrib",
+    "Al Barid",
+    "بريد المغرب"
+  ],
+  "region": {
+    "countries": [
+      "MA"
+    ]
+  },
+  "brand": {
+    "color": "#164c93"
+  },
+  "selectable": true,
+  "timezone": "Africa/Casablanca",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.barid.ma/bamb2cstorefront/fr/tracking/getdetailentrytracking?code={trackingNumber}",
+    "searchUrl": "https://www.barid.ma/bamb2cstorefront/fr/tracking/page",
+    "canaryUrl": "https://www.barid.ma/bamb2cstorefront/fr/tracking/page",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.barid.ma",
+        "barid.ma"
+      ],
+      "pathPattern": "^/bamb2cstorefront/(?:fr|ar|en)/tracking/getdetailentrytracking/?$",
+      "params": [
+        "code"
+      ]
+    },
+    {
+      "domains": [
+        "bam-tracking.barid.ma"
+      ],
+      "pathPattern": "^/Tracking/(?:index|Search)/?$",
+      "params": [
+        "trackingCode"
+      ]
+    }
+  ],
+  "detection": []
+}

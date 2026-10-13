@@ -1,0 +1,46 @@
+{
+  "id": "courier-center",
+  "displayName": "Courier Center",
+  "aliases": [
+    "COURIER CENTER",
+    "Courier Center Α.Ε.",
+    "courier.gr"
+  ],
+  "region": {
+    "countries": [
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#f37029"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.courier.gr/track/result/?tracknr={trackingNumber}",
+    "searchUrl": "https://www.courier.gr/",
+    "canaryUrl": "https://www.courier.gr/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "courier.gr"
+      ],
+      "pathPattern": "^/track/result/?$",
+      "params": [
+        "tracknr"
+      ]
+    }
+  ],
+  "detection": []
+}

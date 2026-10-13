@@ -1,0 +1,27 @@
+{
+  "carrier": "pecom",
+  "entries": [
+    {"wording": "Заявка на забор зарегистрирована", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "A pickup request was registered. Listed among the cargo statuses in PEC's API documentation."},
+    {"code": "4000", "wording": "Забор груза заказан", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Pickup ordered. A history entry in PEC's API documentation."},
+    {"code": "4100", "wording": "Забор груза запланирован", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Pickup scheduled. A history entry in PEC's API documentation."},
+    {"wording": "Ожидается передача груза от отправителя", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Waiting for the sender to hand the cargo over. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Аннулировано до приемки груза", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Cancelled before the cargo was accepted. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Принят к перевозке", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Принят на ПВЗ", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Accepted at a pickup point. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Оформлен", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Documented at the terminal. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "В пути", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "В пути на терминал", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Прибыл", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Arrived at the destination terminal; whether it can be collected is not stated. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Прибыл частично", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Some pieces arrived. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Разгружается. Ожидайте оповещения", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Being unloaded at the destination terminal. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Отправлен на терминал выдачи Раменское", "stage": "in_transit", "language": "ru", "confirmedBy": "source", "note": "Sent to the collection terminal; the wording ends with the terminal's town. Quoted in a Pikabu post about a PEC shipment."},
+    {"wording": "Выполняется адресная доставка", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "official-doc", "note": "Door delivery under way. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Выдан получателю", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Доставлен получателю", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"code": "8", "wording": "Выдан на складе", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Collected at the terminal. A history entry in PEC's API documentation."},
+    {"wording": "Отправлен на возврат", "stage": "returned", "language": "ru", "confirmedBy": "official-doc", "note": "Sent back. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Возвращен отправителю", "stage": "returned", "language": "ru", "confirmedBy": "official-doc", "note": "Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Изъят на таможне", "stage": "customs", "language": "ru", "confirmedBy": "official-doc", "note": "Seized by customs. Listed among the cargo statuses in PEC's API documentation."},
+    {"wording": "Утилизирован", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Disposed of. Listed among the cargo statuses in PEC's API documentation."}
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "speedex",
+  "displayName": "Speedex",
+  "aliases": [
+    "SPEEDEX",
+    "Speedex Courier",
+    "SPEEDEX A.E."
+  ],
+  "region": {
+    "countries": [
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#55b248"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.speedex.gr/isapohi.asp?voucher_code={trackingNumber}",
+    "searchUrl": "https://www.speedex.gr/isapohi.asp",
+    "canaryUrl": "https://www.speedex.gr/isapohi.asp",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "speedex.gr"
+      ],
+      "pathPattern": "^/isapohi\\.asp$",
+      "params": [
+        "voucher_code"
+      ]
+    },
+    {
+      "domains": [
+        "speedex.gr"
+      ],
+      "pathPattern": "^/speedex/NewTrackAndTrace\\.aspx$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,12 @@
+{
+  "carrier": "trendyol-express",
+  "entries": [
+    {"wording": "yolda", "stage": "in_transit", "language": "tr", "confirmedBy": "source", "note": "On the way. Quoted in Şikayetvar complaints about Trendyol Express."},
+    {"wording": "gönderi yolda", "stage": "in_transit", "language": "tr", "confirmedBy": "source", "note": "Quoted in a Şikayetvar complaint."},
+    {"wording": "dağıtımda", "stage": "out_for_delivery", "language": "tr", "confirmedBy": "source", "note": "Quoted in a Şikayetvar complaint as shown in the tracking app."},
+    {"wording": "Tekrar uğrama yapılacak", "stage": "failed_attempt", "language": "tr", "confirmedBy": "source", "note": "Another delivery attempt will be made. Quoted in a Şikayetvar complaint."},
+    {"wording": "adreste bulunamadı", "stage": "failed_attempt", "language": "tr", "confirmedBy": "source", "note": "Not found at the address. Quoted in a Şikayetvar complaint."},
+    {"wording": "hasar tespit edildi", "stage": "exception", "language": "tr", "confirmedBy": "source", "note": "Damage found; the complaint says a return was started after it. Quoted in a Şikayetvar complaint."},
+    {"wording": "teslim edildi", "stage": "delivered", "language": "tr", "confirmedBy": "source", "note": "Quoted in a Şikayetvar complaint."}
+  ]
+}

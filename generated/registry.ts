@@ -180,6 +180,7 @@ import { adapter as venipak } from '../carriers/venipak/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
 import { adapter as xdp } from '../carriers/xdp/adapter.js';
+import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
 import { adapter as xpressbees } from '../carriers/xpressbees/adapter.js';
 import { adapter as yamato } from '../carriers/yamato/adapter.js';
 import { adapter as yanwen } from '../carriers/yanwen/adapter.js';
@@ -370,6 +371,7 @@ export const REGISTRY: RegistryDefinition = {
     "vinted-go": vintedGo,
     "whistl": whistl,
     "xdp": xdp,
+    "xpo-ltl": xpoLtl,
     "xpressbees": xpressbees,
     "yamato": yamato,
     "yanwen": yanwen,
@@ -578,7 +580,7 @@ export const REGISTRY: RegistryDefinition = {
     "wanbexpress": "universal",
     "whistl": "whistl",
     "xdp": "xdp",
-    "xpo-ltl": "universal",
+    "xpo-ltl": "xpo-ltl",
     "xpressbees": "xpressbees",
     "yamato": "yamato",
     "yanwen": "yanwen",

@@ -8731,7 +8731,9 @@
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xpo-ltl",
+      "recognitionRank": 25,
+      "localClocks": true
     },
     "canaryUrl": "https://www.xpo.com/",
     "trackingUrlTemplate": "https://ext-web.ltl-xpo.com/public-app/shipments?referenceNumber={trackingNumber}",

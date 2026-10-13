@@ -169,7 +169,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -179,7 +179,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "ParcelPanel's XPO page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's XPO page offered it as a sample to try on 11 Oct 2026. XPO's PRO tracking pages know it."
     },
     {
       "number": "560243880",
@@ -307,7 +307,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -317,7 +317,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened. XPO's PRO tracking pages know it."
     },
     {
       "number": "552561995",
@@ -330,7 +330,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -340,7 +340,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened. XPO's PRO tracking pages know it."
     },
     {
       "number": "637273814",
@@ -353,7 +353,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -363,7 +363,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened. XPO's PRO tracking pages know it."
     },
     {
       "number": "712918695",
@@ -376,7 +376,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -386,7 +386,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on XPO's own LTL tracker, as an archived address shows; the capture was not opened. XPO's PRO tracking pages know it."
     }
   ]
 }

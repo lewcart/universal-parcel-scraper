@@ -20,18 +20,69 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "xpo-ltl",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 25
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "weight",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://ext-web.ltl-xpo.com/public-app/shipments?referenceNumber={trackingNumber}",
     "searchUrl": "https://www.xpo.com/",
     "canaryUrl": "https://www.xpo.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "weight",
+      "parcel_count",
+      "depots",
+      "route_number",
+      "sender_details",
+      "recipient_name",
+      "recipient_address",
+      "payment_details",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "provider_code"
+    ],
+    "discarded": [
+      "delivered_at",
+      "parcel_count",
+      "depots",
+      "route_number",
+      "sender_details",
+      "recipient_name",
+      "recipient_address",
+      "payment_details",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "service_name",
+      "dimensions"
+    ]
   },
   "links": [
     {

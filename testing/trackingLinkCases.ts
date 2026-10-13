@@ -653,4 +653,5 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',
   usps: 'tools.usps.com answers automated Chrome with an anti-bot script instead of the page',
+  'xpo-ltl': 'the shipment page asks for a reCAPTCHA checkbox before it shows a result, so number forwarding cannot be verified',
 };

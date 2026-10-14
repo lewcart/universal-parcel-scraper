@@ -110,7 +110,7 @@ describe('UI tracking links (rendered public pages)', () => {
         context.skip('Carrier bot protection: tracking link remains unverified');
       }
       // Address and title only: page text can hold other people's shipments.
-      const landed = `landed on ${page.url()} titled ${JSON.stringify(await page.title())}`;
+      const landed = `landed on ${page.url()} with HTTP ${documentStatus ?? 'status unknown'}, titled ${JSON.stringify(await page.title())}`;
       expect(verdict, `Expected a rendered tracker on its known route, not a homepage/error/challenge; ${landed}`).toBe('tracking-page');
       expect(inputBound, `The deep link must prefill, display or submit the synthetic tracking number; ${landed}`).toBe(true);
     } finally {

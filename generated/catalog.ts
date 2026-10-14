@@ -6051,6 +6051,42 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "celeritas": {
+    "displayName": "Celeritas",
+    "color": "#009aab",
+    "aliases": [
+      "Celeritas",
+      "Celeritas Transporte",
+      "Celeritas Transporte y Logística"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "celeritas",
+      "recognitionRank": 996,
+      "localClocks": true
+    },
+    "canaryUrl": "https://celeritastransporte.com/seguimiento-paquete-pedidos/",
+    "trackingUrlTemplate": "https://celeritastransporte.com/seguimiento-paquete-pedidos/?refer={trackingNumber}&lang=es",
+    "trackingSearchUrl": "https://celeritastransporte.com/seguimiento-paquete-pedidos/",
+    "linkRules": [
+      {
+        "domains": [
+          "celeritastransporte.com"
+        ],
+        "pathPattern": "^/seguimiento-paquete-pedidos/?$",
+        "params": [
+          "refer"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "central-transport": {
     "displayName": "Central Transport",
     "color": "#fae800",
@@ -14074,6 +14110,7 @@ export const CARRIER_IDS = [
   "castores",
   "cdek",
   "cdl",
+  "celeritas",
   "central-transport",
   "ceska-posta",
   "ceva-logistics",
@@ -14418,6 +14455,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "castores": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],
+  "celeritas": [],
   "central-transport": [],
   "ceska-posta": ["ceska-posta-1","ceska-posta-s10"],
   "ceva-logistics": [],

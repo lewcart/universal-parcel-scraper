@@ -592,6 +592,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'zeleris', number: 'FFFFFFFF999999999Z',
     route: /^https:\/\/www\.zeleris\.com\/seguimiento-de-envios\/\?tracking_number=FFFFFFFF999999999Z&not_found=1$/,
     marker: /Sigue tu envío|El envío no existe/ },
+  // The server renders the shipment for `refer`; an unknown reference gets a notice that does not repeat it.
+  { carrier: 'celeritas', number: '300000017',
+    route: /^https:\/\/celeritastransporte\.com\/seguimiento-paquete-pedidos\/\?refer=300000017&lang=es$/,
+    marker: /Seguimiento de tu pedido|Esta referencia no existe/,
+    forwarding: { notFound: /Esta referencia no existe/ } },
   // The server sends a found shipment on to its page by id and renders the search page for an unknown number.
   { carrier: 'kuehne-nagel', number: 'RWM999000099',
     route: /^https:\/\/mykn\.kuehne-nagel\.com\/public-tracking\/shipments\?query=RWM999000099$/,

@@ -25851,6 +25851,18 @@
     ]
   },
   {
+    "input": "543583314",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "543648807",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "5449458519",
     "carrier": "unknown",
     "confidence": "low",
@@ -33306,6 +33318,12 @@
     ]
   },
   {
+    "input": "890518109",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "89112087",
     "carrier": "unknown",
     "confidence": "low",
@@ -35512,6 +35530,12 @@
     ]
   },
   {
+    "input": "974849998",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "97515621",
     "carrier": "unknown",
     "confidence": "low",
@@ -35577,6 +35601,22 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "978563530",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt",
+      "xpo-ltl"
+    ],
+    "preferred": [
+      "tnt"
+    ],
+    "asked": [
+      "tnt",
+      "xpo-ltl"
+    ]
   },
   {
     "input": "979675083",

@@ -22,6 +22,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "cargus": 270,
   "cdek": 440,
   "cdl": 95,
+  "celeritas": 996,
   "ceska-posta": 380,
   "chit-chats": 115,
   "chronopost": 890,

@@ -273,6 +273,12 @@
     "reason": "CDEK's older ten-digit numbers share their shape with DHL and several other carriers, and nothing in the number points to CDEK."
   },
   {
+    "carrier": "celeritas",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Celeritas references are bare nine digits, a shape TNT, XPO Logistics and many others share, and nothing in the number points to Celeritas."
+  },
+  {
     "carrier": "central-transport",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

@@ -3,13 +3,19 @@
   "displayName": "17FEIA",
   "aliases": [
     "17FEIA",
-    "Feia"
+    "Feia",
+    "17Feia Express",
+    "一起飞",
+    "上海宏杉国际物流",
+    "Shanghai Hongshan International Logistics"
   ],
   "region": {
-    "countries": []
+    "countries": [
+      "CN"
+    ]
   },
   "brand": {
-    "color": "#8e8e93"
+    "color": "#00a9e4"
   },
   "selectable": true,
   "timezone": "Asia/Shanghai",
@@ -35,7 +41,7 @@
   ],
   "portal": {
     "url": "https://www.17feia.com/tracking?orderNumber={trackingNumber}",
-    "searchUrl": "https://www.17feia.com/tracking",
+    "searchUrl": "https://www.17feia.com/",
     "canaryUrl": "https://www.17feia.com/",
     "shows": [
       "status",
@@ -68,6 +74,23 @@
       "proof_of_delivery"
     ]
   },
-  "links": [],
-  "detection": []
+  "links": [
+    {
+      "domains": [
+        "17feia.com",
+        "www.17feia.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "orderNumber"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "17feia-1",
+      "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
 }

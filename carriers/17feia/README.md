@@ -50,6 +50,13 @@ Tracked through the lookup its tracking page makes.
 - A first visit to the tracking link lands on the cookie check, which reloads the home page
   without the number.
 
+## Numbers
+
+17FEIA's tracking page gives `FEI`, two letters, ten digits and `YQ` as its example layout.
+The parcels ParcelPanel's 17FEIA page offers follow it with `FEISZ` for Shenzhen departures,
+and 17FEIA's tracker answers them. `17feia-1` claims the layout. The tracker also names the
+delivering partner and that partner's own number, which stays with the partner's rules.
+
 ## Testing
 
 `SEVENTEENFEIA_TRACKING_NUMBER=... SEVENTEENFEIA_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/17feia`

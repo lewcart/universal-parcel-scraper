@@ -3,13 +3,18 @@
   "displayName": "TSJY",
   "aliases": [
     "TSJY",
-    "通世集运"
+    "通世集运",
+    "通世集運",
+    "Tonse Supply Chain",
+    "苏州通世供应链"
   ],
   "region": {
-    "countries": []
+    "countries": [
+      "CN"
+    ]
   },
   "brand": {
-    "color": "#8e8e93"
+    "color": "#4042e2"
   },
   "selectable": true,
   "timezone": "Asia/Shanghai",
@@ -66,6 +71,17 @@
       "proof_of_delivery"
     ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "tsjy56.com",
+        "www.tsjy56.com"
+      ],
+      "pathPattern": "^/orderResult\\.html$",
+      "params": [
+        "nos"
+      ]
+    }
+  ],
   "detection": []
 }

@@ -48,6 +48,11 @@ abroad on a line such as 17FEIA's. Tracked through the lookup the order search o
 - Whether TSJY relays the delivering partner's scans after 17FEIA's flight has not been seen;
   the line's adapter has them.
 
+## Numbers
+
+TSJY's tracker takes its own order numbers and the numbers of the lines it books parcels on.
+No public TSJY number was found, so no rule claims one.
+
 ## Testing
 
 `TSJY_TRACKING_NUMBER=... TSJY_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/tsjy`

@@ -41,7 +41,11 @@ The pickup PIN, the shop's phone, opening hours and station id are never read.
 Destination addresses, postcodes, coordinates, delivery photos, order
 identifiers and routing features are excluded. References
 start with the destination postcode, after any `CN` country prefix, so samples
-and fixtures use zeros there.
+and fixtures use zeros there. An 18-digit label is a Spanish postcode, four zeros and
+a nine-digit counter. That layout puts Ecoscooting ahead of bpost, whose numbers
+share the length, when a number is recognised. Other 18-digit numbers are not
+asked: the query error that also answers a label not yet announced cannot settle
+that Ecoscooting does not know one.
 ICP references use a separate client normalization and are not supported.
 Cainiao's other `CN` families, such as `CNUSUP`, belong to other networks.
 

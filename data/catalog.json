@@ -2703,6 +2703,8 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "ecoscooting",
+      "recognitionRank": 655,
+      "recognitionPattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
       "localClocks": true
     },
     "canaryUrl": "https://ecoscooting.com/tracking/1",
@@ -2717,6 +2719,11 @@
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^\\d{18}$",
         "confidence": "low"

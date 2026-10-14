@@ -19,6 +19,10 @@
     "steps": [
       "direct"
     ],
+    "recognition": {
+      "rank": 655,
+      "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$"
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -63,6 +67,12 @@
     }
   ],
   "detection": [
+    {
+      "id": "ecoscooting-postcode",
+      "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+      "confidence": "low",
+      "preferred": true
+    },
     {
       "id": "ecoscooting-1",
       "pattern": "^\\d{18}$",

@@ -12,7 +12,7 @@ describe('continental shipment candidates', () => {
   });
 
   it('prioritizes documented bpost prefixes while preserving overlapping numeric candidates', () => {
-    for (const number of ['323200000000000001', '323200000000000000000001', '329900000000000000000001']) {
+    for (const number of ['323201000000000001', '323200000000000000000001', '329900000000000000000001']) {
       const detected = detectCarrierMatch(number);
       expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['bpost'] });
       expect(detected.candidates[0]).toBe('bpost');
@@ -22,6 +22,8 @@ describe('continental shipment candidates', () => {
     for (const number of ['600000000000000000000001', '32320000000000001', '3232000000000000000000001']) {
       expect(detectCarrierMatch(number).preferred).not.toContain('bpost');
     }
+    // Four zeros after five digits is also Ecoscooting's postcode layout.
+    expect(detectCarrierMatch('323200000000000001').preferred).toEqual(['bpost', 'ecoscooting']);
   });
 
   it('names bpost for its S10 numbers, but not for a U barcode, which bpost does not track', () => {
@@ -64,7 +66,7 @@ describe('continental shipment candidates', () => {
   });
 
   it('lists Bring first for its GS1-checked parcel and consignment numbers and reads its tracking links', () => {
-    for (const number of ['370000000000000004', '373000000000000005', '00370000000000000004', '70000000000000003']) {
+    for (const number of ['370001000000000003', '373001000000000004', '00370000000000000004', '70000000000000003']) {
       const detected = detectCarrierMatch(number);
       expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['bring-posten'] });
       expect(detected.candidates.length).toBeGreaterThan(1);

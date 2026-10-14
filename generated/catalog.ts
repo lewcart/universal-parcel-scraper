@@ -2705,6 +2705,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ecoscooting",
+      "recognitionRank": 655,
+      "recognitionPattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
       "localClocks": true
     },
     "canaryUrl": "https://ecoscooting.com/tracking/1",
@@ -2719,6 +2721,11 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^\\d{18}$",
         "confidence": "low"
@@ -14422,7 +14429,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
   "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-sda-domestic"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
-  "ecoscooting": ["ecoscooting-1","ecoscooting-2"],
+  "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2"],
   "tipsa": ["tipsa-1","tipsa-2"],
   "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],
   "usps": ["usps-impb","usps-impb-26","usps-3","usps-1","usps-2","usps-impb-routing","usps-4","usps-s10"],

@@ -50,6 +50,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dynalogic": 120,
   "early-bird": 350,
   "econt": 290,
+  "ecoscooting": 655,
   "elta": 150,
   "emile": 480,
   "envialia": 260,

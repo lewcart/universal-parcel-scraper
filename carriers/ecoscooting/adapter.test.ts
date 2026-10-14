@@ -187,6 +187,16 @@ describe('Ecoscooting parcel history', () => {
     expect(() => parseEcoscooting({ success: 'false', errorCode: 'S99', errorMsg: 'gateway error' }, NUMBER))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: undefined }));
   });
+  it('recognizes a label it tracks and asks nothing for a number it does not issue', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify(fixture())))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ success: 'false', errorCode: 'P-011-0201-00-00-502', errorMsg: 'query logisticOrder by mailNo error' })));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    await expect(instance.recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    // The query error also comes for a label not yet announced, so it settles nothing.
+    await expect(instance.recognize!(OTHER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(instance.recognize!('ZZ')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
   it('reads a parcel listed without scans as having no history yet', () => {
     const announced = fixture(); announced.statuses = []; announced.packageParam.dimWeight = {};
     expect(() => parseEcoscooting(announced, NUMBER)).toThrow(NoHistoryError);

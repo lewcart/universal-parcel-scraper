@@ -566,12 +566,12 @@
         "confidence": "low"
       },
       {
-        "pattern": "^0034043[345]\\d{12}$",
+        "pattern": "^0034043(?!366)[345]\\d{12}$",
         "confidence": "high",
         "checksum": "sscc"
       },
       {
-        "pattern": "^0034043[345]\\d{12}$",
+        "pattern": "^0034043(?!366)[345]\\d{12}$",
         "confidence": "low"
       },
       {

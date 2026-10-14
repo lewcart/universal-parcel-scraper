@@ -15,7 +15,7 @@ const FINAL: readonly Stage[] = ['delivered', 'returned'];
 
 /** A shipper's SSCC behind its GS1 `00`, outside the company prefixes DHL Paket issues its own under. */
 function isShipperSscc(number: string): boolean {
-  return isValidSscc(number) && !/^0034043[345]/.test(number);
+  return isValidSscc(number) && !/^0034043(?!366)[345]/.test(number);
 }
 
 /**

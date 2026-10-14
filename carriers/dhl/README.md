@@ -39,7 +39,10 @@ once.
   `JD01` range, is still DHL Paket's: DHL's global tracking lists that form as
   the piece of a DHL Paket shipment. It only suggests DHL, because this
   endpoint's answer for that form is unconfirmed.
-- `0034043…` numbers are SSCCs. A failing GS1 check digit keeps one a suggestion.
+- `0034043…` numbers are SSCCs that DHL Paket issues under its own GS1 company
+  prefixes. A failing GS1 check digit keeps one a suggestion. Manufacturers hold
+  prefixes in that range too, for their own SSCCs: `4043366` is one, seen on
+  DB Schenker road shipments, so no DHL rule claims it.
 - Twelve-digit parcel numbers are Identcodes, closed by Deutsche Post's check
   digit (weights 4 and 9 from the left, mod 10). FedEx, Japan Post, Sagawa and
   others also use twelve digits, so a passing check only adds DHL to the

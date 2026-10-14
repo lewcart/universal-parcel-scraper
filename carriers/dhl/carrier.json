@@ -110,14 +110,14 @@
       "confidence": "low"
     },
     {
-      "id": "dhl-5",
-      "pattern": "^0034043[345]\\d{12}$",
+      "id": "dhl-11",
+      "pattern": "^0034043(?!366)[345]\\d{12}$",
       "confidence": "high",
       "checksum": "sscc"
     },
     {
-      "id": "dhl-6",
-      "pattern": "^0034043[345]\\d{12}$",
+      "id": "dhl-12",
+      "pattern": "^0034043(?!366)[345]\\d{12}$",
       "confidence": "low"
     },
     {

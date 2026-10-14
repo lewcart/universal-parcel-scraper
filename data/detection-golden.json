@@ -1010,18 +1010,30 @@
   },
   {
     "input": "00340433660000960875",
-    "carrier": "dhl",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "dhl"
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "asked": [
+      "swiss-post-cargo",
+      "nz-post"
     ]
   },
   {
     "input": "00340433660000963159",
-    "carrier": "dhl",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "dhl"
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "asked": [
+      "swiss-post-cargo",
+      "nz-post"
     ]
   },
   {

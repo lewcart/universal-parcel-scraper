@@ -178,10 +178,15 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "dhl",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "swiss-post-cargo",
+          "usps",
+          "nz-post"
+        ]
       },
-      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker knows it as the SSCC of a road shipment's package; DHL's 0034043 SSCC rule claims it."
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker knows it as the SSCC of a road shipment's package. Its GS1 company prefix, 4043366, is a German manufacturer's, whose products carry it, so the SSCC names the shipper."
     },
     {
       "number": "00340433660000963159",
@@ -195,10 +200,15 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "dhl",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "swiss-post-cargo",
+          "usps",
+          "nz-post"
+        ]
       },
-      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker finds two road shipments for it; DHL's 0034043 SSCC rule claims it."
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker finds two road shipments for it. Its GS1 company prefix, 4043366, is a German manufacturer's, so the SSCC names the shipper."
     }
   ]
 }

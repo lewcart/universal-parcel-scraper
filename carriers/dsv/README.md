@@ -91,6 +91,9 @@ The search takes the number as typed, and the tracker passes it without dashes, 
 that DSV prints with a dash is not found. The page also asks a real-time tracking service for
 XPRESS shipments; the adapter does not. A road shipment's history can hold only its booking.
 
+Detection offers DSV for no number. A package's SSCC carries the GS1 company prefix of whoever
+issued it, usually the shipper, so the user picks DSV for it.
+
 A former DB Schenker lookup runs out of time when the tracker holds its replies longer than the
 lookup has left, and on its slower servers. A package SSCC that the tracker lists under several
 shipments stays inconclusive, and other numbers, such as a waybill, are not sent to that tracker.

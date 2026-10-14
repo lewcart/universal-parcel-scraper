@@ -574,7 +574,7 @@
   {
     "carrier": "dsv",
     "kind": "by_design",
-    "reason": "DSV and former DB Schenker references publish no shape and range from airport-coded to purely numeric ones, so the user picks DSV."
+    "reason": "DSV and former DB Schenker references publish no shape and range from airport-coded to purely numeric ones, and a package's SSCC names whoever issued it, usually the shipper, so the user picks DSV."
   },
   {
     "carrier": "dtdc",

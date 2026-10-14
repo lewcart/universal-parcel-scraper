@@ -257,7 +257,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Invented placeholder used as a shape check. Filed under Amazon Logistics, which no rule claims."

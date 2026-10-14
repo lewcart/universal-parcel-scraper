@@ -302,7 +302,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "A merchant reference whose archived Intelcom tracking reply holds its delivery. The live service no longer finds it, and nothing in it names Intelcom."

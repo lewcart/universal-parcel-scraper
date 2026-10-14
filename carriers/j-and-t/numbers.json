@@ -43,7 +43,8 @@
         "candidates": [
           "colis-prive",
           "j-and-t",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Publicly reported shipment number the source attributes to J&T Express. Indonesian parcel; J&T Indonesia's tracking returns its history."
@@ -117,7 +118,8 @@
         "candidates": [
           "colis-prive",
           "j-and-t",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Customer explicitly distinguishes two separate J&T shipments."
@@ -143,7 +145,8 @@
         "candidates": [
           "colis-prive",
           "j-and-t",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Customer explicitly distinguishes two separate J&T shipments."
@@ -420,7 +423,8 @@
         "candidates": [
           "colis-prive",
           "j-and-t",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Seller gives this as the J&T waybill of a Tokopedia order. J&T later declared the waybill void, which cancelled the order."
@@ -445,7 +449,8 @@
         "candidates": [
           "colis-prive",
           "j-and-t",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Customer reports a shipment in the JNT Express category; the reply supplies tracking activity. J&T Indonesia's tracking returns its history."

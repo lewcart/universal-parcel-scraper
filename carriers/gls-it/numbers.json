@@ -104,7 +104,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "A public Altroconsumo complaint about a GLS delivery gives it as the shipment number."

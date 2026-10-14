@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on Aramex Australia's tracking service, as an archived reply shows; the reply holds its scans up to delivery."
@@ -42,7 +43,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on Aramex Australia's tracking service, as an archived reply shows; the reply holds its scans between depots."
@@ -110,7 +112,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on Fastway's Australian tracker, now Aramex Australia's, as an archived address shows; the capture holds only the page."

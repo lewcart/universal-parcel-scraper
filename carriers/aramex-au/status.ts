@@ -2,6 +2,26 @@ import { classifyWording, type ClassifiedWording, type Stage } from '../../core/
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /**
+ * The stage map of one Aramex network on the shared tracker: the headings its
+ * page shows, in `normalizeStatusWording` form, then its page script's groups
+ * of codes, then the shared wording rules.
+ */
+export function aramexStageMap(headings: Readonly<Record<string, Stage>>, groups: readonly (readonly [Stage, readonly string[]])[]) {
+  const codes: ReadonlyMap<string, Stage> = new Map(groups.flatMap(([stage, list]) => list.map((code) => [code, stage] as const)));
+  const mapped = (code: string, heading: string): Stage | undefined => {
+    const key = normalizeStatusWording(heading);
+    return (Object.hasOwn(headings, key) ? headings[key] : undefined) ?? codes.get(code);
+  };
+  const stage = (code: string, heading: string): ClassifiedWording | null => {
+    const known = mapped(code, heading);
+    if (known) return { stage: known, source: 'carrier_map' };
+    const worded = classifyWording(heading, 'in_transit');
+    return worded.source === 'none' ? null : worded;
+  };
+  return { mapped, stage };
+}
+
+/**
  * The headings the tracking page shows for its scans, in
  * `normalizeStatusWording` form. A heading decides first: one code can carry
  * several headings, and the page script's code groups lag behind them (it
@@ -48,25 +68,17 @@ const GROUPS: readonly (readonly [Stage, readonly string[]])[] = [
   ['returned', ['RTS', 'OW5', 'PCR', 'RSS', 'RPP']],
   ['delivered', ['YES', 'PCY', 'R36', 'ATL', 'LAI', 'PRS', 'R34', 'R35', 'DRU', 'YEA', 'ALL', 'CLS', 'SIG', 'CCD', 'SPD', 'NEI']],
 ];
-const CODES: ReadonlyMap<string, Stage> = new Map(GROUPS.flatMap(([stage, codes]) => codes.map((code) => [code, stage] as const)));
+const AUSTRALIA = aramexStageMap(HEADINGS, GROUPS);
 
 /** The stage the map gives a scan's code and heading, if it knows either. */
-export function aramexAuMappedStage(code: string, heading: string): Stage | undefined {
-  const key = normalizeStatusWording(heading);
-  return (Object.hasOwn(HEADINGS, key) ? HEADINGS[key] : undefined) ?? CODES.get(code);
-}
+export const aramexAuMappedStage = AUSTRALIA.mapped;
 
 /**
  * A scan's stage from its heading, then its code, then the shared wording
  * rules. A scan none of them knows stays without a stage, so it remains
  * visible for review.
  */
-export function aramexAuStage(code: string, heading: string): ClassifiedWording | null {
-  const mapped = aramexAuMappedStage(code, heading);
-  if (mapped) return { stage: mapped, source: 'carrier_map' };
-  const worded = classifyWording(heading, 'in_transit');
-  return worded.source === 'none' ? null : worded;
-}
+export const aramexAuStage = AUSTRALIA.stage;
 
 /** What the map says about one scan, by its code and heading. */
 export const statusMap: CarrierStatusMap = {

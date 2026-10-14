@@ -53,7 +53,8 @@ with other networks, and an SSCC names the sender, so detection offers neither.
 A parcel Aramex hands on to another carrier carries an on-forwarding flag and the partner's
 label, which the adapter does not read. Scans have no instant, so recognition gives no last
 activity time. Aramex New Zealand runs the same tracker on its own host and database,
-aramex.co.nz, with labels of the same shape; they are not tracked here.
+aramex.co.nz, with labels of the same shape: `aramex-nz` tracks them with this parser and
+tracker, and neither host knows the other's labels.
 
 ## Links
 

@@ -39,7 +39,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Colis Privé, which stays one candidate among several."
@@ -73,7 +74,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Colis Privé, which stays one candidate among several."
@@ -90,7 +92,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Published integration example, not a real shipment. The source attributes it to Colis Privé, which stays one candidate among several."
@@ -322,7 +325,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "The customer quotes a Colis Privé notification naming Clevy Chine and this parcel. A handoff report does not independently confirm shipment issuance."
@@ -393,7 +397,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "The customer explicitly names an Asos shipment sent through Colis Privé. The public report supplies carrier context; the shared alphanumeric shape alone does not confirm it."

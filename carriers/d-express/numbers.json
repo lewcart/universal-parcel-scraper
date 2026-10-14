@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker; the archived capture shows the shipment's status."
@@ -61,7 +62,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker; the archived capture shows the shipment's status."
@@ -84,7 +86,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker; the archived capture shows the shipment's status."
@@ -107,7 +110,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker; the archived capture shows the shipment's status."
@@ -130,7 +134,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -153,7 +158,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -176,7 +182,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -199,7 +206,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -222,7 +230,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -245,7 +254,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -268,7 +278,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker, as an archived address shows; the capture was not opened."
@@ -291,7 +302,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "Looked up on D Express's own tracker; the opened capture holds only the page, which fills the history by script."

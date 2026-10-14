@@ -613,6 +613,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'aramex-au', number: 'QX9999999990',
     route: /^https:\/\/www\.aramex\.com\.au\/tools\/track\/?\?l=QX9999999990$/,
     marker: /Parcel Journey|Tracking results not displayed\?/ },
+  // The same page on New Zealand's host, which asks its own tracking service.
+  { carrier: 'aramex-nz', number: 'QZ9999999990',
+    route: /^https:\/\/www\.aramex\.co\.nz\/tools\/track\/?\?l=QZ9999999990$/,
+    marker: /Parcel Journey|Make sure you have entered the tracking number correctly/ },
   // The page reads the number from its address and posts it to the site's tracking action on load.
   { carrier: 'stallion-express', number: 'SE991231ZZZZ',
     route: /^https:\/\/stallion\.ca\/track\/\?tracking=SE991231ZZZZ$/,

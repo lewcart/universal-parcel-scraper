@@ -5239,6 +5239,47 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "aramex-nz": {
+    "displayName": "Aramex New Zealand",
+    "color": "#dc291e",
+    "aliases": [
+      "Aramex NZ",
+      "Fastway New Zealand",
+      "Fastway NZ",
+      "Fastway Couriers New Zealand"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "aramex-nz",
+      "recognitionRank": 444,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.aramex.co.nz/tools/track/",
+    "trackingUrlTemplate": "https://www.aramex.co.nz/tools/track?l={trackingNumber}",
+    "trackingSearchUrl": "https://www.aramex.co.nz/tools/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "aramex.co.nz",
+          "fastway.co.nz"
+        ],
+        "params": [
+          "l"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{10}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "aras-kargo": {
     "displayName": "Aras Kargo",
     "color": "#dc0812",
@@ -13630,6 +13671,7 @@ export const CARRIER_IDS = [
   "apc-overnight",
   "apc-postal-logistics",
   "aramex-au",
+  "aramex-nz",
   "aras-kargo",
   "arrow-xl",
   "averitt",
@@ -13962,6 +14004,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],
   "aramex-au": ["aramex-au-1"],
+  "aramex-nz": ["aramex-nz-1"],
   "aras-kargo": [],
   "arrow-xl": [],
   "averitt": [],

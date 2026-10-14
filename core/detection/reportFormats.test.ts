@@ -113,7 +113,7 @@ describe('evidence-backed tracking formats', () => {
 
   it('suggests J&T for its other two-letter waybills without selecting it', () => {
     for (const number of ['JP1234567890', 'JO1234567890', 'JT1234567890']) {
-      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['colis-prive', 'j-and-t', 'aramex-au'] });
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['colis-prive', 'j-and-t', 'aramex-au', 'aramex-nz'] });
     }
     expect(detectCarrierMatch('J11234567890').candidates).not.toContain('j-and-t');
   });

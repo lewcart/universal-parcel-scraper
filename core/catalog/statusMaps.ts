@@ -106,6 +106,7 @@ import { statusMap as sto } from '../../carriers/sto/status.js';
 import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
 import { statusMap as tnt } from '../../carriers/tnt/status.js';
+import { statusMap as tsjy } from '../../carriers/tsjy/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as venipak } from '../../carriers/venipak/status.js';
@@ -137,8 +138,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, paquetexpress, passport,
   'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl, ptt, redpack,
   'rl-carriers': rlCarriers, sagawa, saia, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, speedx, speedy,
-  'stallion-express': stallionExpress, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, 'ubi-smart-parcel': ubiSmartParcel, ups,
-  venipak, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress, 'yurtici-kargo': yurticiKargo, zeleris,
+  'stallion-express': stallionExpress, sto, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, tsjy, 'ubi-smart-parcel': ubiSmartParcel,
+  ups, venipak, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress, 'yurtici-kargo': yurticiKargo, zeleris,
 };
 
 /** The carrier the app files the universal providers' scans under. */

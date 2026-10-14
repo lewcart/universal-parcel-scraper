@@ -13057,6 +13057,27 @@
     ],
     "detectionRules": []
   },
+  "tsjy": {
+    "displayName": "TSJY",
+    "color": "#8e8e93",
+    "aliases": [
+      "TSJY",
+      "通世集运"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tsjy",
+      "recognitionRank": 98,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.tsjy56.com/",
+    "trackingUrlTemplate": "https://www.tsjy56.com/orderResult.html?nos={trackingNumber}",
+    "trackingSearchUrl": "https://www.tsjy56.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ubi-smart-parcel": {
     "displayName": "UBI Smart Parcel",
     "color": "#053c80",

@@ -13059,6 +13059,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tsjy": {
+    "displayName": "TSJY",
+    "color": "#8e8e93",
+    "aliases": [
+      "TSJY",
+      "通世集运"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tsjy",
+      "recognitionRank": 98,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.tsjy56.com/",
+    "trackingUrlTemplate": "https://www.tsjy56.com/orderResult.html?nos={trackingNumber}",
+    "trackingSearchUrl": "https://www.tsjy56.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ubi-smart-parcel": {
     "displayName": "UBI Smart Parcel",
     "color": "#053c80",
@@ -13923,6 +13944,7 @@ export const CARRIER_IDS = [
   "trackon",
   "trans-o-flex",
   "trendyol-express",
+  "tsjy",
   "ubi-smart-parcel",
   "vasp-expresso",
   "venipak",
@@ -14257,6 +14279,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trackon": [],
   "trans-o-flex": [],
   "trendyol-express": [],
+  "tsjy": [],
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
   "vasp-expresso": [],
   "venipak": ["venipak-1"],

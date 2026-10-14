@@ -1,0 +1,150 @@
+import { DateTime } from 'luxon';
+import { detectCarrierMatch, normalizeTrackingNumber } from '../../core/detection/index.js';
+import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { cleanScalar } from '../../core/transport/index.js';
+import { isRecord } from '../../core/types.js';
+import { normalizeSeventeenFeiaNumber } from '../17feia/parser.js';
+import { ESTIMATE, tsjyStage } from './status.js';
+
+export const PROVIDER = 'TSJY';
+// A long history is a few kilobytes.
+export const TSJY_MAX_BYTES = 256 * 1024;
+// TSJY, nine digits and the origin's country.
+const NUMBER = /^TSJY\d{9}CN$/;
+// TSJY's warehouse is in Kunshan; its own rows are read on its clock.
+const HOME_ZONE = 'Asia/Shanghai';
+// No order predates the site; an earlier stamp is a placeholder.
+const EARLIEST = Date.UTC(2015, 0, 1);
+const MAX_ORDERS = 20;
+const MAX_ROWS = 500;
+const MAX_EVENTS = 100;
+
+/**
+ * The lines TSJY hands orders to, by the catalog id that tracks them and the
+ * check that the line's number is one of its own. A channel number no line
+ * claims goes to the one carrier whose high-confidence rule claims it, if any.
+ */
+export const TSJY_LINES: readonly { carrier: string; accepts: (number: string) => boolean }[] = [
+  { carrier: '17feia', accepts: (number) => {
+    try {
+      return normalizeSeventeenFeiaNumber(number) === number;
+    } catch {
+      return false;
+    }
+  } },
+];
+
+/** A TSJY order number; anything else is a number its tracker is not asked for. */
+export function normalizeTsjyNumber(raw: string): string {
+  const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'TSJY order numbers are TSJY, nine digits and CN');
+  return number;
+}
+
+/** An optional text field; an object or array is a changed reply. */
+function text(record: Record<string, unknown>, key: string, maxLength = 500): string {
+  const value = record[key];
+  if (value === null || value === undefined) return '';
+  if (typeof value !== 'string' && typeof value !== 'number') throw new SchemaError(PROVIDER, `TSJY returned an invalid ${key}`);
+  return cleanScalar(value, maxLength);
+}
+
+/**
+ * A row's clock. TSJY's server stamps its own steps with milliseconds: those
+ * are instants. A partner's rows come in whole seconds, its wall clocks read
+ * on Beijing time, which is right for 17FEIA's Chinese warehouse and unknown
+ * elsewhere, so they keep that wall clock.
+ */
+function clockOf(stamp: number): { time: string } | { local_time: string } {
+  const home = DateTime.fromMillis(stamp, { zone: HOME_ZONE });
+  if (stamp % 1000 !== 0) return { time: home.startOf('second').toISO({ suppressMilliseconds: true })! };
+  return { local_time: home.toFormat("yyyy-MM-dd'T'HH:mm:ss") };
+}
+
+function projectRow(row: unknown, readAt: number): { key: string; at: number; event: CarrierEvent } | null {
+  if (!isRecord(row)) throw new SchemaError(PROVIDER, 'TSJY returned an invalid scan');
+  const stamp = row.date;
+  if (typeof stamp !== 'number' || !Number.isSafeInteger(stamp) || stamp < EARLIEST) {
+    throw new SchemaError(PROVIDER, 'TSJY returned an invalid scan time');
+  }
+  const description = text(row, 'event');
+  // A row dated after the read is not a scan yet, and the line's estimated departure never is.
+  if (!description || ESTIMATE.test(description) || stamp > readAt) return null;
+  const location = text(row, 'loc', 200);
+  const staged = tsjyStage(description);
+  const event: CarrierEvent = {
+    ...clockOf(stamp),
+    description,
+    ...(location ? { location } : {}),
+    ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
+  };
+  return { key: JSON.stringify([stamp, description, location]), at: stamp, event };
+}
+
+/** The line's number, when a line in the table or one carrier's high-confidence rule claims it. */
+export function tsjyHandoff(channelNumber: string, number: string): { delivery_carrier: string; delivery_tracking_number: string } | null {
+  const reference = channelNumber.length <= 64 ? normalizeTrackingNumber(channelNumber) : '';
+  if (!/^[A-Z0-9]{4,40}$/.test(reference) || reference === number) return null;
+  const line = TSJY_LINES.find((candidate) => candidate.accepts(reference));
+  if (line) return { delivery_carrier: line.carrier, delivery_tracking_number: reference };
+  const detected = detectCarrierMatch(reference);
+  return detected.confidence === 'high' && (detected.carrier as string) !== 'tsjy'
+    ? { delivery_carrier: detected.carrier, delivery_tracking_number: reference } : null;
+}
+
+/**
+ * The reply of `POST /oms/api/v1/public/track/query`. The search also finds an
+ * order by its line's number, so an order counts only when its own number is
+ * the one asked. The order's internal id and the rows' ids open its details
+ * and are never read.
+ */
+export function parseTsjy(payload: unknown, raw: string, readAt = Date.now()): CarrierResult {
+  const number = normalizeTsjyNumber(raw);
+  if (!isRecord(payload) || typeof payload.errcode !== 'number') throw new SchemaError(PROVIDER, 'TSJY returned an invalid envelope');
+  if (payload.errcode !== 0) throw new IndeterminateError(PROVIDER, 'TSJY did not complete the lookup');
+  const orders = isRecord(payload.ret) ? payload.ret.list : undefined;
+  if (!Array.isArray(orders) || orders.length > MAX_ORDERS) throw new SchemaError(PROVIDER, 'TSJY returned an invalid order list');
+  // The tracking page shows "no tracking information found" for an empty list.
+  if (!orders.length) throw new NotFoundError(PROVIDER);
+  const own = orders.filter((order) => {
+    if (!isRecord(order)) throw new SchemaError(PROVIDER, 'TSJY returned an invalid order');
+    return normalizeTrackingNumber(text(order, 'no', 64)) === number;
+  }) as Record<string, unknown>[];
+  if (own.length !== 1) throw new IndeterminateError(PROVIDER, own.length ? 'TSJY answered with several orders' : 'TSJY answered with another order');
+  const order = own[0]!;
+  // Each order says whether its lookup succeeded; without that its rows may be missing the line's.
+  if (order.success !== 1 && order.success !== true) throw new IndeterminateError(PROVIDER, 'TSJY did not complete the order’s lookup');
+  const rows = order.trackList;
+  if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'TSJY returned an order without scans');
+  if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'TSJY returned an oversized history');
+
+  const seen = new Set<string>();
+  const scans: { at: number; event: CarrierEvent }[] = [];
+  for (const row of rows) {
+    const scan = projectRow(row, readAt);
+    if (!scan || seen.has(scan.key)) continue;
+    seen.add(scan.key);
+    scans.push(scan);
+  }
+  if (!scans.length) throw new IndeterminateError(PROVIDER, 'TSJY has no scans for the order yet');
+  // Newest first, as the tracking page sorts them.
+  const events = scans.sort((a, b) => b.at - a.at).map((scan) => scan.event);
+
+  const newest = events[0]!;
+  const current = events.find((event) => event.stage);
+  const stage = current?.stage as Stage | undefined;
+  return {
+    status: stage ? languageStageStatus(stage) : 'unknown',
+    ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
+    last_status_text: newest.description!,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
+    expected_delivery: null,
+    ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
+    ...tsjyHandoff(text(order, 'channelNo', 64), number),
+    events: events.slice(0, MAX_EVENTS),
+    ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
+  };
+}

@@ -653,6 +653,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dai-post', number: 'NZC999999999',
     route: /^https:\/\/daipost\.com\/track\?tracknbr=NZC999999999$/,
     marker: /Sorry, we couldn.t find your parcel|Where it.s at/ },
+  // The phone search page posts the number from its address to the order search on load.
+  { carrier: 'tsjy', number: 'TSJY900000000CN',
+    route: /^https:\/\/www\.tsjy56\.com\/orderResult\.html\?nos=TSJY900000000CN$/,
+    marker: /未找到相关的轨迹信息/ },
 ];
 
 /**

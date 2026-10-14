@@ -118,6 +118,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "the-courier-guy": 730,
   "tipsa": 680,
   "tnt": 880,
+  "tsjy": 98,
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,
   "uniuni": 770,

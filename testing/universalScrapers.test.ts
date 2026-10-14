@@ -19,14 +19,15 @@ const ship = (events: unknown[] = [
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 
 describe('Postal Ninja and Ship24 result parsing', () => {
-  it('extracts carrier discovery names without copying courier contact details or guessing a cross-border leg', () => {
+  it('extracts carrier discovery names without copying courier contact details', () => {
     const payload = ship();
     const parsed = parseShip24Response({ data: { ...payload.data, couriers: [
       { translation: { name: 'UPS', phone: 'PRIVATE', website: 'https://private.example' } },
       { translation: { name: 'Swiss Post' } },
     ] } }, number);
     expect(parsed.reported_carriers).toEqual(['UPS', 'Swiss Post']);
-    expect(parsed.discovered_carrier).toBeUndefined();
+    // Swiss Post's numbers all have a layout of their own and this one fits none: UPS's leg is the hint.
+    expect(parsed.discovered_carrier).toBe('ups');
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
   });
   it('preserves Postal Ninja chronology without inventing time zones or exposing recipient details', () => {

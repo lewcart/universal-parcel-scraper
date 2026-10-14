@@ -45,8 +45,8 @@ describe('Ship24 result parsing', () => {
     expect(parsed.events?.[0]?.location).toBeUndefined();
     expect(parsed.events?.[1]).toMatchObject({ description: 'Out for delivery', location: 'Example Town, CH' });
     expect(parsed.reported_carriers).toEqual(['Swiss Post', 'UPS']);
-    // A single unambiguous name may be adopted; several names stay hints only.
-    expect(parsed.discovered_carrier).toBeUndefined();
+    // Swiss Post's numbers all have a layout of their own and this one fits none: UPS's leg is the hint.
+    expect(parsed.discovered_carrier).toBe('ups');
     expect(JSON.stringify(parsed)).not.toMatch(/PRIVATE|PIN:|signed by/i);
   });
 

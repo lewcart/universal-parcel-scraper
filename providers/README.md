@@ -78,6 +78,11 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   [shared/hints.ts](shared/hints.ts)), whatever other carriers' rules match it, because
   that adapter would refuse it as invalid input. The postal union's feed, which an
   aggregator lists as "UPU" or "Universal Postal Union", is not a carrier.
+- Several names can be the legs of one journey, such as DHLink and SwiftX, its last-mile
+  partner. When every name is in the catalog, the hint is the one carrier whose rules fit
+  the number, or the one a preferred rule backs. When no rule fits, a carrier whose numbers
+  all have a layout of their own (only high-confidence rules) was named for its leg, and
+  the one carrier left is the hint.
 - The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja` and `UPU` are public, and
   consumers store them. Don't rename them.
 

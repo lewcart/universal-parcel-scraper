@@ -8,6 +8,7 @@
  */
 import type { CarrierId } from '../../generated/catalog.js';
 import { carrierTimezone } from '../../core/catalog/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { partnerNumberOwner } from '../../core/catalog/partners.js';
 import { brandCarrierIds, brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { checksumFailures } from '../../core/detection/detect.js';
@@ -62,6 +63,8 @@ export const ADAPTER_CHECKED_RULES: ReadonlySet<string> = new Set([
  * carrier whose adapter would refuse it for a failed check digit. A tracker
  * that also finds parcels by their delivery partner's number ("Global Eco",
  * Evri International's tracker) names the partner whose rule claims it.
+ * Several names that all map to the catalog can be one journey's legs; see
+ * `journeyOwner`.
  */
 export function universalCarrierHints(raw: unknown[], trackingNumber?: string): { reported_carriers: string[]; discovered_carrier?: string } {
   const names = [...new Set(raw.filter((value): value is string => typeof value === 'string'
@@ -69,12 +72,37 @@ export function universalCarrierHints(raw: unknown[], trackingNumber?: string): 
   const refused = new Set(trackingNumber ? checksumFailures(trackingNumber)
     .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
   const detected = new Set<string>();
+  let unmapped = false;
   for (const name of names) {
     const named = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber) : undefined);
     const carrier = named && trackingNumber ? partnerNumberOwner(named, trackingNumber) ?? named : named;
-    if (carrier && !refused.has(carrier)) detected.add(carrier);
+    if (!carrier) unmapped = true;
+    else if (!refused.has(carrier)) detected.add(carrier);
   }
-  return { reported_carriers: names,
-    ...(names.length === 1 && detected.size === 1 ? { discovered_carrier: [...detected][0] } : {}),
-  };
+  // A name outside the catalog may be the number's owner, so it leaves no hint.
+  const discovered = unmapped ? undefined : detected.size === 1 ? [...detected][0]
+    : detected.size > 1 && trackingNumber ? journeyOwner([...detected], trackingNumber) : undefined;
+  return { reported_carriers: names, ...(discovered ? { discovered_carrier: discovered } : {}) };
+}
+
+/**
+ * A provider can name an origin and the carrier it hands the parcel to, such
+ * as DHLink and SwiftX. The number is the one carrier's whose rules fit it,
+ * or that a preferred rule backs among several. When none fits, a carrier whose numbers all have a layout of their own
+ * (only high-confidence rules, SwiftX's SWX and eighteen digits) is named for
+ * its own leg, and the one carrier left is the hint.
+ */
+function journeyOwner(carriers: readonly string[], trackingNumber: string): string | undefined {
+  const { candidates, preferred } = detectCarrierMatch(trackingNumber);
+  const fitting = carriers.filter((carrier) => candidates.includes(carrier as CarrierId));
+  if (fitting.length === 1) return fitting[0];
+  if (fitting.length > 1) {
+    const backed = fitting.filter((carrier) => preferred.includes(carrier as CarrierId));
+    return backed.length === 1 ? backed[0] : undefined;
+  }
+  const open = carriers.filter((carrier) => {
+    const rules = CARRIER_DEFINITIONS[carrier as CarrierId]?.detectionRules ?? [];
+    return rules.length === 0 || rules.some((rule) => rule.confidence !== 'high');
+  });
+  return open.length === 1 ? open[0] : undefined;
 }

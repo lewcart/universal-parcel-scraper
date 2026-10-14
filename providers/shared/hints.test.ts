@@ -41,16 +41,35 @@ describe('carrier names reported by universal providers', () => {
     expect(brandCarrierForNumber('Swiss Post', '06080000000002')).toBeUndefined();
   });
 
-  it('proposes one carrier only for a single, resolvable name', () => {
+  it('proposes the carrier a single name resolves to', () => {
     expect(universalCarrierHints(['DPD Group'], '06080000000002')).toEqual({
       reported_carriers: ['DPD Group'], discovered_carrier: 'dpd',
     });
     // Without the number a brand stays a hint, as before.
     expect(universalCarrierHints(['DPD Group'])).toEqual({ reported_carriers: ['DPD Group'] });
     expect(universalCarrierHints(['DPD Group', 'DPD Group ', 7, null], '06080000000002').discovered_carrier).toBe('dpd');
+  });
+
+  it('proposes the carrier whose leg of the journey the number belongs to', () => {
+    // The number fits DPD's rules and no Swiss Post one.
     expect(universalCarrierHints(['Swiss Post', 'DPD Group'], '06080000000002')).toEqual({
-      reported_carriers: ['Swiss Post', 'DPD Group'],
+      reported_carriers: ['Swiss Post', 'DPD Group'], discovered_carrier: 'dpd',
     });
+    // GOFO's rules fit none of Nova Poshta's digits.
+    expect(universalCarrierHints(['Nova Poshta', 'GoFo Express'], '59500000000012').discovered_carrier).toBe('nova-poshta');
+    // Both fit a run of digits; Nova Poshta's preferred rule backs it.
+    expect(universalCarrierHints(['DPD Germany', 'Nova Poshta'], '59500000000012').discovered_carrier).toBe('nova-poshta');
+    expect(universalCarrierHints(['DPD Germany', 'Seur'], '59500000000012').discovered_carrier).toBeUndefined();
+    // No rule fits the origin's number. SwiftX's numbers are all SWX and eighteen digits, so
+    // SwiftX is named for the last leg and DHLink, whose numbers have no layout of their own, is left.
+    expect(universalCarrierHints(['DHLink', 'SwiftX'], 'EYT0000000000HZ')).toEqual({
+      reported_carriers: ['DHLink', 'SwiftX'], discovered_carrier: 'dhlink',
+    });
+    expect(universalCarrierHints(['DHLink', 'SwiftX'], 'SWX000000000000000000').discovered_carrier).toBe('swiftx');
+    // Two carriers without a layout of their own, a name outside the catalog, or no number: no hint.
+    expect(universalCarrierHints(['DHLink', 'Nova Poshta'], 'EYT0000000000HZ').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['Some Forwarder', 'SwiftX'], 'EYT0000000000HZ').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['DHLink', 'SwiftX']).discovered_carrier).toBeUndefined();
   });
 
   it('keeps the postal union\'s feed among the reported names, where it proposes no carrier', () => {

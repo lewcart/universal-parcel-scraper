@@ -372,10 +372,10 @@ describe('ParcelsApp result parsing', () => {
     const unresolved = parseParcelsAppResponse(reply(['DPD Group']), austrian, identity(austrian));
     expect(unresolved.reported_carriers).toEqual(['DPD Group']);
     expect(unresolved.discovered_carrier).toBeUndefined();
-    // Two carriers on one journey never pick one.
+    // Of two carriers on one journey, the one whose rules fit the number.
     const journey = reply(['Swiss Post', 'DPD Group']);
     journey.states.push({ date: '2026-07-01T16:00:00+00:00', status: 'In transit', carrier: 1 });
-    expect(parseParcelsAppResponse(journey, swiss, identity(swiss)).discovered_carrier).toBeUndefined();
+    expect(parseParcelsAppResponse(journey, swiss, identity(swiss)).discovered_carrier).toBe('dpd');
     expect(parseParcelsAppResponse(reply(['Swiss Post']), number, identity()).discovered_carrier).toBe('swiss-post');
   });
 

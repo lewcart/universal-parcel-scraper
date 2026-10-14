@@ -12,8 +12,10 @@ One bounded JSON POST asks for Pacific clocks, one of the public page's time
 options. GOFO US waybills are `GFUS` and 14 digits, or the older `GF` and 13 and
 `CR` and 12 series its tracker still serves; detection only suggests the older
 two. The waybill must be the requested number; the tracking number repeats it
-or is the shipper's own reference, never another GOFO number. The latest summary
-must agree with the first scan.
+or is the shipper's own reference, never another GOFO number. The exception is a
+GFUS waybill whose tracking number is a CR number: asked for either, GOFO returns
+that one parcel, so both are tracked. The latest summary must agree with the
+first scan.
 
 When the user picks GOFO, or opens a GOFO link carrying one, a YunExpress `YT`
 number that GOFO delivers under the same number is sent too, and GOFO must give it

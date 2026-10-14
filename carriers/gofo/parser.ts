@@ -17,6 +17,12 @@ const SUPPORT_LINE = new RegExp(String.raw`\s*(?:For delivery issues (?:&|and) t
 
 /** GOFO US waybills: GFUS numbers, and the older GF and CR series its tracker still serves. */
 const WAYBILL = /^(?:GFUS\d{14}|GF\d{13}|CR\d{12})$/;
+/**
+ * GOFO files some parcels under a GFUS waybill with a CR tracking number.
+ * Asked for either, it returns that one parcel.
+ */
+const PAIRED_WAYBILL = /^GFUS\d{14}$/;
+const PAIRED_REFERENCE = /^CR\d{12}$/;
 /** YunExpress numbers GOFO delivers under the same number, as both waybill and tracking number. */
 const YUNEXPRESS = /^YT\d{16}$/;
 
@@ -69,12 +75,17 @@ export function parseGofo(payload: unknown, rawNumber: string): CarrierResult {
   if (!entries.length && error.errorCount === 1 && Array.isArray(error.us) && error.us.length === 1 && error.us[0] === number
     && Object.keys(error).every(key => ['errorCount', 'us'].includes(key))) throw new NotFoundError('GOFO');
   if (!entries.length) throw new IndeterminateError('GOFO', 'GOFO returned no matching history');
-  // The requested number is the waybill. The tracking number repeats it or is
-  // the shipper's own reference, which must not name another GOFO parcel.
+  // The requested number is the waybill, or the CR tracking number of its
+  // GFUS waybill. Otherwise the tracking number repeats the waybill or is the
+  // shipper's own reference, which must not name another GOFO parcel.
+  const waybill = entries[0]!.waybillNo;
   const reference = entries[0]!.trackingNumber;
-  const ownReference = reference === number || (!YUNEXPRESS.test(number) && typeof reference === 'string' && clean(reference, 100) !== ''
+  const paired = typeof waybill === 'string' && PAIRED_WAYBILL.test(waybill)
+    && typeof reference === 'string' && PAIRED_REFERENCE.test(reference);
+  const ownReference = reference === number || paired || (!YUNEXPRESS.test(number) && typeof reference === 'string' && clean(reference, 100) !== ''
     && !WAYBILL.test(normalizeTrackingNumber(reference)));
-  if (entries.length !== 1 || entries[0]!.waybillNo !== number || !ownReference || error.errorCount !== 0) {
+  const requested = waybill === number || (paired && reference === number);
+  if (entries.length !== 1 || !requested || !ownReference || error.errorCount !== 0) {
     throw new SchemaError('GOFO', 'GOFO returned a different or ambiguous parcel');
   }
   const item = entries[0]!;
@@ -104,7 +115,7 @@ export function parseGofo(payload: unknown, rawNumber: string): CarrierResult {
     if (!code || !rawDescription) throw new SchemaError('GOFO', 'GOFO returned an incomplete scan');
     const mapped = gofoStatus(code);
     if (mapped?.stage === 'delivered' && !/^Delivered(?:,|$)/.test(rawDescription)) throw new IndeterminateError('GOFO', 'GOFO returned inconsistent delivery evidence');
-    if ((row.waybillNo != null && row.waybillNo !== number) || (row.trackingNumber != null && row.trackingNumber !== reference)) {
+    if ((row.waybillNo != null && row.waybillNo !== waybill) || (row.trackingNumber != null && row.trackingNumber !== reference)) {
       throw new SchemaError('GOFO', 'GOFO returned a scan for a different parcel');
     }
     const timestamp = scanClock(row.processDate, row.processTimeZone);

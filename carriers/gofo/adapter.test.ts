@@ -109,6 +109,21 @@ describe('GOFO US history', () => {
     }
   });
 
+  it('tracks a GFUS waybill and its CR tracking number as one parcel', () => {
+    const cr = 'CR000000000001';
+    const value = fixture();
+    for (const row of [item(value), ...item(value).trackEventList]) if (row.trackingNumber != null) row.trackingNumber = cr;
+    bind(value);
+    for (const asked of [NUMBER, cr]) {
+      expect(parseGofo(value, asked)).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    }
+    expect(() => parseGofo(value, 'CR000000000002')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const older = structuredClone(value);
+    for (const row of [item(older), ...item(older).trackEventList]) if (row.waybillNo != null) row.waybillNo = 'GF0000000000001';
+    bind(older);
+    expect(() => parseGofo(older, cr)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
   it('tracks a YunExpress number GOFO delivers under the same number, and only as that parcel', () => {
     const yt = 'YT0000000000000001';
     const value = fixture();

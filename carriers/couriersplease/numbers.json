@@ -171,7 +171,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "A complaint filed against Couriers Please gives it as the tracking number of a parcel redirected to a collection point; it does not start with CP as the help centre says numbers usually do."

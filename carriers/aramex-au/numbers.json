@@ -67,7 +67,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "A label with a digit before its letter. An archived reply of Aramex Australia's tracking service holds its pickup and a depot scan."

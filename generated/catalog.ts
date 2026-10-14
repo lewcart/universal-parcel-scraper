@@ -5331,6 +5331,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^[A-Z]{2}\\d{10}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d[A-Z]\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -14438,7 +14442,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],
   "aramex-au": ["aramex-au-1"],
-  "aramex-nz": ["aramex-nz-1"],
+  "aramex-nz": ["aramex-nz-1","aramex-nz-2"],
   "aras-kargo": [],
   "arrow-xl": [],
   "averitt": [],

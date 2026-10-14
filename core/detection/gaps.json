@@ -131,12 +131,6 @@
     "reason": "Some Aramex New Zealand labels start with a letter and a digit. That shape also holds YTO, Whistl and Colis Privé numbers, and nothing else in the label points to Aramex, so detection leaves it out."
   },
   {
-    "carrier": "aramex-nz",
-    "pattern": "^\\d[A-Z]\\d{10}$",
-    "kind": "open",
-    "reason": "Some Aramex New Zealand labels start with a digit and a letter, the shape Aramex Australia's rule offers. New Zealand's rule takes two letters only, so detection does not offer it for them."
-  },
-  {
     "carrier": "aras-kargo",
     "pattern": "^6[05]\\d{11,12}$",
     "kind": "by_design",

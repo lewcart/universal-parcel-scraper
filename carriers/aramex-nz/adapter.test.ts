@@ -219,13 +219,13 @@ describe('Aramex New Zealand tracking adapter', () => {
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'aramex-nz', step: 'retry', outcome: 'ok' }));
   });
 
-  it('offers Aramex New Zealand two letters and ten digits for recognition, beside Aramex Australia', () => {
-    for (const number of [DELIVERED, TRANSIT, LABELLED, ABSENT]) {
+  it('offers Aramex New Zealand two letters, or a digit and a letter, and ten digits for recognition, beside Aramex Australia', () => {
+    for (const number of [DELIVERED, TRANSIT, LABELLED, ABSENT, '2Q0000000017']) {
       expect(detectCarrierMatch(number).candidates, number).toEqual(expect.arrayContaining(['aramex-au', 'aramex-nz']));
       expect(recognitionAskedCarriers(number), number).toContain('aramex-nz');
     }
-    // A letter or a digit before the other character is a shape other networks share.
-    for (const number of ['W90000000017', '2Q0000000017', '00399999900000000423', 'QZ000000004']) {
+    // A letter and a digit is a shape other networks share.
+    for (const number of ['W90000000017', '00399999900000000423', 'QZ000000004']) {
       expect(detectCarrierMatch(number).candidates, number).not.toContain('aramex-nz');
     }
   });

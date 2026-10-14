@@ -162,7 +162,8 @@
         "confidence": "low",
         "candidates": [
           "colis-prive",
-          "aramex-au"
+          "aramex-au",
+          "aramex-nz"
         ]
       },
       "note": "A label with a digit before a letter. An archived reply of Aramex New Zealand's tracking service holds the parcel handed on to NZ Post for a rural delivery, with NZ Post's label; the tracker no longer knows it."

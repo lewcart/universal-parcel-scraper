@@ -2449,21 +2449,13 @@
     "reason": "XPO's PRO numbers end in the remainder of their first eight digits divided by seven, a check TNT's nine-digit consignment numbers can also carry. Both rules are low-confidence, so the number stays a suggestion, TNT first."
   },
   {
-    "shape": "A digit and a letter followed by ten digits",
-    "carriers": [
-      "colis-prive",
-      "aramex-au"
-    ],
-    "reason": "A few Aramex Australia labels start with a digit and a letter, which Colis Privé's rule for any twelve letters or digits also takes. Both are low-confidence, so the number stays a suggestion that direct tracking must confirm."
-  },
-  {
-    "shape": "Two letters followed by ten digits",
+    "shape": "Two letters, or a digit and a letter, followed by ten digits",
     "carriers": [
       "colis-prive",
       "aramex-au",
       "aramex-nz"
     ],
-    "reason": "Aramex Australia and Aramex New Zealand print the same twelve-character label on one platform, each with its own database, and Colis Privé's rule takes any twelve letters or digits. All three are low-confidence: the label names neither network, so direct tracking must find it on one of them."
+    "reason": "Aramex Australia and Aramex New Zealand print the same twelve-character labels on one platform, each with its own database, and Colis Privé's rule takes any twelve letters or digits. All three are low-confidence: the label names neither network, so direct tracking must find it on one of them."
   },
   {
     "shape": "Five digits, A and ten digits",

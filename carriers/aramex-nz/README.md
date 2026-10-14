@@ -21,12 +21,13 @@ Recognition uses the same lookup.
 
 ## Numbers
 
-A label is two letters and ten digits; some start with a letter and a digit. The adapter takes
-those forms and refuses anything else without a request. The tracker does not find a parcel by
-its SSCC. `aramex-nz-1` offers the labels with two letters at low confidence beside Aramex
-Australia and the other carriers whose rules take twelve characters, so recognition asks both
-Aramex networks. A label with a letter and a digit shares its shape with other networks, so
-detection does not offer it.
+A label is two letters and ten digits; some start with a letter and a digit, or a digit and a
+letter. The adapter takes those forms and refuses anything else without a request. The tracker
+does not find a parcel by its SSCC. `aramex-nz-1` offers the labels with two letters and
+`aramex-nz-2` those with a digit and a letter, at low confidence beside Aramex Australia and the
+other carriers whose rules take twelve characters, so recognition asks both Aramex networks. A
+label with a letter and a digit shares its shape with other networks, so detection does not
+offer it.
 
 ## Notes
 

@@ -5,6 +5,7 @@ LABEL org.opencontainers.image.source="https://github.com/plhery/universal-parce
 ENV LOG_LEVEL=warn
 COPY LICENSE /usr/share/licenses/trawl/LICENSE
 COPY tracking-capture.mjs /app/packages/tiers/src/utils/tracking-capture.mjs
+COPY challenge-wait.mjs /app/packages/tiers/src/utils/challenge-wait.mjs
 COPY royal-mail-history.mjs /app/packages/tiers/src/utils/royal-mail-history.mjs
 COPY fedex-session.mjs /app/packages/tiers/src/utils/fedex-session.mjs
 COPY australia-post-browser.mjs /app/packages/tiers/src/utils/australia-post-browser.mjs

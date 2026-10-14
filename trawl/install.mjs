@@ -91,3 +91,9 @@ if (pool.split(pick).length !== 2) throw new Error('TRAWL browser affinity integ
 writeFileSync(poolPath, 'import { preferredFedExEntry } from "../../tiers/src/utils/fedex-session.mjs"\n'
   + pool.replace(pick, '    const retained = preferredFedExEntry(available, domain)\n'
     + '    if (retained) return retained\n' + pick));
+
+// A Turnstile widget embedded in an ordinary page is not a Cloudflare wall.
+const { challengeWaitSource } = await import('/app/packages/tiers/src/utils/challenge-wait.mjs');
+const challengeWaitPath = '/app/packages/tiers/src/utils/challengeWait.ts';
+writeFileSync(challengeWaitPath, challengeWaitSource(readFileSync(challengeWaitPath, 'utf8'),
+  readFileSync('/app/packages/tiers/src/utils/detect.ts', 'utf8')));

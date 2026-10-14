@@ -88,6 +88,7 @@ import { adapter as gebruederWeiss } from '../carriers/gebrueder-weiss/adapter.j
 import { adapter as geis } from '../carriers/geis/adapter.js';
 import { adapter as genikiTaxydromiki } from '../carriers/geniki-taxydromiki/adapter.js';
 import { adapter as geodis } from '../carriers/geodis/adapter.js';
+import { adapter as geodisPl } from '../carriers/geodis-pl/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
 import { adapter as glsEs } from '../carriers/gls-es/adapter.js';
@@ -294,6 +295,7 @@ export const REGISTRY: RegistryDefinition = {
     "geis": geis,
     "geniki-taxydromiki": genikiTaxydromiki,
     "geodis": geodis,
+    "geodis-pl": geodisPl,
     "gls-ch": glsCh,
     "gls-de": glsDe,
     "gls-es": glsEs,
@@ -548,6 +550,7 @@ export const REGISTRY: RegistryDefinition = {
     "geis": "geis",
     "geniki-taxydromiki": "geniki-taxydromiki",
     "geodis": "geodis",
+    "geodis-pl": "geodis-pl",
     "ghn": "universal",
     "ghtk": "universal",
     "gls-ch": "gls-ch",

@@ -8580,6 +8580,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "geodis-pl": {
+    "displayName": "GEODIS Poland",
+    "color": "#3100e6",
+    "aliases": [
+      "Pekaes",
+      "GeodisPL",
+      "GEODIS Road Network"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "geodis-pl",
+      "recognitionRank": 994,
+      "localClocks": true
+    },
+    "canaryUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
+    "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
+    "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ghn": {
     "displayName": "GHN",
     "color": "#ff5200",
@@ -13996,6 +14021,7 @@ export const CARRIER_IDS = [
   "gebrueder-weiss",
   "geis",
   "geniki-taxydromiki",
+  "geodis-pl",
   "ghn",
   "ghtk",
   "gls-es",
@@ -14335,6 +14361,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gebrueder-weiss": [],
   "geis": [],
   "geniki-taxydromiki": [],
+  "geodis-pl": [],
   "ghn": [],
   "ghtk": ["ghtk-1"],
   "gls-es": [],

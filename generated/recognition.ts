@@ -59,6 +59,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "foxpost": 200,
   "geis": 90,
   "geniki-taxydromiki": 140,
+  "geodis-pl": 994,
   "gls-ch": 920,
   "gls-de": 940,
   "gls-fr": 950,

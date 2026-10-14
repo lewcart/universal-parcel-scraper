@@ -8578,6 +8578,31 @@
     ],
     "detectionRules": []
   },
+  "geodis-pl": {
+    "displayName": "GEODIS Poland",
+    "color": "#3100e6",
+    "aliases": [
+      "Pekaes",
+      "GeodisPL",
+      "GEODIS Road Network"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "geodis-pl",
+      "recognitionRank": 994,
+      "localClocks": true
+    },
+    "canaryUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
+    "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
+    "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ghn": {
     "displayName": "GHN",
     "color": "#ff5200",

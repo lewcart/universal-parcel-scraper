@@ -346,7 +346,9 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
   if (carrier === 'paack' || ownOffset(name, state.date)) return null;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
-  const zone = carrier ? carrierTimezone(carrier) : 'UTC';
+  // A home clock stays a guess that a location abroad rules out, even when
+  // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
+  const zone = carrier && !Object.hasOwn(HOME_COUNTRIES, key) ? carrierTimezone(carrier) : 'UTC';
   // A country-qualified routing name can identify a branch rather than the
   // scan location. Keep its clock as a guess even when the alias is catalogued.
   if (zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name))) return zone;

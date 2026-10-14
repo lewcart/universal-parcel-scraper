@@ -294,6 +294,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'geodis', number: '1G0000000000',
     route: /^https:\/\/espace-client\.geodis\.com\/services\/destinataires\//,
     marker: /Suivre mon envoi|Numéro de suivi/i },
+  { carrier: 'geodis-pl', number: 'PL9999999999999999',
+    route: /^https:\/\/strefaklienta\.pekaes\.geodis\.pl\/en\/\?ShNumber=PL9999999999999999$/,
+    marker: /Shipment with such number does not exist/ },
   // Colisweb ignores ?value= since its search became an in-page request.
   { carrier: 'colisweb', number: '99999999',
     route: /^https:\/\/www\.colisweb\.com\/suivi-livraison/,

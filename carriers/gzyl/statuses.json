@@ -1,0 +1,14 @@
+{
+  "carrier": "gzyl",
+  "entries": [
+    {"wording": "Order information received", "language": "en", "stage": "registered", "confirmedBy": "live"},
+    {"wording": "Arrive at the cross border receiving point", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The first scan in GZYL's hands."},
+    {"wording": "Goods leave the operation center", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Arrive at the international airport", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Departing from the airport", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Item arrives at destination airport", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "local carrier Agent Import customs clearance", "language": "en", "stage": "customs", "confirmedBy": "live"},
+    {"wording": "The import customs keep it for inspection", "language": "en", "stage": "customs", "confirmedBy": "live"},
+    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "prior-art", "note": "The platform writes this row itself for an order without scans, on its creation time."}
+  ]
+}

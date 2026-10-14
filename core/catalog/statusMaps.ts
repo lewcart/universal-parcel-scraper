@@ -64,6 +64,7 @@ import { statusMap as glsIt } from '../../carriers/gls-it/status.js';
 import { statusMap as goExpress } from '../../carriers/go-express/status.js';
 import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
+import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
@@ -71,6 +72,7 @@ import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as jitsu } from '../../carriers/jitsu/status.js';
+import { statusMap as jrt } from '../../carriers/jrt/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
@@ -109,6 +111,7 @@ import { statusMap as sto } from '../../carriers/sto/status.js';
 import { statusMap as swiftx } from '../../carriers/swiftx/status.js';
 import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
+import { statusMap as thhy } from '../../carriers/thhy/status.js';
 import { statusMap as tnt } from '../../carriers/tnt/status.js';
 import { statusMap as tsjy } from '../../carriers/tsjy/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
@@ -136,13 +139,13 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'dhl-express': dhlExpress, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox, 'j-and-t': jAndT,
-  'j-and-t-cargo': jntCargo, jitsu, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
+  'go-express': goExpress, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox, 'j-and-t': jAndT,
+  'j-and-t-cargo': jntCargo, jitsu, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'lietuvos-pastas': lietuvosPastas, 'loomis-express': loomisExpress, 'magyar-posta': magyarPosta, maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta,
-  speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx, 'swiss-post': swissPost, 'thailand-post': thailandPost, tnt, tsjy,
+  speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx, 'swiss-post': swissPost, 'thailand-post': thailandPost, thhy, tnt, tsjy,
   'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress,
   'yurtici-kargo': yurticiKargo, zeleris,
 };

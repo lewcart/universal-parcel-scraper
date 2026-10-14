@@ -69,7 +69,10 @@ const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
 
 const corpus = new Map(loadNumberCorpusFiles().map((file) => [file.carrier, file.records]));
 /** Synthetic numbers in the format of a carrier whose corpus has no public number yet. */
-const UNSAMPLED: Readonly<Record<string, readonly string[]>> = { 'geodis-pl': ['PL1234567890123456'], tsjy: ['TSJY990000001CN'] };
+const UNSAMPLED: Readonly<Record<string, readonly string[]>> = {
+  'geodis-pl': ['PL1234567890123456'], gzyl: ['GZTEST00000001'], jrt: ['JRT0000000000ZZ'], thhy: ['THTEST00000002'],
+  tsjy: ['TSJY990000001CN'],
+};
 
 function credential(validator: string, number: string): string {
   switch (validator) {

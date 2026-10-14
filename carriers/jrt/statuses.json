@@ -1,0 +1,6 @@
+{
+  "carrier": "jrt",
+  "entries": [
+    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "live", "note": "The platform writes this row itself for an order without scans, on its creation time."}
+  ]
+}

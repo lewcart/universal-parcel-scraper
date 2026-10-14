@@ -1,0 +1,75 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, GzylTracker } from './adapter.js';
+import { GZYL_ORIGIN, normalizeGzylNumber, parseGzylPage, parseGzylTrack } from './parser.js';
+import { statusMap } from './status.js';
+import statuses from './statuses.json' with { type: 'json' };
+import carrier from './carrier.json' with { type: 'json' };
+
+const NUMBER = 'GZTEST00000001';
+// Noon in Beijing on the fixture's last day: its last row is still ahead.
+const READ_AT = Date.parse('2026-03-06T04:00:00Z');
+const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
+const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
+const json = (body: unknown) => new Response(JSON.stringify(body), { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+const html = (body: string) => new Response(body, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
+const environment = (fetcher: typeof fetch) => ({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+
+describe('GZYL tracking adapter', () => {
+  it('asks GZYL’s Hualei tracker for the whole number over plain HTTP and records the step', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(json(fixture('track')));
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    await expect(new GzylTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' gztest00000001 ', { budgetMs: 4000 }))
+      .resolves.toMatchObject({ status: 'in_transit' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const [url, init] = fetcher.mock.calls[0]!;
+    expect(String(url)).toBe(`${GZYL_ORIGIN}/selectTrack.htm?documentCode=${NUMBER}`);
+    expect(GZYL_ORIGIN).toBe('http://134.175.243.207:8082');
+    expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
+      headers: { Accept: expect.stringContaining('application/json'), 'User-Agent': 'SyntheticHost/1.0' } });
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'gzyl', step: 'direct', outcome: 'ok' }));
+    const instance = adapter(environment(fetcher));
+    expect(instance).toMatchObject({ id: 'gzyl', recordsSteps: true, steps: ['direct', 'retry'] });
+    expect(instance.recognize).toBeUndefined();
+  });
+
+  it('reads the English timeline GZYL writes ahead, up to the lookup', () => {
+    const result = parseGzylTrack(fixture('track'), NUMBER, READ_AT)!;
+    expect(result).toMatchObject({
+      status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
+      last_status_text: 'local carrier Agent Import customs clearance', last_update: null, last_update_local: '2026-03-05T09:31:20',
+      expected_delivery: null, service_name: 'Synthetic Line PD', destination_country: 'CH',
+    });
+    expect(result.events).toEqual([
+      { local_time: '2026-03-05T09:31:20', description: 'local carrier Agent Import customs clearance', stage: 'customs', stage_source: 'carrier_map' },
+      { local_time: '2026-03-04T14:40:05', description: 'Item arrives at destination airport', stage: 'in_transit', stage_source: 'carrier_map' },
+      { local_time: '2026-03-03T14:02:11', description: 'Departing from the airport', stage: 'in_transit', stage_source: 'carrier_map' },
+      { local_time: '2026-03-03T08:55:39', description: 'Goods leave the operation center', stage: 'in_transit', stage_source: 'carrier_map' },
+      { local_time: '2026-03-02T15:07:14', description: 'Arrive at the cross border receiving point', stage: 'accepted', stage_source: 'carrier_map' },
+      { local_time: '2026-03-01T22:36:51', description: 'Order information received', stage: 'registered', stage_source: 'carrier_map' },
+    ]);
+  });
+
+  it('settles the interface’s no-row answer with the page', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
+    await expect(adapter(environment(fetcher)).track({ number: 'NOTFOUND000001' })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(String(fetcher.mock.calls[1]![0])).toBe(`${GZYL_ORIGIN}/trackIndex.htm`);
+    expect(parseGzylPage(page('page'), NUMBER, READ_AT)).toMatchObject({ current_stage: 'customs', destination_country: 'CH' });
+    expect(normalizeGzylNumber('shop-ref-0001')).toBe('SHOP-REF-0001');
+  });
+
+  it('maps every wording it lists, and the app reads the map', () => {
+    for (const entry of statuses.entries) expect(statusMap.stage(null, normalizeStatusWording(entry.wording)), entry.wording).toBe(entry.stage);
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Goods leave the operation center' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Synthetic wording' })).toEqual({ kind: 'unknown' });
+  });
+
+  it('links no plain-HTTP page', () => {
+    expect(carrier.portal).not.toHaveProperty('url');
+    expect(carrier.portal).not.toHaveProperty('searchUrl');
+    expect(carrier.portal.canaryUrl).toMatch(/^https:\/\//);
+  });
+});

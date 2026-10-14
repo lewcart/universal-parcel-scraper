@@ -8953,6 +8953,30 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "gzyl": {
+    "displayName": "GZYL",
+    "color": "#4e79e1",
+    "aliases": [
+      "GZYL",
+      "Gzyl",
+      "广州云链",
+      "廣州云鏈",
+      "广州云链货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "gzyl",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hanjin": {
     "displayName": "Hanjin",
     "color": "#051469",
@@ -9684,6 +9708,41 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "jrt": {
+    "displayName": "JRT",
+    "color": "#023053",
+    "aliases": [
+      "JRT",
+      "今日通",
+      "Jinritong",
+      "厦门今日通",
+      "厦门今日通商贸有限公司",
+      "今日通商贸有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "jrt",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "106.53.64.22"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "kazpost": {
     "displayName": "Kazpost",
@@ -13111,6 +13170,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "thhy": {
+    "displayName": "Tianhui Hengyuan",
+    "color": "#00a2e9",
+    "aliases": [
+      "TH",
+      "THHY",
+      "Tian Hui Hen Yuan",
+      "天汇恒源",
+      "深圳市天汇恒源供应链有限公司",
+      "广州市天慧恒源供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "thhy",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "toptrans": {
     "displayName": "TOPTRANS",
     "color": "#005daa",
@@ -14061,6 +14145,7 @@ export const CARRIER_IDS = [
   "go-express",
   "gofo-fr",
   "gofo-it",
+  "gzyl",
   "hanjin",
   "helthjem",
   "hepsijet",
@@ -14080,6 +14165,7 @@ export const CARRIER_IDS = [
   "jhgj",
   "jitsu",
   "jne",
+  "jrt",
   "kazpost",
   "kex",
   "kolay-gelsin",
@@ -14168,6 +14254,7 @@ export const CARRIER_IDS = [
   "swiftx",
   "team-global-express",
   "tforce-freight",
+  "thhy",
   "toptrans",
   "total-express",
   "trackon",
@@ -14402,6 +14489,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "go-express": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
+  "gzyl": [],
   "hanjin": [],
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
@@ -14421,6 +14509,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jhgj": [],
   "jitsu": [],
   "jne": ["jne-1"],
+  "jrt": [],
   "kazpost": [],
   "kex": [],
   "kolay-gelsin": [],
@@ -14509,6 +14598,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiftx": ["swiftx-1"],
   "team-global-express": [],
   "tforce-freight": [],
+  "thhy": [],
   "toptrans": [],
   "total-express": [],
   "trackon": [],

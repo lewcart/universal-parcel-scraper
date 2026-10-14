@@ -1,0 +1,18 @@
+{
+  "carrier": "thhy",
+  "entries": [
+    {"code": "ARRIVAL", "wording": "Arrived at the receiving point", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "The first scan in Tianhui Hengyuan's hands."},
+    {"code": "SHIPMENT", "wording": "货物离开操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel leaves the operation centre."},
+    {"code": "CO_C_CR", "wording": "已收取邮件", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The post collects the item from the forwarder."},
+    {"code": "CO_C_CR", "wording": "邮件已完成分拣", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Sorted."},
+    {"code": "CO_C_CR", "wording": "邮件正在发往", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "On its way to the place the row names."},
+    {"code": "CO_C_CR", "wording": "到达", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Arrived at the place the row names."},
+    {"code": "CO_C_CR", "wording": "邮件已完成资料准备", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The item's papers are ready."},
+    {"code": "CO_C_CR", "wording": "邮件准备", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The item is being prepared for dispatch."},
+    {"code": "CO_C_CR", "wording": "送交出口", "language": "zh", "stage": "customs", "confirmedBy": "live", "note": "Presented to export customs."},
+    {"code": "CO_C_CR", "wording": "放行", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Released by customs; the item carries on."},
+    {"code": "CO_C_CR", "wording": "正在发往操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "On its way to an operation centre."},
+    {"code": "CO_C_CR", "wording": "直封", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Sealed into a direct dispatch."},
+    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "prior-art", "note": "The platform writes this row itself for an order without scans, on its creation time."}
+  ]
+}

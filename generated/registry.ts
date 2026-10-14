@@ -99,6 +99,7 @@ import { adapter as goExpress } from '../carriers/go-express/adapter.js';
 import { adapter as gofo } from '../carriers/gofo/adapter.js';
 import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
+import { adapter as gzyl } from '../carriers/gzyl/adapter.js';
 import { adapter as helthjem } from '../carriers/helthjem/adapter.js';
 import { adapter as heppner } from '../carriers/heppner/adapter.js';
 import { adapter as hermes } from '../carriers/hermes/adapter.js';
@@ -115,6 +116,7 @@ import { adapter as jAndTCargo } from '../carriers/j-and-t-cargo/adapter.js';
 import { adapter as japanPost } from '../carriers/japan-post/adapter.js';
 import { adapter as jdLogistics } from '../carriers/jd-logistics/adapter.js';
 import { adapter as jitsu } from '../carriers/jitsu/adapter.js';
+import { adapter as jrt } from '../carriers/jrt/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
 import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
@@ -184,6 +186,7 @@ import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
 import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.js';
 import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
 import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js';
+import { adapter as thhy } from '../carriers/thhy/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
@@ -307,6 +310,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo": gofo,
     "gofo-fr": gofoFr,
     "gofo-it": gofoIt,
+    "gzyl": gzyl,
     "helthjem": helthjem,
     "heppner": heppner,
     "hermes": hermes,
@@ -323,6 +327,7 @@ export const REGISTRY: RegistryDefinition = {
     "japan-post": japanPost,
     "jd-logistics": jdLogistics,
     "jitsu": jitsu,
+    "jrt": jrt,
     "korea-post": koreaPost,
     "kuehne-nagel": kuehneNagel,
     "la-poste": laPoste,
@@ -392,6 +397,7 @@ export const REGISTRY: RegistryDefinition = {
     "swiss-post-cargo": swissPostCargo,
     "thailand-post": thailandPost,
     "the-courier-guy": theCourierGuy,
+    "thhy": thhy,
     "tipsa": tipsa,
     "tnt": tnt,
     "tsjy": tsjy,
@@ -565,6 +571,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo": "gofo",
     "gofo-fr": "gofo-fr",
     "gofo-it": "gofo-it",
+    "gzyl": "gzyl",
     "hanjin": "universal",
     "helthjem": "helthjem",
     "heppner": "heppner",
@@ -594,6 +601,7 @@ export const REGISTRY: RegistryDefinition = {
     "jhgj": "universal",
     "jitsu": "jitsu",
     "jne": "universal",
+    "jrt": "jrt",
     "kazpost": "universal",
     "kex": "universal",
     "kolay-gelsin": "universal",
@@ -719,6 +727,7 @@ export const REGISTRY: RegistryDefinition = {
     "tforce-freight": "universal",
     "thailand-post": "thailand-post",
     "the-courier-guy": "the-courier-guy",
+    "thhy": "thhy",
     "tipsa": "tipsa",
     "tnt": "tnt",
     "toptrans": "universal",

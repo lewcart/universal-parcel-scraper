@@ -99,13 +99,14 @@ describe('the catalog lookups the server reads', () => {
     expect(activeRequirements('swiss-post', 'RA123456785CH')).toEqual([]);
   });
 
-  it('marks only the DPD postcode as optional', () => {
+  it('tells optional postcodes from required ones', () => {
     expect(activeRequirements('dpd', '06080000000001')).toMatchObject([{ field: 'postcode', optional: true }]);
+    // Paack's numbers for Evri International parcels track without one.
+    expect(activeRequirements('paack', 'PAACK12345')).toMatchObject([{ field: 'postcode', optional: true }]);
     for (const [carrier, number] of [
       ['gls-ch', '993990103198'],
       ['gls-de', '123456789018'],
       ['heppner', '23456789'],
-      ['paack', 'PAACK12345'],
       ['mondial-relay', '12345678'],
     ] as const) {
       expect(activeRequirements(carrier, number).map((item) => item.optional), carrier).toEqual([undefined]);

@@ -2841,7 +2841,7 @@
     },
     {
       "carrier": "paack",
-      "direct": "Yes (postcode)",
+      "direct": "Yes (postcode; PK numbers via Evri)",
       "sample": "Not tested (postcode)",
       "references": [
         {

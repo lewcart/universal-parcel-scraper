@@ -121,6 +121,9 @@ consumer's choice. AliExpress follows some parcels under the delivery carrier's 
 names no partner for them. The partner is then the carrier that delivers in the destination
 country Cainiao reports: the one whose high-confidence rule claims the number, unless it is an
 S10 number, else the one carrier at home there whose rule fits the number beside AliExpress's.
+Evri International's tracker is the reverse: it also finds a parcel by its delivery partner's
+number, and that number stays the partner's. A universal provider that names the tracker for
+a number another carrier's high-confidence rule claims hints that carrier, not Evri.
 When a partial carrier answer names the partner, the fallbacks leave that
 lookup a third of the budget, at most 30 seconds.
 

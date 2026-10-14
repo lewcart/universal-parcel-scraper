@@ -27,11 +27,14 @@
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { IndeterminateError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { carrierErrorKind, IndeterminateError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
+import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
+import { firstAttemptMs } from '../../core/runner/networkRetry.js';
 import { countryCode, countryTimeZone, explicitOffsetTime, type ParsedTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
+import { PAACK_EVRI_NUMBER, trackPaackThroughEvri } from './evri.js';
 import { classifyPaackEvent } from './status.js';
 
 const TRACKING_ENDPOINT = 'https://mydeliveries.paack.app/tracking/order';
@@ -373,11 +376,34 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new PaackTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   return {
     id: 'paack',
-    steps: ['direct'],
-    track: async (input, context) => {
+    recordsSteps: true,
+    steps: ['direct', 'evri'],
+    track: async (input, context = {}) => {
+      const trackingNumber = normalizePaackTrackingNumber(input.number);
       const postcode = input.postcode?.trim() ?? '';
-      if (!postcode) throw new InputRequiredError('Paack', 'the delivery postcode');
-      return tracker.fetch(input.number, postcode, context);
+      const viaEvri = PAACK_EVRI_NUMBER.test(trackingNumber);
+      return runSteps({
+        carrier: 'paack', budgetMs: context.budgetMs ?? DEFAULT_TIMEOUT_MS, signal: context.signal, recorder: environment.recorder,
+      }, [
+        {
+          // Paack's own page needs the postcode; with one, it comes first for its instants and window.
+          id: 'direct',
+          enabled: Boolean(postcode) || !viaEvri,
+          run: ({ signal, remainingMs }) => {
+            if (!postcode) throw new InputRequiredError('Paack', 'the delivery postcode');
+            return tracker.fetch(trackingNumber, postcode, { signal, budgetMs: viaEvri ? firstAttemptMs(remainingMs) : remainingMs });
+          },
+        },
+        {
+          // A number Paack gave a parcel from Evri International needs no postcode there. Paack's
+          // not-found answers the number and postcode pair, so this number is still asked alone.
+          id: 'evri',
+          enabled: viaEvri,
+          recovers: (error) => carrierErrorKind(error) === 'not_found' || recoverableByDefault(error),
+          run: ({ signal, remainingMs }) => trackPaackThroughEvri(trackingNumber, { signal, budgetMs: remainingMs },
+            { fetcher: environment.fetcher, userAgent: environment.userAgent }),
+        },
+      ]);
     },
   };
 };

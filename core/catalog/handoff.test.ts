@@ -1,7 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff, hasDirectHandoffAdapter } from './handoff.js';
-import { followsPartnerNumbers } from './partners.js';
+import { followsPartnerNumbers, partnerNumberOwner } from './partners.js';
+import { requiredRequirements } from './definitions.js';
+import { recognitionAskedCarriers } from './recognition.js';
 import { AdapterRegistry } from '../adapter/index.js';
+import { detectCarrierMatch } from '../detection/index.js';
 import { carrierErrorKind } from '../errors/index.js';
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
 import { NOOP_RECORDER } from '../telemetry/index.js';
@@ -191,6 +194,29 @@ describe('delivery partners with an optional input', () => {
       .toEqual({ carrier: 'dpd', number: '06080000000002', basis: 'partner' });
     // Without its own number the partner would be asked about the postal one.
     expect(deliveryHandoff('la-poste', 'CW123456785FR', { delivery_carrier: 'dpd' })).toBeNull();
+  });
+});
+
+describe('a partner number another tracker also knows', () => {
+  // Synthetic: an Evri barcode, and a number Paack gives a parcel from Evri International.
+  const barcode = 'H000000000000001';
+  const paack = 'PK000000000000000001';
+  it('belongs to the partner: detection offers Paack alone, so recognition asks nobody', () => {
+    expect(detectCarrierMatch(paack)).toMatchObject({ carrier: 'paack', confidence: 'high' });
+    expect(recognitionAskedCarriers(paack)).toEqual([]);
+    expect(partnerNumberOwner('evri', paack)).toBe('paack');
+    expect(partnerNumberOwner('evri', barcode)).toBeUndefined();
+    // Only a tracker known to answer its partners' numbers gives them up.
+    expect(partnerNumberOwner('aliexpress', paack)).toBeUndefined();
+  });
+  it('hands the Paack number to Paack, which needs no postcode for it', () => {
+    expect(requiredRequirements('paack', paack)).toEqual([]);
+    expect(hasDirectHandoffAdapter('paack', paack)).toBe(true);
+    expect(deliveryHandoff('evri', barcode, { delivery_carrier: 'paack', delivery_tracking_number: paack }))
+      .toEqual({ carrier: 'paack', number: paack, basis: 'partner' });
+    // Paack's other numbers have no shape of their own and are never asked about the Evri barcode.
+    expect(hasDirectHandoffAdapter('paack', 'PAACK12345')).toBe(false);
+    expect(deliveryHandoff('evri', barcode, { delivery_carrier: 'paack' })).toBeNull();
   });
 });
 

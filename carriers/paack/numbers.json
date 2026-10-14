@@ -2,6 +2,44 @@
   "carrier": "paack",
   "records": [
     {
+      "number": "PK415000000000166147",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260617145612/https://globaleco.app/track/H04WQC0006873574",
+        "date": "2026-06-17",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "paack",
+        "confidence": "high"
+      },
+      "note": "The Carrier Tracking number on an Evri International parcel whose archived GlobalEco page names Paack 48H as its carrier. Paack's own page needs the delivery postcode, so it was not checked there."
+    },
+    {
+      "number": "PK415000000000221343",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260720185304/https://globaleco.app/track/H07F3C0000533894",
+        "date": "2026-07-20",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "paack",
+        "confidence": "high"
+      },
+      "note": "The Carrier Tracking number on an Evri International parcel whose archived GlobalEco page names Paack 48H as its carrier, captured before its first scan. Paack's own page needs the delivery postcode, so it was not checked there."
+    },
+    {
       "number": "00100909086360120251130131718",
       "role": "shipment",
       "evidence": "public_shipment_report",

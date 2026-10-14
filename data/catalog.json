@@ -1606,16 +1606,18 @@
         {
           "field": "postcode",
           "validator": "paackPostcode",
+          "optional": true,
           "label": "Delivery postcode",
           "type": "text",
           "placeholder": "75001",
-          "help": "Paack requires the recipient postcode together with the order number.",
+          "help": "Paack shows most orders only with the delivery postcode. Without it, other sources are asked.",
           "pattern": "^(?=.{3,10}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ -][A-Za-z0-9]+)*$",
           "maxLength": 10,
           "inputMode": "text",
           "autoComplete": "postal-code"
         }
-      ]
+      ],
+      "localClocks": true
     },
     "canaryUrl": "https://mydeliveries.paack.app/tracking",
     "trackingUrlTemplate": "https://mydeliveries.paack.app/tracking?tracking_number={trackingNumber}",
@@ -1639,7 +1641,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^PK\\d{18}$",
+        "confidence": "high"
+      }
+    ]
   },
   "asendia": {
     "displayName": "Asendia",
@@ -2088,7 +2095,9 @@
     "displayName": "Evri",
     "color": "#00014d",
     "aliases": [
-      "Evri International"
+      "Evri International",
+      "Global Eco",
+      "GlobalEco"
     ],
     "countries": [
       "GB"

@@ -24,10 +24,11 @@
       {
         "field": "postcode",
         "validator": "paackPostcode",
+        "optional": true,
         "label": "Delivery postcode",
         "type": "text",
         "placeholder": "75001",
-        "help": "Paack requires the recipient postcode together with the order number.",
+        "help": "Paack shows most orders only with the delivery postcode. Without it, other sources are asked.",
         "pattern": "^(?=.{3,10}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ -][A-Za-z0-9]+)*$",
         "maxLength": 10,
         "inputMode": "text",
@@ -35,11 +36,15 @@
       }
     ],
     "steps": [
-      "direct"
-    ]
+      "direct",
+      "evri"
+    ],
+    "localClocks": true
   },
   "capabilities": [
     "history",
+    "location",
+    "weight",
     "eta",
     "pickup_point"
   ],
@@ -92,5 +97,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "paack-1",
+      "pattern": "^PK\\d{18}$",
+      "confidence": "high"
+    }
+  ]
 }

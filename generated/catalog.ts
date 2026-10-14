@@ -1608,16 +1608,18 @@ export const CARRIER_CATALOG = {
         {
           "field": "postcode",
           "validator": "paackPostcode",
+          "optional": true,
           "label": "Delivery postcode",
           "type": "text",
           "placeholder": "75001",
-          "help": "Paack requires the recipient postcode together with the order number.",
+          "help": "Paack shows most orders only with the delivery postcode. Without it, other sources are asked.",
           "pattern": "^(?=.{3,10}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ -][A-Za-z0-9]+)*$",
           "maxLength": 10,
           "inputMode": "text",
           "autoComplete": "postal-code"
         }
-      ]
+      ],
+      "localClocks": true
     },
     "canaryUrl": "https://mydeliveries.paack.app/tracking",
     "trackingUrlTemplate": "https://mydeliveries.paack.app/tracking?tracking_number={trackingNumber}",
@@ -1641,7 +1643,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^PK\\d{18}$",
+        "confidence": "high"
+      }
+    ]
   },
   "asendia": {
     "displayName": "Asendia",
@@ -2090,7 +2097,9 @@ export const CARRIER_CATALOG = {
     "displayName": "Evri",
     "color": "#00014d",
     "aliases": [
-      "Evri International"
+      "Evri International",
+      "Global Eco",
+      "GlobalEco"
     ],
     "countries": [
       "GB"
@@ -13941,7 +13950,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "c-chez-vous": ["c-chez-vous-1"],
   "heppner": ["heppner-1"],
   "ciblex": ["ciblex-1","ciblex-full-barcode"],
-  "paack": [],
+  "paack": ["paack-1"],
   "asendia": ["asendia-1","asendia-2","asendia-3"],
   "shipup": [],
   "india-post": ["india-post-1"],

@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { adapter, EvriTracker, normalizeEvriNumber, parse } from './adapter.js';
+import { evriPartner } from './parser.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { DEFAULT_USER_AGENT } from '../../core/transport/index.js';
 
@@ -99,6 +101,50 @@ describe('Evri International parser', () => {
     expect(() => parse('<title>Verify you are human</title>', NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     expect(normalizeEvriNumber('h0000 0000 0000 001')).toBe(NUMBER);
     expect(() => normalizeEvriNumber('12345678')).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
+  });
+});
+
+describe('Evri International delivery partners', () => {
+  const partner = (label: string, number: string) => html
+    .replace('Example Delivery Partner', label)
+    .replaceAll('CI000000005NL', number);
+
+  it('names the partner and its number when the label maps and the number is that carrier\'s', () => {
+    expect(parse(partner('Paack 48H', 'PK000000000000000001'), NUMBER))
+      .toMatchObject({ delivery_carrier: 'paack', delivery_tracking_number: 'PK000000000000000001' });
+    expect(parse(partner('Hermes HSI Courier', 'H1000000000000000003'), NUMBER))
+      .toMatchObject({ delivery_carrier: 'hermes-de', delivery_tracking_number: 'H1000000000000000003' });
+  });
+
+  it('names nobody for an unmapped label, a number of another shape or the Evri barcode again', () => {
+    for (const value of [
+      html,
+      partner('Paack 48H', 'PK00000000000000001'),
+      partner('GLS Italy', 'CI000000005NL'),
+      partner('AnPost Direct', NUMBER),
+      partner('Paack 48H', NUMBER),
+    ]) {
+      const result = parse(value, NUMBER);
+      expect(result.delivery_carrier).toBeUndefined();
+      expect(result.delivery_tracking_number).toBeUndefined();
+    }
+  });
+
+  it('maps each label to an automatic catalog carrier with its own adapter', () => {
+    for (const label of ['Paack 48H', 'Colis Prive', 'Hermes HSI Courier', 'GLS Italy', 'DHL Connect', 'Spring Tracked',
+      'Cross Border Connect SpeedX', 'Mondial Point Relais delivery PUDO']) {
+      const carrier = evriPartner(label);
+      expect(carrier, label).toBeDefined();
+      const definition = CARRIER_DEFINITIONS[carrier as keyof typeof CARRIER_DEFINITIONS];
+      expect(definition.tracking.mode, label).toBe('automatic');
+      expect(definition.tracking.adapter, label).toBe(carrier);
+    }
+    expect(evriPartner('paack 48h ')).toBe('paack');
+    expect(evriPartner('Evri 48H Courier')).toBeUndefined();
+  });
+
+  it('answers only for its own barcode when the tracker found the parcel by a partner number', () => {
+    expect(() => parse(html, 'H000000000000002')).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 });
 

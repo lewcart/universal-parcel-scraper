@@ -6,6 +6,7 @@ import { NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { carrierScan } from '../../providers/shared/scans.js';
 import {
+  adapter,
   PaackTracker,
   normalizePaackPostcode,
   normalizePaackTrackingNumber,
@@ -13,6 +14,7 @@ import {
   parsePaackTrackingHtml,
   parsePaackTrackingResponse,
 } from './adapter.js';
+import { PAACK_EVRI_NUMBER, parsePaackEvriReply } from './evri.js';
 import { classifyPaackEvent, paackScan, statusKey } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -271,7 +273,11 @@ describe('Paack response normalization', () => {
       }],
       activeEvent: { id: 'driver-assigned', label: 'inProgress' },
     }), OFFICIAL_EXAMPLE_POSTCODE);
-    const produced = producedCapabilities(delivered, inFlight, atPickupPoint);
+    const throughEvri = parsePaackEvriReply(
+      readFileSync(fileURLToPath(new URL('./fixtures/evri-international.html', import.meta.url)), 'utf8'),
+      'PK000000000000000001',
+    );
+    const produced = producedCapabilities(delivered, inFlight, atPickupPoint, throughEvri);
     expect(carrier.capabilities.length).toBeGreaterThan(0);
     for (const capability of carrier.capabilities) expect([...produced]).toContain(capability);
   });
@@ -658,5 +664,100 @@ describe('Paack links', () => {
     for (const page of ['https://paack.co/contact', 'https://paack.co/shipments/trackings']) {
       expect(parseTrackingInput(`${page}?tracking_number=${LABEL_BARCODE}`).carrier, page).not.toBe('paack');
     }
+  });
+});
+
+// Synthetic: a number Paack gives a parcel from Evri International, and its Evri barcode.
+const EVRI_PARTNER_NUMBER = 'PK000000000000000001';
+const EVRI_BARCODE = 'H000000000000001';
+const evriReply = readFileSync(fileURLToPath(new URL('./fixtures/evri-international.html', import.meta.url)), 'utf8');
+const evriNotFound = '<main><div class="card"><h2>Search by tracking number</h2><form method="POST" action="/track">'
+  + '<input name="tracking_number" value=""></form></div><div class="card"><h2>Parcel not found</h2></div></main>';
+
+function recordingEnvironment(fetcher: typeof fetch) {
+  const steps: Array<{ step: string; outcome: string }> = [];
+  return {
+    steps,
+    environment: { fetcher, env: {}, trawl: null, browserExecutablePath: null,
+      recorder: { step: (event: { step: string; outcome: string }) => { steps.push({ step: event.step, outcome: event.outcome }); }, lookup() {} } },
+  };
+}
+
+describe('Paack numbers on parcels from Evri International', () => {
+  it('reads the rule detection uses', () => {
+    const rules = (json('./carrier.json') as { detection: Array<{ id: string; pattern: string }> }).detection;
+    expect(rules.find((rule) => rule.id === 'paack-1')?.pattern).toBe(PAACK_EVRI_NUMBER.source);
+  });
+
+  it('binds the reply to the whole Carrier Tracking value and a Paack carrier label', () => {
+    const result = parsePaackEvriReply(evriReply, EVRI_PARTNER_NUMBER);
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: null,
+      last_update_local: '2026-03-12T07:31:05', weight_kg: 0.8 });
+    expect(result.events?.map((event) => event.stage)).toEqual([
+      'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'accepted', 'registered',
+    ]);
+    expect(result.events?.every((event) => event.local_time && !event.time)).toBe(true);
+    expect(result.events?.[4]?.location).toBe('Example Crossdock, NL');
+    // The Evri barcode, sender, destination, comments and links stay out.
+    expect(JSON.stringify(result)).not.toMatch(/PRIVATE|H000000000000001|mydeliveries|delivery_carrier/);
+
+    for (const value of [
+      evriReply.replace(`Carrier Tracking:</strong> ${EVRI_PARTNER_NUMBER}`, 'Carrier Tracking:</strong> PK000000000000000002'),
+      evriReply.replace('Paack 48H', 'Example Delivery Partner'),
+    ]) expect(() => parsePaackEvriReply(value, EVRI_PARTNER_NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    // A reply to the Evri barcode is not a reply to the Paack number.
+    expect(() => parsePaackEvriReply(evriReply, EVRI_BARCODE)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parsePaackEvriReply(evriNotFound, EVRI_PARTNER_NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+  });
+
+  it('asks Evri International alone without a postcode, in one bounded form POST', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(evriReply));
+    const { steps, environment } = recordingEnvironment(fetcher);
+    await expect(adapter(environment).track({ number: EVRI_PARTNER_NUMBER }, { budgetMs: 5_000 }))
+      .resolves.toMatchObject({ status: 'out_for_delivery' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith('https://globaleco.app/track', expect.objectContaining({
+      method: 'POST', body: `tracking_number=${EVRI_PARTNER_NUMBER}`, redirect: 'error', signal: expect.any(AbortSignal),
+    }));
+    expect(steps).toEqual([{ step: 'evri', outcome: 'ok' }]);
+  });
+
+  it('keeps the postcode route first and asks Evri International when Paack does not know the pair', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response(null, { status: 302, headers: { Location: '/tracking?err=true' } }))
+      .mockResolvedValueOnce(new Response(evriReply));
+    const { steps, environment } = recordingEnvironment(fetcher);
+    await expect(adapter(environment).track({ number: EVRI_PARTNER_NUMBER, postcode: '75001' }))
+      .resolves.toMatchObject({ status: 'out_for_delivery' });
+    expect(String(fetcher.mock.calls[0]?.[0])).toMatch(/^https:\/\/mydeliveries\.paack\.app\/tracking\/order\?/);
+    expect(fetcher.mock.calls[1]?.[0]).toBe('https://globaleco.app/track');
+    expect(steps).toEqual([{ step: 'direct', outcome: 'not_found' }, { step: 'evri', outcome: 'ok' }]);
+
+    // Paack's own answer stands.
+    const direct = vi.fn<typeof fetch>().mockResolvedValue(new Response(trackingPage()));
+    await expect(adapter(recordingEnvironment(direct).environment).track({ number: EVRI_PARTNER_NUMBER, postcode: OFFICIAL_EXAMPLE_POSTCODE }))
+      .resolves.toMatchObject({ status: 'delivered' });
+    expect(direct).toHaveBeenCalledTimes(1);
+  });
+
+  it('reports a number Evri International does not know as not found', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(evriNotFound));
+    await expect(adapter(recordingEnvironment(fetcher).environment).track({ number: EVRI_PARTNER_NUMBER }))
+      .rejects.toMatchObject({ kind: 'not_found' });
+  });
+
+  it('still needs the postcode for every other number, before any request', async () => {
+    const fetcher = vi.fn<typeof fetch>();
+    const { steps, environment } = recordingEnvironment(fetcher);
+    for (const number of [OFFICIAL_EXAMPLE_NUMBER, 'PK00000000000000001', 'PK0000000000000000001']) {
+      await expect(adapter(environment).track({ number })).rejects.toMatchObject({ kind: 'input_required' });
+    }
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(steps.every((step) => step.step === 'direct')).toBe(true);
+    // With one, they go to Paack's page only.
+    fetcher.mockResolvedValue(new Response(trackingPage()));
+    await expect(adapter(environment).track({ number: OFFICIAL_EXAMPLE_NUMBER, postcode: OFFICIAL_EXAMPLE_POSTCODE }))
+      .resolves.toMatchObject({ status: 'delivered' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 });

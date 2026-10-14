@@ -62,6 +62,15 @@ describe('carrier names reported by universal providers', () => {
     expect(universalCarrierHints(['Universal Postal Union'], finnish)).toEqual({ reported_carriers: ['Universal Postal Union'] });
   });
 
+  it('gives a partner its own number when a tracker that also knows it is named', () => {
+    // GlobalEco is Evri International's tracker; it also answers the number Paack gives the parcel.
+    for (const name of ['Global Eco', 'GlobalEco', 'Evri International']) {
+      expect(universalCarrierHints([name], 'H000000000000001')).toEqual({ reported_carriers: [name], discovered_carrier: 'evri' });
+      expect(universalCarrierHints([name], 'PK000000000000000001')).toEqual({ reported_carriers: [name], discovered_carrier: 'paack' });
+    }
+    expect(universalCarrierHints(['Paack'], 'PK000000000000000001').discovered_carrier).toBe('paack');
+  });
+
   it('proposes no carrier whose adapter would refuse the number for its check digit', () => {
     expect(universalCarrierHints(['DHL Express'], '1234567890')).toEqual({ reported_carriers: ['DHL Express'] });
     expect(universalCarrierHints(['DHL Express'], '1234567891')).toEqual({ reported_carriers: ['DHL Express'], discovered_carrier: 'dhl-express' });

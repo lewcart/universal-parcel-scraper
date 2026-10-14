@@ -15,3 +15,8 @@
   prints next to them. The PaackGo Point steps' ids (`PUDO1`…) and their `variables` are
   placeholders. The point's name and address are invented; the pickup code, QR link and every
   recipient field are `PRIVATE …` placeholders so the test can assert none leaks.
+- `evri-international.html`: Evri International's tracker answering a Paack number, in the
+  structure of a live reply: the Evri barcode in the heading and System Tracking, the Paack
+  number in Carrier Tracking and the search box, "Paack 48H" as Carrier, then Evri's scans and
+  Paack's. Numbers, clocks and places are invented; sender, destination and comments are
+  `PRIVATE …` placeholders.

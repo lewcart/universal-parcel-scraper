@@ -2,7 +2,8 @@
 
 Last-mile carrier for online retailers in Spain, Portugal, France and the UK. Tracked through
 the public recipient page, which needs the order number or label barcode and the delivery
-postcode.
+postcode. Parcels Paack delivers for Evri International carry a number of Paack's own, `PK`
+and 18 digits, which Evri International's tracker answers without the postcode.
 
 ## How it works
 
@@ -22,14 +23,31 @@ postcode.
      `delivery_address.post_code`; one that differs from the requested postcode in its letters
      and digits is a `SchemaError`.
    - An empty HTTP 200 is `IndeterminateError`.
-   - No postcode on the parcel raises `InputRequiredError`.
+   - No postcode on the parcel raises `InputRequiredError`, except for a `PK` number, which
+     skips this step.
+2. `evri`: for a `PK` number only, one bounded form POST to `https://globaleco.app/track`, the
+   tracker [Evri](../evri/README.md) reads, with the number and nothing else.
+   - The reply counts only when its **Carrier Tracking** field is the whole number asked and
+     its **Carrier** field names Paack. The tracker also answers Evri barcodes and other
+     partners' numbers, so any other parcel is a `SchemaError`. "Parcel not found" is
+     not-found.
+   - With a postcode, `direct` runs first on a first-attempt share of the budget, since only
+     Paack's page has instants and the delivery window. Its not-found answers the number and
+     postcode pair, so this step still follows it, as it follows a retryable failure.
 
 ## Notes
 
-- Numbers are retailer order numbers or label barcodes with no stable shape, so there is no
-  detection rule: a rule would cost precision for every other carrier. Paack is picked
+- Most numbers are retailer order numbers or label barcodes with no stable shape, so they have
+  no detection rule: a rule would cost precision for every other carrier. Paack is picked
   manually or through a link to its tracker, on `mydeliveries.paack.app` or under
   `paack.co/shipments/tracking`. The rest of `paack.co` is the company site.
+- The `PK` numbers from Evri International hand-overs have a rule of their own. They are
+  Paack's even though Evri International knows them too: detection offers Paack alone, and an
+  aggregator naming the tracker "Global Eco" gives them to Paack. Evri's own result names Paack
+  and the number as its delivery partner.
+- The postcode is optional in the catalog. A `PK` number needs none, and a saved parcel without
+  one is not locked out of every source: universal providers are asked instead. Without it,
+  other numbers still raise `InputRequiredError` here.
 - The postcode is half of the lookup key, so it is a credential: never log it, commit it or
   put it in an issue.
 - Stages come from each entry's stable `id` and `label` (a translation key), never from the
@@ -63,6 +81,10 @@ postcode.
   too and takes that clock as its `timezone`. A window across midnight, or without an
   offset, keeps only its last day. It is dropped once delivered or in exception, and when it
   ended before the newest scan.
+- Through Evri International the result is that tracker's: Evri's scans up to the hand-over,
+  then Paack's, in Evri's English wording and stages, with locations and the parcel's weight.
+  Its clocks have no offset, so they are kept as `local_time` and the catalog marks Paack's
+  clocks local. It has no delivery window. Sender, destination and comments are never read.
 - Retailer, recipient name, e-mail, phone, address and per-event `variables` (which
   interpolate them) are never read; a test asserts it. The PaackGo Point's pickup code
   (`pudo_passcode`), QR link and collection deadline are not read either. The delivery
@@ -71,12 +93,15 @@ postcode.
 
 ## Limitations
 
-- No event locations: events carry only the order's country, not where the scan happened.
+- Paack's own page has no event locations: events carry only the order's country, not where
+  the scan happened.
 - No live PaackGo Point reply has been seen; the pickup-point labels and fields come from the
   tracking page's code and translations.
 
 ## Testing
 
 `npm run test:carriers:live -- carriers/paack` checks that Paack's own retired API examples
-return not-found. Set `PAACK_TRACKING_NUMBER` and `PAACK_POSTCODE` to also track a private
-parcel with every step mapped and check that another postcode is not-found.
+return not-found, and that Evri International answers an unissued `PK` number as not-found.
+Set `PAACK_TRACKING_NUMBER` and `PAACK_POSTCODE` to also track a private parcel with every
+step mapped and check that another postcode is not-found. Set `PAACK_EVRI_TRACKING_NUMBER` to
+track a `PK` number without a postcode.

@@ -116,7 +116,7 @@ is asked after the other aggregators whatever its count.
 | [NACEX](../carriers/nacex/README.md) | Yes | ✓ 13 | Refused | Refused | Refused | Refused | N/A |
 | [Colis Privé](../carriers/colis-prive/README.md) | Yes (postcode) | Not tested (postcode) | No history | No history | No history | No history | N/A |
 | [Relais Colis](../carriers/relais-colis/README.md) | Yes | ✓ 4 | No history | ✓ 4 | No history | Refused | N/A |
-| [Paack](../carriers/paack/README.md) | Yes (postcode) | Not tested (postcode) | No history | No history | No history | No history | N/A |
+| [Paack](../carriers/paack/README.md) | Yes (postcode; PK numbers via Evri) | Not tested (postcode) | No history | No history | No history | No history | N/A |
 | [Asendia](../carriers/asendia/README.md) | Yes (Asendia USA and UK) | ✓ 5 | ✓ 2, partial | ✓ 6 | Error | ✓ 3, partial | ✓ 2 |
 | [Landmark Global](../carriers/landmark-global/README.md) | Yes | ✓ 14 | ✓ 14 | ✓ 21 | No history | ✓ 21 | N/A |
 | [NZ Post](../carriers/nz-post/README.md) | Yes | ✓ 16 | ✓ 20 | ✓ 20 | ✓ 16 | ✓ 20 | ✓ 4 |

@@ -18,6 +18,20 @@ the 16-character barcode's last digit as described there.
 - Identity is the requested number in both the `Shipment Details #…` heading
   and the **System Tracking** field. The echoed search input is ignored: the
   portal can replace it with the partner's tracking number.
+- The **Carrier** field names the network delivering the parcel abroad and
+  **Carrier Tracking** holds that network's number. The result names it as
+  `delivery_carrier` and `delivery_tracking_number` only when the parser's label
+  table maps the label to a catalog carrier and that carrier's detection offers
+  the whole number. Evri's own courier labels, a label the table lacks and the
+  barcode repeated in Carrier Tracking name nobody.
+- The tracker also finds a parcel by that partner number, but this adapter asks
+  only by the Evri barcode. A partner's number belongs to the partner: Paack
+  reads this tracker for the numbers it gives these parcels (see
+  [Paack](../paack/README.md)).
+- Aggregators call this tracker "Global Eco" or "GlobalEco"; both are aliases
+  of Evri. When an aggregator reports one of these names for a number another
+  carrier's rule claims at high confidence, the hint goes to that carrier
+  (`core/catalog/partners.ts`), so a Paack number is not filed under Evri.
 - Not-found is only the explicit **Parcel not found** heading on the normal
   search form, returned with HTTP 200. That form clears its input, so the POST
   itself scopes the answer; an input naming another number is rejected. A
@@ -42,8 +56,7 @@ the 16-character barcode's last digit as described there.
 ## Limitations
 
 - International only; domestic UK numbers use the Evri UK adapter.
-- Sender names, destination, comments, tracking aliases and outbound links are
-  never read.
+- Sender names, destination, comments and outbound links are never read.
 
 ## Testing
 

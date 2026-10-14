@@ -8,6 +8,7 @@
  */
 import type { CarrierId } from '../../generated/catalog.js';
 import { carrierTimezone } from '../../core/catalog/index.js';
+import { partnerNumberOwner } from '../../core/catalog/partners.js';
 import { brandCarrierIds, brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { checksumFailures } from '../../core/detection/detect.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
@@ -58,7 +59,9 @@ export const ADAPTER_CHECKED_RULES: ReadonlySet<string> = new Set([
 /**
  * Names are hints only. A direct adapter must confirm the shipment before
  * adoption. The looked-up number resolves a bare brand name, and rules out a
- * carrier whose adapter would refuse it for a failed check digit.
+ * carrier whose adapter would refuse it for a failed check digit. A tracker
+ * that also finds parcels by their delivery partner's number ("Global Eco",
+ * Evri International's tracker) names the partner whose rule claims it.
  */
 export function universalCarrierHints(raw: unknown[], trackingNumber?: string): { reported_carriers: string[]; discovered_carrier?: string } {
   const names = [...new Set(raw.filter((value): value is string => typeof value === 'string'
@@ -67,7 +70,8 @@ export function universalCarrierHints(raw: unknown[], trackingNumber?: string): 
     .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
   const detected = new Set<string>();
   for (const name of names) {
-    const carrier = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber) : undefined);
+    const named = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber) : undefined);
+    const carrier = named && trackingNumber ? partnerNumberOwner(named, trackingNumber) ?? named : named;
     if (carrier && !refused.has(carrier)) detected.add(carrier);
   }
   return { reported_carriers: names,

@@ -103,4 +103,15 @@ describe('numeric checksum candidates', () => {
     expect(recognitionAskedCarriers('00312345670000000016')).toContain('swiss-post-cargo');
     expect(detectCarrierMatch('00312345670000000017').candidates).not.toContain('swiss-post-cargo');
   });
+
+  it('selects DHL for an SSCC under its own company prefixes and only suggests it below them', () => {
+    expect(detectCarrierMatch('00340433830000000004')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(detectCarrierMatch('00340433820000000005')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('00340433820000000005').candidates).toContain('dhl');
+    expect(detectCarrierMatch('00340433660000000007').candidates).not.toContain('dhl');
+    // A manufacturer holds 4043533 among DHL's prefixes.
+    expect(detectCarrierMatch('00340435060000000003')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(detectCarrierMatch('00340435330000000007')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('00340435330000000007').candidates).toContain('dhl');
+  });
 });

@@ -1,4 +1,4 @@
-import { isValidSscc } from '../../core/detection/numericChecksums.js';
+import { detectCarrierMatch, isValidSscc } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { Stage } from '../../core/status/index.js';
@@ -13,9 +13,9 @@ const NOT_FOUND = 'No parcel found for the given key(s)';
 /** Stages that end a parcel's journey; a later notice or reminder does not undo them. */
 const FINAL: readonly Stage[] = ['delivered', 'returned'];
 
-/** A shipper's SSCC behind its GS1 `00`, outside the company prefixes DHL Paket issues its own under. */
+/** A shipper's SSCC behind its GS1 `00`, unless detection selects DHL Paket, which issues its own. */
 function isShipperSscc(number: string): boolean {
-  return isValidSscc(number) && !/^0034043(?!366)[345]/.test(number);
+  return isValidSscc(number) && detectCarrierMatch(number).carrier !== 'dhl';
 }
 
 /**

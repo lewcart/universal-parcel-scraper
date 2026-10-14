@@ -139,9 +139,12 @@ describe('DHL eCommerce Netherlands parser', () => {
     expect(normalizeDhlEcommerceNlNumber('JJD0099999999')).toBe('JJD0099999999');
     expect(normalizeDhlEcommerceNlNumber('00 0123456 0000000001 2')).toBe('00012345600000000012');
     expect(() => normalizeDhlEcommerceNlNumber('00012345600000000013')).toThrow(InvalidInputError);
-    // DHL Paket's own SSCCs stay with DHL Paket; a manufacturer's prefix in that range is a shipper's.
-    expect(() => normalizeDhlEcommerceNlNumber('00340434000000000000')).toThrow(InvalidInputError);
+    // DHL Paket's own SSCCs stay with DHL Paket; a manufacturer's prefix among or below them is a shipper's.
+    expect(() => normalizeDhlEcommerceNlNumber('00340434160000000001')).toThrow(InvalidInputError);
+    expect(() => normalizeDhlEcommerceNlNumber('00340433830000000004')).toThrow(InvalidInputError);
     expect(normalizeDhlEcommerceNlNumber('00340433660000000007')).toBe('00340433660000000007');
+    expect(normalizeDhlEcommerceNlNumber('00340433820000000005')).toBe('00340433820000000005');
+    expect(normalizeDhlEcommerceNlNumber('00340435330000000007')).toBe('00340435330000000007');
     expect(() => normalizeDhlEcommerceNlNumber('1234567890')).toThrow(InvalidInputError);
   });
 
@@ -175,7 +178,7 @@ describe('DHL eCommerce Netherlands adapter', () => {
     await expect(known.recognize?.(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: '2026-04-03T10:42:00.269Z' });
     const unknown = adapter(environment(async () => new Response(MISSING, { status: 404 })));
     await expect(unknown.recognize?.(NUMBER)).resolves.toEqual({ known: false });
-    await expect(unknown.recognize?.('00340434000000000000')).resolves.toEqual({ known: false });
+    await expect(unknown.recognize?.('00340434160000000001')).resolves.toEqual({ known: false });
     const generic = adapter(environment(async () => new Response('Not Found', { status: 404 })));
     await expect(generic.recognize?.(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
     const limited = adapter(environment(async () => new Response('', { status: 429 })));

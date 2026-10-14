@@ -24,7 +24,7 @@ const EVENT_STAGES: Readonly<Record<string, Stage>> = { OrderCargoReturn: 'retur
 // Arrival at, and collection from, the branch or locker the recipient chose.
 const PICKUP_EVENTS = new Set(['ArrivalRecipientWarehouse', 'ArrivalRecipientPostomat', 'ReceivedWarehouse']);
 // Partners abroad that deliver Nova Poshta exports under their own number.
-const PARTNERS: Readonly<Record<string, string>> = { UPS: 'ups', PylonLogisticsGofoExpress: 'gofo' };
+const PARTNERS: Readonly<Record<string, string>> = { UPS: 'ups', PylonLogisticsUPS: 'ups', PylonLogisticsGofoExpress: 'gofo' };
 const DELIVERY_REFERENCES = new Set(['NPU', 'NPU_Redirecting']);
 function movementTime(value: unknown): string | undefined {
   const text = clean(value, 64);

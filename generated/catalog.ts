@@ -10730,7 +10730,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "nova-poshta"
+      "adapter": "nova-poshta",
+      "recognitionRank": 685
     },
     "canaryUrl": "https://novaposhta.ua/en/tracking/",
     "trackingUrlTemplate": "https://novaposhta.ua/en/tracking/{trackingNumber}",
@@ -10744,6 +10745,11 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^595000\\d{8}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^(?:(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})$",
         "confidence": "low"
@@ -14578,7 +14584,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nationex": [],
   "nipost": [],
   "nippon-express": [],
-  "nova-poshta": ["nova-poshta-domestic"],
+  "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
   "nz-couriers": [],
   "oca": [],
   "olva-courier": ["olva-courier-3"],

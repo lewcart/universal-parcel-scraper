@@ -23,7 +23,10 @@
     "steps": [
       "direct",
       "summary"
-    ]
+    ],
+    "recognition": {
+      "rank": 685
+    }
   },
   "capabilities": [
     "history",
@@ -86,6 +89,12 @@
     }
   ],
   "detection": [
+    {
+      "id": "nova-poshta-export",
+      "pattern": "^595000\\d{8}$",
+      "confidence": "low",
+      "preferred": true
+    },
     {
       "id": "nova-poshta-domestic",
       "pattern": "^(?:(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})$",

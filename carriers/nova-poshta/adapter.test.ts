@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { NovaPoshtaTracker } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, NovaPoshtaTracker } from './adapter.js';
 import { parseNovaPoshta, parseNovaPoshtaHistory } from './parser.js';
 const NUMBER = '59000000000001';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
@@ -96,6 +97,8 @@ describe('Nova Poshta movement parser', () => {
     value.alternativeNumbersGWNew.push({ name: 'constructor', number: 'ABCDEFGH1234' });
     const result = parseNovaPoshtaHistory(value, NUMBER);
     expect(result.dimensions_text).toBeUndefined(); expect(result.delivery_carrier).toBeUndefined();
+    value.alternativeNumbersGWNew.push({ name: 'PylonLogisticsUPS', number: '1Z999AA10123456784' });
+    expect(parseNovaPoshtaHistory(value, NUMBER)).toMatchObject({ delivery_carrier: 'ups', delivery_tracking_number: '1Z999AA10123456784' });
   });
   it('binds rerouted movements only to returned delivery references', () => {
     const value = history(); value.alternativeNumbersGWNew.push({ name: 'NPU_Redirecting', number: '59000000000002' });
@@ -176,6 +179,15 @@ describe('Nova Poshta retrieval', () => {
     const mixed = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(wrong)));
     await expect(new NovaPoshtaTracker({ fetcher: mixed }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
     expect(mixed).toHaveBeenCalledTimes(1);
+  });
+  it('recognizes a waybill with movements and the official absence, and asks nothing for a number it does not issue', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify(history())))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ errors: { errorMessage: 'not_found' } }), { status: 404 }));
+    const carrier = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+    await expect(carrier.recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    await expect(carrier.recognize!(NUMBER)).resolves.toEqual({ known: false });
+    await expect(carrier.recognize!('NP00000000000001')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
   it('rejects cross-border input and cancellation before any request', async () => {
     const fetcher = vi.fn<typeof fetch>();

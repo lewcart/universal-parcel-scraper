@@ -638,6 +638,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "nova-poshta",
           "dpd",
           "relais-colis",
           "ciblex",
@@ -646,8 +647,7 @@
           "delhivery",
           "dhl-ecommerce-uk",
           "dpd-de",
-          "dpd-uk",
-          "nova-poshta"
+          "dpd-uk"
         ]
       },
       "note": "Export waybill of the 595 family to a Nova Post branch in Germany; the official tracker returned its customs history."
@@ -671,6 +671,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "nova-poshta",
           "dpd",
           "relais-colis",
           "ciblex",
@@ -679,8 +680,7 @@
           "delhivery",
           "dhl-ecommerce-uk",
           "dpd-de",
-          "dpd-uk",
-          "nova-poshta"
+          "dpd-uk"
         ]
       },
       "note": "Export waybill handed to UPS abroad and returned to the sending branch; the official tracker returned its history."
@@ -704,6 +704,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "nova-poshta",
           "dpd",
           "relais-colis",
           "ciblex",
@@ -712,11 +713,77 @@
           "delhivery",
           "dhl-ecommerce-uk",
           "dpd-de",
-          "dpd-uk",
-          "nova-poshta"
+          "dpd-uk"
         ]
       },
       "note": "Export waybill to the United States handed to GoFo Express for delivery; the official tracker returned its history."
+    },
+    {
+      "number": "59500007591779",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/nova-poshta/",
+        "access": "full_page",
+        "date": "2026-10-14",
+        "dateKind": "capture"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Nova Poshta international",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "nova-poshta",
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "hermes-de",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "Sample number on ParcelPanel's Nova Poshta page: an export to the United States handed to GoFo Express; the official tracker returned its history."
+    },
+    {
+      "number": "59500007231597",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.vidhuk.ua/uk/novaya-pochta-nova-poshta/review-2371691",
+        "access": "full_page",
+        "date": "2026-08-28",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "service": "Nova Poshta international",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "nova-poshta",
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "Export waybill to the United States, its partner named PylonLogisticsUPS; the official tracker returned its history."
     },
     {
       "number": "TE1000000010936808NGUS",

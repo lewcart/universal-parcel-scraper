@@ -26545,10 +26545,11 @@
     ]
   },
   {
-    "input": "59500007235170",
+    "input": "59500007231597",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26557,15 +26558,44 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
+      "brt"
+    ]
+  },
+  {
+    "input": "59500007235170",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "nova-poshta",
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "seur",
       "brt",
-      "relais-colis"
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "preferred": [
+      "nova-poshta"
+    ],
+    "asked": [
+      "nova-poshta",
+      "dpd",
+      "dpd-de",
+      "seur",
+      "brt"
     ]
   },
   {
@@ -26573,6 +26603,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26581,15 +26612,17 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
-      "brt",
-      "relais-colis"
+      "brt"
     ]
   },
   {
@@ -26597,6 +26630,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26605,15 +26639,45 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
+      "brt"
+    ]
+  },
+  {
+    "input": "59500007591779",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "nova-poshta",
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "hermes-de",
+      "seur",
       "brt",
-      "relais-colis"
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "preferred": [
+      "nova-poshta"
+    ],
+    "asked": [
+      "nova-poshta",
+      "hermes-de",
+      "dpd",
+      "dpd-de",
+      "seur"
     ]
   },
   {

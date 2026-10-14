@@ -5425,6 +5425,48 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "asyad-express": {
+    "displayName": "Asyad Express",
+    "color": "#221a37",
+    "aliases": [
+      "Oman Post",
+      "Asyad Express Oman",
+      "أسياد إكسبريس",
+      "البريد العماني"
+    ],
+    "countries": [
+      "OM"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Muscat",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.asyadexpress.om/track-trace",
+    "trackingUrlTemplate": "https://www.asyadexpress.om/track-trace/{trackingNumber}",
+    "trackingSearchUrl": "https://www.asyadexpress.om/track-trace",
+    "linkRules": [
+      {
+        "domains": [
+          "asyadexpress.om",
+          "www.asyadexpress.om"
+        ],
+        "path": "^/track-trace/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "omanpost.om",
+          "www.omanpost.om"
+        ],
+        "pathPattern": "^/Tracking/?$",
+        "params": [
+          "trackingno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "averitt": {
     "displayName": "Averitt Express",
     "color": "#c21f38",
@@ -5734,6 +5776,103 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/lctracking\\.asp$",
         "params": [
           "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "border-express": {
+    "displayName": "Border Express",
+    "color": "#cc092f",
+    "aliases": [
+      "BEX",
+      "Border Express Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bexonline.borderexpress.com.au/bxo/track",
+    "trackingUrlTemplate": "https://www.borderexpress.com.au/tracking/?cn={trackingNumber}",
+    "trackingSearchUrl": "https://bexonline.borderexpress.com.au/bxo/track",
+    "linkRules": [
+      {
+        "domains": [
+          "borderexpress.com.au",
+          "www.borderexpress.com.au"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "bexonline.borderexpress.com.au"
+        ],
+        "pathPattern": "^/bxo/track/?$",
+        "params": [
+          "consignmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "bexonline.borderexpress.com.au"
+        ],
+        "path": "^/bxo/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{4}BX\\d{14}$",
+        "confidence": "low"
+      }
+    ]
+  },
+  "bosta": {
+    "displayName": "Bosta",
+    "color": "#e30613",
+    "aliases": [
+      "Bosta Egypt",
+      "بوسطة"
+    ],
+    "countries": [
+      "EG",
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Cairo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bosta.co/en-eg/tracking-shipments",
+    "trackingUrlTemplate": "https://bosta.co/en-eg/tracking-shipments?shipment-number={trackingNumber}",
+    "trackingSearchUrl": "https://bosta.co/en-eg/tracking-shipments",
+    "linkRules": [
+      {
+        "domains": [
+          "bosta.co",
+          "www.bosta.co"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}-[a-z]{2}/)?tracking-shipments/?$",
+        "params": [
+          "shipment-number"
+        ]
+      },
+      {
+        "domains": [
+          "bosta.co",
+          "www.bosta.co"
+        ],
+        "pathPattern": "^/tracking-shipment/?$",
+        "params": [
+          "track_num"
         ]
       }
     ],
@@ -6623,6 +6762,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "correo-uruguayo": {
+    "displayName": "Correo Uruguayo",
+    "color": "#00a7e6",
+    "aliases": [
+      "Administración Nacional de Correos",
+      "ANC",
+      "Uruguay Post",
+      "Correos de Uruguay"
+    ],
+    "countries": [
+      "UY"
+    ],
+    "selectable": true,
+    "timezone": "America/Montevideo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.correo.com.uy/seguimientodeenvios",
+    "trackingUrlTemplate": "https://ahiva.correo.com.uy/servicioConsultaTntIps-web/SeguimientoJSNuevo?codigoPieza={trackingNumber}",
+    "trackingSearchUrl": "https://www.correo.com.uy/seguimientodeenvios",
+    "linkRules": [
+      {
+        "domains": [
+          "ahiva.correo.com.uy"
+        ],
+        "pathPattern": "^/servicioConsultaTntIps-web/SeguimientoJSNuevo/?$",
+        "params": [
+          "codigoPieza"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "correos-de-mexico": {
     "displayName": "Correos de México",
     "color": "#ed007d",
@@ -6694,6 +6867,48 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/track/result/?$",
         "params": [
           "tracknr"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "courier-it": {
+    "displayName": "Courier IT",
+    "color": "#eb2227",
+    "aliases": [
+      "CourierIT",
+      "Courier IT SA"
+    ],
+    "countries": [
+      "ZA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Johannesburg",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://intellitrack.courierit.co.za/",
+    "trackingUrlTemplate": "https://intellitrack.courierit.co.za/?SearchString={trackingNumber}",
+    "trackingSearchUrl": "https://intellitrack.courierit.co.za/",
+    "linkRules": [
+      {
+        "domains": [
+          "intellitrack.courierit.co.za"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "SearchString"
+        ]
+      },
+      {
+        "domains": [
+          "courierit.co.za",
+          "www.courierit.co.za"
+        ],
+        "pathPattern": "^/Trackit/Trackit\\.aspx$",
+        "params": [
+          "WaybillNumber"
         ]
       }
     ],
@@ -7008,6 +7223,49 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "daylight-transport": {
+    "displayName": "Daylight Transport",
+    "color": "#006bb7",
+    "aliases": [
+      "Daylight",
+      "Daylight Transport, LLC",
+      "DYLT"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dylt.com/",
+    "trackingUrlTemplate": "https://mydaylight.dylt.com/external/shipment?probill={trackingNumber}",
+    "trackingSearchUrl": "https://www.dylt.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "mydaylight.dylt.com"
+        ],
+        "pathPattern": "^/external/shipment/?$",
+        "params": [
+          "probill"
+        ]
+      },
+      {
+        "domains": [
+          "www.dylt.com",
+          "dylt.com"
+        ],
+        "pathPattern": "^/shipment-tracing-result11\\.asp$",
+        "params": [
+          "SelectionValue"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dayton-freight": {
     "displayName": "Dayton Freight",
     "color": "#1c3f94",
@@ -7123,6 +7381,37 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.deppon.com/orderTrack",
     "trackingSearchUrl": "https://www.deppon.com/orderTrack",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "deprisa": {
+    "displayName": "Deprisa",
+    "color": "#295191",
+    "aliases": [
+      "Avianca Express",
+      "Deprisa Avianca"
+    ],
+    "countries": [
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.deprisa.com/Tracking/",
+    "trackingUrlTemplate": "https://www.deprisa.com/Tracking/?track={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "deprisa.com"
+        ],
+        "pathPattern": "^/+Tracking(/index)?/?$",
+        "params": [
+          "track"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "dhl-ecommerce-es": {
@@ -8077,6 +8366,57 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "envia-colombia": {
+    "displayName": "Envía",
+    "color": "#ba0020",
+    "aliases": [
+      "Envía Colvanes",
+      "Colvanes",
+      "Envia Colombia"
+    ],
+    "countries": [
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://envia.co/tracking",
+    "trackingUrlTemplate": "https://envia.co/tracking?guia={trackingNumber}",
+    "trackingSearchUrl": "https://envia.co/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "envia.co"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "guia"
+        ]
+      },
+      {
+        "domains": [
+          "portal.envia.co"
+        ],
+        "pathPattern": "^/OnLineRastreo(/Rastreo/Rastreo|/Consulta/Index)?/?$",
+        "params": [
+          "Guia"
+        ]
+      },
+      {
+        "domains": [
+          "enviacolvanes.com.co"
+        ],
+        "pathPattern": "^/Contenido\\.aspx$",
+        "params": [
+          "rastreo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "envialia": {
     "displayName": "Envialia",
     "color": "#ff5a00",
@@ -8174,6 +8514,43 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "europochta": {
+    "displayName": "Europochta",
+    "color": "#225ba8",
+    "aliases": [
+      "Evropochta",
+      "Европочта"
+    ],
+    "countries": [
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Minsk",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://evropochta.by/",
+    "trackingUrlTemplate": "https://evropochta.by/?number={trackingNumber}",
+    "trackingSearchUrl": "https://evropochta.by/",
+    "linkRules": [
+      {
+        "domains": [
+          "evropochta.by"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BY08\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   },
   "evri-uk": {
     "displayName": "Evri UK",
@@ -10591,6 +10968,38 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "midland-transport": {
+    "displayName": "Midland Transport",
+    "color": "#009057",
+    "aliases": [
+      "Midland Transport Limited",
+      "Midland Courier"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Moncton",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings",
+    "trackingUrlTemplate": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings?TrackingNumber={trackingNumber}&Lang=0",
+    "trackingSearchUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings",
+    "linkRules": [
+      {
+        "domains": [
+          "ship.midlandtransport.com"
+        ],
+        "pathPattern": "^/Tracking/TrackClientTrackings/?$",
+        "params": [
+          "TrackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "mng-kargo": {
     "displayName": "DHL eCommerce Türkiye",
     "color": "#ffcc00",
@@ -10818,6 +11227,37 @@ export const CARRIER_CATALOG = {
         "params": [
           "query"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "oak-harbor": {
+    "displayName": "Oak Harbor Freight Lines",
+    "color": "#1e2251",
+    "aliases": [
+      "Oak Harbor",
+      "Oak Harbor Freight Lines, Inc.",
+      "OHFL"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.oakh.com/page/tracing",
+    "trackingUrlTemplate": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",
+    "trackingSearchUrl": "https://www.oakh.com/page/tracing",
+    "linkRules": [
+      {
+        "domains": [
+          "www.oakh.com",
+          "oakh.com"
+        ],
+        "path": "^/quicktrace&[Pp][Rr][Oo]=([^/?#&]+)/?$"
       }
     ],
     "detectionRules": []
@@ -12587,6 +13027,38 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "skroutz-last-mile": {
+    "displayName": "Skroutz Last Mile",
+    "color": "#f68b24",
+    "aliases": [
+      "Skroutz",
+      "SLM",
+      "SendX",
+      "Skroutz Last Mile Cargo"
+    ],
+    "countries": [
+      "GR",
+      "CY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.skroutzlastmile.gr/",
+    "trackingUrlTemplate": "https://www.skroutzlastmile.gr/#{trackingNumber}",
+    "trackingSearchUrl": "https://www.skroutzlastmile.gr/",
+    "linkRules": [
+      {
+        "domains": [
+          "skroutz.gr"
+        ],
+        "path": "^/track/([A-Z0-9]{13})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "skynet-worldwide": {
     "displayName": "SkyNet Worldwide Express",
     "color": "#fe0000",
@@ -13163,6 +13635,51 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "tci-express": {
+    "displayName": "TCI Express",
+    "color": "#0d5fa6",
+    "aliases": [
+      "TCIEXPRESS",
+      "TCI Express Limited",
+      "Transport Corporation of India Express",
+      "TCI"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tciexpress.in/trackingdocket.aspx",
+    "trackingUrlTemplate": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",
+    "trackingSearchUrl": "https://www.tciexpress.in/trackingdocket.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.tciexpress.in",
+          "tciexpress.in"
+        ],
+        "pathPattern": "^/trackingdocket\\.aspx$",
+        "params": [
+          "trackshipment"
+        ]
+      },
+      {
+        "domains": [
+          "www.tciexpress.in",
+          "tciexpress.in"
+        ],
+        "pathPattern": "^/track-your-shipment/?$",
+        "params": [
+          "trackshipment"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "team-global-express": {
     "displayName": "Team Global Express",
     "color": "#143200",
@@ -13519,6 +14036,52 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "urbano": {
+    "displayName": "Urbano",
+    "color": "#5c068c",
+    "aliases": [
+      "Urbano Express",
+      "Urbano Perú",
+      "Urbano Ecuador"
+    ],
+    "countries": [
+      "PE",
+      "EC"
+    ],
+    "selectable": true,
+    "timezone": "America/Lima",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.urbano.com.pe/tracking/",
+    "trackingUrlTemplate": "https://www.urbano.com.pe/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.urbano.com.pe/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "urbano.com.pe"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "app.urbano.com.pe",
+          "api.urbano.com.pe"
+        ],
+        "pathPattern": "^/plugin/etracking/etracking/?$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^G\\d{8}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "vasp-expresso": {
     "displayName": "Vasp Expresso",
     "color": "#02518a",
@@ -13707,6 +14270,60 @@ export const CARRIER_CATALOG = {
           "vnpost.vn"
         ],
         "path": "^/vi-vn/dinh-vi/buu-pham(?:-ban-in/extmid/\\d+)?/key/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "vrl-logistics": {
+    "displayName": "VRL Logistics",
+    "color": "#ffcb00",
+    "aliases": [
+      "VRL",
+      "VRL Logistics Ltd",
+      "VRL Group",
+      "Vijayanand Road Lines"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",
+    "trackingSearchUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",
+    "linkRules": [
+      {
+        "domains": [
+          "vrlgroup.in",
+          "www.vrlgroup.in"
+        ],
+        "pathPattern": "^/vrlwebs/lrtrack\\.aspx$",
+        "params": [
+          "lno"
+        ]
+      },
+      {
+        "domains": [
+          "vrlgroup.in",
+          "www.vrlgroup.in"
+        ],
+        "pathPattern": "^/(tc|track_consignment)\\.aspx$",
+        "params": [
+          "lrno"
+        ]
+      },
+      {
+        "domains": [
+          "vrlgroup.in",
+          "www.vrlgroup.in"
+        ],
+        "pathPattern": "^/search_vrl_consignment_number\\.aspx$",
+        "params": [
+          "consignment_no"
+        ]
       }
     ],
     "detectionRules": []
@@ -14150,6 +14767,7 @@ export const CARRIER_IDS = [
   "aramex-nz",
   "aras-kargo",
   "arrow-xl",
+  "asyad-express",
   "averitt",
   "azul-cargo",
   "barid-al-maghrib",
@@ -14158,6 +14776,8 @@ export const CARRIER_IDS = [
   "better-trucks",
   "bex-express",
   "blue-express",
+  "border-express",
+  "bosta",
   "box-now",
   "bulgarian-posts",
   "burd-delivery",
@@ -14180,8 +14800,10 @@ export const CARRIER_IDS = [
   "cne",
   "coordinadora",
   "correo-argentino",
+  "correo-uruguayo",
   "correos-de-mexico",
   "courier-center",
+  "courier-it",
   "couriersplease",
   "cycloon",
   "cyprus-post",
@@ -14190,9 +14812,11 @@ export const CARRIER_IDS = [
   "danske-fragtmaend",
   "dao",
   "day-ross",
+  "daylight-transport",
   "dayton-freight",
   "dellin",
   "deppon",
+  "deprisa",
   "dhl-ecommerce-es",
   "dhl-ecommerce-nl",
   "dhl-ecommerce-pl",
@@ -14215,9 +14839,11 @@ export const CARRIER_IDS = [
   "elta",
   "emile",
   "emirates-post",
+  "envia-colombia",
   "envialia",
   "epost-global",
   "estes",
+  "europochta",
   "evri-uk",
   "express-one",
   "fan-courier",
@@ -14278,6 +14904,7 @@ export const CARRIER_IDS = [
   "maritime-ontario",
   "matkahuolto",
   "meest",
+  "midland-transport",
   "mng-kargo",
   "naqel",
   "nationex",
@@ -14285,6 +14912,7 @@ export const CARRIER_IDS = [
   "nippon-express",
   "nova-poshta",
   "nz-couriers",
+  "oak-harbor",
   "oca",
   "olva-courier",
   "omgo",
@@ -14331,6 +14959,7 @@ export const CARRIER_IDS = [
   "shadowfax",
   "shree-maruti",
   "sicepat",
+  "skroutz-last-mile",
   "skynet-worldwide",
   "slovak-parcel-service",
   "slovenska-posta",
@@ -14345,6 +14974,7 @@ export const CARRIER_IDS = [
   "starken",
   "surat-kargo",
   "swiftx",
+  "tci-express",
   "team-global-express",
   "tforce-freight",
   "thhy",
@@ -14355,11 +14985,13 @@ export const CARRIER_IDS = [
   "trendyol-express",
   "tsjy",
   "ubi-smart-parcel",
+  "urbano",
   "vasp-expresso",
   "venipak",
   "viettel-post",
   "vinted-go",
   "vnpost",
+  "vrl-logistics",
   "wanbexpress",
   "ward-trucking",
   "whistl",
@@ -14495,6 +15127,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aramex-nz": ["aramex-nz-1","aramex-nz-2"],
   "aras-kargo": [],
   "arrow-xl": [],
+  "asyad-express": [],
   "averitt": [],
   "azul-cargo": [],
   "barid-al-maghrib": [],
@@ -14503,6 +15136,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "better-trucks": ["better-trucks-1"],
   "bex-express": [],
   "blue-express": [],
+  "border-express": ["border-express-1"],
+  "bosta": [],
   "box-now": [],
   "bulgarian-posts": ["bulgarian-posts-1"],
   "burd-delivery": [],
@@ -14525,8 +15160,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cne": ["cne-1"],
   "coordinadora": [],
   "correo-argentino": [],
+  "correo-uruguayo": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "courier-center": [],
+  "courier-it": [],
   "couriersplease": ["couriersplease-1"],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
@@ -14535,9 +15172,11 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "danske-fragtmaend": ["danske-fragtmaend-1"],
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
+  "daylight-transport": [],
   "dayton-freight": [],
   "dellin": [],
   "deppon": [],
+  "deprisa": [],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],
   "dhl-ecommerce-nl": ["dhl-ecommerce-nl-1","dhl-ecommerce-nl-2","dhl-ecommerce-nl-3"],
   "dhl-ecommerce-pl": ["dhl-ecommerce-pl-1"],
@@ -14560,9 +15199,11 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "elta": ["elta-s10"],
   "emile": ["emile-1"],
   "emirates-post": [],
+  "envia-colombia": [],
   "envialia": [],
   "epost-global": ["epost-global-1"],
   "estes": [],
+  "europochta": ["europochta-1"],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
   "express-one": [],
   "fan-courier": [],
@@ -14623,6 +15264,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maritime-ontario": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "meest": ["meest-1"],
+  "midland-transport": [],
   "mng-kargo": [],
   "naqel": [],
   "nationex": [],
@@ -14630,6 +15272,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nippon-express": [],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
   "nz-couriers": [],
+  "oak-harbor": [],
   "oca": [],
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
@@ -14676,6 +15319,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shadowfax": ["shadowfax-1","shadowfax-2"],
   "shree-maruti": [],
   "sicepat": [],
+  "skroutz-last-mile": [],
   "skynet-worldwide": [],
   "slovak-parcel-service": ["slovak-parcel-service-1"],
   "slovenska-posta": ["slovenska-posta-s10"],
@@ -14690,6 +15334,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "starken": [],
   "surat-kargo": [],
   "swiftx": ["swiftx-1"],
+  "tci-express": [],
   "team-global-express": [],
   "tforce-freight": [],
   "thhy": ["thhy-1"],
@@ -14700,11 +15345,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trendyol-express": [],
   "tsjy": ["tsjy-1"],
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
+  "urbano": ["urbano-1"],
   "vasp-expresso": [],
   "venipak": ["venipak-1"],
   "viettel-post": ["viettel-post-1"],
   "vinted-go": ["vinted-go-1"],
   "vnpost": [],
+  "vrl-logistics": [],
   "wanbexpress": ["wanbexpress-1"],
   "ward-trucking": [],
   "whistl": [],

@@ -1,0 +1,60 @@
+{
+  "id": "urbano",
+  "displayName": "Urbano",
+  "aliases": [
+    "Urbano Express",
+    "Urbano Perú",
+    "Urbano Ecuador"
+  ],
+  "region": {
+    "countries": [
+      "PE",
+      "EC"
+    ]
+  },
+  "brand": {
+    "color": "#5c068c"
+  },
+  "selectable": true,
+  "timezone": "America/Lima",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.urbano.com.pe/tracking/{trackingNumber}",
+    "searchUrl": "https://www.urbano.com.pe/tracking/",
+    "canaryUrl": "https://www.urbano.com.pe/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "urbano.com.pe"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "app.urbano.com.pe",
+        "api.urbano.com.pe"
+      ],
+      "pathPattern": "^/plugin/etracking/etracking/?$",
+      "params": [
+        "guia"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "urbano-1",
+      "pattern": "^G\\d{8}$",
+      "confidence": "low"
+    }
+  ]
+}

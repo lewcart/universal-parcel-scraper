@@ -1,0 +1,21 @@
+{
+  "carrier": "bosta",
+  "entries": [
+    {"code": "10", "wording": "Your order is created, Bosta will pick it up once your shipper is ready", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Event text in an archived capture of Bosta's tracking API."},
+    {"code": "10", "wording": "Preparing for shipment", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Current-status label for the same event in an archived capture of Bosta's tracking API."},
+    {"code": "10", "wording": "تم إنشاء الشحنة.  لما التاجر يكون جاهز، هنستلم الشحنة", "stage": "registered", "language": "ar", "confirmedBy": "portal", "note": "Arabic event text for code 10 in an archived capture of Bosta's tracking API; the reply has two spaces after the full stop."},
+    {"code": "10", "wording": "يجهز للشحن", "stage": "registered", "language": "ar", "confirmedBy": "portal", "note": "Arabic current-status label for code 10 in an archived capture of Bosta's tracking API."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Processing", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Received at warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Customs Cleared", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Canceled", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Return inititated", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script. The misspelling is Bosta's."},
+    {"wording": "Return received by courier", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script."},
+    {"wording": "Returned to Business", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script. The parcel went back to the merchant."},
+    {"wording": "Delivered to business", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status label in the English strings of Bosta's tracking page script. Used for a return handed back to the merchant."}
+  ]
+}

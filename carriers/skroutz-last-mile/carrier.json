@@ -1,0 +1,45 @@
+{
+  "id": "skroutz-last-mile",
+  "displayName": "Skroutz Last Mile",
+  "aliases": [
+    "Skroutz",
+    "SLM",
+    "SendX",
+    "Skroutz Last Mile Cargo"
+  ],
+  "region": {
+    "countries": [
+      "GR",
+      "CY"
+    ]
+  },
+  "brand": {
+    "color": "#f68b24"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.skroutzlastmile.gr/#{trackingNumber}",
+    "searchUrl": "https://www.skroutzlastmile.gr/",
+    "canaryUrl": "https://www.skroutzlastmile.gr/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "skroutz.gr"
+      ],
+      "path": "^/track/([A-Z0-9]{13})/?$"
+    }
+  ],
+  "detection": []
+}

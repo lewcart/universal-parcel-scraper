@@ -1,0 +1,10 @@
+{
+  "carrier": "border-express",
+  "entries": [
+    {"wording": "Shipment Data Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Status and first event on the opened tracker capture; the sender's data has arrived."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "A step of the tracker's progress bar."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A step of the tracker's progress bar."},
+    {"wording": "On Board", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A step of the tracker's progress bar, between In Transit and Delivered; read as on board the delivery vehicle."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The last step of the tracker's progress bar."}
+  ]
+}

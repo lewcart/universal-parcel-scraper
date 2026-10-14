@@ -1,0 +1,6 @@
+{
+  "carrier": "asyad-express",
+  "entries": [
+    {"wording": "Order Placed (Awaiting dispatch from the shipper)", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Status and only event on the opened tracker capture."}
+  ]
+}

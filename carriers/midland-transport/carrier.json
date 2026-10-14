@@ -1,0 +1,45 @@
+{
+  "id": "midland-transport",
+  "displayName": "Midland Transport",
+  "aliases": [
+    "Midland Transport Limited",
+    "Midland Courier"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#009057"
+  },
+  "selectable": true,
+  "timezone": "America/Moncton",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings?TrackingNumber={trackingNumber}&Lang=0",
+    "searchUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings",
+    "canaryUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ship.midlandtransport.com"
+      ],
+      "pathPattern": "^/Tracking/TrackClientTrackings/?$",
+      "params": [
+        "TrackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

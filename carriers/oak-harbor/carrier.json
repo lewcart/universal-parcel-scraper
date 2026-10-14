@@ -1,0 +1,44 @@
+{
+  "id": "oak-harbor",
+  "displayName": "Oak Harbor Freight Lines",
+  "aliases": [
+    "Oak Harbor",
+    "Oak Harbor Freight Lines, Inc.",
+    "OHFL"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#1e2251"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",
+    "searchUrl": "https://www.oakh.com/page/tracing",
+    "canaryUrl": "https://www.oakh.com/page/tracing",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.oakh.com",
+        "oakh.com"
+      ],
+      "path": "^/quicktrace&[Pp][Rr][Oo]=([^/?#&]+)/?$"
+    }
+  ],
+  "detection": []
+}

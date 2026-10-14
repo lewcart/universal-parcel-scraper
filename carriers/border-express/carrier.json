@@ -1,0 +1,67 @@
+{
+  "id": "border-express",
+  "displayName": "Border Express",
+  "aliases": [
+    "BEX",
+    "Border Express Pty Ltd"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#cc092f"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.borderexpress.com.au/tracking/?cn={trackingNumber}",
+    "searchUrl": "https://bexonline.borderexpress.com.au/bxo/track",
+    "canaryUrl": "https://bexonline.borderexpress.com.au/bxo/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "borderexpress.com.au",
+        "www.borderexpress.com.au"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "cn"
+      ]
+    },
+    {
+      "domains": [
+        "bexonline.borderexpress.com.au"
+      ],
+      "pathPattern": "^/bxo/track/?$",
+      "params": [
+        "consignmentNumber"
+      ]
+    },
+    {
+      "domains": [
+        "bexonline.borderexpress.com.au"
+      ],
+      "path": "^/bxo/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "border-express-1",
+      "pattern": "^[A-Z]{4}BX\\d{14}$",
+      "confidence": "low"
+    }
+  ]
+}

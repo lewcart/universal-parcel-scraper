@@ -1,0 +1,10 @@
+{
+  "carrier": "envia-colombia",
+  "entries": [
+    {"wording": "Recogida", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Milestone of the archived tracker: collected from the sender."},
+    {"wording": "En bodega origen", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Milestone of the archived tracker; the page appends the origin city."},
+    {"wording": "En despacho", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Milestone of the archived tracker: dispatched towards the destination."},
+    {"wording": "En reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Milestone of the archived tracker."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Milestone of the archived tracker."}
+  ]
+}

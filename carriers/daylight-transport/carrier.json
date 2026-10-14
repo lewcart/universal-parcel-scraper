@@ -1,0 +1,56 @@
+{
+  "id": "daylight-transport",
+  "displayName": "Daylight Transport",
+  "aliases": [
+    "Daylight",
+    "Daylight Transport, LLC",
+    "DYLT"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#006bb7"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mydaylight.dylt.com/external/shipment?probill={trackingNumber}",
+    "searchUrl": "https://www.dylt.com/",
+    "canaryUrl": "https://www.dylt.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mydaylight.dylt.com"
+      ],
+      "pathPattern": "^/external/shipment/?$",
+      "params": [
+        "probill"
+      ]
+    },
+    {
+      "domains": [
+        "www.dylt.com",
+        "dylt.com"
+      ],
+      "pathPattern": "^/shipment-tracing-result11\\.asp$",
+      "params": [
+        "SelectionValue"
+      ]
+    }
+  ],
+  "detection": []
+}

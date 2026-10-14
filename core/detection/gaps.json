@@ -161,6 +161,12 @@
     "reason": "One reported Asendia USA reference of this layout; the family is not established."
   },
   {
+    "carrier": "asyad-express",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Asyad Express shipment numbers seen so far are plain digits, shared with many carriers; the tracker states no fixed length or prefix."
+  },
+  {
     "carrier": "australia-post",
     "pattern": "^9979\\d{14}$",
     "kind": "open",
@@ -207,6 +213,30 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Ten digits are shared by several carriers and nothing in the number points to Blue Express."
+  },
+  {
+    "carrier": "border-express",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Plain eight-digit consignments match many carriers' numeric references; no checksum or prefix sets them apart."
+  },
+  {
+    "carrier": "border-express",
+    "pattern": "^[A-Z]{4}\\d{6}$",
+    "kind": "collision",
+    "reason": "The documented sender-prefix consignment shape is claimed with high confidence by C chez vous's rule."
+  },
+  {
+    "carrier": "border-express",
+    "pattern": "^[A-Za-z]{4}\\d{5,8}$",
+    "kind": "by_design",
+    "reason": "Sender prefixes with ranges other than six digits occur in tracker lookups; the shape is too generic to claim."
+  },
+  {
+    "carrier": "bosta",
+    "pattern": "^\\d{7,8}$",
+    "kind": "by_design",
+    "reason": "Bosta's seven- and eight-digit shipment numbers are a bare digit run many carriers share."
   },
   {
     "carrier": "box-now",
@@ -393,6 +423,12 @@
     "reason": "Twelve digits are shared by several carriers, Speedex among them, and nothing in the number points to Courier Center."
   },
   {
+    "carrier": "courier-it",
+    "pattern": "^[A-Z]{2,3}\\d{6,7}$",
+    "kind": "by_design",
+    "reason": "Courier IT waybills seen so far are a short letter prefix and six or seven digits, a shape shared by many carriers and by PostNet's own waybills."
+  },
+  {
     "carrier": "couriersplease",
     "pattern": "^\\d[A-Z]\\d{10}$",
     "kind": "by_design",
@@ -428,6 +464,12 @@
     "reason": "One Day & Ross sample of this shape; the family is not established."
   },
   {
+    "carrier": "daylight-transport",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are shared by several carriers, and Daylight's probills carry no check digit that could point to it."
+  },
+  {
     "carrier": "dayton-freight",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -450,6 +492,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Ten digits are shared by DHL and several other carriers, and nothing in the number points to Deppon."
+  },
+  {
+    "carrier": "deprisa",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers and nothing in the number points to Deprisa."
   },
   {
     "carrier": "dhl",
@@ -647,6 +695,12 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Thirteen-digit domestic numbers share their shape with many carriers, and Emirates Post documents no prefix."
+  },
+  {
+    "carrier": "envia-colombia",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are shared by several carriers and nothing in the number points to Envía."
   },
   {
     "carrier": "envialia",
@@ -1117,6 +1171,12 @@
     "reason": "One Meest number of this shape; the family is not established."
   },
   {
+    "carrier": "midland-transport",
+    "pattern": "^\\d{16}$",
+    "kind": "by_design",
+    "reason": "Sixteen digits are shared by many carriers and nothing in a Midland Courier number points to Midland."
+  },
+  {
     "carrier": "mng-kargo",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -1187,6 +1247,12 @@
     "pattern": "^\\d{8,9}$",
     "kind": "by_design",
     "reason": "Eight-digit charge labels and nine-digit international consignments are shared by many carriers, and nothing in the number points to New Zealand Couriers."
+  },
+  {
+    "carrier": "oak-harbor",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are shared by several carriers, and Oak Harbor's PROs carry no check digit that could point to it."
   },
   {
     "carrier": "oca",
@@ -1498,6 +1564,12 @@
     "reason": "Twelve digits are FedEx's layout and other carriers print them too, so a leading 00 does not point to SiCepat."
   },
   {
+    "carrier": "skroutz-last-mile",
+    "pattern": "^[A-Z0-9]{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen capital letters and digits without a prefix or check digit are shared with UPU numbers and other carriers' codes, so nothing in a voucher points to Skroutz Last Mile."
+  },
+  {
     "carrier": "skynet-worldwide",
     "pattern": "^\\d{11,12}$",
     "kind": "by_design",
@@ -1573,6 +1645,18 @@
     "carrier": "swiss-post-cargo",
     "kind": "by_design",
     "reason": "The shipment number goes with a company number; eight digits alone are generic."
+  },
+  {
+    "carrier": "tci-express",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "TCI Express's nine-digit docket numbers are a bare digit run shared with other carriers."
+  },
+  {
+    "carrier": "tci-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "TCI Express's ten-digit docket numbers share their shape with many carriers' numeric waybills."
   },
   {
     "carrier": "team-global-express",
@@ -1677,6 +1761,12 @@
     "reason": "UniUni's tracker serves these Canadian parcels, one sample per shape; no family is established."
   },
   {
+    "carrier": "urbano",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are shared by several carriers and nothing in the number points to Urbano."
+  },
+  {
     "carrier": "vasp-expresso",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -1699,6 +1789,18 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Thirteen-digit order numbers carry no Viettel Post marker and many carriers print thirteen digits."
+  },
+  {
+    "carrier": "vrl-logistics",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "VRL's ten-digit LR numbers share their shape with many carriers' numeric waybills."
+  },
+  {
+    "carrier": "vrl-logistics",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "VRL's nine-digit LR numbers are a bare digit run shared with other carriers."
   },
   {
     "carrier": "wanbexpress",

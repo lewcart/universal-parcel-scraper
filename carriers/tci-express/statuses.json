@@ -1,0 +1,6 @@
+{
+  "carrier": "tci-express",
+  "entries": [
+    {"wording": "Arrived At.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker as the docket status, followed by the station code and name and the date."}
+  ]
+}

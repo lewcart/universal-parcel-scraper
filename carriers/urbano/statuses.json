@@ -1,0 +1,18 @@
+{
+  "carrier": "urbano",
+  "entries": [
+    {"wording": "Admitido en Hub", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe. Received at Urbano's hub."},
+    {"wording": "Despachado", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe. Dispatched from the hub."},
+    {"wording": "Arribado", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe. Arrived at the destination station."},
+    {"wording": "Salida a Ruta", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe."},
+    {"wording": "No entregado", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe."},
+    {"wording": "Devuelto", "stage": "returned", "language": "es", "confirmedBy": "portal", "note": "Milestone label in the script of Urbano's own tracker on urbano.com.pe."},
+    {"wording": "SOLICITUD DE SERVICIO", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived)."},
+    {"wording": "Checking Pre-Embarque", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived)."},
+    {"wording": "DESPACHADO A DESTINO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived)."},
+    {"wording": "ARRIBADO EN DESTINO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived)."},
+    {"wording": "SALIO A RUTA", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived)."},
+    {"wording": "VISITADO SIN ENTREGA (Direccion Incorrecta)", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Event in a parcel history on Urbano's own e-tracking page (archived). Visited without delivery: wrong address."}
+  ]
+}

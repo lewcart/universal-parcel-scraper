@@ -1,0 +1,11 @@
+{
+  "carrier": "vrl-logistics",
+  "entries": [
+    {"wording": "MATERIAL DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, on a delivery run."},
+    {"wording": "MATERIAL OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, on a delivery run."},
+    {"wording": "NOT DELIVERED", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, on a delivery run cancelled with a reason."},
+    {"wording": "CAN-refused", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, as the narration of a cancelled delivery run: the consignee refused it."},
+    {"wording": "CAN-wrong addres", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, as the narration of a cancelled delivery run: wrong address."},
+    {"wording": "Not Delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the LR tracking page, in brackets as the overall delivery status while the material waits at a branch; a summary, not an event."}
+  ]
+}

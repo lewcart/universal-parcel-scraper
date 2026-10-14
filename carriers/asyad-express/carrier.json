@@ -1,0 +1,55 @@
+{
+  "id": "asyad-express",
+  "displayName": "Asyad Express",
+  "aliases": [
+    "Oman Post",
+    "Asyad Express Oman",
+    "أسياد إكسبريس",
+    "البريد العماني"
+  ],
+  "region": {
+    "countries": [
+      "OM"
+    ]
+  },
+  "brand": {
+    "color": "#221a37"
+  },
+  "selectable": true,
+  "timezone": "Asia/Muscat",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.asyadexpress.om/track-trace/{trackingNumber}",
+    "searchUrl": "https://www.asyadexpress.om/track-trace",
+    "canaryUrl": "https://www.asyadexpress.om/track-trace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "asyadexpress.om",
+        "www.asyadexpress.om"
+      ],
+      "path": "^/track-trace/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "omanpost.om",
+        "www.omanpost.om"
+      ],
+      "pathPattern": "^/Tracking/?$",
+      "params": [
+        "trackingno"
+      ]
+    }
+  ],
+  "detection": []
+}

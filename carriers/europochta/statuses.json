@@ -1,0 +1,13 @@
+{
+  "carrier": "europochta",
+  "entries": [
+    {"wording": "Заявка на почтовое отправление зарегистрирована", "stage": "registered", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. The sender registered the shipment online."},
+    {"wording": "Почтовое отправление принято на ОПС", "stage": "accepted", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. Accepted at a Europochta office (ОПС)."},
+    {"wording": "Оплачено на ОПС", "stage": "accepted", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. The shipment was paid for at the office of posting."},
+    {"wording": "Почтовое отправление в доставке на центральный сортировочный пункт", "stage": "in_transit", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. On its way to the central sorting point."},
+    {"wording": "Почтовое отправление прибыло на центральный сортировочный пункт", "stage": "in_transit", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot."},
+    {"wording": "В пути на ОПС назначения", "stage": "in_transit", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. On its way to the destination office."},
+    {"wording": "Почтовое отправление прибыло на ОПС выдачи", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. Arrived at the office that hands it over, where the recipient collects it."},
+    {"wording": "Почтовое отправление выдано. Наложенный платеж оплачен", "stage": "delivered", "language": "ru", "confirmedBy": "source", "note": "Seen in a recorded reply of Europochta's tracking service kept as a test fixture by an open-source tracking bot. Handed to the recipient, who paid the cash on delivery."}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "carrier": "midland-transport",
+  "entries": [
+    {"wording": "Shipment Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the progress bar column. The first step of the progress bar; no history line carries it."},
+    {"wording": "No Tracking Info", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column. Shown until the courier scans the parcel."},
+    {"wording": "Your Shipment has been created. Check back soon for more info once the carrier/courier starts to scan.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Description column."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column."},
+    {"wording": "Picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Description column. The terminal follows in parentheses."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column."},
+    {"wording": "Processed at Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Description column. The terminal follows in parentheses."},
+    {"wording": "Delivery Exception", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column."},
+    {"wording": "Delayed in Transit - CONSIGNEE DELAY", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Description column. The terminal follows in parentheses."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Description column. The terminal follows in parentheses."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Midland's tracker on ship.midlandtransport.com, in the Activity column. The Description column repeats it with the delivery town in parentheses."}
+  ]
+}

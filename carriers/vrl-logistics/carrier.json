@@ -1,0 +1,67 @@
+{
+  "id": "vrl-logistics",
+  "displayName": "VRL Logistics",
+  "aliases": [
+    "VRL",
+    "VRL Logistics Ltd",
+    "VRL Group",
+    "Vijayanand Road Lines"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#ffcb00"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",
+    "canaryUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "vrlgroup.in",
+        "www.vrlgroup.in"
+      ],
+      "pathPattern": "^/vrlwebs/lrtrack\\.aspx$",
+      "params": [
+        "lno"
+      ]
+    },
+    {
+      "domains": [
+        "vrlgroup.in",
+        "www.vrlgroup.in"
+      ],
+      "pathPattern": "^/(tc|track_consignment)\\.aspx$",
+      "params": [
+        "lrno"
+      ]
+    },
+    {
+      "domains": [
+        "vrlgroup.in",
+        "www.vrlgroup.in"
+      ],
+      "pathPattern": "^/search_vrl_consignment_number\\.aspx$",
+      "params": [
+        "consignment_no"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,8 @@
+{
+  "carrier": "correo-uruguayo",
+  "entries": [
+    {"code": "15", "wording": "INGRESO A CORREO URUGUAYO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of Correo Uruguayo's tracking service."},
+    {"code": "12", "wording": "PROCESADO EN OFICINA", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of Correo Uruguayo's tracking service."},
+    {"code": "1", "wording": "EN TRANSITO A DESTINO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived reply of Correo Uruguayo's tracking service."}
+  ]
+}

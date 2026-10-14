@@ -1,0 +1,51 @@
+{
+  "id": "europochta",
+  "displayName": "Europochta",
+  "aliases": [
+    "Evropochta",
+    "Европочта"
+  ],
+  "region": {
+    "countries": [
+      "BY"
+    ]
+  },
+  "brand": {
+    "color": "#225ba8"
+  },
+  "selectable": true,
+  "timezone": "Europe/Minsk",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://evropochta.by/?number={trackingNumber}",
+    "searchUrl": "https://evropochta.by/",
+    "canaryUrl": "https://evropochta.by/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "evropochta.by"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "europochta-1",
+      "pattern": "^BY08\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

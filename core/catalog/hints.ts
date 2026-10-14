@@ -16,6 +16,7 @@ const NAME_ALIASES: Readonly<Record<string, string>> = {
   ups: 'ups', swisspost: 'swiss-post', laposte: 'la-poste', colissimo: 'la-poste',
   dhlecommerce: 'dhl-ecommerce', cainiao: 'aliexpress', postnl: 'spring-gds',
   asendiausa: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain', portugalctt: 'ctt',
+  italypost: 'poste-italiane', deutschepostdhlpaket: 'dhl',
 };
 // The postal union's shared feed, which aggregators list among a parcel's carriers.
 const FEED_NAMES = ['upu', 'universalpostalunion'];

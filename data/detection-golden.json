@@ -42165,6 +42165,70 @@
     ]
   },
   {
+    "input": "FEIAA0123456789YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1708307479YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1708891379YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1709287291YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1709303428YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1709310876YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1709327488YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
+    "input": "FEISZ1709343517YQ",
+    "carrier": "17feia",
+    "confidence": "high",
+    "candidates": [
+      "17feia"
+    ]
+  },
+  {
     "input": "FGRC45BKLM",
     "carrier": "c-chez-vous",
     "confidence": "high",
@@ -51684,6 +51748,17 @@
     "confidence": "high",
     "candidates": [
       "an-post"
+    ]
+  },
+  {
+    "input": "TRKB879BE6E9D8E",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "hywl"
+    ],
+    "asked": [
+      "hywl"
     ]
   },
   {

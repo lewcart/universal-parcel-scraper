@@ -4734,24 +4734,47 @@ export const CARRIER_CATALOG = {
   },
   "17feia": {
     "displayName": "17FEIA",
-    "color": "#8e8e93",
+    "color": "#00a9e4",
     "aliases": [
       "17FEIA",
-      "Feia"
+      "Feia",
+      "17Feia Express",
+      "一起飞",
+      "上海宏杉国际物流",
+      "Shanghai Hongshan International Logistics"
+    ],
+    "countries": [
+      "CN"
     ],
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
       "adapter": "17feia",
-      "recognitionRank": 99,
+      "recognitionRank": 991,
       "localClocks": true
     },
     "canaryUrl": "https://www.17feia.com/",
     "trackingUrlTemplate": "https://www.17feia.com/tracking?orderNumber={trackingNumber}",
-    "trackingSearchUrl": "https://www.17feia.com/tracking",
-    "linkRules": [],
-    "detectionRules": []
+    "trackingSearchUrl": "https://www.17feia.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "17feia.com",
+          "www.17feia.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   },
   "5post": {
     "displayName": "5Post",
@@ -9071,6 +9094,51 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "hywl": {
+    "displayName": "Huiyi Logistics",
+    "color": "#0b8f91",
+    "aliases": [
+      "HYWL",
+      "汇一物流",
+      "匯一物流",
+      "Huiyi Logistics",
+      "SZHYWL",
+      "深圳市汇一物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "hywl",
+      "recognitionRank": 993,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.szhywl.it.com/track.html",
+    "trackingUrlTemplate": "https://www.szhywl.it.com/track.html?number={trackingNumber}",
+    "trackingSearchUrl": "https://www.szhywl.it.com/track.html",
+    "linkRules": [
+      {
+        "domains": [
+          "szhywl.it.com",
+          "www.szhywl.it.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "number",
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^TRK[0-9A-F]{12}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "ics-courier": {
     "displayName": "ICS Courier",
     "color": "#004b8e",
@@ -13061,23 +13129,40 @@ export const CARRIER_CATALOG = {
   },
   "tsjy": {
     "displayName": "TSJY",
-    "color": "#8e8e93",
+    "color": "#4042e2",
     "aliases": [
       "TSJY",
-      "通世集运"
+      "通世集运",
+      "通世集運",
+      "Tonse Supply Chain",
+      "苏州通世供应链"
+    ],
+    "countries": [
+      "CN"
     ],
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
       "adapter": "tsjy",
-      "recognitionRank": 98,
+      "recognitionRank": 992,
       "localClocks": true
     },
     "canaryUrl": "https://www.tsjy56.com/",
     "trackingUrlTemplate": "https://www.tsjy56.com/orderResult.html?nos={trackingNumber}",
     "trackingSearchUrl": "https://www.tsjy56.com/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "tsjy56.com",
+          "www.tsjy56.com"
+        ],
+        "pathPattern": "^/orderResult\\.html$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "ubi-smart-parcel": {
@@ -13841,6 +13926,7 @@ export const CARRIER_IDS = [
   "hepsijet",
   "hrvatska-posta",
   "hunter-express",
+  "hywl",
   "ics-courier",
   "ids-logistik",
   "imile",
@@ -14069,7 +14155,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "the-courier-guy": ["the-courier-guy-1","the-courier-guy-2"],
   "j-and-t": ["j-and-t-1","j-and-t-2","j-and-t-3","j-and-t-4","j-and-t-5","j-and-t-6"],
   "ems": [],
-  "17feia": [],
+  "17feia": ["17feia-1"],
   "5post": [],
   "99minutos": [],
   "a-duie-pyle": [],
@@ -14176,6 +14262,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hepsijet": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
   "hunter-express": [],
+  "hywl": ["hywl-1"],
   "ics-courier": ["ics-courier-1"],
   "ids-logistik": [],
   "imile": [],

@@ -657,6 +657,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tsjy', number: 'TSJY900000000CN',
     route: /^https:\/\/www\.tsjy56\.com\/orderResult\.html\?nos=TSJY900000000CN$/,
     marker: /未找到相关的轨迹信息/ },
+  // The page reads the number from its address and asks the tracking service on load.
+  { carrier: 'hywl', number: 'TRK999999999999',
+    route: /^https:\/\/www\.szhywl\.it\.com\/track\.html\?number=TRK999999999999$/,
+    marker: /查询失败：HTTP 404/ },
 ];
 
 /**

@@ -1,0 +1,27 @@
+{
+  "carrier": "hywl",
+  "records": [
+    {
+      "number": "TRKB879BE6E9D8E",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.szhywl.it.com/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "hywl"
+        ]
+      },
+      "note": "The example HYWL's home page prints in its tracking field, which its tracking page also queries by default. HYWL's tracker answers it as a delivered parcel from China to France."
+    }
+  ]
+}

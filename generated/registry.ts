@@ -103,6 +103,7 @@ import { adapter as hermes } from '../carriers/hermes/adapter.js';
 import { adapter as hermesDe } from '../carriers/hermes-de/adapter.js';
 import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
+import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
 import { adapter as inpost } from '../carriers/inpost/adapter.js';
 import { adapter as instabox } from '../carriers/instabox/adapter.js';
@@ -307,6 +308,7 @@ export const REGISTRY: RegistryDefinition = {
     "hermes-de": hermesDe,
     "hongkong-post": hongkongPost,
     "hrvatska-posta": hrvatskaPosta,
+    "hywl": hywl,
     "india-post": indiaPost,
     "inpost": inpost,
     "instabox": instabox,
@@ -564,6 +566,7 @@ export const REGISTRY: RegistryDefinition = {
     "hongkong-post": "hongkong-post",
     "hrvatska-posta": "hrvatska-posta",
     "hunter-express": "universal",
+    "hywl": "hywl",
     "ics-courier": "universal",
     "ids-logistik": "universal",
     "imile": "universal",

@@ -2,7 +2,7 @@
 
 /** Carriers whose adapter can recognize a number, by popularity rank (carrier.json tracking.recognition). */
 export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
-  "17feia": 99,
+  "17feia": 991,
   "99minutos": 40,
   "abf-freight": 10,
   "acs-courier": 310,
@@ -69,6 +69,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "helthjem": 210,
   "hermes-de": 840,
   "hrvatska-posta": 160,
+  "hywl": 993,
   "inpost": 820,
   "j-and-t": 530,
   "j-and-t-cargo": 910,
@@ -118,7 +119,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "the-courier-guy": 730,
   "tipsa": 680,
   "tnt": 880,
-  "tsjy": 98,
+  "tsjy": 992,
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,
   "uniuni": 770,

@@ -18,8 +18,7 @@ Detection and adapter eligibility use the same catalog shapes.
 Fifteen-digit parcel IDs, printed on the parcel label, go through the form's
 parcel search, which only covers about the last two months. Its result page does
 not repeat the parcel ID, so a second request reads the shipment's own parcel
-list and the result is accepted only when that list names the requested ID. A
-parcel ID the search does not find stays inconclusive.
+list and the result is accepted only when that list names the requested ID.
 
 ## Notes
 
@@ -37,8 +36,13 @@ history.
 Recipient details, sender references and shipment identifiers beyond the
 requested identifier are excluded from the result.
 
-A negative requires the portal's matching parcel-label error. Empty replies,
-redirects and generic HTTP errors remain inconclusive.
+A negative requires the portal's matching parcel-label error. BRT answers a
+shipment number it has not found with its TIS0564 error, "Shipment not found or
+still being processed", and the parcel search gives the same sentence without the
+code. It also answers a shipment not processed yet and a parcel ID older than the
+search reaches, so these exact replies stay inconclusive with the reason
+`portal_not_found`. Empty replies, redirects and generic HTTP errors remain
+inconclusive.
 
 Links to the shipment pages (`/vas/sped_…`) and the root of vas.brt.it name
 BRT; its other pages, such as pickup orders and help, name none.

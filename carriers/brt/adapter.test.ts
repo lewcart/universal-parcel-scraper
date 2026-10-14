@@ -15,7 +15,7 @@ const html = readFileSync(new URL('./fixtures/history.html', import.meta.url), '
 const PARCEL_ID = '990991000000015';
 const parcelPage = readFileSync(new URL('./fixtures/parcel-id.html', import.meta.url), 'utf8');
 const parcelList = readFileSync(new URL('./fixtures/parcel-list.html', import.meta.url), 'utf8');
-const notFoundPage = '<div id="box_tool_content"><h3 class="separatore">Errori riscontrati</h3><div id="box_contenuti">Shipment not found or still being processed in our systems.</div></div>';
+const notFoundPage = readFileSync(new URL('./fixtures/not-found.html', import.meta.url), 'utf8');
 const negative = (number = NUMBER) => `<div id="box_tool_content"><div id="toolbar_sx"><h3>Rintraccia</h3></div><h3 class="separatore">Errori riscontrati</h3><div id="box_contenuti">TIS0868 Parcel Label number ${number} not found</div></div>`;
 const edit = (fn: (document: ReturnType<typeof load>) => void) => { const $ = load(html); fn($); return $.html(); };
 const response = (body = html) => new Response(body, { headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
@@ -110,8 +110,9 @@ describe('BRT direct tracking', () => {
       await expect(new BrtTracker({ fetcher: twice(detail!, list) }).fetch(PARCEL_ID)).rejects.toMatchObject({ kind: 'schema' });
     }
     expect(() => parseBrt(parcelPage, PARCEL_ID)).toThrowError(expect.objectContaining({ kind: 'schema' }));
-    const absent = vi.fn<typeof fetch>().mockResolvedValue(response(notFoundPage));
-    await expect(new BrtTracker({ fetcher: absent }).fetch(PARCEL_ID)).rejects.toMatchObject({ kind: 'indeterminate' });
+    // The parcel ID search gives its not-found reply without BRT's error code.
+    const absent = vi.fn<typeof fetch>().mockResolvedValue(response(notFoundPage.replace('TIS0564 ', '')));
+    await expect(new BrtTracker({ fetcher: absent }).fetch(PARCEL_ID)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
     expect(absent).toHaveBeenCalledTimes(1);
   });
 
@@ -138,6 +139,24 @@ describe('BRT direct tracking', () => {
       edit($ => $('.table_stato_dati').remove())]) {
       expect(() => parseBrt(body, NUMBER)).toThrow();
       expect(() => parseBrt(body, NUMBER)).not.toThrowError(expect.objectContaining({ kind: 'not_found' }));
+    }
+  });
+
+  it('reads BRT\'s not-found-or-processing reply as an unknown shipment, never as absence', async () => {
+    for (const number of [SHIPMENT, NUMBER, PARCEL_ID]) {
+      expect(() => parseBrt(notFoundPage, number)).toThrowError(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    }
+    const fetcher = vi.fn<typeof fetch>(async () => new Response(Buffer.from(notFoundPage, 'latin1'),
+      { headers: { 'Content-Type': 'text/html; charset=ISO-8859-1' } }));
+    await expect(adapter(environment(fetcher)).track({ number: SHIPMENT, postcode: null }))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+    await expect(adapter(environment(fetcher)).recognize!(SHIPMENT)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+    const page = (fn: (document: ReturnType<typeof load>) => void) => { const $ = load(notFoundPage); fn($); return $.html(); };
+    for (const body of [notFoundPage.replace('TIS0564', 'TIS0565'), notFoundPage.replace('TIS0564 ', ''), notFoundPage.replace('still being processed', 'being processed'),
+      notFoundPage.replace('Errori riscontrati</label>', 'Avviso</label>'), notFoundPage.replace('box_tool_content', 'hidden'),
+      page($ => $('#box_contenuti td').append(' Try again tomorrow')), page($ => $('#box_contenuti').clone().appendTo('#box_tool_content')),
+      notFoundPage.replace('</body>', `${html}</body>`), notFoundPage + notFoundPage]) {
+      expect(() => parseBrt(body, SHIPMENT)).not.toThrowError(expect.objectContaining({ reason: 'portal_not_found' }));
     }
   });
 

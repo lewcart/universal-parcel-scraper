@@ -41,7 +41,7 @@ export class BrtTracker {
       // result does not repeat the ID, so the shipment's parcel list must name it.
       const detail = await page(`${BASE}sped_det_show.hsm?lang=en`, { referer: 'sped_numspe_par.htm', ChiSono: number,
         ClienteMittente: '', DataInizio: '', DataFine: '', RicercaChiSono: 'Ricerca', lang: 'en' });
-      return parseBrt(detail, number, await page(new URL(brtParcelListPath(detail), BASE).href));
+      return parseBrt(detail, number, await page(new URL(brtParcelListPath(detail, number), BASE).href));
     } }]);
   }
 }

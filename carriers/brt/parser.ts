@@ -42,16 +42,41 @@ function scanTables($: CheerioAPI) {
   return $('table.table_stato_dati').filter((_, table) => $(table).find('tr').first().children('td, th').length === 4);
 }
 
+// BRT's reply for a shipment number it has not found, which also answers a
+// shipment it has not processed yet. The parcel ID search replies without the code.
+const NOT_FOUND_OR_PROCESSING = 'Shipment not found or still being processed in our systems. '
+  + 'Correct the entered parameter or wait and then repeat the search';
+
+/** The error the portal reports under its "Errori riscontrati" heading, or '' when it reports none. */
+function portalError($: CheerioAPI): string {
+  const scope = $('#box_tool_content');
+  const heading = scope.children('h3.separatore');
+  const errors = scope.children('#box_contenuti').clone();
+  errors.find('script, style').remove();
+  return scope.length === 1 && errors.length === 1 && heading.length === 1 && clean(heading.text(), 80) === 'Errori riscontrati'
+    ? clean(errors.text(), 300) : '';
+}
+
+/** Explains a page without shipment details: BRT's own negative or not-found reply, else inconclusive. */
+function throwPortalError($: CheerioAPI, number: string): never {
+  const error = portalError($);
+  if (number.length === 14 && error === `TIS0868 Parcel Label number ${number} not found`) throw new NotFoundError('BRT');
+  if (error === `TIS0564 ${NOT_FOUND_OR_PROCESSING}` || (isBrtParcelId(number) && error === NOT_FOUND_OR_PROCESSING)) {
+    throw new IndeterminateError('BRT', 'BRT has not found the shipment or not processed it yet', { reason: 'portal_not_found' });
+  }
+  throw new IndeterminateError('BRT', 'BRT did not return shipment history');
+}
+
 /**
  * The link from a parcel-ID result to its list of parcels, which names each
  * parcel's BRT and customer IDs. Only a relative link to that list for the
  * same shipment is followed.
  */
-export function brtParcelListPath(html: string): string {
+export function brtParcelListPath(html: string, number: string): string {
   const $ = load(html);
   const shipments = shipmentTables($);
-  // "Shipment not found or still being processed": the search covers two months.
-  if (!shipments.length && !scanTables($).length) throw new IndeterminateError('BRT', 'BRT did not return shipment history');
+  // The search covers about two months, so an older parcel ID is not found either.
+  if (!shipments.length && !scanTables($).length) throwPortalError($, number);
   const shipment = shipments.length === 1
     ? shipments.find('tr').filter((_, row) => rowLabel($, row) === 'N. spedizione').children('td').last().text()
     : '';
@@ -95,17 +120,7 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
   const $ = load(html);
   const metadata = shipmentTables($);
   const history = scanTables($);
-  if (!metadata.length && !history.length) {
-    const scope = $('#box_tool_content');
-    const heading = scope.children('h3.separatore');
-    const errors = scope.children('#box_contenuti').clone();
-    errors.find('script, style').remove();
-    if (number.length === 14 && scope.length === 1 && errors.length === 1 && heading.length === 1 && clean(heading.text(), 80) === 'Errori riscontrati'
-      && clean(errors.text(), 300) === `TIS0868 Parcel Label number ${number} not found`) {
-      throw new NotFoundError('BRT');
-    }
-    throw new IndeterminateError('BRT', 'BRT did not return shipment history');
-  }
+  if (!metadata.length && !history.length) throwPortalError($, number);
   if (metadata.length !== 1 || history.length > 1) throw new SchemaError('BRT', 'BRT returned ambiguous shipment details');
   const parcelId = isBrtParcelId(number);
   const identityLabel = number.length === 14 ? 'BRTcode' : 'N. spedizione';

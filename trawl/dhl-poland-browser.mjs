@@ -46,7 +46,7 @@ export async function runDhlPolandBrowser({ url, capture, handle, tier, maxTimeo
   const nativeDiagnostics = [];
   const recordNative = event => {
     if (nativeDiagnostics.length < 16 && ['checkbox_started', 'checkbox_verified', 'challenge_missing', 'audio_started',
-      'audio_blocked', 'audio_verified', 'native_failed'].includes(event)) nativeDiagnostics.push(event);
+      'audio_blocked', 'audio_refused', 'audio_verified', 'native_failed'].includes(event)) nativeDiagnostics.push(event);
   };
   let phase = 'context', outcome = 'browser_error', cleanup = 'not_created', verification = 'unverified', failure = null, widget = null;
   const httpOutcome = status => status === 429 ? 'rate_limit' : [401, 403, 428].includes(status) ? 'challenge' : 'http_error';

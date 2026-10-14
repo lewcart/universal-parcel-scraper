@@ -28,11 +28,11 @@ The tracker answers in the language the browser asks for. The helper sets the tr
 Hungarian language cookie, and the parser and status map read Hungarian. The result must name
 the whole number in its search field, its item and the item's log.
 
-The widget takes the tracker's language, which stays Hungarian for the parser, and TRAWL's solver
-reads only English refusals. The helper watches the challenge frame and stops the solve as soon as
-Google asks for more answers or shows its automated-traffic page. An unsolved checkbox ends before
-the browser deadline. Either is a challenge, and after Google's refusal lookups fail as a challenge
-for ten minutes without opening a browser.
+The widget takes the tracker's language, which stays Hungarian for the parser. Google's refusal
+shows in the challenge frame's class names in every language: its automated-traffic page, or an
+error under an audio answer asking for more. The image's solver stops there, and the helper also
+watches the frame. An unsolved checkbox ends before the browser deadline. Either is a challenge,
+and after Google's refusal lookups fail as a challenge for ten minutes without opening a browser.
 
 ## Notes
 

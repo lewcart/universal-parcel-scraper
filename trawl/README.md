@@ -63,6 +63,10 @@ The image makes TRAWL's Cloudflare wait count a Turnstile frame as a challenge o
 that may be a wall, so a page that embeds the widget in a form, such as Postal Ninja's, is not
 reloaded until the deadline.
 
+TRAWL's reCAPTCHA audio solver stops as soon as Google's challenge frame shows its
+automated-traffic page or refuses an answer. It reads both from the frame's class names, so a
+widget in any language counts, and it requests no more audio from a refused address.
+
 ## Tests
 
 `npm run test:scripts` runs the offline capture and session tests. Live adapter tests need a

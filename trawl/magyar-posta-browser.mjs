@@ -7,10 +7,6 @@ const RESULT = `${ORIGIN}/ikrnyomkovproxy/Result/Index`;
 const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,30}$/;
 const MAX_BODY = 1_000_000;
 const CHALLENGE = /^https:\/\/www\.google\.com\/recaptcha\/(?:api2|enterprise)\/bframe(?:[?#]|$)/;
-// Google's audio challenge speaks the tracker's Hungarian, which the shared solver's
-// English check misses. It refuses an answer by asking for more, and an address with
-// its automated-traffic page.
-const REFUSED = /Több helyes megoldás|Próbálja újra később|automatizált lekérdezés|Multiple correct solutions|Try again later|automated queries/i;
 const REFUSAL = 'Google refused the audio challenge';
 
 export function magyarPostaBrowserNumber(rawUrl, capture = {}) {
@@ -37,13 +33,33 @@ function sanitize(html) {
     .replace(/<input\b[^>]*__RequestVerificationToken[^>]*>/gi, '');
 }
 
+/**
+ * Runs in Google's challenge frame. Its class names, which every language shares, show a refusal:
+ * the automated-traffic page for the address, or an error under an audio answer, which asks for more.
+ */
+function refusedInFrame() {
+  const shown = element => !!element && element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden';
+  const error = document.querySelector('.rc-audiochallenge-error-message');
+  return shown(document.querySelector('.rc-doscaptcha-header-text, .rc-doscaptcha-body-text'))
+    || (shown(error) && !!error.textContent.trim());
+}
+
+/** Whether a challenge frame on the page shows Google's refusal now. */
+async function refusedNow(page, signal) {
+  for (const frame of page.frames()) {
+    if (signal?.aborted || !CHALLENGE.test(frame.url())) continue;
+    let timer;
+    const refused = await Promise.race([Promise.resolve().then(() => frame.evaluate(refusedInFrame)).catch(() => false),
+      new Promise(resolve => { timer = setTimeout(resolve, 1000, false); })]).finally(() => clearTimeout(timer));
+    if (refused === true) return true;
+  }
+  return false;
+}
+
 /** Resolves true once the challenge frame shows a refusal, or false when `signal` ends the watch. */
 async function refusal(page, signal) {
   while (!signal.aborted) {
-    for (const frame of page.frames()) {
-      if (signal.aborted || !CHALLENGE.test(frame.url())) continue;
-      if (REFUSED.test(await frame.locator('body').innerText({ timeout: 1000 }).catch(() => ''))) return true;
-    }
+    if (await refusedNow(page, signal)) return true;
     await new Promise(resolve => setTimeout(resolve, 400));
   }
   return false;
@@ -149,11 +165,13 @@ export async function runMagyarPostaBrowser({ url, handle, tier, maxTimeout, cap
         const solveMs = Math.min(30000, remaining() - 3000);
         const solving = new AbortController();
         let solveTimer;
-        const outcome = await Promise.race([
+        let outcome = await Promise.race([
           Promise.resolve().then(() => solveCaptcha(page, solveMs, solving.signal)).then(solved => solved ? 'solved' : 'unsolved', () => 'unsolved'),
           refusal(page, solving.signal).then(refused => refused ? 'refused' : 'unsolved'),
           new Promise(resolve => { solveTimer = setTimeout(resolve, solveMs + 500, 'unsolved'); }),
         ]).finally(() => { clearTimeout(solveTimer); solving.abort(); });
+        // The solver also stops at Google's refusal, which its frame still shows.
+        if (outcome === 'unsolved' && !expired && await refusedNow(page)) outcome = 'refused';
         if (outcome === 'refused') {
           // Its outcome, without the widget's tokens or text.
           entries.push({ url: TRACKER, status: statusCode, body: null, headers: {}, truncated: false, base64Encoded: false, error: REFUSAL });

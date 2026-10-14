@@ -15,7 +15,15 @@ const post = (ids = number, typed = ids) => ({ method: () => 'POST',
 const response = (target, status, request, value = '') => ({ url: () => target, status: () => status, request: () => request,
   headers: () => ({ 'set-cookie': 'PRIVATE', 'content-type': 'text/html' }), body: async () => Buffer.from(value) });
 const get = from => ({ method: () => 'GET', redirectedFrom: () => from });
-const frame = (address, text) => ({ url: () => address, locator: () => ({ innerText: async () => text }) });
+// A frame whose page shows Google's block page, an audio error, or neither, in any language.
+const frame = (address, { blocked = false, error = '' } = {}) => ({ url: () => address, evaluate: async fn => {
+  const shown = (visible, text) => visible ? { getClientRects: () => [{}], textContent: text } : null;
+  const document = { querySelector: selector => selector.includes('rc-doscaptcha') ? shown(blocked, 'PRIVATE')
+    : selector === '.rc-audiochallenge-error-message' ? { getClientRects: () => error ? [{}] : [], textContent: error } : null };
+  const saved = [globalThis.document, globalThis.getComputedStyle];
+  Object.assign(globalThis, { document, getComputedStyle: () => ({ visibility: 'visible' }) });
+  try { return fn(); } finally { [globalThis.document, globalThis.getComputedStyle] = saved; }
+} });
 const challenge = 'https://www.google.com/recaptcha/api2/bframe?hl=HU&v=PRIVATE&k=PRIVATE';
 
 function fixture() {
@@ -120,13 +128,11 @@ test('bounds bodies and repeated responses', async () => {
 });
 
 test('ends the solve as a challenge once Google refuses the audio answer or the address', async () => {
-  for (const text of ['Több helyes megoldást kell megadni. Oldjon meg továbbiakat. PRIVATE',
-    'Próbálja újra később Előfordulhat, hogy az Ön számítógépe vagy hálózata automatizált lekérdezéseket küld.',
-    'Try again later Your computer or network may be sending automated queries.']) {
+  for (const shows of [{ error: 'Több helyes megoldást kell megadni. PRIVATE' }, { blocked: true }]) {
     const refused = fixture(); let aborted;
     refused.options.maxTimeout = 20000;
     refused.options.solveCaptcha = (page, timeout, signal) => new Promise(() => { signal.addEventListener('abort', () => { aborted = true; }); });
-    refused.tab.frames = () => [frame('https://www.posta.hu/', ''), frame(challenge, `Hallgassa meg ${text}`)];
+    refused.tab.frames = () => [frame('https://www.posta.hu/'), frame(challenge, shows)];
     const result = await runMagyarPostaBrowser(refused.options);
     assert.equal(result.status, 'success'); assert.ok(result.durationMs < 2000);
     assert.deepEqual(result.capturedResponses.map(row => [row.url, row.status, row.body, row.error]),
@@ -135,13 +141,27 @@ test('ends the solve as a challenge once Google refuses the audio answer or the 
     assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
   }
 
+  // The solver can stop at the refusal first. The frame still shows it, so it is still a refusal.
+  const first = fixture(); let shown = false;
+  first.options.maxTimeout = 20000;
+  first.options.solveCaptcha = async () => { shown = true; return false; };
+  first.tab.frames = () => [frame(challenge, { blocked: shown })];
+  assert.equal((await runMagyarPostaBrowser(first.options)).capturedResponses.at(-1).error, 'Google refused the audio challenge');
+
   // Only the challenge frame counts: the checkbox frame and a lookalike host are ignored.
-  const refusal = 'Próbálja újra később';
   const asking = fixture(); asking.options.maxTimeout = 20000;
   asking.options.solveCaptcha = () => new Promise(resolve => setTimeout(resolve, 900, true));
-  asking.tab.frames = () => [frame(challenge.replace('bframe', 'anchor'), refusal),
-    frame(challenge.replace('www.google.com', 'www.google.com.example'), refusal), frame(challenge, 'Írja be, amit hall')];
+  asking.tab.frames = () => [frame(challenge.replace('bframe', 'anchor'), { blocked: true }),
+    frame(challenge.replace('www.google.com', 'www.google.com.example'), { blocked: true }), frame(challenge)];
   assert.equal((await runMagyarPostaBrowser(asking.options)).capturedResponses.at(-1).trackingNumberSubmitted, number);
+
+  // A failed solve without a refusal stays unsolved, and a frame that never answers cannot hold the lookup.
+  const unsolved = fixture(); unsolved.options.maxTimeout = 20000;
+  unsolved.options.solveCaptcha = async () => false;
+  unsolved.tab.frames = () => [frame(challenge), { url: () => challenge, evaluate: () => new Promise(() => {}) }];
+  const started = Date.now();
+  assert.deepEqual((await runMagyarPostaBrowser(unsolved.options)).capturedResponses, []);
+  assert.ok(Date.now() - started < 3000); assert.equal(unsolved.state.clicked, 0);
 });
 
 test('ends a solve that does not answer before the browser deadline', async () => {

@@ -1,10 +1,13 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dhlPolandNativeSources } from '/app/packages/tiers/src/utils/dhl-poland-native.mjs';
+import { fastRecaptchaAudio } from '/app/packages/tiers/src/utils/recaptcha-audio.mjs';
 
+// Every caller of the reCAPTCHA solver stops once Google blocks or refuses its audio.
+const solverPath = '/app/packages/tiers/src/solvers/recaptcha.ts';
+const solver = fastRecaptchaAudio(readFileSync(solverPath, 'utf8'));
+writeFileSync(solverPath, solver);
 const nativeDir = '/app/packages/tiers/src/utils/dhl-poland-native';
-const nativeSources = dhlPolandNativeSources(
-  readFileSync('/app/packages/tiers/src/solvers/recaptcha.ts', 'utf8'),
-  readFileSync('/app/packages/tiers/src/solvers/stt.ts', 'utf8'));
+const nativeSources = dhlPolandNativeSources(solver, readFileSync('/app/packages/tiers/src/solvers/stt.ts', 'utf8'));
 mkdirSync(nativeDir, { recursive: true });
 writeFileSync(`${nativeDir}/recaptcha.ts`, nativeSources.recaptcha);
 writeFileSync(`${nativeDir}/stt.ts`, nativeSources.stt);

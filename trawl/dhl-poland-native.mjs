@@ -7,6 +7,7 @@ const EVENTS = new Map([
   ['[recaptcha] bframe not found', 'challenge_missing'],
   ['[recaptcha] switched to audio challenge', 'audio_started'],
   ['[recaptcha] blocked by Google — audio challenge requires residential proxy', 'audio_blocked'],
+  ['[recaptcha] audio answer refused', 'audio_refused'],
   ['[recaptcha] solved via audio ✓', 'audio_verified'],
   ['[recaptcha] solver error:', 'native_failed'],
 ]);

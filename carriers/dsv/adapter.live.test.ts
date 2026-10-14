@@ -15,13 +15,13 @@ describe('DSV live retrieval', () => {
   });
 
   it.skipIf(!process.env.DSV_SCHENKER_NUMBER)('retrieves a former DB Schenker shipment bound to the number', async () => {
-    const { events = [] } = await direct().track({ number: process.env.DSV_SCHENKER_NUMBER! }, { budgetMs: 170_000 });
+    const { events = [] } = await direct().track({ number: process.env.DSV_SCHENKER_NUMBER! }, { budgetMs: 60_000 });
     expect(events.length).toBeGreaterThan(0);
     expect(events.every(event => event.local_time && !event.time && event.description && event.provider_code)).toBe(true);
-  }, 180_000);
+  }, 90_000);
 
   it.skipIf(!process.env.DSV_UNKNOWN_NUMBER)('leaves a number neither tracker knows open', async () => {
-    await expect(direct().track({ number: process.env.DSV_UNKNOWN_NUMBER! }, { budgetMs: 170_000 }))
+    await expect(direct().track({ number: process.env.DSV_UNKNOWN_NUMBER! }, { budgetMs: 60_000 }))
       .rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
-  }, 180_000);
+  }, 90_000);
 });

@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { isValidSscc } from '../../core/detection/index.js';
 import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { IndeterminateError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -14,10 +15,34 @@ const MAX_EVENTS = 100;
 const MAX_PACKAGES = 1000;
 // "LandStt:<STT>:<data sources>:LAND", the id the tracker's own detail request takes.
 const LAND_ID = /^[A-Za-z]{2,30}:[A-Z0-9]{3,40}:[A-Z]{2,10}(?:,[A-Z]{2,10}){0,5}:LAND$/;
+// A former DB Schenker road STT: three letters and seven or eight digits, or five letters and nine digits.
+const STT = /^(?:[A-Z]{3}\d{7,8}|[A-Z]{5}\d{9})$/;
 const CODE = /^[A-Z0-9]{2,10}$/;
 const CLOCK = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})(?:\.\d{1,9})?(?:Z|[+-]\d{2}:?\d{2})?$/;
 // Postcodes and street numbers in a place name.
 const DIGITS = /\S*\d{3,}\S*/g;
+
+/**
+ * How the former DB Schenker tracker is asked for a number: an STT straight
+ * by its details, a package's SSCC through the search, any other number not
+ * at all.
+ */
+export function dsvSchenkerRoute(number: string): 'stt' | 'sscc' | null {
+  if (STT.test(number)) return 'stt';
+  return isValidSscc(/^\d{18}$/.test(number) ? `00${number}` : number) ? 'sscc' : null;
+}
+
+/** The details id of a road STT, without the data sources the tracker adds itself. */
+export function dsvSchenkerSttId(number: string): string {
+  return `LandStt:${number}:LAND`;
+}
+
+/** The reply's id is the one asked for, or a road id of the same kind for an id asked without its data sources. */
+function answersId(asked: string, replied: unknown): boolean {
+  if (typeof replied !== 'string' || replied === asked) return true;
+  const [type, , sources] = asked.split(':');
+  return sources === 'LAND' && LAND_ID.test(replied) && replied.startsWith(`${type}:`);
+}
 
 /**
  * The former DB Schenker tracker's search: the shipments whose STT, package,
@@ -125,7 +150,7 @@ export function parseDsvSchenkerShipment(payload: unknown, rawNumber: string, id
     || !(Array.isArray(payload.packages) || payload.packages === null || payload.packages === undefined)) {
     throw new SchemaError(PROVIDER, 'DSV\'s former DB Schenker tracker did not return the shipment');
   }
-  if (typeof payload.shipmentId === 'string' && payload.shipmentId !== id) {
+  if (!answersId(id, payload.shipmentId)) {
     throw new SchemaError(PROVIDER, 'DSV\'s former DB Schenker tracker returned another shipment');
   }
   if (!ownIds(payload).has(number)) {

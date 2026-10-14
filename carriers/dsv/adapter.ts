@@ -9,7 +9,7 @@ import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../cor
 import { isRecord } from '../../core/types.js';
 import { confirmDsvShipment, DSV_MAX_BYTES, normalizeDsvNumber, parseDsvStatuses, pickDsvShipment, PROVIDER } from './parser.js';
 import { parseDsvPuzzles, solveDsvPuzzles } from './puzzle.js';
-import { notFound, parseDsvSchenkerShipment, pickDsvSchenkerShipment } from './schenker.js';
+import { dsvSchenkerRoute, dsvSchenkerSttId, notFound, parseDsvSchenkerShipment, pickDsvSchenkerShipment } from './schenker.js';
 
 // The services the shipment page at mydsv.com/track-shipment calls without an account.
 export const DSV_SEARCH_ENDPOINT = 'https://mydsv.com/app/search/publicShipmentList';
@@ -18,13 +18,20 @@ export const DSV_STATUSES_ENDPOINT = 'https://mydsv.com/app/search/shipment/new-
 // The former DB Schenker tracker's API, behind the page at www.dsv.com/mydsv/tracking-public.
 export const DSV_SCHENKER_ENDPOINT = 'https://www.dsv.com/nges-portal/api/public/tracking-public';
 const DEFAULT_BUDGET_MS = 15_000;
+// The former DB Schenker tracker's longest wait. It answers within a second,
+// but at times holds an STT's details for half a minute, and a package's
+// search for a quarter of a minute before them; a later reply is given up,
+// so the sources after it keep their time.
+const SCHENKER_MS: Readonly<Record<SchenkerRoute, number>> = { stt: 34_000, sscc: 48_000 };
+type SchenkerRoute = NonNullable<ReturnType<typeof dsvSchenkerRoute>>;
 // The tracker's answers when the number matches none of its shipments or reference patterns.
 const SCHENKER_NOT_FOUND = /^TRACKING-BADREQ-(?:SHIPMENT_NOT_FOUND|NO_MATCHING_PATTERN_FOUND)$/;
 // A web application firewall or CDN block page.
 const BLOCKED = /<title>\s*(?:Request Rejected|Access Denied|Just a moment|Attention Required)|The requested URL was rejected|Incapsula incident|cf-chl-|cf-turnstile|_cf_chl_opt/i;
 
 export class DsvTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string;
+    schenkerMs?: Readonly<Record<SchenkerRoute, number>> } = {}) {}
 
   /**
    * One JSON read. The shipment's key opens its details, so a failed read by
@@ -70,7 +77,13 @@ export class DsvTracker {
           { provider: PROVIDER, timeoutMs: left(), maxBytes: DSV_MAX_BYTES, allowHttpStatuses: allow, fetcher: this.options.fetcher });
       } catch (error) {
         if (error instanceof UpstreamHttpError) throw new UpstreamHttpError(PROVIDER, error.status, error.retryAfterMs);
-        if (error instanceof UpstreamNetworkError) throw new UpstreamNetworkError(PROVIDER, new Error('DSV\'s former DB Schenker tracker did not answer'));
+        if (error instanceof UpstreamNetworkError) {
+          // A reply still pending when the step's time or the lookup's ends is a spent budget, not a failure to connect.
+          const spent = signal.aborted ? signal.reason instanceof DOMException && signal.reason.name === 'TimeoutError'
+            : deadline - performance.now() < 100;
+          if (spent) throw new BudgetExceededError(PROVIDER, budgetMs);
+          throw new UpstreamNetworkError(PROVIDER, new Error('DSV\'s former DB Schenker tracker did not answer'));
+        }
         throw error;
       }
     };
@@ -105,13 +118,18 @@ export class DsvTracker {
     throw new UpstreamHttpError(PROVIDER, response.status);
   }
 
-  /** The former DB Schenker tracker: its search, then the details of the one road shipment it finds. */
-  private async schenkerShipment(number: string, signal: AbortSignal, remainingMs: number): Promise<CarrierResult> {
-    const deadline = performance.now() + remainingMs;
-    const id = pickDsvSchenkerShipment(
-      await this.schenker(`/shipments?${new URLSearchParams({ query: number })}`, signal, deadline, remainingMs), number);
+  /**
+   * The former DB Schenker tracker: an STT's details straight away, or a
+   * package's search, then the details of the one road shipment it finds.
+   */
+  private async schenkerShipment(number: string, route: SchenkerRoute, signal: AbortSignal, remainingMs: number): Promise<CarrierResult> {
+    const budgetMs = Math.min(remainingMs, (this.options.schenkerMs ?? SCHENKER_MS)[route]);
+    const deadline = performance.now() + budgetMs;
+    const read = (path: string) => this.schenker(path, signal, deadline, budgetMs);
+    const id = route === 'stt' ? dsvSchenkerSttId(number)
+      : pickDsvSchenkerShipment(await read(`/shipments?${new URLSearchParams({ query: number })}`), number);
     // The page sends the id as it is, colons and commas included.
-    return parseDsvSchenkerShipment(await this.schenker(`/shipments/land/${id}`, signal, deadline, remainingMs), number, id);
+    return parseDsvSchenkerShipment(await read(`/shipments/land/${id}`), number, id);
   }
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -131,13 +149,16 @@ export class DsvTracker {
       return parseDsvStatuses(await this.json(`${DSV_STATUSES_ENDPOINT}${key}`, signal, left(), true), shipment);
     };
     // A lookup that fails to reach myDSV, or hangs, gets one more try: the
-    // first gets half of the budget, so the retry fits in the rest. A number
-    // myDSV does not know goes to the former DB Schenker tracker.
+    // first gets half of the budget, so the retry fits in the rest. An STT or
+    // a package's SSCC that myDSV does not know goes to the former DB Schenker
+    // tracker.
+    const route = dsvSchenkerRoute(number);
     return runSteps({ carrier: 'dsv', budgetMs: context.budgetMs ?? DEFAULT_BUDGET_MS, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
       { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
       networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
-      { id: 'schenker', recovers: notInMyDsv, run: ({ signal, remainingMs }) => this.schenkerShipment(number, signal, remainingMs) },
+      { id: 'schenker', recovers: error => route !== null && notInMyDsv(error),
+        run: ({ signal, remainingMs }) => this.schenkerShipment(number, route!, signal, remainingMs) },
     ]);
   }
 }

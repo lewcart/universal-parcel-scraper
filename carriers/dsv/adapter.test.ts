@@ -9,7 +9,7 @@ import { createTracker } from '../../facade/index.js';
 import { adapter, DSV_SCHENKER_ENDPOINT, DSV_SEARCH_ENDPOINT, DSV_SHIPMENT_ENDPOINT, DSV_STATUSES_ENDPOINT, DsvTracker } from './adapter.js';
 import { confirmDsvShipment, parseDsvStatuses, pickDsvShipment, type DsvShipment } from './parser.js';
 import { parseDsvPuzzles } from './puzzle.js';
-import { parseDsvSchenkerShipment, pickDsvSchenkerShipment } from './schenker.js';
+import { dsvSchenkerRoute, parseDsvSchenkerShipment, pickDsvSchenkerShipment } from './schenker.js';
 import { dsvCodeStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -45,8 +45,10 @@ const editedHistory = (name: string, change: (payload: { events: Group[]; legDat
 // The former DB Schenker tracker: a road shipment's STT, its booking STT, its package's SSCC and its id.
 const STT = 'ZZX0000042';
 const BOOKED_STT = 'ZZX0000041';
-const SSCC = '999999990000000425';
+const SSCC = '999999990000000426';
 const LAND_ID = `LandStt:${STT}:CTTS,OSM:LAND`;
+// The id an STT's details are asked by, without the data sources the tracker adds.
+const STT_ID = `LandStt:${STT}:LAND`;
 const SCHENKER_SEARCH = `${DSV_SCHENKER_ENDPOINT}/shipments?query=`;
 const SCHENKER_LAND = `${DSV_SCHENKER_ENDPOINT}/shipments/land/`;
 /** A signed token holding a 64-byte puzzle; its signature is not checked here. */
@@ -206,7 +208,7 @@ describe('DSV tracking adapter', () => {
     expect(() => pickDsvShipment(json('search-empty'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     const fetcher = former('schenker-empty');
     await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
-    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(fetcher).toHaveBeenCalledTimes(1);
     // A match on another id or the master bill only, such as a customer's or an airline's number.
     const master = { ...json('details-air'), houseBillNumber: 'ZZX0000099' };
     expect(() => confirmDsvShipment(master, '99900000011')).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'reference_only' }));
@@ -323,14 +325,12 @@ describe('DSV former DB Schenker tracker', () => {
     const fetcher = former('schenker-search');
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
     const result = await new DsvTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zzx 000-0042 ', { budgetMs: 10_000 });
+    // An STT's details straight away, by the id without its data sources.
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
-      `${DSV_SEARCH_ENDPOINT}?q=${STT}`,
-      `${SCHENKER_SEARCH}${STT}`, `${SCHENKER_SEARCH}${STT}`,
-      // The id goes as the page sends it, colons and commas included.
-      `${SCHENKER_LAND}${LAND_ID}`, `${SCHENKER_LAND}${LAND_ID}`,
+      `${DSV_SEARCH_ENDPOINT}?q=${STT}`, `${SCHENKER_LAND}${STT_ID}`, `${SCHENKER_LAND}${STT_ID}`,
     ]);
     const headers = fetcher.mock.calls.slice(1).map(([, init]) => new Headers(init!.headers));
-    expect(headers.map(header => header.has('captcha-solution'))).toEqual([false, true, false, true]);
+    expect(headers.map(header => header.has('captcha-solution'))).toEqual([false, true]);
     for (const header of headers) {
       expect(header.get('user-agent')).toBe('SyntheticHost/1.0');
       expect(header.get('accept')).toBe('application/json');
@@ -352,17 +352,65 @@ describe('DSV former DB Schenker tracker', () => {
     expect(result.events!.every(event => event.time === undefined && event.description)).toBe(true);
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'dsv', step: 'direct', outcome: 'indeterminate' }));
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'dsv', step: 'schenker', outcome: 'ok', fallbackFrom: 'direct' }));
+    // A package's SSCC goes through the search, then the details of the shipment it finds.
+    const package_ = former('schenker-search');
+    await expect(carrier(package_).track({ number: `00${SSCC}` })).resolves.toMatchObject({ current_stage: 'failed_attempt' });
+    expect(package_.mock.calls.map(([url]) => String(url))).toEqual([
+      `${DSV_SEARCH_ENDPOINT}?q=00${SSCC}`, `${SCHENKER_SEARCH}00${SSCC}`, `${SCHENKER_SEARCH}00${SSCC}`,
+      // The id goes as the page sends it, colons and commas included.
+      `${SCHENKER_LAND}${LAND_ID}`, `${SCHENKER_LAND}${LAND_ID}`,
+    ]);
+    // The facade leaves the step its time.
+    const routed = former('schenker-search');
+    await expect(createTracker({ fetcher: routed, providers: [], env: {} }).track({ number: STT, carrier: 'dsv' }))
+      .resolves.toMatchObject({ carrier: 'dsv', source: 'dsv', result: { current_stage: 'failed_attempt' } });
+    expect(routed).toHaveBeenCalledTimes(3);
+  });
+
+  it('asks the former tracker only for an STT or a package SSCC', async () => {
+    for (const number of [STT, 'ZZX00000420', 'ZZXAA000000042']) expect(dsvSchenkerRoute(number), number).toBe('stt');
+    for (const number of [SSCC, `00${SSCC}`]) expect(dsvSchenkerRoute(number), number).toBe('sscc');
+    for (const number of [UNKNOWN, '99900000011', 'ZZX000004', 'ZZXA0000042', '999999990000000425', `01${SSCC}`, 'POEXAMPLE1']) {
+      expect(dsvSchenkerRoute(number), number).toBeNull();
+      const fetcher = former('schenker-search');
+      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it('gives up on a late answer at the step’s longest wait or when the lookup’s time ends', async () => {
+    const answers = former('schenker-search');
+    const hanging = vi.fn<typeof fetch>().mockImplementation(async (input, init) => new Headers(init?.headers).has('captcha-solution')
+      ? new Promise<Response>((_, reject) => init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true }))
+      : answers(input, init));
+    const waits = { stt: 300, sscc: 300 };
+    for (const [number, budgetMs] of [[STT, 60_000], [SSCC, 60_000], [STT, 400], [SSCC, 400]] as const) {
+      const started = performance.now();
+      const error = await new DsvTracker({ fetcher: hanging, schenkerMs: budgetMs === 400 ? undefined : waits }).fetch(number, { budgetMs })
+        .catch((caught: unknown) => caught);
+      expect(error, `${number} ${budgetMs}`).toMatchObject({ kind: 'budget' });
+      expect(performance.now() - started).toBeLessThan(2_000);
+      expect(JSON.stringify(error)).not.toMatch(/eyJ|solution/i);
+    }
   });
 
   it('binds the shipment by its STT, its booking STT or a package SSCC, and leaves waybills and references open', async () => {
     for (const number of [STT, BOOKED_STT, SSCC, `00${SSCC}`]) {
       await expect(carrier(former('schenker-search')).track({ number }), number).resolves.toMatchObject({ current_stage: 'failed_attempt' });
     }
+    await expect(carrier(former('schenker-search')).track({ number: 'ZZXAA-000000042' }))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'reference_only' });
     for (const number of ['99900000011', 'ZZXAA-000000042', 'POEXAMPLE1', 'CONSIGNEEEXAMPLE1']) {
-      await expect(carrier(former('schenker-search')).track({ number }), number)
-        .rejects.toMatchObject({ kind: 'indeterminate', reason: 'reference_only' });
+      expect(() => parseDsvSchenkerShipment(json('schenker-land'), number, LAND_ID), number)
+        .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'reference_only' }));
     }
+    // Asked with its data sources, the reply must be that id; asked without, a road id of the same kind.
     expect(() => parseDsvSchenkerShipment(json('schenker-land'), STT, `LandStt:${STT}:CTTS:LAND`)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(parseDsvSchenkerShipment(json('schenker-land'), BOOKED_STT, `LandStt:${BOOKED_STT}:LAND`).events).toHaveLength(7);
+    for (const shipmentId of [`LandPackageId:${STT}:CTTS:LAND`, `LandStt:${STT}`, `LandStt:${STT}:CTTS:AIR`]) {
+      expect(() => parseDsvSchenkerShipment({ ...json('schenker-land'), shipmentId }, STT, `LandStt:${STT}:LAND`).events, shipmentId)
+        .toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
     const search = json('schenker-search').result as Record<string, unknown>[];
     const other = { ...search[0], id: 'LandStt:ZZX0000043:CTTS:LAND', stt: 'ZZX0000043' };
     expect(pickDsvSchenkerShipment({ result: [other, search[0]] }, STT)).toBe(LAND_ID);
@@ -398,14 +446,16 @@ describe('DSV former DB Schenker tracker', () => {
   });
 
   it('leaves a number neither tracker knows open', async () => {
-    for (const search of ['schenker-empty', () => reply('{"code":"TRACKING-NOTFOUND"}', 404),
+    const missing: Answer[] = [() => reply('{"code":"TRACKING-NOTFOUND"}', 404),
       () => reply('{"code":"TRACKING-BADREQ-NO_MATCHING_PATTERN_FOUND"}', 400),
-      () => reply('{"code":"TRACKING-BADREQ-SHIPMENT_NOT_FOUND"}', 400)] as Answer[]) {
-      const fetcher = former(search);
-      await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+      () => reply('{"code":"TRACKING-BADREQ-SHIPMENT_NOT_FOUND"}', 400)];
+    // An STT's details, or a package's search.
+    for (const [number, fetcher] of [...missing.map(details => [STT, former('schenker-search', details)] as const),
+      ...(['schenker-empty', ...missing] as Answer[]).map(search => [SSCC, former(search)] as const)]) {
+      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
       expect(fetcher).toHaveBeenCalledTimes(3);
     }
-    const refused = await carrier(former(() => reply('{"code":"TRACKING-BADREQ-INVALID"}', 400))).track({ number: UNKNOWN })
+    const refused = await carrier(former('schenker-search', () => reply('{"code":"TRACKING-BADREQ-INVALID"}', 400))).track({ number: STT })
       .catch((caught: unknown) => caught);
     expect(refused).toMatchObject({ kind: 'indeterminate' });
     expect((refused as { reason?: string }).reason).toBeUndefined();
@@ -420,29 +470,34 @@ describe('DSV former DB Schenker tracker', () => {
   });
 
   it('keeps puzzle, HTTP and reply failures apart from a missing shipment, without the solution on the error', async () => {
-    const cases: [ReturnType<typeof former>, string][] = [
-      [former('schenker-search', 'schenker-land', null), 'rate_limited'],
-      [former(() => new Response('', { status: 429, headers: { 'Captcha-Puzzle': PUZZLES } })), 'challenge'],
-      [former(() => new Response('', { status: 429 })), 'rate_limited'],
-      [former(() => new Response('', { status: 422 })), 'challenge'],
-      [former(() => reply('{}', 401)), 'challenge'],
-      [former(() => reply('{}', 500)), 'indeterminate'],
-      [former(() => reply('{}', 503)), 'maintenance'],
-      [former(() => reply('{}', 504)), 'indeterminate'],
-      [former('schenker-search', () => reply('{}', 500)), 'indeterminate'],
-      [former(() => reply('<html><head><title>Access Denied</title></head></html>')), 'challenge'],
-      [former(() => reply('<!doctype html><html><body><app-root></app-root></body></html>')), 'schema'],
-      [former(() => reply('{"result":{}}')), 'schema'],
-      [former(() => reply(JSON.stringify({ result: [{ id: '../x', stt: STT, transportMode: 'LAND' }] }))), 'schema'],
-      [former('schenker-search', () => reply('{"events":{}}')), 'schema'],
-      [former('schenker-search', land(payload => { payload.events[0]!.date = '13/05/2026 15:10'; })), 'schema'],
-      [former('schenker-search', land(payload => { payload.events[0]!.date = '2026-02-30T15:10:00Z'; })), 'schema'],
-      [former('schenker-search', land(payload => { payload.events[0]!.code = 'A B'; })), 'schema'],
-      [former('schenker-search', land(payload => { payload.events[0]!.reasons = 'none'; })), 'schema'],
+    // Each reply as an STT's details and as a package's search.
+    const replies: [Answer, string][] = [
+      [() => new Response('', { status: 429, headers: { 'Captcha-Puzzle': PUZZLES } }), 'challenge'],
+      [() => new Response('', { status: 429 }), 'rate_limited'],
+      [() => new Response('', { status: 422 }), 'challenge'],
+      [() => reply('{}', 401), 'challenge'],
+      [() => reply('{}', 500), 'indeterminate'],
+      [() => reply('{}', 503), 'maintenance'],
+      [() => reply('{}', 504), 'indeterminate'],
+      [() => reply('<html><head><title>Access Denied</title></head></html>'), 'challenge'],
+      [() => reply('<!doctype html><html><body><app-root></app-root></body></html>'), 'schema'],
     ];
-    for (const [fetcher, kind] of cases) {
-      const error = await carrier(fetcher).track({ number: STT }).catch((caught: unknown) => caught);
-      expect(error, kind).toMatchObject({ kind });
+    const cases: (readonly [ReturnType<typeof former>, string, string])[] = [
+      [former('schenker-search', 'schenker-land', null), 'rate_limited', STT],
+      [former('schenker-search', 'schenker-land', null), 'rate_limited', SSCC],
+      ...replies.flatMap(([value, kind]) => [[former('schenker-search', value), kind, STT], [former(value), kind, SSCC]] as const),
+      [former('schenker-search', () => reply('{}', 500)), 'indeterminate', SSCC],
+      [former(() => reply('{"result":{}}')), 'schema', SSCC],
+      [former(() => reply(JSON.stringify({ result: [{ id: '../x', stt: STT, transportMode: 'LAND' }] }))), 'schema', SSCC],
+      [former('schenker-search', () => reply('{"events":{}}')), 'schema', STT],
+      [former('schenker-search', land(payload => { payload.events[0]!.date = '13/05/2026 15:10'; })), 'schema', STT],
+      [former('schenker-search', land(payload => { payload.events[0]!.date = '2026-02-30T15:10:00Z'; })), 'schema', STT],
+      [former('schenker-search', land(payload => { payload.events[0]!.code = 'A B'; })), 'schema', SSCC],
+      [former('schenker-search', land(payload => { payload.events[0]!.reasons = 'none'; })), 'schema', STT],
+    ];
+    for (const [fetcher, kind, number] of cases) {
+      const error = await carrier(fetcher).track({ number }).catch((caught: unknown) => caught);
+      expect(error, `${kind} ${number}`).toMatchObject({ kind });
       expect((error as { request?: unknown }).request).toBeUndefined();
       expect((error as { diagnostics?: unknown }).diagnostics).toBeUndefined();
       expect(JSON.stringify(error)).not.toMatch(/eyJ|solution/i);

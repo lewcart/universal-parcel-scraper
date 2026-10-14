@@ -24,12 +24,16 @@ pages and malformed replies keep their own failure kinds; a missing route is a t
 ## Former DB Schenker shipments
 
 DSV tracks former DB Schenker shipments on a separate tracker, `www.dsv.com/mydsv/tracking-public`,
-which `dbschenker.com` redirects to. When myDSV's search does not know a number, the adapter asks
-that tracker's API under `www.dsv.com/nges-portal/api/public/tracking-public/`, as its page does:
+which `dbschenker.com` redirects to. When myDSV's search does not know an STT (three letters and
+seven or eight digits, or five letters and nine digits) or a package's SSCC, the adapter asks that
+tracker's API under `www.dsv.com/nges-portal/api/public/tracking-public/`:
 
-1. `GET /shipments?query={number}` lists the shipments whose STT, package, waybill or a
-   reference matches the number, each with its mode of transport and id.
-2. `GET /shipments/land/{id}` holds a road shipment's details and history.
+1. `GET /shipments/land/LandStt:{STT}:LAND` holds a road shipment's details and history. The
+   page puts the data sources its search names into the id; without them the tracker adds them
+   itself, so an STT needs no search.
+2. A package's SSCC goes through `GET /shipments?query={number}` first, which lists the shipments
+   whose STT, package, waybill or a reference matches the number, each with its mode of transport
+   and id. The details take no package id.
 
 The API answers every request with HTTP 429 and a `Captcha-Puzzle` header: base64 of signed
 tokens, each holding a 64-byte puzzle. For each, the client finds the eight-byte little-endian
@@ -39,6 +43,11 @@ target that bytes 13 and 14 set as exponent and mantissa. It repeats the request
 milliseconds in Node; one that asks for far more is left inconclusive, and solving stops when the
 budget ends. The official DSV Tracking app (`com.dbschenker.mobile.connect2schenker`) calls the
 same API.
+
+The tracker answers within a second, but at times holds each reply for a quarter or half a
+minute. The step waits as long as an STT's details, or an SSCC's search and details, take then,
+or less when the lookup has less time left, and gives up after that, so the universal providers
+after it keep theirs.
 
 The shipment belongs to the number when the details name it as one of the shipment's own ids:
 its STT, the STT it was booked under, or a package's SSCC, with or without the 00 before it.
@@ -58,7 +67,7 @@ The shipment belongs to the number when the search names it as one of the shipme
 its shipment id, booking id or main transport id, or, from the details, its house bill. A match
 on anything else, such as a master bill or a partner's tracking id, can belong to another
 carrier's consignment and is left inconclusive, and so are several shipments for one number.
-An empty search sends the number to the former DB Schenker tracker.
+An empty search sends an STT or a package's SSCC to the former DB Schenker tracker.
 
 The history comes in milestone groups: the booking, the pickup or receipt, the departures and
 arrivals of the main carriage, and the handover. When the reply has port data, the adapter reads
@@ -82,13 +91,13 @@ The search takes the number as typed, and the tracker passes it without dashes, 
 that DSV prints with a dash is not found. The page also asks a real-time tracking service for
 XPRESS shipments; the adapter does not. A road shipment's history can hold only its booking.
 
-The former DB Schenker tracker answers slowly, often beyond the time a lookup through the
-universal facade leaves the direct adapter, so those lookups can run out of time there. A
-package SSCC that the tracker lists under several shipments stays inconclusive.
+A former DB Schenker lookup runs out of time when the tracker holds its replies longer than the
+lookup has left, and on its slower servers. A package SSCC that the tracker lists under several
+shipments stays inconclusive, and other numbers, such as a waybill, are not sent to that tracker.
 
 ## Testing
 
 Set `DSV_TRACKING_NUMBER` outside the repository and run
 `npm run test:carriers:live -- carriers/dsv/adapter.live.test.ts`.
-Set `DSV_SCHENKER_NUMBER` to a former DB Schenker number to check that tracker, and optionally
-`DSV_UNKNOWN_NUMBER` to check a number neither tracker knows.
+Set `DSV_SCHENKER_NUMBER` to a former DB Schenker STT or package SSCC to check that tracker, and
+optionally `DSV_UNKNOWN_NUMBER` to an STT neither tracker knows.

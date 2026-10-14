@@ -22,6 +22,11 @@ export function followsPartnerNumbers(carrier: string): boolean {
  */
 const PARTNER_NUMBER_TRACKERS: ReadonlySet<string> = new Set(['evri']);
 
+/** Whether the carrier's tracker also finds parcels by their delivery partner's number. */
+export function tracksPartnerNumbers(carrier: string): boolean {
+  return PARTNER_NUMBER_TRACKERS.has(carrier);
+}
+
 /**
  * The partner that owns a number reported under one of those trackers: the
  * carrier another catalog rule claims the number for at high confidence.

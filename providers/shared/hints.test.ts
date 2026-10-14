@@ -72,6 +72,21 @@ describe('carrier names reported by universal providers', () => {
     expect(universalCarrierHints(['DHLink', 'SwiftX']).discovered_carrier).toBeUndefined();
   });
 
+  it('names the brand network that delivers a parcel Cainiao brings from abroad', () => {
+    // An Evri barcode fits Evri International and Evri UK alike.
+    const barcode = 'H00A0A0000000002';
+    expect(brandCarrierForNumber('Evri', barcode)).toBeUndefined();
+    expect(universalCarrierHints(['Evri'], barcode).discovered_carrier).toBeUndefined();
+    // Evri International hands parcels to partners abroad, so beside Cainiao the leg is Evri UK's.
+    for (const names of [['Evri', 'Cainiao'], ['Cainiao', 'Evri']]) {
+      expect(universalCarrierHints(names, barcode)).toEqual({ reported_carriers: names, discovered_carrier: 'evri-uk' });
+    }
+    // A number of neither network still leaves the brand unresolved.
+    expect(universalCarrierHints(['Evri', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBeUndefined();
+    // Without Cainiao another name is no reason to rule a network out.
+    expect(universalCarrierHints(['Evri', 'Royal Mail'], barcode).discovered_carrier).toBeUndefined();
+  });
+
   it('keeps the postal union\'s feed among the reported names, where it proposes no carrier', () => {
     // An S10 number with a valid check digit.
     const finnish = 'RR123456785FI';

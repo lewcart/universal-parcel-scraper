@@ -9,7 +9,7 @@
 import type { CarrierId } from '../../generated/catalog.js';
 import { carrierTimezone } from '../../core/catalog/index.js';
 import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
-import { partnerNumberOwner } from '../../core/catalog/partners.js';
+import { followsPartnerNumbers, partnerNumberOwner, tracksPartnerNumbers } from '../../core/catalog/partners.js';
 import { brandCarrierIds, brandTimeZones, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { checksumFailures } from '../../core/detection/detect.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
@@ -21,10 +21,11 @@ export { isKnownCarrierName } from '../../core/catalog/hints.js';
  * A bare brand ("DPD Group") names several catalog networks; the number can
  * still pick one. Keep the networks whose detection rules match it, then the
  * one a preferred rule backs, such as a DPD depot range. Anything else stays
- * unresolved rather than guessed.
+ * unresolved rather than guessed. `leg` keeps only the networks that can be
+ * the one named.
  */
-export function brandCarrierForNumber(name: string, trackingNumber: string): string | undefined {
-  const networks = brandCarrierIds(name);
+export function brandCarrierForNumber(name: string, trackingNumber: string, leg?: (network: string) => boolean): string | undefined {
+  const networks = brandCarrierIds(name).filter((id) => !leg || leg(id));
   if (!networks.length) return undefined;
   const detected = detectCarrierMatch(trackingNumber);
   const matching = networks.filter((id) => detected.candidates.includes(id as CarrierId));
@@ -64,7 +65,8 @@ export const ADAPTER_CHECKED_RULES: ReadonlySet<string> = new Set([
  * that also finds parcels by their delivery partner's number ("Global Eco",
  * Evri International's tracker) names the partner whose rule claims it.
  * Several names that all map to the catalog can be one journey's legs; see
- * `journeyOwner`.
+ * `journeyOwner`. Beside Cainiao, a bare brand names its network that
+ * delivers at home.
  */
 export function universalCarrierHints(raw: unknown[], trackingNumber?: string): { reported_carriers: string[]; discovered_carrier?: string } {
   const names = [...new Set(raw.filter((value): value is string => typeof value === 'string'
@@ -72,9 +74,14 @@ export function universalCarrierHints(raw: unknown[], trackingNumber?: string): 
   const refused = new Set(trackingNumber ? checksumFailures(trackingNumber)
     .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
   const detected = new Set<string>();
+  // Cainiao follows a parcel from abroad under its delivery carrier's number,
+  // so a brand named beside it delivers at home: Evri UK, not Evri
+  // International, which hands parcels to partners abroad.
+  const inbound = names.some((name) => followsPartnerNumbers(carrierIdFromName(name) ?? ''));
+  const leg = inbound ? (network: string) => !tracksPartnerNumbers(network) : undefined;
   let unmapped = false;
   for (const name of names) {
-    const named = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber) : undefined);
+    const named = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber, leg) : undefined);
     const carrier = named && trackingNumber ? partnerNumberOwner(named, trackingNumber) ?? named : named;
     if (!carrier) unmapped = true;
     else if (!refused.has(carrier)) detected.add(carrier);

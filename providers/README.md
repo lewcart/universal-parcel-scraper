@@ -82,7 +82,9 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   partner. When every name is in the catalog, the hint is the one carrier whose rules fit
   the number, or the one a preferred rule backs. When no rule fits, a carrier whose numbers
   all have a layout of their own (only high-confidence rules) was named for its leg, and
-  the one carrier left is the hint.
+  the one carrier left is the hint. Beside Cainiao, which brings parcels from abroad under
+  their delivery carrier's number, a bare brand names its network that delivers at home:
+  "Evri" is Evri UK, since Evri International hands parcels to partners abroad.
 - The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja` and `UPU` are public, and
   consumers store them. Don't rename them.
 

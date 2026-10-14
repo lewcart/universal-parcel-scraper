@@ -2645,5 +2645,13 @@
       "yunda"
     ],
     "reason": "vasp-expresso numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "A country code, nine digits and R or E",
+    "carriers": [
+      "colis-prive",
+      "speedaf"
+    ],
+    "reason": "Speedaf's country-prefixed waybills are twelve characters, which Colis Privé's rule for any 12-character alphanumeric also takes. Both rules are low-confidence; Speedaf's layout is preferred and its tracker confirms the number."
   }
 ]

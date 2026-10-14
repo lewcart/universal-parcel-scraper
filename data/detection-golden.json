@@ -24646,6 +24646,29 @@
     ]
   },
   {
+    "input": "47254200154673",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "asked": [
+      "dpd",
+      "dpd-de",
+      "seur",
+      "brt",
+      "relais-colis"
+    ]
+  },
+  {
     "input": "47258958",
     "carrier": "unknown",
     "confidence": "low",
@@ -40155,6 +40178,17 @@
     ]
   },
   {
+    "input": "CH20025684033",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
     "input": "CH400397205DE",
     "carrier": "unknown",
     "confidence": "low",
@@ -46317,6 +46351,33 @@
     ]
   },
   {
+    "input": "KE000027882E",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "KE146769550",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
+  },
+  {
     "input": "KEX10444216680",
     "carrier": "unknown",
     "confidence": "none",
@@ -48396,6 +48457,44 @@
     ]
   },
   {
+    "input": "MA019681550R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "MA020485212227T",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "MA020548442044",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
     "input": "MA0353025500144239201",
     "carrier": "unknown",
     "confidence": "low",
@@ -48404,6 +48503,38 @@
     ],
     "asked": [
       "matkahuolto"
+    ]
+  },
+  {
+    "input": "MA038621951R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "MA052781271R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
     ]
   },
   {
@@ -48426,6 +48557,39 @@
     ],
     "asked": [
       "matkahuolto"
+    ]
+  },
+  {
+    "input": "MA120041555617",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "MA120042732051",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "MA120042732207",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
     ]
   },
   {
@@ -48646,6 +48810,17 @@
     ],
     "asked": [
       "paquetexpress"
+    ]
+  },
+  {
+    "input": "MU120097922415",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
     ]
   },
   {
@@ -48959,6 +49134,175 @@
       "colis-prive",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "NG013313285E",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "NG020247310703",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020247318517",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020255400711",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020277297639",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020277299841",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020281426016",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020284716829",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG020286551524",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "NG02099156315",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
+    "input": "NG12001462470848",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "NG135304540R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "NG138700855R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "NG140439946R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
     ]
   },
   {
@@ -50062,8 +50406,35 @@
   {
     "input": "PK010486891101",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "PK020259506650",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
+  },
+  {
+    "input": "PK020387217560",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
+    ]
   },
   {
     "input": "PK0DLC0000085800128009G",
@@ -52212,6 +52583,22 @@
     "confidence": "high",
     "candidates": [
       "spring-gds"
+    ]
+  },
+  {
+    "input": "RW000336615R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
     ]
   },
   {
@@ -55637,11 +56024,54 @@
     ]
   },
   {
+    "input": "ZA000176737R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "ZA000295504R",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf",
+      "colis-prive"
+    ],
+    "preferred": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf",
+      "colis-prive"
+    ]
+  },
+  {
     "input": "ZA025167426HK",
     "carrier": "hongkong-post",
     "confidence": "high",
     "candidates": [
       "hongkong-post"
+    ]
+  },
+  {
+    "input": "ZA120116146543",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "speedaf"
+    ],
+    "asked": [
+      "speedaf"
     ]
   },
   {

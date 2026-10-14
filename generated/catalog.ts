@@ -13347,6 +13347,73 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "speedaf": {
+    "displayName": "Speedaf",
+    "color": "#ff8300",
+    "aliases": [
+      "Speedaf Express",
+      "Speedaf Logistics",
+      "速达非"
+    ],
+    "countries": [
+      "NG",
+      "GH",
+      "KE",
+      "UG",
+      "RW",
+      "ZM",
+      "ZA",
+      "EG",
+      "MA",
+      "SA",
+      "AE",
+      "PK",
+      "KZ",
+      "MU",
+      "RE",
+      "MV",
+      "TR",
+      "CH",
+      "IE",
+      "AL",
+      "ME",
+      "RS"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Lagos",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "speedaf",
+      "recognitionRank": 989,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.speedaf.com/cn-en/send-parcel",
+    "trackingUrlTemplate": "https://www.speedaf.com/cn-en/send-parcel?tradeNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.speedaf.com/cn-en/send-parcel",
+    "linkRules": [
+      {
+        "domains": [
+          "speedaf.com",
+          "www.speedaf.com"
+        ],
+        "pathPattern": "^/[a-z]{2}-[a-z]{2}/send-parcel/?$",
+        "params": [
+          "tradeNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:AE|EG|GH|KE|KZ|MA|MU|MV|NG|PK|RE|RW|SA|TR|UG|ZA|ZM)\\d{12}T?$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^(?:AE|EG|GH|KE|KZ|MA|MU|MV|NG|PK|RE|RW|SA|TR|UG|ZA|ZM)\\d{9}[ER]$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "speedex": {
     "displayName": "Speedex",
     "color": "#55b248",
@@ -15009,6 +15076,7 @@ export const CARRIER_IDS = [
   "smsa-express",
   "south-african-post-office",
   "southeastern-freight-lines",
+  "speedaf",
   "speedex",
   "speedpak",
   "speedy",
@@ -15370,6 +15438,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "smsa-express": [],
   "south-african-post-office": [],
   "southeastern-freight-lines": [],
+  "speedaf": ["speedaf-12","speedaf-r"],
   "speedex": [],
   "speedpak": ["speedpak-1"],
   "speedy": [],

@@ -136,7 +136,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "speedaf"
+        ]
       },
       "note": "Looked up on Instabox's own tracking API, as an archived address shows; the capture was not opened."
     },

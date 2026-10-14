@@ -4,6 +4,7 @@ import { magyarPostaBrowserNumber, runMagyarPostaBrowser } from './magyar-posta-
 
 const number = 'ZZ000000014HU';
 const url = `https://www.posta.hu/nyomkovetes/nyitooldal?searchvalue=${number}`;
+const tracker = 'https://www.posta.hu/ikrnyomkovproxy/';
 const search = 'https://www.posta.hu/ikrnyomkovproxy/Search/Search';
 const endpoint = 'https://www.posta.hu/ikrnyomkovproxy/Result/Index';
 const capture = { captureResponses: [endpoint] };
@@ -14,12 +15,15 @@ const post = (ids = number, typed = ids) => ({ method: () => 'POST',
 const response = (target, status, request, value = '') => ({ url: () => target, status: () => status, request: () => request,
   headers: () => ({ 'set-cookie': 'PRIVATE', 'content-type': 'text/html' }), body: async () => Buffer.from(value) });
 const get = from => ({ method: () => 'GET', redirectedFrom: () => from });
+const frame = (address, text) => ({ url: () => address, locator: () => ({ innerText: async () => text }) });
+const challenge = 'https://www.google.com/recaptcha/api2/bframe?hl=HU&v=PRIVATE&k=PRIVATE';
 
 function fixture() {
   const handlers = {}, state = { closed: 0, policy: 0, cookies: [], visited: [], filled: [], clicked: 0 };
   const searched = post();
   const tab = { on: (name, fn) => { handlers[name] = fn; }, off: name => { delete handlers[name]; },
     goto: async target => { state.visited.push(target); return { status: () => 200 }; },
+    frames: () => [],
     locator: selector => ({
       fill: async value => { state.filled.push([selector, value]); },
       click: async () => {
@@ -113,4 +117,37 @@ test('bounds bodies and repeated responses', async () => {
   } });
   const result = await runMagyarPostaBrowser(many.options);
   assert.equal(result.capturedResponses.length, 10); assert.match(result.capturedResponses.at(-1).error, /limit/);
+});
+
+test('ends the solve as a challenge once Google refuses the audio answer or the address', async () => {
+  for (const text of ['Több helyes megoldást kell megadni. Oldjon meg továbbiakat. PRIVATE',
+    'Próbálja újra később Előfordulhat, hogy az Ön számítógépe vagy hálózata automatizált lekérdezéseket küld.',
+    'Try again later Your computer or network may be sending automated queries.']) {
+    const refused = fixture(); let aborted;
+    refused.options.maxTimeout = 20000;
+    refused.options.solveCaptcha = (page, timeout, signal) => new Promise(() => { signal.addEventListener('abort', () => { aborted = true; }); });
+    refused.tab.frames = () => [frame('https://www.posta.hu/', ''), frame(challenge, `Hallgassa meg ${text}`)];
+    const result = await runMagyarPostaBrowser(refused.options);
+    assert.equal(result.status, 'success'); assert.ok(result.durationMs < 2000);
+    assert.deepEqual(result.capturedResponses.map(row => [row.url, row.status, row.body, row.error]),
+      [[tracker, 200, null, 'Google refused the audio challenge']]);
+    assert.equal(aborted, true); assert.equal(refused.state.clicked, 0); assert.equal(refused.state.closed, 1);
+    assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+  }
+
+  // Only the challenge frame counts: the checkbox frame and a lookalike host are ignored.
+  const refusal = 'Próbálja újra később';
+  const asking = fixture(); asking.options.maxTimeout = 20000;
+  asking.options.solveCaptcha = () => new Promise(resolve => setTimeout(resolve, 900, true));
+  asking.tab.frames = () => [frame(challenge.replace('bframe', 'anchor'), refusal),
+    frame(challenge.replace('www.google.com', 'www.google.com.example'), refusal), frame(challenge, 'Írja be, amit hall')];
+  assert.equal((await runMagyarPostaBrowser(asking.options)).capturedResponses.at(-1).trackingNumberSubmitted, number);
+});
+
+test('ends a solve that does not answer before the browser deadline', async () => {
+  const stuck = fixture(); stuck.options.maxTimeout = 5600;
+  stuck.options.solveCaptcha = () => new Promise(() => {});
+  const result = await runMagyarPostaBrowser(stuck.options);
+  assert.equal(result.status, 'success'); assert.deepEqual(result.capturedResponses, []);
+  assert.ok(result.durationMs < 5000); assert.equal(stuck.state.clicked, 0); assert.equal(stuck.state.closed, 1);
 });

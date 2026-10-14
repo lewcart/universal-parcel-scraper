@@ -8,9 +8,14 @@ import { MAGYAR_POSTA_MAX_BYTES, magyarPostaTrackingUrl, normalizeMagyarPostaNum
 
 export { magyarPostaTrackingUrl, normalizeMagyarPostaNumber, parseMagyarPosta } from './parser.js';
 
-/** The search form's endpoint, and the result page it redirects to. */
+/** The tracker page, its search form's endpoint, and the result page the search redirects to. */
+export const MAGYAR_POSTA_TRACKER = 'https://www.posta.hu/ikrnyomkovproxy/';
 export const MAGYAR_POSTA_SEARCH = 'https://www.posta.hu/ikrnyomkovproxy/Search/Search';
 export const MAGYAR_POSTA_RESULT = 'https://www.posta.hu/ikrnyomkovproxy/Result/Index';
+/** The browser helper's record on the tracker page when Google refuses the audio challenge. */
+const REFUSED = 'Google refused the audio challenge';
+/** How long a refusal holds for this address, during which lookups do not open the browser. */
+const REFUSAL_MEMORY_MS = 10 * 60_000;
 
 /** A refused or failed page; a missing route is not a missing item. */
 function httpFailure(status: number, retryAfter?: string): Error | null {
@@ -34,6 +39,9 @@ export async function magyarPostaBrowser(trawl: TrawlClient, raw: string, signal
   { provider: PROVIDER, timeoutMs, signal, requireSolved: false, captureWindow: 'last', maxBytes: 6 * MAGYAR_POSTA_MAX_BYTES });
   signal.throwIfAborted();
   if (page.capturedResponses.length > 10) throw new ChallengeError(PROVIDER, 'Magyar Posta returned no matching verified search');
+  if (page.capturedResponses.some(row => row.url === MAGYAR_POSTA_TRACKER && row.error === REFUSED)) {
+    throw new ChallengeError(PROVIDER, 'Google refused Magyar Posta\'s audio challenge', { reason: 'verification_refused' });
+  }
   const result = page.capturedResponses.filter(row => row.url === MAGYAR_POSTA_RESULT && row.trackingNumberSubmitted === number).at(-1);
   const search = page.capturedResponses.filter(row => row.url === MAGYAR_POSTA_SEARCH).at(-1);
   const response = result ?? search;
@@ -56,6 +64,8 @@ export async function magyarPostaBrowser(trawl: TrawlClient, raw: string, signal
 }
 
 export class MagyarPostaTracker {
+  #refusedUntil = 0;
+
   constructor(private readonly options: { trawl?: TrawlClient | null; recorder?: StepRecorder } = {}) {}
 
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -65,7 +75,18 @@ export class MagyarPostaTracker {
     if (!trawl) throw new ChallengeError(PROVIDER, 'Magyar Posta requires the browser tracking service');
     return runSteps({ carrier: 'magyar-posta', budgetMs: context.budgetMs ?? 45_000, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'trawl', run: ({ signal, remainingMs }) => magyarPostaBrowser(trawl, number, signal, remainingMs) },
+      { id: 'trawl', run: async ({ signal, remainingMs }) => {
+        // Another solve soon after a refusal would hold a browser for the same answer.
+        if (Date.now() < this.#refusedUntil) {
+          throw new ChallengeError(PROVIDER, 'Google refused Magyar Posta\'s audio challenge recently', { reason: 'verification_refused' });
+        }
+        try {
+          return await magyarPostaBrowser(trawl, number, signal, remainingMs);
+        } catch (error) {
+          if (error instanceof ChallengeError && error.reason === 'verification_refused') this.#refusedUntil = Date.now() + REFUSAL_MEMORY_MS;
+          throw error;
+        }
+      } },
     ]);
   }
 }

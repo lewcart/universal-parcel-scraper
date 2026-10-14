@@ -28,6 +28,12 @@ The tracker answers in the language the browser asks for. The helper sets the tr
 Hungarian language cookie, and the parser and status map read Hungarian. The result must name
 the whole number in its search field, its item and the item's log.
 
+The widget takes the tracker's language, which stays Hungarian for the parser, and TRAWL's solver
+reads only English refusals. The helper watches the challenge frame and stops the solve as soon as
+Google asks for more answers or shows its automated-traffic page. An unsolved checkbox ends before
+the browser deadline. Either is a challenge, and after Google's refusal lookups fail as a challenge
+for ten minutes without opening a browser.
+
 ## Notes
 
 - Each scan's icon carries the tracker's category: 1 acceptance, 2 processing, 3 transport,
@@ -53,8 +59,8 @@ the whole number in its search field, its item and the item's log.
 ## Limitations
 
 - Lookups need a TRAWL image that includes the helper.
-- Google may refuse the audio challenge after several solves from one address; the lookup then
-  fails as a challenge.
+- Google's audio challenge can refuse the server's address. Lookups then fall back to the
+  universal providers.
 - At most 100 scans are kept.
 
 ## Testing

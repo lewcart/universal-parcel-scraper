@@ -49,7 +49,8 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
     return await runXpoBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
   }
   if (carrierPage && magyarPostaBrowserNumber(url, capture)) {
-    return await runMagyarPostaBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
+    return await runMagyarPostaBrowser({ ...carrierRun,
+      solveCaptcha: (page, timeout, signal) => solveRecaptchaV2(page, timeout, AbortSignal.any([budget.signal, signal])) })
   }`;
   writeFileSync(path, 'import { attachTrackingCapture, reserveDeadline } from "../utils/tracking-capture.mjs"\n'
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'

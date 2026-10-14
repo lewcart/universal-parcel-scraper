@@ -6,6 +6,12 @@ const SEARCH = `${ORIGIN}/ikrnyomkovproxy/Search/Search`;
 const RESULT = `${ORIGIN}/ikrnyomkovproxy/Result/Index`;
 const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,30}$/;
 const MAX_BODY = 1_000_000;
+const CHALLENGE = /^https:\/\/www\.google\.com\/recaptcha\/(?:api2|enterprise)\/bframe(?:[?#]|$)/;
+// Google's audio challenge speaks the tracker's Hungarian, which the shared solver's
+// English check misses. It refuses an answer by asking for more, and an address with
+// its automated-traffic page.
+const REFUSED = /Több helyes megoldás|Próbálja újra később|automatizált lekérdezés|Multiple correct solutions|Try again later|automated queries/i;
+const REFUSAL = 'Google refused the audio challenge';
 
 export function magyarPostaBrowserNumber(rawUrl, capture = {}) {
   let url;
@@ -29,6 +35,18 @@ function postedNumber(request) {
 function sanitize(html) {
   return html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '')
     .replace(/<input\b[^>]*__RequestVerificationToken[^>]*>/gi, '');
+}
+
+/** Resolves true once the challenge frame shows a refusal, or false when `signal` ends the watch. */
+async function refusal(page, signal) {
+  while (!signal.aborted) {
+    for (const frame of page.frames()) {
+      if (signal.aborted || !CHALLENGE.test(frame.url())) continue;
+      if (REFUSED.test(await frame.locator('body').innerText({ timeout: 1000 }).catch(() => ''))) return true;
+    }
+    await new Promise(resolve => setTimeout(resolve, 400));
+  }
+  return false;
 }
 
 /**
@@ -126,8 +144,21 @@ export async function runMagyarPostaBrowser({ url, handle, tier, maxTimeout, cap
         statusCode = navigation?.status() ?? 0;
         if (expired || statusCode !== 200 || !solveCaptcha || remaining() <= 5000) return result();
         await page.locator('#main_search_content').fill(number, { timeout: Math.min(5000, remaining()) });
-        const solved = await solveCaptcha(page, Math.min(30000, remaining() - 3000));
-        if (expired || !solved) return result();
+        // A refusal ends the solve at once, and the solve ends before the browser deadline,
+        // so the tracker's page can report either as a challenge.
+        const solveMs = Math.min(30000, remaining() - 3000);
+        const solving = new AbortController();
+        let solveTimer;
+        const outcome = await Promise.race([
+          Promise.resolve().then(() => solveCaptcha(page, solveMs, solving.signal)).then(solved => solved ? 'solved' : 'unsolved', () => 'unsolved'),
+          refusal(page, solving.signal).then(refused => refused ? 'refused' : 'unsolved'),
+          new Promise(resolve => { solveTimer = setTimeout(resolve, solveMs + 500, 'unsolved'); }),
+        ]).finally(() => { clearTimeout(solveTimer); solving.abort(); });
+        if (outcome === 'refused') {
+          // Its outcome, without the widget's tokens or text.
+          entries.push({ url: TRACKER, status: statusCode, body: null, headers: {}, truncated: false, base64Encoded: false, error: REFUSAL });
+        }
+        if (expired || outcome !== 'solved') return result();
         await page.locator('#search_button').click({ timeout: Math.min(5000, remaining()) });
         // The search answers within a few seconds; a form that never posts ends the wait.
         await Promise.race([terminal, new Promise(resolve => { settle = setTimeout(resolve, Math.min(20000, remaining())); })]);

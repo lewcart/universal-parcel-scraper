@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
-import { adapter, MAGYAR_POSTA_RESULT, MAGYAR_POSTA_SEARCH, MagyarPostaTracker, magyarPostaTrackingUrl } from './adapter.js';
+import { adapter, MAGYAR_POSTA_RESULT, MAGYAR_POSTA_SEARCH, MAGYAR_POSTA_TRACKER, MagyarPostaTracker, magyarPostaTrackingUrl } from './adapter.js';
 import { normalizeMagyarPostaNumber, parseMagyarPosta } from './parser.js';
 import { magyarPostaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -16,6 +16,8 @@ const capture = (overrides: Record<string, unknown> = {}) => ({ url: MAGYAR_POST
   body: fixture('delivered'), truncated: false, base64Encoded: false, error: null, trackingNumberSubmitted: PARCEL, ...overrides });
 const searched = (status = 302, error: string | null = null) => ({ url: MAGYAR_POSTA_SEARCH, status, headers: { 'retry-after': '30' },
   body: null, truncated: false, base64Encoded: false, error });
+const refused = { url: MAGYAR_POSTA_TRACKER, status: 200, headers: {}, body: null, truncated: false, base64Encoded: false,
+  error: 'Google refused the audio challenge' };
 const edit = (html: string, change: ($: ReturnType<typeof load>) => void) => { const $ = load(html); change($); return $.html(); };
 const tracker = (capturedResponses: unknown[] = [searched(), capture()], statusCode = 200) => {
   const scrape = vi.fn().mockResolvedValue({ tier: 3, statusCode, capturedResponses });
@@ -148,6 +150,8 @@ describe('Magyar Posta browser search', () => {
       [[], 503, 'maintenance'],
       [[], 404, 'transport'],
       [[searched(200, 'Magyar Posta refused the verification')], 200, 'challenge'],
+      [[refused], 200, 'challenge'],
+      [[{ ...refused, error: 'other' }], 200, 'challenge'],
       [[searched(429)], 200, 'rate_limited'],
       [[searched(403)], 200, 'challenge'],
       [[searched(500)], 200, 'indeterminate'],
@@ -165,6 +169,23 @@ describe('Magyar Posta browser search', () => {
       await expect(tracker([...rows], statusCode).tracker.fetch(PARCEL), `${kind} ${JSON.stringify(rows).slice(0, 80)}`)
         .rejects.toMatchObject({ kind });
     }
+  });
+
+  it('fails as a challenge without the browser for a while after Google refuses the audio challenge', async () => {
+    const now = vi.spyOn(Date, 'now').mockReturnValue(1_000_000);
+    try {
+      const { scrape, tracker: active } = tracker([refused]);
+      await expect(active.fetch(PARCEL)).rejects.toMatchObject({ kind: 'challenge', reason: 'verification_refused' });
+      await expect(active.fetch(UNKNOWN)).rejects.toMatchObject({ kind: 'challenge', reason: 'verification_refused' });
+      expect(scrape).toHaveBeenCalledTimes(1);
+      now.mockReturnValue(1_000_000 + 10 * 60_000);
+      scrape.mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [searched(), capture()] });
+      expect((await active.fetch(PARCEL)).current_stage).toBe('delivered');
+      // An unsolved checkbox is no refusal of the address.
+      const unsolved = tracker([]);
+      for (let i = 0; i < 2; i++) await expect(unsolved.tracker.fetch(PARCEL)).rejects.toMatchObject({ kind: 'challenge' });
+      expect(unsolved.scrape).toHaveBeenCalledTimes(2);
+    } finally { now.mockRestore(); }
   });
 
   it('needs the browser service, a usable number and budget', async () => {

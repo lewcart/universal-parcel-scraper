@@ -12,7 +12,6 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import timers from 'node:timers/promises';
 import type { AdapterFactory } from '../../core/adapter/index.js';
-import { isPostiAbroadLabel } from '../../carriers/posti/identity.js';
 import { carrierTimezone } from '../../core/catalog/index.js';
 import { brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { CarrierError, carrierErrorKind, ChallengeError, IndeterminateError, InputRequiredError, NoHistoryError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
@@ -28,7 +27,7 @@ import { isRecord } from '../../core/types.js';
 import { capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
-import { event, isNotice, localEvent, numberOf, result, type UniversalSource } from '../shared/result.js';
+import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
 import { carrierScan, markReturnLeg, type CarrierScan } from '../shared/scans.js';
 import { PARCELSAPP_API, ParcelsAppHttpClient } from './http.js';
 
@@ -608,10 +607,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       continue;
     }
     if (parsed) {
-      const location = typeof raw.location === 'string' ? raw.location.replace(/\s+/g, ' ').trim().slice(0, 200) : '';
-      // Some Chronopost rows put the service label in the location field, and
-      // Posti names scans outside Finland "ULKOMAILLA" (abroad).
-      if (location && !/^Type de livraison\s*:/i.test(location) && !isPostiAbroadLabel(location)) parsed.location = location;
+      // Some Chronopost rows put the service label in the location field.
+      const location = reportedPlace(raw.location);
+      if (location && !/^Type de livraison\s*:/i.test(location)) parsed.location = location;
       events.push(parsed);
       scanCarriers.add(name);
     }

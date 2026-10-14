@@ -368,15 +368,29 @@ describe('India Post response normalization', () => {
       '', 'private recipient details', 'Flight No: ZZ0102 (From FRA To CDG) private recipient details',
       'Flight No: ZZ0102 (From DEL To CDG)',
     ]) {
-      expect(parse(remarks)).toMatchObject({ description: 'Mail Arrived', location: 'Office - FRA' });
+      // An office India Post does not name abroad has no location.
+      expect(parse(remarks)).toMatchObject({ description: 'Mail Arrived', location: '' });
       expect(JSON.stringify(parse(remarks))).not.toContain('private');
     }
     expect(parse('Flight No: ZZ0102 (From FRA To CDG)', 'ItemReceived'))
-      .toMatchObject({ description: 'Mail Arrived', location: 'Office - FRA' });
+      .toMatchObject({ description: 'Mail Arrived', location: '' });
     expect(parse('', 'MailArrived', 'Example Sorting Centre'))
       .toMatchObject({ description: 'Mail Arrived', location: 'Example Sorting Centre' });
     expect(parse('Flight No: ZZ0102 (From FRA To GRU)'))
       .toMatchObject({ description: 'Flight ZZ0102 arrived: Frankfurt Airport (FRA) → GRU', location: 'GRU Airport' });
+  });
+
+  it('leaves out an office India Post does not name and the foreign-mail PIN', () => {
+    const location = (office: string, pincode: string) => parseIndiaPostTrackingHtml(trackingHistoryHtml(SAMPLE_NUMBER, [{
+      tracked_at: '2026-07-12T10:15:00Z', event: 'Item Received', event_type: 'ItemReceived', office, pincode, remarks: '',
+    }]), SAMPLE_NUMBER).events?.[0]?.location;
+    expect(location('Example GPO', '110001')).toBe('Example GPO 110001');
+    expect(location('Example GPO', '999001')).toBe('Example GPO');
+    // The PIN still places a scan at an office India Post does not name, unless the office is abroad.
+    expect(location('Office - 00000001', '110001')).toBe('110001');
+    expect(location('Office - DEL 00000002', '110037')).toBe('110037');
+    for (const office of ['Office - FRA', 'Office - DEFRA', 'Office - CDG 00000003']) expect(location(office, '400099'), office).toBe('');
+    expect(location('Office - 00000001', '999001')).toBe('');
   });
 
   it('keeps rows newest first once a take-off is back on its own clock', () => {
@@ -414,12 +428,13 @@ describe('India Post scans abroad', () => {
     const result = parse('France');
     expect(result.events?.map((event) => [event.time, event.description, event.location])).toEqual([
       // Labelled 09:10Z, 02:20Z and 12:05Z: India's 14:40, 07:50 and 17:35, the clocks of France.
-      ['2026-07-14T14:40:00+02:00', 'Send item to domestic location (Inb)', 'EXAMPLE EXCHANGE OFFICE 999001'],
-      ['2026-07-14T07:50:00+02:00', 'Item received at office of exchange (Inb)', 'EXAMPLE EXCHANGE OFFICE 999001'],
-      ['2026-07-13T17:35:00+02:00', 'Send item to domestic location (Inb)', 'Office - 999001'],
+      // The foreign-mail PIN places no office, and an office India Post does not name has no location.
+      ['2026-07-14T14:40:00+02:00', 'Send item to domestic location (Inb)', 'EXAMPLE EXCHANGE OFFICE'],
+      ['2026-07-14T07:50:00+02:00', 'Item received at office of exchange (Inb)', 'EXAMPLE EXCHANGE OFFICE'],
+      ['2026-07-13T17:35:00+02:00', 'Send item to domestic location (Inb)', ''],
       // India's own rows, and the bag's, keep their labels.
-      ['2026-07-12T18:40:00Z', 'Bag unloaded at destination Airport', 'Office - FRA 999001'],
-      ['2026-07-10T08:15:00Z', 'Transfer to OOE (Otb)', 'EXAMPLE FOREIGN POST OFFICE 999001'],
+      ['2026-07-12T18:40:00Z', 'Bag unloaded at destination Airport', ''],
+      ['2026-07-10T08:15:00Z', 'Transfer to OOE (Otb)', 'EXAMPLE FOREIGN POST OFFICE'],
       ['2026-07-08T05:40:00Z', 'Item Booked', 'Example GPO 110001'],
     ]);
     expect(result).toMatchObject({
@@ -460,12 +475,12 @@ describe('India Post scans abroad', () => {
   it('picks the same rows in a reply worded in bare codes', () => {
     const result = parse('France', INBOUND_CODES.tracking_events);
     expect(result.events?.map((event) => [event.time, event.provider_code, event.location])).toEqual([
-      ['2026-07-14T14:40:00+02:00', 'ItemDispatched', 'EXAMPLE EXCHANGE OFFICE 999001'],
-      ['2026-07-14T07:50:00+02:00', 'ItemReceived', 'EXAMPLE EXCHANGE OFFICE 999001'],
-      ['2026-07-13T17:35:00+02:00', 'ItemDispatched', 'Office - 999001'],
+      ['2026-07-14T14:40:00+02:00', 'ItemDispatched', 'EXAMPLE EXCHANGE OFFICE'],
+      ['2026-07-14T07:50:00+02:00', 'ItemReceived', 'EXAMPLE EXCHANGE OFFICE'],
+      ['2026-07-13T17:35:00+02:00', 'ItemDispatched', ''],
       // The arrival in France places the rows after it; it keeps its label.
       ['2026-07-12T18:40:00Z', 'MailArrived', 'Paris Charles de Gaulle Airport (CDG), France'],
-      ['2026-07-10T08:15:00Z', 'ItemTransfered', 'EXAMPLE FOREIGN POST OFFICE 999001'],
+      ['2026-07-10T08:15:00Z', 'ItemTransfered', 'EXAMPLE FOREIGN POST OFFICE'],
       ['2026-07-08T05:40:00Z', 'ItemBooked', 'Example GPO 110001'],
     ]);
     // An arrival in another country does not; with neither, the labels stay.

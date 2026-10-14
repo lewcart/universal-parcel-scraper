@@ -30,6 +30,15 @@ it('keeps scan locations from the API while excluding a delivery-service label a
   for (const location of [undefined, '', 'Type de livraison : Livraison Standard', 'ULKOMAILLA', ['France'], { city: 'Example City' }]) {
     expect(parse(location)).not.toHaveProperty('location');
   }
+  // Labels that name no place, and the words before a depot's town.
+  for (const location of ['US, SYSTEM, SYSTEM', 'SYSTEM', 'UNI DATA CENTER', 'Linehaul Agent', 'Centro Di Smistamento - Hub']) {
+    expect(parse(location), location).not.toHaveProperty('location');
+  }
+  expect(parse('from the operational headquarters in EXAMPLE TOWN (Example Region)')?.location).toBe('EXAMPLE TOWN (Example Region)');
+  expect(parse('dalla sede operativa di EXAMPLE TOWN (XX)')?.location).toBe('EXAMPLE TOWN (XX)');
+  for (const location of ['Example System Park, US', 'Centro Di Smistamento Example Town', 'Example Data Center Road, Example City']) {
+    expect(parse(location)?.location).toBe(location);
+  }
 });
 
 it('keeps the reported place when another carrier repeats a delivery without a location', () => {

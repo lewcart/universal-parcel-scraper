@@ -122,6 +122,14 @@ function utapiClock(event: JsonObject): { time?: string; local_time?: string } |
   return instant ? { time: instant } : { local_time: wall.toISO({ includeOffset: false, suppressMilliseconds: true }) };
 }
 
+/** The locality, then the country unless the locality already ends with it ("Hebron, KY, US"). */
+function utapiLocation(place: JsonObject): string {
+  const locality = clean(place.addressLocality, 160);
+  const country = clean(place.countryCode, 2);
+  const last = locality.split(',').at(-1)!.trim();
+  return country && last.toUpperCase() !== country.toUpperCase() ? [locality, country].filter(Boolean).join(', ') : locality;
+}
+
 /** Only call for the response to the exact requested UTAPI URL. DHL can return
  * a customer-confirmation id which differs from every queried parcel alias. */
 export function parseDHLEcommerceResponse(payload: unknown): CarrierResult {
@@ -140,9 +148,7 @@ export function parseDHLEcommerceResponse(payload: unknown): CarrierResult {
     if (!clock || !description) return [];
     const place = address(event);
     const stage = stageFor(event);
-    return [{ ...clock, description: stage === 'delivered' ? 'Delivered' : description,
-      location: [...new Set([clean(place.addressLocality, 160), clean(place.countryCode, 2)].filter(Boolean))].join(', '),
-      stage }];
+    return [{ ...clock, description: stage === 'delivered' ? 'Delivered' : description, location: utapiLocation(place), stage }];
   });
   // UTAPI lists scans newest first. Its order stands unless every scan has an instant.
   if (events.every((event) => event.time)) events.sort((left, right) => right.time!.localeCompare(left.time!));

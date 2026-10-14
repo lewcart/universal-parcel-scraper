@@ -181,12 +181,15 @@ function eventDescription(
   return $('span').text().trim().slice(0, 500) || 'Tracking update';
 }
 
-/** Operational scan location: city and postcode, or an explicit country when city is absent. */
+/**
+ * Operational scan location: city and postcode, or an explicit country when city is absent.
+ * A postcode or site number alone places nothing.
+ */
 function eventLocation(event: JsonObject): string {
   const city = text(event.city, 100);
   const postcode = text(event.zip, 30);
   const country = countryCode(event.country);
-  if (!city) return country && country !== 'ZZ' ? country : postcode;
+  if (!city) return country && country !== 'ZZ' ? country : '';
   return [city, postcode].filter(Boolean).join(' ').slice(0, 160);
 }
 

@@ -70,13 +70,14 @@ function parsedTime(value: unknown): { iso: string; timestamp: number } | null {
  * A depot scan's place is a town and its province, as "PESCARA (PE)" or
  * "NAPOLI NA", and a delivery reads "dalla sede operativa di" that town. Any
  * other place, such as a post office's street address or a street named with
- * its province, stays out.
+ * its province, stays out. The country follows the province, which would
+ * otherwise read as one: "TORINO (TO)" is not in Tonga.
  */
 const STREET = /^(?:VIA|VIALE|VICOLO|PIAZZA|PIAZZALE|PIAZZETTA|CORSO|LARGO|STRADA|LUNGOMARE|LUNGOTEVERE|CONTRADA|LOCALIT(?:À|A'?)|FRAZIONE|SALITA)(?:\s|$)/u;
 function townLabel(value: unknown): string {
   const text = clean(value, 120).replace(/^dalla sede operativa di\s+/u, '');
   const match = /^([A-ZÀ-Ý][A-ZÀ-Ý' .-]{1,40}?)\s+(?:\(([A-Z]{2})\)|([A-Z]{2}))$/u.exec(text);
-  return match && !STREET.test(match[1]!) ? `${match[1]} (${match[2] ?? match[3]})` : '';
+  return match && !STREET.test(match[1]!) ? `${match[1]} (${match[2] ?? match[3]}), IT` : '';
 }
 
 /** The product the parcel travels under; letter-post items echo their own number instead. */

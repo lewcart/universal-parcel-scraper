@@ -67,6 +67,14 @@ describe('Ship24 result parsing', () => {
     expect(result.events?.[1]?.location).toBe('EXAMPLE AIRPORT');
   });
 
+  it('gives a scan no location when the provider names no place there', () => {
+    const result = parseShip24Response({ data: { tracking_number: number, couriers: [{ translation: { name: 'GLS Italy' } }],
+      events: [{ timestamp: '2026-01-13T18:00:00+01:00', status: 'Shipment in transit.', location: 'Centro Di Smistamento - Hub' },
+        { timestamp: '2026-01-11T22:00:00+01:00', status: 'Shipment in transit.', location: 'Example Town' }] } }, number);
+    expect(result.events?.[0]?.location).toBeUndefined();
+    expect(result.events?.[1]?.location).toBe('Example Town');
+  });
+
   it('keeps "DHL Express" a reported name for a waybill whose check digit DHL Express refuses', () => {
     const named = (waybill: string) => parseShip24Response({ data: { tracking_number: waybill,
       couriers: [{ translation: { name: 'DHL Express' } }], events: history.data.events } }, waybill);

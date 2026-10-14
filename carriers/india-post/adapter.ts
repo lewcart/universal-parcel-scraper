@@ -206,6 +206,21 @@ function takeOffZone(providerCode: string, office: string, trackedAt: string): s
 }
 
 /**
+ * An office and its PIN, as a scan's location. India Post writes "Office -" and
+ * at most a code ("Office - 00000001", "Office - FRA") for an office it does
+ * not name: the code is left out, and so is the PIN when the code names an
+ * airport abroad, as the office of exchange there carries an Indian office's
+ * PIN. A PIN starting with 9 is the Army Postal Service's, which India Post
+ * also gives foreign mail, and places no office.
+ */
+function officeLocation(office: string, pincode: string): string {
+  const pin = /^[1-8]/.test(pincode) ? pincode : '';
+  const placeholder = /^Office -(?: (?:[A-Z]{2})?([A-Z]{3}))?(?: \d+)?$/.exec(office);
+  if (!placeholder) return [office, pin].filter(Boolean).join(' ');
+  return !placeholder[1] || airportCountry(placeholder[1]) === 'IN' ? pin : '';
+}
+
+/**
  * The office's point from MySpeedPost's pincode directory. It is looked up by
  * pincode, not by office: "KOLKATA FOREIGN LCAO 900056" comes back as an office
  * in Delhi. Only a verified entry for the scan's own office is kept.
@@ -390,7 +405,7 @@ export function parseIndiaPostTrackingHtml(
       event: {
         ...(time ? { time: time.iso } : { local_time: local!.local }),
         location: airport ? `${airport.name} (${airportCode}), ${airport.country}`
-          : flight && !takeOff ? `${flight.airport} Airport` : [office, pincode].filter(Boolean).join(' '),
+          : flight && !takeOff ? `${flight.airport} Airport` : officeLocation(office, pincode),
         description,
         stage: classified.stage,
         ...(providerCode ? { provider_code: providerCode } : {}),

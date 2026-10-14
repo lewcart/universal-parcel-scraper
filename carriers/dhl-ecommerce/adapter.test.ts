@@ -64,7 +64,7 @@ function json<T>(name: string): T {
   return JSON.parse(readFileSync(new URL(name, import.meta.url), 'utf8')) as T;
 }
 
-function event(description = 'EN ROUTE', statusCode = 'transit', timestamp = '2026-09-09T05:40:17', address = { addressLocality: 'FR' }): Scan {
+function event(description = 'EN ROUTE', statusCode = 'transit', timestamp = '2026-09-09T05:40:17', address: Record<string, string> = { addressLocality: 'FR' }): Scan {
   return { description, statusCode, timestamp, location: { address } };
 }
 function shipment(): Payload {
@@ -187,6 +187,16 @@ describe('DHL eCommerce normalization', () => {
     expect(parseDHLEcommerceResponse(payload)).toMatchObject({ last_update: '2026-10-24T23:30:00.000Z',
       events: [{ time: '2026-10-24T23:30:00.000Z' }, { time: '2026-10-24T07:00:00.000Z' }] });
     expect(parseDHLEcommerceResponse(payload)).not.toHaveProperty('last_update_local');
+  });
+
+  it('writes the country once after a locality that already ends with it', () => {
+    const payload = shipment();
+    payload.shipments[0]!.events = [
+      event('PROCESSED', 'transit', '2026-09-03T10:00:00Z', { addressLocality: 'Sampleton, IL, US', countryCode: 'US' }),
+      event('PROCESSED', 'transit', '2026-09-02T10:00:00Z', { addressLocality: 'Zurich', countryCode: 'CH' }),
+      event('PROCESSED', 'transit', '2026-09-01T10:00:00Z', { countryCode: 'US' }),
+    ];
+    expect(parseDHLEcommerceResponse(payload).events?.map((scan) => scan.location)).toEqual(['Sampleton, IL, US', 'Zurich, CH', 'US']);
   });
 
   it('rejects ambiguous, malformed and other-division responses', () => {

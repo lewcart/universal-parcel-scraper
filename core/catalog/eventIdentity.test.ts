@@ -113,6 +113,19 @@ describe('same-instant identity policies', () => {
     }
   });
 
+  it('lets a Swiss Post scan stored with a bare site number lose it', () => {
+    const policy = sameInstantIdentityPolicy('swiss-post', { supportsScanMatching: true });
+    const stored = { stage: 'in_transit', description: 'Sorting - forwarding', location: '100000', providerCode: 'PARCEL.*.1.3001' };
+    const incoming = { ...stored, location: '' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    for (const different of [
+      { ...stored, location: 'Example Depot 100000' },
+      { ...stored, location: 'CH' },
+      { ...stored, description: 'Sorted for delivery' },
+      { ...stored, stage: 'out_for_delivery' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+  });
+
   it('lets a universal copy that lost Posti\'s "abroad" label take over its stored row', () => {
     const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
     const stored = { stage: 'in_transit', description: 'Item is in transport in destination country.', location: 'ULKOMAILLA', providerCode: '' };
@@ -124,6 +137,20 @@ describe('same-instant identity policies', () => {
       { ...stored, description: 'Item has been registered' },
       { ...stored, stage: 'delivered' },
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
+  });
+
+  it('lets a universal copy that lost a label naming no place, or the words before a depot, take over its stored row', () => {
+    const policy = sameInstantIdentityPolicy('unknown', { supportsScanMatching: true });
+    const stored = { stage: 'registered', description: 'Shipping Label Created', location: 'US, SYSTEM, SYSTEM', providerCode: '' };
+    expect(policy?.matches?.({ ...stored, location: '' }, stored)).toBe(true);
+    const depot = { stage: 'delivered', description: 'Delivered', location: 'from the operational headquarters in EXAMPLE TOWN (Example Region)', providerCode: '' };
+    expect(policy?.matches?.({ ...depot, location: 'EXAMPLE TOWN (Example Region)' }, depot)).toBe(true);
+    for (const different of [
+      { ...depot, location: 'OTHER TOWN (Example Region)' },
+      { ...depot, location: '' },
+      { ...depot, description: 'In transit' },
+    ]) expect(policy?.matches?.(different, depot)).toBe(false);
+    expect(policy?.matches?.({ ...stored, location: '' }, { ...stored, location: 'Example System Park, US' })).toBe(false);
   });
 
   it('matches a Cainiao scan whose town has left its wording for its location', () => {
@@ -170,14 +197,35 @@ describe('same-instant identity policies', () => {
     const policy = sameInstantIdentityPolicy('poste-italiane', { supportsScanMatching: true });
     expect(policy).toMatchObject({ storedSources: ['poste-italiane'], requireProviderCode: false, matchEachScan: true });
     const stored = { stage: 'in_transit', description: 'la spedizione è in transito', location: '', providerCode: '' };
-    const incoming = { ...stored, location: 'EXAMPLE TOWN (XX)' };
+    const incoming = { ...stored, location: 'EXAMPLE TOWN (XX), IT' };
     expect(policy?.matches?.(incoming, stored)).toBe(true);
     expect(policy?.matches?.(incoming, incoming)).toBe(true);
+    // A row stored with the town and province alone gains the country.
+    expect(policy?.matches?.(incoming, { ...stored, location: 'EXAMPLE TOWN (XX)' })).toBe(true);
     for (const different of [
       { ...stored, description: 'la spedizione è in consegna' },
       { ...stored, location: 'UFFICIO DI PROVA' },
+      { ...stored, location: 'OTHER TOWN (XX)' },
+      { ...stored, location: 'EXAMPLE TOWN (YY)' },
     ]) expect(policy?.matches?.(incoming, different)).toBe(false);
     expect(policy?.matches?.({ ...incoming, location: 'UFFICIO DI PROVA' }, stored)).toBe(false);
+    expect(policy?.matches?.({ ...incoming, location: 'UFFICIO DI PROVA, IT' }, { ...stored, location: 'UFFICIO DI PROVA' })).toBe(false);
+  });
+
+  it('lets a DHL eCommerce scan stored with its country twice take the location with it once', () => {
+    expect(sameInstantIdentityPolicy('dhl-ecommerce')).toBeUndefined();
+    const policy = sameInstantIdentityPolicy('dhl-ecommerce', { supportsScanMatching: true });
+    expect(policy).toMatchObject({ storedSources: ['dhl-ecommerce'], requireProviderCode: false, matchEachScan: true });
+    const stored = { stage: 'in_transit', description: 'PROCESSED', location: 'Sampleton, IL, US, US', providerCode: '' };
+    const incoming = { ...stored, location: 'Sampleton, IL, US' };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    for (const different of [
+      { ...stored, description: 'ARRIVED' },
+      { ...stored, stage: 'out_for_delivery' },
+      { ...stored, location: 'Otherton, IL, US, US' },
+      { ...stored, location: 'Sampleton, IL, US' },
+      { ...stored, location: '' },
+    ]) expect(policy?.matches?.(incoming, different)).toBe(false);
   });
 
   it('lets an MRW hub scan gain its bracketed label', () => {

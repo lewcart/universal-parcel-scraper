@@ -147,12 +147,15 @@ function isNotFoundError(value: unknown): boolean {
   return key.includes('trackingidnotfound') || key.includes('invalidtrackingid') || key.includes('invalidoffamazonorder');
 }
 
-/** City, region and country only; the same object also carries the street and postcode. */
+/**
+ * City, region and country only; the same object also carries the street and postcode.
+ * A region Amazon does not know reads "N/A".
+ */
 function location(raw: unknown): string {
   if (!isRecord(raw)) return '';
   const values = [raw.city, raw.stateProvince, raw.countryCode]
     .map((value) => cleanScalar(value, 100))
-    .filter((value, index, all) => value
+    .filter((value, index, all) => value && !/^n\/a$/i.test(value)
       && all.findIndex((candidate) => candidate.toLocaleLowerCase('en-US')
         === value.toLocaleLowerCase('en-US')) === index);
   return values.join(', ').slice(0, 250);

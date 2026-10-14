@@ -8,6 +8,7 @@ import {
   PosteItalianeTracker,
   adapter,
 } from './adapter.js';
+import { trackingLocationCountry, trackingPlace } from '../../places/trackingLocation.js';
 import { classifyPosteItalianeStatus } from './status.js';
 
 // All identifiers and timestamps below are synthetic. Italian status wordings
@@ -256,7 +257,7 @@ describe('Poste Italiane response parsing', () => {
       ],
     }), TRACKING_NUMBER);
     expect(result.service_name).toBe('CRONO ECONOMY');
-    expect(result.events?.map((event) => event.location)).toEqual(['EXAMPLE TOWN (XX)', 'SAN EXAMPLE DI PROVA (XX)', 'EXAMPLE TOWN (XX)']);
+    expect(result.events?.map((event) => event.location)).toEqual(['EXAMPLE TOWN (XX), IT', 'SAN EXAMPLE DI PROVA (XX), IT', 'EXAMPLE TOWN (XX), IT']);
     const office = parsePosteItalianeTrackingResponse(parcel({
       tipoProdotto: TRACKING_NUMBER,
       listaMovimenti: [
@@ -272,6 +273,20 @@ describe('Poste Italiane response parsing', () => {
         listaMovimenti: [{ ...movement('la spedizione è in transito', 1767225600000), luogo: street }],
       }), TRACKING_NUMBER);
       expect(scan.events?.[0]?.location).toBe('');
+    }
+  });
+
+  it('writes the country after a province that is also a country code', () => {
+    // Turin's province is Tonga's code, Naples' Namibia's and Bologna's Bolivia's.
+    const result = parsePosteItalianeTrackingResponse(parcel({
+      listaMovimenti: ['TORINO (TO)', 'NAPOLI NA', 'BOLOGNA (BO)'].map((luogo, index) => (
+        { ...movement('la spedizione è in transito', 1767225600000 + index * 3_600_000), luogo })),
+    }), TRACKING_NUMBER);
+    const locations = result.events!.map((event) => event.location!);
+    expect(locations).toEqual(['BOLOGNA (BO), IT', 'NAPOLI (NA), IT', 'TORINO (TO), IT']);
+    for (const location of locations) {
+      expect(trackingPlace(location)).toEqual({ country: 'IT', place: location.slice(0, -4) });
+      expect(trackingLocationCountry(location)).toBe('IT');
     }
   });
 

@@ -116,6 +116,8 @@ const LEAP_MAX_KM = 3000;
 const WORLD_CITY_THOUSANDS = 1000;
 /** The city a region is named after ("Santo Domingo Province") has at least this many thousand people. */
 const NAMESAKE_THOUSANDS = 100;
+// A town of that size this many times larger than its namesake in a country the parcel is in keeps its name.
+const DOMINANT_TIMES = 10;
 
 // Swiss Post scans end in the site's six-digit number: "Zürich Briefzentrum 801050".
 const FACILITIES = new Map(facilityList.map((facility) => [`${facility.country}:${facility.code}`, facility]));
@@ -668,6 +670,8 @@ function carrierHomes(carrier: string): string[] {
  * Places for a parcel's scans, oldest first. A scan that names no country
  * borrows one from the scans around it, then the destination and the
  * carriers' home countries, so "Buchs" after "Zürich" stays in Switzerland.
+ * A world city, or a town ten times larger than that country's namesake,
+ * keeps its own place when it lies nearer the way between the scans around it.
  * A town only its name places, in a country nothing else puts the parcel in,
  * is a namesake and gets no place when it is thousands of kilometres off the
  * way between the scans around it, or, where the scans stop, that far from
@@ -736,14 +740,29 @@ export function placesForEvents(
   const doubtful = namesakes(first);
   const telling = (found: Located | null, index: number): boolean =>
     found !== null && !doubtful.has(index) && (found.text || found.place.precision === 'city');
+  // A world city, or a town far larger than its namesake, keeps its own place over one in a
+  // country the parcel is in when it lies nearer the way between the scans around it:
+  // "Warsaw" between Lviv and New York is in Poland.
+  const ownPlace = (location: string, found: Located | null, index: number): Located | null => {
+    if (!found || found.text || found.place.precision !== 'city') return found;
+    const other = (entry: Located | null, at: number) => telling(entry, at) && locations[at]?.trim() !== location.trim();
+    const before = nearest(first, index, -1, other)?.place;
+    const after = nearest(first, index, 1, other)?.place;
+    const alone = before && after ? cachedPlace(location, [], carriers) : null;
+    if (!before || !after || !alone || alone.place.precision !== 'city' || alone.place.country === found.place.country) return found;
+    const thousands = alone.thousands ?? 0;
+    if (thousands < WORLD_CITY_THOUSANDS && (thousands < NAMESAKE_THOUSANDS || thousands < DOMINANT_TIMES * (found.thousands ?? 0))) return found;
+    const way = (place: EventPlace) => reach(before, place) + reach(after, place);
+    return way(alone.place) < way(found.place) ? alone : found;
+  };
   const settled = locations.map((location, index) => {
     if (!location?.trim()) return null;
     const before = nearest(first, index, -1, telling)?.place.country;
     const after = nearest(first, index, 1, telling)?.place.country;
     const neighbours = [...new Set([before, after].filter((code): code is string => Boolean(code)))];
-    if (!neighbours.length || neighbours.every((code) => base.includes(code))) return first[index]!;
-    return cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers)
-      ?? (telling(first[index]!, index) ? first[index]! : null);
+    if (!neighbours.length || neighbours.every((code) => base.includes(code))) return ownPlace(location, first[index]!, index);
+    return ownPlace(location, cachedPlace(location, [...neighbours, ...base.filter((code) => !neighbours.includes(code))], carriers)
+      ?? (telling(first[index]!, index) ? first[index]! : null), index);
   });
   const dropped = namesakes(settled);
   return locations.map((location, index) => {

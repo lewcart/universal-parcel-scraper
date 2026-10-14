@@ -26,6 +26,9 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   its carriers' countries. `placesForEvents` reads those from the catalog for the carrier
   ids in `carriers`: the countries a carrier delivers in, unless they are more than six, and
   the country of its clock. `carrierCountries` adds countries by code.
+- Context does not outweigh a city of a million people, or a town of 100,000 ten times the
+  size of the namesake context picks, when it lies nearer the way between the scans around
+  it: "Warsaw" between Lviv and New York is in Poland.
 - A state, province or canton written after the town holds: "Earth City, MO" is not Earth
   in Texas.
 - Two letters after the town are a country when a town of that name is there ("MONTE CARLO

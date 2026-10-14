@@ -193,6 +193,15 @@ describe('Amazon Shipping France response normalization', () => {
     });
   });
 
+  it('leaves out a region Amazon does not know', () => {
+    const hub = outForDeliveryFixture();
+    const history = JSON.parse(String(hub.eventHistory)) as { eventHistory: Record<string, unknown>[] };
+    history.eventHistory[2] = scan('Received', 'swa_rex_arrived_at_final_hub', 'Aug 11, 2026, 5:48:16 AM',
+      { city: 'Exampleville', stateProvince: 'N/A', countryCode: 'ES' });
+    hub.eventHistory = JSON.stringify(history);
+    expect(parseAmazonShippingTrackingResponse(hub).events?.[0]?.location).toBe('Exampleville, ES');
+  });
+
   it('keeps a parcel out for delivery when the van leaves the station', () => {
     const summary = {
       status: 'Departed', metadata: { trackingStatus: { stringValue: 'OUT_FOR_DELIVERY' } }, containerStatusTags: ['OUT_FOR_DELIVERY'],

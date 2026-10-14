@@ -202,6 +202,8 @@ describe('Swiss Post projection', () => {
       .toEqual(['Example Depot 100000']);
     for (const country of [undefined, '', 'ZZ', ['CH'], { code: 'CH' }]) {
       expect(locations([{ ...scan, country }])).toEqual(['']);
+      // A site number or postcode alone is no place.
+      expect(locations([{ ...scan, country, zip: '100000' }])).toEqual(['']);
     }
   });
 

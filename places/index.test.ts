@@ -293,4 +293,22 @@ describe('placesForEvents', () => {
     expect(route(['Shenzhen', 'Liège', 'Paris'], { carriers: ['la-poste'] })).toEqual(['Shenzhen, CN', 'Liège, BE', 'Paris, FR']);
     expect(route(['Mount Pleasant MC'])).toEqual(['Mount Pleasant, US']);
   });
+
+  it('keeps a world city in its own country when a namesake would take it off the way', () => {
+    // A Ukrainian parcel flown to the United States leaves from Warsaw and Paris, not from their American namesakes.
+    for (const options of [{ destinationCountry: 'US', carriers: ['gofo', 'nova-poshta'] }, { carriers: ['nova-poshta'] }]) {
+      expect(route(['Lviv', 'Warsaw', 'New York'], options)).toEqual(['Lviv, UA', 'Warsaw, PL', 'New York, US']);
+      expect(route(['Lviv', 'Warsaw', 'Warsaw', 'New York'], options)).toEqual(['Lviv, UA', 'Warsaw, PL', 'Warsaw, PL', 'New York, US']);
+      expect(route(['Lviv', 'Paris', 'New York'], options)).toEqual(['Lviv, UA', 'Paris, FR', 'New York, US']);
+    }
+    // A namesake on the way stays, and so does a town the parcel's country holds that no larger one outweighs.
+    expect(route(['Dallas, TX', 'Paris', 'Memphis, TN'], { destinationCountry: 'US' })).toEqual(['Dallas, US', 'Paris, US', 'Memphis, US']);
+    expect(route(['Toronto, ON', 'London', 'Windsor, ON'], { destinationCountry: 'CA' })).toEqual(['Toronto, CA', 'London, CA', 'Windsor, CA']);
+    expect(route(['ORLEANS'])).toEqual(['Orléans, CA']);
+    expect(route(['ORLEANS', 'Tours'], { carriers: ['yunexpress'] })).toEqual(['Orléans, FR', 'Tours, FR']);
+    expect(route(['Paris', 'ORLEANS', 'Tours'], { carriers: ['yunexpress'] })).toEqual(['Paris, FR', 'Orléans, FR', 'Tours, FR']);
+    expect(route(['Lausanne', 'Chavannes', 'Daillens Centre Colis'])).toEqual(['Lausanne, CH', 'Chavannes, CH', 'Daillens, CH']);
+    expect(route(['CH', 'Chavannes', 'Daillens Centre Colis', 'CH'], { destinationCountry: 'CH', carriers: ['swiss-post'] }))
+      .toEqual(['Switzerland, CH', 'Chavannes, CH', 'Daillens, CH', 'Switzerland, CH']);
+  });
 });

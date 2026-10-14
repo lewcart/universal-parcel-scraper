@@ -38,8 +38,9 @@ The adapter refuses S10 numbers, so mail from abroad to Italy is not handed to P
 - A post-office scan names its office, which becomes the event location; the office's
   address, postcode and hours are not kept. Other scans keep `luogo` only when it is a town
   and province, such as `PESCARA (PE)`, or a delivery "dalla sede operativa di" that town.
-  Any other `luogo`, such as a post office's street address or a street named with its
-  province, is dropped.
+  The location adds the country, `PESCARA (PE), IT`, because many provinces share a
+  country's code and a final code reads as the country. Any other `luogo`, such as a post
+  office's street address or a street named with its province, is dropped.
 - `tipoProdotto` names the product, such as Poste Delivery Standard. Letter-post items echo
   their own number there, which is not kept.
 - `dataPrevistaConsegna` is Italian prose ("Consegna prevista entro Venerdì 2 Gennaio 2026"),

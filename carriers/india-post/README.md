@@ -83,8 +83,12 @@ Outcomes:
   reworded stored scan. Its `relabelledFrom: 'Asia/Kolkata'` lets a scan abroad take over the row
   stored under India's label, by wall clock, provider code and location. The consumer owns the
   stored rows and notification receipts.
-- IDs and pincodes arrive as numbers or strings, hence `cleanScalar`. A pincode is kept only when it
-  is exactly six digits.
+- IDs and pincodes arrive as numbers or strings, hence `cleanScalar`. A pincode is kept in the
+  location only when it is exactly six digits and does not start with 9: those belong to the Army
+  Postal Service, which India Post also gives foreign mail, and place no office.
+- "Office -" followed at most by a code (`Office - 00000000`, `Office - FRA`) stands for an office
+  India Post does not name. The location leaves it out and keeps the pincode alone, unless the code
+  names an airport abroad: the office of exchange there carries an Indian office's pincode.
 - A row's `pincode_info` is MySpeedPost's directory entry for the pincode, not for the office:
   "KOLKATA FOREIGN LCAO 900056" comes back as an office in Delhi, and unverified entries can be
   hundreds of kilometres off. Its coordinates become the scan's `point` only when the entry is

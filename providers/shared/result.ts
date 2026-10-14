@@ -44,13 +44,21 @@ export function hasPrivateDeliveryDetails(description: string): boolean {
   return /\bpin\s*:|(?:access|security|pickup|collection) code|(?:door|house) (?:no\b|number)|signed (?:for )?by|signature|numero civico|firmato da|signe par|signé par|code (?:de retrait|d['’]acc[eè]s)|num[eé]ro de (?:rue|maison)|abholcode|zugangscode|hausnummer|unterschrieben von|codice (?:di ritiro|di accesso)|c[oó]digo (?:pin|secreto|de (?:recogida|retirada|retiro|acceso|acesso|entrega|seguridad|seguran[cç]a|levantamento|recolha|desbloqueo|desbloqueio|apertura|abertura))|firmad[oa] por|firma del destinatari|assinad[oa] por|assinatura|n[uú]mero (?:de (?:portal|puerta|casa|piso|vivienda|pol[ií]cia)|da (?:porta|casa))|(?:porta|puerta) n\.?\s?[º°]|n\.?\s?[º°] (?:de |da )?porta/i.test(description);
 }
 
+// Labels providers put where a place belongs: a feed's system user ("US, SYSTEM, SYSTEM"),
+// an order system's data centre, a line-haul agent and GLS Italy's unnamed sorting hub.
+const NOT_PLACES = /^(?:(?:[A-Z]{2}, )?system(?:, system)*|(?:uni )?data cent(?:er|re)|linehaul agent|centro di smistamento(?: - hub)?)$/i;
+// Poste Italiane delivers "dalla sede operativa di" the depot's town, which providers also translate.
+const DEPOT_PREFIX = /^(?:dalla sede operativa di|from the operational headquarters in)\s+/i;
+
 /**
- * The place a provider reports for a scan, unless it holds private delivery
+ * The place a provider reports for a scan, without the words before a depot's
+ * town, unless it is a label that names no place, holds private delivery
  * details or is Posti's "abroad" label.
  */
 export function place(value: unknown): string {
-  const location = text(value).slice(0, 200);
-  return location && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location) ? location : '';
+  const location = text(value).slice(0, 200).replace(DEPOT_PREFIX, '');
+  return location && !NOT_PLACES.test(location) && !hasPrivateDeliveryDetails(location) && !isPostiAbroadLabel(location)
+    ? location : '';
 }
 
 function sourceEventStage(description: string, includeBroadMovement = true): Stage | undefined {

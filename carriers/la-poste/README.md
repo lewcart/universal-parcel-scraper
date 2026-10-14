@@ -76,8 +76,15 @@ universal provider.
   entry, `DO2` the release and `RE1` the decision to return the item. Duties paid
   at the door (`DESPAY`) follow the delivery scan and keep it delivered. Pickup and customs are set as `current_stage` because the status
   vocabulary has no value for them.
-- Timestamps already carry their Paris offset and are passed through verbatim.
-  `isoTime` only validates them; impossible dates are dropped.
+- Scans in France and its overseas departments keep the feed's timestamp, which
+  carries its offset; impossible dates are dropped. A partner post's scan abroad
+  shows that office's wall clock under the wrong offset: Colissimo gives it the
+  Paris offset, and imported tracked mail ("Lettre et PPI import suivi") reads
+  it as UTC and shows it on Paris's clock. Those scans are read in the
+  country's zone, or kept as `local_time` when the country has several. Other
+  products keep the feed's instant until their partner scans are compared with
+  the partner's own. The app's identity policy lets a corrected Colissimo scan
+  take over the row stored under the Paris label.
 - `contextData.partner` names the foreign carrier after export; it becomes
   `delivery_carrier` and `delivery_tracking_number`. An item whose `product` is
   Chronopost names Chronopost instead, whose own tracking holds the scans and

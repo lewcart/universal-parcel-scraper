@@ -1,4 +1,5 @@
 
+import { DateTime } from 'luxon';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { dpdParcelNumber } from '../../core/detection/dpd.js';
@@ -7,7 +8,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps, type StepSpec } from '../../core/runner/index.js';
 import { firstAttemptMs, isNetworkFailure } from '../../core/runner/networkRetry.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
-import { isoTime } from '../../core/time/index.js';
+import { countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { eventStage, eventStatus, GROUP_STATUSES } from './status.js';
@@ -61,13 +62,34 @@ function eventOrder(event: JsonObject): number {
 }
 
 /**
- * Event timestamps already carry their Paris offset, so the provider's own
- * string is retained verbatim; only calendar-impossible values are dropped.
+ * Scans in France carry their Paris offset, so the provider's own string is
+ * retained verbatim; only calendar-impossible values are dropped.
  */
 function safeDate(value: unknown): string {
   const raw = clean(value, 64);
   if (!/^\d{4}-\d{2}-\d{2}(?:[T ][0-9:+.Z-]+)?$/i.test(raw)) return '';
   return isoTime(raw, TIMEZONE) ? raw : '';
+}
+
+/** France and the overseas places where La Poste scans items itself. */
+const LA_POSTE_COUNTRIES = new Set(['FR', 'GP', 'MQ', 'GF', 'RE', 'YT', 'PM', 'BL', 'MF']);
+
+/**
+ * A partner post's scan abroad shows that office's wall clock, mislabelled:
+ * Colissimo gives it Paris's offset, and imported tracked mail reads it as UTC
+ * and shows it on Paris's clock. It is read in the country's zone, or kept as a
+ * wall clock when the country has several. Null at home and for other
+ * products, whose partner scans have not been compared with the partner's own.
+ */
+function partnerClock(raw: string, country: string, product: string): { time: string; local_time?: string } | null {
+  if (!country || LA_POSTE_COUNTRIES.has(country) || !explicitOffsetTime(raw)) return null;
+  const labelled = DateTime.fromISO(raw, { setZone: true });
+  const shown = product === 'colissimo' ? labelled : product === 'lettre et ppi import suivi' ? labelled.toUTC() : null;
+  const wall = shown?.toISO({ includeOffset: false, suppressMilliseconds: true });
+  if (!wall) return null;
+  const zone = countryTimeZone(country);
+  const placed = zone ? isoTime(wall, zone) : null;
+  return placed ? { time: placed.iso } : { time: '', local_time: wall };
 }
 
 function expectedDate(value: unknown): string | null {
@@ -210,14 +232,18 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
   // Projection allowlist: nothing but status wording, time, coarse location and
   // the provider's own codes leaves this function. Recipient blocks, addresses
   // and proof-of-delivery fields in the payload are never read.
+  const product = clean(shipment.product, 40).toLocaleLowerCase('en-US');
   const kept = rawEvents.slice(0, MAX_EVENTS_TO_RETURN).filter((event) => clean(event.label) || safeDate(event.date));
   const events: CarrierEvent[] = kept.map((event) => {
     const description = clean(event.label);
     const group = clean(event.group, 40).toLocaleUpperCase('en-US');
     const code = clean(event.code, 40).toLocaleUpperCase('en-US');
+    const time = safeDate(event.date);
+    const location = clean(event.country, 80);
     return {
-      time: safeDate(event.date),
-      location: clean(event.country, 80),
+      time,
+      ...partnerClock(time, countryCode(location), product),
+      location,
       description: description || 'Tracking update',
       stage: eventStage(group, code, description),
       ...(group || code ? { provider_code: [group, code].filter(Boolean).join('/') } : {}),
@@ -263,7 +289,8 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
     // the sync would re-read the sentence and fall back to "out for delivery".
     ...(latest?.stage ? { current_stage: latest.stage } : {}),
     last_status_text: latestLabel || 'Tracking information received',
-    last_update: events[0]?.time || safeDate(timeline[0]?.date) || null,
+    last_update: events[0]?.time || (events[0]?.local_time ? null : safeDate(timeline[0]?.date) || null),
+    ...(!events[0]?.time && events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     // A delivered item can stay non-final with its delivery time as the estimate.
     expected_delivery: shipment.isFinal === true || latest?.stage === 'delivered' ? null : expectedDate(shipment.estimDate),
     ...(latest?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),

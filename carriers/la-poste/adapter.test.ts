@@ -655,6 +655,58 @@ describe('La Poste response normalization', () => {
     });
   });
 
+  it('reads a Colissimo partner scan abroad as the wall clock under the Paris offset', () => {
+    const data = deliveredFixture();
+    data[0]!.shipment.event = [
+      { group: 'DESLIVD', code: 'DI1', label: 'Votre colis a été livré', date: '2026-07-06T15:40:00+02:00', country: 'FI', order: 3 },
+      { group: 'DISINTAS', code: 'ET3', label: 'Votre colis est arrivé dans le pays de destination', date: '2026-07-05T20:25:00+02:00', country: 'FI', order: 2 },
+      { group: 'ACHINT', code: 'ET1', label: 'Votre colis est en cours d\'acheminement', date: '2026-07-04T18:00:00+02:00', country: 'FR', order: 1 },
+    ];
+    const result = parseLaPosteTrackingResponse(data, TRACKING_NUMBER);
+    expect(result.events?.map((event) => event.time)).toEqual([
+      '2026-07-06T15:40:00+03:00', '2026-07-05T20:25:00+03:00', '2026-07-04T18:00:00+02:00',
+    ]);
+    expect(result).toMatchObject({ last_update: '2026-07-06T15:40:00+03:00', delivered_at: '2026-07-06T15:40:00+03:00' });
+
+    // Switzerland keeps Paris's clock; a country with several keeps the wall clock alone.
+    data[0]!.shipment.event[0]!.country = 'CH';
+    data[0]!.shipment.event[1]!.country = 'US';
+    const placed = parseLaPosteTrackingResponse(data, TRACKING_NUMBER);
+    expect(Date.parse(placed.events![0]!.time!)).toBe(Date.parse('2026-07-06T15:40:00+02:00'));
+    expect(placed.events?.[1]).toMatchObject({ time: '', local_time: '2026-07-05T20:25:00', location: 'US' });
+    data[0]!.shipment.event.shift();
+    expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER)).toMatchObject({ last_update: null, last_update_local: '2026-07-05T20:25:00' });
+  });
+
+  it('reads an imported letter\'s partner scan as the wall clock read as UTC', () => {
+    const data = deliveredFixture();
+    data[0]!.shipment.product = 'Lettre et PPI import suivi';
+    data[0]!.shipment.event = [
+      { group: 'ACHORI', code: 'ET2', label: 'Votre courrier est prêt à quitter son pays d\'origine', date: '2026-07-08T16:10:00+02:00', country: 'IN', order: 2 },
+      { group: 'EDRINT', code: 'PC2', label: 'Votre courrier a été déposé chez notre partenaire', date: '2026-07-09T21:15:00+02:00', country: 'GB', order: 1 },
+    ];
+    expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER).events?.map((event) => event.time)).toEqual([
+      '2026-07-08T14:10:00+05:30', '2026-07-09T19:15:00+01:00',
+    ]);
+
+    // Other products keep the feed's instant until their partner scans are compared.
+    data[0]!.shipment.product = 'Lettre recommandée';
+    expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER).events?.map((event) => event.time)).toEqual([
+      '2026-07-08T16:10:00+02:00', '2026-07-09T21:15:00+02:00',
+    ]);
+  });
+
+  it('keeps the feed\'s instant for scans in France and its overseas departments', () => {
+    const data = deliveredFixture();
+    data[0]!.shipment.event = [
+      { group: 'DESLIVD', code: 'DI1', label: 'Votre colis a été livré', date: '2026-07-06T15:40:00+02:00', country: 'RE', order: 2 },
+      { group: 'ACHINT', code: 'ET1', label: 'Votre colis est en cours d\'acheminement', date: '2026-07-04T18:00:00+02:00', country: 'FR', order: 1 },
+    ];
+    expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER).events?.map((event) => event.time)).toEqual([
+      '2026-07-06T15:40:00+02:00', '2026-07-04T18:00:00+02:00',
+    ]);
+  });
+
   it('rejects provider errors and responses for another parcel', () => {
     let providerError: unknown;
     try {

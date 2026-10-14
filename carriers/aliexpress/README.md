@@ -75,6 +75,9 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   keeps milliseconds that `timeStr` cannot hold, so the epoch is the recorded instant and `timeStr`
   its Beijing rendering: such a scan is read at `+08:00`. Any other scan without `timeZone` keeps its
   raw text, because a whole-second epoch may only be a reading of that text.
+- The flight out of the departure country (`LH_HO_AIRLINE`, `LH_DEPART`) sometimes comes at
+  exactly midnight, on a day that can precede export clearance. That is the flight's planned day,
+  so it is kept as a date in `local_time`; a flight with any other time keeps it.
 - Each event keeps its action code as `provider_code`. Unknown action codes leave the event without
   a stage; the sync classifies the wording and records it, with the code, for review. `statusMap`
   answers the review by code, and by wording for the four codes the queue held before events kept

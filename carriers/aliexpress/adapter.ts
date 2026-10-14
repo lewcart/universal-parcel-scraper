@@ -90,6 +90,21 @@ function scanTime(scan: JsonObject): string {
   return explicitOffsetTime(`${wall.replace(' ', 'T')}${offset}`)?.iso ?? wall;
 }
 
+/** The flight out of the departure country, which Cainiao can date by its day alone. */
+const FLIGHT_CODES = new Set(['LH_HO_AIRLINE', 'LH_DEPART']);
+
+/**
+ * A scan's clock, or its day alone. Cainiao can put the flight out
+ * ("Leaving from departure country/region", "Departed from departure
+ * country/region") at midnight on its day, sometimes before export customs
+ * has cleared: a planned day, not a scan time.
+ */
+function scanClock(scan: JsonObject): { time: string } | { local_time: string } {
+  const day = FLIGHT_CODES.has(cainiaoActionCode(scan.actionCode))
+    ? /^(\d{4}-\d{2}-\d{2}) 00:00:00$/.exec(text(scan.timeStr).trim())?.[1] : undefined;
+  return day ? { local_time: day } : { time: scanTime(scan) };
+}
+
 /** The carriers a module names, which a bracket can name too without being a place. */
 function carrierNames(trackingModule: JsonObject, scans: readonly JsonObject[]): Set<string> {
   const named = [trackingModule.destCpInfo, ...[trackingModule.latestTrace, trackingModule.globalCombinedLogisticsTraceDTO, ...scans]
@@ -185,7 +200,7 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
     const stage = cainiaoActionStage(code);
     const { description, location } = placedWording(text(event.standerdDesc) || text(event.desc), carriers);
     return {
-      time: scanTime(event),
+      ...scanClock(event),
       location,
       description,
       // The code keys the app's review of a scan the map does not stage.
@@ -208,11 +223,13 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
   // Cainiao can follow the country with the recipient's town, "France,Town": only the country is read.
   const destination = text(trackingModule.destCountry).split(',')[0]!.trim().slice(0, 80);
   const deliveredAt = status === 'delivered' ? scanTime(latest) || null : null;
+  const latestClock = scanClock(latest);
   return {
     status,
     ...(currentStage ? { current_stage: currentStage } : {}),
     last_status_text: placedWording(text(latest.standerdDesc) || text(latest.desc), carriers).description || rawStatus,
-    last_update: scanTime(latest) || null,
+    last_update: 'time' in latestClock ? latestClock.time || null : null,
+    ...('local_time' in latestClock ? { last_update_local: latestClock.local_time } : {}),
     expected_delivery: status === 'delivered' ? null : expected,
     ...(status === 'delivered' || expectedFrom == null || expectedFrom === expected
       ? {}

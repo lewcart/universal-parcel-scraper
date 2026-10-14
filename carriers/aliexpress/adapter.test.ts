@@ -227,6 +227,24 @@ describe('Cainiao projection', () => {
     expect(time(scan('2026-06-10 07:40:16', 1781048416947, 'CET'))).toBe('2026-06-10 07:40:16');
   });
 
+  it('keeps a flight out dated at midnight as its day', () => {
+    const scan = (actionCode: string, timeStr: string) => ({ actionCode, timeStr, timeZone: 'GMT+8', time: 1781020800000 });
+    const leaving = scan('LH_HO_AIRLINE', '2026-06-10 00:00:00');
+    const result = parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000001',
+      latestTrace: leaving,
+      detailList: [leaving, scan('LH_DEPART', '2026-06-10 00:00:00'), scan('CC_EX_SUCCESS', '2026-06-09 00:00:00'), scan('LH_HO_IN_SUCCESS', '2026-06-08 09:48:49')],
+    }] }, 'LP00000000000001');
+    expect(result.events?.map((event) => event.time ?? event.local_time)).toEqual([
+      '2026-06-10', '2026-06-10', '2026-06-09T00:00:00+08:00', '2026-06-08T09:48:49+08:00',
+    ]);
+    expect(result.events?.[0]?.time).toBeUndefined();
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-06-10' });
+    // A flight with a time keeps it.
+    const timed = scan('LH_DEPART', '2026-06-10 05:57:00');
+    expect(parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000001', latestTrace: timed, detailList: [timed] }] },
+      'LP00000000000001').events?.[0]).toMatchObject({ time: '2026-06-10T05:57:00+08:00' });
+  });
+
   it.each(['ra 123.456-785 ch', 'RA123456785CH'])('normalizes the machine-readable partner reference before host validation: %s', (reference) => {
     const result = normalizeCarrierResult(parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000001',
       copyRealMailNo: reference, latestTrace: { actionCode: 'LH_ARRIVE' }, detailList: [],

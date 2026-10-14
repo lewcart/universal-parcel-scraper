@@ -1045,18 +1045,6 @@
     "reason": "Twelve digits with a mod-7 check digit are shared with Yamato, Sagawa, Japan Post and other Korean carriers, and nothing in the number points to Lotte."
   },
   {
-    "carrier": "magyar-posta",
-    "pattern": "^PB\\d{11}$",
-    "kind": "open",
-    "reason": "One MPL business-parcel sample of this shape; the family is not established."
-  },
-  {
-    "carrier": "magyar-posta",
-    "pattern": "^PNAW\\d{9}$",
-    "kind": "open",
-    "reason": "Two sample package ids from MPL's API guide share this shape; it is not established that MPL parcel ids start with PNAW."
-  },
-  {
     "carrier": "mainfreight",
     "pattern": "^\\d{11}$",
     "kind": "by_design",

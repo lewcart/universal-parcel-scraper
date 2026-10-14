@@ -16,6 +16,7 @@ import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundE
 import { isValidGlsParcelNumber } from './gls.js';
 import { isValidHermesParcelNumber } from './hermes.js';
 import { isValidDhlIdentcode } from './identcode.js';
+import { isValidMagyarPostaNumber } from './magyarPosta.js';
 import { isValidMondialRelayBarcode } from './mondialRelay.js';
 import {
   hasGs1CheckDigit,
@@ -64,4 +65,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   'fedex-ground-economy': isValidFedExGroundEconomyNumber,
   'pos-laju': isValidPosLajuConsignment,
   saia: isValidSaiaPro,
+  'magyar-posta': isValidMagyarPostaNumber,
 };

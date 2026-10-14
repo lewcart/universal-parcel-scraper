@@ -1,38 +1,64 @@
 # Magyar Posta
 
-Magyar Posta items use enabled universal providers. There is no dedicated adapter.
+Tracks Magyar Posta and MPL items through the public tracker at
+[posta.hu](https://www.posta.hu/nyomkovetes/nyitooldal), driven by the TRAWL browser service:
+domestic MPL parcels, S10 items Magyar Posta issues, and items from other posts it delivers.
 
 ## Numbers
 
-An aggregator page prints an MPL business-parcel number, `PB` and eleven digits; one sample
-does not establish a rule. International items use the UPU S10 layout and stay with the generic
-postal carrier.
+Domestic MPL numbers are `P`, a product letter, a three-character customer code, seven digits
+and a check digit. The seven digits weigh 3 and 1 alternately from the left, and their sum mod 10
+is the check digit; the MPL API guides' examples and the public numbers pass it. Such a number is a
+suggestion led by Magyar Posta; one with a numeric customer code also fits La Poste's
+two-characters-and-eleven-digits rule. S10 items ending in `HU` stay with the generic postal
+carrier, which lists Magyar Posta first among the direct carriers.
 
-## Links
+## How it works
 
-Magyar Posta's tracker posts the item numbers behind a reCAPTCHA, so no link opens one
-parcel.
+1. `trawl`: the helper [`magyar-posta-browser.mjs`](../../trawl/magyar-posta-browser.mjs) opens
+   the tracker the public page frames, `www.posta.hu/ikrnyomkovproxy/`, in a fresh context. It
+   fills the number in, solves the reCAPTCHA checkbox with TRAWL's solver, searches, and keeps
+   the result page the search for that number redirects to, without scripts or form tokens.
 
-## Why there is no adapter
+Every search needs a new checkbox answer, so there is no plain HTTP route, and recognition does
+not ask Magyar Posta. A search the tracker refuses comes back as its form without a redirect,
+which is a challenge.
 
-The tracker page at `www.posta.hu/nyomkovetes/nyitooldal` frames a search form under
-`/ikrnyomkovproxy/`. The form posts the numbers with the answer to a reCAPTCHA checkbox, and the
-server refuses a search without a valid answer.
+The tracker answers in the language the browser asks for. The helper sets the tracker's own
+Hungarian language cookie, and the parser and status map read Hungarian. The result must name
+the whole number in its search field, its item and the item's log.
 
-The Posta app (`hu.posta.uzletimobil`) reads tracking from a guest API under
-`net.posta.hu/mpl/public/api/mobile/guest`. An anonymous request issues the install an
-application id, and every request carries a key the app ships. Adding a number posts it with an
-invisible reCAPTCHA Enterprise token, and the server refuses the request without a valid one.
-The app refreshes the numbers it has added without a token, but a number reaches that list only
-through the checked request.
+## Notes
 
-The previous app's `PostaWeb/TrackingInfo` read is now refused by the site's firewall, and its
-copy on `postamobil.eu` no longer answers. The MPL tracking API on `core.api.posta.hu` needs a
-business client id. Every route that looks up a new number is behind a reCAPTCHA or an
-account. TRAWL's checkbox solver can complete the web search, but the available
-references return the unknown-item page. A dedicated adapter still needs a matching
-shipment response to establish its identity, history and clocks.
+- Each scan's icon carries the tracker's category: 1 acceptance, 2 processing, 3 transport,
+  4 delivery and 5 delivered. It is the event's `provider_code`. The wording refines it, following
+  Magyar Posta's [event list](https://www.posta.hu/static/internet/download/Nyomkovetesi_esemenyek.pdf):
+  an item announced by its sender is registered, an undeliverable item on its way back is
+  returned, and a delivery after a return is the return's end. Category 4 has no stage of its own.
+- Cash-on-delivery settlements with the sender come after the delivery and move nothing, so they
+  are left out. Repeated delivery rows count once.
+- Clocks are Budapest wall clocks without an offset. Events get `local_time` and the result
+  `last_update_local`.
+- A parcel's details name its service. The post office, PostaPont or locker an item waited at is
+  its pickup point. The line naming who received an item is dropped.
+- The tracker's notice for the number is not found. A block page or a 401/403 is a challenge,
+  429 is rate limited, and 404/410 means the tracker is unavailable.
+- Not used: the MPL tracking API on `core.api.posta.hu` needs a business client id and secret.
+  The Posta app's guest API under `net.posta.hu/mpl/public/api/mobile/guest` adds a number only
+  with an invisible reCAPTCHA Enterprise token, and the previous app's `PostaWeb/TrackingInfo`
+  read is refused by the site's firewall.
+- The page's `?searchvalue=` link fills the number into the tracker's search; the visitor still
+  ticks the checkbox.
+
+## Limitations
+
+- Lookups need a TRAWL image that includes the helper.
+- Google may refuse the audio challenge after several solves from one address; the lookup then
+  fails as a challenge.
+- At most 100 scans are kept.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/magyar-posta` with `FLARESOLVERR_URL` and
+`MAGYAR_POSTA_TRACKING_NUMBER`. Optionally set `MAGYAR_POSTA_UNKNOWN_NUMBER` to check the
+not-found notice.

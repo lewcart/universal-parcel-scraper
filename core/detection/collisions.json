@@ -345,6 +345,15 @@
     "reason": "The Croatian issuer suffix suggests Hrvatska pošta but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}HU with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "magyar-posta"
+    ],
+    "reason": "The Hungarian issuer suffix suggests Magyar Posta but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}SK with a valid S10 check digit",
     "carriers": [
       "chronopost",
@@ -724,6 +733,14 @@
       "la-poste"
     ],
     "reason": "La Poste accepts any two characters followed by 11 digits, which also covers JD Logistics VG numbers; the JD rule decides."
+  },
+  {
+    "shape": "PA9{11} with a valid Magyar Posta check digit",
+    "carriers": [
+      "la-poste",
+      "magyar-posta"
+    ],
+    "reason": "La Poste accepts any two characters followed by 11 digits, which also covers Magyar Posta numbers whose customer code is digits; both stay low-confidence suggestions."
   },
   {
     "shape": "AA9{11}",

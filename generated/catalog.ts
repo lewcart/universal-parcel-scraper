@@ -10022,12 +10022,37 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Budapest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "magyar-posta",
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
+    "trackingUrlTemplate": "https://www.posta.hu/nyomkovetes/nyitooldal?searchvalue={trackingNumber}",
     "trackingSearchUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "posta.hu"
+        ],
+        "pathPattern": "^/nyomkovetes/nyitooldal/?$",
+        "params": [
+          "searchvalue"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}HU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      },
+      {
+        "pattern": "^P[A-Z][0-9A-Z]{3}\\d{8}$",
+        "confidence": "low",
+        "checksum": "magyar-posta",
+        "preferred": true
+      }
+    ]
   },
   "mainfreight": {
     "displayName": "Mainfreight",
@@ -14121,7 +14146,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lotte-global": [],
   "lso": ["lso-1"],
-  "magyar-posta": [],
+  "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
   "mainfreight": [],
   "maltapost": ["maltapost-s10"],
   "maritime-ontario": [],

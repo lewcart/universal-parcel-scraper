@@ -44,6 +44,7 @@ import {
   isValidSaiaPro,
   isValidUkrposhtaBarcode,
 } from '../detection/numericChecksums.js';
+import { isValidMagyarPostaNumber } from '../detection/magyarPosta.js';
 import { isValidPosLajuConsignment } from '../detection/s10.js';
 import { isValidSfExpressWaybill } from '../detection/sfExpress.js';
 import { isValidOnTracTrackingNumber, isValidUpsTrackingNumber } from '../detection/ups.js';
@@ -66,7 +67,7 @@ interface DetectionRule {
   readonly checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta';
   readonly preferred?: true;
 }
 
@@ -125,6 +126,7 @@ function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
   if (rule.checksum === 'fedex-ground-economy') return isValidFedExGroundEconomyNumber(value);
   if (rule.checksum === 'pos-laju') return isValidPosLajuConsignment(value);
   if (rule.checksum === 'saia') return isValidSaiaPro(value);
+  if (rule.checksum === 'magyar-posta') return isValidMagyarPostaNumber(value);
   return true;
 }
 

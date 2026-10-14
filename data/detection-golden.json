@@ -38556,6 +38556,14 @@
     ]
   },
   {
+    "input": "CH168862545NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
     "input": "CH400397205DE",
     "carrier": "unknown",
     "confidence": "low",
@@ -45709,6 +45717,14 @@
     ]
   },
   {
+    "input": "LR294360805NL",
+    "carrier": "spring-gds",
+    "confidence": "high",
+    "candidates": [
+      "spring-gds"
+    ]
+  },
+  {
     "input": "LR616917539NL",
     "carrier": "spring-gds",
     "confidence": "high",
@@ -47738,10 +47754,25 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "magyar-posta",
       "la-poste"
+    ],
+    "preferred": [
+      "magyar-posta"
     ],
     "asked": [
       "la-poste"
+    ]
+  },
+  {
+    "input": "PB2SW00021917",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
     ]
   },
   {
@@ -48244,6 +48275,17 @@
     ]
   },
   {
+    "input": "PKQZ050115785",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
+  },
+  {
     "input": "PL-12345678",
     "carrier": "unknown",
     "confidence": "low",
@@ -48288,16 +48330,74 @@
     "candidates": []
   },
   {
+    "input": "PN00019954019",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta",
+      "la-poste"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
+    "input": "PNAAA50069529",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
+  },
+  {
     "input": "PNAW250000715",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
   },
   {
     "input": "PNAW250000728",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
+  },
+  {
+    "input": "PNE8T03807415",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
+  },
+  {
+    "input": "PNJGY56798744",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "magyar-posta"
+    ],
+    "preferred": [
+      "magyar-posta"
+    ]
   },
   {
     "input": "PP023977837SG",
@@ -50082,6 +50182,17 @@
   },
   {
     "input": "RR754739765BY",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR785780564HU",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

@@ -18,18 +18,89 @@
   "timezone": "Europe/Budapest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "magyar-posta",
+    "steps": [
+      "trawl"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point",
+    "service_name"
+  ],
   "portal": {
+    "url": "https://www.posta.hu/nyomkovetes/nyitooldal?searchvalue={trackingNumber}",
     "searchUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
     "canaryUrl": "https://www.posta.hu/nyomkovetes/nyitooldal",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "payment_details",
+      "delivery_method",
+      "pickup_deadline",
+      "tracking_alias",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point",
+      "service_name"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin_country",
+      "destination_country",
+      "payment_details",
+      "delivery_method",
+      "pickup_deadline",
+      "tracking_alias",
+      "signatory"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "dimensions",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
-  "links": [],
-  "detection": []
+  "links": [
+    {
+      "domains": [
+        "posta.hu"
+      ],
+      "pathPattern": "^/nyomkovetes/nyitooldal/?$",
+      "params": [
+        "searchvalue"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "magyar-posta-s10",
+      "pattern": "^[A-Z]{2}\\d{9}HU$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    },
+    {
+      "id": "magyar-posta-domestic",
+      "pattern": "^P[A-Z][0-9A-Z]{3}\\d{8}$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "magyar-posta"
+    }
+  ]
 }

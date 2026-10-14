@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia and DHL Poland. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland and Magyar Posta. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
@@ -15,7 +15,7 @@ documentation describes the verification flows.
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
-DHL Express, SF Express, WanbExpress, XPO, Asendia and DHL Poland use fresh contexts.
+DHL Express, SF Express, WanbExpress, XPO, Asendia, DHL Poland and Magyar Posta use fresh contexts.
 DHL Poland uses TRAWL's native checkbox and audio solver.
 Its scoped native modules replace upstream raw debug logs with fixed events.
 It submits its history form after reCAPTCHA verification and returns only
@@ -23,6 +23,8 @@ the waybill and scan fields, excluding recipient acknowledgements and verificati
 Asendia waits for its own Turnstile callback to enable search and binds the captured POST
 to one whole identifier. Given a delivery postcode in the fragment, it opens the scans through the page's dialog; otherwise recipient verification leaves the current status only. XPO scopes the checkbox
 solver to its visible widget while the public client completes verification and tracking.
+Magyar Posta opens the tracker its public page frames, solves the checkbox there, searches one
+number and keeps the result page its search redirects to, without scripts or form tokens.
 DHL Express waits for the public
 page to complete verification and repeat tracking after an intermediate HTTP 428.
 17TRACK submits a supplied postcode through the site's form and binds the capture to

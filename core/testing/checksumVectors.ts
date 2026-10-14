@@ -337,6 +337,22 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(swap, `${swap.slice(0, 4)}90${swap.slice(6)}`);
   },
 
+  'magyar-posta'(r) {
+    // P, a product letter, a three-character customer code, seven digits and the check digit.
+    const valid = [
+      ...['PN', 'PK', 'PI', 'PB'].map((prefix) => r.complete(`${prefix}${r.string(3, LETTERS)}${r.string(7)}`)),
+      r.complete(`PN${r.string(3, ALNUM)}${r.string(7)}`), r.complete(`PN000${r.string(7)}`), r.complete(`P${r.pick(LETTERS)}${r.string(3)}${r.string(7)}`),
+    ];
+    standard(r, valid);
+    // The sum mod 10 is the digit, not its complement, and the customer code is outside the check.
+    const uneven = valid.find((value) => !/[05]$/.test(value))!;
+    r.add(`${uneven.slice(0, 12)}${(10 - Number(uneven[12])) % 10}`);
+    r.add(`${uneven.slice(0, 2)}ZZZ${uneven.slice(5)}`, `${uneven.slice(0, 2)}999${uneven.slice(5)}`);
+    // Only P opens a number, a letter follows it, and the code holds no other character.
+    r.add(`Q${uneven.slice(1)}`, `P1${uneven.slice(2)}`, `${uneven.slice(0, 2)}A-B${uneven.slice(5)}`);
+    r.add('PAAA00000000', 'PAAA000000000', 'PAAAA00000000', 'PZZZZ99999997');
+  },
+
   mod7(r) {
     const valid = [11, 11, 12, 12, 2, 3, 9, 15].map((length) => r.complete(r.string(length - 1)));
     standard(r, valid);

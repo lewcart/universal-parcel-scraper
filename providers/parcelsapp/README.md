@@ -73,8 +73,9 @@ step exists for future protocol changes.
      else the catalog zone of the scan's carrier (`carriers[state.carrier]`), unless it is
      UTC;
   2. the country at the end of `location`, past a trailing postcode ("Example Town,
-     Denmark, 4600"), if `COUNTRY_ZONES` ([core/time](../../core/time/index.ts)) gives it
-     a single clock, else, for the North American scans of a few carriers, their state's
+     Denmark, 4600") or by the code FedEx writes before one, after a town and its region
+     ("EXAMPLE TOWN, RR, IT 12345"), if `COUNTRY_ZONES` ([core/time](../../core/time/index.ts))
+     gives it a single clock, else, for the North American scans of a few carriers, their state's
      or province's zone (see North American scans below);
   3. the country that name ends with, after a catalog carrier or brand ("DPD UK",
      "GLS Italy", "DHL Parcel Netherlands"), if that country has a single clock. It comes
@@ -171,7 +172,11 @@ step exists for future protocol changes.
   "Delivered", and bpost's and CTT's wording) on the destination's clock, except the UK's
   last mile, on GMT in July. Its transit hub, on GMT+2 for a UK parcel, and "Arrived at
   linehaul office", on either side's clock, are not listed; that office stays on China
-  time, as it was checked first. 4PX's page (two parcels to the US) dates its scans up to
+  time, as it was checked first. A parcel bound for Portugal clears customs in Spain, on
+  Madrid's clock: AliExpress's own "Departed from customs" and the Madrid customs broker's
+  scans have the digits of Cainiao's import customs. EcoScooting's sorting-center sentences
+  that Cainiao relays ("Your shipment has arrived at sorting center") are on Madrid's clock
+  too, also for a parcel bound for Portugal. 4PX's page (two parcels to the US) dates its scans up to
   the departing flight on China time and the rest in the US. EcoScooting's own instants
   (two parcels) put its China leg on China time, its order and its Spanish sorting
   center on Madrid's, and its last mile on the destination's.
@@ -210,13 +215,20 @@ step exists for future protocol changes.
   2026-10-10). "Italy Post" has Poste Italiane's epoch milliseconds on Rome time. "New
   Zealand Post" has NZ Post's UTC instants on Auckland time, also for the scans it relays
   from abroad ("Hong Kong"). "Singapore Post" has SingPost's "+08:00" digits, also for its
-  scans in China, and "SunYou - Sytrack" those of SunYou's "+08:00" feed. Step 1 reads
-  them on that clock. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
+  scans in China, and "SunYou - Sytrack" those of the origin leg of SunYou's feed, on
+  "+08:00". Step 1 reads them on that clock. SunYou's feed dates its destination leg,
+  from "Arrived At Destination Country Airport" to the delivery, on the destination's clock
+  ("+02:00" for Spain, where EcoScooting's own instants agree), so those scans take the
+  destination's single clock, or else only a guess. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
   Post" (Bring's offsets, in Denmark too) and "Royal Mail" (Parcelforce's offsets) were
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
   times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
   A name added here moves its stored scans (see Limitations).
+- China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
+  written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
+  on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
+  through the steps like any.
 - TNT's international scans (9-digit numbers) skip these steps. tnt.com gives them
   offsets, and ParcelsApp's `date` is already their UTC instant.
 - So do scans named "Asendia United States" or "Asendia USA", wherever they happened.
@@ -231,6 +243,8 @@ step exists for future protocol changes.
 - So do Paack's scans. Paack's timeline gives instants, not wall clocks, and ParcelsApp's
   `date` is their UTC instant: Paack's own lookup gives the same instants scan for scan.
   Read on Paack's Paris clock, they came out two hours early in summer.
+- So do Vinted Go's scans: Vinted Go's own instants, in the Netherlands and Spain, have
+  ParcelsApp's UTC digits to the second.
 - North American scans: the dates of UPS, FedEx, UniUni, EasyShip and DHL eCommerce are
   the scan's local clock, as UPS's own instants, FedEx's own page, UniUni's own feed,
   Ship24's offsets and DHL eCommerce's Webtrack, which names each scan's clock, show on US

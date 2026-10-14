@@ -512,6 +512,19 @@ describe('ParcelsApp result parsing', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', discovered_carrier: 'paack' });
   });
 
+  it('keeps the UTC instants ParcelsApp gives Vinted Go scans', () => {
+    // Vinted Go's own instants have ParcelsApp's UTC digits, in the Netherlands
+    // and Spain alike; read on its catalog clock they came out two hours early.
+    const result = parseParcelsAppResponse({ carriers: ['VintedGO'], states: [
+      { date: '2026-07-02T09:16:45Z', status: 'At sorting center in Example City, ES', carrier: 0, location: 'Example City, ES' },
+      { date: '2026-07-01T19:09:46Z', status: 'At sorting center in Example Town, NL', carrier: 0, location: 'Example Town, NL' },
+      { date: '2026-06-30T13:53:22Z', status: 'Shipment created', carrier: 0 },
+    ] }, number, identity(), 'Europe/Paris');
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-07-02T09:16:45.000Z', '2026-07-01T19:09:46.000Z', '2026-06-30T13:53:22.000Z',
+    ]);
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.
@@ -567,6 +580,23 @@ describe('ParcelsApp result parsing', () => {
       '2026-07-01T10:30:00.000Z', // Newfoundland
       '2026-06-30T06:00:00.000Z', // the Netherlands
       '2026-06-30T05:00:00.000Z', // Slovakia
+    ]);
+    // FedEx's country code before the postcode, after a town and its region;
+    // with two parts, a state and its ZIP code.
+    expect(times(['FedEx'], [
+      scan('2026-07-03T15:11:00Z', 'EXAMPLE TOWN, RR, IT 12345'),
+      scan('2026-07-02T21:52:00Z', 'EXAMPLE TOWN, GL, NL 1234'),
+      scan('2026-07-02T16:05:00Z', 'EXAMPLE TOWN, NW, DE 12345'),
+      scan('2026-07-02T09:00:00Z', 'MISSISSAUGA, ON, CA L5T 2V1'),
+      scan('2026-07-01T09:00:00Z', 'MEMPHIS, TN, US 38118'),
+      scan('2026-07-01T06:00:00Z', 'INDIANAPOLIS, IN 46241'),
+    ])).toEqual([
+      '2026-07-03T13:11:00.000Z', // Italy
+      '2026-07-02T19:52:00.000Z', // the Netherlands
+      '2026-07-02T14:05:00.000Z', // Germany, not Delaware, in a reply that is in North America
+      '2026-07-02T13:00:00.000Z', // Ontario
+      '2026-07-01T14:00:00.000Z', // Tennessee
+      '2026-07-01T10:00:00.000Z', // Indiana
     ]);
     // A location that names no place leaves the reply in North America.
     expect(times(['UNI Express'], [scan('2026-11-11T20:34:39Z', 'Example Town IL'), scan('2026-11-06T16:50:03Z', 'UNI DATA CENTER')]))
@@ -844,6 +874,24 @@ describe('ParcelsApp result parsing', () => {
     ];
     expect(times('BE', states)).toEqual(['2026-07-10T12:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T02:00:00.000Z']);
     expect(times('GB', states)).toEqual(['2026-07-10T14:00:00.000Z', '2026-07-08T08:00:00.000Z', '2026-07-01T02:00:00.000Z']);
+    expect(times('RE', states)).toEqual(['2026-07-10T10:00:00.000Z', '2026-07-08T05:00:00.000Z', '2026-07-01T02:00:00.000Z']);
+    // A parcel bound for Portugal clears customs and is sorted in Spain, then
+    // delivered in Portugal; a neighbour placed there lends the sorting no clock.
+    expect(times('PT', [
+      scan('2026-07-10T16:23:11Z', 'Delivered', 'Example Town'),
+      scan('2026-07-10T06:09:16Z', 'Your shipment has been accepted by delivery carrier', 'Portugal'),
+      scan('2026-07-09T12:03:35Z', 'Your shipment has arrived at sorting center', 'Example Hub'),
+      scan('2026-07-08T19:29:00Z', 'Leaving customs'),
+      scan('2026-07-08T18:36:00Z', 'Import customs clearance complete'),
+    ])).toEqual([
+      '2026-07-10T15:23:11.000Z', '2026-07-10T05:09:16.000Z', '2026-07-09T10:03:35.000Z', '2026-07-08T17:29:00.000Z',
+      '2026-07-08T16:36:00.000Z',
+    ]);
+    // The local carrier's first scans, in Cainiao's words.
+    expect(times('IT', [
+      scan('2026-07-10T17:00:00Z', 'Package arrived at facility of the local delivery company'),
+      scan('2026-07-10T15:06:00Z', 'First parcel scan along Example Post’s logistic network'),
+    ])).toEqual(['2026-07-10T15:00:00.000Z', '2026-07-10T13:06:00.000Z']);
     // A destination of several clocks lends only the clock of a scan placed
     // there, as a guess, and none from outside it.
     expect(times('US', [
@@ -911,6 +959,52 @@ describe('ParcelsApp result parsing', () => {
     expect(times(['DPD France'], dpd, '10000000000000')).toEqual(['2026-07-22T12:17:00.000Z']);
     expect(parseParcelsAppHtml(rendered(carrierRow('02 Oct 2026', '10:07', 'In transit', 'Italy Post')), number).events?.[0]?.time)
       .toBe('2026-10-02T08:07:00.000Z');
+  });
+
+  it('reads SunYou\'s destination leg on the destination\'s clock', () => {
+    // SunYou's own feed dates its origin leg "+08:00" and its destination leg
+    // "+02:00" for a parcel to Spain, where EcoScooting's own instants agree.
+    const parse = (destinationCode?: string) => parseParcelsAppResponse({
+      carriers: ['SunYou - Sytrack', 'EcoScooting'], ...(destinationCode ? { destinationCode } : {}), states: [
+        { date: '2026-07-14T14:40:24Z', status: 'Delivery Success. Your shipment has been delivered successfully', carrier: 1 },
+        { date: '2026-07-14T14:40:24Z', status: 'Delivered', carrier: 0, location: 'Example City' },
+        { date: '2026-07-13T18:48:40Z', status: 'Delivery Failed, Reason: Consignee Is Not Available', carrier: 0, location: 'Example Town' },
+        { date: '2026-07-12T20:56:13Z', status: 'Hand Over To Last Mile', carrier: 0, location: 'Example Hub' },
+        { date: '2026-07-10T05:29:00Z', status: 'Arrived At Destination Country Airport', carrier: 0 },
+        { date: '2026-07-09T15:34:00Z', status: 'Departed From Port Of Origin', carrier: 0 },
+        { date: '2026-07-06T03:53:06Z', status: 'Pre-Shipment Info Sent To Spain', carrier: 0 },
+      ] }, number, identity());
+    // EcoScooting's delivery and SunYou's are one scan again.
+    expect(parse('ES').events?.map((scan) => [scan.time, scan.description])).toEqual([
+      ['2026-07-14T12:40:24.000Z', 'Delivered'],
+      ['2026-07-13T16:48:40.000Z', 'Delivery Failed, Reason: Consignee Is Not Available'],
+      ['2026-07-12T18:56:13.000Z', 'Hand Over To Last Mile'],
+      ['2026-07-10T03:29:00.000Z', 'Arrived At Destination Country Airport'],
+      ['2026-07-09T07:34:00.000Z', 'Departed From Port Of Origin'],
+      ['2026-07-05T19:53:06.000Z', 'Pre-Shipment Info Sent To Spain'],
+    ]);
+    // A destination with several clocks, or none named, gives that leg only a guess.
+    expect(parse('US').events?.slice(1, 4).map((scan) => scan.time)).toEqual([
+      '2026-07-13T18:48:40.000Z', '2026-07-12T20:56:13.000Z', '2026-07-10T05:29:00.000Z',
+    ]);
+  });
+
+  it('reads China Post\'s scans in China on Beijing\'s clock', () => {
+    // 17TRACK's copies of the same scans carry "+08:00"; ParcelsApp labels the digits UTC.
+    const result = parseParcelsAppResponse({ carriers: ['China Post'], states: [
+      { date: '2026-07-03T09:12:12Z', status: 'In transit', carrier: 0, location: 'Example Town ENG GB AB1' },
+      { date: '2026-07-01T10:10:00Z', status: '启运【HK】', carrier: 0, location: 'HK' },
+      { date: '2026-06-28T21:40:07Z', status: 'Departed from sorting center', carrier: 0, location: 'Example City, Guangdong' },
+      { date: '2026-06-28T10:05:16Z', status: 'China Post has received the mail', carrier: 0, location: '示例市 12345678' },
+      { date: '2026-06-28T01:00:00Z', status: 'Electronic information received', carrier: 0 },
+    ] }, number, identity());
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-07-03T09:12:12.000Z', // a place it cannot tell
+      '2026-07-01T02:10:00.000Z', // Hong Kong
+      '2026-06-28T13:40:07.000Z',
+      '2026-06-28T02:05:16.000Z',
+      '2026-06-28T01:00:00.000Z', // no place
+    ]);
   });
 
   it('keeps the UTC instants ParcelsApp gives Asendia USA scans wherever they happened', () => {

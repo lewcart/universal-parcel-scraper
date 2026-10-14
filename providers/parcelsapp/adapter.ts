@@ -67,7 +67,8 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * their dates are the UTC instants of Asendia's A1 feed, and Swiss Post's own
  * scans of the same item agree (checked 2026-09-30). So do Paack's: its
  * timeline gives instants, and Paack's own lookup has ParcelsApp's UTC scan
- * for scan (checked 2026-10-07).
+ * for scan (checked 2026-10-07). So do Vinted Go's: its own instants, in the
+ * Netherlands and Spain, have ParcelsApp's UTC digits to the second.
  */
 function stateCarrierName(payload: Record<string, unknown>, state: Record<string, unknown>): unknown {
   const carriers = Array.isArray(payload.carriers) ? payload.carriers : [];
@@ -106,6 +107,7 @@ const CAINIAO_LAST_MILE = [
   'received by local\\s+delivery company', '(?:at|left) destination country/region(?: sorting center)?', 'arrived at local delivery center',
   'out for delivery', 'delivery failed(?:\\. not at home\\.)?', 'delivery attempt failure,.*', '(?:item )?delivered',
   'parcel is handled', 'your shipment has been delivered to the postal operator of the country.*',
+  'first parcel scan along .+ logistic network', 'package arrived at facility of the local delivery company',
 ];
 /**
  * The clocks of some wall-clock scans whatever their neighbours', from each
@@ -118,7 +120,13 @@ const CAINIAO_LAST_MILE = [
  * too. It dates import customs on the destination's clock, and the last mile
  * as well, except the UK's, on GMT in July. Its transit hub, on GMT+2 for a
  * UK parcel, and "Arrived at linehaul office", on either side's clock, are
- * not listed; that office stays on China time, as it was checked first.
+ * not listed; that office stays on China time, as it was checked first. A
+ * parcel bound for Portugal clears customs in Spain, on Madrid's clock:
+ * AliExpress's own "Departed from customs" and the Madrid broker's scans have
+ * the digits of Cainiao's import customs. The sorting-center sentences of
+ * EcoScooting that Cainiao relays ("Your shipment has arrived at sorting
+ * center") are on Madrid's clock as well, as EcoScooting's own are, also for a
+ * parcel bound for Portugal.
  *
  * 4PX's page (2026-10-11, two parcels to the US) dates its scans up to the
  * departing flight on China time and the rest in the US. EcoScooting's own
@@ -132,7 +140,9 @@ const CAINIAO_LAST_MILE = [
  * destination borrows only from a scan placed there, and otherwise takes its
  * single clock (`wallClockZones`).
  */
-const KNOWN_CLOCKS: ReadonlyMap<string, readonly { wording: RegExp; zone: string; except?: string; otherwise?: string }[]> = new Map([
+const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
+  wording: RegExp; zone: string; except?: string; otherwise?: string; via?: Readonly<Record<string, string>>;
+}[]> = new Map([
   ['gofoexpress', [{ wording: /^shipping label created$/i, zone: 'America/Los_Angeles' }]],
   ['cainiao', [
     { wording: wordings([
@@ -143,7 +153,9 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly { wording: RegExp; zone: string
       'return warehouse inbound success\\.?', 'parcel has been destroyed in return warehouse\\.?',
     ]), zone: 'Asia/Shanghai' },
     { wording: wordings(['import clearance start', 'import customs clearance complete', 'arrived at customs', 'leaving customs',
-      'we\'re inspecting your order']), zone: DESTINATION },
+      'we\'re inspecting your order']), zone: DESTINATION, via: { PT: 'ES' } },
+    { wording: wordings(['your shipment has arrived at sorting center', 'your shipment has been processed at sorting center and ready for shipping']),
+      zone: 'Europe/Madrid' },
     { wording: wordings(CAINIAO_LAST_MILE), zone: DESTINATION, except: 'GB' },
   ]],
   ['4pxexpress', [
@@ -165,13 +177,15 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly { wording: RegExp; zone: string
 
 /**
  * A scan's known clock: its zone, null when the destination has several, and
- * for a scan in the destination, that country.
+ * for a scan in the destination, that country, or the one `via` names for it.
  */
 function knownClock(name: unknown, status: string, destination: string | null): { zone: string | null; country?: string } | null {
   const known = KNOWN_CLOCKS.get(nameKey(name))?.find(({ wording }) => wording.test(status.trim()));
   if (!known || known.zone !== DESTINATION) return known ? { zone: known.zone } : null;
   if (!destination) return known.otherwise ? { zone: known.otherwise } : null;
-  return destination === known.except ? null : { zone: countryTimeZone(destination), country: destination };
+  if (destination === known.except) return null;
+  const country = known.via?.[destination] ?? destination;
+  return { zone: countryTimeZone(country), country };
 }
 /**
  * Networks whose dates are their home clock wherever the scan was: their own
@@ -179,11 +193,19 @@ function knownClock(name: unknown, status: string, destination: string | null): 
  * are Poste Italiane's epoch milliseconds on Rome time. New Zealand Post's
  * are NZ Post's UTC instants on Auckland time, also for the scans it relays
  * from abroad ("Hong Kong"). Singapore Post's are SingPost's "+08:00" digits,
- * also for its scans in China, and SunYou's those of its "+08:00" feed.
+ * also for its scans in China, and SunYou's those of its feed's origin leg,
+ * on "+08:00".
  */
 const HOME_CLOCKS: Readonly<Record<string, string>> = {
   italypost: 'Europe/Rome', newzealandpost: 'Pacific/Auckland', singaporepost: 'Asia/Singapore', sunyousytrack: 'Asia/Shanghai',
 };
+/**
+ * SunYou's feed dates its destination leg, from the arrival at the
+ * destination's airport, on the destination's clock: "+02:00" for a parcel to
+ * Spain, where ParcelsApp has the same digits and EcoScooting's own instants
+ * agree. Those scans take the destination's single clock, or else only a guess.
+ */
+const SUNYOU_DESTINATION_LEG = /^(?:arrived at destination country airport|customs clearance\b|hand over to last mile|arrived at the processing center of the last mile provider|out for delivery|delivery in progress|delivery failed|delivered\b)/i;
 /**
  * Networks whose dates are their scans' local clocks, checked at home only
  * (2026-10-10): Korea Post's page, Bring's offsets (in Denmark too) and
@@ -199,6 +221,8 @@ const HOME_COUNTRIES: Readonly<Record<string, string>> = {
 };
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
+// A country's code before a postcode, as FedEx ends a location: "EXAMPLE TOWN, RR, IT 12345".
+const COUNTRY_POSTCODE = /^([A-Z]{2})\s+(?=[A-Z\d -]*\d)[A-Z\d][A-Z\d -]{1,9}$/;
 // USPS facilities: "EXAMPLE CITY IL DISTRIBUTION CENTER", "ISC EXAMPLE CITY IL (USPS)".
 const US_FACILITY = /\s+(?:\(USPS\)|(?:(?:NETWORK|REGIONAL|INTERNATIONAL)\s+)?DISTRIBUTION\s+CENTER)$/i;
 // States written out, as Orange Connex does for SpeedPAK ("Example City Minnesota, United States").
@@ -225,13 +249,14 @@ const US_STATE_NAMES: ReadonlyMap<string, string> = new Map(Object.entries({
 function regionClock(location: string): { zone: string; certain: boolean } | null {
   const parts = location.split(',').map((part) => part.trim()).filter(Boolean);
   const last = parts.at(-1) ?? '';
+  const coded = parts.length > 2 ? COUNTRY_POSTCODE.exec(last)?.[1] : undefined;
   // "CA" after a province is Canada; after a town it is California.
   const country = parts.length > 1 && UNITED_STATES.test(last.replace(POSTAL_CODE, '')) ? 'US'
-    : (parts.length > 1 && /^canada$/i.test(last)) || (parts.length > 2 && /^ca$/i.test(last)) ? 'CA' : null;
+    : (parts.length > 1 && /^canada$/i.test(last)) || (parts.length > 2 && /^ca$/i.test(coded ?? last)) ? 'CA' : null;
   if (country) parts.pop();
   if (parts.length > 1 && !parts.at(-1)!.replace(POSTAL_CODE, '')) parts.pop();
-  // "Example City, BE, NL": a region, then some other country.
-  if (!country && parts.length > 2 && parts.slice(-2).every((part) => /^[A-Z]{2}$/i.test(part))) return null;
+  // "Example City, BE, NL" and "EXAMPLE CITY, BE, NL 1234": a region, then some other country.
+  if (!country && parts.length > 2 && [parts.at(-2)!, coded ?? parts.at(-1)!].every((part) => /^[A-Z]{2}$/i.test(part))) return null;
   const words = (parts.at(-1) ?? '').replace(POSTAL_CODE, '').replace(US_FACILITY, '').split(/\s+/);
   if (country === 'US') {
     const size = [3, 2, 1].find((count) => words.length >= count && US_STATE_NAMES.has(nameKey(words.slice(-count).join(''))));
@@ -247,13 +272,34 @@ function regionClock(location: string): { zone: string; certain: boolean } | nul
  * The last part of a location that is not a bare postcode: "Example Town,
  * Denmark, 4600" is in Denmark. Orange Connex names China and the United
  * States in full for SpeedPAK, Canada Post writes "USA", 4PX "US 12345", and
- * Hong Kong is not the name Intl gives it.
+ * Hong Kong is not the name Intl gives it. FedEx writes a town, its region and
+ * the country's code before the postcode ("EXAMPLE TOWN, RR, IT 12345"); with
+ * two parts, "EXAMPLE TOWN, IN 12345" is a US state and its ZIP code.
  */
 function lastPlace(location: string): string | undefined {
-  const place = location.split(',').map((part) => part.trim()).filter((part) => part && !/^\d[\d\s-]*$/.test(part)).at(-1);
+  const parts = location.split(',').map((part) => part.trim()).filter((part) => part && !/^\d[\d\s-]*$/.test(part));
+  const place = parts.at(-1);
   if (!place) return place;
+  const coded = parts.length > 2 ? COUNTRY_POSTCODE.exec(place)?.[1] : undefined;
   return /^people['’]?s republic of china$/i.test(place) ? 'CN' : UNITED_STATES.test(place.replace(POSTAL_CODE, '')) ? 'US'
-    : /^hong\s*kong$/i.test(place) ? 'HK' : place;
+    : /^hong\s*kong$/i.test(place) ? 'HK' : coded ?? place;
+}
+
+// Mainland China's provinces, regions and municipalities, as China Post's scans name them.
+const CHINESE_PROVINCES = new Set([
+  'anhui', 'beijing', 'chongqing', 'fujian', 'gansu', 'guangdong', 'guangxi', 'guizhou', 'hainan', 'hebei', 'heilongjiang', 'henan',
+  'hubei', 'hunan', 'innermongolia', 'jiangsu', 'jiangxi', 'jilin', 'liaoning', 'ningxia', 'qinghai', 'shaanxi', 'shandong',
+  'shanghai', 'shanxi', 'sichuan', 'tianjin', 'tibet', 'xinjiang', 'xizang', 'yunnan', 'zhejiang',
+]);
+
+/**
+ * Whether a China Post scan is on Beijing's clock: its place is written in
+ * Chinese ("示例市 12345678") or ends with a mainland province ("Example City,
+ * Guangdong"). China Post dates those scans in China, as 17TRACK's "+08:00"
+ * copies of them show.
+ */
+function inChina(location: string): boolean {
+  return /\p{Script=Han}/u.test(location) || CHINESE_PROVINCES.has(nameKey(location.split(',').at(-1)));
 }
 
 /**
@@ -337,13 +383,15 @@ function numberNetworkZone(carrier: string | undefined, number: string): string 
  * instant, or a DHL Express facility the rule cannot place, and undefined for
  * a scan only a guess can place (`guessedZone`).
  */
-function placedZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false): string | null | undefined {
+function placedZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false,
+  status = '', destination: string | null = null): string | null | undefined {
   const name = stateCarrierName(payload, state);
   const key = nameKey(name);
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
-  if (carrier === 'paack' || ownOffset(name, state.date)) return null;
+  if (carrier === 'paack' || carrier === 'vinted-go' || ownOffset(name, state.date)) return null;
+  if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
@@ -354,6 +402,7 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   const location = scanLocation(name, state.location);
   // A facility's clock, whatever the label: no other step applies to it.
   if (relaysFacilityClock(name)) return facilityZone(location);
+  if (carrier === 'china-post' && inChina(location)) return 'Asia/Shanghai';
   const place = lastPlace(location);
   // A state or province the town confirms beats the country its code also
   // names ("Chicago, IL"); a merely possible one comes after ("Koeln, DE").
@@ -431,7 +480,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const location = scanLocation(name, raw.location);
   const offset = ownOffset(name, state.date);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
-  const placed = placedZone(payload, state, number, inNorthAmerica);
+  const placed = placedZone(payload, state, number, inNorthAmerica, status, destination);
   const zone = placed !== undefined ? placed : wallClock ? null : guessedZone(payload, state, fallback, number);
   const known = wallClock ? knownClock(name, status, destination) : null;
   // A local clock that nothing places, in the US or Canada alone ("US 12345").

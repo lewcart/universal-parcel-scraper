@@ -51,6 +51,8 @@ signal.
   pairing is unambiguous. Otherwise their local clock uses `Europe/Zurich`.
   This preserves repeated autumn-hour instants instead of choosing an offset
   from an unrelated scan.
+- The page's summary, and a page row without a time, show a date alone. Such
+  a step keeps its day in `local_time` rather than an invented midnight.
 - Scan codes take precedence over history enumerations. Unknown wording stays
   visible without an invented milestone. Scans are sorted newest first.
 - A scan code is mapped where a live lookup paired it with a history

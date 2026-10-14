@@ -192,6 +192,12 @@ function eventTime(date: string, clock: string): string {
   return value;
 }
 
+/** A page row's day, `dd.MM.yyyy`, when it shows no time: a date alone, never midnight. */
+function pageDay(date: string): string | null {
+  const day = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(date);
+  return day ? calendarDay(Number(day[3]), Number(day[2]), Number(day[1])) : null;
+}
+
 function apiDescription(value: unknown): string {
   const key = clean(value).toUpperCase().replaceAll(' ', '_');
   return API_LABELS[key] ?? key.toLocaleLowerCase('en-US')
@@ -548,31 +554,25 @@ export function parseDPDTrackingHtml(html: string, trackingNumber: string): Carr
     const row = $(element);
     const description = clean(row.find('.entry-body').text());
     if (!description) return;
+    const date = clean(row.find('.entry-date').text());
+    const clock = clean(row.find('.entry-time').text());
+    const day = clock ? null : pageDay(date);
     events.push({
-      time: eventTime(clean(row.find('.entry-date').text()), clean(row.find('.entry-time').text())),
+      ...(day ? { local_time: day } : { time: eventTime(date, clock) }),
       location: clean(row.find('.place-track').text()),
       description,
     });
   });
   if (events.length === 0) {
-    const summary: Array<{ date: string; description: string }> = [];
+    // The summary shows each step's date alone, oldest first.
     $('.parcelStatus .row').each((_, element) => {
       const row = $(element);
       const date = /\d{2}\.\d{2}\.\d{4}/.exec(clean(row.text()))?.[0] ?? '';
       const description = clean(row.find('.col-xs-7').text())
         || clean(row.text()).replace(date, '').trim();
-      if (date && description) summary.push({ date, description });
+      const day = pageDay(date);
+      if (day && description) events.push({ local_time: day, location: '', description });
     });
-    const offsets = new Map<string, number>();
-    for (const item of summary) {
-      const offset = offsets.get(item.date) ?? 0;
-      offsets.set(item.date, offset + 1);
-      events.push({
-        time: eventTime(item.date, `00:${String(Math.floor(offset / 60)).padStart(2, '0')}:${String(offset % 60).padStart(2, '0')}`),
-        location: '',
-        description: item.description,
-      });
-    }
     events.reverse();
   }
   const labels = $('.gray-out').map((_, element) => clean($(element).text())).get().filter(Boolean);
@@ -581,6 +581,7 @@ export function parseDPDTrackingHtml(html: string, trackingNumber: string): Carr
     status: wordingStatus(statusText, events.length > 0),
     last_status_text: statusText,
     last_update: events[0]?.time || null,
+    ...(!events[0]?.time && events[0]?.local_time ? { last_update_local: events[0].local_time } : {}),
     expected_delivery: null,
     events,
   };

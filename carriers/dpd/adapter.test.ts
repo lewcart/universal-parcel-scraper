@@ -8,6 +8,7 @@ import {
   DPDTrackingError,
   adapter,
   parseDPDTrackingApi,
+  parseDPDTrackingHtml,
 } from './adapter.js';
 import { apiStage, apiStatus, scanStage, wordingStatus } from './status.js';
 
@@ -534,6 +535,28 @@ describe('DPD scan times', () => {
     expect(scanWithTwinAt('2026-03-29', '02:30:00', null)).toBe('2026-03-29T03:30:00+02:00');
     expect(scanWithTwinAt('2026-03-29', '02:30:00', '+01:00')).toBe('2026-03-29T03:30:00+02:00');
     expect(historyAt('2026-03-29T02:30:00', 'GMT+1')).toBe('2026-03-29T03:30:00+02:00');
+  });
+
+  it('keeps a page row that shows only its date as that date, never midnight', () => {
+    const summary = parseDPDTrackingHtml(`<html><body><div>${TRACKING_NUMBER}</div><div class="parcelStatus">
+      <div class="row"><div class="col-xs-5">03.08.2026</div><div class="col-xs-7">Parcel handed to DPD</div></div>
+      <div class="row"><div class="col-xs-5">04.08.2026</div><div class="col-xs-7">At delivery centre</div></div>
+      <div class="row"><div class="col-xs-5">04.08.2026</div><div class="col-xs-7">Delivered</div></div>
+      <div class="row"><div class="col-xs-5">31.02.2026</div><div class="col-xs-7">Not a day</div></div>
+    </div></body></html>`, TRACKING_NUMBER);
+    expect(summary.events).toEqual([
+      { local_time: '2026-08-04', location: '', description: 'Delivered' },
+      { local_time: '2026-08-04', location: '', description: 'At delivery centre' },
+      { local_time: '2026-08-03', location: '', description: 'Parcel handed to DPD' },
+    ]);
+    expect(summary).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-08-04' });
+
+    const scans = parseDPDTrackingHtml(`<html><body><div>${TRACKING_NUMBER}</div>
+      <li class="content-item-track"><span class="entry-date">04.08.2026</span><span class="entry-body">At delivery centre</span></li>
+      <li class="content-item-track"><span class="entry-date">03.08.2026</span><span class="entry-time">17:05</span><span class="entry-body">Parcel handed to DPD</span></li>
+    </body></html>`, TRACKING_NUMBER);
+    expect(scans.events?.map((event) => event.time ?? event.local_time)).toEqual(['2026-08-04', '2026-08-03T17:05:00+02:00']);
+    expect(scans.events?.[0]?.time).toBeUndefined();
   });
 
   it('accepts the zone spellings DPD could plausibly send', () => {

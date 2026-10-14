@@ -122,7 +122,7 @@ describe('JD Logistics international projection', () => {
       ['a declared offset Saudi Arabia does not keep', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCountry: '沙特阿拉伯' })],
       ['a country spanning several zones', scan('2026-09-03 10:00:00', 'UTC+7', '2026-09-03T10:00:00+07:00', { routeCountry: '印度尼西亚' })],
       ['a country spanning several zones, named in English', scan('2026-09-03 10:00:00', 'UTC-4', '2026-09-03T10:00:00-04:00', { routeProvinceName: 'United States' })],
-      ['a country whose zone is not known here', scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', { routeProvinceName: 'Jordan' })],
+      ['a country with several clocks', scan('2026-09-03 10:00:00', 'UTC+3', '2026-09-03T10:00:00+03:00', { routeProvinceName: 'Russia' })],
       ['a country field read neither way', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCountry: '示例国' })],
       ['a country written in a form not read here', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: 'Riyadh', routeProvinceName: 'KSA' })],
       ['a country abbreviation beside a city', scan('2026-09-03 10:00:00', 'UTC+8', '2026-09-03T10:00:00+08:00', { routeCityName: 'Los Angeles', routeProvinceName: 'USA' })],

@@ -29,13 +29,10 @@ const COUNTRY_BY_CHINESE_NAME: ReadonlyMap<string, string> = new Map([
 // English names of the special administrative regions that `countryCode` reads only in full.
 const REGION_BY_SHORT_NAME: ReadonlyMap<string, string> = new Map([['HONG KONG', 'HK'], ['MACAO', 'MO'], ['MACAU', 'MO']]);
 
-// Single-zone countries JD's lanes name that core/time's table lacks. Countries
-// spanning several zones (US, AU, ID, BR...) stay out: a country alone cannot
-// tell their clock.
-const LANE_ZONES: Readonly<Record<string, string>> = {
-  SA: 'Asia/Riyadh', KW: 'Asia/Kuwait', QA: 'Asia/Qatar', BH: 'Asia/Bahrain', OM: 'Asia/Muscat', EG: 'Africa/Cairo',
-  MO: 'Asia/Macau',
-};
+// A single-zone region JD's lanes name that core/time's table leaves out: its
+// code is also Missouri's. Countries spanning several zones (US, AU, ID,
+// BR...) stay out: a country alone cannot tell their clock.
+const LANE_ZONES: Readonly<Record<string, string>> = { MO: 'Asia/Macau' };
 const countryZone = (code: string) => (Object.hasOwn(LANE_ZONES, code) ? LANE_ZONES[code]! : countryTimeZone(code));
 
 /**

@@ -154,6 +154,11 @@ export function settleGuessedClocks(scans: readonly FeedClock[], readAt: number)
 // Countries that keep one civil time. Spain and Portugal use their mainland
 // zone (their islands differ by an hour). Countries spanning several zones
 // (US, CA, BR, RU, AU, MX, ID...) are absent: they need a finer location.
+// The rest of the list is every country or territory with a single zone in
+// the IANA database, except those whose code a US state or Canadian province
+// also uses (GA, PA, TN...) and Georgia, whose name a state has: "Atlanta, GA"
+// and "Atlanta, Georgia" are in the US. DE, IL, IN, MT, NL and SK keep town
+// lists that tell the two apart (`regionHasTown`).
 const COUNTRY_ZONES: Record<string, string> = {
   AT: 'Europe/Vienna', BE: 'Europe/Brussels', BG: 'Europe/Sofia', CH: 'Europe/Zurich',
   CY: 'Asia/Nicosia', CZ: 'Europe/Prague', DE: 'Europe/Berlin', DK: 'Europe/Copenhagen',
@@ -168,6 +173,34 @@ const COUNTRY_ZONES: Record<string, string> = {
   CN: 'Asia/Shanghai', HK: 'Asia/Hong_Kong', JP: 'Asia/Tokyo', KR: 'Asia/Seoul',
   MY: 'Asia/Kuala_Lumpur', PH: 'Asia/Manila', SG: 'Asia/Singapore', TH: 'Asia/Bangkok',
   TW: 'Asia/Taipei', VN: 'Asia/Ho_Chi_Minh',
+  AD: 'Europe/Andorra', AF: 'Asia/Kabul', AG: 'America/Antigua', AI: 'America/Anguilla', AM: 'Asia/Yerevan', AO: 'Africa/Luanda',
+  AW: 'America/Aruba', AX: 'Europe/Mariehamn', BA: 'Europe/Sarajevo', BB: 'America/Barbados', BD: 'Asia/Dhaka',
+  BF: 'Africa/Ouagadougou', BH: 'Asia/Bahrain', BI: 'Africa/Bujumbura', BJ: 'Africa/Porto-Novo', BL: 'America/St_Barthelemy',
+  BM: 'Atlantic/Bermuda', BN: 'Asia/Brunei', BO: 'America/La_Paz', BQ: 'America/Kralendijk', BS: 'America/Nassau',
+  BT: 'Asia/Thimphu', BW: 'Africa/Gaborone', BY: 'Europe/Minsk', BZ: 'America/Belize', CC: 'Indian/Cocos', CF: 'Africa/Bangui',
+  CG: 'Africa/Brazzaville', CI: 'Africa/Abidjan', CK: 'Pacific/Rarotonga', CM: 'Africa/Douala', CR: 'America/Costa_Rica',
+  CU: 'America/Havana', CV: 'Atlantic/Cape_Verde', CW: 'America/Curacao', CX: 'Indian/Christmas', DJ: 'Africa/Djibouti',
+  DM: 'America/Dominica', DO: 'America/Santo_Domingo', DZ: 'Africa/Algiers', EG: 'Africa/Cairo', EH: 'Africa/El_Aaiun',
+  ER: 'Africa/Asmara', ET: 'Africa/Addis_Ababa', FJ: 'Pacific/Fiji', FK: 'Atlantic/Stanley', FO: 'Atlantic/Faroe',
+  GD: 'America/Grenada', GF: 'America/Cayenne', GG: 'Europe/Guernsey', GH: 'Africa/Accra',
+  GI: 'Europe/Gibraltar', GM: 'Africa/Banjul', GN: 'Africa/Conakry', GP: 'America/Guadeloupe', GQ: 'Africa/Malabo',
+  GS: 'Atlantic/South_Georgia', GT: 'America/Guatemala', GW: 'Africa/Bissau', GY: 'America/Guyana', HN: 'America/Tegucigalpa',
+  HT: 'America/Port-au-Prince', IM: 'Europe/Isle_of_Man', IO: 'Indian/Chagos', IQ: 'Asia/Baghdad', IR: 'Asia/Tehran',
+  JE: 'Europe/Jersey', JM: 'America/Jamaica', JO: 'Asia/Amman', KE: 'Africa/Nairobi', KG: 'Asia/Bishkek', KH: 'Asia/Phnom_Penh',
+  KM: 'Indian/Comoro', KN: 'America/St_Kitts', KP: 'Asia/Pyongyang', LB: 'Asia/Beirut', LC: 'America/St_Lucia', LK: 'Asia/Colombo',
+  LR: 'Africa/Monrovia', LS: 'Africa/Maseru', LY: 'Africa/Tripoli', MC: 'Europe/Monaco', MF: 'America/Marigot',
+  MG: 'Indian/Antananarivo', MK: 'Europe/Skopje', ML: 'Africa/Bamako', MM: 'Asia/Yangon', MQ: 'America/Martinique',
+  MR: 'Africa/Nouakchott', MU: 'Indian/Mauritius', MV: 'Indian/Maldives', MW: 'Africa/Blantyre', MZ: 'Africa/Maputo',
+  NA: 'Africa/Windhoek', NF: 'Pacific/Norfolk', NG: 'Africa/Lagos', NI: 'America/Managua', NP: 'Asia/Kathmandu',
+  NR: 'Pacific/Nauru', OM: 'Asia/Muscat', PK: 'Asia/Karachi', PM: 'America/Miquelon', PN: 'Pacific/Pitcairn', PW: 'Pacific/Palau',
+  PY: 'America/Asuncion', QA: 'Asia/Qatar', RE: 'Indian/Reunion', RS: 'Europe/Belgrade', RW: 'Africa/Kigali',
+  SB: 'Pacific/Guadalcanal', SH: 'Atlantic/St_Helena', SJ: 'Arctic/Longyearbyen', SL: 'Africa/Freetown', SM: 'Europe/San_Marino',
+  SN: 'Africa/Dakar', SO: 'Africa/Mogadishu', SR: 'America/Paramaribo', SS: 'Africa/Juba', ST: 'Africa/Sao_Tome',
+  SX: 'America/Lower_Princes', SY: 'Asia/Damascus', SZ: 'Africa/Mbabane', TC: 'America/Grand_Turk', TD: 'Africa/Ndjamena',
+  TF: 'Indian/Kerguelen', TG: 'Africa/Lome', TJ: 'Asia/Dushanbe', TK: 'Pacific/Fakaofo', TL: 'Asia/Dili', TM: 'Asia/Ashgabat',
+  TO: 'Pacific/Tongatapu', TT: 'America/Port_of_Spain', TV: 'Pacific/Funafuti', TZ: 'Africa/Dar_es_Salaam', UG: 'Africa/Kampala',
+  UY: 'America/Montevideo', VC: 'America/St_Vincent', VE: 'America/Caracas', VG: 'America/Tortola', VU: 'Pacific/Efate',
+  WF: 'Pacific/Wallis', WS: 'Pacific/Apia', YE: 'Asia/Aden', ZA: 'Africa/Johannesburg', ZM: 'Africa/Lusaka', ZW: 'Africa/Harare',
 };
 const ENGLISH_REGIONS = new Intl.DisplayNames(['en'], { type: 'region' });
 // Every region Intl names. Retired codes ("FX", "UK") repeat a current

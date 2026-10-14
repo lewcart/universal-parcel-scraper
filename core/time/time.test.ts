@@ -119,7 +119,12 @@ describe('time policies', () => {
     expect(countryTimeZone('UA')).toBe('Europe/Kyiv');
     expect(countryTimeZone('US')).toBeNull();
     expect(countryTimeZone('Canada')).toBeNull();
-    expect(countryTimeZone('South Africa')).toBeNull();
+    expect(countryTimeZone('Brazil')).toBeNull();
+    // Single-zone territories, and none whose code or name a US state also has.
+    expect(countryTimeZone('South Africa')).toBe('Africa/Johannesburg');
+    expect(countryTimeZone('RE')).toBe('Indian/Reunion');
+    expect(countryTimeZone('Réunion')).toBe('Indian/Reunion');
+    for (const value of ['GA', 'TN', 'PA', 'Georgia']) expect(countryTimeZone(value)).toBeNull();
     expect(countryTimeZone(undefined)).toBeNull();
   });
 

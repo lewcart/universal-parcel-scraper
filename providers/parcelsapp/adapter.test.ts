@@ -310,8 +310,8 @@ describe('ParcelsApp result parsing', () => {
     const scan = (location: string, carriers = ['Example Parcel Co']) => times({
       carriers, states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', carrier: 0, location }],
     })?.[0];
-    // A country with several clocks, by name or code, or one with no listed zone.
-    for (const location of ['EXAMPLE CITY, CA, United States', 'EXAMPLE CITY, CA, US', 'EXAMPLE CITY, South Africa']) {
+    // A country with several clocks, by name or code.
+    for (const location of ['EXAMPLE CITY, CA, United States', 'EXAMPLE CITY, CA, US', 'EXAMPLE CITY, Brazil']) {
       expect(scan(location)).toBe('2026-07-02T18:30:00.000Z');
     }
     // The parcel carrier's country, or a place with no country it can tell.
@@ -320,7 +320,7 @@ describe('ParcelsApp result parsing', () => {
     }
     // The country a carrier name ends with is a guess too: it can be a branch.
     expect(scan('EXAMPLE CITY, United States', ['Cainiao (China)'])).toBe('2026-07-02T18:30:00.000Z');
-    expect(times({ states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', location: 'EXAMPLE CITY, South Africa' }] }))
+    expect(times({ states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', location: 'EXAMPLE CITY, Brazil' }] }))
       .toEqual(['2026-07-02T18:30:00.000Z']);
   });
 

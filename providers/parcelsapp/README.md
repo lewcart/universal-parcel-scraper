@@ -91,7 +91,7 @@ step exists for future protocol changes.
 
   Steps 3 and 5 only guess where the scan was. A `location` ending with any other country,
   by ISO code or by name in English, German, French, Italian, Spanish or Dutch ("Example
-  City, CA, US", "Example City, South Africa"), rules them out and the scan stays as
+  City, CA, US", "Example City, Brazil"), rules them out and the scan stays as
   labeled. Canada Post's "USA", 4PX's "US 12345" and Orange Connex's "United States of
   America" and "People's Republic of China" name the US and China too; the last also
   places a scan on China time in step 2. "Hong Kong", which is not the name Intl gives it,

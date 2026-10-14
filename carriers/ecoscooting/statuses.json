@@ -98,8 +98,9 @@
       "code": "GTMS_ACCEPT",
       "wording": "Parcel has been accepted by last mile",
       "language": "en",
-      "stage": "accepted",
-      "confirmedBy": "live"
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The last-mile carrier taking over a parcel Cainiao accepted long before."
     },
     {
       "code": "TD_TRANSWH_OUTBOUND",
@@ -246,8 +247,9 @@
       "code": "SL_ACCEPT",
       "wording": "Your shipment has been accepted by delivery carrier",
       "language": "en",
-      "stage": "accepted",
-      "confirmedBy": "live"
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The last-mile carrier taking over a parcel Cainiao accepted long before."
     },
     {
       "code": "TRANSFER_ARRIVE",
@@ -302,15 +304,17 @@
       "code": "GTMS_ACCEPT",
       "wording": "Your shipment has been accepted by delivery carrier",
       "language": "en",
-      "stage": "accepted",
-      "confirmedBy": "live"
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The last-mile carrier taking over a parcel Cainiao accepted long before."
     },
     {
       "code": "GTMS_ACCEPT",
       "wording": "accepted by delivery partner",
       "language": "en",
-      "stage": "accepted",
-      "confirmedBy": "live"
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The last-mile carrier taking over a parcel Cainiao accepted long before."
     },
     {
       "code": "GTMS_DEL_FAILURE",

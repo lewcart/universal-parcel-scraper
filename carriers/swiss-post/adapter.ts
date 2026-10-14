@@ -246,6 +246,24 @@ function destinationClock(event: JsonObject, time: string, destination: string |
   return (zone ? isoTime(wall, zone)?.iso : null) ?? time;
 }
 
+/** Ready at a PickPost or My Post 24 point, and the point's own arrival scans. */
+const PICKUP_READY = new Set(['2101', '2102']);
+const PICKUP_ARRIVAL = new Set(['1001', '1100']);
+const LEFT_THE_POINT = new Set<string>(['out_for_delivery', 'delivered', 'failed_attempt', 'returned']);
+
+/**
+ * A parcel still waiting at its pickup point when the point scans its arrival
+ * after the ready-for-pickup scan: a newest-first history whose newest scan is
+ * that arrival, with a ready scan before it and nothing in between that takes
+ * the parcel out again.
+ */
+function heldForPickup(events: readonly CarrierEvent[]): boolean {
+  const codeOf = (event: CarrierEvent) => event.provider_code?.split('.').at(-1) ?? '';
+  if (!events[0] || !PICKUP_ARRIVAL.has(codeOf(events[0]))) return false;
+  const ready = events.findIndex((event) => PICKUP_READY.has(codeOf(event)) && event.stage === 'ready_for_pickup');
+  return ready > 0 && events.slice(0, ready).every((event) => !LEFT_THE_POINT.has(event.stage ?? ''));
+}
+
 export function parseSwissPostShipment(
   item: JsonObject,
   rawEvents: unknown[],
@@ -286,6 +304,7 @@ export function parseSwissPostShipment(
   if ((globalStatus === 'RETURNED' || item.returned === true) && (!events[0]?.stage || stage === 'delivered')) {
     stage = 'returned';
   }
+  if (stage === 'in_transit' && heldForPickup(events)) stage = 'ready_for_pickup';
   if (stage && STAGE_STATUS[stage]) status = STAGE_STATUS[stage]!;
   let lastStatusText: string;
   let lastUpdate: string | null;

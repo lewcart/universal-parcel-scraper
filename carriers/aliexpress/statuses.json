@@ -633,6 +633,14 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": ""
+    },
+    {
+      "code": "GTMS_ORDER_INFO_UPDATE",
+      "wording": "Delivery details updated",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-14",
+      "note": "No stage: the order's delivery details changed, which moves no parcel."
     }
   ]
 }

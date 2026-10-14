@@ -616,6 +616,48 @@ describe('classifyWording', () => {
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
   });
 
+  it('reads pickup points, failed rounds and hand-offs in the words carriers use', () => {
+    for (const [wording, stage] of [
+      // A pickup spelled "pick-up", and DPD's "retrieval point".
+      ['Ready for pick-up at the example parcel point', 'ready_for_pickup'],
+      ['Your parcel has been delivered to the retrieval point', 'ready_for_pickup'],
+      ['Your parcel is available at the retrieval point', 'ready_for_pickup'],
+      // "Couldn't", and premises that were closed.
+      ["We couldn't deliver your parcel and had to return it to the depot", 'failed_attempt'],
+      ["We couldn’t deliver your parcel, it will soon be available at a retrieval point", 'failed_attempt'],
+      ['Your parcel is being held at our delivery depot, your premises were closed', 'failed_attempt'],
+      // A delivery terminal is no delivery round.
+      ['Shipment Unloaded in Delivery Terminal', 'in_transit'],
+      // The sender's deposit with a postal partner, an airline taking the
+      // parcel, and the recipient collecting it.
+      ['Your shipment has been deposited by the sender with postal partner in their country of origin', 'accepted'],
+      ['Handed over to airline.', 'in_transit'],
+      ['You have collected your parcel', 'delivered'],
+      // An export release, completed import procedures and a parcel cleared to leave move on.
+      ['Item released by export Customs', 'in_transit'],
+      ['The import procedures for your shipment are complete.', 'in_transit'],
+      ['Your shipment is ready to leave the foreign territory. It will be handed over to the carrier for delivery', 'in_transit'],
+      // A new delivery date someone asked for, and a parcel the carrier has not received yet.
+      ['Delivery exception, A request was made to change this delivery date.', 'in_transit'],
+      ["We're expecting your parcel to arrive with us soon and we'll update your tracking once we've received it", 'registered'],
+    ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
+    // A French sort still reads as one; "retrieval" is no sort, nor a notice a pickup.
+    expect(wordingStage('Colis trié', 'pending')).toBe('in_transit');
+    expect(classifyWording('Retrieval of shipment data', 'pending')).toEqual({ stage: 'pending', source: 'none' });
+    expect(wordingStage('Your parcel will be available at the retrieval point', 'pending')).toBe('in_transit');
+    expect(wordingStage('Your parcel is not available at the retrieval point', 'pending')).not.toBe('ready_for_pickup');
+    // The round itself still reads as one, a terminal or depot does not.
+    expect(wordingStage('The parcel is in delivery.', 'pending')).toBe('out_for_delivery');
+    for (const wording of ['Arrived in delivery depot', 'Sorted in delivery centre', 'Parcel scanned in delivery hub']) {
+      expect(wordingStage(wording, 'pending'), wording).not.toBe('out_for_delivery');
+    }
+    // A sender's deposit is no delivery; a deposit for the recipient is.
+    expect(wordingStage('Deposited by the sender at the post office', 'pending')).not.toBe('delivered');
+    expect(wordingStage('Deposited in the mailbox', 'pending')).toBe('delivered');
+    // A collection still to come is none.
+    expect(wordingStage('Once you have collected your parcel, rate your delivery', 'pending')).not.toBe('delivered');
+  });
+
   it('falls back without a rule id when nothing matches', () => {
     expect(classifyWording('Estado interno 99', 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(wordingStage('Estado interno 99')).toBe('in_transit');

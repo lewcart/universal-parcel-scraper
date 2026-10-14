@@ -1,6 +1,7 @@
 {
   "carrier": "poste-italiane",
   "entries": [
+    { "wording": "la spedizione è stata presa in carico presso il Punto Poste", "language": "it", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-09", "note": "Prefix match, checked before the shorter prefix: a drop-off at a Punto Poste." },
     { "wording": "la spedizione è stata presa in carico…", "language": "it", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-09-10", "note": "Prefix match." },
     { "wording": "da un nostro operatore presso l’ufficio postale…", "language": "it", "stage": "registered", "confirmedBy": "prior-art", "firstSeen": "2026-09-10", "note": "Prefix match; both the typographic and the ASCII apostrophe are accepted." },
     { "wording": "a seguito di acquisto da poste.it", "language": "it", "stage": "registered", "confirmedBy": "prior-art", "firstSeen": "2026-09-10", "note": "Exact match." },

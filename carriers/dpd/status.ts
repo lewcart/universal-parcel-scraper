@@ -93,6 +93,10 @@ export function apiStage(description: unknown): Stage | null {
  * enumeration named beside them. CCO has no twin; it ends customs clearance.
  * HUI, HUS, DLS and DLQ are the hub and delivery-depot scans a verified
  * domestic history lists between ORI and DLO, each labelled with one movement.
+ * A German history adds SPX before the line haul, the failed rounds DEX, DLR
+ * and DLW, and the pickup-point scans: DEHD and DEHDY when the parcel reaches
+ * the point, DODEI (twin AVAILABLE_FOR_COLLECTION) and the notice DOMSDLO when
+ * it waits there, DODEY (twin DELIVERED) when the recipient collects it.
  * ORI ("Origin depot - In") stays unmapped like its twin PARCEL_HANDED: the
  * result stage then comes from the same wording as the scan's, and an import
  * that cleared customs does not step back to accepted. Other codes stay
@@ -100,13 +104,22 @@ export function apiStage(description: unknown): Stage | null {
  */
 const SCAN_STAGES: Readonly<Record<string, Stage>> = {
   CCO: 'in_transit', // "Customs - Out"
+  SPX: 'in_transit', // "Your parcel is on our premises, it will soon be on its way"
   HUI: 'in_transit', // "Your parcel arrived at our hub"
   HUS: 'in_transit', // "Your parcel is ready to be transported to our next premises"
   DLI: 'in_transit', // "Destination depot - Inbound", twin AT_DELIVERY_CENTER
   DLS: 'in_transit', // "Your parcel has been sorted and is ready for delivery"
   DLQ: 'in_transit', // "Your parcel is at our delivery depot, it will soon be on its way"
   DLO: 'out_for_delivery', // "Destination depot - Out for delivery", twin PARCEL_OUT_FOR_DELIVERY
+  DEX: 'failed_attempt', // "We couldn't deliver your parcel, it will soon be available at a retrieval point"
+  DLR: 'failed_attempt', // "We couldn't deliver your parcel and had to return it to the depot"
+  DLW: 'failed_attempt', // "Your parcel is being held at our delivery depot, your premises were closed"
+  DEHD: 'ready_for_pickup', // "Your parcel has been delivered to the retrieval point, it will soon be available for collection"
+  DEHDY: 'ready_for_pickup', // "Your parcel has been delivered to the retrieval point"
+  DODEI: 'ready_for_pickup', // "Your parcel is available at the retrieval point", twin AVAILABLE_FOR_COLLECTION
+  DOMSDLO: 'ready_for_pickup', // The same wording as DODEI, sent as a notice without a place
   DEY: 'delivered', // "Delivery - Delivered", twin DELIVERED
+  DODEY: 'delivered', // "You have collected your parcel", twin DELIVERED
 };
 
 /** The stage for a guest API scan code, or null when the code is not mapped. */
@@ -144,5 +157,7 @@ export const statusMap: CarrierStatusMap = {
     { code: 'MSDLO', note: 'The notice DPD emailed for the delivery round, not a scan.' },
     { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan." },
     { code: 'ENA', note: "A data exchange inside DPD's systems, not a scan: it comes before the parcel reaches the origin depot." },
+    { code: 'DEYY', note: 'The proof of delivery, paperwork after the delivery scan: dropped beside it, delivered alone only when the enumeration says so.' },
+    { code: 'DODEYY', note: 'The proof of delivery after a collection from a pickup point, read like DEYY.' },
   ],
 };

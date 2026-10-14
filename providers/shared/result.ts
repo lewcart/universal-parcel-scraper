@@ -81,7 +81,9 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // A new attempt announced for the next round is no failure; the shared rules tell them apart.
   if (/delivery attempt/i.test(description) && [undefined, 'failed_attempt'].includes(trackingLanguageStage(description))) return 'failed_attempt';
   // Carrier-reported problems that are neither a missed attempt nor a return.
-  if (/damaged|broken in transit|lost in transit|(?:package|parcel|shipment) (?:is )?lost|refused(?: by)?|rejected by (?:the )?recipient|(?:incorrect|incomplete|insufficient|unknown|invalid) address|address (?:incorrect|incomplete|insufficient|unknown|invalid)|addressee (?:unknown|cannot be located)|delivery exception|shipment exception|carrier exception|action required|awaiting instructions/i.test(description)) return 'exception';
+  // A new delivery date someone asked for moves on, even filed as an exception.
+  if (/damaged|broken in transit|lost in transit|(?:package|parcel|shipment) (?:is )?lost|refused(?: by)?|rejected by (?:the )?recipient|(?:incorrect|incomplete|insufficient|unknown|invalid) address|address (?:incorrect|incomplete|insufficient|unknown|invalid)|addressee (?:unknown|cannot be located)|delivery exception|shipment exception|carrier exception|action required|awaiting instructions/i.test(description)
+    && trackingLanguageStage(description) !== 'in_transit') return 'exception';
   // The shared rules tell a hold the recipient asked for, and a customs problem
   // already resolved, from a problem.
   if (/held (?:by|in|at) customs|customs (?:issue|problem)|(?:shipment|parcel) (?:held|on hold)/i.test(description)
@@ -106,11 +108,29 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // Customs wording outranks a provider's own stage. The shared rules tell a
   // release or a completed clearance from customs still at work.
   if (/customs|clearance/i.test(description)) return trackingLanguageStage(description) === 'in_transit' ? 'in_transit' : 'customs';
-  if (/instruction data.*provided.*electronically|electronic information|information (?:received|submitted)|label (?:created|printed)|pre.?advice|shipment announced/i.test(description)) return 'registered';
+  if (/instruction data.*provided.*electronically|instruction data transmitted\b|electronic information|information (?:received|submitted)|label (?:created|printed)|pre.?advice|shipment announced/i.test(description)) return 'registered';
   if (/will be transported to the destination country/i.test(description)) return 'in_transit';
   if (!includeBroadMovement) return undefined;
-  if (/package received at dhl ecommerce|^pick-up was successful[.!]?$|accepted|collected|picked up|handed over/i.test(description)) return 'accepted';
+  const providerStage = providerWordingStage(description);
+  if (providerStage) return providerStage;
+  // A recipient collecting the parcel and a hand-over to an airline are no acceptance.
+  if (/package received at dhl ecommerce|^pick-up was successful[.!]?$|accepted|(?<!\byou(?: have|'ve|’ve)? )collected|picked up|handed over(?! to (?:the |an )?(?:airline|air carrier))/i.test(description)) return 'accepted';
   if (/transit|arrived|departed|processed|processing completed at origin|sorting|sorted|transport|dispatched|en route|loaded to movement/i.test(description)) return 'in_transit';
+  return undefined;
+}
+
+/**
+ * Whole scans the aggregators relay in their own or a carrier's words, which
+ * no shared rule reads: warehouse and terminal steps, order notices and
+ * Chinese postal scans. Each is matched whole, so it says nothing about
+ * other wording.
+ */
+function providerWordingStage(description: string): Stage | undefined {
+  const value = description.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (/^delivery in progress, (?:first|second|third|\d+(?:st|nd|rd|th)) attempt\b|scanned for delivery[;,] ?the courier is\b|派送员派送途中/i.test(value)) return 'out_for_delivery';
+  if (/^order confirmed[.!]?$|^order received(?: successfully)?[.!]?$|^creat(?:e|ed)\. (?:parcel|shipment(?: order)?) created\b|^pre-shipment info sent to\b/i.test(value)) return 'registered';
+  if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: and scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^rfid confirmed pick-?up$/i.test(value)) return 'accepted';
+  if (/^goods leave the operation cent(?:er|re)[.!]?$|^(?:package |parcel )?(?:left|leaves?) the warehouse[.!]?$|^we['’]re processing your parcel at our hub\b|^warehouse\. (?:inbound warehouse|delivery in last mile facilities|ready to hand over to last-mile supplier)[.!]?$|^hand over to last mile[.!]?$|^at destination country\/region[.!]?$|^(?:beladung|entladung)$|^entrance to the terminal from the driver$|^outbou?n?d from pickup terminal to the line ?h[ao]u?l$|^inbound from l?ine ?h[ao]u?l to (?:the )?terminal$|^[\w ]+ warehouse, .{1,80}? processing,? (?:order has been (?:in|out)bounded|assembling operation)$|^received in site[- ]|(?:邮件|快件)(?:到达|离开)处理中心|航空公司接收|已交承运商运输|已完成分拣|^出口海关\/放行|^启运|^干线中转/i.test(value)) return 'in_transit';
   return undefined;
 }
 

@@ -77,12 +77,17 @@ export function classifyWording(text: string, fallback: Stage = 'in_transit'): C
     'incidencia', 'irregularität'].some((term) => value.includes(term))) {
     return matched('exception', 'exception_incident');
   }
-  if (['ready for pickup', 'ready for collection', 'abholbereit', 'deposited in the mypost24 machine']
-    .some((term) => value.includes(term))) return matched('ready_for_pickup', 'ready_for_pickup');
-  if (['delivered', 'deposited', 'zugestellt', 'confirmation of receipt']
-    .some((term) => value.includes(term))) return matched('delivered', 'delivered');
-  if (['out for delivery', 'in delivery', 'loading into delivery vehicle',
-    'loaded into delivery vehicle', 'zustellung'].some((term) => value.includes(term))) {
+  if (['ready for pickup', 'ready for pick-up', 'ready for pick up', 'ready for collection', 'abholbereit',
+    'deposited in the mypost24 machine'].some((term) => value.includes(term))) return matched('ready_for_pickup', 'ready_for_pickup');
+  // The sender depositing the parcel with the carrier is no delivery.
+  if (['delivered', 'zugestellt', 'confirmation of receipt'].some((term) => value.includes(term))
+    || /\bdeposited\b(?![^.;]*\b(?:by (?:the )?(?:sender|shipper|seller|merchant)|postal partner)\b)/.test(value)) {
+    return matched('delivered', 'delivered');
+  }
+  // "In delivery", but not a delivery terminal or depot the parcel is sorted in.
+  if (['out for delivery', 'loading into delivery vehicle', 'loaded into delivery vehicle', 'zustellung']
+    .some((term) => value.includes(term))
+    || /\bin delivery\b(?! (?:terminal|depot|cent(?:er|re)|office|facility|hub|station|base|area|point)s?\b)/.test(value)) {
     return matched('out_for_delivery', 'out_for_delivery');
   }
   if (['was released by customs', 'has been released by customs', 'has been released by a government agency']

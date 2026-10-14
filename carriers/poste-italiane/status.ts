@@ -23,6 +23,8 @@ export function normalizePosteItalianeWording(value: unknown): string {
 export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStatus | undefined {
   const value = normalizePosteItalianeWording(rawWording);
   if (!value) return undefined;
+  // Dropped off at a Punto Poste: the parcel itself is in Poste's hands.
+  if (value.startsWith('la spedizione è stata presa in carico presso il punto poste')) return { status: 'in_transit', stage: 'accepted' };
   if (value.startsWith('la spedizione è stata presa in carico')
     || value.startsWith('da un nostro operatore presso l’ufficio postale')
     || value.startsWith('da un nostro operatore presso l\'ufficio postale')

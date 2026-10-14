@@ -88,6 +88,7 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   '1204': 'in_transit',
   '1213': 'in_transit',
   '1218': 'in_transit',
+  '2101': 'ready_for_pickup',
   '2102': 'ready_for_pickup',
   '3600': 'returned',
   '3800': 'delivered',

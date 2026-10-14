@@ -185,6 +185,95 @@
       "note": "Scan code (Delivery - Proof of delivery), minutes after DEY with no place. Dropped when a delivery scan is listed or the enumeration is not DELIVERED; staged delivered only when it is the sole delivery evidence of a delivered parcel. Its podUrl is never kept."
     },
     {
+      "code": "SPX",
+      "wording": "Your parcel is on our premises, it will soon be on its way",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code, seen on a German parcel before the line haul."
+    },
+    {
+      "code": "DLR",
+      "wording": "We couldn't deliver your parcel and had to return it to the depot",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code: a failed delivery round, back at the delivery depot."
+    },
+    {
+      "code": "DLW",
+      "wording": "Your parcel is being held at our delivery depot, your premises were closed",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code: a failed delivery round, the recipient's premises closed."
+    },
+    {
+      "code": "DEX",
+      "wording": "We couldn't deliver your parcel, it will soon be available at a retrieval point. You will be informed of the location upon arrival",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code: a failed delivery round; the parcel goes on to a pickup point."
+    },
+    {
+      "code": "DEHD",
+      "wording": "Your parcel has been delivered to the retrieval point, it will soon be available for collection",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code: the parcel reaches the pickup point, which is no delivery to the recipient."
+    },
+    {
+      "code": "DEHDY",
+      "wording": "Your parcel has been delivered to the retrieval point",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code: the parcel reaches the pickup point, which is no delivery to the recipient."
+    },
+    {
+      "code": "DODEI",
+      "wording": "Your parcel is available at the retrieval point",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code at the same instant as AVAILABLE_FOR_COLLECTION."
+    },
+    {
+      "code": "DOMSDLO",
+      "wording": "Your parcel is available at the retrieval point",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "The notice of DODEI, sent without a place."
+    },
+    {
+      "code": "DODEY",
+      "wording": "You have collected your parcel",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "Scan code at the same instant as DELIVERED: the recipient collected the parcel from the pickup point."
+    },
+    {
+      "code": "DODEYY",
+      "wording": "We received the proof of delivery",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-13",
+      "note": "The proof of delivery after a collection from a pickup point, read like DEYY."
+    },
+    {
       "code": "SPE",
       "wording": "Your parcel is estimated to be delivered on: <date>",
       "language": "en",

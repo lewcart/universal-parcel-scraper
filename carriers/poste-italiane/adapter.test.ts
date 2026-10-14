@@ -234,6 +234,14 @@ describe('Poste Italiane response parsing', () => {
     for (const secret of ['VIA DI PROVA', '00000', '99999', '08:20', 'Test Depot']) expect(serialized).not.toContain(secret);
   });
 
+  it('reads a drop-off at a Punto Poste as accepted', () => {
+    const result = parsePosteItalianeTrackingResponse(parcel({ stato: '3', listaMovimenti: [
+      movement('la spedizione è stata presa in carico presso il Punto Poste', 1767225600000),
+    ] }), TRACKING_NUMBER);
+    expect(result.events?.map((event) => event.stage)).toEqual(['accepted']);
+    expect(result.current_stage).toBe('accepted');
+  });
+
   it('reads the later of two movements sharing an instant as the newer', () => {
     const delivered = parsePosteItalianeTrackingResponse(parcel({ listaMovimenti: [
       movement('la spedizione è in consegna', 1767398400000),

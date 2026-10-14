@@ -54,6 +54,9 @@ describe('status map answers', () => {
     expect(answer('dpd-de', null, 'Parcel handed to DPD')).toEqual(mapped('accepted'));
     expect(answer('dpd-de', 'DLO', 'Your parcel is out for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('dpd-de', 'PARCEL_HANDED', 'Parcel handed to DPD')).toEqual(gap);
+    expect(answer('dpd-de', 'DEX', "We couldn't deliver your parcel, it will soon be available at a retrieval point")).toEqual(mapped('failed_attempt'));
+    expect(answer('dpd-de', 'DEHDY', 'Your parcel has been delivered to the retrieval point')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('dpd-de', 'DODEYY', 'We received the proof of delivery')).toEqual(gap);
     // The Swiss page's labels are not read for German lookups.
     expect(answer('dpd-de', null, 'Your parcel is on its way')).toEqual(unknown);
     expect(answer('dpd-de', null, 'Picked up')).toEqual(unknown);
@@ -76,6 +79,11 @@ describe('status map answers', () => {
     expect(answer('postlogistics', 'IMG', 'IMAGE')).toEqual(gap);
     expect(answer('postlogistics', null, 'Image')).toEqual(unknown);
     expect(answer('ups', 'OF', 'Out For Delivery Today')).toEqual(mapped('out_for_delivery'));
+    expect(answer('ups', 'PC', 'RFID Confirmed Pickup')).toEqual(mapped('accepted'));
+    expect(answer('gofo', '414', 'In Transit to Next Facility')).toEqual(mapped('in_transit'));
+    expect(answer('gofo', '205', 'Delivered, In Mailbox')).toEqual(mapped('delivered'));
+    expect(answer('gofo', '205', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('aliexpress', 'GTMS_ORDER_INFO_UPDATE', 'Delivery details updated')).toEqual(gap);
     // Without a code, UPS's map reads only the rendered page's banner.
     expect(answer('ups', null, 'Delivered')).toEqual(mapped('delivered'));
     expect(answer('ups', null, 'Arrived at Facility')).toEqual(unknown);
@@ -121,6 +129,7 @@ describe('status map answers', () => {
   });
 
   it('reads the last segment of a Swiss Post code, and a revoked scan has no stage', () => {
+    expect(answer('swiss-post', 'PARCEL.*.1.2101', 'Ready for pick-up at PickPost / My Post 24 point')).toEqual(mapped('ready_for_pickup'));
     expect(answer('swiss-post', 'LETTER.*.106.859', 'Your shipment will shortly be handed over to the Swiss Post')).toEqual(mapped('registered'));
     expect(answer('swiss-post', 'LETTER.*.93.9112', 'Enquiry initiated')).toEqual(gap);
     expect(answer('swiss-post', 'PARCEL.*.1.4000', 'Delivered — Revocation')).toEqual(unknown);
@@ -157,6 +166,8 @@ describe('status map answers', () => {
   });
 
   it("answers Correos by its event code, and its office hold without one", () => {
+    expect(answer('correos-spain', 'B030000V', 'En oficina de cambio')).toEqual(mapped('in_transit'));
+    expect(answer('correos-spain', 'D050000V', 'Llegada a oficina de cambio')).toEqual(mapped('in_transit'));
     expect(answer('correos-spain', 'G01L020V', 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', null, 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', 'A010000V', 'Admitido.')).toEqual(mapped('accepted'));
@@ -288,6 +299,9 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', 'InTransit_Other', 'Estado interno 99')).toEqual(mapped('in_transit'));
     expect(answer('unknown', 'Delivered_Other', 'Not delivered')).toEqual(mapped('failed_attempt'));
     expect(answer('unknown', 'Delivered_Other', 'Estado interno 99')).toEqual(unknown);
+    // Nor does the round's code outrank wording that reads as delivered.
+    expect(answer('unknown', 'OutForDelivery_Other', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('unknown', 'OutForDelivery_Other', 'Estado interno 99')).toEqual(mapped('out_for_delivery'));
     // Any other code, such as a UPU event code the provider does not map, leaves it to the wording.
     expect(answer('unknown', 'EMZ', 'Processed at EXAMPLE HUB')).toEqual(mapped('in_transit'));
     expect(answer('unknown', 'NotFound_Other', 'Estado interno 99')).toEqual(unknown);
@@ -297,7 +311,7 @@ describe("universal providers' answers", () => {
     const wordings = ['Processed at EXAMPLE CITY - FRANCE', 'Shipment information received', 'Arrived at customs',
       'Released from import customs', 'Not delivered', 'Delivered', 'The item has been registered', 'Returned',
       'Will be delivered tomorrow', 'Estado interno 99', 'Parcel on hold at recipient’s request', 'Shipping label created'];
-    const codes = [undefined, 'InfoReceived', 'InTransit_Other', 'InTransit_PickedUp', 'Delivered_Other',
+    const codes = [undefined, 'InfoReceived', 'InTransit_Other', 'InTransit_PickedUp', 'OutForDelivery_Other', 'Delivered_Other',
       'Exception_Cancel', 'Exception_Returned', 'NotFound_Other'];
     const scans: CarrierEvent[] = [];
     for (const description of wordings) {
@@ -322,6 +336,40 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'admitido.. el envío ha tenido admisión en origen.')).toEqual(mapped('accepted'));
     expect(answer('unknown', null, 'i̇ptal edildi')).toEqual(mapped('exception'));
     for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
+      expect(answer('unknown', null, wording), wording).toEqual(unknown);
+    }
+  });
+
+  it("close the aggregators' whole scans no shared rule reads, and nothing like them", () => {
+    for (const [wording, stage] of [
+      ['Warehouse receipt.', 'accepted'], ['Received by warehouse', 'accepted'], ['Package received and scanned at warehouse', 'accepted'],
+      ["We've got it", 'accepted'], ['Received at Evri', 'accepted'], ['Acceptance, Sent To Spain', 'accepted'],
+      ['China Post has received the mail', 'accepted'], ['Envío recogido en origen', 'accepted'],
+      ['First parcel scan along Poste Italiane’s logistic network', 'accepted'], ['RFID Confirmed Pickup', 'accepted'],
+      ['示例处理中心已收寄【示例市】', 'accepted'],
+      ['Instruction data transmitted to DPD', 'registered'], ['Order confirmed.', 'registered'], ['Order received successfully', 'registered'],
+      ['Created. Parcel created by Example Shop at EXA', 'registered'], ['create. Shipment order created', 'registered'],
+      ['Pre-Shipment Info Sent To Spain', 'registered'],
+      ['Goods leave the operation center', 'in_transit'], ['Package left the warehouse', 'in_transit'], ['Leave the warehouse', 'in_transit'],
+      ["We're processing your parcel at our hub", 'in_transit'], ['Warehouse. Inbound warehouse', 'in_transit'],
+      ['Warehouse. Delivery in last mile facilities', 'in_transit'], ['Warehouse. Ready to hand over to last-mile supplier', 'in_transit'],
+      ['Hand Over To Last Mile', 'in_transit'], ['At destination country/region', 'in_transit'], ['Beladung', 'in_transit'],
+      ['Entladung', 'in_transit'], ['Entrance to the terminal from the driver', 'in_transit'],
+      ['Shipment Unloaded in Collection Terminal', 'in_transit'], ['Outboud from pickup terminal to the linehoul', 'in_transit'],
+      ['Inbound from inehoul to terminal', 'in_transit'],
+      ['Example warehouse, Example warehouse processing, order has been outbounded', 'in_transit'],
+      ['Example warehouse, Example warehouse processing assembling operation', 'in_transit'],
+      ['Received in Site-Example，the pick-up is Example', 'in_transit'],
+      ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
+      ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
+      ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],
+      ['Delivery in progress, second attempt', 'out_for_delivery'],
+      ['Site-ExampleScanned for delivery;the courier is Example', 'out_for_delivery'],
+      ['交接成功-交出（派送员派送途中）', 'out_for_delivery'],
+    ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
+    // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
+    for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
+      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

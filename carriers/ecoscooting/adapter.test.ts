@@ -25,7 +25,7 @@ describe('Ecoscooting parcel history', () => {
     const result = normalizeCarrierResult(parseEcoscooting(referenceFixture(number), number));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Your shipment has been delivered successfully',
       last_update: '2026-01-10T12:00:00Z', delivered_at: '2026-01-10T12:00:00Z', weight_kg: 4.301 });
-    expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'accepted', 'in_transit', 'in_transit', 'registered']);
+    expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'registered']);
     // Sorting scans carry another local offset than last-mile scans; epochs keep them in order.
     expect(result.events?.slice(2, 4).map(event => event.time)).toEqual(['2026-01-08T12:00:00Z', '2026-01-07T12:00:00Z']);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|imgUrl|opCode|Latitude|Longitude|outOrder|toZip|feature|cainiaoId|solution/);
@@ -65,7 +65,7 @@ describe('Ecoscooting parcel history', () => {
     const result = normalizeCarrierResult(parseEcoscooting(pickupFixture(), NUMBER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Your shipment has been collected by consignee at the parcelshop',
       last_update: '2026-02-06T17:30:00Z', delivered_at: '2026-02-06T17:30:00Z', weight_kg: 1.25, pickup_point: PICKUP_POINT });
-    expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'ready_for_pickup', 'failed_attempt', 'out_for_delivery', 'accepted', 'registered', 'registered']);
+    expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'ready_for_pickup', 'failed_attempt', 'out_for_delivery', 'in_transit', 'registered', 'registered']);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|imgUrl|opCode|opRemark|Latitude|Longitude|outOrder|toZip|feature|cainiaoId|popStation|pinCode/);
     // "Delivered to PUDO" is the pickup point's signature, not the recipient's.
     const waiting = pickupFixture(); waiting.statuses.shift();
@@ -124,7 +124,7 @@ describe('Ecoscooting parcel history', () => {
     expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Your shipment has been returned successfully to sender', weight_kg: 0.8 });
     expect(result).not.toHaveProperty('delivered_at');
     expect(result.events?.map(event => event.stage)).toEqual([...Array(7).fill('returned'), 'ready_for_pickup', 'ready_for_pickup', 'out_for_delivery',
-      'accepted', 'in_transit', 'in_transit', 'registered']);
+      'in_transit', 'in_transit', 'in_transit', 'registered']);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|imgUrl|opCode|opRemark|Latitude|Longitude|outOrder|toZip|feature|cainiaoId/);
     const expired = returnedFixture(); expired.statuses = expired.statuses.slice(6);
     expect(parseEcoscooting(expired, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'returned',

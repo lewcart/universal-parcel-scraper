@@ -450,6 +450,15 @@
       "firstSeen": "2026-09-10"
     },
     {
+      "code": "2101",
+      "wording": "Ready for pick-up at PickPost / My Post 24 point",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-12",
+      "note": "The point may then scan its own arrival (1001); the parcel still waits there."
+    },
+    {
       "code": "2102",
       "wording": "Deposited in the MyPost24 machine",
       "language": "en",

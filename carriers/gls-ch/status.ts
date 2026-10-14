@@ -51,6 +51,10 @@ export function classifyDescription(description: string): ClassifiedStatus {
   if (/^(?:the )?parcel has not been handed over to gls[.!]?$/i.test(description.trim())) {
     return { status: 'pending', stage: 'registered' };
   }
+  // INDELIVERY's wording: the parcel is on today's round, not a forecast.
+  if (/^(?:the )?parcel is expected to be delivered during the day[.!]?$/i.test(description.trim())) {
+    return { status: 'out_for_delivery', stage: 'out_for_delivery' };
+  }
   const translated = trackingLanguageStage(description);
   if (translated) return { status: languageStageStatus(translated), stage: translated };
   // A delivery notice ("will be delivered tomorrow") is no movement either.

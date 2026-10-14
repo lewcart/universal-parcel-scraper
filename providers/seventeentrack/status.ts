@@ -25,10 +25,12 @@ export const SUB_STAGES: Record<string, Stage> = {
  * outrank the wording. The specific code supplies semantics that Chinese
  * wording cannot provide; the shared delivered, negation and handoff
  * safeguards are kept: generic transit yields to any reading of the wording,
- * and a delivery code to wording that does not read as delivered.
+ * a delivery code to wording that does not read as delivered, and a
+ * delivery-round code to wording that reads as delivered.
  */
 export function subStatusStage(code: string, worded: Stage): Stage | undefined {
   const mapped = Object.hasOwn(SUB_STAGES, code) ? SUB_STAGES[code] : undefined;
   if (!mapped || (code === 'InTransit_Other' && worded !== 'pending')) return undefined;
+  if (mapped === 'out_for_delivery' && worded === 'delivered') return undefined;
   return mapped !== 'delivered' || worded === 'delivered' ? mapped : undefined;
 }

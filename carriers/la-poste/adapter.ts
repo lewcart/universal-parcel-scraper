@@ -10,7 +10,7 @@ import type { StepRecorder } from '../../core/telemetry/index.js';
 import { isoTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { eventStage, eventStatus } from './status.js';
+import { eventStage, eventStatus, GROUP_STATUSES } from './status.js';
 
 // Protocol provenance:
 // - `suivi-unifie` is the keyless feed the public tracking page calls: one
@@ -125,11 +125,10 @@ function countryCode(value: unknown): string {
  * Such a pair stands only while every scan stays in that country; otherwise the
  * country of a delivery scan is the destination.
  */
-function destinationCountry(context: JsonObject, events: CarrierEvent[]): string {
+function destinationCountry(context: JsonObject, events: CarrierEvent[], latest: CarrierEvent | undefined): string {
   const arrival = countryCode(context.arrivalCountry);
   if (!arrival || arrival !== countryCode(context.originCountry)) return arrival;
   if (events.every((event) => !event.location || countryCode(event.location) === arrival)) return arrival;
-  const latest = events[0];
   return latest?.stage === 'delivered' ? countryCode(latest.location) : '';
 }
 
@@ -211,33 +210,38 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
   // Projection allowlist: nothing but status wording, time, coarse location and
   // the provider's own codes leaves this function. Recipient blocks, addresses
   // and proof-of-delivery fields in the payload are never read.
-  const events: CarrierEvent[] = rawEvents.slice(0, MAX_EVENTS_TO_RETURN).flatMap((event) => {
+  const kept = rawEvents.slice(0, MAX_EVENTS_TO_RETURN).filter((event) => clean(event.label) || safeDate(event.date));
+  const events: CarrierEvent[] = kept.map((event) => {
     const description = clean(event.label);
-    const time = safeDate(event.date);
-    if (!description && !time) return [];
     const group = clean(event.group, 40).toLocaleUpperCase('en-US');
     const code = clean(event.code, 40).toLocaleUpperCase('en-US');
-    return [{
-      time,
+    return {
+      time: safeDate(event.date),
       location: clean(event.country, 80),
       description: description || 'Tracking update',
       stage: eventStage(group, code, description),
       ...(group || code ? { provider_code: [group, code].filter(Boolean).join('/') } : {}),
-    }];
+    };
   });
 
-  const latestRaw = rawEvents[0] ?? {};
-  const latest = events[0];
   const timeline = records(shipment.timeline)
     .filter((step) => step.status === true)
     .sort((left, right) => (number(right.id) ?? -1) - (number(left.id) ?? -1));
+  // A finished shipment, or one whose progress bar ends on a delivery, keeps
+  // that state: a pre-advice La Poste files after it is paperwork, not a step
+  // back to registered.
+  const finished = shipment.isFinal === true
+    || GROUP_STATUSES.get(clean(timeline[0]?.code, 40).toLocaleUpperCase('en-US')) === 'delivered';
+  const current = finished ? Math.max(0, events.findIndex((event) => event.stage !== 'registered')) : 0;
+  const latestRaw = (current > 0 ? kept[current] : rawEvents[0]) ?? {};
+  const latest = events[current];
   const currentState = isRecord(shipment.currentState) ? shipment.currentState : {};
   const fallbackLabel = clean(currentState.shortLabel) || clean(timeline[0]?.shortLabel);
   const latestLabel = latest?.description || fallbackLabel || clean(response.returnMessage);
   const latestGroup = clean(latestRaw.group, 40);
   const latestCode = clean(latestRaw.code, 40);
   const context = isRecord(shipment.contextData) ? shipment.contextData : {};
-  const destination = destinationCountry(context, events);
+  const destination = destinationCountry(context, events, latest);
   const shipped = clean(shipment.idShip, 64).toLocaleUpperCase('en-US');
   // The merchant La Poste shows on the tracking page. Recipient blocks stay unread.
   const sender = clean(context.merchantName, 200);
@@ -259,7 +263,7 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
     // the sync would re-read the sentence and fall back to "out for delivery".
     ...(latest?.stage ? { current_stage: latest.stage } : {}),
     last_status_text: latestLabel || 'Tracking information received',
-    last_update: latest?.time || safeDate(timeline[0]?.date) || null,
+    last_update: events[0]?.time || safeDate(timeline[0]?.date) || null,
     // A delivered item can stay non-final with its delivery time as the estimate.
     expected_delivery: shipment.isFinal === true || latest?.stage === 'delivered' ? null : expectedDate(shipment.estimDate),
     ...(latest?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),

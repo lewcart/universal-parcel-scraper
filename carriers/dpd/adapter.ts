@@ -221,6 +221,9 @@ function apiPickupPoint(payload: JsonObject, current: JsonObject, stage: string 
   return value ? value.slice(0, 200) : null;
 }
 
+/** The proof of delivery, after a doorstep delivery (DEYY) or a collection from a pickup point (DODEYY). */
+const PROOF_OF_DELIVERY_SCANS = new Set([PROOF_OF_DELIVERY_SCAN, 'DODEYY']);
+
 /** Scans at DPD's depots and hubs. */
 const DEPOT_SCANS = new Set(['ORI', 'SPL', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO']);
 
@@ -440,10 +443,10 @@ export function parseDPDTrackingApi(
   // current stage. Alone it proves the delivery only when the enumeration
   // says delivered; otherwise (a return, say) it would hide the real state.
   const deliveryScanned = scans.some((event) => (
-    event.stage === 'delivered' && event.provider_code !== PROOF_OF_DELIVERY_SCAN
+    event.stage === 'delivered' && !PROOF_OF_DELIVERY_SCANS.has(event.provider_code ?? '')
   ));
   const events = newestFirst(scans.flatMap((event) => {
-    if (event.provider_code !== PROOF_OF_DELIVERY_SCAN) return [event];
+    if (!PROOF_OF_DELIVERY_SCANS.has(event.provider_code ?? '')) return [event];
     return deliveryScanned || stage !== 'delivered' ? [] : [{ ...event, stage: 'delivered' }];
   }));
   const statusText = events[0]?.description || apiDescription(currentDescription)

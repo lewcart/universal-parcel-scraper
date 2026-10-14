@@ -189,6 +189,28 @@ describe('Swiss Post historical event codes', () => {
       events: [{ stage: 'ready_for_pickup' }],
     });
   });
+
+  it('keeps a parcel ready at its PickPost point after the point scans its arrival', () => {
+    const scans = [
+      { eventCode: 'PARCEL.*.1.1003', timestamp: '2026-09-01T08:00:00+02:00' },
+      { eventCode: 'PARCEL.*.1.2101', timestamp: '2026-09-01T13:28:00+02:00' },
+      { eventCode: 'PARCEL.*.1.1001', timestamp: '2026-09-01T13:29:00+02:00' },
+    ];
+    const result = parseSwissPostShipment({ globalStatus: 'MISSED_DELIVERY' }, scans,
+      { 'PARCEL.*.1.2101.INLAND': 'Ready for pick-up at PickPost / My Post 24 point' });
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup' });
+    expect(result.events?.map((event) => event.stage)).toEqual(['in_transit', 'ready_for_pickup', 'out_for_delivery']);
+    // A new round or a delivery after the pickup notice takes the parcel out again.
+    const later = (code: string) => parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [
+      ...scans.slice(0, 2),
+      { eventCode: `PARCEL.*.1.${code}`, timestamp: '2026-09-02T08:00:00+02:00' },
+      { eventCode: 'PARCEL.*.1.1001', timestamp: '2026-09-02T09:00:00+02:00' },
+    ]).current_stage;
+    expect(later('1003')).toBe('in_transit');
+    expect(later('4000')).toBe('in_transit');
+    // An arrival with no pickup notice before it stays in transit.
+    expect(parseSwissPostShipment({ globalStatus: 'TO_BE_DELIVERED' }, [scans[0]!, scans[2]!]).current_stage).toBe('in_transit');
+  });
 });
 
 describe('Swiss Post projection', () => {

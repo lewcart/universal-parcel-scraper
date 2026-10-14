@@ -20,7 +20,9 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['RT_WH_INBOUND', RETURNED],
   ['GTMS_DO_DEPART', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['GTMS_DEL_FAILURE', { status: 'exception', stage: 'failed_attempt' }],
-  ['GTMS_ACCEPT', { status: 'in_transit', stage: 'accepted' }],
+  // The last-mile carrier taking the parcel over, after the sorting and line-haul
+  // scans: Cainiao accepted it long before, as AliExpress's map reads it.
+  ['GTMS_ACCEPT', { status: 'in_transit', stage: 'in_transit' }],
   ['TD_TRANSWH_OUTBOUND', { status: 'in_transit', stage: 'in_transit' }],
   ['TD_TRANS_ARRIVE_C', { status: 'in_transit', stage: 'in_transit' }],
   ['In_transit', { status: 'in_transit', stage: 'in_transit' }],
@@ -43,7 +45,7 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['LM_DELIVERY_DEPART', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['LM_DELIVERY_FAILURE', { status: 'exception', stage: 'failed_attempt' }],
   ['LM_PARCEL_EXCEPTION', { status: 'exception', stage: 'exception' }],
-  ['SL_ACCEPT', { status: 'in_transit', stage: 'accepted' }],
+  ['SL_ACCEPT', { status: 'in_transit', stage: 'in_transit' }],
   ['TRANSFER_ARRIVE', { status: 'in_transit', stage: 'in_transit' }],
   ['TRANSFER_DEPART', { status: 'in_transit', stage: 'in_transit' }],
   ['SC_OUTBOUND', { status: 'in_transit', stage: 'in_transit' }],

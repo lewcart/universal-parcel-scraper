@@ -1509,7 +1509,7 @@
           "time": "2026-01-02T10:00:00Z",
           "description": "Parcel has been accepted by last mile",
           "provider_code": "GTMS_ACCEPT",
-          "stage": "accepted"
+          "stage": "in_transit"
         }
       ]
     }
@@ -2392,7 +2392,7 @@
           "time": "2026-01-08T12:00:00Z",
           "description": "Your shipment has been accepted by delivery carrier",
           "provider_code": "SL_ACCEPT",
-          "stage": "accepted"
+          "stage": "in_transit"
         },
         {
           "time": "2026-01-07T12:00:00Z",

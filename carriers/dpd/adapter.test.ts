@@ -328,6 +328,36 @@ describe('DPD verified guest payload', () => {
     expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([['ZZZ', 'returned']]);
   });
 
+  it('reads failed rounds, a pickup-point hold and its collection by their scan codes', () => {
+    const scan = (time: string, eventType: string, translation: string) => ({
+      date: '2026-07-16', time, city: 'Example', country: 'DE', translation, eventType,
+    });
+    const result = parseDPDTrackingApi({
+      parcelNumber: TRACKING_NUMBER,
+      status: { description: 'DELIVERED' },
+      parcelHistory: [],
+      parcelEvents: [
+        scan('06:00:00', 'SPX', 'Your parcel is on our premises, it will soon be on its way'),
+        scan('09:00:00', 'DLR', "We couldn't deliver your parcel and had to return it to the depot"),
+        scan('09:30:00', 'DLW', 'Your parcel is being held at our delivery depot, your premises were closed'),
+        scan('10:00:00', 'DEX', "We couldn't deliver your parcel, it will soon be available at a retrieval point"),
+        scan('11:00:00', 'DEHD', 'Your parcel has been delivered to the retrieval point, it will soon be available for collection'),
+        scan('11:01:00', 'DEHDY', 'Your parcel has been delivered to the retrieval point'),
+        scan('11:02:00', 'DOMSDLO', 'Your parcel is available at the retrieval point'),
+        scan('11:03:00', 'DODEI', 'Your parcel is available at the retrieval point'),
+        scan('15:00:00', 'DODEY', 'You have collected your parcel'),
+        scan('15:01:00', 'DODEYY', 'We received the proof of delivery'),
+      ],
+    }, TRACKING_NUMBER, true);
+
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'You have collected your parcel' });
+    // The proof of delivery is dropped beside the collection, like DEYY beside DEY.
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+      ['DODEY', 'delivered'], ['DODEI', 'ready_for_pickup'], ['DOMSDLO', 'ready_for_pickup'], ['DEHDY', 'ready_for_pickup'],
+      ['DEHD', 'ready_for_pickup'], ['DEX', 'failed_attempt'], ['DLW', 'failed_attempt'], ['DLR', 'failed_attempt'], ['SPX', 'in_transit'],
+    ]);
+  });
+
   it('leaves unknown scan codes to the wording rules', () => {
     const result = parseDPDTrackingApi({
       parcelNumber: TRACKING_NUMBER,
@@ -578,12 +608,15 @@ describe('DPD status vocabulary', () => {
   });
 
   it('maps only the scan codes a live lookup paired or labelled with one movement', () => {
-    expect(['CCO', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
-      'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
+    expect(['CCO', 'SPX', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
+      'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
+    ]);
+    expect(['DEX', 'DLR', 'DLW', 'DEHD', 'DEHDY', 'DODEI', 'DOMSDLO', 'DODEY'].map(scanStage)).toEqual([
+      'failed_attempt', 'failed_attempt', 'failed_attempt', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'delivered',
     ]);
     // ORI and SPL are left to their wording, like their PARCEL_HANDED and
-    // IN_TRANSIT twins; notices and estimates are no scan.
-    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'ENA', 'DEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
+    // IN_TRANSIT twins; notices and estimates are no scan, nor the proofs of delivery.
+    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
       expect(scanStage(code)).toBeNull();
     }
   });
@@ -594,8 +627,8 @@ describe('DPD status vocabulary', () => {
     ) as { entries: Array<{ code: string; stage?: string }> };
 
     for (const { code, stage } of entries) {
-      // The proof-of-delivery scan is staged by the parser, not by a map.
-      if (code === 'DEYY') continue;
+      // The proof-of-delivery scans are staged by the parser, not by a map.
+      if (code === 'DEYY' || code === 'DODEYY') continue;
       expect([code, scanStage(code) ?? apiStage(code)]).toEqual([code, stage ?? null]);
     }
   });

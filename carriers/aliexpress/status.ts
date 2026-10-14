@@ -164,5 +164,7 @@ export const statusMap: CarrierStatusMap = {
     const action = code ? cainiaoActionCode(code) : UNCODED_SCANS.get(wording.replace(/^\[[^\]]*\]\s*/, ''));
     return action ? cainiaoActionStage(action) : undefined;
   },
-  gaps: [],
+  gaps: [
+    { code: 'GTMS_ORDER_INFO_UPDATE', note: "The order's delivery details changed, which moves no parcel." },
+  ],
 };

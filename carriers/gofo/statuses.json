@@ -53,6 +53,14 @@
       "firstSeen": "2026-10-08"
     },
     {
+      "code": "414",
+      "wording": "In Transit to Next Facility",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-14"
+    },
+    {
       "code": "208",
       "wording": "Out for Delivery",
       "language": "en",

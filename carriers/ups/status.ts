@@ -62,8 +62,9 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   // Shipper created a label; UPS does not have the parcel yet.
   ['MP', 'registered'],
   // Drop-off at an access point, the access point readying it for UPS, a
-  // pickup scan, and the origin scan.
-  ['XD', 'accepted'], ['ZO', 'accepted'], ['PU', 'accepted'], ['OR', 'accepted'],
+  // pickup scan, the RFID-confirmed collection from the access point, and the
+  // origin scan.
+  ['XD', 'accepted'], ['ZO', 'accepted'], ['PU', 'accepted'], ['PC', 'accepted'], ['OR', 'accepted'],
   // Facility scans, export and import scans.
   ['AR', 'in_transit'], ['DP', 'in_transit'], ['DS', 'in_transit'], ['YP', 'in_transit'],
   ['EP', 'in_transit'], ['IP', 'in_transit'],

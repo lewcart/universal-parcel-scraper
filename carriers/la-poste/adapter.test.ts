@@ -439,6 +439,28 @@ describe('La Poste response normalization', () => {
     expect(delivered.delivered_at).toBe('2026-01-08T11:14:50+01:00');
   });
 
+  it('keeps a finished delivery over a pre-advice filed after it', () => {
+    const withPreAdvice = (isFinal: boolean, lastStep: string) => {
+      const fixture = deliveredFixture();
+      fixture[0]!.shipment.isFinal = isFinal;
+      fixture[0]!.shipment.timeline = [{ id: 5, shortLabel: 'Livré', date: '2026-01-08T11:14:50+01:00', status: true, code: lastStep }];
+      fixture[0]!.shipment.event.push({
+        group: 'EXPANN', code: 'DR1', label: 'Votre colis est annoncé. Il va nous être confié par l\'expéditeur',
+        date: '2026-01-08T11:40:00+01:00', country: 'FR', order: 6,
+      });
+      return parseLaPosteTrackingResponse(fixture, TRACKING_NUMBER);
+    };
+    for (const result of [withPreAdvice(true, 'ACHNAT'), withPreAdvice(false, 'DESBAL')]) {
+      expect(result).toMatchObject({
+        status: 'delivered', current_stage: 'delivered', delivered_at: '2026-01-08T11:14:50+01:00',
+        last_status_text: 'Colis livré au destinataire', last_update: '2026-01-08T11:40:00+01:00', expected_delivery: null,
+      });
+      expect(result.events?.map((event) => event.stage)).toEqual(['registered', 'delivered', 'in_transit']);
+    }
+    // Still open, the newest scan leads as before.
+    expect(withPreAdvice(false, 'ACHNAT')).toMatchObject({ status: 'pending', current_stage: 'registered' });
+  });
+
   it('uses timeline data when an announced parcel has no event history', () => {
     const fixture = deliveredFixture();
     fixture[0]!.shipment.isFinal = false;

@@ -52,7 +52,9 @@ and the `INLAND`/`IMPORT`/`EXPORT` segment comes from the shipment's own flags.
   waits for pickup. When the newest scan has no stage (an enquiry or delay
   note, a recipient's order, an unmapped code, no scans yet), `globalStatus`
   gives it. `statusMap` in [status.ts](status.ts) lists the notes and orders
-  left without a stage on purpose.
+  left without a stage on purpose. A pickup point may scan its own arrival
+  (`1001`, `1100`) after the ready-for-pickup scan (`2101`, `2102`); the parcel
+  then stays ready for pickup.
 - Codes are classified, not wording. One table serves letters and parcels:
   Swiss Post's own wording table gives each mapped code the same meaning for
   both. Several English wordings mislead: "Completion of customs clearance" and

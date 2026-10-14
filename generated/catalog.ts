@@ -296,7 +296,8 @@ export const CARRIER_CATALOG = {
     "displayName": "SunYou",
     "color": "#02a232",
     "aliases": [
-      "SYPost"
+      "SYPost",
+      "SunYou - Sytrack"
     ],
     "countries": [
       "CN"
@@ -10714,6 +10715,7 @@ export const CARRIER_CATALOG = {
     "color": "#e30613",
     "aliases": [
       "Nova Poshta",
+      "Nova Post",
       "Nova Post Ukraine",
       "Нова Пошта"
     ],

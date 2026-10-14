@@ -88,6 +88,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "matkahuolto": 715,
   "meest": 340,
   "mng-kargo": 360,
+  "mtscn": 986,
   "nacex": 850,
   "nationex": 125,
   "ninja-van": 720,

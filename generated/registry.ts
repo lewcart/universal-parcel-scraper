@@ -133,6 +133,7 @@ import { adapter as meest } from '../carriers/meest/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
 import { adapter as mrw } from '../carriers/mrw/adapter.js';
+import { adapter as mtscn } from '../carriers/mtscn/adapter.js';
 import { adapter as nacex } from '../carriers/nacex/adapter.js';
 import { adapter as nationex } from '../carriers/nationex/adapter.js';
 import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
@@ -345,6 +346,7 @@ export const REGISTRY: RegistryDefinition = {
     "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
     "mrw": mrw,
+    "mtscn": mtscn,
     "nacex": nacex,
     "nationex": nationex,
     "ninja-van": ninjaVan,
@@ -640,6 +642,7 @@ export const REGISTRY: RegistryDefinition = {
     "mng-kargo": "mng-kargo",
     "mondial-relay": "mondial-relay",
     "mrw": "mrw",
+    "mtscn": "mtscn",
     "nacex": "nacex",
     "naqel": "universal",
     "nationex": "nationex",

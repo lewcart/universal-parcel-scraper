@@ -1,10 +1,10 @@
 /**
- * The Hualei (华磊) forwarder platform, which GZYL, Tianhui Hengyuan and JRT
- * each run as a tenant: a Tomcat tracker on port 8082 of a bare IP, plain HTTP
- * only. `selectTrack.htm` is the platform's documented track interface, JSON
- * encoded in GBK; `trackIndex.htm` is the tracking page the carriers' sites
- * open, in HTML. Each carrier keeps its own host and status map; this module
- * holds the requests and parsers they share.
+ * The Hualei (华磊) forwarder platform, which GZYL, Tianhui Hengyuan, JRT and
+ * Meiteshun each run as a tenant: a Tomcat tracker on port 8082 of a bare IP,
+ * plain HTTP only. `selectTrack.htm` is the platform's documented track
+ * interface, JSON encoded in GBK; `trackIndex.htm` is the tracking page the
+ * carriers' sites open, in HTML. Each carrier keeps its own host and status
+ * map; this module holds the requests and parsers they share.
  */
 import { load, type CheerioAPI } from 'cheerio';
 import { DateTime } from 'luxon';
@@ -35,6 +35,8 @@ export interface HualeiTenant {
   readonly origin: string;
   /** The stage the carrier's map gives a row, by its kind code (null without one) and `normalizeStatusWording` wording. */
   readonly stage: (code: string | null, wording: string) => Stage | undefined;
+  /** The wording and place of a row whose text carries both, before the shared cleaning. */
+  readonly split?: (content: string, location: string) => { readonly content: string; readonly location: string };
 }
 
 /** The zone of the trackers' own clock, which decides when a row written ahead is shown. */
@@ -67,7 +69,8 @@ const RECIPIENT_COLUMN = '收件人';
 /**
  * Delivery carriers by the channel label a record names in `channel_name`, in
  * `normalizeStatusWording` form. A label the table does not hold names no
- * partner. The tenants' lines end in Switzerland.
+ * partner. The labels are Swiss Post's, where GZYL's, Tianhui Hengyuan's and
+ * JRT's lines end.
  */
 const PARTNERS: Readonly<Record<string, CarrierId>> = {
   'swiss post': 'swiss-post',
@@ -163,8 +166,9 @@ function scans(rows: readonly Row[], tenant: HualeiTenant, readAt: number): { ev
   rows.forEach((row, index) => {
     const local = wallClock(row.clock, tenant.provider);
     if (ahead(local, readAt)) return;
-    const place = hualeiScanText(row.location, 200);
-    const wording = hualeiScanText(row.content);
+    const parts = tenant.split?.(row.content, row.location) ?? row;
+    const place = hualeiScanText(parts.location, 200);
+    const wording = hualeiScanText(parts.content);
     const description = wording || place;
     if (!description) return;
     const location = wording ? place : '';

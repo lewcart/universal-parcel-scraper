@@ -11026,6 +11026,48 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "mtscn": {
+    "displayName": "Meiteshun Logistics",
+    "color": "#f89f3b",
+    "aliases": [
+      "MTSCN",
+      "Meiteshun",
+      "美特顺",
+      "美特顺物流",
+      "深圳美特顺物流",
+      "深圳市美特顺物流有限公司",
+      "Shenzhen Meiteshun Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "mtscn",
+      "recognitionRank": 986,
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "182.254.194.208"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^AMTS\\d{9}FS$",
+        "confidence": "high"
+      }
+    ]
+  },
   "naqel": {
     "displayName": "Naqel Express",
     "color": "#06205c",
@@ -14906,6 +14948,7 @@ export const CARRIER_IDS = [
   "meest",
   "midland-transport",
   "mng-kargo",
+  "mtscn",
   "naqel",
   "nationex",
   "nipost",
@@ -15266,6 +15309,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "meest": ["meest-1"],
   "midland-transport": [],
   "mng-kargo": [],
+  "mtscn": ["mtscn-1"],
   "naqel": [],
   "nationex": [],
   "nipost": [],

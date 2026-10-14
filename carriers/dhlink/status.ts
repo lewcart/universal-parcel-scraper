@@ -1,0 +1,108 @@
+import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
+
+/**
+ * DHLink's standard nodes, by the `nodeCode` a row carries. The warehouse
+ * lines (WH), the ePacket line (EUBJ) and the postal line (J) name their nodes
+ * alike; FA001 to DE001 are the steps of the tracking page's progress rail.
+ * "Dispatched" is the warehouse's or the collection point's receipt.
+ */
+const NODE_CODES: ReadonlyMap<string, Stage> = new Map([
+  ['WH001', 'accepted'],
+  ['EUBJ007', 'accepted'],
+  ['WH011', 'in_transit'],
+  ['EUBJ009', 'in_transit'],
+  ['FA001', 'in_transit'],
+  ['EUBJ010', 'in_transit'],
+  ['AD001', 'in_transit'],
+  ['J013', 'out_for_delivery'],
+  ['DE002', 'out_for_delivery'],
+  ['J014', 'delivered'],
+  ['DE001', 'delivered'],
+]);
+
+/** The same nodes by name, for a line whose codes the map does not know yet. */
+const NODE_NAMES: ReadonlyMap<string, Stage> = new Map([
+  ['dispatched', 'accepted'],
+  ['outbound', 'in_transit'],
+  ['origin leaving', 'in_transit'],
+  ['original leaving', 'in_transit'],
+  ['destination arrived', 'in_transit'],
+  ['pending delivery', 'out_for_delivery'],
+  ['delivered', 'delivered'],
+]);
+
+/**
+ * DHLink's own wordings and the English that EMS relays beside China Post's
+ * scans, where the shared rules would read them otherwise or not at all.
+ */
+const WORDINGS: ReadonlyMap<string, Stage> = new Map([
+  ['arrive at the collection warehouse', 'accepted'],
+  ['the collection warehouse has completed sorting', 'accepted'],
+  ['package received & scanned at warehouse', 'accepted'],
+  ['parcel handed over to carrier,waiting for transportation', 'accepted'],
+  // China Post's receipt (中国邮政 已收取邮件).
+  ['package received', 'accepted'],
+  ['the package has sent from the warehouse', 'in_transit'],
+  ['package departed from the warehouse', 'in_transit'],
+  ['flight departure', 'in_transit'],
+  ['the flight has taken off', 'in_transit'],
+  ['the flight has arrived and the board is being dismantled', 'in_transit'],
+  ['flight arrival', 'in_transit'],
+  // Import clearance is done and the parcel moves on.
+  ['customs clearance completed', 'in_transit'],
+  // The hand-over to the US partner, first announced, then made.
+  ['ups/usps/fedex', 'in_transit'],
+  ['货物已交ups/usps/fedex,the goods have been delivered to ups/usps/fedex', 'in_transit'],
+  // China Post hands the dispatch to the airline after taking the parcel.
+  ['handed over to airlines', 'in_transit'],
+  ['item presented to customs', 'customs'],
+  // Export customs released the item (出口海关/放行).
+  ['item returned from customs?', 'in_transit'],
+  // China Post's 安排投递 abroad.
+  ['scheduled for delivery', 'out_for_delivery'],
+]);
+
+/** China Post's scans as DHLink relays them in Chinese, and a relayed USPS notice. */
+const PATTERNS: readonly (readonly [RegExp, Stage])[] = [
+  [/^已入库$/, 'accepted'],
+  [/已收取邮件$/, 'accepted'],
+  [/^已出库$/, 'in_transit'],
+  [/^邮件(?:到达|离开)/, 'in_transit'],
+  [/完成分拣/, 'in_transit'],
+  [/^揽投配发$/, 'in_transit'],
+  [/^航空公司(?:接收|启运)$/, 'in_transit'],
+  [/^飞机到达进港$/, 'in_transit'],
+  [/^已交承运商运输$/, 'in_transit'],
+  [/已出口直封$/, 'in_transit'],
+  [/^出口海关\/放行$/, 'in_transit'],
+  [/^到达寄达地(?:处理中心)?$/, 'in_transit'],
+  [/^离开【[^】]*】处理中心$/, 'in_transit'],
+  [/^送交出口海关$/, 'customs'],
+  [/安排投递$/, 'out_for_delivery'],
+  [/已妥投$/, 'delivered'],
+  // USPS's attempt, relayed after the post office's place.
+  [/\bno access to delivery location$/, 'failed_attempt'],
+];
+
+function wordingStage(wording: string): Stage | undefined {
+  const key = normalizeStatusWording(wording);
+  return WORDINGS.get(key) ?? PATTERNS.find(([pattern]) => pattern.test(key))?.[1];
+}
+
+/**
+ * A row's stage: its node, by code then by name, DHLink's map of the wording,
+ * else the shared rules, which read the partners' relayed English. Null when
+ * nothing reads it.
+ */
+export function dhlinkStage(code: string, name: string, wording: string): ClassifiedWording | null {
+  const mapped = NODE_CODES.get(code) ?? NODE_NAMES.get(normalizeStatusWording(name)) ?? wordingStage(wording);
+  if (mapped) return { stage: mapped, source: 'carrier_map' };
+  const worded = classifyWording(wording, 'pending');
+  return worded.source === 'none' ? null : worded;
+}
+
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? NODE_CODES.get(code) : undefined) ?? wordingStage(wording),
+  gaps: [],
+};

@@ -542,6 +542,12 @@
     "reason": "This layout is shared with other carriers or too plain to claim, so detection leaves it unclaimed."
   },
   {
+    "carrier": "dhlink",
+    "pattern": "^[A-Z]{2}\\d{9}CN$",
+    "kind": "by_design",
+    "reason": "International numbers in the UPU S10 layout that DHLink's line providers issue belong to postal detection even when the check digit fails, and do not point to DHLink."
+  },
+  {
     "carrier": "direct-freight-express",
     "pattern": "^\\d{13}$",
     "kind": "by_design",

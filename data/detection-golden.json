@@ -37118,6 +37118,17 @@
     ]
   },
   {
+    "input": "AS823417258CN",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "ASDLP2465555",
     "carrier": "unknown",
     "confidence": "low",
@@ -42165,6 +42176,17 @@
     ]
   },
   {
+    "input": "FC2404051641097",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhlink"
+    ],
+    "asked": [
+      "dhlink"
+    ]
+  },
+  {
     "input": "FEIAA0123456789YQ",
     "carrier": "17feia",
     "confidence": "high",
@@ -46188,6 +46210,14 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "LV992455447CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
     ]
   },
   {

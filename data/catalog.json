@@ -7352,6 +7352,37 @@
       }
     ]
   },
+  "dhlink": {
+    "displayName": "DHLink",
+    "color": "#143167",
+    "aliases": [
+      "DHLink",
+      "Dhlink",
+      "驼飞侠",
+      "駝飛俠"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dhlink",
+      "recognitionRank": 995,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.dhlink.com/trackQuery",
+    "trackingUrlTemplate": "https://www.dhlink.com/trackQuery?intlExpressNo={trackingNumber}&lang=en",
+    "trackingSearchUrl": "https://www.dhlink.com/trackQuery",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^FC\\d{13}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "direct-freight-express": {
     "displayName": "Direct Freight Express",
     "color": "#1e4488",

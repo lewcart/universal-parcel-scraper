@@ -1,0 +1,72 @@
+# DHLink
+
+DHLink (驼飞侠), DHgate's logistics arm, takes marketplace parcels in at its warehouses in China
+and the United States and sends them on its own lines or through posts and line providers to a
+last-mile partner such as USPS, Royal Mail or SwiftX. Tracked through the lookup its tracking
+page makes.
+
+## How it works
+
+1. `direct`: one `POST https://www.dhlink.com/stage-api/trbiz/track/queryTrack` with
+   `{"trackNos":[number],"state":"","language":"EN"}`, as the tracking page's script sends it.
+   It needs no cookie, token, key, account or browser. The JSON reply holds the parcel's
+   numbers, countries and rows.
+2. `retry`: one more try when the request fails to reach the site or hangs. The first try gets
+   half of the budget.
+
+- The lookup finds a parcel by its tracking number. A DHLink number (FC and thirteen digits)
+  finds it only when it is also the tracking number, as on DHLink's own line; the last leg's
+  number finds nothing.
+- The parcel counts only when the number asked is its tracking number or its DHLink number:
+  the search can find a parcel by its other numbers.
+- An empty parcel with state 1 is the unknown-number answer. For a DHLink number or a SwiftX
+  last-leg number it is inconclusive, since the search gives it for parcels it has too. A
+  refusal in the envelope, or a parcel without rows, is inconclusive.
+- DHLink's firewall answers clients it refuses, such as a headless browser's User-Agent, with a
+  block page and HTTP 403, on the page and the lookup alike. A block is a challenge, never a
+  missing parcel. Redirects are not followed.
+- Recognition makes the same request.
+
+## Notes
+
+- Each scan comes once per feed that relays it: DHLink's own, the post's in English and in
+  Chinese, the line providers'. One feed can send a scan in two formats. Rows that share a
+  clock are one scan; the adapter keeps the row with DHLink's node, else English, else a place,
+  else the longest wording.
+- A row with a node is read by its code, else by the node's name. Other rows are read by
+  DHLink's wordings and China Post's Chinese ones, else by the shared rules, which read the
+  partners' relayed English. The hand-over to the US partner ("delivered to UPS/USPS/Fedex")
+  and China Post's hand-over to the airline are transit. DHLink's delivered count makes the
+  parcel delivered when the last row says less.
+- Clocks have no offset: China's rows are on Beijing time and the partners' on the
+  destination's, so every row keeps its wall clock. A row still after the read at UTC+14, the
+  earliest instant it can stand for, is dropped, and the delivered count is then not trusted.
+- The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
+  the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX. Other
+  numbers give no hand-off.
+- Places lose postcodes, placeholders and the destination code one feed appends to Chinese
+  places. Wordings lose US ZIP codes, British and Canadian postcodes, and contact or signature
+  details a post appends. The order id, the DHLink number and the feeds' and rows' ids are
+  never read.
+- The tracking link adds `lang=en`: the page shows Chinese otherwise.
+
+## Limitations
+
+- No delivery estimate, delivery time, weight, service, sender or recipient.
+- A parcel asked by its DHLink number is inconclusive when it has another tracking number.
+- The share links on tr.dhlink.com need DHgate's order id, which the adapter never sends.
+- The progress rail and the origin are not read.
+
+## Numbers
+
+DHLink is DHgate's logistics platform. Its tracker labels its own logistics number, `FC` and
+thirteen digits, as the DHLink number. On some channels that number is also the tracking
+number, as on a parcel ParcelPanel's DHLink page offers. `dhlink-1` suggests DHLink for it at
+low confidence, since a two-letter prefix and a digit run can come from other systems. Other
+parcels travel under the international number of the line DHLink books: a China Post number,
+which postal detection handles, or a line provider's number in the same layout whose check
+digit fails, which no rule claims. The tracker also gives the last-mile partner's number.
+
+## Testing
+
+`DHLINK_TRACKING_NUMBER=... DHLINK_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/dhlink`

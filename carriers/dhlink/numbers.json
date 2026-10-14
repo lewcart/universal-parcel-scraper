@@ -1,0 +1,68 @@
+{
+  "carrier": "dhlink",
+  "records": [
+    {
+      "number": "FC2404051641097",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dhlink/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhlink"
+        ]
+      },
+      "note": "ParcelPanel's DHLink page offered it to try. DHLink's tracker answers it as both its DHLink number and its tracking number, a parcel from China delivered in the United States."
+    },
+    {
+      "number": "LV992455447CN",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dhlink/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "china-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's DHLink page offered it to try. DHLink's tracker answers it as the tracking number of one of its parcels, carried by China Post and delivered in the United Kingdom."
+    },
+    {
+      "number": "AS823417258CN",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dhlink/",
+        "date": "2026-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ]
+      },
+      "note": "ParcelPanel's DHLink page offered it to try. DHLink's tracker answers it as the tracking number of one of its parcels, delivered in the United States; its check digit fails, so no post issued it."
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "dhlink",
+  "displayName": "DHLink",
+  "aliases": [
+    "DHLink",
+    "Dhlink",
+    "驼飞侠",
+    "駝飛俠"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#143167"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "dhlink",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 995
+    },
+    "localClocks": true
+  },
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
+  "portal": {
+    "url": "https://www.dhlink.com/trackQuery?intlExpressNo={trackingNumber}&lang=en",
+    "searchUrl": "https://www.dhlink.com/trackQuery",
+    "canaryUrl": "https://www.dhlink.com/trackQuery",
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "postcodes",
+      "origin_country",
+      "destination_country",
+      "tracking_alias",
+      "delivery_tracking_number",
+      "order_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "postcodes",
+      "origin_country",
+      "tracking_alias",
+      "order_reference"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "delivered_at",
+      "service_name",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "dhlink-1",
+      "pattern": "^FC\\d{13}$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -664,6 +664,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'hywl', number: 'TRK999999999999',
     route: /^https:\/\/www\.szhywl\.it\.com\/track\.html\?number=TRK999999999999$/,
     marker: /查询失败：HTTP 404/ },
+  // The page sends the number in its address to the tracking lookup on load and counts an unknown one not found.
+  { carrier: 'dhlink', number: 'FC9912310000001',
+    route: /^https:\/\/www\.dhlink\.com\/trackQuery\?intlExpressNo=FC9912310000001&lang=en$/,
+    marker: /Tracking Search|There is no track for this waybill number/ },
 ];
 
 /**

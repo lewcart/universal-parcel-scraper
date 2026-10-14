@@ -57,6 +57,7 @@ import { adapter as dhlEcommerceNl } from '../carriers/dhl-ecommerce-nl/adapter.
 import { adapter as dhlEcommercePl } from '../carriers/dhl-ecommerce-pl/adapter.js';
 import { adapter as dhlEcommerceUk } from '../carriers/dhl-ecommerce-uk/adapter.js';
 import { adapter as dhlExpress } from '../carriers/dhl-express/adapter.js';
+import { adapter as dhlink } from '../carriers/dhlink/adapter.js';
 import { adapter as dpd } from '../carriers/dpd/adapter.js';
 import { adapter as dpdDe } from '../carriers/dpd-de/adapter.js';
 import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
@@ -264,6 +265,7 @@ export const REGISTRY: RegistryDefinition = {
     "dhl-ecommerce-pl": dhlEcommercePl,
     "dhl-ecommerce-uk": dhlEcommerceUk,
     "dhl-express": dhlExpress,
+    "dhlink": dhlink,
     "dpd": dpd,
     "dpd-de": dpdDe,
     "dpd-fr": dpdFr,
@@ -510,6 +512,7 @@ export const REGISTRY: RegistryDefinition = {
     "dhl-ecommerce-uk": "dhl-ecommerce-uk",
     "dhl-express": "dhl-express",
     "dhl-freight": "universal",
+    "dhlink": "dhlink",
     "direct-freight-express": "universal",
     "dpd": "dpd",
     "dpd-de": "dpd-de",

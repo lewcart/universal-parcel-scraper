@@ -7354,6 +7354,37 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "dhlink": {
+    "displayName": "DHLink",
+    "color": "#143167",
+    "aliases": [
+      "DHLink",
+      "Dhlink",
+      "驼飞侠",
+      "駝飛俠"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dhlink",
+      "recognitionRank": 995,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.dhlink.com/trackQuery",
+    "trackingUrlTemplate": "https://www.dhlink.com/trackQuery?intlExpressNo={trackingNumber}&lang=en",
+    "trackingSearchUrl": "https://www.dhlink.com/trackQuery",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^FC\\d{13}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "direct-freight-express": {
     "displayName": "Direct Freight Express",
     "color": "#1e4488",
@@ -13991,6 +14022,7 @@ export const CARRIER_IDS = [
   "dhl-ecommerce-uk",
   "dhl-express",
   "dhl-freight",
+  "dhlink",
   "direct-freight-express",
   "dpd-de",
   "dpd-ie",
@@ -14331,6 +14363,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-ecommerce-uk": ["dhl-ecommerce-uk-2","dhl-ecommerce-uk-1"],
   "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label"],
   "dhl-freight": ["dhl-freight-2"],
+  "dhlink": ["dhlink-1"],
   "direct-freight-express": [],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],

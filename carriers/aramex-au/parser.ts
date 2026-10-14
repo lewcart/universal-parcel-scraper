@@ -41,6 +41,8 @@ export interface AramexNetwork {
   readonly priority: boolean;
   /** What else the page asks of a reply before it shows the delivery estimate. */
   readonly showsEstimate: (result: Record<string, unknown>, rows: readonly unknown[]) => boolean;
+  /** The partner and its number for a parcel the reply marks as handed on, when the network reads them. */
+  readonly handoff?: (result: Record<string, unknown>) => Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'>;
 }
 
 // The page hides the label's own record and an internal scan, and shows no
@@ -186,6 +188,7 @@ export function parseAramex(payload: unknown, raw: string, network: AramexNetwor
     ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
     expected_delivery: etaOf(result, newest, rows, network),
     ...(typeof priority === 'boolean' ? { service_name: priority ? 'Priority Delivery' : 'Economy Delivery' } : {}),
+    ...network.handoff?.(result),
     // Asked by its SSCC, the parcel keeps Aramex's own label.
     ...(original !== number && LABEL.test(original) ? { canonical_tracking_number: original } : {}),
     events: events.slice(0, MAX_EVENTS),

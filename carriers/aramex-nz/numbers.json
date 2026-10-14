@@ -143,6 +143,29 @@
         ]
       },
       "note": "A label with a letter before a digit. An archived reply of Aramex New Zealand's tracking service holds a scan between depots."
+    },
+    {
+      "number": "9Q0001464687",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20211206225201/https://www.aramex.co.nz/tracking-api/?callback&LabelNo=9Q0001464687&dataFormat=json",
+        "date": "2021-12-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "aramex-au"
+        ]
+      },
+      "note": "A label with a digit before a letter. An archived reply of Aramex New Zealand's tracking service holds the parcel handed on to NZ Post for a rural delivery, with NZ Post's label; the tracker no longer knows it."
     }
   ]
 }

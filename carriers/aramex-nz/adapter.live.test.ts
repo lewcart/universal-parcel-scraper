@@ -17,6 +17,12 @@ describe('Aramex New Zealand live retrieval', () => {
     await expect(direct().recognize!(number)).resolves.toMatchObject({ known: true });
   });
 
+  it.skipIf(!process.env.ARAMEX_NZ_ONFORWARDED_NUMBER)('names NZ Post’s label for a parcel handed on to NZ Post and asks NZ Post for it', async () => {
+    const answer = await createTracker({ providers: [] }).track({ number: process.env.ARAMEX_NZ_ONFORWARDED_NUMBER!, carrier: 'aramex-nz' });
+    expect(answer.result).toMatchObject({ delivery_carrier: 'nz-post', delivery_tracking_number: expect.any(String) });
+    expect(answer.handoff).toMatchObject({ carrier: 'nz-post', number: answer.result.delivery_tracking_number, basis: 'partner' });
+  });
+
   it.skipIf(!process.env.ARAMEX_NZ_UNKNOWN_NUMBER)('reads the tracker’s unknown number as not found', async () => {
     await expect(direct().track({ number: process.env.ARAMEX_NZ_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'not_found' });
     await expect(direct().recognize!(process.env.ARAMEX_NZ_UNKNOWN_NUMBER!)).resolves.toEqual({ known: false });

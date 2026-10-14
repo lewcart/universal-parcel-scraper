@@ -10,4 +10,5 @@ scans oldest first. Numbers, depots, parties, references and clocks are invented
   pickup and a depot named after two towns.
 - `customs.json`: a parcel from abroad through customs, without a pickup depot.
 - `pre-pickup.json`: a labelled parcel the courier has not collected.
+- `onforwarded.json`: a parcel handed on to NZ Post for a rural delivery, with NZ Post's label.
 - `not-found.json`: the answer to a number without scans.

@@ -44,15 +44,16 @@ detection does not offer it.
 - The estimate is the day the page shows: only between pickup and the delivering courier's round,
   with both depots known, and while that day has not passed at the pickup depot. The page names
   no Priority or Economy service.
+- A parcel Aramex hands on to NZ Post for a rural delivery names NZ Post as its delivery partner,
+  with NZ Post's label, when the reply flags the hand-on and NZ Post's detection takes the label
+  whole. The parcel keeps Aramex's own scans and status.
 - The scans' explanations, the couriers' ids, the signatory, the signature and delivery photo,
   the delivery instructions, the sender's reference and the collection point's details are never
   read.
 
 ## Limitations
 
-A parcel Aramex hands on to NZ Post carries an on-forwarding flag and NZ Post's label, which the
-adapter does not read. Labels with a letter and a digit reach the adapter only when the carrier
-is chosen.
+Labels with a letter and a digit reach the adapter only when the carrier is chosen.
 
 ## Links
 
@@ -64,4 +65,5 @@ too. A partner link to Aramex New Zealand's home page names the carrier.
 
 Set `ARAMEX_NZ_TRACKING_NUMBER` outside the repository and run
 `npm run test:carriers:live -- carriers/aramex-nz/adapter.live.test.ts`.
-Optionally set `ARAMEX_NZ_UNKNOWN_NUMBER` to check a label Aramex New Zealand does not know.
+Optionally set `ARAMEX_NZ_UNKNOWN_NUMBER` to check a label Aramex New Zealand does not know, and
+`ARAMEX_NZ_ONFORWARDED_NUMBER` to check a parcel handed on to NZ Post.

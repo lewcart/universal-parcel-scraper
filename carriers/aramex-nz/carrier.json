@@ -33,7 +33,9 @@
     "history",
     "location",
     "eta",
-    "provider_code"
+    "provider_code",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "url": "https://www.aramex.co.nz/tools/track?l={trackingNumber}",
@@ -63,7 +65,9 @@
       "history",
       "location",
       "eta",
-      "provider_code"
+      "provider_code",
+      "delivery_partner",
+      "delivery_tracking_number"
     ],
     "discarded": [
       "progress_rail",
@@ -76,9 +80,7 @@
       "pickup_point_address",
       "office_opening_hours",
       "coordinates",
-      "pickup_code",
-      "delivery_partner",
-      "delivery_tracking_number"
+      "pickup_code"
     ],
     "unavailable": [
       "sender_name",

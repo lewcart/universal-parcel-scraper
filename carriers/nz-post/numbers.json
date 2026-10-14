@@ -298,6 +298,25 @@
         "confidence": "high"
       },
       "note": "An NZ Post tracking request archived by the Wayback Machine. An outbound parcel NZ Post's tracker follows to delivery abroad."
+    },
+    {
+      "number": "XD037763553NZ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20211206225201/https://www.aramex.co.nz/tracking-api/?callback&LabelNo=9Q0001464687&dataFormat=json",
+        "date": "2021-12-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "nz-post",
+        "confidence": "high"
+      },
+      "note": "NZ Post's label for a parcel Aramex New Zealand handed on for a rural delivery, as an archived Aramex reply shows. NZ Post's tracker no longer knows it."
     }
   ]
 }

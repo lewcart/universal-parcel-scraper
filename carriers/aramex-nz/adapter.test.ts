@@ -20,7 +20,11 @@ const TRANSIT = 'QZ0000000017';
 const LABELLED = 'QZ0000000033';
 const CUSTOMS = 'QZ0000000050';
 const ABSENT = 'QZ9999999990';
+const ONFORWARDED = 'QZ0000000068';
+// NZ Post's label for the parcel Aramex hands on.
+const HANDED_ON = 'XD123456785NZ';
 const ENDPOINT = `${ARAMEX_NZ_ORIGIN}/umbraco/api/TrackingApi/GetTrackingData`;
+const NZ_POST_ENDPOINT = 'https://tools.nzpost.co.nz/tracking/api/parceltrack/parcels';
 // A parsed fixture that tests change in place.
 type Reply = ReturnType<typeof JSON.parse>;
 const fixture = (name: string): Reply => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
@@ -135,6 +139,37 @@ describe('Aramex New Zealand tracking adapter', () => {
     expect(() => parseAramexNz(bare, LABELLED)).toThrow(expect.objectContaining({ name: 'NoHistoryError', kind: 'indeterminate' }));
   });
 
+  it('names NZ Post and its label for a parcel handed on to NZ Post, keeping Aramex’s own scans and status', () => {
+    const result = parseAramexNz(fixture('onforwarded'), ONFORWARDED);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Delivery onforwarded',
+      last_update: '2026-05-13T06:20:41+12:00', expected_delivery: null, delivery_carrier: 'nz-post', delivery_tracking_number: HANDED_ON });
+    // The hand-on scan keeps its heading and depot, without a stage of its own.
+    expect(result.events![0]).toEqual({ time: '2026-05-13T06:20:41+12:00', description: 'Delivery onforwarded', location: 'Southvale', provider_code: 'RUR' });
+    expect(JSON.stringify(result)).not.toContain('rural agent');
+    // Spaces and case do not matter, and NZ Post's courier label counts too.
+    for (const [label, expected] of [[' xd 123 456 785 nz ', HANDED_ON], ['0000000000000017AKL001AS', '0000000000000017AKL001AS']] as const) {
+      expect(parseAramexNz(edited('onforwarded', (result) => { result.OnforwardLabelNumber = label; }), ONFORWARDED), label)
+        .toMatchObject({ delivery_carrier: 'nz-post', delivery_tracking_number: expected });
+    }
+    for (const [label, change] of [
+      ['not flagged', (result: Reply) => { result.IsNZPostOnforward = false; }],
+      ['flag as text', (result: Reply) => { result.IsNZPostOnforward = 'true'; }],
+      ['no label', (result: Reply) => { result.OnforwardLabelNumber = ''; }],
+      ['label not text', (result: Reply) => { result.OnforwardLabelNumber = { label: HANDED_ON }; }],
+      ['broken check digit', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456784NZ'; }],
+      ['part of the label', (result: Reply) => { result.OnforwardLabelNumber = 'XD123456785'; }],
+      ['another post’s item', (result: Reply) => { result.OnforwardLabelNumber = 'RA123456785CH'; }],
+      ['an Aramex label', (result: Reply) => { result.OnforwardLabelNumber = TRANSIT; }],
+    ] as const) {
+      const other = parseAramexNz(edited('onforwarded', change), ONFORWARDED);
+      expect(other.delivery_carrier, label).toBeUndefined();
+      expect(other.delivery_tracking_number, label).toBeUndefined();
+      expect(other.current_stage, label).toBe('in_transit');
+    }
+    // Aramex Australia's replies carry the same fields; its page links no partner with them.
+    expect(parseAramexAu(fixture('onforwarded'), ONFORWARDED).delivery_carrier).toBeUndefined();
+  });
+
   it('counts a reply only for the number asked, and only the service’s own error for it as a missing parcel', () => {
     expect(() => parseAramexNz(fixture('not-found'), ABSENT)).toThrow(expect.objectContaining({ kind: 'not_found', provider: 'Aramex New Zealand' }));
     expect(() => parseAramexNz(fixture('not-found'), DELIVERED)).toThrow('Aramex New Zealand answered for another number');
@@ -214,6 +249,20 @@ describe('Aramex New Zealand tracking adapter', () => {
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'aramex-nz' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'aramex-nz', source: 'aramex-nz', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url]) => String(url).startsWith(ARAMEX_AU_ENDPOINT))).toBe(false);
+  });
+});
+
+describe('Aramex New Zealand hand-off to NZ Post', () => {
+  it('offers NZ Post the label of a parcel Aramex hands on, and keeps NZ Post’s answer apart', async () => {
+    const nzPost = JSON.parse(readFileSync(new URL('../nz-post/fixtures/delivered.json', import.meta.url), 'utf8'));
+    nzPost.results[0].tracking_reference = HANDED_ON;
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).startsWith(ENDPOINT) ? reply(fixture('onforwarded'))
+      : String(url).startsWith(NZ_POST_ENDPOINT) ? reply(nzPost) : reply('', 500));
+    const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: ONFORWARDED, carrier: 'aramex-nz' }, { budgetMs: 3000 });
+    expect(answer).toMatchObject({ carrier: 'aramex-nz', source: 'aramex-nz',
+      result: { current_stage: 'in_transit', delivery_carrier: 'nz-post', delivery_tracking_number: HANDED_ON },
+      handoff: { carrier: 'nz-post', number: HANDED_ON, basis: 'partner', confirmed: true, result: { current_stage: 'delivered' } } });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([aramexNzUrl(ONFORWARDED), `${NZ_POST_ENDPOINT}?tracking_reference=${HANDED_ON}`]);
   });
 });
 

@@ -7,3 +7,7 @@ details and its history. Ids, keys, parties, places, ports and clocks are invent
 ending with the handover. `search-road.json` finds a road shipment by its booking id;
 `statuses-road.json` is its history without port data, picked up and with a delivery estimate.
 `search-empty.json` is the search's reply for a number it does not know.
+`schenker-search.json`, `schenker-land.json` and `schenker-empty.json` follow the former DB
+Schenker tracker's search and road shipment details: a shipment found by its STT, booked under
+another STT, with one package, a duplicated row and a failed delivery with its reason, and the
+search's reply for a number it does not know.

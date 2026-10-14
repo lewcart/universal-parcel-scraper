@@ -4,7 +4,9 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 /**
  * myDSV names each row of a shipment's history with a date type: the booking,
  * the pickup, the departure and arrival at each port and the handover at the
- * end. The same codes name the page's date filters.
+ * end. The same codes name the page's date filters. The former DB Schenker
+ * tracker names a road shipment's rows with three-letter event codes; the two
+ * sets share only DEP, a departure in both.
  */
 const CODES: Readonly<Record<string, Stage>> = {
   BOOKING: 'registered',
@@ -20,6 +22,36 @@ const CODES: Readonly<Record<string, Stage>> = {
   Z70: 'delivered',
   HANDOVER: 'delivered',
   ACTUAL_DELIVERY: 'delivered',
+  // Former DB Schenker road shipments.
+  ENT: 'registered',
+  COT: 'registered',
+  COL: 'accepted',
+  DET: 'accepted',
+  // Not collected: the pickup failed.
+  NCL: 'exception',
+  ENM: 'in_transit',
+  MAN: 'in_transit',
+  ARR: 'in_transit',
+  TIN: 'in_transit',
+  VLO: 'in_transit',
+  VUL: 'in_transit',
+  TLO: 'in_transit',
+  TUL: 'in_transit',
+  VTL: 'in_transit',
+  VTU: 'in_transit',
+  // Held back from the load it was planned on; a reason says why.
+  NLO: 'exception',
+  CCL: 'customs',
+  CCF: 'in_transit',
+  DOT: 'out_for_delivery',
+  NDL: 'failed_attempt',
+  DIS: 'ready_for_pickup',
+  DIF: 'ready_for_pickup',
+  DLV: 'delivered',
+  PUP: 'delivered',
+  PUF: 'delivered',
+  // The electronic proof of delivery, which follows the delivery.
+  POD: 'delivered',
 };
 
 // Dates DSV plans or a customer asked for: not scans.

@@ -1,8 +1,8 @@
 # DSV
 
 Tracks DSV shipments through the public track and trace of myDSV, the page at
-`mydsv.com/track-shipment`. Former DB Schenker shipments are not in it; they fall back to the
-enabled universal providers.
+`mydsv.com/track-shipment`, and former DB Schenker road shipments through DSV's separate
+tracker for them.
 
 ## How it works
 
@@ -24,13 +24,33 @@ pages and malformed replies keep their own failure kinds; a missing route is a t
 ## Former DB Schenker shipments
 
 DSV tracks former DB Schenker shipments on a separate tracker, `www.dsv.com/mydsv/tracking-public`,
-which `dbschenker.com` redirects to. Its API under `/nges-portal/api/public/tracking-public/`, on
-`www.dsv.com` and `mydsv.dsv.com`, answers every lookup with HTTP 429 and a `Captcha-Puzzle`
-header, a signed proof-of-work puzzle the client must solve and send back. The public browser
-client solves it and repeats the lookup. The official DSV Tracking app
-(`com.dbschenker.mobile.connect2schenker`) calls the same API. A dedicated route still needs
-a matching shipment response to establish its history and clocks, so those shipments
-stay with the universal providers.
+which `dbschenker.com` redirects to. When myDSV's search does not know a number, the adapter asks
+that tracker's API under `www.dsv.com/nges-portal/api/public/tracking-public/`, as its page does:
+
+1. `GET /shipments?query={number}` lists the shipments whose STT, package, waybill or a
+   reference matches the number, each with its mode of transport and id.
+2. `GET /shipments/land/{id}` holds a road shipment's details and history.
+
+The API answers every request with HTTP 429 and a `Captcha-Puzzle` header: base64 of signed
+tokens, each holding a 64-byte puzzle. For each, the client finds the eight-byte little-endian
+nonce whose double SHA-256 after the puzzle's first 32 bytes, read little-endian, is under the
+target that bytes 13 and 14 set as exponent and mantissa. It repeats the request with
+`Captcha-Solution`, base64 of the tokens and their nonces. A puzzle takes a few thousand hashes,
+milliseconds in Node; one that asks for far more is left inconclusive, and solving stops when the
+budget ends. The official DSV Tracking app (`com.dbschenker.mobile.connect2schenker`) calls the
+same API.
+
+The shipment belongs to the number when the details name it as one of the shipment's own ids:
+its STT, the STT it was booked under, or a package's SSCC, with or without the 00 before it.
+A waybill or a party's reference is left inconclusive, and so are several shipments for one
+number and air and ocean shipments. A number neither tracker knows stays inconclusive.
+
+Each row keeps its event code, its English wording with the reasons the page shows, and its
+place without postcodes. The reply gives most clocks an offset and labels some local clocks Z;
+the page prints each clock as written, and the adapter keeps them as wall clocks. The agreed
+delivery day, else the estimated one, is the delivery estimate until the shipment is delivered.
+The parties, references, addresses, goods, the recipient on a delivery and the packages' own rows
+are not read.
 
 ## Notes
 
@@ -38,8 +58,7 @@ The shipment belongs to the number when the search names it as one of the shipme
 its shipment id, booking id or main transport id, or, from the details, its house bill. A match
 on anything else, such as a master bill or a partner's tracking id, can belong to another
 carrier's consignment and is left inconclusive, and so are several shipments for one number.
-An empty search is inconclusive too: the number may be a former DB Schenker one, or one the
-search knows only with its dashes.
+An empty search sends the number to the former DB Schenker tracker.
 
 The history comes in milestone groups: the booking, the pickup or receipt, the departures and
 arrivals of the main carriage, and the handover. When the reply has port data, the adapter reads
@@ -63,8 +82,13 @@ The search takes the number as typed, and the tracker passes it without dashes, 
 that DSV prints with a dash is not found. The page also asks a real-time tracking service for
 XPRESS shipments; the adapter does not. A road shipment's history can hold only its booking.
 
+The former DB Schenker tracker answers slowly, often beyond the time a lookup through the
+universal facade leaves the direct adapter, so those lookups can run out of time there. A
+package SSCC that the tracker lists under several shipments stays inconclusive.
+
 ## Testing
 
 Set `DSV_TRACKING_NUMBER` outside the repository and run
 `npm run test:carriers:live -- carriers/dsv/adapter.live.test.ts`.
-Optionally set `DSV_UNKNOWN_NUMBER` to check a number myDSV does not know.
+Set `DSV_SCHENKER_NUMBER` to a former DB Schenker number to check that tracker, and optionally
+`DSV_UNKNOWN_NUMBER` to check a number neither tracker knows.

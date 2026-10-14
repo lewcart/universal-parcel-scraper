@@ -125,6 +125,80 @@
         ]
       },
       "note": "Example value in the tool schema of an open-source DB Schenker tracking client; not a real shipment."
+    },
+    {
+      "number": "LGG6221781",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dbschenker/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post"
+        ]
+      },
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker knows it as the STT of a road shipment."
+    },
+    {
+      "number": "LGG6221779",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dbschenker/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post"
+        ]
+      },
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker knows it as the STT of a road shipment."
+    },
+    {
+      "number": "00340433660000960875",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dbschenker/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker knows it as the SSCC of a road shipment's package; DHL's 0034043 SSCC rule claims it."
+    },
+    {
+      "number": "00340433660000963159",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/dbschenker/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel lists it as an example on its DB Schenker page. DSV's former DB Schenker tracker finds two road shipments for it; DHL's 0034043 SSCC rule claims it."
     }
   ]
 }

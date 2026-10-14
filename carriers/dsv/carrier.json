@@ -25,7 +25,8 @@
     "adapter": "dsv",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "schenker"
     ],
     "localClocks": true
   },

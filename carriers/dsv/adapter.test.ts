@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
@@ -5,8 +6,10 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
-import { adapter, DSV_SEARCH_ENDPOINT, DSV_SHIPMENT_ENDPOINT, DSV_STATUSES_ENDPOINT, DsvTracker } from './adapter.js';
+import { adapter, DSV_SCHENKER_ENDPOINT, DSV_SEARCH_ENDPOINT, DSV_SHIPMENT_ENDPOINT, DSV_STATUSES_ENDPOINT, DsvTracker } from './adapter.js';
 import { confirmDsvShipment, parseDsvStatuses, pickDsvShipment, type DsvShipment } from './parser.js';
+import { parseDsvPuzzles } from './puzzle.js';
+import { parseDsvSchenkerShipment, pickDsvSchenkerShipment } from './schenker.js';
 import { dsvCodeStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -37,6 +40,55 @@ const editedHistory = (name: string, change: (payload: { events: Group[]; legDat
   const payload = JSON.parse(text(name)) as { events: Group[]; legData: null | Record<string, unknown> };
   change(payload);
   return payload;
+};
+
+// The former DB Schenker tracker: a road shipment's STT, its booking STT, its package's SSCC and its id.
+const STT = 'ZZX0000042';
+const BOOKED_STT = 'ZZX0000041';
+const SSCC = '999999990000000425';
+const LAND_ID = `LandStt:${STT}:CTTS,OSM:LAND`;
+const SCHENKER_SEARCH = `${DSV_SCHENKER_ENDPOINT}/shipments?query=`;
+const SCHENKER_LAND = `${DSV_SCHENKER_ENDPOINT}/shipments/land/`;
+/** A signed token holding a 64-byte puzzle; its signature is not checked here. */
+const token = (exponent = 33, mantissa = 10, fill = 7, length = 64) => {
+  const puzzle = Buffer.alloc(length, fill);
+  puzzle.writeInt8(exponent, 13);
+  puzzle.writeInt8(mantissa, 14);
+  return `eyJhbGciOiJIUzI1NiJ9.${Buffer.from(JSON.stringify({ puzzle: puzzle.toString('base64'), iat: 1, exp: 61 })).toString('base64url')}.c2lnbmF0dXJl`;
+};
+const puzzleHeader = (...tokens: string[]) => Buffer.from(tokens.join(',')).toString('base64');
+const PUZZLES = puzzleHeader(token(33, 10, 7), token(33, 10, 9));
+/** Whether every nonce gives its puzzle a double SHA-256 under the target, checked apart from the adapter's solver. */
+const solved = (header: string): boolean => {
+  const entries = JSON.parse(Buffer.from(header, 'base64').toString()) as { jwt: string; solution: string }[];
+  return entries.length > 0 && entries.every(({ jwt, solution }) => {
+    const puzzle = Buffer.from((JSON.parse(Buffer.from(jwt.split('.')[1]!, 'base64url').toString()) as { puzzle: string }).puzzle, 'base64');
+    const nonce = Buffer.from(solution, 'base64');
+    const hash = createHash('sha256').update(createHash('sha256').update(Buffer.concat([puzzle.subarray(0, 32), nonce])).digest()).digest();
+    const value = BigInt(`0x${Buffer.from(hash).reverse().toString('hex')}`);
+    return nonce.length === 8 && value < BigInt(puzzle.readInt8(14)) << BigInt(8 * (puzzle.readInt8(13) - 3));
+  });
+};
+type Answer = string | (() => Response);
+const answer = (value: Answer) => typeof value === 'string' ? reply(text(value)) : value();
+/**
+ * myDSV's search does not know the number; the former DB Schenker tracker
+ * asks for a puzzle, then answers a solved request from the named fixtures.
+ */
+const former = (search: Answer, details: Answer = 'schenker-land', puzzles: string | null = PUZZLES) =>
+  vi.fn<typeof fetch>().mockImplementation(async (input, init) => {
+    const url = String(input);
+    if (url.startsWith(DSV_SEARCH_ENDPOINT)) return reply(text('search-empty'));
+    if (!url.startsWith(DSV_SCHENKER_ENDPOINT)) return reply('{}', 404);
+    const solution = new Headers(init?.headers).get('captcha-solution');
+    if (!solution) return new Response('', { status: 429, headers: puzzles ? { 'Captcha-Puzzle': puzzles } : {} });
+    if (!solved(solution)) return new Response('', { status: 422 });
+    return answer(url.startsWith(SCHENKER_LAND) ? details : search);
+  });
+const land = (change: (payload: Record<string, unknown> & { events: Record<string, unknown>[] }) => void) => () => {
+  const payload = json('schenker-land') as Record<string, unknown> & { events: Record<string, unknown>[] };
+  change(payload);
+  return reply(JSON.stringify(payload));
 };
 
 describe('DSV tracking adapter', () => {
@@ -152,9 +204,9 @@ describe('DSV tracking adapter', () => {
 
   it('leaves a number the search does not know, or knows only by references, open', async () => {
     expect(() => pickDsvShipment(json('search-empty'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
-    const fetcher = routes('search-empty', null, 'statuses-road');
+    const fetcher = former('schenker-empty');
     await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledTimes(3);
     // A match on another id or the master bill only, such as a customer's or an airline's number.
     const master = { ...json('details-air'), houseBillNumber: 'ZZX0000099' };
     expect(() => confirmDsvShipment(master, '99900000011')).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'reference_only' }));
@@ -263,6 +315,169 @@ describe('DSV tracking adapter', () => {
     }
     expect(parseTrackingInput(`https://mydsv.com/new/tracking/track-shipment?query=${HOUSE_BILL}`))
       .toMatchObject({ trackingNumber: HOUSE_BILL, carrier: 'dsv', source: 'link' });
+  });
+});
+
+describe('DSV former DB Schenker tracker', () => {
+  it('sends a number myDSV does not know to the former DB Schenker tracker, solves its puzzle and reads the road shipment', async () => {
+    const fetcher = former('schenker-search');
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    const result = await new DsvTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' zzx 000-0042 ', { budgetMs: 10_000 });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+      `${DSV_SEARCH_ENDPOINT}?q=${STT}`,
+      `${SCHENKER_SEARCH}${STT}`, `${SCHENKER_SEARCH}${STT}`,
+      // The id goes as the page sends it, colons and commas included.
+      `${SCHENKER_LAND}${LAND_ID}`, `${SCHENKER_LAND}${LAND_ID}`,
+    ]);
+    const headers = fetcher.mock.calls.slice(1).map(([, init]) => new Headers(init!.headers));
+    expect(headers.map(header => header.has('captcha-solution'))).toEqual([false, true, false, true]);
+    for (const header of headers) {
+      expect(header.get('user-agent')).toBe('SyntheticHost/1.0');
+      expect(header.get('accept')).toBe('application/json');
+      expect(header.has('cookie')).toBe(false);
+    }
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map',
+      last_status_text: 'Not delivered: Closed/holiday', last_update: null, last_update_local: '2026-05-13T15:10:00',
+      expected_delivery: '2026-05-14' });
+    // Wall clocks as the page prints them, whether the reply labels them Z or with an offset.
+    expect(rows(result)).toEqual([
+      ['2026-05-13T15:10:00', 'NDL', 'failed_attempt', 'Receivertown, XC'],
+      ['2026-05-13T07:25:50', 'DOT', 'out_for_delivery', 'Transit Terminal, XB'],
+      ['2026-05-12T06:29:34', 'ENM', 'in_transit', 'Transit Terminal, XB'],
+      ['2026-05-12T02:34:00', 'MAN', 'in_transit', 'Origin Terminal, XA'],
+      ['2026-05-11T16:36:17', 'ENM', 'in_transit', 'Origin Terminal, XA'],
+      ['2026-05-11T16:36:17', 'COL', 'accepted', 'Sendertown, XA'],
+      ['2026-05-11T09:28:19', 'ENT', 'registered', 'Origin Terminal, XA'],
+    ]);
+    expect(result.events!.every(event => event.time === undefined && event.description)).toBe(true);
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'dsv', step: 'direct', outcome: 'indeterminate' }));
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'dsv', step: 'schenker', outcome: 'ok', fallbackFrom: 'direct' }));
+  });
+
+  it('binds the shipment by its STT, its booking STT or a package SSCC, and leaves waybills and references open', async () => {
+    for (const number of [STT, BOOKED_STT, SSCC, `00${SSCC}`]) {
+      await expect(carrier(former('schenker-search')).track({ number }), number).resolves.toMatchObject({ current_stage: 'failed_attempt' });
+    }
+    for (const number of ['99900000011', 'ZZXAA-000000042', 'POEXAMPLE1', 'CONSIGNEEEXAMPLE1']) {
+      await expect(carrier(former('schenker-search')).track({ number }), number)
+        .rejects.toMatchObject({ kind: 'indeterminate', reason: 'reference_only' });
+    }
+    expect(() => parseDsvSchenkerShipment(json('schenker-land'), STT, `LandStt:${STT}:CTTS:LAND`)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const search = json('schenker-search').result as Record<string, unknown>[];
+    const other = { ...search[0], id: 'LandStt:ZZX0000043:CTTS:LAND', stt: 'ZZX0000043' };
+    expect(pickDsvSchenkerShipment({ result: [other, search[0]] }, STT)).toBe(LAND_ID);
+    expect(() => pickDsvSchenkerShipment({ result: [other, search[0]] }, SSCC))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'several_parcels' }));
+    expect(() => pickDsvSchenkerShipment({ result: [{ ...search[0], transportMode: 'AIR', id: `AirStt:${STT}:X:AIR` }] }, STT))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  it('keeps a delivery, its recipient and the parties out of what it returns, and drops the estimate once delivered', async () => {
+    const delivered = land(payload => {
+      payload.events.push({ ...payload.events[6], code: 'DLV', date: '2026-05-14T10:05:00+02:00', comment: 'Delivered',
+        location: { name: 'Receivertown 99999', code: 'ZZT', countryCode: 'XC' }, recipient: 'Example Signer' });
+    });
+    const result = await carrier(former('schenker-search', delivered)).track({ number: STT });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered',
+      last_update_local: '2026-05-14T10:05:00', expected_delivery: null });
+    expect(result.events![0]).toEqual({ local_time: '2026-05-14T10:05:00', description: 'Delivered', provider_code: 'DLV',
+      location: 'Receivertown, XC', stage: 'delivered', stage_source: 'carrier_map' });
+    expect(JSON.stringify(result)).not.toMatch(/Example (?:Sender|Receiver|Signer|service|terms)|Sample (?:Street|Road)|SENDERTOWN|RECEIVERTOWN|ORIGIN\b|11111|99999|EXAMPLE|123\.4|ZZXAA|99900000011|CTTS/);
+    // Without an agreed day, the estimated one.
+    const estimated = land(payload => { payload.deliveryDate = { estimated: '2026-05-15T00:00:00Z', agreed: null }; });
+    await expect(carrier(former('schenker-search', estimated)).track({ number: STT })).resolves.toMatchObject({ expected_delivery: '2026-05-15' });
+    const unstaged = land(payload => {
+      payload.events.push({ ...payload.events[6], code: 'ZZZ', date: '2026-05-14T08:00:00Z', comment: 'Documents checked', reasons: null });
+    });
+    const open = await carrier(former('schenker-search', unstaged)).track({ number: STT });
+    expect(open).toMatchObject({ status: 'unknown', last_status_text: 'Documents checked' });
+    expect(open.current_stage).toBeUndefined();
+    const undated = land(payload => { for (const row of payload.events) row.date = null; });
+    await expect(carrier(former('schenker-search', undated)).track({ number: STT }))
+      .rejects.toMatchObject({ kind: 'indeterminate', reason: 'no_history' });
+  });
+
+  it('leaves a number neither tracker knows open', async () => {
+    for (const search of ['schenker-empty', () => reply('{"code":"TRACKING-NOTFOUND"}', 404),
+      () => reply('{"code":"TRACKING-BADREQ-NO_MATCHING_PATTERN_FOUND"}', 400),
+      () => reply('{"code":"TRACKING-BADREQ-SHIPMENT_NOT_FOUND"}', 400)] as Answer[]) {
+      const fetcher = former(search);
+      await expect(carrier(fetcher).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+      expect(fetcher).toHaveBeenCalledTimes(3);
+    }
+    const refused = await carrier(former(() => reply('{"code":"TRACKING-BADREQ-INVALID"}', 400))).track({ number: UNKNOWN })
+      .catch((caught: unknown) => caught);
+    expect(refused).toMatchObject({ kind: 'indeterminate' });
+    expect((refused as { reason?: string }).reason).toBeUndefined();
+  });
+
+  it('asks the former tracker only after myDSV answered that it does not know the number', async () => {
+    for (const status of [404, 500, 503]) {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply('{}', status));
+      await expect(carrier(fetcher).track({ number: STT })).rejects.toMatchObject({ kind: expect.any(String) });
+      expect(fetcher.mock.calls.every(([url]) => !String(url).startsWith(DSV_SCHENKER_ENDPOINT))).toBe(true);
+    }
+  });
+
+  it('keeps puzzle, HTTP and reply failures apart from a missing shipment, without the solution on the error', async () => {
+    const cases: [ReturnType<typeof former>, string][] = [
+      [former('schenker-search', 'schenker-land', null), 'rate_limited'],
+      [former(() => new Response('', { status: 429, headers: { 'Captcha-Puzzle': PUZZLES } })), 'challenge'],
+      [former(() => new Response('', { status: 429 })), 'rate_limited'],
+      [former(() => new Response('', { status: 422 })), 'challenge'],
+      [former(() => reply('{}', 401)), 'challenge'],
+      [former(() => reply('{}', 500)), 'indeterminate'],
+      [former(() => reply('{}', 503)), 'maintenance'],
+      [former(() => reply('{}', 504)), 'indeterminate'],
+      [former('schenker-search', () => reply('{}', 500)), 'indeterminate'],
+      [former(() => reply('<html><head><title>Access Denied</title></head></html>')), 'challenge'],
+      [former(() => reply('<!doctype html><html><body><app-root></app-root></body></html>')), 'schema'],
+      [former(() => reply('{"result":{}}')), 'schema'],
+      [former(() => reply(JSON.stringify({ result: [{ id: '../x', stt: STT, transportMode: 'LAND' }] }))), 'schema'],
+      [former('schenker-search', () => reply('{"events":{}}')), 'schema'],
+      [former('schenker-search', land(payload => { payload.events[0]!.date = '13/05/2026 15:10'; })), 'schema'],
+      [former('schenker-search', land(payload => { payload.events[0]!.date = '2026-02-30T15:10:00Z'; })), 'schema'],
+      [former('schenker-search', land(payload => { payload.events[0]!.code = 'A B'; })), 'schema'],
+      [former('schenker-search', land(payload => { payload.events[0]!.reasons = 'none'; })), 'schema'],
+    ];
+    for (const [fetcher, kind] of cases) {
+      const error = await carrier(fetcher).track({ number: STT }).catch((caught: unknown) => caught);
+      expect(error, kind).toMatchObject({ kind });
+      expect((error as { request?: unknown }).request).toBeUndefined();
+      expect((error as { diagnostics?: unknown }).diagnostics).toBeUndefined();
+      expect(JSON.stringify(error)).not.toMatch(/eyJ|solution/i);
+    }
+    const missing = vi.fn<typeof fetch>().mockImplementation(async (input) => String(input).startsWith(DSV_SEARCH_ENDPOINT)
+      ? reply(text('search-empty')) : reply('{}', 404));
+    await expect(carrier(missing).track({ number: STT })).rejects.toMatchObject({ kind: 'transport' });
+    const answers = former('schenker-search');
+    const failing = vi.fn<typeof fetch>().mockImplementation(async (input, init) =>
+      new Headers(init?.headers).has('captcha-solution') ? Promise.reject(new TypeError('fetch failed')) : answers(input, init));
+    const failed = await carrier(failing).track({ number: STT }).catch((caught: unknown) => caught);
+    expect(failed).toMatchObject({ kind: 'transport' });
+    expect(JSON.stringify(failed)).not.toMatch(/eyJ|solution/i);
+  });
+
+  it('reads only puzzles it can afford, and stops solving when the budget ends', async () => {
+    for (const header of ['not a puzzle', puzzleHeader('a.b'), puzzleHeader(token(33, 10, 7, 63)), puzzleHeader(token(33, 0)),
+      puzzleHeader(token(33, -10)), puzzleHeader(token(35, 10)), puzzleHeader(token(2, 10)), puzzleHeader(...Array.from({ length: 9 }, () => token()))]) {
+      expect(() => parseDsvPuzzles(header, 'DSV'), header).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    }
+    expect(parseDsvPuzzles(PUZZLES, 'DSV').map(puzzle => puzzle.expectedHashes)).toEqual([6553.6, 6553.6]);
+    // A puzzle a thousand times harder than the tracker's is not attempted.
+    const costly = former('schenker-search', 'schenker-land', puzzleHeader(token(32, 1)));
+    await expect(carrier(costly).track({ number: STT })).rejects.toMatchObject({ kind: 'indeterminate', reason: 'costly_puzzle' });
+    expect(costly).toHaveBeenCalledTimes(2);
+    // About eight million hashes: more than a short budget allows.
+    const hard = former('schenker-search', 'schenker-land', puzzleHeader(token(32, 2)));
+    const started = performance.now();
+    await expect(carrier(hard).track({ number: STT }, { budgetMs: 300 })).rejects.toMatchObject({ kind: 'budget' });
+    expect(performance.now() - started).toBeLessThan(2_000);
+    expect(hard).toHaveBeenCalledTimes(2);
+    const controller = new AbortController();
+    const cancelled = carrier(former('schenker-search', 'schenker-land', puzzleHeader(token(32, 2)))).track({ number: STT }, { signal: controller.signal });
+    setTimeout(() => controller.abort(new Error('cancelled')), 50);
+    await expect(cancelled).rejects.toThrow('cancelled');
   });
 });
 

@@ -661,6 +661,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  '17feia': 'www.17feia.com sends a session without its cookie to cc.html, whose reload opens the home page without the number, so number forwarding cannot be verified',
   'allegro-one': 'allegro.pl answers automated Chrome with a DataDome block page instead of the tracker, so number forwarding cannot be verified',
   'an-post': 'Radware Bot Manager sends automated sessions on www.anpost.com to validate.perfdrive.com and a CAPTCHA, so number forwarding cannot be verified',
   cacesa: 'www.cacesa.com answers an address with a number only after about twenty seconds, past the navigation limit; the page then fills the number in and looks it up',

@@ -4730,6 +4730,27 @@
     ],
     "detectionRules": []
   },
+  "17feia": {
+    "displayName": "17FEIA",
+    "color": "#8e8e93",
+    "aliases": [
+      "17FEIA",
+      "Feia"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "17feia",
+      "recognitionRank": 99,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.17feia.com/",
+    "trackingUrlTemplate": "https://www.17feia.com/tracking?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.17feia.com/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "5post": {
     "displayName": "5Post",
     "color": "#64b441",

@@ -4732,6 +4732,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "17feia": {
+    "displayName": "17FEIA",
+    "color": "#8e8e93",
+    "aliases": [
+      "17FEIA",
+      "Feia"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "17feia",
+      "recognitionRank": 99,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.17feia.com/",
+    "trackingUrlTemplate": "https://www.17feia.com/tracking?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.17feia.com/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "5post": {
     "displayName": "5Post",
     "color": "#64b441",
@@ -13692,6 +13713,7 @@ export const CARRIER_IDS = [
   "the-courier-guy",
   "j-and-t",
   "ems",
+  "17feia",
   "5post",
   "99minutos",
   "a-duie-pyle",
@@ -14025,6 +14047,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "the-courier-guy": ["the-courier-guy-1","the-courier-guy-2"],
   "j-and-t": ["j-and-t-1","j-and-t-2","j-and-t-3","j-and-t-4","j-and-t-5","j-and-t-6"],
   "ems": [],
+  "17feia": [],
   "5post": [],
   "99minutos": [],
   "a-duie-pyle": [],

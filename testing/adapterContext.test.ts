@@ -68,6 +68,8 @@ const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
 };
 
 const corpus = new Map(loadNumberCorpusFiles().map((file) => [file.carrier, file.records]));
+/** Synthetic numbers in the format of a carrier whose corpus has no public number yet. */
+const UNSAMPLED: Readonly<Record<string, readonly string[]>> = { '17feia': ['FEISH9900000001YQ'] };
 
 function credential(validator: string, number: string): string {
   switch (validator) {
@@ -87,8 +89,9 @@ function credential(validator: string, number: string): string {
 
 /** A carrier's corpus numbers, with synthetic credentials where the catalog asks for one. */
 function carrierInputs(carrier: string): TrackingInput[] {
-  return (corpus.get(carrier) ?? []).filter((record) => !['negative', 'quarantined'].includes(record.role)).map((record) => {
-    const number = normalizeTrackingNumber(record.number);
+  const numbers = (corpus.get(carrier) ?? []).filter((record) => !['negative', 'quarantined'].includes(record.role)).map((record) => record.number);
+  return (numbers.length ? numbers : UNSAMPLED[carrier] ?? []).map((raw) => {
+    const number = normalizeTrackingNumber(raw);
     const input: TrackingInput = { number };
     for (const requirement of activeRequirements(carrier, number)) {
       const value = credential(requirement.validator, number);
@@ -317,4 +320,10 @@ describe.each(Object.entries(ENVIRONMENTS))('%s', (_, browsers) => {
       });
     });
   });
+});
+
+it('drives synthetic numbers only for carriers whose corpus has no public number', () => {
+  for (const carrier of Object.keys(UNSAMPLED)) {
+    expect((corpus.get(carrier) ?? []).filter((record) => !['negative', 'quarantined'].includes(record.role)), carrier).toHaveLength(0);
+  }
 });

@@ -1695,12 +1695,6 @@
     "reason": "A twenty-digit WanbExpress sample matches the DHL label shape; it is likely a handed-over parcel."
   },
   {
-    "carrier": "wanbexpress",
-    "pattern": "^SWX\\d{18}$",
-    "kind": "open",
-    "reason": "Two WanB Express numbers of this shape, both from one source; the family is not established."
-  },
-  {
     "carrier": "ward-trucking",
     "pattern": "^\\d{11}$",
     "kind": "by_design",

@@ -12932,9 +12932,8 @@ export const CARRIER_CATALOG = {
   },
   "swiftx": {
     "displayName": "SwiftX",
-    "color": "#8e8e93",
+    "color": "#5e51d3",
     "aliases": [
-      "SwiftX",
       "SwiftX Express"
     ],
     "countries": [
@@ -12961,7 +12960,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^SWX\\d{18}$",
+        "confidence": "high"
+      }
+    ]
   },
   "team-global-express": {
     "displayName": "Team Global Express",
@@ -14442,7 +14446,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "stallion-express": ["stallion-express-1","stallion-express-2"],
   "starken": [],
   "surat-kargo": [],
-  "swiftx": [],
+  "swiftx": ["swiftx-1"],
   "team-global-express": [],
   "tforce-freight": [],
   "toptrans": [],

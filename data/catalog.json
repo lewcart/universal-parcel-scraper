@@ -12930,9 +12930,8 @@
   },
   "swiftx": {
     "displayName": "SwiftX",
-    "color": "#8e8e93",
+    "color": "#5e51d3",
     "aliases": [
-      "SwiftX",
       "SwiftX Express"
     ],
     "countries": [
@@ -12959,7 +12958,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^SWX\\d{18}$",
+        "confidence": "high"
+      }
+    ]
   },
   "team-global-express": {
     "displayName": "Team Global Express",

@@ -140,14 +140,15 @@
         "dateKind": "capture",
         "access": "full_page"
       },
+      "quarantine": true,
       "context": {
-        "assessment": "candidate"
+        "assessment": "scope_review"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
+        "carrier": "swiftx",
+        "confidence": "high"
       },
-      "note": "ParcelPanel's WanB Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's WanB Express page offered it as a sample to try on 11 Oct 2026. It has SwiftX's number layout, the last-mile number WanB parcels get in the United States, so it is not WanB's own."
     },
     {
       "number": "SWX614600000197173052",
@@ -159,14 +160,15 @@
         "dateKind": "capture",
         "access": "full_page"
       },
+      "quarantine": true,
       "context": {
-        "assessment": "candidate"
+        "assessment": "scope_review"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
+        "carrier": "swiftx",
+        "confidence": "high"
       },
-      "note": "ParcelPanel's WanB Express page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's WanB Express page offered it as a sample to try on 11 Oct 2026. It has SwiftX's number layout, the last-mile number WanB parcels get in the United States, so it is not WanB's own."
     }
   ]
 }

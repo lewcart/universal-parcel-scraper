@@ -42,6 +42,11 @@ rate limits and incomplete captures keep their own failure kinds.
 - Every lookup needs the browser service, so recognition never asks SwiftX.
 - The reply names no sender, service, weight or delivery estimate.
 
+## Numbers
+
+SwiftX numbers are SWX followed by eighteen digits, the prefix the tracker's own example uses.
+The `swiftx-1` rule claims them.
+
 ## Testing
 
 Set `FLARESOLVERR_URL`, plus `SWIFTX_TRACKING_NUMBER` and optionally `SWIFTX_UNKNOWN_NUMBER`

@@ -51321,16 +51321,156 @@
     "candidates": []
   },
   {
+    "input": "SWX039330000187892873",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX173290000201641602",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX216360000201636395",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX387860000122464028",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX425540000198658805",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX434970000020210722",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX506720000198622865",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX550960000205198666",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
     "input": "SWX614600000197173052",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX705100000205144890",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX719640000203029388",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX805770000017365253",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX839930000148712877",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX845680000188540374",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX847580000191684613",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX866600000161768061",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX927910000202931537",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
+  },
+  {
+    "input": "SWX948840000202098913",
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
   },
   {
     "input": "SWX973780000197172797",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "swiftx",
+    "confidence": "high",
+    "candidates": [
+      "swiftx"
+    ]
   },
   {
     "input": "SX446838689IE",

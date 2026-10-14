@@ -2,7 +2,6 @@
   "id": "swiftx",
   "displayName": "SwiftX",
   "aliases": [
-    "SwiftX",
     "SwiftX Express"
   ],
   "region": {
@@ -11,7 +10,7 @@
     ]
   },
   "brand": {
-    "color": "#8e8e93"
+    "color": "#5e51d3"
   },
   "selectable": true,
   "timezone": "America/Los_Angeles",
@@ -81,5 +80,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "swiftx-1",
+      "pattern": "^SWX\\d{18}$",
+      "confidence": "high"
+    }
+  ]
 }

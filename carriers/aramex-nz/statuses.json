@@ -14,6 +14,7 @@
     {"code": "ICC", "wording": "Cleared by customs", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Customs cleared the parcel, which carries on."},
     {"code": "Z30", "wording": "Arrived in destination country", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "A parcel from abroad reaches the New Zealand network; the page script counts the code among pickup scans."},
     {"code": "Z32", "wording": "Arrived in destination country", "language": "en", "stage": "in_transit", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service."},
+    {"code": "RUR", "wording": "Delivery onforwarded", "language": "en", "stage": "in_transit", "confirmedBy": "portal", "note": "Aramex hands the parcel on to NZ Post for a rural delivery. Seen in an archived reply of the tracking service."},
     {"code": "ONB", "wording": "Onboard for delivery", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live"},
     {"code": "RUO", "wording": "In transit with our freight partners", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "note": "A rural freight partner delivers the parcel; the page script counts the scan as onboard for delivery."},
     {"code": "CCL", "wording": "Attempted delivery", "language": "en", "stage": "failed_attempt", "confirmedBy": "portal", "note": "The courier left a calling card. Seen in an archived reply of the tracking service."},

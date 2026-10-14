@@ -144,7 +144,7 @@ describe('Aramex New Zealand tracking adapter', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Delivery onforwarded',
       last_update: '2026-05-13T06:20:41+12:00', expected_delivery: null, delivery_carrier: 'nz-post', delivery_tracking_number: HANDED_ON });
     // The hand-on scan keeps its heading and depot, without a stage of its own.
-    expect(result.events![0]).toEqual({ time: '2026-05-13T06:20:41+12:00', description: 'Delivery onforwarded', location: 'Southvale', provider_code: 'RUR' });
+    expect(result.events![0]).toEqual({ time: '2026-05-13T06:20:41+12:00', description: 'Delivery onforwarded', location: 'Southvale', provider_code: 'RUR', stage: 'in_transit', stage_source: 'carrier_map' });
     expect(JSON.stringify(result)).not.toContain('rural agent');
     // Spaces and case do not matter, and NZ Post's courier label counts too.
     for (const [label, expected] of [[' xd 123 456 785 nz ', HANDED_ON], ['0000000000000017AKL001AS', '0000000000000017AKL001AS']] as const) {

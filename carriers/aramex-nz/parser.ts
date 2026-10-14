@@ -17,6 +17,9 @@ function nzPostHandoff(result: Record<string, unknown>): Pick<CarrierResult, 'de
     ? { delivery_carrier: 'nz-post', delivery_tracking_number: label } : {};
 }
 
+// The page script's codes of a scan handing the parcel on to another carrier.
+const HANDED_ON = new Set(['CR1', 'B63', 'DVR', 'ONF', 'RUR', 'NP1']);
+
 // Aramex New Zealand runs Aramex Australia's tracker on its own host and
 // database. Its page shows every scan, with no place for those before pickup,
 // and every depot keeps New Zealand's clock.
@@ -30,8 +33,10 @@ const NEW_ZEALAND: AramexNetwork = {
   stage: aramexNzStage,
   zone: 'Pacific/Auckland',
   priority: false,
-  // The page shows the estimate only with both depots known.
-  showsEstimate: (result) => typeof result.PickupFranchiseCode === 'string' && result.PickupFranchiseCode.trim() !== '',
+  // The page shows the estimate only with both depots known, and shows a notice
+  // instead once the newest scan hands the parcel on to another carrier.
+  showsEstimate: (result, rows) => typeof result.PickupFranchiseCode === 'string' && result.PickupFranchiseCode.trim() !== ''
+    && !HANDED_ON.has(String((rows.at(-1) as { Status?: unknown } | undefined)?.Status)),
   handoff: nzPostHandoff,
 };
 

@@ -17,6 +17,8 @@ const HEADINGS: Readonly<Record<string, Stage>> = {
   'cleared by customs': 'in_transit',
   // A parcel from abroad reaches the New Zealand network.
   'arrived in destination country': 'in_transit',
+  // Aramex hands the parcel on to NZ Post for a rural delivery.
+  'delivery onforwarded': 'in_transit',
   'onboard for delivery': 'out_for_delivery',
   'attempted delivery': 'failed_attempt',
   delivered: 'delivered',

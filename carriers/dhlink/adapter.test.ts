@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -65,6 +66,8 @@ describe('DHLink HTTP adapter', () => {
     expect(JSON.stringify(result)).not.toMatch(/FC9912310000001|99000000001|9900000000001|ZZ0000|P9901/);
     // The parcel's own DHLink number finds it too.
     expect(parseDhlink(fixture('swiftx-at-warehouse'), WAREHOUSE_OWN, LATER).delivery_carrier).toBe('swiftx');
+    // The tracker then asks SwiftX's adapter for its own number.
+    expect(deliveryHandoff('dhlink', WAREHOUSE, result)).toEqual({ carrier: 'swiftx', number: 'SWX990000000000000001', basis: 'partner' });
   });
 
   it('keeps one row per scan, preferring DHLink’s node and English, and drops the destination code from Chinese places', () => {

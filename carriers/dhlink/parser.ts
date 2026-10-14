@@ -38,8 +38,7 @@ const CONTACT = /(?:投递员|快递员|派送员|联系电话|电话[:：]|手�
  * number's whole layout. A number no layout fits gives no hand-off.
  */
 export const DHLINK_LAST_LEGS: readonly { readonly carrier: string; readonly number: RegExp }[] = [
-  // SwiftX's own numbers. The catalog id `swiftx` comes with the SwiftX adapter at integration;
-  // until then result normalization drops the hand-off. Validated here: SWX and eighteen digits.
+  // SwiftX's own numbers: SWX and eighteen digits, the layout `swiftx-1` claims.
   { carrier: 'swiftx', number: /^SWX\d{18}$/ },
 ];
 

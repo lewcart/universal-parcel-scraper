@@ -54,12 +54,18 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   if (carrierPage && magyarPostaBrowserNumber(url, capture)) {
     return await runMagyarPostaBrowser({ ...carrierRun,
       solveCaptcha: (page, timeout, signal) => solveRecaptchaV2(page, timeout, AbortSignal.any([budget.signal, signal])) })
+  }
+  if (carrierPage && magyarPostaAppRequest(url, capture)) {
+    return await runMagyarPostaApp({ ...carrierRun,
+      transcribe: (audio, signal) => transcribeMagyarPostaAudio(audio, AbortSignal.any([budget.signal, signal])) })
   }`;
   writeFileSync(path, 'import { attachTrackingCapture, reserveDeadline } from "../utils/tracking-capture.mjs"\n'
     + 'import { solveRecaptchaV2 } from "../solvers/recaptcha"\n'
     + 'import { wanbBrowserNumber, runWanbBrowser } from "../utils/wanbexpress-browser.mjs"\n'
     + 'import { xpoBrowserNumber, runXpoBrowser } from "../utils/xpo-browser.mjs"\n'
     + 'import { magyarPostaBrowserNumber, runMagyarPostaBrowser } from "../utils/magyar-posta-browser.mjs"\n'
+    + 'import { magyarPostaAppRequest, runMagyarPostaApp } from "../utils/magyar-posta-app.mjs"\n'
+    + 'import { transcribeAudio as transcribeMagyarPostaAudio } from "../solvers/stt"\n'
     + 'import { solveRecaptchaV2 as solveDhlPolandNative } from "../utils/dhl-poland-native/recaptcha"\n'
     + 'import { dhlPolandBrowserNumber, runDhlPolandBrowser } from "../utils/dhl-poland-browser.mjs"\n'
     + 'import { asendiaBrowserNumber, runAsendiaBrowser } from "../utils/asendia-browser.mjs"\n'

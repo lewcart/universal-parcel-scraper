@@ -12,6 +12,7 @@ COPY australia-post-browser.mjs /app/packages/tiers/src/utils/australia-post-bro
 COPY wanbexpress-browser.mjs /app/packages/tiers/src/utils/wanbexpress-browser.mjs
 COPY xpo-browser.mjs /app/packages/tiers/src/utils/xpo-browser.mjs
 COPY magyar-posta-browser.mjs /app/packages/tiers/src/utils/magyar-posta-browser.mjs
+COPY magyar-posta-app.mjs /app/packages/tiers/src/utils/magyar-posta-app.mjs
 COPY asendia-browser.mjs /app/packages/tiers/src/utils/asendia-browser.mjs
 COPY recaptcha-audio.mjs /app/packages/tiers/src/utils/recaptcha-audio.mjs
 COPY dhl-poland-native.mjs /app/packages/tiers/src/utils/dhl-poland-native.mjs

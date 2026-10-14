@@ -23,8 +23,11 @@ the waybill and scan fields, excluding recipient acknowledgements and verificati
 Asendia waits for its own Turnstile callback to enable search and binds the captured POST
 to one whole identifier. Given a delivery postcode in the fragment, it opens the scans through the page's dialog; otherwise recipient verification leaves the current status only. XPO scopes the checkbox
 solver to its visible widget while the public client completes verification and tracking.
-Magyar Posta opens the tracker its public page frames, solves the checkbox there, searches one
-number and keeps the result page its search redirects to, without scripts or form tokens.
+Magyar Posta renders the Posta app's invisible reCAPTCHA Enterprise widget on the app's WebView
+origin, answers its audio challenge with TRAWL's speech-to-text and posts one number to the app's
+guest list, keeping the reply without names, phone numbers or the token. Its fallback opens the
+tracker the public page frames, solves the checkbox there, searches one number and keeps the
+result page its search redirects to, without scripts or form tokens.
 DHL Express waits for the public
 page to complete verification and repeat tracking after an intermediate HTTP 428.
 17TRACK submits a supplied postcode through the site's form and binds the capture to

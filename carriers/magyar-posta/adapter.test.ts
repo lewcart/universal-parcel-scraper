@@ -3,8 +3,9 @@ import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import type { TrawlClient } from '../../core/transport/trawl.js';
-import { adapter, MAGYAR_POSTA_RESULT, MAGYAR_POSTA_SEARCH, MAGYAR_POSTA_TRACKER, MagyarPostaTracker, magyarPostaTrackingUrl } from './adapter.js';
-import { normalizeMagyarPostaNumber, parseMagyarPosta } from './parser.js';
+import { adapter, MAGYAR_POSTA_APP_PAGE, MAGYAR_POSTA_APP_TRACKING, MAGYAR_POSTA_RESULT, MAGYAR_POSTA_SEARCH, MAGYAR_POSTA_TRACKER, MagyarPostaTracker,
+  magyarPostaAppTrackingUrl, magyarPostaTrackingUrl } from './adapter.js';
+import { normalizeMagyarPostaNumber, parseMagyarPosta, parseMagyarPostaApp } from './parser.js';
 import { magyarPostaStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
@@ -19,9 +20,39 @@ const searched = (status = 302, error: string | null = null) => ({ url: MAGYAR_P
 const refused = { url: MAGYAR_POSTA_TRACKER, status: 200, headers: {}, body: null, truncated: false, base64Encoded: false,
   error: 'Google refused the audio challenge' };
 const edit = (html: string, change: ($: ReturnType<typeof load>) => void) => { const $ = load(html); change($); return $.html(); };
+// The app's API refuses its key, so the tracker's checkbox serves.
+const keyRefused = vi.fn(async () => new Response('{"message":"Unauthorized request."}', { status: 403 }));
 const tracker = (capturedResponses: unknown[] = [searched(), capture()], statusCode = 200) => {
   const scrape = vi.fn().mockResolvedValue({ tier: 3, statusCode, capturedResponses });
-  return { scrape, tracker: new MagyarPostaTracker({ trawl: { scrape } as unknown as TrawlClient }) };
+  return { scrape, tracker: new MagyarPostaTracker({ trawl: { scrape } as unknown as TrawlClient, fetcher: keyRefused as unknown as typeof fetch }) };
+};
+const appFixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as Record<string, unknown>;
+const APPLICATION = '0a1b2c3d-0000-4000-8000-00000000000e';
+const json = (value: unknown, status = 200, headers: Record<string, string> = {}) =>
+  new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json', ...headers } });
+/** The app's API, which hands out application ids and returns the numbers added under them. */
+function appApi(held: Record<string, unknown> = {}, ids = [APPLICATION]) {
+  const requests: { url: URL; headers: Record<string, string> }[] = [];
+  let issued = 0;
+  const fetcher = vi.fn(async (input: string | URL, init?: RequestInit) => {
+    const url = new URL(String(input));
+    requests.push({ url, headers: init?.headers as Record<string, string> });
+    if (url.pathname.endsWith('/generateApplicationId')) return json({ data: ids[Math.min(issued++, ids.length - 1)] });
+    const number = url.searchParams.get('packages[0][packageId]')!;
+    return json({ data: held[number] ? [held[number]] : [] });
+  });
+  return { fetcher, requests, held };
+}
+const added = (body: unknown, overrides: Record<string, unknown> = {}) => ({ url: MAGYAR_POSTA_APP_TRACKING, status: 200,
+  headers: { 'content-type': 'application/json' }, body: typeof body === 'string' ? body : JSON.stringify(body), truncated: false,
+  base64Encoded: false, error: null, trackingNumberSubmitted: PARCEL, ...overrides });
+const widgetRefused = { url: MAGYAR_POSTA_APP_PAGE, status: 200, headers: {}, body: null, truncated: false, base64Encoded: false,
+  error: 'Google refused the audio challenge' };
+const appTracker = (rows: unknown[] = [added(appFixture('app-delivered'))], held: Record<string, unknown> = {}) => {
+  const scrape = vi.fn().mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: rows });
+  const api = appApi(held);
+  return { scrape, api, tracker: new MagyarPostaTracker({ trawl: { scrape } as unknown as TrawlClient, userAgent: 'synthetic-host/1.0',
+    fetcher: api.fetcher as unknown as typeof fetch }) };
 };
 
 describe('Magyar Posta result page', () => {
@@ -113,6 +144,176 @@ describe('Magyar Posta result page', () => {
   });
 });
 
+describe('Magyar Posta app reply', () => {
+  it('reads instants, categories and wording, newest first, without names or settlements', () => {
+    const result = parseMagyarPostaApp(appFixture('app-delivered'), PARCEL)!;
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'Sikeresen kézbesítve háznál', last_update: '2026-03-03T12:20:14Z', service_name: 'Üzleti csomag' });
+    expect(result.events!.map(event => [event.time, event.provider_code, event.stage])).toEqual([
+      ['2026-03-03T12:20:14Z', '5', 'delivered'],
+      ['2026-03-03T12:20:14Z', '5', 'delivered'],
+      ['2026-03-03T06:58:28Z', '4', 'out_for_delivery'],
+      ['2026-03-03T00:05:03Z', '3', 'in_transit'],
+      ['2026-03-02T21:41:06Z', '1', 'accepted'],
+      ['2026-03-02T14:10:01Z', '1', 'registered'],
+    ]);
+    expect(result.events![1]).toMatchObject({ description: 'Sikeres kézbesítés rögzítése belső rendszerben',
+      location: 'Példavárosi Operatív Osztály, Példaváros' });
+    expect(result.events![0]).not.toHaveProperty('location');
+    expect(JSON.stringify(result)).not.toMatch(/Példa Feladó|Példa Címzett|jegyzet|\+36|Árufizetési|local_time/);
+    expect(result).not.toHaveProperty('last_update_local');
+  });
+
+  it('reads a letter waiting at a post office, its categories by name and wording the map does not know', () => {
+    const result = parseMagyarPostaApp(appFixture('app-pickup'), LETTER)!;
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup', pickup_point: 'Példaváros 1 posta, Példaváros',
+      last_status_text: 'A küldemény postán átvehető', service_name: 'Levél', last_update: '2026-04-11T07:00:00Z' });
+    expect(result.events!.map(event => [event.provider_code, event.stage])).toEqual([
+      ['4', 'ready_for_pickup'], ['3', 'in_transit'], ['2', 'in_transit'], ['2', 'in_transit'], ['1', 'accepted']]);
+  });
+
+  it('answers null for a number the list does not hold, and refuses other replies', () => {
+    expect(parseMagyarPostaApp({ data: [] }, PARCEL)).toBeNull();
+    expect(parseMagyarPostaApp({ data: [{ ...(appFixture('app-pickup').data as object[])[0] }] }, PARCEL)).toBeNull();
+    const item = (appFixture('app-delivered').data as Record<string, unknown>[])[0]!;
+    const events = item.events as Record<string, unknown>[];
+    for (const payload of [null, [], { data: {} }, { message: 'x' }, { data: [item, item] }, { data: [{ ...item, events: null }] },
+      { data: [{ ...item, events: [{ ...events[0], date: '2026-03-02 14:10:01' }] }] },
+      { data: [{ ...item, events: [{ ...events[0], date: '2026-03-02T14:10:01+01:00' }] }] },
+      { data: [{ ...item, events: [{ ...events[0], message: '', alias: '' }] }] },
+      { data: [{ ...item, events: Array.from({ length: 301 }, () => events[1]) }] }]) {
+      expect(() => parseMagyarPostaApp(payload, PARCEL), JSON.stringify(payload).slice(0, 60)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
+    // An unknown category keeps the wording's stage without a code; the current state alone is a summary.
+    const unknown = parseMagyarPostaApp({ data: [{ ...item, events: [{ ...events[1], status: 'Új' }] }] }, PARCEL)!;
+    expect(unknown.events![0]).toMatchObject({ stage: 'accepted' });
+    expect(unknown.events![0]).not.toHaveProperty('provider_code');
+    expect(parseMagyarPostaApp({ data: [{ ...item, events: [] }] }, PARCEL)).toMatchObject({ summary_only: true, current_stage: 'delivered',
+      last_status_text: 'Sikeresen kézbesítve háznál', last_update: null, events: [] });
+    expect(() => parseMagyarPostaApp({ data: [{ ...item, events: [], delivery_info: null }] }, PARCEL))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+});
+
+describe('Magyar Posta app route', () => {
+  it('adds a number through the browser service, then reads it again without a token', async () => {
+    const { scrape, api, tracker: active } = appTracker();
+    expect((await active.fetch(PARCEL, { budgetMs: 40_000 })).current_stage).toBe('delivered');
+    const [request, options] = scrape.mock.calls[0]!;
+    expect(request).toMatchObject({ url: magyarPostaAppTrackingUrl(APPLICATION, PARCEL), skipHttp: true, maxTier: 3,
+      captureResponses: [MAGYAR_POSTA_APP_TRACKING] });
+    expect(new URL(request.url).searchParams.get('applicationId')).toBe(APPLICATION);
+    expect(request.maxTimeout).toBeLessThanOrEqual(38_000);
+    expect(options).toMatchObject({ requireSolved: false, captureWindow: 'last', timeoutMs: request.maxTimeout });
+
+    // The list now holds the number, which the same tracker reads under its id.
+    api.held[PARCEL] = (appFixture('app-delivered').data as unknown[])[0];
+    expect((await active.fetch(PARCEL)).last_update).toBe('2026-03-03T12:20:14Z');
+    expect(scrape).toHaveBeenCalledTimes(1);
+    const read = api.requests.at(-1)!;
+    expect(read.url.origin + read.url.pathname).toBe(MAGYAR_POSTA_APP_TRACKING);
+    expect(Object.fromEntries(read.url.searchParams)).toMatchObject({ applicationId: APPLICATION, 'packages[0][packageId]': PARCEL });
+    expect(read.headers).toMatchObject({ 'User-Agent': 'synthetic-host/1.0', preview: 'true' });
+    expect(read.headers['X-Internal-Key']).toEqual(expect.any(String));
+    expect(api.requests.filter(row => row.url.pathname.endsWith('/generateApplicationId'))).toHaveLength(1);
+  });
+
+  it('adds a number again once the list no longer holds it, and moves to a fresh id after fifty', async () => {
+    const { scrape, api, tracker: active } = appTracker();
+    await active.fetch(PARCEL);
+    expect((await active.fetch(PARCEL)).current_stage).toBe('delivered');
+    expect(scrape).toHaveBeenCalledTimes(2);
+    const reads = api.requests.filter(row => row.url.pathname.endsWith('/package/tracking'));
+    expect(reads).toHaveLength(1);
+
+    const many = appTracker();
+    const numbers = Array.from({ length: 51 }, (_, index) => `PNZZZ${String(index).padStart(7, '0')}`);
+    many.scrape.mockImplementation(async (request: { url: string }) => {
+      const number = new URL(request.url).searchParams.get('packageId')!;
+      const item = { ...(appFixture('app-delivered').data as Record<string, unknown>[])[0], package_id: number };
+      return { tier: 3, statusCode: 200, capturedResponses: [added({ data: [item] }, { trackingNumberSubmitted: number })] };
+    });
+    for (const number of numbers) await many.tracker.fetch(number);
+    expect(many.api.requests.filter(row => row.url.pathname.endsWith('/generateApplicationId'))).toHaveLength(2);
+  });
+
+  it('keeps refusals, limits, unadded numbers and failures apart', async () => {
+    const reply = appFixture('app-delivered');
+    for (const [rows, kind] of [
+      [[], 'challenge'],
+      [[widgetRefused], 'challenge'],
+      [[added('{"status":"error","message":"Unsuccessful Action!"}', { status: 502 })], 'indeterminate'],
+      [[added('{"status":"error","message":"Unsuccessful Action!"}', { status: 401 })], 'challenge'],
+      [[added('', { status: 429, body: null, headers: { 'retry-after': '30' } })], 'rate_limited'],
+      [[added('{}', { status: 404 })], 'transport'],
+      [[added('{}', { status: 500 })], 'indeterminate'],
+      [[added('{}', { status: 503 })], 'maintenance'],
+      [[added(reply, { truncated: true })], 'transport'],
+      [[added('', { body: null, error: 'Magyar Posta app reply is not JSON' })], 'transport'],
+      [[added('', { body: null })], 'schema'],
+      [[added({ data: [] })], 'schema'],
+      [[added(reply, { trackingNumberSubmitted: 'PNZZZ00000026' })], 'challenge'],
+      [[added(reply), added(reply)], 'challenge'],
+    ] as const) {
+      await expect(appTracker([...rows]).tracker.fetch(PARCEL), `${kind} ${JSON.stringify(rows).slice(0, 90)}`)
+        .rejects.toMatchObject({ kind });
+    }
+  });
+
+  it('does not ask again for a while after Google refuses the widget or the app does not add the number', async () => {
+    const now = vi.spyOn(Date, 'now').mockReturnValue(1_000_000);
+    try {
+      const refused = appTracker([widgetRefused]);
+      await expect(refused.tracker.fetch(PARCEL)).rejects.toMatchObject({ kind: 'challenge', reason: 'verification_refused' });
+      await expect(refused.tracker.fetch(LETTER)).rejects.toMatchObject({ kind: 'challenge', reason: 'verification_refused' });
+      expect(refused.scrape).toHaveBeenCalledTimes(1);
+      now.mockReturnValue(1_000_000 + 10 * 60_000);
+      refused.scrape.mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [added(appFixture('app-delivered'))] });
+      expect((await refused.tracker.fetch(PARCEL)).current_stage).toBe('delivered');
+
+      now.mockReturnValue(1_000_000);
+      const unadded = appTracker([added('{"status":"error","message":"Unsuccessful Action!"}', { status: 502 })]);
+      for (let i = 0; i < 2; i++) await expect(unadded.tracker.fetch(PARCEL)).rejects.toMatchObject({ kind: 'indeterminate' });
+      expect(unadded.scrape).toHaveBeenCalledTimes(1);
+      // Another number is still asked, here without a reply bound to it, and this one after half an hour.
+      await expect(unadded.tracker.fetch('PNZZZ00000026')).rejects.toMatchObject({ kind: 'challenge' });
+      now.mockReturnValue(1_000_000 + 30 * 60_000);
+      await expect(unadded.tracker.fetch(PARCEL)).rejects.toMatchObject({ kind: 'indeterminate' });
+      expect(unadded.scrape).toHaveBeenCalledTimes(3);
+    } finally { now.mockRestore(); }
+  });
+
+  it('falls back to the tracker only when the app refuses its key, and keeps the app\'s limits', async () => {
+    const scrape = vi.fn().mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [searched(), capture()] });
+    const trawl = { scrape } as unknown as TrawlClient;
+    expect((await new MagyarPostaTracker({ trawl, fetcher: keyRefused as unknown as typeof fetch }).fetch(PARCEL)).current_stage).toBe('delivered');
+    expect(scrape.mock.calls[0]![0]).toMatchObject({ url: magyarPostaTrackingUrl(PARCEL) });
+    for (const [fetcher, kind] of [
+      [async () => json({}, 429, { 'retry-after': '60' }), 'rate_limited'],
+      [async () => { throw new TypeError('fetch failed'); }, 'transport'],
+      [async () => json({ data: 'PRIVATE' }), 'schema'],
+      [async () => new Response('<html></html>', { status: 200 }), 'schema'],
+    ] as const) {
+      scrape.mockClear();
+      await expect(new MagyarPostaTracker({ trawl, fetcher: fetcher as unknown as typeof fetch }).fetch(PARCEL)).rejects.toMatchObject({ kind });
+      expect(scrape).not.toHaveBeenCalled();
+    }
+    // A refused tracker checkbox does not hold the app's widget back.
+    const now = vi.spyOn(Date, 'now').mockReturnValue(1_000_000);
+    try {
+      let refusing = true;
+      const api = appApi();
+      const both = new MagyarPostaTracker({ trawl, fetcher: (async (input: string, init?: RequestInit) => refusing
+        ? keyRefused() : api.fetcher(input, init)) as unknown as typeof fetch });
+      scrape.mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [refused] });
+      await expect(both.fetch(PARCEL)).rejects.toMatchObject({ reason: 'verification_refused' });
+      refusing = false;
+      scrape.mockResolvedValue({ tier: 3, statusCode: 200, capturedResponses: [added(appFixture('app-delivered'))] });
+      expect((await both.fetch(PARCEL)).current_stage).toBe('delivered');
+    } finally { now.mockRestore(); }
+  });
+});
+
 describe('Magyar Posta status map', () => {
   it('stages every recorded wording, its category otherwise, and leaves settlements out', () => {
     for (const entry of statuses.entries) {
@@ -131,7 +332,7 @@ describe('Magyar Posta status map', () => {
   });
 });
 
-describe('Magyar Posta browser search', () => {
+describe('Magyar Posta tracker search', () => {
   it('asks the browser service for the public page and its bound result within the budget', async () => {
     const { scrape, tracker: active } = tracker();
     expect((await active.fetch(PARCEL, { budgetMs: 40_000 })).current_stage).toBe('delivered');
@@ -200,7 +401,7 @@ describe('Magyar Posta browser search', () => {
 
   it('declares its browser step', () => {
     const instance = adapter({ trawl: null } as never);
-    expect(instance).toMatchObject({ id: 'magyar-posta', steps: ['trawl'], recordsSteps: true });
+    expect(instance).toMatchObject({ id: 'magyar-posta', steps: ['app', 'trawl'], recordsSteps: true });
     expect(instance.recognize).toBeUndefined();
   });
 });

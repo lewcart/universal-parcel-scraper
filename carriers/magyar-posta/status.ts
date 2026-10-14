@@ -16,7 +16,10 @@ const STAGES: ReadonlyMap<string, Stage> = new Map([
   ['a küldeményt a feladótól átvettük', 'accepted'],
   ['felvétel a feladótól', 'accepted'],
   ['a küldemény feldolgozás alatt', 'in_transit'],
+  ['a küldemény feldolgozása folyamatban', 'in_transit'],
+  ['feldolgozás alatt', 'in_transit'],
   ['küldemény előkészítése nemzetközi szállításra', 'in_transit'],
+  ['a küldemény előkészítése nemzetközi szállításra', 'in_transit'],
   ['a bejövő küldemény átvétele a kicserélőben', 'in_transit'],
   // Customs asks the recipient for information, then clears the item.
   ['a vámkezeléshez szükséges információk bekérése (ügyfélre vár)', 'customs'],
@@ -32,6 +35,7 @@ const STAGES: ReadonlyMap<string, Stage> = new Map([
   ['járat indítás - egyéb', 'in_transit'],
   ['járat érkeztetés - feldolgozás', 'in_transit'],
   ['tartalmazó egységképző érkeztetés', 'in_transit'],
+  ['egységképző átvétele (resdes)', 'in_transit'],
   ['továbbítás belföldre', 'in_transit'],
   ['a küldemény továbbítása kézbesítésre', 'in_transit'],
   ['a küldemény csomagautomatából postára szállítva', 'in_transit'],

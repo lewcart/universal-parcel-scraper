@@ -6,7 +6,9 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { explicitOffsetTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
+import { isRecord } from '../../core/types.js';
 import { isMagyarPostaSettlement, magyarPostaStage } from './status.js';
 
 export const PROVIDER = 'Magyar Posta';
@@ -24,6 +26,12 @@ const BLOCKED = /<title>\s*(?:Request Rejected|Access Denied)|requested URL was 
 const STAMP = /^(\d{4})\. (\d{2})\. (\d{2})\. (\d{1,2}):(\d{2})$/;
 // The icon of a row or item: its tab (parcel, letter, other), then the category of the scan.
 const CATEGORY = /^fig_[123]([1-5])$/;
+// The app's instants: UTC, with microseconds.
+const APP_STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/;
+/** The app names each scan's category, the tracker's icons 1 to 5. */
+const APP_CATEGORIES: ReadonlyMap<string, string> = new Map([
+  ['felvétel', '1'], ['feldolgozás', '2'], ['szállítás', '3'], ['kézbesítés', '4'], ['kézbesített', '5'],
+]);
 
 type Selection = ReturnType<CheerioAPI>;
 
@@ -134,16 +142,7 @@ export function parseMagyarPosta(html: string, raw: string): CarrierResult {
   scans.sort((left, right) => right.event.local_time! > left.event.local_time! ? 1
     : right.event.local_time! < left.event.local_time! ? -1 : right.index - left.index);
   const events = scans.map(({ event }) => event);
-
-  // Oldest first: once the item is going back, a delivery reaches its sender.
-  let returning = false;
-  for (const event of [...events].reverse()) {
-    let stage = magyarPostaStage(event.provider_code as string, event.description!);
-    if (!stage) continue;
-    if (stage === 'delivered' && returning) stage = 'returned';
-    if (stage === 'returned') returning = true;
-    Object.assign(event, { stage, stage_source: 'carrier_map' });
-  }
+  stageScans(events);
 
   const current = clean(item.children('div.data_2').text(), 300);
   const latest = events[0];
@@ -155,6 +154,28 @@ export function parseMagyarPosta(html: string, raw: string): CarrierResult {
     return { status: stage ? languageStageStatus(stage) : 'unknown', ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
       last_status_text: current, last_update: null, last_update_local: time, expected_delivery: null, summary_only: true, events: [] };
   }
+  // A parcel's details name its service; letters have none.
+  const service = opened.find('div.details_item').filter((_, node) =>
+    clean($(node).children('div.details_label').text(), 60).replace(/\s*:$/, '') === SERVICE).children('div.details_data');
+  return history(events, current, service.length === 1 ? clean(service.text(), 100) : '', { last_update: null, last_update_local: latest.local_time! });
+}
+
+/** Stages scans, newest first. Oldest first: once the item is going back, a delivery reaches its sender. */
+function stageScans(events: CarrierEvent[]): void {
+  let returning = false;
+  for (const event of [...events].reverse()) {
+    let stage = magyarPostaStage(event.provider_code ?? null, event.description!);
+    if (!stage) continue;
+    if (stage === 'delivered' && returning) stage = 'returned';
+    if (stage === 'returned') returning = true;
+    Object.assign(event, { stage, stage_source: 'carrier_map' });
+  }
+}
+
+/** The result for staged scans, newest first, with the item's current status and service. */
+function history(events: CarrierEvent[], current: string, serviceName: string,
+  clock: Partial<Pick<CarrierResult, 'last_update' | 'last_update_local'>>): CarrierResult {
+  const latest = events[0]!;
   const staged = events.find(event => event.stage);
   const stage = staged?.stage as Stage | undefined;
   // The office or locker an item waits at is its pickup point. A delivered
@@ -164,21 +185,66 @@ export function parseMagyarPosta(html: string, raw: string): CarrierResult {
     : latest.stage === 'delivered' && lastMovement(earlier) === 'ready_for_pickup'
       ? earlier.find(event => event.stage === 'ready_for_pickup') : undefined;
   const point = waiting?.location ?? '';
-  // A parcel's details name its service; letters have none.
-  const service = opened.find('div.details_item').filter((_, node) =>
-    clean($(node).children('div.details_label').text(), 60).replace(/\s*:$/, '') === SERVICE).children('div.details_data');
-  const serviceName = service.length === 1 ? clean(service.text(), 100) : '';
-
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
     last_status_text: current || latest.description!,
-    last_update: null,
-    last_update_local: latest.local_time!,
+    ...clock,
     expected_delivery: null,
     ...(serviceName ? { service_name: serviceName } : {}),
     ...(point ? { pickup_point: point } : {}),
     ...(events.length > 100 ? { history_truncated: true } : {}),
     events: events.slice(0, 100),
   };
+}
+
+/**
+ * The Posta app's guest reply: for each item added to an application id, its
+ * scans with UTC instants and category names, the same wording as the
+ * tracker, its current state and service. Null when the reply holds no item
+ * for the number, which is how the app's list answers a number it does not hold.
+ */
+export function parseMagyarPostaApp(payload: unknown, raw: string): CarrierResult | null {
+  const number = normalizeMagyarPostaNumber(raw);
+  if (!isRecord(payload) || !Array.isArray(payload.data)) throw new SchemaError(PROVIDER, 'Magyar Posta app returned an invalid reply');
+  const items = (payload.data as unknown[]).filter(item => isRecord(item) && returnedTrackingNumber(item.package_id) === number);
+  if (!items.length) return null;
+  const [item] = items;
+  if (items.length > 1 || !isRecord(item) || !Array.isArray(item.events) || item.events.length > MAX_ROWS) {
+    throw new SchemaError(PROVIDER, 'Magyar Posta app returned an ambiguous or invalid item');
+  }
+  const scans: { event: CarrierEvent; timestamp: number; index: number }[] = [];
+  const seen = new Set<string>();
+  item.events.forEach((row, index) => {
+    const stamp = isRecord(row) ? clean(row.date, 40) : '';
+    const time = APP_STAMP.test(stamp) ? explicitOffsetTime(stamp) : null;
+    const description = isRecord(row) ? clean(row.message, 300) || clean(row.alias, 300) : '';
+    if (!isRecord(row) || !time || !description) throw new SchemaError(PROVIDER, 'Magyar Posta app returned a scan without a clock or wording');
+    if (isMagyarPostaSettlement(description)) return;
+    const code = APP_CATEGORIES.get(clean(row.status, 40).toLowerCase());
+    const location = place(clean(row.location, 400));
+    const event: CarrierEvent = { time: time.iso, description, ...(location ? { location } : {}), ...(code ? { provider_code: code } : {}) };
+    // A delivery can repeat a scan with the same clock, place and wording.
+    const identity = JSON.stringify(event);
+    if (seen.has(identity)) return;
+    seen.add(identity);
+    scans.push({ event, timestamp: time.timestamp, index });
+  });
+  // Newest first; on equal clocks, the later row first.
+  scans.sort((left, right) => right.timestamp - left.timestamp || right.index - left.index);
+  const events = scans.map(({ event }) => event);
+  stageScans(events);
+
+  const details = isRecord(item.delivery_info) ? item.delivery_info : {};
+  const current = clean(details.text, 300) || clean(details.alias, 300);
+  const service = isRecord(item.package_details) ? clean(item.package_details.consignment_title, 100) : '';
+  if (!events.length) {
+    // An item the app knows by its current state alone.
+    const code = typeof item.current_status === 'number' ? String(item.current_status) : null;
+    const stage = current ? magyarPostaStage(code, current) : undefined;
+    if (!current) throw new IndeterminateError(PROVIDER, 'Magyar Posta app returned an item without a status');
+    return { status: stage ? languageStageStatus(stage) : 'unknown', ...(stage ? { current_stage: stage, current_stage_source: 'carrier_map' } : {}),
+      last_status_text: current, last_update: null, expected_delivery: null, ...(service ? { service_name: service } : {}), summary_only: true, events: [] };
+  }
+  return history(events, current, service, { last_update: events[0]!.time! });
 }

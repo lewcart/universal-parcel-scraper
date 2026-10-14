@@ -9543,6 +9543,28 @@
     ],
     "detectionRules": []
   },
+  "jhgj": {
+    "displayName": "Jiuhao International",
+    "color": "#283593",
+    "aliases": [
+      "JHGJ",
+      "九好国际",
+      "九好國際",
+      "广州九好国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jitsu": {
     "displayName": "Jitsu",
     "color": "#4dc480",
@@ -9696,6 +9718,29 @@
     },
     "canaryUrl": "https://www.kolaygelsin.com/tracking",
     "trackingSearchUrl": "https://www.kolaygelsin.com/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "ktd": {
+    "displayName": "KTD",
+    "color": "#01234d",
+    "aliases": [
+      "跨通达",
+      "跨通達",
+      "跨通达物流",
+      "深圳市跨通达物流有限公司",
+      "Kuatongda"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
     "detectionRules": []
   },

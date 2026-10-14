@@ -9545,6 +9545,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "jhgj": {
+    "displayName": "Jiuhao International",
+    "color": "#283593",
+    "aliases": [
+      "JHGJ",
+      "九好国际",
+      "九好國際",
+      "广州九好国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jitsu": {
     "displayName": "Jitsu",
     "color": "#4dc480",
@@ -9698,6 +9720,29 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://www.kolaygelsin.com/tracking",
     "trackingSearchUrl": "https://www.kolaygelsin.com/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "ktd": {
+    "displayName": "KTD",
+    "color": "#01234d",
+    "aliases": [
+      "跨通达",
+      "跨通達",
+      "跨通达物流",
+      "深圳市跨通达物流有限公司",
+      "Kuatongda"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -13937,11 +13982,13 @@ export const CARRIER_IDS = [
   "j-and-t-cargo",
   "jadlog",
   "jersey-post",
+  "jhgj",
   "jitsu",
   "jne",
   "kazpost",
   "kex",
   "kolay-gelsin",
+  "ktd",
   "kuehne-nagel",
   "latvijas-pasts",
   "lbc-express",
@@ -14273,11 +14320,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "jadlog": [],
   "jersey-post": [],
+  "jhgj": [],
   "jitsu": [],
   "jne": ["jne-1"],
   "kazpost": [],
   "kex": [],
   "kolay-gelsin": [],
+  "ktd": [],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],

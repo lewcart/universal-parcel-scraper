@@ -32,8 +32,10 @@ parcel's status. "COLIS NON REMIS" has no stage either: seen only before the
 first scan, it can say the shipper did not hand the parcel over, while the same
 words also say a parcel was not delivered.
 
-Empty tables and form errors do not prove parcel absence. They remain
-inconclusive, as do blank responses, redirects and generic HTTP errors.
+Ciblex answers any number it has no scans for with the number's banner over an
+empty table, whether the label is not scanned yet or was never issued. That
+page is an answer without history, never proof of absence. Form errors, blank
+responses, redirects and generic HTTP errors remain inconclusive.
 
 ## Testing
 

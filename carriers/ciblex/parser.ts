@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 import { DateTime } from 'luxon';
-import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { clean } from '../../core/transport/index.js';
 import { calendarDay, zonedTime } from '../../core/time/index.js';
@@ -62,7 +62,9 @@ export function parseCiblexTrackingHtml(html: string, raw: string): CarrierResul
   if (rows.length > 501) throw new SchemaError('Ciblex', 'Ciblex returned excessive tracking history');
   const header = rows.first().children('td, th').map((_, node) => comparableText($(node).text())).get();
   if (header.join('|') !== 'date|heure livraison|action|lieu') throw new SchemaError('Ciblex', 'Ciblex tracking columns changed');
-  if (rows.length === 1) throw new IndeterminateError('Ciblex', 'Ciblex returned no parcel history');
+  // The page Ciblex shows for any number it has no scans for, a label not yet
+  // scanned or one it never issued: an answer about the number, not an outage.
+  if (rows.length === 1) throw new NoHistoryError('Ciblex', 'Ciblex returned no parcel history');
   const scanned: CarrierEvent[] = [];
   const seen = new Set<string>();
   for (const row of rows.slice(1).toArray()) {

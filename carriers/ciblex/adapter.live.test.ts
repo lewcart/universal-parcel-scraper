@@ -10,7 +10,7 @@ describe('Ciblex live anonymous tracking', () => {
     expect(result.events?.length).toBeGreaterThan(0);
     expect(result.events?.some(event => event.time)).toBe(true);
   });
-  it.skipIf(!process.env.CIBLEX_UNKNOWN_NUMBER)('keeps an empty table or empty200 inconclusive', async () => {
-    await expect(instance().track({ number: process.env.CIBLEX_UNKNOWN_NUMBER! })).rejects.toMatchObject({ kind: 'indeterminate' });
+  it.skipIf(!process.env.CIBLEX_UNKNOWN_NUMBER)('answers an unknown number without history', async () => {
+    await expect(instance().track({ number: process.env.CIBLEX_UNKNOWN_NUMBER! })).rejects.toMatchObject({ name: 'NoHistoryError', kind: 'indeterminate' });
   });
 });

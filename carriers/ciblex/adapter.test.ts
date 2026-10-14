@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { IndeterminateError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import {
   CiblexTracker,
@@ -320,7 +320,7 @@ describe('Ciblex response normalization', () => {
     } catch (caught) {
       error = caught;
     }
-    expect(error).toBeInstanceOf(IndeterminateError);
+    expect(error).toBeInstanceOf(NoHistoryError);
     expect(error).toMatchObject({
       kind: 'indeterminate',
       status: 502,
@@ -335,6 +335,7 @@ describe('Ciblex response normalization', () => {
       empty = caught;
     }
     expect(empty).toBeInstanceOf(IndeterminateError);
+    expect(empty).not.toBeInstanceOf(NoHistoryError);
     expect(empty).toMatchObject({
       kind: 'indeterminate',
       status: 502,
@@ -353,10 +354,14 @@ describe('Ciblex response normalization', () => {
     )).toThrow('different shipment');
     expect(() => parseCiblexTrackingHtml('<html>generic page</html>', TEST_TRACKING_NUMBER))
       .toThrow('shipment identifier');
-    expect(() => parseCiblexTrackingHtml(
-      '<html><p class="f_erreur">CODE BORDEREAU OBLIGATOIRE !</p></html>',
-      TEST_TRACKING_NUMBER,
-    )).toThrow(IndeterminateError);
+    let form: unknown;
+    try {
+      parseCiblexTrackingHtml('<html><p class="f_erreur">CODE BORDEREAU OBLIGATOIRE !</p></html>', TEST_TRACKING_NUMBER);
+    } catch (caught) {
+      form = caught;
+    }
+    expect(form).toBeInstanceOf(IndeterminateError);
+    expect(form).not.toBeInstanceOf(NoHistoryError);
   });
 });
 
@@ -423,7 +428,7 @@ describe('Ciblex tracker', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response(emptyTrackingPage('12345678901234')));
     await expect(new CiblexTracker({ timeoutMs: 1_000 }).fetch('12345678901234')).rejects.toMatchObject({
-      name: 'IndeterminateError',
+      name: 'NoHistoryError',
       kind: 'indeterminate',
       status: 502,
       message: 'Ciblex returned no parcel history',

@@ -82,6 +82,11 @@
       "id": "ecoscooting-2",
       "pattern": "^CN(?:ESP|PRT)\\d{20}$",
       "confidence": "high"
+    },
+    {
+      "id": "ecoscooting-without-cn",
+      "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
+      "confidence": "high"
     }
   ]
 }

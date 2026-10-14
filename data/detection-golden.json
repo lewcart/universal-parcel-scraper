@@ -38855,7 +38855,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -39271,14 +39275,24 @@
   {
     "input": "C1004444443",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
   },
   {
     "input": "C1004444444",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
   },
   {
     "input": "C11031500001879",
@@ -41887,7 +41901,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -42270,14 +42288,24 @@
   {
     "input": "E20 73619796",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
   },
   {
     "input": "E60 14099922",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
   },
   {
     "input": "EA004037757HU",
@@ -43661,6 +43689,14 @@
     "candidates": []
   },
   {
+    "input": "ESP00000123400000000001",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
     "input": "ET0000035260",
     "carrier": "unknown",
     "confidence": "low",
@@ -45025,7 +45061,11 @@
     "confidence": "low",
     "candidates": [
       "ups",
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -45034,7 +45074,11 @@
     "confidence": "low",
     "candidates": [
       "ups",
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -45377,7 +45421,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ups"
+      "ups",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -46283,7 +46331,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ups"
+      "ups",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -48428,8 +48480,13 @@
   {
     "input": "M1 663983020",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
   },
   {
     "input": "M89265730",
@@ -50709,6 +50766,14 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "PRT00000001234000000001",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
   },
   {
     "input": "PS000427F0334063903",
@@ -53826,7 +53891,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -54962,7 +55031,11 @@
     "confidence": "low",
     "candidates": [
       "ups",
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {
@@ -54979,7 +55052,11 @@
     "confidence": "low",
     "candidates": [
       "ups",
-      "dtdc"
+      "dtdc",
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
     ]
   },
   {

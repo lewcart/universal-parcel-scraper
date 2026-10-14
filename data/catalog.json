@@ -2731,6 +2731,10 @@
       {
         "pattern": "^CN(?:ESP|PRT)\\d{20}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
+        "confidence": "high"
       }
     ]
   },
@@ -9237,6 +9241,10 @@
     "detectionRules": [
       {
         "pattern": "^[A-Z]{2}\\d{9}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]\\d{10}$",
         "confidence": "low"
       }
     ]

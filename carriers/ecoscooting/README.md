@@ -46,6 +46,12 @@ a nine-digit counter. That layout puts Ecoscooting ahead of bpost, whose numbers
 share the length, when a number is recognised. Other 18-digit numbers are not
 asked: the query error that also answers a label not yet announced cannot settle
 that Ecoscooting does not know one.
+A `CN` reference typed without its `CN` gets it back before the request and in the
+tracking link, since neither Ecoscooting nor Cainiao answers it without, and the
+result names the full reference as `canonical_tracking_number`. Without the prefix,
+detection asks for the reference's whole layout: the destination, its postcode
+(five digits in Spain, seven in Portugal), `1234` and the counter, as every public
+reference has it.
 ICP references use a separate client normalization and are not supported.
 Cainiao's other `CN` families, such as `CNUSUP`, belong to other networks.
 

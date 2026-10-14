@@ -1,4 +1,5 @@
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
@@ -22,7 +23,9 @@ export class EcoscootingTracker {
           { provider: 'Ecoscooting', timeoutMs: Math.max(1, Math.floor(remainingMs)), maxBytes: 1_000_000, fetcher: this.options.fetcher });
         let payload: unknown;
         try { payload = parseJsonBytes(bytes, 'Ecoscooting'); } catch (cause) { throw new SchemaError('Ecoscooting', 'Ecoscooting returned invalid tracking JSON', { cause }); }
-        return parseEcoscooting(payload, number);
+        const result = parseEcoscooting(payload, number);
+        // A reference typed without its CN is the carrier's under the full one.
+        return number === normalizeTrackingNumber(raw) ? result : { ...result, canonical_tracking_number: number };
       } catch (error) {
         if (error instanceof UpstreamHttpError && [404, 410].includes(error.status)) throw new TransportError('Ecoscooting', 'Ecoscooting tracking endpoint is unavailable', { cause: error });
         throw error;

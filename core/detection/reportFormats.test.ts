@@ -225,7 +225,7 @@ describe('evidence-backed tracking formats', () => {
   });
 
   it('offers UPS for an H waybill without selecting it', () => {
-    expect(detectCarrierMatch('H1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['ups', 'dtdc'] });
+    expect(detectCarrierMatch('H1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['ups', 'dtdc', 'gls-it'] });
     expect(detectCarrierMatch('A1234567890').candidates).not.toContain('ups');
   });
 

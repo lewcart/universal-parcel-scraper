@@ -104,7 +104,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups"
+          "ups",
+          "gls-it"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
@@ -120,7 +121,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "ups"
+          "ups",
+          "gls-it"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
@@ -137,7 +139,8 @@
         "confidence": "low",
         "candidates": [
           "ups",
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to UPS, which stays one candidate among several."
@@ -788,7 +791,8 @@
         "confidence": "low",
         "candidates": [
           "ups",
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Broker review of a UPS shipment from Poland to Spain. The H waybill passes the mod-10 check of the open-source UPS waybill definition."

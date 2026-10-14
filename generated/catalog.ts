@@ -2733,6 +2733,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^CN(?:ESP|PRT)\\d{20}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
+        "confidence": "high"
       }
     ]
   },
@@ -9240,6 +9244,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^[A-Z]{2}\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -15172,7 +15180,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
   "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-sda-domestic"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
-  "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2"],
+  "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],
   "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],
   "usps": ["usps-impb","usps-impb-26","usps-3","usps-1","usps-2","usps-impb-routing","usps-4","usps-s10"],
@@ -15331,7 +15339,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghn": [],
   "ghtk": ["ghtk-1"],
   "gls-es": [],
-  "gls-it": ["gls-it-1"],
+  "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "go-express": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],

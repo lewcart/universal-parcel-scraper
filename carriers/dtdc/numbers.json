@@ -50,7 +50,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to DTDC, which stays one candidate among several."
@@ -147,7 +148,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Domestic consignment number from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
@@ -169,7 +171,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Waybill from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
@@ -192,7 +195,8 @@
         "confidence": "low",
         "candidates": [
           "ups",
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Consignment number from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."
@@ -215,7 +219,8 @@
         "confidence": "low",
         "candidates": [
           "ups",
-          "dtdc"
+          "dtdc",
+          "gls-it"
         ]
       },
       "note": "Tracking number from a review of DTDC. Not confirmed live: DTDC's feed answered every lookup with a generic failure."

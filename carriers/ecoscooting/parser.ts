@@ -1,9 +1,9 @@
-import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { epochMillisTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { ecoscootingRequestNumber } from './number.js';
 import { ecoscootingStatus } from './status.js';
 
 const COLLECTED = ['PUDO Sign Success', 'Your shipment has been collected by consignee at the parcelshop'] as const;
@@ -21,9 +21,7 @@ const PICKUP_POINT_CODES = new Set(['GTMS_PUDO_INBOUND', 'GTMS_STA_SIGNED', 'GTM
   'PUDO_INBOUND', 'PUDO_DELIVERY', 'PUDO_SIGN_SUCCESS', 'PUDO_OVERDUE']);
 
 export function normalizeEcoscootingNumber(raw: string): string {
-  const number = normalizeTrackingNumber(raw);
-  if (!/^(?:\d{18}|CN(?:ESP|PRT)\d{20})$/.test(number)) throw new InvalidInputError('Ecoscooting', 'Ecoscooting requires a numeric, CNESP or CNPRT parcel reference');
-  return number;
+  return ecoscootingRequestNumber(raw);
 }
 
 export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierResult {

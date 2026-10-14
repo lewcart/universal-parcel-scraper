@@ -710,12 +710,37 @@
     "reason": "STO Express's current waybills are fifteen digits in the 77 range, which BRT's parcel IDs and Yunda's fifteen-digit rule also accept, and Yunda's own client sends to its international site. STO's rule lists it first; the number stays a low-confidence suggestion that STO's trace must confirm."
   },
   {
-    "shape": "A9{10}",
+    "shape": "H or V and ten digits",
     "carriers": [
       "dtdc",
+      "gls-it",
       "ups"
     ],
-    "reason": "UPS (K, J, V) and DTDC (B, D, H, P, T, U, V) both print a letter and ten digits; V numbers stay a low-confidence suggestion."
+    "reason": "UPS (H, J, K, V), DTDC (B, D, H, P, T, U, V) and GLS Italy, whose depot code can be a letter and a digit, all print a letter and ten digits. The number stays a low-confidence suggestion, and recognition asks GLS Italy."
+  },
+  {
+    "shape": "B, D, P, T or U and ten digits",
+    "carriers": [
+      "dtdc",
+      "gls-it"
+    ],
+    "reason": "DTDC's letter and ten digits is also a GLS Italy number whose depot code has a digit. The number stays a low-confidence suggestion, and recognition asks GLS Italy."
+  },
+  {
+    "shape": "J or K and ten digits",
+    "carriers": [
+      "gls-it",
+      "ups"
+    ],
+    "reason": "UPS's letter and ten digits is also a GLS Italy number whose depot code has a digit. The number stays a low-confidence suggestion, and recognition asks GLS Italy."
+  },
+  {
+    "shape": "Z and ten digits",
+    "carriers": [
+      "gls-it",
+      "packeta"
+    ],
+    "reason": "Packeta's Z numbers also fit GLS Italy's depot code with a digit; the Packeta rule decides."
   },
   {
     "shape": "9{8}",

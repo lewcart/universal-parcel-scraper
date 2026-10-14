@@ -97,6 +97,11 @@
       "id": "gls-it-1",
       "pattern": "^[A-Z]{2}\\d{9}$",
       "confidence": "low"
+    },
+    {
+      "id": "gls-it-digit-depot",
+      "pattern": "^[A-Z]\\d{10}$",
+      "confidence": "low"
     }
   ]
 }

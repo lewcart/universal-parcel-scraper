@@ -264,6 +264,27 @@ describe('Ecoscooting direct retrieval', () => {
     }
     expect(fetcher).toHaveBeenCalledTimes(4);
   });
+  it('puts back the CN of a reference typed without it, and names the full reference', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) =>
+      new Response(JSON.stringify(referenceFixture(JSON.parse(new URLSearchParams(String(init?.body)).get('logistics_interface')!).mailNo))));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const patterns = metadata.detection.map(rule => new RegExp(rule.pattern));
+    for (const [input, number] of [['PRT00000001234000000001', 'CNPRT00000001234000000001'], ['prt 0000000 1234 000000001', 'CNPRT00000001234000000001'],
+      ['ESP00000123400000000001', 'CNESP00000123400000000001']] as const) {
+      expect(normalizeEcoscootingNumber(input)).toBe(number);
+      expect(patterns.some(pattern => pattern.test(input.replace(/[^A-Z0-9]/gi, '').toUpperCase())), input).toBe(true);
+      await expect(instance.track({ number: input })).resolves.toMatchObject({ status: 'delivered', canonical_tracking_number: number });
+      expect(JSON.parse(new URLSearchParams(String(fetcher.mock.lastCall?.[1]?.body)).get('logistics_interface')!).mailNo).toBe(number);
+    }
+    // The full reference needs no canonical number.
+    await expect(instance.track({ number: 'CNPRT00000001234000000001' })).resolves.not.toHaveProperty('canonical_tracking_number');
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    // Only the Spanish and Portuguese layouts, with the postcode's length and 1234, lose their CN.
+    for (const number of ['PRT00000000000000000001', 'ESP00000000000000000001', 'FRA00000001234000000001', 'PRT0000000123400000001', 'ESP0000012340000000001']) {
+      expect(patterns.some(pattern => pattern.test(number)), number).toBe(false);
+      expect(() => normalizeEcoscootingNumber(number)).toThrow(InvalidInputError);
+    }
+  });
   it('sends one fresh anonymous form using exact public client configuration and identity', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(fixture())));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });

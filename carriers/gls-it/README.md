@@ -40,8 +40,10 @@ A national shipment number is the two-character code of the sending depot, a let
 letter or digit, followed by at most nine digits. The page prints it with a space after the
 code, and the service fails on that space, so the adapter sends the number without it.
 `gls-it-1` suggests GLS Italy at low confidence when the code is two letters and nine digits
-follow. A depot code with a digit, the eleven-digit cross-border numbers and the long parcel
-IDs ending `GLS` stay unclaimed.
+follow, and `gls-it-digit-depot` when the code is a letter and a digit. That second shape, a
+letter and ten digits, is also UPS's, DTDC's and Packeta's, so it stays one suggestion among
+theirs and recognition asks GLS Italy. The eleven-digit cross-border numbers and the long
+parcel IDs ending `GLS` stay unclaimed.
 
 ## Links
 

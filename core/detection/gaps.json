@@ -836,12 +836,6 @@
   },
   {
     "carrier": "gls-it",
-    "pattern": "^[A-Z][0-9]\\d{9}$",
-    "kind": "by_design",
-    "reason": "A depot code with a digit makes the number one letter and ten digits, a shape other carriers share."
-  },
-  {
-    "carrier": "gls-it",
     "pattern": "^[A-Z]{2}\\d{10}$",
     "kind": "open",
     "reason": "One reported GLS Italy number with ten digits after the depot code; the family is not established."

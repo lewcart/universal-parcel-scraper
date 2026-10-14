@@ -229,6 +229,12 @@ step exists for future protocol changes.
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
   through the steps like any.
+- Speedaf's dates are its sites' wall clocks under a UTC label. Its own feed dates the
+  scans up to the departing flight ("Cargo flight departured") on China time and the rest
+  on the destination's, and Cainiao's copies of the same scans agree once read that way.
+  Scans whose digits come after the flight's take the destination's single clock, or
+  else go through the steps; the others, and all of them before the flight, are read on
+  China time.
 - TNT's international scans (9-digit numbers) skip these steps. tnt.com gives them
   offsets, and ParcelsApp's `date` is already their UTC instant.
 - So do scans named "Asendia United States" or "Asendia USA", wherever they happened.

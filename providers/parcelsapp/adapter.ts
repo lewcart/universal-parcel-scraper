@@ -207,6 +207,23 @@ const HOME_CLOCKS: Readonly<Record<string, string>> = {
  */
 const SUNYOU_DESTINATION_LEG = /^(?:arrived at destination country airport|customs clearance\b|hand over to last mile|arrived at the processing center of the last mile provider|out for delivery|delivery in progress|delivery failed|delivered\b)/i;
 /**
+ * Speedaf's own feed dates each scan on its site's clock: China's up to the
+ * departing flight ("Cargo flight departured"), then the destination's.
+ * ParcelsApp keeps the digits under a UTC label, and its Cainiao copies of the
+ * same scans agree once read that way. A scan whose digits come after the
+ * flight's is in the destination, which gives it a zone if it has one clock.
+ */
+function speedafZone(payload: Record<string, unknown>, date: unknown, destination: string | null): string | undefined {
+  const wall = mislabeledWallTime(date);
+  const departed = (Array.isArray(payload.states) ? payload.states : []).flatMap((raw: unknown) => {
+    const name = isRecord(raw) ? stateCarrierName(payload, raw) : undefined;
+    return isRecord(raw) && typeof name === 'string' && carrierIdFromName(name) === 'speedaf' && typeof raw.status === 'string'
+      && /^cargo flight depart(?:ed|ured)$/i.test(raw.status.trim()) ? [mislabeledWallTime(raw.date) ?? ''] : [];
+  }).sort().at(-1);
+  if (!wall || !departed || wall <= departed) return 'Asia/Shanghai';
+  return countryTimeZone(destination) ?? undefined;
+}
+/**
  * Networks whose dates are their scans' local clocks, checked at home only
  * (2026-10-10): Korea Post's page, Bring's offsets (in Denmark too) and
  * Parcelforce's for Royal Mail; Japan Post's, which its portal gives as local
@@ -392,6 +409,7 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
   if (carrier === 'paack' || carrier === 'vinted-go' || ownOffset(name, state.date)) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
+  if (carrier === 'speedaf') return speedafZone(payload, state.date, destination);
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").

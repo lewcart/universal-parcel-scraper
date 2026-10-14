@@ -12,6 +12,7 @@
     { "code": "LMD.1002", "language": "en", "stage": "in_transit", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "Last mile." },
     { "code": "LMD.3006", "language": "en", "stage": "in_transit", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "Last mile redirect." },
     { "code": "LMD.3014", "language": "en", "stage": "in_transit", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "Last mile redirect." },
+    { "code": "LMD.3013", "language": "pl", "wording": "Paczka przekierowana", "confirmedBy": "live", "note": "Redirected to another pickup point, also right after the label is created: not a movement, so the parcel keeps the stage it had." },
     { "code": "LMD.1004", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "In the locker or pickup point." },
     { "code": "LMD.1005", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "In the locker or pickup point." },
     { "code": "LMD.9001", "language": "en", "stage": "ready_for_pickup", "confirmedBy": "prior-art", "firstSeen": "2026-08-31", "note": "Awaiting collection." },

@@ -45,6 +45,18 @@ const TRACKING_STATUS: Record<string, ClassifiedStatus> = {
   'RTS.1002': { status: 'exception', stage: 'returned' },
 };
 
+/**
+ * Codes that change where the parcel goes, not how far it got. LMD.3013
+ * ("Paczka przekierowana") comes straight after creation as well as later,
+ * so it keeps the stage of the event before it.
+ */
+const DESTINATION_CHANGES = new Set(['LMD.3013']);
+
+/** Whether an InPost hub status code only changes the parcel's destination. */
+export function isInpostDestinationChange(code: string): boolean {
+  return DESTINATION_CHANGES.has(code);
+}
+
 /** The stage and status for an InPost hub status code, or undefined when unmapped. */
 export function classifyInpostStatus(code: string): ClassifiedStatus | undefined {
   return TRACKING_STATUS[code];

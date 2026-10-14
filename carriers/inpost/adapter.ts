@@ -2,9 +2,10 @@
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { classifyInpostStatus } from './status.js';
+import { classifyInpostStatus, isInpostDestinationChange } from './status.js';
 import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 import { inpostClock } from './clock.js';
 
@@ -65,7 +66,7 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
   if (rawDetails !== undefined && !Array.isArray(rawDetails)) {
     throw new SchemaError('InPost', 'InPost returned invalid tracking history');
   }
-  const parsed: Array<{ event: CarrierEvent; timestamp: number; index: number }> = [];
+  const parsed: Array<{ event: CarrierEvent; code: string; classified?: ClassifiedStatus; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
   (Array.isArray(rawDetails) ? rawDetails : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const eventCode = statusCode(rawEvent.status);
@@ -91,16 +92,29 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
         description,
         ...(eventClassified ? { stage: eventClassified.stage } : {}),
       },
+      code: eventCode,
+      ...(eventClassified ? { classified: eventClassified } : {}),
       timestamp: time.timestamp,
       index,
     });
   });
   parsed.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
+  // A redirect keeps the stage the parcel had before it.
+  let before: ClassifiedStatus | undefined;
+  for (const entry of [...parsed].reverse()) {
+    if (!entry.classified && isInpostDestinationChange(entry.code) && before) {
+      entry.classified = before;
+      entry.event.stage = before.stage;
+    }
+    before = entry.classified ?? before;
+  }
   const events = parsed.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);
+  const current = classified
+    ?? (isInpostDestinationChange(code) ? parsed.find((entry) => entry.classified)?.classified : undefined);
   // Of the destination only the country code is sent; the origin country feeds no field.
   const country = isRecord(payload.destination) ? payload.destination.countryCode : undefined;
   const destination = typeof country === 'string' && /^[A-Z]{2}$/.test(country) ? { destination_country: country } : {};
-  if (!classified) {
+  if (!current) {
     return {
       status: 'unknown',
       last_status_text: clean(payload.statusTitle, 500) || clean(payload.statusDescription, 500) || code || 'Tracking information received',
@@ -110,10 +124,10 @@ export function parseInpostTrackingResponse(payload: unknown, trackingNumber: st
       events,
     };
   }
-  const delivery = classified.status === 'delivered' ? events.find((event) => event.stage === 'delivered') : undefined;
+  const delivery = current.status === 'delivered' ? events.find((event) => event.stage === 'delivered') : undefined;
   return {
-    status: classified.status,
-    current_stage: classified.stage,
+    status: current.status,
+    current_stage: current.stage,
     last_status_text: clean(payload.statusTitle, 500) || clean(payload.statusDescription, 500) || code,
     last_update: events[0]?.time ?? null,
     expected_delivery: null,

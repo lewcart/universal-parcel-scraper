@@ -134,6 +134,28 @@ describe('InPost response parsing', () => {
     expect(result.events?.[0]?.stage).toBeUndefined();
   });
 
+  it('keeps the stage a parcel had when InPost redirects it', () => {
+    const redirect = { status: 'LMD.3013', statusTitle: 'Paczka przekierowana', datetime: '2026-05-04T10:20:00+02:00' };
+    const created = { status: 'CRE.1001', statusTitle: 'Przesyłka utworzona', datetime: '2026-05-04T10:00:00+02:00' };
+    const beforeHandover = parseInpostTrackingResponse(parcel({
+      status: 'LMD.3013', statusTitle: 'Paczka przekierowana', trackingDetails: [redirect, created],
+    }), TRACKING_NUMBER);
+    expect(beforeHandover).toMatchObject({ status: 'pending', current_stage: 'registered', last_status_text: 'Paczka przekierowana' });
+    expect(beforeHandover.events?.map((event) => event.stage)).toEqual(['registered', 'registered']);
+
+    const posted = { status: 'FMD.1001', statusTitle: 'Nadana przez Paczkomat/PaczkoPunkt', datetime: '2026-05-05T09:00:00+02:00' };
+    const later = { ...redirect, datetime: '2026-05-06T08:00:00+02:00' };
+    const afterHandover = parseInpostTrackingResponse(parcel({
+      status: 'LMD.3013', statusTitle: 'Paczka przekierowana', trackingDetails: [later, posted, redirect, created],
+    }), TRACKING_NUMBER);
+    expect(afterHandover).toMatchObject({ status: 'in_transit', current_stage: 'accepted' });
+    expect(afterHandover.events?.map((event) => event.stage)).toEqual(['accepted', 'accepted', 'registered', 'registered']);
+
+    const alone = parseInpostTrackingResponse(parcel({ status: 'LMD.3013', trackingDetails: [redirect] }), TRACKING_NUMBER);
+    expect(alone).toMatchObject({ status: 'unknown' });
+    expect(alone.events?.[0]?.stage).toBeUndefined();
+  });
+
   it('binds the returned tracking number to the requested shipment', () => {
     expect(() => parseInpostTrackingResponse(parcel({ trackingNumber: '640000000000000000000002' }), TRACKING_NUMBER))
       .toThrow(SchemaError);

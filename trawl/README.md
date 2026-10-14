@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland and Magyar Posta. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta and SwiftX. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
@@ -31,6 +31,8 @@ page to complete verification and repeat tracking after an intermediate HTTP 428
 the number and postcode in its outgoing request.
 UPS binds the browser POST to one tracking ID and retains the latest bounded
 response sequence, including refusals after the body extraction budget is spent.
+SwiftX's page clears Cloudflare's managed challenge, then posts one GraphQL query; the helper keeps
+the decoded reply only for the query naming the whole number in the page's address.
 
 Redis is optional. It stores cookies and user agents with a TTL, not tracking history, and a
 cached session that fails falls back to a fresh browser. Do not expose Redis.

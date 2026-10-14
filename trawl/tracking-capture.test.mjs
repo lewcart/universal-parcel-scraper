@@ -217,6 +217,74 @@ for (const missing of [false, true]) test(`YunExpress live hook reads a fresh ${
   }
 });
 
+const swiftxApi = 'https://swiftx-express.com/api/graphql';
+const swiftxNumber = 'SWX000000000000000001';
+const swiftxUrl = `https://swiftx-express.com/track?trackingNumber=${swiftxNumber}`;
+const swiftxQuery = '\n query GetOfficialWebsiteTrackingInfo($input: OfficialWebsiteTrackingInput!) {\n getOfficialWebsiteTrackingInfo(input: $input) { success trackingNo } }';
+const swiftxRequest = (input = { trackingNo: swiftxNumber }, query = swiftxQuery) => ({ query, variables: { input } });
+const swiftxReply = (success = true) => JSON.stringify({ data: { getOfficialWebsiteTrackingInfo: {
+  success, message: success ? '' : 'Order not found.', trackingNo: swiftxNumber, trackingEventList: [] } } });
+
+test('SwiftX capture is restricted to the tracking page and one whole SWX number', async () => {
+  for (const url of [swiftxUrl.replace('swiftx-express.com', 'other.test'), swiftxUrl.replace('://', '://www.'),
+    swiftxUrl.replace('/track', '/es/track'), swiftxUrl + '&trackingNumber=' + swiftxNumber, swiftxUrl + '&other=1',
+    swiftxUrl + '#test', swiftxUrl.replace(swiftxNumber, 'SWX00000000000000001'), swiftxUrl.replace(swiftxNumber, swiftxNumber.toLowerCase()),
+    swiftxUrl.replace(swiftxNumber, `${swiftxNumber},SWX000000000000000002`)]) {
+    assert.equal(await attachTrackingCapture({}, url, { captureResponses: [swiftxApi] }), undefined);
+  }
+  assert.equal(await attachTrackingCapture({}, swiftxUrl, { captureResponses: [swiftxApi + '?other=1'] }), undefined);
+});
+
+test('SwiftX captures only the page\'s tracking query for exactly the requested number', async () => {
+  const { capture, respond, handlers } = await fixture(swiftxUrl, swiftxApi);
+  for (const [method, requestBody] of [['GET', swiftxRequest()], ['POST', null], ['POST', { query: swiftxQuery }],
+    ['POST', swiftxRequest({ trackingNo: 'SWX000000000000000002' })], ['POST', swiftxRequest({ trackingNo: swiftxNumber, other: 1 })],
+    ['POST', swiftxRequest(undefined, 'query GetOrderPodImages { getOrderPodImages { url } }')]]) {
+    await respond(swiftxReply(), { method, requestBody });
+  }
+  assert.equal(capture.hasResponse(), false);
+  assert.equal(capture.hasTrackingRequest(), false);
+  handlers.request({ url: () => swiftxApi, method: () => 'POST', postDataJSON: () => swiftxRequest() });
+  assert.equal(capture.hasTrackingRequest(), true);
+  await respond(swiftxReply(), { method: 'POST', requestBody: swiftxRequest(), headers: { 'set-cookie': 'PRIVATE_COOKIE', 'content-encoding': 'br' } });
+  assert.equal(capture.hasResponse(), true);
+  await capture.settle(100);
+  const rows = (await capture.drain()).capturedResponses;
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].body, swiftxReply());
+  assert.deepEqual(rows[0].headers, {});
+});
+
+test('SwiftX keeps its not-found reply and challenges without reading refused bodies', async () => {
+  const missing = await fixture(swiftxUrl, swiftxApi);
+  await missing.respond(swiftxReply(false), { method: 'POST', requestBody: swiftxRequest() });
+  await missing.capture.settle(100);
+  assert.equal((await missing.capture.drain()).capturedResponses[0].body, swiftxReply(false));
+  for (const status of [403, 429]) {
+    const { capture, respond } = await fixture(swiftxUrl, swiftxApi);
+    await respond('', { method: 'POST', requestBody: swiftxRequest(), status, headers: { 'retry-after': '60' },
+      read: () => { throw new Error('must not read rejected body'); } });
+    assert.equal(capture.hasResponse(), true);
+    const row = (await capture.drain()).capturedResponses[0];
+    assert.equal(row.status, status);
+    assert.equal(row.body, null);
+    assert.equal(row.headers['retry-after'], '60');
+  }
+});
+
+test('SwiftX reports a page that never asked for the number and a failed query', async () => {
+  const silent = await fixture(swiftxUrl, swiftxApi);
+  await silent.capture.settle(1);
+  await assert.rejects(silent.capture.drain(), { message: 'SwiftX produced no tracking response after submission' });
+  const { capture, handlers } = await fixture(swiftxUrl, swiftxApi);
+  const request = { url: () => swiftxApi, method: () => 'POST', postDataJSON: () => swiftxRequest(),
+    failure: () => ({ errorText: 'PRIVATE_TOKEN in unexpected network text' }) };
+  handlers.request(request);
+  handlers.requestfailed(request);
+  await capture.settle(100);
+  await assert.rejects(capture.drain(), { message: 'SwiftX tracking request failed: network failure' });
+});
+
 const australiaNumber = '7T0000000000000000001';
 const australiaUrl = `https://auspost.com.au/mypost/track/details/${australiaNumber}`;
 const australiaApi = `https://digitalapi.auspost.com.au/shipments-gateway/v1/watchlist/shipments?trackingIds=${australiaNumber}`;

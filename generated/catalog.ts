@@ -12930,6 +12930,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "swiftx": {
+    "displayName": "SwiftX",
+    "color": "#8e8e93",
+    "aliases": [
+      "SwiftX",
+      "SwiftX Express"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "swiftx"
+    },
+    "canaryUrl": "https://swiftx-express.com/",
+    "trackingUrlTemplate": "https://swiftx-express.com/track?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://swiftx-express.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "swiftx-express.com",
+          "www.swiftx-express.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?track/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "team-global-express": {
     "displayName": "Team Global Express",
     "color": "#143200",
@@ -14070,6 +14103,7 @@ export const CARRIER_IDS = [
   "stallion-express",
   "starken",
   "surat-kargo",
+  "swiftx",
   "team-global-express",
   "tforce-freight",
   "toptrans",
@@ -14408,6 +14442,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "stallion-express": ["stallion-express-1","stallion-express-2"],
   "starken": [],
   "surat-kargo": [],
+  "swiftx": [],
   "team-global-express": [],
   "tforce-freight": [],
   "toptrans": [],

@@ -1,0 +1,48 @@
+# SwiftX
+
+Tracks SwiftX Express parcels in the United States through the GraphQL query behind SwiftX's own
+tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
+
+## How it works
+
+1. `trawl`: the browser service opens `swiftx-express.com/track?trackingNumber={number}`. Cloudflare
+   puts a managed challenge in front of the page and its API, which the service's browser clears.
+   The page then posts one `getOfficialWebsiteTrackingInfo` query to `/api/graphql` and gets a
+   compressed JSON reply. The service's capture helper keeps that reply only for the query naming
+   the whole number from the page's address; no request is replayed outside the browser.
+
+Without the browser service the adapter fails as challenged before any request: plain HTTP, Node
+and automated Chrome all get the challenge. No account, key or CAPTCHA solving is needed. Production
+needs a TRAWL image built with the SwiftX helper.
+
+A known number gets `success: true` and its scans. An unknown one gets `success: false` with the
+notice "Order not found." and the number echoed, which is the only missing parcel. Any other
+refusal, a reply naming another number, a GraphQL error, a challenge page in place of the reply,
+rate limits and incomplete captures keep their own failure kinds.
+
+## Notes
+
+- Each scan gives its site's wall clock and its offset at that time, `GMT-07:00` or `GMT-7:00`,
+  so clocks are instants. The offsets follow each site's daylight saving time. Labels SwiftX's
+  system creates carry `GMT-07:00` in every season, which orders correctly with the scans after
+  them. The tracker lists scans once they happen; one dated after the reply was read would be
+  left out.
+- The provider code is the tracker's event code, mapped in [status.ts](status.ts). Other codes go
+  to the shared wording rules. A failed pickup at the shipper moves nothing. `DELIVERY_FAILED` also
+  marks an exception; with the wording "Package missing" it is one.
+- A failed delivery's wording carries the driver's note on a second line, then SwiftX's help line
+  with its phone number and email. The note is kept and the help line is not.
+- Scans at SwiftX's hubs, stations and warehouses carry the town and state the reply gives for the
+  site. Delivery and failed-delivery rows give the recipient's town, state and postcode as their
+  place; they are not read, nor are pickup and return rows' places, any postcode or the
+  proof-of-delivery images the page offers.
+
+## Limitations
+
+- Every lookup needs the browser service, so recognition never asks SwiftX.
+- The reply names no sender, service, weight or delivery estimate.
+
+## Testing
+
+Set `FLARESOLVERR_URL`, plus `SWIFTX_TRACKING_NUMBER` and optionally `SWIFTX_UNKNOWN_NUMBER`
+outside the repository, and run `npm run test:carriers:live -- carriers/swiftx/adapter.live.test.ts`.

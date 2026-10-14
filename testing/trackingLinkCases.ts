@@ -688,6 +688,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the page often stays empty past the render window',
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
+  swiftx: 'swiftx-express.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',
   usps: 'tools.usps.com answers automated Chrome with an anti-bot script instead of the page',
   'xpo-ltl': 'the shipment page asks for a reCAPTCHA checkbox before it shows a result, so number forwarding cannot be verified',

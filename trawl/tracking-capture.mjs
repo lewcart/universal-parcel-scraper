@@ -102,6 +102,31 @@ const SITES = [
     },
   },
   {
+    // The page passes Cloudflare's check, then posts one GraphQL query per
+    // number in its address and gets a compressed JSON reply.
+    api: 'https://swiftx-express.com/api/graphql',
+    provider: 'SwiftX',
+    requestMethod: 'POST',
+    number(page) {
+      if (page.origin !== 'https://swiftx-express.com' || page.pathname !== '/track' || page.hash) return null;
+      const values = [...page.searchParams];
+      return values.length === 1 && values[0][0] === 'trackingNumber' && /^SWX\d{18}$/.test(values[0][1]) ? values[0][1] : null;
+    },
+    requestMatches(request, number) {
+      try {
+        const body = request.postDataJSON();
+        const input = body?.variables?.input;
+        return typeof body?.query === 'string' && /\bgetOfficialWebsiteTrackingInfo\b/.test(body.query)
+          && input && typeof input === 'object' && Object.keys(input).length === 1 && input.trackingNo === number;
+      } catch { return false; }
+    },
+    settled() {
+      // One query, one final reply. The adapter binds the returned number and
+      // reads the not-found notice itself.
+      return true;
+    },
+  },
+  {
     api: 'https://digitalapi.auspost.com.au/shipments-gateway/v1/watchlist/shipments',
     queryNumber: true,
     number(page) {

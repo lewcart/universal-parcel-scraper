@@ -33,7 +33,6 @@ describe('GZYL tracking adapter', () => {
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'gzyl', step: 'direct', outcome: 'ok' }));
     const instance = adapter(environment(fetcher));
     expect(instance).toMatchObject({ id: 'gzyl', recordsSteps: true, steps: ['direct', 'retry'] });
-    expect(instance.recognize).toBeUndefined();
   });
 
   it('reads the English timeline GZYL writes ahead, up to the lookup', () => {
@@ -51,6 +50,14 @@ describe('GZYL tracking adapter', () => {
       { local_time: '2026-03-02T15:07:14', description: 'Arrive at the cross border receiving point', stage: 'accepted', stage_source: 'carrier_map' },
       { local_time: '2026-03-01T22:36:51', description: 'Order information received', stage: 'registered', stage_source: 'carrier_map' },
     ]);
+  });
+
+  it('recognizes a waybill the tracker holds and the page’s unknown answer', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('track')))
+      .mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
+    await expect(adapter(environment(fetcher)).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    await expect(adapter(environment(fetcher)).recognize!('NOTFOUND000001')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
   it('settles the interface’s no-row answer with the page', async () => {

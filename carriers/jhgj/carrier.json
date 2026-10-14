@@ -31,5 +31,11 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "jhgj-1",
+      "pattern": "^JH\\d{10}CN$",
+      "confidence": "low"
+    }
+  ]
 }

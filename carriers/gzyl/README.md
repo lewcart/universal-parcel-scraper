@@ -47,8 +47,11 @@ but no channel label hands nothing over.
 
 ## Numbers
 
-No public GZYL number has been found, so no rule claims one. The tracker accepts both the
-waybill's tracking number and its reference number.
+GZYL's waybills are YL, ten digits and YQ, made by a Hualei number rule. Many forwarders end
+their numbers with YQ and Yili International's are YL, nine digits and YQ, so the rule has low
+confidence and recognition asks the tracker. No public GZYL number has been found, so the
+corpus holds a synthetic one. The tracker accepts both the waybill's tracking number and its
+reference number.
 
 ## Testing
 

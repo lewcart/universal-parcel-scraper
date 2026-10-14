@@ -7,7 +7,13 @@ Its website does not answer, and no copy of it is archived.
 
 ## Numbers
 
-No public Jiuhao International number has been found, so no rule claims one.
+Its parcels carry JH, ten digits and CN, the shape a universal provider files under Jiuhao
+International. JH fits other companies' initials too, and no tracker of the carrier confirms
+the shape, so the rule has low confidence. No public number has been found, so the corpus
+holds a synthetic one.
+
+The Kingtrans tenant at `jhgj.kingtrans.net` belongs to 广东嘉华物流, not to Jiuhao, and does
+not know these parcels.
 
 ## Links
 

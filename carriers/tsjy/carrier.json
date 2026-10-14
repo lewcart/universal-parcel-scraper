@@ -83,5 +83,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "tsjy-1",
+      "pattern": "^TSJY\\d{9}CN$",
+      "confidence": "high"
+    }
+  ]
 }

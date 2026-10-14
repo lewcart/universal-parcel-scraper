@@ -26,6 +26,9 @@
       "direct",
       "retry"
     ],
+    "recognition": {
+      "rank": 987
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -93,5 +96,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "thhy-1",
+      "pattern": "^AT\\d{10}TH$",
+      "confidence": "low"
+    }
+  ]
 }

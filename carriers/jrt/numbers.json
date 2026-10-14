@@ -1,5 +1,17 @@
 {
   "carrier": "jrt",
-  "gap": "No public JRT number has been found; its tracker has no archived lookups and aggregators publish no example.",
-  "records": []
+  "records": [
+    {
+      "number": "JRT9900000001MM",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-14",
+      "expect": {
+        "carrier": "jrt",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of the number JRT's tracker gives as the order's own."
+    }
+  ]
 }

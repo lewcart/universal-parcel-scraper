@@ -8673,7 +8673,12 @@
     "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
     "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^PL\\d{16}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ghn": {
     "displayName": "GHN",
@@ -9010,11 +9015,17 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "gzyl",
+      "recognitionRank": 988,
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YL\\d{10}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "hanjin": {
     "displayName": "Hanjin",
@@ -9684,7 +9695,12 @@
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JH\\d{10}CN$",
+        "confidence": "low"
+      }
+    ]
   },
   "jitsu": {
     "displayName": "Jitsu",
@@ -9781,7 +9797,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JRT\\d{10}MM$",
+        "confidence": "high"
+      }
+    ]
   },
   "kazpost": {
     "displayName": "Kazpost",
@@ -9898,7 +9919,12 @@
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^KTDWE\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "kuehne-nagel": {
     "displayName": "Kuehne+Nagel",
@@ -13235,11 +13261,17 @@
     "tracking": {
       "mode": "automatic",
       "adapter": "thhy",
+      "recognitionRank": 987,
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AT\\d{10}TH$",
+        "confidence": "low"
+      }
+    ]
   },
   "toptrans": {
     "displayName": "TOPTRANS",
@@ -13431,7 +13463,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^TSJY\\d{9}CN$",
+        "confidence": "high"
+      }
+    ]
   },
   "ubi-smart-parcel": {
     "displayName": "UBI Smart Parcel",

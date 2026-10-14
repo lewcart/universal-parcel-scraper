@@ -32,8 +32,9 @@ JRT, so its scan wordings fall back to the shared wording rules.
 
 ## Numbers
 
-No public JRT number has been found, so no rule claims one. The tracker accepts both the
-tracking number and the customer's reference.
+JRT's own numbers are JRT, ten digits and MM, made by a Hualei number rule; JRT is 今日通's
+initials. The tracker also accepts the customer's reference, which no rule claims because the
+shipper chooses it. No public JRT number has been found, so the corpus holds a synthetic one.
 
 ## Testing
 

@@ -32,5 +32,11 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "ktd-1",
+      "pattern": "^KTDWE\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

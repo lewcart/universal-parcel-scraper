@@ -51,7 +51,10 @@ abroad on a line such as 17FEIA's. Tracked through the lookup the order search o
 ## Numbers
 
 TSJY's tracker takes its own order numbers and the numbers of the lines it books parcels on.
-No public TSJY number was found, so no rule claims one.
+Its own numbers are TSJY, nine digits and CN. TSJY's number rule makes the ninth digit the S10
+check digit of the eight before it; the rule does not test it, since a new check would need a
+port in every consumer. No public TSJY number has been found, so the corpus holds a synthetic
+one.
 
 ## Testing
 

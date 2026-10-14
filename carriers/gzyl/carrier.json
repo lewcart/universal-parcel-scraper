@@ -25,6 +25,9 @@
       "direct",
       "retry"
     ],
+    "recognition": {
+      "rank": 988
+    },
     "localClocks": true
   },
   "capabilities": [
@@ -92,5 +95,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "gzyl-1",
+      "pattern": "^YL\\d{10}YQ$",
+      "confidence": "low"
+    }
+  ]
 }

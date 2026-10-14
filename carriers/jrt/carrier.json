@@ -103,5 +103,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "jrt-1",
+      "pattern": "^JRT\\d{10}MM$",
+      "confidence": "high"
+    }
+  ]
 }

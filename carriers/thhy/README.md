@@ -33,7 +33,9 @@ cannot be checked against a post's tracker: the record names no post number.
 
 ## Numbers
 
-No public Tianhui Hengyuan number has been found, so no rule claims one.
+Tianhui Hengyuan's waybills are AT, ten digits and TH, made by a Hualei number rule. Neither
+part is the carrier's name, so the rule has low confidence and recognition asks the tracker.
+No public number has been found, so the corpus holds a synthetic one.
 
 ## Testing
 

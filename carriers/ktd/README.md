@@ -3,12 +3,14 @@
 KTD parcels use enabled universal providers. There is no dedicated adapter.
 
 KTD is 深圳市跨通达物流有限公司 (跨通达物流), a Shenzhen cross-border forwarder founded in 2016
-with FBA lines, dedicated small-parcel lines and air freight. Its website is gone. Its old
-tracking page only showed what an aggregator returned, so it never had a tracker of its own.
+with FBA lines, dedicated small-parcel lines and air freight. Its site's tracking page only
+relays an aggregator, through a proxy that no longer answers, so it has no tracker of its own.
 
 ## Numbers
 
-No public KTD number has been found, so no rule claims one.
+Its parcels carry KTDWE and ten digits, the shape a universal provider files under KTD. No
+tracker of 跨通达 confirms the shape, and 快通达国际快递 also goes by KTD, so the rule has low
+confidence. No public number has been found, so the corpus holds a synthetic one.
 
 ## Links
 

@@ -54,6 +54,8 @@ describe('Tianhui Hengyuan tracking adapter', () => {
     await expect(adapter(environment(fetcher)).track({ number: 'NOTFOUND000002' })).rejects.toMatchObject({ kind: 'not_found' });
     expect(String(fetcher.mock.calls[1]![0])).toBe(`${THHY_ORIGIN}/trackIndex.htm`);
     expect(() => parseThhyPage(page('page-unknown'), 'NOTFOUND000002', READ_AT)).toThrow('could not locate');
+    const unknown = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
+    await expect(adapter(environment(unknown)).recognize!('NOTFOUND000002')).resolves.toEqual({ known: false });
   });
 
   it('maps every wording it lists by wording alone, and the app reads the map', () => {

@@ -83,5 +83,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "geodis-pl-1",
+      "pattern": "^PL\\d{16}$",
+      "confidence": "low"
+    }
+  ]
 }

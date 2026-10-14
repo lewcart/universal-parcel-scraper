@@ -8675,7 +8675,12 @@ export const CARRIER_CATALOG = {
     "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
     "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^PL\\d{16}$",
+        "confidence": "low"
+      }
+    ]
   },
   "ghn": {
     "displayName": "GHN",
@@ -9012,11 +9017,17 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gzyl",
+      "recognitionRank": 988,
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YL\\d{10}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "hanjin": {
     "displayName": "Hanjin",
@@ -9686,7 +9697,12 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JH\\d{10}CN$",
+        "confidence": "low"
+      }
+    ]
   },
   "jitsu": {
     "displayName": "Jitsu",
@@ -9783,7 +9799,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JRT\\d{10}MM$",
+        "confidence": "high"
+      }
+    ]
   },
   "kazpost": {
     "displayName": "Kazpost",
@@ -9900,7 +9921,12 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^KTDWE\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "kuehne-nagel": {
     "displayName": "Kuehne+Nagel",
@@ -13237,11 +13263,17 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "thhy",
+      "recognitionRank": 987,
       "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AT\\d{10}TH$",
+        "confidence": "low"
+      }
+    ]
   },
   "toptrans": {
     "displayName": "TOPTRANS",
@@ -13433,7 +13465,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^TSJY\\d{9}CN$",
+        "confidence": "high"
+      }
+    ]
   },
   "ubi-smart-parcel": {
     "displayName": "UBI Smart Parcel",
@@ -14531,7 +14568,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gebrueder-weiss": [],
   "geis": [],
   "geniki-taxydromiki": [],
-  "geodis-pl": [],
+  "geodis-pl": ["geodis-pl-1"],
   "ghn": [],
   "ghtk": ["ghtk-1"],
   "gls-es": [],
@@ -14539,7 +14576,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "go-express": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
-  "gzyl": [],
+  "gzyl": ["gzyl-1"],
   "hanjin": [],
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
@@ -14556,14 +14593,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "jadlog": [],
   "jersey-post": [],
-  "jhgj": [],
+  "jhgj": ["jhgj-1"],
   "jitsu": [],
   "jne": ["jne-1"],
-  "jrt": [],
+  "jrt": ["jrt-1"],
   "kazpost": [],
   "kex": [],
   "kolay-gelsin": [],
-  "ktd": [],
+  "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
@@ -14648,13 +14685,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiftx": ["swiftx-1"],
   "team-global-express": [],
   "tforce-freight": [],
-  "thhy": [],
+  "thhy": ["thhy-1"],
   "toptrans": [],
   "total-express": [],
   "trackon": [],
   "trans-o-flex": [],
   "trendyol-express": [],
-  "tsjy": [],
+  "tsjy": ["tsjy-1"],
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
   "vasp-expresso": [],
   "venipak": ["venipak-1"],

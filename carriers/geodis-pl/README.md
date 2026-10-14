@@ -49,7 +49,9 @@ the separate [`geodis`](../geodis/README.md) carrier.
 
 ## Numbers
 
-No public number has been found, so no rule claims one.
+Shipment numbers are PL and sixteen digits, the number the tracker shows as the shipment's and
+sellers give as its waybill. PL is the country, not the carrier, so the rule has low confidence
+and recognition asks the tracker.
 
 ## Testing
 

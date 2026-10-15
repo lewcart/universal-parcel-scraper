@@ -42535,6 +42535,17 @@
     ]
   },
   {
+    "input": "EE002763955MH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "EE002800794AR",
     "carrier": "intl-post",
     "confidence": "high",
@@ -48767,10 +48778,133 @@
     ]
   },
   {
+    "input": "ML559616706MH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "MLAR042396450EX",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLAR042951130EX",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLAR086293445EX",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
     "input": "MLC6ZG",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "MLCO004858315R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLCO012599462R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLCR000992116R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLPE061797570R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLPE077045388R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MLUY000058663EX",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MMXQP003906641N",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MMXQP016258945R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MMXQP049053940E",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MMXQP119499020R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
+  },
+  {
+    "input": "MMXQP141379634R",
+    "carrier": "mailamericas",
+    "confidence": "high",
+    "candidates": [
+      "mailamericas"
+    ]
   },
   {
     "input": "MP0068255613",
@@ -52014,6 +52148,17 @@
     ]
   },
   {
+    "input": "RP123674697MU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "RP325552475CN",
     "carrier": "china-post",
     "confidence": "high",
@@ -54835,6 +54980,17 @@
     ]
   },
   {
+    "input": "UN057195456MU",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "UN392483044CN",
     "carrier": "china-post",
     "confidence": "high",
@@ -56245,6 +56401,18 @@
     "confidence": "high",
     "candidates": [
       "hongkong-post"
+    ]
+  },
+  {
+    "input": "ZH132121855MX",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "correos-de-mexico",
+      "chronopost"
     ]
   },
   {

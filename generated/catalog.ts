@@ -10771,6 +10771,59 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "mailamericas": {
+    "displayName": "MailAmericas",
+    "color": "#76bd1d",
+    "aliases": [
+      "Mail Americas"
+    ],
+    "countries": [
+      "AR",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE",
+      "SV",
+      "UY"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "mailamericas",
+      "recognitionRank": 985,
+      "localClocks": true
+    },
+    "canaryUrl": "https://mailamericas.com/tracking",
+    "trackingUrlTemplate": "https://mailamericas.com/tracking?number_id={trackingNumber}",
+    "trackingSearchUrl": "https://mailamericas.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "mailamericas.com",
+          "www.mailamericas.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?tracking/?$",
+        "params": [
+          "number_id",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ML[A-Z]{2}\\d{9}(?:R|EX)$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      }
+    ]
+  },
   "mainfreight": {
     "displayName": "Mainfreight",
     "color": "#005eb8",
@@ -15016,6 +15069,7 @@ export const CARRIER_IDS = [
   "lotte-global",
   "lso",
   "magyar-posta",
+  "mailamericas",
   "mainfreight",
   "maltapost",
   "maritime-ontario",
@@ -15378,6 +15432,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lotte-global": [],
   "lso": ["lso-1"],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
+  "mailamericas": ["mailamericas-ml","mailamericas-mmxqp"],
   "mainfreight": [],
   "maltapost": ["maltapost-s10"],
   "maritime-ontario": [],

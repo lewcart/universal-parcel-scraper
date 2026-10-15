@@ -10769,6 +10769,59 @@
       }
     ]
   },
+  "mailamericas": {
+    "displayName": "MailAmericas",
+    "color": "#76bd1d",
+    "aliases": [
+      "Mail Americas"
+    ],
+    "countries": [
+      "AR",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE",
+      "SV",
+      "UY"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "mailamericas",
+      "recognitionRank": 985,
+      "localClocks": true
+    },
+    "canaryUrl": "https://mailamericas.com/tracking",
+    "trackingUrlTemplate": "https://mailamericas.com/tracking?number_id={trackingNumber}",
+    "trackingSearchUrl": "https://mailamericas.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "mailamericas.com",
+          "www.mailamericas.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?tracking/?$",
+        "params": [
+          "number_id",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ML[A-Z]{2}\\d{9}(?:R|EX)$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      }
+    ]
+  },
   "mainfreight": {
     "displayName": "Mainfreight",
     "color": "#005eb8",

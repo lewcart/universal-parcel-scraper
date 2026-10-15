@@ -677,6 +677,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'speedaf', number: 'MA000000000000',
     route: /^https:\/\/www\.speedaf\.com\/cn-en\/send-parcel\?tradeNo=MA000000000000$/,
     marker: /Track[\s\S]*Inquiry/ },
+  { carrier: 'mailamericas', number: 'MLAR000000000EX',
+    route: /^https:\/\/mailamericas\.com\/tracking\?number_id=MLAR000000000EX$/,
+    marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
 ];
 
 /**

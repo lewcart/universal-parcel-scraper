@@ -84,6 +84,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "latvijas-pasts": 100,
   "lietuvos-pastas": 895,
   "loomis-express": 285,
+  "mailamericas": 985,
   "maltapost": 50,
   "matkahuolto": 715,
   "meest": 340,

@@ -11668,7 +11668,9 @@
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "israel-post",
+      "recognitionRank": 81,
+      "localClocks": true
     },
     "canaryUrl": "https://israelpost.co.il/",
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
@@ -11699,6 +11701,12 @@
       {
         "pattern": "^\\d{11}IL$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IL$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

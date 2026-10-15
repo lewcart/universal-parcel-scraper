@@ -782,6 +782,7 @@ export const trackingLinkCases: TrackingLinkCase[] = [
  * tracking comes from shared providers, not the page the link opens.
  */
 export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
+  'israel-post': 'The public tracking page blocks requests before the tracking form; the adapter uses the native guest API.',
   zto: 'the domestic tracking page asks for Dingxiang verification before returning a shipment; the link opens the search form',
   '17feia': 'www.17feia.com sends a session without its cookie to cc.html, whose reload opens the home page without the number, so number forwarding cannot be verified',
   'allegro-one': 'allegro.pl answers automated Chrome with a DataDome block page instead of the tracker, so number forwarding cannot be verified',

@@ -130,6 +130,7 @@ import { adapter as inpost } from '../carriers/inpost/adapter.js';
 import { adapter as instabox } from '../carriers/instabox/adapter.js';
 import { adapter as intelcom } from '../carriers/intelcom/adapter.js';
 import { adapter as interrapidisimo } from '../carriers/interrapidisimo/adapter.js';
+import { adapter as israelPost } from '../carriers/israel-post/adapter.js';
 import { adapter as jAndT } from '../carriers/j-and-t/adapter.js';
 import { adapter as jAndTCargo } from '../carriers/j-and-t-cargo/adapter.js';
 import { adapter as japanPost } from '../carriers/japan-post/adapter.js';
@@ -388,6 +389,7 @@ export const REGISTRY: RegistryDefinition = {
     "instabox": instabox,
     "intelcom": intelcom,
     "interrapidisimo": interrapidisimo,
+    "israel-post": israelPost,
     "j-and-t": jAndT,
     "j-and-t-cargo": jAndTCargo,
     "japan-post": japanPost,
@@ -741,7 +743,7 @@ export const REGISTRY: RegistryDefinition = {
     "internet-express": "universal",
     "interrapidisimo": "interrapidisimo",
     "intl-post": "universal",
-    "israel-post": "universal",
+    "israel-post": "israel-post",
     "j-and-t": "j-and-t",
     "j-and-t-br": "universal",
     "j-and-t-cargo": "j-and-t-cargo",

@@ -24,7 +24,12 @@ to `/jadlog/rastreio`. A separate contact form has another widget. The promotion
 can cover the tracking checkbox; dismissing it is necessary before interaction. Google's
 audio challenge can refuse automated traffic even after the correct widget opens, leaving
 no tracking submission. The official [myJadlog app](https://play.google.com/store/apps/details?id=com.dpdgroup.chatbot.jadlog.prod)
-is another endpoint lead; its anonymous access requirements remain unimplemented.
+uses Geopost's `dpdgroup.com/concept/webservice` API. Its guest flow obtains an application
+token, then reads `/v10/parcels/details/{number}` with `businessUnit=JADLOG` and
+`continueWithoutVerification=true`. Guest display settings omit sender and recipient
+information. A successful guest token does not establish parcel coverage; this route
+has no dedicated adapter until matching history is verified. Firebase Remote Config
+supplies the shared application credential; issued guest tokens are temporary.
 
 ## Testing
 

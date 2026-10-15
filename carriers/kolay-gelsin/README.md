@@ -24,6 +24,11 @@ query capability; it is not a reusable public tracking link. The separate `kgHis
 route requires a verification code. A browser must complete the public form before its
 tracking response can establish the available anonymous history.
 
+The official [Android app](https://play.google.com/store/apps/details?id=com.kolaygelsin.ebranchandroid)
+opens the same tracking page in a web view. Its native support and OTP services are
+separate from shipment tracking. App deep links add `redirected=true`; this does not
+replace the tracking verification or create a result capability.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

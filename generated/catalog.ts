@@ -11670,7 +11670,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "israel-post",
+      "recognitionRank": 81,
+      "localClocks": true
     },
     "canaryUrl": "https://israelpost.co.il/",
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
@@ -11701,6 +11703,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{11}IL$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IL$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -20826,7 +20834,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "internet-express": [],
   "interrapidisimo": [],
-  "israel-post": ["israel-post-1"],
+  "israel-post": ["israel-post-1","israel-post-s10"],
   "j-and-t-br": [],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "j-and-t-cn": ["j-and-t-cn-1"],

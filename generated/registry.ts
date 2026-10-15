@@ -35,6 +35,7 @@ import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
 import { adapter as chronopost } from '../carriers/chronopost/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
+import { adapter as cjLogistics } from '../carriers/cj-logistics/adapter.js';
 import { adapter as cne } from '../carriers/cne/adapter.js';
 import { adapter as colisPrive } from '../carriers/colis-prive/adapter.js';
 import { adapter as colisweb } from '../carriers/colisweb/adapter.js';
@@ -251,6 +252,7 @@ export const REGISTRY: RegistryDefinition = {
     "chit-chats": chitChats,
     "chronopost": chronopost,
     "ciblex": ciblex,
+    "cj-logistics": cjLogistics,
     "cne": cne,
     "colis-prive": colisPrive,
     "colisweb": colisweb,
@@ -495,7 +497,7 @@ export const REGISTRY: RegistryDefinition = {
     "ciblex": "ciblex",
     "citylink-express": "universal",
     "citysprint": "universal",
-    "cj-logistics": "universal",
+    "cj-logistics": "cj-logistics",
     "cj-packet": "universal",
     "cne": "cne",
     "colis-prive": "colis-prive",

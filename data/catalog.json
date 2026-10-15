@@ -6568,7 +6568,8 @@
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cj-logistics",
+      "recognitionRank": 977
     },
     "canaryUrl": "https://www.cjlogistics.com/ko/tool/parcel/tracking",
     "trackingUrlTemplate": "https://www.cjlogistics.com/ko/tool/parcel/newTracking?gnbInvcNo={trackingNumber}",
@@ -6581,6 +6582,24 @@
         "pathPattern": "^/ko/tool/parcel/(?:tracking|newTracking)$",
         "params": [
           "gnbInvcNo"
+        ]
+      },
+      {
+        "domains": [
+          "trace.cjlogistics.com"
+        ],
+        "pathPattern": "^/next/tracking\\.html$",
+        "params": [
+          "wblNo"
+        ]
+      },
+      {
+        "domains": [
+          "trace.cjlogistics.com"
+        ],
+        "pathPattern": "^/web/(?:detail|info)\\.jsp$",
+        "params": [
+          "slipno"
         ]
       },
       {

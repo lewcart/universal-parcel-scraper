@@ -683,6 +683,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
+  // The page keeps the number from its address in its form and posts it to its own lookup on load.
+  { carrier: 'cj-logistics', number: '000000000000',
+    route: /^https:\/\/www\.cjlogistics\.com\/ko\/tool\/parcel\/newTracking\?gnbInvcNo=000000000000$/,
+    marker: /운송장이 등록되지 않았거나 보내는 분이 상품을 준비 중입니다|운송장번호를 입력하세요/ },
 ];
 
 /**

@@ -20,18 +20,64 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cj-logistics",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 977
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.cjlogistics.com/ko/tool/parcel/newTracking?gnbInvcNo={trackingNumber}",
     "searchUrl": "https://www.cjlogistics.com/ko/tool/parcel/tracking",
     "canaryUrl": "https://www.cjlogistics.com/ko/tool/parcel/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "office_contact_details",
+      "driver_name",
+      "signatory",
+      "order_contents",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "office_contact_details",
+      "driver_name",
+      "signatory",
+      "order_contents",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -41,6 +87,24 @@
       "pathPattern": "^/ko/tool/parcel/(?:tracking|newTracking)$",
       "params": [
         "gnbInvcNo"
+      ]
+    },
+    {
+      "domains": [
+        "trace.cjlogistics.com"
+      ],
+      "pathPattern": "^/next/tracking\\.html$",
+      "params": [
+        "wblNo"
+      ]
+    },
+    {
+      "domains": [
+        "trace.cjlogistics.com"
+      ],
+      "pathPattern": "^/web/(?:detail|info)\\.jsp$",
+      "params": [
+        "slipno"
       ]
     },
     {

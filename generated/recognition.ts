@@ -27,6 +27,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "chit-chats": 115,
   "chronopost": 890,
   "ciblex": 640,
+  "cj-logistics": 977,
   "colis-prive": 740,
   "correos-de-mexico": 30,
   "correos-express": 800,

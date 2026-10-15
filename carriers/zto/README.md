@@ -18,10 +18,18 @@ requires recognition of the requested glyphs, their image positions and the clic
 The OCR worker infrastructure can be reused with a suitable model; the Correios weights
 do not cover this task. ZTO therefore remains on universal providers.
 
+The other official routes do not avoid the challenge. The mobile site's waybill page reads
+`hdgateway.zto.com/getTrace`, which requires a signed-in ZTO account. The 中通快递 Android app
+(`cn.beekee.zhongtong`) ships its code inside a protection shell, so its tracking request is
+not readable from the package.
+
 ## Limitations
 
-International ZTO services use separate portals. Domestic number shapes overlap other
-carriers and do not establish ZTO ownership.
+International ZTO services use separate portals. ZTO International's tracker posts to
+`taurus-api.ztoglobal.com/applet/track/queryFromMainSite` without a challenge, but it only
+answers ZTO International waybills, which start with `771`. Domestic waybills get the same
+empty reply as unknown numbers. Domestic number shapes overlap other carriers and do not
+establish ZTO ownership.
 
 ## Testing
 

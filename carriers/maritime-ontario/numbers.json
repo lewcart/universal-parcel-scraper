@@ -20,7 +20,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "M-O's Track and Trace customer guide shows it in the Freight Bill column of the trace grid and as the bill on the detail screen, with placeholder customer names; read from the guide's screenshot."

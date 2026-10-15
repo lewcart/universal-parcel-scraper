@@ -1,26 +1,27 @@
 # Loggi
 
-Loggi parcels use enabled universal providers. There is no dedicated adapter.
+Reads Loggi's public tracking page through the optional TRAWL browser service.
 
-## Numbers
+## Retrieval
 
-Loggi's tracker takes an eight-character tracking code of capital letters and digits. Lookups
-archived from the tracker show them, and its page names that part of the address the tracking
-code. Eight characters are a shape several carriers share, so no rule claims them. Older
-lookups put a merchant's own reference after a merchant key, or Loggi's internal package
-number; neither is a tracking code.
+The browser clears Cloudflare's page check, then Loggi's server includes the shipment in
+the page's React component data. The adapter reads those props without running their scripts
+and checks both the route and the shipment's whole tracking code. A loaded page or a cleared
+challenge alone does not confirm a parcel. Unknown codes render the tracker's missing-page view.
 
-## Links
+The parser retains scan wording and facility towns. Recipient names, delivery instructions,
+documents and verification state stay out of results. The history supplies calendar days,
+so scans keep dates without invented times or offsets and retain the page's order within a day.
 
-`app.loggi.com/rastreador/{code}` shows one parcel after a robot check, and the tracker on
-`loggi.com/rastreador/` embeds the same page. The library reads the code from those addresses
-but builds none, because the robot check hides the search field from automated checks.
+## Limitations
 
-The robot check is Cloudflare's checkbox, before every tracker address loads. Loggi's server
-then writes the parcel into the page, so there is no lookup of its own to call, and Loggi's app
-opens the same page. No adapter reads it.
+The eight-character code overlaps other carriers and is only a low-confidence suggestion.
+Older merchant references and internal package ids are not supported. No cheap HTTP
+recognition is available. Cloudflare can still refuse the browser; enabled universal providers
+remain the fallback. A reused code can require the recipient's postcode on the public form;
+the adapter does not submit recipient verification.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `FLARESOLVERR_URL` and `LOGGI_TRACKING_NUMBER`, then run
+`npm run test:carriers:live -- carriers/loggi`. `LOGGI_UNKNOWN_NUMBER` also checks an unknown code.

@@ -1099,12 +1099,6 @@
     "reason": "Eleven digits with a mod-7 check digit are shared with Japan Post and several other carriers, and nothing in the number points to Logen."
   },
   {
-    "carrier": "loggi",
-    "pattern": "^[A-Z0-9]{8}$",
-    "kind": "by_design",
-    "reason": "Eight capital letters and digits are shared by GLS, DX and other carriers, and nothing in the code points to Loggi."
-  },
-  {
     "carrier": "lotte-global",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -1795,6 +1789,12 @@
     "pattern": "^\\d{9}$",
     "kind": "by_design",
     "reason": "Nine-digit waybills carry no Viettel Post marker and other carriers print the same length."
+  },
+  {
+    "carrier": "viettel-post",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve-digit waybills carry no Viettel Post marker and overlap several other carriers. A complete matching record is required for ownership."
   },
   {
     "carrier": "viettel-post",

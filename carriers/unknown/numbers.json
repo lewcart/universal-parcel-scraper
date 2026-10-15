@@ -221,7 +221,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Shared numeric shape that must stay a suggestion rather than a carrier."
@@ -234,7 +235,10 @@
       "shapeConfirmed": "2026-09-12",
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "Plain word that must never look like a tracking number."
     },

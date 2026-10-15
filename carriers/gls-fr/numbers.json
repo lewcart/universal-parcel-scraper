@@ -107,7 +107,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS France, which stays one candidate among several."
@@ -162,7 +163,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "The customer names this GLS parcel at the Artigues delivery agency and contact with GLS France. The report is evidence of the French service without independently confirming shipment history."
@@ -188,7 +190,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "GLS France quotes this number in its public reply to a review; its tracker returns the history. Eight letters and digits not starting 00 are shared by GLS networks, so GLS France stays one suggestion."
@@ -277,7 +280,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "A GLS France review names this ParcelShop parcel; GLS France's tracker returns the history. The shape is shared by GLS networks, so GLS France stays one suggestion."

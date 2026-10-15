@@ -16,7 +16,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "Looked up on Loggi's own tracker, whose page names this path segment the tracking code; the capture was opened but renders the history in the browser, so it does not show the parcel."
     },
@@ -35,7 +38,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "Looked up on Loggi's own tracker, as an archived address shows; the capture was not opened."
     },
@@ -58,7 +64,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Looked up on Loggi's own tracker, as an archived address shows; the capture was not opened."
@@ -74,7 +81,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -82,10 +89,11 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
-      "note": "Looked up on Loggi's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on the official tracker. Its current public page returns the matching tracking code and shipment history through the browser service."
     },
     {
       "number": "69AC1B4A",
@@ -106,7 +114,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Looked up on Loggi's own tracker, as an archived address shows; the capture was not opened."

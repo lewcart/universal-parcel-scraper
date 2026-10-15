@@ -7399,7 +7399,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "deppon",
+      "localClocks": true
     },
     "canaryUrl": "https://www.deppon.com/orderTrack",
     "trackingSearchUrl": "https://www.deppon.com/orderTrack",
@@ -10596,7 +10597,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "loggi",
+      "localClocks": true
     },
     "canaryUrl": "https://www.loggi.com/rastreador/",
     "linkRules": [
@@ -10607,7 +10609,12 @@ export const CARRIER_CATALOG = {
         "path": "^/rastreador/([A-Za-z0-9]{8})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?=[A-Z0-9]*[A-Z])[A-Z0-9]{8}$",
+        "confidence": "low"
+      }
+    ]
   },
   "loomis-express": {
     "displayName": "Loomis Express",
@@ -14395,7 +14402,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "viettel-post",
+      "localClocks": true
     },
     "canaryUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
     "trackingSearchUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
@@ -15481,7 +15489,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lbc-express": ["lbc-domestic"],
   "lietuvos-pastas": ["lietuvos-pastas-1","lietuvos-pastas-s10"],
   "logen": [],
-  "loggi": [],
+  "loggi": ["loggi-1"],
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lotte-global": [],
   "lso": ["lso-1"],

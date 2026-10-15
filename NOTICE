@@ -8,6 +8,10 @@ The Correios CAPTCHA model is derived from opastorello/correios-rastreamento
 and retains its MIT license in dist/carriers/correios-br/model/LICENSE and
 carriers/correios-br/model/LICENSE. See that folder's README for provenance.
 
+The Viettel Post CAPTCHA model is from sml2h3/ddddocr and retains its MIT
+license in carriers/viettel-post/model/LICENSE and the corresponding dist
+folder. See that folder's README for provenance.
+
 The places gazetteer includes GeoNames data (https://www.geonames.org),
 licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
 Facility coordinates include OpenStreetMap data (https://www.openstreetmap.org/copyright),

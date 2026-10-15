@@ -829,9 +829,10 @@
     "carriers": [
       "gls-ch",
       "gls-de",
-      "gls-fr"
+      "gls-fr",
+      "loggi"
     ],
-    "reason": "The three GLS countries share one 8-character format; the number stays a low-confidence suggestion."
+    "reason": "The three GLS countries share one 8-character format; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence."
   },
   {
     "shape": "Eleven digits that pass the mod 7 check",
@@ -948,9 +949,10 @@
       "gls-ch",
       "gls-de",
       "gls-fr",
+      "loggi",
       "the-courier-guy"
     ],
-    "reason": "Courier Guy product references share the eight-character format with the three GLS networks; native recognition must establish the carrier."
+    "reason": "Courier Guy product references share the eight-character format with the three GLS networks; native recognition must establish the carrier. Loggi also suggests this shape at low confidence."
   },
   {
     "shape": "9{22}",
@@ -2209,9 +2211,10 @@
       "dx",
       "gls-ch",
       "gls-de",
-      "gls-fr"
+      "gls-fr",
+      "loggi"
     ],
-    "reason": "DX's letter and seven digits share the eight-character format of the three GLS networks; the number stays a low-confidence suggestion."
+    "reason": "DX's letter and seven digits share the eight-character format of the three GLS networks; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence."
   },
   {
     "shape": "Two digits, A and nine digits",
@@ -2236,9 +2239,10 @@
       "gls-ch",
       "gls-de",
       "gls-fr",
+      "loggi",
       "lso"
     ],
-    "reason": "LSO airbills share the eight-character format of the three GLS networks; the specific ZY0 rule decides."
+    "reason": "LSO airbills share the eight-character format of the three GLS networks; the specific ZY0 rule decides. Loggi also suggests this shape at low confidence."
   },
   {
     "shape": "KP followed by eleven digits",
@@ -2678,5 +2682,13 @@
       "speedaf"
     ],
     "reason": "Speedaf's country-prefixed waybills are twelve characters, which Colis Privé's rule for any 12-character alphanumeric also takes. Both rules are low-confidence; Speedaf's layout is preferred and its tracker confirms the number."
+  },
+  {
+    "shape": "Eight letters in a Courier Guy reference",
+    "carriers": [
+      "loggi",
+      "the-courier-guy"
+    ],
+    "reason": "Courier Guy references without digits overlap Loggi tracking codes. Direct confirmation must establish the carrier."
   }
 ]

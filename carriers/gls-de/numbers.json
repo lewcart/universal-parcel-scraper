@@ -81,7 +81,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS, which stays one candidate among several."
@@ -99,7 +100,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS Germany, which stays one candidate among several."
@@ -646,7 +648,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "A GLS Track ID from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."

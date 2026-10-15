@@ -105,7 +105,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Looked up on RAM's own tracker, as an archived address shows; the capture was not opened."
@@ -129,7 +130,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on RAM's own tracker; the capture shows this waybill's road movements, a failed delivery attempt and follow-up calls."
@@ -177,7 +179,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Ordertracker's RAM page gives it as an example of the shorter reference a sender may pass to the recipient."

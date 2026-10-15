@@ -33,7 +33,6 @@ const WITHOUT_SIGNAL: Readonly<Record<string, string>> = {
   'carriers/asendia/probe.ts requestJson': 'The same probe.',
   'carriers/swiss-post/adapter.ts readJson': 'Sets the signal of the budget it is handed, and every request of a lookup hands its own; '
     + 'only `loadTranslations` called outside a lookup comes without one.',
-  'carriers/correios-br/ocr.ts solve': 'The timer closes the OCR worker once it is idle: no lookup waits on it.',
   'carriers/mondial-relay/app.ts #renew': 'One token renewal serves every lookup waiting for it; each stops waiting on its own signal, '
     + 'and the request keeps its timeout.',
   'carriers/dpd-de/service.ts #retry': 'Opens again the DPD app session a long-lived host keeps open after a failed opening: no '

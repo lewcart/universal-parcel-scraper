@@ -52,6 +52,7 @@ import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
 import { adapter as dayRoss } from '../carriers/day-ross/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
+import { adapter as deppon } from '../carriers/deppon/adapter.js';
 import { adapter as dhl } from '../carriers/dhl/adapter.js';
 import { adapter as dhlEcommerce } from '../carriers/dhl-ecommerce/adapter.js';
 import { adapter as dhlEcommerceEs } from '../carriers/dhl-ecommerce-es/adapter.js';
@@ -131,6 +132,7 @@ import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js'
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
 import { adapter as logen } from '../carriers/logen/adapter.js';
+import { adapter as loggi } from '../carriers/loggi/adapter.js';
 import { adapter as loomisExpress } from '../carriers/loomis-express/adapter.js';
 import { adapter as lotteGlobal } from '../carriers/lotte-global/adapter.js';
 import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
@@ -209,6 +211,7 @@ import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
 import { adapter as ups } from '../carriers/ups/adapter.js';
 import { adapter as usps } from '../carriers/usps/adapter.js';
 import { adapter as venipak } from '../carriers/venipak/adapter.js';
+import { adapter as viettelPost } from '../carriers/viettel-post/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
@@ -276,6 +279,7 @@ export const REGISTRY: RegistryDefinition = {
     "dao": dao,
     "day-ross": dayRoss,
     "delhivery": delhivery,
+    "deppon": deppon,
     "dhl": dhl,
     "dhl-ecommerce": dhlEcommerce,
     "dhl-ecommerce-es": dhlEcommerceEs,
@@ -355,6 +359,7 @@ export const REGISTRY: RegistryDefinition = {
     "lbc-express": lbcExpress,
     "lietuvos-pastas": lietuvosPastas,
     "logen": logen,
+    "loggi": loggi,
     "loomis-express": loomisExpress,
     "lotte-global": lotteGlobal,
     "magyar-posta": magyarPosta,
@@ -433,6 +438,7 @@ export const REGISTRY: RegistryDefinition = {
     "ups": ups,
     "usps": usps,
     "venipak": venipak,
+    "viettel-post": viettelPost,
     "vinted-go": vintedGo,
     "wanbexpress": wanbexpress,
     "whistl": whistl,
@@ -542,7 +548,7 @@ export const REGISTRY: RegistryDefinition = {
     "delhivery": "delhivery",
     "delivengo": "la-poste",
     "dellin": "universal",
-    "deppon": "universal",
+    "deppon": "deppon",
     "deprisa": "universal",
     "dhl": "dhl",
     "dhl-ecommerce": "dhl-ecommerce",
@@ -650,7 +656,7 @@ export const REGISTRY: RegistryDefinition = {
     "lbc-express": "lbc-express",
     "lietuvos-pastas": "lietuvos-pastas",
     "logen": "logen",
-    "loggi": "universal",
+    "loggi": "loggi",
     "loomis-express": "loomis-express",
     "lotte-global": "lotte-global",
     "lso": "universal",
@@ -788,7 +794,7 @@ export const REGISTRY: RegistryDefinition = {
     "usps": "usps",
     "vasp-expresso": "universal",
     "venipak": "venipak",
-    "viettel-post": "universal",
+    "viettel-post": "viettel-post",
     "vinted-go": "vinted-go",
     "vnpost": "universal",
     "vrl-logistics": "universal",

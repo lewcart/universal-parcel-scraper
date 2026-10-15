@@ -20,7 +20,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Danske Fragtmænd's Track & Trace integration guide gives it as the example consignment note number in its tracker link."
@@ -63,7 +64,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived reply of the tracker's own API on trace.fragt.dk; it shows the consignment's pickup, delivery attempts and events."
@@ -106,7 +108,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived reply of the tracker's own API on trace.fragt.dk; it shows the consignment's events."

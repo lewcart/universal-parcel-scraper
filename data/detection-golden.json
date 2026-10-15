@@ -2514,7 +2514,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -10094,6 +10095,29 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "138702241536",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -18853,7 +18877,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -30322,7 +30347,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -38526,7 +38552,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -38935,7 +38962,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -39751,7 +39779,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -42430,7 +42459,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "the-courier-guy"
+      "the-courier-guy",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -42504,8 +42534,10 @@
   {
     "input": "DELIVERY",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "DHL13237372",
@@ -42589,6 +42621,12 @@
     "candidates": [
       "aliexpress"
     ]
+  },
+  {
+    "input": "DPK212604897303",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "DQ0DK20000034530118220Z",
@@ -42679,7 +42717,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44236,7 +44275,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44270,7 +44310,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44640,7 +44681,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44655,7 +44697,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44670,7 +44713,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44685,7 +44729,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44700,7 +44745,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44715,7 +44761,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44730,7 +44777,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44741,8 +44789,10 @@
   {
     "input": "GACDDLFY",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "GAHAYWM8",
@@ -44751,7 +44801,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -44762,8 +44813,10 @@
   {
     "input": "GATVWVXK",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "GB0000000001",
@@ -45090,7 +45143,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -45101,8 +45155,10 @@
   {
     "input": "GYAAYVXL",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "GYBF9DG3",
@@ -45111,7 +45167,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -45122,8 +45179,10 @@
   {
     "input": "GYNHEQKR",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "Glv39451553139",
@@ -46767,7 +46826,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -46782,7 +46842,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -46816,7 +46877,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47026,7 +47088,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47042,7 +47105,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47058,7 +47122,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47074,7 +47139,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47090,7 +47156,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47106,7 +47173,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47407,7 +47475,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "the-courier-guy"
+      "the-courier-guy",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -47841,7 +47910,8 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "the-courier-guy"
+      "the-courier-guy",
+      "loggi"
     ],
     "asked": [
       "the-courier-guy"
@@ -50156,8 +50226,10 @@
   {
     "input": "NVSGIVCJ",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "NZC999999999",
@@ -50708,8 +50780,10 @@
   {
     "input": "PEZHCQRG",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "loggi"
+    ]
   },
   {
     "input": "PF0328183418300",
@@ -55873,7 +55947,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -55966,7 +56041,8 @@
       "gls-ch",
       "gls-fr",
       "gls-de",
-      "dx"
+      "dx",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56576,7 +56652,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56634,7 +56711,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56724,7 +56802,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56739,7 +56818,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56863,7 +56943,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -56986,7 +57067,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",
@@ -57134,7 +57216,8 @@
     "candidates": [
       "gls-ch",
       "gls-fr",
-      "gls-de"
+      "gls-de",
+      "loggi"
     ],
     "asked": [
       "gls-fr",

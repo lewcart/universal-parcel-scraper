@@ -19,17 +19,18 @@
   "timezone": "Asia/Ho_Chi_Minh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "viettel-post",
+    "steps": ["direct"],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": ["provider_code", "service_name"],
   "portal": {
     "searchUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
     "canaryUrl": "https://viettelpost.com.vn/tra-cuu-hanh-trinh-don/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": ["status", "history", "service_name"],
+    "scraped": ["status", "provider_code", "service_name"],
+    "discarded": ["recipient_name", "recipient_address", "phone_numbers", "postcodes", "office_contact_details"],
+    "unavailable": ["eta", "weight", "dimensions", "pickup_point"]
   },
   "links": [
     {

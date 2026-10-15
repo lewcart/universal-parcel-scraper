@@ -22,17 +22,18 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "deppon",
+    "steps": ["direct"],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": ["history", "provider_code"],
   "portal": {
     "searchUrl": "https://www.deppon.com/orderTrack",
     "canaryUrl": "https://www.deppon.com/orderTrack",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": ["status", "history"],
+    "scraped": ["status", "history", "provider_code"],
+    "discarded": ["recipient_name", "recipient_address", "phone_numbers"],
+    "unavailable": ["eta", "weight", "dimensions", "service_name", "pickup_point"]
   },
   "links": [],
   "detection": []

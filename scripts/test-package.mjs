@@ -117,7 +117,9 @@ try {
     assert.equal(typeof carrierTrackingHintKey('ups'), 'string');
     assert(!('carrierTrackingHintKey' in tracking));
     const base = new URL('.', import.meta.resolve('universal-parcel-scraper/node'));
-    for (const file of ['carriers/correios-br/ocr-worker.mjs','carriers/correios-br/model/captcha.onnx','carriers/correios-br/model/LICENSE','places/places.tsv.br','places/pincodes.json','browser/scraper.js']) assert(existsSync(new URL(file, base)), file);
+    for (const file of ['carriers/correios-br/ocr-worker.mjs','carriers/correios-br/model/captcha.onnx','carriers/correios-br/model/LICENSE',
+      'carriers/viettel-post/ocr-worker.mjs','carriers/viettel-post/model/captcha.onnx','carriers/viettel-post/model/characters.json','carriers/viettel-post/model/LICENSE',
+      'places/places.tsv.br','places/pincodes.json','browser/scraper.js']) assert(existsSync(new URL(file, base)), file);
     assert(!readFileSync(new URL('browser/scraper.js', base), 'utf8').includes('node:'));
   `);
   execFileSync(process.execPath, ['smoke.mjs'], { cwd: scratch, stdio: 'inherit' });

@@ -288,6 +288,37 @@
         "confidence": "none"
       },
       "note": "Viettel Store's guide to Viettel Post tracking gives it as an example waybill to enter on Viettel Post's tracking page."
+    },
+    {
+      "number": "138702241536",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/jsp/pakn_answer_byid.jsp?pakn_id=4ED741001801DC6DE063540AA8C0B011",
+        "date": "2026-04-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "A public government response identifies Viettel Post as the carrier. The official legacy API repeats the whole waybill in its registration record, without current tracking history."
     }
   ]
 }

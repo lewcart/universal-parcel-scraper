@@ -1,23 +1,31 @@
 # Viettel Post
 
-Viettel Post parcels use enabled universal providers. There is no dedicated adapter.
+Reads a Viettel Post shipment record through its legacy text-CAPTCHA lookup.
 
-## Numbers
+## Retrieval
 
-Lookups archived from Viettel Post's tracking pages show waybills of nine digits, of `V` and
-eleven digits, and, on the current order page, of thirteen digits. `viettel-post-1` suggests
-the `V` layout. Bare digits of these lengths are printed by other carriers too, so no rule
-claims them.
+The [public tracking client](https://viettelpost.vn/viettelpost-iframe/tra-cuu-hanh-trinh-don-hang)
+contains the legacy `api.viettelpost.vn/api/orders/getCaptcha` and `viewTrackingOrders` flow.
+Each lookup opens a fresh cookie jar, reads the text image with the bundled local
+[OCR model](model/README.md) and submits its id, answer and one whole waybill. One fresh
+challenge is allowed after unreadable text or an explicit rejected answer. Changed payloads,
+limits and blocked pages do not become not-found.
 
-## Links
+The record must repeat the requested waybill in `MA_KIEN`. Its wording, status clock,
+provider code and service name are retained. The clock keeps its local wall time.
 
-The library reads the number from the current order page on `viettelpost.vn`, which takes it
-as `orderNumber`, and from the former tracking page on `viettelpost.com.vn`, which took it as
-`KEY`, `Key` or `id`. The order page opens only for a signed-in customer, so the library builds
-no address. Viettel Post's public tracker and its app's guest lookup answer only with a
-reCAPTCHA token, so no adapter reads them.
+## Limitations
+
+This is a partial record, not the current tracker's history. It can still show registration
+after delivery. Every answer is `summary_only`, so enabled universal providers are asked for
+richer and newer history. Recipient details, office addresses and verification state are omitted.
+
+The current tracker and the Android app `com.viettel.ViettelPost` require reCAPTCHA for
+their guest history endpoints; neither is used. No cheap recognition solves a CAPTCHA.
+Overlapping numeric shapes do not establish carrier ownership. Existing order-page links
+can be read, but the signed-in page is not built as a public tracking address.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/viettel-post`. Set `VIETTEL_POST_TRACKING_NUMBER`
+to read a known record and `VIETTEL_POST_UNKNOWN_NUMBER` to check an unknown waybill.

@@ -20,7 +20,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -44,7 +45,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -68,7 +70,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -92,7 +95,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -116,7 +120,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -140,7 +145,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -160,7 +166,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
     },
@@ -183,7 +192,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -203,7 +213,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
     },
@@ -226,7 +239,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -246,7 +260,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
     },
@@ -269,7 +286,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
@@ -289,7 +307,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "loggi"
+        ]
       },
       "note": "An archived lookup on GHN's own tracker passes it as order_code; the capture was not opened."
     }

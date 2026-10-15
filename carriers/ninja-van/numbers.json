@@ -14,7 +14,8 @@
         "candidates": [
           "gls-ch",
           "gls-fr",
-          "gls-de"
+          "gls-de",
+          "loggi"
         ]
       },
       "note": "Official documentation example, not a real shipment. The source attributes it to Ninja Van, which no rule claims."

@@ -36,7 +36,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "the-courier-guy"
+          "the-courier-guy",
+          "loggi"
         ]
       },
       "note": "Door-to-door product reference from a review of The Courier Guy; its booking was cancelled after failed collections. The Courier Guy's tracker returns its history."
@@ -59,7 +60,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "the-courier-guy"
+          "the-courier-guy",
+          "loggi"
         ]
       },
       "note": "Locker-to-door product reference from a review of The Courier Guy. The Courier Guy's tracker returns its history."
@@ -117,7 +119,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "the-courier-guy"
+          "the-courier-guy",
+          "loggi"
         ]
       },
       "note": "Locker-to-locker product reference from a review of The Courier Guy. The Courier Guy's tracker returns its history."

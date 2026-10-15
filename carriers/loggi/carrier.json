@@ -17,16 +17,17 @@
   "timezone": "America/Sao_Paulo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "loggi",
+    "steps": ["trawl"],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": ["history", "location"],
   "portal": {
     "canaryUrl": "https://www.loggi.com/rastreador/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": ["status", "history", "location", "recipient_name", "delivery_comments", "sender_name"],
+    "scraped": ["status", "history", "location"],
+    "discarded": ["recipient_name", "delivery_comments", "sender_name"],
+    "unavailable": ["eta", "weight", "dimensions", "service_name", "pickup_point"]
   },
   "links": [
     {
@@ -36,5 +37,7 @@
       "path": "^/rastreador/([A-Za-z0-9]{8})/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    { "id": "loggi-1", "pattern": "^(?=[A-Z0-9]*[A-Z])[A-Z0-9]{8}$", "confidence": "low" }
+  ]
 }

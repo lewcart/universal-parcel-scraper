@@ -135,6 +135,26 @@
         ]
       },
       "note": "A customer review on TrackingMore's DEPPON review page gives it as the goods number of a box sent from Shanghai to Taiwan."
+    },
+    {
+      "number": "DPK212604897303",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ccwb.cn/content/202510/23/c813242.html",
+        "date": "2025-10-23",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "quarantine"
+      },
+      "quarantine": true,
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A published enforcement notice identifies a Deppon waybill. Retained as quarantined scope evidence; the current tracking service has not confirmed it."
     }
   ]
 }

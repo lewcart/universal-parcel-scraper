@@ -13,8 +13,9 @@ claims them.
 
 The library reads the number from the current order page on `viettelpost.vn`, which takes it
 as `orderNumber`, and from the former tracking page on `viettelpost.com.vn`, which took it as
-`KEY`, `Key` or `id`. The current page renders in the browser and its guest view is untested,
-so the library builds no address.
+`KEY`, `Key` or `id`. The order page opens only for a signed-in customer, so the library builds
+no address. Viettel Post's public tracker and its app's guest lookup answer only with a
+reCAPTCHA token, so no adapter reads them.
 
 ## Testing
 

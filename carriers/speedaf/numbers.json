@@ -16,12 +16,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A review on Speedaf's Trustpilot page gives it as the tracking number. Speedaf's tracker returns its history."
     },
@@ -40,12 +36,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A review on Speedaf's Trustpilot page gives it as the Speedaf number of an AliExpress order, beside the order's Cainiao numbers. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -202,12 +194,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A review on Speedaf's Trustpilot page gives it as the tracking number of a parcel held in customs. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -226,12 +214,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A review on Speedaf's Trustpilot page gives it as the tracking number of an AliExpress order. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -319,12 +303,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A review on AliExpress's Trustpilot page gives it as the Speedaf number of a parcel to Morocco. Speedaf's tracker returns its history."
     },
@@ -389,12 +369,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A post to Speedaf Nigeria on X gives it as the tracking number of a self pick-up parcel. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -413,12 +389,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A post to Speedaf Nigeria on X gives it for an AliExpress order. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -437,12 +409,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A reply to Speedaf on X quotes Speedaf's delivery message for it. Speedaf's tracker returns its history."
     },
@@ -599,12 +567,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A PissedConsumer review of Speedaf gives it for a parcel to Rwanda. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -623,12 +587,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A PissedConsumer review of Speedaf gives it for a parcel to South Africa. Speedaf's tracker knows it but no longer returns its scans."
     },
@@ -670,12 +630,8 @@
         "assessment": "review"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "speedaf",
-          "colis-prive"
-        ]
+        "carrier": "speedaf",
+        "confidence": "high"
       },
       "note": "A Kenyan forum post gives it as the kind of AliExpress number Speedaf delivers. Speedaf's tracker no longer knows it, so its owner is unconfirmed."
     },

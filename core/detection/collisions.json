@@ -2681,7 +2681,7 @@
       "colis-prive",
       "speedaf"
     ],
-    "reason": "Speedaf's country-prefixed waybills are twelve characters, which Colis Privé's rule for any 12-character alphanumeric also takes. Both rules are low-confidence; Speedaf's layout is preferred and its tracker confirms the number."
+    "reason": "Speedaf's country-prefixed waybills are twelve characters, which Colis Privé's low-confidence rule for any 12-character alphanumeric also takes. Colis Privé numbers end in digits, so Speedaf's high-confidence layout decides."
   },
   {
     "shape": "Eight letters in a Courier Guy reference",

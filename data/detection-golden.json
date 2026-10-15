@@ -46993,18 +46993,10 @@
   },
   {
     "input": "KE000027882E",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -49112,18 +49104,10 @@
   },
   {
     "input": "MA019681550R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -49161,34 +49145,18 @@
   },
   {
     "input": "MA038621951R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
     "input": "MA052781271R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -49915,18 +49883,10 @@
   },
   {
     "input": "NG013313285E",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -50036,50 +49996,26 @@
   },
   {
     "input": "NG135304540R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
     "input": "NG138700855R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
     "input": "NG140439946R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -53423,18 +53359,10 @@
   },
   {
     "input": "RW000336615R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
@@ -56974,34 +56902,18 @@
   },
   {
     "input": "ZA000176737R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {
     "input": "ZA000295504R",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "speedaf",
+    "confidence": "high",
     "candidates": [
-      "speedaf",
-      "colis-prive"
-    ],
-    "preferred": [
       "speedaf"
-    ],
-    "asked": [
-      "speedaf",
-      "colis-prive"
     ]
   },
   {

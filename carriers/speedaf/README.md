@@ -27,9 +27,9 @@ own but use the same tracker. Tracked through the lookup its tracking page makes
 ## Notes
 
 - Each scan's `time` is the scanning site's wall clock and `timezone` its offset in hours: 8 in
-  the Chinese warehouses, then the destination's, such as 1 in Nigeria or 4 in Mauritius. The adapter returns the time at that
-  offset, which keeps a history crossing from China in order. A scan without a usable offset
-  keeps its wall clock.
+  the Chinese warehouses, then the destination's, such as 1 in Nigeria or 4 in Mauritius. The
+  adapter returns the time at that offset, which keeps a history crossing from China in order. A
+  scan without a usable offset keeps its wall clock.
 - The scan's `action` stages it, with its `subAction` when that differs: the provider code is
   `action:subAction`, such as `3:3001` for an arrival at a distribution centre. Issue scans
   (`-1`) give their reason only in the sub-action, so the map stages the reasons it knows, a
@@ -61,10 +61,12 @@ Speedaf numbers start with the destination country's code. Its tracker answers t
   this number for parcels Speedaf delivers, and Speedaf's tracker answers it as its own waybill
   from the Chinese warehouse on.
 
-`speedaf-12` and `speedaf-r` suggest Speedaf for these layouts when the prefix is a country where
-its numbers have been seen, `speedaf-r` listed first. Both are low confidence: a country code and
-digits is a common shape, and Instabox has used the first one in Sweden. The samples and their sources are
-in [`numbers.json`](numbers.json).
+Both rules take only a prefix for a country where Speedaf numbers have been seen. `speedaf-r`
+detects the second layout with high confidence: no other carrier's numbers in the corpus or the
+harvested pages end in a letter after nine digits, and it otherwise overlaps only Colis Privé's
+rule for any twelve characters, whose numbers end in digits. `speedaf-12` only suggests
+Speedaf, because the same country-and-digits shape turns up in Instabox and Bring samples. The
+samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Testing
 

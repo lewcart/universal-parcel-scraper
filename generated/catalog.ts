@@ -13515,8 +13515,7 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^(?:AE|EG|GH|KE|KZ|MA|MU|MV|NG|PK|RE|RW|SA|TR|UG|ZA|ZM)\\d{9}[ER]$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       }
     ]
   },

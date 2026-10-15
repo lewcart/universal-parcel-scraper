@@ -121,6 +121,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "paquetexpress": 35,
   "passport": 55,
   "poczta-polska": 750,
+  "pos-indonesia": 964,
   "post-luxembourg": 80,
   "posta-slovenije": 130,
   "posta-srbije": 110,

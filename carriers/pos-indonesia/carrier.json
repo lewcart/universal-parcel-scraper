@@ -20,18 +20,64 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pos-indonesia",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 964
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "weight",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://www.posindonesia.co.id/id/tracking/{trackingNumber}",
     "searchUrl": "https://www.posindonesia.co.id/id/tracking",
     "canaryUrl": "https://www.posindonesia.co.id/id/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "staff_details",
+      "signatory",
+      "postcodes",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "weight",
+      "destination_country"
+    ],
+    "discarded": [
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "staff_details",
+      "signatory",
+      "postcodes",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "pickup_point",
+      "dimensions"
+    ]
   },
   "links": [
     {

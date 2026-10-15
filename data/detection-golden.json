@@ -51341,6 +51341,17 @@
     ]
   },
   {
+    "input": "EE205187475BN",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "EE212938475ID",
     "carrier": "intl-post",
     "confidence": "high",
@@ -57017,6 +57028,14 @@
     ]
   },
   {
+    "input": "LP107221675JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
+    ]
+  },
+  {
     "input": "LP157079155HK",
     "carrier": "hongkong-post",
     "confidence": "high",
@@ -59769,6 +59788,9 @@
     "confidence": "low",
     "candidates": [
       "pos-indonesia"
+    ],
+    "asked": [
+      "pos-indonesia"
     ]
   },
   {
@@ -59794,6 +59816,9 @@
     "confidence": "low",
     "candidates": [
       "pos-indonesia"
+    ],
+    "asked": [
+      "pos-indonesia"
     ]
   },
   {
@@ -59802,6 +59827,9 @@
     "confidence": "low",
     "candidates": [
       "pos-indonesia"
+    ],
+    "asked": [
+      "pos-indonesia"
     ]
   },
   {
@@ -59809,6 +59837,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pos-indonesia"
+    ],
+    "asked": [
       "pos-indonesia"
     ]
   },
@@ -67981,6 +68012,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pos-indonesia"
+    ],
+    "asked": [
       "pos-indonesia"
     ]
   },

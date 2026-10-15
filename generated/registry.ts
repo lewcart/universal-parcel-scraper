@@ -179,6 +179,7 @@ import { adapter as passport } from '../carriers/passport/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
+import { adapter as posIndonesia } from '../carriers/pos-indonesia/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
 import { adapter as postLuxembourg } from '../carriers/post-luxembourg/adapter.js';
 import { adapter as postaSlovenije } from '../carriers/posta-slovenije/adapter.js';
@@ -439,6 +440,7 @@ export const REGISTRY: RegistryDefinition = {
     "pecom": pecom,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
+    "pos-indonesia": posIndonesia,
     "pos-malaysia": posMalaysia,
     "post-luxembourg": postLuxembourg,
     "posta-slovenije": postaSlovenije,
@@ -852,7 +854,7 @@ export const REGISTRY: RegistryDefinition = {
     "planzer": "planzer",
     "poczta-polska": "poczta-polska",
     "polaris-transport": "universal",
-    "pos-indonesia": "universal",
+    "pos-indonesia": "pos-indonesia",
     "pos-malaysia": "pos-malaysia",
     "post-haste": "universal",
     "post-luxembourg": "post-luxembourg",

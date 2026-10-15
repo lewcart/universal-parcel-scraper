@@ -15154,7 +15154,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pos-indonesia",
+      "recognitionRank": 964,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posindonesia.co.id/id/tracking",
     "trackingUrlTemplate": "https://www.posindonesia.co.id/id/tracking/{trackingNumber}",

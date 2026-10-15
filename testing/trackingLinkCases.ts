@@ -740,6 +740,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/siguetuenvio\.interrapidisimo\.com\/999999999999$/,
     marker: /Consulta el estado de tu envío/,
     forwarding: { notFound: /No se encontraron guías con la información ingresada/ } },
+  // The server renders the lookup; its answer to an unknown number shows the number.
+  { carrier: 't-cat', number: '900000000099',
+    route: /^https:\/\/www\.t-cat\.com\.tw\/Inquire\/TraceDetail\.aspx\?BillID=900000000099$/,
+    marker: /一般包裹查詢|目前資料庫尚未能查詢到該筆貨物追蹤查詢號碼狀態/ },
 ];
 
 /**

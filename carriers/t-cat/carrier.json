@@ -20,18 +20,44 @@
   "timezone": "Asia/Taipei",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "t-cat",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 966
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.t-cat.com.tw/Inquire/TraceDetail.aspx?BillID={trackingNumber}",
     "searchUrl": "https://www.t-cat.com.tw/Inquire/Trace.aspx",
     "canaryUrl": "https://www.t-cat.com.tw/Inquire/Trace.aspx",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "location"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "weight",
+      "service_name",
+      "provider_code",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

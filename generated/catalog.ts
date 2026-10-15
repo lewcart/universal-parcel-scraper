@@ -16127,7 +16127,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "t-cat",
+      "recognitionRank": 966
     },
     "canaryUrl": "https://www.t-cat.com.tw/Inquire/Trace.aspx",
     "trackingUrlTemplate": "https://www.t-cat.com.tw/Inquire/TraceDetail.aspx?BillID={trackingNumber}",

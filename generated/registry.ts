@@ -214,6 +214,7 @@ import { adapter as sunyou } from '../carriers/sunyou/adapter.js';
 import { adapter as swiftx } from '../carriers/swiftx/adapter.js';
 import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
 import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.js';
+import { adapter as tCat } from '../carriers/t-cat/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
 import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js';
@@ -459,6 +460,7 @@ export const REGISTRY: RegistryDefinition = {
     "swiftx": swiftx,
     "swiss-post": swissPost,
     "swiss-post-cargo": swissPostCargo,
+    "t-cat": tCat,
     "tci-express": tciExpress,
     "thailand-post": thailandPost,
     "the-courier-guy": theCourierGuy,
@@ -865,7 +867,7 @@ export const REGISTRY: RegistryDefinition = {
     "swiftx": "swiftx",
     "swiss-post": "swiss-post",
     "swiss-post-cargo": "swiss-post-cargo",
-    "t-cat": "universal",
+    "t-cat": "t-cat",
     "taxydema": "universal",
     "tci-express": "tci-express",
     "tcs-pakistan": "universal",

@@ -13866,7 +13866,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tci-express",
+      "localClocks": true
     },
     "canaryUrl": "https://www.tciexpress.in/trackingdocket.aspx",
     "trackingUrlTemplate": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",

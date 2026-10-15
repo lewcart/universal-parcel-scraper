@@ -19,18 +19,56 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tci-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",
     "searchUrl": "https://www.tciexpress.in/trackingdocket.aspx",
     "canaryUrl": "https://www.tciexpress.in/trackingdocket.aspx",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "parcel_count",
+      "postcodes",
+      "destination",
+      "contact_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight"
+    ],
+    "discarded": [
+      "parcel_count",
+      "postcodes",
+      "destination",
+      "contact_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [
     {

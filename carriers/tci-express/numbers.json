@@ -155,7 +155,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -165,7 +165,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Only seen in the indexed title of a ConsumerComplaints.in complaint about an undelivered TCI Express parcel; the page is behind a challenge."
+      "note": "Seen in the indexed title of a ConsumerComplaints.in complaint about an undelivered TCI Express parcel; TCI Express's tracker shows its delivery."
     },
     {
       "number": "116032475762",
@@ -209,9 +209,8 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -221,7 +220,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "TrackingMore's TCI Express page lists it among examples it calls illustrations of the format, so it may not be a real docket."
+      "note": "TrackingMore's TCI Express page lists it among examples it calls illustrations of the format; TCI Express's tracker shows a delivery for it."
     },
     {
       "number": "601375465",

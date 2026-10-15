@@ -13,7 +13,8 @@ carriers, so no rule claims them.
 ## Links
 
 The tracker is a single-page app that posts the number to Deppon's gateway; its address carries
-no number, so no link is read.
+no number, so no link is read. The gateway shows most parcels only after a slider puzzle, and
+Deppon's app and mobile site ask the visitor to sign in, so no adapter reads them.
 
 ## Testing
 

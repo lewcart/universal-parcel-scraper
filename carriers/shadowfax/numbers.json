@@ -2,6 +2,82 @@
   "carrier": "shadowfax",
   "records": [
     {
+      "number": "SF1904798183E",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6acc9fb9af491a9444655c49",
+        "date": "2026-10-12",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the AWB of an order. Its merchant code has one letter, a shape no rule claims."
+    },
+    {
+      "number": "SF4073772682DEU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6abe1a3c94b05e45c51cda5a",
+        "date": "2026-10-01",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "shadowfax",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the AWB of an order."
+    },
+    {
+      "number": "SF3772148429KR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6aa8ed8ef7c7485156793e1e",
+        "date": "2026-09-15",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the AWB of an order whose delivery failed. Its merchant code has two letters, a shape no rule claims."
+    },
+    {
+      "number": "SF3667163853YWR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a85f3579943014d9c754812",
+        "date": "2026-08-19",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "shadowfax",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the AWB of a parcel held at a delivery centre for days."
+    },
+    {
       "number": "SF3616823438NEF",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -12,13 +88,73 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
         "confidence": "high"
       },
       "note": "A Voxya complaint against Shadowfax gives it as the AWB of an undelivered pharmacy order."
+    },
+    {
+      "number": "SF3033213302ARA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/699dcc0c0da1a5f2bebfab31",
+        "date": "2026-02-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "shadowfax",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as one of two AWBs of a cash-on-delivery order."
+    },
+    {
+      "number": "SF2917969609ARA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/699dcc0c0da1a5f2bebfab31",
+        "date": "2026-02-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "shadowfax",
+        "confidence": "high"
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the second AWB of the same order."
+    },
+    {
+      "number": "R1858467302TIU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/699c1afefc669f4a80032d89",
+        "date": "2026-02-23",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "shadowfax"
+        ]
+      },
+      "note": "A Trustpilot review of Shadowfax gives it as the tracking ID in a complaint about a delivery agent."
     },
     {
       "number": "R1361006196FPL",
@@ -31,7 +167,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -53,7 +189,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
@@ -72,7 +208,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
@@ -91,7 +227,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
@@ -110,7 +246,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
@@ -129,7 +265,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",
@@ -148,7 +284,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "shadowfax",

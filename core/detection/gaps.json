@@ -1541,6 +1541,12 @@
     "reason": "A public SEUR report uses fifteen digits; the service and accepted reference format remain unconfirmed."
   },
   {
+    "carrier": "shadowfax",
+    "pattern": "^SF\\d{10}[A-Z]{1,2}$",
+    "kind": "open",
+    "reason": "Shadowfax's tracker knows AWBs whose merchant code has one or two letters, but too few samples show these shorter codes to widen the three-letter rule."
+  },
+  {
     "carrier": "shipup",
     "kind": "by_design",
     "reason": "An invented shape check; ShipUp has no number shape of its own."

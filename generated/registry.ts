@@ -178,6 +178,7 @@ import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
 import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
+import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
@@ -399,6 +400,7 @@ export const REGISTRY: RegistryDefinition = {
     "sameday": sameday,
     "seur": seur,
     "sf-express": sfExpress,
+    "shadowfax": shadowfax,
     "singapore-post": singaporePost,
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
@@ -731,7 +733,7 @@ export const REGISTRY: RegistryDefinition = {
     "seur": "seur",
     "sf-express": "sf-express",
     "sfc": "universal",
-    "shadowfax": "universal",
+    "shadowfax": "shadowfax",
     "shipup": "universal",
     "shree-maruti": "universal",
     "sicepat": "universal",

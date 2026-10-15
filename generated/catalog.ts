@@ -13039,7 +13039,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shadowfax",
+      "recognitionRank": 595
     },
     "canaryUrl": "https://www.shadowfax.in/track",
     "trackingUrlTemplate": "https://tracker.shadowfax.in/#/awb/{trackingNumber}",

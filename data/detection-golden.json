@@ -51474,6 +51474,20 @@
     "confidence": "low",
     "candidates": [
       "shadowfax"
+    ],
+    "asked": [
+      "shadowfax"
+    ]
+  },
+  {
+    "input": "R1858467302TIU",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shadowfax"
+    ],
+    "asked": [
+      "shadowfax"
     ]
   },
   {
@@ -53557,6 +53571,12 @@
     ]
   },
   {
+    "input": "SF1904798183E",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "SF211225399443FPL",
     "carrier": "shadowfax",
     "confidence": "high",
@@ -53566,6 +53586,22 @@
   },
   {
     "input": "SF266553988PIC",
+    "carrier": "shadowfax",
+    "confidence": "high",
+    "candidates": [
+      "shadowfax"
+    ]
+  },
+  {
+    "input": "SF2917969609ARA",
+    "carrier": "shadowfax",
+    "confidence": "high",
+    "candidates": [
+      "shadowfax"
+    ]
+  },
+  {
+    "input": "SF3033213302ARA",
     "carrier": "shadowfax",
     "confidence": "high",
     "candidates": [
@@ -53590,6 +53626,28 @@
   },
   {
     "input": "SF3616823438NEF",
+    "carrier": "shadowfax",
+    "confidence": "high",
+    "candidates": [
+      "shadowfax"
+    ]
+  },
+  {
+    "input": "SF3667163853YWR",
+    "carrier": "shadowfax",
+    "confidence": "high",
+    "candidates": [
+      "shadowfax"
+    ]
+  },
+  {
+    "input": "SF3772148429KR",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SF4073772682DEU",
     "carrier": "shadowfax",
     "confidence": "high",
     "candidates": [

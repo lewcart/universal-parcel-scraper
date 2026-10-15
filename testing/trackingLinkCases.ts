@@ -696,6 +696,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'cj-logistics', number: '000000000000',
     route: /^https:\/\/www\.cjlogistics\.com\/ko\/tool\/parcel\/newTracking\?gnbInvcNo=000000000000$/,
     marker: /운송장이 등록되지 않았거나 보내는 분이 상품을 준비 중입니다|운송장번호를 입력하세요/ },
+  // The tracker keeps the number from its address in its form and looks it up on load.
+  { carrier: 'shadowfax', number: 'SF000000001ZZZ',
+    route: /^https:\/\/tracker\.shadowfax\.in\/#\/(?:awb\/SF000000001ZZZ|track\/)/,
+    marker: /Invalid AWB Number\. Please check again\.|Track Your Order with Shadowfax/ },
 ];
 
 /**

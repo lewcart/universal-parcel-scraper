@@ -19,18 +19,66 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "shadowfax",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 595
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "eta",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://tracker.shadowfax.in/#/awb/{trackingNumber}",
     "searchUrl": "https://www.shadowfax.in/track",
     "canaryUrl": "https://www.shadowfax.in/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "progress_rail",
+      "proof_of_delivery",
+      "contact_details",
+      "remarks",
+      "merchant_reference",
+      "payment_details",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "proof_of_delivery",
+      "contact_details",
+      "remarks",
+      "merchant_reference",
+      "payment_details",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

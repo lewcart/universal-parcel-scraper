@@ -112,6 +112,7 @@ import { statusMap as rlCarriers } from '../../carriers/rl-carriers/status.js';
 import { statusMap as saia } from '../../carriers/saia/status.js';
 import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
 import { statusMap as sameday } from '../../carriers/sameday/status.js';
+import { statusMap as shadowfax } from '../../carriers/shadowfax/status.js';
 import { statusMap as slovakParcelService } from '../../carriers/slovak-parcel-service/status.js';
 import { statusMap as slovenskaPosta } from '../../carriers/slovenska-posta/status.js';
 import { statusMap as speedaf } from '../../carriers/speedaf/status.js';
@@ -156,7 +157,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
-  ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta,
+  ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, shadowfax, 'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta,
   speedaf, speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx, 'swiss-post': swissPost, 'thailand-post': thailandPost, thhy, tnt, tsjy,
   'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress,
   'yurtici-kargo': yurticiKargo, zeleris,

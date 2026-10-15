@@ -11037,7 +11037,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hct-logistics",
+      "recognitionRank": 967,
+      "localClocks": true
     },
     "canaryUrl": "https://www.hct.com.tw/Search/SearchGoods_n.aspx",
     "trackingSearchUrl": "https://www.hct.com.tw/Search/SearchGoods_n.aspx",

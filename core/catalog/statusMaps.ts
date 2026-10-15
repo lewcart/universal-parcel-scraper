@@ -80,6 +80,7 @@ import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
 import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
+import { statusMap as hctLogistics } from '../../carriers/hct-logistics/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
@@ -185,7 +186,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, gati, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
+  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'hct-logistics': hctLogistics, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
   instabox, interrapidisimo, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste,
   'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, logen, loggi, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
   'magyar-posta': magyarPosta, mailamericas,

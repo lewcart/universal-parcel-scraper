@@ -112,6 +112,62 @@
         ]
       },
       "note": "The tracking example in the README of an open-source PHP library for HCT's mobile tracking endpoint; not checked against HCT's tracker."
+    },
+    {
+      "number": "4792713601",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://track.tw/carrier/9a9840bc-a5d9-4c4a-8cd2-a79031b4ad53",
+        "date": "2026-08-19",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A comment on track.tw's HCT page gives it as the number of a parcel sent a week earlier and not yet delivered. HCT's tracker lists its scans from the first branch to delivery."
+    },
+    {
+      "number": "2510862336",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://track.tw/carrier/9a9840bc-a5d9-4c4a-8cd2-a79031b4ad53",
+        "date": "2025-03-28",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A comment on track.tw's HCT page gives it as a number the tracker would not show. HCT's tracker lists the pickup it was issued for, and a later pickup under the same number."
     }
   ]
 }

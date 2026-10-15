@@ -7026,7 +7026,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "coordinadora",
+      "recognitionRank": 973,
+      "localClocks": true
     },
     "canaryUrl": "https://rastreo.coordinadora.com/",
     "trackingUrlTemplate": "https://rastreo.coordinadora.com/?guia={trackingNumber}",

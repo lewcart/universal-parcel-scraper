@@ -16,18 +16,60 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "coordinadora",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 973
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://rastreo.coordinadora.com/?guia={trackingNumber}",
     "searchUrl": "https://rastreo.coordinadora.com/",
     "canaryUrl": "https://rastreo.coordinadora.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "origin",
+      "destination",
+      "progress_rail",
+      "pickup_point",
+      "office_opening_hours",
+      "office_contact_details",
+      "related_tracking_numbers",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "progress_rail",
+      "pickup_point",
+      "office_opening_hours",
+      "office_contact_details",
+      "related_tracking_numbers",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name"
+    ]
   },
   "links": [
     {

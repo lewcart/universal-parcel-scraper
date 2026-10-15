@@ -175,7 +175,7 @@ is asked after the other aggregators whatever its count.
 | Source | Carriers with history | Full | Partial | Only source |
 | --- | ---: | ---: | ---: | ---: |
 | Ship24 | 63 | 24 | 39 | 0 |
-| ParcelsApp | 79 | 51 | 28 | 5 |
+| ParcelsApp | 80 | 52 | 28 | 6 |
 | 17TRACK | 76 | 49 | 27 | 4 |
 | Postal Ninja | 58 | 19 | 39 | 0 |
 

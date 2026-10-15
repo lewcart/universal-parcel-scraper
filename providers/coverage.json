@@ -2854,6 +2854,22 @@
           }
         },
         {
+          "note": "Paack PK number via GlobalEco: https://web.archive.org/web/20260617145612/https://globaleco.app/track/H04WQC0006873574",
+          "results": {
+            "Ship24": "no_history",
+            "UPU": "n/a",
+            "ParcelsApp": 10
+          }
+        },
+        {
+          "note": "Paack PK number via GlobalEco: https://web.archive.org/web/20260720185304/https://globaleco.app/track/H07F3C0000533894",
+          "results": {
+            "Ship24": "no_history",
+            "UPU": "n/a",
+            "ParcelsApp": 18
+          }
+        },
+        {
           "note": "Benchmark number 534000021265325582",
           "stale": true,
           "results": {

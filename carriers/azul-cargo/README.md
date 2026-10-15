@@ -10,8 +10,12 @@ claims them.
 
 ## Links
 
-The former tracker took the AWB as `n` on `Rastreio.aspx` with the AWB type; the current
-tracker shows a form with a CAPTCHA, so no address opens one shipment today.
+The former tracker took the AWB as `n` on `Rastreio.aspx` with the AWB type. The current
+site is `azullogistica.com.br`: its `/Rastreio` form posts one `Awbs[]` entry and
+`BuscarRastreioPor: awb` to `/Rastreio/Rastrear`. Its public script sends no CAPTCHA
+answer, but Akamai can refuse the POST with HTTP 403 after serving the form normally.
+The form alone therefore does not establish usable anonymous tracking. No address opens
+one shipment today.
 
 ## Testing
 

@@ -25,6 +25,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",
@@ -57,6 +58,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",
@@ -89,6 +91,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",
@@ -122,6 +125,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",
@@ -141,7 +145,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -155,6 +159,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",
@@ -187,6 +192,7 @@
           "seur",
           "brt",
           "delhivery",
+          "anteraja",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk",

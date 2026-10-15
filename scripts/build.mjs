@@ -12,7 +12,7 @@ async function assets(directory) {
     else if ((/\.(?:mjs|onnx|br|json)$/.test(entry.name) || entry.name === 'LICENSE')) { await mkdir(`dist/${directory}`, { recursive: true }); await cp(source, `dist/${source}`); }
   }
 }
-for (const directory of ['carriers','providers','places']) await assets(directory);
+for (const directory of ['carriers','providers','places','core/transport']) await assets(directory);
 await mkdir('dist/server', { recursive: true });
 await cp('server/openapi.json', 'dist/server/openapi.json');
 await cp('scripts/canary-report.mjs', 'dist/scripts/canary-report.mjs');

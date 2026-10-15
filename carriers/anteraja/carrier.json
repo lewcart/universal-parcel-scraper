@@ -18,18 +18,49 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "anteraja",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 835
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "service_name"
+  ],
   "portal": {
     "url": "https://anteraja.id/tracking/{trackingNumber}",
     "searchUrl": "https://anteraja.id/id/tracking",
     "canaryUrl": "https://anteraja.id/id/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "sender_name",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "service_name"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -39,5 +70,11 @@
       "path": "^/(?:id/|en/)?tracking/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "anteraja-1",
+      "pattern": "^(?:1000|1100)\\d{10}$",
+      "confidence": "low"
+    }
+  ]
 }

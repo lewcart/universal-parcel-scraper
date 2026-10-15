@@ -81,7 +81,7 @@ describe('recognition candidates', () => {
     expect(recognitionCandidates('1Z999AA10123456784')).toEqual([]);
     // A DPD France depot: DPD France cannot be asked, and DPD Switzerland's or
     // DPD Germany's group-wide answer would file its parcel under the wrong network.
-    expect(recognitionCandidates('10000000000001').map((candidate) => candidate.carrier)).toEqual(['seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
+    expect(recognitionCandidates('10000000000001').map((candidate) => candidate.carrier)).toEqual(['seur', 'brt', 'anteraja', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
   });
 
   it('asks GLS France, then GLS Germany, then GLS Switzerland about a GLS number', () => {

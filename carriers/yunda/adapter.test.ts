@@ -216,6 +216,37 @@ describe('Yunda anonymous retrieval', () => {
     expect(rejected).toHaveBeenCalledTimes(3);
   });
 
+  it('refreshes an uncertain image once before making one confident submission', async () => {
+    const uncertain = challenge();
+    uncertain.data.big = await png(Buffer.alloc(344 * 152 * 4, 255), 344, 152);
+    let images = 0;
+    const fetcher = transport().mockImplementation(async url => {
+      if (String(url).includes('/captcha_type?')) return new Response(JSON.stringify({ code: 200, data: 1 }));
+      if (String(url).includes('/captcha?')) return new Response(JSON.stringify(++images === 1 ? uncertain : challenge()));
+      return new Response(JSON.stringify(fixture()));
+    });
+    await expect(new YundaTracker({ fetcher }).fetch(NUMBER)).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual([
+      '/index.php/api/order.record/captcha_type', '/index.php/api/order.record/captcha',
+      '/index.php/api/order.record/captcha_type', '/index.php/api/order.record/captcha', '/index.php/api/v2.record/search',
+    ]);
+    const parameters = fetcher.mock.calls.slice(0, 4).map(([url]) => new URL(String(url)).search);
+    expect(new Set(parameters).size).toBe(1);
+  });
+
+  it('bounds ambiguity recovery and rechecks the verification type without submitting guesses', async () => {
+    const uncertain = challenge();
+    uncertain.data.big = await png(Buffer.alloc(344 * 152 * 4, 255), 344, 152);
+    for (const nextType of [1, 2]) {
+      let types = 0;
+      const fetcher = transport().mockImplementation(async url => new Response(JSON.stringify(
+        String(url).includes('/captcha_type?') ? { code: 200, data: ++types === 1 ? 1 : nextType } : uncertain)));
+      await expect(new YundaTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+      expect(fetcher).toHaveBeenCalledTimes(nextType === 1 ? 4 : 3);
+      expect(fetcher.mock.calls.every(([url]) => !String(url).includes('/search'))).toBe(true);
+    }
+  });
+
   it.each([[401, 'challenge'], [403, 'challenge'], [404, 'transport'], [410, 'transport'], [429, 'rate_limited'], [503, 'maintenance']])('keeps HTTP %s separate from absence', async (status, kind) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Failure', { status: Number(status) }));
     await expect(new YundaTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind });

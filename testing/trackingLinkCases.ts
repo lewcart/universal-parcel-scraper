@@ -29,6 +29,9 @@ export interface TrackingLinkCase {
 // independently of the generated link templates, so a template that drifts
 // fails here instead of passing against itself.
 export const trackingLinkCases: TrackingLinkCase[] = [
+  { carrier: 'anteraja', number: '10000000000001',
+    route: /^https:\/\/anteraja\.id\/id\/tracking\/10000000000001$/,
+    marker: /Cek Resi Paketmu|Lacak Pengirimanmu/i },
   { carrier: 'dhl-express', number: '9876000046',
     route: /^https:\/\/mydhl\.express\.dhl\/gb\/en\/tracking\.html/,
     marker: /Tracking Results|No result found for your DHL query|Not found/i, renderTimeoutMs: 20_000 },

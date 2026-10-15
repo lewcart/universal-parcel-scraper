@@ -55,7 +55,10 @@ function site(key: { privateKey: KeyObject; signing: ImileSigning }, shipments: 
     if (`${url.origin}${url.pathname}` === IMILE_API) {
       const number = url.searchParams.get('waybillNo')!;
       const sign = new Headers(init?.headers).get('sign') ?? '';
-      const known = shipments[number] !== undefined && decrypt(key.privateKey, sign) === number;
+      let known = false;
+      // A ciphertext from another key can also fail RSA decoding. The service
+      // rejects either case with its empty reply, rather than a network error.
+      try { known = shipments[number] !== undefined && decrypt(key.privateKey, sign) === number; } catch { /* Rejected signature. */ }
       return reply(known ? shipments[number] : fixture('not-found'));
     }
     if (String(input) === IMILE_PAGE) return pages.page?.() ?? new Response(page(), { headers: { 'Content-Type': 'text/html' } });

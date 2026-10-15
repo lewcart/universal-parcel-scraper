@@ -18,7 +18,8 @@ export class OcrWorker {
   private queued = 0;
   private idleTimer: NodeJS.Timeout | null = null;
 
-  constructor(private readonly provider: string, private readonly workerUrl: URL) {}
+  constructor(private readonly provider: string, private readonly workerUrl: URL,
+    private readonly workerData?: Readonly<Record<string, unknown>>) {}
 
   async solve(bytes: Uint8Array, signal: AbortSignal): Promise<string> {
     signal.throwIfAborted();
@@ -32,7 +33,7 @@ export class OcrWorker {
     try {
       await withAbort(previous, signal);
       signal.throwIfAborted();
-      const worker = this.worker ??= new Worker(this.workerUrl);
+      const worker = this.worker ??= new Worker(this.workerUrl, { workerData: this.workerData });
       worker.ref();
       const id = ++this.nextId;
       const operation = new Promise<string>((resolve, reject) => {

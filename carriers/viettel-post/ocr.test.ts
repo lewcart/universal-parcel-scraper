@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
-import characters from './model/characters.json' with { type: 'json' };
+import characters from '../../core/transport/text-captcha-model/characters.json' with { type: 'json' };
 import { decodeViettelLogits } from './ocr-worker.mjs';
 import { ViettelPostOcr } from './ocr.js';
 

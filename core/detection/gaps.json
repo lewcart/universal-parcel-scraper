@@ -89,12 +89,6 @@
     "reason": "Only one Anjun sample has been seen, too few to establish the layout for a rule."
   },
   {
-    "carrier": "anteraja",
-    "pattern": "^1[01]00\\d{10}$",
-    "kind": "by_design",
-    "reason": "Fourteen digits are DPD's parcel layout and several other carriers print them, so nothing in the number points to Anteraja."
-  },
-  {
     "carrier": "apc-postal-logistics",
     "pattern": "^\\d{16}$",
     "kind": "by_design",

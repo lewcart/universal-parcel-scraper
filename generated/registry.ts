@@ -9,6 +9,7 @@ import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
 import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
 import { adapter as amazonShipping } from '../carriers/amazon-shipping/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
+import { adapter as anteraja } from '../carriers/anteraja/adapter.js';
 import { adapter as apcOvernight } from '../carriers/apc-overnight/adapter.js';
 import { adapter as aramex } from '../carriers/aramex/adapter.js';
 import { adapter as aramexAu } from '../carriers/aramex-au/adapter.js';
@@ -34,6 +35,7 @@ import { adapter as ceskaPosta } from '../carriers/ceska-posta/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
 import { adapter as chronopost } from '../carriers/chronopost/adapter.js';
+import { adapter as chunghwaPost } from '../carriers/chunghwa-post/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
 import { adapter as cjLogistics } from '../carriers/cj-logistics/adapter.js';
 import { adapter as cne } from '../carriers/cne/adapter.js';
@@ -237,6 +239,7 @@ export const REGISTRY: RegistryDefinition = {
     "allegro-one": allegroOne,
     "amazon-shipping": amazonShipping,
     "an-post": anPost,
+    "anteraja": anteraja,
     "apc-overnight": apcOvernight,
     "aramex": aramex,
     "aramex-au": aramexAu,
@@ -262,6 +265,7 @@ export const REGISTRY: RegistryDefinition = {
     "china-post": chinaPost,
     "chit-chats": chitChats,
     "chronopost": chronopost,
+    "chunghwa-post": chunghwaPost,
     "ciblex": ciblex,
     "cj-logistics": cjLogistics,
     "cne": cne,
@@ -470,7 +474,7 @@ export const REGISTRY: RegistryDefinition = {
     "an-post": "an-post",
     "andreani": "universal",
     "anjun": "universal",
-    "anteraja": "universal",
+    "anteraja": "anteraja",
     "apc-overnight": "apc-overnight",
     "apc-postal-logistics": "universal",
     "aramex": "aramex",
@@ -515,7 +519,7 @@ export const REGISTRY: RegistryDefinition = {
     "china-post": "china-post",
     "chit-chats": "chit-chats",
     "chronopost": "chronopost",
-    "chunghwa-post": "universal",
+    "chunghwa-post": "chunghwa-post",
     "ciblex": "ciblex",
     "citylink-express": "universal",
     "citysprint": "universal",

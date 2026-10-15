@@ -1,11 +1,85 @@
 {
   "carrier": "chunghwa-post",
   "entries": [
-    {"wording": "交寄郵件", "stage": "accepted", "language": "zh-Hant", "confirmedBy": "portal", "note": "Posted at a counter; the tracker pads it with full-width spaces."},
-    {"wording": "運輸途中", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "portal", "note": "Sent on from a sorting unit; the remark names the receiving office."},
-    {"wording": "安排投遞中", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "portal", "note": "At the delivery office, being scheduled for a round."},
-    {"wording": "郵件投遞中", "stage": "out_for_delivery", "language": "zh-Hant", "confirmedBy": "portal", "note": "Out with the carrier."},
-    {"wording": "查無此號碼資料！！", "language": "zh-Hant", "confirmedBy": "official-doc", "note": "The tracker's no-result message for an unknown number."},
-    {"wording": "寄往科威特國際快捷郵件，該國不提供查詢服務。", "language": "zh-Hant", "confirmedBy": "official-doc", "note": "A help line on the tracker page; one example of destinations that give no tracking."}
+    {
+      "wording": "交寄郵件",
+      "stage": "accepted",
+      "language": "zh-Hant",
+      "confirmedBy": "portal",
+      "note": "Posted at a counter; the tracker pads it with full-width spaces."
+    },
+    {
+      "wording": "運輸途中",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "portal",
+      "note": "Sent on from a sorting unit; the remark names the receiving office."
+    },
+    {
+      "wording": "安排投遞中",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "portal",
+      "note": "At the delivery office, being scheduled for a round."
+    },
+    {
+      "wording": "郵件投遞中",
+      "stage": "out_for_delivery",
+      "language": "zh-Hant",
+      "confirmedBy": "portal",
+      "note": "Out with the carrier."
+    },
+    {
+      "wording": "查無此號碼資料！！",
+      "language": "zh-Hant",
+      "confirmedBy": "official-doc",
+      "note": "The tracker's no-result message for an unknown number."
+    },
+    {
+      "wording": "寄往科威特國際快捷郵件，該國不提供查詢服務。",
+      "language": "zh-Hant",
+      "confirmedBy": "official-doc",
+      "note": "A help line on the tracker page; one example of destinations that give no tracking."
+    },
+    {
+      "code": "L",
+      "wording": "到達出口互換局",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "live",
+      "note": "International tracking scan from the public EB500200 query."
+    },
+    {
+      "code": "C",
+      "wording": "已出口－資料詳如右方",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "live",
+      "note": "International tracking scan from the public EB500200 query."
+    },
+    {
+      "code": "Y",
+      "wording": "郵袋接收",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "live",
+      "note": "International tracking scan from the public EB500200 query."
+    },
+    {
+      "code": "D",
+      "wording": "到達寄達國互換局",
+      "stage": "in_transit",
+      "language": "zh-Hant",
+      "confirmedBy": "live",
+      "note": "International tracking scan from the public EB500200 query."
+    },
+    {
+      "code": "E",
+      "wording": "海關查驗",
+      "stage": "customs",
+      "language": "zh-Hant",
+      "confirmedBy": "live",
+      "note": "International tracking scan from the public EB500200 query."
+    }
   ]
 }

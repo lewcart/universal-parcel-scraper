@@ -8,7 +8,7 @@ import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { solveYundaSlider } from './challenge.js';
+import { solveYundaSlider, UncertainYundaSliderError } from './challenge.js';
 import { normalizeYundaNumber, parseYunda, yundaEnvelope } from './parser.js';
 
 const ORIGIN = 'https://web.yundaex.com';
@@ -42,18 +42,26 @@ export class YundaTracker {
           throw error;
         }
       };
-      const type = yundaEnvelope(await request('/index.php/api/order.record/captcha_type?' + params.toString()));
-      if (type.data !== 1) throw new ChallengeError('Yunda Express', 'Yunda requires an unsupported verification type');
-      const captcha = yundaEnvelope(await request('/index.php/api/order.record/captcha?' + params.toString()));
-      if (!isRecord(captcha.data)) throw new SchemaError('Yunda Express');
-      const coordinate = await solveYundaSlider(captcha.data, signal);
-      signal.throwIfAborted();
-      const body = new FormData();
-      for (const [key, value] of params) body.append(key, value);
-      body.append('x', String(coordinate.x)); body.append('y', String(coordinate.y)); body.append('tm', number);
-      // Actual backend acceptance is required; computing a coordinate is not a
-      // successful lookup. One submission, with no candidate/verification retry.
-      return parseYunda(await request('/index.php/api/v2.record/search', { method: 'POST', body }), number);
+      for (let attempt = 0; attempt < 2; attempt++) {
+        // The public client's reset repeats both requests in the same session.
+        const type = yundaEnvelope(await request('/index.php/api/order.record/captcha_type?' + params.toString()));
+        if (type.data !== 1) throw new ChallengeError('Yunda Express', 'Yunda requires an unsupported verification type');
+        const captcha = yundaEnvelope(await request('/index.php/api/order.record/captcha?' + params.toString()));
+        if (!isRecord(captcha.data)) throw new SchemaError('Yunda Express');
+        let coordinate;
+        try { coordinate = await solveYundaSlider(captcha.data, signal); }
+        catch (error) {
+          if (!attempt && error instanceof UncertainYundaSliderError) continue;
+          throw error;
+        }
+        signal.throwIfAborted();
+        const body = new FormData();
+        for (const [key, value] of params) body.append(key, value);
+        body.append('x', String(coordinate.x)); body.append('y', String(coordinate.y)); body.append('tm', number);
+        // Submit one confident coordinate; backend verification is authoritative.
+        return parseYunda(await request('/index.php/api/v2.record/search', { method: 'POST', body }), number);
+      }
+      throw new ChallengeError('Yunda Express', 'Yunda slider match is uncertain');
     } }]);
   }
 }

@@ -5,6 +5,11 @@ import { isRecord } from '../../core/types.js';
 const PROVIDER = 'Yunda Express';
 const PNG = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
+/** A fresh image can resolve ambiguity without submitting a guessed coordinate. */
+export class UncertainYundaSliderError extends ChallengeError {
+  constructor() { super(PROVIDER, 'Yunda slider match is uncertain'); }
+}
+
 async function pixels(raw: unknown, width: number, height: number) {
   if (typeof raw !== 'string' || raw.length > 700_000 || !/^[A-Za-z\d+/]+={0,2}$/.test(raw)) throw new SchemaError(PROVIDER, 'Yunda returned an invalid challenge image');
   const bytes = Buffer.from(raw, 'base64');
@@ -50,7 +55,7 @@ export async function solveYundaSlider(value: unknown, signal?: AbortSignal): Pr
   scores.sort((a, b) => b.score - a.score);
   const best = scores[0]!;
   const other = scores.find(candidate => Math.abs(candidate.x - best.x) > 3)!;
-  if (best.score < 0.98 || best.score - other.score < 0.1) throw new ChallengeError(PROVIDER, 'Yunda slider match is uncertain');
+  if (best.score < 0.98 || best.score - other.score < 0.1) throw new UncertainYundaSliderError();
   signal?.throwIfAborted();
   return { x: best.x, y };
 }

@@ -7,7 +7,8 @@ Tracks Chinese domestic waybills through the official consumer website.
 A request-scoped anonymous session fetches the verification type and slider images,
 then submits one lookup. The adapter matches the transparent piece outline to the
 white gap only when the match is strong and unambiguous. Backend acceptance is
-required; an uncertain match or changed image layout stops the lookup.
+required. An uncertain match refreshes the verification type and image once in
+the same session, within the original deadline. Changed image layouts stop the lookup.
 
 ## Notes
 
@@ -22,7 +23,8 @@ descriptions, names, phones, addresses, signatures and unlabelled weights are ex
 
 Anonymous queries expose a partial history; the website requires login for the full
 timeline. Empty replies are inconclusive. International shipments and Yunda freight
-use separate flows. Other verification types and ambiguous slider images are unsupported.
+use separate flows. Other verification types and a second ambiguous image remain
+challenge failures. Backend refusals are not retried.
 
 ## Testing
 

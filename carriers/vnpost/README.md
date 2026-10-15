@@ -14,6 +14,12 @@ VNPost's former tracking page put the number in the path after `/dinh-vi/buu-pha
 the library reads it from such addresses. The current form asks for a captcha, so the library
 builds no address.
 
+The current form is on `vnpost.vn/vi`. Its public `homeCtrl.js` opens a Laravel session,
+gets an image address from `/handle-captcha/refresh-captcha`, then sends the whole number
+and image answer to `/postcode/thong-tin` as `post_code` and `captcha`. The deployed `mews`
+driver uses a four-character JPEG, rather than reCAPTCHA. Invalid-number validation alone
+does not establish that verification passed or show the tracking response's history layout.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

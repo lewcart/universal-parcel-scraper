@@ -7,7 +7,7 @@ Reads a Viettel Post shipment record through its legacy text-CAPTCHA lookup.
 The [public tracking client](https://viettelpost.vn/viettelpost-iframe/tra-cuu-hanh-trinh-don-hang)
 contains the legacy `api.viettelpost.vn/api/orders/getCaptcha` and `viewTrackingOrders` flow.
 Each lookup opens a fresh cookie jar, reads the text image with the bundled local
-[OCR model](model/README.md) and submits its id, answer and one whole waybill. One fresh
+[OCR model](../../core/transport/text-captcha-model/README.md) and submits its id, answer and one whole waybill. One fresh
 challenge is allowed after unreadable text or an explicit rejected answer. Changed payloads,
 limits and blocked pages do not become not-found.
 

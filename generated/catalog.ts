@@ -5170,7 +5170,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anteraja",
+      "recognitionRank": 835,
+      "localClocks": true
     },
     "canaryUrl": "https://anteraja.id/id/tracking",
     "trackingUrlTemplate": "https://anteraja.id/tracking/{trackingNumber}",
@@ -5183,7 +5185,12 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:id/|en/)?tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?:1000|1100)\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "apc-overnight": {
     "displayName": "APC Overnight",
@@ -6457,9 +6464,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chunghwa-post",
+      "localClocks": true
     },
     "canaryUrl": "https://postserv.post.gov.tw/pstmail/main_mail.html",
+    "trackingSearchUrl": "https://postserv.post.gov.tw/pstmail/main_mail.html",
     "linkRules": [
       {
         "domains": [
@@ -15356,7 +15365,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "allegro-one": ["allegro-one-1","allegro-one-2"],
   "andreani": [],
   "anjun": [],
-  "anteraja": [],
+  "anteraja": ["anteraja-1"],
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],
   "aramex-au": ["aramex-au-1"],

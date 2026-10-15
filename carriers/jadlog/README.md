@@ -19,6 +19,13 @@ Jadlog's tracking form sends the number as `cte` to `jadlog.com.br/jadlog/captch
 archived lookups show that address with `?cte=`. The page asks for a CAPTCHA before it shows a
 parcel, so the library reads the number from such an address but does not build one.
 
+The tracking widget belongs to `#formulario` and posts `cte` with its reCAPTCHA v2 answer
+to `/jadlog/rastreio`. A separate contact form has another widget. The promotion dialog
+can cover the tracking checkbox; dismissing it is necessary before interaction. Google's
+audio challenge can refuse automated traffic even after the correct widget opens, leaving
+no tracking submission. The official [myJadlog app](https://play.google.com/store/apps/details?id=com.dpdgroup.chatbot.jadlog.prod)
+is another endpoint lead; its anonymous access requirements remain unimplemented.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

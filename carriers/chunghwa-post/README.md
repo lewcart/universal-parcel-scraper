@@ -1,22 +1,30 @@
 # Chunghwa Post
 
-Chunghwa Post parcels use enabled universal providers. There is no dedicated adapter.
+Reads Chunghwa Post's international postal tracking through its public image-CAPTCHA flow.
 
-Chunghwa Post (中華郵政) is Taiwan's national post.
+## Retrieval
 
-## Numbers
+The [official tracker](https://postserv.post.gov.tw/pstmail/main_mail.html) opens a session
+through `SessionServlet` and creates a four-digit JPEG through `jcaptcha` with a fresh UUID.
+The adapter uses the shared local [OCR model](../../core/transport/text-captcha-model/README.md)
+and posts the same UUID, answer and one whole item to `EsoafDispatcher`, using the public
+client's `EB500200` query envelope. One fresh challenge is allowed after an unreadable or
+explicitly refused answer. Cookies and verification material stay within that lookup.
 
-International items carry a UPU S10 number ending in `TW`. Generic postal detection handles S10
-numbers, as for other posts without a dedicated adapter, so no Chunghwa Post rule claims them.
-Domestic registered letters and parcels use bare fourteen- or twenty-digit numbers, shapes
-shared with other carriers, so no rule claims them either.
+The server must confirm verification and repeat the requested item. The parser keeps scan
+wording, event codes and processing locations. Overseas and domestic facility clocks retain
+their local time without invented offsets. Recipient, dispatch-bag and expanded remark fields
+are omitted. Only the server's explicit absence message for the requested item is not found.
 
-## Links
+## Limitations
 
-The former lookup on `postserv.post.gov.tw/webpost/CSController` took the number in `MAILNO`.
-The current tracker asks for a CAPTCHA, so no address opens one parcel.
+The direct path supports international EMS, parcel, registered and tracked-letter S10 items.
+Other postal services, numeric domestic references and proprietary mainland formats use
+enabled universal providers.
+The tracker retains six months of history, and destination posts can withhold scans.
+No cheap HTTP recognition is declared. Changed image geometry remains a challenge.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `CHUNGHWA_POST_TRACKING_NUMBER` outside Git and run
+`npm run test:carriers:live -- carriers/chunghwa-post`. `CHUNGHWA_POST_UNKNOWN_NUMBER` checks an unknown item.

@@ -17,6 +17,12 @@ with the number inside the path rather than in a query string. The library reads
 from that address in either case. The tracing page itself loads results by script behind a
 Turnstile check.
 
+The public client posts to `/tracingactions.php` with `action: loadTraceDetails`, the whole
+PRO in both `traceNum` and `tracePro`, `traceType: OHPRO`, and an empty `traceAccount` for
+a guest. `showPrevious` and `showNext` are false. Its generic support message does not
+distinguish an unknown PRO from a refused lookup; an HTTP 200 containing that message is
+not shipment history. Account and proof-of-delivery actions are separate flows.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

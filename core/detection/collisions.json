@@ -2690,5 +2690,42 @@
       "the-courier-guy"
     ],
     "reason": "Courier Guy references without digits overlap Loggi tracking codes. Direct confirmation must establish the carrier."
+  },
+  {
+    "shape": "Fourteen digits in Anteraja ranges",
+    "carriers": [
+      "anteraja",
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-uk",
+      "relais-colis",
+      "seur",
+      "xpressbees"
+    ],
+    "reason": "Anteraja ranges overlap other carriers. Its low-confidence suggestion requires the guest API to confirm the whole waybill."
+  },
+  {
+    "shape": "Fourteen digits in Anteraja ranges that also satisfy Hermes detection",
+    "carriers": [
+      "anteraja",
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-uk",
+      "hermes-de",
+      "relais-colis",
+      "seur",
+      "xpressbees"
+    ],
+    "reason": "Anteraja ranges overlap other carriers. Its low-confidence suggestion requires the guest API to confirm the whole waybill."
   }
 ]

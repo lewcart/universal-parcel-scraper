@@ -86,13 +86,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "saudi-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Saudi Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Saudi Post page offered it as a sample to try, without describing it as a live shipment. SPL's tracker knows it."
     },
     {
       "number": "CRDSAL0240822521",
@@ -143,13 +143,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "saudi-post",
         "confidence": "high"
       },
-      "note": "Looked up on SPL's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it."
     },
     {
       "number": "CRDSAL1692298424",
@@ -162,13 +162,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "saudi-post",
         "confidence": "high"
       },
-      "note": "Looked up on SPL's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it."
     },
     {
       "number": "EJ023555935SA",
@@ -181,13 +181,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on SPL's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it."
     },
     {
       "number": "EMSPRI0268635021",
@@ -219,13 +219,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on SPL's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it."
     },
     {
       "number": "EK131568205SA",
@@ -264,6 +264,44 @@
         "confidence": "high"
       },
       "note": "Looked up on SPL's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "ABSINE1031240022",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221018101119/https://splonline.com.sa/ar/shipmentdetailsstatic/?tid=ABSINE1031240022",
+        "date": "2022-10-18",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it as a domestic parcel. Another six-letter prefix before ten digits."
+    },
+    {
+      "number": "RR804119342BD",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260303095453/https://splonline.com.sa/ar/shipmentdetailsstatic/?tid=RR804119342BD",
+        "date": "2026-03-03",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Looked up on SPL's own tracker, as an archived address shows; the tracker knows it as an item from abroad that SPL delivered."
     }
   ]
 }

@@ -712,6 +712,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.naqelexpress\.com\/en\/Track\/TrackShipment\/100000009$/,
     marker: /Waybills \/ Reference Numbers|Shipment Details/,
     forwarding: { notFound: /Sorry Tracking information is not available/ } },
+  // The page shows the number from its address as a tag in its form and asks its own lookup on load.
+  { carrier: 'saudi-post', number: 'RR000000005SA',
+    route: /^https:\/\/splonline\.com\.sa\/en\/shipmentdetailsstatic\/\?tid=RR000000005SA$/,
+    marker: /No data matches entered tracking number|Track Your Shipment/ },
 ];
 
 /**

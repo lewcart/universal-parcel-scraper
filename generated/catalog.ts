@@ -12786,7 +12786,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "saudi-post",
+      "recognitionRank": 963,
+      "localClocks": true
     },
     "canaryUrl": "https://splonline.com.sa/en/",
     "trackingUrlTemplate": "https://splonline.com.sa/en/shipmentdetailsstatic/?tid={trackingNumber}",

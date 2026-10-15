@@ -38649,6 +38649,12 @@
     ]
   },
   {
+    "input": "ABSINE1031240022",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "AD01EIJLQ4",
     "carrier": "allegro-one",
     "confidence": "high",
@@ -53249,6 +53255,17 @@
   },
   {
     "input": "RR785780564HU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR804119342BD",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

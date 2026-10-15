@@ -1482,9 +1482,9 @@
   },
   {
     "carrier": "saudi-post",
-    "pattern": "^(?:EMSPRI|EBUMSP)\\d{10}$",
+    "pattern": "^(?:EMSPRI|EBUMSP|ABSINE)\\d{10}$",
     "kind": "by_design",
-    "reason": "SPL uses several six-letter prefixes before ten digits, and only one sample each of these two is known, too few to claim them."
+    "reason": "SPL uses several six-letter prefixes before ten digits, and only one sample each of these three is known, too few to claim them."
   },
   {
     "carrier": "seino",

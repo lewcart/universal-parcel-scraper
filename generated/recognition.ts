@@ -124,6 +124,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "rl-carriers": 5,
   "saia": 12,
   "sameday": 370,
+  "saudi-post": 963,
   "seur": 870,
   "shadowfax": 595,
   "slovak-parcel-service": 180,

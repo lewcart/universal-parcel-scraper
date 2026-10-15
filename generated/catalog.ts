@@ -7694,7 +7694,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "couriersplease",
+      "recognitionRank": 961,
+      "localClocks": true
     },
     "canaryUrl": "https://www.couriersplease.com.au/tools-track",
     "trackingUrlTemplate": "https://www.couriersplease.com.au/tools-track?no={trackingNumber}",

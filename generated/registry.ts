@@ -52,6 +52,7 @@ import { adapter as correosChile } from '../carriers/correos-chile/adapter.js';
 import { adapter as correosDeMexico } from '../carriers/correos-de-mexico/adapter.js';
 import { adapter as correosExpress } from '../carriers/correos-express/adapter.js';
 import { adapter as correosSpain } from '../carriers/correos-spain/adapter.js';
+import { adapter as couriersplease } from '../carriers/couriersplease/adapter.js';
 import { adapter as ctt } from '../carriers/ctt/adapter.js';
 import { adapter as cttExpress } from '../carriers/ctt-express/adapter.js';
 import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
@@ -313,6 +314,7 @@ export const REGISTRY: RegistryDefinition = {
     "correos-de-mexico": correosDeMexico,
     "correos-express": correosExpress,
     "correos-spain": correosSpain,
+    "couriersplease": couriersplease,
     "ctt": ctt,
     "ctt-express": cttExpress,
     "cyprus-post": cyprusPost,
@@ -619,7 +621,7 @@ export const REGISTRY: RegistryDefinition = {
     "correos-spain": "correos-spain",
     "courier-center": "universal",
     "courier-it": "universal",
-    "couriersplease": "universal",
+    "couriersplease": "couriersplease",
     "cruz-del-sur": "universal",
     "cse-russia": "universal",
     "ctt": "ctt",

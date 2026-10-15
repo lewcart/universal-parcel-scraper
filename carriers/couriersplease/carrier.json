@@ -17,18 +17,62 @@
   "timezone": "Australia/Sydney",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "couriersplease",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 961
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta"
+  ],
   "portal": {
     "url": "https://www.couriersplease.com.au/tools-track?no={trackingNumber}",
     "searchUrl": "https://www.couriersplease.com.au/tools-track",
     "canaryUrl": "https://www.couriersplease.com.au/tools-track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "parcel_count",
+      "weight",
+      "volume",
+      "customer_reference",
+      "recipient_name",
+      "driver_name",
+      "depot_code"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta"
+    ],
+    "discarded": [
+      "delivered_at",
+      "parcel_count",
+      "weight",
+      "volume",
+      "customer_reference",
+      "recipient_name",
+      "driver_name",
+      "depot_code"
+    ],
+    "unavailable": [
+      "service_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

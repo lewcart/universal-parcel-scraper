@@ -478,6 +478,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/ems\.com\.vn\/tra-cuu\/tra-cuu-buu-gui\?code=EB000000076VN$/,
     marker: /Tra cứu bưu gửi|Mã bưu gửi|Không tìm thấy kết quả/i },
   // The page fills its field in and looks the number up on load.
+  { carrier: 'couriersplease', number: 'CPBZZZZ0000014',
+    route: /^https:\/\/www\.couriersplease\.com\.au\/tools-track\?no=CPBZZZZ0000014$/,
+    marker: /Track A Parcel Delivery|Enter up to 10 tracking numbers|Must be a valid tracking number/i },
+  // The page fills its field in and looks the number up on load.
   { carrier: 'orlen-paczka', number: '2109999000003',
     route: /^https:\/\/www\.orlenpaczka\.pl\/sledz-paczke\/\?numer=/,
     marker: /Śledzę paczkę|przesyłki o tym numerze nie można śledzić/i },

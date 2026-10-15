@@ -955,7 +955,10 @@
         {
           "note": "Benchmark number 2010505799436494",
           "results": {
-            "Ship24": 2,
+            "Ship24": {
+              "rows": 2,
+              "partial": "a third of the rows or fewer"
+            },
             "ParcelsApp": "no_history",
             "17TRACK": {
               "rows": 1,
@@ -4219,7 +4222,6 @@
       "references": [
         {
           "note": "Benchmark number 4164600013923",
-          "stale": true,
           "results": {
             "Ship24": "no_history",
             "ParcelsApp": "no_history",
@@ -4237,12 +4239,38 @@
       "references": [
         {
           "note": "Benchmark number 1TMB2419700167",
-          "stale": true,
           "results": {
             "Ship24": "no_history",
             "ParcelsApp": "no_history",
             "17TRACK": "no_history",
             "Postal Ninja": "undated",
+            "UPU": "n/a"
+          }
+        }
+      ]
+    },
+    {
+      "carrier": "yurtici-kargo",
+      "direct": "Yes",
+      "sample": "✓ 2",
+      "references": [
+        {
+          "note": "Benchmark number 114011114595",
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "postcode_prompt",
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
+            "UPU": "n/a"
+          }
+        },
+        {
+          "note": "Benchmark number 191329680164",
+          "results": {
+            "Ship24": "no_history",
+            "ParcelsApp": "postcode_prompt",
+            "17TRACK": "no_history",
+            "Postal Ninja": "no_history",
             "UPU": "n/a"
           }
         }

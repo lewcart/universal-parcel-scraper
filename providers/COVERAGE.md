@@ -169,6 +169,7 @@ is asked after the other aggregators whatever its count.
 | [Speedy](../carriers/speedy/README.md) | Yes | No adapter | No history | ✓ 21 | No history | No history | N/A |
 | [FAN Courier](../carriers/fan-courier/README.md) | Yes | No adapter | No history | No history | No history | No history | N/A |
 | [Sameday](../carriers/sameday/README.md) | Yes | No adapter | No history | No history | No history | Undated | N/A |
+| [Yurtiçi Kargo](../carriers/yurtici-kargo/README.md) | Yes | ✓ 2 | No history | Postcode prompt | No history | No history | N/A |
 <!-- /GENERATED:coverage -->
 
 <!-- GENERATED:lookup-order -->

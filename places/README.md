@@ -60,6 +60,28 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   the country instead of pinning a town. A DHL operation followed only by a country name
   also places that country; the carrier's name alone supplies no country.
 
+## Scans filed away from the parcel
+
+An office can file a scan where the parcel is not. DHL Express updates the customs clearance
+at the destination's office while the parcel is still being sorted at the origin, and a
+delivering carrier registers a parcel in its own country before the parcel has left. Given each
+scan's stage and time (`stages` and `times`), `placesForEvents` gives such a scan no place, so a
+map does not send the parcel there and back. The scan keeps its text.
+
+Only a scan of paperwork (`registered`, `pending` or `customs`) or one that names only a
+country can be away. The scans that handle the parcel in a town say where it is, and the scan
+is away when:
+
+- it lies more than 300 km off the way between the handling scans before and after it,
+  measured from a country's nearest town;
+- the parcel would have had to fly faster than 1,000 km/h, give or take two hours, between it
+  and the handling scan before or after it. Clocks without an offset prove nothing;
+- the handling scans around it are in other countries, and the parcel only comes to its
+  country later.
+
+A country between two handling scans abroad can be the way through: a Hong Kong hub between
+Shenzhen and Leipzig stays.
+
 The gazetteer loads once per process, from the packaged asset. `preloadPlaces()` loads it
 ahead of the first lookup. Results are cached in memory; consumers decide whether to
 persist them or serve a parcel when place resolution fails.

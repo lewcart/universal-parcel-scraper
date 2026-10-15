@@ -118,6 +118,13 @@ const WORLD_CITY_THOUSANDS = 1000;
 const NAMESAKE_THOUSANDS = 100;
 // A town of that size this many times larger than its namesake in a country the parcel is in keeps its name.
 const DOMINANT_TIMES = 10;
+// Scans that record paperwork, which an office can file where the parcel is not.
+const PAPERWORK_STAGES = new Set(['registered', 'pending', 'customs']);
+// Such a scan in a town this far off the way between the parcel's handling scans was filed elsewhere.
+const AWAY_DETOUR_KM = 300;
+// No parcel travels faster than a plane, and two hours absorb a scan clock's rounding and delays.
+const PLANE_KMH = 1000;
+const CLOCK_SLACK_HOURS = 2;
 
 // Swiss Post scans end in the site's six-digit number: "Zürich Briefzentrum 801050".
 const FACILITIES = new Map(facilityList.map((facility) => [`${facility.country}:${facility.code}`, facility]));
@@ -248,6 +255,59 @@ function countryDistanceKm(country: string, latitude: number, longitude: number)
     nearest = Math.min(nearest, distanceKm(latitude, longitude, data.latitude[index]!, data.longitude[index]!));
   }
   return nearest;
+}
+
+/** The instant an ISO 8601 time stands for, when it gives its offset. */
+function instant(time: string | null | undefined): number | null {
+  if (!time || !/(?:Z|[+-]\d\d:?\d\d)$/i.test(time.trim())) return null;
+  const value = Date.parse(time);
+  return Number.isFinite(value) ? value : null;
+}
+
+/**
+ * The scans the parcel was not at. A scan that records paperwork, or names only
+ * a country, can be filed ahead of the parcel: customs clears it at the
+ * destination's office while it is still abroad, and a destination carrier
+ * registers it before it has left. The scans that handle it in a town say
+ * where it is, and such a scan is away when:
+ * - it lies more than 300 km off the way between the handling scans before
+ *   and after it, measured from a country's nearest town;
+ * - the parcel would have flown faster than a plane between it and the
+ *   handling scan before or after it;
+ * - the handling scans around it are in other countries, and the parcel
+ *   only comes to its country later.
+ */
+function awayScans(
+  places: readonly (EventPlace | null)[],
+  stages: readonly (string | null | undefined)[],
+  times: readonly (string | null | undefined)[],
+): Set<number> {
+  const away = new Set<number>();
+  const paperwork = (index: number) => PAPERWORK_STAGES.has(stages[index] ?? '');
+  const handled = places.flatMap((place, index) => place?.precision === 'city' && !paperwork(index) ? [index] : []);
+  const reach = (from: EventPlace, to: EventPlace) => from.precision === 'country'
+    ? countryDistanceKm(from.country, to.latitude, to.longitude)
+    : distanceKm(from.latitude, from.longitude, to.latitude, to.longitude);
+  places.forEach((place, index) => {
+    if (!place || (place.precision === 'city' && !paperwork(index))) return;
+    const before = handled.filter((at) => at < index).at(-1);
+    const after = handled.find((at) => at > index);
+    const offWay = () => {
+      if (before === undefined || after === undefined) return false;
+      const [from, to] = [places[before]!, places[after]!];
+      return reach(place, from) + reach(place, to) - distanceKm(from.latitude, from.longitude, to.latitude, to.longitude) > AWAY_DETOUR_KM;
+    };
+    const at = instant(times[index]);
+    const flown = (other: number | undefined) => {
+      const then = other === undefined || at === null ? null : instant(times[other]);
+      return then !== null && reach(place, places[other!]!) > PLANE_KMH * (Math.abs(at! - then) / 3_600_000 + CLOCK_SLACK_HOURS);
+    };
+    const elsewhere = (other: number | undefined) => other === undefined || places[other]!.country !== place.country;
+    const ahead = () => after !== undefined && elsewhere(before) && elsewhere(after)
+      && places.some((later, at) => at > after && later?.country === place.country && !paperwork(at));
+    if (offWay() || flown(before) || flown(after) || ahead()) away.add(index);
+  });
+  return away;
 }
 
 interface Token { key: string; start: number; end: number }
@@ -678,17 +738,22 @@ function carrierHomes(carrier: string): string[] {
  * them and from the parcel's countries, under a name other towns share,
  * without being a world city. A carrier's own point for a scan, or for
  * another scan with the same text, moves it from the town's centre to the
- * facility, if the two are within 30 km of each other.
+ * facility, if the two are within 30 km of each other. Given the scans'
+ * stages and times, a scan the parcel was not at gets no place (see `awayScans`).
  */
 export function placesForEvents(
   locations: readonly (string | null | undefined)[],
-  { destinationCountry, carrierCountries = [], carriers = [], points = [] }: {
+  { destinationCountry, carrierCountries = [], carriers = [], points = [], stages = [], times = [] }: {
     destinationCountry?: string | null;
     carrierCountries?: readonly string[];
     /** The parcel's carriers by catalog id, the one delivering now first: their countries and their own hubs. */
     carriers?: readonly string[];
     /** The carrier's own point for each scan, where it gave one. */
     points?: readonly (EventPoint | null | undefined)[];
+    /** Each scan's stage, such as `customs`. */
+    stages?: readonly (string | null | undefined)[];
+    /** When each scan happened, as an ISO 8601 time with its offset. */
+    times?: readonly (string | null | undefined)[];
   } = {},
 ): (EventPlace | null)[] {
   const base = [...new Set([destinationCountry, ...carrierCountries, ...carriers.flatMap(carrierHomes)].filter((code): code is string => Boolean(code)))];
@@ -765,9 +830,12 @@ export function placesForEvents(
       ?? (telling(first[index]!, index) ? first[index]! : null), index);
   });
   const dropped = namesakes(settled);
-  return locations.map((location, index) => {
+  const places = locations.map((location, index) => {
     const found = settled[index];
     if (!found || !location || dropped.has(index)) return null;
     return atPoint(found.place, points[index] ?? pointAt.get(location.trim()));
   });
+  if (!stages.length) return places;
+  const away = awayScans(places, stages, times);
+  return places.map((place, index) => away.has(index) ? null : place);
 }

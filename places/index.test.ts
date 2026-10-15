@@ -311,4 +311,44 @@ describe('placesForEvents', () => {
     expect(route(['CH', 'Chavannes', 'Daillens Centre Colis', 'CH'], { destinationCountry: 'CH', carriers: ['swiss-post'] }))
       .toEqual(['Switzerland, CH', 'Chavannes, CH', 'Daillens, CH', 'Switzerland, CH']);
   });
+
+  it('gives paperwork filed away from the parcel no place', () => {
+    const scans = (list: [string, string, string][]) => route(list.map(([location]) => location), {
+      stages: list.map(([, stage]) => stage),
+      times: list.map(([, , time]) => time),
+    });
+    const hongKong = 'HONG KONG - HONG KONG SAR, CHINA';
+    const basel = 'BASEL - SWITZERLAND';
+    // The destination's customs office clears the parcel while it is still being sorted in Hong Kong.
+    expect(scans([[hongKong, 'in_transit', '2026-01-05T11:47:00Z'], [basel, 'customs', '2026-01-05T15:53:00Z']]))
+      .toEqual(['Hong Kong, HK', null]);
+    expect(scans([[hongKong, 'in_transit', '2026-01-05T11:47:00Z'], [basel, 'customs', '2026-01-05T15:53:00Z'],
+      [hongKong, 'in_transit', '2026-01-05T16:18:00Z'], ['BAHRAIN - BAHRAIN', 'in_transit', '2026-01-06T08:27:00Z']]))
+      .toEqual(['Hong Kong, HK', null, 'Hong Kong, HK', 'Bahrain, BH']);
+    expect(route([hongKong, basel, hongKong])).toEqual(['Hong Kong, HK', 'Basel, CH', 'Hong Kong, HK']);
+    // Once the parcel has had time to get there, the clearance is where it is; a clock without its offset proves nothing.
+    expect(scans([[hongKong, 'in_transit', '2026-01-05T11:47:00Z'], ['LEIPZIG - GERMANY', 'in_transit', '2026-01-06T08:00:00Z'],
+      [basel, 'customs', '2026-01-06T20:00:00Z'], [basel, 'in_transit', '2026-01-06T22:00:00Z']]))
+      .toEqual(['Hong Kong, HK', 'Leipzig, DE', 'Basel, CH', 'Basel, CH']);
+    expect(scans([[hongKong, 'in_transit', '2026-01-05T11:47:00'], [basel, 'customs', '2026-01-05T15:53:00']]))
+      .toEqual(['Hong Kong, HK', 'Basel, CH']);
+    // An import released by a central office the parcel never went to.
+    expect(scans([['Barcelona, BC, ES', 'in_transit', '2026-01-05T15:51:00Z'], ['Madrid, MD, ES', 'customs', '2026-01-07T11:07:00Z'],
+      ['Barcelona, BC, ES', 'in_transit', '2026-01-08T18:02:00Z']])).toEqual(['Barcelona, ES', null, 'Barcelona, ES']);
+    // The delivering carrier registers the parcel, and misses it, before it has crossed.
+    expect(scans([['FR', 'registered', '2026-01-05T11:09:00Z'], ['LONDON - UNITED KINGDOM', 'accepted', '2026-01-07T07:49:00Z'],
+      ['FR', 'pending', '2026-01-07T11:52:00Z'], ['AMSTERDAM - NETHERLANDS', 'in_transit', '2026-01-08T07:27:00Z'],
+      ['FR', 'delivered', '2026-01-10T14:32:00Z']]))
+      .toEqual([null, 'London, GB', null, 'Amsterdam, NL', 'France, FR']);
+    expect(scans([['Germany', 'registered', '2026-01-05T10:05:00Z'], ['Shanghai, China', 'accepted', '2026-01-05T10:05:56Z']]))
+      .toEqual([null, 'Shanghai, CN']);
+    // A label created where the parcel sets off stays, and so does a hub only a country names on its way.
+    expect(scans([['Poland', 'registered', '2026-01-05T21:25:00Z'], ['Warsaw', 'accepted', '2026-01-07T09:00:00Z'],
+      ['Berlin', 'in_transit', '2026-01-08T09:00:00Z']])).toEqual(['Poland, PL', 'Warsaw, PL', 'Berlin, DE']);
+    expect(scans([['Poland', 'registered', '2026-01-05T21:25:00Z'], ['Strasbourg', 'accepted', '2026-01-07T09:00:00Z'],
+      ['Berlin', 'in_transit', '2026-01-08T09:00:00Z'], ['Warsaw', 'delivered', '2026-01-09T09:00:00Z']]))
+      .toEqual([null, 'Strasbourg, FR', 'Berlin, DE', 'Warsaw, PL']);
+    expect(scans([['Shenzhen', 'in_transit', '2026-01-05T10:00:00Z'], ['Hong Kong International Hub', 'in_transit', '2026-01-06T21:04:00Z'],
+      ['Leipzig', 'in_transit', '2026-01-07T09:00:00Z']])).toEqual(['Shenzhen, CN', 'Hong Kong, HK', 'Leipzig, DE']);
+  });
 });

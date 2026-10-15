@@ -728,6 +728,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'saudi-post', number: 'RR000000005SA',
     route: /^https:\/\/splonline\.com\.sa\/en\/shipmentdetailsstatic\/\?tid=RR000000005SA$/,
     marker: /No data matches entered tracking number|Track Your Shipment/ },
+  // The page fills its field in from the address and looks the number up once its large script bundles load.
+  { carrier: 'starken', number: '100000009',
+    route: /^https:\/\/www\.starken\.cl\/seguimiento\?codigo=100000009$/,
+    marker: /Realiza seguimiento en línea|número de orden de flete/, renderTimeoutMs: 25_000 },
 ];
 
 /**

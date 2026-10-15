@@ -15934,7 +15934,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "starken",
+      "localClocks": true
     },
     "canaryUrl": "https://www.starken.cl/seguimiento",
     "trackingUrlTemplate": "https://www.starken.cl/seguimiento?codigo={trackingNumber}",

@@ -205,6 +205,7 @@ import { adapter as speedy } from '../carriers/speedy/adapter.js';
 import { adapter as springGds } from '../carriers/spring-gds/adapter.js';
 import { adapter as spxPh } from '../carriers/spx-ph/adapter.js';
 import { adapter as stallionExpress } from '../carriers/stallion-express/adapter.js';
+import { adapter as starken } from '../carriers/starken/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
 import { adapter as sunyou } from '../carriers/sunyou/adapter.js';
 import { adapter as swiftx } from '../carriers/swiftx/adapter.js';
@@ -446,6 +447,7 @@ export const REGISTRY: RegistryDefinition = {
     "spring-gds": springGds,
     "spx-ph": spxPh,
     "stallion-express": stallionExpress,
+    "starken": starken,
     "sto": sto,
     "sunyou": sunyou,
     "swiftx": swiftx,
@@ -848,7 +850,7 @@ export const REGISTRY: RegistryDefinition = {
     "sri-lanka-post": "universal",
     "st-courier": "universal",
     "stallion-express": "stallion-express",
-    "starken": "universal",
+    "starken": "starken",
     "steadfast": "universal",
     "sto": "sto",
     "sundarban-courier": "universal",

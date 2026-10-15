@@ -2,6 +2,74 @@
   "carrier": "starken",
   "records": [
     {
+      "number": "261538238",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/starken/reclamo/2026/jan/starken-encomienda-extraviada",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A complaint on Reclamos.cl's Starken page gives it as the order of freight number. Starken's tracker returns its history."
+    },
+    {
+      "number": "271897355",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/starken/reclamo/2026/feb/starken-demora-en-entrega-de-mi-paquete",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A complaint on Reclamos.cl's Starken page gives it as an order of freight number. Starken's tracker returns its history."
+    },
+    {
+      "number": "262586044",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/starken/reclamo/2026/feb/starken-demora-en-entrega-de-mi-paquete",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A complaint on Reclamos.cl's Starken page gives it as an order of freight number. Starken's tracker returns its history, closed with a claim."
+    },
+    {
+      "number": "240278577",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/starken/reclamo/2025/may/starken-compensaci-n-por-env-o-estraviado-orden-de-flete-240278577",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The title of a complaint on Reclamos.cl's Starken page names it as an order of freight number. Starken's tracker returns its history, closed as lost."
+    },
+    {
       "number": "233399313",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -12,13 +80,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "267553427",
@@ -31,13 +99,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "910934765",
@@ -50,7 +118,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -60,7 +128,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "914569667",
@@ -73,13 +141,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "253638187",
@@ -92,13 +160,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "250064999",
@@ -111,13 +179,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "237493021",
@@ -130,13 +198,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "913547136",
@@ -149,13 +217,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the opened capture shows the search page without the shipment's history."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the opened capture shows the search page without the shipment's history. Starken's tracker returns its history."
     },
     {
       "number": "914627431",
@@ -168,7 +236,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -178,7 +246,7 @@
           "xpo-ltl"
         ]
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "963991371",
@@ -191,13 +259,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "978236863",
@@ -210,13 +278,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the capture was not opened. Starken's tracker returns its history."
     },
     {
       "number": "917226316",
@@ -229,13 +297,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Starken's own tracking page, as an archived address shows; the opened capture shows the search page without the shipment's history."
+      "note": "Looked up on Starken's own tracking page, as an archived address shows; the opened capture shows the search page without the shipment's history. Starken's tracker returns its history."
     }
   ]
 }

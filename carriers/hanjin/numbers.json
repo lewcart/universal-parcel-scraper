@@ -42,10 +42,10 @@
         "url": "https://web.archive.org/web/20221204221824/https://www.hanjin.com:443/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=450931509291&schLang=KR&wblnumText=",
         "date": "2022-12-04",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -65,7 +65,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Hanjin's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history."
     },
     {
       "number": "800221108621",
@@ -75,10 +75,10 @@
         "url": "https://web.archive.org/web/20241107034815/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=800221108621&schLang=KR&wblnumText=",
         "date": "2024-11-07",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -98,7 +98,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Hanjin's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history."
     },
     {
       "number": "519119701785",
@@ -108,10 +108,10 @@
         "url": "https://web.archive.org/web/20251017044217/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=519119701785&schLang=KR&wblnumText=",
         "date": "2025-10-17",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -132,7 +132,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Hanjin's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history."
     },
     {
       "number": "520695602044",
@@ -142,10 +142,10 @@
         "url": "https://web.archive.org/web/20260812235339/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=520695602044&schLang=KR&wblnumText=",
         "date": "2026-08-12",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -165,7 +165,107 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Hanjin's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history."
+    },
+    {
+      "number": "462944190995",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260911175226/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&schLang=KR&wblnumText2=462944190995",
+        "date": "2026-09-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history."
+    },
+    {
+      "number": "518734483374",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250505100642/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=518734483374&schLang=KR&wblnumText=",
+        "date": "2025-05-05",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "purolator",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history. A domestic waybill whose history starts abroad, with a flight and Korean customs."
+    },
+    {
+      "number": "800785966444",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260527063918/https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum=800785966444&schLang=KR",
+        "date": "2026-05-27",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An archived lookup on Hanjin's own tracker; the capture shows this number with its history. An international waybill flown in from Japan."
     },
     {
       "number": "300894504105",

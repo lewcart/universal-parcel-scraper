@@ -103,6 +103,7 @@ import { adapter as gofo } from '../carriers/gofo/adapter.js';
 import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
 import { adapter as gzyl } from '../carriers/gzyl/adapter.js';
+import { adapter as hanjin } from '../carriers/hanjin/adapter.js';
 import { adapter as helthjem } from '../carriers/helthjem/adapter.js';
 import { adapter as heppner } from '../carriers/heppner/adapter.js';
 import { adapter as hermes } from '../carriers/hermes/adapter.js';
@@ -320,6 +321,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo-fr": gofoFr,
     "gofo-it": gofoIt,
     "gzyl": gzyl,
+    "hanjin": hanjin,
     "helthjem": helthjem,
     "heppner": heppner,
     "hermes": hermes,
@@ -594,7 +596,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo-fr": "gofo-fr",
     "gofo-it": "gofo-it",
     "gzyl": "gzyl",
-    "hanjin": "universal",
+    "hanjin": "hanjin",
     "helthjem": "helthjem",
     "heppner": "heppner",
     "hepsijet": "universal",

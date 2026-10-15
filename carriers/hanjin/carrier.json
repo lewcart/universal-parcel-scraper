@@ -20,18 +20,63 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "hanjin",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 545
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum={trackingNumber}&schLang=KR",
     "searchUrl": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do",
     "canaryUrl": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "progress_rail",
+      "order_contents",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "payment_details",
+      "driver_name",
+      "contact_details",
+      "related_awb_numbers"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "discarded": [
+      "progress_rail",
+      "order_contents",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "payment_details",
+      "driver_name",
+      "contact_details",
+      "related_awb_numbers"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

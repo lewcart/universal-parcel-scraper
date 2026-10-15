@@ -705,6 +705,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
   'dpd-ie': 'www.dpd.ie passes the number only to its tracker frame from tracking.dpd.ie, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   dtdc: 'the MyDTDC Flutter page exposes no visible body text until accessibility is enabled, and the portal link opens its home page',
+  hanjin: 'the result page answers an unknown number with an alert and sends the browser back to the empty search form, so only a real parcel verifies the link',
   'j-and-t': 'the Philippine page the link opens asks for a Tencent CAPTCHA before it looks a waybill up, and the adapter reads the Indonesian network instead',
   'j-and-t-cargo': 'headless Chrome receives the page frame without the tracking form, which a regular browser shows with the waybill filled in',
   'evri-uk': 'the protected key request rejects the default automated browser and leaves the domestic result panel empty, so number forwarding cannot be verified',

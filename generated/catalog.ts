@@ -9459,7 +9459,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hanjin",
+      "recognitionRank": 545,
+      "localClocks": true
     },
     "canaryUrl": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillSch.do",
     "trackingUrlTemplate": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum={trackingNumber}&schLang=KR",

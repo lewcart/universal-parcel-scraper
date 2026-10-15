@@ -69,6 +69,7 @@ import { statusMap as gofo } from '../../carriers/gofo/status.js';
 import { statusMap as gofoFr } from '../../carriers/gofo-fr/status.js';
 import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
+import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
@@ -146,8 +147,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox, 'j-and-t': jAndT,
-  'j-and-t-cargo': jntCargo, jitsu, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
+  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox,
+  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'lietuvos-pastas': lietuvosPastas, 'loomis-express': loomisExpress, 'magyar-posta': magyarPosta, mailamericas, maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,

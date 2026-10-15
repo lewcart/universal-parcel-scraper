@@ -67,7 +67,7 @@ describe('Starken HTTP adapter', () => {
     expect(starkenOpen(starkenSeal('Envío ñandú', 'passphrase', salt), 'passphrase')).toBe('Envío ñandú');
     expect(starkenOpen(starkenToken('42', new Date('2026-03-01T02:03:04.567Z')), STARKEN_TOKEN_PASSPHRASE))
       .toMatch(/^STARKENCL\|2026-03-01 02:03:04\|[^|]+\|42$/);
-    expect(() => starkenOpen(starkenSeal('synthetic', 'passphrase'), 'another')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => starkenOpen(starkenSeal('synthetic', 'passphrase', salt), 'another')).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
   it('keeps every package’s scans once, newest first, with their wall clocks and the newest of a run of waiting notes', () => {

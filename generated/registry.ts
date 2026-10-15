@@ -794,6 +794,7 @@ export const REGISTRY: RegistryDefinition = {
     "maritime-ontario": "universal",
     "matkahuolto": "matkahuolto",
     "mauritius-post": "universal",
+    "mayiyinfu": "universal",
     "mds-collivery": "universal",
     "meest": "meest",
     "midland-transport": "universal",

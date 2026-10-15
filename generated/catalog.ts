@@ -13422,6 +13422,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "mayiyinfu": {
+    "displayName": "Mayi Yinfu",
+    "color": "#000000",
+    "aliases": [
+      "Mayiyinfu",
+      "MYYF",
+      "蚂蚁银服",
+      "螞蟻銀服",
+      "广东蚂蚁银服国际物流有限公司",
+      "Mayi Yinfu International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "mayiyinfu.com.cn",
+          "www.mayiyinfu.com.cn"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^MY\\d{10}US$",
+        "confidence": "high"
+      }
+    ]
+  },
   "mds-collivery": {
     "displayName": "MDS Collivery",
     "color": "#00823d",
@@ -20334,6 +20374,7 @@ export const CARRIER_IDS = [
   "maritime-ontario",
   "matkahuolto",
   "mauritius-post",
+  "mayiyinfu",
   "mds-collivery",
   "meest",
   "midland-transport",
@@ -20832,6 +20873,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maritime-ontario": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "mauritius-post": [],
+  "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
   "meest": ["meest-1"],
   "midland-transport": [],

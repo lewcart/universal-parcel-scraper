@@ -13420,6 +13420,46 @@
     ],
     "detectionRules": []
   },
+  "mayiyinfu": {
+    "displayName": "Mayi Yinfu",
+    "color": "#000000",
+    "aliases": [
+      "Mayiyinfu",
+      "MYYF",
+      "蚂蚁银服",
+      "螞蟻銀服",
+      "广东蚂蚁银服国际物流有限公司",
+      "Mayi Yinfu International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "mayiyinfu.com.cn",
+          "www.mayiyinfu.com.cn"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^MY\\d{10}US$",
+        "confidence": "high"
+      }
+    ]
+  },
   "mds-collivery": {
     "displayName": "MDS Collivery",
     "color": "#00823d",

@@ -1,0 +1,16 @@
+{
+  "carrier": "mayiyinfu",
+  "entries": [
+    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "live", "note": "The Hualei platform's own row on the order's creation time: the shipment data has arrived."},
+    {"wording": "已入库,到达收货点", "language": "zh", "stage": "accepted", "confirmedBy": "live", "note": "Booked into the warehouse at the receiving point."},
+    {"wording": "已出库,货物离开操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Booked out: the parcel has left the operations centre."},
+    {"wording": "国内清关中", "language": "zh", "stage": "customs", "confirmedBy": "live", "note": "Export customs clearance in China is under way."},
+    {"wording": "已排航班", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "A flight has been booked."},
+    {"wording": "货物已交机场，等待安排航班中The goods have been delivered to the airport and are awaiting the arrangement of flights.", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Handed to the airport to wait for a flight. It is not a delivery to the recipient, though a translation may read 'Delivered'."},
+    {"wording": "起运地航班起飞", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The flight has left the origin."},
+    {"wording": "已到达目的国", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Arrived in the destination country or region."},
+    {"wording": "清关完成", "language": "zh", "stage": "customs", "confirmedBy": "live", "note": "Customs clearance is complete."},
+    {"wording": "清关完成，待转运Clearance has been completed and it is awaiting transfer.", "language": "zh", "stage": "customs", "confirmedBy": "live", "note": "Cleared at the destination and waiting to be handed to the delivering carrier."},
+    {"wording": "已转运transferred", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Handed to the delivering carrier, whose number the tracker then shows."}
+  ]
+}

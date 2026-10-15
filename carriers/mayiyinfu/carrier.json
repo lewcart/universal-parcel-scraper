@@ -1,0 +1,54 @@
+{
+  "id": "mayiyinfu",
+  "displayName": "Mayi Yinfu",
+  "aliases": [
+    "Mayiyinfu",
+    "MYYF",
+    "蚂蚁银服",
+    "螞蟻銀服",
+    "广东蚂蚁银服国际物流有限公司",
+    "Mayi Yinfu International Logistics"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#000000"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://t.17track.net/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mayiyinfu.com.cn",
+        "www.mayiyinfu.com.cn"
+      ],
+      "pathPattern": "^/trackIndex\\.htm$",
+      "params": [
+        "documentCode"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "mayiyinfu-1",
+      "pattern": "^MY\\d{10}US$",
+      "confidence": "high"
+    }
+  ]
+}

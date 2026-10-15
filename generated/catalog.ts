@@ -8860,7 +8860,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gati",
+      "recognitionRank": 43
     },
     "canaryUrl": "https://www.allcargologistics.com/track-shipment",
     "trackingSearchUrl": "https://www.allcargologistics.com/track-shipment",

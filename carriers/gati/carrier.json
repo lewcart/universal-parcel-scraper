@@ -22,17 +22,59 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gati",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 43
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "eta",
+    "weight"
+  ],
   "portal": {
     "searchUrl": "https://www.allcargologistics.com/track-shipment",
     "canaryUrl": "https://www.allcargologistics.com/track-shipment",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "origin",
+      "departure_date",
+      "destination",
+      "delivered_at",
+      "eta",
+      "recipient_name",
+      "remarks",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "eta",
+      "weight"
+    ],
+    "discarded": [
+      "origin",
+      "departure_date",
+      "destination",
+      "recipient_name",
+      "remarks",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

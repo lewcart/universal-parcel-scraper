@@ -10097,6 +10097,12 @@
     ]
   },
   {
+    "input": "139815455",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "13CF4B49016730467J",
     "carrier": "zeleris",
     "confidence": "high",
@@ -23534,6 +23540,20 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "412933252",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt"
+    ],
+    "preferred": [
+      "tnt"
+    ],
+    "asked": [
+      "tnt"
     ]
   },
   {
@@ -37359,6 +37379,12 @@
     "asked": [
       "brt"
     ]
+  },
+  {
+    "input": "988397715",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "988C01701257F",

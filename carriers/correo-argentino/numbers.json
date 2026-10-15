@@ -190,6 +190,91 @@
         "confidence": "high"
       },
       "note": "Looked up whole on Correo Argentino's former tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "SP904542386AR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tuquejasuma.com/correo-argentino/reclamos/correo-no-entrego-sp-904542386-ar-y-devolvio-sin-aviso",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A complaint about Correo Argentino gives it in its title. The tracker returns the domestic history of an item from abroad."
+    },
+    {
+      "number": "HC473288028AR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tuquejasuma.com/correo-argentino/reclamos/se-encuentra-en-clog-salta-pieza-hc-473288028-ar-desde-107-sin-movimiento",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A complaint about an item held at a logistics centre gives it in its title. The tracker returns a delivered history."
+    },
+    {
+      "number": "CM125686622AR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tuquejasuma.com/correo-argentino/reclamos/paquete-trabado-en-clasificacion-ya-pague-vep-cm-125686622-ar",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A complaint about an import held in sorting gives it in its title. The tracker returns its domestic history."
+    },
+    {
+      "number": "SP903191428AR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tuquejasuma.com/correo-argentino/reclamos/no-puedo-generar-el-vep-ni-pagar-el-impuesto-para-sp903191428ar-ua551773334vu",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A complaint about paying an import's fees gives it in its title. The tracker returns the item as unclaimed in time."
+    },
+    {
+      "number": "MC000612060AR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tuquejasuma.com/correo-argentino/reclamos/reclamo-por-demora-y-falta-de-informacion-envio-n-mc000612060ar",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A complaint about a delayed shipment gives it in its title. The tracker no longer finds it."
     }
   ]
 }

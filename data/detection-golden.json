@@ -41561,6 +41561,17 @@
     ]
   },
   {
+    "input": "CM125686622AR",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "CM473272924IN",
     "carrier": "india-post",
     "confidence": "high",
@@ -46085,6 +46096,17 @@
     ]
   },
   {
+    "input": "HC473288028AR",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "HE0000451419",
     "carrier": "unknown",
     "confidence": "low",
@@ -49638,6 +49660,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "MC000612060AR",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
   },
   {
     "input": "MED 06568468",
@@ -54464,6 +54497,28 @@
     "confidence": "high",
     "candidates": [
       "spee-dee"
+    ]
+  },
+  {
+    "input": "SP903191428AR",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "SP904542386AR",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {

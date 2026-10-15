@@ -43,6 +43,7 @@ import { adapter as cne } from '../carriers/cne/adapter.js';
 import { adapter as colisPrive } from '../carriers/colis-prive/adapter.js';
 import { adapter as colisweb } from '../carriers/colisweb/adapter.js';
 import { adapter as correiosBr } from '../carriers/correios-br/adapter.js';
+import { adapter as correoArgentino } from '../carriers/correo-argentino/adapter.js';
 import { adapter as correosChile } from '../carriers/correos-chile/adapter.js';
 import { adapter as correosDeMexico } from '../carriers/correos-de-mexico/adapter.js';
 import { adapter as correosExpress } from '../carriers/correos-express/adapter.js';
@@ -280,6 +281,7 @@ export const REGISTRY: RegistryDefinition = {
     "colis-prive": colisPrive,
     "colisweb": colisweb,
     "correios-br": correiosBr,
+    "correo-argentino": correoArgentino,
     "correos-chile": correosChile,
     "correos-de-mexico": correosDeMexico,
     "correos-express": correosExpress,
@@ -544,7 +546,7 @@ export const REGISTRY: RegistryDefinition = {
     "colisweb": "colisweb",
     "coordinadora": "universal",
     "correios-br": "correios-br",
-    "correo-argentino": "universal",
+    "correo-argentino": "correo-argentino",
     "correo-uruguayo": "universal",
     "correos-chile": "correos-chile",
     "correos-de-mexico": "correos-de-mexico",

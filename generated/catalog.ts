@@ -6786,7 +6786,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correo-argentino",
+      "recognitionRank": 978,
+      "localClocks": true
     },
     "canaryUrl": "https://www.correoargentino.com.ar/formularios/e-commerce",
     "trackingSearchUrl": "https://www.correoargentino.com.ar/formularios/e-commerce",

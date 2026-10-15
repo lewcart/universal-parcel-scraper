@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { NoHistoryError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, normalizeTntExpressNumber, normalizeTntFranceNumber, parseTntExpressResponse, parseTntFranceResponse, TntExpressTracker, TntFranceTracker } from './adapter.js';
 import { tntExpressStatus } from './status.js';
@@ -34,6 +35,7 @@ describe('TNT France public tracking', () => {
     expect(parseTntFranceResponse(fixture().replaceAll("Colis chez l'expéditeur", 'New milestone'), NUMBER).status).toBe('unknown');
     expect(() => parseTntFranceResponse(fixture().replace('27/03/2026', '32/03/2026'), NUMBER)).toThrow('incomplete tracking row');
     expect(() => parseTntFranceResponse(fixture().replace('Etapes de votre expédition', 'Changed header'), NUMBER)).toThrow('unique tracking history');
+    expect(() => parseTntFranceResponse(fixture().replace(/<div class="roster tnt-even">.*<\/div><\/div>/, ''), NUMBER)).toThrow(NoHistoryError);
   });
 
   it('classifies a synthetic delivered history independently of older scans', () => {
@@ -151,14 +153,14 @@ describe('TNT international public tracking', () => {
     expect(tntExpressStatus('constructor')).toBeUndefined();
   });
 
-  it('requires offsets and wording, and leaves an empty history inconclusive', () => {
+  it('requires offsets and wording, and answers a shipment listed without scans as no history', () => {
     const payload = express();
     payload['tracker.output'].consignment[0].events[0].date = '2026-03-27T09:40:00';
     expect(() => parseTntExpressResponse(payload, EXPRESS_NUMBER)).toThrow('incomplete scan');
     const empty = express();
     empty['tracker.output'].consignment = empty['tracker.output'].consignment.slice(0, 1);
     empty['tracker.output'].consignment[0].events = [];
-    expect(() => parseTntExpressResponse(empty, EXPRESS_NUMBER)).toThrow('without tracking history');
+    expect(() => parseTntExpressResponse(empty, EXPRESS_NUMBER)).toThrow(NoHistoryError);
   });
 
   it('makes one bounded anonymous read, honours cancellation and keeps outages apart', async () => {

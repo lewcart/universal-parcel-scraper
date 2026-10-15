@@ -2,7 +2,7 @@
 import { load } from 'cheerio';
 import { recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { ChallengeError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { countryCode, explicitOffsetTime, zonedTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -64,7 +64,7 @@ export function parseTntFranceResponse(html: string, rawNumber: string): Carrier
   const sections = $('.result__item').filter((_, element) => clean($(element).children('.result__row').text(), 100) === 'Etapes de votre expédition');
   if (sections.length !== 1) throw new SchemaError(PROVIDER, 'TNT France returned no unique tracking history');
   const rows = sections.children('.result__content').children('.roster');
-  if (!rows.length) throw new IndeterminateError(PROVIDER, 'TNT France returned empty tracking history');
+  if (!rows.length) throw new NoHistoryError(PROVIDER, 'TNT France lists the shipment without scans');
   if (rows.length > 500) throw new SchemaError(PROVIDER, 'TNT France returned excessive tracking history');
   const parsed: Array<{ event: CarrierEvent; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
@@ -150,7 +150,7 @@ export function parseTntExpressResponse(payload: unknown, rawNumber: string): Ca
   if (!shipments.length) throw new SchemaError(EXPRESS_PROVIDER, 'TNT returned a different shipment');
   const newest = ({ history }: { history: Array<{ timestamp: number }> }) => history[0]?.timestamp ?? -Infinity;
   const { consignment, history } = shipments.reduce((best, shipment) => newest(shipment) > newest(best) ? shipment : best);
-  if (!history.length) throw new IndeterminateError(EXPRESS_PROVIDER, 'TNT returned a shipment without tracking history');
+  if (!history.length) throw new NoHistoryError(EXPRESS_PROVIDER, 'TNT lists the shipment without scans');
   const events = history.slice(0, 100).map(({ event }) => event);
   const mapped = tntExpressStatus(String(events[0]!.provider_code ?? ''));
   // `destinationDate` is the estimate until delivery; its day matches the page.

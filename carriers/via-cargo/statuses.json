@@ -1,0 +1,8 @@
+{
+  "carrier": "via-cargo",
+  "entries": [
+    {"code": "ALTA", "wording": "INGRESO A VIA CARGO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "First event of the archived API history."},
+    {"wording": "EN VIAJE", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived API history; it appeared with the event types MANI and CPCE."},
+    {"code": "RECD", "wording": "Recepcionado en centro de distribución", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived API history."}
+  ]
+}

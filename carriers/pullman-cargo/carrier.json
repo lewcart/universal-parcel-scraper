@@ -1,0 +1,41 @@
+{
+  "id": "pullman-cargo",
+  "displayName": "Pullman Cargo",
+  "aliases": [
+    "Pullman GO"
+  ],
+  "region": {
+    "countries": [
+      "CL"
+    ]
+  },
+  "brand": {
+    "color": "#003fa2"
+  },
+  "selectable": true,
+  "timezone": "America/Santiago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pullmancargo.cl/seguimiento/{trackingNumber}",
+    "searchUrl": "https://pullmancargo.cl/seguimiento",
+    "canaryUrl": "https://pullmancargo.cl/seguimiento",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pullmancargo.cl"
+      ],
+      "path": "^/seguimiento/([0-9]+)/?$"
+    }
+  ],
+  "detection": []
+}

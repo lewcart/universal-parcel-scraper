@@ -72,6 +72,12 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to ACS Courier."
   },
   {
+    "carrier": "aex-paraguay",
+    "pattern": "^A\\d{9}$",
+    "kind": "collision",
+    "reason": "AEX guías of the A series fall inside Allegro One's high-confidence A0 shape, and nothing else in the number names AEX."
+  },
+  {
     "carrier": "akash-ganga",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -117,6 +123,18 @@
     "carrier": "amazon-shipping",
     "kind": "by_design",
     "reason": "Amazon Logistics owns the shared Amazon pattern. A parcel moves here only after Amazon's public tracker answers for it."
+  },
+  {
+    "carrier": "ampm",
+    "pattern": "^CNA\\d{12}$",
+    "kind": "by_design",
+    "reason": "Grupo ampm tracks Cainiao-issued CNA numbers for AliExpress parcels; one sample is too few for a rule and the prefix is Cainiao's."
+  },
+  {
+    "carrier": "ampm",
+    "pattern": "^IDTS\\d{14}$",
+    "kind": "by_design",
+    "reason": "One archived guía is too few to tie the IDTS layout to Grupo ampm alone."
   },
   {
     "carrier": "andreani",
@@ -405,6 +423,18 @@
     "reason": "CEVA's lettered references vary with the shipper and service, and nothing in them points to CEVA alone."
   },
   {
+    "carrier": "chazki",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Twelve-digit Chazki trackcodes share their shape with many carriers' numeric waybills, so the shape cannot name Chazki."
+  },
+  {
+    "carrier": "chazki",
+    "pattern": "^[A-Z]{3}\\d{7,10}$",
+    "kind": "by_design",
+    "reason": "Chazki trackcodes of three letters and digits carry a prefix that varies by sender, and the nine-digit form falls inside Purolator's rule."
+  },
+  {
     "carrier": "chilexpress",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -511,6 +541,12 @@
     "pattern": "^\\d[A-Z]\\d{10}$",
     "kind": "by_design",
     "reason": "Twelve characters are a shape several carriers print, and nothing in the number points to CouriersPlease."
+  },
+  {
+    "carrier": "cruz-del-sur",
+    "pattern": "^\\d{7}\\d{2}$",
+    "kind": "by_design",
+    "reason": "A seven-digit, two-digit NIC is a short digit group that other carriers' numbers can match, and nothing in it points to Cruz del Sur."
   },
   {
     "carrier": "cse-russia",
@@ -1033,6 +1069,12 @@
     "reason": "GS Postbox half-price numbers are bare twelve digits without a known check digit, a shape SMSA Express, Korean and Japanese carriers share."
   },
   {
+    "carrier": "guatex",
+    "pattern": "^[A-Z]\\d{3,4}[A-Z]{1,2}\\d{5}$",
+    "kind": "by_design",
+    "reason": "Three public Guatex guías in two variants are too few to fix a layout for a rule."
+  },
+  {
     "carrier": "hanjin",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -1201,6 +1243,12 @@
     "reason": "Twelve and thirteen digits are shared by several carriers and nothing in the number points to Inter Rapidísimo."
   },
   {
+    "carrier": "j-and-t-br",
+    "pattern": "^888\\d{12}$",
+    "kind": "collision",
+    "reason": "Fifteen-digit J&T Express Brazil waybills share their shape with BRT, Yunda and other carriers' numeric rules, and no carrier statement ties the 888 prefix to J&T Brazil."
+  },
+  {
     "carrier": "j-and-t-cargo",
     "pattern": "^57\\d{10}$",
     "kind": "open",
@@ -1211,6 +1259,18 @@
     "pattern": "^\\d{14}$",
     "kind": "by_design",
     "reason": "Fourteen digits are DPD's parcel layout and several other carriers print them, so nothing in the number points to Jadlog."
+  },
+  {
+    "carrier": "jamaica-post",
+    "pattern": "^ZL\\d{8}$",
+    "kind": "by_design",
+    "reason": "Only the Ja Mail tracker's own example shows this layout, too little for a rule."
+  },
+  {
+    "carrier": "jamaica-post",
+    "pattern": "^CSN\\d{4}$",
+    "kind": "by_design",
+    "reason": "A seven-character reference shown only as the tracker's example is too short and too thin for a rule."
   },
   {
     "carrier": "janio",
@@ -1337,6 +1397,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Kunyoung Express numbers are bare ten-digit runs without a known check digit, a shape many carriers share."
+  },
+  {
+    "carrier": "laar-courier",
+    "pattern": "^GYE\\d{10}$",
+    "kind": "by_design",
+    "reason": "Only one public Laar guía is known, so a rule for its letter prefix would rest on a single sample."
   },
   {
     "carrier": "landmark-global",
@@ -1829,6 +1895,12 @@
     "reason": "Thirteen digits are shared by several posts and couriers and nothing in the number points to PTT."
   },
   {
+    "carrier": "pullman-cargo",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "Eleven-digit Pullman Cargo ODT numbers share their shape with many carriers' numeric waybills, so the shape cannot name Pullman Cargo."
+  },
+  {
     "carrier": "quantium-solutions",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -2229,6 +2301,12 @@
     "reason": "Fourteen digits are shared by many carriers and no known prefix or check digit sets TCS apart."
   },
   {
+    "carrier": "tealca",
+    "pattern": "^\\d{7,8}$",
+    "kind": "by_design",
+    "reason": "Seven or eight bare digits are shared by many carriers and nothing in a Tealca guía points to Tealca."
+  },
+  {
     "carrier": "team-global-express",
     "pattern": "^\\d{12,13}$",
     "kind": "by_design",
@@ -2343,6 +2421,12 @@
     "reason": "Ten digits are printed by many carriers, and TST-CF publishes no prefix or check that would set its PRO numbers apart."
   },
   {
+    "carrier": "tufesa",
+    "pattern": "^[A-Z]{4}\\d{6}$",
+    "kind": "by_design",
+    "reason": "C chez vous, Team Global Express and Border Express print the same shape, and two public TufesaPack samples are too few for a rule."
+  },
+  {
     "carrier": "ubi-smart-parcel",
     "pattern": "^[0-9A-Z]{23}$",
     "kind": "collision",
@@ -2377,6 +2461,12 @@
     "pattern": "^0?\\d{8}$",
     "kind": "by_design",
     "reason": "Eight digits, sometimes typed with a leading zero, are shared by several carriers and nothing in the number points to Venipak."
+  },
+  {
+    "carrier": "via-cargo",
+    "pattern": "^999\\d{9}$",
+    "kind": "by_design",
+    "reason": "Twelve digits starting 999 also occur in deprisa, pecom and sending corpus numbers, so the prefix does not point to Via Cargo alone."
   },
   {
     "carrier": "viettel-post",
@@ -2474,6 +2564,12 @@
     "reason": "A public experience table attributes this reference to Yanwen; no official source establishes the family."
   },
   {
+    "carrier": "yimidida",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Yimidida waybills are bare twelve-digit numbers, a shape many carriers' rules already suggest."
+  },
+  {
     "carrier": "yto",
     "pattern": "^G\\d{11}$",
     "kind": "open",
@@ -2520,5 +2616,11 @@
     "pattern": "^\\d{16}$",
     "kind": "by_design",
     "reason": "Sixteen digits without the printed dashes are shared by DHL eCommerce, Evri, TNT and others, and nothing in a JDE number points to JDE."
+  },
+  {
+    "carrier": "zoom-ve",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by many carriers and nothing in a Zoom guía points to Zoom."
   }
 ]

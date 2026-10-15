@@ -1,0 +1,13 @@
+{
+  "carrier": "guatex",
+  "entries": [
+    {"wording": "Guía pendiente de recolectar", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "First progress step of the tracker page's script, printed over two lines."},
+    {"wording": "La guía fue creada", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El paquete fue recolectado", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El paquete ingresó a bodega", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El paquete salió a ruta", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El paquete ha sido entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El paquete no fue entregado", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Wording in the tracker page's own script at servicios.guatex.gt/Guatex/RastreoTracking, followed there by the date and time."},
+    {"wording": "El monto ha sido acreditado", "language": "es", "confirmedBy": "portal", "note": "Cash-on-delivery step of the tracker page's script: the collected amount was credited to the sender."}
+  ]
+}

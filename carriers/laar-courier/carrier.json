@@ -1,0 +1,56 @@
+{
+  "id": "laar-courier",
+  "displayName": "Laar Courier",
+  "aliases": [
+    "LaarCourier",
+    "Laar"
+  ],
+  "region": {
+    "countries": [
+      "EC"
+    ]
+  },
+  "brand": {
+    "color": "#ff0000"
+  },
+  "selectable": true,
+  "timezone": "America/Guayaquil",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://fenix.laarcourier.com/Tracking/?guia={trackingNumber}",
+    "searchUrl": "https://fenix.laarcourier.com/Tracking/",
+    "canaryUrl": "https://fenix.laarcourier.com/Tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fenix.laarcourier.com",
+        "fenixoper.laarcourier.com"
+      ],
+      "pathPattern": "^/Tracking/?$",
+      "params": [
+        "guia"
+      ]
+    },
+    {
+      "domains": [
+        "fenix.laarcourier.com",
+        "fenixoper.laarcourier.com"
+      ],
+      "pathPattern": "^/Tracking/Guia[Cc]ompleta\\.aspx$",
+      "params": [
+        "Guia"
+      ]
+    }
+  ],
+  "detection": []
+}

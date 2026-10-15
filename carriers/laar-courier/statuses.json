@@ -1,0 +1,12 @@
+{
+  "carrier": "laar-courier",
+  "entries": [
+    {"code": "2", "wording": "POR RECOLECTAR", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "Timeline step of the archived tracker; the tracker script describes it as a created shipment awaiting processing."},
+    {"code": "3", "wording": "RECOLECTADO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Timeline step of the archived tracker: collected from the sender."},
+    {"code": "4", "wording": "EN BODEGA", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Timeline step of the archived tracker: entered a warehouse."},
+    {"code": "5", "wording": "EN TRÁNSITO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Timeline step of the archived tracker; the script describes it as in operational processing."},
+    {"code": "6", "wording": "ZONA DE ENTREGA", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Timeline step of the archived tracker; the script describes it as in the destination delivery zone, and delivery followed the same morning."},
+    {"code": "7", "wording": "ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Timeline step and summary status of the archived tracker."},
+    {"wording": "SALIDA DE BODEGA DE ORIGEN", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Transit detail of the archived tracker: left the origin warehouse."}
+  ]
+}

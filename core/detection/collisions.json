@@ -3209,5 +3209,32 @@
       "tnt-it"
     ],
     "reason": "Swiss Post Cargo's PL- references have the shape of TNT Italy's national waybills; both stay low-confidence suggestions and carrier recognition asks each."
+  },
+  {
+    "shape": "FD and six digits",
+    "carriers": [
+      "forza-delivery",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "loggi"
+    ],
+    "reason": "Forza guías with six digits share the eight-character format of the three GLS networks and Loggi; all rules are low-confidence, so recognition asks each carrier."
+  },
+  {
+    "shape": "^[A-Z]{1}\\d{9}$",
+    "carriers": [
+      "allegro-one",
+      "australia-post"
+    ],
+    "reason": "AEX guías are A and nine digits. Allegro One's high rule takes A0 and eight letters or digits, and Australia Post's low ten-character consignment rule takes three letters or digits and seven digits, so an AEX guía starting A0 detects as Allegro One. AEX has no rule of its own."
+  },
+  {
+    "shape": "^[A-Z]{2}\\d{8}$",
+    "carriers": [
+      "forza-delivery",
+      "tnt-it"
+    ],
+    "reason": "Forza guías with eight digits are two letters and eight digits, the layout TNT Italy's low rule takes; both rules are low, so recognition asks each carrier."
   }
 ]

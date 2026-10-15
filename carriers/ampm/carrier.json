@@ -1,0 +1,48 @@
+{
+  "id": "ampm",
+  "displayName": "Grupo ampm",
+  "aliases": [
+    "ampm",
+    "AMPM",
+    "Grupo AMPM",
+    "Am Pm"
+  ],
+  "region": {
+    "countries": [
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#0d298e"
+  },
+  "selectable": true,
+  "timezone": "America/Mexico_City",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://grupoampm.com/rastreador/?tracking-id={trackingNumber}",
+    "searchUrl": "https://grupoampm.com/rastreador/",
+    "canaryUrl": "https://grupoampm.com/rastreador/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "grupoampm.com",
+        "www.grupoampm.com"
+      ],
+      "pathPattern": "^/(?:en/)?rastreador/?$",
+      "params": [
+        "tracking-id"
+      ]
+    }
+  ],
+  "detection": []
+}

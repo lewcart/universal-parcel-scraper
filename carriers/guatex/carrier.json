@@ -1,0 +1,47 @@
+{
+  "id": "guatex",
+  "displayName": "Guatex",
+  "aliases": [
+    "GUATEX",
+    "GuatEx",
+    "Guate Expreso",
+    "Guatex Guatemala"
+  ],
+  "region": {
+    "countries": [
+      "GT"
+    ]
+  },
+  "brand": {
+    "color": "#141b49"
+  },
+  "selectable": true,
+  "timezone": "America/Guatemala",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://servicios.guatex.gt/Guatex/RastreoTracking?tipo=G&dato={trackingNumber}",
+    "searchUrl": "https://servicios.guatex.gt/Guatex/RastreoTracking",
+    "canaryUrl": "https://servicios.guatex.gt/Guatex/RastreoTracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "servicios.guatex.gt"
+      ],
+      "pathPattern": "^/Guatex/RastreoTracking/?$",
+      "params": [
+        "dato"
+      ]
+    }
+  ],
+  "detection": []
+}

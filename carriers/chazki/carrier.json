@@ -1,0 +1,43 @@
+{
+  "id": "chazki",
+  "displayName": "Chazki",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "PE",
+      "AR",
+      "CL",
+      "CO",
+      "MX"
+    ]
+  },
+  "brand": {
+    "color": "#116dd6"
+  },
+  "selectable": true,
+  "timezone": "America/Lima",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nintendo.chazki.com/trackcodeTracking/{trackingNumber}",
+    "searchUrl": "https://www.chazki.com/centro-de-ayuda",
+    "canaryUrl": "https://www.chazki.com/centro-de-ayuda",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nintendo.chazki.com"
+      ],
+      "path": "^/trackcodeTracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

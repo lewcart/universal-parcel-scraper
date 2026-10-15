@@ -1,0 +1,49 @@
+{
+  "id": "tufesa",
+  "displayName": "TufesaPack",
+  "aliases": [
+    "Tufesa",
+    "Tufesa Paquetería",
+    "Tufesa Envíos",
+    "Tufesa Pack",
+    "Grupo TUFESA"
+  ],
+  "region": {
+    "countries": [
+      "MX",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#f05a28"
+  },
+  "selectable": true,
+  "timezone": "America/Hermosillo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://tufesapack.com/paqueteria/rastreo/captura",
+    "canaryUrl": "https://tufesapack.com/paqueteria/rastreo/captura",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tufesapack.com",
+        "www.tufesapack.com"
+      ],
+      "pathPattern": "^/paqueteria/rastreo/captura/?$",
+      "params": [
+        "codigo"
+      ]
+    }
+  ],
+  "detection": []
+}

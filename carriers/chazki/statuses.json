@@ -1,0 +1,16 @@
+{
+  "carrier": "chazki",
+  "entries": [
+    {"wording": "Pendiente de ingreso a Paquery", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "Not yet received at the logistics centre. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "por recoger", "stage": "registered", "language": "es", "confirmedBy": "source", "note": "Not yet collected from the sender; quoted from Chazki's tracking in a Tu Queja Suma complaint."},
+    {"wording": "No operado", "stage": "exception", "language": "es", "confirmedBy": "official-doc", "note": "The order does not belong to Chazki's operation. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Colectado", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "Collected by Chazki. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Arribado a Paquery Point", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Entered the logistics centre. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "En poder del Paquer", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "With the courier on the way. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Intento de entrega 1", "stage": "failed_attempt", "language": "es", "confirmedBy": "official-doc", "note": "Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Intento de entrega 2", "stage": "failed_attempt", "language": "es", "confirmedBy": "official-doc", "note": "Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "En proceso de devolución", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Being returned. Chazki's help-centre article on tracking lists it with its meaning."},
+    {"wording": "Devuelto", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Chazki's help-centre article on tracking lists it with its meaning."}
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "aex-paraguay",
+  "displayName": "AEX",
+  "aliases": [
+    "AEX Paraguay",
+    "Grupo AEX",
+    "Asunción Express",
+    "COPASSA S.A."
+  ],
+  "region": {
+    "countries": [
+      "PY"
+    ]
+  },
+  "brand": {
+    "color": "#4a9fdc"
+  },
+  "selectable": true,
+  "timezone": "America/Asuncion",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.aex.com.py/web/tracking.php?guia={trackingNumber}",
+    "searchUrl": "https://www.aex.com.py/web/tracking.php",
+    "canaryUrl": "https://www.aex.com.py/web/tracking.php",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "aex.com.py"
+      ],
+      "pathPattern": "^/web/tracking\\.php$",
+      "params": [
+        "guia"
+      ]
+    },
+    {
+      "domains": [
+        "aex.com.py"
+      ],
+      "path": "^/web/tracking/([A-Za-z0-9]+)/?$"
+    }
+  ],
+  "detection": []
+}

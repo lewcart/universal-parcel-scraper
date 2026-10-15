@@ -9,8 +9,10 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   blueex: 'blue-ex.com hides its tracking forms on phone-sized screens; its own links open the tracking page with the number',
   ciblex: 'Ciblex shows parcels only in its customer extranet, behind a sign-in',
   deprisa: 'Deprisa\'s tracker opens a shipment from the number in its address; archived copies of its pages show no number field, and deprisa.com answers 403 to many networks outside Colombia',
+  'forza-delivery': 'Forza\'s tracker is a script-rendered app at rastreo.forzadelivery.com; the search-page check finds no number field on it, and a guía opens at its own address',
   'nim-express': 'nimexpress.com\'s tracking fields are a script widget and a form that asks for a confirmation code; its own header form opens the tracking page with the number',
   'skynet-worldwide': 'SkyNet\'s tracker shows its number field only with a network parameter in the address, and skynetworldwide.com has no tracking page of its own',
+  yimidida: 'www.yimidida.com answers the search-page check with its cloud firewall\'s 405 block page; a waybill opens at its own address',
 };
 
 /** Search pages the weekly check cannot open, and why. Each was seen working in a regular browser. */

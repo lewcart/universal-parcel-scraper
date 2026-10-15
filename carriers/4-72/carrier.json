@@ -1,0 +1,55 @@
+{
+  "id": "4-72",
+  "displayName": "4-72",
+  "aliases": [
+    "472",
+    "Servicios Postales Nacionales",
+    "SPN"
+  ],
+  "region": {
+    "countries": [
+      "CO"
+    ]
+  },
+  "brand": {
+    "color": "#0033a0"
+  },
+  "selectable": true,
+  "timezone": "America/Bogota",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://svc2.sipost.co/TrazabilidadWeb?guia={trackingNumber}",
+    "searchUrl": "https://svc2.sipost.co/TrazabilidadWeb",
+    "canaryUrl": "https://svc2.sipost.co/TrazabilidadWeb",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "svc2.sipost.co"
+      ],
+      "pathPattern": "^/TrazabilidadWeb(/ReportTrace|/Traceability/(Search|Events))?/?$",
+      "params": [
+        "guia"
+      ]
+    },
+    {
+      "domains": [
+        "enviosonline.4-72.com.co"
+      ],
+      "pathPattern": "^/envios472/portal/rastrear\\.php$",
+      "params": [
+        "guia"
+      ]
+    }
+  ],
+  "detection": []
+}

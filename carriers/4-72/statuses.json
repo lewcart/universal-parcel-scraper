@@ -1,0 +1,12 @@
+{
+  "carrier": "4-72",
+  "entries": [
+    {"wording": "Envío Recibido en la oficina de cambio internacional", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker: an inbound item reached the international exchange office."},
+    {"wording": "Envío recibido de aduanas", "stage": "customs", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker: the item came back from customs."},
+    {"wording": "Salida de aduana y transferencia entre oficinas", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker: left customs and moved between offices."},
+    {"wording": "En proceso", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker, at the exchange office and again at the delivery office."},
+    {"wording": "Envío no entregado", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker at the delivery office."},
+    {"wording": "Registro de entrega no exitosa", "stage": "failed_attempt", "language": "es", "confirmedBy": "portal", "note": "Event of the archived tracker; its observation column gave the reason, here an unpaid import duty."},
+    {"wording": "Envio entregado en la direccion señalada.", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Statement of the tracker's delivery certificate page."}
+  ]
+}

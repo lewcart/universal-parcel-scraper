@@ -1,0 +1,11 @@
+{
+  "carrier": "zoom-ve",
+  "entries": [
+    {"wording": "PROCESADO", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "First event of the archived grupozoom.com history, at the origin office."},
+    {"wording": "ENVIO EN TRANSITO HACIA EL DESTINO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived grupozoom.com history."},
+    {"wording": "EN TRANSITO HACIA EL DESTINO", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived grupozoom.com history; it carried a reason column such as a link failure."},
+    {"wording": "EN PROCESO DE ENTREGA", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived grupozoom.com history at the destination office, before the parcel was held for collection."},
+    {"wording": "DISPUESTO PARA RETIRAR POR LA TAQUILLA DESTINO", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "portal", "note": "Event of the archived grupozoom.com history: held for collection at the destination counter."},
+    {"wording": "ENTREGADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Final event and summary status of the archived grupozoom.com history."}
+  ]
+}

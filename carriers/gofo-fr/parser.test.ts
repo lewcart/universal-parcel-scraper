@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { NoHistoryError } from '../../core/errors/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { normalizeGofoItalyNumber, parseGofoItaly } from '../gofo-it/parser.js';
 import { gofoItalyStage } from '../gofo-it/status.js';
@@ -47,15 +48,17 @@ describe.each(cases)('GOFO $region identity and history', ({ region, number, par
     expect(() => parse(unbound, number)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
-  it('keeps omitted, empty and unsuccessful replies inconclusive and malformed envelopes distinct', () => {
-    for (const payload of [{ code: 200, data: [] }, { code: 500, data: [] }, { code: '200', data: [] }]) {
+  it('answers an empty list or scan list as no history, and keeps unsuccessful replies inconclusive and malformed envelopes distinct', () => {
+    expect(() => parse({ code: 200, data: [] }, number)).toThrow(NoHistoryError);
+    for (const payload of [{ code: 500, data: [] }, { code: '200', data: [] }]) {
       expect(() => parse(payload, number)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+      expect(() => parse(payload, number)).not.toThrow(NoHistoryError);
     }
     for (const payload of [null, {}, { code: 200, data: {} }, { code: 200, data: [null] }]) {
       expect(() => parse(payload, number)).toThrow();
     }
     const empty = fixture(region); item(empty).trackEventList = [];
-    expect(() => parse(empty, number)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parse(empty, number)).toThrow(NoHistoryError);
   });
 
   it('checks the current summary and declares a counter-limited history partial', () => {

@@ -1,5 +1,5 @@
 import { load, type CheerioAPI } from 'cheerio';
-import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import { isBrtTrackingNumber } from '../../core/detection/brt.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { calendarDay } from '../../core/time/index.js';
@@ -149,7 +149,7 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
     events.push({ description: mapped?.status === 'delivered' ? 'Delivered' : label, provider_status: label,
       ...(mapped ? { stage: mapped.stage } : {}), ...(location ? { location } : {}), ...scanClock(date, clock) });
   }
-  if (!events.length) throw new IndeterminateError('BRT', 'BRT returned empty tracking history');
+  if (!events.length) throw new NoHistoryError('BRT', 'BRT lists the shipment without scans');
   // BRT includes cross-border depots without identifying each scan's zone.
   // Source order also carries undated scans, so local clocks are never sorted.
   const latest = events[0]!;

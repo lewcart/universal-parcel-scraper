@@ -26,10 +26,10 @@ describe.each(cases)('GOFO $region direct retrieval', ({ region, number, adapter
     }
   });
 
-  it('keeps an empty valid lookup indeterminate during tracking and recognition', async () => {
+  it('answers an empty valid lookup as no history during tracking and keeps recognition inconclusive', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response('{"code":200,"data":[]}'));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
-    await expect(instance.track({ number })).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(instance.track({ number })).rejects.toMatchObject({ kind: 'indeterminate', name: 'NoHistoryError' });
     await expect(instance.recognize!(number)).rejects.toMatchObject({ kind: 'indeterminate' });
     expect(await instance.recognize!('GFUS00000000000001')).toEqual({ known: false }); expect(fetcher).toHaveBeenCalledTimes(2);
   });

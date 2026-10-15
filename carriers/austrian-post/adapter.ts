@@ -2,7 +2,7 @@
 import { DateTime } from 'luxon';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -96,7 +96,7 @@ export function parseAustrianPostResponse(payload: unknown, rawNumber: string): 
   const events = parsed.slice(0, 100).map(({ event }) => event);
   const summary = clean(parcel.status, 32);
   const mapped = austrianPostSummaryStatus(summary);
-  if (!events.length) throw new IndeterminateError(PROVIDER, 'Austrian Post returned a shipment without tracking history');
+  if (!events.length) throw new NoHistoryError(PROVIDER, 'Austrian Post lists the shipment without scans');
   const estimate = austrianPostShowsEstimate(summary, newestReason) ? estimateOf(parcel.estimatedDelivery) : null;
   // A later scan than the estimate's end leaves it stale.
   const expected = estimate && estimate.end >= parsed[0]!.timestamp ? estimate : null;

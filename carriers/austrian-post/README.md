@@ -41,8 +41,8 @@ than the estimate's end also drops it.
 
 Account-only delivery options and recipient details are not retrieved. The
 estimate follows the page's code and has not been checked against a live
-value. Empty history and GraphQL errors remain inconclusive so another source
-can help.
+value. A shipment listed without scans is a `NoHistoryError` and GraphQL errors
+are inconclusive; either way another source can help.
 
 ## Testing
 

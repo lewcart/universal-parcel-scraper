@@ -4,7 +4,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, AustrianPostTracker, normalizeAustrianPostNumber, parseAustrianPostResponse } from './adapter.js';
 import { austrianPostPlace } from './identity.js';
 import { austrianPostEventStatus, austrianPostSummaryStatus } from './status.js';
-import { InvalidInputError } from '../../core/errors/index.js';
+import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
 const NUMBER = '1000000000000000000001';
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
@@ -65,13 +65,13 @@ describe('Austrian Post public tracking', () => {
     expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow('different shipment');
   });
 
-  it('separates positive not-found from missing data, query errors and empty history', () => {
+  it('separates positive not-found from missing data, query errors and a shipment without scans', () => {
     expect(() => parseAustrianPostResponse({ data: { einzelsendung: null } }, NUMBER)).toThrow('could not locate');
     expect(() => parseAustrianPostResponse({ data: {} }, NUMBER)).toThrow('invalid tracking response');
     expect(() => parseAustrianPostResponse({ data: { einzelsendung: null }, errors: [{ message: 'Unavailable' }] }, NUMBER)).toThrow('could not complete');
     const payload = fixture();
     payload.data.einzelsendung.sendungsEvents = [];
-    expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow('without tracking history');
+    expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow(NoHistoryError);
   });
 
   it('requires explicit timestamp offsets', () => {

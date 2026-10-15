@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { isRegionalGofoNumber, isRegionalGofoWaybill, type GofoRegion } from '../../core/detection/gofo.js';
-import { IndeterminateError, InvalidInputError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode, explicitOffsetTime } from '../../core/time/index.js';
@@ -57,9 +57,10 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
   if (!isRecord(payload)) throw new SchemaError(provider);
   if (payload.code !== 200) throw new IndeterminateError(provider, 'GOFO returned an unsuccessful tracking response');
   if (!Array.isArray(payload.data) || !payload.data.every(isRecord)) throw new SchemaError(provider);
-  // The public page calls omitted inputs invalid, but the API's empty list
-  // cannot distinguish an absent parcel from an incomplete upstream answer.
-  if (!payload.data.length) throw new IndeterminateError(provider, 'GOFO returned no matching parcel history');
+  // The API answers an empty list for any number it has no scans for, a label
+  // not yet scanned or one never issued: an answer about the number, not an
+  // outage, and not a not-found.
+  if (!payload.data.length) throw new NoHistoryError(provider, 'GOFO returned no matching parcel history');
   if (payload.data.length !== 1) throw new SchemaError(provider, 'GOFO returned ambiguous parcel history');
   const item = payload.data[0]!;
   const waybill = identity(item.waybillNo, provider);
@@ -71,7 +72,7 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
   if (countryCode(item.toCountry) !== region) throw new SchemaError(provider, 'GOFO returned a parcel outside the national service');
   if (!Array.isArray(item.trackEventList) || !item.trackEventList.every(isRecord) || item.trackEventList.length > 500) throw new SchemaError(provider);
   const rows = item.trackEventList;
-  if (!rows.length) throw new IndeterminateError(provider, 'GOFO returned no parcel scans');
+  if (!rows.length) throw new NoHistoryError(provider, 'GOFO lists the parcel without scans');
   if (!Number.isInteger(item.trackEventCount) || Number(item.trackEventCount) < rows.length || Number(item.trackEventCount) > 500) {
     throw new IndeterminateError(provider, 'GOFO returned an inconsistent scan count');
   }

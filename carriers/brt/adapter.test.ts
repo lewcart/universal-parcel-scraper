@@ -6,7 +6,7 @@ import { BrtTracker, adapter } from './adapter.js';
 import { normalizeBrtNumber, parseBrt } from './parser.js';
 import { classifyBrtStatus } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
-import { InvalidInputError } from '../../core/errors/index.js';
+import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
 const NUMBER = '99000000000002';
 const OTHER = '99000000000003';
@@ -195,7 +195,7 @@ describe('BRT direct tracking', () => {
       edit($ => $('.table_stato_dati').append('<tr><td>x</td></tr>'.repeat(502)))]) {
       expect(() => parseBrt(body, NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     }
-    expect(() => parseBrt(edit($ => $('.table_stato_dati tr').slice(1).remove()), NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseBrt(edit($ => $('.table_stato_dati tr').slice(1).remove()), NUMBER)).toThrow(NoHistoryError);
     const many = edit($ => $('.table_stato_dati').append($('.table_stato_dati tr').eq(1).prop('outerHTML')!.repeat(120)));
     expect(parseBrt(many, NUMBER).events).toHaveLength(100);
   });

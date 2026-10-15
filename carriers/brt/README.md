@@ -41,8 +41,8 @@ shipment number it has not found with its TIS0564 error, "Shipment not found or
 still being processed", and the parcel search gives the same sentence without the
 code. It also answers a shipment not processed yet and a parcel ID older than the
 search reaches, so these exact replies stay inconclusive with the reason
-`portal_not_found`. Empty replies, redirects and generic HTTP errors remain
-inconclusive.
+`portal_not_found`. A shipment shown with an empty scan table is a `NoHistoryError`.
+Empty replies, redirects and generic HTTP errors remain inconclusive.
 
 Links to the shipment pages (`/vas/sped_…`) and the root of vas.brt.it name
 BRT; its other pages, such as pickup orders and help, name none.

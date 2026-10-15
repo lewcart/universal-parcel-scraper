@@ -35,7 +35,9 @@ the carrier supplies it.
 
 ## Limitations
 
-Empty results remain inconclusive. Proof images, recipient verification,
+An empty result, or a parcel listed without scans, is a `NoHistoryError`: GOFO
+answers a label not yet scanned and one it never issued alike, so it stays
+inconclusive rather than not-found. Proof images, recipient verification,
 detailed delivery prose and unrelated references are excluded. Weight has no
 verified unit, and estimates have no verified active-parcel provenance.
 

@@ -2,6 +2,12 @@
 
 Ozon parcels use enabled universal providers. There is no dedicated adapter.
 
+## Limitations
+
+Ozon's trackers and the lookups behind them sit behind Ozon's own bot check, which runs a script
+in the browser before any lookup answers. The Ozon app passes the same check with a device
+fingerprint and tracks only a signed-in customer's orders.
+
 ## Numbers
 
 Ozon posting numbers are an order number of eight or ten digits, four digits and one digit,

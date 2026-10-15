@@ -1,0 +1,253 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { createTracker } from '../../facade/index.js';
+import { adapter, SPX_BR_API, SpxBrTracker } from './adapter.js';
+import { normalizeSpxBrNumber, parseSpxBr, spxBrWording } from './parser.js';
+import { spxBrStage, statusMap } from './status.js';
+import statuses from './statuses.json' with { type: 'json' };
+
+const DELIVERED = 'BR2600000000011';
+const IN_TRANSIT = 'BR260000000002X';
+const UNKNOWN = 'BR2600000000003';
+
+type Row = Record<string, unknown>;
+type Tracking = Row & { records: Row[] };
+type Reply = Row & { data: Row & { sls_tracking_info: Tracking } };
+
+const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as Reply;
+const changed = (name: string, change: (tracking: Tracking, reply: Reply) => void) => {
+  const reply = fixture(name);
+  change(reply.data.sls_tracking_info, reply);
+  return reply;
+};
+const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
+  { ...init, headers: { 'Content-Type': 'application/json', ...init.headers } });
+const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+
+describe('SPX Express Brazil HTTP adapter', () => {
+  it('asks the tracker’s lookup for the whole number once, in the page’s language, through the supplied transport', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('in-transit')));
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    await expect(new SpxBrTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' br 2600-0000-0002x ', { budgetMs: 1000.5 }))
+      .resolves.toMatchObject({ current_stage: 'customs' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const [url, init] = fetcher.mock.calls[0]!;
+    expect(String(url)).toBe(`${SPX_BR_API}?spx_tn=${IN_TRANSIT}&language_code=pt`);
+    expect(init).toMatchObject({ redirect: 'manual', signal: expect.any(AbortSignal),
+      headers: { Accept: 'application/json, text/plain, */*', 'User-Agent': 'SyntheticHost/1.0' } });
+    expect(init).not.toHaveProperty('body');
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'spx-br', step: 'direct', outcome: 'ok' }));
+    expect(recorder.lookup).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the visible scans of a delivery once, as instants, without the recipient or the seller’s town', () => {
+    const result = parseSpxBr(fixture('delivered'), DELIVERED);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'Pedido entregue', last_update: '2026-05-19T12:53:20Z', delivered_at: '2026-05-19T12:53:20Z' });
+    expect(result.events!.map((event) => [event.time, event.provider_code, event.stage, event.location ?? null])).toEqual([
+      ['2026-05-19T12:53:20Z', 'F980', 'delivered', null],
+      ['2026-05-19T08:26:40Z', 'F600', 'out_for_delivery', null],
+      ['2026-05-18T16:46:40Z', 'F540', 'in_transit', null],
+      ['2026-05-17T19:33:20Z', 'F515', 'in_transit', 'Vila Amostra - SP'],
+      // The repeated sorting scan is kept once.
+      ['2026-05-17T16:46:40Z', 'F510', 'in_transit', 'Vila Amostra - SP'],
+      ['2026-05-17T14:00:00Z', 'F450', 'in_transit', null],
+      ['2026-05-17T03:26:40Z', 'F440', 'in_transit', 'Cidade Exemplo - SP'],
+      // The pickup names the seller's town, which is not kept.
+      ['2026-05-17T01:06:40Z', 'F100', 'accepted', null],
+      ['2026-05-16T14:00:00Z', 'F000', 'registered', null],
+    ]);
+    expect(result.events![6]).toMatchObject({ point: { latitude: -23.5, longitude: -46.6 },
+      description: 'Seu pedido chegou ao centro logístico: Cidade Exemplo - SP' });
+    expect(result.events!.every((event) => !('local_time' in event))).toBe(true);
+    expect(JSON.stringify(result)).not.toMatch(/Pessoa Exemplo|Recebido|Vendedor|Rua |Avenida|R101|1000000000000000001/);
+  });
+
+  it('files a parcel from abroad under customs, newest scan first by its clock', () => {
+    const result = parseSpxBr(fixture('in-transit'), IN_TRANSIT);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
+      last_status_text: 'Pedido em inspeção na alfândega de importação', last_update: '2026-05-24T14:13:20Z' });
+    expect(result).not.toHaveProperty('delivered_at');
+    expect(result.events!.map((event) => [event.provider_code, event.stage, event.location ?? null])).toEqual([
+      ['F380', 'customs', null],
+      ['F366', 'customs', null],
+      ['F360', 'in_transit', 'Aeroporto Internacional Exemplo'],
+      // The customs check the reply lists after this later departure.
+      ['F355', 'in_transit', 'Aeroporto de Trânsito'],
+      ['F380', 'customs', null],
+      ['F350', 'in_transit', 'Aeroporto de Trânsito'],
+      ['F341', 'in_transit', 'Aeroporto Amostra'],
+      ['F339', 'in_transit', 'Aeroporto Amostra'],
+      ['F300', 'in_transit', 'Aeroporto Amostra'],
+      ['F299', 'in_transit', 'Origem'],
+      ['F200', 'in_transit', 'Origem'],
+      ['F099', 'accepted', null],
+      ['F000', 'registered', null],
+    ]);
+    expect(result.events![4]!.description).toBe('Pedido em inspeção na alfândega de importação: RFB - Descrição insuficiente/incompleta');
+    // A scan without a Portuguese line keeps its English tracking name.
+    expect(result.events![11]!.description).toBe('Pickup From Cross Border Seller');
+    expect(result.events!.some((event) => event.point)).toBe(false);
+  });
+
+  it('reads a return, a refused import and a code it does not know', () => {
+    const returned = parseSpxBr(changed('delivered', (tracking) => {
+      Object.assign(tracking.records[0]!, { tracking_code: 'F999', tracking_name: 'Returned to Sender', description: 'Pedido devolvido' });
+    }), DELIVERED);
+    expect(returned).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Pedido devolvido' });
+    expect(returned).not.toHaveProperty('delivered_at');
+    const refused = parseSpxBr(changed('in-transit', (tracking) => {
+      tracking.records.unshift({ ...tracking.records[0]!, tracking_code: 'F979', actual_time: 1_780_000_000,
+        description: 'O pacote não pôde ser importado, será retornado ou confiscado pela alfândega ' });
+    }), IN_TRANSIT);
+    expect(refused).toMatchObject({ status: 'exception', current_stage: 'exception' });
+    const unmapped = parseSpxBr(changed('in-transit', (tracking) => {
+      tracking.records.unshift({ ...tracking.records[0]!, tracking_code: 'F777', actual_time: 1_780_000_000, description: 'Aviso sintético' });
+    }), IN_TRANSIT);
+    // A scan nothing stages leaves the stage to the newest scan that has one.
+    expect(unmapped.events![0]).not.toHaveProperty('stage');
+    expect(unmapped).toMatchObject({ last_status_text: 'Aviso sintético', current_stage: 'customs' });
+  });
+
+  it('takes whoever received the parcel out of the wording', () => {
+    expect(spxBrWording('Pedido entregue. Recebido por: Pessoa Exemplo')).toBe('Pedido entregue');
+    expect(spxBrWording('[LM Hub_SP_Exemplo] Seu pacote foi entregue a [Pessoa Exemplo] ')).toBe('[LM Hub_SP_Exemplo] Seu pacote foi entregue');
+    expect(spxBrWording('Pacote [TO0000] está sendo transportado para [SoC_SP_Exemplo]'))
+      .toBe('Pacote [TO0000] está sendo transportado para [SoC_SP_Exemplo]');
+    expect(spxBrWording('Seu pacote foi recebido pelo centro de triagem')).toBe('Seu pacote foi recebido pelo centro de triagem');
+  });
+
+  it('reads an unknown number as not found, any other failure as inconclusive and a record without scans as no history', () => {
+    expect(() => parseSpxBr(fixture('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    // Several parcels under one number, or a failure of its own, do not say the parcel is missing.
+    const several = { ...fixture('not-found'), message: String(fixture('not-found').message).replace('find [0]', 'find [2]') };
+    expect(() => parseSpxBr(several, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseSpxBr({ retcode: 2001, message: 'param is invalid' }, UNKNOWN)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseSpxBr({ retcode: 0, data: { fulfillment_info: {} } }, UNKNOWN))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
+    expect(() => parseSpxBr(changed('delivered', (tracking) => { tracking.records = []; }), DELIVERED))
+      .toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
+    expect(() => parseSpxBr(changed('delivered', (tracking) => { for (const row of tracking.records) row.display_flag = 0; }), DELIVERED))
+      .toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
+  });
+
+  it('counts a shipment only when it names the number asked', () => {
+    expect(() => parseSpxBr(fixture('in-transit'), DELIVERED))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'SPX Express Brazil answered for another shipment' }));
+    expect(parseSpxBr(changed('in-transit', (tracking) => { tracking.sls_tn = IN_TRANSIT.toLowerCase(); }), IN_TRANSIT).events).toHaveLength(13);
+  });
+
+  it('rejects a changed reply', () => {
+    for (const change of [
+      (_tracking: Tracking, body: Reply) => { delete (body as Row).retcode; },
+      (_tracking: Tracking, body: Reply) => { body.data = 'shipment' as never; },
+      (_tracking: Tracking, body: Reply) => { body.data.sls_tracking_info = 'tracking' as never; },
+      (tracking: Tracking) => { delete (tracking as Row).sls_tn; },
+      (tracking: Tracking) => { tracking.records = 'records' as never; },
+      (tracking: Tracking) => { tracking.records = Array.from({ length: 1001 }, () => tracking.records[0]!); },
+      (tracking: Tracking) => { tracking.records[0] = 'scan' as never; },
+      (tracking: Tracking) => { tracking.records[0]!.actual_time = '1779200000'; },
+      (tracking: Tracking) => { tracking.records[0]!.actual_time = 1_779_200_000_000; },
+      (tracking: Tracking) => { delete tracking.records[0]!.actual_time; },
+      (tracking: Tracking) => { tracking.records[0]!.description = ['Pedido entregue']; },
+      (tracking: Tracking) => { tracking.records[0]!.tracking_code = 'F 980'; },
+      (tracking: Tracking) => { tracking.records[0]!.description = ''; tracking.records[0]!.tracking_name = ''; },
+    ]) {
+      expect(() => parseSpxBr(changed('delivered', change), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
+  });
+
+  it('keeps an unknown number, a moved route, a gateway page and a broken reply apart', async () => {
+    const lookup = (body: unknown, init?: ResponseInit) => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body, init))).track({ number: UNKNOWN });
+    await expect(lookup(fixture('not-found'))).rejects.toMatchObject({ kind: 'not_found' });
+    // The tracker reads a missing parcel from a 200 reply: a 404 or a redirect is a moved route.
+    await expect(lookup(fixture('not-found'), { status: 404 })).rejects.toMatchObject({ kind: 'transport' });
+    await expect(lookup('', { status: 302, headers: { Location: 'https://spx.com.br/' } })).rejects.toMatchObject({ kind: 'transport' });
+    await expect(lookup('<!doctype html><html><title>Verify</title></html>', { headers: { 'Content-Type': 'text/html' } }))
+      .rejects.toMatchObject({ kind: 'challenge' });
+    await expect(lookup('{"retcode":0,')).rejects.toMatchObject({ kind: 'schema' });
+  });
+
+  it.each([[403, 'challenge'], [429, 'rate_limited'], [500, 'indeterminate'], [502, 'indeterminate'], [503, 'maintenance']] as const)(
+    'preserves HTTP %s as %s during retrieval and recognition', async (status, kind) => {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response('', { status }));
+      await expect(carrier(fetcher).track({ number: IN_TRANSIT })).rejects.toMatchObject({ kind });
+      await expect(carrier(fetcher).recognize!(IN_TRANSIT)).rejects.toMatchObject({ kind });
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    });
+
+  it('recognizes a known number with its last scan and the unknown-number answer, and asks nothing for another layout', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
+      .mockResolvedValueOnce(reply(fixture('not-found')));
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-05-19T12:53:20.000Z' });
+    await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
+    await expect(carrier(fetcher).recognize!('PH2600000000011')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('rejects numbers SPX Brazil does not issue and pre-aborted lookups without a request', async () => {
+    const fetcher = vi.fn<typeof fetch>();
+    for (const number of ['BR260000000001', 'BR26000000000111', 'BR26000000000AX', 'SPXBR2600000000011', '5964000000000000001']) {
+      await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });
+    }
+    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(normalizeSpxBrNumber('br 2600 0000 0002 x')).toBe(IN_TRANSIT);
+  });
+
+  it('ends a hanging read inside the budget', async () => {
+    let signal: AbortSignal | undefined;
+    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
+      signal = init?.signal ?? undefined;
+      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+    }));
+    const started = Date.now();
+    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 60 })).rejects.toThrow();
+    expect(signal?.aborted).toBe(true);
+    expect(Date.now() - started).toBeGreaterThanOrEqual(50);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('routes a number filed under SPX Express Brazil, or one its recognition confirms, to the adapter', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('delivered')));
+    const tracker = createTracker({ fetcher, providers: [], env: {} });
+    await expect(tracker.track({ number: DELIVERED, carrier: 'spx-br' }, { budgetMs: 3000 }))
+      .resolves.toMatchObject({ carrier: 'spx-br', source: 'spx-br', result: { current_stage: 'delivered' } });
+    // Recognition settles on a carrier whose parcel moved lately.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(new Date('2026-05-20T00:00:00Z'));
+      await expect(tracker.track({ number: DELIVERED }, { budgetMs: 3000 }))
+        .resolves.toMatchObject({ carrier: 'spx-br', source: 'spx-br' });
+    } finally {
+      vi.useRealTimers();
+    }
+    expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(SPX_BR_API))).toBe(true);
+  });
+});
+
+describe('SPX Express Brazil numbers', () => {
+  it('only suggests SPX Brazil for its layout, for recognition to settle', () => {
+    for (const number of [DELIVERED, IN_TRANSIT]) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['spx-br'] });
+    }
+  });
+});
+
+describe('SPX Express Brazil status vocabulary', () => {
+  it('records every code and wording the map knows with the stage it gives', () => {
+    for (const entry of statuses.entries as { code: string; wording: string; stage: string }[]) {
+      expect(statusMap.stage(entry.code, entry.wording.toLowerCase()), entry.code).toBe(entry.stage);
+      expect(spxBrStage(entry.code, entry.wording)?.stage, entry.code).toBe(entry.stage);
+    }
+    expect(statusMapAnswer({ carrier: 'spx-br', providerCode: 'F600', description: 'Pedido em rota de entrega' }))
+      .toEqual({ kind: 'mapped', stage: 'out_for_delivery' });
+    expect(statusMapAnswer({ carrier: 'spx-br', providerCode: 'F777', description: 'Aviso sintético' })).toEqual({ kind: 'unknown' });
+    // A code the map does not know falls to the shared wording rules.
+    expect(spxBrStage('F981', 'Pedido entregue')).toMatchObject({ stage: 'delivered' });
+    expect(spxBrStage('F777', 'Aviso sintético')).toBeNull();
+  });
+});

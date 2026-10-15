@@ -1,15 +1,53 @@
 # SPX Express Brazil
 
-SPX Express Brazil parcels use enabled universal providers. There is no dedicated adapter.
+SPX Express Brazil is Shopee's delivery network in Brazil. It collects from sellers in Brazil,
+carries Shopee's parcels from overseas sellers through its own warehouses abroad and Brazilian
+customs, and delivers to the door.
+Tracked through the lookup its tracker makes. `spx-ph` covers the Philippine network, whose
+numbers carry a PH prefix.
 
-SPX Express Brazil is Shopee's delivery network in Brazil. It runs its own tracker and numbers;
-`spx-ph` covers the Philippine network, whose numbers carry a PH prefix.
+## How it works
+
+1. `direct`: one `GET https://spx.com.br/shipment/order/open/order/get_order_info` with
+   `spx_tn={number}&language_code=pt`, as the tracker sends it for the number in its address.
+   It needs no cookie, token, signature or browser. The JSON reply has the parcel's scans,
+   newest first.
+
+- An unknown number is HTTP 200 with a non-zero `retcode` whose message says the order index
+  found none (`find [0]`). The page shows "Sua busca não gerou resultados" for that and for any
+  other failure, so only that message is not found; other failures are inconclusive. A 404 or a
+  redirect is a moved route, and a web page in place of the JSON is a gateway's check.
+- The tracking object must name the number asked.
+- Recognition makes the same request.
+
+## Notes
+
+- Each scan's `actual_time` is Unix seconds, so every scan is an exact instant. The page shows
+  them in Brasília time, but the network also spans Brazil's other zones, so no wall clock is
+  derived.
+- `pt` is the page's own language code. Its lines name no one; the `pt-BR` lines put the
+  recipient's name in brackets after a delivery, and the buyer's line adds who received the
+  parcel. The adapter reads the `pt` line and still drops a clause naming who received it.
+  Scans without a Portuguese line keep their English tracking name.
+- Rows flagged hidden, which the page leaves out, are left out too.
+- Scans at SPX's warehouses, forwarders, ports, hubs and sorting centres keep the place and
+  coordinates the reply gives. Pickups, deliveries and the return to the seller would name the
+  seller's or the recipient's town, so they keep none. Facility addresses are not kept.
+- The reply can list a customs check filed late among later scans; the history is ordered by
+  the clocks.
+- Tracking codes give the stages. Brazilian customs holding or inspecting a parcel is customs,
+  its refusal to import is an exception, and every leg of a return is returned.
+
+## Limitations
+
+- No delivery estimate, weight or delivery partner.
+- The lookup also answers the numeric order reference its reply carries, which no rule claims.
 
 ## Numbers
 
 Archived lookups on the tracker show BR followed by thirteen characters: twelve digits and a
 final digit or letter. The low-confidence rule suggests SPX Express Brazil for that layout; the
-BR prefix alone does not rule out other senders.
+BR prefix alone does not rule out other senders, and recognition confirms the parcel.
 
 ## Links
 
@@ -19,5 +57,5 @@ lookups use, as on the Philippine tracker. After a search the tracker script mov
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/spx-br`, with `SPX_BR_TRACKING_NUMBER` and optionally
+`SPX_BR_UNKNOWN_NUMBER` set outside the repository.

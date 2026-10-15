@@ -133,6 +133,7 @@ import { statusMap as smsaExpress } from '../../carriers/smsa-express/status.js'
 import { statusMap as speedaf } from '../../carriers/speedaf/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
 import { statusMap as speedy } from '../../carriers/speedy/status.js';
+import { statusMap as spxBr } from '../../carriers/spx-br/status.js';
 import { statusMap as stallionExpress } from '../../carriers/stallion-express/status.js';
 import { statusMap as starken } from '../../carriers/starken/status.js';
 import { statusMap as sto } from '../../carriers/sto/status.js';
@@ -182,7 +183,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, shadowfax, 'slovak-parcel-service': slovakParcelService,
-  'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy, 'stallion-express': stallionExpress, starken, sto, swiftx,
+  'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy, 'spx-br': spxBr, 'stallion-express': stallionExpress,
+  starken, sto, swiftx,
   'swiss-post': swissPost, 'tci-express': tciExpress, 'thailand-post': thailandPost, thhy, tnt, 'total-express': totalExpress, tsjy,
   'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
   yunexpress, zto,

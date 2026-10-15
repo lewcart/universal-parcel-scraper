@@ -15722,7 +15722,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-br",
+      "recognitionRank": 982
     },
     "canaryUrl": "https://spx.com.br/track",
     "trackingUrlTemplate": "https://spx.com.br/track?{trackingNumber}",

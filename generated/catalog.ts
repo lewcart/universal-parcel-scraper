@@ -10782,10 +10782,11 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "interrapidisimo",
+      "recognitionRank": 969
     },
-    "canaryUrl": "https://interrapidisimo.com/",
-    "trackingUrlTemplate": "https://interrapidisimo.com/sigue-tu-envio/?guia={trackingNumber}",
+    "canaryUrl": "https://siguetuenvio.interrapidisimo.com/",
+    "trackingUrlTemplate": "https://siguetuenvio.interrapidisimo.com/{trackingNumber}",
     "trackingSearchUrl": "https://interrapidisimo.com/",
     "linkRules": [
       {

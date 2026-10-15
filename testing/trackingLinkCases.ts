@@ -735,6 +735,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'starken', number: '100000009',
     route: /^https:\/\/www\.starken\.cl\/seguimiento\?codigo=100000009$/,
     marker: /Realiza seguimiento en línea|número de orden de flete/, renderTimeoutMs: 25_000 },
+  // The tracker clears an unknown guide from its search field and says it found none.
+  { carrier: 'interrapidisimo', number: '999999999999',
+    route: /^https:\/\/siguetuenvio\.interrapidisimo\.com\/999999999999$/,
+    marker: /Consulta el estado de tu envío/,
+    forwarding: { notFound: /No se encontraron guías con la información ingresada/ } },
 ];
 
 /**

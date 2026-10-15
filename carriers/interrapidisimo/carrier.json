@@ -18,18 +18,61 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "interrapidisimo",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 969
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
-    "url": "https://interrapidisimo.com/sigue-tu-envio/?guia={trackingNumber}",
+    "url": "https://siguetuenvio.interrapidisimo.com/{trackingNumber}",
     "searchUrl": "https://interrapidisimo.com/",
-    "canaryUrl": "https://interrapidisimo.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "canaryUrl": "https://siguetuenvio.interrapidisimo.com/",
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "eta",
+      "eta_window",
+      "origin",
+      "destination",
+      "office_addresses",
+      "coordinates",
+      "future_milestones",
+      "return_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta_window",
+      "origin",
+      "destination",
+      "office_addresses",
+      "coordinates",
+      "future_milestones",
+      "return_number"
+    ],
+    "unavailable": [
+      "provider_code",
+      "weight",
+      "service_name"
+    ]
   },
   "links": [
     {

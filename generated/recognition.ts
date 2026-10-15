@@ -86,6 +86,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "hrvatska-posta": 160,
   "hywl": 993,
   "inpost": 820,
+  "interrapidisimo": 969,
   "j-and-t": 530,
   "j-and-t-cargo": 910,
   "jitsu": 85,

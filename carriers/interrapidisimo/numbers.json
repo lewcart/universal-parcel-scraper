@@ -313,7 +313,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -344,7 +344,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -362,6 +362,74 @@
         ]
       },
       "note": "Looked up on Inter Rapidísimo's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "700181513084",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.supertransporte.gov.co/documentos/2026/Agosto/DPPT_12/20268600390171.pdf",
+        "date": "2026-07-02",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "A Superintendencia de Transporte reply on a claim names this Inter Rapidísimo remesa, which went back to its sender."
+    },
+    {
+      "number": "3000224857929",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.supertransporte.gov.co/documentos/2026/Agosto/DPPT_12/20268600390171.pdf",
+        "date": "2026-07-02",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "relationships": [
+        {
+          "kind": "return_of",
+          "number": "700181513084",
+          "source": {
+            "url": "https://www.supertransporte.gov.co/documentos/2026/Agosto/DPPT_12/20268600390171.pdf",
+            "date": "2026-07-02",
+            "dateKind": "publication",
+            "access": "full_page"
+          }
+        }
+      ],
+      "note": "The same Superintendencia de Transporte reply names this internal guide as the remesa's return to its sender."
     }
   ]
 }

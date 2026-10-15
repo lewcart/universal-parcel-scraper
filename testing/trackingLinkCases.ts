@@ -727,6 +727,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'poste-italiane': 'the results page exposes no readable text to headless Chrome',
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the page often stays empty past the render window',
+  'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page, so number forwarding cannot be verified daily; the page puts the number from its address in its search field',
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
   swiftx: 'swiftx-express.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',

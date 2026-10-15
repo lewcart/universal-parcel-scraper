@@ -14047,11 +14047,37 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "total-express",
+      "recognitionRank": 975,
+      "localClocks": true
     },
-    "canaryUrl": "https://totalexpress.com.br/rastrear-um-produto/",
-    "linkRules": [],
-    "detectionRules": []
+    "canaryUrl": "https://totalconecta.totalexpress.com.br/rastreamento",
+    "trackingUrlTemplate": "https://totalconecta.totalexpress.com.br/rastreamento?codigo={trackingNumber}",
+    "trackingSearchUrl": "https://totalconecta.totalexpress.com.br/rastreamento",
+    "linkRules": [
+      {
+        "domains": [
+          "totalconecta.totalexpress.com.br"
+        ],
+        "path": "^/rastreamento/rastreamento/encomendas/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "totalconecta.totalexpress.com.br"
+        ],
+        "pathPattern": "^/rastreamento/?$",
+        "params": [
+          "codigo"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:TX[A-Z]{2}|AMZB)\\d{9}TX$",
+        "confidence": "high"
+      }
+    ]
   },
   "trackon": {
     "displayName": "Trackon Couriers",
@@ -15543,7 +15569,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tforce-freight": [],
   "thhy": ["thhy-1"],
   "toptrans": [],
-  "total-express": [],
+  "total-express": ["total-express-awb"],
   "trackon": [],
   "trans-o-flex": [],
   "trendyol-express": [],

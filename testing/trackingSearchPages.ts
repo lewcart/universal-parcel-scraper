@@ -24,5 +24,6 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'spee-dee': 'the tracking form is a frame from packages.speedeedelivery.com, which drops connections from many networks',
   'surat-kargo': 'www.suratkargo.com.tr answers a Cloudflare block to many networks outside Turkey; an archived copy shows its number field',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the form often stays empty past the render window',
+  'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page; to the networks it lets through it shows its number field',
   'ward-trucking': 'wardtlctools.com refuses connections from many networks; an archived copy shows its PRO number fields',
 };

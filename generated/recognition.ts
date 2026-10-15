@@ -135,6 +135,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "thhy": 987,
   "tipsa": 680,
   "tnt": 880,
+  "total-express": 975,
   "tsjy": 992,
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,

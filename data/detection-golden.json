@@ -38921,6 +38921,14 @@
     ]
   },
   {
+    "input": "AMZB664764467tx",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
+    ]
+  },
+  {
     "input": "AN725955",
     "carrier": "unknown",
     "confidence": "low",
@@ -54843,6 +54851,46 @@
     "confidence": "high",
     "candidates": [
       "tsjy"
+    ]
+  },
+  {
+    "input": "TXAQ243268174TX",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
+    ]
+  },
+  {
+    "input": "TXAQ402565477tx",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
+    ]
+  },
+  {
+    "input": "TXAQ549180149tx",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
+    ]
+  },
+  {
+    "input": "TXAQ589033943TX",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
+    ]
+  },
+  {
+    "input": "TXAS426107751tx",
+    "carrier": "total-express",
+    "confidence": "high",
+    "candidates": [
+      "total-express"
     ]
   },
   {

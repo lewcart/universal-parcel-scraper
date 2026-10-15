@@ -810,7 +810,7 @@
       "evri-uk",
       "tnt"
     ],
-    "reason": "These catalog entries share the reference shape. A unique high-confidence rule can select its service; otherwise the number stays ambiguous and national scope requires recognition or an explicit carrier link."
+    "reason": "Sixteen digits is a low rule for Canada Post, Correos Express, DHL eCommerce, Evri UK and TNT. None claims the length with high confidence, so the number stays a low-confidence suggestion and recognition asks each carrier."
   },
   {
     "shape": "Sixteen digits starting 250 whose last digit is the GS1 check",
@@ -990,7 +990,7 @@
       "evri",
       "evri-uk"
     ],
-    "reason": "These catalog entries share the reference shape. A unique high-confidence rule can select its service; otherwise the number stays ambiguous and national scope requires recognition or an explicit carrier link."
+    "reason": "Evri International and Evri UK track the same sixteen-character Hermes barcodes on separate services, so both low rules take them. The barcode does not say which service holds the parcel; recognition or the carrier's own link decides."
   },
   {
     "shape": "S10 postal identifier ending CA",
@@ -1014,7 +1014,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1031,7 +1031,7 @@
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1046,7 +1046,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1063,7 +1063,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1081,7 +1081,7 @@
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits starting 13",
@@ -1134,7 +1134,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1151,7 +1151,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1167,7 +1167,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1183,7 +1183,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1199,7 +1199,7 @@
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Relais Colis public shipment evidence also uses this numeric length; number shape alone cannot identify a carrier."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14-digit Nova Poshta family passing the Hermes checksum",
@@ -1931,7 +1931,7 @@
       "evri-uk",
       "hermes-de"
     ],
-    "reason": "These catalog entries share the reference shape. A unique high-confidence rule can select its service; otherwise the number stays ambiguous and national scope requires recognition or an explicit carrier link."
+    "reason": "Evri's sixteen-character barcodes can be H and fifteen digits, the shape Hermes Germany's low rule takes, and a passing Evri check digit does not rule Hermes Germany out. All three rules are low, so recognition asks each carrier."
   },
   {
     "shape": "9{18} starting with 370 or 373 that passes the GS1 check",

@@ -69,11 +69,11 @@ export class CttApiError extends IndeterminateError {
 }
 
 export function normalizeCttTrackingNumber(raw: string): string {
-  // Mirrors number detection: checksum-valid S10 PT. Anything else stays with
-  // the generic postal fallback — those routes were never sampled here.
+  // A checksum-valid S10 number: CTT's own, ending in PT, or mail from abroad
+  // under the number its origin post gave it, which CTT's tracker also looks up.
   const value = raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
-  if (!/^[A-Z]{2}\d{9}PT$/.test(value) || !isValidS10TrackingNumber(value)) {
-    throw new InvalidInputError('CTT', 'CTT tracking requires a valid 13-character S10 number ending in PT');
+  if (!/^[A-Z]{2}\d{9}[A-Z]{2}$/.test(value) || !isValidS10TrackingNumber(value)) {
+    throw new InvalidInputError('CTT', 'CTT tracking requires a valid 13-character S10 number');
   }
   return value;
 }
@@ -103,18 +103,21 @@ function sessionFromSetCookie(response: Response): CttSession | null {
 
 /** UPU events a destination post records: from arrival at its office of exchange to delivery. */
 const DESTINATION_EVENT = /^(?:EM[D-I]|ED[A-H])$/;
+/** UPU events an origin post records: from posting to dispatch from its office of exchange. */
+const ORIGIN_EVENT = /^(?:EM[A-C]|EX[A-DX])$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(?:Z|\+00:?00)?$/i;
 
 /**
  * A scan's clock. CTT's Z is no offset: the digits are the wall clock where
- * the scan happened (see clock.ts). That is the destination's, for a
- * partner post's scan of a parcel bound abroad (`abroad`), unless the
- * location names an office or a site of CTT's; Portugal's otherwise. In a
- * destination with several zones the scan keeps CTT's Z, the last guess:
- * hours off, but the reply keeps its instant. Only a wall clock sent with no
- * Z stays a wall time there. Any other offset is taken as sent.
+ * the scan happened (see clock.ts). That is the partner post's country
+ * (`partner`) for its scans: the destination's on a parcel bound abroad, the
+ * origin's on mail from abroad. A location naming an office or a site of
+ * CTT's overrides it; Portugal's clock applies otherwise. In a country with
+ * several zones the scan keeps CTT's Z, the last guess: hours off, but the
+ * reply keeps its instant. Only a wall clock sent with no Z stays a wall time
+ * there. Any other offset is taken as sent.
  */
-function scanClock(value: unknown, location: string, abroad: string | null):
+function scanClock(value: unknown, location: string, partner: string | null):
   { time?: string; local_time?: string; timestamp: number } | null {
   const raw = typeof value === 'string' ? value.trim() : '';
   const wall = WALL_CLOCK.exec(raw)?.[1];
@@ -122,7 +125,7 @@ function scanClock(value: unknown, location: string, abroad: string | null):
     const time = explicitOffsetTime(raw);
     return time ? { time: time.iso, timestamp: time.timestamp } : null;
   }
-  const zone = cttSiteZone(location, abroad ? [abroad] : []) ?? (abroad ? countryTimeZone(abroad) : portugalZone(location));
+  const zone = cttSiteZone(location, partner ? [partner] : []) ?? (partner ? countryTimeZone(partner) : portugalZone(location));
   const placed = zone ? isoTime(wall, zone) : null;
   if (placed) return { time: placed.iso, timestamp: placed.timestamp };
   const labelled = explicitOffsetTime(raw);
@@ -144,16 +147,22 @@ export function parseCttTrackingResponse(payload: unknown, trackingNumber: strin
   const rawEvents = record.Events;
   const eventsList = isRecord(rawEvents) && Array.isArray(rawEvents.List) ? rawEvents.List : null;
   if (eventsList === null) throw new SchemaError('CTT', 'CTT returned invalid tracking history');
-  // Only the recipient's country is read, to tell a parcel bound abroad.
+  // Only the parcel's countries are read: the recipient's, to tell a parcel
+  // bound abroad, and the origin's on mail from abroad, the sender's country
+  // or else the one whose post issued the number.
   const recipient = clean(record.RecipientCountryCode, 8).toUpperCase();
   const abroad = /^[A-Z]{2}$/.test(recipient) && recipient !== 'PT' ? recipient : null;
+  const sender = clean(record.SenderCountryCode, 8).toUpperCase();
+  const origin = requested.endsWith('PT') ? null : /^[A-Z]{2}$/.test(sender) && sender !== 'PT' ? sender : requested.slice(-2);
   const parsed: Array<{ event: CarrierEvent; classified: ClassifiedStatus | undefined; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
   eventsList.filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const stateId = typeof rawEvent.StateId === 'number' ? rawEvent.StateId : Number.NaN;
     const description = clean(rawEvent.Event, 500) || clean(rawEvent.State, 200);
     const location = clean(rawEvent.Local, 160);
-    const clock = scanClock(rawEvent.DateTime, location, abroad && DESTINATION_EVENT.test(clean(rawEvent.EventCode, 8)) ? abroad : null);
+    const code = clean(rawEvent.EventCode, 8);
+    const partner = abroad && DESTINATION_EVENT.test(code) ? abroad : origin && ORIGIN_EVENT.test(code) ? origin : null;
+    const clock = scanClock(rawEvent.DateTime, location, partner);
     if (!clock || !description) return;
     const identity = `${clock.time ?? clock.local_time}\u0000${description}\u0000${Number.isSafeInteger(stateId) ? stateId : ''}`;
     if (seen.has(identity)) return;

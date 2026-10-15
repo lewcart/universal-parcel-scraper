@@ -1,8 +1,9 @@
 # CTT Portugal
 
-The Portuguese postal operator, for S10 numbers ending in `PT`. Tracked through the OutSystems
-data actions on `appserver.ctt.pt` that back the public tracker. CTT Express (`ctt-express`)
-is a separate carrier.
+The Portuguese postal operator, for its S10 numbers ending in `PT` and for mail from abroad
+under the S10 number its origin post gave it. Tracked through the OutSystems data actions on
+`appserver.ctt.pt` that back the public tracker. CTT Express (`ctt-express`) is a separate
+carrier.
 
 ## How it works
 
@@ -49,6 +50,10 @@ is a separate carrier.
     destination's zone. When it has several they keep CTT's `Z`, the last guess: hours off,
     but the reply keeps its instants. CTT relays them unconverted: an Italian delivery
     comes at the Italian office's time.
+  - On mail from abroad, the origin post's events (UPU `EMA`–`EMC`, `EXA`–`EXD`) keep that
+    post's wall clock: they are read in the zone of the sender's country, else of the country
+    that issued the number, unless the location names a Portuguese office or CTT site. An
+    origin with several zones keeps CTT's `Z`.
   - Any other scan is CTT's, on Portugal's clock.
   - Any other offset is taken as sent. Wall times sort among instants by their digits.
 - The app identity policy in [app.ts](app.ts) requires the same instant and `StateId` before
@@ -72,9 +77,13 @@ is a separate carrier.
 ## Limitations
 
 - No delivery estimate.
-- Non-`PT` S10 numbers and other CTT routes stay with the generic postal fallback.
+- Detection offers CTT only its own `PT` numbers. Mail from abroad reaches CTT when a caller
+  names it, a provider names CTT, or a result gives Portugal as the destination of an S10
+  item.
+- CTT's numbers outside S10 stay with the universal providers.
 
 ## Testing
 
 `npm run test:carriers:live -- carriers/ctt`. The unknown-number check needs
-no env vars; set `CTT_DELIVERED_TRACKING_NUMBER` to also check a real delivered parcel.
+no env vars; set `CTT_DELIVERED_TRACKING_NUMBER` to also check a real delivered parcel, and
+`CTT_INBOUND_TRACKING_NUMBER` for an item from abroad.

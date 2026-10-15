@@ -93,10 +93,11 @@ afterEach(() => {
 });
 
 describe('CTT tracking normalization', () => {
-  it('accepts checksum-valid S10 PT and rejects the rest', () => {
+  it('accepts checksum-valid S10 numbers, mail from abroad included, and rejects the rest', () => {
     expect(normalizeCttTrackingNumber('rl000000005pt')).toBe(TRACKING_NUMBER);
     expect(normalizeCttTrackingNumber('RL402552798PT')).toBe('RL402552798PT');
-    for (const raw of ['RL000000006PT', 'RL000000005GB', '12345', '']) {
+    expect(normalizeCttTrackingNumber('LT 000 000 005 GB')).toBe('LT000000005GB');
+    for (const raw of ['RL000000006PT', 'LT000000006GB', 'LT000000005G1', '12345', '']) {
       expect(() => normalizeCttTrackingNumber(raw)).toThrow(InvalidInputError);
     }
     expect(cttTrackingUrl(TRACKING_NUMBER)).toBe(
@@ -149,6 +150,26 @@ describe('CTT response parsing', () => {
       // CTT's own scans of the same parcel stay on Portugal's clock.
       expect(scanAt('2026-08-01T11:10:15Z', 'PTEXAA - (OUTRO) EXAMPLE', 'EMC', 'IT')).toBe('2026-08-01T11:10:15+01:00');
       expect(scanAt('2026-08-01T10:13:58Z', '', 'EMO', 'IT')).toBe('2026-08-01T10:13:58+01:00');
+    });
+
+    it("reads the origin post's scans of mail from abroad on the origin's clock", () => {
+      /** The clock of one scan of an inbound item issued in `issuer`, as the result keeps it. */
+      function inboundAt(DateTime: string, Local: string, EventCode: string, issuer: string, SenderCountryCode = '') {
+        const number = `LT000000005${issuer}`;
+        const [scan] = parseCttTrackingResponse({ data: { ObjectEventsFromQuery: record({ ObjectCode: number,
+          RecipientCountryCode: 'PT', SenderCountryCode,
+          Events: { List: [{ DateTime, State: 'X', StateId: 11, Event: 'Wording', EventCode, Local }] } }) } }, number).events!;
+        return scan!.time ?? `local ${String(scan!.local_time)}`;
+      }
+      // Posting and export: the country that issued the number, or the sender's when the record names one.
+      expect(inboundAt('2026-10-06T17:53:00Z', 'EXAMPLE MC', 'EMA', 'CN')).toBe('2026-10-06T17:53:00+08:00');
+      expect(inboundAt('2026-10-07T06:32:00Z', 'CNEXAA - (OUTRO) EXAMPLE', 'EMC', 'CN')).toBe('2026-10-07T06:32:00+08:00');
+      expect(inboundAt('2026-10-06T17:53:00Z', 'EXAMPLE MC', 'EMA', 'CN', 'JP')).toBe('2026-10-06T17:53:00+09:00');
+      // An origin with several clocks keeps CTT's Z.
+      expect(inboundAt('2026-10-06T17:53:00Z', 'EXAMPLE MC', 'EMA', 'US')).toBe('2026-10-06T17:53:00Z');
+      // Arrival, customs and delivery in Portugal are CTT's.
+      expect(inboundAt('2026-10-12T07:13:04Z', 'PTEXAB - (OUTRO) EXAMPLE', 'EMD', 'CN')).toBe('2026-10-12T07:13:04+01:00');
+      expect(inboundAt('2026-10-12T08:37:39Z', 'PTEXAE - (CTC) EXAMPLE', 'EDB', 'CN')).toBe('2026-10-12T08:37:39+01:00');
     });
 
     it('takes any other offset as sent and orders wall times among instants', () => {

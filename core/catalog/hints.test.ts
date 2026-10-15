@@ -24,14 +24,14 @@ describe('national postal lookup candidates', () => {
     ['CA', 'canada-post'], ['DE', 'dhl'], ['ES', 'correos-spain'], ['JP', 'japan-post'], ['Japan', 'japan-post'],
     ['AU', 'australia-post'], ['Australia', 'australia-post'], ['PL', 'poczta-polska'], ['Poland', 'poczta-polska'],
     ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['SA', 'saudi-post'], ['Saudi Arabia', 'saudi-post'],
-    ['AR', 'correo-argentino'], ['Argentina', 'correo-argentino'],
+    ['AR', 'correo-argentino'], ['Argentina', 'correo-argentino'], ['PT', 'ctt'], ['Portugal', 'ctt'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });
-  // The posts of Italy, India and Portugal look up only numbers of their own, and Pos Malaysia's
+  // The posts of Italy and India look up only numbers of their own, and Pos Malaysia's
   // tracker answers any S10 number but leaves the scans of mail from abroad undated, so these
   // destinations have no candidate.
-  it.each(['XX', 'LI', 'IT', 'Italy', 'IN', 'MY', 'PT', 'unknown', 'Arrived in Switzerland', 'constructor', '', null, 123])(
+  it.each(['XX', 'LI', 'IT', 'Italy', 'IN', 'MY', 'unknown', 'Arrived in Switzerland', 'constructor', '', null, 123])(
     'leaves unavailable or ambiguous destinations alone: %s', (country) => {
       expect(nationalPostCandidate(country)).toBeUndefined();
     },
@@ -119,7 +119,7 @@ describe('carrier names reported by universal providers', () => {
     ['UPS', 'ups'], ['La Poste (Colissimo)', 'la-poste'], ['Chronopost France', 'chronopost'],
     ['Chronopost (France)', 'chronopost'], ['Posti Finland', 'posti'], ['Swiss Post CH', 'swiss-post'],
     ['Finland Post', 'posti'], ['Spain Post', 'correos-spain'], ['Portugal CTT', 'ctt'],
-    ['Italy Post', 'poste-italiane'], ['Deutsche Post - DHL Paket', 'dhl'],
+    ['Portugal Post - Portugal CTT', 'ctt'], ['Italy Post', 'poste-italiane'], ['Deutsche Post - DHL Paket', 'dhl'],
     ['Correos de España', 'correos-spain'], ['Correos Spain', 'correos-spain'],
     ['Intelcom', 'intelcom'], ['Dragonfly', 'intelcom'], ['Orange Connex', 'speedpak'],
     ['Evri International', 'evri'], ['Hermes UK', 'evri-uk'], ['DPD Germany', 'dpd-de'], ['DPD UK', 'dpd-uk'],
@@ -137,7 +137,7 @@ describe('carrier names reported by universal providers', () => {
   it.each([
     'La Poste', 'La Poste (Colissimo)', 'Chronopost France', 'FedEx', 'India Post', 'Posti', 'UPS',
     'Chronopost Portugal', 'Correos Chile', 'Royal Mail (UK)', 'DHL', 'DHL Express', 'GLS Italy', 'DPD UK',
-    'Finland Post', 'Spain Post', 'Portugal CTT', 'Italy Post', 'Deutsche Post - DHL Paket', 'Correos de España', 'Correos Spain',
+    'Finland Post', 'Spain Post', 'Portugal CTT', 'Portugal Post - Portugal CTT', 'Italy Post', 'Deutsche Post - DHL Paket', 'Correos de España', 'Correos Spain',
   ])('knows %s from the catalog', (name) => {
     expect(isKnownCarrierName(name)).toBe(true);
   });

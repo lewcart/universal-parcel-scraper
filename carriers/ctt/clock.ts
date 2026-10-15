@@ -7,7 +7,8 @@ import { countryTimeZone, regionHasTown } from '../../core/time/index.js';
  * whatever the viewer's zone. UPU's tracking has the same wall clocks for
  * CTT's posting and dispatch, and 17TRACK reads them on Lisbon's clock
  * (checked 2026-10-10). The destination post's scans keep its own wall clock:
- * an Italian delivery comes at the Italian office's time.
+ * an Italian delivery comes at the Italian office's time. So do the origin
+ * post's scans of mail from abroad.
  */
 
 /** A UPU office of exchange leading a location: "PTLISA - (OUTRO) LISBOA". */

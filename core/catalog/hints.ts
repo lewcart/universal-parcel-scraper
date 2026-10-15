@@ -15,7 +15,7 @@ const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'evri', 'gofo', 'post']
 const NAME_ALIASES: Readonly<Record<string, string>> = {
   ups: 'ups', swisspost: 'swiss-post', laposte: 'la-poste', colissimo: 'la-poste',
   dhlecommerce: 'dhl-ecommerce', cainiao: 'aliexpress', postnl: 'spring-gds',
-  asendiausa: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain', portugalctt: 'ctt',
+  asendiausa: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain', portugalctt: 'ctt', portugalpostportugalctt: 'ctt',
   italypost: 'poste-italiane', deutschepostdhlpaket: 'dhl',
 };
 // The postal union's shared feed, which aggregators list among a parcel's carriers.
@@ -28,8 +28,8 @@ const CATALOG_NAMES = new Set([
 
 // Postal lookup candidates, not proof of which operator delivers a shipment.
 // Only operators whose dedicated adapter looks up mail from abroad by its S10
-// number are useful here: India Post's, CTT's and Poste Italiane's take only
-// numbers of their own. Pos Malaysia's tracker answers any S10 number, but it
+// number are useful here: India Post's and Poste Italiane's take only numbers
+// of their own. Pos Malaysia's tracker answers any S10 number, but it
 // leaves the scans of mail from abroad undated, so it is not the hand-off for
 // mail to Malaysia. Poczta Polska dates scans at its
 // delivery office, and other inward scans when they name a Polish office; those
@@ -42,7 +42,7 @@ const CATALOG_NAMES = new Set([
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'],
   ['DE', 'dhl'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
-  ['GB', 'royal-mail'], ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'],
+  ['GB', 'royal-mail'], ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['PT', 'ctt'],
   ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });

@@ -27,6 +27,15 @@ describe('CTT live anonymous tracking', () => {
     },
   );
 
+  it.skipIf(!process.env.CTT_INBOUND_TRACKING_NUMBER)(
+    "returns history for mail from abroad under its origin post's number",
+    async () => {
+      const result = await new CttTracker({ timeoutMs: 20_000 }).fetch(process.env.CTT_INBOUND_TRACKING_NUMBER!);
+      expect(result.events?.length).toBeGreaterThan(0);
+      expect(result.events?.every((event) => event.time || event.local_time)).toBe(true);
+    },
+  );
+
   it('pins the not-found error contract used by routing cooldowns', () => {
     expect(new NotFoundError('CTT').status).toBe(404);
   });

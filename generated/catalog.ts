@@ -10268,10 +10268,23 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gdex",
+      "recognitionRank": 957
     },
-    "canaryUrl": "https://my.gdexpress.com/",
+    "canaryUrl": "https://app.gdexpress.com/",
+    "trackingUrlTemplate": "https://gdexpress.com/tracking/?consignmentno={trackingNumber}",
+    "trackingSearchUrl": "https://gdexpress.com/our-business/delivery/tools-references/tracking/",
     "linkRules": [
+      {
+        "domains": [
+          "gdexpress.com",
+          "www.gdexpress.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "consignmentno"
+        ]
+      },
       {
         "domains": [
           "web2.gdexpress.com"

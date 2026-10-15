@@ -19,18 +19,58 @@
   "timezone": "Asia/Kuala_Lumpur",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gdex",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 957
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
-    "canaryUrl": "https://my.gdexpress.com/",
-    "shows": [],
-    "scraped": [],
+    "url": "https://gdexpress.com/tracking/?consignmentno={trackingNumber}",
+    "searchUrl": "https://gdexpress.com/our-business/delivery/tools-references/tracking/",
+    "canaryUrl": "https://app.gdexpress.com/",
+    "shows": [
+      "status",
+      "history",
+      "location"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
+    {
+      "domains": [
+        "gdexpress.com",
+        "www.gdexpress.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "consignmentno"
+      ]
+    },
     {
       "domains": [
         "web2.gdexpress.com"

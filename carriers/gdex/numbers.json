@@ -250,6 +250,44 @@
         ]
       },
       "note": "A Lowyat forum post about the GDex courier service gives it as the tracking number of a parcel sent through a GDex branch."
+    },
+    {
+      "number": "MY37324153968",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260504075317/https://gdexpress.com/tracking/?consignmentno=MY37324153968",
+        "date": "2026-05-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "gdex",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on GDEX's current tracking page; the opened capture shows the consignment's history."
+    },
+    {
+      "number": "MY37279142960",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250805102258/https://gdexpress.com/tracking/?consignmentno=MY37279142960",
+        "date": "2025-08-05",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "gdex",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on GDEX's current tracking page passes it as the consignment number; the opened capture shows no history."
     }
   ]
 }

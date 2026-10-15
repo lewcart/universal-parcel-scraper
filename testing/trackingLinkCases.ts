@@ -608,6 +608,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'loomis-express', number: 'LSHP99999999',
     route: /^https:\/\/loomisexpress\.com\/loomship\/Track\/TrackResults\?t=WAYBILL&s=LSHP99999999$/,
     marker: /Tracking Results|Below waybills are not available at this moment/ },
+  // The server renders the result page; a waybill it does not know is echoed with *** for both branches.
+  { carrier: 'lotte-global', number: '314159265350',
+    route: /^https:\/\/www\.lotteglogis\.com\/(?:home|mobile)\/reservation\/tracking\/linkView\?InvNo=314159265350$/,
+    marker: /운송장 번호|택배조회/ },
   // The page fills its field in and looks the number up alone; an unknown one gets the number-and-postcode notice.
   { carrier: 'dynalogic', number: '99999ZZ999999',
     route: /^https:\/\/track\.mydynalogic\.eu\/track\/(?:login\?ordernumber=99999ZZ999999$|order$)/,

@@ -21,18 +21,60 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "lotte-global",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "eta",
+    "delivered_at"
+  ],
   "portal": {
-    "url": "https://www.lotteglogis.com/open/tracking?invno={trackingNumber}",
+    "url": "https://www.lotteglogis.com/home/reservation/tracking/linkView?InvNo={trackingNumber}",
     "searchUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
     "canaryUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "progress_rail",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "origin",
+      "destination",
+      "driver_name",
+      "contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "eta",
+      "eta_window",
+      "delivered_at"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin",
+      "destination",
+      "driver_name",
+      "contact_details"
+    ],
+    "unavailable": [
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

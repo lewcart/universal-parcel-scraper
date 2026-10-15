@@ -10675,10 +10675,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lotte-global",
+      "localClocks": true
     },
     "canaryUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
-    "trackingUrlTemplate": "https://www.lotteglogis.com/open/tracking?invno={trackingNumber}",
+    "trackingUrlTemplate": "https://www.lotteglogis.com/home/reservation/tracking/linkView?InvNo={trackingNumber}",
     "trackingSearchUrl": "https://www.lotteglogis.com/home/reservation/tracking/index",
     "linkRules": [
       {

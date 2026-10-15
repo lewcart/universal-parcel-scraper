@@ -207,7 +207,12 @@ import { adapter as speedx } from '../carriers/speedx/adapter.js';
 import { adapter as speedy } from '../carriers/speedy/adapter.js';
 import { adapter as springGds } from '../carriers/spring-gds/adapter.js';
 import { adapter as spxBr } from '../carriers/spx-br/adapter.js';
+import { adapter as spxId } from '../carriers/spx-id/adapter.js';
+import { adapter as spxMy } from '../carriers/spx-my/adapter.js';
 import { adapter as spxPh } from '../carriers/spx-ph/adapter.js';
+import { adapter as spxTh } from '../carriers/spx-th/adapter.js';
+import { adapter as spxTw } from '../carriers/spx-tw/adapter.js';
+import { adapter as spxVn } from '../carriers/spx-vn/adapter.js';
 import { adapter as stallionExpress } from '../carriers/stallion-express/adapter.js';
 import { adapter as starken } from '../carriers/starken/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
@@ -456,7 +461,12 @@ export const REGISTRY: RegistryDefinition = {
     "speedy": speedy,
     "spring-gds": springGds,
     "spx-br": spxBr,
+    "spx-id": spxId,
+    "spx-my": spxMy,
     "spx-ph": spxPh,
+    "spx-th": spxTh,
+    "spx-tw": spxTw,
+    "spx-vn": spxVn,
     "stallion-express": stallionExpress,
     "starken": starken,
     "sto": sto,
@@ -910,12 +920,12 @@ export const REGISTRY: RegistryDefinition = {
     "speedy": "speedy",
     "spring-gds": "spring-gds",
     "spx-br": "spx-br",
-    "spx-id": "universal",
-    "spx-my": "universal",
+    "spx-id": "spx-id",
+    "spx-my": "spx-my",
     "spx-ph": "spx-ph",
-    "spx-th": "universal",
-    "spx-tw": "universal",
-    "spx-vn": "universal",
+    "spx-th": "spx-th",
+    "spx-tw": "spx-tw",
+    "spx-vn": "spx-vn",
     "sri-lanka-post": "universal",
     "st-courier": "universal",
     "stallion-express": "stallion-express",

@@ -19,16 +19,44 @@
   "timezone": "Asia/Taipei",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "spx-tw",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point"
+  ],
   "portal": {
     "canaryUrl": "https://spx.tw/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "pickup_point"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "recipient_name",
+      "recipient_contact",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

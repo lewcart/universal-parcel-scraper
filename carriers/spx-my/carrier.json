@@ -18,18 +18,47 @@
   "timezone": "Asia/Kuala_Lumpur",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "spx-my",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://spx.com.my/track?{trackingNumber}",
     "searchUrl": "https://spx.com.my/track",
     "canaryUrl": "https://spx.com.my/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "seller_location",
+      "office_addresses"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

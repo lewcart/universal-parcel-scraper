@@ -137,6 +137,11 @@ import { statusMap as speedaf } from '../../carriers/speedaf/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
 import { statusMap as speedy } from '../../carriers/speedy/status.js';
 import { statusMap as spxBr } from '../../carriers/spx-br/status.js';
+import { statusMap as spxId } from '../../carriers/spx-id/status.js';
+import { statusMap as spxMy } from '../../carriers/spx-my/status.js';
+import { statusMap as spxTh } from '../../carriers/spx-th/status.js';
+import { statusMap as spxTw } from '../../carriers/spx-tw/status.js';
+import { statusMap as spxVn } from '../../carriers/spx-vn/status.js';
 import { statusMap as stallionExpress } from '../../carriers/stallion-express/status.js';
 import { statusMap as starken } from '../../carriers/starken/status.js';
 import { statusMap as sto } from '../../carriers/sto/status.js';
@@ -190,7 +195,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, servientrega, shadowfax,
   'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy,
-  'spx-br': spxBr, 'stallion-express': stallionExpress, starken, sto, swiftx, 'swiss-post': swissPost, 't-cat': tCat, 'tci-express': tciExpress,
+  'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn,
+  'stallion-express': stallionExpress, starken, sto, swiftx, 'swiss-post': swissPost, 't-cat': tCat, 'tci-express': tciExpress,
   'tcs-pakistan': tcsPakistan, 'thailand-post': thailandPost, thhy, tnt, 'tnt-it': tntIt, 'total-express': totalExpress, tsjy,
   'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
   yunexpress, zto,

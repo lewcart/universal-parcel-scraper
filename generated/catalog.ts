@@ -17572,7 +17572,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-id"
     },
     "canaryUrl": "https://spx.co.id/track",
     "trackingUrlTemplate": "https://spx.co.id/track?{trackingNumber}",
@@ -17618,7 +17618,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-my"
     },
     "canaryUrl": "https://spx.com.my/track",
     "trackingUrlTemplate": "https://spx.com.my/track?{trackingNumber}",
@@ -17741,7 +17741,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-th"
     },
     "canaryUrl": "https://spx.co.th/track",
     "trackingUrlTemplate": "https://spx.co.th/track?{trackingNumber}",
@@ -17782,7 +17782,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-tw"
     },
     "canaryUrl": "https://spx.tw/",
     "linkRules": [
@@ -17815,7 +17815,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-vn"
     },
     "canaryUrl": "https://spx.vn/track",
     "trackingUrlTemplate": "https://spx.vn/track?{trackingNumber}",

@@ -18,18 +18,47 @@
   "timezone": "Asia/Ho_Chi_Minh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "spx-vn",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://spx.vn/track?{trackingNumber}",
     "searchUrl": "https://spx.vn/track",
     "canaryUrl": "https://spx.vn/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "seller_location",
+      "office_addresses"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

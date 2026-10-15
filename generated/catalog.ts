@@ -4752,7 +4752,7 @@ export const CARRIER_CATALOG = {
   },
   "139express": {
     "displayName": "139 Express",
-    "color": "#c00000",
+    "color": "#b81c22",
     "aliases": [
       "139快递",
       "一三九快递",
@@ -5903,7 +5903,7 @@ export const CARRIER_CATALOG = {
   },
   "bangladesh-post": {
     "displayName": "Bangladesh Post Office",
-    "color": "#b31a1a",
+    "color": "#ce0000",
     "aliases": [
       "Bangladesh Post",
       "Bangladesh EMS",
@@ -9010,7 +9010,7 @@ export const CARRIER_CATALOG = {
   },
   "ecourier": {
     "displayName": "eCourier",
-    "color": "#347b31",
+    "color": "#602d90",
     "aliases": [
       "eCourier Ltd",
       "Ecourier",
@@ -10614,7 +10614,7 @@ export const CARRIER_CATALOG = {
   },
   "gs-postbox": {
     "displayName": "GS Postbox",
-    "color": "#f36523",
+    "color": "#e36808",
     "aliases": [
       "GS포스트박스",
       "포스트박스",
@@ -11146,7 +11146,7 @@ export const CARRIER_CATALOG = {
   },
   "ilyang-logis": {
     "displayName": "Ilyang Logis",
-    "color": "#0083cd",
+    "color": "#003c83",
     "aliases": [
       "일양로지스",
       "(주)일양로지스",
@@ -11576,7 +11576,7 @@ export const CARRIER_CATALOG = {
   },
   "janio": {
     "displayName": "Janio",
-    "color": "#394892",
+    "color": "#0a1f5c",
     "aliases": [
       "Janio Asia",
       "Janio Technologies"
@@ -11873,7 +11873,7 @@ export const CARRIER_CATALOG = {
   },
   "kerry-tj": {
     "displayName": "Kerry TJ",
-    "color": "#f4772b",
+    "color": "#ec6900",
     "aliases": [
       "嘉里大榮物流",
       "嘉里大榮",
@@ -12133,7 +12133,7 @@ export const CARRIER_CATALOG = {
   },
   "kunyoung": {
     "displayName": "Kunyoung Express",
-    "color": "#1b6eb4",
+    "color": "#04378c",
     "aliases": [
       "건영택배",
       "건영화물",
@@ -12702,7 +12702,7 @@ export const CARRIER_CATALOG = {
   },
   "m-and-p": {
     "displayName": "M&P",
-    "color": "#ff6b35",
+    "color": "#f26522",
     "aliases": [
       "M&P Express Logistics",
       "M&P Courier",
@@ -13375,7 +13375,7 @@ export const CARRIER_CATALOG = {
   },
   "nepal-post": {
     "displayName": "Nepal Post",
-    "color": "#0447af",
+    "color": "#f6c63e",
     "aliases": [
       "Department of Postal Service",
       "हुलाक सेवा विभाग",
@@ -14054,7 +14054,7 @@ export const CARRIER_CATALOG = {
   },
   "pakistan-post": {
     "displayName": "Pakistan Post",
-    "color": "#be0101",
+    "color": "#ed1b24",
     "aliases": [
       "PakPost",
       "Pakistan Post Office",
@@ -15263,7 +15263,7 @@ export const CARRIER_CATALOG = {
   },
   "prompt-xpress": {
     "displayName": "Prompt Xpress",
-    "color": "#e81820",
+    "color": "#24408f",
     "aliases": [
       "Prompt XP",
       "PromptXpress"
@@ -15358,7 +15358,7 @@ export const CARRIER_CATALOG = {
   },
   "quantium-solutions": {
     "displayName": "Quantium Solutions",
-    "color": "#009d96",
+    "color": "#00474f",
     "aliases": [
       "Quantium",
       "Quantium Worldwide",
@@ -15920,7 +15920,7 @@ export const CARRIER_CATALOG = {
   },
   "sapx-express": {
     "displayName": "SAPX Express",
-    "color": "#862880",
+    "color": "#ee6825",
     "aliases": [
       "SAP Express",
       "SAPX",
@@ -16325,7 +16325,7 @@ export const CARRIER_CATALOG = {
   },
   "seven-eleven-tw": {
     "displayName": "7-ELEVEN Taiwan",
-    "color": "#ff6000",
+    "color": "#00734d",
     "aliases": [
       "統一超商",
       "交貨便",
@@ -17441,7 +17441,7 @@ export const CARRIER_CATALOG = {
   },
   "sri-lanka-post": {
     "displayName": "Sri Lanka Post",
-    "color": "#c01838",
+    "color": "#cf1839",
     "aliases": [
       "SL Post",
       "SL Post Courier",
@@ -17463,7 +17463,7 @@ export const CARRIER_CATALOG = {
   },
   "st-courier": {
     "displayName": "ST Courier",
-    "color": "#de200b",
+    "color": "#c7262f",
     "aliases": [
       "ST Courier PVT LTD",
       "ST Courier Private Limited"
@@ -17626,7 +17626,7 @@ export const CARRIER_CATALOG = {
   },
   "sundarban-courier": {
     "displayName": "Sundarban Courier Service",
-    "color": "#d9802e",
+    "color": "#0b4c9f",
     "aliases": [
       "Sundarban Courier",
       "Sundarban Courier Service (Pvt.) Ltd.",
@@ -18027,7 +18027,7 @@ export const CARRIER_CATALOG = {
   },
   "tiki": {
     "displayName": "TIKI",
-    "color": "#105cef",
+    "color": "#0033ab",
     "aliases": [
       "Titipan Kilat",
       "PT Citra Van Titipan Kilat",
@@ -18056,7 +18056,7 @@ export const CARRIER_CATALOG = {
   },
   "tirupati-courier": {
     "displayName": "Shree Tirupati Courier",
-    "color": "#fac11c",
+    "color": "#f4791f",
     "aliases": [
       "Shree Tirupati Courier Services Pvt. Ltd.",
       "Shree Tirupati Courier Service Pvt. Ltd.",
@@ -18242,7 +18242,7 @@ export const CARRIER_CATALOG = {
   },
   "tracx-logis": {
     "displayName": "TracX Logis",
-    "color": "#0b5fff",
+    "color": "#0084ca",
     "aliases": [
       "Qxpress",
       "QXPRESS",
@@ -19360,7 +19360,7 @@ export const CARRIER_CATALOG = {
   },
   "zr-express": {
     "displayName": "ZR Express",
-    "color": "#fec30f",
+    "color": "#ffcb05",
     "aliases": [
       "ZR Express Algérie",
       "ZRexpress"

@@ -308,6 +308,60 @@
         ]
       },
       "note": "Looked up on Blue Express's own tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "2209565643",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/files/BLUE.pdf",
+        "date": "2026-02-17",
+        "dateKind": "latest event shown",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A complaint filed against Blue Express quotes this service order with its tracking link and history."
+    },
+    {
+      "number": "2408964154",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/blue-express/reclamo/2026/sep/blue-express-retenci-n-de-pedido-2408964154-en-san-miguel-e-imposibilidad-de-c",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-express",
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "A complaint filed against Blue Express names this order; Blue Express's lookup answers it with its history."
     }
   ]
 }

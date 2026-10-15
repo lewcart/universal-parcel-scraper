@@ -5921,7 +5921,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "blue-express",
+      "recognitionRank": 971,
+      "localClocks": true
     },
     "canaryUrl": "https://www.blue.cl/",
     "trackingUrlTemplate": "https://www.blue.cl/enviar/seguimiento?n_seguimiento={trackingNumber}",

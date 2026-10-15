@@ -11,8 +11,15 @@ carrier prints the prefix.
 
 ## Links
 
-The tracking form posts the number after a Cloudflare Turnstile check, so no address opens one
-parcel.
+The tracking page fills its field from `yalidine.com/suivre-un-colis/?tracking={number}`, but it
+shows a history only after a Cloudflare Turnstile check, so no address opens one parcel.
+
+## Limitations
+
+Yalidine's server verifies the Turnstile token before it looks the number up; without one it
+answers the same retry message for every number. The merchant dashboard and the developer API
+need a Yalidine account, and Yalidine publishes no tracking app, so Yalidine stays on universal
+providers.
 
 ## Testing
 

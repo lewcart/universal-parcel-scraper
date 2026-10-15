@@ -1,0 +1,341 @@
+import { constants, createHash, generateKeyPairSync, privateDecrypt, type KeyObject } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { createTracker } from '../../facade/index.js';
+import { adapter, IMILE_API, IMILE_PAGE, IMILE_SIGNING, ImileTracker, imileSignature, scriptSigning, type ImileSigning } from './adapter.js';
+import { imileWording, normalizeImileNumber, parseImile } from './parser.js';
+import { imileStage, statusMap } from './status.js';
+import statuses from './statuses.json' with { type: 'json' };
+
+const DELIVERED = '6000000000001';
+const IN_TRANSIT = '6000000000002';
+const UNKNOWN = '6000000000000';
+
+type Row = Record<string, unknown>;
+type Shipment = Row & { trackInfos: Row[] };
+type Reply = Row & { resultObject: Shipment };
+
+const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as Reply;
+const changed = (name: string, change: (shipment: Shipment, reply: Reply) => void) => {
+  const reply = fixture(name);
+  change(reply.resultObject, reply);
+  return reply;
+};
+const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
+  { ...init, headers: { 'Content-Type': 'application/json', ...init.headers } });
+const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+
+// Two synthetic key pairs: the page's values, and the ones it changes to.
+const pair = (salt: string) => {
+  const { publicKey, privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
+  return { privateKey, signing: { key: publicKey.export({ type: 'spki', format: 'der' }).toString('base64'), salt } };
+};
+const FIRST = pair('syntheticSalt');
+const SECOND = pair('otherSalt');
+const decrypt = (privateKey: KeyObject, sign: string) => privateDecrypt({ key: privateKey, padding: constants.RSA_PKCS1_PADDING }, Buffer.from(sign, 'base64')).toString();
+
+const SCRIPT_PATH = '/_next/static/chunks/pages/%5BcountryAndLang%5D/track-0123456789abcdef.js';
+const page = (body = `<script src="${SCRIPT_PATH}" defer=""></script>`) => `<!DOCTYPE html><html><head>${body}</head><body></body></html>`;
+// The track page's signing, as its script writes it.
+const script = (signing: ImileSigning) => `V=async e=>{let t=new v.v;t.setPublicKey("${signing.key}");let i=t.encrypt(e),`
+  + `n="/saastms/mobileWeb/track/query?waybillNo=".concat(e,"&code=").concat(g().MD5("".concat(e,"${signing.salt}")).toString());`
+  + 'return window.fetch(n,{headers:{lang:a,sign:i}})}';
+
+/**
+ * iMile's site: the lookup answers a shipment only when its sign decrypts to
+ * the number under the key in use, and the same empty reply otherwise.
+ */
+function site(key: { privateKey: KeyObject; signing: ImileSigning }, shipments: Record<string, unknown>,
+  pages: { page?: () => Response; script?: () => Response } = {}) {
+  return vi.fn<typeof fetch>(async (input, init) => {
+    const url = new URL(String(input));
+    if (`${url.origin}${url.pathname}` === IMILE_API) {
+      const number = url.searchParams.get('waybillNo')!;
+      const sign = new Headers(init?.headers).get('sign') ?? '';
+      const known = shipments[number] !== undefined && decrypt(key.privateKey, sign) === number;
+      return reply(known ? shipments[number] : fixture('not-found'));
+    }
+    if (String(input) === IMILE_PAGE) return pages.page?.() ?? new Response(page(), { headers: { 'Content-Type': 'text/html' } });
+    if (url.pathname === SCRIPT_PATH) return pages.script?.() ?? new Response(script(key.signing), { headers: { 'Content-Type': 'application/javascript' } });
+    throw new Error(`unexpected request to ${String(input)}`);
+  });
+}
+
+describe('iMile HTTP adapter', () => {
+  it('asks the tracking page’s lookup once in English, signed as the page signs it, through the supplied transport', async () => {
+    const fetcher = site(FIRST, { [IN_TRANSIT]: fixture('in-transit') });
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    await expect(new ImileTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0', signing: FIRST.signing }).fetch(' 6000-0000-00002 ', { budgetMs: 1000.5 }))
+      .resolves.toMatchObject({ current_stage: 'customs' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const [url, init] = fetcher.mock.calls[0]!;
+    const code = createHash('md5').update(`${IN_TRANSIT}syntheticSalt`).digest('hex');
+    expect(String(url)).toBe(`${IMILE_API}?waybillNo=${IN_TRANSIT}&code=${code}`);
+    expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
+      headers: { Accept: 'application/json', lang: 'en_US', 'User-Agent': 'SyntheticHost/1.0' } });
+    expect(decrypt(FIRST.privateKey, (init!.headers as Record<string, string>).sign!)).toBe(IN_TRANSIT);
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'imile', step: 'direct', outcome: 'ok' }));
+    expect(recorder.lookup).toHaveBeenCalledTimes(1);
+  });
+
+  it('signs with the values the tracking script holds', () => {
+    expect(scriptSigning(script(FIRST.signing))).toEqual(FIRST.signing);
+    const { code, sign } = imileSignature('CNBR00000000001', SECOND.signing);
+    expect(code).toBe(createHash('md5').update('CNBR00000000001otherSalt').digest('hex'));
+    expect(decrypt(SECOND.privateKey, sign)).toBe('CNBR00000000001');
+    // The values shipped with the adapter read as a key.
+    expect(imileSignature(DELIVERED, IMILE_SIGNING).sign).toMatch(/^[A-Za-z0-9+/]{342}==$/);
+    expect(() => scriptSigning('t.setPublicKey("short");')).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => scriptSigning(script({ key: 'A'.repeat(300), salt: 'syntheticSalt' }))).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => scriptSigning(script(FIRST.signing).replace('/saastms/mobileWeb/track/query', '/other')))
+      .toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('keeps each scan’s wall clock and stages it by its code and sentence', () => {
+    const result = parseImile(fixture('in-transit'), IN_TRANSIT);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
+      last_status_text: '【SMP】 Clearance start.', last_update: null, last_update_local: '2026-06-04T02:15:00', expected_delivery: null,
+      destination_country: 'CO' });
+    expect(result.events!.map((event) => [event.local_time, event.provider_code ?? null, event.stage ?? null, event.location ?? null])).toEqual([
+      ['2026-06-04T02:15:00', null, 'customs', null],
+      ['2026-06-03T23:15:00', '1002', 'customs', null],
+      ['2026-06-02T18:00:00', '1002', 'in_transit', null],
+      // A booked flight moves nothing.
+      ['2026-06-01T04:51:00', '1002', null, null],
+      ['2026-05-31T12:02:11', '2005', 'accepted', 'Sample Origin Center'],
+      ['2026-05-31T08:40:00', null, 'registered', null],
+      ['2026-05-30T19:16:16', '1001', 'registered', null],
+    ]);
+    expect(result.events!.every((event) => event.time === undefined)).toBe(true);
+    // The booked flight's own clocks stay in its wording, as the page shows it.
+    expect(result.events![3]!.description).toBe('Flight Schedule ETD【<HKG>】<2026-06-03 02:00:00>, ETA【<SMP>】<2026-06-03 12:00:00>.');
+    // The last-mile number names no courier, so there is no hand-off.
+    expect(JSON.stringify(result)).not.toMatch(/SAMPLELM|delivery_tracking_number|Sample Origin Center"?,"dispatch/);
+  });
+
+  it('keeps the delivery without the driver’s phone, who took it, its proof or the repeated scan', () => {
+    const result = parseImile(fixture('delivered'), DELIVERED);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'Your order has been delivered successfully.', last_update: null, last_update_local: '2026-05-20T15:42:10',
+      destination_country: 'SA' });
+    expect(result.events).toHaveLength(16);
+    expect(result.events!.slice(0, 8).map((event) => [event.provider_code, event.stage ?? null, event.description])).toEqual([
+      ['2060', 'delivered', 'Your order has been delivered successfully.'],
+      ['1003', 'out_for_delivery', 'Our delivery associate is out for delivery.'],
+      // A delivery day booked moves nothing.
+      ['1003', null, 'Shipment is scheduled to [2026-05-20].'],
+      ['1003', 'failed_attempt', 'Delivery attempt finished,return to Local logistics company warehouse.'],
+      ['1003', 'failed_attempt', 'User not at home'],
+      ['1003', 'out_for_delivery', 'Our delivery associate is out for delivery.'],
+      ['1003', 'in_transit', 'Your order has assigned delivery drvier.'],
+      ['1003', 'in_transit', 'Your order has arrived at 【SMP DS01】'],
+    ]);
+    expect(result.events!.find((event) => event.description === 'Clearance Processing')).toMatchObject({ stage: 'customs' });
+    expect(result.events!.find((event) => event.description === 'Clearance Processing')).not.toHaveProperty('provider_code');
+    expect(JSON.stringify(result)).not.toMatch(/Self|Receiver|viewPic|example\.invalid|contact him|\+000|0500000001/);
+  });
+
+  it('takes the return codes’ word for a parcel going back', () => {
+    const failed = parseImile(changed('delivered', (shipment) => {
+      Object.assign(shipment.trackInfos[0]!, { trackStage: 1008, trackStageTx: 'Return Handling Process',
+        content: 'Order delivery failed, returning to sender. If you have any question, please contact us through cs  ' });
+    }), DELIVERED);
+    expect(failed).toMatchObject({ status: 'exception', current_stage: 'returned', current_stage_source: 'carrier_map',
+      last_status_text: 'Order delivery failed, returning to sender.' });
+    const received = parseImile(changed('delivered', (shipment) => {
+      Object.assign(shipment.trackInfos[0]!, { trackStage: 1008, trackStageTx: 'Return Handling Process', content: '【Sample Hub】Shipment received.' });
+    }), DELIVERED);
+    expect(received).toMatchObject({ current_stage: 'returned', last_status_text: '【Sample Hub】Shipment received.' });
+    const signed = parseImile(changed('delivered', (shipment) => {
+      Object.assign(shipment.trackInfos[0]!, { trackStage: 2065, trackStageTx: 'Returned to Client', content: '【Sample Hub】Return signature' });
+    }), DELIVERED);
+    expect(signed).toMatchObject({ current_stage: 'returned' });
+  });
+
+  it('reads a history listed oldest first newest first, as the page shows it', () => {
+    const result = parseImile(changed('in-transit', (shipment) => { shipment.trackInfos.reverse(); }), IN_TRANSIT);
+    expect(result).toMatchObject({ last_update_local: '2026-06-04T02:15:00', current_stage: 'customs' });
+    expect(result.events!.at(-1)).toMatchObject({ provider_code: '1001' });
+  });
+
+  it('takes people, phones, proof links and support contacts out of the wording', () => {
+    expect(imileWording('【DS SMP】Your package was received by 【Sample Person】. If you have any questions, please contact us so we can assist you.'
+      + '📞 WhatsApp: +00 00 0000-0000📧 Email: support@example.invalid🌐 Official website: https://example.invalid/'))
+      .toBe('【DS SMP】Your package was received.');
+    expect(imileWording('Your order has been delivered successfully, Receiver Type:【Family】.')).toBe('Your order has been delivered successfully.');
+    expect(imileWording('Our delivery associate is out for delivery.You can contact him by clicking +000 0500000000.'))
+      .toBe('Our delivery associate is out for delivery.');
+    expect(imileWording('Your order has been delivered successfully.<div class="viewPic" data-pic="https://example.invalid/a.jpg">View</div>'))
+      .toBe('Your order has been delivered successfully.');
+    expect(imileWording('Driver called 000 000 0000 , no answer')).toBe('Driver called, no answer');
+    // Dates, flight clocks and centre names stay.
+    expect(imileWording('Shipment is scheduled to [2026-05-20] .')).toBe('Shipment is scheduled to [2026-05-20].');
+    expect(imileWording('Flight Schedule ETD【<HKG>】<2026-05-17 11:40:00>, ETA【<SMP>】<2026-05-17 16:15:00>.'))
+      .toBe('Flight Schedule ETD【<HKG>】<2026-05-17 11:40:00>, ETA【<SMP>】<2026-05-17 16:15:00>.');
+    expect(imileWording(' Customer Wants to Change Location')).toBe('Customer Wants to Change Location');
+  });
+
+  it('reads the empty reply as not found, a failed lookup as inconclusive and a shipment without scans as no history', () => {
+    expect(() => parseImile(fixture('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    expect(() => parseImile({ ...fixture('not-found'), status: 'fail', message: 'System error' }, UNKNOWN))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseImile({ ...fixture('not-found'), status: 'fail', message: 'Requests are too frequent' }, UNKNOWN))
+      .toThrow(expect.objectContaining({ kind: 'rate_limited' }));
+    expect(() => parseImile(changed('delivered', (shipment) => { shipment.trackInfos = []; }), DELIVERED))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
+    expect(() => parseImile(changed('delivered', (shipment) => { delete (shipment as Row).trackInfos; }), DELIVERED))
+      .toThrow(expect.objectContaining({ name: 'NoHistoryError' }));
+  });
+
+  it('counts a shipment only when it names the number asked', () => {
+    expect(() => parseImile(fixture('in-transit'), DELIVERED))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'iMile answered for another shipment' }));
+    const reference = parseImile(changed('in-transit', (shipment) => { shipment.waybillNo = 'CNBR00000000001'; }), 'cnbr00000000001');
+    expect(reference.events).toHaveLength(7);
+    expect(() => parseImile(changed('in-transit', (shipment) => { shipment.waybillNo = 'CNBR00000000001'; }), 'CNBR0000000000'))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  it('rejects a changed reply', () => {
+    for (const change of [
+      (_shipment: Shipment, body: Reply) => { delete (body as Row).status; },
+      (_shipment: Shipment, body: Reply) => { body.resultObject = 'shipment' as never; },
+      (shipment: Shipment) => { delete shipment.waybillNo; },
+      (shipment: Shipment) => { shipment.trackInfos = 'scans' as never; },
+      (shipment: Shipment) => { shipment.trackInfos = Array.from({ length: 501 }, () => shipment.trackInfos[0]!); },
+      (shipment: Shipment) => { shipment.trackInfos[0] = 'scan' as never; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.time = '20/05/2026 15:42'; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.time = '2026-05-20T15:42:10Z'; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.time = '2026-05-20 24:00:00'; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.time = '2026-02-30 10:00:00'; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.time = 1_780_000_000_000; },
+      (shipment: Shipment) => { delete shipment.trackInfos[0]!.time; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.trackStage = 'Delivered'; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.trackStage = -1; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.content = ['Delivered']; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.content = ''; shipment.trackInfos[0]!.trackStageTx = null; },
+      (shipment: Shipment) => { shipment.trackInfos[0]!.operateStationName = 7; },
+    ]) {
+      expect(() => parseImile(changed('delivered', change), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    }
+    // A scan whose own sentence is empty takes its code's label.
+    expect(parseImile(changed('delivered', (shipment) => { shipment.trackInfos[0]!.content = null; }), DELIVERED).events![0])
+      .toMatchObject({ description: 'Delivered', stage: 'delivered' });
+  });
+
+  it('checks the page’s values once an hour before calling an empty reply not found', async () => {
+    let clock = 0;
+    const fetcher = site(FIRST, {});
+    const tracker = new ImileTracker({ fetcher, signing: FIRST.signing, now: () => clock });
+    await expect(tracker.fetch(UNKNOWN)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual(['/saastms/mobileWeb/track/query', '/AE-en/track', SCRIPT_PATH]);
+    expect(fetcher.mock.calls.every(([, init]) => init?.signal instanceof AbortSignal)).toBe(true);
+    clock += 59 * 60_000;
+    await expect(tracker.fetch(UNKNOWN)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    clock += 2 * 60_000;
+    await expect(tracker.fetch(UNKNOWN)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(fetcher).toHaveBeenCalledTimes(7);
+  });
+
+  it('signs again with the page’s new values when they changed, and keeps them', async () => {
+    const fetcher = site(SECOND, { [DELIVERED]: fixture('delivered'), [IN_TRANSIT]: fixture('in-transit') });
+    const tracker = new ImileTracker({ fetcher, signing: FIRST.signing });
+    await expect(tracker.fetch(DELIVERED)).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher).toHaveBeenCalledTimes(4);
+    const retried = new URL(String(fetcher.mock.calls[3]![0]));
+    expect(retried.searchParams.get('code')).toBe(createHash('md5').update(`${DELIVERED}otherSalt`).digest('hex'));
+    await expect(tracker.fetch(IN_TRANSIT)).resolves.toMatchObject({ current_stage: 'customs' });
+    expect(fetcher).toHaveBeenCalledTimes(5);
+  });
+
+  it('keeps a changed or blocked page apart from an unknown number', async () => {
+    const lookup = (pages: Parameters<typeof site>[2]) => new ImileTracker({ fetcher: site(FIRST, {}, pages), signing: FIRST.signing }).fetch(UNKNOWN);
+    const html = (body: string, status = 200) => () => new Response(body, { status, headers: { 'Content-Type': 'text/html' } });
+    await expect(lookup({ page: html(page('<script src="/_next/static/chunks/main-0.js"></script>')) })).rejects.toMatchObject({ kind: 'schema' });
+    await expect(lookup({ page: html(page('<title>Just a moment...</title><script>window._cf_chl_opt={}</script>')) }))
+      .rejects.toMatchObject({ kind: 'challenge' });
+    await expect(lookup({ page: html('', 403) })).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(lookup({ page: html('', 404) })).rejects.toMatchObject({ kind: 'transport' });
+    await expect(lookup({ script: html('console.log("moved")') })).rejects.toMatchObject({ kind: 'schema' });
+  });
+
+  it('keeps an unknown number, a moved route, a refusal, a browser check and a broken reply apart', async () => {
+    const lookup = (body: unknown, init?: ResponseInit) => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body, init))).track({ number: UNKNOWN });
+    // The page answers its own lookup with HTTP 200: a 404 or a redirect is a moved route.
+    await expect(lookup(fixture('not-found'), { status: 404 })).rejects.toMatchObject({ kind: 'transport' });
+    await expect(lookup('', { status: 302, headers: { Location: 'https://www.imile.com/' } })).rejects.toMatchObject({ kind: 'transport' });
+    await expect(lookup('<html><title>Just a moment...</title><script>window._cf_chl_opt={}</script></html>', { headers: { 'Content-Type': 'text/html' } }))
+      .rejects.toMatchObject({ kind: 'challenge' });
+    await expect(lookup('<html><title>iMile</title></html>')).rejects.toMatchObject({ kind: 'schema' });
+    await expect(lookup({ ...fixture('not-found'), status: 'fail', message: 'System busy' })).rejects.toMatchObject({ kind: 'indeterminate' });
+  });
+
+  it.each([[403, 'challenge'], [429, 'rate_limited'], [500, 'indeterminate'], [502, 'indeterminate'], [503, 'maintenance']] as const)(
+    'preserves HTTP %s as %s', async (status, kind) => {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response('', { status }));
+      await expect(carrier(fetcher).track({ number: IN_TRANSIT })).rejects.toMatchObject({ kind });
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    });
+
+  it('rejects numbers iMile does not answer and pre-aborted lookups without a request', async () => {
+    const fetcher = vi.fn<typeof fetch>();
+    for (const number of ['6000000', 'SAMPLETRACKING', `6${'0'.repeat(40)}`, '6000000000001!']) {
+      await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
+    }
+    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(normalizeImileNumber('cnbr 0000-0000-001')).toBe('CNBR00000000001');
+  });
+
+  it('sends a read that failed to reach the site once more', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(fixture('in-transit')));
+    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 5000 })).resolves.toMatchObject({ current_stage: 'customs' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('ends a hanging read inside the caller’s budget', async () => {
+    let signal: AbortSignal | undefined;
+    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
+      signal = init?.signal ?? undefined;
+      signal?.addEventListener('abort', () => reject(signal?.reason), { once: true });
+    }));
+    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 20.5 })).rejects.toThrow();
+    expect(signal?.aborted).toBe(true);
+  });
+
+  it('routes a number filed under iMile to the adapter, and leaves thirteen bare digits unclaimed', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('delivered')));
+    const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'imile' }, { budgetMs: 3000 });
+    expect(answer).toMatchObject({ carrier: 'imile', source: 'imile', result: { current_stage: 'delivered' } });
+    expect(fetcher.mock.calls.some(([url]) => String(url).startsWith(`${IMILE_API}?`))).toBe(true);
+    expect(detectCarrierMatch(DELIVERED).carrier).not.toBe('imile');
+  });
+});
+
+describe('iMile status vocabulary', () => {
+  it('records every code and wording seen with the stage it gives', () => {
+    for (const entry of statuses.entries as { code?: string; wording: string; stage?: string; unmapped?: boolean }[]) {
+      const code = entry.code ?? '';
+      if (entry.unmapped) {
+        expect(statusMap.stage(entry.code ?? null, entry.wording.toLowerCase()), entry.wording).toBeUndefined();
+        expect(imileStage(code, entry.wording), entry.wording).toBeNull();
+        continue;
+      }
+      expect(statusMap.stage(entry.code ?? null, entry.wording.toLowerCase()), entry.wording).toBe(entry.stage);
+      expect(imileStage(code, entry.wording)?.stage, entry.wording).toBe(entry.stage);
+    }
+    expect(statusMapAnswer({ carrier: 'imile', providerCode: '1003', description: 'Lost order' })).toMatchObject({ kind: 'intentional_gap' });
+    expect(statusMapAnswer({ carrier: 'imile', providerCode: '1003', description: 'User not at home' }))
+      .toEqual({ kind: 'mapped', stage: 'failed_attempt' });
+    expect(statusMapAnswer({ carrier: 'imile', providerCode: '9999', description: 'Synthetic note' })).toEqual({ kind: 'unknown' });
+    // A delivery-stage sentence the map does not know is read by the shared rules, else stays in transit.
+    expect(imileStage('1003', 'Synthetic note')).toEqual({ stage: 'in_transit', source: expect.any(String) });
+    expect(imileStage('9999', 'Synthetic note')).toBeNull();
+    // The return codes decide whatever the sentence says.
+    expect(imileStage('1008', '【Sample Hub】Received.')).toEqual({ stage: 'returned', source: 'carrier_map' });
+  });
+});

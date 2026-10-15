@@ -24,18 +24,58 @@
   "timezone": "Asia/Dubai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "imile",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://www.imile.com/en/track?waybillNo={trackingNumber}",
     "searchUrl": "https://www.imile.com/en/track",
     "canaryUrl": "https://www.imile.com/en/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "eta",
+      "delivery_tracking_number",
+      "proof_of_delivery",
+      "signatory",
+      "contact_details",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "destination_country"
+    ],
+    "discarded": [
+      "eta",
+      "delivery_tracking_number",
+      "proof_of_delivery",
+      "signatory",
+      "contact_details",
+      "payment_details"
+    ],
+    "unavailable": [
+      "weight",
+      "delivered_at",
+      "offset_timestamps",
+      "service_name",
+      "recipient_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

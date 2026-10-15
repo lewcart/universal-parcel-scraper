@@ -9777,7 +9777,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "imile",
+      "localClocks": true
     },
     "canaryUrl": "https://www.imile.com/en/track",
     "trackingUrlTemplate": "https://www.imile.com/en/track?waybillNo={trackingNumber}",

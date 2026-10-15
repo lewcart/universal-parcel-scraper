@@ -1,0 +1,116 @@
+import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+
+/**
+ * iMile's `trackStage` codes, by the label the reply gives them. Delivered,
+ * returned and return handling decide the stage whatever the wording says.
+ */
+const DECISIVE: ReadonlyMap<string, Stage> = new Map([
+  ['2060', 'delivered'], // Delivered.
+  ['1008', 'returned'], // Return Handling Process: the parcel goes back after its delivery failed.
+  ['2065', 'returned'], // Returned to Client.
+]);
+
+/** The other codes, when the wording is not one of iMile's own sentences. */
+const CODES: ReadonlyMap<string, Stage> = new Map([
+  ['1001', 'registered'], // Order Creation: the sender's order, before iMile has the parcel.
+  ['2005', 'accepted'], // Pick Up: collected from the sender.
+  // Received at iMile's first centre in the destination country, after any
+  // flight and clearance: movement, not a first acceptance.
+  ['2004', 'in_transit'],
+  ['1002', 'in_transit'], // In Transit: flights, clearance and centres.
+]);
+
+/** The code whose scans its wording tells apart: arrivals, delivery runs, attempts and drivers' reasons. */
+const DELIVERY = '1003';
+
+/**
+ * iMile's own sentences and drivers' reasons, without the centre names in
+ * 【】 and the closing full stop, with the stage they mean. Null marks a scan
+ * that moves nothing: a driver's reason that does not establish a loss and
+ * a stock count.
+ */
+const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>([
+  ['order submitted, pending to receive', 'registered'],
+  ['order submited', 'registered'],
+  ['your order has assigned pickup driver', 'registered'],
+  ['your order has been picked up', 'accepted'],
+  ['your order has been received', 'in_transit'],
+  ['received', 'in_transit'],
+  ['your order has arrived at', 'in_transit'],
+  ['arrived in warehouse', 'in_transit'],
+  ['arrived', 'in_transit'],
+  ['your order has been shipped from', 'in_transit'],
+  ['goods put on shelves completed', 'in_transit'],
+  ['parcel is currently being processed', 'in_transit'],
+  ['the flight has taken off', 'in_transit'],
+  ['flight arrived - waiting for customs clearance', 'customs'],
+  ['clearance start', 'customs'],
+  ['clearance processing', 'customs'],
+  ['airplane clearance finish,ready to ship to', 'in_transit'],
+  // The driver is named before the parcel leaves the centre; the misspelling is iMile's.
+  ['your order has assigned delivery drvier', 'in_transit'],
+  ['our delivery associate is out for delivery', 'out_for_delivery'],
+  ['delivery attempt finished,return to local logistics company warehouse', 'failed_attempt'],
+  // Drivers' reasons, each followed by the attempt's end and the return to the centre.
+  ['switch off', 'failed_attempt'],
+  ['customer wants to change location', 'failed_attempt'],
+  ['route not completed', 'failed_attempt'],
+  ['user not at home', 'failed_attempt'],
+  ['wrong address', 'failed_attempt'],
+  ['lost order', null],
+  ['inventory count scan', null],
+  ['your order has been delivered successfully', 'delivered'],
+  ['your package was received', 'delivered'],
+  ['order delivery failed, returning to sender', 'returned'],
+  ['shipment returned to origin', 'returned'],
+  ['return signature', 'returned'],
+]);
+
+/**
+ * Sentences that carry a date or a reason after a fixed opening. A booked
+ * flight and a scheduled delivery day are no movement.
+ */
+const OPENINGS: readonly (readonly [RegExp, Stage | null])[] = [
+  [/^flight schedule etd\b/, null],
+  [/^shipment is scheduled to\b/, null],
+  [/^the driver failed to deliver\b/, 'failed_attempt'],
+];
+
+/** A wording as the phrases list it: lower case, without the 【】 names, single spaces, no closing full stop. */
+export function imilePhrase(wording: string): string {
+  return wording.replace(/【[^】]*】/g, ' ').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim().replace(/\s*\.$/, '');
+}
+
+/** What iMile's own sentences say: a stage, null for a scan that moves nothing, undefined for a sentence they do not know. */
+function phraseStage(wording: string): Stage | null | undefined {
+  const phrase = imilePhrase(wording);
+  if (PHRASES.has(phrase)) return PHRASES.get(phrase)!;
+  return OPENINGS.find(([opening]) => opening.test(phrase))?.[1];
+}
+
+/** The stage iMile's code and sentences give a scan, null for one that moves nothing, undefined when neither decides. */
+export function imileMappedStage(code: string, wording: string): Stage | null | undefined {
+  const phrase = phraseStage(wording);
+  if (phrase === null) return null;
+  return DECISIVE.get(code) ?? phrase ?? CODES.get(code);
+}
+
+/**
+ * A scan's stage: iMile's code and sentences, else the shared wording rules.
+ * A delivery-stage scan they do not read stays in transit as the fallback.
+ */
+export function imileStage(code: string, wording: string): ClassifiedWording | null {
+  const mapped = imileMappedStage(code, wording);
+  if (mapped) return { stage: mapped, source: 'carrier_map' };
+  if (mapped === null) return null;
+  const worded = classifyWording(wording, 'in_transit');
+  return worded.source === 'none' && code !== DELIVERY ? null : worded;
+}
+
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => imileMappedStage(code ?? '', wording) ?? undefined,
+  gaps: [
+    { code: DELIVERY, wording: 'lost order', note: 'A driver\'s reason during a delivery run, followed by the attempt\'s end; the parcel it was seen on went out again and was delivered, so it does not establish a loss.' },
+  ],
+};

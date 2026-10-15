@@ -700,6 +700,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'shadowfax', number: 'SF000000001ZZZ',
     route: /^https:\/\/tracker\.shadowfax\.in\/#\/(?:awb\/SF000000001ZZZ|track\/)/,
     marker: /Invalid AWB Number\. Please check again\.|Track Your Order with Shadowfax/ },
+  // The page fills its field in from the address and looks the number up on load.
+  { carrier: 'imile', number: '0000000000013',
+    route: /^https:\/\/www\.imile\.com\/[^/]+\/track\/?\?waybillNo=0000000000013$/,
+    marker: /TRACK YOUR ORDER|TYPE YOUR ORDER NUMBER/i },
 ];
 
 /**

@@ -75,6 +75,7 @@ import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
+import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
@@ -156,9 +157,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, gati, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox,
-  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
-  'lietuvos-pastas': lietuvosPastas, logen, loggi, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas,
+  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
+  instabox, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste,
+  'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, logen, loggi, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
+  'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,

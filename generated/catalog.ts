@@ -6665,11 +6665,13 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chilexpress",
+      "recognitionRank": 958,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.chilexpress.cl/",
-    "trackingUrlTemplate": "https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA={trackingNumber}",
-    "trackingSearchUrl": "https://www.chilexpress.cl/",
+    "canaryUrl": "https://centrodeayuda.chilexpress.cl/",
+    "trackingUrlTemplate": "https://centrodeayuda.chilexpress.cl/pre-seguimiento/{trackingNumber}",
+    "trackingSearchUrl": "https://centrodeayuda.chilexpress.cl/",
     "linkRules": [
       {
         "domains": [
@@ -6684,7 +6686,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "centrodeayuda.chilexpress.cl"
         ],
-        "path": "^/seguimiento/([^/?#]+)/?$"
+        "path": "^/(?:pre-)?seguimiento/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

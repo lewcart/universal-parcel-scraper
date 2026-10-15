@@ -16,18 +16,65 @@
   "timezone": "America/Santiago",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "chilexpress",
+    "steps": [
+      "direct",
+      "refresh",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 958
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "service_name",
+    "weight",
+    "dimensions"
+  ],
   "portal": {
-    "url": "https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA={trackingNumber}",
-    "searchUrl": "https://www.chilexpress.cl/",
-    "canaryUrl": "https://www.chilexpress.cl/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://centrodeayuda.chilexpress.cl/pre-seguimiento/{trackingNumber}",
+    "searchUrl": "https://centrodeayuda.chilexpress.cl/",
+    "canaryUrl": "https://centrodeayuda.chilexpress.cl/",
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "service_name",
+      "weight",
+      "dimensions",
+      "origin",
+      "destination",
+      "payment_details",
+      "signature",
+      "proof_of_delivery",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "service_name",
+      "weight",
+      "dimensions"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "payment_details",
+      "signature",
+      "proof_of_delivery",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -43,7 +90,7 @@
       "domains": [
         "centrodeayuda.chilexpress.cl"
       ],
-      "path": "^/seguimiento/([^/?#]+)/?$"
+      "path": "^/(?:pre-)?seguimiento/([^/?#]+)/?$"
     }
   ],
   "detection": []

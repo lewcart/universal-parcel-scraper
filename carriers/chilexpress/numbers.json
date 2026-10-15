@@ -437,6 +437,191 @@
         ]
       },
       "note": "Looked up on Chilexpress's help-centre tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "21401502990",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/oct/chilexpress-demora-m-s-de-una-semana-siendo-que-deber-haber-llegado-al-d-siguie",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A reclamos.cl complaint about a delayed delivery by Chilexpress quotes this transport order, which the help centre's tracking knows. Eleven digits."
+    },
+    {
+      "number": "713130996104",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/sep/chilexpress-retraso-de-entrega",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A reclamos.cl complaint about a late delivery by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
+    },
+    {
+      "number": "713124563804",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/sep/chilexpress-me-entregaron-mi-producto-en-otra-direcci-n",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A reclamos.cl complaint about a delivery to another address by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
+    },
+    {
+      "number": "713124476971",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/sep/chilexpress-devoluci-n-encomienda",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A reclamos.cl complaint about a parcel sent back by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
+    },
+    {
+      "number": "713123388983",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/sep/chilexpress-encomienda-no-entregada",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A reclamos.cl complaint about a parcel that was not delivered by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
+    },
+    {
+      "number": "713117508541",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclamos.cl/chilexpress/reclamo/2026/aug/chilexpress-muy-mala-log-stica-en-el-servicio-de-entrega",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "A reclamos.cl complaint about poor delivery service by Chilexpress quotes this transport order, which the help centre's tracking knows. Twelve digits."
     }
   ]
 }

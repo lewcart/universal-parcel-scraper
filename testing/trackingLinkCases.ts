@@ -112,6 +112,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.correos\.cl\/seguimiento-en-linea(?:\?|$)/,
     marker: /Seguimiento en línea|Envíos y Seguimiento de Paquetes/i,
     forwarding: 'none' },
+  // The help centre signs the visitor in and looks the number up; it opens the order on /seguimiento,
+  // or returns to its home and tracking form for an order it does not know.
+  { carrier: 'chilexpress', number: '9900000000',
+    route: /^https:\/\/centrodeayuda\.chilexpress\.cl\/(?:pre-seguimiento\/9900000000|seguimiento|home)$/,
+    marker: /Rastrea tu envío/i },
   { carrier: 'correos-express', number: '9900000000000002',
     route: /^https:\/\/s\.correosexpress\.com\//,
     marker: /Localiza tu envío|Sigue tu envío/i, forwarding: 'none' },

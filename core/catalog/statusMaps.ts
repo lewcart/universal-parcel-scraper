@@ -30,6 +30,7 @@ import { statusMap as cdek } from '../../carriers/cdek/status.js';
 import { statusMap as cdl } from '../../carriers/cdl/status.js';
 import { statusMap as celeritas } from '../../carriers/celeritas/status.js';
 import { statusMap as ceskaPosta } from '../../carriers/ceska-posta/status.js';
+import { statusMap as chilexpress } from '../../carriers/chilexpress/status.js';
 import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
@@ -162,7 +163,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress,
   'allegro-one': allegroOne, 'an-post': anPost, andreani, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz,
-  'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta, 'china-post': chinaPost,
+  'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics, 'correo-argentino': correoArgentino,
   'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain, 'cyprus-post': cyprusPost, 'dai-post': daiPost, dao, 'day-ross': dayRoss,
   deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,

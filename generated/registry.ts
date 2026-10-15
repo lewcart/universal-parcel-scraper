@@ -634,6 +634,7 @@ export const REGISTRY: RegistryDefinition = {
     "cse-russia": "universal",
     "ctt": "ctt",
     "ctt-express": "ctt-express",
+    "cttyex": "universal",
     "cycloon": "universal",
     "cyprus-post": "cyprus-post",
     "d-express": "universal",

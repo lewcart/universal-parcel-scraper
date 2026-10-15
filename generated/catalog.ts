@@ -7789,6 +7789,49 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "cttyex": {
+    "displayName": "CTTYEX",
+    "color": "#0068AC",
+    "aliases": [
+      "CTTY",
+      "CTYYEX",
+      "Chengtai Tongyun",
+      "诚泰通运",
+      "誠泰通運",
+      "深圳诚泰通运国际物流",
+      "Shenzhen Chengtai Tongyun International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cttyvip888.com/assets/html/search.html",
+    "trackingUrlTemplate": "https://www.cttyvip888.com/index/tracknumber/track?nos={trackingNumber}",
+    "trackingSearchUrl": "https://www.cttyvip888.com/assets/html/search.html",
+    "linkRules": [
+      {
+        "domains": [
+          "cttyvip888.com",
+          "www.cttyvip888.com"
+        ],
+        "pathPattern": "^/index/tracknumber/track/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CTTY\\d{10}CN$",
+        "confidence": "high"
+      }
+    ]
+  },
   "cycloon": {
     "displayName": "Cycloon",
     "color": "#e4002b",
@@ -20264,6 +20307,7 @@ export const CARRIER_IDS = [
   "couriersplease",
   "cruz-del-sur",
   "cse-russia",
+  "cttyex",
   "cycloon",
   "cyprus-post",
   "d-express",
@@ -20763,6 +20807,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "couriersplease": ["couriersplease-1"],
   "cruz-del-sur": [],
   "cse-russia": [],
+  "cttyex": ["cttyex-1"],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
   "d-express": [],

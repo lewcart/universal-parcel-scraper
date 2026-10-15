@@ -1,0 +1,11 @@
+{
+  "carrier": "cttyex",
+  "entries": [
+    {"wording": "Order information received", "language": "en", "stage": "registered", "confirmedBy": "live", "note": "The shipment data has arrived; the parcel is not yet in hand."},
+    {"wording": "Arrive at the cross border receiving point", "language": "en", "stage": "accepted", "confirmedBy": "live", "note": "Received at the cross-border receiving point in China."},
+    {"wording": "Goods leave the operation center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel has left the operations centre."},
+    {"wording": "Arrival at domestic internationality airport", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "At the departure airport in China."},
+    {"wording": "Departure from the airport of origin domestic", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The flight has left the origin airport."},
+    {"wording": "运输途中", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The tracker's summary status: in transit."}
+  ]
+}

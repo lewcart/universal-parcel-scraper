@@ -49876,6 +49876,14 @@
     ]
   },
   {
+    "input": "CTTY9900000001CN",
+    "carrier": "cttyex",
+    "confidence": "high",
+    "candidates": [
+      "cttyex"
+    ]
+  },
+  {
     "input": "CU311474773AR",
     "carrier": "intl-post",
     "confidence": "high",

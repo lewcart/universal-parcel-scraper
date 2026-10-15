@@ -16,18 +16,72 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "servientrega",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 979
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "service_name",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.servientrega.com/wps/portal/rastreo-envio/detalle?id={trackingNumber}&tipo=0",
     "searchUrl": "https://www.servientrega.com/wps/portal",
     "canaryUrl": "https://www.servientrega.com/wps/portal",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "progress_rail",
+      "service_name",
+      "weight",
+      "parcel_count",
+      "payment_details",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "delivered_at",
+      "proof_of_delivery",
+      "invoice"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "progress_rail",
+      "weight",
+      "parcel_count",
+      "payment_details",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery",
+      "invoice"
+    ],
+    "unavailable": [
+      "eta"
+    ]
   },
   "links": [
     {

@@ -191,6 +191,7 @@ import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
 import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as saudiPost } from '../carriers/saudi-post/adapter.js';
+import { adapter as servientrega } from '../carriers/servientrega/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
 import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
 import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
@@ -435,6 +436,7 @@ export const REGISTRY: RegistryDefinition = {
     "saia": saia,
     "sameday": sameday,
     "saudi-post": saudiPost,
+    "servientrega": servientrega,
     "seur": seur,
     "sf-express": sfExpress,
     "shadowfax": shadowfax,
@@ -823,7 +825,7 @@ export const REGISTRY: RegistryDefinition = {
     "sendex": "universal",
     "sending": "universal",
     "serpost": "universal",
-    "servientrega": "universal",
+    "servientrega": "servientrega",
     "seur": "seur",
     "seven-eleven-tw": "universal",
     "sf-express": "sf-express",

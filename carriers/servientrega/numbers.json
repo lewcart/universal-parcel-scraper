@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -26,7 +26,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number."
+      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. Servientrega's lookup returns its history."
     },
     {
       "number": "2265693199",
@@ -39,7 +39,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -53,7 +53,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. The complaint asks for the exact delivery time."
+      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. The complaint asks for the exact delivery time. Servientrega's lookup returns its history."
     },
     {
       "number": "2089271858",
@@ -66,7 +66,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -80,7 +80,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. The parcel was an online store purchase."
+      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. The parcel was an online store purchase. Servientrega's lookup returns its history."
     },
     {
       "number": "9187254763",
@@ -93,7 +93,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -107,7 +107,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number."
+      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. Servientrega's lookup returns its history."
     },
     {
       "number": "9187484096",
@@ -120,7 +120,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -134,7 +134,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number."
+      "note": "A decision of the Colombian communications regulator (CRC) on a user complaint names this Servientrega guide number. Servientrega's lookup returns its history."
     },
     {
       "number": "9167502869",
@@ -147,7 +147,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -161,7 +161,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A request of the Colombian transport regulator to Servientrega about a user complaint lists this guide number."
+      "note": "A request of the Colombian transport regulator to Servientrega about a user complaint lists this guide number. Servientrega's lookup returns its history."
     },
     {
       "number": "9118817771",
@@ -174,7 +174,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -188,7 +188,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Servientrega's own tracking page, as an archived address shows; the opened capture holds only the page frame because the history loads by script."
+      "note": "Looked up on Servientrega's own tracking page, as an archived address shows. Servientrega's lookup returns its history."
     },
     {
       "number": "2010665096",
@@ -201,7 +201,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -215,7 +215,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Servientrega's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Servientrega's own tracking page, as an archived address shows. Servientrega's lookup returns its history."
     },
     {
       "number": "2015578592",
@@ -228,7 +228,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -242,7 +242,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Servientrega's own tracking page, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Servientrega's own tracking page, as an archived address shows. Servientrega's lookup returns its history."
     },
     {
       "number": "271156397",
@@ -255,13 +255,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Servientrega's own tracking page, as an archived address shows; the capture was not opened. Nine digits."
+      "note": "Looked up on Servientrega's own tracking page, as an archived address shows. Nine digits. Servientrega's lookup returns its history."
     }
   ]
 }

@@ -14942,7 +14942,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "servientrega",
+      "recognitionRank": 979,
+      "localClocks": true
     },
     "canaryUrl": "https://www.servientrega.com/wps/portal",
     "trackingUrlTemplate": "https://www.servientrega.com/wps/portal/rastreo-envio/detalle?id={trackingNumber}&tipo=0",

@@ -120,6 +120,93 @@
       "note": "An archived lookup on Logen's own tracker; the capture shows this number with its history."
     },
     {
+      "number": "41785783152",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250731232754/https://www.ilogen.com/web/personal/trace/41785783152",
+        "date": "2025-07-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "An archived lookup on Logen's own tracker; the capture shows this number with its history."
+    },
+    {
+      "number": "92903663484",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://kin.naver.com/qna/detail.naver?dirId=81302&docId=495520694",
+        "date": "2026-10-12",
+        "dateKind": "forum_post",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A question about a 로젠택배 parcel quotes it as the waybill. Logen's tracker returns its history."
+    },
+    {
+      "number": "92954263220",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://kin.naver.com/qna/detail.naver?dirId=81302&docId=495522991",
+        "date": "2026-10-13",
+        "dateKind": "forum_post",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "A question about a 로젠택배 parcel quotes it as the waybill. Logen's tracker returns its history."
+    },
+    {
       "number": "30629656680",
       "role": "shipment",
       "evidence": "public_shipment_report",

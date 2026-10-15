@@ -10546,7 +10546,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logen",
+      "recognitionRank": 48
     },
     "canaryUrl": "https://www.ilogen.com/web",
     "trackingUrlTemplate": "https://www.ilogen.com/web/personal/trace/{trackingNumber}",

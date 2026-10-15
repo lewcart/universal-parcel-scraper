@@ -82,6 +82,7 @@ import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js'
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
+import { statusMap as logen } from '../../carriers/logen/status.js';
 import { statusMap as loomisExpress } from '../../carriers/loomis-express/status.js';
 import { statusMap as lotteGlobal } from '../../carriers/lotte-global/status.js';
 import { statusMap as magyarPosta } from '../../carriers/magyar-posta/status.js';
@@ -150,7 +151,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox,
   'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
-  'lietuvos-pastas': lietuvosPastas, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas,
+  'lietuvos-pastas': lietuvosPastas, logen, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,

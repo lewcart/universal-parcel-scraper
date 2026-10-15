@@ -20,18 +20,69 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "logen",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 48
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.ilogen.com/web/personal/trace/{trackingNumber}",
     "searchUrl": "https://www.ilogen.com/web",
     "canaryUrl": "https://www.ilogen.com/web",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "progress_rail",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "order_contents",
+      "parcel_count",
+      "driver_name",
+      "signatory",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "eta_window",
+      "delivered_at"
+    ],
+    "discarded": [
+      "progress_rail",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "order_contents",
+      "parcel_count",
+      "driver_name",
+      "signatory",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {

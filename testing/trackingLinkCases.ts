@@ -193,6 +193,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'korea-post', number: 'EE000000005KR',
     route: /^https:\/\/trace\.epost\.go\.kr\/xtts\//,
     marker: /Track.*Trace|Tracking|Item Number|Delivery Status/i },
+  // The server renders the lookup; its answer to an unknown number does not show the number.
+  { carrier: 'logen', number: '40000000003',
+    route: /^https:\/\/www\.ilogen\.com\/web\/personal\/trace\/40000000003$/,
+    marker: /운송장 번호로 조회|배송조회/,
+    forwarding: { notFound: /배송자료를 조회할 수 없습니다/ } },
   { carrier: 'yamato', number: '123456789012',
     route: /^https:\/\/toi\.kuronekoyamato\.co\.jp\/cgi-bin\/tneko/,
     marker: /荷物お問い合わせ|送り状番号|Tracking/i, forwarding: 'none' },

@@ -120,6 +120,7 @@ import { adapter as jAndTCargo } from '../carriers/j-and-t-cargo/adapter.js';
 import { adapter as japanPost } from '../carriers/japan-post/adapter.js';
 import { adapter as jdLogistics } from '../carriers/jd-logistics/adapter.js';
 import { adapter as jitsu } from '../carriers/jitsu/adapter.js';
+import { adapter as jne } from '../carriers/jne/adapter.js';
 import { adapter as jrt } from '../carriers/jrt/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
@@ -340,6 +341,7 @@ export const REGISTRY: RegistryDefinition = {
     "japan-post": japanPost,
     "jd-logistics": jdLogistics,
     "jitsu": jitsu,
+    "jne": jne,
     "jrt": jrt,
     "korea-post": koreaPost,
     "kuehne-nagel": kuehneNagel,
@@ -628,7 +630,7 @@ export const REGISTRY: RegistryDefinition = {
     "jersey-post": "universal",
     "jhgj": "universal",
     "jitsu": "jitsu",
-    "jne": "universal",
+    "jne": "jne",
     "jrt": "jrt",
     "kazpost": "universal",
     "kex": "universal",

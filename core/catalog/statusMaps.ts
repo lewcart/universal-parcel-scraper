@@ -77,6 +77,7 @@ import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as jitsu } from '../../carriers/jitsu/status.js';
+import { statusMap as jne } from '../../carriers/jne/status.js';
 import { statusMap as jrt } from '../../carriers/jrt/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
@@ -150,7 +151,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox,
-  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
+  'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'lietuvos-pastas': lietuvosPastas, logen, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,

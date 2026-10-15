@@ -43,7 +43,7 @@ const HOST_USER_AGENT = 'ConformanceHost/1.0';
 /** A browser's own User-Agent, unlike a client that names itself in a `compatible` clause. */
 const BROWSER_USER_AGENT = /^Mozilla\/5\.0 \((?!compatible;)/;
 /** Carriers whose gateway answers only its own mobile app's HTTP client, with the client they name. */
-const APP_USER_AGENT: Readonly<Record<string, string>> = { 'australia-post': 'okhttp/4.12.0', 'posta-slovenije': 'MojaPosta/2.5.0 (android)' };
+const APP_USER_AGENT: Readonly<Record<string, string>> = { 'australia-post': 'okhttp/4.12.0', jne: 'okhttp/4.12.0', 'posta-slovenije': 'MojaPosta/2.5.0 (android)' };
 const BROWSER_SERVICE = 'http://trawl.invalid';
 /** Recognition gets no postcode: Colis Privé recognizes a number only with its postcode at the end, which the corpus does not hold. */
 const RECOGNIZED: Readonly<Record<string, (number: string) => string>> = { 'colis-prive': (number) => `${number}75001` };

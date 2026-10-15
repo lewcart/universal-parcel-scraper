@@ -10169,10 +10169,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jne",
+      "localClocks": true
     },
-    "canaryUrl": "https://www.jne.co.id/",
-    "trackingSearchUrl": "https://www.jne.co.id/",
+    "canaryUrl": "https://www.jne.co.id/tracking-package",
+    "trackingSearchUrl": "https://www.jne.co.id/tracking-package",
     "linkRules": [],
     "detectionRules": [
       {

@@ -18,6 +18,10 @@
     {"wording": "BOX UNDEL (Box Undelivered)", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Nobody at the address. Listed in Parcelsapp's JNE status table."},
     {"wording": "BA (Bad Address)", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Listed in Parcelsapp's JNE status table."},
     {"wording": "CC (Criss Cross)", "stage": "exception", "language": "en", "confirmedBy": "source", "note": "The parcel was swapped with another. Listed in Parcelsapp's JNE status table."},
-    {"wording": "RETUR ORIGIN", "stage": "returned", "language": "en", "confirmedBy": "source", "note": "Being returned to the sender. Listed in Parcelsapp's JNE status table."}
+    {"wording": "RETUR ORIGIN", "stage": "returned", "language": "en", "confirmedBy": "source", "note": "Being returned to the sender. Listed in Parcelsapp's JNE status table."},
+    {"wording": "SHIPMENT RECEIVED AT", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Taken into the network at the origin agent; the brackets name the station."},
+    {"wording": "SHIPMENT PICKED UP BY JNE COURIER", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "A courier collected the parcel from the sender."},
+    {"wording": "PROCESS AND FORWARD TO", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Sorted and forwarded towards the station in the first bracket."},
+    {"wording": "RECEIVED AT", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Arrived at the JNE hub the brackets name."}
   ]
 }

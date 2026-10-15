@@ -38,6 +38,7 @@ import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
 import { statusMap as dhlExpress } from '../../carriers/dhl-express/status.js';
+import { statusMap as dhlFreight } from '../../carriers/dhl-freight/status.js';
 import { statusMap as dhlink } from '../../carriers/dhlink/status.js';
 import { statusMap as dpd } from '../../carriers/dpd/status.js';
 import { statusMap as dpdDe } from '../../carriers/dpd-de/status.js';
@@ -141,7 +142,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'allegro-one': allegroOne, 'an-post': anPost, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz, 'aras-kargo': arasKargo,
   'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost,
   'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain, 'cyprus-post': cyprusPost, 'dai-post': daiPost, dao, 'day-ross': dayRoss,
-  'dhl-express': dhlExpress, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
+  'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, instabox, 'j-and-t': jAndT,

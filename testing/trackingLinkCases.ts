@@ -248,6 +248,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     // The portal moves an unknown number from /tracking to its search form.
     route: /^https:\/\/mojdhl\.pl\/(?:tracking\?paczki=29999999990|sprawdz)/,
     marker: /parcel|shipment|przesy[łl]k/i },
+  { carrier: 'dhl-freight', number: '00000000000',
+    route: /^https:\/\/activetracing\.dhl\.com\/DatPublic\/datSelection\.do\?/,
+    marker: /DHL ACTIVETRACING|existiert keine Sendung|no consignment matching/i },
   { carrier: 'dhl-ecommerce', number: 'GM0000000000000000',
     route: /^https:\/\/www\.dhl\.com\/ch-en\/home\/tracking\.html\?/,
     marker: /tracking number|track your shipment/i },

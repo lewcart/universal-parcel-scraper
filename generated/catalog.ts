@@ -7670,7 +7670,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dhl-freight",
+      "recognitionRank": 437,
+      "localClocks": true
     },
     "canaryUrl": "https://activetracing.dhl.com/",
     "trackingUrlTemplate": "https://activetracing.dhl.com/DatPublic/datSelection.do?autoSearch=true&search=consignmentId&l=DE&a={trackingNumber}",

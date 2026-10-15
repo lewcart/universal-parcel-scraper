@@ -229,6 +229,188 @@
         ]
       },
       "note": "Looked up on DHL Freight's ActiveTracing as a package ID, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "00340339886190788395",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260604200747/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886190788395",
+        "date": "2026-06-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "swiss-post-cargo",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "Looked up on DHL Freight's ActiveTracing as a package SSCC; the opened capture shows a road freight consignment waiting for collection."
+    },
+    {
+      "number": "00058678403",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260604200747/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886190788395",
+        "date": "2026-06-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "The domestic consignment ID shown on DHL Freight's ActiveTracing for the package of that capture."
+    },
+    {
+      "number": "QUL-DL-9194640",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260604200747/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886190788395",
+        "date": "2026-06-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "The order code shown on DHL Freight's ActiveTracing for the package of that capture."
+    },
+    {
+      "number": "602117582",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260604200747/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886190788395",
+        "date": "2026-06-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The nine-digit consignment number shown on DHL Freight's ActiveTracing beside the domestic ID of that capture."
+    },
+    {
+      "number": "00340339886198671231",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260618120356/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886198671231",
+        "date": "2026-06-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "swiss-post-cargo",
+          "usps",
+          "nz-post"
+        ]
+      },
+      "note": "Looked up on DHL Freight's ActiveTracing as a package SSCC; the opened capture shows a road freight consignment waiting for collection."
+    },
+    {
+      "number": "00059562228",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260618120356/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886198671231",
+        "date": "2026-06-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "The domestic consignment ID shown on DHL Freight's ActiveTracing for the package of that capture."
+    },
+    {
+      "number": "QUL-DL-9201168",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260618120356/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886198671231",
+        "date": "2026-06-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "The order code shown on DHL Freight's ActiveTracing for the package of that capture."
+    },
+    {
+      "number": "603943866",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260618120356/https://activetracing.dhl.com/DatPublic/search.do?search=consignmentId&autoSearch=true&l=DE&at=package&a=00340339886198671231",
+        "date": "2026-06-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The nine-digit consignment number shown on DHL Freight's ActiveTracing beside the domestic ID of that capture."
     }
   ]
 }

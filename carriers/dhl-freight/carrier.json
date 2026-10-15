@@ -28,18 +28,70 @@
   "timezone": "Europe/Berlin",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dhl-freight",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 437
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "service_name",
+    "weight",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://activetracing.dhl.com/DatPublic/datSelection.do?autoSearch=true&search=consignmentId&l=DE&a={trackingNumber}",
     "searchUrl": "https://activetracing.dhl.com/",
     "canaryUrl": "https://activetracing.dhl.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "weight",
+      "destination_country",
+      "destination",
+      "origin",
+      "parcel_count",
+      "volume",
+      "departure_date",
+      "delivered_at",
+      "tracking_alias",
+      "proof_of_delivery",
+      "signature"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "weight",
+      "destination_country"
+    ],
+    "discarded": [
+      "destination",
+      "origin",
+      "parcel_count",
+      "volume",
+      "departure_date",
+      "delivered_at",
+      "tracking_alias",
+      "proof_of_delivery",
+      "signature"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "provider_code",
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [
     {

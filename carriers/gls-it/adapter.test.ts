@@ -23,27 +23,41 @@ const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null,
   recorder: { step() {}, lookup() {} } });
 
 describe('GLS Italy direct tracking', () => {
-  it('reads the scans newest first as wall clocks, with the weight and nothing private', () => {
+  it('reads the scans newest first in Italian time, with the weight and nothing private', () => {
     const result = normalizeCarrierResult(parseGLSItaly(fixture(), NUMBER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Delivered.', last_update: null, last_update_local: '2026-03-05T11:42:00', expected_delivery: null, weight_kg: 1.4 });
+      last_status_text: 'Delivered.', last_update: '2026-03-05T11:42:00+01:00', expected_delivery: null, weight_kg: 1.4 });
+    expect(result).not.toHaveProperty('last_update_local');
     // The repeated scan is kept once.
     expect(result.events).toHaveLength(9);
-    expect(result.events?.[0]).toEqual({ local_time: '2026-03-05T11:42:00', description: 'Delivered.', location: 'Sample Village',
+    expect(result.events?.[0]).toEqual({ time: '2026-03-05T11:42:00+01:00', description: 'Delivered.', location: 'Sample Village',
       stage: 'delivered', stage_source: 'carrier_map' });
     expect(result.events?.[2]).toMatchObject({ stage: 'exception', description: expect.stringMatching(/^Not in delivery\./) });
-    expect(result.events?.[3]).toMatchObject({ stage: 'failed_attempt', local_time: '2026-03-04T12:03:00',
+    expect(result.events?.[3]).toMatchObject({ stage: 'failed_attempt', time: '2026-03-04T12:03:00+01:00',
       description: 'Parcel not delivered as the consignee was absent, please book redelivery within 3 working days as per instructions provided by email or sms.' });
     expect(result.events?.[4]).toMatchObject({ stage: 'out_for_delivery' });
     expect(result.events?.[6]).toMatchObject({ stage: 'in_transit', location: 'Centro Di Smistamento - HUB' });
     // A scan with a date and no time keeps its day.
     expect(result.events?.at(-1)).toMatchObject({ local_time: '2026-03-01', stage: 'registered', location: 'Sample Depot Town' });
-    expect(result.events?.every((event) => !('time' in event))).toBe(true);
+    expect(result.events?.slice(0, -1).every((event) => event.time && !('local_time' in event))).toBe(true);
     expect(result).not.toHaveProperty('delivered_at');
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|Pr\*{4}|PR\*{4}|Secretville|Privatetown|SAMPLE DEPOT|EXAMPLE DEPOT|Departure|02\/03\/2026|Volume|2,0/);
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
     expect(metadata.capabilities).toEqual(['history', 'location', 'weight']);
     expect(metadata.tracking).toMatchObject({ adapter: 'gls-it', steps: ['direct', 'retry'], localClocks: true });
+  });
+
+  it('reads summer scans at Italian summer time, the repeated hour once, and keeps a skipped hour local', () => {
+    const result = parseGLSItaly(shipment((row) => {
+      row.history.unshift(
+        { time: '02:30:00', date: '2026-10-25', evtDscr: 'Zxq.', address: { city: 'Sample Village' } },
+        { time: '02:30:00', date: '2026-03-29', evtDscr: 'Zxq.', address: { city: 'Sample Village' } },
+        { time: '09:15', date: '2026-07-01', evtDscr: 'Zxq.', address: { city: 'Sample Village' } },
+      );
+    }), NUMBER);
+    expect(result.events?.slice(0, 3).map((event) => event.time ?? event.local_time))
+      .toEqual(['2026-10-25T02:30:00+02:00', '2026-03-29T02:30:00', '2026-07-01T09:15:00+02:00']);
+    expect(result.events?.[1]).not.toHaveProperty('time');
   });
 
   it('takes the stage from the newest scan, the rail only when its sentence says nothing, and the return flag first', () => {
@@ -212,8 +226,8 @@ describe('GLS Italy direct tracking', () => {
     const instance = adapter(environment(known));
     expect(await instance.recognize!('00000000000')).toEqual({ known: false });
     expect(known).not.toHaveBeenCalled();
-    // Wall clocks cannot rank reuse of a number.
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    // The newest scan's Italian time dates the shipment.
+    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-03-05T10:42:00.000Z' });
     const unknown = vi.fn(async () => reply(fixture('not-found'), 404));
     expect(await adapter(environment(unknown as unknown as typeof fetch)).recognize!(NUMBER)).toEqual({ known: false });
     const outage = vi.fn(async () => reply({ exceptionText: 'Internal system error [x].' }, 500));

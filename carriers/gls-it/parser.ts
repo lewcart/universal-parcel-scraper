@@ -4,11 +4,13 @@ import { returnedTrackingNumber } from '../../core/detection/returned.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type ClassifiedWording } from '../../core/status/index.js';
+import { zonedTime } from '../../core/time/index.js';
 import { clean, textFromHtml } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { glsItalyRailStage, glsItalyScanStage } from './status.js';
 
 export const PROVIDER = 'GLS Italy';
+const ZONE = 'Europe/Rome';
 
 // A national shipment number: the sending depot's two characters, a letter and
 // a letter or digit, then at most nine digits, as the tracker's form asks.
@@ -53,8 +55,13 @@ function shipmentRow(rows: JsonObject[], number: string): JsonObject {
   throw new SchemaError(PROVIDER, matching.length ? 'GLS Italy returned an ambiguous shipment' : 'GLS Italy returned a different shipment');
 }
 
-/** A scan's wall clock, from its separate date and time. The reply gives no offset, so the clock stays local. */
-function wallClock(row: JsonObject): string {
+/**
+ * A scan's clock, from its separate date and time. The national search only
+ * answers for shipments inside GLS Italy's network, so a timed scan is read in
+ * Italian time. A scan with only a date, and an hour the clocks skip, keep the
+ * reply's digits as a local clock.
+ */
+function scanClock(row: JsonObject): { time: string } | { local_time: string } {
   const date = typeof row.date === 'string' ? row.date.trim() : '';
   // A scan without a clock carries an empty time.
   const time = typeof row.time === 'string' ? row.time.trim() : row.time ?? '';
@@ -64,7 +71,10 @@ function wallClock(row: JsonObject): string {
   // UTC only checks the calendar and clock fields; no offset is assigned.
   const parsed = DateTime.fromISO(time ? `${date}T${time}` : date, { zone: 'UTC' });
   if (!parsed.isValid) throw new SchemaError(PROVIDER, 'GLS Italy returned an invalid scan clock');
-  return time ? parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") : date;
+  if (!time) return { local_time: date };
+  const local = parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+  const zoned = zonedTime(local, "yyyy-MM-dd'T'HH:mm:ss", ZONE);
+  return zoned?.iso.startsWith(local) ? { time: zoned.iso } : { local_time: local };
 }
 
 /** The shipment's weight as the page prints it ("0,8 Kg"). */
@@ -97,14 +107,14 @@ export function parseGLSItaly(payload: unknown, raw: string): CarrierResult {
     if (!isRecord(scan)) throw new SchemaError(PROVIDER, 'GLS Italy returned an invalid scan');
     const description = textFromHtml(scan.evtDscr, 500);
     if (!description) throw new SchemaError(PROVIDER, 'GLS Italy returned a scan without wording');
-    const localTime = wallClock(scan);
+    const clock = scanClock(scan);
     // The town of the depot, the hub or the delivery; the street and the note are not read.
     const location = isRecord(scan.address) ? textFromHtml(scan.address.city, 120) : '';
-    const key = JSON.stringify([localTime, description, location]);
+    const key = JSON.stringify([clock, description, location]);
     if (seen.has(key)) continue;
     seen.add(key);
     const stage = glsItalyScanStage(description);
-    events.push({ local_time: localTime, description, ...(location ? { location } : {}),
+    events.push({ ...clock, description, ...(location ? { location } : {}),
       ...(stage ? { stage: stage.stage, stage_source: stage.source } : {}) });
   }
   const latest = events[0]!;
@@ -121,8 +131,8 @@ export function parseGLSItaly(payload: unknown, raw: string): CarrierResult {
     status: current ? languageStageStatus(current.stage) : 'unknown',
     ...(current ? { current_stage: current.stage, current_stage_source: current.source } : {}),
     last_status_text: latest.description!,
-    last_update: null,
-    last_update_local: latest.local_time!,
+    last_update: latest.time ?? null,
+    ...(latest.local_time ? { last_update_local: latest.local_time } : {}),
     expected_delivery: null,
     ...(kilograms !== null ? { weight_kg: kilograms } : {}),
     events: events.slice(0, MAX_EVENTS),

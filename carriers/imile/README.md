@@ -59,8 +59,9 @@ makes.
 
 iMile's own waybill numbers are thirteen digits. Thirteen digits are a bare counter many
 carriers share, so no rule claims them. Its Italian parcels also carry `IM` and fourteen
-digits, which iMile calls their waybill number; the samples seen are too alike to establish a
-rule. The samples and their sources are in [`numbers.json`](numbers.json).
+digits, which iMile calls their waybill number. No other carrier's rule takes that layout, so
+`imile-1` suggests iMile for it with low confidence: every sample seen so far shares one
+prefix. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

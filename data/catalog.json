@@ -11227,7 +11227,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^IM\\d{14}$",
+        "confidence": "low"
+      }
+    ]
   },
   "instabox": {
     "displayName": "Instabox",

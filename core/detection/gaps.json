@@ -1171,12 +1171,6 @@
     "reason": "Thirteen bare digits are shared with many carriers, and nothing in the number points to iMile."
   },
   {
-    "carrier": "imile",
-    "pattern": "^IM\\d{14}$",
-    "kind": "open",
-    "reason": "iMile's Italian parcels also carry IM and fourteen digits, which iMile calls their waybill number; the samples share one prefix, too few to establish the layout for a rule."
-  },
-  {
     "carrier": "inpost",
     "pattern": "^\\d{8}$",
     "kind": "by_design",

@@ -11229,7 +11229,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^IM\\d{14}$",
+        "confidence": "low"
+      }
+    ]
   },
   "instabox": {
     "displayName": "Instabox",
@@ -20103,7 +20108,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],
   "ilyang-logis": [],
-  "imile": [],
+  "imile": ["imile-1"],
   "instabox": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "internet-express": [],

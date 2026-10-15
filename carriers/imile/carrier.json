@@ -89,5 +89,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "imile-1",
+      "pattern": "^IM\\d{14}$",
+      "confidence": "low"
+    }
+  ]
 }

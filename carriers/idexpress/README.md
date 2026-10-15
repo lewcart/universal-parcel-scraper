@@ -16,6 +16,11 @@ them.
 ID Express's site sends a search to `www.idexpress.com/lacak-paket?waybillNo={number}`, which
 takes several numbers separated by commas; the library reads the number from that address.
 
+## Limitations
+
+ID Express's tracker and app ask for the last four digits of the recipient's phone before they
+show a history, so ID Express stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

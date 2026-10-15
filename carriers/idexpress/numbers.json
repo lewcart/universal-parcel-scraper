@@ -97,6 +97,44 @@
       "note": "ID Express's reply on Media Konsumen gives it as the resi of a cross-dock parcel."
     },
     {
+      "number": "IDS7002643829641",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tanyapaket.cekresi.com/question/paket-belum-datang-namun-sudah-dalam-pengantaran/",
+        "date": "2026-09-04",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "idexpress",
+        "confidence": "high"
+      },
+      "note": "A question on a parcel-tracking Q&A site about an ID Express parcel out for delivery for three days; ID Express's tracker accepted the number."
+    },
+    {
+      "number": "IDP8000450862142",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://tanyapaket.cekresi.com/question/idp8000450862142-id-expres/",
+        "date": "2026-09-04",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "idexpress",
+        "confidence": "high"
+      },
+      "note": "A question on a parcel-tracking Q&A site from someone who could not track this ID Express parcel; ID Express's tracker accepted the number."
+    },
+    {
       "number": "IDV9002869952108",
       "role": "shipment",
       "evidence": "public_shipment_report",

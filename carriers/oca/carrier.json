@@ -18,18 +18,45 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "oca",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 974
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.oca.com.ar/Seguimiento/Paquetes/{trackingNumber}",
     "searchUrl": "https://www.oca.com.ar/Seguimiento/BuscarEnvio",
     "canaryUrl": "https://www.oca.com.ar/Seguimiento/BuscarEnvio",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name"
+    ]
   },
   "links": [
     {

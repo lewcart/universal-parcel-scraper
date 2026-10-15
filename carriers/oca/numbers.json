@@ -100,7 +100,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -109,7 +109,7 @@
           "poczta-polska"
         ]
       },
-      "note": "Looked up on OCA's current tracker; the opened capture shows only the robot check, not the parcel."
+      "note": "Looked up on OCA's current tracker; the opened capture shows only the robot check, not the parcel. OCA's tracking service knows it."
     },
     {
       "number": "4168200000008209607",
@@ -122,7 +122,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -131,7 +131,7 @@
           "poczta-polska"
         ]
       },
-      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
     },
     {
       "number": "5746700000000096306",
@@ -144,7 +144,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -153,7 +153,7 @@
           "poczta-polska"
         ]
       },
-      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
     },
     {
       "number": "6510100000000062618",
@@ -166,7 +166,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -175,7 +175,7 @@
           "poczta-polska"
         ]
       },
-      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
     },
     {
       "number": "7065800000000020641",
@@ -188,7 +188,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -197,7 +197,7 @@
           "poczta-polska"
         ]
       },
-      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
     },
     {
       "number": "4586200000000051462",
@@ -242,6 +242,116 @@
         ]
       },
       "note": "Looked up on OCA's e-Pak tracking page, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "3654000000001903165",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260903022639/https://oca.com.ar/Seguimiento/Paquetes/3654000000001903165",
+        "date": "2026-09-03",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "poczta-polska"
+        ]
+      },
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
+    },
+    {
+      "number": "3654000000001872659",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260804012249/https://oca.com.ar/Seguimiento/Paquetes/3654000000001872659",
+        "date": "2026-08-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "poczta-polska"
+        ]
+      },
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
+    },
+    {
+      "number": "3654000000001846685",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260702162325/https://oca.com.ar/Seguimiento/Paquetes/3654000000001846685",
+        "date": "2026-07-02",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "poczta-polska"
+        ]
+      },
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
+    },
+    {
+      "number": "8496600000000040514",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260408132636/https://www.oca.com.ar/Seguimiento/Paquetes/8496600000000040514",
+        "date": "2026-04-08",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "poczta-polska"
+        ]
+      },
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
+    },
+    {
+      "number": "4168200000008717246",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250524121517/https://www.oca.com.ar/Seguimiento/Paquetes/4168200000008717246",
+        "date": "2025-05-24",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "poczta-polska"
+        ]
+      },
+      "note": "Looked up on OCA's current tracker, as an archived address shows; the capture was not opened. OCA's tracking service knows it."
     }
   ]
 }

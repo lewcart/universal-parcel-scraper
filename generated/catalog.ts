@@ -11433,7 +11433,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "oca",
+      "recognitionRank": 974
     },
     "canaryUrl": "https://www.oca.com.ar/Seguimiento/BuscarEnvio",
     "trackingUrlTemplate": "https://www.oca.com.ar/Seguimiento/Paquetes/{trackingNumber}",

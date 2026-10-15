@@ -21734,6 +21734,39 @@
     ]
   },
   {
+    "input": "3654000000001846685",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska"
+    ]
+  },
+  {
+    "input": "3654000000001872659",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska"
+    ]
+  },
+  {
+    "input": "3654000000001903165",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska"
+    ]
+  },
+  {
     "input": "36570542917",
     "carrier": "unknown",
     "confidence": "low",
@@ -23822,6 +23855,17 @@
   },
   {
     "input": "4168200000008209607",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska"
+    ]
+  },
+  {
+    "input": "4168200000008717246",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -34509,6 +34553,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "8496600000000040514",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska"
+    ]
   },
   {
     "input": "84971563697SE",

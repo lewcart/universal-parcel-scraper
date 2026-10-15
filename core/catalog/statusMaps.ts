@@ -102,6 +102,7 @@ import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
 import { statusMap as mtscn } from '../../carriers/mtscn/status.js';
 import { statusMap as naqel } from '../../carriers/naqel/status.js';
 import { statusMap as nationex } from '../../carriers/nationex/status.js';
+import { statusMap as oca } from '../../carriers/oca/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as omniva } from '../../carriers/omniva/status.js';
@@ -171,7 +172,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, logen, loggi, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
   'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, meest,
-  'mng-kargo': mngKargo, mtscn, naqel, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
+  'mng-kargo': mngKargo, mtscn, naqel, nationex, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,
+  'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, shadowfax, 'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx,

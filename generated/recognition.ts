@@ -96,6 +96,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "kuehne-nagel": 435,
   "la-poste": 1000,
   "latvijas-pasts": 100,
+  "leopards-courier": 965,
   "lietuvos-pastas": 895,
   "logen": 48,
   "loomis-express": 285,

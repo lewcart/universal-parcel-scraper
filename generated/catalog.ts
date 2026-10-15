@@ -12687,7 +12687,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "leopards-courier",
+      "recognitionRank": 965
     },
     "canaryUrl": "https://pk.leopardscourier.com/",
     "trackingSearchUrl": "https://pk.leopardscourier.com/",

@@ -1418,9 +1418,9 @@
   },
   {
     "carrier": "leopards-courier",
-    "pattern": "^[A-Z]{2}\\d{9}$",
+    "pattern": "^[A-Z]{2}\\d{9,10}$",
     "kind": "by_design",
-    "reason": "Two letters and nine digits are printed by several carriers and no known check sets Leopards apart."
+    "reason": "Two letters and nine or ten digits are printed by several carriers and no known check sets Leopards apart."
   },
   {
     "carrier": "libanpost",

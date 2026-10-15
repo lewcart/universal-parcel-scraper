@@ -144,6 +144,7 @@ import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
 import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js';
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
+import { adapter as leopardsCourier } from '../carriers/leopards-courier/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
 import { adapter as logen } from '../carriers/logen/adapter.js';
 import { adapter as loggi } from '../carriers/loggi/adapter.js';
@@ -403,6 +404,7 @@ export const REGISTRY: RegistryDefinition = {
     "landmark-global": landmarkGlobal,
     "latvijas-pasts": latvijasPasts,
     "lbc-express": lbcExpress,
+    "leopards-courier": leopardsCourier,
     "lietuvos-pastas": lietuvosPastas,
     "logen": logen,
     "loggi": loggi,
@@ -777,7 +779,7 @@ export const REGISTRY: RegistryDefinition = {
     "landmark-global": "landmark-global",
     "latvijas-pasts": "latvijas-pasts",
     "lbc-express": "lbc-express",
-    "leopards-courier": "universal",
+    "leopards-courier": "leopards-courier",
     "libanpost": "universal",
     "lietuvos-pastas": "lietuvos-pastas",
     "line-clear": "universal",

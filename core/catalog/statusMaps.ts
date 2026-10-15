@@ -98,6 +98,7 @@ import { statusMap as jrt } from '../../carriers/jrt/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
+import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
 import { statusMap as logen } from '../../carriers/logen/status.js';
 import { statusMap as loggi } from '../../carriers/loggi/status.js';
@@ -192,8 +193,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, gati, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'hct-logistics': hctLogistics, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
-  instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste,
-  'latvijas-pasts': latvijasPasts, 'lietuvos-pastas': lietuvosPastas, logen, loggi, 'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
+  instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, 'kuehne-nagel': kuehneNagel,
+  'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, logen, loggi,
+  'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
   'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, naqel, nationex, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,

@@ -415,7 +415,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -428,7 +428,7 @@
           "dhl-ecommerce-pl"
         ]
       },
-      "note": "A customer's Trustpilot review of TCS gives it as the consignment booked from Rawalpindi to Karachi."
+      "note": "A customer's Trustpilot review of TCS gives it as the consignment booked from Rawalpindi to Karachi. TCS's lookup returns its checkpoints."
     }
   ]
 }

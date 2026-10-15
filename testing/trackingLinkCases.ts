@@ -744,6 +744,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 't-cat', number: '900000000099',
     route: /^https:\/\/www\.t-cat\.com\.tw\/Inquire\/TraceDetail\.aspx\?BillID=900000000099$/,
     marker: /一般包裹查詢|目前資料庫尚未能查詢到該筆貨物追蹤查詢號碼狀態/ },
+  { carrier: 'tcs-pakistan', number: '10000000001',
+    route: /^https:\/\/www\.tcsexpress\.com\/track\/10000000001$/,
+    marker: /Enter any combination of TCS tracking Reference number/ },
 ];
 
 /**

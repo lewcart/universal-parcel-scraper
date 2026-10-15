@@ -17888,7 +17888,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tcs-pakistan",
+      "recognitionRank": 968,
+      "localClocks": true
     },
     "canaryUrl": "https://www.tcsexpress.com/",
     "trackingUrlTemplate": "https://www.tcsexpress.com/track/{trackingNumber}",

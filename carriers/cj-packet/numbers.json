@@ -221,13 +221,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "cj-packet",
         "confidence": "high"
       },
-      "note": "Looked up on CJ Packet's own tracker, as an archived address shows; the capture was not opened, and the page loads its history by script."
+      "note": "Looked up on CJ Packet's own tracker, as an archived address shows; CJ Packet's tracker knows it."
     },
     {
       "number": "CJPBDC1240600053YQ",
@@ -240,13 +240,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "cj-packet",
         "confidence": "high"
       },
-      "note": "Looked up on CJ Packet's own tracker, as an archived address shows; the capture was not opened, and the page loads its history by script."
+      "note": "Looked up on CJ Packet's own tracker, as an archived address shows; CJ Packet's tracker knows it."
     },
     {
       "number": "CJPMG0390200118YQ",

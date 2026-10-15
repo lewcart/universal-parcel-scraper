@@ -481,6 +481,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'couriersplease', number: 'CPBZZZZ0000014',
     route: /^https:\/\/www\.couriersplease\.com\.au\/tools-track\?no=CPBZZZZ0000014$/,
     marker: /Track A Parcel Delivery|Enter up to 10 tracking numbers|Must be a valid tracking number/i },
+  // The page reads the numbers from its address and looks them up on load.
+  { carrier: 'cj-packet', number: 'CJPZZZ0000000001YQ',
+    route: /^https:\/\/www\.cjpacket\.com\/\?trackingNumber=CJPZZZ0000000001YQ$/,
+    marker: /Copy All Tracking Numbers|No tracking info found|Global Package Tracking/i },
   // The page fills its field in and looks the number up on load.
   { carrier: 'orlen-paczka', number: '2109999000003',
     route: /^https:\/\/www\.orlenpaczka\.pl\/sledz-paczke\/\?numer=/,

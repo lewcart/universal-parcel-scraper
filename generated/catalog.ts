@@ -7370,7 +7370,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cj-packet",
+      "recognitionRank": 956,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cjpacket.com/",
     "trackingUrlTemplate": "https://www.cjpacket.com/?trackingNumber={trackingNumber}",

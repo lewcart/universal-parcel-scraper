@@ -18,18 +18,71 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cj-packet",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 956
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "offset_timestamps",
+    "service_name",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.cjpacket.com/?trackingNumber={trackingNumber}",
     "searchUrl": "https://www.cjpacket.com/",
     "canaryUrl": "https://www.cjpacket.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "tracking_alias",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivered_at",
+      "order_reference",
+      "merchant_reference",
+      "contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "service_name",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivered_at"
+    ],
+    "discarded": [
+      "origin_country",
+      "tracking_alias",
+      "order_reference",
+      "merchant_reference",
+      "contact_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

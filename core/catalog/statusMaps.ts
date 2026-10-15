@@ -38,6 +38,7 @@ import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
 import { statusMap as chunghwaPost } from '../../carriers/chunghwa-post/status.js';
 import { statusMap as cjLogistics } from '../../carriers/cj-logistics/status.js';
+import { statusMap as cjPacket } from '../../carriers/cj-packet/status.js';
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
@@ -190,6 +191,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'allegro-one': allegroOne, 'an-post': anPost, andreani, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz,
   'aras-kargo': arasKargo, 'blue-express': blueExpress, 'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta,
   chilexpress, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics,
+  'cj-packet': cjPacket,
   coordinadora, 'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain,
   couriersplease: couriersPlease, 'cyprus-post': cyprusPost,
   'dai-post': daiPost, dao, 'day-ross': dayRoss,

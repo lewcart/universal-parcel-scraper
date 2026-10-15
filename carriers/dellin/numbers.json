@@ -198,7 +198,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -211,7 +211,7 @@
           "korea-post"
         ]
       },
-      "note": "The waybill number of a damaged consignment, quoted in a complaint about Delovye Linii."
+      "note": "The waybill number of a damaged consignment, quoted in a complaint about Delovye Linii. Dellin's order search knows it as a completed order."
     },
     {
       "number": "22-02691029419",
@@ -291,6 +291,78 @@
         ]
       },
       "note": "The forwarding receipt number of a consignment Delovye Linii accepted, quoted in a legal question about cargo it lost."
+    },
+    {
+      "number": "26-00101122648",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://irecommend.ru/content/otvratitelnaya-kompaniya-n11722731",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "One of two waybills quoted in an Irecommend review of Delovye Linii. Dellin's order search knows both as one completed order."
+    },
+    {
+      "number": "26-00105044543",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://irecommend.ru/content/otvratitelnaya-kompaniya-n11722731",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "The second waybill quoted in the same review, an additional waybill of the same order."
+    },
+    {
+      "number": "24-00371242716",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://otzovik.com/review_16652482.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "The waybill quoted in an Otzovik review of the Delovye Linii holding. Dellin's order search knows it as a completed order."
     }
   ]
 }

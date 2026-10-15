@@ -59,6 +59,7 @@ import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
 import { adapter as dayRoss } from '../carriers/day-ross/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
+import { adapter as dellin } from '../carriers/dellin/adapter.js';
 import { adapter as deppon } from '../carriers/deppon/adapter.js';
 import { adapter as dhl } from '../carriers/dhl/adapter.js';
 import { adapter as dhlEcommerce } from '../carriers/dhl-ecommerce/adapter.js';
@@ -307,6 +308,7 @@ export const REGISTRY: RegistryDefinition = {
     "dao": dao,
     "day-ross": dayRoss,
     "delhivery": delhivery,
+    "dellin": dellin,
     "deppon": deppon,
     "dhl": dhl,
     "dhl-ecommerce": dhlEcommerce,
@@ -605,7 +607,7 @@ export const REGISTRY: RegistryDefinition = {
     "dayton-freight": "universal",
     "delhivery": "delhivery",
     "delivengo": "la-poste",
-    "dellin": "universal",
+    "dellin": "dellin",
     "deppon": "deppon",
     "deprisa": "universal",
     "dhl": "dhl",

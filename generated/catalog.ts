@@ -7997,7 +7997,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dellin",
+      "localClocks": true
     },
     "canaryUrl": "https://www.dellin.ru/tracker/",
     "trackingUrlTemplate": "https://www.dellin.ru/tracker/orders/{trackingNumber}/",

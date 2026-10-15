@@ -45,6 +45,7 @@ import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
 import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
+import { statusMap as dellin } from '../../carriers/dellin/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
 import { statusMap as dhlExpress } from '../../carriers/dhl-express/status.js';
 import { statusMap as dhlFreight } from '../../carriers/dhl-freight/status.js';
@@ -176,7 +177,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   chilexpress, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics,
   coordinadora, 'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain, 'cyprus-post': cyprusPost,
   'dai-post': daiPost, dao, 'day-ross': dayRoss,
-  deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
+  dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, gati, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,

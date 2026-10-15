@@ -767,6 +767,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'china-post': 'www.ems.com.cn answers automated Chrome with an empty HTTP 400 from its web application firewall, and its tracker asks for a click CAPTCHA before each lookup',
   cdek: 'the order page asks the tracking service for the number in its address, but answers an unknown one with the site\'s generic page-not-found screen, so only a real order verifies the link',
   cne: 'the tracking portal redirects inspected Chrome sessions to about:blank through its anti-debug script, preventing a stable rendered-page check',
+  dellin: 'www.dellin.ru puts Qrator\'s script check before every page, and the order page answers an unknown number with the site\'s generic page-not-found screen, so only a real order verifies the link',
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
   'dpd-ie': 'www.dpd.ie passes the number only to its tracker frame from tracking.dpd.ie, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   dtdc: 'the MyDTDC Flutter page exposes no visible body text until accessibility is enabled, and the portal link opens its home page',

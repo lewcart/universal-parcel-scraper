@@ -18,17 +18,65 @@
   "timezone": "Asia/Riyadh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "smsa-express",
+    "steps": [
+      "app",
+      "retry",
+      "direct"
+    ],
+    "recognition": {
+      "rank": 448
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "weight",
+    "destination_country"
+  ],
   "portal": {
+    "url": "https://www.smsaexpress.com/sa/trackingdetails?tracknumbers={trackingNumber}",
     "searchUrl": "https://www.smsaexpress.com/",
     "canaryUrl": "https://www.smsaexpress.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "origin",
+      "destination",
+      "destination_country",
+      "parcel_count",
+      "progress_rail",
+      "signatory",
+      "sender_name",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "destination_country",
+      "provider_code",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "parcel_count",
+      "progress_rail",
+      "signatory",
+      "sender_name",
+      "recipient_name"
+    ],
+    "unavailable": [
+      "service_name"
+    ]
   },
   "links": [
     {

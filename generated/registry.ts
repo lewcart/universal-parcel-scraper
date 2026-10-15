@@ -191,6 +191,7 @@ import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
+import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
 import { adapter as speeDee } from '../carriers/spee-dee/adapter.js';
 import { adapter as speedaf } from '../carriers/speedaf/adapter.js';
 import { adapter as speedpak } from '../carriers/speedpak/adapter.js';
@@ -426,6 +427,7 @@ export const REGISTRY: RegistryDefinition = {
     "singapore-post": singaporePost,
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
+    "smsa-express": smsaExpress,
     "spee-dee": speeDee,
     "speedaf": speedaf,
     "speedpak": speedpak,
@@ -768,7 +770,7 @@ export const REGISTRY: RegistryDefinition = {
     "skynet-worldwide": "universal",
     "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "slovenska-posta",
-    "smsa-express": "universal",
+    "smsa-express": "smsa-express",
     "south-african-post-office": "universal",
     "southeastern-freight-lines": "universal",
     "spee-dee": "spee-dee",

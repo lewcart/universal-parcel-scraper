@@ -13359,9 +13359,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "smsa-express",
+      "recognitionRank": 448,
+      "localClocks": true
     },
     "canaryUrl": "https://www.smsaexpress.com/",
+    "trackingUrlTemplate": "https://www.smsaexpress.com/sa/trackingdetails?tracknumbers={trackingNumber}",
     "trackingSearchUrl": "https://www.smsaexpress.com/",
     "linkRules": [
       {

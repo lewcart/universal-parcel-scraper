@@ -124,6 +124,7 @@ import { statusMap as saudiPost } from '../../carriers/saudi-post/status.js';
 import { statusMap as shadowfax } from '../../carriers/shadowfax/status.js';
 import { statusMap as slovakParcelService } from '../../carriers/slovak-parcel-service/status.js';
 import { statusMap as slovenskaPosta } from '../../carriers/slovenska-posta/status.js';
+import { statusMap as smsaExpress } from '../../carriers/smsa-express/status.js';
 import { statusMap as speedaf } from '../../carriers/speedaf/status.js';
 import { statusMap as speedx } from '../../carriers/speedx/status.js';
 import { statusMap as speedy } from '../../carriers/speedy/status.js';
@@ -173,9 +174,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'mng-kargo': mngKargo, mtscn, naqel, nationex, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide,
   paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, shadowfax, 'slovak-parcel-service': slovakParcelService,
-  'slovenska-posta': slovenskaPosta, speedaf, speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx, 'swiss-post': swissPost,
-  'tci-express': tciExpress, 'thailand-post': thailandPost, thhy, tnt, 'total-express': totalExpress, tsjy, 'ubi-smart-parcel': ubiSmartParcel, ups,
-  venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress, zto,
+  'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx,
+  'swiss-post': swissPost, 'tci-express': tciExpress, 'thailand-post': thailandPost, thhy, tnt, 'total-express': totalExpress, tsjy,
+  'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
+  yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,
 };
 

@@ -695,6 +695,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
+  // The server renders the results page; an unknown airway bill gets a notice that names it.
+  { carrier: 'smsa-express', number: '100000000000',
+    route: /^https:\/\/www\.smsaexpress\.com\/sa\/trackingdetails\?tracknumbers=100000000000$/,
+    marker: /Track And Trace Details|This tracking number is not found/ },
   // The page keeps the number from its address in its form and posts it to its own lookup on load.
   { carrier: 'cj-logistics', number: '000000000000',
     route: /^https:\/\/www\.cjlogistics\.com\/ko\/tool\/parcel\/newTracking\?gnbInvcNo=000000000000$/,

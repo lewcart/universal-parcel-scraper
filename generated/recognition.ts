@@ -130,6 +130,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "shadowfax": 595,
   "slovak-parcel-service": 180,
   "slovenska-posta": 170,
+  "smsa-express": 448,
   "speedaf": 989,
   "speedy": 280,
   "stallion-express": 105,

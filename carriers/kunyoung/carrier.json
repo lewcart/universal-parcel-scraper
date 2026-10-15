@@ -1,0 +1,58 @@
+{
+  "id": "kunyoung",
+  "displayName": "Kunyoung Express",
+  "aliases": [
+    "건영택배",
+    "건영화물",
+    "건영화물(주)",
+    "Kunyong Express",
+    "KUNYONG EXPRESS"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#1b6eb4"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mj.kunyoung.com/?invoiceNumber={trackingNumber}",
+    "searchUrl": "https://mj.kunyoung.com/",
+    "canaryUrl": "https://mj.kunyoung.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mj.kunyoung.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "invoiceNumber"
+      ]
+    },
+    {
+      "domains": [
+        "www.kunyoung.com",
+        "kunyoung.com"
+      ],
+      "pathPattern": "^/goods/goods_0[12]\\.php$",
+      "params": [
+        "mulno"
+      ]
+    }
+  ],
+  "detection": []
+}

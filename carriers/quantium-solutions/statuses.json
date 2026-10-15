@@ -1,0 +1,6 @@
+{
+  "carrier": "quantium-solutions",
+  "entries": [
+    {"wording": "Shipment delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Current status column in archived captures of Quantium Solutions' tracker."}
+  ]
+}

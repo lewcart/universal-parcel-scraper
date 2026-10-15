@@ -1,0 +1,57 @@
+{
+  "id": "spx-br",
+  "displayName": "SPX Express Brazil",
+  "aliases": [
+    "Shopee Express Brasil",
+    "Shopee Xpress Brasil",
+    "Shopee Express Brazil",
+    "SPX Brasil"
+  ],
+  "region": {
+    "countries": [
+      "BR"
+    ]
+  },
+  "brand": {
+    "color": "#ee4d2d"
+  },
+  "selectable": true,
+  "timezone": "America/Sao_Paulo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://spx.com.br/track?{trackingNumber}",
+    "searchUrl": "https://spx.com.br/track",
+    "canaryUrl": "https://spx.com.br/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "spx.com.br"
+      ],
+      "pathPattern": "^/track/?$",
+      "query": "^(BR\\d{12}[0-9A-Z])$"
+    },
+    {
+      "domains": [
+        "spx.com.br"
+      ],
+      "path": "^/detail/(BR\\d{12}[0-9A-Z])/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "spx-br-1",
+      "pattern": "^BR\\d{12}[0-9A-Z]$",
+      "confidence": "low"
+    }
+  ]
+}

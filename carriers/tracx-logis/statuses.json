@@ -1,0 +1,9 @@
+{
+  "carrier": "tracx-logis",
+  "entries": [
+    {"code": "D2", "wording": "Arrived at the Processing Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Activity in an archived reply of Qxpress's tracking API; seen at the origin hub in Korea and in Hong Kong."},
+    {"code": "SI", "wording": "Parcel Departed from Sender Nation", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Activity in an archived reply of Qxpress's tracking API; the parcel left the origin country."},
+    {"code": "SA", "wording": "Arrived at the Distribution Center", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Activity in an archived reply of Qxpress's tracking API; the arrival at the destination country's hub."},
+    {"code": "D3", "wording": "Starting Delivery to Recipient", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Activity in an archived reply of Qxpress's tracking API."}
+  ]
+}

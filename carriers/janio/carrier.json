@@ -1,0 +1,51 @@
+{
+  "id": "janio",
+  "displayName": "Janio",
+  "aliases": [
+    "Janio Asia",
+    "Janio Technologies"
+  ],
+  "region": {
+    "countries": [
+      "SG",
+      "MY",
+      "TH",
+      "HK"
+    ]
+  },
+  "brand": {
+    "color": "#394892"
+  },
+  "selectable": true,
+  "timezone": "Asia/Singapore",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracker.janio.asia/{trackingNumber}",
+    "searchUrl": "https://tracker.janio.asia/",
+    "canaryUrl": "https://tracker.janio.asia/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracker.janio.asia"
+      ],
+      "path": "^/([A-Z]{1,5}\\d[0-9A-Z]{7,18})/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "janio-1",
+      "pattern": "^JN[A-Z]{2}\\d{12}$",
+      "confidence": "low"
+    }
+  ]
+}

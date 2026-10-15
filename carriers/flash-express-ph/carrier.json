@@ -1,0 +1,53 @@
+{
+  "id": "flash-express-ph",
+  "displayName": "Flash Express Philippines",
+  "aliases": [
+    "Flash Express PH",
+    "Flash Express (PH)",
+    "Flash Express Philippines Inc."
+  ],
+  "region": {
+    "countries": [
+      "PH"
+    ]
+  },
+  "brand": {
+    "color": "#ffea33"
+  },
+  "selectable": true,
+  "timezone": "Asia/Manila",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.flashexpress.ph/fle/tracking?se={trackingNumber}",
+    "searchUrl": "https://www.flashexpress.ph/fle/tracking",
+    "canaryUrl": "https://www.flashexpress.ph/fle/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "flashexpress.ph",
+        "www.flashexpress.ph"
+      ],
+      "pathPattern": "^/(?:(?:en|zh)/)?(?:fle/)?tracking/?$",
+      "params": [
+        "se"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "flash-express-ph-1",
+      "pattern": "^P\\d{4}[0-9A-Z]{6,7}[A-Z]$",
+      "confidence": "low"
+    }
+  ]
+}

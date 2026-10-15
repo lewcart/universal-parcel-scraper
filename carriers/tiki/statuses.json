@@ -1,0 +1,14 @@
+{
+  "carrier": "tiki",
+  "entries": [
+    {"wording": "Shipment Data Entry at", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; the shipment was entered at the origin counter, with the city after it."},
+    {"wording": "Arrive at TIKI at", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; arrived at the TIKI office in the city named after it."},
+    {"wording": "Departed to", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; left for the city named after it."},
+    {"wording": "Arrived at TIKI", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; arrived at the destination TIKI office named after it."},
+    {"wording": "With Delivery Courier", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; out for delivery."},
+    {"wording": "Success / (M) RECEIVED BY:", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an opened capture of TIKI's own mobile tracker; delivered, with the receiver's name after it."},
+    {"wording": "Success / [M] RECEIVED BY:", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Quoted from a TIKI result in a trackingpaket.com guide; delivered, with the receiver after it."},
+    {"wording": "Success / [M] KIRIMAN DIKEMBALIKAN KEPADA PENGIRIM", "stage": "returned", "language": "id", "confirmedBy": "source", "note": "Quoted from a TIKI result in a trackingpaket.com guide; the parcel went back to the sender even though the line starts with Success."},
+    {"wording": "Failed : DEX 03 – ALAMAT TIDAK LENGKAP", "stage": "failed_attempt", "language": "id", "confirmedBy": "source", "note": "Quoted from a TIKI result in a trackingpaket.com guide; delivery failed because the address was incomplete (exception code DEX 03)."}
+  ]
+}

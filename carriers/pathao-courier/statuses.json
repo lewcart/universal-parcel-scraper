@@ -1,0 +1,33 @@
+{
+  "carrier": "pathao-courier",
+  "entries": [
+    {"wording": "New order pickup requested", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking API."},
+    {"wording": "Pickup requested.", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Order confirmed.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Pathao accepted the order; the parcel is not collected yet."},
+    {"wording": "Received at pickup hub: Pathao Central LTL.", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The wording names the pickup hub, which varies."},
+    {"wording": "Dispatched from Pathao Central LTL.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The wording names the hub, which varies."},
+    {"wording": "Dispatched from Central Processing OSD.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The wording names the hub, which varies."},
+    {"wording": "Confirmed", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Current state label of an order that is not picked up yet."},
+    {"wording": "Ready For Delivery", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Current state label shown while the parcel moves between hubs towards delivery."},
+    {"wording": "Pending", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Pickup_Requested", "wording": "Pickup Requested", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Assigned_for_Pickup", "wording": "Assigned For Pickup", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Picked", "wording": "Pickup", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation. Its value is Picked."},
+    {"code": "Pickup_Failed", "wording": "Pickup Failed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Pickup_Cancelled", "wording": "Pickup Cancelled", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "At_the_Sorting_HUB", "wording": "At the Sorting Hub", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "In_Transit", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Received_at_Last_Mile_HUB", "wording": "Received at Last Mile HUB", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation. The event list spells it Received at Last Mile Hub."},
+    {"code": "Assigned_for_Delivery", "wording": "Assigned for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Delivered", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Partial_Delivery", "wording": "Partial Delivery", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation. Part of the order was delivered."},
+    {"code": "Delivery_Failed", "wording": "Delivery Failed", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "On_Hold", "wording": "On Hold", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Return", "wording": "Return", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "paid_return", "wording": "Paid Return", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "return_in_transit", "wording": "Return In Transit", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "Returned_to_Merchant", "wording": "Returned To Merchant", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation."},
+    {"code": "exchange", "wording": "Exchange", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation. The parcel is swapped for a returned item."},
+    {"code": "Payment_Invoice", "wording": "Payment Invoice", "language": "en", "confirmedBy": "official-doc", "note": "Webhook event and order_status value in Pathao's courier developer API documentation. Billing to the merchant, not a parcel event."}
+  ]
+}

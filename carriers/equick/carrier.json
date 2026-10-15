@@ -1,0 +1,47 @@
+{
+  "id": "equick",
+  "displayName": "Equick",
+  "aliases": [
+    "网易速达",
+    "网易速达国际货运代理有限公司",
+    "Equick International Transportation Co.,ltd",
+    "Equick China",
+    "EQuick"
+  ],
+  "region": {
+    "countries": [
+      "CN",
+      "DE",
+      "GB",
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#a70707"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://api.equick.cn/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.equick.cn",
+        "equick.cn"
+      ],
+      "fragment": "^/support/supportWay\\?(?:[^#]*&)?nums=([^&,]+)"
+    }
+  ],
+  "detection": []
+}

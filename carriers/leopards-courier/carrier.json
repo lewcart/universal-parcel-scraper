@@ -1,0 +1,47 @@
+{
+  "id": "leopards-courier",
+  "displayName": "Leopards Courier",
+  "aliases": [
+    "Leopards Courier Services",
+    "LCS",
+    "Leopards"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#ffcb05"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://pk.leopardscourier.com/",
+    "canaryUrl": "https://pk.leopardscourier.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pk.leopardscourier.com",
+        "www.leopardscourier.com",
+        "leopardscourier.com"
+      ],
+      "pathPattern": "^/shipment_tracking_view/?$",
+      "params": [
+        "cn_number"
+      ]
+    }
+  ],
+  "detection": []
+}

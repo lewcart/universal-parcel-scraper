@@ -1,0 +1,20 @@
+{
+  "carrier": "slgtrax",
+  "entries": [
+    {"wording": "Parcel Booked", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The shipper booked the parcel."},
+    {"wording": "Parcel Recieved Office", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. Spelled this way by the tracker."},
+    {"wording": "Parcel In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk."},
+    {"wording": "Shipment Reached At Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. Reached the destination city."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk."},
+    {"wording": "Attempt Not Successful [ Consignee unresponsive on phone ]", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The brackets hold the reason."},
+    {"wording": "Return Marked [ Consignee unresponsive on phone ]", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The parcel is marked to go back to the shipper; the brackets hold the reason."},
+    {"wording": "Return Confirm", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The return to the shipper is confirmed."},
+    {"wording": "Return In Transit", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The parcel travels back to the shipper."},
+    {"wording": "Return Shipment Reached At Destination", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The returning parcel reached the shipper's city."},
+    {"wording": "Return Out for Delivery", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The returning parcel is out for delivery to the shipper."},
+    {"wording": "Returned", "stage": "returned", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. Handed back to the shipper."},
+    {"wording": "Payment Done", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. The cash on delivery was paid out to the shipper, not a parcel event."},
+    {"wording": "Charges Deducted", "language": "en", "confirmedBy": "portal", "note": "In archived lookups on Trax's former tracking page at trax.pk. Return charges were billed to the shipper, not a parcel event."}
+  ]
+}

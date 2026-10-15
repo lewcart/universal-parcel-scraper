@@ -1,0 +1,35 @@
+{
+  "id": "line-clear",
+  "displayName": "Line Clear Express",
+  "aliases": [
+    "Line Clear",
+    "LineClear",
+    "Line Clear Express & Logistics"
+  ],
+  "region": {
+    "countries": [
+      "MY"
+    ]
+  },
+  "brand": {
+    "color": "#40c0f0"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kuala_Lumpur",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.lineclearexpress.com/tracker",
+    "canaryUrl": "https://www.lineclearexpress.com/tracker",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

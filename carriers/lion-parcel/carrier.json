@@ -1,0 +1,51 @@
+{
+  "id": "lion-parcel",
+  "displayName": "Lion Parcel",
+  "aliases": [
+    "LionParcel"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#ff0000"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://lionparcel.com/track/stt?q={trackingNumber}",
+    "searchUrl": "https://lionparcel.com/track/stt",
+    "canaryUrl": "https://lionparcel.com/track/stt",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "lionparcel.com",
+        "www.lionparcel.com"
+      ],
+      "pathPattern": "^/(?:my/)?track/stt/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "lion-parcel-1",
+      "pattern": "^\\d{2}LP\\d{13}$",
+      "confidence": "high"
+    }
+  ]
+}

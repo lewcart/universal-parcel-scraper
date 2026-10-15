@@ -1,0 +1,66 @@
+{
+  "id": "blueex",
+  "displayName": "BlueEX",
+  "aliases": [
+    "blueEX",
+    "Blue-Ex",
+    "Blue Ex"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#1946ba"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.blue-ex.com/tracking?trackno={trackingNumber}",
+    "canaryUrl": "https://www.blue-ex.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.blue-ex.com",
+        "blue-ex.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackno"
+      ]
+    },
+    {
+      "domains": [
+        "www.blue-ex.com",
+        "blue-ex.com"
+      ],
+      "pathPattern": "^/tracking\\.php$",
+      "params": [
+        "cn"
+      ]
+    },
+    {
+      "domains": [
+        "www.blue-ex.com",
+        "blue-ex.com"
+      ],
+      "pathPattern": "^/index\\.php$",
+      "params": [
+        "trackno"
+      ]
+    }
+  ],
+  "detection": []
+}

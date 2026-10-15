@@ -1,0 +1,42 @@
+{
+  "id": "tiki",
+  "displayName": "TIKI",
+  "aliases": [
+    "Titipan Kilat",
+    "PT Citra Van Titipan Kilat",
+    "TiKi"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#105cef"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://tiki.id/id/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tiki.id",
+        "www.tiki.id"
+      ],
+      "path": "^/id/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

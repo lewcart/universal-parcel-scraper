@@ -1,0 +1,51 @@
+{
+  "id": "2go",
+  "displayName": "2GO Express",
+  "aliases": [
+    "2GO",
+    "2GO Group",
+    "2GO Logistics"
+  ],
+  "region": {
+    "countries": [
+      "PH"
+    ]
+  },
+  "brand": {
+    "color": "#ec008c"
+  },
+  "selectable": true,
+  "timezone": "Asia/Manila",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://track.2go.com.ph/",
+    "canaryUrl": "https://track.2go.com.ph/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "express.2go.com.ph"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "tracking_no"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "2go-1",
+      "pattern": "^[A-Z]\\d{7}[A-Z]$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -58,8 +58,12 @@
         "date": "2026-08-20"
       },
       "expect": {
-        "carrier": "j-and-t",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "j-and-t",
+          "j-and-t-cn"
+        ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. Philippine parcel."
     },

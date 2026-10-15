@@ -1,0 +1,45 @@
+{
+  "id": "m-and-p",
+  "displayName": "M&P",
+  "aliases": [
+    "M&P Express Logistics",
+    "M&P Courier",
+    "Muller & Phipps",
+    "Mulphilog"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#ff6b35"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mulphilog.com/tracking/{trackingNumber}",
+    "searchUrl": "https://www.mulphilog.com/",
+    "canaryUrl": "https://www.mulphilog.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.mulphilog.com",
+        "mulphilog.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

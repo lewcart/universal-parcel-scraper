@@ -65,7 +65,7 @@
     {
       "id": "yto-1",
       "pattern": "^D\\d{11}$",
-      "confidence": "high"
+      "confidence": "low"
     },
     {
       "id": "yto-2",

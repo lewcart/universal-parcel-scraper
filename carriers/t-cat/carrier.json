@@ -1,0 +1,48 @@
+{
+  "id": "t-cat",
+  "displayName": "T-CAT",
+  "aliases": [
+    "黑貓宅急便",
+    "黑貓",
+    "Black Cat",
+    "統一速達",
+    "President Transnet"
+  ],
+  "region": {
+    "countries": [
+      "TW"
+    ]
+  },
+  "brand": {
+    "color": "#009481"
+  },
+  "selectable": true,
+  "timezone": "Asia/Taipei",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.t-cat.com.tw/Inquire/TraceDetail.aspx?BillID={trackingNumber}",
+    "searchUrl": "https://www.t-cat.com.tw/Inquire/Trace.aspx",
+    "canaryUrl": "https://www.t-cat.com.tw/Inquire/Trace.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "t-cat.com.tw"
+      ],
+      "pathPattern": "^/Inquire/TraceDetail\\.aspx$",
+      "params": [
+        "BillID"
+      ]
+    }
+  ],
+  "detection": []
+}

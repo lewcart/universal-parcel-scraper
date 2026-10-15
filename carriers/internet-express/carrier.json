@@ -1,0 +1,44 @@
+{
+  "id": "internet-express",
+  "displayName": "Internet Express",
+  "aliases": [
+    "Internet Express (Pty) Ltd"
+  ],
+  "region": {
+    "countries": [
+      "ZA"
+    ]
+  },
+  "brand": {
+    "color": "#fae80b"
+  },
+  "selectable": true,
+  "timezone": "Africa/Johannesburg",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://portal.internetexpress.co.za/track?ref={trackingNumber}",
+    "searchUrl": "https://portal.internetexpress.co.za/track",
+    "canaryUrl": "https://portal.internetexpress.co.za/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "portal.internetexpress.co.za"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "ref"
+      ]
+    }
+  ],
+  "detection": []
+}

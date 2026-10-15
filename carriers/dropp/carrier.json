@@ -1,0 +1,39 @@
+{
+  "id": "dropp",
+  "displayName": "Dropp",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "IS"
+    ]
+  },
+  "brand": {
+    "color": "#00007d"
+  },
+  "selectable": true,
+  "timezone": "Atlantic/Reykjavik",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://api.dropp.is/dropp/track/{trackingNumber}",
+    "searchUrl": "https://dropp.is/",
+    "canaryUrl": "https://dropp.is/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "api.dropp.is"
+      ],
+      "path": "^/dropp/track/([0-9A-Za-z]+)/?$"
+    }
+  ],
+  "detection": []
+}

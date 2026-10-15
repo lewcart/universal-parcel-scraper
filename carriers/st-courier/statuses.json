@@ -1,0 +1,8 @@
+{
+  "carrier": "st-courier",
+  "entries": [
+    {"wording": "In-Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of the tracker for each hop between branches and hubs."},
+    {"wording": "Taken For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracker."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of the tracker."}
+  ]
+}

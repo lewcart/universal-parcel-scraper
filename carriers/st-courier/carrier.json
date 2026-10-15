@@ -1,0 +1,45 @@
+{
+  "id": "st-courier",
+  "displayName": "ST Courier",
+  "aliases": [
+    "ST Courier PVT LTD",
+    "ST Courier Private Limited"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#de200b"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.stcourier.com/",
+    "canaryUrl": "https://www.stcourier.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "stcourier.com"
+      ],
+      "pathPattern": "^/cgi_bin/show_status1\\.php$",
+      "params": [
+        "awb_no",
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,53 @@
+{
+  "id": "paperfly",
+  "displayName": "Paperfly",
+  "aliases": [
+    "Paperfly Courier",
+    "Paperfly Private Limited"
+  ],
+  "region": {
+    "countries": [
+      "BD"
+    ]
+  },
+  "brand": {
+    "color": "#00adee"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dhaka",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://go.paperfly.com.bd/track/order/{trackingNumber}",
+    "searchUrl": "https://paperfly.com.bd/",
+    "canaryUrl": "https://paperfly.com.bd/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "go.paperfly.com.bd"
+      ],
+      "path": "^/track/order/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "paperfly-1",
+      "pattern": "^PFLBD[A-Z]{2}\\d{10}$",
+      "confidence": "high"
+    },
+    {
+      "id": "paperfly-2",
+      "pattern": "^(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4,6}[A-Z]\\d[A-Z]\\d$",
+      "confidence": "high"
+    }
+  ]
+}

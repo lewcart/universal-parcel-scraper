@@ -1,0 +1,14 @@
+{
+  "carrier": "flash-express-ph",
+  "entries": [
+    {"wording": "Successful pick up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Scan message in an archived reply of Flash Express Philippines' tracking API."},
+    {"wording": "Parcel received by origin outlet", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Scan message in an archived reply of Flash Express Philippines' tracking API."},
+    {"wording": "Parcel outbound to next station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Scan message in an archived reply of Flash Express Philippines' tracking API."},
+    {"wording": "Parcel arrived at outlet", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Scan message in an archived reply of Flash Express Philippines' tracking API."},
+    {"code": "1", "wording": "Picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Parcel state label in an archived reply of the tracking API; the code is the reply's numeric state."},
+    {"code": "2", "wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Parcel state label in an archived reply of the tracking API; the code is the reply's numeric state."},
+    {"code": "2", "wording": "Unloading Scan", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Parcel state label in an archived reply of the tracking API, shown while the parcel was between outlets; it shares numeric state 2 with In transit."},
+    {"code": "3", "wording": "On Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Parcel state label in an archived reply of the tracking API; the code is the reply's numeric state."},
+    {"code": "5", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Parcel state label in an archived reply of the tracking API; the code is the reply's numeric state."}
+  ]
+}

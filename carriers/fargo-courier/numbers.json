@@ -1,0 +1,106 @@
+{
+  "carrier": "fargo-courier",
+  "records": [
+    {
+      "number": "2769313",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20180213062356/http://www.fargocourier.co.ke:80/track-your-parcel?waybill_number=2769313",
+        "date": "2018-02-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "Archived lookup on Fargo's former tracking page; the opened capture shows the waybill created in Nairobi, sent by linehaul and delivered with proof of delivery."
+    },
+    {
+      "number": "2583552",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20180107044134/http://www.fargocourier.co.ke:80/track-your-parcel?waybill_number=2583552",
+        "date": "2018-01-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "Archived lookup on Fargo's former tracking page; the opened capture shows the waybill sent from the Nairobi hub to Mombasa and delivered with proof of delivery."
+    },
+    {
+      "number": "FCLIN10845428",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20200424095549/http://www.fargocourier.co.ke/track-your-parcel?waybill_number=FCLIN10845428",
+        "date": "2020-04-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fargo-courier",
+        "confidence": "high"
+      },
+      "note": "Archived lookup on Fargo's former tracking page; the opened capture shows the waybill sent from Meru to the Nairobi hub and delivered with proof of delivery."
+    },
+    {
+      "number": "FCLIN10000001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20200424100509/http://www.fargocourier.co.ke/track-your-parcel?waybill_number=fclin10000001",
+        "date": "2020-04-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fargo-courier",
+        "confidence": "high"
+      },
+      "note": "Archived lookup on Fargo's former tracking page, typed in lower case; the opened capture prints the waybill in capitals and shows it sent from the Nairobi hub and delivered in Kisumu."
+    },
+    {
+      "number": "FCLIN11000000",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20200424100345/http://www.fargocourier.co.ke/track-your-parcel?waybill_number=FCLIN11000000",
+        "date": "2020-04-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "fargo-courier",
+        "confidence": "high"
+      },
+      "note": "Archived lookup on Fargo's former tracking page; the opened capture shows the waybill sent from the Nairobi hub to Mombasa and delivered with proof of delivery."
+    }
+  ]
+}

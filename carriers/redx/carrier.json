@@ -1,0 +1,52 @@
+{
+  "id": "redx",
+  "displayName": "RedX",
+  "aliases": [
+    "REDX",
+    "Redx"
+  ],
+  "region": {
+    "countries": [
+      "BD"
+    ]
+  },
+  "brand": {
+    "color": "#eb2127"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dhaka",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://redx.com.bd/track-global-parcel/?trackingId={trackingNumber}",
+    "searchUrl": "https://redx.com.bd/",
+    "canaryUrl": "https://redx.com.bd/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "redx.com.bd",
+        "www.redx.com.bd"
+      ],
+      "pathPattern": "^/track-(?:global-)?parcel/?$",
+      "params": [
+        "trackingId"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "redx-1",
+      "pattern": "^(?=(?:[^A-Z]*[A-Z]){4})2\\dA[1-9][0-9A-Z]{8,10}$",
+      "confidence": "high"
+    }
+  ]
+}

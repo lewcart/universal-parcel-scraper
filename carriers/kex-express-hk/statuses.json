@@ -1,0 +1,10 @@
+{
+  "carrier": "kex-express-hk",
+  "entries": [
+    {"wording": "KEX Express已收到運單資訊，正等待寄件人轉交快件給KEX Express", "stage": "registered", "language": "zh", "confirmedBy": "portal", "note": "Scan text in an archived capture of KEX Express Hong Kong's tracker: the order is registered and the sender has not handed the parcel over yet."},
+    {"wording": "快件已到達KEX Express分揀中心", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "Scan text in an archived capture of KEX Express Hong Kong's tracker: the parcel reached the sorting centre."},
+    {"wording": "快件已被快遞員提取，正在派送中", "stage": "out_for_delivery", "language": "zh", "confirmedBy": "portal", "note": "Scan text in an archived capture of KEX Express Hong Kong's tracker."},
+    {"wording": "派送完成，多謝使用KEX Express", "stage": "delivered", "language": "zh", "confirmedBy": "portal", "note": "Scan text in an archived capture of KEX Express Hong Kong's tracker."},
+    {"wording": "Kerry Express has received the order information. The package is not yet received by Kerry Express.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Scan text in an archived capture of the tracker under the former Kerry Express Hong Kong name."}
+  ]
+}

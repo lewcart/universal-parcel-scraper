@@ -1,0 +1,6 @@
+{
+  "carrier": "madhur-courier",
+  "entries": [
+    {"wording": "MANIFEST OUTWARD", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen on the older tracker as the document type of each forwarding step, followed by 'Forwarded from Branch' or 'Forwarded from Branch (LOCAL)'."}
+  ]
+}

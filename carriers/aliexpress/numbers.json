@@ -51,7 +51,7 @@
           "colis-prive"
         ]
       },
-      "note": "Public report on the German consumer forum. Cainiao's tracking returns its history. Detection suggests AliExpress beside Colis Priv\u00e9's generic rule."
+      "note": "Public report on the German consumer forum. Cainiao's tracking returns its history. Detection suggests AliExpress beside Colis Privé's generic rule."
     },
     {
       "number": "UB209300714LV",
@@ -318,7 +318,7 @@
           "colis-prive"
         ]
       },
-      "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history. Detection suggests AliExpress beside Colis Priv\u00e9's generic rule."
+      "note": "A Cainiao tracking link archived by the Wayback Machine. Cainiao's tracker returns its history. Detection suggests AliExpress beside Colis Privé's generic rule."
     },
     {
       "number": "CNBR00121186607",
@@ -714,7 +714,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "aliexpress"
+          "aliexpress",
+          "janio"
         ]
       },
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Singapore."
@@ -737,7 +738,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "aliexpress"
+          "aliexpress",
+          "janio"
         ]
       },
       "note": "Cainiao's tracking reply, archived by the Wayback Machine, lists its history: an AliExpress parcel to Singapore."

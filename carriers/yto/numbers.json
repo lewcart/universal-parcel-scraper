@@ -10,8 +10,12 @@
         "date": "2015-08-29"
       },
       "expect": {
-        "carrier": "yto",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "yto"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },

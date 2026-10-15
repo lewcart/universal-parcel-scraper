@@ -409,25 +409,6 @@
         "confidence": "none"
       },
       "note": "The public source names a service outside the catalog; this identifier must not identify another national network by brand or shape alone."
-    },
-    {
-      "number": "BUFZA3070231229YQ",
-      "role": "quarantined",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.chinapostaltracking.com/qa/my-package-may-be-stuck-93532/",
-        "access": "full_page"
-      },
-      "quarantine": true,
-      "context": {
-        "service": "Buffalo (China->South Africa)",
-        "assessment": "scope_review"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "The public source names a service outside the catalog; this identifier must not identify another national network by brand or shape alone."
     }
   ]
 }

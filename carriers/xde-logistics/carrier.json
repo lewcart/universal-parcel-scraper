@@ -1,0 +1,57 @@
+{
+  "id": "xde-logistics",
+  "displayName": "XDE Logistics",
+  "aliases": [
+    "Ximex Delivery Express",
+    "XIMEX Delivery Express",
+    "XDE"
+  ],
+  "region": {
+    "countries": [
+      "PH"
+    ]
+  },
+  "brand": {
+    "color": "#071a2b"
+  },
+  "selectable": true,
+  "timezone": "Asia/Manila",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.xde.com.ph/?tn={trackingNumber}",
+    "searchUrl": "https://www.xde.com.ph/",
+    "canaryUrl": "https://www.xde.com.ph/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.xde.com.ph",
+        "xde.com.ph"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "tn"
+      ]
+    },
+    {
+      "domains": [
+        "xdelogistics.com",
+        "www.xdelogistics.com"
+      ],
+      "pathPattern": "^/tracking\\.html$",
+      "params": [
+        "trackingnumber"
+      ]
+    }
+  ],
+  "detection": []
+}

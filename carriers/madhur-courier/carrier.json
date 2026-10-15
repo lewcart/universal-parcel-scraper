@@ -1,0 +1,45 @@
+{
+  "id": "madhur-courier",
+  "displayName": "Madhur Courier Services",
+  "aliases": [
+    "Madhur Couriers",
+    "Madhur Courier Service Pvt Ltd",
+    "Madhur Courier"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#e31e24"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://madhurcouriers.in/CNoteTracking.aspx",
+    "canaryUrl": "https://madhurcouriers.in/CNoteTracking.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "madhurexpress.net"
+      ],
+      "pathPattern": "^/madhurnet/cnsgtracking_2\\.aspx$",
+      "params": [
+        "cno"
+      ]
+    }
+  ],
+  "detection": []
+}

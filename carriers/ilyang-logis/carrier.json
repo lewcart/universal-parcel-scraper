@@ -1,0 +1,59 @@
+{
+  "id": "ilyang-logis",
+  "displayName": "Ilyang Logis",
+  "aliases": [
+    "일양로지스",
+    "(주)일양로지스",
+    "일양택배",
+    "(주)일양택배",
+    "ILYANG LOGIS"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#0083cd"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.ilyanglogis.co.kr/page/TrackingResult.do?trackingType=0&blNum={trackingNumber}",
+    "searchUrl": "https://www.ilyanglogis.co.kr/page/Tracking.do",
+    "canaryUrl": "https://www.ilyanglogis.co.kr/page/Tracking.do",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.ilyanglogis.co.kr",
+        "ilyanglogis.co.kr"
+      ],
+      "pathPattern": "^/page/TrackingResult\\.do$",
+      "params": [
+        "blNum"
+      ]
+    },
+    {
+      "domains": [
+        "www.ilyanglogis.com",
+        "ilyanglogis.com"
+      ],
+      "pathPattern": "^/functionality/(?:popup_result(?:_m|_eng)?|tracking_result)\\.asp$",
+      "params": [
+        "hawb_no"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,59 @@
+{
+  "id": "quantium-solutions",
+  "displayName": "Quantium Solutions",
+  "aliases": [
+    "Quantium",
+    "Quantium Worldwide",
+    "Quantium Solutions International"
+  ],
+  "region": {
+    "countries": [
+      "SG",
+      "MY",
+      "TH",
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#009d96"
+  },
+  "selectable": true,
+  "timezone": "Asia/Singapore",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.quantiumworldwide.com/?trackno={trackingNumber}",
+    "searchUrl": "https://track.quantiumworldwide.com/",
+    "canaryUrl": "https://track.quantiumworldwide.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.quantiumworldwide.com",
+        "track.quantiumsolutions.com"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "trackno"
+      ]
+    },
+    {
+      "domains": [
+        "itapps.quantiumworldwide.com"
+      ],
+      "pathPattern": "^/itcms_tracking/home/itcms/?$",
+      "params": [
+        "as_order_no"
+      ]
+    }
+  ],
+  "detection": []
+}

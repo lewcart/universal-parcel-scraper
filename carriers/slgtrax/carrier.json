@@ -1,0 +1,69 @@
+{
+  "id": "slgtrax",
+  "displayName": "SLGTrax",
+  "aliases": [
+    "Trax",
+    "Trax Courier",
+    "Trax Online",
+    "SLG Trax",
+    "SLG-Trax",
+    "Secure Logistics Trax Group"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#2d7a52"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://sonic.pk/tracking",
+    "canaryUrl": "https://sonic.pk/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "sonic.pk"
+      ],
+      "pathPattern": "^/(?:cod/)?tracking/?$",
+      "params": [
+        "tracking_number"
+      ]
+    },
+    {
+      "domains": [
+        "slgtrax.com",
+        "www.slgtrax.com"
+      ],
+      "pathPattern": "^/(?:tracking/?)?$",
+      "params": [
+        "tracking_number"
+      ]
+    },
+    {
+      "domains": [
+        "trax.pk",
+        "www.trax.pk",
+        "legacy.trax.pk"
+      ],
+      "pathPattern": "^/admin_cod/parcel_tracking\\.php$",
+      "params": [
+        "parcel_list"
+      ]
+    }
+  ],
+  "detection": []
+}

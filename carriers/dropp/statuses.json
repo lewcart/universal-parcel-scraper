@@ -1,0 +1,17 @@
+{
+  "carrier": "dropp",
+  "entries": [
+    {"wording": "Sending stofnuð", "stage": "registered", "language": "is", "confirmedBy": "portal", "note": "The step the archived capture shows reached, with its date and time; the shipment is announced but not yet with Dropp. The English site calls this step Parcel expected."},
+    {"wording": "Sending á leið til Íslands", "stage": "in_transit", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: on the way to Iceland."},
+    {"wording": "Áætlað til landsins", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: the expected arrival in Iceland, an estimate rather than an event."},
+    {"wording": "Sending í vöruhúsi Dropp", "stage": "in_transit", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: in Dropp's warehouse."},
+    {"wording": "Sending í undirbúningi", "stage": "in_transit", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: being prepared for delivery; the English site calls this step On the way."},
+    {"wording": "Tilbúin til afhendingar", "stage": "ready_for_pickup", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: ready to be handed out; the English site calls this step Ready for pickup."},
+    {"wording": "Sending afhent", "stage": "delivered", "language": "is", "confirmedBy": "portal", "note": "Step label on the tracker page, shown but not yet reached in the archived capture: handed out."},
+    {"wording": "Stofnuð", "stage": "registered", "language": "is", "confirmedBy": "official-doc", "note": "Step label of the search on dropp.is, the short form of Sending stofnuð."},
+    {"wording": "Á leið til landsins", "stage": "in_transit", "language": "is", "confirmedBy": "official-doc", "note": "Step label of the search on dropp.is: on the way to Iceland."},
+    {"wording": "Komin í vöruhús Dropp", "stage": "in_transit", "language": "is", "confirmedBy": "official-doc", "note": "Step label of the search on dropp.is: arrived at Dropp's warehouse."},
+    {"wording": "Í undirbúningi", "stage": "in_transit", "language": "is", "confirmedBy": "official-doc", "note": "Step label of the search on dropp.is: being prepared for delivery."},
+    {"wording": "Afhent", "stage": "delivered", "language": "is", "confirmedBy": "official-doc", "note": "Step label of the search on dropp.is: handed out."}
+  ]
+}

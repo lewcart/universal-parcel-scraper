@@ -1,0 +1,6 @@
+{
+  "carrier": "tirupati-courier",
+  "entries": [
+    {"wording": "IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen as the status of an archived lookup on the older tracker."}
+  ]
+}

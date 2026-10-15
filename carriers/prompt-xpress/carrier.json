@@ -1,0 +1,40 @@
+{
+  "id": "prompt-xpress",
+  "displayName": "Prompt Xpress",
+  "aliases": [
+    "Prompt XP",
+    "PromptXpress"
+  ],
+  "region": {
+    "countries": [
+      "LK"
+    ]
+  },
+  "brand": {
+    "color": "#e81820"
+  },
+  "selectable": true,
+  "timezone": "Asia/Colombo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://promptxpress.lk/TrackItem.aspx",
+    "canaryUrl": "https://promptxpress.lk/TrackItem.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "prompt-xpress-1",
+      "pattern": "^(?:(?:MC|NC|RP)\\d{8}|SP\\d{9})$",
+      "confidence": "low"
+    }
+  ]
+}

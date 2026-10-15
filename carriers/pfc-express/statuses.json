@@ -1,0 +1,13 @@
+{
+  "carrier": "pfc-express",
+  "entries": [
+    {"wording": "在途", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "Summary status column of the inquiry page."},
+    {"wording": "Picked up shipment.", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Shown after the facility name and a comma, as at PFCSZ; a lower-case form follows a later facility name."},
+    {"wording": "Shipment arrived at facility and measured.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Shown after the facility name and a comma."},
+    {"wording": "Shipment picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"wording": "The order has been put in storage", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Booked into PFC's warehouse."},
+    {"wording": "Shipment sent to destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Depart from facility to service provider.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Hand-over to the delivering service; shown after the facility name and a comma."},
+    {"wording": "Export of international mail", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Postal export event relayed for a China Post channel."}
+  ]
+}

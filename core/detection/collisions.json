@@ -2762,5 +2762,155 @@
       "zto"
     ],
     "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
+  },
+  {
+    "shape": "P, four digits, six letters or digits and a letter (twelve characters)",
+    "carriers": [
+      "colis-prive",
+      "flash-express-ph"
+    ],
+    "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps the shorter Flash Express Philippines layout; both rules are low confidence and only suggest the carriers."
+  },
+  {
+    "shape": "JT and thirteen digits",
+    "carriers": [
+      "j-and-t",
+      "j-and-t-cn"
+    ],
+    "reason": "J&T's Philippine and Chinese networks both print JT and thirteen digits, so detection offers both and the user's choice decides."
+  },
+  {
+    "shape": "JNCN followed by twelve digits",
+    "carriers": [
+      "aliexpress",
+      "janio"
+    ],
+    "reason": "Janio delivers these AliExpress parcels and Cainiao tracks them too; both rules are low confidence and only suggest the carriers."
+  },
+  {
+    "shape": "Two digits, LP and thirteen digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "lion-parcel"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the Lion Parcel LP layout is the only high-confidence rule."
+  },
+  {
+    "shape": "PFL-BD- references: PFLBD, two letters and ten digits",
+    "carriers": [
+      "colis-prive",
+      "paperfly"
+    ],
+    "reason": "Colis Privé's low-confidence rule takes any twelve letters and digits followed by five more characters; the PFLBD prefix is Paperfly's own, so paperfly-1 decides."
+  },
+  {
+    "shape": "R and sixteen digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "pfc-express"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites and PFC order numbers usually end in five digits that look like a French postcode; both rules are low confidence, so direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Two-digit year, A, a month digit and eight letters and digits, twelve characters in all",
+    "carriers": [
+      "colis-prive",
+      "redx"
+    ],
+    "reason": "Colis Privé's low-confidence rule takes any twelve-character alphanumeric; the RedX rule follows RedX's dated layout and decides."
+  },
+  {
+    "shape": "QSP9{9}",
+    "carriers": [
+      "colis-prive",
+      "tracx-logis"
+    ],
+    "reason": "TracX Logis QSP numbers overlap Colis Privé's broad twelve-character rule; the specific TracX Logis rule decides, and Purolator excludes the QSP prefix."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "saia",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "gs-postbox numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "fedex",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "tcs-pakistan numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "fedex",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "pelican-express numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "fedex",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "pelican-express numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

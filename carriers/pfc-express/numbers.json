@@ -1,0 +1,74 @@
+{
+  "carrier": "pfc-express",
+  "records": [
+    {
+      "number": "R1130292204230067",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220509045832/https://www.pfcexpress.com/Manage/WebManage/Inquire.aspx?txtID=R1130292204230067",
+        "date": "2022-05-09",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "pfc-express"
+        ]
+      },
+      "note": "An archived lookup on PFC's own inquiry page shows this PFC order number with its history from pick-up at PFC Shenzhen to the hand-over to the service provider."
+    },
+    {
+      "number": "R1130292204250001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220509045534/https://www.pfcexpress.com/Manage/WebManage/Inquire.aspx?txtID=R1130292204250001",
+        "date": "2022-05-09",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "pfc-express"
+        ]
+      },
+      "note": "An archived lookup on PFC's own inquiry page shows this PFC order number with its history from pick-up at PFC Shenzhen to the hand-over to the service provider."
+    },
+    {
+      "number": "R1130292211140069",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221125051006/https://www.pfcexpress.com/Manage/WebManage/Inquire.aspx?txtID=R1130292211140069",
+        "date": "2022-11-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "pfc-express"
+        ]
+      },
+      "note": "An archived lookup on PFC's own inquiry page shows this PFC order number with its history up to the export of international mail."
+    }
+  ]
+}

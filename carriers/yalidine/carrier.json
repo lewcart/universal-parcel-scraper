@@ -1,0 +1,39 @@
+{
+  "id": "yalidine",
+  "displayName": "Yalidine",
+  "aliases": [
+    "Yalidine Express"
+  ],
+  "region": {
+    "countries": [
+      "DZ"
+    ]
+  },
+  "brand": {
+    "color": "#d62e2f"
+  },
+  "selectable": true,
+  "timezone": "Africa/Algiers",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.yalidine.com/suivre-un-colis/",
+    "canaryUrl": "https://www.yalidine.com/suivre-un-colis/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "yalidine-1",
+      "pattern": "^YAL[A-Z0-9]{6}$",
+      "confidence": "high"
+    }
+  ]
+}

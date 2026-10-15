@@ -1,0 +1,12 @@
+{
+  "carrier": "chunil",
+  "entries": [
+    {"wording": "접수", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "The sending branch accepted the parcel. Seen in an archived reply of the tracker."},
+    {"wording": "발송", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Dispatched from the sending branch. Seen in an archived reply of the tracker."},
+    {"wording": "발송터미널하차", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Unloaded at the origin terminal. Seen in an archived reply of the tracker."},
+    {"wording": "발송터미널출발", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Left the origin terminal. Seen in an archived reply of the tracker."},
+    {"wording": "도착터미널하차", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Unloaded at the destination terminal. Seen in an archived reply of the tracker."},
+    {"wording": "영업소도착", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Arrived at the delivering branch. Seen in an archived reply of the tracker."},
+    {"wording": "배송완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Delivered; the reply repeats it as the delivery result. Seen in an archived reply of the tracker."}
+  ]
+}

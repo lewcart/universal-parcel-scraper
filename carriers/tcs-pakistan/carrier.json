@@ -1,0 +1,44 @@
+{
+  "id": "tcs-pakistan",
+  "displayName": "TCS",
+  "aliases": [
+    "TCS Express",
+    "TCS Courier",
+    "TCS Express & Logistics"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#f21e26"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.tcsexpress.com/track/{trackingNumber}",
+    "searchUrl": "https://www.tcsexpress.com/",
+    "canaryUrl": "https://www.tcsexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.tcsexpress.com",
+        "tcsexpress.com"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

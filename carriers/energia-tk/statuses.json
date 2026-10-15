@@ -1,0 +1,12 @@
+{
+  "carrier": "energia-tk",
+  "entries": [
+    {"wording": "В рейсе", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Loaded on a trip between two cities; seen in archived replies of the carrier's tracking API, which the tracker page lists."},
+    {"wording": "На складе", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "At one of the carrier's warehouses, on the way or at destination; its sub-state says whether the cargo is ready for issue. Seen in archived API replies."},
+    {"wording": "В пути", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Sub-state shown under В рейсе or На складе while the cargo has not reached its destination; seen in archived API replies."},
+    {"wording": "Готов к выдаче", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "portal", "note": "Sub-state of cargo waiting at the destination warehouse; seen in an archived API reply, and the tracker page shows it as a flag next to the waybill."},
+    {"wording": "Выдана", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Flag the tracker page shows next to the waybill once the cargo is handed out; seen in the page's template, not in a capture."},
+    {"wording": "Не готова к выдаче", "language": "ru", "confirmedBy": "official-doc", "note": "Flag the tracker page shows while the cargo is neither handed out nor ready for issue; a summary, not an event."},
+    {"wording": "Груз у отправителя", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "The tracker page's message when the waybill exists but the sender has not yet handed the cargo to an Energia warehouse."}
+  ]
+}

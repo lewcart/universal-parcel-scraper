@@ -1,0 +1,11 @@
+{
+  "carrier": "bangladesh-post",
+  "entries": [
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history. International items."},
+    {"wording": "Delivered_To_Receipent", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history. Domestic items; spelled this way in the script."},
+    {"wording": "Return_To_Sender", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history."},
+    {"wording": "Lost", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history."},
+    {"wording": "Garbage", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history. The item was disposed of."},
+    {"wording": "Expired", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker page's script checks for in the last row of the history. The item was not collected in time."}
+  ]
+}

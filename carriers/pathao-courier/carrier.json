@@ -1,0 +1,51 @@
+{
+  "id": "pathao-courier",
+  "displayName": "Pathao Courier",
+  "aliases": [
+    "Pathao",
+    "Pathao Courier Bangladesh"
+  ],
+  "region": {
+    "countries": [
+      "BD"
+    ]
+  },
+  "brand": {
+    "color": "#e83330"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dhaka",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://merchant.pathao.com/public-tracking?consignment_id={trackingNumber}",
+    "searchUrl": "https://pathao.com/courier/",
+    "canaryUrl": "https://pathao.com/courier/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "merchant.pathao.com"
+      ],
+      "pathPattern": "^/(?:public-)?tracking/?$",
+      "params": [
+        "consignment_id"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "pathao-courier-1",
+      "pattern": "^D[A-Z](?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}[A-Z0-9]{6}$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "carrier": "fargo-courier",
+  "entries": [
+    {"wording": "Waybill created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "First event in archived captures of Fargo's former tracking page."},
+    {"wording": "Waybill allocated to linehaul MRU278408 MRU to HDO", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Fargo's former tracking page. The linehaul number and the origin and destination branch codes vary; HDO is the Nairobi hub."},
+    {"wording": "Waybill allocated to delivery HDO-00362174 - HDO", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Fargo's former tracking page: the waybill is put on a delivery run at the destination branch. The run number and branch code vary."},
+    {"wording": "Waybill FCLIN10845428 delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Fargo's former tracking page. The waybill number in the text varies."},
+    {"wording": "Waybill has been PODed", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Fargo's former tracking page: the proof of delivery was recorded, shortly after the delivery event."},
+    {"wording": "Proof of delivery", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The Waybill Status value above the history in archived captures of Fargo's former tracking page."}
+  ]
+}

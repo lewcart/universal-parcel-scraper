@@ -1,0 +1,45 @@
+{
+  "id": "tirupati-courier",
+  "displayName": "Shree Tirupati Courier",
+  "aliases": [
+    "Shree Tirupati Courier Services Pvt. Ltd.",
+    "Shree Tirupati Courier Service Pvt. Ltd.",
+    "Shree Tirupati Courier Services"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#fac11c"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.shreetirupaticourier.net/",
+    "canaryUrl": "https://www.shreetirupaticourier.net/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "shreetirupaticourier.net"
+      ],
+      "pathPattern": "^/(?:frm_doctrack|frmtracking)\\.aspx$",
+      "params": [
+        "docno"
+      ]
+    }
+  ],
+  "detection": []
+}

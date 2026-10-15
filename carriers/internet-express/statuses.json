@@ -1,0 +1,13 @@
+{
+  "carrier": "internet-express",
+  "entries": [
+    {"code": "submitted", "wording": "submitted", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Ship Logic event status in an archived capture of Internet Express's tracking API."},
+    {"code": "collection-assigned", "wording": "collection-assigned", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Ship Logic event status in an archived capture of Internet Express's tracking API."},
+    {"code": "collection-failed-attempt", "wording": "collection-failed-attempt", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Ship Logic event status in an archived capture of Internet Express's tracking API. The courier could not collect the parcel from the sender; it still waits for collection."},
+    {"code": "collected", "wording": "collected", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Ship Logic event status in an archived capture of Internet Express's tracking API."},
+    {"code": "in-transit", "wording": "in-transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Ship Logic event status in an archived capture of Internet Express's tracking API. Also the shipment's current status in that reply."},
+    {"code": "created", "wording": "created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Progress-step label in an archived capture of Internet Express's tracking API."},
+    {"code": "out-for-delivery", "wording": "out-for-delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Progress-step label in an archived capture of Internet Express's tracking API."},
+    {"code": "delivered", "wording": "delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Progress-step label in an archived capture of Internet Express's tracking API."}
+  ]
+}

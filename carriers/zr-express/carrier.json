@@ -1,0 +1,55 @@
+{
+  "id": "zr-express",
+  "displayName": "ZR Express",
+  "aliases": [
+    "ZR Express Algérie",
+    "ZRexpress"
+  ],
+  "region": {
+    "countries": [
+      "DZ"
+    ]
+  },
+  "brand": {
+    "color": "#fec30f"
+  },
+  "selectable": true,
+  "timezone": "Africa/Algiers",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.zrexpress.net/suivi?tn={trackingNumber}",
+    "searchUrl": "https://www.zrexpress.net/suivi",
+    "canaryUrl": "https://www.zrexpress.net/suivi",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.zrexpress.net",
+        "zrexpress.net",
+        "zrexpress.dz",
+        "www.zrexpress.dz"
+      ],
+      "pathPattern": "^/(?:suivi|en/track|ar/suivi)/?$",
+      "params": [
+        "tn"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "zr-express-1",
+      "pattern": "^\\d{2}[A-Z0-9]{6}(?:[A-Z0-9]|[A-Z0-9]{4})?ZR$",
+      "rawPattern": "^\\d{2}-[A-Z0-9]{6}(?:[A-Z0-9]|[A-Z0-9]{4})?-ZR$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "energia-tk",
+  "displayName": "TK Energia",
+  "aliases": [
+    "ТК Энергия",
+    "Транспортная компания «Энергия»",
+    "МТК «Энергия»",
+    "TK Energy",
+    "Energiya"
+  ],
+  "region": {
+    "countries": [
+      "RU",
+      "BY",
+      "KZ",
+      "KG",
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#44759d"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nrg-tk.pro/client/tracking/#{trackingNumber}",
+    "searchUrl": "https://nrg-tk.pro/client/tracking/",
+    "canaryUrl": "https://nrg-tk.pro/client/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nrg-tk.pro"
+      ],
+      "pathPattern": "^/client/tracking/?$",
+      "fragment": "^(\\d{3,4}-\\d{7}|\\d{7})$"
+    }
+  ],
+  "detection": []
+}

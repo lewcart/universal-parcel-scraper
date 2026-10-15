@@ -1,0 +1,43 @@
+{
+  "id": "taxydema",
+  "displayName": "Taxydema",
+  "aliases": [
+    "Ταχυδέμα",
+    "ΤΒ ΤΑΧΥΔΕΜΑ Α.Ε."
+  ],
+  "region": {
+    "countries": [
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#fe5000"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.taxydema.gr/entopismos/{trackingNumber}",
+    "searchUrl": "https://www.taxydema.gr/track-and-trace.html",
+    "canaryUrl": "https://www.taxydema.gr/track-and-trace.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "taxydema.gr",
+        "www.taxydema.gr"
+      ],
+      "path": "^/entopismos/([0-9A-Za-z]+)$"
+    }
+  ],
+  "detection": []
+}

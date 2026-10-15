@@ -1,0 +1,306 @@
+{
+  "carrier": "gs-postbox",
+  "records": [
+    {
+      "number": "210019328875",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20210506094030/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210019328875",
+        "date": "2021-05-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with five half-price parcel scans from store acceptance to the hub."
+    },
+    {
+      "number": "210112597100",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220618051143/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210112597100",
+        "date": "2022-06-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa",
+          "saia"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with store acceptance and driver pickup."
+    },
+    {
+      "number": "210149357316",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221029072546/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210149357316",
+        "date": "2022-10-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "purolator",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with store acceptance."
+    },
+    {
+      "number": "210418851215",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241225084537/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210418851215",
+        "date": "2024-12-25",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with store acceptance, driver pickup and arrival at the collection centre."
+    },
+    {
+      "number": "210490806120",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250731004545/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210490806120",
+        "date": "2025-07-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fedex",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with four scans up to the hub."
+    },
+    {
+      "number": "210518693206",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251022175427/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210518693206",
+        "date": "2025-10-22",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with store acceptance and driver pickup."
+    },
+    {
+      "number": "210561556354",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260311194250/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=210561556354",
+        "date": "2026-03-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows it as a GS Networks 반값택배 parcel with eight scans ending with handover to the recipient at the destination store."
+    },
+    {
+      "number": "363853763583",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230531135924/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=363853763583",
+        "date": "2023-05-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fedex",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows a 국내택배 parcel whose carrier it names as CJ대한통운, with ten CJ scans ending in delivery; the number is a CJ Logistics waybill."
+    },
+    {
+      "number": "364893684316",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241205074902/https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no=364893684316",
+        "date": "2024-12-05",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "purolator",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "The opened capture of GS Postbox's tracker shows a 국내택배 parcel whose carrier it names as CJ대한통운, with nine CJ scans ending in delivery; the number is a CJ Logistics waybill."
+    }
+  ]
+}

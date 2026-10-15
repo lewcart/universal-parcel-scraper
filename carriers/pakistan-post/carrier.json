@@ -1,0 +1,52 @@
+{
+  "id": "pakistan-post",
+  "displayName": "Pakistan Post",
+  "aliases": [
+    "PakPost",
+    "Pakistan Post Office",
+    "Pak Post"
+  ],
+  "region": {
+    "countries": [
+      "PK"
+    ]
+  },
+  "brand": {
+    "color": "#be0101"
+  },
+  "selectable": true,
+  "timezone": "Asia/Karachi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://ep.gov.pk/",
+    "canaryUrl": "https://ep.gov.pk/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ep.gov.pk",
+        "www.ep.gov.pk"
+      ],
+      "pathPattern": "^/emtts/EPTrack_Live\\.aspx$",
+      "params": [
+        "ArticleIDz"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "pakistan-post-1",
+      "pattern": "^(?:RGL|PAR)\\d{8}$",
+      "confidence": "low"
+    }
+  ]
+}

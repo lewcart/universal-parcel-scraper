@@ -1,0 +1,73 @@
+{
+  "id": "fargo-courier",
+  "displayName": "Fargo Courier",
+  "aliases": [
+    "Fargo",
+    "Fargo Courier Limited",
+    "Fargo Courier Kenya"
+  ],
+  "region": {
+    "countries": [
+      "KE"
+    ]
+  },
+  "brand": {
+    "color": "#0a4436"
+  },
+  "selectable": true,
+  "timezone": "Africa/Nairobi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.fargocourier.co.ke/waybill-viewer/?wayBill={trackingNumber}",
+    "searchUrl": "https://www.fargocourier.co.ke/",
+    "canaryUrl": "https://www.fargocourier.co.ke/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.fargocourier.co.ke",
+        "fargocourier.co.ke"
+      ],
+      "pathPattern": "^/waybill-viewer/?$",
+      "params": [
+        "wayBill"
+      ]
+    },
+    {
+      "domains": [
+        "www.fargocourier.co.ke",
+        "fargocourier.co.ke"
+      ],
+      "pathPattern": "^/track-your-parcel/?$",
+      "params": [
+        "waybill_number"
+      ]
+    },
+    {
+      "domains": [
+        "www.fargocourier.co.ke",
+        "fargocourier.co.ke"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "waybill_number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "fargo-courier-1",
+      "pattern": "^FCLIN\\d{8}$",
+      "confidence": "high"
+    }
+  ]
+}

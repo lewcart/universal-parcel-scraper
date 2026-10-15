@@ -1,0 +1,26 @@
+{
+  "carrier": "equick",
+  "entries": [
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Shown in the Status field above the history."},
+    {"wording": "picked up from shipper", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Pick-up from the sender in China."},
+    {"wording": "Accepted by courier", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Arrived at SHA operation center", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Shanghai operation centre."},
+    {"wording": "Arrived at BJS hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Beijing hub."},
+    {"wording": "Departed from PVG airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The airport code changes with the route, as in Departed from BJS airport."},
+    {"wording": "Departed from BJS airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Arrived at LHR airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The airport code changes with the route, as in Arrived at YYZ airport."},
+    {"wording": "Arrived at YYZ airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Released from customs", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Import clearance finished; the parcel moves on to the last-mile carrier."},
+    {"wording": "Order information has been transmitted to DPD.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Data hand-over to DPD for the last mile; the following German events are DPD's, relayed by Equick."},
+    {"wording": "Electronic information submitted by shipper.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Data hand-over to Canada Post for the last mile; the following Canadian events are Canada Post's, relayed by Equick."},
+    {"wording": "In transit.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Relayed DPD event."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Relayed Canada Post event."},
+    {"wording": "Item processed", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Relayed Canada Post event."},
+    {"wording": "At parcel delivery centre.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Relayed DPD event."},
+    {"wording": "Item processed at local delivery facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Relayed Canada Post event."},
+    {"wording": "Out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Relayed DPD event."},
+    {"wording": "Item out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Relayed Canada Post event."},
+    {"wording": "Delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Relayed DPD event."},
+    {"wording": "Item successfully delivered to recipient's front door", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Relayed Canada Post event."}
+  ]
+}

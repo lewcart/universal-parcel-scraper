@@ -1,0 +1,36 @@
+{
+  "id": "bangladesh-post",
+  "displayName": "Bangladesh Post Office",
+  "aliases": [
+    "Bangladesh Post",
+    "Bangladesh EMS",
+    "Department of Posts",
+    "বাংলাদেশ ডাক বিভাগ"
+  ],
+  "region": {
+    "countries": [
+      "BD"
+    ]
+  },
+  "brand": {
+    "color": "#b31a1a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dhaka",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://ipsbd.bdpost.gov.bd/mail-tracking.html",
+    "canaryUrl": "https://ipsbd.bdpost.gov.bd/mail-tracking.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

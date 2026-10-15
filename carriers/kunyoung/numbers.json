@@ -1,0 +1,113 @@
+{
+  "carrier": "kunyoung",
+  "records": [
+    {
+      "number": "2284123241",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240716151212/https://www.kunyoung.com/goods/goods_01.php?mulno=2284123241",
+        "date": "2024-07-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The opened capture of Kunyoung's waybill lookup lists the parcel with its 2023 date and masked sender and recipient; its scan history was not visible because it sits behind a link that was not captured."
+    },
+    {
+      "number": "2250444367",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240907100914/http://www.kunyoung.com/goods/goods_01.php?mulno=2250444367",
+        "date": "2024-09-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The opened capture of Kunyoung's waybill lookup lists the parcel with its 2024 date and masked sender and recipient; its scan history was not visible because it sits behind a link that was not captured."
+    },
+    {
+      "number": "2250154689",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20241007180154/http://www.kunyoung.com/goods/goods_01.php?mulno=2250154689",
+        "date": "2024-10-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The opened capture of Kunyoung's waybill lookup lists the parcel with its 2024 date and masked sender and recipient; its scan history was not visible because it sits behind a link that was not captured."
+    },
+    {
+      "number": "3010023023",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250321015342/http://www.kunyoung.com/goods/goods_01.php?mulno=3010023023",
+        "date": "2025-03-21",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "The opened capture of Kunyoung's waybill lookup lists the parcel with its 2024 date and masked sender and recipient; its scan history was not visible because it sits behind a link that was not captured."
+    }
+  ]
+}

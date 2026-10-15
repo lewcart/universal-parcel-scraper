@@ -1,0 +1,8 @@
+{
+  "carrier": "line-clear",
+  "entries": [
+    {"wording": "Awaiting Shipment Handover", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Parcel status the script of Line Clear's own tracker maps to a progress step; the waybill exists but the sender has not handed the parcel over."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Parcel status the script of Line Clear's own tracker maps to a progress step."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Parcel status the script of Line Clear's own tracker maps to a progress step."}
+  ]
+}

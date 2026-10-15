@@ -1,0 +1,13 @@
+{
+  "carrier": "ecourier",
+  "entries": [
+    {"wording": "Initiated", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation. The order is booked and not yet picked up."},
+    {"wording": "Initiated API", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Named in the cancel-order section of the merchant API documentation: an order booked through the API."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation."},
+    {"wording": "In Source Branch", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation. At the branch serving the sender."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation."},
+    {"wording": "In Destination Branch", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation. At the branch serving the recipient."},
+    {"wording": "On the way to Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Listed in the tracking reply of eCourier's merchant API documentation."}
+  ]
+}

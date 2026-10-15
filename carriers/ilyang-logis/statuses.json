@@ -1,0 +1,9 @@
+{
+  "carrier": "ilyang-logis",
+  "entries": [
+    {"wording": "배송경유지 도착", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Arrived at a branch or hub on the way. Seen in archived replies of the former tracker on ilyanglogis.com."},
+    {"wording": "배송경유지 출고", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Left a branch or hub on the way. Seen in archived replies of the former tracker on ilyanglogis.com."},
+    {"wording": "직원 배송중", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "A courier is delivering the parcel. Seen in archived replies of the former tracker on ilyanglogis.com."},
+    {"wording": "배달완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "Delivered. Seen in archived replies of the former tracker on ilyanglogis.com."}
+  ]
+}

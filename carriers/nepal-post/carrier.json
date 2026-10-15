@@ -1,0 +1,34 @@
+{
+  "id": "nepal-post",
+  "displayName": "Nepal Post",
+  "aliases": [
+    "Department of Postal Service",
+    "हुलाक सेवा विभाग",
+    "Nepal Postal Service"
+  ],
+  "region": {
+    "countries": [
+      "NP"
+    ]
+  },
+  "brand": {
+    "color": "#0447af"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kathmandu",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.nepalpost.gov.np/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

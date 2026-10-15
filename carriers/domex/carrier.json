@@ -1,0 +1,47 @@
+{
+  "id": "domex",
+  "displayName": "Domex",
+  "aliases": [
+    "Domex Courier",
+    "Domex Global",
+    "DOMEX"
+  ],
+  "region": {
+    "countries": [
+      "LK"
+    ]
+  },
+  "brand": {
+    "color": "#ffcd05"
+  },
+  "selectable": true,
+  "timezone": "Asia/Colombo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://domex.lk/Order-Details.php?wbno={trackingNumber}",
+    "searchUrl": "https://domex.lk/Order-Details.php",
+    "canaryUrl": "https://domex.lk/Order-Details.php",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "domex.lk",
+        "www.domex.lk"
+      ],
+      "pathPattern": "^/(?:Order-Details|tracking)\\.php$",
+      "params": [
+        "wbno"
+      ]
+    }
+  ],
+  "detection": []
+}

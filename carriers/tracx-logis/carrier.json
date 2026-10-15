@@ -1,0 +1,66 @@
+{
+  "id": "tracx-logis",
+  "displayName": "TracX Logis",
+  "aliases": [
+    "Qxpress",
+    "QXPRESS",
+    "TracX",
+    "Tracx Logis"
+  ],
+  "region": {
+    "countries": [
+      "SG",
+      "KR",
+      "JP",
+      "HK",
+      "TW"
+    ]
+  },
+  "brand": {
+    "color": "#0b5fff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Singapore",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.tracxlogis.com/tracking?trackingNo={trackingNumber}",
+    "searchUrl": "https://www.tracxlogis.com/tracking",
+    "canaryUrl": "https://www.tracxlogis.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracxlogis.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackingNo"
+      ]
+    },
+    {
+      "domains": [
+        "qxpress.net"
+      ],
+      "pathPattern": "^/Customer/PopupTraceParcels/?$",
+      "params": [
+        "TrackingNo"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "tracx-logis-1",
+      "pattern": "^QSP\\d{9}$",
+      "confidence": "high"
+    }
+  ]
+}

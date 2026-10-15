@@ -1,0 +1,65 @@
+{
+  "carrier": "postex",
+  "records": [
+    {
+      "number": "25402140002878",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250730163149/https://postex.pk/tracking?cn=25402140002878",
+        "date": "2025-07-30",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "Sent to PostEx's own tracker on postex.pk, as an archived address shows; the opened capture holds only the page shell, so no history is visible."
+    },
+    {
+      "number": "26402140002879",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250730141845/https://postex.pk/tracking?cn=26402140002879",
+        "date": "2025-07-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "Sent to PostEx's own tracker on postex.pk, as an archived address shows; the capture was not opened and no history is visible."
+    }
+  ]
+}

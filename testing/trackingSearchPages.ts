@@ -6,6 +6,7 @@ import type { CarrierId } from '../generated/catalog.js';
  */
 export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   'amazon-logistics': 'Amazon shows its own deliveries only in the buyer\'s account; no public page takes the number',
+  blueex: 'blue-ex.com hides its tracking forms on phone-sized screens; its own links open the tracking page with the number',
   ciblex: 'Ciblex shows parcels only in its customer extranet, behind a sign-in',
   deprisa: 'Deprisa\'s tracker opens a shipment from the number in its address; archived copies of its pages show no number field, and deprisa.com answers 403 to many networks outside Colombia',
   'skynet-worldwide': 'SkyNet\'s tracker shows its number field only with a network parameter in the address, and skynetworldwide.com has no tracking page of its own',

@@ -1,0 +1,78 @@
+{
+  "id": "winit",
+  "displayName": "WINIT",
+  "aliases": [
+    "万邑通",
+    "万邑通（上海）信息科技股份有限公司",
+    "WINIT Information Technology Co., Ltd.",
+    "WINIT Corporation"
+  ],
+  "region": {
+    "countries": [
+      "CN",
+      "US",
+      "CA",
+      "GB",
+      "DE",
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#a07647"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.winit.com/tracking/Mobile/result?trackingNos={trackingNumber}",
+    "searchUrl": "https://track.winit.com/tracking/Mobile",
+    "canaryUrl": "https://track.winit.com/tracking/Mobile",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.winit.com",
+        "track.winit.com.cn"
+      ],
+      "pathPattern": "^/tracking/Mobile/result/?$",
+      "params": [
+        "trackingNos"
+      ]
+    },
+    {
+      "domains": [
+        "track.winit.com",
+        "track.winit.com.cn"
+      ],
+      "path": "^/tracking/Index/result(?:/l/[a-z-]+)?/trackingNoString/([^/?#]+)(?:/l/[a-z-]+)?/?$"
+    },
+    {
+      "domains": [
+        "track.winit.com",
+        "track.winit.com.cn"
+      ],
+      "path": "^/tracking/Mobile/traceDetail/trackingNo/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "winit-1",
+      "pattern": "^ID\\d{14}[A-Z]{2}$",
+      "confidence": "high"
+    },
+    {
+      "id": "winit-2",
+      "pattern": "^WO\\d{11}(?:\\d{3})?[A-Z]{2}$",
+      "confidence": "high"
+    }
+  ]
+}

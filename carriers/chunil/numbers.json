@@ -1,0 +1,31 @@
+{
+  "carrier": "chunil",
+  "records": [
+    {
+      "number": "11633265509",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240229082427/http://www.chunil.co.kr/HTrace/HTrace.jsp?transNo=11633265509",
+        "date": "2024-02-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "The opened capture of Chunil Express's tracker shows the parcel with seven scans from acceptance in Daejeon to delivery."
+    }
+  ]
+}

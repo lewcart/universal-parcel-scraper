@@ -84,7 +84,7 @@
     {
       "id": "j-and-t-2",
       "pattern": "^JT\\d{13}$",
-      "confidence": "high"
+      "confidence": "low"
     },
     {
       "id": "j-and-t-3",

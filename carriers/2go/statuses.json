@@ -1,0 +1,14 @@
+{
+  "carrier": "2go",
+  "entries": [
+    {"wording": "DELIVERED - Received by:", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in opened captures of 2GO's eTrace tracker as the shipment status; the receiver and date follow."},
+    {"wording": "2GO will attempt to deliver your package", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Quoted on ComplaintsBoard from a 2GO Express text message; the tracking number and 'today' follow."},
+    {"wording": "Booking Created", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); the page describes it as a booking received from the shipper."},
+    {"wording": "Shipment Accepted", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); the shipment was received from the shipper."},
+    {"wording": "Shipment Arrival At Facility", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); the shipment arrived at a hub."},
+    {"wording": "In-Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); moving from the origin hub to the destination hub."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); a courier is attempting delivery."},
+    {"wording": "Delivery Unsuccessful - Consignee Not Around", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); the attempt failed because the consignee was not there."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Listed as a status title in the sample history in the markup of 2GO Express's tracking page (express.2go.com.ph/tracking); delivered to the receiver."}
+  ]
+}

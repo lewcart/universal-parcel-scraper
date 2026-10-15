@@ -1,0 +1,260 @@
+{
+  "carrier": "tracx-logis",
+  "records": [
+    {
+      "number": "QSP177671223",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240319051653/https://www.qxpress.net/Customer/GetMultiTrackingLatestStatInfo",
+        "date": "2024-03-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "Qxpress's own tracking API reply, archived two seconds after the tracker lookup for this number and keyed by it, shows the parcel leaving the Incheon hub from Korea for Japan."
+    },
+    {
+      "number": "QSP147827798",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230622054035/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP147827798",
+        "date": "2023-06-22",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "Qxpress's own tracker page for this number; the reply of its history API, archived two seconds later in the same crawl, shows a Hong Kong to Singapore parcel reaching the Singapore hub and going out for delivery."
+    },
+    {
+      "number": "QSP164122529",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426094352/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP164122529",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
+    },
+    {
+      "number": "QSP178047147",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426094338/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP178047147",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
+    },
+    {
+      "number": "QSP179118922",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426094323/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP179118922",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
+    },
+    {
+      "number": "JP3564644",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426235451/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=JP3564644",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address; the capture was opened, but the page loads the history by script, so the history was not visible."
+    },
+    {
+      "number": "JP3911190",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426235448/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=JP3911190",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
+    },
+    {
+      "number": "929782405215",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20210605231558/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=929782405215",
+        "date": "2021-06-05",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An archived lookup on Qxpress's own tracker, opened but without visible history; the twelve digits pass the mod 7 check Japanese domestic carriers use, and the tracker hands Japanese deliveries to Sagawa, so it may be a partner's number."
+    },
+    {
+      "number": "360133930892",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426094401/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=360133930892",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "sagawa"
+        ]
+      },
+      "note": "An archived lookup on Qxpress's own tracker, not opened; the twelve digits pass the mod 7 check Japanese domestic carriers use, and the tracker hands Japanese deliveries to Sagawa, so it may be a partner's number."
+    },
+    {
+      "number": "6064886927883",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20210201141659/http://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=6064886927883",
+        "date": "2021-02-01",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "An archived lookup on Qxpress's own tracker, opened but without visible history; thirteen digits starting with 6 is also Korea Post's domestic layout, so it may be a partner's number."
+    },
+    {
+      "number": "6064891004317",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220626015342/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=6064891004317",
+        "date": "2022-06-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "An archived lookup on Qxpress's own tracker, opened but without visible history; thirteen digits starting with 6 is also Korea Post's domestic layout, so it may be a partner's number."
+    }
+  ]
+}

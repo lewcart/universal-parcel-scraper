@@ -1,0 +1,12 @@
+{
+  "carrier": "blueex",
+  "entries": [
+    {"wording": "Shipment is being processed.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page. The first entry, before any hub scan."},
+    {"wording": "Shipment reached BlueEx Head Office - Karachi.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page."},
+    {"wording": "Shipment is on route to (Lahore).", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page. The brackets hold the destination city."},
+    {"wording": "Unsuccessful attempted due to - Customer Not Available", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page."},
+    {"wording": "Shipment has been delivered to .", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page. The receiver's name normally follows \"to\"."},
+    {"wording": "Unsuccessful attempted due to - Shipment At Hold On Customer`S Request", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page. Delivery was held at the recipient's request."},
+    {"wording": "Unsuccessful attempted due to - Address Closed", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "In an archived lookup on BlueEX's former tracking page."}
+  ]
+}

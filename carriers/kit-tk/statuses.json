@@ -1,0 +1,13 @@
+{
+  "carrier": "kit-tk",
+  "entries": [
+    {"code": "00", "wording": "Новый заказ", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): the order is created."},
+    {"code": "01", "wording": "Груз принят на терминале", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): the cargo is accepted at the origin terminal."},
+    {"code": "02", "wording": "Груз отправлен", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): the cargo has left; some routes skip this step."},
+    {"code": "03", "wording": "Груз прибыл на терминал", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): the cargo is at the terminal in the consignee's city, where paid storage applies; on routes with delivery the script says a logistician will arrange it and F3 follows."},
+    {"code": "F3", "wording": "Груз принят на доставку", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): taken for delivery to the address or to a pickup point; only routes with delivery show it."},
+    {"code": "04", "wording": "Груз выдан", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): issued to the consignee."},
+    {"code": "ZZ", "wording": "Отменен", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in the tracker page's own script (tk-kit.ru tracking.js): the order is cancelled."},
+    {"wording": "Выдача груза заблокирована отправителем", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Heading of the tracker page's block shown when the sender has barred issue; the cargo keeps moving but is held at the destination until the sender lifts the bar."}
+  ]
+}

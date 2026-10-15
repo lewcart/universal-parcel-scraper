@@ -1,0 +1,9 @@
+{
+  "carrier": "xde-logistics",
+  "entries": [
+    {"wording": "picked", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen as a status value in an opened capture of XDE's own tracking API; the 2017 tracker page showed it title-cased with spaces; the parcel was picked up."},
+    {"wording": "for_dispatch", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen as a status value in an opened capture of XDE's own tracking API; the 2017 tracker page showed it title-cased with spaces; the parcel was assigned to a dispatch run, which the capture shows before both the pickup and the delivery attempt."},
+    {"wording": "accepted_to_warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen as a status value in an opened capture of XDE's own tracking API; the 2017 tracker page showed it title-cased with spaces; the parcel was received at an XDE warehouse."},
+    {"wording": "first_delivery_attempt", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen as a status value in an opened capture of XDE's own tracking API; the 2017 tracker page showed it title-cased with spaces; the first delivery attempt started, seconds after the parcel was dispatched."}
+  ]
+}

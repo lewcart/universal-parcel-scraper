@@ -1,0 +1,35 @@
+{
+  "id": "hct-logistics",
+  "displayName": "HCT Logistics",
+  "aliases": [
+    "新竹物流",
+    "HCT",
+    "Hsinchu Transport"
+  ],
+  "region": {
+    "countries": [
+      "TW"
+    ]
+  },
+  "brand": {
+    "color": "#004b97"
+  },
+  "selectable": true,
+  "timezone": "Asia/Taipei",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.hct.com.tw/Search/SearchGoods_n.aspx",
+    "canaryUrl": "https://www.hct.com.tw/Search/SearchGoods_n.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

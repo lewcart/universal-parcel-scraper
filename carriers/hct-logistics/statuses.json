@@ -1,0 +1,10 @@
+{
+  "carrier": "hct-logistics",
+  "entries": [
+    {"wording": "收貨人簽收完畢", "stage": "delivered", "language": "zh", "confirmedBy": "portal", "note": "Seen in an archived capture of HCT's tracker as the latest status: the recipient signed for the parcel."},
+    {"wording": "貨件已抵達中和營業所，貨件整理中。貨物件數共1件。", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "Seen in an archived capture of HCT's tracker: the parcel reached a branch and is being sorted. The branch name and the piece count change with the parcel."},
+    {"wording": "貨件已抵達五股營業所，分貨中。", "stage": "in_transit", "language": "zh", "confirmedBy": "portal", "note": "Seen in an archived capture of HCT's tracker: the parcel reached the delivering branch and is being sorted for its route. The branch name and the piece count change with the parcel."},
+    {"wording": "貨件由五股營業所人員配送中。", "stage": "out_for_delivery", "language": "zh", "confirmedBy": "portal", "note": "Seen in an archived capture of HCT's tracker. The branch name and the piece count change with the parcel."},
+    {"wording": "貨件已由五股營業所送達。貨物件數共1件。", "stage": "delivered", "language": "zh", "confirmedBy": "portal", "note": "Seen in an archived capture of HCT's tracker. The branch name and the piece count change with the parcel."}
+  ]
+}

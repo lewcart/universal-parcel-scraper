@@ -1,0 +1,26 @@
+{
+  "carrier": "m-and-p",
+  "entries": [
+    {"wording": "Shipment is booked.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Booking."},
+    {"wording": "Booking", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment is booked.\""},
+    {"wording": "Shipment has arrived at origin facility.", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Arrived at OPS."},
+    {"wording": "Arrived at OPS", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment has arrived at origin facility.\""},
+    {"wording": "Shipment has departed.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Loading."},
+    {"wording": "Loading", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment has departed.\""},
+    {"wording": "Shipment has arrived at hub.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Unloading."},
+    {"wording": "Unloading", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment has arrived at hub.\""},
+    {"wording": "Shipment is Out for Delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows On Delivery."},
+    {"wording": "On Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment is Out for Delivery.\""},
+    {"wording": "Shipment has been Delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; it goes on with the delivery time and the receiver. The status column shows Delivered."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment has been Delivered.\""},
+    {"wording": "Shipment is undelivered due to Ready to Return.", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Ready to Return. Delivery stopped and the parcel is to go back to the shipper."},
+    {"wording": "Ready to Return", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment is undelivered due to Ready to Return.\""},
+    {"wording": "Shipment has been Returned to Shipper.", "stage": "returned", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Return to Shipper."},
+    {"wording": "Return to Shipper", "stage": "returned", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment has been Returned to Shipper.\""},
+    {"wording": "Shipment is undelivered as delivery was refused by consignee.", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "The details column of M&P's tracker; the status column shows Refused Delivery."},
+    {"wording": "Refused Delivery", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "The status column of M&P's tracker; the details column reads \"Shipment is undelivered as delivery was refused by consignee.\""},
+    {"wording": "DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The CN Status summary of M&P's tracker."},
+    {"wording": "RETURNED", "stage": "returned", "language": "en", "confirmedBy": "portal", "note": "The CN Status summary of M&P's tracker."},
+    {"wording": "LOADED", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The CN Status summary of M&P's tracker."}
+  ]
+}

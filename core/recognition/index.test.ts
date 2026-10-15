@@ -43,7 +43,7 @@ describe('recognition candidates', () => {
     expect(recognitionCandidates(number, { priorities: { ciblex: NaN, seur: Infinity, brt: -10 } })).toEqual(recognitionCandidates(number));
     expect(recognitionCandidates(number, { countryHint: 'GB', priorities: { ciblex: 1e6 } })[0]?.carrier).toBe('dhl-ecommerce-uk');
     expect(recognitionCandidates('000000000011', { countryHint: 'US', priorities: { fedex: 1e6 } }).map(({ carrier }) => carrier)).not.toContain('fedex');
-    expect(recognitionCandidates('000000000011', { phase: 'browser', countryHint: 'US', priorities: { fedex: 1 } }).map(({ carrier }) => carrier)).toEqual(['fedex']);
+    expect(recognitionCandidates('000000000011', { phase: 'browser', countryHint: 'US', priorities: { fedex: 1 } }).map(({ carrier }) => carrier)).toEqual(['fedex', 'zto']);
   });
 
   it('retains only character classes and run lengths in aggregate shapes', () => {
@@ -146,7 +146,7 @@ describe('recognition candidates', () => {
 describe('asking carriers', () => {
   it('keeps browser checks separate from HTTP checks', () => {
     expect(recognitionCandidates('000000000011').map(({ carrier }) => carrier)).not.toContain('fedex');
-    expect(recognitionCandidates('000000000011', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['fedex']);
+    expect(recognitionCandidates('000000000011', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['fedex', 'zto']);
     expect(recognitionCandidates('33870000000000001', { phase: 'browser' }).map(({ carrier }) => carrier)).toEqual(['dhl-ecommerce']);
   });
   it('aborts callbacks at the deadline and on caller cancellation', async () => {

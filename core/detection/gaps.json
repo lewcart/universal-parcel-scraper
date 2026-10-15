@@ -1884,11 +1884,5 @@
     "pattern": "^ES\\d{4}COM\\d{10}$",
     "kind": "by_design",
     "reason": "A sender-side shipment reference quoted to Zeleris, not its own number."
-  },
-  {
-    "carrier": "zto",
-    "pattern": "^7\\d{13}$",
-    "kind": "open",
-    "reason": "ZTO's mobile tracking page was archived with a fourteen-digit number starting 7. One sample, and no adapter to confirm it, does not establish the family."
   }
 ]

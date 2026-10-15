@@ -145,6 +145,7 @@ import { statusMap as wanbexpress } from '../../carriers/wanbexpress/status.js';
 import { statusMap as whistl } from '../../carriers/whistl/status.js';
 import { statusMap as xdp } from '../../carriers/xdp/status.js';
 import { statusMap as xpoLtl } from '../../carriers/xpo-ltl/status.js';
+import { statusMap as zto } from '../../carriers/zto/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
 import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
@@ -172,7 +173,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, shadowfax, 'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, speedaf, speedx, speedy, 'stallion-express': stallionExpress, sto, swiftx, 'swiss-post': swissPost,
   'tci-express': tciExpress, 'thailand-post': thailandPost, thhy, tnt, 'total-express': totalExpress, tsjy, 'ubi-smart-parcel': ubiSmartParcel, ups,
-  venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress,
+  venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,
 };
 

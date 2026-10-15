@@ -2,20 +2,22 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta and SwiftX. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta, SwiftX and ZTO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
-is the service's network, and no browser is launched. Dingxiang (ZTO) and MTCaptcha
-(Hongkong Post) need carrier-specific handling that this image's solvers do not provide.
-Their [ZTO](../carriers/zto/README.md) and [Hongkong Post](../carriers/hongkong-post/README.md)
-documentation describes the verification flows.
+is the service's network, and no browser is launched. MTCaptcha (Hongkong Post)
+needs handling that this image's solvers do not provide; its
+[documentation](../carriers/hongkong-post/README.md) describes the verification flow.
 
 ## Sessions
 
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
-DHL Express, SF Express, WanbExpress, XPO, Asendia, DHL Poland and Magyar Posta use fresh contexts.
+DHL Express, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta and ZTO use fresh contexts.
+ZTO solves Dingxiang's slider and ordered-character challenge locally, with at most two
+concurrent offline OCR workers. Each worker ends with its request and retains no images.
+Verification failures and the public tracker's incomplete history still need enabled providers.
 DHL Poland uses TRAWL's native checkbox and audio solver.
 Its scoped native modules replace upstream raw debug logs with fixed events.
 It submits its history form after reCAPTCHA verification and returns only

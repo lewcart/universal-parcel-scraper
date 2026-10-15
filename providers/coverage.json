@@ -1602,7 +1602,7 @@
     },
     {
       "carrier": "zto",
-      "direct": "No adapter",
+      "direct": "Yes (browser; partial history)",
       "sample": "Not tested",
       "references": [
         {

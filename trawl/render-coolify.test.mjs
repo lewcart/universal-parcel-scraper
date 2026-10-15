@@ -2,20 +2,21 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { gunzipSync } from 'node:zlib';
+import { brotliDecompressSync } from 'node:zlib';
 
 test('Coolify installs every Dockerfile source with identical bytes and build steps', () => {
   const dockerfile = readFileSync(new URL('./Dockerfile', import.meta.url), 'utf8');
   const rendered = execFileSync(process.execPath, [new URL('./render-coolify.mjs', import.meta.url).pathname], { encoding: 'utf8', cwd: '/tmp' });
-  const match = /printf '%s' ([\s\S]+?) \| base64 -d \| gzip -d > \/tmp\/upc-trawl-sources.json/.exec(rendered);
+  const match = /printf '%s' ([\s\S]+?) \| base64 -d > \/tmp\/upc-trawl-sources.br/.exec(rendered);
   assert.ok(match);
   const chunks = [...match[1].matchAll(/'([A-Za-z0-9+/=]+)'/g)].map(row => row[1]);
   assert.ok(chunks.length > 1);
-  const sources = JSON.parse(gunzipSync(Buffer.from(chunks.join(''), 'base64')).toString('utf8'));
+  const sources = JSON.parse(brotliDecompressSync(Buffer.from(chunks.join(''), 'base64')).toString('utf8'));
   const copies = [...dockerfile.matchAll(/^COPY (\S+) (\S+)$/gm)];
   assert.equal(Object.keys(sources).length, copies.length);
   for (const [, file, target] of copies) assert.equal(sources[target], readFileSync(new URL(file, import.meta.url), 'utf8'), file);
-  assert.ok(rendered.includes(dockerfile.slice(dockerfile.indexOf('\nRUN ') + 5).trim()));
+  assert.ok(rendered.includes(dockerfile.slice(dockerfile.lastIndexOf('\nRUN ') + 5).trim()));
+  assert.ok(rendered.includes(dockerfile.slice(0, dockerfile.indexOf('\nCOPY LICENSE'))));
   assert.ok(rendered.includes('mkdirSync(dirname(path),{recursive:true})'));
   // Coolify embeds the Dockerfile in one base64 SSH argument. Leave room for
   // its wrapper beneath Linux's 128 KiB per-argument limit.

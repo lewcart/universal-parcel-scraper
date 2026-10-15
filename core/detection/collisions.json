@@ -2383,9 +2383,10 @@
       "dpd-uk",
       "relais-colis",
       "seur",
-      "slovak-parcel-service"
+      "slovak-parcel-service",
+      "zto"
     ],
-    "reason": "SPS parcel numbers start with 703, Slovakia's country code, so SPS is offered next to the other carriers that print fourteen digits; number shape alone cannot identify the carrier."
+    "reason": "SPS parcel numbers start with 703, Slovakia's country code, so SPS is offered next to the other carriers that print fourteen digits; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
   },
   {
     "shape": "14 digits starting 703 that pass the Hermes checksum",
@@ -2400,9 +2401,10 @@
       "hermes-de",
       "relais-colis",
       "seur",
-      "slovak-parcel-service"
+      "slovak-parcel-service",
+      "zto"
     ],
-    "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier."
+    "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
   },
   {
     "shape": "Nine digits, a hyphen and one digit",
@@ -2727,5 +2729,38 @@
       "xpressbees"
     ],
     "reason": "Anteraja ranges overlap other carriers. Its low-confidence suggestion requires the guest API to confirm the whole waybill."
+  },
+  {
+    "shape": "7 followed by thirteen digits",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "relais-colis",
+      "seur",
+      "zto"
+    ],
+    "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
+  },
+  {
+    "shape": "7 followed by thirteen digits",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "relais-colis",
+      "seur",
+      "zto"
+    ],
+    "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
   }
 ]

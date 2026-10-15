@@ -3855,7 +3855,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zto",
+      "recognitionRank": 51,
+      "browserRecognitionRank": 51
     },
     "canaryUrl": "https://www.zto.com/check",
     "trackingUrlTemplate": "https://www.zto.com/",
@@ -3864,6 +3866,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^\\d{12}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^7\\d{13}$",
         "confidence": "low"
       }
     ]
@@ -15338,7 +15344,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sto": ["sto-1","sto-2"],
   "yunda": ["yunda-1"],
   "yto": ["yto-1","yto-2"],
-  "zto": ["zto-1"],
+  "zto": ["zto-1","zto-2"],
   "jd-logistics": ["jd-logistics-1","jd-logistics-2"],
   "yamato": ["yamato-1"],
   "korea-post": ["korea-post-1","korea-post-2","korea-post-3"],

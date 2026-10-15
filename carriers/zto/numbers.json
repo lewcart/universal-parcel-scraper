@@ -50,12 +50,13 @@
           "seur",
           "brt",
           "delhivery",
+          "zto",
           "dhl-ecommerce-uk",
           "dpd-de",
           "dpd-uk"
         ]
       },
-      "note": "A ZTO tracking link archived by the Wayback Machine. ZTO has no adapter here, so it stays unconfirmed; fourteen digits starting 7 do not yet suggest ZTO."
+      "note": "A ZTO tracking link archived by the Wayback Machine. Its shipment remains unconfirmed; the whole identifier is a domestic ZTO candidate."
     }
   ]
 }

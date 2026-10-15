@@ -83,7 +83,7 @@ is asked after the other aggregators whatever its count.
 | [Yanwen](../carriers/yanwen/README.md) | Yes | ✓ 29 | ✓ 1, partial | ✓ 29 | ✓ 29 | No history | No history |
 | [J&T Express](../carriers/j-and-t/README.md) | Yes (Indonesia) | Out of scope (Philippines); alternate ✓ 11 | No history | No history | No history | No history | N/A |
 | [JD Logistics](../carriers/jd-logistics/README.md) | Yes (international) | Unverified | Unverified | Unverified | Unverified | Refused | N/A |
-| [ZTO Express](../carriers/zto/README.md) | No adapter | Not tested | Unverified | Unverified | Unverified | Unverified | N/A |
+| [ZTO Express](../carriers/zto/README.md) | Yes (browser; partial history) | Not tested | Unverified | Unverified | Unverified | Unverified | N/A |
 | [YTO Express](../carriers/yto/README.md) | Yes (China domestic) | ✓ 30 | Error | ✓ 30 | ✓ 20 | No history | N/A |
 | [Yunda Express](../carriers/yunda/README.md) | Yes (China domestic) | Unverified; alternate ✓ 2 | Unverified | Unverified | Unverified | Unverified | N/A |
 | [STO Express](../carriers/sto/README.md) | Yes (China domestic) | Unverified; alternate ✓ 11 | Unverified | Unverified | Unverified | Unverified | N/A |

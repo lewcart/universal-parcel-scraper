@@ -1,36 +1,30 @@
 # ZTO Express
 
-Chinese domestic ZTO parcels use enabled universal providers. There is no dedicated adapter.
+Chinese domestic ZTO waybills use the [official tracker](https://www.zto.com/check).
+Number shapes overlap other carriers; only a matching response confirms ownership.
+ZTO International uses a separate network and tracker.
 
-## How it works
+The adapter first posts to `hdgateway.zto.com/batchGetTrace`. A verification response
+can fall back to the bundled TRAWL image. The page obtains a Dingxiang challenge
+from `mapi.zto.com/captcha/image2`, solves a slider and, when requested, clicks
+Chinese characters in order using local OCR. The page submits its own verification
+token and repeats tracking in the same context. Tokens and recipient details stay
+inside that context.
 
-The [official tracker](https://www.zto.com/check) posts waybills to
-`hdgateway.zto.com/batchGetTrace`. Code `10201` asks the page to call `getVerifyType`,
-complete its verification and repeat tracking with `x-captcha-id` and `x-captcha-code`.
-The current widget is Dingxiang: a slider can escalate to an ordered-character challenge
-before it issues a token. Its verification response and the repeated tracking response
-must both succeed; a hidden slider or a loaded tracking page proves neither.
+Verification can fail or exceed the lookup budget. Enabled universal providers
+remain available for those failures and for fuller history: the public PC tracker
+suppresses earlier traces even after verification. The adapter marks its history
+as incomplete and keeps the carrier's epoch scan clocks.
 
-The bundled TRAWL image has no Dingxiang solver. Its GeeTest slider support does not cover
-this widget or the character challenge. The [Correios OCR model](../correios-br/model/README.md)
-recognizes lowercase Latin letters and digits as a string. Ordered Chinese-character verification
-requires recognition of the requested glyphs, their image positions and the click order.
-The OCR worker infrastructure can be reused with a suitable model; the Correios weights
-do not cover this task. ZTO therefore remains on universal providers.
+HTTP recognition never starts a browser. Browser recognition is a separate opt-in
+phase and can require more time than a short preflight budget permits.
 
-The other official routes do not avoid the challenge. The mobile site's waybill page reads
-`hdgateway.zto.com/getTrace`, which requires a signed-in ZTO account. The 中通快递 Android app
-(`cn.beekee.zhongtong`) ships its code inside a protection shell, so its tracking request is
-not readable from the package.
-
-## Limitations
-
-International ZTO services use separate portals. ZTO International's tracker posts to
-`taurus-api.ztoglobal.com/applet/track/queryFromMainSite` without a challenge, but it only
-answers ZTO International waybills, which start with `771`. Domestic waybills get the same
-empty reply as unknown numbers. Domestic number shapes overlap other carriers and do not
-establish ZTO ownership.
+The legacy image endpoint does not supply the page's plain-code challenge. Mobile
+H5 tracking requires a signed-in ZTO account, and the Android app
+(`cn.beekee.zhongtong`) protects its request implementation. The unauthenticated
+ZTO International route does not establish domestic shipment ownership.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Set `ZTO_TRACKING_NUMBER` and `FLARESOLVERR_URL` privately, then run
+`npm run test:carriers:live -- carriers/zto`.

@@ -264,6 +264,50 @@
         ]
       },
       "note": "Looked up on Flash Express's own tracker at flashexpress.co.th, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "TH37079591XP1A",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://pantip.com/topic/44230775",
+        "date": "2026-09-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "flash-express"
+        ]
+      },
+      "note": "A domestic parcel a Pantip topic in Flash Express's tag reports. Flash Express's tracker returned its delivered history."
+    },
+    {
+      "number": "TH210895RYGD1A",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://pantip.com/topic/44232080",
+        "date": "2026-09-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "flash-express"
+        ]
+      },
+      "note": "A domestic parcel a Pantip topic in Flash Express's tag reports. Flash Express's tracker returned its delivered history."
     }
   ]
 }

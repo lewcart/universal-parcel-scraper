@@ -923,6 +923,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'olva-courier', number: '26-00000000',
     route: /^https:\/\/tracking\.olvacourier\.com\/\?q=26-00000000$/,
     marker: /El número ingresado 26-00000000 no se ha encontrado|Código de seguimiento inválido/ },
+  // The page posts the number in its address to the tracking lookup on load; an unknown one gets the not-found line.
+  { carrier: 'flash-express', number: 'TH9999000000Z',
+    route: /^https:\/\/www\.flashexpress\.co\.th\/fle\/tracking\?se=TH9999000000Z$/,
+    marker: /ไม่พบข้อมูลของเลขพัสดุนี้|No information found for this tracking number|未查到此运单信息/ },
 ];
 
 /**

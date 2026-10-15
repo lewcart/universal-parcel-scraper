@@ -46,6 +46,14 @@
     "reason": "Colis Privé accepts generic seventeen-character composites; the specific OMGO prefix is the only high-confidence rule."
   },
   {
+    "shape": "AJ, a six-digit date and nine digits ending in a French postcode range",
+    "carriers": [
+      "anjun",
+      "colis-prive"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the Anjun rule is the only high-confidence one."
+  },
+  {
     "shape": "SPEPH followed by twelve digits ending in a French postcode range",
     "carriers": [
       "colis-prive",

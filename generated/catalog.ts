@@ -5518,7 +5518,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anjun",
+      "recognitionRank": 954,
+      "localClocks": true
     },
     "canaryUrl": "https://anjuntrack.com/trajectory",
     "trackingUrlTemplate": "https://anjuntrack.com/trackQuery?t={trackingNumber}",
@@ -5532,7 +5534,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/trackQuery/?$",
         "params": [
           "t"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -5542,10 +5545,26 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/trajectory/?$",
         "params": [
           "orderNum"
-        ]
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "anjunexpress.com"
+        ],
+        "pathPattern": "^/trackPackage/?$",
+        "params": [
+          "tracking"
+        ],
+        "ownNumbersOnly": true
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AJ\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{9}$",
+        "confidence": "high"
+      }
+    ]
   },
   "anteraja": {
     "displayName": "Anteraja",
@@ -20750,7 +20769,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "allegro-one": ["allegro-one-1","allegro-one-2"],
   "ampm": [],
   "andreani": [],
-  "anjun": [],
+  "anjun": ["anjun-aj"],
   "anteraja": ["anteraja-1"],
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],

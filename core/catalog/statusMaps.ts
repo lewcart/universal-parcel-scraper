@@ -19,6 +19,7 @@ import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as andreani } from '../../carriers/andreani/status.js';
+import { statusMap as anjun } from '../../carriers/anjun/status.js';
 import { statusMap as anteraja } from '../../carriers/anteraja/status.js';
 import { statusMap as apcOvernight } from '../../carriers/apc-overnight/status.js';
 import { statusMap as aramexAu } from '../../carriers/aramex-au/status.js';
@@ -189,7 +190,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '5post': fivePost, '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress,
-  'allegro-one': allegroOne, 'an-post': anPost, andreani, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz,
+  'allegro-one': allegroOne, 'an-post': anPost, andreani, anjun, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz,
   'aras-kargo': arasKargo, 'blue-express': blueExpress, 'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta,
   chilexpress, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics,
   'cj-packet': cjPacket,

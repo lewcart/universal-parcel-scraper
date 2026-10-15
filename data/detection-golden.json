@@ -46154,14 +46154,43 @@
     ]
   },
   {
-    "input": "AJ260917112216701",
-    "carrier": "unknown",
-    "confidence": "low",
+    "input": "AJ251124103873801",
+    "carrier": "anjun",
+    "confidence": "high",
     "candidates": [
-      "colis-prive"
-    ],
-    "asked": [
-      "colis-prive"
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260610165109201",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260618108824401",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260618128559501",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260917112216701",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
     ]
   },
   {

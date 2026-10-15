@@ -23,18 +23,54 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "anjun",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 954
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://anjuntrack.com/trackQuery?t={trackingNumber}",
     "searchUrl": "https://anjuntrack.com/trajectory",
     "canaryUrl": "https://anjuntrack.com/trajectory",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "destination_country",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "failed_delivery_reason",
+      "destination_country"
+    ],
+    "discarded": [
+      "progress_rail",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {
@@ -45,7 +81,8 @@
       "pathPattern": "^/trackQuery/?$",
       "params": [
         "t"
-      ]
+      ],
+      "ownNumbersOnly": true
     },
     {
       "domains": [
@@ -55,8 +92,25 @@
       "pathPattern": "^/trajectory/?$",
       "params": [
         "orderNum"
-      ]
+      ],
+      "ownNumbersOnly": true
+    },
+    {
+      "domains": [
+        "anjunexpress.com"
+      ],
+      "pathPattern": "^/trackPackage/?$",
+      "params": [
+        "tracking"
+      ],
+      "ownNumbersOnly": true
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "anjun-aj",
+      "pattern": "^AJ\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{9}$",
+      "confidence": "high"
+    }
+  ]
 }

@@ -5516,7 +5516,9 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anjun",
+      "recognitionRank": 954,
+      "localClocks": true
     },
     "canaryUrl": "https://anjuntrack.com/trajectory",
     "trackingUrlTemplate": "https://anjuntrack.com/trackQuery?t={trackingNumber}",
@@ -5530,7 +5532,8 @@
         "pathPattern": "^/trackQuery/?$",
         "params": [
           "t"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -5540,10 +5543,26 @@
         "pathPattern": "^/trajectory/?$",
         "params": [
           "orderNum"
-        ]
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "anjunexpress.com"
+        ],
+        "pathPattern": "^/trackPackage/?$",
+        "params": [
+          "tracking"
+        ],
+        "ownNumbersOnly": true
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AJ\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{9}$",
+        "confidence": "high"
+      }
+    ]
   },
   "anteraja": {
     "displayName": "Anteraja",

@@ -235,7 +235,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened, and the tracker also accepts reference numbers, so it may be a sender's reference rather than a Deprisa guía."
     },
@@ -255,7 +258,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened, and the tracker also accepts reference numbers, so it may be a sender's reference rather than a Deprisa guía."
     },
@@ -275,7 +281,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com; the opened capture echoes it as the guía number without a history, and the tracker also accepts reference numbers, so its role is unclear."
     }

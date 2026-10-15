@@ -47,7 +47,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "swiss-post-cargo"
+          "swiss-post-cargo",
+          "tnt-it"
         ]
       },
       "note": "Invented customer reference in the printed PL- and eight-digit form eos answers as a reference; not a known shipment."
@@ -119,7 +120,8 @@
         "confidence": "low",
         "candidates": [
           "swiss-post-cargo",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "tnt-it"
         ]
       },
       "note": "A customer reference archived by the Wayback Machine. eos answers it with the histories of the two barcodes of its consignment. The adapter reads a reference only while that consignment has recent scans."

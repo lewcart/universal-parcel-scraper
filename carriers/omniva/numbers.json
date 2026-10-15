@@ -131,7 +131,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "Looked up on Omniva's own Lithuanian tracker, as an archived address shows, and an archived reply of the tracker's API holds its history. Omniva documents no layout of ten characters starting ZA, so no rule claims it."
     },

@@ -81,7 +81,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "A courier ticket looked up on New Zealand Couriers' own tracker; the opened capture shows its pickup, on-board and delivery scans."
     },
@@ -100,7 +103,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "A courier ticket looked up on New Zealand Couriers' own tracker, as an archived address shows; the capture was not opened."
     },
@@ -119,7 +125,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "A courier ticket looked up on New Zealand Couriers' own tracker, as an archived address shows; the capture was not opened."
     },

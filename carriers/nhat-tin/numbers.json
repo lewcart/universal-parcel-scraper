@@ -19,7 +19,8 @@
         "confidence": "low",
         "candidates": [
           "dhl-ecommerce-es",
-          "nhat-tin"
+          "nhat-tin",
+          "tnt-it"
         ]
       },
       "note": "The request example in Nhat Tin Logistics' own API documentation for tracking a shipment."
@@ -41,7 +42,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "nhat-tin"
+          "nhat-tin",
+          "tnt-it"
         ]
       },
       "note": "The shipment in the reply example of Nhat Tin Logistics' own API documentation for tracking, with a delivered history."

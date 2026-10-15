@@ -31,7 +31,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "tnt-it"
         ]
       },
       "note": "Made-up number in the short form of two letters, seven digits and a zero."
@@ -47,7 +48,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "tnt-it"
         ]
       },
       "note": "Placeholder DHL Spain shows for the short form of a parcel number."
@@ -318,7 +320,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "tnt-it"
         ]
       },
       "note": "Iberian short reference given next to the parcel's German DHL number; the Iberian tracker returns its history."

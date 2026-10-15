@@ -222,6 +222,7 @@ import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js
 import { adapter as thhy } from '../carriers/thhy/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
+import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
 import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.js';
@@ -469,6 +470,7 @@ export const REGISTRY: RegistryDefinition = {
     "thhy": thhy,
     "tipsa": tipsa,
     "tnt": tnt,
+    "tnt-it": tntIt,
     "total-express": totalExpress,
     "tsjy": tsjy,
     "ubi-smart-parcel": ubiSmartParcel,
@@ -926,6 +928,7 @@ export const REGISTRY: RegistryDefinition = {
     "tipsa": "tipsa",
     "tirupati-courier": "universal",
     "tnt": "tnt",
+    "tnt-it": "tnt-it",
     "toptrans": "universal",
     "total-express": "total-express",
     "trackon": "universal",

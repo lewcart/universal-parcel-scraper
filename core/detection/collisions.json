@@ -1322,12 +1322,13 @@
     "reason": "DHL eCommerce hands these US parcels to USPS under a USPS number and tracks them itself too, so USPS's PIC rule leaves these families out. Direct tracking must confirm the carrier."
   },
   {
-    "shape": "Two letters, seven digits and a final zero",
+    "shape": "L[AIEHNX], seven digits and a final zero",
     "carriers": [
       "dhl-ecommerce-es",
-      "ontrac"
+      "ontrac",
+      "tnt-it"
     ],
-    "reason": "DHL's Iberian alias for an inbound parcel fits OnTrac's letter-prefixed shape. Direct tracking must confirm the carrier."
+    "reason": "DHL's Iberian alias for an inbound parcel fits OnTrac's letter-prefixed shape and TNT Italy's national waybills. OnTrac's high-confidence rule decides; direct tracking must confirm the carrier."
   },
   {
     "shape": "Twelve digits that pass the FedEx and mod 7 checks",
@@ -2031,9 +2032,10 @@
     "shape": "PL followed by eight digits ending in 0",
     "carriers": [
       "dhl-ecommerce-es",
-      "swiss-post-cargo"
+      "swiss-post-cargo",
+      "tnt-it"
     ],
-    "reason": "DHL eCommerce Spain accepts two letters and eight digits ending in 0, which covers Swiss Post Cargo's PL- references; both stay low-confidence suggestions and carrier recognition asks eos."
+    "reason": "DHL eCommerce Spain accepts two letters and eight digits ending in 0, and TNT Italy any two letters and eight digits, which covers Swiss Post Cargo's PL- references; all stay low-confidence suggestions and carrier recognition asks each."
   },
   {
     "shape": "Twelve digits that pass the Identcode check",
@@ -2989,9 +2991,18 @@
     "shape": "CP followed by seven digits and a final 0",
     "carriers": [
       "dhl-ecommerce-es",
-      "nhat-tin"
+      "nhat-tin",
+      "tnt-it"
     ],
-    "reason": "DHL eCommerce Spain accepts any two letters, seven digits and a final 0; the CP layout only suggests Nhat Tin Logistics."
+    "reason": "DHL eCommerce Spain accepts any two letters, seven digits and a final 0, and TNT Italy any two letters and eight digits; the CP layout only suggests Nhat Tin Logistics, and all stay low-confidence suggestions that carrier recognition asks."
+  },
+  {
+    "shape": "CP followed by eight digits",
+    "carriers": [
+      "nhat-tin",
+      "tnt-it"
+    ],
+    "reason": "Nhat Tin Logistics CP numbers have the shape of TNT Italy national waybills, two letters and eight digits; both stay low-confidence suggestions and carrier recognition asks each."
   },
   {
     "shape": "eight digits, four digits and one digit joined by hyphens",
@@ -3166,5 +3177,37 @@
       "zto"
     ],
     "reason": "Some SCG Express numbers also pass Purolator's twelve-digit check, so Purolator joins the carriers whose rules take twelve digits and the mod 7 group; every rule is low-confidence, so recognition asks each of them."
+  },
+  {
+    "shape": "Two letters, seven digits and a final zero",
+    "carriers": [
+      "dhl-ecommerce-es",
+      "tnt-it"
+    ],
+    "reason": "DHL eCommerce Spain's inbound aliases have the shape of TNT Italy's national waybills, two letters and eight digits; both stay low-confidence suggestions and carrier recognition asks each."
+  },
+  {
+    "shape": "L[AIEHNX] followed by eight digits",
+    "carriers": [
+      "ontrac",
+      "tnt-it"
+    ],
+    "reason": "OnTrac's letter-prefixed numbers have the shape of TNT Italy waybills from branches whose letters match; OnTrac's high-confidence rule decides."
+  },
+  {
+    "shape": "MC, NC or RP followed by eight digits",
+    "carriers": [
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "reason": "Prompt Xpress numbers have the shape of TNT Italy's national waybills; both stay low-confidence suggestions."
+  },
+  {
+    "shape": "PL followed by eight digits",
+    "carriers": [
+      "swiss-post-cargo",
+      "tnt-it"
+    ],
+    "reason": "Swiss Post Cargo's PL- references have the shape of TNT Italy's national waybills; both stay low-confidence suggestions and carrier recognition asks each."
   }
 ]

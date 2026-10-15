@@ -18086,6 +18086,44 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tnt-it": {
+    "displayName": "TNT Italy",
+    "color": "#ff6600",
+    "aliases": [
+      "TNT Italia"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "tnt-it",
+      "recognitionRank": 645
+    },
+    "canaryUrl": "https://www.tnt.it/tracking/Tracking.do",
+    "trackingUrlTemplate": "https://www.tnt.it/tracking/getTrack.html?wt=1&consigNos={trackingNumber}",
+    "trackingSearchUrl": "https://www.tnt.it/tracking/Tracking.do",
+    "linkRules": [
+      {
+        "domains": [
+          "tnt.it"
+        ],
+        "pathPattern": "^/tracking/getTrack\\.html$",
+        "params": [
+          "consigNos"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{8}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "toptrans": {
     "displayName": "TOPTRANS",
     "color": "#005daa",
@@ -19807,6 +19845,7 @@ export const CARRIER_IDS = [
   "thhy",
   "tiki",
   "tirupati-courier",
+  "tnt-it",
   "toptrans",
   "total-express",
   "trackon",
@@ -20287,6 +20326,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "thhy": ["thhy-1"],
   "tiki": [],
   "tirupati-courier": [],
+  "tnt-it": ["tnt-it-1"],
   "toptrans": [],
   "total-express": ["total-express-awb"],
   "trackon": [],

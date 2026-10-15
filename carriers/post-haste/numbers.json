@@ -16,7 +16,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "Post Haste's track and trace page gives it as its courier ticket example: product code and ticket number, entered as two fields."
     },
@@ -78,7 +81,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "A courier ticket looked up on Post Haste's own tracker; the opened capture shows its pickup, on-board and delivery scans."
     },
@@ -135,7 +141,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "tnt-it"
+        ]
       },
       "note": "A courier ticket looked up on Post Haste's own tracker, as an archived address shows; the capture was not opened."
     }

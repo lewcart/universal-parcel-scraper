@@ -46652,8 +46652,13 @@
   {
     "input": "CB00071928",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CB212298281IE",
@@ -46975,8 +46980,13 @@
   {
     "input": "CE00047947",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CE003358579MU",
@@ -48180,20 +48190,35 @@
   {
     "input": "CO00310395",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CO03735375",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CO05879975",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CO964345600RO",
@@ -48413,9 +48438,11 @@
     "confidence": "low",
     "candidates": [
       "dhl-ecommerce-es",
-      "nhat-tin"
+      "nhat-tin",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -48424,7 +48451,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "nhat-tin"
+      "nhat-tin",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {
@@ -48880,20 +48911,35 @@
   {
     "input": "CT 06914031",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CT 06914066",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CT 06916098",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "CT001362607SK",
@@ -49436,9 +49482,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -49463,9 +49511,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -51033,8 +51083,13 @@
   {
     "input": "EP20031174",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "EP318770974NZ",
@@ -51369,9 +51424,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -55222,17 +55279,24 @@
   {
     "input": "LC47899649",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "LC47899650",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -57403,8 +57467,24 @@
   {
     "input": "MY10002706",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
+  },
+  {
+    "input": "MY23642676",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "MY2548586263784",
@@ -57441,8 +57521,13 @@
   {
     "input": "MY33217326",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "MY40000807898",
@@ -57606,6 +57691,17 @@
     "confidence": "high",
     "candidates": [
       "dtdc"
+    ]
+  },
+  {
+    "input": "NA12345678",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {
@@ -58405,23 +58501,35 @@
   {
     "input": "OV76778301",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "OV90865832",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "OV91069550",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es"
     ]
   },
@@ -58851,14 +58959,24 @@
   {
     "input": "PE 09999658",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "PE 17479545",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "PE041199688UY",
@@ -59387,9 +59505,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "swiss-post-cargo"
+      "swiss-post-cargo",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "swiss-post-cargo"
     ]
   },
@@ -59407,9 +59527,11 @@
     "confidence": "low",
     "candidates": [
       "swiss-post-cargo",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "tnt-it"
     ],
     "asked": [
+      "tnt-it",
       "dhl-ecommerce-es",
       "swiss-post-cargo"
     ]
@@ -60970,8 +61092,13 @@
   {
     "input": "RN 10404698",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "RN061916705LT",
@@ -61100,7 +61227,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "prompt-xpress"
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {
@@ -65234,6 +65365,28 @@
     ]
   },
   {
+    "input": "WS00195119",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
+  },
+  {
+    "input": "WS89725933",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
+  },
+  {
     "input": "WT0004403087",
     "carrier": "unknown",
     "confidence": "low",
@@ -66017,8 +66170,13 @@
   {
     "input": "ZA16096066",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "ZA587200125LV",
@@ -66466,7 +66624,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "prompt-xpress"
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {

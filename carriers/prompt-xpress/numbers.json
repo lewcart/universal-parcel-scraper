@@ -18,7 +18,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "prompt-xpress"
+          "prompt-xpress",
+          "tnt-it"
         ]
       },
       "note": "An archived tracking address on Prompt Xpress's own site with this number, in the RP format its tracking page published; the capture is a 404 with no history."
@@ -40,7 +41,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "prompt-xpress"
+          "prompt-xpress",
+          "tnt-it"
         ]
       },
       "note": "An archived tracking address on Prompt Xpress's own site with this number, two letters and eight digits like its published formats; the capture is a 404 with no history."

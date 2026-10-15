@@ -23,7 +23,7 @@ describe('national postal lookup candidates', () => {
     ['NL', 'spring-gds'], ['FR', 'la-poste'], ['GB', 'royal-mail'], ['US', 'usps'],
     ['CA', 'canada-post'], ['DE', 'dhl'], ['ES', 'correos-spain'], ['JP', 'japan-post'], ['Japan', 'japan-post'],
     ['AU', 'australia-post'], ['Australia', 'australia-post'], ['PL', 'poczta-polska'], ['Poland', 'poczta-polska'],
-    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'],
+    ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['SA', 'saudi-post'], ['Saudi Arabia', 'saudi-post'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

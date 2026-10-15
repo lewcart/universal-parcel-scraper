@@ -42,8 +42,8 @@ const CATALOG_NAMES = new Set([
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
   ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'],
-  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['SE', 'postnord'],
-  ['UA', 'ukrposhta'], ['US', 'usps'],
+  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['SA', 'saudi-post'],
+  ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

@@ -40,10 +40,10 @@ const CATALOG_NAMES = new Set([
 // host also checks adapter availability and required inputs before making a
 // request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
-  ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
-  ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'],
-  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['SA', 'saudi-post'],
-  ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
+  ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'],
+  ['DE', 'dhl'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
+  ['GB', 'royal-mail'], ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'],
+  ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

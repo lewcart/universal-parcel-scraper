@@ -27,7 +27,8 @@ errors and malformed replies keep their own failure kinds. Recognition uses the 
 The tracker follows S10 item codes. The adapter takes them with a valid check digit from any
 country and refuses anything else without a request. A code ending `AR` is asked on the national
 form; the international form does not find it, nor does the national form a foreign code. Generic
-postal detection handles S10 codes, so no Correo Argentino rule claims them.
+postal detection handles S10 codes, so no Correo Argentino rule claims them. Mail a provider
+reports as bound for Argentina is looked up here by its S10 code.
 
 The site also has forms for e-commerce parcels and Mercado Libre shipments, which take other
 layouts. No live number of those was found, so the adapter does not take them.

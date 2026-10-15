@@ -95,6 +95,25 @@
         "confidence": "high"
       },
       "note": "A customer review on TrackingMore's SFC Service review page quotes it for a package not received after five months."
+    },
+    {
+      "number": "SFCAA0121278784YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.kuaidi100.com/all/stsd.shtml",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "sfc",
+        "confidence": "high"
+      },
+      "note": "Kuaidi100's SFC page offers it as its example. SFC's tracker answers it as the AliExpress number of an order to Mexico that J&T Express delivered."
     }
   ]
 }

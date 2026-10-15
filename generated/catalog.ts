@@ -16854,7 +16854,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sfc",
+      "recognitionRank": 955,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sendfromchina.com/track",
     "trackingSearchUrl": "https://www.sendfromchina.com/track",
@@ -16862,6 +16864,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^SFC\\d[A-Z]{2}\\d{13,14}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SFC[A-Z]{2}\\d{10}YQ$",
         "confidence": "high"
       }
     ]
@@ -20990,7 +20996,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "serpost": [],
   "servientrega": [],
   "seven-eleven-tw": [],
-  "sfc": ["sfc-1"],
+  "sfc": ["sfc-1","sfc-ae"],
   "shadowfax": ["shadowfax-1","shadowfax-2"],
   "shree-maruti": [],
   "shree-nandan": [],

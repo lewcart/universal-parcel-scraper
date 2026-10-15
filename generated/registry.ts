@@ -206,6 +206,7 @@ import { adapter as saudiPost } from '../carriers/saudi-post/adapter.js';
 import { adapter as servientrega } from '../carriers/servientrega/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
 import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
+import { adapter as sfc } from '../carriers/sfc/adapter.js';
 import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
@@ -471,6 +472,7 @@ export const REGISTRY: RegistryDefinition = {
     "servientrega": servientrega,
     "seur": seur,
     "sf-express": sfExpress,
+    "sfc": sfc,
     "shadowfax": shadowfax,
     "singapore-post": singaporePost,
     "slovak-parcel-service": slovakParcelService,
@@ -919,7 +921,7 @@ export const REGISTRY: RegistryDefinition = {
     "seur": "seur",
     "seven-eleven-tw": "universal",
     "sf-express": "sf-express",
-    "sfc": "universal",
+    "sfc": "sfc",
     "shadowfax": "shadowfax",
     "shipup": "universal",
     "shree-maruti": "universal",

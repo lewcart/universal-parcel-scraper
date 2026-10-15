@@ -18,18 +18,55 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "5post",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://fivepost.ru/tracking?id={trackingNumber}",
     "searchUrl": "https://fivepost.ru/",
     "canaryUrl": "https://fivepost.ru/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "pickup_deadline",
+      "eta",
+      "sender_name",
+      "payment_details",
+      "office_opening_hours",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "delivered_at"
+    ],
+    "discarded": [
+      "pickup_deadline",
+      "sender_name",
+      "payment_details",
+      "office_opening_hours",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "recipient_name",
+      "weight",
+      "dimensions",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -30,7 +30,7 @@
           "xpressbees"
         ]
       },
-      "note": "A vc.ru post about a lost FivePost parcel gives it as the parcel's tracking number."
+      "note": "A vc.ru post about a lost FivePost parcel gives it as the parcel's tracking number; 5Post's app finds the order."
     },
     {
       "number": "99990023667453",
@@ -43,7 +43,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -61,7 +61,7 @@
           "xpressbees"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "99990024107391",
@@ -74,7 +74,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -92,7 +92,7 @@
           "xpressbees"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "99880000719762",
@@ -105,7 +105,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -123,7 +123,7 @@
           "xpressbees"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "99880020264657",
@@ -136,7 +136,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -154,7 +154,7 @@
           "xpressbees"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "99110007024671",
@@ -167,7 +167,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -185,7 +185,7 @@
           "xpressbees"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "BX00000016018296FRW",
@@ -198,13 +198,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "BX00000016161928FRW",
@@ -217,13 +217,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "BX00000016412302FRW",
@@ -236,13 +236,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order."
     },
     {
       "number": "P03321461309",
@@ -255,7 +255,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -264,7 +264,7 @@
           "colis-prive"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request. Another capture of the same lookup names Avito as the shop."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order. Another capture of the same lookup names Avito as the shop."
     },
     {
       "number": "P06321818332",
@@ -277,7 +277,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -286,7 +286,7 @@
           "colis-prive"
         ]
       },
-      "note": "Looked up on 5Post's own tracker, as an archived address shows; the capture was not opened because the page loads results by a CAPTCHA-gated request. Another capture of the same lookup names Avito as the shop."
+      "note": "Looked up on 5Post's own tracker, as an archived address shows; 5Post's app finds the order. Another capture of the same lookup names Avito as the shop."
     }
   ]
 }

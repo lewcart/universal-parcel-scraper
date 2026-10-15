@@ -4929,7 +4929,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "5post"
     },
     "canaryUrl": "https://fivepost.ru/",
     "trackingUrlTemplate": "https://fivepost.ru/tracking?id={trackingNumber}",

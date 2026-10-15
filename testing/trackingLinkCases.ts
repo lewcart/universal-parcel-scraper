@@ -766,6 +766,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pecom', number: '100000000033',
     route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,
     marker: /Отследить груз|Запрашиваемые вами грузы не найдены/ },
+  // The page looks the number up itself and names it in its answer to an unknown one.
+  { carrier: '5post', number: '99990000000000',
+    route: /^https:\/\/fivepost\.ru\/tracking\/\?id=99990000000000$/,
+    marker: /Заказ с номером \S+ не существует|Где мой заказ\?/ },
 ];
 
 /**

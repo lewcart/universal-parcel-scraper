@@ -61,6 +61,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ecoscooting": 655,
   "elta": 150,
   "emile": 480,
+  "ems-vietnam": 962,
   "envialia": 260,
   "epost-global": 65,
   "estes": 20,

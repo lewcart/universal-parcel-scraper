@@ -470,6 +470,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'emile', number: 'EM000000000001CA',
     route: /^https:\/\/www\.emileps\.com\/tracking\?/,
     marker: /Track Your\s+Shipment|Enter tracking number/i },
+  // The page fills its field in; the lookup waits for the visitor's search.
+  { carrier: 'ems-vietnam', number: 'EB000000076VN',
+    route: /^https:\/\/ems\.com\.vn\/tra-cuu\/tra-cuu-buu-gui\?code=EB000000076VN$/,
+    marker: /Tra cứu bưu gửi|Mã bưu gửi|Không tìm thấy kết quả/i },
   // The page fills its field in and looks the number up on load.
   { carrier: 'orlen-paczka', number: '2109999000003',
     route: /^https:\/\/www\.orlenpaczka\.pl\/sledz-paczke\/\?numer=/,

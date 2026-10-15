@@ -9445,7 +9445,10 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ems-vietnam",
+      "recognitionRank": 962,
+      "recognitionPattern": "^E[A-Z]\\d{9}VN$",
+      "localClocks": true
     },
     "canaryUrl": "https://www.ems.com.vn/tra-cuu/tra-cuu-buu-gui",
     "trackingUrlTemplate": "https://ems.com.vn/tra-cuu/tra-cuu-buu-gui?code={trackingNumber}",

@@ -117,6 +117,7 @@ import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js'
 import { statusMap as osmWorldwide } from '../../carriers/osm-worldwide/status.js';
 import { statusMap as paquetexpress } from '../../carriers/paquetexpress/status.js';
 import { statusMap as passport } from '../../carriers/passport/status.js';
+import { statusMap as pecom } from '../../carriers/pecom/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/status.js';
 import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
@@ -193,7 +194,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   maltapost, matkahuolto, meest,
   'mng-kargo': mngKargo, mtscn, naqel, nationex, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,
   'osm-worldwide': osmWorldwide,
-  paquetexpress, passport, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
+  paquetexpress, passport, pecom, 'post-luxembourg': postLuxembourg, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, sagawa, saia, sameday, 'saudi-post': saudiPost, servientrega, shadowfax,
   'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedx, speedy,
   'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn,

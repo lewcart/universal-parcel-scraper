@@ -172,6 +172,7 @@ import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
 import { adapter as passport } from '../carriers/passport/adapter.js';
+import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
@@ -427,6 +428,7 @@ export const REGISTRY: RegistryDefinition = {
     "packeta": packeta,
     "paquetexpress": paquetexpress,
     "passport": passport,
+    "pecom": pecom,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
     "pos-malaysia": posMalaysia,
@@ -833,7 +835,7 @@ export const REGISTRY: RegistryDefinition = {
     "pathao-courier": "universal",
     "paxi": "universal",
     "pbt": "universal",
-    "pecom": "universal",
+    "pecom": "pecom",
     "pelican-express": "universal",
     "pfc-express": "universal",
     "pilot-freight": "universal",

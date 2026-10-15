@@ -762,6 +762,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tcs-pakistan', number: '10000000001',
     route: /^https:\/\/www\.tcsexpress\.com\/track\/10000000001$/,
     marker: /Enter any combination of TCS tracking Reference number/ },
+  // The page fills its field in from the address, looks the code up and names the codes it did not find.
+  { carrier: 'pecom', number: '100000000033',
+    route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,
+    marker: /Отследить груз|Запрашиваемые вами грузы не найдены/ },
 ];
 
 /**

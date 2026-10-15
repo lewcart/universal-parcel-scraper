@@ -14839,7 +14839,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pecom",
+      "localClocks": true
     },
     "canaryUrl": "https://pecom.ru/services-are/order-status/",
     "trackingUrlTemplate": "https://pecom.ru/services-are/order-status/?code={trackingNumber}",

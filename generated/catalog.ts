@@ -5329,7 +5329,7 @@ export const CARRIER_CATALOG = {
   },
   "algerie-poste": {
     "displayName": "Algérie Poste",
-    "color": "#213f98",
+    "color": "#22297c",
     "aliases": [
       "Algeria Post",
       "Algerie Poste",
@@ -6126,7 +6126,7 @@ export const CARRIER_CATALOG = {
   },
   "best-express-vn": {
     "displayName": "BEST Express Vietnam",
-    "color": "#022344",
+    "color": "#d80c18",
     "aliases": [
       "BEST Express Việt Nam",
       "BEST Inc. Vietnam",
@@ -9431,7 +9431,7 @@ export const CARRIER_CATALOG = {
   },
   "ems-vietnam": {
     "displayName": "EMS Vietnam",
-    "color": "#0050a0",
+    "color": "#0054a6",
     "aliases": [
       "EMS Việt Nam",
       "Tổng công ty Chuyển phát nhanh Bưu điện",
@@ -10099,7 +10099,7 @@ export const CARRIER_CATALOG = {
   },
   "forza-delivery": {
     "displayName": "Forza Delivery Express",
-    "color": "#ff5100",
+    "color": "#ea5c1d",
     "aliases": [
       "Forza Delivery",
       "Forza",
@@ -10457,7 +10457,7 @@ export const CARRIER_CATALOG = {
   },
   "ghana-post": {
     "displayName": "Ghana Post",
-    "color": "#f57500",
+    "color": "#f7730f",
     "aliases": [
       "GhanaPost"
     ],
@@ -10867,7 +10867,7 @@ export const CARRIER_CATALOG = {
   },
   "guatex": {
     "displayName": "Guatex",
-    "color": "#141b49",
+    "color": "#282f6a",
     "aliases": [
       "GUATEX",
       "GuatEx",
@@ -11001,7 +11001,7 @@ export const CARRIER_CATALOG = {
   },
   "haypost": {
     "displayName": "HayPost",
-    "color": "#0063bd",
+    "color": "#fa4616",
     "aliases": [
       "Haypost",
       "Հայփոստ",
@@ -11816,7 +11816,7 @@ export const CARRIER_CATALOG = {
   },
   "j-and-t-mx": {
     "displayName": "J&T Express Mexico",
-    "color": "#e62019",
+    "color": "#e60012",
     "aliases": [
       "J&T Express México",
       "J&T Express (MX)",
@@ -11886,7 +11886,7 @@ export const CARRIER_CATALOG = {
   },
   "jamaica-post": {
     "displayName": "Jamaica Post",
-    "color": "#e8312f",
+    "color": "#e3352e",
     "aliases": [
       "Postal Corporation of Jamaica"
     ],
@@ -12508,7 +12508,7 @@ export const CARRIER_CATALOG = {
   },
   "la-poste-tunisienne": {
     "displayName": "La Poste Tunisienne",
-    "color": "#fa891c",
+    "color": "#10155f",
     "aliases": [
       "Tunisia Post",
       "Poste Tunisienne",
@@ -12543,7 +12543,7 @@ export const CARRIER_CATALOG = {
   },
   "laar-courier": {
     "displayName": "Laar Courier",
-    "color": "#ff0000",
+    "color": "#fce200",
     "aliases": [
       "LaarCourier",
       "Laar"
@@ -13387,7 +13387,7 @@ export const CARRIER_CATALOG = {
   },
   "mauritius-post": {
     "displayName": "Mauritius Post",
-    "color": "#00539b",
+    "color": "#f5d800",
     "aliases": [
       "Mauritius Post Ltd"
     ],
@@ -13714,7 +13714,7 @@ export const CARRIER_CATALOG = {
   },
   "ncs-courier": {
     "displayName": "NCS Kurir",
-    "color": "#e32222",
+    "color": "#243f80",
     "aliases": [
       "NCS",
       "PT Nusantara Card Semesta",
@@ -13909,7 +13909,7 @@ export const CARRIER_CATALOG = {
   },
   "northline": {
     "displayName": "Northline",
-    "color": "#e3173e",
+    "color": "#000000",
     "aliases": [
       "Northline Transport",
       "Northline Pty Ltd"
@@ -16158,7 +16158,7 @@ export const CARRIER_CATALOG = {
   },
   "saee": {
     "displayName": "Saee",
-    "color": "#f8941d",
+    "color": "#ff6b00",
     "aliases": [
       "SAEE",
       "ساعي"
@@ -16482,7 +16482,7 @@ export const CARRIER_CATALOG = {
   },
   "scg-express": {
     "displayName": "SCG Express",
-    "color": "#ed1c06",
+    "color": "#ed1c24",
     "aliases": [
       "SCG EXPRESS",
       "เอสซีจี เอ็กซ์เพรส",
@@ -18167,7 +18167,7 @@ export const CARRIER_CATALOG = {
   },
   "tanzania-posts": {
     "displayName": "Tanzania Posts Corporation",
-    "color": "#c31f26",
+    "color": "#dd1f2e",
     "aliases": [
       "Tanzania Post",
       "Tanzania Posts",
@@ -18309,7 +18309,7 @@ export const CARRIER_CATALOG = {
   },
   "tealca": {
     "displayName": "Tealca",
-    "color": "#0560a2",
+    "color": "#00559e",
     "aliases": [
       "Grupo Tealca",
       "Tealca Venezuela"
@@ -18842,7 +18842,7 @@ export const CARRIER_CATALOG = {
   },
   "tst-cf-express": {
     "displayName": "TST-CF Express",
-    "color": "#0050a0",
+    "color": "#0052a2",
     "aliases": [
       "TST-CF",
       "TST Overland Express",
@@ -18999,7 +18999,7 @@ export const CARRIER_CATALOG = {
   },
   "uzbekistan-post": {
     "displayName": "Uzbekistan Post",
-    "color": "#0d47a1",
+    "color": "#183e98",
     "aliases": [
       "O‘zbekiston pochtasi",
       "O'zbekiston pochtasi",
@@ -19114,7 +19114,7 @@ export const CARRIER_CATALOG = {
   },
   "via-cargo": {
     "displayName": "Via Cargo",
-    "color": "#1e8d34",
+    "color": "#589b50",
     "aliases": [
       "Vía Cargo",
       "Viacargo"
@@ -19734,7 +19734,7 @@ export const CARRIER_CATALOG = {
   },
   "yimidida": {
     "displayName": "Yimidida",
-    "color": "#fabe00",
+    "color": "#f5a91a",
     "aliases": [
       "壹米滴答",
       "壹米滴答快运",
@@ -19917,7 +19917,7 @@ export const CARRIER_CATALOG = {
   },
   "zoom-ve": {
     "displayName": "Zoom",
-    "color": "#1574b3",
+    "color": "#006ab0",
     "aliases": [
       "Grupo Zoom",
       "Zoom Venezuela",

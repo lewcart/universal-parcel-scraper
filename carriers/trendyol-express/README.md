@@ -2,6 +2,11 @@
 
 Trendyol Express parcels use enabled universal providers. There is no dedicated adapter.
 
+## Limitations
+
+Trendyol's cargo tracker reads a public JSON lookup, but Cloudflare refuses that lookup to
+clients other than a browser. The Trendyol app tracks only a signed-in customer's orders.
+
 ## Numbers
 
 Customers quote sixteen-digit shipment numbers starting `7330` or `10`, which Trendyol and

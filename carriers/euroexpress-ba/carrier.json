@@ -1,0 +1,43 @@
+{
+  "id": "euroexpress-ba",
+  "displayName": "EuroExpress",
+  "aliases": [
+    "EuroExpress brza pošta",
+    "Euro Express",
+    "EuroExpress d.o.o."
+  ],
+  "region": {
+    "countries": [
+      "BA"
+    ]
+  },
+  "brand": {
+    "color": "#da212e"
+  },
+  "selectable": true,
+  "timezone": "Europe/Sarajevo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.euroexpress.ba/pracenje-posiljke/{trackingNumber}",
+    "searchUrl": "https://www.euroexpress.ba/pracenje-posiljke",
+    "canaryUrl": "https://www.euroexpress.ba/pracenje-posiljke",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "euroexpress.ba"
+      ],
+      "path": "^/pracenje-posiljke/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,13 @@
+{
+  "carrier": "dohrn-transfer",
+  "entries": [
+    {"wording": "Pickup Request Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace."},
+    {"wording": "Manifested", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace. The freight is loaded on a trailer manifest at a terminal."},
+    {"wording": "Trailer Departed For Dohrn Rock Falls", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace. The wording ends with the next terminal."},
+    {"wording": "Trailer Arrived", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace."},
+    {"wording": "Enroute To Connecting Line", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace. The freight is handed to a partner carrier for the last leg."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace."},
+    {"wording": "DELIVERED OK", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of Dohrn's own XML trace. It is the summary status, followed by the delivery date, time and the name of the person who signed."}
+  ]
+}

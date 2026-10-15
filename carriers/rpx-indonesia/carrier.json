@@ -1,0 +1,45 @@
+{
+  "id": "rpx-indonesia",
+  "displayName": "RPX",
+  "aliases": [
+    "RPX Indonesia",
+    "RPX Kiriman Express"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#c9a73d"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://rpx.co.id/tracking",
+    "canaryUrl": "https://rpx.co.id/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "rpx.co.id",
+        "www.rpx.co.id"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "tracking_number[]"
+      ]
+    }
+  ],
+  "detection": []
+}

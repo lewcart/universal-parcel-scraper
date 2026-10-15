@@ -1,0 +1,55 @@
+{
+  "id": "uzbekistan-post",
+  "displayName": "Uzbekistan Post",
+  "aliases": [
+    "O‘zbekiston pochtasi",
+    "O'zbekiston pochtasi",
+    "UzPost",
+    "Uzbekiston Pochtasi"
+  ],
+  "region": {
+    "countries": [
+      "UZ"
+    ]
+  },
+  "brand": {
+    "color": "#0d47a1"
+  },
+  "selectable": true,
+  "timezone": "Asia/Tashkent",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://uz.post/ru/tracking/{trackingNumber}",
+    "searchUrl": "https://uz.post/ru/tracking",
+    "canaryUrl": "https://uz.post/ru/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "uz.post",
+        "www.uz.post"
+      ],
+      "path": "^/(?:(?:ru|uz)/)?tracking/([A-Za-z]{2}\\d{9}[A-Za-z]{2})/?$"
+    },
+    {
+      "domains": [
+        "uz.post",
+        "www.uz.post"
+      ],
+      "pathPattern": "^/(?:(?:ru|uz)/)?tracking/?$",
+      "params": [
+        "search"
+      ]
+    }
+  ],
+  "detection": []
+}

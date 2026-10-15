@@ -1,0 +1,72 @@
+{
+  "id": "pbt",
+  "displayName": "PBT",
+  "aliases": [
+    "PBT Couriers",
+    "PBT Express Freight Network",
+    "PBT Transport",
+    "PBT Group",
+    "PBTrack"
+  ],
+  "region": {
+    "countries": [
+      "NZ"
+    ]
+  },
+  "brand": {
+    "color": "#008fbe"
+  },
+  "selectable": true,
+  "timezone": "Pacific/Auckland",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",
+    "searchUrl": "https://www.pbt.nz/",
+    "canaryUrl": "https://www.pbt.nz/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.pbt.nz",
+        "pbt.nz"
+      ],
+      "pathPattern": "^/tracking-result/?$",
+      "params": [
+        "consignmentNumber",
+        "consignmentnumber"
+      ]
+    },
+    {
+      "domains": [
+        "www.pbt.com",
+        "pbt.com",
+        "www.pbt.co.nz",
+        "pbt.co.nz"
+      ],
+      "pathPattern": "^/(?:track|nick)/results\\.cfm$",
+      "params": [
+        "ticketNo"
+      ]
+    },
+    {
+      "domains": [
+        "www.pbt.co.nz",
+        "pbt.co.nz"
+      ],
+      "pathPattern": "^/landing\\.aspx$",
+      "params": [
+        "track"
+      ]
+    }
+  ],
+  "detection": []
+}

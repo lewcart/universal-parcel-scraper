@@ -1,0 +1,48 @@
+{
+  "id": "ems-vietnam",
+  "displayName": "EMS Vietnam",
+  "aliases": [
+    "EMS Việt Nam",
+    "Tổng công ty Chuyển phát nhanh Bưu điện",
+    "Tổng công ty EMS",
+    "VNPost EMS"
+  ],
+  "region": {
+    "countries": [
+      "VN"
+    ]
+  },
+  "brand": {
+    "color": "#0050a0"
+  },
+  "selectable": true,
+  "timezone": "Asia/Ho_Chi_Minh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://ems.com.vn/tra-cuu/tra-cuu-buu-gui?code={trackingNumber}",
+    "searchUrl": "https://www.ems.com.vn/tra-cuu/tra-cuu-buu-gui",
+    "canaryUrl": "https://www.ems.com.vn/tra-cuu/tra-cuu-buu-gui",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "ems.com.vn",
+        "www.ems.com.vn"
+      ],
+      "pathPattern": "^/tra-cuu/tra-cuu-buu-gui/?$",
+      "params": [
+        "code"
+      ]
+    }
+  ],
+  "detection": []
+}

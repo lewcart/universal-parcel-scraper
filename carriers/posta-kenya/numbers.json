@@ -1,0 +1,81 @@
+{
+  "carrier": "posta-kenya",
+  "records": [
+    {
+      "number": "cp003640229ke",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kenya-post.html",
+        "date": "2021-11-17",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Pasted with its item details, origin City Square in Kenya and destination Sweden, in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+    },
+    {
+      "number": "EP006537852KE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kenya-post.html",
+        "date": "2018-07-23",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Quoted as an undelivered package in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+    },
+    {
+      "number": "RA 203008471KE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kenya-post.html",
+        "date": "2021-11-30",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Quoted, with a space, as an item not yet received in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+    },
+    {
+      "number": "Rr008058151ke",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kenya-post.html?p=2",
+        "date": "2017-06-23",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Quoted as a missing mail item in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+    }
+  ]
+}

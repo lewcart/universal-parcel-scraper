@@ -2912,5 +2912,259 @@
       "zto"
     ],
     "reason": "pelican-express numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "AA9{10}",
+    "carriers": [
+      "aeropost",
+      "aramex-au",
+      "aramex-nz",
+      "colis-prive"
+    ],
+    "reason": "Aeropost's Costa Rica shipments are CR and ten digits, which Aramex Australia and Aramex New Zealand accept as any two letters and ten digits and Colis Privé as any twelve characters; all rules are low-confidence, so recognition decides."
+  },
+  {
+    "shape": "EC or ED and eleven digits",
+    "carriers": [
+      "algerie-poste",
+      "la-poste"
+    ],
+    "reason": "La Poste's low-confidence rule takes any two characters and eleven digits; EMS Champion Post Algérie's domestic express numbers fall inside it and both stay suggestions."
+  },
+  {
+    "shape": "AY followed by eleven digits",
+    "carriers": [
+      "aymakan",
+      "la-poste"
+    ],
+    "reason": "La Poste's low rule accepts two letters or digits before eleven digits; the AyMakan prefix rule decides."
+  },
+  {
+    "shape": "AY followed by ten digits",
+    "carriers": [
+      "aramex-au",
+      "aramex-nz",
+      "aymakan",
+      "colis-prive"
+    ],
+    "reason": "Colis Privé and Aramex accept generic twelve-character composites; the AyMakan prefix rule decides."
+  },
+  {
+    "shape": "AY followed by nine digits",
+    "carriers": [
+      "aymakan",
+      "gls-it"
+    ],
+    "reason": "GLS Italy's low rule accepts eleven-character composites; the AyMakan prefix rule decides."
+  },
+  {
+    "shape": "14 digits starting 688001, 688002 or 688005",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "city-express-rs",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-de",
+      "dpd-uk",
+      "relais-colis",
+      "seur"
+    ],
+    "reason": "City Express shipment numbers start with one of its centre codes; the same fourteen digits fit other carriers' low-confidence rules, so recognition asks each of them."
+  },
+  {
+    "shape": "16 digits starting 688001, 688002 or 688005",
+    "carriers": [
+      "canada-post",
+      "city-express-rs",
+      "correos-express",
+      "dhl-ecommerce",
+      "evri-uk",
+      "tnt"
+    ],
+    "reason": "City Express parcel numbers start with one of its centre codes; the same sixteen digits fit other carriers' low-confidence rules, so recognition asks each of them."
+  },
+  {
+    "shape": "CP followed by seven digits and a final 0",
+    "carriers": [
+      "dhl-ecommerce-es",
+      "nhat-tin"
+    ],
+    "reason": "DHL eCommerce Spain accepts any two letters, seven digits and a final 0; the CP layout only suggests Nhat Tin Logistics."
+  },
+  {
+    "shape": "eight digits, four digits and one digit joined by hyphens",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "korea-post",
+      "la-poste",
+      "ozon-logistics",
+      "yunda"
+    ],
+    "reason": "Without hyphens an Ozon posting number is thirteen digits, a length these carriers share; the hyphenated print selects Ozon's high-confidence rule."
+  },
+  {
+    "shape": "eight digits starting 0, four digits and one digit joined by hyphens",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "dpd-fr",
+      "la-poste",
+      "ozon-logistics",
+      "yunda"
+    ],
+    "reason": "Without hyphens an Ozon posting number is thirteen digits, a length these carriers share; the hyphenated print selects Ozon's high-confidence rule."
+  },
+  {
+    "shape": "ten digits, four digits and one digit joined by hyphens",
+    "carriers": [
+      "brt",
+      "dpd-fr",
+      "ozon-logistics",
+      "yunda"
+    ],
+    "reason": "Without hyphens a ten-digit Ozon posting number is fifteen digits, a length these carriers share; the hyphenated print selects Ozon's high-confidence rule."
+  },
+  {
+    "shape": "PL-, six digits, hyphen and five digits",
+    "carriers": [
+      "la-poste",
+      "ozon-logistics"
+    ],
+    "reason": "Without hyphens an Ozon Rocket order code fits La Poste's two-letter suggestion; the hyphenated print selects Ozon's high-confidence rule."
+  },
+  {
+    "shape": "PAR and ten digits",
+    "carriers": [
+      "magyar-posta",
+      "pargo"
+    ],
+    "reason": "Magyar Posta's low-confidence domestic rule takes any P, a letter, three characters and eight digits; Pargo's PAR waybills fall inside it and pargo-1 decides."
+  },
+  {
+    "shape": "OS, eight digits and KS",
+    "carriers": [
+      "colis-prive",
+      "saee"
+    ],
+    "reason": "Colis Privé's low rule accepts generic twelve-character composites; the Saee prefix and suffix rule decides."
+  },
+  {
+    "shape": "Twelve digits starting 1100 that pass the mod 7 check",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "scg-express",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "SCG Express numbers carry the mod 7 check digit that Japan Post, Sagawa and Yamato share, inside the twelve digits that several carriers accept; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "SPXID followed by twelve digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "spx-id"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Indonesia prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "SPXMY followed by twelve digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "spx-my"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Malaysia prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "SPXTH followed by twelve digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "spx-th"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Thailand prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "SPXVN followed by twelve digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "spx-vn"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Vietnam prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "PL and ten digits, printed with hyphens",
+    "carriers": [
+      "amazon-logistics",
+      "aramex-au",
+      "aramex-nz",
+      "colis-prive",
+      "ozon-logistics"
+    ],
+    "reason": "Typed with Ozon's hyphens, an Ozon Rocket code of PL and ten digits fits both Ozon's high-confidence rule and Amazon Logistics' PL layout, so neither decides; Aramex and Colis Privé suggest the same twelve characters. Typed without hyphens, the number stays Amazon's."
+  },
+  {
+    "shape": "P and seven digits",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "loggi",
+      "polaris-transport"
+    ],
+    "reason": "Polaris PRO numbers are P and seven digits, which GLS's and Loggi's low-confidence rules for eight letters and digits also take; no rule decides, so recognition asks each carrier."
+  },
+  {
+    "shape": "Twelve digits starting 1100",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "fedex",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "scg-express",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "Some SCG Express numbers also pass FedEx's twelve-digit check, so FedEx joins the carriers whose rules take twelve digits and the mod 7 group; every rule is low-confidence, so recognition asks each of them."
+  },
+  {
+    "shape": "Twelve digits starting 1100",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "scg-express",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "Some SCG Express numbers also pass Purolator's twelve-digit check, so Purolator joins the carriers whose rules take twelve digits and the mod 7 group; every rule is low-confidence, so recognition asks each of them."
   }
 ]

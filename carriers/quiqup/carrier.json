@@ -1,0 +1,31 @@
+{
+  "id": "quiqup",
+  "displayName": "Quiqup",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#6c65f7"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://track-parcel.quiqup.com/",
+    "canaryUrl": "https://track-parcel.quiqup.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

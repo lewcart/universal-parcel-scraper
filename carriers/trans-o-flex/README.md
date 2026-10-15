@@ -36,4 +36,5 @@ live one shows the result.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Provider live-test inputs and commands are in the
+[provider READMEs](../../providers/README.md).

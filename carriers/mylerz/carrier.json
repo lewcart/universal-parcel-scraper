@@ -1,0 +1,45 @@
+{
+  "id": "mylerz",
+  "displayName": "Mylerz",
+  "aliases": [
+    "MYLERZ"
+  ],
+  "region": {
+    "countries": [
+      "EG",
+      "TN",
+      "MA",
+      "DZ",
+      "JO"
+    ]
+  },
+  "brand": {
+    "color": "#fb4f14"
+  },
+  "selectable": true,
+  "timezone": "Africa/Cairo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://mylerz.net/track/{trackingNumber}",
+    "searchUrl": "https://mylerz.net/track",
+    "canaryUrl": "https://mylerz.net/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mylerz.net"
+      ],
+      "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

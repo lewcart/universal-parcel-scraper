@@ -1,0 +1,6 @@
+{
+  "carrier": "rpx-indonesia",
+  "entries": [
+    {"code": "WPU", "wording": "Shipping Manifest Accepted and Waiting For Pickup", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "The tracking event in the sample reply of RPX's getTracking API documentation."}
+  ]
+}

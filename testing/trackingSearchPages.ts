@@ -9,19 +9,26 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   blueex: 'blue-ex.com hides its tracking forms on phone-sized screens; its own links open the tracking page with the number',
   ciblex: 'Ciblex shows parcels only in its customer extranet, behind a sign-in',
   deprisa: 'Deprisa\'s tracker opens a shipment from the number in its address; archived copies of its pages show no number field, and deprisa.com answers 403 to many networks outside Colombia',
+  'nim-express': 'nimexpress.com\'s tracking fields are a script widget and a form that asks for a confirmation code; its own header form opens the tracking page with the number',
   'skynet-worldwide': 'SkyNet\'s tracker shows its number field only with a network parameter in the address, and skynetworldwide.com has no tracking page of its own',
 };
 
 /** Search pages the weekly check cannot open, and why. Each was seen working in a regular browser. */
 export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'aaa-cooper': 'www.aaacooper.com refuses connections from many networks; an archived copy of the home page shows its Action Trac number field',
+  'best-express-vn': 'www.best-inc.vn sends phone-sized screens to a tracking page that renders blank in automated browsers; the desktop page has the waybill field',
   'daylight-transport': 'the Track PRO # field sits in the desktop header of dylt.com, which the phone-size check does not show',
   dellin: 'the tracker answers automated browsers with a Qrator check (HTTP 401); in a regular browser it shows its order-number field',
   dtdc: 'www.dtdc.com refuses connections from many networks outside India; an archived phone-size copy shows its number field',
   'emirates-post': 'emiratespost.ae answers 403 to many networks outside the UAE; an archived copy shows its number field',
+  'hi-trans': 'www.hi-trans.com.au challenges automated browsers; in a regular browser its home page has the consignment number field',
   'israel-post': 'israelpost.co.il answers 403 to many networks outside Israel; an archived copy shows its item-number field',
   'midland-transport': 'the tracking-number field sits in the desktop navigation bar of the tracker, which the phone-size check does not show',
   'olva-courier': 'the tracker names its field q, which the check reads as a site search',
+  'ozon-logistics': 'tracking.ozon.ru answers automated browsers with a bot check; in a regular browser it shows the tracking number field',
+  'polaris-transport': 'polaristransport.com does not answer from many networks; its trace page has the PRO number field',
+  postaplus: 'postaplus.com draws its tracking form late in a script app, after the automated check gives up',
+  saee: 'saee.sa answers 503 to automated checks from many networks; archived copies of its tracking page show the waybill field',
   'spee-dee': 'the tracking form is a frame from packages.speedeedelivery.com, which drops connections from many networks',
   'surat-kargo': 'www.suratkargo.com.tr answers a Cloudflare block to many networks outside Turkey; an archived copy shows its number field',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the form often stays empty past the render window',

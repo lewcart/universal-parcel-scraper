@@ -1,0 +1,44 @@
+{
+  "id": "jordan-post",
+  "displayName": "Jordan Post",
+  "aliases": [
+    "البريد الأردني"
+  ],
+  "region": {
+    "countries": [
+      "JO"
+    ]
+  },
+  "brand": {
+    "color": "#a42035"
+  },
+  "selectable": true,
+  "timezone": "Asia/Amman",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://212.35.69.84/JordanWebTrack/Result.aspx?itemid={trackingNumber}",
+    "searchUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
+    "canaryUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "212.35.69.84"
+      ],
+      "pathPattern": "^/JordanWebTrack/Result\\.aspx$",
+      "params": [
+        "itemid"
+      ]
+    }
+  ],
+  "detection": []
+}

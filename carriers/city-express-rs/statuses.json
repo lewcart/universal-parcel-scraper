@@ -1,0 +1,11 @@
+{
+  "carrier": "city-express-rs",
+  "entries": [
+    {"wording": "Preuzimanje u toku", "stage": "registered", "language": "sr", "confirmedBy": "portal", "note": "Seen in an archived result of City Express's tracker, before the parcel was entered at the depot. Pickup in progress."},
+    {"wording": "Pošiljka uneta u sistem", "stage": "accepted", "language": "sr", "confirmedBy": "portal", "note": "Seen in archived results of City Express's tracker, recorded at the depot on the evening of pickup."},
+    {"wording": "Utovareno za isporuku", "stage": "out_for_delivery", "language": "sr", "confirmedBy": "portal", "note": "Seen in an archived result of City Express's tracker. Loaded for delivery."},
+    {"wording": "Utovareno za dostavu", "stage": "out_for_delivery", "language": "sr", "confirmedBy": "portal", "note": "Seen in an archived result of City Express's tracker. Loaded for delivery."},
+    {"wording": "Na isporuci", "stage": "out_for_delivery", "language": "sr", "confirmedBy": "portal", "note": "The status heading of an archived result of City Express's tracker, above a history ending in Utovareno za isporuku."},
+    {"wording": "Isporučeno", "stage": "delivered", "language": "sr", "confirmedBy": "portal", "note": "Seen in an archived result of City Express's tracker, as the history line and the status heading."}
+  ]
+}

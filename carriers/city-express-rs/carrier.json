@@ -1,0 +1,41 @@
+{
+  "id": "city-express-rs",
+  "displayName": "City Express",
+  "aliases": [
+    "City Express d.o.o.",
+    "City Express Serbia",
+    "CITY EXPRESS DOO"
+  ],
+  "region": {
+    "countries": [
+      "RS"
+    ]
+  },
+  "brand": {
+    "color": "#f58220"
+  },
+  "selectable": true,
+  "timezone": "Europe/Belgrade",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.cityexpress.rs/pracenje-posiljke",
+    "canaryUrl": "https://www.cityexpress.rs/pracenje-posiljke",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "city-express-rs-1",
+      "pattern": "^68800[125]\\d{8}(?:\\d{2})?$",
+      "confidence": "low"
+    }
+  ]
+}

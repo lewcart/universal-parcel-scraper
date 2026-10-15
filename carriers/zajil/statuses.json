@@ -1,0 +1,8 @@
+{
+  "carrier": "zajil",
+  "entries": [
+    {"wording": "Processing", "stage": "registered", "language": "en", "confirmedBy": "bundle", "note": "Progress label in Zajil's tracking page script, which maps the tracking API's website_update value to it."},
+    {"code": "In_Transit", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "bundle", "note": "Progress label in Zajil's tracking page script, which maps the tracking API's website_update value to it."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Progress label in Zajil's tracking page script, which maps the tracking API's website_update value to it."}
+  ]
+}

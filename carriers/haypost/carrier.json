@@ -1,0 +1,36 @@
+{
+  "id": "haypost",
+  "displayName": "HayPost",
+  "aliases": [
+    "Haypost",
+    "Հայփոստ",
+    "Armenia Post"
+  ],
+  "region": {
+    "countries": [
+      "AM"
+    ]
+  },
+  "brand": {
+    "color": "#0063bd"
+  },
+  "selectable": true,
+  "timezone": "Asia/Yerevan",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.haypost.am/track-trace#{trackingNumber}",
+    "searchUrl": "https://www.haypost.am/en/track-trace",
+    "canaryUrl": "https://www.haypost.am/en/track-trace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

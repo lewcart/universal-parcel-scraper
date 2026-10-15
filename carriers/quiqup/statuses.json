@@ -1,0 +1,19 @@
+{
+  "carrier": "quiqup",
+  "entries": [
+    {"wording": "Packed", "stage": "registered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state pending, ready_for_collection or out_for_collection to it."},
+    {"code": "scheduled", "wording": "Scheduled", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"wording": "Collected", "stage": "accepted", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state collected, at_depot or received_at_depot to it."},
+    {"code": "in_transit", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"code": "out_for_delivery", "wording": "Delivering", "stage": "out_for_delivery", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"code": "robot_loaded", "wording": "With robot", "stage": "out_for_delivery", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it. The text has a no-break space; the parcel is loaded into a delivery robot."},
+    {"code": "delivery_failed", "wording": "Attempted", "stage": "failed_attempt", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"code": "on_hold", "wording": "On Hold", "stage": "exception", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"wording": "Cancelled", "stage": "exception", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state cancelled, return_to_origin or returned_to_origin to it. A return to the sender also shows as Cancelled."},
+    {"code": "delivery_complete", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script, which maps the order state given as code to it."},
+    {"code": "recipient_pin", "wording": "Code entered on the robot", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script for a robot delivery, keyed by the robot hand-over method given as code."},
+    {"code": "concierge", "wording": "Handed to the building concierge", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script for a robot delivery, keyed by the robot hand-over method given as code."},
+    {"code": "reception", "wording": "Left at reception", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script for a robot delivery, keyed by the robot hand-over method given as code."},
+    {"wording": "Collected from the robot", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Label in Quiqup's tracker script for a robot delivery without a recorded hand-over method."}
+  ]
+}

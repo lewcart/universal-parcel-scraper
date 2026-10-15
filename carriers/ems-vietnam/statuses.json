@@ -1,0 +1,13 @@
+{
+  "carrier": "ems-vietnam",
+  "entries": [
+    {"wording": "Chấp nhận gửi", "stage": "accepted", "language": "vi", "confirmedBy": "portal", "note": "Followed by a customer-service contact in brackets. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "Đã đóng chuyến thư đi", "stage": "in_transit", "language": "vi", "confirmedBy": "portal", "note": "Dispatched in an outgoing mail bag. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "[BĐ8]Đã xác nhận đi", "stage": "in_transit", "language": "vi", "confirmedBy": "portal", "note": "Departure confirmed. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "[BĐ8]Đã tới bưu cục nhận", "stage": "in_transit", "language": "vi", "confirmedBy": "portal", "note": "Arrived at the receiving office. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "Đã xác nhận đến", "stage": "in_transit", "language": "vi", "confirmedBy": "portal", "note": "Arrival confirmed. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "Đã giao cho bưu tá", "stage": "out_for_delivery", "language": "vi", "confirmedBy": "portal", "note": "Followed by the postman's name and phone, left out here. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "Phát thành công", "stage": "delivered", "language": "vi", "confirmedBy": "portal", "note": "Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."},
+    {"wording": "Đã phát thành công", "stage": "delivered", "language": "vi", "confirmedBy": "portal", "note": "The delivery summary line, followed by the receiver and a remark, left out here. Seen in an archived reply of EMS Vietnam's tracking API, which its tracking page calls."}
+  ]
+}

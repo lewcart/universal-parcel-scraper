@@ -1,0 +1,68 @@
+{
+  "id": "roadie",
+  "displayName": "Roadie",
+  "aliases": [
+    "Roadie, a UPS Company",
+    "Roadie Inc."
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#76cccd"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.roadie.com/id/{trackingNumber}",
+    "searchUrl": "https://track.roadie.com/",
+    "canaryUrl": "https://track.roadie.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.roadie.com"
+      ],
+      "path": "^/(?:[^/]+/)?id/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "track.roadie.com"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "track.roadie.com"
+      ],
+      "pathPattern": "^/(?:[^/]+/)?track/?$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "roadie-1",
+      "pattern": "^1R[0-9A-Z]{26}$",
+      "confidence": "high"
+    },
+    {
+      "id": "roadie-2",
+      "pattern": "^1R[0-9A-F]{14}$",
+      "confidence": "high"
+    }
+  ]
+}

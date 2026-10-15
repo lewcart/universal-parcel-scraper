@@ -1,0 +1,46 @@
+{
+  "id": "nim-express",
+  "displayName": "Nim Express",
+  "aliases": [
+    "NIMEXPRESS",
+    "นิ่มเอ็กซ์เพรส"
+  ],
+  "region": {
+    "countries": [
+      "TH"
+    ]
+  },
+  "brand": {
+    "color": "#0967b3"
+  },
+  "selectable": true,
+  "timezone": "Asia/Bangkok",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.nimexpress.com/web/p/tracking?h_i={trackingNumber}",
+    "canaryUrl": "https://www.nimexpress.com/web/p/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nimexpress.com",
+        "www.nimexpress.com"
+      ],
+      "pathPattern": "^/web/p/tracking/?$",
+      "params": [
+        "h_i",
+        "i"
+      ]
+    }
+  ],
+  "detection": []
+}

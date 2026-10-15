@@ -1,0 +1,45 @@
+{
+  "id": "mauritius-post",
+  "displayName": "Mauritius Post",
+  "aliases": [
+    "Mauritius Post Ltd"
+  ],
+  "region": {
+    "countries": [
+      "MU"
+    ]
+  },
+  "brand": {
+    "color": "#00539b"
+  },
+  "selectable": true,
+  "timezone": "Indian/Mauritius",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mauritiuspost.mu/track-trace/?tracking_code={trackingNumber}",
+    "searchUrl": "https://www.mauritiuspost.mu/track-trace/",
+    "canaryUrl": "https://www.mauritiuspost.mu/track-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.mauritiuspost.mu",
+        "mauritiuspost.mu"
+      ],
+      "pathPattern": "^/track-trace/?$",
+      "params": [
+        "tracking_code"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -29,4 +29,5 @@ outside Russia, so Russian Post stays on universal providers.
 
 ## Testing
 
-Provider live-test inputs and commands are in the [provider READMEs](../../providers/README.md).
+Provider live-test inputs and commands are in the
+[provider READMEs](../../providers/README.md).

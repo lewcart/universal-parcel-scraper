@@ -1,0 +1,10 @@
+{
+  "carrier": "northline",
+  "entries": [
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "A step of the tracker's progress bar, read from the live tracker's script (SendDepot), not from an archived capture."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A progress-bar step in the tracker's script (InTransit)."},
+    {"wording": "Dest Depot", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A progress-bar step in the tracker's script (DestDepot): the consignment reached the destination depot."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A progress-bar step in the tracker's script (OnDelivery)."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A progress-bar step in the tracker's script (Delivered)."}
+  ]
+}

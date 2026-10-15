@@ -1,0 +1,56 @@
+{
+  "id": "aymakan",
+  "displayName": "AyMakan",
+  "aliases": [
+    "Aymakan",
+    "أي مكان"
+  ],
+  "region": {
+    "countries": [
+      "SA"
+    ]
+  },
+  "brand": {
+    "color": "#feca07"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://aymakan.com/tracking/{trackingNumber}",
+    "searchUrl": "https://aymakan.com/tracking",
+    "canaryUrl": "https://aymakan.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "aymakan.com",
+        "www.aymakan.com"
+      ],
+      "path": "^/(?:ar/|en/)?tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "aymakan.com.sa",
+        "www.aymakan.com.sa"
+      ],
+      "path": "^/(?:ar|en)/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "aymakan-1",
+      "pattern": "^AY\\d{9,11}$",
+      "confidence": "high"
+    }
+  ]
+}

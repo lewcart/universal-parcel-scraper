@@ -1,0 +1,64 @@
+{
+  "id": "dohrn-transfer",
+  "displayName": "Dohrn Transfer",
+  "aliases": [
+    "Dohrn",
+    "Dohrn Transfer Company"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#ee3631"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm?wpro={trackingNumber}",
+    "searchUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm",
+    "canaryUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "facts.dohrn.com",
+        "www.dohrn.com"
+      ],
+      "pathPattern": "^/scripts/cgiip\\.exe/protraceext\\.htm$",
+      "params": [
+        "wpro"
+      ]
+    },
+    {
+      "domains": [
+        "facts.dohrn.com"
+      ],
+      "pathPattern": "^/scripts/cgiip\\.exe/protracexml(?:\\.htm)?$",
+      "params": [
+        "pronum"
+      ]
+    },
+    {
+      "domains": [
+        "facts.dohrn.com"
+      ],
+      "pathPattern": "^/scripts/cgiip\\.exe/shipmenttrace\\.htm$",
+      "params": [
+        "referencenumber"
+      ]
+    }
+  ],
+  "detection": []
+}

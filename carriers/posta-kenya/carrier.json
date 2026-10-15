@@ -1,0 +1,35 @@
+{
+  "id": "posta-kenya",
+  "displayName": "Posta Kenya",
+  "aliases": [
+    "Postal Corporation of Kenya",
+    "PCK",
+    "Kenya Post"
+  ],
+  "region": {
+    "countries": [
+      "KE"
+    ]
+  },
+  "brand": {
+    "color": "#ed1c24"
+  },
+  "selectable": true,
+  "timezone": "Africa/Nairobi",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",
+    "canaryUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,23 @@
+{
+  "carrier": "mylerz",
+  "entries": [
+    {"code": 12, "wording": "Uploaded", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusEnName): the merchant uploaded the shipment."},
+    {"code": 12, "wording": "تم الرفع", "stage": "registered", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusArName) for Uploaded."},
+    {"code": 7, "wording": "Picked from shipper", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusEnName)."},
+    {"code": 7, "wording": "تم استلامها من التاجر", "stage": "accepted", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusArName) for Picked from shipper."},
+    {"code": 3, "wording": "In-Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusEnName)."},
+    {"code": 3, "wording": "فى الطريق", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusArName) for In-Transit."},
+    {"code": 4, "wording": "mylerz on the way", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusEnName): the courier is on the way to the recipient."},
+    {"code": 4, "wording": "المندوب فى الطريق", "stage": "out_for_delivery", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusArName) for mylerz on the way."},
+    {"code": 2, "wording": "Delivered, Enjoy it :-)", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusEnName and ConsumerENStatus)."},
+    {"code": 2, "wording": "تم تسليمها   :-)", "stage": "delivered", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker (StatusBusArName and ConsumerARStatus); the reply has three spaces before the smiley."},
+    {"wording": "Ready", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusEnName) beside Uploaded."},
+    {"wording": "Received by Myler", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusEnName) beside Picked from shipper and mylerz on the way, so it covers both the pickup and the delivery courier."},
+    {"wording": "Received in Hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusEnName) beside In-Transit."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusEnName) beside Delivered, Enjoy it :-)."},
+    {"wording": "جاهز", "stage": "registered", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusArName) for Ready."},
+    {"wording": "استلمت", "stage": "accepted", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusArName) for Received by Myler, used at pickup and with the delivery courier."},
+    {"wording": "موجوده بالفرع", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusArName) for Received in Hub."},
+    {"wording": "وصلت", "stage": "delivered", "language": "ar", "confirmedBy": "portal", "note": "Seen in an archived capture of the tracking API behind Mylerz's tracker: internal status name (StatusArName) for Delivered."}
+  ]
+}

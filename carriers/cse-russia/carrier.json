@@ -1,0 +1,59 @@
+{
+  "id": "cse-russia",
+  "displayName": "CSE",
+  "aliases": [
+    "КСЭ",
+    "Курьер Сервис Экспресс",
+    "Courier Service Express",
+    "Курьерская служба КСЭ"
+  ],
+  "region": {
+    "countries": [
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#f47920"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.cse.ru/mow/track/?numbers={trackingNumber}",
+    "searchUrl": "https://www.cse.ru/mow/track/",
+    "canaryUrl": "https://www.cse.ru/mow/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "cse.ru",
+        "www.cse.ru"
+      ],
+      "pathPattern": "^/[a-z]{3}/track/?$",
+      "params": [
+        "numbers"
+      ]
+    },
+    {
+      "domains": [
+        "cse.ru",
+        "www.cse.ru",
+        "old.cse.ru"
+      ],
+      "pathPattern": "^/track\\.php$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": []
+}

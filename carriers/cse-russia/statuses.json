@@ -1,0 +1,27 @@
+{
+  "carrier": "cse-russia",
+  "entries": [
+    {"wording": "Принят. Идет обработка", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Accepted. Processing..."},
+    {"wording": "Заказ принят, идет обработка заказа.", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru."},
+    {"wording": "Курьер уже в пути", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. The pickup courier is on the way. English: Courier is already on the way."},
+    {"wording": "Отправлен курьер.", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. A pickup courier was sent."},
+    {"wording": "На основании заказа оформлена накладная", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Waybill issued based on the order."},
+    {"wording": "Отправление создано", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Shipment created."},
+    {"wording": "Зарегистрирована накладная", "stage": "registered", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru."},
+    {"wording": "Отправление забрано", "stage": "accepted", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Shipment picked up."},
+    {"wording": "Отправление получено курьером", "stage": "accepted", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Shipment received by the courier."},
+    {"wording": "Груз забран", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in CSE's extended API documentation (lk.cse.ru/files/uploads/extended_api_2020_05_06_EngVer.pdf)."},
+    {"wording": "Груз получен на склад КС", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. Received at a CSE warehouse."},
+    {"wording": "Отправление подготовлено к отправке", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru."},
+    {"wording": "Отправление в пути", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Shipment is on the way."},
+    {"wording": "Отправление прибыло в город", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. Arrived in the destination city."},
+    {"wording": "Оформлена переадресация доставки", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. Delivery redirected to a new address."},
+    {"wording": "Перенос доставки по запросу клиента", "stage": "exception", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. Delivery postponed at the customer's request."},
+    {"wording": "Груз передан на доставку", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Cargo handed over for delivery."},
+    {"wording": "Ожидайте курьера сегодня", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Await the courier today."},
+    {"wording": "Получатель самостоятельно заберет отправку из офиса КС.", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. The recipient will collect the item at a CSE office."},
+    {"wording": "Отправление доставлено получателю", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Shown on archived replies of CSE's Cargo 3 tracking portal at cse-cargo.ru. The portal follows it with the recipient's name."},
+    {"wording": "Доставка завершена", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Shown in archived replies of CSE's tracking API at lk.cse.ru. English: Delivery completed."},
+    {"wording": "Заказ выполнен.", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Listed in CSE's extended API documentation (lk.cse.ru/files/uploads/extended_api_2020_05_06_EngVer.pdf)."}
+  ]
+}

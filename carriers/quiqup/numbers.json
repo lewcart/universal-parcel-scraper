@@ -1,0 +1,27 @@
+{
+  "carrier": "quiqup",
+  "records": [
+    {
+      "number": "8994240",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://track-parcel.quiqup.com/",
+        "date": "2026-10-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "Placeholder of the Reference No field on Quiqup's own tracker."
+    }
+  ]
+}

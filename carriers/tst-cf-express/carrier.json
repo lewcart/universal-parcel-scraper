@@ -1,0 +1,48 @@
+{
+  "id": "tst-cf-express",
+  "displayName": "TST-CF Express",
+  "aliases": [
+    "TST-CF",
+    "TST Overland Express",
+    "Canadian Freightways",
+    "TST Solutions"
+  ],
+  "region": {
+    "countries": [
+      "CA",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#0050a0"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.tst-cfexpress.com/tracing/by-url?lang=e&PRO={trackingNumber}",
+    "searchUrl": "https://m.tst-cfexpress.com/tracing",
+    "canaryUrl": "https://m.tst-cfexpress.com/tracing",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tst-cfexpress.com"
+      ],
+      "pathPattern": "^/tracing/by-url/?$",
+      "params": [
+        "PRO"
+      ]
+    }
+  ],
+  "detection": []
+}

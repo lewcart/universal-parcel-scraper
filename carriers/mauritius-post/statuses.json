@@ -1,0 +1,8 @@
+{
+  "carrier": "mauritius-post",
+  "entries": [
+    {"wording": "Received the shipment from customer", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Shown with the location Virtual Office on the archived tracking page."},
+    {"wording": "Pacakge label printed", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The tracker spells it this way."},
+    {"wording": "Dispatched", "stage": "in_transit", "language": "en", "confirmedBy": "portal"}
+  ]
+}

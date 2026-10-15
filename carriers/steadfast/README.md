@@ -11,10 +11,18 @@ hexadecimal codes are too generic to claim.
 
 ## Links
 
-`steadfast.com.bd/t/{code}` opens a parcel by its hexadecimal code, and the page loads the
-history from `steadfast.com.bd/track/consignment/{code}`; both addresses are read. Text
-messages link to `/t/` or `/tl/` with a longer private code, which is not a tracking number
-and is not read.
+Older addresses, `steadfast.com.bd/t/{code}` with a hexadecimal code and
+`steadfast.com.bd/track/consignment/{code}`, carry the tracking code, and the library reads it
+from them. Text messages link to `/t/` or `/tl/` with a longer private code, which is not a
+tracking number and is not read.
+
+## Limitations
+
+Steadfast's tracking page opens a parcel only from the private code in the recipient's text
+message. With a tracking code, `/t/` and `/tl/` answer that the link is not available, and
+`steadfast.com.bd/track/consignment/{code}` answers "Consignment not found!" for every code,
+current parcels included. The Steadfast Courier app is the merchant app and needs an account,
+and the merchant API needs the merchant's keys, so Steadfast stays on universal providers.
 
 ## Testing
 

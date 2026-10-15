@@ -18081,7 +18081,6 @@ export const CARRIER_CATALOG = {
       "adapter": "universal"
     },
     "canaryUrl": "https://steadfast.com.bd/tracking",
-    "trackingUrlTemplate": "https://steadfast.com.bd/t/{trackingNumber}",
     "trackingSearchUrl": "https://steadfast.com.bd/tracking",
     "linkRules": [
       {

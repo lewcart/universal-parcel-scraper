@@ -707,6 +707,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'imile', number: '0000000000013',
     route: /^https:\/\/www\.imile\.com\/[^/]+\/track\/?\?waybillNo=0000000000013$/,
     marker: /TRACK YOUR ORDER|TYPE YOUR ORDER NUMBER/i },
+  // The server renders the lookup; its answer to an unknown number does not show the number.
+  { carrier: 'naqel', number: '100000009',
+    route: /^https:\/\/www\.naqelexpress\.com\/en\/Track\/TrackShipment\/100000009$/,
+    marker: /Waybills \/ Reference Numbers|Shipment Details/,
+    forwarding: { notFound: /Sorry Tracking information is not available/ } },
 ];
 
 /**

@@ -11193,7 +11193,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "naqel",
+      "recognitionRank": 413,
+      "localClocks": true
     },
     "canaryUrl": "https://www.naqelexpress.com/en/sa/tracking/",
     "trackingUrlTemplate": "https://www.naqelexpress.com/en/Track/TrackShipment/{trackingNumber}",

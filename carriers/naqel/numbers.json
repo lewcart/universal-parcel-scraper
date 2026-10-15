@@ -55,13 +55,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened. Naqel's tracker shows the shipment's history."
     },
     {
       "number": "396514038",
@@ -74,13 +74,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened. Naqel's tracker shows the shipment's history."
     },
     {
       "number": "385789088",
@@ -93,13 +93,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened. Naqel's tracker shows the shipment's history."
     },
     {
       "number": "332808665",
@@ -242,7 +242,7 @@
     },
     {
       "number": "36955288200001",
-      "role": "shipment",
+      "role": "full_barcode",
       "evidence": "public_shipment_report",
       "source": {
         "url": "https://web.archive.org/web/20251031051158/https://www.naqelexpress.com/en/Track/TrackShipment/36955288200001",
@@ -250,9 +250,8 @@
         "dateKind": "capture",
         "access": "indexed_excerpt"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -269,7 +268,7 @@
           "dpd-uk"
         ]
       },
-      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened. Fourteen digits may be a waybill with a piece counter; Saudi Post's tracker script accepts Naqel numbers of eight, nine, thirteen and fourteen digits."
+      "note": "Looked up on Naqel's own tracker, as an archived address shows; the capture was not opened. Naqel's tracker answers it with the history of the nine-digit waybill its first nine digits give; the last five count the piece."
     }
   ]
 }

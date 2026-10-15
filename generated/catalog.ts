@@ -12278,7 +12278,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kex",
+      "recognitionRank": 959
     },
     "canaryUrl": "https://th.kex-express.com/en/track-parcel",
     "trackingUrlTemplate": "https://th.kex-express.com/en/track/?track={trackingNumber}",

@@ -20,18 +20,69 @@
   "timezone": "Asia/Bangkok",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 959
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://th.kex-express.com/en/track/?track={trackingNumber}",
     "searchUrl": "https://th.kex-express.com/en/track-parcel",
     "canaryUrl": "https://th.kex-express.com/en/track-parcel",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "eta",
+      "delivered_at",
+      "origin",
+      "destination",
+      "sender_name",
+      "recipient_name",
+      "customer_reference",
+      "courier_name",
+      "contact_details",
+      "signature",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin",
+      "destination",
+      "sender_name",
+      "recipient_name",
+      "customer_reference",
+      "courier_name",
+      "contact_details",
+      "signature",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "weight",
+      "pickup_point"
+    ]
   },
   "links": [
     {

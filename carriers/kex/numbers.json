@@ -209,6 +209,82 @@
         "confidence": "none"
       },
       "note": "Looked up on the carrier's tracker at th.kerryexpress.com, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "DCAT0000175027",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260527053210/https://th.kex-express.com/en/track/?track=DCAT0000175027",
+        "date": "2026-05-27",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Looked up on KEX Express' tracker at th.kex-express.com; the opened capture holds only the page's script. The tracker answers the number with a delivered history."
+    },
+    {
+      "number": "PROS0518804706",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260604134748/https://th.kex-express.com/en/track/?track=ODg5NjJjNjlkNGRhMjYxMjFjNDViNTliODg0ZWU4NGZmSHg4MjcyODI2NzAwMTA2N2YyNjJlYjUzMTkzYjk1ZTY3NWVmSHg4UFJPUzA1MTg4MDQ3MDZmSHg4MzA0NjBiOWI1ZjcxM2FjMTI1NGZkNDgwYWY2NzYwZjdmSHg4ODgwNmZiNThlOWYwMDc1NTQxZWI4ZTBkNGE0ZDJmNDA%253D",
+        "date": "2026-06-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Looked up on KEX Express' tracker, as an archived address shows; the number is in the page's encoded track parameter. The tracker answers it with a delivered history."
+    },
+    {
+      "number": "PROS0585164315",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260930091259/https://th.kex-express.com/th/track/?track=Njg0MTYyY2M1ZTNjNDc0ODliN2M1MzU0M2FkMDE3MWFmSHg4OGM3ODJhMmU0NTg4NDUyM2FkZTVhN2ZkMDg2NmQ3YzJmSHg4UFJPUzA1ODUxNjQzMTVmSHg4ZGJmYjUzMjYwMGRmNDYyODk1NTUxNjFjODhjMDU1MDJmSHg4NGQ4OTdhZTBhNTBiNDE3NDllMjVjYzVjYzQ2NWE1OTk%3D",
+        "date": "2026-09-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Looked up on KEX Express' tracker, as an archived address shows; the number is in the page's encoded track parameter. The tracker answers it with a delivered history."
+    },
+    {
+      "number": "RUTD000239675UL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260512174958/https://th.kex-express.com/th/track/?track=RUTD000239675UL",
+        "date": "2026-05-12",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Looked up on KEX Express' tracker, as an archived address shows. The tracker answers it with a delivered history."
     }
   ]
 }

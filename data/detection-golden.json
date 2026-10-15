@@ -50358,6 +50358,12 @@
     ]
   },
   {
+    "input": "DCAT0000175027",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "DD-KBA6JL",
     "carrier": "unknown",
     "confidence": "low",
@@ -60873,6 +60879,18 @@
     "candidates": []
   },
   {
+    "input": "PROS0518804706",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "PROS0585164315",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "PRT00000001234000000001",
     "carrier": "ecoscooting",
     "confidence": "high",
@@ -63217,6 +63235,12 @@
     "candidates": [
       "spring-gds"
     ]
+  },
+  {
+    "input": "RUTD000239675UL",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "RW000336615R",

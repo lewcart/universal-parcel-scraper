@@ -781,6 +781,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: '5post', number: '99990000000000',
     route: /^https:\/\/fivepost\.ru\/tracking\/\?id=99990000000000$/,
     marker: /Заказ с номером \S+ не существует|Где мой заказ\?/ },
+  // The page fills its search box in from the address without looking the number up.
+  { carrier: 'kex', number: 'SYNT000000017',
+    route: /^https:\/\/th\.kex-express\.com\/en\/track\/\?track=SYNT000000017$/,
+    marker: /Track & Trace/ },
 ];
 
 /**

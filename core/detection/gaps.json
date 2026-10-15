@@ -1327,6 +1327,12 @@
     "reason": "Longer prefixed consignments, such as KEX or account-coded ones, also vary by sender and share their shape with other carriers."
   },
   {
+    "carrier": "kex",
+    "pattern": "^[A-Z]{4}\\d{9}[A-Z]{2}$",
+    "kind": "by_design",
+    "reason": "Some senders' consignments end in two letters after the digits; the prefix is the sender's, and nothing else in the number points to KEX Express."
+  },
+  {
     "carrier": "kex-express-hk",
     "pattern": "^[A-Z]\\d{9}$",
     "kind": "by_design",

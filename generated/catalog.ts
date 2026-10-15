@@ -5097,7 +5097,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "andreani",
+      "recognitionRank": 976
     },
     "canaryUrl": "https://www.andreani.com/",
     "linkRules": [

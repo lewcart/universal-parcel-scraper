@@ -19,16 +19,55 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "andreani",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 976
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "canaryUrl": "https://www.andreani.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "progress_rail",
+      "sender_name",
+      "remarks",
+      "driver_name",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "eta",
+      "progress_rail",
+      "sender_name",
+      "remarks",
+      "driver_name",
+      "coordinates"
+    ],
+    "unavailable": [
+      "weight",
+      "provider_code",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

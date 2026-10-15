@@ -17,6 +17,7 @@ import { statusMap as acsCourier } from '../../carriers/acs-courier/status.js';
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
+import { statusMap as andreani } from '../../carriers/andreani/status.js';
 import { statusMap as anteraja } from '../../carriers/anteraja/status.js';
 import { statusMap as apcOvernight } from '../../carriers/apc-overnight/status.js';
 import { statusMap as aramexAu } from '../../carriers/aramex-au/status.js';
@@ -157,8 +158,9 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier, aliexpress,
-  'allegro-one': allegroOne, 'an-post': anPost, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz, 'aras-kargo': arasKargo,
-  'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost,
+  'allegro-one': allegroOne, 'an-post': anPost, andreani, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu, 'aramex-nz': aramexNz,
+  'aras-kargo': arasKargo, 'box-now': boxNow, cacesa, cargus, cdek, cdl, celeritas, 'ceska-posta': ceskaPosta, 'china-post': chinaPost,
+  'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost,
   'cj-logistics': cjLogistics, 'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain, 'cyprus-post': cyprusPost, 'dai-post': daiPost, dao, 'day-ross': dayRoss,
   deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, elta, emile, envialia, 'epost-global': epostGlobal, estes, 'express-one': expressOne, 'fan-courier': fanCourier,

@@ -7359,9 +7359,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ceva-logistics",
+      "recognitionRank": 925,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.cevalogistics.com/en/ceva-trak",
+    "canaryUrl": "https://my.cevalogistics.com/follow",
     "trackingUrlTemplate": "https://www.cevalogistics.com/en/ceva-trak?reference_query={trackingNumber}",
     "trackingSearchUrl": "https://www.cevalogistics.com/en/ceva-trak",
     "linkRules": [

@@ -39,6 +39,7 @@ import { adapter as cdek } from '../carriers/cdek/adapter.js';
 import { adapter as cdl } from '../carriers/cdl/adapter.js';
 import { adapter as celeritas } from '../carriers/celeritas/adapter.js';
 import { adapter as ceskaPosta } from '../carriers/ceska-posta/adapter.js';
+import { adapter as cevaLogistics } from '../carriers/ceva-logistics/adapter.js';
 import { adapter as chilexpress } from '../carriers/chilexpress/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
@@ -330,6 +331,7 @@ export const REGISTRY: RegistryDefinition = {
     "cdl": cdl,
     "celeritas": celeritas,
     "ceska-posta": ceskaPosta,
+    "ceva-logistics": cevaLogistics,
     "chilexpress": chilexpress,
     "china-post": chinaPost,
     "chit-chats": chitChats,
@@ -662,7 +664,7 @@ export const REGISTRY: RegistryDefinition = {
     "celeritas": "celeritas",
     "central-transport": "universal",
     "ceska-posta": "ceska-posta",
-    "ceva-logistics": "universal",
+    "ceva-logistics": "ceva-logistics",
     "chazki": "universal",
     "chilexpress": "chilexpress",
     "china-post": "china-post",

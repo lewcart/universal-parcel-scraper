@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -22,7 +22,7 @@
           "tnt-it"
         ]
       },
-      "note": "ParcelPanel's CEVA Logistics page offers it as a sample number to try."
+      "note": "ParcelPanel's CEVA Logistics page offers it as a sample number to try. CEVA's tracker answers it as a delivered house bill."
     },
     {
       "number": "CEV1101370",
@@ -35,7 +35,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -44,7 +44,7 @@
           "australia-post"
         ]
       },
-      "note": "ParcelPanel's CEVA Logistics page gives it as an example of a house air waybill number."
+      "note": "ParcelPanel's CEVA Logistics page gives it as an example of a house air waybill number. CEVA's tracker answers it as a house bill booked without events."
     },
     {
       "number": "AZN1732639",
@@ -361,13 +361,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "The Wayback Machine indexes a CEVA Home Delivery tracking lookup for this number; the capture was not opened."
+      "note": "The Wayback Machine indexes a CEVA Home Delivery tracking lookup for this number; the capture was not opened. CEVA's tracker answers it as a house bill booked without events."
     },
     {
       "number": "20455715",
@@ -502,13 +502,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "The Wayback Machine indexes a request to CEVA's tracking service for this house bill number; the capture was not opened."
+      "note": "The Wayback Machine indexes a request to CEVA's tracking service for this house bill number; the capture was not opened. CEVA's tracker answers it as a delivered house bill."
     },
     {
       "number": "CEV1099373",
@@ -521,7 +521,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -530,7 +530,7 @@
           "australia-post"
         ]
       },
-      "note": "The Wayback Machine indexes a request to CEVA's tracking service for this house bill number; the capture was not opened."
+      "note": "The Wayback Machine indexes a request to CEVA's tracking service for this house bill number; the capture was not opened. CEVA's tracker answers it as a house bill booked without events."
     },
     {
       "number": "EP20031174",
@@ -543,7 +543,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -552,7 +552,7 @@
           "tnt-it"
         ]
       },
-      "note": "The Wayback Machine indexes a CEVA Trak search request for this number; the capture was not opened."
+      "note": "The Wayback Machine indexes a CEVA Trak search request for this number; the capture was not opened. CEVA's tracker answers it as a delivered house bill."
     },
     {
       "number": "OV90865832",

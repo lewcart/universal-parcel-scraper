@@ -846,6 +846,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'team-global-express', number: '9900000000000',
     route: /^https:\/\/www\.myteamge\.com\/\?externalSearchQuery=9900000000000$/,
     marker: /0 shipments\s+matched|Track your shipment/i },
+  // The page answers an unknown number with a notice and an empty form.
+  { carrier: 'south-african-post-office', number: 'ZZ000000014ZA',
+    route: /^https:\/\/trackingnew\.postoffice\.co\.za\/\?ParcelId=ZZ000000014ZA$/,
+    marker: /Enter Parcel Number To Track|PARCEL TRACKING RESULTS/i,
+    forwarding: { notFound: /No tracking record found/ } },
 ];
 
 /**

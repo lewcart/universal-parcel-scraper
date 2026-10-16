@@ -226,6 +226,7 @@ import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js'
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
 import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
+import { adapter as southAfricanPostOffice } from '../carriers/south-african-post-office/adapter.js';
 import { adapter as speeDee } from '../carriers/spee-dee/adapter.js';
 import { adapter as speedaf } from '../carriers/speedaf/adapter.js';
 import { adapter as speedex } from '../carriers/speedex/adapter.js';
@@ -509,6 +510,7 @@ export const REGISTRY: RegistryDefinition = {
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
     "smsa-express": smsaExpress,
+    "south-african-post-office": southAfricanPostOffice,
     "spee-dee": speeDee,
     "speedaf": speedaf,
     "speedex": speedex,
@@ -1014,7 +1016,7 @@ export const REGISTRY: RegistryDefinition = {
     "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "slovenska-posta",
     "smsa-express": "smsa-express",
-    "south-african-post-office": "universal",
+    "south-african-post-office": "south-african-post-office",
     "southeastern-freight-lines": "universal",
     "spee-dee": "spee-dee",
     "speedaf": "speedaf",

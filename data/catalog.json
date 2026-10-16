@@ -18967,7 +18967,9 @@
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "south-african-post-office",
+      "recognitionRank": 933,
+      "localClocks": true
     },
     "canaryUrl": "https://trackingnew.postoffice.co.za/",
     "trackingUrlTemplate": "https://trackingnew.postoffice.co.za/?ParcelId={trackingNumber}",
@@ -18993,7 +18995,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}ZA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "southeastern-freight-lines": {
     "displayName": "Southeastern Freight Lines",

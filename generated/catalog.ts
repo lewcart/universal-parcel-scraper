@@ -18969,7 +18969,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "south-african-post-office",
+      "recognitionRank": 933,
+      "localClocks": true
     },
     "canaryUrl": "https://trackingnew.postoffice.co.za/",
     "trackingUrlTemplate": "https://trackingnew.postoffice.co.za/?ParcelId={trackingNumber}",
@@ -18995,7 +18997,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}ZA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "southeastern-freight-lines": {
     "displayName": "Southeastern Freight Lines",
@@ -22865,7 +22874,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "slovak-parcel-service": ["slovak-parcel-service-1"],
   "slovenska-posta": ["slovenska-posta-s10"],
   "smsa-express": [],
-  "south-african-post-office": [],
+  "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
   "speedaf": ["speedaf-12","speedaf-r"],
   "speedex": [],

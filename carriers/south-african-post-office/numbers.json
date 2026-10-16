@@ -69,7 +69,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
@@ -145,7 +145,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
@@ -218,16 +218,16 @@
         "url": "https://web.archive.org/web/20231106154950/https://trackingnew.postoffice.co.za/?ParcelId=HA015310485ZA",
         "date": "2023-11-06",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on the Post Office's own tracker, as an archived address shows; the capture was not opened."
+      "note": "The archived lookup on the Post Office's tracker shows the item received at a sorting centre and dispatched."
     }
   ]
 }

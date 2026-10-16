@@ -157,8 +157,8 @@ export function settleGuessedClocks(scans: readonly FeedClock[], readAt: number)
 // The rest of the list is every country or territory with a single zone in
 // the IANA database, except those whose code a US state or Canadian province
 // also uses (GA, PA, TN...) and Georgia, whose name a state has: "Atlanta, GA"
-// and "Atlanta, Georgia" are in the US. DE, IL, IN, MT, NL and SK keep town
-// lists that tell the two apart (`regionHasTown`).
+// and "Atlanta, Georgia" are in the US. CO, DE, IL, IN, MT, NL and SK keep
+// town lists that tell the two apart (`regionHasTown`).
 const COUNTRY_ZONES: Record<string, string> = {
   AT: 'Europe/Vienna', BE: 'Europe/Brussels', BG: 'Europe/Sofia', CH: 'Europe/Zurich',
   CY: 'Asia/Nicosia', CZ: 'Europe/Prague', DE: 'Europe/Berlin', DK: 'Europe/Copenhagen',
@@ -178,7 +178,7 @@ const COUNTRY_ZONES: Record<string, string> = {
   BF: 'Africa/Ouagadougou', BH: 'Asia/Bahrain', BI: 'Africa/Bujumbura', BJ: 'Africa/Porto-Novo', BL: 'America/St_Barthelemy',
   BM: 'Atlantic/Bermuda', BN: 'Asia/Brunei', BO: 'America/La_Paz', BQ: 'America/Kralendijk', BS: 'America/Nassau',
   BT: 'Asia/Thimphu', BW: 'Africa/Gaborone', BY: 'Europe/Minsk', BZ: 'America/Belize', CC: 'Indian/Cocos', CF: 'Africa/Bangui',
-  CG: 'Africa/Brazzaville', CI: 'Africa/Abidjan', CK: 'Pacific/Rarotonga', CM: 'Africa/Douala', CR: 'America/Costa_Rica',
+  CG: 'Africa/Brazzaville', CI: 'Africa/Abidjan', CK: 'Pacific/Rarotonga', CM: 'Africa/Douala', CO: 'America/Bogota', CR: 'America/Costa_Rica',
   CU: 'America/Havana', CV: 'Atlantic/Cape_Verde', CW: 'America/Curacao', CX: 'Indian/Christmas', DJ: 'Africa/Djibouti',
   DM: 'America/Dominica', DO: 'America/Santo_Domingo', DZ: 'Africa/Algiers', EG: 'Africa/Cairo', EH: 'Africa/El_Aaiun',
   ER: 'Africa/Asmara', ET: 'Africa/Addis_Ababa', FJ: 'Pacific/Fiji', FK: 'Atlantic/Stanley', FO: 'Atlantic/Faroe',
@@ -310,7 +310,7 @@ const REGION_TOWN_SETS = new Map(Object.entries(REGION_TOWNS).map(([code, towns]
  * and Koeln is not in Delaware. Also whether it lies in an island group that
  * keeps another clock than its country, by ISO 3166-2 code: the Canary Islands
  * (`ES-CN`) and the Azores (`PT-20`), without the names their mainland also
- * has. Only DE, IL, IN, MT, NL, SK and these two have town lists (generated
+ * has. Only CO, DE, IL, IN, MT, NL, SK and these two have town lists (generated
  * from GeoNames); false for any other code.
  */
 export function regionHasTown(code: string, town: string): boolean {

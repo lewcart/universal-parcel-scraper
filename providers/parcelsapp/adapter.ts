@@ -98,13 +98,14 @@ const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'e
  * and the "at 8:25 am" ParcelsApp relays in its text; Canada Post's digits;
  * GOFO's US feed, which gives the offsets; Orange Connex's times and offsets
  * for SpeedPAK; the EMS office clocks Parcelforce and NZ Post relay; Cainiao's
- * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; and 4PX's (below).
- * They are read in the state, province or single-clock country their location
- * names; `wallClockZones` reads the others.
+ * leg by leg, on GMT+8, +2 or +1, also under EcoScooting; 4PX's and
+ * MailAmericas' (below). They are read in the state, province or single-clock
+ * country their location names; `wallClockZones` reads the others.
  */
-const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress']);
-// A known clock that is the destination country's (`knownClock`).
+const WALL_CLOCKS = new Set(['usps', 'canadapost', 'gofoexpress', 'speedpak', 'ems', 'cainiao', 'ecoscooting', '4pxexpress', 'mailamericas']);
+// Known clocks that are the destination or origin country's (`knownClock`).
 const DESTINATION = 'destination';
+const ORIGIN = 'origin';
 const wordings = (list: readonly string[]) => new RegExp(`^(?:${list.join('|')})$`, 'i');
 // Cainiao's last-mile scans, in its words or the local carrier's.
 const CAINIAO_LAST_MILE = [
@@ -124,7 +125,8 @@ const CAINIAO_LAST_MILE = [
  * too. It dates import customs on the destination's clock, and the last mile
  * as well, except the UK's, on GMT in July. Its transit hub, on GMT+2 for a
  * UK parcel, and "Arrived at linehaul office", on either side's clock, are
- * not listed; that office stays on China time, as it was checked first. A
+ * not listed: a parcel to Colombia reached that office four minutes before
+ * MailAmericas' "Delivered by Airline" there. A
  * parcel bound for Portugal clears customs in Spain, on Madrid's clock:
  * AliExpress's own "Departed from customs" and the Madrid broker's scans have
  * the digits of Cainiao's import customs. The sorting-center sentences of
@@ -137,6 +139,14 @@ const CAINIAO_LAST_MILE = [
  * instants (two parcels) put its China leg on China time, its order and its
  * Spanish sorting center on Madrid's, and its last mile on the destination's:
  * Lisbon's for a "CNPRT" reference, otherwise Spain's.
+ *
+ * MailAmericas' older tracker gave each scan its site's offset, China's for
+ * the origin leg and the Americas' after it. ParcelsApp relays the wall
+ * clocks with no place before the destination's customs. Its Tax ID checks,
+ * logged with the label, were dated up to six hours after ParcelsApp first
+ * returned them on a parcel to Colombia, and come before that moment only on
+ * China's clock, the parcel's origin (2026-10-16). Its scans in the
+ * destination matched Cainiao's import customs to the minute on Colombia's.
  *
  * A scan on a fixed clock borrows no neighbour's: borrowed from a GOFO
  * parcel's Florida scans, the label came 3 hours early and Cainiao's "Order
@@ -153,7 +163,7 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
       'order received successfully', 'package finished', 'leave the warehouse', 'departed from warehouse', 'accepted by carrier',
       '(?:inbound|outbound) in sorting center', 'package (?:received by|left) sorting center of transit', 'last-mile delivery forecast',
       'arrived at departure transport hub', 'export customs clearance started', 'export clearance success',
-      '(?:leaving|left) from departure country/region', 'arrived at linehaul office', 'cross-solution reroute', '质检真假鉴定',
+      '(?:leaving|left) from departure country/region', 'cross-solution reroute', '质检真假鉴定',
       'return warehouse inbound success\\.?', 'parcel has been destroyed in return warehouse\\.?',
     ]), zone: 'Asia/Shanghai' },
     { wording: wordings(['import clearance start', 'import customs clearance complete', 'arrived at customs', 'leaving customs',
@@ -161,6 +171,12 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
     { wording: wordings(['your shipment has arrived at sorting center', 'your shipment has been processed at sorting center and ready for shipping']),
       zone: 'Europe/Madrid' },
     { wording: wordings(CAINIAO_LAST_MILE), zone: DESTINATION, except: 'GB' },
+  ]],
+  ['mailamericas', [
+    { wording: /^(?:order created|tax id|origin warehouse)\.|^transit to destination country\. (?:on the way to the airport|origin customs|flight)$/i,
+      zone: ORIGIN },
+    { wording: /^(?:arrived at destination country|destination customs|wi\s*[–-]\s*intermediate warehouse|receiving destination mail|received in destination office|delivery (?:branch|office)|finished)\.|^delivered\b/i,
+      zone: DESTINATION },
   ]],
   ['4pxexpress', [
     { wording: wordings(['parcel information received', 'pickup scanned, in transit to warehouse', 'shipment picked up\\.?',
@@ -180,11 +196,13 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
 ]);
 
 /**
- * A scan's known clock: its zone, null when the destination has several, and
- * for a scan in the destination, that country, or the one `via` names for it.
+ * A scan's known clock: its zone, null when the destination or origin has
+ * several, and for a scan in the destination, that country, or the one `via`
+ * names for it.
  */
-function knownClock(name: unknown, status: string, destination: string | null): { zone: string | null; country?: string } | null {
+function knownClock(name: unknown, status: string, destination: string | null, origin: string | null = null): { zone: string | null; country?: string } | null {
   const known = KNOWN_CLOCKS.get(nameKey(name))?.find(({ wording }) => wording.test(status.trim()));
+  if (known?.zone === ORIGIN) return origin ? { zone: countryTimeZone(origin) } : null;
   if (!known || known.zone !== DESTINATION) return known ? { zone: known.zone } : null;
   if (!destination) return known.otherwise ? { zone: known.otherwise } : null;
   if (destination === known.except) return null;
@@ -474,7 +492,9 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   // names ("Chicago, IL"); a merely possible one comes after ("Koeln, DE").
   const region = regionScanZone(name, location, inNorthAmerica);
   if (region?.certain) return region.zone;
-  const located = countryTimeZone(place);
+  // A town of the state or province whose code a country shares is not in
+  // that country: "Denver, CO" is not in Colombia, whoever scanned it.
+  const located = regionClock(location)?.certain ? null : countryTimeZone(place);
   if (located) return located;
   if (region) return region.zone;
   if (POSTAL_FEEDS.has(key) && POSTAL_ORIGIN_LEG.test(status.trim())) {
@@ -543,7 +563,7 @@ function stateDate(name: unknown, date: unknown, instants = true): unknown {
  * which `wallClockZones` falls back on.
  */
 function readState(payload: Record<string, unknown>, raw: Record<string, unknown>, status: string, fallback: string | null, number: string,
-  inNorthAmerica = false, destination: string | null = null, instants = true) {
+  inNorthAmerica = false, destination: string | null = null, instants = true, origin: string | null = null) {
   const name = stateCarrierName(payload, raw);
   const state = { ...raw, date: stateDate(name, raw.date, instants) };
   const location = scanLocation(name, raw.location);
@@ -551,7 +571,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const placed = placedZone(payload, state, number, inNorthAmerica, status, destination);
   const zone = placed !== undefined ? placed : wallClock ? null : guessedZone(payload, state, fallback, number);
-  const known = wallClock ? knownClock(name, status, destination) : null;
+  const known = wallClock ? knownClock(name, status, destination, origin) : null;
   // A local clock that nothing places, in the US or Canada alone ("US 12345").
   const country = countryCode(lastPlace(location));
   const nationwide = placed === undefined && zone === null && LOCAL_CLOCK_CARRIERS.has(nameKey(name)) && (country === 'US' || country === 'CA');
@@ -676,6 +696,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   });
   const inNorthAmerica = kinds.includes('certain') || (kinds.includes('region') && !kinds.includes('abroad'));
   const destination = replyDestination(payload, number);
+  const origin = countryCode(payload.originCode) ?? countryCode(payload.origin);
   const instants = fourPxInstants(payload, payload.states);
   const entries: (ReturnType<typeof readState> & { raw: Record<string, unknown>; scan: CarrierScan | undefined; wording: string })[] = [];
   for (const raw of payload.states) {
@@ -688,7 +709,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       continue;
     }
     const status = relayedLabel(raw.status);
-    const state = readState(payload, raw, status, timezone, number, inNorthAmerica, destination, instants);
+    const state = readState(payload, raw, status, timezone, number, inNorthAmerica, destination, instants, origin);
     const scan = carrierScan(typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined, status);
     entries.push({ ...state, raw, scan, wording: scan?.wording ?? status });
   }

@@ -926,6 +926,39 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-10-03T20:01:13.000Z', '2026-10-02T01:26:36.000Z', '2026-09-30T00:00:00.000Z']);
   });
 
+  it('reads MailAmericas\' origin leg and Tax ID checks on the origin\'s clock, its scans in the destination on that one\'s', () => {
+    // On a parcel to Colombia (2026-10-16), the Tax ID checks precede
+    // ParcelsApp's first answer only on China's clock, and the scans there
+    // match Cainiao's import customs on Colombia's.
+    const states = [
+      { date: '2026-07-12T08:00:00Z', status: 'Tax ID. Form received', carrier: 0 },
+      { date: '2026-07-11T12:30:00Z', status: 'Delivery branch. Received at Distribution Branch', carrier: 0, location: 'Example Town' },
+      { date: '2026-07-10T02:00:00Z', status: 'Destination customs. Released', carrier: 0, location: 'Colombia' },
+      { date: '2026-07-09T04:45:00Z', status: 'Arrived at destination country. Delivered by Airline', carrier: 0 },
+      { date: '2026-07-09T04:41:00Z', status: 'Arrived at linehaul office', carrier: 1 },
+      { date: '2026-07-07T12:00:00Z', status: 'Transit to destination country. Flight', carrier: 0 },
+      { date: '2026-07-06T14:00:00Z', status: 'Order created. Label printed', carrier: 0 },
+    ];
+    expect(parseParcelsAppResponse({ carriers: ['MailAmericas', 'Cainiao'], originCode: 'CN', destinationCode: 'CO', states }, number,
+      identity()).events?.map((scan) => scan.time)).toEqual([
+      '2026-07-12T00:00:00.000Z',
+      '2026-07-11T17:30:00.000Z', // Colombia's clock, from the customs scan before it
+      '2026-07-10T07:00:00.000Z',
+      '2026-07-09T09:45:00.000Z', // from the customs scan after it
+      '2026-07-09T04:41:00.000Z', // Cainiao's linehaul office, on either side's clock, as labeled
+      '2026-07-07T04:00:00.000Z',
+      '2026-07-06T06:00:00.000Z',
+    ]);
+  });
+
+  it('reads a town of the state a country\'s code also names in that state, not the country', () => {
+    const times = (location: string) => parseParcelsAppResponse({ carriers: ['Example Courier'], states: [
+      { date: '2026-07-10T12:00:00Z', status: 'In transit', carrier: 0, location },
+    ] }, number, identity()).events?.map((scan) => scan.time);
+    expect(times('Denver, CO')).toEqual(['2026-07-10T12:00:00.000Z']);
+    expect(times('Example Town, Colombia')).toEqual(['2026-07-10T17:00:00.000Z']);
+  });
+
   it('reads EcoScooting\'s last mile in Portugal for a "CNPRT" reference, otherwise in Spain', () => {
     // EcoScooting's own instants (2026-10-11): its China leg on China time, its
     // order and Spanish sorting center on Madrid's, its last mile on the

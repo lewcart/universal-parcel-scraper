@@ -124,12 +124,13 @@ step exists for future protocol changes.
   scan does not stand in for the parcel's state and routing asks the next source. The
   rendered page prints no location, so it places none of them.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
-  EcoScooting and 4PX are each scan's local clock under a label that is never its instant
-  (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in the status text
-  ParcelsApp relays; Canada Post's own digits; GOFO's US feed, which gives the offsets;
-  Orange Connex's times and offsets for SpeedPAK; the EMS office clocks Parcelforce and NZ
-  Post relay; Cainiao's leg by leg, on GMT+8, +2 or +1, also under EcoScooting, whose
-  Spanish and Portuguese scans differ by an hour). Such a scan skips the steps above and
+  EcoScooting, 4PX and MailAmericas are each scan's local clock under a label that is
+  never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in
+  the status text ParcelsApp relays; Canada Post's own digits; GOFO's US feed, which gives
+  the offsets; Orange Connex's times and offsets for SpeedPAK; the EMS office clocks
+  Parcelforce and NZ Post relay; Cainiao's leg by leg, on GMT+8, +2 or +1, also under
+  EcoScooting, whose Spanish and Portuguese scans differ by an hour; MailAmericas' older
+  tracker, which gave each scan its site's offset). Such a scan skips the steps above and
   takes the first zone of:
   1. its place: the state or province (North American scans below) or the single-clock
      country its location names;
@@ -173,18 +174,26 @@ step exists for future protocol changes.
   and the last mile ("Received by local delivery company", "Out for delivery",
   "Delivered", and bpost's and CTT's wording) on the destination's clock, except the UK's
   last mile, on GMT in July. Its transit hub, on GMT+2 for a UK parcel, and "Arrived at
-  linehaul office", on either side's clock, are not listed; that office stays on China
-  time, as it was checked first. A parcel bound for Portugal clears customs in Spain, on
+  linehaul office", on either side's clock, are not listed: a parcel to Colombia reached
+  that office four minutes before MailAmericas' "Delivered by Airline" there. A parcel
+  bound for Portugal clears customs in Spain, on
   Madrid's clock: AliExpress's own "Departed from customs" and the Madrid customs broker's
   scans have the digits of Cainiao's import customs. EcoScooting's sorting-center sentences
   that Cainiao relays ("Your shipment has arrived at sorting center") are on Madrid's clock
   too, also for a parcel bound for Portugal. 4PX's page (two parcels to the US) dates its scans up to
   the departing flight on China time and the rest in the US. EcoScooting's own instants
   (two parcels) put its China leg on China time, its order and its Spanish sorting
-  center on Madrid's, and its last mile on the destination's.
+  center on Madrid's, and its last mile on the destination's. MailAmericas dates its
+  origin leg ("Order created", "Transit to destination country") and its Tax ID checks,
+  logged with the label, on the origin's clock, and its scans from "Arrived at destination
+  country" on the destination's. On a parcel from China to Colombia, the Tax ID checks
+  were dated up to six hours after ParcelsApp first returned them, and come before that
+  moment only on China's clock; the scans in Colombia matched Cainiao's import customs to
+  the minute.
 
   The destination is the country the reply names (`destinationCode` or `destination`),
   else the one an EcoScooting reference names ("CNPRT" for Portugal, "CNESP" for Spain).
+  The origin is the country the reply names as `originCode` or `origin`.
   A scan on a fixed clock skips step 3, since its neighbours keep another clock: borrowed
   from a GOFO parcel's Florida scans, the label came 3 hours early and Cainiao's "Order
   received" 12 hours after it, where China time puts it 19 seconds after. A scan in the
@@ -279,9 +288,11 @@ step exists for future protocol changes.
   CENTER" and "ISC EXAMPLE CITY IL (USPS)"), the majority zone where there are several, as
   in the USPS adapter. A state written out counts only after the country ("Example City
   Minnesota, United States of America", as Orange Connex writes SpeedPAK's), since Georgia
-  is a country too. A code shared with a single-clock country (DE, IL, IN, MT, NL, SK)
+  is a country too. A code shared with a single-clock country (CO, DE, IL, IN, MT, NL, SK)
   counts, before that country, only for a town of the state or province: UPS writes both
-  "Chicago, IL" and "Koeln, DE". The town lists come from the server's GeoNames gazetteer,
+  "Chicago, IL" and "Koeln, DE". Such a town is never read in the country, whatever the
+  carrier: "Denver, CO" is not in Colombia. The town lists come from the server's GeoNames
+  gazetteer,
   and a name the country also has for more people stays the country's ("Salem, IN").
   [generate-region-towns.mjs](../../scripts/generate-region-towns.mjs) writes them.
   Another shared code ("GA" is Gabon) counts only in a reply that is in North America: one

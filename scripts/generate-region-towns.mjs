@@ -1,10 +1,10 @@
 /*
  * Generates generated/regionTowns.ts: the towns of the US
  * states and Canadian provinces whose postal code also names a single-clock
- * country (DE Delaware or Germany, IL Illinois or Israel, IN Indiana or India,
- * MT Montana or Malta, NL Newfoundland and Labrador or the Netherlands, SK
- * Saskatchewan or Slovakia). Carriers write "Chicago, IL" and "Koeln, DE"
- * alike, so only the town tells them apart.
+ * country (CO Colorado or Colombia, DE Delaware or Germany, IL Illinois or
+ * Israel, IN Indiana or India, MT Montana or Malta, NL Newfoundland and
+ * Labrador or the Netherlands, SK Saskatchewan or Slovakia). Carriers write
+ * "Chicago, IL" and "Koeln, DE" alike, so only the town tells them apart.
  *
  * Source: the server's gazetteer, places/places.tsv.br (GeoNames
  * towns of 1,000 people or more, CC BY 4.0). A town whose name the country
@@ -31,6 +31,7 @@ const outputPath = path.join(packageRoot, 'generated', 'regionTowns.ts');
 
 // Region code -> its country and GeoNames admin1 code, and the country the same code names.
 const REGIONS = {
+  CO: { country: 'US', admin1: 'CO', other: 'CO' },
   DE: { country: 'US', admin1: 'DE', other: 'DE' },
   IL: { country: 'US', admin1: 'IL', other: 'IL' },
   IN: { country: 'US', admin1: 'IN', other: 'IN' },

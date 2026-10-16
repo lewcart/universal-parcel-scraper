@@ -116,6 +116,7 @@ describe('time policies', () => {
     expect(countryTimeZone('Schweiz')).toBe('Europe/Zurich');
     expect(countryTimeZone('India')).toBe('Asia/Kolkata');
     expect(countryTimeZone('Kuwait')).toBe('Asia/Kuwait');
+    expect(countryTimeZone('Colombia')).toBe('America/Bogota');
     expect(countryTimeZone('UA')).toBe('Europe/Kyiv');
     expect(countryTimeZone('US')).toBeNull();
     expect(countryTimeZone('Canada')).toBeNull();
@@ -179,6 +180,8 @@ describe('time policies', () => {
     expect(regionHasTown('IL', 'Tel Aviv')).toBe(false);
     expect(regionHasTown('DE', 'Koeln')).toBe(false);
     expect(regionHasTown('NL', "St. John's")).toBe(true);
+    expect(regionHasTown('CO', 'Denver')).toBe(true);
+    expect(regionHasTown('CO', 'Cartagena de Indias')).toBe(false);
     // Only the codes shared with a single-clock country have lists.
     expect(regionHasTown('NY', 'New York')).toBe(false);
     // Island groups on another clock than their country, without the names the mainland shares.

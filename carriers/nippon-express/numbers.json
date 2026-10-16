@@ -102,10 +102,10 @@
         "url": "https://web.archive.org/web/20241228150313/https://lp-trace.nittsu.co.jp/web/webarpaa702.srv?LANG=JP&officeselect2=&denpyoNo1=00273702225554",
         "date": "2024-12-28",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -123,7 +123,7 @@
           "dpd-uk"
         ]
       },
-      "note": "Looked up on Nippon Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Nippon Express's air tracker; the archived capture lists it on its way to the delivering branch."
     },
     {
       "number": "60209698253",

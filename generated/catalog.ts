@@ -15221,9 +15221,10 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nippon-express",
+      "recognitionRank": 941
     },
-    "canaryUrl": "https://www.nipponexpress.com/jp/ja/",
+    "canaryUrl": "https://lp-trace.nittsu.co.jp/web/webarpaa701.srv",
     "trackingUrlTemplate": "https://lp-trace.nittsu.co.jp/web/webarpaa702.srv?LANG=JP&denpyoNo1={trackingNumber}",
     "trackingSearchUrl": "https://www.nipponexpress.com/jp/ja/",
     "linkRules": [

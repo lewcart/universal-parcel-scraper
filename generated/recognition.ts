@@ -121,6 +121,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "naqel": 413,
   "nationex": 125,
   "ninja-van": 720,
+  "nippon-express": 941,
   "nova-poshta": 685,
   "nz-post": 760,
   "oca": 974,

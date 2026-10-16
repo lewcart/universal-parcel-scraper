@@ -219,6 +219,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'yamato', number: '123456789012',
     route: /^https:\/\/toi\.kuronekoyamato\.co\.jp\/cgi-bin\/tneko/,
     marker: /荷物お問い合わせ|送り状番号|Tracking/i, forwarding: 'none' },
+  // The list names the number it was asked, also when it holds no shipment under it.
+  { carrier: 'nippon-express', number: '100000000004',
+    route: /^https:\/\/lp-trace\.nittsu\.co\.jp\/web\/webarpaa702\.srv\?LANG=JP&denpyoNo1=100000000004$/,
+    marker: /航空便の配達状況確認|お問い合せ伝票番号/ },
   { carrier: 'yanwen', number: 'UK000000005YP',
     route: /^https:\/\/track\.yw56\.com\.cn\/en\/index/,
     marker: /Tracking|Tracking number|Track/i, forwarding: 'none' },

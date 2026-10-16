@@ -174,6 +174,7 @@ import { adapter as nacex } from '../carriers/nacex/adapter.js';
 import { adapter as naqel } from '../carriers/naqel/adapter.js';
 import { adapter as nationex } from '../carriers/nationex/adapter.js';
 import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
+import { adapter as nipponExpress } from '../carriers/nippon-express/adapter.js';
 import { adapter as novaPoshta } from '../carriers/nova-poshta/adapter.js';
 import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
 import { adapter as oca } from '../carriers/oca/adapter.js';
@@ -452,6 +453,7 @@ export const REGISTRY: RegistryDefinition = {
     "naqel": naqel,
     "nationex": nationex,
     "ninja-van": ninjaVan,
+    "nippon-express": nipponExpress,
     "nova-poshta": novaPoshta,
     "nz-post": nzPost,
     "oca": oca,
@@ -888,7 +890,7 @@ export const REGISTRY: RegistryDefinition = {
     "nim-express": "universal",
     "ninja-van": "ninja-van",
     "nipost": "universal",
-    "nippon-express": "universal",
+    "nippon-express": "nippon-express",
     "nord-wheel": "universal",
     "northline": "universal",
     "nova-poshta": "nova-poshta",

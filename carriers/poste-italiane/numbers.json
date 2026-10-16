@@ -311,6 +311,27 @@
         "confidence": "high"
       },
       "note": "Tracking code a complaint against SDA quotes in lower case; the tracker no longer finds it."
+    },
+    {
+      "number": "CW600354061IT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/problema-con-spedizione/a5895d752a78d81aa0",
+        "access": "full_page",
+        "date": "2026-06-16",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Poste Delivery Europe",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Poste Delivery Europe shipment its sender quotes in a complaint against Poste Italiane; the tracker no longer finds it."
     }
   ]
 }

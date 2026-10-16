@@ -52493,6 +52493,14 @@
     ]
   },
   {
+    "input": "CW600354061IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "CX712034439LV",
     "carrier": "intl-post",
     "confidence": "high",

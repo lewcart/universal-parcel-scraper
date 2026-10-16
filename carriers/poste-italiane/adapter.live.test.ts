@@ -27,6 +27,15 @@ describe('Poste Italiane live anonymous tracking', () => {
     },
   );
 
+  it.skipIf(!process.env.POSTE_ITALIANE_TRACKING_NUMBER)(
+    'returns identity-bound history for a real parcel in any state',
+    async () => {
+      const result = await new PosteItalianeTracker({ timeoutMs: 15_000 }).fetch(process.env.POSTE_ITALIANE_TRACKING_NUMBER!);
+      expect(result.events?.length).toBeGreaterThan(0);
+      expect(result.current_stage).toBeTruthy();
+    },
+  );
+
   it('pins the not-found error contract used by routing cooldowns', () => {
     expect(new NotFoundError('Poste Italiane').status).toBe(404);
   });

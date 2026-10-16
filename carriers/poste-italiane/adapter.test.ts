@@ -45,7 +45,8 @@ describe('Poste Italiane tracking normalization', () => {
     expect(normalizePosteItalianeTrackingNumber('ra00000000001')).toBe(TRACKING_NUMBER);
     expect(normalizePosteItalianeTrackingNumber('1UW1G2J193065')).toBe('1UW1G2J193065');
     expect(normalizePosteItalianeTrackingNumber('2IMA0051035900')).toBe('2IMA0051035900');
-    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', '']) {
+    expect(normalizePosteItalianeTrackingNumber('cw 123 456 785 it')).toBe('CW123456785IT');
+    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785IT', '']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
     }
     expect(posteItalianeTrackingUrl(TRACKING_NUMBER)).toBe(

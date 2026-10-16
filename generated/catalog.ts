@@ -1960,7 +1960,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?!AS\\d{9}US$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -2645,6 +2645,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^2IMA\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^CW\\d{9}IT$",
+        "confidence": "high",
+        "checksum": "s10"
       },
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|3C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
@@ -22375,7 +22380,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nacex": ["nacex-1"],
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
-  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-sda-domestic"],
+  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-delivery-europe","poste-italiane-sda-domestic"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],

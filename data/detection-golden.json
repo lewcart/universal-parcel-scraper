@@ -72662,6 +72662,22 @@
     ]
   },
   {
+    "input": "ZC10000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "china-post",
+      "la-poste"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "china-post",
+      "la-poste"
+    ]
+  },
+  {
     "input": "ZDBBXK034308",
     "carrier": "xdp",
     "confidence": "high",

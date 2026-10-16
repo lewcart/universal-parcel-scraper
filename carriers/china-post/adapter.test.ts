@@ -103,6 +103,10 @@ describe('China Post adapter', () => {
 
   it('recognizes a ZS number China Post holds from the phone request alone', async () => {
     expect(recognitionAskedCarriers('ZS00000000001')[0]).toBe('china-post');
+    expect(recognitionAskedCarriers('ZC00000000001')[0]).toBe('china-post');
+    const zc = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
+    await expect(instance(zc).recognize!('ZC00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(JSON.parse(String(zc.mock.calls[0]![1]?.body))).toEqual({ mailNo: 'ZC00000000001' });
     const phone = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
     await expect(instance(phone).recognize!('ZS00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
     expect(phone).toHaveBeenCalledTimes(1);

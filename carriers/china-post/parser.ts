@@ -18,13 +18,13 @@ const GUEST_SCANS = 3;
 const ACCEPTED = '已揽收';
 
 /**
- * S10 numbers issued in China, and ZS numbers of eleven digits. The service
- * asks for phone digits on ZS numbers; the public web preview is separate.
+ * S10 numbers issued in China, and ZS or ZC numbers of eleven digits. The
+ * service asks for phone digits on them; the public web preview is separate.
  */
 export function normalizeChinaPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^ZS\d{11}$/.test(number) && (!/^[A-Z]{2}\d{9}CN$/.test(number) || !isValidS10TrackingNumber(number))) {
-    throw new InvalidInputError(PROVIDER, 'China Post tracks international postal numbers ending in CN and ZS numbers');
+  if (!/^Z[SC]\d{11}$/.test(number) && (!/^[A-Z]{2}\d{9}CN$/.test(number) || !isValidS10TrackingNumber(number))) {
+    throw new InvalidInputError(PROVIDER, 'China Post tracks international postal numbers ending in CN and ZS or ZC numbers');
   }
   return number;
 }

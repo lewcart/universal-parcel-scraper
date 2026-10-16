@@ -37,6 +37,8 @@ test('scopes the helper to the exact China Post page, number and endpoints', () 
   for (const raw of [url + '#x', url + '&extra=1', url.replace('www.ems.com.cn', 'example.test'),
     url.replace('www.ems.com.cn', 'user@www.ems.com.cn'), url.replace(number, number + '0')]) assert.equal(chinaPostBrowserNumber(raw, capture), null);
   assert.equal(chinaPostBrowserNumber(url, { captureResponses: [api] }), null);
+  assert.equal(chinaPostBrowserNumber(url.replace(number, 'ZC00000000001'), capture), 'ZC00000000001');
+  assert.equal(chinaPostBrowserNumber(url.replace(number, 'ZT00000000001'), capture), null);
 });
 test('projects only matching scan identity, clocks and state labels', () => {
   const value = projectChinaPostWebReply(found, number);

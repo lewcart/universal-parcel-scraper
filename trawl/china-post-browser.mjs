@@ -14,7 +14,7 @@ export function chinaPostBrowserNumber(raw, capture = {}) {
   try { url = new URL(raw); } catch { return null; }
   const number = url.searchParams.get('mailNo') ?? '';
   return url.origin === ORIGIN && url.pathname === '/queryList' && !url.username && !url.password && !url.hash
-    && [...url.searchParams].length === 1 && /^(?:ZS\d{11}|[A-Z]{2}\d{9}CN)$/.test(number)
+    && [...url.searchParams].length === 1 && /^(?:Z[SC]\d{11}|[A-Z]{2}\d{9}CN)$/.test(number)
     && capture.captureResponses?.length === 2 && capture.captureResponses[0] === FLAG && capture.captureResponses[1] === API ? number : null;
 }
 

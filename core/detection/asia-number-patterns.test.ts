@@ -87,6 +87,20 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 
+  it('suggests China Post before La Poste for ZS and ZC numbers only', () => {
+    for (const number of ['ZS00000000001', 'ZC00000000001']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['china-post', 'la-poste'] });
+      expect(recognitionAskedCarriers(number)[0]).toBe('china-post');
+    }
+    // Other Z prefixes and other lengths keep La Poste's broad rule alone, or nothing.
+    for (const number of ['ZT00000000001', 'ZA00000000001', 'CZ00000000001']) {
+      expect(detectCarrierMatch(number).candidates).toEqual(['la-poste']);
+    }
+    for (const number of ['ZC0000000001', 'ZC000000000001', 'ZC00000000001CN']) {
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('china-post');
+    }
+  });
+
   it('gives each forwarder\'s YQ code to the carrier of its prefix alone', () => {
     // Forwarders on one Chinese platform share the YQ ending and ten digits; the customer prefix names the forwarder.
     const owners = { JSEJY0000000001YQ: 'js-express', WNBZZ0000000001YQ: 'wanbexpress', FEISH0000000001YQ: '17feia',

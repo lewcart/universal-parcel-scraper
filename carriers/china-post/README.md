@@ -5,13 +5,14 @@ through the guest trace API of China Post's EMS app. EMS items issued in China
 (`E…CN`) are detected as China Post and read here too; the
 [EMS adapter](../ems/README.md) reads the EMS Cooperative's tracker when EMS is
 chosen. Domestic 13-digit waybills are out of scope and rejected before any
-request. `ZS` numbers with eleven digits are China Post's too, and the adapter
-takes them. The app asks for a contact phone's last four digits; the optional
-TRAWL browser instead reads the anonymous web preview after character verification.
-No public sample is known, so detection only
-suggests China Post for them (`china-post-zs`), ahead of La Poste's rule for any two
-characters and eleven digits, and recognition asks China Post. The service asks for the phone
-digits only about an item it holds, so that request makes the number known. Source selection is covered in
+request. `ZS` and `ZC` numbers with eleven digits are China Post's too, and the
+adapter takes them. The app asks for a contact phone's last four digits; the
+optional TRAWL browser instead reads the anonymous web preview after character
+verification. No public sample is known, so detection only suggests China Post
+for them (`china-post-zs`, `china-post-zc`), ahead of La Poste's rule for any
+two characters and eleven digits, and recognition asks China Post. The service
+asks for the phone digits only about an item it holds, so that request makes the
+number known. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);
 provider results are in [COVERAGE.md](../../providers/COVERAGE.md).
 

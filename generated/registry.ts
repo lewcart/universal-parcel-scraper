@@ -705,6 +705,7 @@ export const REGISTRY: RegistryDefinition = {
     "dohrn-transfer": "universal",
     "domex": "universal",
     "dpd": "dpd",
+    "dpd-be": "universal",
     "dpd-de": "dpd-de",
     "dpd-fr": "dpd-fr",
     "dpd-ie": "dpd-ie",

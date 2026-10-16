@@ -94,6 +94,11 @@
   ],
   "detection": [
     {
+      "id": "imile-3",
+      "pattern": "^IM0601\\d{10}$",
+      "confidence": "high"
+    },
+    {
       "id": "imile-1",
       "pattern": "^IM\\d{14}$",
       "confidence": "low"

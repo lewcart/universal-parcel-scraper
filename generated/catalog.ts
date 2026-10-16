@@ -9217,6 +9217,24 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dpd-be": {
+    "displayName": "DPD Belgium",
+    "color": "#dc0032",
+    "countries": [
+      "BE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Brussels",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "dpd-de": {
     "displayName": "DPD Germany",
     "color": "#dc0032",
@@ -12453,6 +12471,10 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^IM0601\\d{10}$",
+        "confidence": "high"
+      },
       {
         "pattern": "^IM\\d{14}$",
         "confidence": "low"
@@ -22037,6 +22059,7 @@ export const CARRIER_IDS = [
   "direct-freight-express",
   "dohrn-transfer",
   "domex",
+  "dpd-be",
   "dpd-de",
   "dpd-ie",
   "dpd-pl",
@@ -22585,6 +22608,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direct-freight-express": [],
   "dohrn-transfer": [],
   "domex": [],
+  "dpd-be": [],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
@@ -22667,7 +22691,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],
   "ilyang-logis": [],
-  "imile": ["imile-1","imile-2"],
+  "imile": ["imile-3","imile-1","imile-2"],
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],

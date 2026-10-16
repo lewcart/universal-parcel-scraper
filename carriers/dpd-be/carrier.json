@@ -1,0 +1,32 @@
+{
+  "id": "dpd-be",
+  "displayName": "DPD Belgium",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "BE"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Brussels",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
+    "searchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "canaryUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

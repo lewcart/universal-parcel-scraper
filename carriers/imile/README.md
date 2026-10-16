@@ -63,9 +63,10 @@ after its date. `imile-2` suggests iMile for that layout, with years from 24, at
 Other carriers' thirteen digits are a bare counter that can fit it, Korea Post's domestic
 parcels among them, so the tracker has to confirm the number. The waybills that start with 3
 show no such date, and no rule claims them. Its Italian parcels also carry `IM` and fourteen
-digits, which iMile calls their waybill number. No other carrier's rule takes that layout, so
-`imile-1` suggests iMile for it with low confidence: every sample seen so far shares one
-prefix. The samples and their sources are in [`numbers.json`](numbers.json).
+digits, which iMile calls their waybill number. Every sample starts `IM0601`, so `imile-3`
+names iMile for that prefix. No other carrier's rule takes the layout, and `imile-1` suggests
+iMile with low confidence for other prefixes. The samples and their sources are in
+[`numbers.json`](numbers.json).
 
 ## Links
 

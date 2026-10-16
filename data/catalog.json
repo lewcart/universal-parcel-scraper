@@ -9215,6 +9215,24 @@
     ],
     "detectionRules": []
   },
+  "dpd-be": {
+    "displayName": "DPD Belgium",
+    "color": "#dc0032",
+    "countries": [
+      "BE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Brussels",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "dpd-de": {
     "displayName": "DPD Germany",
     "color": "#dc0032",
@@ -12451,6 +12469,10 @@
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^IM0601\\d{10}$",
+        "confidence": "high"
+      },
       {
         "pattern": "^IM\\d{14}$",
         "confidence": "low"

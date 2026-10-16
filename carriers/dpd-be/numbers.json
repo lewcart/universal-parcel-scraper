@@ -1,0 +1,68 @@
+{
+  "carrier": "dpd-be",
+  "records": [
+    {
+      "number": "10604003586250",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.test-achats.be/plainte/plaintes-publiques/colis-forc-C3-A9/54e8b79d06cd21f861",
+        "date": "2025-07-14",
+        "dateKind": "reply",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk",
+          "xpressbees"
+        ]
+      },
+      "note": "DPD Belgium's customer care, replying to a complaint against it, gives this as the parcel number on the label."
+    },
+    {
+      "number": "04361051197860",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.test-achats.be/plainte/plaintes-publiques/mon-colis-reste-bloqu-C3-A9-C3-A0-flema/63f7612d9ba9c48526",
+        "date": "2025-12-11",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "dpd-fr",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "A complaint against DPD Belgium about this parcel held at one of its Belgian depots; DPD Belgium's replies arrange its delivery."
+    }
+  ]
+}

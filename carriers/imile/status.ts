@@ -50,6 +50,7 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['airplane clearance finish,ready to ship to', 'in_transit'],
   // The driver is named before the parcel leaves the centre; the misspelling is iMile's.
   ['your order has assigned delivery drvier', 'in_transit'],
+  ['dispatch task assigned to da', 'in_transit'],
   ['our delivery associate is out for delivery', 'out_for_delivery'],
   ['delivery attempt finished,return to local logistics company warehouse', 'failed_attempt'],
   // Drivers' reasons, each followed by the attempt's end and the return to the centre.
@@ -58,6 +59,9 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['route not completed', 'failed_attempt'],
   ['user not at home', 'failed_attempt'],
   ['wrong address', 'failed_attempt'],
+  ['<bad address>', 'failed_attempt'],
+  // A recipient iMile cannot reach, on the delivery run before the return starts.
+  ['need to return', 'exception'],
   ['lost order', null],
   ['inventory count scan', null],
   ['your order has been delivered successfully', 'delivered'],
@@ -72,6 +76,8 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
  * flight and a scheduled delivery day are no movement.
  */
 const OPENINGS: readonly (readonly [RegExp, Stage | null])[] = [
+  // The origin airport's warehouse took the parcel in; the flight it books follows.
+  [/^origin port warehouse receive\b/, 'in_transit'],
   [/^flight schedule etd\b/, null],
   [/^shipment is scheduled to\b/, null],
   [/^the driver failed to deliver\b/, 'failed_attempt'],

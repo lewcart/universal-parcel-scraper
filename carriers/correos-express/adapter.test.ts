@@ -2,25 +2,58 @@ import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import type { StepRecord } from '../../core/telemetry/index.js';
 import { resultTimezone } from '../../core/time/result.js';
 import { CorreosExpressTracker, adapter } from './adapter.js';
-import { normalizeCorreosExpressNumber, parseCorreosExpress } from './parser.js';
-import { classifyCorreosExpressStatus } from './status.js';
+import {
+  correosExpressFeedResult, fixedExplanation, normalizeCorreosExpressNumber, parseCorreosExpress, parseCorreosExpressFeed,
+  type CorreosExpressFeed,
+} from './parser.js';
+import { classifyCorreosExpressStatus, correosExpressCodeLabel, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { InvalidInputError } from '../../core/errors/index.js';
 
 const NUMBER = '9900000000000002';
 const OTHER = '9900000000000003';
+const LABEL = '99000000000000001999994', SHIPMENT = '9900000000000004';
 const FAILED_ROUND = 'Su envío no ha podido ser entregado';
+const FORM = 'https://s.correosexpress.com/SeguimientoSinCP/search';
+const FEED = 'https://localizador.correos.es/canonico/eventos_envio_servicio/';
 const html = readFileSync(new URL('./fixtures/history.html', import.meta.url), 'utf8');
+const explained = readFileSync(new URL('./fixtures/explained.html', import.meta.url), 'utf8');
 const failedRound = readFileSync(new URL('./fixtures/failed-round.html', import.meta.url), 'utf8');
+const feedText = readFileSync(new URL('./fixtures/feed.json', import.meta.url), 'utf8');
+type Envelope = Record<string, unknown> & { eventos: Record<string, unknown>[] | null };
+const feedPayload = (change: (envelope: Envelope) => void = () => {}) => {
+  const payload = JSON.parse(feedText) as [Envelope];
+  change(payload[0]);
+  return payload;
+};
+const noTrace = (number = NUMBER) => feedPayload((envelope) => {
+  Object.assign(envelope, { codEnvio: number, eventos: null, enviosAsociados: null, error: { codError: '3', desError: 'Sin Trazabilidad en Minerva.' } });
+});
+const feed = parseCorreosExpressFeed(feedPayload(), NUMBER)!;
 const response = (body = html) => new Response(body, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+const json = (payload: unknown) => new Response(JSON.stringify(payload), { headers: { 'Content-Type': 'application/json;charset=UTF-8' } });
 const edit = (change: (document: ReturnType<typeof load>) => void, source = html) => { const $ = load(source); change($); return $.html(); };
 const negative = (number = NUMBER, code = '2') => `<html><head><title>Sigue tu envío- correosexpress.com</title></head><body>
   <form id="desktopHomeForm"><input name="shippingNumber" value="${number}"><input name="errorCode" value="${code}"></form>
   <form id="mobileHomeForm"><input name="shippingNumber" value="${number}"><input name="errorCode" value="${code}"></form>
   <div class="errorMessage2"><span class="errorMessage">Lo sentimos, no se ha encontrado ningún envío con el número indicado.</span></div>
   <div class="errorMessage-1">Lo sentimos, se ha producido un error durante la búsqueda del envío.</div></body></html>`;
+/** A fetcher that answers the form and the localizador each with its own reply. */
+const routed = (form: () => Response | Promise<Response>, localizador: () => Response | Promise<Response> = () => json(noTrace())) =>
+  vi.fn(async (url: string | URL | Request) => (String(url).startsWith(FORM) ? form() : localizador())) as unknown as typeof fetch;
+const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
+const urls = (fetcher: typeof fetch) => vi.mocked(fetcher).mock.calls.map(([url]) => String(url));
+const EXPLAINED = {
+  INFORMADO: 'Ya hemos recibido la información de su envío, en breve dispondremos de su mercancía. Si necesita información adicional por favor póngase en contacto con su remitente.',
+  EN_RUTA: 'Su envío está en uno de nuestro vehículos siendo transportado a la localidad de destino. Lo recibirá en la fecha de entrega prevista.',
+  EN_DESTINO: 'Su envío está en nuestras instalaciones de destino y lo estamos clasificando. Lo recibirá en la fecha de entrega prevista.',
+  EN_REPARTO: 'Su envío se encuentra en reparto. Lo recibirá en la fecha de entrega prevista.',
+  ADDRESS: 'Su envío no ha podido ser entregado porque la dirección que tenemos es incompleta o incorrecta. Si desea gestionar una nueva entrega por favor pulse la opción Gestionar nueva entrega.',
+};
 
 describe('Correos Express direct tracking', () => {
   it('projects matching actual scans, local clocks, locality and date-only estimates without private details', () => {
@@ -29,14 +62,49 @@ describe('Correos Express direct tracking', () => {
       last_update: null, last_update_local: '2026-01-05T18:27:00', expected_delivery: '2026-01-06' });
     expect(result.events).toHaveLength(7);
     expect(result.events?.[0]).toMatchObject({ local_time: '2026-01-05T18:27:00', location: 'BARCELONA2', provider_status: 'NUEVO REPARTO', stage: 'in_transit' });
+    // Notes that are not the carrier's fixed sentences are dropped whole.
+    expect(result.events?.map(event => event.description)).toEqual(['NUEVO REPARTO', 'EN ALMACÉN', 'EN REPARTO', 'EN DESTINO',
+      'EN RUTA A LOCALIDAD DE DESTINO', 'ADMITIDO', 'INFORMADO']);
     // The host and aggregators relaying these wall clocks read them in Spanish time.
     expect(resultTimezone('correos-express', result)).toBe('Europe/Madrid');
     expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'exception', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
     expect(result.events?.every(event => !event.time && !event.provider_code)).toBe(true);
     expect(result.delivered_at).toBeUndefined();
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
-    for (const row of statuses.entries) expect(classifyCorreosExpressStatus(row.wording)?.stage).toBe(row.stage);
     expect(classifyCorreosExpressStatus('constructor')).toBeUndefined();
+  });
+
+  it('keeps the fixed sentences that explain a label and drops what follows them', () => {
+    const result = parseCorreosExpress(explained, NUMBER);
+    expect(result.events?.map(event => event.description)).toEqual(['NUEVO REPARTO', `EN ALMACÉN. ${EXPLAINED.ADDRESS}`,
+      `EN REPARTO. ${EXPLAINED.EN_REPARTO}`, 'EN DESTINO', `EN RUTA A LOCALIDAD DE DESTINO. ${EXPLAINED.EN_RUTA}`, 'ADMITIDO',
+      `INFORMADO. ${EXPLAINED.INFORMADO}`]);
+    expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'exception', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
+    expect(result.events?.every(event => !event.provider_code)).toBe(true);
+    expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
+  });
+
+  it('maps every recorded label and situation code, and every situation to a mapped label', () => {
+    for (const row of statuses.entries) {
+      const wording = normalizeStatusWording(row.wording);
+      if (row.code) {
+        expect(statusMap.stage(row.code, wording), row.code).toBe(row.stage);
+      } else {
+        expect(classifyCorreosExpressStatus(row.wording)?.stage, row.wording).toBe(row.stage);
+        expect(statusMap.stage(null, wording), row.wording).toBe(row.stage);
+      }
+    }
+    for (const situation of ['01', '02', '04', '06', '08', '09', '10', '11', '12', '13', '14', '17', '38', '39']) {
+      expect(classifyCorreosExpressStatus(correosExpressCodeLabel(`X${situation}0000V`)!), situation).toBeDefined();
+    }
+    expect(correosExpressCodeLabel('X070000V')).toBeUndefined();
+    expect(correosExpressCodeLabel('A010000V')).toBeUndefined();
+    // The descriptions the parser writes, read back as the app keys them.
+    expect(statusMap.stage(null, normalizeStatusWording(`EN DESTINO. ${EXPLAINED.EN_DESTINO}`))).toBe('in_transit');
+    expect(statusMap.stage(null, normalizeStatusWording(EXPLAINED.ADDRESS))).toBe('failed_attempt');
+    expect(statusMap.stage(null, 'delivered')).toBe('delivered');
+    expect(statusMap.stage('X070000V', 'tracking update')).toBeUndefined();
+    expect(statusMap.codeKey?.('X090060R')).toBe('X09');
   });
 
   it('requires supported input and both independent shipment label and hidden field to match', () => {
@@ -52,7 +120,6 @@ describe('Correos Express direct tracking', () => {
   });
 
   it('accepts a parcel label whose page names the shipment it opens with, and reports that shipment', () => {
-    const LABEL = '99000000000000001999994', SHIPMENT = '9900000000000004';
     const page = (shown: string, echoed = LABEL) => edit($ => { $('h3.status .shipping > span').text(shown); $('#shippingNumber').val(echoed); });
     const result = parseCorreosExpress(page(SHIPMENT), LABEL);
     expect(result).toMatchObject({ status: 'in_transit', canonical_tracking_number: SHIPMENT });
@@ -75,6 +142,22 @@ describe('Correos Express direct tracking', () => {
       const result = parseCorreosExpress(edit($ => $('tbody tr').first().find('td').last().text(`${label}. PRIVATE_SYNTHETIC_NOTE`)), NUMBER);
       expect(result).toMatchObject({ status, current_stage: stage, last_status_text: label, expected_delivery: null });
       expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
+    }
+    const explained = parseCorreosExpress(edit($ => $('tbody tr').first().find('td').last()
+      .text(`${ended}.. Tiempo de recogida finalizado en Punto de Conveniencia`)), NUMBER);
+    expect(explained.last_status_text).toBe(`${ended}. Tiempo de recogida finalizado en Punto de Conveniencia.`);
+  });
+
+  it('keeps only the fixed sentences that open an explanation', () => {
+    expect(fixedExplanation(' Su envío se encuentra en el punto de conveniencia seleccionado y en breve recibirá las instrucciones para recogerlo.PRIVATE_SYNTHETIC_POINT. 1 PRIVATE_SYNTHETIC_STREET'))
+      .toBe('Su envío se encuentra en el punto de conveniencia seleccionado y en breve recibirá las instrucciones para recogerlo.');
+    expect(fixedExplanation('Su envío está en uno de nuestros vehí­culos  siendo transportado a la localidad de destino.'))
+      .toBe('Su envío está en uno de nuestros vehículos siendo transportado a la localidad de destino.');
+    expect(fixedExplanation('. Su envío  no ha podido ser entregado por una incidencia logística en nuestro reparto. Ya hemos gestionado su envío y lo recibirá en la fecha de entrega prevista'))
+      .toBe('Su envío no ha podido ser entregado por una incidencia logística en nuestro reparto. Ya hemos gestionado su envío y lo recibirá en la fecha de entrega prevista.');
+    for (const text of ['PRIVATE_SYNTHETIC_NOTE. Su envío está entregado.', 'Su envío está entregado a PRIVATE_SYNTHETIC_NAME.',
+      'Su envío no ha podido ser entregado por PRIVATE_SYNTHETIC_REASON.', 'SU ENVÍO ESTÁ ENTREGADO.', '']) {
+      expect(fixedExplanation(text), text).toBe('');
     }
   });
 
@@ -101,7 +184,7 @@ describe('Correos Express direct tracking', () => {
       first.find('td').last().text('. PRIVATE_SYNTHETIC_INCIDENT');
       const unknown = first.clone();
       unknown.find('td').first().text('05/01/2026 18:20');
-      unknown.find('td').last().text('FIRMADO POR PRIVATE_SYNTHETIC_NAME');
+      unknown.find('td').last().text('FIRMADO POR PRIVATE_SYNTHETIC_NAME. Su envío está entregado.');
       first.after(unknown);
       $('tbody tr').eq(2).find('td').last().text('ENTREGADO. PRIVATE_SYNTHETIC_SIGNATURE');
     });
@@ -115,7 +198,7 @@ describe('Correos Express direct tracking', () => {
     ]);
     expect(result.events?.[0]!.provider_status).toBeUndefined();
     expect(result.events?.[1]!.provider_status).toBeUndefined();
-    expect(result.events?.[2]!.stage).toBe('delivered');
+    expect(result.events?.[2]).toMatchObject({ description: 'Delivered', stage: 'delivered' });
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
   });
 
@@ -125,8 +208,10 @@ describe('Correos Express direct tracking', () => {
       last_update_local: '2026-01-16T17:40:00', expected_delivery: null });
     expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'in_transit', 'failed_attempt',
       'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
+    expect(result.events?.[2]!.description).toBe('ENTREGADO EN PUNTO DE CONVENIENCIA. Su envío se encuentra en el punto de conveniencia seleccionado y en breve recibirá las instrucciones para recogerlo.');
     expect(result.events?.[3]).toEqual({ description: FAILED_ROUND, provider_status: FAILED_ROUND, stage: 'failed_attempt',
       local_time: '2026-01-15T09:45:00', location: 'VALENCIA' });
+    expect(result.events?.[8]!.description).toBe('INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de su mercancía.');
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     for (const note of ['. Su envío no ha podido ser entregado por PRIVATE_SYNTHETIC_REASON.',
       'Su envío no ha podido ser entregado por PRIVATE_SYNTHETIC_REASON', '. SU ENVIO NO HA PODIDO SER ENTREGADO POR PRIVATE_SYNTHETIC_REASON']) {
@@ -134,25 +219,31 @@ describe('Correos Express direct tracking', () => {
       expect(newest).toMatchObject({ status: 'exception', current_stage: 'failed_attempt', last_status_text: FAILED_ROUND, expected_delivery: null });
       expect(JSON.stringify(newest)).not.toContain('PRIVATE_SYNTHETIC');
     }
+    // A reason the carrier gives every shipment is kept with the round.
+    const reasoned = parseCorreosExpress(edit($ => { $('tbody tr').slice(0, 3).remove(); $('tbody tr').first().find('td').last().text(`. ${EXPLAINED.ADDRESS}`); }, failedRound), NUMBER);
+    expect(reasoned).toMatchObject({ current_stage: 'failed_attempt', last_status_text: EXPLAINED.ADDRESS });
+    expect(reasoned.events?.[0]!.provider_status).toBe(FAILED_ROUND);
     const waiting = parseCorreosExpress(edit($ => $('tbody tr').first().remove(), failedRound), NUMBER);
-    expect(waiting).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup', last_status_text: 'DISPONIBLE EN PUNTO DE CONVENIENCIA' });
+    expect(waiting).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup',
+      last_status_text: 'DISPONIBLE EN PUNTO DE CONVENIENCIA. Su envío ya está disponible en el punto de conveniencia seleccionado para poder ser recogido.' });
   });
 
   it('keeps newest unknown or malformed-clock rows ahead of older delivery and preserves unresolved digits', () => {
-    for (const clock of ['', '31/02/2026 12:00', '05/01/2026 25:00', 'Tomorrow']) {
+    for (const clock of ['', '31/02/2026 12:00', '05/01/2026 25:00', '05/01/2026 24:00', 'Tomorrow']) {
       const changed = edit($ => {
         $('tbody tr').first().find('td').eq(0).text(clock);
         $('tbody tr').first().find('td').eq(2).text('NUEVO ESTADO. PRIVATE_SYNTHETIC_DETAIL');
         $('tbody tr').eq(1).find('td').eq(2).text('ENTREGADO. PRIVATE_SYNTHETIC_SIGNATURE');
       });
-      const result = parseCorreosExpress(changed, NUMBER);
-      expect(result).toMatchObject({ status: 'unknown', last_status_text: 'Tracking update', last_update: null, expected_delivery: null });
-      expect(result.current_stage).toBeUndefined();
-      expect(result.delivered_at).toBeUndefined();
-      expect(result.events?.[0]!.local_time).toBeUndefined();
-      expect(result.events?.[0]!.provider_status).toBeUndefined();
-      expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
-      if (clock) expect(result.events?.[0]!.provider_time_text).toBe(clock);
+      for (const result of [parseCorreosExpress(changed, NUMBER), parseCorreosExpress(changed, NUMBER, feed)]) {
+        expect(result).toMatchObject({ status: 'unknown', last_status_text: 'Tracking update', last_update: null, expected_delivery: null });
+        expect(result.current_stage).toBeUndefined();
+        expect(result.delivered_at).toBeUndefined();
+        expect(result.events?.[0]!.local_time).toBeUndefined();
+        expect(result.events?.[0]!.provider_status).toBeUndefined();
+        expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
+        if (clock) expect(result.events?.[0]!.provider_time_text).toBe(clock);
+      }
     }
   });
 
@@ -188,48 +279,196 @@ describe('Correos Express direct tracking', () => {
     const incident = edit($ => $('tbody tr').first().find('td').last().text('ESTACIONADO'));
     expect(parseCorreosExpress(incident, NUMBER).expected_delivery).toBeNull();
   });
+});
 
-  it('uses one anonymous form POST with no bootstrap, cookie, authorization or credential', async () => {
-    const fetcher = vi.fn(async (url, init) => {
-      expect(String(url)).toBe('https://s.correosexpress.com/SeguimientoSinCP/search');
-      expect(init).toMatchObject({ method: 'POST', cache: 'no-store', redirect: 'error' });
-      expect(init?.body).toBeInstanceOf(URLSearchParams);
-      expect(String(init?.body)).toBe('shippingNumber=' + NUMBER + '&errorCode=');
+describe('Correos Express history from the Correos localizador', () => {
+  it('gives the form scans their seconds, situation codes and fixed explanations, never an instant', () => {
+    const result = normalizeCarrierResult(parseCorreosExpress(explained, NUMBER, feed));
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: null,
+      last_status_text: 'NUEVO REPARTO. Concertación entrega flexible.', last_update_local: '2026-01-05T18:27:05', expected_delivery: '2026-01-06' });
+    expect(result.events?.map(({ local_time, provider_code, location }) => [local_time, provider_code, location])).toEqual([
+      ['2026-01-05T18:27:05', 'X110430V', 'BARCELONA2'],
+      // A coded scan in a minute the form does not show, which has no locality.
+      ['2026-01-03T08:30:12', 'X060000V', undefined],
+      ['2026-01-02T10:01:33', 'X100010R', 'BARCELONA2'],
+      ['2026-01-02T09:00:18', 'X080000V', 'BARCELONA2'],
+      ['2026-01-01T12:00:51', 'X060000V', 'MADRID'],
+      ['2026-01-01T06:03:27', 'X020000V', 'MADRID'],
+      // The localizador has no admission; the uncoded scan in its minute is not paired with it.
+      ['2025-12-31T13:15:00', undefined, 'OVIEDO'],
+      ['2025-12-30T13:15:42', 'X010000V', 'CENTRAL'],
+    ]);
+    expect(result.events?.map(event => event.description)).toEqual(['NUEVO REPARTO. Concertación entrega flexible.',
+      `EN DESTINO. ${EXPLAINED.EN_DESTINO}`, `EN ALMACÉN. ${EXPLAINED.ADDRESS}`, `EN REPARTO. ${EXPLAINED.EN_REPARTO}`,
+      `EN DESTINO. ${EXPLAINED.EN_DESTINO}`, `EN RUTA A LOCALIDAD DE DESTINO. ${EXPLAINED.EN_RUTA}`, 'ADMITIDO', `INFORMADO. ${EXPLAINED.INFORMADO}`]);
+    expect(result.events?.every(event => !event.time)).toBe(true);
+    expect(resultTimezone('correos-express', result)).toBe('Europe/Madrid');
+    expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
+  });
+
+  it('pairs an uncoded scan only with the one row left in its minute, and a coded one only with its situation', () => {
+    const uncoded = (time: string) => ({ local_time: time, explanation: '' });
+    const scans = (list: CorreosExpressFeed['scans']) => parseCorreosExpress(html, NUMBER, { shipment: NUMBER, scans: list }).events!;
+    expect(scans([uncoded('2026-01-01T12:00:40')])[3]).toMatchObject({ local_time: '2026-01-01T12:00:40', description: 'EN DESTINO' });
+    expect(scans([uncoded('2026-01-01T12:00:40')])[3]!.provider_code).toBeUndefined();
+    // Two uncoded scans for one row, or a coded scan of another situation, leave the row to the minute.
+    expect(scans([uncoded('2026-01-01T12:00:40'), uncoded('2026-01-01T12:00:45')])[3]!.local_time).toBe('2026-01-01T12:00:00');
+    const other = scans([{ local_time: '2026-01-01T12:00:40', code: 'X080000V', explanation: '' }]);
+    expect(other[3]).toMatchObject({ local_time: '2026-01-01T12:00:00', description: 'EN DESTINO' });
+    expect(other).toHaveLength(7);
+    // A failed round in the localizador is the form's label-free note.
+    const failed = parseCorreosExpress(failedRound, NUMBER, { shipment: NUMBER, scans: [
+      { local_time: '2026-01-15T09:45:31', code: 'X090060R', explanation: 'Su envío no ha podido ser entregado por no localizar al destinatario en el momento de la entrega.' }] });
+    expect(failed.events?.[3]).toMatchObject({ local_time: '2026-01-15T09:45:31', provider_code: 'X090060R', stage: 'failed_attempt',
+      description: 'Su envío no ha podido ser entregado por no localizar al destinatario en el momento de la entrega.' });
+    // A localizador history of another shipment is not used.
+    expect(parseCorreosExpress(html, NUMBER, { ...feed, shipment: OTHER }).events?.every(event => !event.provider_code)).toBe(true);
+  });
+
+  it('reads the localizador reply only for the whole number or a label of the shipment it names', () => {
+    expect(feed.shipment).toBe(NUMBER);
+    expect(feed.scans).toHaveLength(9);
+    expect(JSON.stringify(feed)).not.toContain('PRIVATE_SYNTHETIC');
+    expect(parseCorreosExpressFeed(noTrace(), NUMBER)).toBeNull();
+    expect(parseCorreosExpressFeed(noTrace()[0], NUMBER)).toBeNull();
+    const labelled = feedPayload((envelope) => { envelope.codEnvio = SHIPMENT; });
+    expect(parseCorreosExpressFeed(labelled, LABEL)?.shipment).toBe(SHIPMENT);
+    expect(parseCorreosExpressFeed(noTrace(LABEL), LABEL)).toBeNull();
+    for (const [payload, number] of [[feedPayload(), OTHER], [noTrace(OTHER), NUMBER], [labelled, '99000000000000002999993'],
+      [feedPayload((envelope) => { envelope.enviosAsociados = []; envelope.codEnvio = SHIPMENT; }), LABEL], [feedPayload(), LABEL],
+      [[], NUMBER], [[...feedPayload(), ...feedPayload()], NUMBER], ['<html>Blocked</html>', NUMBER]] as const) {
+      expect(() => parseCorreosExpressFeed(payload, number)).toThrowError(expect.objectContaining({ kind: 'schema' }));
+    }
+    for (const change of [(envelope: Envelope) => { envelope.eventos = {} as never; },
+      (envelope: Envelope) => { envelope.eventos![0]!.horEvento = '24:00:00'; },
+      (envelope: Envelope) => { envelope.eventos![0]!.fecEvento = '31/02/2026'; },
+      (envelope: Envelope) => { envelope.eventos![0]!.codEvento = 'X01 PRIVATE'; },
+      (envelope: Envelope) => { envelope.eventos = Array.from({ length: 501 }, () => envelope.eventos![0]!); }]) {
+      expect(() => parseCorreosExpressFeed(feedPayload(change), NUMBER)).toThrowError(expect.objectContaining({ kind: 'schema' }));
+    }
+    for (const code of ['1', '', undefined]) {
+      expect(() => parseCorreosExpressFeed(feedPayload((envelope) => { envelope.error = { codError: code }; }), NUMBER))
+        .toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    }
+  });
+
+  it('answers from the localizador alone only with Correos Express situation codes', () => {
+    const result = normalizeCarrierResult(correosExpressFeedResult(feed, NUMBER));
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: null,
+      last_status_text: 'NUEVO REPARTO. Concertación entrega flexible.', last_update_local: '2026-01-05T18:27:05', expected_delivery: null });
+    expect(result.events?.map(({ local_time, description }) => [local_time, description])).toEqual([
+      ['2026-01-05T18:27:05', 'NUEVO REPARTO. Concertación entrega flexible.'],
+      ['2026-01-03T08:30:12', `EN DESTINO. ${EXPLAINED.EN_DESTINO}`],
+      ['2026-01-02T10:01:33', `EN ALMACÉN. ${EXPLAINED.ADDRESS}`],
+      ['2026-01-02T09:00:18', `EN REPARTO. ${EXPLAINED.EN_REPARTO}`],
+      ['2026-01-01T12:00:58', 'Tracking update'],
+      ['2026-01-01T12:00:51', `EN DESTINO. ${EXPLAINED.EN_DESTINO}`],
+      ['2026-01-01T06:03:27', `EN RUTA A LOCALIDAD DE DESTINO. ${EXPLAINED.EN_RUTA}`],
+      ['2025-12-31T13:15:09', 'Tracking update'],
+      ['2025-12-30T13:15:42', 'INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de su mercancía. Si necesita más información por favor contacte con su remitente.'],
+    ]);
+    expect(result.events?.every(event => !event.time && !event.location)).toBe(true);
+    expect(correosExpressFeedResult({ ...feed, shipment: SHIPMENT }, LABEL).canonical_tracking_number).toBe(SHIPMENT);
+    // The localizador serves the whole Correos group: a history without Correos Express codes is not taken.
+    for (const scans of [[{ local_time: '2026-01-01T10:00:00', code: 'A010000V', explanation: '' }, ...feed.scans],
+      feed.scans.map(({ local_time }) => ({ local_time, explanation: '' })), []]) {
+      expect(() => correosExpressFeedResult({ shipment: NUMBER, scans }, NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    }
+  });
+});
+
+describe('Correos Express retrieval', () => {
+  it('sends one anonymous form POST and one localizador read, with no bootstrap, cookie, authorization or credential', async () => {
+    const fetcher = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
       expect(new Headers(init?.headers).has('cookie')).toBe(false);
       expect(new Headers(init?.headers).has('authorization')).toBe(false);
       expect(init?.signal).toBeInstanceOf(AbortSignal);
-      return response();
+      expect(init).toMatchObject({ cache: 'no-store', redirect: 'error' });
+      if (String(url) === FORM) {
+        expect(init).toMatchObject({ method: 'POST' });
+        expect(init?.body).toBeInstanceOf(URLSearchParams);
+        expect(String(init?.body)).toBe('shippingNumber=' + NUMBER + '&errorCode=');
+        return response();
+      }
+      expect(String(url)).toBe(`${FEED}${NUMBER}?codAplicacion=60&codCanal=3&codIdioma=ES&indUltEvento=N`);
+      expect(init?.method ?? 'GET').toBe('GET');
+      return json(feedPayload());
     }) as unknown as typeof fetch;
-    const instance = adapter({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
-    expect(await instance.track({ number: NUMBER, postcode: 'PRIVATE_SYNTHETIC_POSTCODE' })).toMatchObject({ status: 'in_transit' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    const instance = adapter(environment(fetcher));
+    const result = await instance.track({ number: NUMBER, postcode: 'PRIVATE_SYNTHETIC_POSTCODE' });
+    expect(result).toMatchObject({ status: 'in_transit', last_update_local: '2026-01-05T18:27:05' });
+    expect(result.events).toHaveLength(8);
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
-  it('recognizes matching history and a proven negative but never ranks local clocks or converts failure to absence', async () => {
-    const fetcher = vi.fn(async () => response()) as unknown as typeof fetch;
-    const instance = adapter({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
+  it('keeps the form history when the localizador fails or answers for another shipment', async () => {
+    for (const localizador of [() => new Response('Unavailable', { status: 503 }), () => response('<html>Blocked</html>'),
+      () => json(feedPayload((envelope) => { envelope.codEnvio = OTHER; })), () => json(noTrace()),
+      () => Promise.reject(new TypeError('network'))]) {
+      const result = await new CorreosExpressTracker({ fetcher: routed(() => response(), localizador) }).fetch(NUMBER);
+      expect(result).toMatchObject({ status: 'in_transit', last_update_local: '2026-01-05T18:27:00' });
+      expect(result.events?.every(event => !event.provider_code)).toBe(true);
+    }
+  });
+
+  it('confirms the form negative only when the localizador has no trace either', async () => {
+    const tracker = (localizador: () => Response | Promise<Response>) => new CorreosExpressTracker({ fetcher: routed(() => response(negative()), localizador) });
+    await expect(tracker(() => json(noTrace())).fetch(NUMBER)).rejects.toMatchObject({ kind: 'not_found' });
+    // The form forgets a shipment after a while; the localizador may still hold its history.
+    expect(await tracker(() => json(feedPayload())).fetch(NUMBER)).toMatchObject({ status: 'in_transit', last_update_local: '2026-01-05T18:27:05' });
+    for (const [localizador, kind] of [[() => new Response('Busy', { status: 429 }), 'rate_limited'], [() => new Response('Denied', { status: 403 }), 'challenge'],
+      [() => response('<html>Blocked</html>'), 'schema'], [() => json(feedPayload((envelope) => { envelope.codEnvio = OTHER; })), 'schema'],
+      [() => json(feedPayload((envelope) => { envelope.error = { codError: '1' }; })), 'indeterminate'],
+      [() => Promise.reject(new TypeError('network')), 'transport'],
+      [() => json(feedPayload((envelope) => { envelope.eventos![0]!.codEvento = 'A010000V'; })), 'indeterminate']] as const) {
+      await expect(tracker(localizador).fetch(NUMBER)).rejects.toMatchObject({ kind });
+    }
+  });
+
+  it('answers from the localizador when the form fails, and keeps the form failure when it cannot', async () => {
+    const steps: StepRecord[] = [];
+    const recorder = { step: (step: StepRecord) => steps.push(step), lookup() {} };
+    const blocked = () => new Response('Denied', { status: 403 });
+    const recovered = await new CorreosExpressTracker({ fetcher: routed(blocked, () => json(feedPayload())), recorder }).fetch(NUMBER);
+    expect(recovered).toMatchObject({ status: 'in_transit', last_status_text: 'NUEVO REPARTO. Concertación entrega flexible.' });
+    expect(steps.map(({ step, outcome, fallbackFrom, fallbackReason }) => [step, outcome, fallbackFrom, fallbackReason]))
+      .toEqual([['direct', 'challenge', null, null], ['correos', 'ok', 'direct', 'challenge']]);
+    for (const [form, kind] of [[blocked, 'challenge'], [() => new Response('Busy', { status: 429 }), 'rate_limited'],
+      [() => response('<html>Maintenance</html>'), 'indeterminate'], [() => response(edit($ => $('thead th').first().text('Changed'))), 'schema']] as const) {
+      for (const localizador of [() => json(noTrace()), () => new Response('Unavailable', { status: 503 }), () => response('<html>Blocked</html>')]) {
+        await expect(new CorreosExpressTracker({ fetcher: routed(form, localizador) }).fetch(NUMBER)).rejects.toMatchObject({ kind });
+      }
+      expect(await new CorreosExpressTracker({ fetcher: routed(form, () => json(feedPayload())) }).fetch(NUMBER)).toMatchObject({ status: 'in_transit' });
+    }
+  });
+
+  it('recognizes matching history and a confirmed negative but never ranks local clocks or converts failure to absence', async () => {
+    const fetcher = routed(() => response());
+    const instance = adapter(environment(fetcher));
     expect(await instance.recognize!('invalid')).toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
     expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
-    const unknown = adapter({ fetcher: vi.fn(async () => response(negative())), env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
-    expect(await unknown.recognize!(NUMBER)).toEqual({ known: false });
-    const outage = adapter({ fetcher: vi.fn(async () => response(negative(NUMBER, '-1'))), env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
-    await expect(outage.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    expect(await adapter(environment(routed(() => response(negative())))).recognize!(NUMBER)).toEqual({ known: false });
+    expect(await adapter(environment(routed(() => response(negative()), () => json(feedPayload())))).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    await expect(adapter(environment(routed(() => response(negative(NUMBER, '-1'))))).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    await expect(adapter(environment(routed(() => response(negative()), () => new Response('Busy', { status: 429 })))).recognize!(NUMBER))
+      .rejects.toMatchObject({ kind: 'rate_limited' });
   });
 
   it('preserves generic HTTP failures and streaming body limits without retrying', async () => {
     for (const [status, kind] of [[404, 'indeterminate'], [410, 'indeterminate'], [403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']] as const) {
       const fetcher = vi.fn(async () => new Response('Unavailable', { status })) as unknown as typeof fetch;
       await expect(new CorreosExpressTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind });
-      expect(fetcher).toHaveBeenCalledTimes(1);
+      expect(urls(fetcher).filter(url => url === FORM)).toHaveLength(1);
+      expect(fetcher).toHaveBeenCalledTimes(2);
     }
     const large = vi.fn(async () => new Response(new Uint8Array(1_000_001))) as unknown as typeof fetch;
     await expect(new CorreosExpressTracker({ fetcher: large }).fetch(NUMBER)).rejects.toThrow('unexpectedly large');
-    expect(large).toHaveBeenCalledTimes(1);
+    expect(large).toHaveBeenCalledTimes(2);
   });
 
   it('honors cancellation before and during retrieval and enforces the whole lookup budget', async () => {
-    const immediate = vi.fn(async () => response()) as unknown as typeof fetch;
+    const immediate = routed(() => response());
     await expect(new CorreosExpressTracker({ fetcher: immediate }).fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toBeInstanceOf(Error);
     await expect(new CorreosExpressTracker({ fetcher: immediate }).fetch(NUMBER, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
     expect(immediate).not.toHaveBeenCalled();
@@ -242,7 +481,8 @@ describe('Correos Express direct tracking', () => {
     const active = new CorreosExpressTracker({ fetcher: waiting }).fetch(NUMBER, { signal: controller.signal });
     controller.abort();
     await expect(active).rejects.toMatchObject({ kind: 'transport' });
-    await expect(new CorreosExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'transport' });
     expect(waiting).toHaveBeenCalledTimes(2);
+    await expect(new CorreosExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'budget' });
+    expect(waiting).toHaveBeenCalledTimes(4);
   });
 });

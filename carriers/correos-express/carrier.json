@@ -17,7 +17,8 @@
     "mode": "automatic",
     "adapter": "correos-express",
     "steps": [
-      "direct"
+      "direct",
+      "correos"
     ],
     "recognition": {
       "rank": 800

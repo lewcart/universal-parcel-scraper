@@ -51,6 +51,7 @@ import { statusMap as cjPacket } from '../../carriers/cj-packet/status.js';
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
+import { statusMap as correosExpress } from '../../carriers/correos-express/status.js';
 import { statusMap as correosSpain } from '../../carriers/correos-spain/status.js';
 import { statusMap as courierCenter } from '../../carriers/courier-center/status.js';
 import { statusMap as couriersPlease } from '../../carriers/couriersplease/status.js';
@@ -234,8 +235,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'bulgarian-posts': bulgarianPosts, cacesa, cargus, cdek, cdl, celeritas, 'central-transport': centralTransport, 'ceska-posta': ceskaPosta,
   'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics,
   'cj-packet': cjPacket,
-  coordinadora, 'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain,
-  'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost,
+  coordinadora, 'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress,
+  'correos-spain': correosSpain, 'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex,
+  'cyprus-post': cyprusPost,
   'dai-post': daiPost, dao, 'day-ross': dayRoss,
   dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, envialia, 'epost-global': epostGlobal, estes,

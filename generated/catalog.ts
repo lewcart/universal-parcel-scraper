@@ -6968,6 +6968,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^PS[0-9A-Z]{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -22811,7 +22817,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bts-uz": [],
   "budbee": [],
   "buffalo-ex": ["buffalo-ex-1"],
-  "bulgarian-posts": ["bulgarian-posts-1"],
+  "bulgarian-posts": ["bulgarian-posts-1","bulgarian-posts-s10"],
   "burd-delivery": [],
   "bussgods": ["bussgods-1"],
   "cacesa": [],

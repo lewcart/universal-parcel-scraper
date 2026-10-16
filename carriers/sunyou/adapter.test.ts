@@ -282,7 +282,7 @@ describe('SunYou scan codes and last-mile handoff', () => {
     expect(deliveryHandoff('sunyou', 'SYGB000000001', result)).toEqual({ carrier: 'japan-post', number: reference, basis: 'destination' });
     // With no national post for the destination, the number's issuer takes it.
     const elsewhere = parseSunYouTrackingResponse(withItem({
-      dstCountry: 'BG', carrierName: 'China Post', carrierWebsite: 'https://www.ems.com.cn/', trackingNumber: reference,
+      dstCountry: 'IS', carrierName: 'China Post', carrierWebsite: 'https://www.ems.com.cn/', trackingNumber: reference,
     }), 'SYGB000000001');
     expect(elsewhere.delivery_carrier).toBeUndefined();
     expect(deliveryHandoff('sunyou', 'SYGB000000001', elsewhere)).toEqual({ carrier: 'china-post', number: reference, basis: 'reference' });

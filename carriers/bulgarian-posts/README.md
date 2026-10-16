@@ -57,10 +57,12 @@ and domestic items carry thirteen letters and digits starting `PS`, which `bulga
 claims. The adapter takes S10 codes from any post with a valid check digit and `PS` numbers;
 anything else is invalid without a request.
 
-The issuer of an S10 code does not establish who delivers it, and mail from abroad keeps its
-issuer's suffix, so no rule offers S10 codes to Bulgarian Posts. They reach the adapter when a
-caller or a provider names it. The samples and their sources are in
-[`numbers.json`](numbers.json).
+A code ending `BG` is Bulgarian Posts', but the issuer of an S10 code does not establish who
+delivers it, so detection keeps such codes with the generic postal carrier. `bulgarian-posts-s10`,
+at low confidence, makes preflight ask Bulgarian Posts about them. Mail from abroad keeps the
+suffix of the post that issued it, and reaches Bulgarian Posts when a caller names it, a provider
+names it, or a result gives Bulgaria as the destination of an S10 item. The samples and their
+sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

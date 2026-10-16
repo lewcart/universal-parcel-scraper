@@ -6966,6 +6966,12 @@
       {
         "pattern": "^PS[0-9A-Z]{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },

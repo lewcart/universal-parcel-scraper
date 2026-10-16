@@ -92,6 +92,13 @@
       "id": "bulgarian-posts-1",
       "pattern": "^PS[0-9A-Z]{11}$",
       "confidence": "high"
+    },
+    {
+      "id": "bulgarian-posts-s10",
+      "pattern": "^[A-Z]{2}\\d{9}BG$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
     }
   ]
 }

@@ -50,8 +50,9 @@ request.
 A code ending `BY` is Belpost's, but the issuer of an S10 code does not establish who delivers
 it, so detection keeps such codes with the generic postal carrier. `belpost-s10`, at low
 confidence, makes preflight ask Belpost about them. Mail from abroad keeps the suffix of the post
-that issued it, and reaches Belpost when a caller or a provider names it. The samples and their
-sources are in [`numbers.json`](numbers.json).
+that issued it, and reaches Belpost when a caller names it, a provider names it, or a result gives
+Belarus as the destination of an S10 item. The samples and their sources are in
+[`numbers.json`](numbers.json).
 
 ## Links
 

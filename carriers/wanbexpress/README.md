@@ -1,8 +1,14 @@
 # WanbExpress
 
 Tracks WanbExpress's own parcel identifiers through `tracking.wanbexpress.com`.
-A direct HTTP lookup is tried first; a refused session can recover through the optional
+A direct HTTP lookup is tried first. A refused session can recover through a private
+Playwright browser configured with `WANBEXPRESS_BROWSER_WS_ENDPOINT`, then the optional
 TRAWL service. HTTP recognition never starts a browser.
+
+The private browser opens the blank form and uses its advertised passive V3 verification.
+Use a browser and network accepted by the carrier, with the SDK's exact `playwright-core`
+peer version. Keep the capability endpoint private; the [Royal Mail browser service](../royal-mail/README.md)
+can also serve this adapter. Each lookup has an isolated context and bounded deadline.
 
 The scoped browser helper observes tracking responses before opening the blank form. A deep link
 can select the checkbox-only configuration. It tries the page's
@@ -21,5 +27,6 @@ Verification depends on the browser and its network. A datacenter network can be
 both reCAPTCHA flows; enabled universal providers then take over. An accepted CAPTCHA alone
 never establishes that tracking succeeded.
 
-Set `WANBEXPRESS_TRACKING_NUMBER` and `FLARESOLVERR_URL` outside the repository and run
+Set `WANBEXPRESS_TRACKING_NUMBER` and either `WANBEXPRESS_BROWSER_WS_ENDPOINT` or
+`FLARESOLVERR_URL` outside the repository and run
 `npm run test:carriers:live -- carriers/wanbexpress/adapter.live.test.ts`.

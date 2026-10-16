@@ -1,8 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { ChallengeError } from '../../core/errors/index.js';
 import { TrawlClient } from '../../core/transport/trawl.js';
 import { adapter } from './adapter.js';
+import { fetchWanbInBrowser } from './browser.js';
 import { API, normalizeWanbNumber, parseWanb } from './parser.js';
+
+vi.mock('./browser.js', () => ({ fetchWanbInBrowser: vi.fn() }));
 
 const number = 'WNBZZ9990000001YQ';
 const unknown = 'WNBZZ9999999999YQ';
@@ -19,6 +23,34 @@ const capture = (value: unknown, status = 200, id = number) => ({ url: `${API}?T
   headers: { 'content-type': 'application/json' }, body: JSON.stringify(value), truncated: false, base64Encoded: false, error: null });
 
 describe('WanbExpress', () => {
+  it('uses the optional private browser for tracking and opt-in recognition, with the initial failure recorded', async () => {
+    vi.mocked(fetchWanbInBrowser).mockClear().mockResolvedValue(parseWanb(found(), number));
+    const recorded: unknown[] = [];
+    const carrier = adapter({ env: { WANBEXPRESS_BROWSER_WS_ENDPOINT: 'ws://browser.test/synthetic' },
+      fetcher: async () => reply(challenge), trawl: null, browserExecutablePath: null,
+      recorder: { ...NOOP_RECORDER, step: event => { recorded.push(event); } } });
+    await expect(carrier.recognize!(number)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(fetchWanbInBrowser).not.toHaveBeenCalled();
+    await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(recorded).toMatchObject([{ step: 'direct', outcome: 'challenge' }, { step: 'browser', outcome: 'ok', fallbackFrom: 'direct' }]);
+    expect(fetchWanbInBrowser).toHaveBeenCalledWith(number, 'ws://browser.test/synthetic', expect.any(AbortSignal), expect.any(Number));
+    expect(vi.mocked(fetchWanbInBrowser).mock.calls[0]![3]).toBeLessThanOrEqual(6000);
+    await expect(carrier.recognizeWithBrowser!(number, {})).resolves.toMatchObject({ known: true });
+  });
+
+  it('can recover through TRAWL after the private browser is refused', async () => {
+    vi.mocked(fetchWanbInBrowser).mockRejectedValueOnce(new ChallengeError('WanbExpress'));
+    const carrier = adapter({ env: { WANBEXPRESS_BROWSER_WS_ENDPOINT: 'ws://browser.test/synthetic' }, fetcher: async () => reply(challenge),
+      trawl: new TrawlClient('http://browser.test', async () => reply({ tier: 3, statusCode: 200, html: '', capturedResponses: [capture(found())] })),
+      browserExecutablePath: null, recorder: NOOP_RECORDER });
+    await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+  });
+
+  it('retains a verification failure when neither browser service is configured', async () => {
+    const carrier = adapter({ env: {}, fetcher: async () => reply(challenge), trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
+    await expect(carrier.recognizeWithBrowser!(number, {})).rejects.toMatchObject({ kind: 'challenge' });
+  });
+
   it('binds the complete parcel id and trusts UTC instead of applying the display offset again', () => {
     const result = parseWanb(found(), number);
     expect(result).toMatchObject({ current_stage: 'delivered', status: 'delivered', origin_country: 'CN', destination_country: 'US',

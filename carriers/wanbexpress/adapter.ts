@@ -4,9 +4,20 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { API, MAX_BYTES, normalizeWanbNumber, ORIGIN, parseWanb, PROVIDER } from './parser.js';
+import { fetchWanbInBrowser } from './browser.js';
 
 export class WanbTracker {
   constructor(private readonly environment: AdapterEnvironment) {}
+
+  private get endpoint(): string | null { return this.environment.env.WANBEXPRESS_BROWSER_WS_ENDPOINT?.trim() || null; }
+
+  browserSteps(number: string) {
+    return [
+      { id: 'browser', enabled: !!this.endpoint, run: ({ signal, remainingMs }: { signal: AbortSignal; remainingMs: number }) =>
+        fetchWanbInBrowser(number, this.endpoint!, signal, Math.max(1, Math.min(20_000, remainingMs - 2000))) },
+      { id: 'trawl', enabled: !!this.environment.trawl, run: ({ signal, remainingMs }: { signal: AbortSignal; remainingMs: number }) => this.browser(number, signal, remainingMs) },
+    ];
+  }
 
   async direct(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeWanbNumber(raw);
@@ -50,20 +61,21 @@ export class WanbTracker {
     const number = normalizeWanbNumber(raw);
     return runSteps({ carrier: 'wanbexpress', budgetMs: context.budgetMs ?? 45000, signal: context.signal, recorder: this.environment.recorder }, [
       { id: 'direct', run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(5000, remainingMs) }) },
-      { id: 'trawl', enabled: !!this.environment.trawl, run: ({ signal, remainingMs }) => this.browser(number, signal, remainingMs) },
+      ...this.browserSteps(number),
     ]);
   }
 }
 
 export const adapter: AdapterFactory = environment => {
   const tracker = new WanbTracker(environment);
-  return { id: 'wanbexpress', recordsSteps: true, steps: ['direct', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
+  return { id: 'wanbexpress', recordsSteps: true, steps: ['direct', ...(environment.env.WANBEXPRESS_BROWSER_WS_ENDPOINT?.trim() ? ['browser'] : []), 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeWanbNumber(number))),
     recognizeWithBrowser: (number, context, previous) => {
       if (previous instanceof SchemaError || previous instanceof RateLimitedError) return Promise.reject(previous);
+      if (!environment.env.WANBEXPRESS_BROWSER_WS_ENDPOINT?.trim() && !environment.trawl) return Promise.reject(new ChallengeError(PROVIDER, 'WanbExpress requires a browser tracking service'));
       return recognizeFromBrowserLookup(() => runSteps({ carrier: 'wanbexpress', budgetMs: context?.budgetMs ?? 45000,
         signal: context?.signal, recorder: environment.recorder }, [
-        { id: 'trawl', run: ({ signal, remainingMs }) => tracker.browser(number, signal, remainingMs) },
+        ...tracker.browserSteps(normalizeWanbNumber(number)),
       ]));
     } };
 };

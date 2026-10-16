@@ -21,6 +21,7 @@
     "adapter": "wanbexpress",
     "steps": [
       "direct",
+      "browser",
       "trawl"
     ],
     "recognition": {

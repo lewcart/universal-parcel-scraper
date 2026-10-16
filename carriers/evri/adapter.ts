@@ -1,4 +1,4 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
@@ -57,5 +57,8 @@ export class EvriTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new EvriTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  return { id: 'evri', steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  return {
+    id: 'evri', steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeEvriNumber(number))),
+  };
 };

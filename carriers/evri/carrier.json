@@ -23,6 +23,9 @@
     "steps": [
       "direct"
     ],
+    "recognition": {
+      "rank": 605
+    },
     "localClocks": true
   },
   "capabilities": [

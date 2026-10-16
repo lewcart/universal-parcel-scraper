@@ -7,7 +7,8 @@ Detection offers both services only when the barcode's last digit matches: a
 letter counts as its ASCII code minus 63, mod 10, and the first fifteen
 characters weigh 2, 1 from the left, summed mod 10. Barcodes opening `C00HHA`
 appear only on Evri UK's own tracking links, so detection offers them to Evri
-UK alone.
+UK alone. Recognition asks both services about lettered barcodes, and a barcode
+both know is left for the reader to choose.
 
 ## Retrieval
 
@@ -31,6 +32,12 @@ history service. Those keys and tokens remain inside the browser.
 
 The page reads the same history as the guest API. When the guest API answers
 without confirming a parcel, the page is not opened.
+
+Recognition sends the guest API's reference lookup alone and never opens the
+page. A barcode it resolves is known. No parcel, a barcode the service rejects
+for its last digit, and a parcel it redirects to Evri International are
+unknown; several parcels under one barcode stay inconclusive. All-digit
+barcodes are only suggested.
 
 The browser's automation flag and installed-version User-Agent are configured
 for this carrier because the protected key request rejects the default

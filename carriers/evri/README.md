@@ -32,6 +32,8 @@ the 16-character barcode's last digit as described there.
   of Evri. When an aggregator reports one of these names for a number another
   carrier's rule claims at high confidence, the hint goes to that carrier
   (`core/catalog/partners.ts`), so a Paack number is not filed under Evri.
+- Recognition makes the same POST: a parcel with scans is known, and the
+  **Parcel not found** heading is unknown.
 - Not-found is only the explicit **Parcel not found** heading on the normal
   search form, returned with HTTP 200. That form clears its input, so the POST
   itself scopes the answer; an input naming another number is rejected. A

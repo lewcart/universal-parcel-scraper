@@ -183,6 +183,19 @@ describe('Evri International retrieval', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
+  it('recognizes a parcel from the same POST and reads only the not-found heading as unknown', async () => {
+    const recognize = (reply: () => Response, number: string) => {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply());
+      return { fetcher, answer: adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} }).recognize!(number, { budgetMs: 1_000 }) };
+    };
+    await expect(recognize(() => new Response(html), NUMBER).answer).resolves.toMatchObject({ known: true });
+    await expect(recognize(() => new Response(empty), UNKNOWN).answer).resolves.toEqual({ known: false });
+    await expect(recognize(() => new Response('Unavailable', { status: 503 }), NUMBER).answer).rejects.toMatchObject({ kind: 'maintenance' });
+    const invalid = recognize(() => new Response(html), 'invalid');
+    await expect(invalid.answer).resolves.toEqual({ known: false });
+    expect(invalid.fetcher).not.toHaveBeenCalled();
+  });
+
   it('rejects invalid input and timeout without making a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
     await expect(new EvriTracker({ fetcher }).fetch('invalid')).rejects.toMatchObject({ kind: 'invalid_input' });

@@ -1,10 +1,10 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { CarrierError, carrierErrorKind, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { withLocalBrowser } from '../../core/transport/localBrowser.js';
 import { requestEvriUkInPage } from './browser.js';
-import { EVRI_UK_UNCONFIRMED, readEvriUkMobile } from './mobile.js';
+import { EVRI_UK_UNCONFIRMED, readEvriUkMobile, recognizeEvriUkMobile } from './mobile.js';
 import { normalizeEvriUkNumber, parseEvriUk } from './parser.js';
 
 /** How long the guest API may take while the page can still answer. */
@@ -83,5 +83,15 @@ export const adapter: AdapterFactory = environment => {
     executablePath: environment.browserExecutablePath, recorder: environment.recorder, fetcher: environment.fetcher,
     userAgent: environment.userAgent,
   });
-  return { id: 'evri-uk', recordsSteps: true, steps: ['direct', 'browser'], track: (input, context) => tracker.fetch(input.number, context) };
+  return {
+    id: 'evri-uk', recordsSteps: true, steps: ['direct', 'browser'], track: (input, context) => tracker.fetch(input.number, context),
+    // The guest API's reference lookup alone; the page is never opened to recognize a number.
+    recognize: async (number, context = {}) => {
+      if (!accepted(() => normalizeEvriUkNumber(number))) return { known: false };
+      const budgetMs = context.budgetMs ?? DIRECT_TIMEOUT_MS;
+      if (!Number.isFinite(budgetMs) || budgetMs <= 0) throw new TypeError('Evri UK budget must be positive');
+      return recognizeEvriUkMobile(number, { fetcher: environment.fetcher, userAgent: environment.userAgent,
+        signal: context.signal ?? new AbortController().signal, timeoutMs: budgetMs });
+    },
+  };
 };

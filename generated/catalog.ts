@@ -2126,6 +2126,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "evri",
       "upstreamName": "Evri International",
+      "recognitionRank": 605,
       "localClocks": true
     },
     "canaryUrl": "https://globaleco.app/track/",
@@ -10551,7 +10552,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "evri-uk"
+      "adapter": "evri-uk",
+      "recognitionRank": 615,
+      "recognitionPattern": "^(?:[HT][0-9A-Z]{5}|C00HHA)\\d{10}$"
     },
     "canaryUrl": "https://www.evri.com/track-a-parcel",
     "trackingUrlTemplate": "https://www.evri.com/track/parcel/{trackingNumber}/details",

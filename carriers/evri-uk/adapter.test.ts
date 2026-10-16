@@ -1,7 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { describe, expect, it } from 'vitest';
-import { EvriUkTracker } from './adapter.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, EvriUkTracker } from './adapter.js';
 import { requestEvriUkInPage } from './browser.js';
 import { EVRI_UK_MOBILE_API, readEvriUkMobile } from './mobile.js';
 import { evriUkTrackingUrl, normalizeEvriUkNumber, parseEvriUk } from './parser.js';
@@ -252,6 +254,57 @@ describe('Evri UK guest API', () => {
     const failure = await read(service([]).fetcher).catch((error: unknown) => error);
     expect(failure).toMatchObject({ kind: 'transport' });
     expect(failure).not.toHaveProperty('cause');
+  });
+});
+
+describe('Evri UK recognition', () => {
+  const recognize = (replies: Response[], number = NUMBER) => {
+    const calls: string[] = [];
+    const fetcher = ((url: string | URL) => {
+      calls.push(String(url));
+      const response = replies.shift();
+      return response ? Promise.resolve(response) : Promise.reject(new Error('Unexpected request'));
+    }) as typeof fetch;
+    return { calls, answer: adapter({ fetcher, env: {}, userAgent: 'Host/1.0', recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: '/nonexistent/chromium' }).recognize!(number, { budgetMs: 1_000 }) };
+  };
+  const reference = (identifiers: unknown[]) => Response.json({ parcelIdentifiers: identifiers });
+
+  it('knows a barcode from the reference lookup alone', async () => {
+    const { calls, answer } = recognize([reference([{ urn: URN, redirectUrl: null }])]);
+    await expect(answer).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(calls).toEqual([`${EVRI_UK_MOBILE_API}/parcels/reference/${NUMBER}`]);
+  });
+
+  it.each([
+    ['no parcel', () => reference([])],
+    ['a parcel Evri International follows', () => reference([{ urn: URN, redirectUrl: 'https://private.example/opaque' }])],
+    ['a barcode rejected for its check digit', () => Response.json({ errors: [{ status: 400, errorType: 'InvalidReferenceException', message: 'PRIVATE_MARKER' }] }, { status: 400 })],
+  ])('reads %s as unknown', async (_, reply) => {
+    await expect(recognize([reply()]).answer).resolves.toEqual({ known: false });
+  });
+
+  it.each([
+    ['several parcels', () => reference([{ urn: URN, redirectUrl: null }, { urn: URN, redirectUrl: null }]), 'indeterminate'],
+    ['another rejection', () => Response.json({ errors: [{ status: 404, errorType: 'SyntheticException' }] }, { status: 404 }), 'indeterminate'],
+    ['a bare server error', () => new Response('', { status: 500 }), 'indeterminate'],
+    ['a refused key', () => new Response('', { status: 403 }), 'challenge'],
+    ['a rate limit', () => new Response('', { status: 429 }), 'rate_limited'],
+    ['another barcode', () => reference([{ urn: URN.replace(NUMBER, 'H000000000000002'), redirectUrl: null }]), 'schema'],
+  ])('keeps %s from reading as unknown', async (_, reply, kind) => {
+    await expect(recognize([reply()]).answer).rejects.toMatchObject({ kind });
+  });
+
+  it('asks nothing about a number that is not a barcode', async () => {
+    const { calls, answer } = recognize([], 'H00000000000001');
+    await expect(answer).resolves.toEqual({ known: false });
+    expect(calls).toHaveLength(0);
+  });
+
+  it('is asked about lettered barcodes only, beside Evri International', () => {
+    // Made-up barcodes whose last digit passes the check.
+    expect(recognitionAskedCarriers('H00AAA0000000006')).toEqual(['evri-uk', 'evri']);
+    expect(recognitionAskedCarriers('C00HHA0000000000')).toEqual(['evri-uk']);
+    expect(recognitionAskedCarriers('1234567890123452')).not.toContain('evri-uk');
   });
 });
 

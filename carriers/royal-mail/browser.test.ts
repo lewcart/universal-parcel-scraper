@@ -14,9 +14,9 @@ const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 function harness(phase: 'summary' | 'events' = 'summary') {
   const emitter = new EventEmitter();
   const frame = {};
-  const captcha = { visible: false };
-  const page = Object.assign(emitter, { mainFrame: () => frame,
-    locator: (selector: string) => ({ count: async () => captcha.visible && selector.includes('hcaptcha') ? 1 : 0 }) }) as unknown as Page;
+  const captcha = { visible: false, withheld: false };
+  const page = Object.assign(emitter, { mainFrame: () => frame, locator: (selector: string) => ({ count: async () =>
+    (captcha.visible && selector.includes('frame=challenge')) || (captcha.withheld && selector.includes('data-ta-src')) ? 1 : 0 }) }) as unknown as Page;
   const target = phase === 'summary' ? URL : royalMailEventsApiUrl(NUMBER);
   const request = (url = target, method = 'GET', ownFrame = true, errorText = 'PRIVATE TOKEN in request URL') => ({ url: () => url,
     method: () => method, resourceType: () => 'xhr', frame: () => ownFrame ? frame : {}, failure: () => ({ errorText }) }) as Request;
@@ -149,6 +149,13 @@ describe('Royal Mail browser response capture', () => {
     const h = harness();
     const result = h.capture(async () => { h.captcha.visible = true; }, 5000);
     await expect(result).rejects.toMatchObject({ kind: 'challenge', message: 'Royal Mail asked for an interactive CAPTCHA' });
+    expect(h.emitter.eventNames()).toEqual([]);
+  });
+
+  it('ends at once when the consent manager withholds the CAPTCHA the page waits for', async () => {
+    const h = harness();
+    const result = h.capture(async () => { h.captcha.withheld = true; }, 5000);
+    await expect(result).rejects.toMatchObject({ kind: 'schema', message: "Royal Mail's cookie consent withheld its CAPTCHA" });
     expect(h.emitter.eventNames()).toEqual([]);
   });
 

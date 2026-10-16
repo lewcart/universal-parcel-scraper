@@ -11,6 +11,8 @@ const ORIGIN = 'https://www.royalmail.com';
 const MAX_BYTES = 2_000_000;
 // The page keeps this frame hidden off-screen until hCaptcha wants a person to solve it.
 const CAPTCHA_CHALLENGE = 'iframe[src*="hcaptcha.com"][src*="frame=challenge"]:visible';
+// The consent manager parks the address of a frame it blocks in `data-ta-src`.
+const CAPTCHA_WITHHELD = 'iframe[data-hcaptcha-widget-id][data-ta-src]';
 
 /** The destination the full-history reply adds to the summary, and nothing else from it. */
 export function royalMailDestination(summary: unknown): { summary?: { destinationCountryCode: string } } {
@@ -91,10 +93,15 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
     })().catch(error => { if (active) reject(carrierErrorKind(error) ? error : new TransportError(PROVIDER)); });
   };
   // A visible CAPTCHA waits for a person, and the page sends no request until it is solved.
+  // Nor does it send one while the consent manager withholds the CAPTCHA.
   const watchChallenge = async () => {
     while (active && !deadline.aborted) {
       if (await page.locator(CAPTCHA_CHALLENGE).count().catch(() => 0)) {
         if (active) reject(new ChallengeError(PROVIDER, 'Royal Mail asked for an interactive CAPTCHA'));
+        return;
+      }
+      if (await page.locator(CAPTCHA_WITHHELD).count().catch(() => 0)) {
+        if (active) reject(new SchemaError(PROVIDER, "Royal Mail's cookie consent withheld its CAPTCHA"));
         return;
       }
       await delay(500, undefined, { signal: deadline });
@@ -129,17 +136,31 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       session.throwIfAborted();
       const page = await context.newPage();
       const timeout = () => Math.min(15_000, remainingMs());
-      const decline = async () => {
-        const button = page.getByText('Decline all', { exact: true });
-        await button.waitFor({ state: 'visible', timeout: Math.min(3_000, remainingMs()) }).catch(() => {});
+      // The consent manager withholds hCaptcha's frame unless functional cookies
+      // are allowed, and the tracking application sends nothing without its token.
+      // Allow that category alone.
+      const consent = async () => {
+        const choose = page.locator('#truste-show-consent');
+        await choose.waitFor({ state: 'visible', timeout: Math.min(3_000, remainingMs()) }).catch(() => {});
         session.throwIfAborted();
-        if (await button.isVisible()) {
-          // Consent may reload the document and clear a number already typed.
-          const reload = page.waitForEvent('domcontentloaded', { timeout: Math.min(4_000, remainingMs()) }).catch(() => {});
-          await button.click({ timeout: timeout() });
-          await reload;
-          session.throwIfAborted();
+        if (!await choose.isVisible()) return;
+        await choose.click({ timeout: timeout() });
+        const dialog = page.getByRole('dialog', { name: /cookies/i });
+        const functional = page.getByRole('checkbox', { name: 'Functional choice', exact: true });
+        await dialog.locator('label').filter({ has: functional }).waitFor({ state: 'visible', timeout: timeout() });
+        // The dialog saves once every category has a choice, so each switch is set explicitly.
+        for (const toggle of await dialog.locator('label').filter({ has: page.getByRole('checkbox') }).all()) {
+          const box = toggle.getByRole('checkbox');
+          const allow = await toggle.filter({ has: functional }).count() > 0;
+          if (await box.isChecked() === allow) await toggle.click({ timeout: timeout() });
+          await toggle.click({ timeout: timeout() });
+          if (await box.isChecked() !== allow) throw new SchemaError(PROVIDER, "Royal Mail's cookie preferences did not change");
         }
+        // Saving reloads the document and would clear a number already typed.
+        const reload = page.waitForEvent('domcontentloaded', { timeout: Math.min(4_000, remainingMs()) }).catch(() => {});
+        await dialog.getByRole('button', { name: /^Saves? preferences$/i }).click({ timeout: timeout() });
+        await reload;
+        session.throwIfAborted();
       };
       // Ordinary navigation lets the public site initialize its anonymous edge
       // session before the tracking application starts.
@@ -150,7 +171,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       if ([404, 410].includes(response.status())) throw new TransportError(PROVIDER, 'Royal Mail tracking page is unavailable');
       if (response.status() !== 200) throw new UpstreamHttpError(PROVIDER, response.status());
       if (new URL(page.url()).origin !== ORIGIN) throw new SchemaError(PROVIDER);
-      await decline();
+      await consent();
       const link = page.locator('a').filter({ hasText: /^\s*Track your item\s*$/i }).first();
       await link.waitFor({ state: 'visible', timeout: timeout() });
       const href = await link.getAttribute('href');
@@ -166,7 +187,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       if (trackingPage.status() !== 200) throw new UpstreamHttpError(PROVIDER, trackingPage.status());
       const input = page.locator('#barcode-input');
       await input.waitFor({ state: 'visible', timeout: timeout() });
-      await decline();
+      await consent();
       await input.waitFor({ state: 'visible', timeout: timeout() });
       const landed = new URL(page.url());
       if (landed.origin !== ORIGIN || landed.pathname !== '/track-your-item') throw new SchemaError(PROVIDER);

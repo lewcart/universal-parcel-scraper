@@ -8,9 +8,11 @@ sending post's S10 number once it reaches the UK.
 
 ## Retrieval
 
-The browser opens the homepage, declines optional cookies and follows its
-tracking link. Consent can reload the page, so number entry waits until it
-settles. The navigation link can be covered by the site's fixed header;
+The browser opens the homepage, allows functional cookies alone and follows
+its tracking link. The site's consent manager files hCaptcha under functional
+cookies and withholds its frame otherwise, and the tracking application sends
+no request without a CAPTCHA token; a withheld frame ends the lookup at once.
+Consent reloads the page, so number entry waits until it settles. The navigation link can be covered by the site's fixed header;
 the adapter follows its validated destination in the same context.
 
 The page obtains its own CAPTCHA token for the microsummary, then `Get more

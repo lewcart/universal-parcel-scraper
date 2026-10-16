@@ -32,6 +32,7 @@ describe('Royal Mail live browser tracking', () => {
           'current_stage',
           'last_status_text',
           'last_update',
+          'delivered_at',
           'expected_delivery',
           'destination_country',
           'events',

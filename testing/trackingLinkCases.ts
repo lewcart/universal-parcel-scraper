@@ -509,6 +509,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'posta-slovenije', number: 'ZZ000000014SI',
     route: /^https:\/\/moja\.posta\.si\/tracking\?trackingNumber=ZZ000000014SI/,
     marker: /Pošiljke s sprejemno številko nismo našli|Ustvarite račun MojaPošta/ },
+  // The page shows the number from its address and looks it up on load; the reply waits for a captcha.
+  { carrier: 'posta-romana', number: 'ZZ000000014RO',
+    route: /^https:\/\/www\.posta-romana\.ro\/track-trace\.html\?awb=ZZ000000014RO$/,
+    marker: /Starea trimiterii|Ghidul Track&Trace/ },
   // The client-rendered tracker fills its field in from the address and looks the number up.
   { carrier: 'latvijas-pasts', number: 'ZZ900000005LV',
     route: /^https:\/\/mans\.pasts\.lv\/track\?(?:[^#]*&)?id=ZZ900000005LV/,

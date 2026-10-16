@@ -49189,6 +49189,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-romana",
       "chronopost"
     ]
   },
@@ -62447,6 +62448,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-romana",
       "chronopost"
     ]
   },
@@ -62458,6 +62460,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-romana",
       "chronopost"
     ]
   },
@@ -62743,6 +62746,17 @@
   },
   {
     "input": "RR089892227SA",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR103136288PH",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

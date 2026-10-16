@@ -15474,7 +15474,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-romana",
+      "recognitionRank": 948
     },
     "canaryUrl": "https://www.posta-romana.ro/track-trace.html",
     "trackingUrlTemplate": "https://www.posta-romana.ro/track-trace.html?awb={trackingNumber}",
@@ -15490,7 +15491,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-shqiptare": {
     "displayName": "Posta Shqiptare",
@@ -21024,7 +21032,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posta-kenya": [],
   "posta-moldovei": ["posta-moldovei-1"],
   "posta-north-macedonia": [],
-  "posta-romana": [],
+  "posta-romana": ["posta-romana-s10"],
   "posta-shqiptare": [],
   "posta-slovenije": ["posta-slovenije-s10"],
   "posta-srbije": ["posta-srbije-s10"],

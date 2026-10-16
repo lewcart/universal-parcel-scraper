@@ -15472,7 +15472,8 @@
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-romana",
+      "recognitionRank": 948
     },
     "canaryUrl": "https://www.posta-romana.ro/track-trace.html",
     "trackingUrlTemplate": "https://www.posta-romana.ro/track-trace.html?awb={trackingNumber}",
@@ -15488,7 +15489,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-shqiptare": {
     "displayName": "Posta Shqiptare",

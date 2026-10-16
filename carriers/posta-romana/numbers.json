@@ -139,6 +139,25 @@
         "confidence": "high"
       },
       "note": "Inbound item looked up on Poșta Română's former tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "RR103136288PH",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20121205223726/http://www.posta-romana.ro:80/tt2/middle_detalii.jsp?cod_trimitere=RR103136288PH",
+        "date": "2012-12-05",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Inbound item from the Philippines looked up on Poșta Română's former tracker, as an archived address shows; the capture was not opened."
     }
   ]
 }

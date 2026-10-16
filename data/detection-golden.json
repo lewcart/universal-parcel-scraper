@@ -55809,6 +55809,17 @@
     ]
   },
   {
+    "input": "F100D00000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "F1163994",
     "carrier": "unknown",
     "confidence": "low",
@@ -65301,6 +65312,14 @@
     "confidence": "high",
     "candidates": [
       "pos-malaysia"
+    ]
+  },
+  {
+    "input": "RELRRKL7J17P",
+    "carrier": "relaytech",
+    "confidence": "high",
+    "candidates": [
+      "relaytech"
     ]
   },
   {

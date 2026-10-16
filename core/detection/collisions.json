@@ -96,6 +96,14 @@
     "reason": "Colis Privé accepts any 12-character alphanumeric, so it overlaps Pirate Ship AHOY numbers carried by Asendia USA; the Asendia high-confidence rule decides."
   },
   {
+    "shape": "RELR then 8 characters mixing letters and digits",
+    "carriers": [
+      "colis-prive",
+      "relaytech"
+    ],
+    "reason": "Colis Privé accepts any twelve letters and digits; Relay's RELR prefix is the only high-confidence rule."
+  },
+  {
     "shape": "99 then a three-character location ID with a letter, then 9{7}",
     "carriers": [
       "australia-post",

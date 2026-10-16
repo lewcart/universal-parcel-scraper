@@ -2674,6 +2674,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|3C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^F\\d{3}D\\d{8}$",
+        "confidence": "low"
       }
     ]
   },
@@ -17631,6 +17635,33 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "relaytech": {
+    "displayName": "Relay",
+    "color": "#d6ec83",
+    "aliases": [
+      "Relay Technology",
+      "Relay Tech",
+      "Relaytech"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://relaytech.co/track-order",
+    "trackingSearchUrl": "https://relaytech.co/track-order",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^RELR[A-Z0-9]{8}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "rl-carriers": {
     "displayName": "R+L Carriers",
     "color": "#006647",
@@ -22355,6 +22386,7 @@ export const CARRIER_IDS = [
   "ram-hand-to-hand",
   "redpack",
   "redx",
+  "relaytech",
   "rl-carriers",
   "roadie",
   "roadrunner",
@@ -22523,7 +22555,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nacex": ["nacex-1"],
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
-  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic"],
+  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],
@@ -22904,6 +22936,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
   "redpack": [],
   "redx": ["redx-1"],
+  "relaytech": ["relaytech-1"],
   "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],

@@ -1,0 +1,41 @@
+{
+  "id": "relaytech",
+  "displayName": "Relay",
+  "aliases": [
+    "Relay Technology",
+    "Relay Tech",
+    "Relaytech"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#d6ec83"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://relaytech.co/track-order",
+    "canaryUrl": "https://relaytech.co/track-order",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "relaytech-1",
+      "pattern": "^RELR[A-Z0-9]{8}$",
+      "confidence": "high"
+    }
+  ]
+}

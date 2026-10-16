@@ -32,6 +32,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
   aliases, so a provider's naming points to Poste's tracker, which still has to know the number.
 - Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
   MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
+- PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker
+  follows them, but no public sample is known, so the shape only suggests Poste Italiane
+  (`poste-italiane-promopacco`) and recognition asks it.
 - Envelope `stato` `5` forces `delivered` whatever the movement wording says: a delivered
   parcel sometimes carries a truncated last line. A parcel sent back ends with its delivery
   to the sender; that delivery carries the return flag (`flagRitorno`) and reads as

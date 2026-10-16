@@ -992,6 +992,7 @@ export const REGISTRY: RegistryDefinition = {
     "redpack": "redpack",
     "redx": "universal",
     "relais-colis": "relais-colis",
+    "relaytech": "universal",
     "rl-carriers": "rl-carriers",
     "roadie": "universal",
     "roadrunner": "universal",

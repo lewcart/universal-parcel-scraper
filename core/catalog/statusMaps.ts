@@ -134,6 +134,7 @@ import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as omniva } from '../../carriers/omniva/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as osmWorldwide } from '../../carriers/osm-worldwide/status.js';
+import { statusMap as packlink } from '../../carriers/packlink/status.js';
 import { statusMap as paquetexpress } from '../../carriers/paquetexpress/status.js';
 import { statusMap as passport } from '../../carriers/passport/status.js';
 import { statusMap as pathaoCourier } from '../../carriers/pathao-courier/status.js';
@@ -226,7 +227,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'magyar-posta': magyarPosta, mailamericas,
   maltapost, matkahuolto, mayiyinfu, meest,
   'mng-kargo': mngKargo, mtscn, naqel, nationex, 'nippon-express': nipponExpress, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,
-  'osm-worldwide': osmWorldwide,
+  'osm-worldwide': osmWorldwide, packlink,
   paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom, 'pos-indonesia': posIndonesia, 'post-luxembourg': postLuxembourg, 'posta-romana': postaRomana,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, redpack, 'rl-carriers': rlCarriers, 'rpx-indonesia': rpxIndonesia, sagawa, saia, sameday, 'saudi-post': saudiPost, seino, servientrega, sfc, shadowfax,

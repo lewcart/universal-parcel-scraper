@@ -15936,7 +15936,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "packlink",
+      "recognitionRank": 981,
+      "localClocks": true
     },
     "canaryUrl": "https://www.packlink.es/seguimiento-envios/",
     "trackingSearchUrl": "https://www.packlink.es/seguimiento-envios/",

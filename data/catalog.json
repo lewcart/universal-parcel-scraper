@@ -362,7 +362,8 @@
     "color": "#ef7d00",
     "aliases": [
       "Spring GDS",
-      "Mailing Technology"
+      "Mailing Technology",
+      "PostNL - Netherlands Post"
     ],
     "countries": [
       "NL"
@@ -2129,7 +2130,9 @@
     "aliases": [
       "InPost Paczkomaty",
       "Paczkomaty",
-      "InPost Easy"
+      "InPost Easy",
+      "InPost UK",
+      "Yodel"
     ],
     "countries": [
       "PL",
@@ -2164,6 +2167,10 @@
       {
         "pattern": "^8YDR\\d{9}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^\\d{2}[A-Z]{3}\\d{7}A\\d{3}$",
+        "confidence": "low"
       }
     ]
   },
@@ -2649,7 +2656,8 @@
     "aliases": [
       "BRT Bartolini",
       "BRT Bartolini (Parcel ID)",
-      "BRT Bartolini (DPD)"
+      "BRT Bartolini (DPD)",
+      "myBRT.it"
     ],
     "countries": [
       "IT"

@@ -34,8 +34,8 @@ function statusCode(value: unknown): string {
 
 export function normalizeInpostTrackingNumber(raw: string): string {
   const value = raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
-  if (!/^(?:\d{24}|JJD\d{16}|JD\d{16}|8YDR\d{9})$/.test(value)) {
-    throw new InvalidInputError('InPost', 'InPost tracking requires a 24-digit, JJD/JD legacy or 8YDR identifier');
+  if (!/^(?:\d{24}|JJD\d{16}|JD\d{16}|8YDR\d{9}|\d{2}[A-Z]{3}\d{7}A\d{3})$/.test(value)) {
+    throw new InvalidInputError('InPost', 'InPost tracking requires a 24-digit, JJD/JD legacy, 8YDR or Yodel identifier');
   }
   return value;
 }

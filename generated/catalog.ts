@@ -364,7 +364,8 @@ export const CARRIER_CATALOG = {
     "color": "#ef7d00",
     "aliases": [
       "Spring GDS",
-      "Mailing Technology"
+      "Mailing Technology",
+      "PostNL - Netherlands Post"
     ],
     "countries": [
       "NL"
@@ -2131,7 +2132,9 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "InPost Paczkomaty",
       "Paczkomaty",
-      "InPost Easy"
+      "InPost Easy",
+      "InPost UK",
+      "Yodel"
     ],
     "countries": [
       "PL",
@@ -2166,6 +2169,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^8YDR\\d{9}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^\\d{2}[A-Z]{3}\\d{7}A\\d{3}$",
+        "confidence": "low"
       }
     ]
   },
@@ -2651,7 +2658,8 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "BRT Bartolini",
       "BRT Bartolini (Parcel ID)",
-      "BRT Bartolini (DPD)"
+      "BRT Bartolini (DPD)",
+      "myBRT.it"
     ],
     "countries": [
       "IT"
@@ -22349,7 +22357,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "royal-mail": ["royal-mail-1","royal-mail-2","royal-mail-3"],
   "parcelforce": ["parcelforce-1","parcelforce-2"],
   "evri": ["evri-1"],
-  "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4"],
+  "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
   "an-post": ["an-post-1"],
   "bpost": ["bpost-numeric-prefix","bpost-1","bpost-2","bpost-3","bpost-jjbe"],
   "austrian-post": ["austrian-post-1","austrian-post-2"],

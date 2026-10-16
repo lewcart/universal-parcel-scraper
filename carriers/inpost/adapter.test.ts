@@ -48,7 +48,8 @@ describe('InPost tracking normalization', () => {
     expect(normalizeInpostTrackingNumber('640000000000000000000001')).toBe(TRACKING_NUMBER);
     expect(normalizeInpostTrackingNumber('jjd0002233564270287')).toBe('JJD0002233564270287');
     expect(normalizeInpostTrackingNumber('8ydr098765432')).toBe('8YDR098765432');
-    for (const raw of ['12345', 'Z8328162951', '']) {
+    expect(normalizeInpostTrackingNumber('00abc0000001a001')).toBe('00ABC0000001A001');
+    for (const raw of ['12345', 'Z8328162951', '0ABC00000001A001', '']) {
       expect(() => normalizeInpostTrackingNumber(raw)).toThrow(InvalidInputError);
     }
   });

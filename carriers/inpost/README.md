@@ -30,6 +30,9 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
 - At most 20 events are returned, newest first.
 - `JJD`/`JD` + 16 digits and bare 24-digit numbers are low confidence: `JJD` collides with
   DHL and needs a domain hint or an explicit pick.
+- Yodel, InPost's UK network, also prints two digits, three letters, seven digits, `A` and
+  three digits. Nothing in that layout names InPost, and ArrowXL's references share it, so it
+  is low confidence too.
 - Each event keeps its place, a town or hub with its country. A delivered parcel keeps
   its delivery time, and the destination country is kept; the origin country is not.
 - Recipient name, address, phone and signature fields are never read; a test asserts it.

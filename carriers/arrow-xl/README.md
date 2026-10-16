@@ -8,7 +8,7 @@ ArrowXL's tracker asks for the tracking reference and the delivery postcode. Its
 says the reference is usually 10 to 13 characters of letters and digits, and the archived
 tracker asked for 13 characters starting with `8` and ending in a letter. Lookups archived
 from the tracker and an aggregator's sample carry that reference with a three-digit suffix,
-16 characters in all. Yodel prints the same layout, so no rule claims it.
+16 characters in all. Yodel prints the same layout, so no ArrowXL rule claims it.
 
 ## Links
 

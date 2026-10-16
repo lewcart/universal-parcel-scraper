@@ -43269,6 +43269,61 @@
     ]
   },
   {
+    "input": "87MRI8789978A023",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
+    "input": "87NXH9086794A025",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
+    "input": "87RKI8168190A044",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
+    "input": "87RKI8987381A089",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
+    "input": "87VMI1023844A021",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
     "input": "88000012680741A",
     "carrier": "la-poste",
     "confidence": "high",

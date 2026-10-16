@@ -4,7 +4,9 @@
   "aliases": [
     "InPost Paczkomaty",
     "Paczkomaty",
-    "InPost Easy"
+    "InPost Easy",
+    "InPost UK",
+    "Yodel"
   ],
   "region": {
     "countries": [
@@ -80,6 +82,11 @@
       "id": "inpost-4",
       "pattern": "^8YDR\\d{9}$",
       "confidence": "high"
+    },
+    {
+      "id": "inpost-5",
+      "pattern": "^\\d{2}[A-Z]{3}\\d{7}A\\d{3}$",
+      "confidence": "low"
     }
   ]
 }

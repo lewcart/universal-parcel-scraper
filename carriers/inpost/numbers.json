@@ -223,6 +223,116 @@
         ]
       },
       "note": "The new number the same review gives for the parcel's return. InPost's tracker returns its history, which starts when the outbound parcel turned back. The anonymous ShipX feed also returns identity-bound history."
+    },
+    {
+      "number": "87RKI8987381A089",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240418111608/https://www.yodel.co.uk/tracking/87RKI8987381A089",
+        "date": "2024-04-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost"
+        ]
+      },
+      "note": "A lookup on Yodel's former tracker, now InPost's UK network, archived by the Wayback Machine. The capture shows the parcel's history through Yodel's depot and national hub."
+    },
+    {
+      "number": "87MRI8789978A023",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240409171619/https://www.yodel.co.uk/tracking/87MRI8789978A023",
+        "date": "2024-04-09",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost"
+        ]
+      },
+      "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "87RKI8168190A044",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240304223430/https://www.yodel.co.uk/tracking/87RKI8168190A044",
+        "date": "2024-03-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost"
+        ]
+      },
+      "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "87VMI1023844A021",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230606111522/https://www.yodel.co.uk/tracking/87VMI1023844A021",
+        "date": "2023-06-06",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost"
+        ]
+      },
+      "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "87NXH9086794A025",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230411081126/https://www.yodel.co.uk/tracking/87NXH9086794A025",
+        "date": "2023-04-11",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "inpost"
+        ]
+      },
+      "note": "Looked up on Yodel's former tracker, now InPost's UK network, as an archived address shows; the capture was not opened."
     }
   ]
 }

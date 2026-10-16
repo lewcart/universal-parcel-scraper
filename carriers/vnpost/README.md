@@ -14,11 +14,22 @@ VNPost's former tracking page put the number in the path after `/dinh-vi/buu-pha
 the library reads it from such addresses. The current form asks for a captcha, so the library
 builds no address.
 
-The current form is on `vnpost.vn/vi`. Its public `homeCtrl.js` opens a Laravel session,
-gets an image address from `/handle-captcha/refresh-captcha`, then sends the whole number
-and image answer to `/postcode/thong-tin` as `post_code` and `captcha`. The deployed `mews`
-driver uses a four-character JPEG, rather than reCAPTCHA. Invalid-number validation alone
-does not establish that verification passed or show the tracking response's history layout.
+## Why there is no adapter
+
+The tracking form on `vnpost.vn/vi`, also served at `vietnampost.vn`, opens a Laravel session,
+gets an image address from `/handle-captcha/refresh-captcha`, then sends the whole number and
+the image's answer to `/postcode/thong-tin` as `post_code` and `captcha`. The image is a
+four-character `mews` JPEG. The service checks the answer before it looks the number up:
+without one it replies HTTP 422 "Vui lòng nhập captcha", and a wrong one gets "Captcha không
+đúng hoặc đã hết hạn".
+
+The international tracker on `ipostal.vnpost.vn` posts the numbers to `/api/v1/tra-cuu-buu-gui`
+with a reCAPTCHA v2 checkbox token and, without one, answers "Vui lòng xác nhận captcha."
+
+The My Vietnam Post Plus Android app (`vn.vnpost.myvnp`) and its web portal `my.vnpost.vn` are
+for senders with an account. Their order search and item history need a signed-in session;
+without one the app only looks up fees and post offices. VNPost therefore stays on universal
+providers.
 
 ## Testing
 

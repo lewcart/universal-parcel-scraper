@@ -353,6 +353,11 @@ describe("universal providers' answers", () => {
       ['Instruction data transmitted to DPD', 'registered'], ['Order confirmed.', 'registered'], ['Order received successfully', 'registered'],
       ['Created. Parcel created by Example Shop at EXA', 'registered'], ['create. Shipment order created', 'registered'],
       ['Pre-Shipment Info Sent To Spain', 'registered'],
+      ['The order has information pending customer confirmation.', 'registered'],
+      // Ship24's copies carry the feed's category or original wording after the sentence.
+      ['Order confirmed., OTHER', 'registered'], ['Warehouse receipt., 仓库收货', 'accepted'], ['仓库收货', 'accepted'],
+      ['Export declaration in progress., OTHER', 'customs'], ['Flight delayed., OTHER', 'in_transit'],
+      ['Flight delay. The flight scheduled for the 7th is expected to be delayed', 'in_transit'],
       ['Goods leave the operation center', 'in_transit'], ['Package left the warehouse', 'in_transit'], ['Leave the warehouse', 'in_transit'],
       ["We're processing your parcel at our hub", 'in_transit'], ['Warehouse. Inbound warehouse', 'in_transit'],
       ['Warehouse. Delivery in last mile facilities', 'in_transit'], ['Warehouse. Ready to hand over to last-mile supplier', 'in_transit'],
@@ -377,7 +382,7 @@ describe("universal providers' answers", () => {
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
-      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling']) {
+      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

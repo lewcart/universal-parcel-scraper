@@ -591,7 +591,8 @@ export const CARRIER_CATALOG = {
     "color": "#ffcc00",
     "aliases": [
       "DHL eCommerce Solutions",
-      "DHL Global Mail"
+      "DHL Global Mail",
+      "DHL eCommerce Global Mail"
     ],
     "countries": [
       "DE",

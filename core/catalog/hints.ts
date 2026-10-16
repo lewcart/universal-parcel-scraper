@@ -115,11 +115,14 @@ export function carrierIdFromName(name: string): string | undefined {
   if (exact) return exact;
   // The carrier's own country names the same carrier; another country can be a
   // different company under the brand, and a multi-zone country cannot tell. A
-  // brand with several networks names its network there.
+  // brand with several networks names its network there. A carrier whose scans
+  // are instants keeps no clock of its country, so its home country decides.
   const qualified = countryQualified(name);
   const carrier = qualified && (catalogCarrier(key(qualified.base)) ?? brandNetwork(qualified.base, qualified.country));
   const zone = qualified && countryTimeZone(qualified.country);
-  return carrier && zone && CARRIER_DEFINITIONS[carrier as CarrierId]?.timezone === zone ? carrier : undefined;
+  const definition = carrier ? CARRIER_DEFINITIONS[carrier as CarrierId] : undefined;
+  return carrier && zone && (definition?.timezone === zone || definition?.countries?.[0] === qualified.country)
+    ? carrier : undefined;
 }
 
 /**

@@ -124,10 +124,12 @@ describe('carrier names reported by universal providers', () => {
     ['Finland Post', 'posti'], ['Spain Post', 'correos-spain'], ['Portugal CTT', 'ctt'],
     ['Portugal Post - Portugal CTT', 'ctt'], ['Italy Post', 'poste-italiane'], ['Italy SDA', 'poste-italiane'],
     ['SDA Express Courier', 'poste-italiane'], ['4PX Express', 'four-px'], ['Asendia United States', 'asendia'],
-    ['Deutsche Post - DHL Paket', 'dhl'],
+    ['Deutsche Post - DHL Paket', 'dhl'], ['DHL eCommerce Global Mail', 'dhl-ecommerce'],
     ['Correos de España', 'correos-spain'], ['Correos Spain', 'correos-spain'], ['Austria Post', 'austrian-post'],
     ['Intelcom', 'intelcom'], ['Dragonfly', 'intelcom'], ['Orange Connex', 'speedpak'],
     ['Evri International', 'evri'], ['Evri', 'evri-uk'], ['Hermes UK', 'evri-uk'], ['DPD Germany', 'dpd-de'], ['DPD UK', 'dpd-uk'],
+    // Carriers whose scans are instants, followed by their home country.
+    ['BRT (IT)', 'brt'], ['Bpost Belgium', 'bpost'], ['Royal Mail (UK)', 'royal-mail'],
   ])('maps %s, a carrier followed by its own country included', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });
@@ -141,6 +143,8 @@ describe('carrier names reported by universal providers', () => {
   it.each([
     // Another company under the brand, a country without one zone, a brand with several networks.
     'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
+    // A carrier whose scans are instants, followed by a country other than its home.
+    'Bpost Netherlands', 'Aramex Jordan',
     // No network there, two networks there, a worldwide network, a network on another clock.
     'DPD (NL)', 'Hermes (DE)', 'DHL (PL)', 'GLS (LI)',
     // DPD's networks share one lookup, and a provider's country for its parcel can be another's.

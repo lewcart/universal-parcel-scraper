@@ -212,6 +212,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.ilogen\.com\/web\/personal\/trace\/40000000003$/,
     marker: /운송장 번호로 조회|배송조회/,
     forwarding: { notFound: /배송자료를 조회할 수 없습니다/ } },
+  // The server renders the lookup; its answer to an unknown number repeats the number.
+  { carrier: 'seino', number: '0000000000',
+    route: /^https:\/\/track\.seino\.co\.jp\/cgi-bin\/gnpquery\.pgm\?GNPNO1=0000000000$/,
+    marker: /入力されたお問合せ番号が見当りません/ },
   { carrier: 'yamato', number: '123456789012',
     route: /^https:\/\/toi\.kuronekoyamato\.co\.jp\/cgi-bin\/tneko/,
     marker: /荷物お問い合わせ|送り状番号|Tracking/i, forwarding: 'none' },

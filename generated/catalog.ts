@@ -18069,7 +18069,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "seino",
+      "recognitionRank": 943
     },
     "canaryUrl": "https://track.seino.co.jp/cgi-bin/gnpquery.pgm",
     "trackingUrlTemplate": "https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1={trackingNumber}",

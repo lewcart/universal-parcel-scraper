@@ -36,10 +36,10 @@
         "url": "https://web.archive.org/web/20230629014536/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?NEXTFM=GNP&GNPNO1=0287413501",
         "date": "2023-06-29",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -54,7 +54,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "8001737795",
@@ -64,10 +64,10 @@
         "url": "https://web.archive.org/web/20241118105047/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1=8001737795",
         "date": "2024-11-18",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -81,7 +81,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "0285489990",
@@ -91,10 +91,10 @@
         "url": "https://web.archive.org/web/20250124075711/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1=0285489990",
         "date": "2025-01-24",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -108,7 +108,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "8078334570",
@@ -118,10 +118,10 @@
         "url": "https://web.archive.org/web/20250227001534/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1=8078334570",
         "date": "2025-02-27",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -135,7 +135,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "8409302592",
@@ -145,10 +145,10 @@
         "url": "https://web.archive.org/web/20250421225028/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1=8409302592",
         "date": "2025-04-21",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -162,7 +162,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "8047293726",
@@ -190,7 +190,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its history. The page is Shift_JIS; the number, its receipt and arrival times, piece count and weight are legible, the Japanese labels were not decoded."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "5449458519",
@@ -200,10 +200,10 @@
         "url": "https://web.archive.org/web/20250618011726/https://track.seino.co.jp/cgi-bin/gnpquery.pgm?GNPNO1=5449458519",
         "date": "2025-06-18",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -217,7 +217,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Looked up on Seino Transportation's own tracker, as an archived address shows; the capture was not opened."
+      "note": "An archived lookup on Seino Transportation's own tracker; the capture shows this number with its status code and milestones."
     },
     {
       "number": "807-833-5136",
@@ -257,7 +257,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -271,7 +271,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "ParcelPanel's Seino page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."
+      "note": "ParcelPanel's Seino page offered it as a sample to try on 13 Oct 2026; Seino Transportation's own tracker knew it."
     }
   ]
 }

@@ -23,6 +23,7 @@ import { adapter as australiaPost } from '../carriers/australia-post/adapter.js'
 import { adapter as austrianPost } from '../carriers/austrian-post/adapter.js';
 import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
+import { adapter as bosta } from '../carriers/bosta/adapter.js';
 import { adapter as boxNow } from '../carriers/box-now/adapter.js';
 import { adapter as bpost } from '../carriers/bpost/adapter.js';
 import { adapter as bringPosten } from '../carriers/bring-posten/adapter.js';
@@ -291,6 +292,7 @@ export const REGISTRY: RegistryDefinition = {
     "austrian-post": austrianPost,
     "blue-dart": blueDart,
     "blue-express": blueExpress,
+    "bosta": bosta,
     "box-now": boxNow,
     "bpost": bpost,
     "bring-posten": bringPosten,
@@ -587,7 +589,7 @@ export const REGISTRY: RegistryDefinition = {
     "blue-express": "blue-express",
     "blueex": "universal",
     "border-express": "universal",
-    "bosta": "universal",
+    "bosta": "bosta",
     "box-now": "box-now",
     "bpost": "bpost",
     "bring-posten": "bring-posten",

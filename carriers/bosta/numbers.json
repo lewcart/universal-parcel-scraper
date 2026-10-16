@@ -60,7 +60,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -71,7 +71,7 @@
           "heppner"
         ]
       },
-      "note": "Archived lookup on Bosta's own tracking page; the capture was not opened because the page renders the history from a script."
+      "note": "Archived lookup on Bosta's own tracking page; the capture was not opened because the page renders the history from a script. Bosta's tracker knows it."
     },
     {
       "number": "7234258",
@@ -84,7 +84,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -93,7 +93,7 @@
           "seur"
         ]
       },
-      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README."
+      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README. Bosta's tracker knows it."
     },
     {
       "number": "13737343",
@@ -106,7 +106,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -117,7 +117,7 @@
           "heppner"
         ]
       },
-      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README."
+      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README. Bosta's tracker knows it."
     },
     {
       "number": "67151313",
@@ -130,7 +130,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -141,7 +141,7 @@
           "heppner"
         ]
       },
-      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README."
+      "note": "One of the tracking numbers Bosta's front-end assessment tells candidates to search on its tracking API, as copied into a candidate's README. Bosta's tracker knows it."
     },
     {
       "number": "36406704",
@@ -154,7 +154,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -165,11 +165,11 @@
           "heppner"
         ]
       },
-      "note": "Listed as a sample tracking number for Bosta's tracking API (tracking.bosta.co/shipments/track) in a Bosta front-end assessment README."
+      "note": "Listed as a sample tracking number for Bosta's tracking API (tracking.bosta.co/shipments/track) in a Bosta front-end assessment README. Bosta's tracker knows it as a shipment to Saudi Arabia."
     },
     {
       "number": "1094442",
-      "role": "shipment",
+      "role": "quarantined",
       "evidence": "open_source_example",
       "source": {
         "url": "https://github.com/AbduHany/bosta_frontend_assessment/blob/main/README.md",
@@ -177,8 +177,9 @@
         "dateKind": "publication",
         "access": "full_page"
       },
+      "quarantine": true,
       "context": {
-        "assessment": "candidate"
+        "assessment": "review"
       },
       "expect": {
         "carrier": "unknown",
@@ -187,7 +188,7 @@
           "seur"
         ]
       },
-      "note": "Listed as a sample tracking number for Bosta's tracking API (tracking.bosta.co/shipments/track) in a Bosta front-end assessment README."
+      "note": "Listed as a sample tracking number for Bosta's tracking API (tracking.bosta.co/shipments/track) in a Bosta front-end assessment README. Bosta's tracker now answers it with another shipment under a ten-digit number, so it may not be a shipment number."
     }
   ]
 }

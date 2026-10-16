@@ -6468,7 +6468,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bosta",
+      "recognitionRank": 951
     },
     "canaryUrl": "https://bosta.co/en-eg/tracking-shipments",
     "trackingUrlTemplate": "https://bosta.co/en-eg/tracking-shipments?shipment-number={trackingNumber}",

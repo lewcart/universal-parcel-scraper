@@ -306,9 +306,9 @@
   },
   {
     "carrier": "bosta",
-    "pattern": "^\\d{7,8}$",
+    "pattern": "^\\d{7,10}$",
     "kind": "by_design",
-    "reason": "Bosta's seven- and eight-digit shipment numbers are a bare digit run many carriers share."
+    "reason": "Bosta's seven- to ten-digit shipment numbers are a bare digit run many carriers share."
   },
   {
     "carrier": "box-now",

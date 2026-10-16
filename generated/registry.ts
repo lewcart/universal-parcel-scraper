@@ -913,6 +913,7 @@ export const REGISTRY: RegistryDefinition = {
     "ozon-logistics": "universal",
     "paack": "paack",
     "packeta": "packeta",
+    "packlink": "universal",
     "pakistan-post": "universal",
     "palletways": "universal",
     "paperfly": "universal",

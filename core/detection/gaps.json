@@ -2882,12 +2882,6 @@
     "reason": "Zajil's Z references have a single public lookup, too little to claim the shape."
   },
   {
-    "carrier": "zeleris",
-    "pattern": "^ES\\d{4}COM\\d{10}$",
-    "kind": "by_design",
-    "reason": "A sender-side shipment reference quoted to Zeleris, not its own number."
-  },
-  {
     "carrier": "zheldor",
     "pattern": "^\\d{16}$",
     "kind": "by_design",

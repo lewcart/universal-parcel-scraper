@@ -18,7 +18,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "A customer-support reply quoted on the O2 help forum gives it as the trans-o-flex tracking number."
@@ -40,7 +41,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "A customer-support reply quoted on the O2 help forum gives it as the trans-o-flex tracking number."
@@ -64,7 +66,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "An archived link to trans-o-flex's guest tracker passes it as a barcode; the capture holds only the empty page shell."
@@ -88,7 +91,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "An archived link to trans-o-flex's guest tracker passes it as a barcode; the capture holds only the empty page shell."
@@ -112,7 +116,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "An archived link to trans-o-flex's guest tracker passes it as a barcode; the capture holds only the empty page shell."
@@ -136,7 +141,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "An archived link to trans-o-flex's guest tracker passes it as the shipment number; the capture holds only the empty page shell."
@@ -160,7 +166,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "An archived lookup on trans-o-flex's former barcode tracker, whose host no longer answers; the capture holds only its terms page."

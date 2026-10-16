@@ -36,23 +36,6 @@
       "note": "A public OCU complaint against Zeleris gives it as the shipment."
     },
     {
-      "number": "ES2024COM0000457118",
-      "role": "order_reference",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/no-entrega-de-paquetes/a1f839231396c4c1fa",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "A public OCU complaint against Zeleris gives it as the shipment; a sender-side reference, not the Zeleris code."
-    },
-    {
       "number": "0DDFD414157451255V",
       "role": "shipment",
       "evidence": "public_shipment_report",

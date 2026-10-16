@@ -21,8 +21,8 @@ the same lookup.
 ## Numbers
 
 A Zeleris code is eight hexadecimal characters, nine digits and a letter, which `zeleris-1`
-claims. Anything else is invalid without a request. Sender references of `ES`, a year, `COM` and
-ten digits are not Zeleris numbers.
+claims. Anything else is invalid without a request. References of `ES`, a year, `COM` and ten
+digits are [Packlink](../packlink/README.md)'s bookings, not Zeleris numbers.
 
 The hexadecimal part is a nine-digit number whose third to seventh digits are a day of the year
 and a year. Zeleris ignores those five digits in a lookup and prints the code with its own

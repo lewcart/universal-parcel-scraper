@@ -2276,6 +2276,10 @@
         "confidence": "low"
       },
       {
+        "pattern": "^\\d{24}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}AT$",
         "confidence": "high",
         "checksum": "s10"
@@ -15885,6 +15889,37 @@
         "pattern": "^PL\\d{6}[0-9A-Z]+$",
         "confidence": "high",
         "rawPattern": "^PL-\\d{6}-[0-9A-Z]+(?:-[0-9A-Z]+)*$"
+      }
+    ]
+  },
+  "packlink": {
+    "displayName": "Packlink",
+    "color": "#ff4f00",
+    "aliases": [
+      "Packlink PRO",
+      "Packlink Shipping"
+    ],
+    "countries": [
+      "ES",
+      "FR",
+      "IT",
+      "DE",
+      "PT",
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.packlink.es/seguimiento-envios/",
+    "trackingSearchUrl": "https://www.packlink.es/seguimiento-envios/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}20\\d{2}(?:COM|PRO)\\d{10}$",
+        "confidence": "high"
       }
     ]
   },

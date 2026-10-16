@@ -38,7 +38,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Invented full label barcode of 24 digits. Real ones end in routing digits that read as a postcode, so none are kept."
@@ -57,7 +58,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Publicly reported full label barcode; the native parcel lookup accepts it unchanged. The shape remains ambiguous pending matching history."
@@ -76,7 +78,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Publicly reported full label barcode; the native parcel lookup accepts it unchanged. The shape remains ambiguous pending matching history."

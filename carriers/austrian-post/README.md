@@ -41,8 +41,10 @@ than the estimate's end also drops it.
 
 ## Limitations
 
-No detection rule claims 24 digits for Austrian Post: EURODIS barcodes have no
-public samples, and other carriers use that length. Account-only delivery
+`austrian-post-3` suggests Austrian Post for 24 digits at low confidence, beside
+the other carriers whose rules take that length, so recognition can ask its
+tracker. No public EURODIS barcode has been found, so the corpus holds a
+synthetic one. Account-only delivery
 options and recipient details are not retrieved. The estimate follows the
 page's code and has not been checked against a live value. A shipment listed
 without scans is a `NoHistoryError` and GraphQL errors are inconclusive;

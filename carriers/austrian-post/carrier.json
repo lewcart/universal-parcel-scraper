@@ -68,6 +68,11 @@
       "confidence": "low"
     },
     {
+      "id": "austrian-post-3",
+      "pattern": "^\\d{24}$",
+      "confidence": "low"
+    },
+    {
       "id": "austrian-post-2",
       "pattern": "^[A-Z]{2}\\d{9}AT$",
       "confidence": "high",

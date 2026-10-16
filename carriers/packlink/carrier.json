@@ -1,0 +1,45 @@
+{
+  "id": "packlink",
+  "displayName": "Packlink",
+  "aliases": [
+    "Packlink PRO",
+    "Packlink Shipping"
+  ],
+  "region": {
+    "countries": [
+      "ES",
+      "FR",
+      "IT",
+      "DE",
+      "PT",
+      "NL"
+    ]
+  },
+  "brand": {
+    "color": "#ff4f00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.packlink.es/seguimiento-envios/",
+    "canaryUrl": "https://www.packlink.es/seguimiento-envios/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "packlink-1",
+      "pattern": "^[A-Z]{2}20\\d{2}(?:COM|PRO)\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

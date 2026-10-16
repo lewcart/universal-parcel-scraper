@@ -35,7 +35,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Quoted in a merchant's reply. InPost's tracker returns its history; twenty-four digits stay one candidate among several."
@@ -52,7 +53,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Invented number following the 24-digit InPost format. Filed under InPost, which stays one candidate among several."
@@ -70,7 +72,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to InPost, which stays one candidate among several."
@@ -159,7 +162,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "Public report names this carrier. InPost's tracker returns its history."
@@ -183,7 +187,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "A parcel to an InPost point abroad that was sent back, per a public review. InPost's tracker returns its history. The anonymous ShipX feed also returns identity-bound history."
@@ -219,7 +224,8 @@
         "candidates": [
           "ciblex",
           "inpost",
-          "bpost"
+          "bpost",
+          "austrian-post"
         ]
       },
       "note": "The new number the same review gives for the parcel's return. InPost's tracker returns its history, which starts when the outbound parcel turned back. The anonymous ShipX feed also returns identity-bound history."

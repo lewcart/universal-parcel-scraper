@@ -971,11 +971,12 @@
   {
     "shape": "9{24}",
     "carriers": [
+      "austrian-post",
       "bpost",
       "ciblex",
       "inpost"
     ],
-    "reason": "Ciblex full label barcodes share the 24-digit space with bpost and InPost; native recognition must establish the carrier."
+    "reason": "Ciblex full label barcodes share the 24-digit space with bpost, InPost and the EURODIS barcodes Austrian Post sends abroad; native recognition must establish the carrier."
   },
   {
     "shape": "DD or LD followed by six letters or digits",

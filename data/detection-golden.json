@@ -2713,6 +2713,23 @@
     ]
   },
   {
+    "input": "010000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ciblex",
+      "inpost",
+      "bpost",
+      "austrian-post"
+    ],
+    "asked": [
+      "austrian-post",
+      "inpost",
+      "bpost",
+      "ciblex"
+    ]
+  },
+  {
     "input": "010050000023791274",
     "carrier": "unknown",
     "confidence": "low",
@@ -8543,9 +8560,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -11015,9 +11034,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -11095,9 +11116,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -11110,9 +11133,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -11700,9 +11725,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13460,9 +13487,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13475,9 +13504,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13490,9 +13521,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13505,9 +13538,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13520,9 +13555,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13535,9 +13572,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -13550,9 +13589,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -16596,9 +16637,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -16611,9 +16654,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -25262,13 +25307,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -25280,13 +25327,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -25313,13 +25362,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -25331,13 +25382,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -25379,13 +25432,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -25538,13 +25593,15 @@
     "candidates": [
       "bpost",
       "ciblex",
-      "inpost"
+      "inpost",
+      "austrian-post"
     ],
     "preferred": [
       "bpost"
     ],
     "asked": [
       "bpost",
+      "austrian-post",
       "inpost",
       "ciblex"
     ]
@@ -30058,9 +30115,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -30369,9 +30428,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -32193,9 +32254,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -33881,9 +33944,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -33896,9 +33961,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -33911,9 +33978,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -34533,9 +34602,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -35170,9 +35241,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -35816,9 +35889,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -35831,9 +35906,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -35998,9 +36075,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -36667,9 +36746,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -36760,9 +36841,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -37352,9 +37435,11 @@
     "candidates": [
       "ciblex",
       "inpost",
-      "bpost"
+      "bpost",
+      "austrian-post"
     ],
     "asked": [
+      "austrian-post",
       "inpost",
       "bpost",
       "ciblex"
@@ -52896,6 +52981,14 @@
     ]
   },
   {
+    "input": "DE2019PRO0000309473",
+    "carrier": "packlink",
+    "confidence": "high",
+    "candidates": [
+      "packlink"
+    ]
+  },
+  {
     "input": "DE30493380",
     "carrier": "unknown",
     "confidence": "low",
@@ -55041,9 +55134,19 @@
   },
   {
     "input": "ES2024COM0000457118",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "packlink",
+    "confidence": "high",
+    "candidates": [
+      "packlink"
+    ]
+  },
+  {
+    "input": "ES2026COM0000394716",
+    "carrier": "packlink",
+    "confidence": "high",
+    "candidates": [
+      "packlink"
+    ]
   },
   {
     "input": "ES2414474381",
@@ -69043,6 +69146,14 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "UN2026COM0000000000",
+    "carrier": "packlink",
+    "confidence": "high",
+    "candidates": [
+      "packlink"
     ]
   },
   {

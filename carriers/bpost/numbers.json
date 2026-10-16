@@ -15,7 +15,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to bpost, which stays one candidate among several."
@@ -55,7 +56,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "Publicly reported shipment number. bpost's tracking returned its history, a parcel from abroad collected at a pickup point. Twenty-four digits stay one candidate among several."
@@ -153,7 +155,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -204,7 +207,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -243,7 +247,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "Official parcel-barcode example; the documented prefix prioritizes recognition without asserting shipment existence."
@@ -339,7 +344,8 @@
         "candidates": [
           "bpost",
           "ciblex",
-          "inpost"
+          "inpost",
+          "austrian-post"
         ]
       },
       "note": "A bpost tracking lookup for this number listed in the Wayback Machine's capture index. bpost's tracking returned a parcel redirected between pickup points and collected there."

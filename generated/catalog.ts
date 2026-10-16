@@ -2278,6 +2278,10 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
+        "pattern": "^\\d{24}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}AT$",
         "confidence": "high",
         "checksum": "s10"
@@ -15890,6 +15894,37 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "packlink": {
+    "displayName": "Packlink",
+    "color": "#ff4f00",
+    "aliases": [
+      "Packlink PRO",
+      "Packlink Shipping"
+    ],
+    "countries": [
+      "ES",
+      "FR",
+      "IT",
+      "DE",
+      "PT",
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.packlink.es/seguimiento-envios/",
+    "trackingSearchUrl": "https://www.packlink.es/seguimiento-envios/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}20\\d{2}(?:COM|PRO)\\d{10}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "pakistan-post": {
     "displayName": "Pakistan Post",
     "color": "#ed1b24",
@@ -22175,6 +22210,7 @@ export const CARRIER_IDS = [
   "osm-worldwide",
   "overseas-express",
   "ozon-logistics",
+  "packlink",
   "pakistan-post",
   "palletways",
   "paperfly",
@@ -22376,7 +22412,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
   "an-post": ["an-post-1"],
   "bpost": ["bpost-numeric-prefix","bpost-1","bpost-2","bpost-3","bpost-jjbe"],
-  "austrian-post": ["austrian-post-1","austrian-post-2"],
+  "austrian-post": ["austrian-post-1","austrian-post-3","austrian-post-2"],
   "postnord": ["postnord-1","postnord-2","postnord-5","postnord-3"],
   "posti": ["posti-1","posti-2","posti-3"],
   "correos-express": ["correos-express-1","correos-express-2"],
@@ -22722,6 +22758,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
   "overseas-express": [],
   "ozon-logistics": ["ozon-logistics-1","ozon-logistics-2"],
+  "packlink": ["packlink-1"],
   "pakistan-post": ["pakistan-post-1"],
   "palletways": [],
   "paperfly": ["paperfly-1","paperfly-2"],

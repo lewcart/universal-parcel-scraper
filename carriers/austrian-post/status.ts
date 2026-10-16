@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // The public website's SendungenApiSchemasExtension distinguishes the summary
 // vocabulary from scan codes: a delivered scan can still carry status IZ.
@@ -43,7 +44,22 @@ export function austrianPostEventStatus(code: string, reason: string, text: stri
   if (['EAW', 'HO', 'UPB', '2034'].includes(reason)) return SUMMARY.EB;
   if (/\b(?:rücksendung|zurückgesandt|return to sender)\b/i.test(text)) return SUMMARY.RE;
   if (code === 'AZT' || /\b(?:in zustellung|out for delivery)\b/i.test(text)) return SUMMARY.IZ;
-  if (code === 'BEI' || code === 'PUG') return SUMMARY.IV;
+  if (code === 'BEI' || code === 'PUG' || exportConsolidation(code, text)) return SUMMARY.IV;
   // Unmapped scan codes retain their wording for the host's classifier.
   return SUMMARY[code];
 }
+
+/** The export hub gathers the item into an outgoing dispatch. */
+function exportConsolidation(code: string, text: string): boolean {
+  return code === 'TRA' && /^konsolidierung für (?:den )?export$/i.test(text.trim());
+}
+
+/**
+ * What the map says about one scan by its code and wording. Most scans take
+ * their stage from the reason as well (an IZ scan with reason BH is a missed
+ * delivery), so the map answers only scans the reason cannot change.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code && exportConsolidation(code, wording) ? 'in_transit' : undefined),
+  gaps: [],
+};

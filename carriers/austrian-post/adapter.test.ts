@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, AustrianPostTracker, normalizeAustrianPostNumber, parseAustrianPostResponse } from './adapter.js';
 import { austrianPostPlace } from './identity.js';
-import { austrianPostEventStatus, austrianPostSummaryStatus } from './status.js';
+import { austrianPostEventStatus, austrianPostSummaryStatus, statusMap } from './status.js';
 import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
 const NUMBER = '1000000000000000000001';
@@ -194,6 +194,11 @@ describe('Austrian Post public tracking', () => {
   it('separates summary and scan vocabularies for pickup, returns and delivery', () => {
     expect(austrianPostSummaryStatus('IZ')?.stage).toBe('out_for_delivery');
     expect(austrianPostEventStatus('IZ', 'ZA', '')?.stage).toBe('delivered');
+    expect(austrianPostEventStatus('TRA', '', 'Konsolidierung für Export')?.stage).toBe('in_transit');
+    expect(austrianPostEventStatus('TRA', '', 'Synthetic transit wording')).toBeUndefined();
+    expect(statusMap.stage('TRA', 'konsolidierung für export')).toBe('in_transit');
+    // A code alone says nothing the reason could not change.
+    expect(statusMap.stage('IZ', 'sendung in zustellung')).toBeUndefined();
     expect(austrianPostEventStatus('IZ', 'BH', '')?.stage).toBe('failed_attempt');
     expect(austrianPostEventStatus('IZ', 'HO', '')?.stage).toBe('ready_for_pickup');
     expect(austrianPostSummaryStatus('RE')?.stage).toBe('returned');

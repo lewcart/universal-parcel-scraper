@@ -109,6 +109,7 @@ describe('continental shipment candidates', () => {
       { number: '990001A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '3C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '1C9900A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
+      { number: 'D99000A000001', candidates: ['poste-italiane'], asked: ['poste-italiane'] },
       { number: '990A00000001A', candidates: ['aliexpress', 'poste-italiane'], asked: ['poste-italiane', 'aliexpress'] },
     ]) {
       expect(isPosteItalianeTrackingNumber(number)).toBe(true);

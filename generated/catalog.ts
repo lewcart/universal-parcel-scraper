@@ -2682,6 +2682,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^F\\d{3}D\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^D\\d{5}[A-Z]\\d{6}$",
+        "confidence": "low"
       }
     ]
   },
@@ -22627,7 +22631,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nacex": ["nacex-1"],
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
-  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco"],
+  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],

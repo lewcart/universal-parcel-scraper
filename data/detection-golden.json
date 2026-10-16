@@ -53718,6 +53718,17 @@
     ]
   },
   {
+    "input": "D99000A000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "DC010822S3ZDUD",
     "carrier": "pathao-courier",
     "confidence": "high",

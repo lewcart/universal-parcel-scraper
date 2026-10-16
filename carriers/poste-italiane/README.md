@@ -38,6 +38,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker
   follows them, but no public sample is known, so the shape only suggests Poste Italiane
   (`poste-italiane-promopacco`) and recognition asks it.
+- Codes of `D`, five digits, a letter and six digits are Poste's too: its tracker follows
+  them, for ROAD EUROPE shipments for instance. No public sample is known, so the shape only
+  suggests Poste Italiane (`poste-italiane-d`) and recognition asks it.
 - SDA's 13-character codes with a digit before the `C` start with `3`, as complaints quote
   them, or with `1`, which Poste's tracker follows for Crono Express parcels. No public sample
   starts with `1`.

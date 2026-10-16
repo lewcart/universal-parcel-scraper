@@ -112,6 +112,11 @@
       "id": "poste-italiane-promopacco",
       "pattern": "^F\\d{3}D\\d{8}$",
       "confidence": "low"
+    },
+    {
+      "id": "poste-italiane-d",
+      "pattern": "^D\\d{5}[A-Z]\\d{6}$",
+      "confidence": "low"
     }
   ]
 }

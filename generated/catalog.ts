@@ -10172,7 +10172,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "energia-tk",
+      "recognitionRank": 927
     },
     "canaryUrl": "https://nrg-tk.pro/client/tracking/",
     "trackingUrlTemplate": "https://nrg-tk.pro/client/tracking/#{trackingNumber}",

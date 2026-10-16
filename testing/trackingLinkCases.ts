@@ -489,6 +489,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ems-vietnam', number: 'EB000000076VN',
     route: /^https:\/\/ems\.com\.vn\/tra-cuu\/tra-cuu-buu-gui\?code=EB000000076VN$/,
     marker: /Tra cứu bưu gửi|Mã bưu gửi|Không tìm thấy kết quả/i },
+  // The tracker reads the receipt from the fragment and looks it up on load.
+  { carrier: 'energia-tk', number: '9999-0000001',
+    route: /^https:\/\/nrg-tk\.pro\/client\/tracking\/#9999-0000001$/,
+    marker: /Отслеживание \/ оплата груза|Информация об экспедиторской расписке/ },
   // The page fills its field in and looks the number up on load.
   { carrier: 'couriersplease', number: 'CPBZZZZ0000014',
     route: /^https:\/\/www\.couriersplease\.com\.au\/tools-track\?no=CPBZZZZ0000014$/,

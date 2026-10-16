@@ -2,6 +2,30 @@
   "carrier": "energia-tk",
   "records": [
     {
+      "number": "0101-2157708",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://gdeposylka.ru/courier/nrg-tk",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl"
+        ]
+      },
+      "note": "Gdeposylka's TK Energia page gives it as an example receipt number, and Energia's tracker knows it."
+    },
+    {
       "number": "2401-2092174",
       "role": "shipment",
       "evidence": "public_shipment_report",

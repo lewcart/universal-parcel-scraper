@@ -37,6 +37,8 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
 - Yodel, InPost's UK network, also prints two digits, three letters, seven digits, `A` and
   three digits. Nothing in that layout names InPost, and ArrowXL's references share it, so it
   is low confidence too.
+- Links carry the number. The Polish page does not find Yodel's layouts, so those open
+  InPost UK's page, where Yodel's former tracker now forwards them.
 - Each event keeps its place, a town or hub with its country. A delivered parcel keeps
   its delivery time, and the destination country is kept; the origin country is not.
 - Recipient name, address, phone and signature fields are never read; a test asserts it.

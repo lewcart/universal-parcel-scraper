@@ -8,6 +8,7 @@ import { isRecord } from '../../core/types.js';
 import { classifyInpostStatus, isInpostDestinationChange } from './status.js';
 import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 import { inpostClock } from './clock.js';
+import { INPOST_UK_NUMBER } from './number.js';
 
 // Protocol provenance:
 // - Prior art (structure + vocabulary, verified independently below, MIT):
@@ -34,7 +35,7 @@ function statusCode(value: unknown): string {
 
 export function normalizeInpostTrackingNumber(raw: string): string {
   const value = raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
-  if (!/^(?:\d{24}|JJD\d{16}|JD\d{16}|8YDR\d{9}|\d{2}[A-Z]{3}\d{7}A\d{3})$/.test(value)) {
+  if (!/^\d{24}$/.test(value) && !INPOST_UK_NUMBER.test(value)) {
     throw new InvalidInputError('InPost', 'InPost tracking requires a 24-digit, JJD/JD legacy, 8YDR or Yodel identifier');
   }
   return value;

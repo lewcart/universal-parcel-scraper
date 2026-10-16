@@ -9,6 +9,7 @@
  */
 import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
+import { inpostUkTrackingUrl } from '../../carriers/inpost/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
 import type { CarrierId } from '../../generated/catalog.js';
@@ -52,11 +53,13 @@ export function trackingLink(carrierId: CarrierId, template: string | undefined)
   if (carrierId === 'amazon-shipping') return amazonShippingUrl;
   if (carrierId === 'ninja-van') return ninjaVanTrackingUrl;
   if (!template) return undefined;
-  return (trackingNumber: string) =>
+  const link = (trackingNumber: string) =>
     template.replace(
       '{trackingNumber}',
       encodeURIComponent(trackingNumberForLink(carrierId, trackingNumber)),
     );
+  if (carrierId === 'inpost') return (trackingNumber: string) => inpostUkTrackingUrl(trackingNumber) ?? link(trackingNumber);
+  return link;
 }
 
 function builtCarrierInfo(id: CarrierId, carrier: CarrierDefinition): CarrierInfo {

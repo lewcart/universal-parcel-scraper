@@ -38,7 +38,7 @@
     "pickup_point"
   ],
   "portal": {
-    "url": "https://inpost.pl/sledzenie-przesylek",
+    "url": "https://inpost.pl/sledzenie-przesylek?number={trackingNumber}",
     "searchUrl": "https://inpost.pl/sledzenie-przesylek",
     "canaryUrl": "https://inposteasy.com/",
     "shows": [

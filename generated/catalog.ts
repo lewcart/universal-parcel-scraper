@@ -2150,7 +2150,7 @@ export const CARRIER_CATALOG = {
       "recognitionRank": 820
     },
     "canaryUrl": "https://inposteasy.com/",
-    "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek",
+    "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek?number={trackingNumber}",
     "trackingSearchUrl": "https://inpost.pl/sledzenie-przesylek",
     "linkRules": [],
     "detectionRules": [

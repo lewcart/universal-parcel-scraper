@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { sameInstantIdentityPolicy } from '../../app.js';
+import { carrierInfo } from '../../core/catalog/index.js';
 import { SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
   normalizeInpostTrackingNumber,
@@ -53,6 +54,17 @@ describe('InPost tracking normalization', () => {
     for (const raw of ['12345', 'Z8328162951', '0ABC00000001A001', '']) {
       expect(() => normalizeInpostTrackingNumber(raw)).toThrow(InvalidInputError);
     }
+  });
+});
+
+describe('InPost tracking links', () => {
+  it('opens InPost UK for Yodel layouts and the Polish page for the rest', () => {
+    const link = carrierInfo('inpost').trackingUrl!;
+    expect(link(TRACKING_NUMBER)).toBe(`https://inpost.pl/sledzenie-przesylek?number=${TRACKING_NUMBER}`);
+    for (const number of ['JJD0002233564270287', 'JD0002123456789012', '8YDR098765432', '00ABC0000001A001']) {
+      expect(link(number)).toBe(`https://inpost.co.uk/tracking/result?parcel_code=${number}`);
+    }
+    expect(link('00abc 0000001a001')).toBe('https://inpost.co.uk/tracking/result?parcel_code=00ABC0000001A001');
   });
 });
 

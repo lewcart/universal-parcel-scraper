@@ -28,7 +28,8 @@ request.
 A code ending `RO` is Poșta Română's, but the issuer of an S10 code does not establish who
 delivers it, so detection keeps such codes with the generic postal carrier. A low-confidence rule
 makes preflight ask Poșta Română about them. The domestic shape is shared with other carriers, so
-no rule claims it.
+no rule claims it. Mail from abroad reaches Poșta Română when a caller names it, a provider
+names it, or a result gives Romania as the destination of an S10 item.
 
 ## Notes
 

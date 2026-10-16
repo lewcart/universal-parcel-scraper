@@ -59,6 +59,7 @@ import { adapter as correosSpain } from '../carriers/correos-spain/adapter.js';
 import { adapter as couriersplease } from '../carriers/couriersplease/adapter.js';
 import { adapter as ctt } from '../carriers/ctt/adapter.js';
 import { adapter as cttExpress } from '../carriers/ctt-express/adapter.js';
+import { adapter as cttyex } from '../carriers/cttyex/adapter.js';
 import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
 import { adapter as dachser } from '../carriers/dachser/adapter.js';
 import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
@@ -338,6 +339,7 @@ export const REGISTRY: RegistryDefinition = {
     "couriersplease": couriersplease,
     "ctt": ctt,
     "ctt-express": cttExpress,
+    "cttyex": cttyex,
     "cyprus-post": cyprusPost,
     "dachser": dachser,
     "dai-post": daiPost,
@@ -673,7 +675,7 @@ export const REGISTRY: RegistryDefinition = {
     "cse-russia": "universal",
     "ctt": "ctt",
     "ctt-express": "ctt-express",
-    "cttyex": "universal",
+    "cttyex": "cttyex",
     "cycloon": "universal",
     "cyprus-post": "cyprus-post",
     "d-express": "universal",

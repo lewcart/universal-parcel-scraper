@@ -6,6 +6,9 @@
     {"wording": "Goods leave the operation center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The parcel has left the operations centre."},
     {"wording": "Arrival at domestic internationality airport", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "At the departure airport in China."},
     {"wording": "Departure from the airport of origin domestic", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The flight has left the origin airport."},
-    {"wording": "运输途中", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The tracker's summary status: in transit."}
+    {"wording": "运输途中", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The tracker's summary status: in transit. The adapter reads it only when no scan has a stage."},
+    {"wording": "In Transit", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The summary status in English, which the tracker gives a lookup asked in English. The adapter asks in Chinese."},
+    {"wording": "Not Found", "language": "en", "confirmedBy": "live", "unmapped": true, "note": "The not-found status in English, which the tracker gives a lookup asked in English. The adapter reads it as not found."},
+    {"wording": "查询不到", "language": "zh", "confirmedBy": "live", "unmapped": true, "note": "\"Cannot be found\": the summary status for a number the tracker does not know, with no scans. The adapter reads it as not found."}
   ]
 }

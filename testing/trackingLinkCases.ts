@@ -834,6 +834,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/corp\.fukutsu\.co\.jp\/corp\/recieve\/tracking_no_hunt\/12345678901$/,
     marker: /お荷物配達状況詳細|該当データはありません/,
     forwarding: { notFound: /該当データはありません/ } },
+  // The page puts the number in its form and looks it up on load.
+  { carrier: 'cttyex', number: 'CTTY9900000001CN',
+    route: /^https:\/\/www\.cttyvip888\.com\/index\/tracknumber\/track\?nos=CTTY9900000001CN$/,
+    marker: /快件跟踪|跟踪\(Track\)/ },
 ];
 
 /**

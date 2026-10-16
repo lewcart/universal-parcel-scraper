@@ -1,10 +1,48 @@
 # CTTYEX
 
-CTTYEX parcels use enabled universal providers. There is no dedicated adapter.
-
 CTTYEX (深圳诚泰通运国际物流, Shenzhen Chengtai Tongyun) is a Shenzhen forwarder of
-cross-border e-commerce parcels from China. Its tracker shows the destination country and the
-scans up to the flight out of China, in English.
+cross-border e-commerce parcels from China. Tracked through the lookup its tracking page makes.
+
+## How it works
+
+1. `direct`: one `GET https://www.cttyvip888.com/index/tracknumber/getTrackingByNos?nos={number}`,
+   as the tracking page's script sends it on load. It needs no cookie, token, key or browser.
+   The reply is a JSON array, served as HTML, with an item per number asked: the summary's status
+   in Chinese, the origin and destination countries in Chinese, and the scans in English, newest
+   first.
+2. `retry`: one more request after a network failure or a timeout. The first gets half of the
+   budget.
+
+- The tracker matches the whole number in capitals, so the adapter sends it in capitals, and the
+  item must echo it.
+- The adapter asks in Chinese, the page's language, with `Accept-Language: zh-CN`. The tracker
+  fails with HTTP 500 for the `*` Node's fetch sends by default, and words the summary and the
+  countries in English only for exactly `en`.
+- An unknown number is HTTP 200 with the status "查询不到" ("Not Found" in English) and no scans.
+  Only that answer is not found. A lookup without a number gets `{"success":false}`, which is
+  inconclusive.
+- A redirect or a 404 is a moved route. A browser check in place of the reply is a challenge, and
+  any other reply that is not the expected JSON is a schema failure.
+- Recognition makes the same request.
+
+## Notes
+
+- The tracker shows the scans up to the flight out of China and no later leg. Its scans are
+  CTTYEX's own steps there, from the order data to the departure from the origin airport, and
+  print a wall clock to the second without a zone. China keeps one zone, so a scan the map lists
+  is an instant on Beijing time. A wording the map does not list could come from another leg and
+  keeps its wall clock.
+- The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
+  through the shared wording rules. The newest staged scan decides the parcel's stage, and the
+  summary's status only when no scan has one: a status such as "运输途中" (in transit) says less
+  than the scans.
+- The destination's Chinese name becomes a country code where it names a country, and is kept as
+  written otherwise.
+
+## Limitations
+
+- No location, delivery estimate, weight, delivery partner or partner number.
+- The tracker keeps parcels for two months.
 
 ## Numbers
 
@@ -19,5 +57,5 @@ tracker, which looks the number up on load.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/cttyex`, with `CTTYEX_TRACKING_NUMBER` and optionally
+`CTTYEX_UNKNOWN_NUMBER` set outside the repository.

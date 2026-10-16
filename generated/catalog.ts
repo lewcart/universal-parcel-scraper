@@ -8256,7 +8256,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cttyex",
+      "recognitionRank": 953,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cttyvip888.com/assets/html/search.html",
     "trackingUrlTemplate": "https://www.cttyvip888.com/index/tracknumber/track?nos={trackingNumber}",

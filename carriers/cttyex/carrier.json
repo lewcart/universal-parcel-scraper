@@ -22,18 +22,46 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cttyex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 953
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "destination_country",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.cttyvip888.com/index/tracknumber/track?nos={trackingNumber}",
     "searchUrl": "https://www.cttyvip888.com/assets/html/search.html",
     "canaryUrl": "https://www.cttyvip888.com/assets/html/search.html",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "destination_country"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "destination_country"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "provider_code",
+      "eta",
+      "weight",
+      "delivered_at",
+      "service_name",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

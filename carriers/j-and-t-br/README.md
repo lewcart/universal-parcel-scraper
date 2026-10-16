@@ -11,9 +11,16 @@ carriers' rules.
 
 ## Links
 
-The tracker at `www.jtexpress.com.br/trajectoryQuery` reads the waybill from `waybillNo` and
-searches it, as the site's script and archived lookups show; the mobile page
-`/mobile/expressTracking` takes the same parameter.
+Archived lookups on `www.jtexpress.com.br/trajectoryQuery` and the mobile page
+`/mobile/expressTracking` carry the waybill in `waybillNo`. The current pages search only what
+their tracking form submits, so such an address opens an empty tracker.
+
+## Limitations
+
+Both pages show a Tencent slider captcha before they look a waybill up, and J&T Brazil's lookup
+refuses a missing or wrong captcha answer. The pages' other search needs the recipient's CPF or
+CNPJ. The J&T Brasil app embeds the same captcha, so J&T Express Brazil stays on universal
+providers.
 
 ## Testing
 

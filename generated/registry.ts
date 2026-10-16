@@ -170,6 +170,7 @@ import { adapter as loomisExpress } from '../carriers/loomis-express/adapter.js'
 import { adapter as lotteGlobal } from '../carriers/lotte-global/adapter.js';
 import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
 import { adapter as mailamericas } from '../carriers/mailamericas/adapter.js';
+import { adapter as mainfreight } from '../carriers/mainfreight/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
 import { adapter as mayiyinfu } from '../carriers/mayiyinfu/adapter.js';
@@ -462,6 +463,7 @@ export const REGISTRY: RegistryDefinition = {
     "lotte-global": lotteGlobal,
     "magyar-posta": magyarPosta,
     "mailamericas": mailamericas,
+    "mainfreight": mainfreight,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
     "mayiyinfu": mayiyinfu,
@@ -891,7 +893,7 @@ export const REGISTRY: RegistryDefinition = {
     "magyar-posta": "magyar-posta",
     "mailamericas": "mailamericas",
     "mailplus-au": "universal",
-    "mainfreight": "universal",
+    "mainfreight": "mainfreight",
     "major-express": "universal",
     "maltapost": "maltapost",
     "mandae": "universal",

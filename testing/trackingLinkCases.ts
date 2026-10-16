@@ -871,6 +871,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'kazpost', number: 'ZZ000000014KZ',
     route: /^https:\/\/post\.kz\/services\/postal\/ZZ000000014KZ$/,
     marker: /Сәлемдемені іздеу|Найти посылку|Track a parcel|Сәлемдеме бойынша ақпарат жоқ|Отсутствует информация о посылке|There is no information about the parcel/ },
+  // The page looks the number up on the server and heads its results with it.
+  { carrier: 'mainfreight', number: 'S00000000',
+    route: /^https:\/\/www\.mainfreight\.com\/tracking\?trackingnumber=S00000000$/,
+    marker: /Tracking Results for|No results found for the provided tracking number/i },
 ];
 
 /**

@@ -1666,7 +1666,7 @@
     "carrier": "mainfreight",
     "pattern": "^[A-Z]{3}\\d{8}$",
     "kind": "by_design",
-    "reason": "Older consignments with three letters and eight digits, a layout too generic to tie to Mainfreight alone."
+    "reason": "Senders' consignment references of three letters and eight digits, a layout too generic to tie to Mainfreight alone."
   },
   {
     "carrier": "major-express",

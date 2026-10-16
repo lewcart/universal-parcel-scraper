@@ -20,18 +20,69 @@
   "timezone": "Pacific/Auckland",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "mainfreight",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 923
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "offset_timestamps",
+    "eta",
+    "delivered_at",
+    "weight",
+    "service_name",
+    "destination_country",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://www.mainfreight.com/tracking?trackingnumber={trackingNumber}",
     "searchUrl": "https://www.mainfreight.com/tracking",
     "canaryUrl": "https://www.mainfreight.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "eta",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "destination_country",
+      "canonical_tracking_number",
+      "contacts",
+      "postcodes",
+      "customer_reference",
+      "documents"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "eta",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "destination_country",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "contacts",
+      "postcodes",
+      "customer_reference",
+      "documents"
+    ],
+    "unavailable": [
+      "proof_of_delivery",
+      "recipient_name"
+    ]
   },
   "links": [
     {

@@ -14541,7 +14541,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mainfreight",
+      "recognitionRank": 923,
+      "localClocks": true
     },
     "canaryUrl": "https://www.mainfreight.com/tracking",
     "trackingUrlTemplate": "https://www.mainfreight.com/tracking?trackingnumber={trackingNumber}",

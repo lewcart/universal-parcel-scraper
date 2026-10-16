@@ -126,6 +126,7 @@ import { statusMap as loomisExpress } from '../../carriers/loomis-express/status
 import { statusMap as lotteGlobal } from '../../carriers/lotte-global/status.js';
 import { statusMap as magyarPosta } from '../../carriers/magyar-posta/status.js';
 import { statusMap as mailamericas } from '../../carriers/mailamericas/status.js';
+import { statusMap as mainfreight } from '../../carriers/mainfreight/status.js';
 import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as mayiyinfu } from '../../carriers/mayiyinfu/status.js';
@@ -232,7 +233,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, kazpost, kex, 'kuehne-nagel': kuehneNagel,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, 'lion-parcel': lionParcel, logen, loggi,
   'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
-  'magyar-posta': magyarPosta, mailamericas,
+  'magyar-posta': magyarPosta, mailamericas, mainfreight,
   maltapost, matkahuolto, mayiyinfu, meest,
   'mng-kargo': mngKargo, mtscn, naqel, nationex, 'nippon-express': nipponExpress, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,
   'osm-worldwide': osmWorldwide, packlink, 'pakistan-post': pakistanPost, paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom,

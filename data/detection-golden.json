@@ -58734,6 +58734,46 @@
     ]
   },
   {
+    "input": "JSEJA1143458320YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEKI2871054068YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSELK1099980597YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSELO1674399416YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEWU1847680080YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
     "input": "JT0022543312549",
     "carrier": "unknown",
     "confidence": "low",

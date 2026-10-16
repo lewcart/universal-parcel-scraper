@@ -1,0 +1,100 @@
+{
+  "carrier": "js-express",
+  "records": [
+    {
+      "number": "JSEJA1143458320YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/js-exp",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "js-express",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's JS Express page offered it to try. JS Express's tracker answers it with a parcel flown from Hong Kong to Amsterdam."
+    },
+    {
+      "number": "JSEKI2871054068YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/js-exp",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "js-express",
+        "confidence": "high"
+      },
+      "note": "Listed as a JS Express tracking number example on ParcelPanel's JS Express page. JS Express's tracker no longer finds it."
+    },
+    {
+      "number": "JSELK1099980597YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/js-exp",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "js-express",
+        "confidence": "high"
+      },
+      "note": "Listed as a JS Express tracking number example on ParcelPanel's JS Express page. JS Express's tracker no longer finds it."
+    },
+    {
+      "number": "JSEWU1847680080YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/js-exp",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "js-express",
+        "confidence": "high"
+      },
+      "note": "Listed as a JS Express tracking number example on ParcelPanel's JS Express page. JS Express's tracker no longer finds it."
+    },
+    {
+      "number": "JSELO1674399416YQ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/js-exp",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "js-express",
+        "confidence": "high"
+      },
+      "note": "Listed as a JS Express tracking number example on ParcelPanel's JS Express page. JS Express's tracker no longer finds it."
+    }
+  ]
+}

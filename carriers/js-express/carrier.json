@@ -1,0 +1,41 @@
+{
+  "id": "js-express",
+  "displayName": "JS Express",
+  "aliases": [
+    "JS EXP",
+    "急速国际",
+    "急创速供应链管理（苏州）有限公司"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#fe9b00"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.js-exp.com/index.php?catid=19",
+    "canaryUrl": "https://www.js-exp.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "js-express-1",
+      "pattern": "^JSE[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -13302,6 +13302,33 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "js-express": {
+    "displayName": "JS Express",
+    "color": "#fe9b00",
+    "aliases": [
+      "JS EXP",
+      "急速国际",
+      "急创速供应链管理（苏州）有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.js-exp.com/",
+    "trackingSearchUrl": "https://www.js-exp.com/index.php?catid=19",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^JSE[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "kargoist": {
     "displayName": "Kargoist",
     "color": "#18b6d6",
@@ -22277,6 +22304,7 @@ export const CARRIER_IDS = [
   "jordan-post",
   "jrs-express",
   "jrt",
+  "js-express",
   "kargoist",
   "kazpost",
   "kerry-tj",
@@ -22827,6 +22855,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jordan-post": [],
   "jrs-express": [],
   "jrt": ["jrt-1"],
+  "js-express": ["js-express-1"],
   "kargoist": ["kargoist-1"],
   "kazpost": ["kazpost-s10"],
   "kerry-tj": [],

@@ -1,6 +1,7 @@
 import { constants, createHash, generateKeyPairSync, privateDecrypt, type KeyObject } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
@@ -342,6 +343,15 @@ describe('iMile HTTP adapter', () => {
     expect(detectCarrierMatch(DATED)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['imile']) });
     // Month 13 is no date.
     expect(detectCarrierMatch('6130124000001').candidates).not.toContain('imile');
+  });
+
+  it('adds iMile beside the other thirteen-digit carriers and asks it among the first five anywhere', () => {
+    expect(detectCarrierMatch(DATED)).toMatchObject({ carrier: 'unknown', confidence: 'low',
+      candidates: expect.arrayContaining(['la-poste', 'correos-chile', 'delhivery', 'yunda', 'korea-post', 'imile']) });
+    // A parcel bought abroad keeps its buyer's country hint, so iMile is asked without its own countries too.
+    for (const countryHint of [undefined, 'CO', 'ES', 'HU', 'KR', 'IN']) {
+      expect(recognitionAskedCarriers(DATED, { countryHint }), countryHint ?? 'no hint').toContain('imile');
+    }
   });
 });
 

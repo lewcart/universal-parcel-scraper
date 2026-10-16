@@ -20,7 +20,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 870
+      "rank": 870,
+      "pattern": "^(?:\\d{14}|\\d{21,22})$"
     },
     "localClocks": true
   },

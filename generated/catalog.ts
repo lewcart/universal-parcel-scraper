@@ -2449,6 +2449,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "seur",
       "recognitionRank": 870,
+      "recognitionPattern": "^(?:\\d{14}|\\d{21,22})$",
       "localClocks": true
     },
     "canaryUrl": "https://www.seur.com/miseur/mis-envios",

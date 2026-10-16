@@ -12,6 +12,17 @@ export function normalizeSeurNumber(raw: string): string {
   return number;
 }
 
+/**
+ * A number recognition can ask about. The seven-digit expedition number is
+ * reused: about a third of random ones find a recent shipment, so a hit says
+ * nothing about whose parcel it is.
+ */
+export function normalizeSeurRecognitionNumber(raw: string): string {
+  const number = normalizeSeurNumber(raw);
+  if (number.length === 7) throw new InvalidInputError('SEUR', 'SEUR recognition does not ask about seven-digit expedition numbers');
+  return number;
+}
+
 function field(value: unknown, limit: number): string {
   if (typeof value !== 'string' || value.length > limit) throw new SchemaError('SEUR', 'SEUR returned an invalid scan field');
   return clean(value, limit);

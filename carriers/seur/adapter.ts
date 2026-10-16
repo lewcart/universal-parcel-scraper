@@ -3,7 +3,7 @@ import { BudgetExceededError, ChallengeError, IndeterminateError } from '../../c
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
-import { normalizeSeurNumber, parseSeur } from './parser.js';
+import { normalizeSeurNumber, normalizeSeurRecognitionNumber, parseSeur } from './parser.js';
 
 export class SeurTracker {
   constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
@@ -34,5 +34,5 @@ export class SeurTracker {
 export const adapter: AdapterFactory = environment => {
   const tracker = new SeurTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return { id: 'seur', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeSeurNumber(number))) };
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeSeurRecognitionNumber(number))) };
 };

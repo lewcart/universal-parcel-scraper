@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { SeurTracker, adapter } from './adapter.js';
-import { normalizeSeurNumber, parseSeur } from './parser.js';
+import { accepted } from '../../core/adapter/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { recognitionAskedCarriers, recognitionCandidates } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
+import { normalizeSeurNumber, normalizeSeurRecognitionNumber, parseSeur } from './parser.js';
 import { classifySeurStatus, seurStatusGroup } from './status.js';
 import fixture from './fixtures/history.json' with { type: 'json' };
 import statuses from './statuses.json' with { type: 'json' };
@@ -151,16 +155,33 @@ describe('SEUR simplified anonymous tracking', () => {
   });
 
   it('recognizes matching activity, skips unsupported formats and propagates no-history failures', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response()); const instance = adapter(environment(fetcher));
+    // Recognition asks about SEUR's longer numbers only.
+    const long = '99000000000002'; const asked = (body = copy()) => ({ ...body, identificador_busqueda: long });
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response(asked())); const instance = adapter(environment(fetcher));
     expect(await instance.recognize!('unsupported')).toEqual({ known: false }); expect(fetcher).not.toHaveBeenCalled();
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await instance.recognize!(long)).toEqual({ known: true, lastActivityAt: null });
     const body0 = copy(); body0.situaciones[0]!.fecha = '2026-01-23T13:13:05+01:00';
-    const offset = vi.fn<typeof fetch>().mockResolvedValue(response(body0));
-    expect(await adapter(environment(offset)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-23T12:13:05.000Z' });
+    const offset = vi.fn<typeof fetch>().mockResolvedValue(response(asked(body0)));
+    expect(await adapter(environment(offset)).recognize!(long)).toEqual({ known: true, lastActivityAt: '2026-01-23T12:13:05.000Z' });
     const unresolved = vi.fn<typeof fetch>().mockResolvedValue(response(noHistory));
-    await expect(adapter(environment(unresolved)).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
-    const body = copy(); body.situaciones.forEach(scan => { scan.fecha = ''; }); const undated = vi.fn<typeof fetch>().mockResolvedValue(response(body));
-    expect(await adapter(environment(undated)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    await expect(adapter(environment(unresolved)).recognize!(long)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+    const body = copy(); body.situaciones.forEach(scan => { scan.fecha = ''; }); const undated = vi.fn<typeof fetch>().mockResolvedValue(response(asked(body)));
+    expect(await adapter(environment(undated)).recognize!(long)).toEqual({ known: true, lastActivityAt: null });
+  });
+
+  it('tracks a seven-digit expedition number but never asks recognition about one, since SEUR reuses them', async () => {
+    const short = '0000007';
+    expect(detectCarrierMatch(short).candidates).toContain('seur');
+    expect(recognitionAskedCarriers(short)).not.toContain('seur');
+    expect(recognitionCandidates(short, { hint: 'seur', countryHint: 'ES' }).map(({ carrier }) => carrier)).not.toContain('seur');
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response());
+    expect(await adapter(environment(fetcher)).recognize!(short)).toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+    // The catalog asks recognition about exactly the numbers the adapter's recognition accepts.
+    const pattern = new RegExp(CARRIER_DEFINITIONS.seur.tracking.recognitionPattern!);
+    for (const number of [short, '0'.repeat(14), '0'.repeat(21), '2026010100000000000001', NUMBER]) {
+      expect(pattern.test(number), number).toBe(accepted(() => normalizeSeurRecognitionNumber(number)));
+    }
   });
 
   it('keeps generic HTTP failures distinct from shipment absence and bounds response bytes', async () => {

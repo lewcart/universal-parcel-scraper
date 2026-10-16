@@ -29,6 +29,12 @@ fourteen digits. `seur-4` suggests SEUR for that layout and recognition asks
 SEUR. APC Overnight's rule takes the same length with the month before the day,
 so both are suggested when the day is twelve or less.
 
+A seven-digit number is the short expedition number inside SEUR's twenty-one-digit
+shipment key. SEUR reuses it: about a third of random seven-digit numbers find a recent
+shipment. Tracking accepts it, but recognition only asks SEUR for its fourteen, twenty-one
+and twenty-two-digit numbers, so a seven-digit hit never files someone else's number under
+SEUR.
+
 The no-history error also covers recent or out-of-range identifiers and remains
 inconclusive, with the reason `portal_not_found` so a consumer can tell it from
 an outage. Empty replies, redirects and generic HTTP errors are inconclusive

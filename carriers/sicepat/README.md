@@ -10,15 +10,22 @@ Media Konsumen give them. Twelve digits are also FedEx's and other carriers' lay
 
 ## Links
 
-SiCepat's tracker reads the number from its form and asks for a reCAPTCHA token, and sometimes
-the recipient's phone number, before it shows a parcel. No address opens one parcel.
+SiCepat's tracker reads the number from its form. No address opens one parcel.
 
-The current public client posts to `api.sicepatconsumer.com/v2/contentsvc/public/validate-awb-id`
-with `awb_number` and a fresh `x-recaptcha` token for action `checkAwb`. Ordinary waybills then
-use `check-awb` under the same prefix with `awb_id` and `awb_number`, after fresh verification.
-The other branch requires the recipient phone's last five digits. The Android app's current
-guest route also sends a reCAPTCHA token; its older content-service routes do not establish
-another usable guest path. A failed token and an explicit missing-waybill reply are separate.
+## Why there is no adapter
+
+SiCepat's tracker and app ask for a reCAPTCHA token, and for some waybills the last five digits
+of the recipient's phone, before they show a parcel.
+
+The web client posts to `api.sicepatconsumer.com/v2/contentsvc/public/validate-awb-id` with
+`awb_number` and a fresh `x-recaptcha` token for action `checkAwb`. Ordinary waybills then use
+`check-awb` under the same prefix with an empty `awb_id` and `awb_number`, after fresh
+verification. For the other branch the page sends the phone digits as `awb_id`. The Android app
+(`com.sicepat.consumer`) asks `GET api.sicepatconsumer.com/v1/order/public/shipping/awb/{number}`
+with the same kind of token; the content-service routes left in it are no longer called and no
+longer answer. Both services refuse a missing or failed token for made-up numbers too, so the
+refusal says nothing about the number, while a missing waybill gets an explicit `Not Found`
+reply. The library solves no captcha, so SiCepat stays on universal providers.
 
 ## Testing
 

@@ -9,15 +9,7 @@
  * number; the Pos Laju check, like the other checksums, takes a normalized one.
  */
 import { normalizeTrackingNumber } from './normalize.js';
-
-/** The ninth of nine digits checks the first eight: weights 8, 6, 4, 2, 3, 5, 9, 7, then 11 minus the sum mod 11. */
-function hasS10CheckDigit(digits: string): boolean {
-  const weights = [8, 6, 4, 2, 3, 5, 9, 7];
-  const sum = weights.reduce((total, weight, index) => total + Number(digits[index]) * weight, 0);
-  const rawCheckDigit = 11 - (sum % 11);
-  const expected = rawCheckDigit === 10 ? 0 : rawCheckDigit === 11 ? 5 : rawCheckDigit;
-  return Number(digits[8]) === expected;
-}
+import { hasS10CheckDigit } from './s10CheckDigit.js';
 
 /** Validate the UPU S10 check digit, not only its broad A2-N9-A2 shape. */
 export function isValidS10TrackingNumber(raw: string): boolean {

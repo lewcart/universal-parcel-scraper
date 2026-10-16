@@ -81,6 +81,14 @@ describe('normalization', () => {
     expect(parseTrackingInput('(00) 370123456789012347')).toMatchObject({ source: 'number', candidates: detectCarrierMatch('00370123456789012347').candidates });
   });
 
+  it('reads a letter O typed in an S10 serial as the zero its check digit asks for', () => {
+    expect(normalizeTrackingNumber('cio 0000000 5nl')).toBe('CI000000005NL');
+    expect(detectCarrierMatch('CIO00000005NL')).toEqual(detectCarrierMatch('CI000000005NL'));
+    expect(detectCarrierMatch('CIO00000005NL').confidence).not.toBe('none');
+    // A serial whose check digit fails either way stays as typed.
+    expect(normalizeTrackingNumber('CIO00000001NL')).toBe('CIO00000001NL');
+  });
+
   it('leaves other bracketed GS1 identifiers as typed', () => {
     // (420) carries the destination ZIP, which is no parcel number.
     for (const raw of ['(420) 12345', '(420) 12345 (92) 612 90 100 13043 50825 07', '(00) 37012345678901234', '(01) 09501101530003']) {

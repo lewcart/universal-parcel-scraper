@@ -85,8 +85,10 @@ normally holds a digit. Without one it must be six to ten unbroken letters that 
 detection rule claims, as on a GLS notification card. Such a number is never read out of
 pasted text, and the universal providers refuse it. Detection and recognition read the number
 as typed, so a separator a rule needs, such as the dash in a PostLogistics reference, still
-counts; adapters and providers get the normalized number. A postcode the carrier does not read
-goes to the enabled fallbacks only, since ParcelsApp and 17TRACK can ask for one.
+counts; adapters and providers get the normalized number. Normalization reads a letter O in an
+S10 serial as a zero when the check digit then holds, since the serial holds only digits. A
+postcode the carrier does not read goes to the enabled fallbacks only, since ParcelsApp and
+17TRACK can ask for one.
 A number whose shape fits several carriers, or only
 identifies an international postal item, is settled by asking the carriers that can recognize
 it cheaply. A postal issuer is a lookup candidate, not proof of the delivery carrier.

@@ -1,11 +1,13 @@
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
+import { hasS10CheckDigit } from './s10CheckDigit.js';
 
 /**
  * Tracking-number normalization and display formatting.
  *
  * What it is: the one place that decides what "the same number" means, plus
  * the printed grouping carriers use on their labels.
- * What it is not: no carrier lookup, no checksum validation, no provider I/O.
+ * What it is not: no carrier lookup and no provider I/O. The only check digit
+ * it reads is an S10 serial's, to tell a typed letter O from a zero.
  */
 
 /**
@@ -13,10 +15,16 @@ import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js'
  * A label prints its SSCC behind the bracketed GS1 identifier, "(00) 3 7012345
  * 678901234 7", and carriers track it as the twenty digits without brackets.
  * Other bracketed identifiers stay as typed: (420), for one, carries a ZIP.
+ * An S10 serial holds only digits, so a letter O in it ("CIO…NL") is a zero
+ * typed as a letter when the check digit then holds.
  */
 export function normalizeTrackingNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
-  return /^\(00\)\d{18}$/.test(value) ? `00${value.slice(4)}` : value;
+  if (/^\(00\)\d{18}$/.test(value)) return `00${value.slice(4)}`;
+  const serial = /^([A-Z]{2})([\dO]{9})([A-Z]{2})$/.exec(value);
+  if (!serial?.[2]!.includes('O')) return value;
+  const digits = serial[2]!.replace(/O/g, '0');
+  return hasS10CheckDigit(digits) ? `${serial[1]}${digits}${serial[3]}` : value;
 }
 
 /** Capability-link shipment numbers look like 999.90.########. */

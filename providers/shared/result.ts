@@ -139,6 +139,11 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^depositado en punto mrw[.!]?$/i.test(value)) return 'ready_for_pickup';
   // A return on its way back to the sender, as other unfinished returns.
   if (/^the shipment is handled by a return consolidator[.!]?$/i.test(value)) return 'exception';
+  // Relay's notices on Vinted parcels, from the label to the parcel in its hands.
+  if (/^awaiting your vinted parcel[.!]?$|^expecting your parcel[.!]?$/i.test(value)) return 'registered';
+  if (/^parcel received by relay[.!]?$|^received your parcel[.!]?$/i.test(value)) return 'accepted';
+  // SF Express's pickup notice, which goes on to name the courier.
+  if (/^sf express has received your package\b/i.test(value)) return 'accepted';
   // iMile's scans as aggregators relay them, its 【】 place names cut or dropped.
   // A wrong address sends the parcel out again; a recipient who cannot be
   // reached closes the delivery and starts the return.

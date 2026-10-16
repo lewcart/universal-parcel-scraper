@@ -397,13 +397,16 @@ describe("universal providers' answers", () => {
       ['EXAMPLE.DS Dispatch task assigned to DA', 'in_transit'], ['<Bad Address>', 'failed_attempt'],
       ['Contact Error need to return', 'exception'], ['Start returning，reason:[Contact Error]', 'exception'],
       ['EXA-DEVOLUCION.DS Order Closed', 'exception'],
+      ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
+      ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
+      ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
       'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
-      'Order Closed', 'Center', 'Dispatch task assigned']) {
+      'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

@@ -196,6 +196,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "tforce-freight": 946,
   "the-courier-guy": 730,
   "thhy": 987,
+  "tiki": 918,
   "tipsa": 680,
   "tnt": 880,
   "tnt-it": 645,

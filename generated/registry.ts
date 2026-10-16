@@ -271,6 +271,7 @@ import { adapter as tforceFreight } from '../carriers/tforce-freight/adapter.js'
 import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
 import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js';
 import { adapter as thhy } from '../carriers/thhy/adapter.js';
+import { adapter as tiki } from '../carriers/tiki/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
@@ -570,6 +571,7 @@ export const REGISTRY: RegistryDefinition = {
     "thailand-post": thailandPost,
     "the-courier-guy": theCourierGuy,
     "thhy": thhy,
+    "tiki": tiki,
     "tipsa": tipsa,
     "tnt": tnt,
     "tnt-it": tntIt,
@@ -1089,7 +1091,7 @@ export const REGISTRY: RegistryDefinition = {
     "thailand-post": "thailand-post",
     "the-courier-guy": "the-courier-guy",
     "thhy": "thhy",
-    "tiki": "universal",
+    "tiki": "tiki",
     "tipsa": "tipsa",
     "tirupati-courier": "universal",
     "tnt": "tnt",

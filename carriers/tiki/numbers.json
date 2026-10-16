@@ -79,7 +79,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -99,7 +99,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on TIKI's mobile tracker; the capture was not opened."
+      "note": "An archived lookup on TIKI's mobile tracker; the capture was not opened. TIKI's tracking service shows it in several pieces, all delivered."
     },
     {
       "number": "660032157360",
@@ -112,7 +112,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -130,7 +130,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on TIKI's own tracker; the opened capture shows the number filled into the search form, but the history was not visible."
+      "note": "An archived lookup on TIKI's own tracker; the opened capture shows the number filled into the search form, but the history was not visible. TIKI's tracking service shows it delivered."
     },
     {
       "number": "660086160013",
@@ -143,7 +143,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -164,7 +164,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "TIKI's reply on Media Konsumen gives it as the resi of the shipment it rechecked."
+      "note": "TIKI's reply on Media Konsumen gives it as the resi of the shipment it rechecked. TIKI's tracking service shows a delivery, then the parcel held at TIKI on request."
     },
     {
       "number": "660075788504",
@@ -177,7 +177,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -195,7 +195,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "TIKI's reply on Media Konsumen gives it as the resi of a pickup order it cancelled and refunded."
+      "note": "TIKI's reply on Media Konsumen gives it as the resi of a pickup order it cancelled and refunded. TIKI's tracking service shows its data entry, then the shipment cancelled."
     },
     {
       "number": "600003451780",
@@ -208,7 +208,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -226,7 +226,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Media Konsumen letter gives it as the resi a TIKI courier messaged about."
+      "note": "A Media Konsumen letter gives it as the resi a TIKI courier messaged about. TIKI's tracking service shows failed deliveries for an incomplete address and a return to the sender."
     },
     {
       "number": "030209240746",
@@ -239,7 +239,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -261,7 +261,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Media Konsumen letter gives it as the resi of a COD parcel sent with TIKI Reg."
+      "note": "A Media Konsumen letter gives it as the resi of a COD parcel sent with TIKI Reg. TIKI's tracking service shows failed deliveries and a return to the sender."
     }
   ]
 }

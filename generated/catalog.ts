@@ -20418,9 +20418,13 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tiki",
+      "recognitionRank": 918,
+      "localClocks": true
     },
     "canaryUrl": "https://tiki.id/id/track",
+    "trackingUrlTemplate": "https://tiki.id/id/track/{trackingNumber}",
+    "trackingSearchUrl": "https://tiki.id/id/track",
     "linkRules": [
       {
         "domains": [

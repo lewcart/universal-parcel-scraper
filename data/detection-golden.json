@@ -16061,6 +16061,17 @@
     ]
   },
   {
+    "input": "1C1000A000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "1C339438114203716M",
     "carrier": "zeleris",
     "confidence": "high",

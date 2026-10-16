@@ -35,6 +35,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker
   follows them, but no public sample is known, so the shape only suggests Poste Italiane
   (`poste-italiane-promopacco`) and recognition asks it.
+- SDA's 13-character codes with a digit before the `C` start with `3`, as complaints quote
+  them, or with `1`, which Poste's tracker follows for Crono Express parcels. No public sample
+  starts with `1`.
 - Envelope `stato` `5` forces `delivered` whatever the movement wording says: a delivered
   parcel sometimes carries a truncated last line. A parcel sent back ends with its delivery
   to the sender; that delivery carries the return flag (`flagRitorno`) and reads as
@@ -67,8 +70,8 @@ mail from abroad to Italy is not handed to Poste Italiane.
 
 - No event location for a scan at a post office's street address without its office name.
 - Day-resolution estimate only.
-- Poste's tracker also answers 13-character codes with another digit than `3` before the `C`.
-  No public sample shows one yet, so neither detection nor the adapter takes them.
+- Poste's tracker also answers those codes with other digits before the `C`. No parcel shows
+  one yet, so neither detection nor the adapter takes them.
 
 ## Testing
 

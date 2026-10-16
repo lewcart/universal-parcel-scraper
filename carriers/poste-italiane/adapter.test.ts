@@ -57,7 +57,7 @@ describe('Poste Italiane tracking normalization', () => {
   it('uses complete SDA candidates for the request and recognition identity', async () => {
     const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null,
       recorder: { step() {}, lookup() {} } });
-    for (const number of ['990001A000001', '3C9900A000001', '990A00000001A']) {
+    for (const number of ['990001A000001', '3C9900A000001', '1C9900A000001', '990A00000001A']) {
       expect(normalizePosteItalianeTrackingNumber(number.toLowerCase())).toBe(number);
       const fetcher = vi.fn<typeof fetch>(async (_url, init) => {
         expect(JSON.parse(String(init?.body)).codiceSpedizione).toBe(number);
@@ -71,7 +71,7 @@ describe('Poste Italiane tracking normalization', () => {
     }
     const empty = vi.fn<typeof fetch>().mockResolvedValue(response(parcel({ idTracciatura: '990001A000001', esitoRicerca: '2', listaMovimenti: [] })));
     expect(await adapter(environment(empty)).recognize!('990001A000001')).toEqual({ known: false });
-    for (const number of ['990001AA000001', '3C9900A0000010', 'ABCDEF0000001']) {
+    for (const number of ['990001AA000001', '3C9900A0000010', '2C9900A000001', 'ABCDEF0000001']) {
       expect(() => normalizePosteItalianeTrackingNumber(number)).toThrow(InvalidInputError);
     }
   });

@@ -4,7 +4,9 @@
   "aliases": [
     "Poste",
     "PosteDelivery",
-    "Crono"
+    "Crono",
+    "SDA",
+    "SDA Express Courier"
   ],
   "region": {
     "countries": [
@@ -88,6 +90,11 @@
     {
       "id": "poste-italiane-3",
       "pattern": "^2IMA\\d{10}$",
+      "confidence": "high"
+    },
+    {
+      "id": "poste-italiane-4",
+      "pattern": "^JF\\d{11}$",
       "confidence": "high"
     },
     {

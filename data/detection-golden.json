@@ -57744,6 +57744,30 @@
     ]
   },
   {
+    "input": "JF00003251492",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
+    "input": "JF40000213877",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
+    "input": "JF80003339011",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "JFV247545960",
     "carrier": "purolator",
     "confidence": "high",

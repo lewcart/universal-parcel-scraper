@@ -332,6 +332,68 @@
         "confidence": "high"
       },
       "note": "Poste Delivery Europe shipment its sender quotes in a complaint against Poste Italiane; the tracker no longer finds it."
+    },
+    {
+      "number": "JF00003251492",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/mancata-consegna-di-un-pacco/6bec431730d812ca0e",
+        "access": "full_page",
+        "date": "2025-09-18",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "MyPoste",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Shipment number its sender quotes in a complaint against Poste Italiane about a parcel sent through MyPoste; the tracker no longer finds it."
+    },
+    {
+      "number": "JF40000213877",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-spedito-fermo-a-bologna-/569944524654749fe7",
+        "access": "full_page",
+        "date": "2024-01-14",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Poste Delivery Web",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Tracking code its sender quotes in a complaint against Poste Italiane about a parcel sent through Poste Delivery Web; the tracker no longer finds it."
+    },
+    {
+      "number": "JF80003339011",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/pacco-smarrito-ho-rubato/2bbc82763430771975",
+        "access": "full_page",
+        "date": "2025-03-05",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Code its sender quotes in a complaint against Poste Italiane about a lost parcel; the tracker no longer finds it."
     }
   ]
 }

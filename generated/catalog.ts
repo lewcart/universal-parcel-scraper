@@ -2614,7 +2614,9 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "Poste",
       "PosteDelivery",
-      "Crono"
+      "Crono",
+      "SDA",
+      "SDA Express Courier"
     ],
     "countries": [
       "IT"
@@ -2648,6 +2650,10 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^2IMA\\d{10}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JF\\d{11}$",
         "confidence": "high"
       },
       {
@@ -22473,7 +22479,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nacex": ["nacex-1"],
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
-  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-delivery-europe","poste-italiane-sda-domestic"],
+  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],

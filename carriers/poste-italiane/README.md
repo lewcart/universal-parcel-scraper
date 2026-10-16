@@ -28,6 +28,10 @@ mail from abroad to Italy is not handed to Poste Italiane.
   Its [official request builder](https://www.poste.it/cerca-app/js/module/forms-ricerche-directive.js)
   submits the complete code. Detection and adapter eligibility share the catalog rules;
   neither a matching shape nor an expired reply confirms issuance.
+- Aggregators name SDA's parcels "SDA", "Italy SDA" or "SDA Express Courier". Those names are
+  aliases, so a provider's naming points to Poste's tracker, which still has to know the number.
+- Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
+  MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
 - Envelope `stato` `5` forces `delivered` whatever the movement wording says: a delivered
   parcel sometimes carries a truncated last line. A parcel sent back ends with its delivery
   to the sender; that delivery carries the return flag (`flagRitorno`) and reads as

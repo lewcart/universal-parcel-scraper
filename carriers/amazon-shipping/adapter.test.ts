@@ -345,6 +345,27 @@ describe('Amazon Shipping France tracker', () => {
     await expect(new AmazonShippingTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
       .rejects.toThrow('unexpectedly large response');
   });
+
+  it('reads a web page in place of the tracker reply as inconclusive, never as not found', async () => {
+    const page = (body: string) => vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(
+      `\n\n\n<html>\n<head>\n<meta name="CSRF-TOKEN" content="synthetic">\n</head>\n<body>${body}</body></html>`,
+      { headers: { 'Content-Type': 'text/html;charset=UTF-8' } },
+    ));
+    page('<div id="root"></div>');
+    await expect(new AmazonShippingTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ kind: 'indeterminate', message: expect.stringContaining('tracking page') });
+    page('<form action="/errors/validateCaptcha"></form>');
+    await expect(new AmazonShippingTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ kind: 'challenge' });
+  });
+
+  it('reads a reply that is neither JSON nor a page as a changed reply', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{"progressTracker":', {
+      headers: { 'Content-Type': 'application/json' },
+    }));
+    await expect(new AmazonShippingTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ kind: 'schema', message: expect.stringContaining('invalid tracking JSON') });
+  });
 });
 
 describe('Amazon Shipping discovery boundaries', () => {

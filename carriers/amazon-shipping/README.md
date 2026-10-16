@@ -15,6 +15,10 @@ check proves the tracker knows it.
 
 Checks, before any history is read:
 
+- A web page in place of the JSON: `ChallengeError` for Amazon's robot check, otherwise
+  `IndeterminateError`. The tracker can answer HTTP 200 with its own page shell, which says
+  nothing about the parcel; unknown ids get JSON. A reply that is neither is a `SchemaError`.
+
 - `TRACKING_ID_NOT_FOUND` or `INVALID_TRACKING_ID` in `progressTracker.errors`:
   `AmazonShippingNotFoundError`. The tracker answers unknown ids with HTTP 200, not 404.
 - `ERROR_INVALID_OFF_AMAZON_ORDER`: not found. The id belongs to an Amazon retail order that

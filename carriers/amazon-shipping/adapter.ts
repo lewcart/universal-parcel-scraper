@@ -3,16 +3,18 @@ import { DateTime } from 'luxon';
 import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { amazonShippingOrigin, amazonShippingUrl } from '../../core/catalog/index.js';
 import { isAmazonTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
-import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
+import { cleanScalar, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { classifyStatus, statusKey, type ClassifiedStatus } from './status.js';
 
 const PROVIDER = 'Amazon Shipping';
 const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_RESPONSE_BYTES = 2_000_000;
+// Amazon's robot check, which can stand in for the tracker's reply.
+const CAPTCHA = /\/errors\/validateCaptcha|opfcaptcha|api-services-support@amazon\.com/i;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
 
@@ -388,7 +390,18 @@ export class AmazonShippingTracker {
       maxBytes: MAX_RESPONSE_BYTES,
       ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
     });
-    return parseAmazonShippingTrackingResponse(parseJsonBytes(bytes, PROVIDER), amazonShippingTimezone(trackingNumber), trackingNumber);
+    const head = decodeText(bytes.subarray(0, 64_000));
+    if (/^\s*</.test(head)) {
+      if (CAPTCHA.test(head)) throw new ChallengeError(PROVIDER, 'Amazon Shipping asked for a captcha');
+      throw new IndeterminateError(PROVIDER, 'Amazon Shipping answered with its tracking page instead of tracking data');
+    }
+    let payload: unknown;
+    try {
+      payload = parseJsonBytes(bytes, PROVIDER);
+    } catch (cause) {
+      throw new SchemaError(PROVIDER, 'Amazon Shipping returned invalid tracking JSON', { cause });
+    }
+    return parseAmazonShippingTrackingResponse(payload, amazonShippingTimezone(trackingNumber), trackingNumber);
   }
 }
 

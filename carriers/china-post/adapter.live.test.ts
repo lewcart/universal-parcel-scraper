@@ -1,11 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { adapter } from './adapter.js';
 
 const instance = () => adapter({ fetcher: fetch, env: {}, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
 
 describe('China Post app trace live', () => {
+  it.skipIf(!process.env.CHINA_POST_WEB_NUMBER || !process.env.FLARESOLVERR_URL)('reads the identity-bound anonymous web preview', async () => {
+    const carrier = adapter({ fetcher: fetch, env: process.env, recorder: NOOP_RECORDER,
+      trawl: TrawlClient.fromEnvironment(process.env), browserExecutablePath: null });
+    const result = await carrier.track({ number: process.env.CHINA_POST_WEB_NUMBER! }, { budgetMs: 60_000 });
+    expect(result.events?.length).toBeGreaterThan(0);
+    expect(result.history_truncated).toBe(true);
+    expect(result.events!.every(event => event.local_time && !event.time)).toBe(true);
+    expect(JSON.stringify(result)).not.toMatch(/电话|手机|快递员|投递员|签收人|\d{7,}/);
+  });
   it('signs accepted requests and keeps an unused well-formed number inconclusive', async () => {
     // A refused signature would answer as a challenge instead.
     await expect(instance().track({ number: 'LZ000000005CN' })).rejects.toMatchObject({ kind: 'indeterminate' });

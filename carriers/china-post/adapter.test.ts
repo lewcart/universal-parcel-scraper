@@ -5,10 +5,12 @@ import { carrierDefinition } from '../../core/catalog/index.js';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { REGISTRY } from '../../generated/registry.js';
 import { adapter } from './adapter.js';
 import { CHINA_POST_APP_API, CHINA_POST_CHECK_PATH, CHINA_POST_TRACE_PATH } from './app.js';
 import { chinaPostCodeStatus, chinaPostStateStatus } from './status.js';
+import { CHINA_POST_WEB_FLAG, CHINA_POST_WEB_TRACE } from './web.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const NUMBER = 'LZ123456785CN';
@@ -38,7 +40,7 @@ describe('China Post adapter', () => {
     expect(carrierDefinition('china-post').tracking).toMatchObject({ adapter: 'china-post', localClocks: true });
     expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'china-post', confidence: 'high' });
     const registry = new AdapterRegistry(REGISTRY, { fetcher: transport(), env: {}, recorder: NOOP_RECORDER, trawl: null, browserExecutablePath: null });
-    expect(registry.for('china-post')?.steps).toEqual(['direct']);
+    expect(registry.for('china-post')?.steps).toEqual(['direct', 'trawl']);
   });
 
   it('signs a check step then the trace, and returns the bound history', async () => {
@@ -200,6 +202,34 @@ describe('China Post adapter', () => {
     await expect(instance(stalled).track({ number: NUMBER }, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'budget' });
     expect(stalled).toHaveBeenCalledTimes(1);
     await expect(instance(transport()).track({ number: NUMBER }, { budgetMs: 0 })).rejects.toMatchObject({ kind: 'budget' });
+  });
+
+  it('recovers the app phone gate through the anonymous preview and keeps its provenance', async () => {
+    const number = 'ZS00000000001';
+    const browserFetcher = vi.fn<typeof fetch>(async (_url, init) => {
+      expect(init?.signal).toBeInstanceOf(AbortSignal);
+      expect(JSON.parse(String(init?.body))).toMatchObject({ url: `https://www.ems.com.cn/queryList?mailNo=${number}`,
+        captureResponses: [CHINA_POST_WEB_FLAG, CHINA_POST_WEB_TRACE] });
+      return json(JSON.stringify({ tier: 3, status: 'success', statusCode: 200, html: '', capturedResponses: [{
+        url: CHINA_POST_WEB_TRACE, status: 200, trackingNumberSubmitted: number, headers: {},
+        body: JSON.stringify({ success: true, match: true, scans: [{ number, time: '2030-01-02 12:30', code: 'O_051', state: '到达境外目的地' }] }),
+      }] }));
+    });
+    const step = vi.fn(), lookup = vi.fn();
+    const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":2}')), env: {}, recorder: { step, lookup },
+      trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
+    await expect(carrier.track({ number })).resolves.toMatchObject({ current_stage: 'in_transit', history_truncated: true });
+    expect(step.mock.calls.map(([row]) => [row.step, row.outcome])).toEqual([['direct', 'input_required'], ['trawl', 'ok']]);
+    expect(step.mock.calls[1]![0]).toMatchObject({ fallbackFrom: 'direct', fallbackReason: 'input_required' });
+    expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ finalStep: 'trawl', outcome: 'ok' }));
+  });
+
+  it('keeps HTTP recognition out of the browser even when the app asks for phone digits', async () => {
+    const browserFetcher = vi.fn<typeof fetch>();
+    const carrier = adapter({ fetcher: transport(() => json('{"code":"000000","info":2}')), env: {}, recorder: NOOP_RECORDER,
+      trawl: new TrawlClient('http://browser.test', browserFetcher), browserExecutablePath: null });
+    await expect(carrier.recognize!('ZS00000000001')).resolves.toMatchObject({ known: true });
+    expect(browserFetcher).not.toHaveBeenCalled();
   });
 
   it('records the same stage for every mapped code and label', () => {

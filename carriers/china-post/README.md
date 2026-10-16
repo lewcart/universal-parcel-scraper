@@ -6,9 +6,9 @@ through the guest trace API of China Post's EMS app. EMS items issued in China
 [EMS adapter](../ems/README.md) reads the EMS Cooperative's tracker when EMS is
 chosen. Domestic 13-digit waybills are out of scope and rejected before any
 request. `ZS` numbers with eleven digits are China Post's too, and the adapter
-takes them, but the service asks for a contact phone's last four digits before
-it shows one. A lookup that finds one therefore ends as `input_required`, and
-its history has to come from a provider. No public sample is known, so detection only
+takes them. The app asks for a contact phone's last four digits; the optional
+TRAWL browser instead reads the anonymous web preview after character verification.
+No public sample is known, so detection only
 suggests China Post for them (`china-post-zs`), ahead of La Poste's rule for any two
 characters and eleven digits, and recognition asks China Post. The service asks for the phone
 digits only about an item it holds, so that request makes the number known. Source selection is covered in
@@ -23,6 +23,13 @@ a block page. Completing the character challenge permits an anonymous preview of
 two scans from `/ems-web/mailTrack/queryTrack`; full history requires login. The
 preview can show a later processing scan above a delivered scan, so its first
 row alone does not establish the parcel's stage.
+
+When the app is gated or unreachable, TRAWL submits one number through the blank web
+form and solves its ordered-character challenge offline. The helper binds both
+the check and tracking requests to the whole number, then checks every returned
+scan's number. It retains only state labels, scan codes and local clocks. The
+web preview always sets `history_truncated`; phone and account dialogs are not
+completed. HTTP recognition continues to use the app alone.
 
 China Post's EMS app (Android package `com.kun.ems`) looks up guests through
 `https://ec.ems.com.cn/ect-web` without an account, cookie, CAPTCHA or browser,
@@ -114,7 +121,7 @@ sender (711) reads "已退回".
   expired numbers alike, and also real registered (`R…CN`) and `U…CN`
   letter-post items this backend does not serve. It is inconclusive, never not
   found, in tracking and recognition alike.
-- A request for the phone digits ends the lookup as `input_required`.
+- Without TRAWL, a request for the phone digits ends as `input_required`.
 - Full history needs a signed-in account: `subjection/v2` answers guests with
   "请登录后再查询" (sign in first). Accounts are not used.
 - The EMS partner API requires issued customer credentials and is not used.
@@ -127,3 +134,5 @@ positive lookup when `CHINA_POST_TRACKING_NUMBER` is set outside Git, and checks
 the phone request when `CHINA_POST_GATED_NUMBER` names a number the service gates:
 
 `CHINA_POST_TRACKING_NUMBER=<number> npm run test:carriers:live -- carriers/china-post`
+
+Set `CHINA_POST_WEB_NUMBER` and `FLARESOLVERR_URL` to check the browser preview.

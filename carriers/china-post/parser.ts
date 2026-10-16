@@ -19,8 +19,7 @@ const ACCEPTED = '已揽收';
 
 /**
  * S10 numbers issued in China, and ZS numbers of eleven digits. The service
- * knows ZS numbers but opens them only after a contact phone's last four
- * digits, so their lookups end at the check step.
+ * asks for phone digits on ZS numbers; the public web preview is separate.
  */
 export function normalizeChinaPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);

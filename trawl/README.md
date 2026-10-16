@@ -2,7 +2,7 @@
 
 Some carriers and universal providers only answer a full browser session. This image extends
 [TRAWL](https://github.com/germondai/trawl) with identity-bound capture for DHL Express, FedEx, UPS, Royal Mail,
-Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta, SwiftX and ZTO. The adapter checks the captured response against
+Australia Post, YunExpress, 17TRACK, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta, SwiftX, China Post and ZTO. The adapter checks the captured response against
 the requested parcel. A solved challenge alone is not tracking history.
 
 Spee-Dee also uses the service's HTTP tier after a refused direct connection; the benefit
@@ -20,6 +20,9 @@ cannot read one.
 ZTO solves Dingxiang's slider and ordered-character challenge locally, with at most two
 concurrent offline OCR workers. Each worker ends with its request and retains no images.
 Verification failures and the public tracker's incomplete history still need enabled providers.
+China Post reads its ordered-character prompt offline, submits the anonymous preview form
+and retains only scan state labels and local clocks. Its two-scan guest window stays marked
+incomplete; the helper enters no phone digits and signs into no account.
 DHL Poland uses TRAWL's native checkbox and audio solver.
 Its scoped native modules replace upstream raw debug logs with fixed events.
 It submits its history form after reCAPTCHA verification and returns only

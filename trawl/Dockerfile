@@ -33,5 +33,8 @@ COPY zto-browser.mjs /app/packages/tiers/src/utils/zto-browser.mjs
 COPY zto-slider.mjs /app/packages/tiers/src/utils/zto-slider.mjs
 COPY zto-ocr.mjs /app/packages/tiers/src/utils/zto-ocr.mjs
 COPY zto-ocr.py /app/packages/tiers/src/utils/zto-ocr.py
+COPY china-post-browser.mjs /app/packages/tiers/src/utils/china-post-browser.mjs
+COPY china-post-ocr.mjs /app/packages/tiers/src/utils/china-post-ocr.mjs
+COPY china-post-ocr.py /app/packages/tiers/src/utils/china-post-ocr.py
 COPY install.mjs /tmp/install-tracking-capture.mjs
 RUN bun /tmp/install-tracking-capture.mjs && rm /tmp/install-tracking-capture.mjs

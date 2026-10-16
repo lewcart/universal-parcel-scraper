@@ -16,7 +16,8 @@
     "mode": "automatic",
     "adapter": "china-post",
     "steps": [
-      "direct"
+      "direct",
+      "trawl"
     ],
     "recognition": {
       "rank": 905

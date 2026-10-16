@@ -123,6 +123,24 @@ describe('MRW anonymous tracking', () => {
     expect(() => parseMrwHistory(empty, NUMBER, summary())).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
+  it('follows a history that runs ahead of the summary once the summary’s own row is in it', () => {
+    const reopened = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>',
+      '<tr class="past"><td>10/09/2026</td><td>19:41</td><td>Dirección entrega incorrecta</td><td>28000 Madrid</td></tr>'
+      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío en reparto</td><td>28000 Madrid</td></tr>'
+      + '<tr class="past"><td>10/09/2026</td><td>19:35</td><td>Envío reabierto para entregar</td><td>28000 Madrid</td></tr>'
+      + '<tr class="past"><td>10/09/2026</td><td>19:29</td>');
+    const result = parseMrwHistory(reopened, NUMBER, summary());
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'failed_attempt', last_status_text: 'Dirección entrega incorrecta',
+      last_update_local: '2026-09-10T19:41:00' });
+    expect(result.events?.slice(0, 4).map(event => [event.description, event.stage])).toEqual([
+      ['Dirección entrega incorrecta', 'failed_attempt'], ['Envío en reparto', 'out_for_delivery'],
+      ['Envío reabierto para entregar', 'in_transit'], ['Envío entregado', 'delivered']]);
+    // A row above the summary's own that is older is not a history running ahead.
+    const older = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>',
+      '<tr class="past"><td>10/09/2026</td><td>19:00</td><td>Envío en reparto</td><td>28000 Madrid</td></tr><tr class="past"><td>10/09/2026</td><td>19:29</td>');
+    expect(() => parseMrwHistory(older, NUMBER, summary())).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
   it('calls the exact anonymous five-step sequence with one cookie jar through the full factory', async () => {
     const fetcher = vi.fn<typeof fetch>(async (url, init) => {
       const step = fetcher.mock.calls.length;

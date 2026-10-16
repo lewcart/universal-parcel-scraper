@@ -11,6 +11,9 @@ const LABELS: Record<string, ClassifiedStatus> = {
   'DEPOSITADO EN PUNTO MRW': { status: 'in_transit', stage: 'ready_for_pickup' },
   'DEPOSITADO EN POINTCORNER DESTINO': { status: 'in_transit', stage: 'ready_for_pickup' },
   'ENVIO ENTREGADO': { status: 'delivered', stage: 'delivered' },
+  // A delivery undone: the parcel goes back out.
+  'ENVIO REABIERTO PARA ENTREGAR': { status: 'in_transit', stage: 'in_transit' },
+  'DIRECCION ENTREGA INCORRECTA': { status: 'exception', stage: 'failed_attempt' },
   // www.mrw.pt renders the same history in Portuguese.
   'PENDENTE DE RECOLHER': { status: 'pending', stage: 'registered' },
   'ENVIO RECOLHIDO NA ORIGEM': { status: 'in_transit', stage: 'accepted' },

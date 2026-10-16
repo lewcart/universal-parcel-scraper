@@ -16,6 +16,11 @@ result is marked `summary_only` and contains no invented scans; the summary's
 date and hour still give the current status's wall clock. A page that echoes an
 unknown number without a shipment table is inconclusive.
 
+The summary can lag the history: a delivery reopened and attempted again is
+listed above the delivery the summary still shows. The newest history row
+decides when the summary's own row is in the history with only later rows above
+it; any other disagreement is inconclusive.
+
 Some history rows are followed by a breakdown of each parcel's own scans. Only
 the shipment's rows are read. Hub offices keep their bracketed kind, such as
 "(Plataforma)".

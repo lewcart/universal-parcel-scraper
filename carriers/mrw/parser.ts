@@ -82,6 +82,11 @@ function buildLocalDate(rawDate: string, rawHour: string): { local_time?: string
   return text ? { provider_time_text: text } : {};
 }
 
+/** A row's day and minute in an order strings sort by, or empty when unreadable. */
+function sortableClock(row: { date: string; hour: string }): string {
+  return buildLocalDate(row.date, row.hour).local_time ?? '';
+}
+
 function officeLabel(value: string): string {
   const text = clean(value, 80);
   // Hubs carry their kind in brackets, such as "(Plataforma)".
@@ -141,13 +146,19 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
       ...clock, ...(location ? { location } : {}) });
   }
   const latest = events[0]!;
-  const firstRawStatus = clean(rows.first().children('td').eq(2).text(), 500);
-  const firstDate = clean(rows.first().children('td').eq(0).text(), 32);
-  const firstHour = clean(rows.first().children('td').eq(1).text(), 16);
-  if (summary.status !== firstRawStatus || summary.date !== firstDate || summary.hour !== firstHour) {
+  const listed = rows.toArray().map((row) => {
+    const cells = $(row).children('td');
+    return { status: clean(cells.eq(2).text(), 500), date: clean(cells.eq(0).text(), 32), hour: clean(cells.eq(1).text(), 16) };
+  });
+  // The summary can lag the history: a delivery reopened and attempted again
+  // is listed above the delivery the summary still shows. The summary's own
+  // row must be in the history, with only later rows above it.
+  const at = listed.findIndex((row) => row.status === summary.status && row.date === summary.date && row.hour === summary.hour);
+  const shown = at > 0 ? sortableClock(listed[at]!) : '';
+  if (at < 0 || (at > 0 && (!shown || listed.slice(0, at).some((row) => !(sortableClock(row) >= shown))))) {
     throw new IndeterminateError('MRW', 'Current summary and history disagree');
   }
-  const mapped = classifyMrwStatus(firstRawStatus);
+  const mapped = classifyMrwStatus(listed[0]!.status);
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
     last_status_text: latest.description, last_update: null, last_update_local: latest.local_time ?? null,
     expected_delivery: null, events: events.slice(0, 100) };

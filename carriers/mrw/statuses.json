@@ -10,6 +10,8 @@
     { "wording": "Depositado en punto MRW", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live" },
     { "wording": "Depositado en PointCorner destino", "language": "es", "stage": "ready_for_pickup", "confirmedBy": "live" },
     { "wording": "Envío entregado", "language": "es", "stage": "delivered", "confirmedBy": "live" },
+    { "wording": "Envío reabierto para entregar", "language": "es", "stage": "in_transit", "confirmedBy": "live", "note": "A delivery undone; the parcel goes back out." },
+    { "wording": "Dirección entrega incorrecta", "language": "es", "stage": "failed_attempt", "confirmedBy": "live" },
     { "wording": "Pendente de recolher", "language": "pt", "stage": "registered", "confirmedBy": "live" },
     { "wording": "Envio recolhido na origem", "language": "pt", "stage": "accepted", "confirmedBy": "live" },
     { "wording": "Em tránsito", "language": "pt", "stage": "in_transit", "confirmedBy": "live" },

@@ -1,7 +1,9 @@
 {
   "id": "four-px",
   "displayName": "4PX",
-  "aliases": [],
+  "aliases": [
+    "4PX Express"
+  ],
   "region": {
     "countries": [
       "CN"

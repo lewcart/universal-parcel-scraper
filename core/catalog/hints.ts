@@ -17,7 +17,8 @@ const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'gofo', 'post'];
 const NAME_ALIASES: Readonly<Record<string, string>> = {
   ups: 'ups', swisspost: 'swiss-post', laposte: 'la-poste', colissimo: 'la-poste',
   dhlecommerce: 'dhl-ecommerce', cainiao: 'aliexpress', postnl: 'spring-gds',
-  asendiausa: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain', portugalctt: 'ctt', portugalpostportugalctt: 'ctt',
+  asendiausa: 'asendia', asendiaunitedstates: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain',
+  portugalctt: 'ctt', portugalpostportugalctt: 'ctt',
   italypost: 'poste-italiane', italysda: 'poste-italiane', deutschepostdhlpaket: 'dhl', austriapost: 'austrian-post',
   evri: 'evri-uk',
 };

@@ -3497,6 +3497,9 @@ export const CARRIER_CATALOG = {
   "four-px": {
     "displayName": "4PX",
     "color": "#005add",
+    "aliases": [
+      "4PX Express"
+    ],
     "countries": [
       "CN"
     ],

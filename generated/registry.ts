@@ -166,6 +166,7 @@ import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
 import { adapter as mailamericas } from '../carriers/mailamericas/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
+import { adapter as mayiyinfu } from '../carriers/mayiyinfu/adapter.js';
 import { adapter as meest } from '../carriers/meest/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
@@ -446,6 +447,7 @@ export const REGISTRY: RegistryDefinition = {
     "mailamericas": mailamericas,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
+    "mayiyinfu": mayiyinfu,
     "meest": meest,
     "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
@@ -874,7 +876,7 @@ export const REGISTRY: RegistryDefinition = {
     "maritime-ontario": "universal",
     "matkahuolto": "matkahuolto",
     "mauritius-post": "universal",
-    "mayiyinfu": "universal",
+    "mayiyinfu": "mayiyinfu",
     "mds-collivery": "universal",
     "meest": "meest",
     "messenger-cz": "universal",

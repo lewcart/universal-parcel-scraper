@@ -14736,7 +14736,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mayiyinfu",
+      "localClocks": true
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [

@@ -2,7 +2,8 @@
 
 Tracks shipments of GZYL (广州云链货运代理有限公司), a Guangzhou forwarder, on its own tenant of
 the Hualei (华磊) forwarder platform. [Tianhui Hengyuan](../thhy/README.md),
-[JRT](../jrt/README.md) and [Meiteshun Logistics](../mtscn/README.md) run tenants of the same
+[JRT](../jrt/README.md), [Meiteshun Logistics](../mtscn/README.md) and
+[Mayi Yinfu](../mayiyinfu/README.md) run tenants of the same
 platform; they share the client in [hualei.ts](hualei.ts) and keep their own hosts and status
 maps.
 

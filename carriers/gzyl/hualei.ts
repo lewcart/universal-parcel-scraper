@@ -1,7 +1,7 @@
 /**
- * The Hualei (华磊) forwarder platform, which GZYL, Tianhui Hengyuan, JRT and
- * Meiteshun each run as a tenant: a Tomcat tracker on port 8082 of a bare IP,
- * plain HTTP only. `selectTrack.htm` is the platform's documented track
+ * The Hualei (华磊) forwarder platform, which GZYL, Tianhui Hengyuan, JRT,
+ * Meiteshun and Mayi Yinfu each run as a tenant: a Tomcat tracker on port 8082
+ * of a bare IP or the carrier's own domain, plain HTTP only. `selectTrack.htm` is the platform's documented track
  * interface, JSON encoded in GBK; `trackIndex.htm` is the tracking page the
  * carriers' sites open, in HTML. Each carrier keeps its own host and status
  * map; this module holds the requests and parsers they share.

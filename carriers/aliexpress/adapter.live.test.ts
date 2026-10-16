@@ -15,6 +15,18 @@ describe('Cainiao live wrong-number handling', () => {
       message: 'Cainiao could not locate the shipment',
     });
   });
+
+  it('reads a home-delivery number neither Cainiao tracker knows as inconclusive', async () => {
+    await expect(fetchCainiao('DOFR0000000000000HD')).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+  });
+});
+
+describe('Cainiao Express live lookup', () => {
+  it.skipIf(!process.env.CAINIAO_EXPRESS_TRACKING_NUMBER)('reads a partner\'s home-delivery parcel from Cainiao Express', async () => {
+    const result = await fetchCainiao(process.env.CAINIAO_EXPRESS_TRACKING_NUMBER!);
+    expect(result.events?.length).toBeGreaterThan(0);
+    expect(result.events?.every((event) => /[+-]\d{2}:\d{2}$|Z$/.test(event.time ?? ''))).toBe(true);
+  });
 });
 
 describe('Cainiao live handoff evidence', () => {

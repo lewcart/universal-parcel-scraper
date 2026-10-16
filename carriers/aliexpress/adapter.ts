@@ -12,11 +12,18 @@
  * A module with no status, no history and no latest trace is genuinely unknown
  * only when `mailNoSource` is `EXTERNAL`; otherwise Cainiao is still waiting
  * for the seller and the parcel is simply pending.
+ *
+ * That feed holds AliExpress's parcels. Partners such as 4PX hand theirs to
+ * Cainiao Express for home delivery in France under the same `DOFR…HD` and
+ * `CNFR…HD` numbers, and only Cainiao Express's own tracker
+ * (`track.cainiao.com/coe/trace/queryDetail`, same module shape) holds those,
+ * once it has the parcel. Before that only the partner knows the number, so
+ * one neither feed knows is inconclusive, not missing.
  */
-import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { lookupBudget, recognizeFromLookup, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { validTrackingNumber } from '../../core/detection/valid.js';
-import { ChallengeError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
 import { decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -32,6 +39,9 @@ import {
 const PROVIDER = 'Cainiao';
 const UPSTREAM = 'Cainiao tracking';
 const DETAIL_URL = 'https://global.cainiao.com/global/detail.json';
+const EXPRESS_URL = 'https://track.cainiao.com/coe/trace/queryDetail';
+/** Cainiao Express's French home-delivery numbers, which partners' parcels carry too. */
+const HOME_DELIVERY = /^(?:DO|CN)FR\d{13}HD$/;
 const DEFAULT_TIMEOUT_MS = 10_000;
 const MAX_EVENTS_TO_RETURN = 100;
 const BASE_HEADERS = {
@@ -113,23 +123,32 @@ function carrierNames(trackingModule: JsonObject, scans: readonly JsonObject[]):
 }
 
 /**
- * Cainiao has no place field: it writes a scan's town in front of its standard
- * wording, "[Bordeaux] Out for delivery", in every language. A bracket that
- * reads as a place name becomes the location and the wording keeps the rest.
- * Codes, ambiguous capitals-only names and the module's carrier names stay in the text.
+ * A name that reads as a place, or ''. Codes, ambiguous capitals-only names
+ * and the module's carrier names are none.
  */
-function placedWording(wording: string, carriers: ReadonlySet<string>): { description: string; location: string } {
-  const match = /^\s*\[([^[\]]{1,80})\]\s*(\S[\s\S]*)$/.exec(wording);
-  const place = match?.[1]!.trim() ?? '';
+function placeName(value: string, carriers: ReadonlySet<string>): string {
+  const place = value.trim();
   // An explicit numbered city district is a place even in uppercase. Keep
   // arbitrary numbers and facility codes excluded from the general rule.
   const arrondissement = /^(?:Paris (?:[1-9]|1\d|20)|Lyon [1-9]|Marseille (?:[1-9]|1[0-6]))(?:er|e|eme|ème) arrondissement$/i.test(place);
   const letters = place.match(/\p{L}/gu)?.length ?? 0;
-  if (!match || letters < 3 || (!arrondissement && (!/^\p{L}[\p{L}\p{M} .'’-]*$/u.test(place)
+  if (letters < 3 || (!arrondissement && (!/^\p{L}[\p{L}\p{M} .'’-]*$/u.test(place)
     || (/\p{Lu}/u.test(place) && !/\p{Ll}/u.test(place)))) || carriers.has(place.toLocaleLowerCase('en-US'))) {
-    return { description: wording, location: '' };
+    return '';
   }
-  return { description: match[2]!.trim(), location: place };
+  return place;
+}
+
+/**
+ * Cainiao's global feed has no place field: it writes a scan's town in front
+ * of its standard wording, "[Bordeaux] Out for delivery", in every language. A
+ * bracket that reads as a place name becomes the location and the wording
+ * keeps the rest.
+ */
+function placedWording(wording: string, carriers: ReadonlySet<string>): { description: string; location: string } {
+  const match = /^\s*\[([^[\]]{1,80})\]\s*(\S[\s\S]*)$/.exec(wording);
+  const place = match ? placeName(match[1]!, carriers) : '';
+  return place ? { description: match![2]!.trim(), location: place } : { description: wording, location: '' };
 }
 
 const BEIJING_OFFSET_MS = 8 * 3_600_000;
@@ -198,11 +217,12 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
   const events = details.slice(0, MAX_EVENTS_TO_RETURN).map((event): CarrierEvent => {
     const code = cainiaoActionCode(event.actionCode);
     const stage = cainiaoActionStage(code);
-    const { description, location } = placedWording(text(event.standerdDesc) || text(event.desc), carriers);
+    const placed = placedWording(text(event.standerdDesc) || text(event.desc), carriers);
     return {
       ...scanClock(event),
-      location,
-      description,
+      // Cainiao Express's tracker states a town or a country code in `location`.
+      location: placed.location || placeName(text(event.location), carriers),
+      description: placed.description,
       // The code keys the app's review of a scan the map does not stage.
       ...(/^[A-Z0-9_]{1,64}$/.test(code) ? { provider_code: code } : {}),
       ...(stage ? { stage } : {}),
@@ -262,12 +282,25 @@ export class CainiaoTracker {
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const budget = lookupBudget(context, this.timeoutMs);
+    try {
+      return await this.read(`${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
+        'https://www.aliexpress.com/', trackingNumber, budget);
+    } catch (error) {
+      if (!(error instanceof NotFoundError) || !HOME_DELIVERY.test(comparableIdentifier(trackingNumber))) throw error;
+    }
+    try {
+      return await this.read(`${EXPRESS_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US', language: 'en-US' })}`,
+        'https://track.cainiao.com/orderTrack', trackingNumber, budget);
+    } catch (error) {
+      if (!(error instanceof NotFoundError)) throw error;
+      throw new IndeterminateError(PROVIDER, 'Cainiao has no record of the shipment yet', { reason: 'portal_not_found' });
+    }
+  }
+
+  private async read(url: string, referer: string, trackingNumber: string, budget: LookupBudget): Promise<CarrierResult> {
     const { bytes } = await fetchBounded(
-      `${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
-      {
-        signal: budget.signal,
-        headers: { ...BASE_HEADERS, 'User-Agent': this.userAgent, Referer: 'https://www.aliexpress.com/' },
-      },
+      url,
+      { signal: budget.signal, headers: { ...BASE_HEADERS, 'User-Agent': this.userAgent, Referer: referer } },
       { provider: UPSTREAM, timeoutMs: Math.min(this.timeoutMs, budget.remainingMs()), fetcher: this.fetcher },
     );
     if (sliderPage(decodeText(bytes))) throw new ChallengeError(PROVIDER);
@@ -284,7 +317,7 @@ export const adapter: AdapterFactory = (environment) => {
   const tracker = new CainiaoTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
   return {
     id: 'aliexpress',
-    // One keyless GET; there is no second tier to fall back to.
+    // Keyless GETs, a second only for a home-delivery number the first does not know.
     steps: ['direct'],
     track: (input, context) => tracker.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => validTrackingNumber(number)),

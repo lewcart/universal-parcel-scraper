@@ -128,6 +128,79 @@ describe('Cainiao wrong-number handling', () => {
   });
 });
 
+describe('Cainiao Express home-delivery numbers', () => {
+  const HOME_DELIVERY = 'DOFR0000000000003HD';
+  const empty = (mailNoSource: string, mailNo = HOME_DELIVERY) => jsonResponse({ data: [{ mailNo, mailNoSource, detailList: [] }], success: true });
+  const endpoint = (call: Parameters<typeof fetch> | undefined) => {
+    const url = new URL(String(call?.[0]));
+    return `${url.origin}${url.pathname}`;
+  };
+
+  it('asks Cainiao Express for a partner\'s parcel that AliExpress\'s feed does not know', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(empty('EXTERNAL'))
+      .mockResolvedValueOnce(jsonResponse(fixture('express-in-transit.json')));
+    const result = await new CainiaoTracker({ fetcher }).fetch(HOME_DELIVERY);
+    expect(fetcher.mock.calls.map(endpoint)).toEqual([
+      'https://global.cainiao.com/global/detail.json',
+      'https://track.cainiao.com/coe/trace/queryDetail',
+    ]);
+    const [url, init] = fetcher.mock.calls[1]!;
+    expect(new URL(String(url)).searchParams.get('mailNos')).toBe(HOME_DELIVERY);
+    expect(init?.signal).toBeInstanceOf(AbortSignal);
+    expect(new Headers(init?.headers).get('Referer')).toBe('https://track.cainiao.com/orderTrack');
+    expect(result).toMatchObject({
+      status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Transfer Departure',
+      last_update: '2026-04-08T15:20:00+02:00', destination_country_name: 'France',
+    });
+    expect(result.delivery_tracking_number).toBeUndefined();
+    // Its `location` field gives the town; a country code alone is no place.
+    expect(result.events?.map((event) => [event.time, event.location, event.provider_code])).toEqual([
+      ['2026-04-08T15:20:00+02:00', '', 'TRANSFER_DEPART'],
+      ['2026-04-08T11:05:12+02:00', 'Exampleville', 'SC_SORTING'],
+      ['2026-04-08T08:40:30+02:00', 'Exampleville', 'SC_INBOUND'],
+      ['2026-04-08T03:10:00+02:00', 'Sample Hub', 'SC_OUTBOUND'],
+      ['2026-04-07T13:45:00+02:00', 'Sample Hub', 'SC_INBOUND'],
+    ]);
+  });
+
+  it('reads a home-delivery number neither feed knows as inconclusive, not missing', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(empty('EXTERNAL')).mockResolvedValueOnce(empty('EXTERNAL'));
+    await expect(new CainiaoTracker({ fetcher }).fetch(HOME_DELIVERY)).rejects.toMatchObject({
+      name: 'IndeterminateError', kind: 'indeterminate', reason: 'portal_not_found', provider: 'Cainiao',
+    });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('asks only AliExpress\'s feed when it answers, and for any other number', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(fixture('delivered-dofr.json')))
+      .mockResolvedValueOnce(empty('INTERNAL', 'DOFR0000000000001HD'))
+      .mockResolvedValueOnce(empty('EXTERNAL', CAINIAO_WRONG_NUMBER));
+    const tracker = new CainiaoTracker({ fetcher });
+    await expect(tracker.fetch('DOFR0000000000001HD')).resolves.toMatchObject({ status: 'delivered' });
+    await expect(tracker.fetch('DOFR0000000000001HD')).resolves.toMatchObject({ status: 'pending' });
+    await expect(tracker.fetch(CAINIAO_WRONG_NUMBER)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(fetcher.mock.calls.map(endpoint)).toEqual(Array(3).fill('https://global.cainiao.com/global/detail.json'));
+  });
+
+  it('keeps either feed\'s slider and a stranger\'s module from reading as an answer', async () => {
+    const slider = () => new Response('<!DOCTYPE html><html><body><punish-component />\n<!--rgv587_flag:sm-->\n</body></html>',
+      { headers: { 'Content-Type': 'text/html' } });
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(slider())
+      .mockResolvedValueOnce(empty('EXTERNAL'))
+      .mockResolvedValueOnce(slider())
+      .mockResolvedValueOnce(empty('EXTERNAL'))
+      .mockResolvedValueOnce(empty('EXTERNAL', 'DOFR0000000000004HD'));
+    const tracker = new CainiaoTracker({ fetcher });
+    await expect(tracker.fetch(HOME_DELIVERY)).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(tracker.fetch(HOME_DELIVERY)).rejects.toMatchObject({ kind: 'challenge' });
+    await expect(tracker.fetch(HOME_DELIVERY)).rejects.toMatchObject({ kind: 'schema' });
+    expect(fetcher).toHaveBeenCalledTimes(5);
+  });
+});
+
 describe('Cainiao projection', () => {
   const delivered = parseCainiaoTrackingResponse(fixture('delivered.json'), 'LP00000000000001');
   const inTransit = parseCainiaoTrackingResponse(fixture('in-transit.json'), 'LP00000000000002');

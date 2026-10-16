@@ -26,9 +26,10 @@ The contact card names the last-mile provider and its website; the adapter
 reports the catalog carrier both agree on, never the card's phone numbers, and
 provider discovery confirms the operator separately. The feed also answers
 partners' numbers and 4PX's `OLS` references, which detection does not route
-here. It also follows some AliExpress `DOFR…HD` numbers that Cainiao's tracker does not
-know. Aggregators name 4PX "4PX Express" for those, and that name is an alias, so their
-naming leads to this adapter, which still has to find the parcel.
+here. It also follows the Cainiao Express `DOFR…HD` numbers of parcels 4PX hands to
+Cainiao Express in France, from the first mile; Cainiao answers them only once Cainiao
+Express has the parcel, without 4PX's leg. Aggregators name 4PX "4PX Express" for those, and
+that name is an alias, so their naming leads to this adapter, which still has to find the parcel.
 
 Run `npm run test:carriers:live -- carriers/four-px`.
 Set `FOUR_PX_TRACKING_NUMBER` outside the repository to check a real parcel.

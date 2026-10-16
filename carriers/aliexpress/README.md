@@ -32,7 +32,11 @@ a consumer can keep a parcel filed under it and show Cainiao's answer as the ear
 ## How it works
 
 1. `direct`: one keyless GET to `https://global.cainiao.com/global/detail.json?mailNos={number}&lang=en-US`,
-   the JSON behind the consumer page. No session, cookie or token. 10 s timeout, no fallback tier.
+   the JSON behind the consumer page. No session, cookie or token. 10 s budget, no fallback tier.
+   A `DOFR…HD` or `CNFR…HD` number that feed does not know is asked again, in the same budget, at
+   `https://track.cainiao.com/coe/trace/queryDetail?mailNos={number}&lang=en-US&language=en-US`,
+   Cainiao Express's own tracker behind `track.cainiao.com/orderTrack`. It answers the same module
+   shape inside `data`.
 
 HTTP recognition uses that same feed for ambiguous references. Matching shipment
 activity confirms the Cainiao tracking leg; an empty internal pending module does not.
@@ -68,6 +72,12 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   hand-off (`GTMS_ACCEPT`, `SL_ACCEPT`, `LH_POST_COLLECTION`) stays in transit.
 - An empty module is not-found only when `mailNoSource` is `EXTERNAL`. Otherwise the seller has
   not shipped yet and the parcel stays pending; a 404 would make the sync give up on an early parcel.
+- `DOFR…HD` and `CNFR…HD` are Cainiao Express's home-delivery numbers in France. Partners such as
+  4PX hand their own parcels over under them, and AliExpress's feed does not hold those. Cainiao
+  Express's tracker holds them from the moment it receives the parcel; before that only the partner
+  knows the number. So a home-delivery number neither tracker knows is `indeterminate` with the
+  reason `portal_not_found`, not not-found. Cainiao Express's history starts at its own hub, without
+  the partner's leg.
 - Scan time is `timeStr` (local wall clock) plus `timeZone` (`GMT+2`, `GMT+8`…). `timeStr` alone
   would be read as UTC, the catalog timezone. The epoch `time` field is not the instant: it treats
   `timeStr` as Beijing time even for European scans.
@@ -82,11 +92,13 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   a stage; the sync classifies the wording and records it, with the code, for review. `statusMap`
   answers the review by code, and by wording for the four codes the queue held before events kept
   theirs.
-- Cainiao has no place field. It writes a scan's town in brackets before the standard wording,
-  `[Town] Out for delivery`, in every language. That town becomes the location and the wording keeps
-  the rest. A bracket holding digits, capitals only, fewer than three letters or a carrier the module
-  names stays in the text. Explicit numbered arrondissements of Paris, Lyon and Marseille are
-  accepted even in uppercase. No scan states its country, so the location is the town alone.
+- The global feed has no place field. It writes a scan's town in brackets before the standard
+  wording, `[Town] Out for delivery`, in every language. That town becomes the location and the
+  wording keeps the rest. A bracket holding digits, capitals only, fewer than three letters or a
+  carrier the module names stays in the text. Explicit numbered arrondissements of Paris, Lyon and
+  Marseille are accepted even in uppercase. Cainiao Express's tracker puts a town or a country code
+  in `location`; the same rule reads it when the wording has no bracket. No scan states its
+  country, so the location is the town alone.
 - The app scan-identity policy reconciles extracted towns and corrected milestones at the same
   instant. Stage corrections require a matching action code, wording and place, and the consumer
   requires unique matches to update the stored scan.
@@ -107,4 +119,5 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
 
 `npm run test:carriers:live -- carriers/aliexpress` needs no env vars. It checks
 not-found with a synthetic number and handoff extraction on the public example in `numbers.json`.
-`CAINIAO_TRACKING_NUMBER` adds a private shipment lookup through automatic detection.
+`CAINIAO_TRACKING_NUMBER` adds a private shipment lookup through automatic detection, and
+`CAINIAO_EXPRESS_TRACKING_NUMBER` a home-delivery number a partner handed to Cainiao Express.

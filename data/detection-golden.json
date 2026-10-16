@@ -71596,6 +71596,21 @@
     "candidates": []
   },
   {
+    "input": "ZS10000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "china-post",
+      "la-poste"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
     "input": "ZW924750388GB",
     "carrier": "royal-mail",
     "confidence": "high",

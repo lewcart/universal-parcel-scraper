@@ -8,8 +8,9 @@ chosen. Domestic 13-digit waybills are out of scope and rejected before any
 request. `ZS` numbers with eleven digits are China Post's too, and the adapter
 takes them, but the service asks for a contact phone's last four digits before
 it shows one. A lookup that finds one therefore ends as `input_required`, and
-its history has to come from a provider. No detection rule names China Post for
-them. Source selection is covered in
+its history has to come from a provider. No public sample is known, so detection only
+suggests China Post for them (`china-post-zs`), ahead of La Poste's rule for any two
+characters and eleven digits. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);
 provider results are in [COVERAGE.md](../../providers/COVERAGE.md).
 

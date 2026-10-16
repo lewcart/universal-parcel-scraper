@@ -4320,6 +4320,11 @@
         "pattern": "^[A-Z]{2}\\d{9}CN$",
         "confidence": "high",
         "checksum": "s10"
+      },
+      {
+        "pattern": "^ZS\\d{11}$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },

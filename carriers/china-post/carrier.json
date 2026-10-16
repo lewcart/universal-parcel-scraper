@@ -69,6 +69,12 @@
       "pattern": "^[A-Z]{2}\\d{9}CN$",
       "confidence": "high",
       "checksum": "s10"
+    },
+    {
+      "id": "china-post-zs",
+      "pattern": "^ZS\\d{11}$",
+      "confidence": "low",
+      "preferred": true
     }
   ]
 }

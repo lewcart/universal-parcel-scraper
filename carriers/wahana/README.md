@@ -10,9 +10,19 @@ to Wahana when the user or a provider names the carrier.
 
 ## Links
 
-The tracker reads one or more numbers, separated by spaces, from the `noresi` query parameter
-of `/lacak-kiriman` on `www.wahana.com` and `wahana.com`. Its search form now opens a CAPTCHA
-before it shows a result.
+The tracker reads up to ten numbers, separated by spaces, from the `noresi` query parameter
+of `/lacak-kiriman` on `www.wahana.com` and `wahana.com`, and the library reads the number from
+that address. The page shows a history only after its CAPTCHA, so the address alone opens no
+parcel.
+
+## Limitations
+
+Wahana's server checks the answer to its tracker's CAPTCHA, a self-hosted Captcheck picture
+question. Without a solved one the page answers "Resi tidak ditemukan" for every number, current
+parcels included, so that answer says nothing about the number. The result page's PDF download
+fails without one too. The Sahabat Wahana app tracks only the shipments booked in the user's own
+app account, and the agent and partner portals need an account. The library solves no CAPTCHA,
+so Wahana Express stays on universal providers.
 
 ## Testing
 

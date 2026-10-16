@@ -11,8 +11,16 @@ the tracker checks that shape, and archived lookups show it. `j-and-t-mx-1` clai
 ## Links
 
 The tracker at `www.jtexpress.mx/trajectoryQuery` reads the waybill from `waybillNo`, as
-archived lookups show. It asks for the last four digits of the recipient's phone before it
-shows the history.
+archived lookups show. It asks for the last four digits of the recipient's or sender's phone
+before it shows the history.
+
+## Limitations
+
+The tracker and mobile site look a waybill up through
+`GET official.jtjms-mx.com/official/logisticsTracking/v3/getDetailByWaybillNo`, which takes
+those digits in `phoneVerify` and refuses a request without them. The J&T Mexico app's lookup
+needs a signed-in account. The library takes no phone digits, so J&T Express Mexico stays on
+universal providers.
 
 ## Testing
 

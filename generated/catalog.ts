@@ -3195,7 +3195,7 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^[A-Z]{2}\\d{2}CAA0[A-Z]\\d{9}$",
+        "pattern": "^[A-Z]{2}\\d{2}(?:CA|US)A0[A-Z]\\d{9}$",
         "confidence": "low"
       }
     ]

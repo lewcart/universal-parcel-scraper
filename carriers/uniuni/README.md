@@ -29,7 +29,9 @@ parcel's country, the United States or Canada, is the destination.
 Detection claims the `UUS`, `UUSC`, `4C…US` and `U9999` formats and suggests
 UniUni for other `U` and fifteen-digit references, which Canadian parcels carry.
 Cross-border shippers' references of two letters, two digits, `CAA0`, a letter
-and nine digits only suggest UniUni: Intelcom's tracker accepts them too.
+and nine digits only suggest UniUni: Intelcom's tracker accepts them too. Those for
+the United States carry `USA0` instead; no public sample shows one, but UniUni's
+tracker follows them.
 Recognition looks them up at UniUni, whose tracker lists a reference it does not
 know as invalid.
 

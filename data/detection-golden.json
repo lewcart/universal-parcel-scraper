@@ -56807,6 +56807,17 @@
     "candidates": []
   },
   {
+    "input": "GV00USA0U000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "uniuni"
+    ],
+    "asked": [
+      "uniuni"
+    ]
+  },
+  {
     "input": "GV25CAA0U033926004",
     "carrier": "unknown",
     "confidence": "low",

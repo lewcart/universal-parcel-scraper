@@ -30,8 +30,10 @@ makes.
 - Each scan's `time` is a wall clock to the second with no zone. The page says it shows the
   recipient country's time. In a Saudi history the take-off and landing scans read five hours
   behind the clocks of the flight's own schedule line, which are China's, so the scans are
-  Saudi time. Australia, Brazil and Mexico span several zones and the reply does not say which,
-  so the clocks stay `local_time`.
+  Saudi time, and a Colombian take-off reads just after its flight's departure on Colombia's
+  clock. A recipient country with one zone places every scan as an instant. Australia, Brazil,
+  Mexico and the United States span several zones and the reply does not say which, so their
+  clocks stay `local_time`.
 - A scan's description is its own sentence, with the centre names in 【】 that the page shows.
   The `trackStage` code stages it: Delivered (`2060`), Return Handling Process (`1008`) and
   Returned to Client (`2065`) decide whatever the sentence says. In Transit (`1002`) and

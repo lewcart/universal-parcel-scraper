@@ -11,9 +11,11 @@ describe('iMile live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'imile', source: 'imile' });
     expect(answer.attempts[0]).toMatchObject({ source: 'imile', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    // Every scan keeps the recipient country's wall clock, without an offset.
-    expect(answer.result.events.every((event) => event.description && !event.time
-      && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time)))).toBe(true);
+    // Every scan is placed on the recipient country's clock, or keeps it local
+    // when the country spans several zones.
+    expect(answer.result.events.every((event) => event.description && (event.time
+      ? /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(event.time)
+      : /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(event.local_time))))).toBe(true);
     // Most scans carry a stage code; a few come without one.
     expect(answer.result.events.some((event) => event.provider_code)).toBe(true);
   }, 75_000);

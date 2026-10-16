@@ -99,22 +99,23 @@ describe('iMile HTTP adapter', () => {
       .toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
-  it('keeps each scan’s wall clock and stages it by its code and sentence', () => {
+  it('places each scan on the recipient country’s clock and stages it by its code and sentence', () => {
     const result = parseImile(fixture('in-transit'), IN_TRANSIT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
-      last_status_text: '【SMP】 Clearance start.', last_update: null, last_update_local: '2026-06-04T02:15:00', expected_delivery: null,
+      last_status_text: '【SMP】 Clearance start.', last_update: '2026-06-04T02:15:00-05:00', expected_delivery: null,
       destination_country: 'CO' });
-    expect(result.events!.map((event) => [event.local_time, event.provider_code ?? null, event.stage ?? null, event.location ?? null])).toEqual([
-      ['2026-06-04T02:15:00', null, 'customs', null],
-      ['2026-06-03T23:15:00', '1002', 'customs', null],
-      ['2026-06-02T18:00:00', '1002', 'in_transit', null],
+    expect(result).not.toHaveProperty('last_update_local');
+    expect(result.events!.map((event) => [event.time, event.provider_code ?? null, event.stage ?? null, event.location ?? null])).toEqual([
+      ['2026-06-04T02:15:00-05:00', null, 'customs', null],
+      ['2026-06-03T23:15:00-05:00', '1002', 'customs', null],
+      ['2026-06-02T18:00:00-05:00', '1002', 'in_transit', null],
       // A booked flight moves nothing.
-      ['2026-06-01T04:51:00', '1002', null, null],
-      ['2026-05-31T12:02:11', '2005', 'accepted', 'Sample Origin Center'],
-      ['2026-05-31T08:40:00', null, 'registered', null],
-      ['2026-05-30T19:16:16', '1001', 'registered', null],
+      ['2026-06-01T04:51:00-05:00', '1002', null, null],
+      ['2026-05-31T12:02:11-05:00', '2005', 'accepted', 'Sample Origin Center'],
+      ['2026-05-31T08:40:00-05:00', null, 'registered', null],
+      ['2026-05-30T19:16:16-05:00', '1001', 'registered', null],
     ]);
-    expect(result.events!.every((event) => event.time === undefined)).toBe(true);
+    expect(result.events!.every((event) => event.local_time === undefined)).toBe(true);
     // The booked flight's own clocks stay in its wording, as the page shows it.
     expect(result.events![3]!.description).toBe('Flight Schedule ETD【<HKG>】<2026-06-03 02:00:00>, ETA【<SMP>】<2026-06-03 12:00:00>.');
     // The last-mile number names no courier, so there is no hand-off.
@@ -124,7 +125,7 @@ describe('iMile HTTP adapter', () => {
   it('keeps the delivery without the driver’s phone, who took it, its proof or the repeated scan', () => {
     const result = parseImile(fixture('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Your order has been delivered successfully.', last_update: null, last_update_local: '2026-05-20T15:42:10',
+      last_status_text: 'Your order has been delivered successfully.', last_update: '2026-05-20T15:42:10+03:00',
       destination_country: 'SA' });
     expect(result.events).toHaveLength(16);
     expect(result.events!.slice(0, 8).map((event) => [event.provider_code, event.stage ?? null, event.description])).toEqual([
@@ -162,8 +163,16 @@ describe('iMile HTTP adapter', () => {
 
   it('reads a history listed oldest first newest first, as the page shows it', () => {
     const result = parseImile(changed('in-transit', (shipment) => { shipment.trackInfos.reverse(); }), IN_TRANSIT);
-    expect(result).toMatchObject({ last_update_local: '2026-06-04T02:15:00', current_stage: 'customs' });
+    expect(result).toMatchObject({ last_update: '2026-06-04T02:15:00-05:00', current_stage: 'customs' });
     expect(result.events!.at(-1)).toMatchObject({ provider_code: '1001' });
+  });
+
+  it('keeps the wall clocks of a country with several zones or none named', () => {
+    for (const country of ['MEX', 'BRA', 'USA', 'XXX', '']) {
+      const result = parseImile(changed('in-transit', (shipment) => { shipment.country = country; }), IN_TRANSIT);
+      expect(result).toMatchObject({ last_update: null, last_update_local: '2026-06-04T02:15:00' });
+      expect(result.events!.every((event) => event.time === undefined && event.local_time !== undefined)).toBe(true);
+    }
   });
 
   it('takes people, phones, proof links and support contacts out of the wording', () => {

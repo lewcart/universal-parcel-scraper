@@ -3,6 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { countryTimeZone, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { imileStage } from './status.js';
@@ -76,8 +77,7 @@ export function imileWording(raw: string): string {
 
 /**
  * A scan's clock: a wall clock to the second with no zone. The page says it
- * is the recipient country's time, and several of iMile's countries have
- * more than one zone, so it stays local.
+ * is the recipient country's time, which places it once that country is known.
  */
 function scanClock(row: Record<string, unknown>): string {
   const stamp = text(row, 'time', 32);
@@ -157,15 +157,23 @@ export function parseImile(payload: unknown, raw: string): CarrierResult {
   const stage = current?.stage as Stage | undefined;
   const code = text(shipment, 'country', 8).toUpperCase();
   const country = Object.hasOwn(COUNTRIES, code) ? COUNTRIES[code] : undefined;
+  // Every scan shows the recipient country's clock: a country of one zone
+  // places them all, and one of several leaves them local.
+  const zone = country ? countryTimeZone(country) : null;
+  const placed = zone ? newestFirst.map(({ local_time, ...event }): CarrierEvent => {
+    const time = isoTime(local_time, zone)?.iso;
+    return time ? { time, ...event } : { local_time, ...event };
+  }) : newestFirst;
+  const latest = placed[0]!;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time,
+    last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: newest.local_time }),
     expected_delivery: null,
     ...(country ? { destination_country: country } : {}),
-    events: newestFirst.slice(0, MAX_EVENTS),
+    events: placed.slice(0, MAX_EVENTS),
     ...(newestFirst.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };
 }

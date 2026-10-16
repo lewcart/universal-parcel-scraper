@@ -69,6 +69,37 @@
       "note": "The AWB in the sample success reply of RPX's own shipment-creation API documentation."
     },
     {
+      "number": "700075011630",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://mediakonsumen.com/2026/08/10/surat-pembaca/sport-station-dan-rpx-saling-lempar-tanggung-jawab-soal-keberadaan-paket-pesanan-saya",
+        "date": "2026-08-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express"
+        ]
+      },
+      "note": "The RPX AWB a shopper's complaint gives for an online order; RPX's tracking knows it, with a history from the shipper's booking to the delivery."
+    },
+    {
       "number": "781644913880",
       "role": "shipment",
       "evidence": "public_shipment_report",

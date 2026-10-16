@@ -16268,9 +16268,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rpx-indonesia",
+      "recognitionRank": 947,
+      "localClocks": true
     },
-    "canaryUrl": "https://rpx.co.id/tracking",
+    "canaryUrl": "https://ke-api-admin-v2-x3ct6vzffa-et.a.run.app/",
     "trackingSearchUrl": "https://rpx.co.id/tracking",
     "linkRules": [
       {

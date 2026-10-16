@@ -144,6 +144,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "redpack": 15,
   "relais-colis": 690,
   "rl-carriers": 5,
+  "rpx-indonesia": 947,
   "saia": 12,
   "sameday": 370,
   "saudi-post": 963,

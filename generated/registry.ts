@@ -205,6 +205,7 @@ import { adapter as redpack } from '../carriers/redpack/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
+import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
 import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
@@ -477,6 +478,7 @@ export const REGISTRY: RegistryDefinition = {
     "relais-colis": relaisColis,
     "rl-carriers": rlCarriers,
     "royal-mail": royalMail,
+    "rpx-indonesia": rpxIndonesia,
     "sagawa": sagawa,
     "saia": saia,
     "sameday": sameday,
@@ -914,7 +916,7 @@ export const REGISTRY: RegistryDefinition = {
     "roadie": "universal",
     "roadrunner": "universal",
     "royal-mail": "royal-mail",
-    "rpx-indonesia": "universal",
+    "rpx-indonesia": "rpx-indonesia",
     "russian-post": "universal",
     "saee": "universal",
     "sagawa": "sagawa",

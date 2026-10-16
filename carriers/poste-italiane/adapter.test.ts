@@ -46,7 +46,9 @@ describe('Poste Italiane tracking normalization', () => {
     expect(normalizePosteItalianeTrackingNumber('1UW1G2J193065')).toBe('1UW1G2J193065');
     expect(normalizePosteItalianeTrackingNumber('2IMA0051035900')).toBe('2IMA0051035900');
     expect(normalizePosteItalianeTrackingNumber('cw 123 456 785 it')).toBe('CW123456785IT');
-    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785IT', '']) {
+    // PROMOPACCO PLUS: F, three digits, D and eight digits.
+    expect(normalizePosteItalianeTrackingNumber('f990d00000001')).toBe('F990D00000001');
+    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785IT', 'F990D0000001', 'F990E00000001', '']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
     }
     expect(posteItalianeTrackingUrl(TRACKING_NUMBER)).toBe(

@@ -10,7 +10,8 @@ takes them, but the service asks for a contact phone's last four digits before
 it shows one. A lookup that finds one therefore ends as `input_required`, and
 its history has to come from a provider. No public sample is known, so detection only
 suggests China Post for them (`china-post-zs`), ahead of La Poste's rule for any two
-characters and eleven digits. Source selection is covered in
+characters and eleven digits, and recognition asks China Post. The service asks for the phone
+digits only about an item it holds, so that request makes the number known. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);
 provider results are in [COVERAGE.md](../../providers/COVERAGE.md).
 
@@ -112,7 +113,7 @@ sender (711) reads "已退回".
 - "暂无物流信息" (no logistics information) answers unknown, unscanned and
   expired numbers alike, and also real registered (`R…CN`) and `U…CN`
   letter-post items this backend does not serve. It is inconclusive, never not
-  found, and the adapter does not implement recognition.
+  found, in tracking and recognition alike.
 - A request for the phone digits ends the lookup as `input_required`.
 - Full history needs a signed-in account: `subjection/v2` answers guests with
   "请登录后再查询" (sign in first). Accounts are not used.

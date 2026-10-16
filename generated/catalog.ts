@@ -4315,6 +4315,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "china-post",
+      "recognitionRank": 905,
       "localClocks": true
     },
     "canaryUrl": "https://ec.ems.com.cn/ect-web/mail/getGisTraces/checkMail",

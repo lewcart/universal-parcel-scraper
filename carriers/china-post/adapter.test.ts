@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { AdapterRegistry } from '../../core/adapter/index.js';
 import { carrierDefinition } from '../../core/catalog/index.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { REGISTRY } from '../../generated/registry.js';
@@ -96,6 +97,20 @@ describe('China Post adapter', () => {
     expect(JSON.parse(String(phone.mock.calls[0]![1]?.body))).toEqual({ mailNo: 'ZS00000000001' });
     const closed = transport(() => json('{"code":"000000","info":3,"msg":"SUCCESS"}'));
     await expect(instance(closed).track({ number: 'ZS00000000001' })).rejects.toMatchObject({ kind: 'indeterminate' });
+  });
+
+  it('recognizes a ZS number China Post holds from the phone request alone', async () => {
+    expect(recognitionAskedCarriers('ZS00000000001')[0]).toBe('china-post');
+    const phone = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
+    await expect(instance(phone).recognize!('ZS00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(phone).toHaveBeenCalledTimes(1);
+    // "No information" answers unissued and unscanned numbers alike.
+    const closed = transport(() => json('{"code":"000000","info":3,"msg":"SUCCESS"}'));
+    await expect(instance(closed).recognize!('ZS00000000001')).rejects.toMatchObject({ kind: 'indeterminate' });
+    const fetcher = transport();
+    await expect(instance(fetcher).recognize!('ZS0000000001')).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+    await expect(instance(transport(open, () => json(text('delivered')))).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
   });
 
   it.each([

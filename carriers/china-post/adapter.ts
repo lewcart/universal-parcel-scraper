@@ -1,4 +1,5 @@
-import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { carrierErrorKind } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { userAgentOf } from '../../core/transport/index.js';
 import { readChinaPostTraces } from './app.js';
@@ -24,5 +25,19 @@ export class ChinaPostTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new ChinaPostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent });
-  return { id: 'china-post', steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  return {
+    id: 'china-post',
+    steps: ['direct'],
+    track: (input, context) => tracker.fetch(input.number, context),
+    recognize: async (number, context) => {
+      try {
+        return await recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeChinaPostNumber(number)));
+      } catch (error) {
+        // The check step asks for a contact phone's digits only about an item China Post holds;
+        // other numbers get its "no information" answer, which stays inconclusive.
+        if (carrierErrorKind(error) === 'input_required') return { known: true, lastActivityAt: null };
+        throw error;
+      }
+    },
+  };
 };

@@ -19249,7 +19249,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "southeastern-freight-lines",
+      "recognitionRank": 919,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sefl.com/Tracing/index.jsp",
     "trackingUrlTemplate": "https://www.sefl.com/webconnect/tracing?Type=PN&RefNum1={trackingNumber}",

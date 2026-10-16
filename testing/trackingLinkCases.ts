@@ -867,6 +867,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/trackingnew\.postoffice\.co\.za\/\?ParcelId=ZZ000000014ZA$/,
     marker: /Enter Parcel Number To Track|PARCEL TRACKING RESULTS/i,
     forwarding: { notFound: /No tracking record found/ } },
+  // The tracer looks the PRO up on the server and names it in its not-found notice.
+  { carrier: 'southeastern-freight-lines', number: '9999999',
+    route: /^https:\/\/www\.sefl\.com\/webconnect\/tracing\?Type=PN&RefNum1=9999999$/,
+    marker: /The tracing information you requested for Pro Number 9999999 was not found in our system|Tracing Results/ },
   // The page looks the number up, shows it and says it has no data on it yet.
   { carrier: 'belpost', number: 'ZZ000000014BY',
     route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,

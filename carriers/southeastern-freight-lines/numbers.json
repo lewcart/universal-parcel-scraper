@@ -98,13 +98,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Ship24's Southeastern Freight Lines page gives it as an example tracking number."
+      "note": "Ship24's Southeastern Freight Lines page gives it as an example tracking number, and Southeastern Freight Lines' own tracer shows the shipment."
     }
   ]
 }

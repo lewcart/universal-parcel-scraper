@@ -770,9 +770,9 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-02-03T03:42:33.000Z', '2026-02-02T16:09:00.000Z', '2026-01-31T09:07:00.000Z']);
     // 4PX's "US" alone takes the US scan before it.
     expect(parseParcelsAppResponse({ carriers: ['4PX Express'], states: [
-      { date: '2026-05-25T01:36:43Z', status: 'Arrived at usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
-      { date: '2026-05-24T23:39:05Z', status: 'In transit to next facility', carrier: 0, location: 'US    ' },
-      { date: '2026-05-24T22:10:36Z', status: 'Departed usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
+      { date: '2026-05-25T09:36:43Z', status: 'Arrived at usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
+      { date: '2026-05-25T07:39:05Z', status: 'In transit to next facility', carrier: 0, location: 'US    ' },
+      { date: '2026-05-25T06:10:36Z', status: 'Departed usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
     ] }, number, identity()).events?.map((event) => event.time))
       .toEqual(['2026-05-25T13:36:43.000Z', '2026-05-25T11:39:05.000Z', '2026-05-25T10:10:36.000Z']);
     // With nothing to borrow, routing's zone, unless the location rules it out.
@@ -826,7 +826,7 @@ describe('ParcelsApp result parsing', () => {
       expect(result, carriers.join()).toMatchObject({ last_update: '2026-10-10T06:10:00.000Z' });
       expect(result.undated_event_count, carriers.join()).toBeUndefined();
     }
-    // 4PX's label is its own instant: China time.
+    // A 4PX scan nothing places keeps its label.
     expect(reply(['4PX Express'], [scan('2026-05-23T10:00:38Z')]).last_update).toBe('2026-05-23T10:00:38.000Z');
     // The rendered page prints no location: routing's zone, a known clock, or the label.
     const page = rendered(carrierRow('10 Oct 2026', '06:10', 'Out for delivery', 'USPS')
@@ -835,20 +835,19 @@ describe('ParcelsApp result parsing', () => {
     expect(parseParcelsAppHtml(page, number, 'America/New_York').events?.[0]?.time).toBe('2026-10-10T10:10:00.000Z');
   });
 
-  it('reads 4PX scans on the wall clock its instants give on China time', () => {
-    // Live shape (2026-10-10): 4PX's fixed fields and its own instants, which
-    // read each wall clock on China time, a US one too. 4PX's page gives the
-    // offsets: its scans up to the departing flight on China time, the rest in
-    // the US.
+  it('reads 4PX scans under its fixed fields on the wall clock of their dates', () => {
+    // Live shape: 4PX's fixed fields, and dates that are the wall clocks 4PX's
+    // page shows, under a UTC label. The page gives the offsets: its scans up
+    // to the departing flight on China time, the rest in the US.
     const result = parseParcelsAppResponse({ carriers: ['4PX Express'], destinationCode: 'US', states: [
-      { date: '2026-05-26T06:30:03Z', status: 'Delivered, in/at mailbox', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
-      { date: '2026-05-25T01:36:43Z', status: 'Arrived at usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
-      { date: '2026-05-23T10:00:38Z', status: 'Customs clearance agent received the shipment in destnation country.\n', carrier: 0 },
-      { date: '2026-05-23T04:22:00Z', status: 'Arrival to the destination airport', carrier: 0 },
-      { date: '2026-05-22T17:27:00Z', status: 'Departure from the original airport', carrier: 0 },
-      { date: '2026-05-21T12:35:30Z', status: 'Pickup scanned, in transit to warehouse', carrier: 0, location: 'CN' },
-      { date: '2026-05-21T09:08:01Z', status: 'Shipping label created, usps awaiting item', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
-      { date: '2026-05-21T09:04:13Z', status: 'Parcel information received', carrier: 0 },
+      { date: '2026-05-26T14:30:03Z', status: 'Delivered, in/at mailbox', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
+      { date: '2026-05-25T09:36:43Z', status: 'Arrived at usps regional facility', carrier: 0, location: 'US    EXAMPLE CITY NY DISTRIBUTION CENTER' },
+      { date: '2026-05-23T18:00:38Z', status: 'Customs clearance agent received the shipment in destnation country.\n', carrier: 0 },
+      { date: '2026-05-23T12:22:00Z', status: 'Arrival to the destination airport', carrier: 0 },
+      { date: '2026-05-23T01:27:00Z', status: 'Departure from the original airport', carrier: 0 },
+      { date: '2026-05-21T20:35:30Z', status: 'Pickup scanned, in transit to warehouse', carrier: 0, location: 'CN' },
+      { date: '2026-05-21T17:08:01Z', status: 'Shipping label created, usps awaiting item', carrier: 0, location: 'US  NY  EXAMPLE CITY 10001' },
+      { date: '2026-05-21T17:04:13Z', status: 'Parcel information received', carrier: 0 },
     ] }, number, identity());
     expect(result.events?.map((scan) => [scan.time, scan.location])).toEqual([
       ['2026-05-26T18:30:03.000Z', 'US NY EXAMPLE CITY 10001'], // 14:30:03 in New York
@@ -857,12 +856,36 @@ describe('ParcelsApp result parsing', () => {
       // 12:22 in New York on 4PX's page.
       ['2026-05-23T22:00:38.000Z', undefined],
       ['2026-05-23T16:22:00.000Z', undefined],
-      ['2026-05-22T17:27:00.000Z', undefined], // China time, as labeled
+      ['2026-05-22T17:27:00.000Z', undefined], // China time
       ['2026-05-21T21:08:01.000Z', 'US NY EXAMPLE CITY 10001'], // the US label, 17:08:01 in New York
       ['2026-05-21T12:35:30.000Z', 'CN'],
       ['2026-05-21T09:04:13.000Z', undefined], // China time, not the label's US one after it
     ]);
     expect(result.undated_event_count).toBeUndefined();
+  });
+
+  it('reads 4PX scans on their wall clocks where its fields and its destination partner\'s places mix', () => {
+    // Live shape: a bare "FR" from 4PX's fields beside the partner's towns, and
+    // dates that are the wall clocks of 4PX's page, which gives each its
+    // place's offset. The partner's first sorting center has no place.
+    const result = parseParcelsAppResponse({ carriers: ['4PX Express'], destination: 'France', states: [
+      { date: '2026-10-16T15:55:00Z', status: 'Your shipment has departed from the transit origin', carrier: 0, location: 'FR' },
+      { date: '2026-10-16T09:41:20Z', status: 'Your shipment has arrived at sorting center', carrier: 0, location: 'Example Town' },
+      { date: '2026-10-16T09:29:01Z', status: 'Your shipment has arrived at the transit destination', carrier: 0, location: 'FR' },
+      { date: '2026-10-16T04:08:35Z', status: 'Your shipment has been processed at sorting center and ready for shipping', carrier: 0 },
+      { date: '2026-10-15T08:30:00Z', status: 'Arrival to the destination airport', carrier: 0 },
+      { date: '2026-10-15T04:18:58Z', status: 'Departure from the original airport', carrier: 0 },
+      { date: '2026-10-07T19:45:38Z', status: 'Shipment picked up', carrier: 0, location: 'Example City,China' },
+    ] }, number, identity());
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-10-16T13:55:00.000Z', // 15:55 in France
+      '2026-10-16T07:41:20.000Z', // in France, from the scan before it, a guess
+      '2026-10-16T07:29:01.000Z',
+      '2026-10-16T02:08:35.000Z', // in the destination, from a scan placed there
+      '2026-10-15T06:30:00.000Z',
+      '2026-10-14T20:18:58.000Z',
+      '2026-10-07T11:45:38.000Z',
+    ]);
   });
 
   it('reads 4PX scans whose places ParcelsApp rewrote on the wall clock of their dates', () => {

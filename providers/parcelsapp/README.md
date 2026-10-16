@@ -189,7 +189,10 @@ step exists for future protocol changes.
   scans have the digits of Cainiao's import customs. EcoScooting's sorting-center sentences
   that Cainiao relays ("Your shipment has arrived at sorting center") are on Madrid's clock
   too, also for a parcel bound for Portugal. 4PX's page (two parcels to the US) dates its scans up to
-  the departing flight on China time and the rest in the US. EcoScooting's own instants
+  the departing flight on China time and the rest in the US. Its destination partner's
+  sorting center ("Your shipment has been processed at sorting center and ready for
+  shipping"), which a parcel to France reaches before any placed scan, is on the
+  destination's clock. EcoScooting's own instants
   (two parcels) put its China leg on China time, its order and its Spanish sorting
   center on Madrid's, and its last mile on the destination's. MailAmericas dates its
   origin leg ("Order created", "Transit to destination country") and its Tax ID checks,
@@ -213,18 +216,12 @@ step exists for future protocol changes.
 - Steps 1 to 5 move the stored scans they now date, and the names read as the US or China
   above move theirs (see Limitations). A copy merged into the scan it copies leaves one row
   where there were two.
-- ParcelsApp relays 4PX's feed two ways (checked 2026-10-11 against 4PX's page, which
-  shows each scan's wall clock with its offset). Where it keeps 4PX's fixed fields, the
-  country first ("US  NY  EXAMPLE CITY 12345", "US    EXAMPLE CITY NY DISTRIBUTION
-  CENTER", "CN"), its dates are the instants of 4PX's own feed, which reads every wall
-  clock on China time, the US ones too: 4PX's page shows a New York delivery at 14:30
-  with its -04:00 offset, and ParcelsApp has 06:30Z. The wall clock is that instant's
-  Shanghai digits, read where the location places it. Where it rewrites the places
-  ("United States", "Hong Kong", "EXAMPLE CITY, IN, US 12345"), its dates are the wall
-  clocks themselves under a UTC label, as other carriers' are. A reply whose 4PX scans
-  have places, none in 4PX's fields, is read the second way. An instant is right only for
-  a scan on China time, so a scan with no place, or in "US" alone, goes through steps 2
-  to 6, and in step 6 keeps its label.
+- ParcelsApp's 4PX dates are the wall clocks of 4PX's page under a UTC label, whether it keeps
+  4PX's place fields, the country first ("US  NY  EXAMPLE CITY 12345", "CN", "FR"), or
+  rewrites them ("United States", "Hong Kong"). Those fields are no sign of the instants of
+  4PX's own feed, which read every wall clock on China time: the same parcels now come with
+  the wall clocks, and reading them as such instants put scans up to 8 hours late, some
+  after the lookup.
 - GOFO France's dates carry real offsets ("+02:00"), the instants of GOFO France's own
   feed, and are taken as given. Other carriers' copies of the same scan (YTO's, Cirro's,
   EQuick China's) write its digits under a UTC label; a copy with the same digits and

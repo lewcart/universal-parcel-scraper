@@ -117,5 +117,7 @@ Both wait for the CI workflow to pass on the same commit, and publish nothing wh
 A dispatch on a commit CI has not run on fails until CI is dispatched on it. After rerunning a
 failed CI run, rerun the release run's failed jobs.
 
+Raising the version sets it in `package.json`, `package-lock.json` and `server/openapi.json`.
+
 The TRAWL image is published with its upstream and patch source archives, under its AGPL
 license.

@@ -9,6 +9,9 @@
     {"wording": "Item arrives at destination airport", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"wording": "local carrier Agent Import customs clearance", "language": "en", "stage": "customs", "confirmedBy": "live"},
     {"wording": "The import customs keep it for inspection", "language": "en", "stage": "customs", "confirmedBy": "live"},
+    {"wording": "Customs clearance completed", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"wording": "Internationaliy Package received at processing center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The destination's processing centre takes the cleared parcel; it was accepted long before."},
+    {"wording": "Leave the email processing center", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "prior-art", "note": "The platform writes this row itself for an order without scans, on its creation time."}
   ]
 }

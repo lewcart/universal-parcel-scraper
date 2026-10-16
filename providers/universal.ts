@@ -16,6 +16,7 @@
  * lives in the provider folder next to it.
  */
 import type { AdapterEnvironment, CarrierAdapter, TrackingContext } from '../core/adapter/index.js';
+import { normalizeTrackingNumber } from '../core/detection/normalize.js';
 import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../core/detection/usps.js';
 import { BudgetExceededError, IndeterminateError } from '../core/errors/index.js';
 import type { CarrierResult } from '../core/result/index.js';
@@ -124,18 +125,19 @@ export class UniversalTracker {
   }
 
   async fetchSource(source: Source, trackingNumber: string, timeoutMs = this.options.timeoutMs ?? universalSourceBudget(source), postcode?: string | null, timezone?: string | null, signal?: AbortSignal, countryHint?: string | null, carrier?: string | null): Promise<CarrierResult> {
-    const typed = numberOf(trackingNumber);
+    // Providers get the normalized number, as from createTracker(), however the caller stored it.
+    const normalized = normalizeTrackingNumber(numberOf(trackingNumber));
     // A USPS routing barcode opens with the recipient's ZIP code. Providers are
     // asked for the package identifier after it, the number USPS tracks, and
     // bind their answer to it. Without a single identifier neither the barcode
     // nor its readings are sent, and the lookup is left to USPS's adapter.
     // Detection still reads the barcode as typed.
-    const pic = uspsPackageIdentifier(typed);
-    if (!pic && USPS_ROUTING_BARCODE.test(typed)) {
+    const pic = uspsPackageIdentifier(normalized);
+    if (!pic && USPS_ROUTING_BARCODE.test(normalized)) {
       throw new IndeterminateError(source, 'A USPS routing barcode without a single package identifier is not sent',
         { reason: 'usps_routing_barcode' });
     }
-    const number = pic ?? typed;
+    const number = pic ?? normalized;
     const result = this.options.browserLookup && (source === 'Postal Ninja' || source === 'Ship24')
       ? await this.options.browserLookup(source, number)
       : await this.provider(source).track({ number, postcode: postcode ?? null, timezone: timezone ?? null, countryHint: countryHint ?? null,

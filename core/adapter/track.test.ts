@@ -20,6 +20,18 @@ describe('consumer dispatch', () => {
     expect(track).toHaveBeenCalledWith({ number: 'TEST0001', postcode: '00000' }, expect.objectContaining({ signal: expect.any(AbortSignal) }));
   });
 
+  it('gives the adapter and the universal chain the normalized number, as createTracker() does', async () => {
+    // A letter O typed in an S10 serial is the zero its check digit asks for.
+    const track = vi.fn().mockResolvedValue({ status: 'in_transit' });
+    const universal = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) } as unknown as UniversalTracker;
+    const registry = new AdapterRegistry({ factories: { test: () => ({ id: 'test', steps: ['direct'], track }) },
+      carriers: { test: 'test', fallback: 'universal' } }, environment);
+    await trackCarrier('test', { number: 'cio 0000000 5nl', postcode: '00000' }, { registry, universal });
+    expect(track).toHaveBeenCalledWith({ number: 'CI000000005NL', postcode: '00000' });
+    await trackCarrier('fallback', { number: 'CIO00000005NL' }, { registry, universal });
+    expect(universal.fetch).toHaveBeenCalledWith('CI000000005NL', undefined, { signal: undefined, budgetMs: undefined }, undefined, 'fallback');
+  });
+
   it('records one lookup and leaves an adapter that owns its steps to record them', async () => {
     const recorder = { ...NOOP_RECORDER, lookup: vi.fn(), step: vi.fn() };
     for (const recordsSteps of [false, true]) {

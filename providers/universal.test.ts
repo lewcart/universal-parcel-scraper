@@ -223,6 +223,16 @@ describe('universal discovery chain', () => {
     }
   });
 
+  it('asks providers for the zero a letter O stands for in an S10 serial, however the caller stored it', async () => {
+    const history = { data: { tracking_number: 'CI000000005NL',
+      events: [{ timestamp: '2026-09-10T10:00:00+02:00', status: 'Delivered', dispatch_code_id: 7 }] } };
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(history));
+    const tracker = new UniversalTracker({ providers: ['Ship24'], fetcher });
+    await expect(tracker.fetchSource('Ship24', 'CIO00000005NL', 20_000)).resolves.toMatchObject({ current_stage: 'delivered' });
+    await expect(tracker.fetch('cio 0000000 5nl')).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher.mock.calls.map(([url]) => new URL(String(url)).pathname)).toEqual(Array(2).fill('/api/parcels/CI000000005NL'));
+  });
+
   it('sends no provider a USPS routing barcode without a single package identifier, nor either reading', async () => {
     // The made-up ZIP code 00314. The ZIP+4 9300 and the PIC read as a channel 93 PIC that passes its check
     // digit too, each Mailer ID fitting its channel; the other barcode fails its check digit.

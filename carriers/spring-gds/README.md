@@ -74,9 +74,13 @@ native catalog all carry it; everything user-facing says PostNL.
 - The endpoint answers "The shipment barcode was incorrect." for 13-character `3S` barcodes,
   which are PostNL's, and for 15-character ones without a four-letter customer code. The
   lookup then stays inconclusive.
+- The tracking endpoint enforces a per-minute call quota shared beyond one client, so a
+  lookup can meet HTTP 429 at a low request rate. The replay after its one-second
+  `Retry-After` can meet the same quota; the lookup then fails as a rate limit.
 - The endpoints are undocumented and can change without notice.
 
 ## Testing
 
-`npm run test:carriers:live -- carriers/spring-gds` (no env vars). It checks
-that a never-issued S10 number returns a clean 404.
+`npm run test:carriers:live -- carriers/spring-gds`. It checks that a never-issued S10
+number returns a clean 404. With `SPRING_GDS_TRACKING_NUMBER` set to a live parcel, as a
+consumer stored it, it also checks that `trackCarrier` returns that parcel's history.

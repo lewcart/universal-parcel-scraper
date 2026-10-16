@@ -1,3 +1,4 @@
+import { normalizeTrackingNumber } from '../detection/normalize.js';
 import { BudgetExceededError } from '../errors/index.js';
 import { normalizeCarrierResult, type CarrierResult } from '../result/index.js';
 import { runSteps } from '../runner/index.js';
@@ -5,8 +6,12 @@ import { NOOP_RECORDER, type StepRecorder } from '../telemetry/index.js';
 import type { UniversalTracker } from '../../providers/universal.js';
 import type { AdapterRegistry, TrackingContext, TrackingInput } from './index.js';
 
-/** One carrier lookup, leaving provider selection and scheduling to the consumer. */
-export async function trackCarrier(carrier: string, input: TrackingInput, options: TrackingContext & {
+/**
+ * One carrier lookup, leaving provider selection and scheduling to the consumer.
+ * The adapter gets the normalized number, as from `createTracker()`: a number
+ * stored as typed, with a letter O in an S10 serial, reaches the carrier with its zero.
+ */
+export async function trackCarrier(carrier: string, typed: TrackingInput, options: TrackingContext & {
   registry: AdapterRegistry;
   universal: UniversalTracker;
   recorder?: StepRecorder;
@@ -14,6 +19,7 @@ export async function trackCarrier(carrier: string, input: TrackingInput, option
   if (options.budgetMs !== undefined && Number.isNaN(options.budgetMs)) throw new TypeError('Lookup budget must be a number of milliseconds');
   // A budget already spent is a budget failure, whichever adapter would have been asked.
   if (options.budgetMs !== undefined && options.budgetMs <= 0) throw new BudgetExceededError(carrier, options.budgetMs);
+  const input = { ...typed, number: normalizeTrackingNumber(typed.number) };
   const registered = options.registry.for(carrier);
   if (registered) {
     const context = { signal: options.signal, budgetMs: options.budgetMs === undefined ? undefined : Math.min(60_000, options.budgetMs) };

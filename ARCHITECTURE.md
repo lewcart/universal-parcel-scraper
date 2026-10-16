@@ -156,9 +156,11 @@ reference and explicit German destination propose a DPD Germany confirmation loo
 Consumers with their own router can call `trackCarrier` from `/node` with an
 `AdapterRegistry`, their configured `UniversalTracker` and a `StepRecorder`. It dispatches one
 carrier lookup and normalizes the result, and leaves scheduling and provider choice to the
-caller. An adapter with `recordsSteps` reports its own lookup, so dispatch does not wrap its
-telemetry a second time. `CarrierError.reason` separates expected details, such as Amazon
-Shipping's expired history, from transport failures.
+caller. It and `UniversalTracker` hand adapters and providers the normalized number, as
+`createTracker()` does: a number stored as typed, with a letter O for a zero in an S10 serial,
+reaches them corrected. An adapter with `recordsSteps` reports its own lookup, so dispatch
+does not wrap its telemetry a second time. `CarrierError.reason` separates expected details,
+such as Amazon Shipping's expired history, from transport failures.
 
 USPS barcode validation shares the carrier adapter's whole-identifier checks. A routing
 barcode is `420`, the recipient's five- or nine-digit ZIP code and a 22- or 26-digit package

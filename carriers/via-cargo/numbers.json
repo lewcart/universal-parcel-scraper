@@ -26,7 +26,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Opened capture of Via Cargo's own tracking API shows this shipment with its events from intake to the distribution centre."
@@ -56,7 +57,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
@@ -86,7 +88,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
@@ -116,7 +119,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
@@ -146,7 +150,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."

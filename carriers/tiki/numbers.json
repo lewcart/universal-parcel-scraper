@@ -27,7 +27,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An opened capture of TIKI's mobile tracker shows this REG resi in eight pieces, from data entry in Denpasar through Palembang to delivery; sender and receiver details were not copied."
@@ -61,6 +62,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -93,7 +95,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived lookup on TIKI's mobile tracker; the capture was not opened."
@@ -123,7 +126,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived lookup on TIKI's own tracker; the opened capture shows the number filled into the search form, but the history was not visible."
@@ -156,7 +160,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "TIKI's reply on Media Konsumen gives it as the resi of the shipment it rechecked."
@@ -186,7 +191,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "TIKI's reply on Media Konsumen gives it as the resi of a pickup order it cancelled and refunded."
@@ -216,7 +222,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi a TIKI courier messaged about."
@@ -250,7 +257,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A Media Konsumen letter gives it as the resi of a COD parcel sent with TIKI Reg."

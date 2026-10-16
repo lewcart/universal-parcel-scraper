@@ -27,7 +27,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Barcode of a domestic order in the sample reply of the order details call in BTS's own API documentation."

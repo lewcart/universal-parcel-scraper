@@ -50,7 +50,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Bookurier's own tracker showing Bookurier's order events; its tracker script files twelve- to fourteen-digit numbers under GLS, so the waybill is likely GLS Romania's."
@@ -85,7 +86,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Bookurier's own tracker; after Bookurier's pickup request the history continues with GLS Romania scans up to delivery, so the waybill is GLS Romania's."
@@ -120,7 +122,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Bookurier's own tracker; after Bookurier's order events the history shows a GLS registration scan, so the waybill is GLS Romania's."
@@ -155,7 +158,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Bookurier's own tracker; after Bookurier's order events the history shows GLS depot and out-for-delivery scans, so the waybill is GLS Romania's."

@@ -96,7 +96,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
@@ -128,7 +129,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Opened from a Paquetexpress SMS link to its own tracker, as the archived address shows; the capture was not opened."
@@ -287,7 +289,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up through Paquetexpress's own history service, as an archived reply shows: a parcel collected and on its way."
@@ -447,7 +450,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up through Paquetexpress's own history service, as an archived reply shows: a parcel collected and on its way."
@@ -581,7 +585,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up through Paquetexpress's own history service, as an archived reply shows: a parcel collected and on its way."
@@ -612,7 +617,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "ParcelPanel's Paquet Express page offered it as a sample to try on 13 Oct 2026. Paquetexpress's history service knows it."
@@ -644,7 +650,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "ParcelPanel's Paquet Express page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."
@@ -675,7 +682,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "ParcelPanel's Paquet Express page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."
@@ -731,7 +739,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "ParcelPanel's Paquet Express page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."
@@ -765,6 +774,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },

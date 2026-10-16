@@ -28,7 +28,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Zajil's own tracker; the opened capture is the script page shell, so the history was not visible."
@@ -59,7 +60,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Archived lookup on Zajil's own tracker; the capture was not opened (the tracker is a script page), so the history was not visible."
@@ -247,7 +249,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Example shipment in the initial state of Zajil's tracking page script, shown as in transit from Jeddah to Riyadh; it may be a demonstration value."

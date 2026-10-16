@@ -40,7 +40,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to FedEx, which stays one candidate among several."
@@ -66,7 +67,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Publicly reported FedEx shipment; detection lists FedEx among several twelve-digit candidates. On 2026-09-30 ParcelsApp listed its US scans as \"City, ST\"; its delivery-day order only fits local clocks."
@@ -92,7 +94,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Publicly reported FedEx shipment; detection lists FedEx among several twelve-digit candidates. On 2026-09-30 FedEx's own page gave the local delivery time whose digits ParcelsApp labels UTC."
@@ -117,7 +120,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to FedEx, which stays one candidate among several."
@@ -159,7 +163,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 34-digit FedEx Express label barcode, which is a record of its own. FedEx stays one candidate among several."
@@ -184,7 +189,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Open-source project example, not a real shipment. The twelve-digit tracking number inside the source's 32-digit FedEx ASTRA label barcode, which is a record of its own. FedEx stays one candidate among several."
@@ -255,7 +261,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sender explicitly names FedEx for Poland-to-Asia delivery."
@@ -288,7 +295,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer explicitly publishes FedEx tracking number in international customs report."
@@ -745,7 +753,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An international FedEx parcel reported in a review. FedEx tracking needs the browser service, so it was not checked here."
@@ -779,7 +788,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -811,7 +821,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -842,7 +853,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -874,7 +886,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -905,7 +918,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -936,7 +950,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A FedEx tracking link archived by the Wayback Machine. FedEx tracking needs the browser service, so it was not checked here."
@@ -967,7 +982,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A 12-digit FedEx number published with spaces in an archived FedEx tracking link."
@@ -998,7 +1014,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A 12-digit FedEx number published with spaces in an archived FedEx tracking link."

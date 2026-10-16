@@ -29,6 +29,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -63,6 +64,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -96,7 +98,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Ship24's SkyNet tracking-number page lists it among its examples, but the same list mixes in marketplace labels of Skynet Malaysia, a separate company."
@@ -134,6 +137,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -218,6 +222,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -272,7 +277,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived lookup on SkyNet's former tracker at skynetworldwide.com; the capture shows this shipment's London scans and delivery in Spain."

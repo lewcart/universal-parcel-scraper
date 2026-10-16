@@ -43,7 +43,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Invented 12-digit placeholder with a valid GLS check digit; the route only resolves it after a verified GLS lookup. Filed under GLS Germany, which stays one candidate among several."
@@ -214,7 +215,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -280,7 +282,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Reported national GLS service is outside the German adapter scope; the shared number shape does not establish German ownership.",

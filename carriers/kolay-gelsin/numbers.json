@@ -83,7 +83,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar's Kolay Gelsin page that calls it the Kolay Gelsin tracking number, next to a separate order number."
@@ -113,7 +114,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar's Kolay Gelsin page: a Trendyol order sent with Kolay Gelsin, quoted as the cargo tracking number."
@@ -146,6 +148,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -179,7 +182,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar that lists it as a Kolay Gelsin tracking number, separately from the Trendyol order numbers."
@@ -209,7 +213,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar quoting it as the tracking number of a shipment sent with Kolay Gelsin."
@@ -239,7 +244,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Complaint on Şikayetvar quoting it as the tracking number of a Trendyol order handed to Kolay Gelsin."
@@ -268,7 +274,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar quoting it as the tracking number of a parcel Kolay Gelsin was delivering."
@@ -376,7 +383,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar's Sendeo page quoting it as a Sendeo tracking number; Sendeo's network now runs under Kolay Gelsin."
@@ -406,7 +414,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer complaint on Şikayetvar's Sendeo page quoting it as the tracking number of a Sendeo parcel; Sendeo's network now runs under Kolay Gelsin."

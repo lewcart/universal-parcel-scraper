@@ -123,7 +123,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Shared numeric shape that must stay a suggestion rather than a carrier."

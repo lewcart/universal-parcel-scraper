@@ -136,7 +136,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Public shipment report; the official shipment-number lookup returns matching tracking history."
@@ -167,7 +168,8 @@
           "zto",
           "j-and-t",
           "j-and-t-cargo",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A BRT tracking link archived by the Wayback Machine. BRT's tracker returns its history."
@@ -199,7 +201,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A BRT tracking link archived by the Wayback Machine. BRT's tracker returns its history."
@@ -231,7 +234,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A BRT tracking link archived by the Wayback Machine. BRT's tracker returns its history."
@@ -262,7 +266,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "A BRT tracking link archived by the Wayback Machine. BRT's tracker returns its history, which ends with the delivery back to its sender."
@@ -326,7 +331,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The shipment BRT's archived parcel-ID page shows. BRT's tracker returns its history."
@@ -356,7 +362,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The shipment BRT's archived parcel-ID page shows, with its history."

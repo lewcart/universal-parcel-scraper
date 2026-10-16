@@ -15050,6 +15050,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "metropolitan-warehouse": {
+    "displayName": "Metropolitan Warehouse & Delivery",
+    "color": "#c9a84c",
+    "aliases": [
+      "Metropolitan Warehouse and Delivery",
+      "MWD"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "metropolitan-warehouse",
+      "recognitionRank": 8,
+      "localClocks": true
+    },
+    "canaryUrl": "https://main.gomwd.com/client/wixtrackorder",
+    "trackingSearchUrl": "https://www.gomwd.com/track-a-shipment",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "midland-transport": {
     "displayName": "Midland Transport",
     "color": "#009057",
@@ -22419,6 +22447,7 @@ export const CARRIER_IDS = [
   "mds-collivery",
   "meest",
   "messenger-cz",
+  "metropolitan-warehouse",
   "midland-transport",
   "mng-kargo",
   "mtscn",
@@ -22971,6 +23000,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mds-collivery": [],
   "meest": ["meest-1"],
   "messenger-cz": [],
+  "metropolitan-warehouse": ["metropolitan-warehouse-1"],
   "midland-transport": [],
   "mng-kargo": [],
   "mtscn": ["mtscn-1"],

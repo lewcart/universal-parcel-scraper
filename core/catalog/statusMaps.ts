@@ -134,6 +134,7 @@ import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as mayiyinfu } from '../../carriers/mayiyinfu/status.js';
 import { statusMap as meest } from '../../carriers/meest/status.js';
+import { statusMap as metropolitanWarehouse } from '../../carriers/metropolitan-warehouse/status.js';
 import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
 import { statusMap as mtscn } from '../../carriers/mtscn/status.js';
 import { statusMap as naqel } from '../../carriers/naqel/status.js';
@@ -239,7 +240,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, 'lion-parcel': lionParcel, logen, loggi,
   'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,
   'magyar-posta': magyarPosta, mailamericas, mainfreight,
-  maltapost, matkahuolto, mayiyinfu, meest,
+  maltapost, matkahuolto, mayiyinfu, meest, 'metropolitan-warehouse': metropolitanWarehouse,
   'mng-kargo': mngKargo, mtscn, naqel, nationex, 'nippon-express': nipponExpress, oca, 'old-dominion': oldDominion, omgo, omniva, 'orlen-paczka': orlenPaczka,
   'osm-worldwide': osmWorldwide, packlink, 'pakistan-post': pakistanPost, paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom,
   'pos-indonesia': posIndonesia, 'post-luxembourg': postLuxembourg, 'posta-romana': postaRomana,

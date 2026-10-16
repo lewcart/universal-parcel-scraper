@@ -29,6 +29,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -60,7 +61,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -90,7 +92,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -120,7 +123,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -150,7 +154,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Sent as the track parameter to Deprisa's own tracker on deprisa.com, as an archived address shows; the capture was not opened."
@@ -183,6 +188,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -214,6 +220,7 @@
           "zto",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "saia"
         ]
       },

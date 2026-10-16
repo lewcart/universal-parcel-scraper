@@ -29,7 +29,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API, looked up with this number, shows its history from creation by the customer through the Athens distribution centre and a partner network to delivery."
@@ -59,7 +60,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API echoes this number with its history from the Kalochori hub to arrival at the Kallithea delivery station, for a parcel Meest International sent."
@@ -91,7 +93,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "An archived reply of Taxydema's own tracking API echoes this number with its receipt at the Kalochori hub, for a parcel Meest International sent."
@@ -125,6 +128,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },

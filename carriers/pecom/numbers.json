@@ -25,7 +25,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "PEC's API documentation uses it as the example cargo code and cargo barcode in its status requests."
@@ -53,7 +54,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "PEC's API documentation lists it among the example cargo codes of its status requests."
@@ -81,7 +83,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "PEC's API documentation lists it among the example cargo codes and as the parent cargo of a document return."
@@ -109,7 +112,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "PEC's API documentation uses it as the example cargo barcode; its piece barcodes add four digits."
@@ -166,6 +170,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -196,7 +201,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up on PEC's own tracker, as an archived address shows; the capture was not opened."
@@ -227,7 +233,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up on PEC's own tracker, as an archived address shows; the capture was not opened."
@@ -258,7 +265,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up on PEC's own tracker, as an archived address shows; the capture was not opened."
@@ -288,7 +296,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up on PEC's own tracker, as an archived address shows; the capture was not opened."
@@ -318,7 +327,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Looked up on PEC's own tracker, as an archived address shows; the capture was not opened."

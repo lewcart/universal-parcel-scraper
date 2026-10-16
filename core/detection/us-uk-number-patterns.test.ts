@@ -290,3 +290,28 @@ describe('Saia twelve-digit PRO numbers', () => {
     }
   });
 });
+
+describe('Metropolitan Warehouse twelve-digit numbers', () => {
+  // Made-up numbers across leading digits and check-digit outcomes; the tracker takes any twelve digits.
+  const TWELVE = ['000000000000', '100000000009', '123456789012', '200000000000', '500000000013', '5000 0000 0013', '700000000000',
+    '900000000005', '999999999999'];
+
+  it('suggests Metropolitan for every twelve-digit number, beside the carriers that share the length', () => {
+    for (const number of TWELVE) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low',
+        candidates: expect.arrayContaining(['metropolitan-warehouse']) });
+      expect(recognitionCandidates(number).map(({ carrier }) => carrier), number).toContain('metropolitan-warehouse');
+      // The check is HTTP; the browser phase does not ask it.
+      expect(recognitionCandidates(number, { phase: 'browser' }).map(({ carrier }) => carrier), number).not.toContain('metropolitan-warehouse');
+    }
+    // A US caller asks Metropolitan first; without a hint the commoner twelve-digit carriers keep the first batch.
+    expect(recognitionCandidates('500000000013', { countryHint: 'US' })[0]).toMatchObject({ carrier: 'metropolitan-warehouse', countryMatch: 'home' });
+    expect(recognitionCandidates('500000000013').slice(0, 5).map(({ carrier }) => carrier)).not.toContain('metropolitan-warehouse');
+  });
+
+  it('leaves Metropolitan out for other lengths and for letters', () => {
+    for (const number of ['50000000001', '5000000000130', 'TRX500000000', 'A00000000013']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('metropolitan-warehouse');
+    }
+  });
+});

@@ -21,7 +21,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Colis Privé, which stays one candidate among several."
@@ -182,7 +183,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -216,6 +218,7 @@
           "yamato",
           "j-and-t",
           "lbc-express",
+          "metropolitan-warehouse",
           "sagawa"
         ]
       },
@@ -247,7 +250,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -278,7 +282,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The customer explicitly lists this among Colis Privé parcels. Its numeric format remains ambiguous and does not establish carrier ownership."
@@ -429,7 +434,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "The customer quotes a Colis Privé reply acknowledging receipt and subsequent loss of this Pixmania parcel. It remains a reported carrier association without independently matching history."

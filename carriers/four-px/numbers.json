@@ -119,7 +119,8 @@
           "sto",
           "zto",
           "j-and-t",
-          "lbc-express"
+          "lbc-express",
+          "metropolitan-warehouse"
         ]
       },
       "note": "Customer attributes the parcel to 4PX, while the reply attributes it to WishPost. The carrier is disputed.",

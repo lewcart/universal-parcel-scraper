@@ -5,7 +5,7 @@ import { load } from 'cheerio';
 import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
 import { dpdParcelNumber } from '../../core/detection/dpd.js';
-import { BudgetExceededError, carrierErrorKind, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError, type CarrierErrorKind, type CarrierErrorOptions } from '../../core/errors/index.js';
+import { BudgetExceededError, carrierErrorKind, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, UpstreamHttpError, type CarrierErrorKind, type CarrierErrorOptions } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -52,6 +52,21 @@ const CLIENT_VERSION = '3.79.14';
 const INSTALLATIONS_URL = `https://firebaseinstallations.googleapis.com/v1/projects/${FIREBASE_PROJECT}/installations`;
 const REMOTE_CONFIG_URL = `https://firebaseremoteconfig.googleapis.com/v1/projects/${FIREBASE_PROJECT_NUMBER}/namespaces/firebase:fetch`;
 const TIMEZONE = 'Europe/Zurich';
+
+/** A guest business unit: `businessUnit=DPD-<country>`. */
+export type DPDCountry = 'CH' | 'DE' | 'BE';
+
+/**
+ * What the unit changes beyond its selector: the carrier a lookup is filed
+ * under, the network recognition names, and the zone a reply's clock is read
+ * in when DPD names none. German replies keep the Swiss reading they have
+ * always had: both countries share the same civil-clock rules.
+ */
+const UNITS: Readonly<Record<DPDCountry, { carrier: string; name: string; adjective: string; zone: string }>> = {
+  CH: { carrier: 'dpd', name: 'DPD Switzerland', adjective: 'Swiss', zone: TIMEZONE },
+  DE: { carrier: 'dpd-de', name: 'DPD Germany', adjective: 'German', zone: TIMEZONE },
+  BE: { carrier: 'dpd-be', name: 'DPD Belgium', adjective: 'Belgian', zone: 'Europe/Brussels' },
+};
 const DEFAULT_TIMEOUT_MS = 90_000;
 /** How long a failed guest login answers new lookups before the next attempt. */
 const TOKEN_FAILURE_MEMORY_MS = 30_000;
@@ -94,12 +109,31 @@ class DPDAPIHttpError extends DPDAPIError {
   declare readonly status: number;
   /** The `exceptionType` the guest API names in a refusal's JSON body, or ''. */
   readonly exceptionType: string;
+  /** The wait a `Retry-After` header asked for, kept apart from the inconclusive error's own. */
+  readonly retryAfterHeaderMs: number | undefined;
 
-  constructor(status: number, exceptionType = '') {
+  constructor(status: number, exceptionType = '', retryAfterHeaderMs?: number) {
     super(`DPD guest API returned HTTP ${status}`, { status });
     this.name = 'DPDAPIHttpError';
     this.exceptionType = exceptionType;
+    this.retryAfterHeaderMs = retryAfterHeaderMs;
   }
+}
+
+/** Guest replies that were Cloudflare's challenge page rather than DPD's own. */
+const CHALLENGED = new WeakSet<object>();
+
+function challengePage(response: Response, bytes: Uint8Array): boolean {
+  return response.headers.get('cf-mitigated') === 'challenge'
+    || /Just a moment|Enable JavaScript and cookies/i.test(decodeText(bytes.subarray(0, 20_000)));
+}
+
+/** A `Retry-After` header, in seconds or as a date, in milliseconds. */
+function retryAfterMs(value: string | null): number | undefined {
+  const text = value?.trim() ?? '';
+  if (/^\d{1,6}$/.test(text)) return Number(text) * 1_000;
+  const at = /[a-z]/i.test(text) ? Date.parse(text) : Number.NaN;
+  return Number.isFinite(at) ? Math.max(0, at - Date.now()) : undefined;
 }
 
 /** The refusal's `exceptionType` (`PARCEL_NOT_FOUND`, `PROVIDE_ZIP_CODE`…), or '' for any other body. */
@@ -265,7 +299,7 @@ function apiLocation(event: JsonObject): string {
 /**
  * A scan's `eventDateAndTimeZoneId` as a zone luxon reads. DPD sends "+02:00"
  * and "Europe/Zurich"; "+0200", "UTC+2", "Z", "UTC" and "GMT" are accepted
- * too. Anything else passes through, and an unreadable zone means Swiss time.
+ * too. Anything else passes through, and an unreadable zone means the unit's.
  */
 function scanZone(value: unknown): string {
   const text = clean(value);
@@ -277,22 +311,24 @@ function scanZone(value: unknown): string {
 }
 
 /** How this adapter read a zone id before `scanZone`; stored events carry its spelling. */
-function storedTime(value: string, zoneId: unknown): ParsedTime | null {
+function storedTime(value: string, zoneId: unknown, unitZone: string): ParsedTime | null {
   const zoneText = clean(zoneId);
-  const zone = /^[+-]\d{2}:\d{2}$/.test(zoneText) ? `UTC${zoneText}` : zoneText || TIMEZONE;
-  return isoTime(value, zone) ?? (zoneText ? isoTime(value, TIMEZONE) : null);
+  const zone = /^[+-]\d{2}:\d{2}$/.test(zoneText) ? `UTC${zoneText}` : zoneText || unitZone;
+  return isoTime(value, zone) ?? (zoneText ? isoTime(value, unitZone) : null);
 }
 
 /**
  * Guest API timestamps: an explicit offset wins, then the zone DPD names for
- * that scan, then Swiss time. Unparsable values keep their raw text.
+ * that scan, then the unit's zone (Swiss time but for Belgium). Unparsable
+ * values keep their raw text.
  *
  * The sync keys stored events on this exact string. When the instant is the
- * one the adapter read before (with `storedZoneId`, Swiss time for
+ * one the adapter read before (with `storedZoneId`, the unit's zone for
  * `parcelEvents`), the earlier spelling is returned so no stored scan is
  * duplicated.
  */
 function apiEventTime(
+  unitZone: string,
   date: unknown,
   clock: unknown = '',
   zoneId: unknown = null,
@@ -305,8 +341,8 @@ function apiEventTime(
   const offsetParsed = explicitOffsetTime(value);
   if (offsetParsed) return offsetParsed.iso;
   const zone = scanZone(zoneId);
-  const parsed = (zone ? isoTime(value, zone) : null) ?? isoTime(value, TIMEZONE);
-  const stored = storedTime(value, storedZoneId);
+  const parsed = (zone ? isoTime(value, zone) : null) ?? isoTime(value, unitZone);
+  const stored = storedTime(value, storedZoneId, unitZone);
   return (stored && stored.timestamp === parsed?.timestamp ? stored : parsed)?.iso
     ?? clean(`${dateText} ${clockText}`);
 }
@@ -371,6 +407,8 @@ export function parseDPDTrackingApi(
   payload: unknown,
   trackingNumber: string,
   postcodeVerified?: boolean,
+  /** The zone of a clock DPD names none for: the unit's, Swiss time by default. */
+  zone: string = TIMEZONE,
 ): CarrierResult {
   if (!isRecord(payload)) throw new DPDAPIError('DPD guest API returned an invalid response');
   if (clean(payload.parcelNumber ?? payload.shipmentId) !== trackingNumber) {
@@ -381,7 +419,7 @@ export function parseDPDTrackingApi(
   // wording, place and scan code but a bare Swiss wall clock, and in
   // `parcelHistory` with the enumeration and DPD's offset for that scan. A
   // scan takes the offset of the history entry at the same wall clock, so the
-  // repeated autumn hour keeps its instant; without one it is read in Swiss time.
+  // repeated autumn hour keeps its instant; without one it is read in the unit's zone.
   // Only a scan alone at its wall clock with a single entry there is paired
   // and lent that entry's stage. Otherwise nothing says which entry is whose:
   // the scans share an offset only when every entry there names the same zone.
@@ -419,7 +457,7 @@ export function parseDPDTrackingApi(
       : null;
     const stage = scanStage(code) ?? apiStage(code) ?? (twin ? apiStage(twin.description) : null);
     append({
-      time: apiEventTime(raw.date, raw.time, zoneId, null),
+      time: apiEventTime(zone, raw.date, raw.time, zoneId, null),
       location: apiLocation(raw),
       description: clean(textual(raw.translation) ?? textual(raw.eventTypeText) ?? apiDescription(raw.eventType))
         || 'Tracking update',
@@ -432,7 +470,7 @@ export function parseDPDTrackingApi(
       const code = scanCode(raw.description);
       const stage = apiStage(code);
       append({
-        time: apiEventTime(raw.eventDateAndTime, '', raw.eventDateAndTimeZoneId),
+        time: apiEventTime(zone, raw.eventDateAndTime, '', raw.eventDateAndTimeZoneId),
         location: apiLocation(raw),
         description: apiDescription(raw.description),
         ...(stage ? { stage } : {}),
@@ -482,6 +520,7 @@ export function parseDPDTrackingApi(
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: statusText,
     last_update: events[0]?.time || apiEventTime(
+      zone,
       current.eventDateAndTime,
       '',
       current.eventDateAndTimeZoneId,
@@ -503,7 +542,7 @@ export function parseDPDTrackingApi(
   return result;
 }
 
-/** Guard automatic scope confirmation and the new German direct service. */
+/** Guard automatic scope confirmation and the German and Belgian direct services. */
 function requireGuestActivity(payload: JsonObject, result: CarrierResult): void {
   if (!isRecord(payload.status) || !known(payload.status.description)) {
     throw new SchemaError('DPD', 'DPD returned no usable shipment status');
@@ -607,7 +646,7 @@ async function whileLive<T>(shared: Promise<T>, signal: AbortSignal): Promise<T>
 
 export interface DPDTrackerOptions {
   /** Guest service country; the existing Swiss adapter remains the default. */
-  country?: 'CH' | 'DE';
+  country?: DPDCountry;
   timeoutMs?: number;
   /** Whole-lookup budget; defaults to both tiers plus the solver's own allowance. */
   budgetMs?: number;
@@ -642,7 +681,7 @@ export interface DPDAppTier {
 }
 
 export class DPDTracker {
-  readonly country: 'CH' | 'DE';
+  readonly country: DPDCountry;
   readonly timeoutMs: number;
   readonly budgetMs: number;
   readonly flaresolverrUrl: string;
@@ -689,6 +728,7 @@ export class DPDTracker {
     // DPD checks the postcode against the recipient's, and the service this
     // adapter asks also answers for parcels delivered in other countries: any
     // country's postcode goes through. The German unit reads German deliveries.
+    // DPD Belgium's catalog entry asks for none.
     const resolvedPostcode = deliveryPostcodeText(postcode);
     if (resolvedPostcode && !(this.country === 'DE' ? /^\d{5}$/ : DELIVERY_POSTCODE).test(resolvedPostcode)) {
       throw new InvalidInputError('DPD', this.country === 'DE'
@@ -696,7 +736,7 @@ export class DPDTracker {
         : 'DPD postcode must be 3 to 12 letters and digits with a digit, in groups joined by a space or hyphen');
     }
     // One signal and one clock for both tiers and the guest login they share with `recognizes`.
-    const carrier = this.country === 'DE' ? 'dpd-de' : 'dpd';
+    const { carrier } = UNITS[this.country];
     const lookup = lookupBudget(context, this.budgetMs, carrier);
     const pageRecovers = (error: unknown): boolean => {
       const kind = carrierErrorKind(error);
@@ -763,7 +803,7 @@ export class DPDTracker {
           if (lookup.signal.aborted && pageRecovers(error)) {
             throw new BudgetExceededError(carrier, lookup.budgetMs, { cause: error });
           }
-          throw error;
+          throw this.reported(error);
         }),
       },
       ...(this.country === 'CH' ? [{
@@ -774,7 +814,9 @@ export class DPDTracker {
     ]);
     result.tracking_url = this.country === 'DE'
       ? `https://tracking.dpd.de/status/en_US/parcel/${trackingNumber}`
-      : dpdTrackingUrl(trackingNumber);
+      : this.country === 'BE'
+        ? `https://www.dpdgroup.com/be/mydpd/my-parcels/track?parcelNumber=${trackingNumber}`
+        : dpdTrackingUrl(trackingNumber);
     return result;
   }
 
@@ -790,7 +832,8 @@ export class DPDTracker {
   async recognizes(raw: string, context: TrackingContext = {}): Promise<boolean> {
     const trackingNumber = dpdParcelNumber(raw);
     if (!trackingNumber) return false;
-    const lookup = lookupBudget(context, this.budgetMs, this.country === 'DE' ? 'dpd-de' : 'dpd');
+    const unit = UNITS[this.country];
+    const lookup = lookupBudget(context, this.budgetMs, unit.carrier);
     try {
       const payload = await this.detailsWithFreshToken(trackingNumber, undefined, lookup);
       if (clean(payload.parcelNumber ?? payload.shipmentId) !== trackingNumber) return false;
@@ -798,16 +841,29 @@ export class DPDTracker {
       const country = known(current.countryCode).toUpperCase();
       if (/^[A-Z]{2}$/.test(country) && country !== this.country) return false;
       if (country !== this.country) {
-        throw this.country === 'DE'
-          ? new IndeterminateError('DPD Germany', 'DPD returned no German country evidence')
-          : new IndeterminateError('DPD Switzerland', 'DPD returned no Swiss country evidence');
+        throw new IndeterminateError(unit.name, `DPD returned no ${unit.adjective} country evidence`);
       }
-      requireGuestActivity(payload, parseDPDTrackingApi(payload, trackingNumber));
+      requireGuestActivity(payload, parseDPDTrackingApi(payload, trackingNumber, undefined, unit.zone));
       return true;
     } catch (error) {
       if (error instanceof DPDTrackingError) return false;
-      throw error;
+      throw this.reported(error);
     }
+  }
+
+  /**
+   * The Swiss page and the German app can answer after Cloudflare's challenge
+   * or DPD's rate limit, so those stay inconclusive for them. Belgium has no
+   * tier after the guest API, and reports them as what they are.
+   */
+  private reported(error: unknown): unknown {
+    if (this.country !== 'BE' || !(error instanceof Error)) return error;
+    if (CHALLENGED.has(error)) {
+      return new DPDChallengeError('DPD returned a Cloudflare challenge to its guest API', { cause: error });
+    }
+    return error instanceof DPDAPIHttpError && error.status === 429
+      ? new RateLimitedError('DPD', error.retryAfterHeaderMs, undefined, { cause: error, status: 429 })
+      : error;
   }
 
   private async apiFetch(trackingNumber: string, postcode: string, lookup: LookupBudget): Promise<CarrierResult> {
@@ -821,7 +877,7 @@ export class DPDTracker {
       payload = await this.detailsWithFreshToken(trackingNumber, undefined, lookup);
       postcodeVerified = false;
     }
-    const result = parseDPDTrackingApi(payload, trackingNumber, postcodeVerified);
+    const result = parseDPDTrackingApi(payload, trackingNumber, postcodeVerified, UNITS[this.country].zone);
     const shopId = this.shops && result.current_stage === 'ready_for_pickup' ? pickupShopId(payload) : '';
     if (shopId) {
       // The reply names the shop, if at all, without its address: the shop's own
@@ -838,7 +894,13 @@ export class DPDTracker {
         throw new IndeterminateError('DPD Germany', 'DPD returned activity in another country', { reason: 'other_country' });
       }
     }
-    if (this.country === 'DE') requireGuestActivity(payload, result);
+    if (this.country !== 'CH') requireGuestActivity(payload, result);
+    // Without verified scans DPD gives each milestone once, with its newest
+    // date and no place: the scans between, and earlier rounds of a milestone,
+    // are missing. Enabled providers may hold them.
+    if (this.country === 'BE' && !(Array.isArray(payload.parcelEvents) && payload.parcelEvents.some(isRecord))) {
+      result.history_truncated = true;
+    }
     return result;
   }
 
@@ -1060,12 +1122,20 @@ export class DPDTracker {
     // A 503 describes DPD's availability, so the page must not turn it into
     // an answer about the parcel or hold up the caller's other lookups.
     if (result.response.status === 503) throw new UpstreamHttpError('DPD guest API', 503);
-    if (!result.response.ok) throw new DPDAPIHttpError(result.response.status, exceptionType(result.bytes));
+    const challenged = <T extends Error>(error: T): T => {
+      if (challengePage(result.response, result.bytes)) CHALLENGED.add(error);
+      return error;
+    };
+    if (!result.response.ok) {
+      throw challenged(new DPDAPIHttpError(
+        result.response.status, exceptionType(result.bytes), retryAfterMs(result.response.headers.get('retry-after')),
+      ));
+    }
     let payload: unknown;
     try {
       payload = parseJsonBytes(result.bytes, 'DPD guest API');
     } catch (error) {
-      throw new DPDAPIError('DPD guest API returned invalid JSON', { cause: error });
+      throw challenged(new DPDAPIError('DPD guest API returned invalid JSON', { cause: error }));
     }
     if (!isRecord(payload)) throw new DPDAPIError('DPD guest API returned an invalid response');
     return payload;

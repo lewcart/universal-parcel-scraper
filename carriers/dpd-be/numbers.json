@@ -63,6 +63,68 @@
         ]
       },
       "note": "A complaint against DPD Belgium about this parcel held at one of its Belgian depots; DPD Belgium's replies arrange its delivery."
+    },
+    {
+      "number": "05345106755403",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.test-achats.be/plainte/plaintes-publiques/colis-non-livr-C3-A9-de-mani-C3-A8re-inj/97c65a07c842950766",
+        "date": "2026-08-17",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "dpd-fr",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "A complaint against DPD Belgium; the customer names this parcel in the thread and DPD Belgium's customer care replies about its delivery."
+    },
+    {
+      "number": "05222389179587",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.test-aankoop.be/klagen/publieke-klachten/probleem-met-levering-van-pake/10c3fd0d1a016eee20",
+        "date": "2026-10-15",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "dpd-fr",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "A complaint against DPD Belgium about this parcel's pickup points; DPD Belgium's reply traces its Belgian route."
     }
   ]
 }

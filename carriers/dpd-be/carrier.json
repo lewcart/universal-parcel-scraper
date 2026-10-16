@@ -14,16 +14,35 @@
   "timezone": "Europe/Brussels",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dpd-be",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 983
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "eta",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
     "searchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
     "canaryUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta",
+      "delivered_at",
+      "provider_code"
+    ],
     "discarded": [],
     "unavailable": []
   },

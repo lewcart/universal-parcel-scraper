@@ -9227,7 +9227,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Brussels",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-be",
+      "recognitionRank": 983
     },
     "canaryUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
     "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",

@@ -1,0 +1,19 @@
+import type { AdapterFactory } from '../../core/adapter/index.js';
+import { DPDTracker } from '../dpd/adapter.js';
+
+/** Belgium reads the myDPD guest protocol with its own business-unit selector. */
+export const adapter: AdapterFactory = (environment) => {
+  const tracker = new DPDTracker({
+    country: 'BE',
+    fetcher: environment.fetcher,
+    recorder: environment.recorder,
+    userAgent: environment.userAgent,
+  });
+  return {
+    id: 'dpd-be', recordsSteps: true, steps: ['direct'],
+    // The catalog asks for no postcode, so DPD answers without verifying the recipient.
+    track: (input, context) => tracker.fetch(input.number, '', context),
+    // The guest API's current country, as for Switzerland and Germany.
+    recognize: async (number, context) => ({ known: await tracker.recognizes(number, context) }),
+  };
+};

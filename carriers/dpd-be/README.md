@@ -1,11 +1,44 @@
 # DPD Belgium
 
-DPD Belgium parcels use enabled universal providers. There is no dedicated adapter.
-
 DPD Belgium is DPD's network in Belgium. Its tracking page on dpd.com hands the number to
-myDPD, DPD's consumer site, which also serves [DPD Switzerland](../dpd/README.md). The myDPD
-guest service behind the `dpd` adapter answers for Belgian parcels too, but that adapter
-recognizes Swiss parcels only.
+myDPD, DPD's consumer site, which also serves [DPD Switzerland](../dpd/README.md). Tracked
+through the myDPD guest service with Belgium's business unit.
+
+## How it works
+
+1. `direct`: the guest API of the myDPD Android app, with `businessUnit=DPD-BE` and no
+   postcode. The Firebase installation, Remote Config and OAuth token come first, as for
+   [DPD Switzerland](../dpd/README.md#how-it-works), and are cached per instance.
+
+- The reply must name the requested parcel and list dated milestones. A details 404, or a 400
+  typed `PARCEL_NOT_FOUND`, is not found; another 400 or a reply without milestones is
+  inconclusive, and malformed milestones are a schema error.
+- Cloudflare's challenge page, whatever its HTTP status, is a challenge, and HTTP 429 a rate
+  limit. No tier follows: the Swiss consignee page is not read.
+- Recognition makes the same request and knows a number only when DPD's current country for
+  the parcel is Belgium. Another country is unknown, and a reply without one is inconclusive.
+
+## Notes
+
+- The guest service is group-wide: every business unit answers for any DPD network's parcel
+  with the same history, and the unit changes only the zone named for the current status. A
+  matching number does not make a parcel Belgian, so recognition needs the Belgian current
+  country. A parcel filed under DPD Belgium is read wherever DPD places it, since a parcel
+  sent to Belgium from abroad starts there.
+- Without a postcode DPD gives each milestone once, with its newest date and DPD's offset but
+  no place. Earlier rounds of a milestone and the scans between are missing, so the answer is
+  marked `history_truncated` for enabled providers to complete. The milestones can come out of
+  order and are sorted newest first.
+- The catalog asks for no postcode: the guest lookup answers without one.
+- A clock DPD names no zone for is read in Belgian time.
+- [DPD's map](../dpd/status.ts) stages the codes, and the codes it leaves unmapped stay so
+  ([status.ts](status.ts)).
+
+## Limitations
+
+- The reply has no places, sender, weight or pickup point, and gives the delivery day without
+  a window.
+- The guest service drops older parcels and then answers as for an unknown number.
 
 ## Numbers
 
@@ -17,10 +50,14 @@ rule claims the number. The samples and their sources are in [`numbers.json`](nu
 ## Links
 
 DPD Belgium's tracking page opens one parcel at
-`www.dpdgroup.com/be/mydpd/my-parcels/track` with the number in `?parcelNumber=`. myDPD links
-are read as [DPD Switzerland](../dpd/README.md)'s, whose rules take the whole domain.
+`www.dpdgroup.com/be/mydpd/my-parcels/track` with the number in `?parcelNumber=`, and results
+link there. myDPD links are read as [DPD Switzerland](../dpd/README.md)'s, whose rules take
+the whole domain.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+```sh
+DPD_BE_TRACKING_NUMBER=... DPD_BE_UNKNOWN_NUMBER=... npm run test:carriers:live -- carriers/dpd-be
+```
+
+Fixtures are synthetic ([fixtures/README.md](fixtures/README.md)).

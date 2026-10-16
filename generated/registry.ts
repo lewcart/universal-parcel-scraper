@@ -156,6 +156,7 @@ import { adapter as jdLogistics } from '../carriers/jd-logistics/adapter.js';
 import { adapter as jitsu } from '../carriers/jitsu/adapter.js';
 import { adapter as jne } from '../carriers/jne/adapter.js';
 import { adapter as jrt } from '../carriers/jrt/adapter.js';
+import { adapter as jsExpress } from '../carriers/js-express/adapter.js';
 import { adapter as kazpost } from '../carriers/kazpost/adapter.js';
 import { adapter as kex } from '../carriers/kex/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
@@ -457,6 +458,7 @@ export const REGISTRY: RegistryDefinition = {
     "jitsu": jitsu,
     "jne": jne,
     "jrt": jrt,
+    "js-express": jsExpress,
     "kazpost": kazpost,
     "kex": kex,
     "korea-post": koreaPost,
@@ -876,7 +878,7 @@ export const REGISTRY: RegistryDefinition = {
     "jordan-post": "universal",
     "jrs-express": "universal",
     "jrt": "jrt",
-    "js-express": "universal",
+    "js-express": "js-express",
     "kargoist": "universal",
     "kazpost": "kazpost",
     "kerry-tj": "universal",

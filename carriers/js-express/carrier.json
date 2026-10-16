@@ -18,17 +18,45 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "js-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 916
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://www.js-exp.com/index.php?catid=19",
     "canaryUrl": "https://www.js-exp.com/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "history",
+      "location"
+    ],
+    "scraped": [
+      "history",
+      "location"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "status",
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [],
   "detection": [

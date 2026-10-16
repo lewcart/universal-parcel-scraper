@@ -13393,7 +13393,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "js-express",
+      "recognitionRank": 916,
+      "localClocks": true
     },
     "canaryUrl": "https://www.js-exp.com/",
     "trackingSearchUrl": "https://www.js-exp.com/index.php?catid=19",

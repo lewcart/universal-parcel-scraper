@@ -16,7 +16,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS Germany, which stays one candidate among several."
@@ -64,7 +65,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to GLS, which stays one candidate among several."
@@ -149,7 +151,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Public GLS shipment complaint. GLS group tracking shows the parcel; the issuing country is unestablished."
@@ -180,7 +183,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Public GLS Germany delivery complaint. GLS Germany's tracking shows the parcel delivered."
@@ -245,7 +249,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -421,7 +426,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -447,7 +453,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -473,7 +480,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -499,7 +507,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -528,7 +537,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -554,7 +564,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -580,7 +591,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -606,7 +618,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."
@@ -632,7 +645,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A GLS parcel number from a public Paketda question. GLS's group tracking overview returned its status history without a postcode."

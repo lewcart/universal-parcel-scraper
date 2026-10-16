@@ -20,7 +20,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Speedy's routing-label specification uses it as the waybill printed under the barcode; not a real shipment."
@@ -44,7 +45,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
@@ -68,7 +70,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
@@ -92,7 +95,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Ship24's Speedy page lists it as a sample; it is not described as a live shipment."
@@ -116,7 +120,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Speedy's own REST API examples use it as the parcel number in the routing-barcode example; not a real shipment."
@@ -140,7 +145,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Speedy's sample A4 label with cash on delivery, printed by its API testers, shows it as the parcel number; a test label, not a real shipment."
@@ -164,7 +170,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Speedy's sample A4 label without cash on delivery, printed by its API testers, shows it as the parcel number; a test label, not a real shipment."
@@ -190,7 +197,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -216,7 +224,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -242,7 +251,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -271,7 +281,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -298,7 +309,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -324,7 +336,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."
@@ -350,7 +363,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Speedy page offered it as a sample to try on 11 Oct 2026; Speedy's own tracker returns its history."

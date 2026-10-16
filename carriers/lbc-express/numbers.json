@@ -139,7 +139,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An LBC tracking page archived by the Wayback Machine shows its domestic history."
@@ -251,7 +252,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "The source attributes this identifier to LBC; the public page echoes it without usable scans. Carrier confirmation remains unresolved."

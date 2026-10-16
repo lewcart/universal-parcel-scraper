@@ -17,7 +17,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Dachser, which no rule claims. Consignment within Spain."

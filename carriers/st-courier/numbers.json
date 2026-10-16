@@ -89,7 +89,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on ST Courier's own tracker, as an archived address shows; the opened capture holds the page's script source instead of a result."
@@ -119,7 +120,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A Voxya complaint against ST Courier gives it as the AWB consignment marked delivered but not received."
@@ -148,7 +150,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A Voxya complaint against ST Courier gives it as the AWB number of a delayed parcel."
@@ -177,7 +180,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A Voxya complaint against ST Courier gives it as the AWB number of a parcel not delivered within Chennai."

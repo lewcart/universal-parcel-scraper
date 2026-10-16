@@ -22,7 +22,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Castores' tracking manual prints it under the barcode of a carta porte as an example of the 11-digit talón number."
@@ -67,7 +68,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte documented and in transit."
@@ -93,7 +95,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte documented, in transit and delivered."
@@ -119,7 +122,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte delivered."
@@ -148,7 +152,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' own talón tracker shows the carta porte delivered."
@@ -174,7 +179,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' former tracking page; the capture holds only the page shell, results were loaded by script."
@@ -201,7 +207,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Castores' former tracking path; the capture holds only the script app shell, without the history."

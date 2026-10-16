@@ -1696,6 +1696,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 675,
       "localClocks": true
     },
     "canaryUrl": "https://a1.asendiausa.com/tracking/",
@@ -17397,7 +17398,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ppl"
+      "adapter": "ppl",
+      "recognitionRank": 608
     },
     "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
     "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
@@ -17413,7 +17415,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "professional-couriers": {
     "displayName": "The Professional Couriers",
@@ -23059,7 +23066,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "postaplus": [],
   "postex": [],
   "posturinn": [],
-  "ppl": [],
+  "ppl": ["ppl-1"],
   "professional-couriers": [],
   "prompt-xpress": ["prompt-xpress-1"],
   "pronto-lanka": [],

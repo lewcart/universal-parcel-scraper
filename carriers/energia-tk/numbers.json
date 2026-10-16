@@ -20,7 +20,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Gdeposylka's TK Energia page gives it as an example receipt number, and Energia's tracker knows it."
@@ -46,7 +47,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived reply of Energia's own tracking API for this waybill shows it on a trip, in transit from Krasnoyarsk to Nakhodka."
@@ -75,7 +77,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived reply of Energia's own tracking API for this waybill shows it on a rail trip from Vladivostok, bound for Bryansk."
@@ -104,7 +107,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived reply of Energia's own tracking API for this waybill shows two places at a Moscow-region warehouse, in transit from Belgorod to Minsk."
@@ -130,7 +134,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived reply of Energia's own tracking API for this waybill shows it at the destination warehouse in Leninsk-Kuznetsky, ready for issue, sent from Kostroma."
@@ -156,7 +161,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived reply of Energia's own tracking API for this waybill shows it on a rail trip from Novosibirsk to Khabarovsk."

@@ -16,7 +16,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Made-up waybill in the eleven-digit shape the portal answers with; several carriers share the shape."
@@ -56,7 +57,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Official documentation example, not a real shipment."
@@ -111,7 +113,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Waybill in a public review of DHL in Poland. The portal returns its status, a return to the sender."
@@ -137,7 +140,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Waybill in a public review of DHL in Poland. The portal returns its status, a return to the sender."

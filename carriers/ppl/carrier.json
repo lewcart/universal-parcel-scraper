@@ -19,7 +19,10 @@
     "adapter": "ppl",
     "steps": [
       "direct"
-    ]
+    ],
+    "recognition": {
+      "rank": 608
+    }
   },
   "capabilities": [
     "history",
@@ -82,5 +85,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "ppl-1",
+      "pattern": "^\\d{11}$",
+      "confidence": "low"
+    }
+  ]
 }

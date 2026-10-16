@@ -39,7 +39,7 @@
  * read, and nothing else from the summary is copied except the destination
  * country, weight and the declared last-mile reference.
  */
-import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
@@ -568,6 +568,9 @@ export const adapter: AdapterFactory = (environment) => {
     id: 'asendia',
     recordsSteps: true,
     steps: ['direct', 'trawl'],
+    // A1 and Asendia UK only: recognition never opens the global portal's browser.
+    recognize: (number, context) => recognizeFromLookup(() => trackEverywhere(a1, uk, number, context),
+      () => accepted(() => normalizeAsendiaA1TrackingNumber(number))),
     track: (input, context) => {
       const number = normalizeAsendiaA1TrackingNumber(input.number);
       const browserEligible = !!environment.trawl && /^[A-Z0-9]{8,40}$/.test(number) && /\d/.test(number);

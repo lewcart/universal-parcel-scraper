@@ -2,9 +2,12 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
 import { CARRIER_DEFINITIONS, tracksAutomatically } from '../../core/catalog/index.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
+import { universalCarrierHints } from '../../providers/shared/hints.js';
 import { adapter, PplTracker } from './adapter.js';
 import { parsePpl, parsePplRejection } from './parser.js';
 import { pplStage, statusMap } from './status.js';
@@ -194,6 +197,45 @@ describe('PPL tracking through its tracking page’s service', () => {
       .track({ number: NUMBER, carrier: 'ppl' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'ppl', source: 'ppl', result: { current_stage: 'delivered', pickup_point: 'PBOX Example Square' } });
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([API]);
+  });
+});
+
+describe('PPL recognition', () => {
+  it('knows a parcel only from a history bound to the number', async () => {
+    const fetcher = transport(() => reply(delivered));
+    await expect(carrier(fetcher).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([API]);
+    await expect(carrier(transport(() => reply(notFound, 400))).recognize!(NUMBER)).resolves.toEqual({ known: false });
+  });
+
+  it('keeps every other reply inconclusive and sends nothing for numbers PPL does not issue', async () => {
+    for (const [response, kind] of [[() => reply({ status: 400, detail: 'service.Synthetic' }, 400), 'indeterminate'],
+      [() => reply('<html><title>Request Rejected</title></html>'), 'challenge'], [() => reply({ status: 429 }, 429), 'rate_limited'],
+      [() => reply({ status: 404 }, 404), 'transport']] as const) {
+      await expect(carrier(transport(response)).recognize!(NUMBER)).rejects.toMatchObject({ kind });
+    }
+    const fetcher = vi.fn<typeof fetch>();
+    for (const number of ['4000000000', '400000000012', 'JJD000000000000000001']) {
+      await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
+    }
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('is suggested for eleven digits and asked first for a Czech parcel or one a provider names PPL', () => {
+    for (const number of ['40000000001', '20000000000', '70000000009']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['ppl']) });
+      // The commoner eleven-digit carriers keep the first batch.
+      expect(recognitionAskedCarriers(number)).not.toContain('ppl');
+      expect(recognitionAskedCarriers(number, { countryHint: 'CZ' })[0]).toBe('ppl');
+      expect(recognitionAskedCarriers(number, { hint: 'ppl' })[0]).toBe('ppl');
+    }
+    // A provider names PPL beside the DHL networks it hands over to; only PPL's rule fits.
+    expect(universalCarrierHints(['PPL', 'DHL Express', 'DHL Parcel Netherlands'], NUMBER).discovered_carrier).toBe('ppl');
+    // PPL is no DHL network: a bare DHL name keeps DHL eCommerce Poland.
+    expect(universalCarrierHints(['DHL'], NUMBER).discovered_carrier).toBe('dhl-ecommerce-pl');
+    for (const number of ['4000000000', '400000000012', 'PPL40000000001']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('ppl');
+    }
   });
 });
 

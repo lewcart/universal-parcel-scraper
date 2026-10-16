@@ -42,7 +42,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An Australian transport consignment looked up on Mainfreight's tracker; the opened tracker reply shows it as information received."
@@ -68,7 +69,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An Australian transport consignment looked up on Mainfreight's tracker; the opened tracker reply shows its pickup, transit and arrival at the delivery depot."
@@ -113,7 +115,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -140,7 +143,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -166,7 +170,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -192,7 +197,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its New Zealand transport (MSNZS) service code, as an archived address shows; the capture was not opened."
@@ -221,7 +227,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Mainfreight's own tracker under its United States (MSUSS) service code, as an archived address shows; the capture was not opened."
@@ -289,7 +296,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Mainfreight's tracking webhook documentation gives it as the consignment number in its New Zealand transport example."
@@ -315,7 +323,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "The same New Zealand transport example gives it in its tracking address on Mainfreight's tracker, under the MSNZS service code."

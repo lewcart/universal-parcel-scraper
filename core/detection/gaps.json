@@ -2105,12 +2105,6 @@
     "reason": "A DPD parcel number that PostNord delivered. The shape is DPD's; PostNord's tracker also knows the parcel it delivers."
   },
   {
-    "carrier": "ppl",
-    "pattern": "^\\d{11}$",
-    "kind": "by_design",
-    "reason": "Eleven digits are shared by several carriers and nothing in the number points to PPL."
-  },
-  {
     "carrier": "professional-couriers",
     "pattern": "^[A-Z]{3}\\d{9}$",
     "kind": "collision",

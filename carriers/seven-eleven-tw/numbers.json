@@ -67,7 +67,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup address on 7-ELEVEN's own E-Tracking page with this number; the opened capture shows only the empty search form behind its picture code, so no history is visible."
@@ -96,7 +97,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup address on 7-ELEVEN's own E-Tracking page with this eleven-digit number; the capture was not opened, and captures of this form without the C2C link show only the empty form."

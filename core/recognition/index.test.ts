@@ -76,6 +76,7 @@ describe('recognition candidates', () => {
       { carrier: 'gls-ch', needsInput: 'postcode', preferred: false },
       { carrier: 'postlogistics', needsInput: null, preferred: false },
       { carrier: 'dhl-ecommerce-pl', needsInput: null, preferred: false },
+      { carrier: 'ppl', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('06080000000002', { skip: (carrier) => carrier === 'dpd' }).map((candidate) => candidate.carrier))
       .toEqual(['dpd-be', 'dpd-nl', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);

@@ -134,7 +134,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A public Altroconsumo complaint about a GLS delivery gives it as the shipment number."
@@ -160,7 +161,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A public Altroconsumo complaint about a GLS delivery gives it as the shipment number."

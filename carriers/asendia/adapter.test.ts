@@ -3,7 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 import { carrierErrorKind, NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { recognitionAskedCarriers, recognitionCandidates } from '../../core/catalog/recognition.js';
 import { REGISTRY } from '../../generated/registry.js';
+import { universalCarrierHints } from '../../providers/shared/hints.js';
 import {
   adapter,
   AsendiaA1Tracker,
@@ -625,5 +627,47 @@ describe('Asendia lookup across A1 and Asendia UK', () => {
       : fetcher(input, init);
     await expect(adapter(environment(stalling)).track({ number: UK_NUMBER }, { budgetMs: 900 })).resolves.toMatchObject({ status: 'delivered' });
     expect(paths()).toEqual(['tracking.php']);
+  });
+});
+
+describe('Asendia recognition', () => {
+  const UK_NUMBER = 'SYNTHETICUK0000001';
+  const ukPage = (name: string) => () => new Response(readFileSync(fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url)), 'utf8'));
+  const environment = (fetcher: typeof fetch, scrape = vi.fn()) => ({ fetcher, trawl: { scrape } as unknown as TrawlClient,
+    browserExecutablePath: null, recorder: { step() {}, lookup() {} }, env: {} });
+  const a1Unknown = () => ({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(NOT_FOUND)] });
+
+  it('knows a parcel A1 or Asendia UK holds, and never opens the global portal', async () => {
+    const a1 = upstream({ 'main.js': [script()], Customer: [jsonReply(CUSTOMER)], Tracking: [jsonReply(delivered())] });
+    await expect(adapter(environment(a1.fetcher)).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    expect(a1.paths()).toEqual(['main.js', 'Customer', 'Tracking']);
+    const uk = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-delivered.html')] });
+    await expect(adapter(environment(uk.fetcher)).recognize!(UK_NUMBER)).resolves.toMatchObject({ known: true });
+    const scrape = vi.fn();
+    const neither = upstream({ ...a1Unknown(), 'tracking.php': [ukPage('uk-not-found.html')] });
+    await expect(adapter(environment(neither.fetcher, scrape)).recognize!(UK_NUMBER)).resolves.toEqual({ known: false });
+    expect(neither.paths()).toEqual(['main.js', 'Customer', 'Tracking', 'tracking.php']);
+    expect(scrape).not.toHaveBeenCalled();
+  });
+
+  it('keeps a tracker failure inconclusive and sends nothing for input Asendia cannot take', async () => {
+    const failing = upstream({ 'main.js': [new Response('', { status: 500 })], 'tracking.php': [ukPage('uk-not-found.html')] });
+    await expect(adapter(environment(failing.fetcher)).recognize!(UK_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
+    const idle = upstream({});
+    await expect(adapter(environment(idle.fetcher)).recognize!('AB12')).resolves.toEqual({ known: false });
+    expect(idle.fetcher).not.toHaveBeenCalled();
+  });
+
+  it('is asked about eBay ESUS numbers before DHL eCommerce, and first when a provider names Asendia', () => {
+    for (const number of ['ESUS000000001', 'ESUS123456780']) {
+      expect(recognitionAskedCarriers(number)).toEqual(['asendia', 'dhl-ecommerce']);
+      expect(recognitionAskedCarriers(number, { hint: 'dhl-ecommerce' })).toEqual(['dhl-ecommerce', 'asendia']);
+      expect(universalCarrierHints(['Asendia United States'], number).discovered_carrier).toBe('asendia');
+    }
+    // Its own layouts are selected outright, with nothing to recognize.
+    expect(recognitionCandidates(NUMBER)).toEqual([]);
+    for (const number of ['ESUS00000001', 'ESUS0000000001', 'ESGB000000001']) {
+      expect(recognitionAskedCarriers(number)).not.toContain('asendia');
+    }
   });
 });

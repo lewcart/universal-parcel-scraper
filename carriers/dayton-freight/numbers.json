@@ -22,7 +22,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Dayton Freight's former status page shows the shipment's history, in the eleven-digit form."
@@ -48,7 +49,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Dayton Freight's former PRO status page; the capture was not opened."
@@ -194,7 +196,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Dayton Freight's own tracker of a PRO in its eleven-digit barcode form; the capture was not opened."
@@ -223,7 +226,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on Dayton Freight's own tracker of a PRO in its eleven-digit barcode form; the capture was not opened."

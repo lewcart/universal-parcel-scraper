@@ -22,7 +22,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on TOPTRANS's own tracking service shows the shipment's history."
@@ -48,7 +49,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on TOPTRANS's own tracking service shows the shipment's history."
@@ -74,7 +76,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on TOPTRANS's own tracking service shows the shipment's history."
@@ -100,7 +103,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on TOPTRANS's own tracking service shows the shipment with its order-received event."
@@ -127,7 +131,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on TOPTRANS's own tracking service as a shipment number, as an archived address shows; the capture was not opened."
@@ -153,7 +158,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on TOPTRANS's own tracking service as a shipment number, as an archived address shows; the capture was not opened."
@@ -205,7 +211,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "The shipment number an archived piece lookup on TOPTRANS's own tracking service shows, with its history."

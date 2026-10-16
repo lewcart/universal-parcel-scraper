@@ -22,7 +22,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on OCASA's tracker shows this shipment's history from pickup to delivery in June 2017."
@@ -48,7 +49,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "An archived lookup on OCASA's tracker shows this shipment's history from pickup to delivery in April 2018."
@@ -74,7 +76,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on OCASA's tracker, as an archived address shows; the capture holds only the tracker's CAPTCHA step, so no history is visible."

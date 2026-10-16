@@ -89,7 +89,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "The archived Chilexpress tracking page shows this number as a consolidated transport order (Orden de Transporte Consolidado). Eleven digits."
@@ -255,7 +256,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -349,7 +351,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Chilexpress's own tracking page, as an archived address shows; the capture was not opened."
@@ -440,7 +443,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Chilexpress's help-centre tracking page, as an archived address shows; the capture was not opened."
@@ -467,7 +471,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A reclamos.cl complaint about a delayed delivery by Chilexpress quotes this transport order, which the help centre's tracking knows. Eleven digits."

@@ -104,8 +104,9 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
   and last-mile numbers. They are not specific to Asendia, so there is no detection rule for
   them. S10 numbers issued by a partner post stay with that post.
 - eBay International Standard Delivery's `ESUS` + 9 digits are a low suggestion with DHL
-  eCommerce: eBay names DHL Global Mail's tracker for them, and A1 answers some. Asendia has
-  no recognition step, so an aggregator's "Asendia United States" naming brings them here.
+  eCommerce: eBay names DHL Global Mail's tracker for them, and A1 answers some. Recognition
+  asks Asendia first: A1, then Asendia UK, as the lookup does, but never the global portal's
+  browser. Asendia's other layouts are selected outright and need no recognition.
 - Events keep time, wording, code and city/province/country only. Address lines, postal codes,
   service name, order reference and Asendia UK's destination city and state are never read.
 

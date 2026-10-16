@@ -320,7 +320,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Sent to TCS's own tracker at tcsexpress.com/track/, as an archived address shows; the capture was not opened."
@@ -346,7 +347,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Sent to TCS's own tracker at tcsexpress.com/track/, as an archived address shows; the capture was not opened."
@@ -437,7 +439,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A customer's Trustpilot review of TCS gives it as the consignment booked from Rawalpindi to Karachi. TCS's lookup returns its checkpoints."

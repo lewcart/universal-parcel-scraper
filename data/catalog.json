@@ -1694,6 +1694,7 @@
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 675,
       "localClocks": true
     },
     "canaryUrl": "https://a1.asendiausa.com/tracking/",
@@ -17395,7 +17396,8 @@
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ppl"
+      "adapter": "ppl",
+      "recognitionRank": 608
     },
     "canaryUrl": "https://www.ppl.cz/vyhledat-zasilku",
     "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
@@ -17411,7 +17413,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "professional-couriers": {
     "displayName": "The Professional Couriers",

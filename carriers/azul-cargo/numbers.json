@@ -22,7 +22,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up as a domestic AWB on Azul Cargo Express's own tracker, as an archived address shows; the opened capture shows only an error page, not the parcel."
@@ -48,7 +49,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up as a domestic AWB on Azul Cargo's own tracker address, as an archived address shows; the capture was not opened."

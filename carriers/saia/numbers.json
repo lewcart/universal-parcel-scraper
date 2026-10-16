@@ -53,7 +53,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "TrackingMore lists it as an example on its Saia LTL Freight page; it is not described as a live shipment."
@@ -77,7 +78,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Saia page says it entered this PRO on Saia's tracker and the shipment details showed up."
@@ -101,7 +103,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Saia page gives it as an example PRO number; it is not described as a live shipment."
@@ -128,7 +131,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "ParcelPanel's Saia page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -154,7 +158,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -180,7 +185,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -206,7 +212,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -232,7 +239,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."
@@ -258,7 +266,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Looked up on Saia's own tracker, as an archived address shows; the capture was not opened."

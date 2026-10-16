@@ -23,7 +23,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Open-source project example, not a real shipment. The source attributes it to Aramex, which stays one candidate among several."
@@ -50,7 +51,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Number from a review of Aramex. Aramex's tracker returns its history."
@@ -78,7 +80,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Number from a review of Aramex. Aramex's tracker returns its history."
@@ -158,7 +161,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "The public reply names transit facilities but no carrier; the route does not establish Aramex ownership."
@@ -187,7 +191,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Second waybill in the same review, an e-commerce parcel to Kuwait. Aramex's tracker returns its history."
@@ -244,7 +249,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Parcel Express waybill to Pakistan from a review of Aramex. Aramex's tracker returns its history."
@@ -273,7 +279,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "E-commerce waybill to the United Kingdom from a review of Aramex. Aramex's tracker returns its history."
@@ -330,7 +337,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Card delivery waybill from a review of Aramex; payment notes follow the delivery. Aramex's tracker returns its history."
@@ -359,7 +367,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Letter express waybill to India from a review of Aramex. Aramex's tracker returns its history."
@@ -416,7 +425,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Italian review of an Aramex waybill from Morocco to Italy, through a Czech transit. Aramex's tracker returns its history."
@@ -445,7 +455,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Number from a review of Aramex reporting a lost parcel. Aramex's tracker no longer finds it."

@@ -25,7 +25,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint article on vc.ru that names CDEK gives it as the internal CDEK track number."
@@ -71,7 +72,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the shipment number."
@@ -98,7 +100,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the shipment number."
@@ -124,7 +127,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the shipment number."
@@ -150,7 +154,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the order number."
@@ -174,7 +179,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the order number, with its status."
@@ -200,7 +206,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the order number."
@@ -229,7 +236,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the delivery number."
@@ -256,7 +264,8 @@
           "gls-fr",
           "gls-de",
           "old-dominion",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the order number."
@@ -282,7 +291,8 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A review on crmindex.ru's CDEK page gives it as the CDEK waybill of an AliExpress parcel."

@@ -35,8 +35,11 @@ the maintainer's approval. A rejected key is a challenge.
   way, and is dropped when it falls before the latest scan.
 - Scan clocks carry their UTC offset. A clock without one stays unresolved text.
 - Numbers one apart both occur, so the last digit is no check digit and only the length is
-  checked. Eleven digits are shared with other carriers, so no detection rule claims them and
-  the user picks PPL. Recognition is not declared, since detection never offers PPL.
+  checked. Eleven digits are shared with other carriers, so `ppl-1` only suggests PPL among
+  them.
+- Recognition makes the same search. A Czech caller, or a provider that names PPL, asks PPL
+  first; otherwise the commoner eleven-digit carriers are asked before it. Providers name PPL
+  beside the DHL networks that take a parcel abroad, and only PPL's rule fits its number.
 
 ## Limitations
 

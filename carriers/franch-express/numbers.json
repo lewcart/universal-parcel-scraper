@@ -25,7 +25,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "Archived lookup on Franch Express's own tracker; the opened capture shows the captcha message The Validation code does not match!, so no history was visible."
@@ -54,7 +55,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint against Franch Express Courier, marked resolved, names it as the consignment number in its title, kept in the page address; the page body masks it."
@@ -83,7 +85,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the AWB number of an undelivered courier."
@@ -112,7 +115,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page asks for the status of this AWB number."
@@ -141,7 +145,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the consignment number of a package sent via Franch Express."
@@ -170,7 +175,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the number of a parcel not yet received."
@@ -199,7 +205,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the track id of a delayed delivery."
@@ -228,7 +235,8 @@
           "blue-dart",
           "japan-post",
           "aramex",
-          "dhl-ecommerce-pl"
+          "dhl-ecommerce-pl",
+          "ppl"
         ]
       },
       "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the AWB number of a consignment."

@@ -41,6 +41,9 @@
       "direct",
       "trawl"
     ],
+    "recognition": {
+      "rank": 675
+    },
     "localClocks": true
   },
   "capabilities": [

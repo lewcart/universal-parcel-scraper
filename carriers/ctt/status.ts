@@ -9,7 +9,9 @@
  *
  * Provenance: derived from the prior-art client
  * https://github.com/ha-parcel-integrations/ha-ctt (MIT) and confirmed live on
- * 2026-09-10 against a delivered parcel whose whole history mapped.
+ * 2026-09-10 against a delivered parcel whose whole history mapped. State 10
+ * is customs: its scans on mail from abroad read "O envio foi selecionado para
+ * apresentação à Alfândega" and "O envio está em desalfandegamento".
  */
 import type { ClassifiedStatus } from '../../core/status/index.js';
 
@@ -19,7 +21,7 @@ const EVENT_STATUS: Record<number, ClassifiedStatus> = {
   5: { status: 'exception', stage: 'returned' },
   7: { status: 'out_for_delivery', stage: 'out_for_delivery' },
   8: { status: 'in_transit', stage: 'in_transit' },
-  10: { status: 'in_transit', stage: 'in_transit' },
+  10: { status: 'in_transit', stage: 'customs' },
   11: { status: 'in_transit', stage: 'in_transit' },
   12: { status: 'delivered', stage: 'delivered' },
   13: { status: 'exception', stage: 'failed_attempt' },

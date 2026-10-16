@@ -191,7 +191,7 @@ describe('CTT response parsing', () => {
       [5, 'exception', 'returned'],
       [7, 'out_for_delivery', 'out_for_delivery'],
       [8, 'in_transit', 'in_transit'],
-      [10, 'in_transit', 'in_transit'],
+      [10, 'in_transit', 'customs'],
       [11, 'in_transit', 'in_transit'],
       [12, 'delivered', 'delivered'],
       [13, 'exception', 'failed_attempt'],

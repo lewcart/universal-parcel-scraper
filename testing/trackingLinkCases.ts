@@ -875,6 +875,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mainfreight', number: 'S00000000',
     route: /^https:\/\/www\.mainfreight\.com\/tracking\?trackingnumber=S00000000$/,
     marker: /Tracking Results for|No results found for the provided tracking number/i },
+  // The deep link opens an anonymous session on the number and redirects to the app, which says it cannot find it.
+  { carrier: 'raben', number: '999999000000033',
+    route: /^https:\/\/oftc\.myraben\.com\/index\.html$/,
+    marker: /Shipment number: \d+ could not be found|Shipment, reference number or Colli/i },
 ];
 
 /**

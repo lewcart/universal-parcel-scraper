@@ -157,6 +157,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "postnord": 510,
   "ptt": 400,
   "purolator": 560,
+  "raben": 924,
   "redpack": 15,
   "relais-colis": 690,
   "rl-carriers": 5,

@@ -216,6 +216,7 @@ import { adapter as postnord } from '../carriers/postnord/adapter.js';
 import { adapter as ppl } from '../carriers/ppl/adapter.js';
 import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
+import { adapter as raben } from '../carriers/raben/adapter.js';
 import { adapter as redpack } from '../carriers/redpack/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
@@ -509,6 +510,7 @@ export const REGISTRY: RegistryDefinition = {
     "ppl": ppl,
     "ptt": ptt,
     "purolator": purolator,
+    "raben": raben,
     "redpack": redpack,
     "relais-colis": relaisColis,
     "rl-carriers": rlCarriers,
@@ -989,7 +991,7 @@ export const REGISTRY: RegistryDefinition = {
     "quantium-solutions": "universal",
     "quickpac": "planzer",
     "quiqup": "universal",
-    "raben": "universal",
+    "raben": "raben",
     "ram-hand-to-hand": "universal",
     "redpack": "redpack",
     "redx": "universal",

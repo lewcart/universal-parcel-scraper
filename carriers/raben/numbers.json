@@ -47,6 +47,73 @@
         ]
       },
       "note": "Looked up on Raben's own myRaben shipment page, as an archived address shows; the capture was not opened and only records a redirect."
+    },
+    {
+      "number": "276574000140793",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://at-api.raben-group.com/fileadmin/Country_Directories/Austria/pdf/Kundenkommunikation_Final.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "reportedRole": "Sendungsnummer",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "brt",
+          "yunda"
+        ]
+      },
+      "note": "A shipment number in the sample invoice specification of Raben Austria's customer guide, beside a separate reference column."
+    },
+    {
+      "number": "276574000141025",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://at-api.raben-group.com/fileadmin/Country_Directories/Austria/pdf/Kundenkommunikation_Final.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "reportedRole": "Sendungsnummer",
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "brt",
+          "yunda"
+        ]
+      },
+      "note": "A shipment number in the sample invoice specification of Raben Austria's customer guide, beside a separate reference column."
+    },
+    {
+      "number": "528234000006530",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.joesandbox.com/analysis/1311408/0/html",
+        "date": "2023-09-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "brt",
+          "yunda"
+        ]
+      },
+      "note": "The address of a myRaben shipment page, analysed in a public sandbox report."
     }
   ]
 }

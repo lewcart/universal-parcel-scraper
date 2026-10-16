@@ -17524,9 +17524,10 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "raben",
+      "recognitionRank": 924
     },
-    "canaryUrl": "https://www.raben-group.com/",
+    "canaryUrl": "https://oftc.myraben.com/",
     "trackingUrlTemplate": "https://oftc.myraben.com/link/ShipmentInformation?ShipmentNumber={trackingNumber}&Language=EN",
     "trackingSearchUrl": "https://www.raben-group.com/",
     "linkRules": [

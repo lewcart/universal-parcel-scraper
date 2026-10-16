@@ -26,6 +26,7 @@ describe('national postal lookup candidates', () => {
     ['UA', 'ukrposhta'], ['Ukraine', 'ukrposhta'], ['SA', 'saudi-post'], ['Saudi Arabia', 'saudi-post'],
     ['AR', 'correo-argentino'], ['Argentina', 'correo-argentino'], ['PT', 'ctt'], ['Portugal', 'ctt'],
     ['RO', 'posta-romana'], ['Romania', 'posta-romana'], ['EG', 'egypt-post'], ['Egypt', 'egypt-post'],
+    ['ZA', 'south-african-post-office'], ['South Africa', 'south-african-post-office'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

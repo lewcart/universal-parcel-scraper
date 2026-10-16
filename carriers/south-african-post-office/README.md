@@ -47,8 +47,9 @@ post with a valid check digit; anything else is invalid without a request.
 A code ending `ZA` is the Post Office's, but the issuer of an S10 code does not establish who
 delivers it, so detection keeps such codes with the generic postal carrier.
 `south-african-post-office-s10`, at low confidence, makes preflight ask the Post Office about
-them. Mail from abroad reaches the Post Office when a caller or a provider names it. The samples
-and their sources are in [`numbers.json`](numbers.json).
+them. Mail from abroad reaches the Post Office when a caller names it, a provider names it, or a
+result gives South Africa as the destination of an S10 item. The samples and their sources are in
+[`numbers.json`](numbers.json).
 
 ## Links
 

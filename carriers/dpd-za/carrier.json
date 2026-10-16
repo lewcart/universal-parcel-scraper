@@ -1,0 +1,61 @@
+{
+  "id": "dpd-za",
+  "displayName": "DPD South Africa",
+  "aliases": [
+    "DPD Laser",
+    "DPD Laser Express Logistics",
+    "DPD Laser Express Logistics (Pty) Ltd",
+    "DPDLaser",
+    "Dawn Wing"
+  ],
+  "region": {
+    "countries": [
+      "ZA"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Africa/Johannesburg",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/tracking-details/?{trackingNumber}",
+    "searchUrl": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/",
+    "canaryUrl": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dpd.com"
+      ],
+      "pathPattern": "^/za/en/receiving-parcels/track-my-parcel/tracking-details/?$",
+      "query": "^([A-Za-z0-9]+)$"
+    },
+    {
+      "domains": [
+        "website.dpdl.co.za"
+      ],
+      "path": "^/parceltrack/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "dawnwing.co.za"
+      ],
+      "pathPattern": "^/business-tools/online-parcel-tracking/?$",
+      "params": [
+        "WaybillNo"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,42 @@
+{
+  "id": "messenger-cz",
+  "displayName": "Messenger",
+  "aliases": [
+    "Messenger a.s."
+  ],
+  "region": {
+    "countries": [
+      "CZ",
+      "SK"
+    ]
+  },
+  "brand": {
+    "color": "#fedf05"
+  },
+  "selectable": true,
+  "timezone": "Europe/Prague",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.messenger.cz/{trackingNumber}",
+    "searchUrl": "https://tracking.messenger.cz/",
+    "canaryUrl": "https://tracking.messenger.cz/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.messenger.cz"
+      ],
+      "path": "^/(?:consignment/)?((?=[A-Za-z]*[0-9])[0-9A-Za-z]{8,15})/?$"
+    }
+  ],
+  "detection": []
+}

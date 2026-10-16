@@ -1,0 +1,7 @@
+{
+  "carrier": "shree-anjani",
+  "entries": [
+    {"wording": "Booked", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Heading the tracking page script gives the booking entry, which says the number was booked at a centre on a date; the parcel is handed in at the counter."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Heading the tracking page script gives delivery-run entries whose reason mentions delivery."}
+  ]
+}

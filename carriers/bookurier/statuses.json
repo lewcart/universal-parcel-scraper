@@ -1,0 +1,10 @@
+{
+  "carrier": "bookurier",
+  "entries": [
+    {"wording": "Anunta pentru ridicare", "stage": "registered", "language": "ro", "confirmedBy": "portal", "note": "Pickup announced; the earlier form of the pickup-request event."},
+    {"wording": "S-a solicitat ridicarea coletului", "stage": "registered", "language": "ro", "confirmedBy": "portal", "note": "Pickup of the parcel requested."},
+    {"wording": "Awb emis", "stage": "registered", "language": "ro", "confirmedBy": "portal", "note": "Waybill issued."},
+    {"wording": "Coletul a fost repartizat curier", "stage": "registered", "language": "ro", "confirmedBy": "portal", "note": "The order was assigned to a courier; the partner network's scans follow."},
+    {"wording": "În tranzit", "language": "ro", "confirmedBy": "portal", "note": "Overall status line above the history on the current tracker; it was shown even when the only event was a pickup request, so it is not an event."}
+  ]
+}

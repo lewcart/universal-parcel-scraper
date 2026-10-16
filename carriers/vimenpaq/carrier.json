@@ -1,0 +1,33 @@
+{
+  "id": "vimenpaq",
+  "displayName": "Vimenpaq",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "DO",
+      "US",
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#013ca6"
+  },
+  "selectable": true,
+  "timezone": "America/Santo_Domingo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
+    "canaryUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

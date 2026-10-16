@@ -1,0 +1,46 @@
+{
+  "id": "evropat",
+  "displayName": "Evropat",
+  "aliases": [
+    "Европът",
+    "Европът-2000"
+  ],
+  "region": {
+    "countries": [
+      "BG"
+    ]
+  },
+  "brand": {
+    "color": "#103683"
+  },
+  "selectable": true,
+  "timezone": "Europe/Sofia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://evropat.bg/track/?barcode={trackingNumber}",
+    "searchUrl": "https://evropat.bg/track/",
+    "canaryUrl": "https://evropat.bg/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "evropat.bg"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "barcode",
+        "track"
+      ]
+    }
+  ],
+  "detection": []
+}

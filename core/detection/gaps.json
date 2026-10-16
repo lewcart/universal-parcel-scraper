@@ -125,6 +125,12 @@
     "reason": "Amazon Logistics owns the shared Amazon pattern. A parcel moves here only after Amazon's public tracker answers for it."
   },
   {
+    "carrier": "ameex",
+    "pattern": "^[A-Z]{3}\\d{4}B[A-Z0-9]{6,15}$",
+    "kind": "by_design",
+    "reason": "Ameex codes open with a city code shared with other Moroccan couriers and vary in length, so detection does not claim them."
+  },
+  {
     "carrier": "ampm",
     "pattern": "^CNA\\d{12}$",
     "kind": "by_design",
@@ -141,6 +147,18 @@
     "pattern": "^\\d{15}$",
     "kind": "by_design",
     "reason": "This layout is shared with other carriers or too plain to claim, so detection leaves it unclaimed."
+  },
+  {
+    "carrier": "anousith",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Anousith."
+  },
+  {
+    "carrier": "ap-cargo",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are shared by several carriers and nothing in the number points to AP Cargo."
   },
   {
     "carrier": "apc-postal-logistics",
@@ -317,6 +335,24 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to BOX NOW."
   },
   {
+    "carrier": "bts-uz",
+    "pattern": "^\\d{11,12}$",
+    "kind": "by_design",
+    "reason": "BTS barcodes are bare digit runs that many carriers print, so no rule claims them."
+  },
+  {
+    "carrier": "budbee",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen bare digits are printed by many carriers, so Budbee's numeric ids stay unclaimed."
+  },
+  {
+    "carrier": "budbee",
+    "pattern": "^[0-9A-Z]{12}$",
+    "kind": "by_design",
+    "reason": "Twelve letters and digits overlap Colis Privé and other twelve-character layouts, and only one such Budbee id is known."
+  },
+  {
     "carrier": "buffalo-ex",
     "pattern": "^\\d{15}$",
     "kind": "by_design",
@@ -327,6 +363,12 @@
     "pattern": "^\\d{18}$",
     "kind": "by_design",
     "reason": "Burd's shipment numbers are eighteen-digit SSCCs, a layout every carrier that labels with GS1 codes can print."
+  },
+  {
+    "carrier": "bussgods",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten bare digits are printed by many carriers, so Bussgods' plain fraktsedel numbers stay unclaimed."
   },
   {
     "carrier": "c-chez-vous",
@@ -513,6 +555,12 @@
     "reason": "Eleven digits are shared by several carriers and nothing in the number points to Coordinadora."
   },
   {
+    "carrier": "correos-bolivia",
+    "pattern": "^R[DR]\\d{9}BO$",
+    "kind": "by_design",
+    "reason": "AGBC issues some registered numbers in the S10 layout whose check digit does not validate; generic postal detection skips them and national posts get no S10 rule."
+  },
+  {
     "carrier": "correos-spain",
     "pattern": "^L[A-Z0-9]{22}$",
     "kind": "open",
@@ -531,10 +579,28 @@
     "reason": "Courier IT waybills seen so far are a short letter prefix and six or seven digits, a shape shared by many carriers and by PostNet's own waybills."
   },
   {
+    "carrier": "courier-plus-ng",
+    "pattern": "^\\dN\\d{11}$",
+    "kind": "by_design",
+    "reason": "A digit, a letter and eleven digits is also La Poste's two-character layout, and nothing in the number points to CourierPlus."
+  },
+  {
     "carrier": "couriersplease",
     "pattern": "^\\d[A-Z]\\d{10}$",
     "kind": "by_design",
     "reason": "Twelve characters are a shape several carriers print, and nothing in the number points to CouriersPlease."
+  },
+  {
+    "carrier": "credifin",
+    "pattern": "^\\d{18}$",
+    "kind": "collision",
+    "reason": "Credifin's eighteen-digit tracking codes are a bare digit run that other carriers' numbers share, so the shape cannot name Credifin."
+  },
+  {
+    "carrier": "credifin",
+    "pattern": "^\\d{15}$",
+    "kind": "collision",
+    "reason": "Credifin's fifteen-digit package labels are a bare digit run that many carriers' numbers share, so the shape cannot name Credifin."
   },
   {
     "carrier": "cruz-del-sur",
@@ -576,6 +642,12 @@
     "carrier": "dachser",
     "kind": "by_design",
     "reason": "Dachser tracking needs its capability link; the numbers alone are generic numeric shapes."
+  },
+  {
+    "carrier": "daewoo-fastex",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Daewoo FastEx's nine-digit tracking numbers are a bare digit run many carriers share."
   },
   {
     "carrier": "dai-post",
@@ -770,6 +842,18 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to DPD Ireland."
   },
   {
+    "carrier": "dpd-za",
+    "pattern": "^[A-Z]{2,3}\\d{5,11}$",
+    "kind": "by_design",
+    "reason": "DPD South Africa waybills start with two or three letters naming an account, branch or shop, a shape many carriers share, so the letters cannot name DPD South Africa."
+  },
+  {
+    "carrier": "dpd-za",
+    "pattern": "^ODO[A-Z]{2}\\d{7}S\\d$",
+    "kind": "by_design",
+    "reason": "ODO is the shop OneDayOnly's waybill prefix, which also reaches Pargo, so it names the shop rather than DPD South Africa."
+  },
+  {
     "carrier": "dropp",
     "pattern": "^DR[0-9A-Z]{11}$",
     "kind": "by_design",
@@ -841,6 +925,12 @@
     "reason": "Three archived lookups on Early Bird's tracker use 999 and sixteen digits; the family is not established."
   },
   {
+    "carrier": "easy-mail",
+    "pattern": "^0?1[34]\\d{9}$",
+    "kind": "by_design",
+    "reason": "Eleven-digit vouchers, twelve with the leading zero the tracker prints, share their shape with Courier Center's numbers and other numeric waybills, so the shape cannot name Easy Mail."
+  },
+  {
     "carrier": "econt",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -895,6 +985,18 @@
     "reason": "Nine digits are printed by many carriers, and EuroExpress publishes no prefix or check that would set its shipment codes apart."
   },
   {
+    "carrier": "evropat",
+    "pattern": "^91\\d{8}$",
+    "kind": "collision",
+    "reason": "Ten digits starting with 91 are printed by DHL Express and other carriers, and some Evropat numbers pass the DHL Express check, so the shape cannot name Evropat."
+  },
+  {
+    "carrier": "exline-kz",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Exline waybills are bare ten-digit runs that many carriers print, so no rule claims them."
+  },
+  {
     "carrier": "express-one",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -917,6 +1019,24 @@
     "pattern": "^\\d{7}$",
     "kind": "by_design",
     "reason": "Fargo's older seven-digit waybills are a bare digit run many carriers share."
+  },
+  {
+    "carrier": "fargo-uz",
+    "pattern": "^(?:\\d{9}|\\d{14}|TEZ\\d{6})$",
+    "kind": "by_design",
+    "reason": "Fargo tracks by track ids and shop order numbers whose layouts are shared or come from its delivery platform, so no rule claims them."
+  },
+  {
+    "carrier": "fastfrate",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Fastfrate probill numbers are ten bare digits that many carriers share."
+  },
+  {
+    "carrier": "first-delivery-tn",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve bare digits are shared by many carriers and nothing in the number points to First Delivery."
   },
   {
     "carrier": "followmont",
@@ -947,6 +1067,12 @@
     "pattern": "^EM\\d{12}CA$",
     "kind": "by_design",
     "reason": "An Emile number on a parcel 4PX handed over to Emile. The shape is Emile's; 4PX's feed also knows the parcels it hands over."
+  },
+  {
+    "carrier": "franch-express",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Franch Express's eleven-digit AWB numbers are a bare digit run many carriers share."
   },
   {
     "carrier": "fukuyama",
@@ -997,6 +1123,12 @@
     "reason": "Thirteen digits are shared by several carriers and nothing in the number points to Geis."
   },
   {
+    "carrier": "gel-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten bare digits are printed by many carriers, so GEL Sendungsnummern stay unclaimed."
+  },
+  {
     "carrier": "geniki-taxydromiki",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -1043,6 +1175,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve digits are shared by several carriers, FedEx and GLS among them, and nothing in the number points to GO! Express."
+  },
+  {
+    "carrier": "gobolt",
+    "pattern": "^(?:\\d{12}|[A-Z0-9]{12})$",
+    "kind": "by_design",
+    "reason": "GoBolt tracks parcels by merchant-issued numbers without a published layout, so no rule claims them."
   },
   {
     "carrier": "gofo",
@@ -1171,6 +1309,12 @@
     "reason": "Hi-Trans consignment numbers are a customer's account prefix and a counter, a shape many carriers print, so nothing in them points to Hi-Trans."
   },
   {
+    "carrier": "horoz",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "Fourteen bare digits are printed by many carriers, so the shape cannot name Horoz Lojistik."
+  },
+  {
     "carrier": "hunter-express",
     "pattern": "^[A-Z]{3}\\d{6}$",
     "kind": "by_design",
@@ -1217,6 +1361,12 @@
     "pattern": "^[A-Z]{2}0[12]\\d{8}(?:\\d{2})?$",
     "kind": "by_design",
     "reason": "Two letters and ten digits are already shapes of Amazon, J&T, Relais Colis and Colis Privé numbers, and Instabox's letters vary between parcels, so the user picks Instabox."
+  },
+  {
+    "carrier": "integral-pack",
+    "pattern": "^\\d{4}[ABP]\\d{1,8}$",
+    "kind": "by_design",
+    "reason": "Integral Pack guides follow the Argentine invoice layout of point of sale, letter and number, which other companies' receipts share, so the shape cannot name Integral Pack."
   },
   {
     "carrier": "intelcom",
@@ -1273,6 +1423,12 @@
     "reason": "Janio's order-based numbers carry a merchant or service prefix and a destination country suffix, and each prefix has too few samples to show who issues it."
   },
   {
+    "carrier": "jeebly",
+    "pattern": "^JBP?\\d{6}$",
+    "kind": "by_design",
+    "reason": "Jeebly's six-digit JB and JBP numbers appear only as documentation examples, and short two- or three-letter composites are shared by many carriers."
+  },
+  {
     "carrier": "jitsu",
     "pattern": "^[0-9A-Z]{16}$",
     "kind": "by_design",
@@ -1301,6 +1457,12 @@
     "pattern": "^\\d{6}$",
     "kind": "by_design",
     "reason": "A JRS airbill is a short receipt number that only identifies a parcel together with the branch code, so its digits cannot point to JRS."
+  },
+  {
+    "carrier": "kargoist",
+    "pattern": "^(?:\\d{9}|\\d{12}|\\d{16}|\\d{19,20})$",
+    "kind": "by_design",
+    "reason": "Kargoist tracks parcels by the shop's barcode, bare digit runs of many lengths that other carriers print too."
   },
   {
     "carrier": "kerry-tj",
@@ -1397,6 +1559,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Kunyoung Express numbers are bare ten-digit runs without a known check digit, a shape many carriers share."
+  },
+  {
+    "carrier": "la-poste-senegal",
+    "pattern": "^JT\\d{13}$",
+    "kind": "by_design",
+    "reason": "Jotnaci numbers share J&T Express's JT and thirteen-digit layout, so detection does not offer La Poste du Sénégal for them."
   },
   {
     "carrier": "laar-courier",
@@ -1501,6 +1669,24 @@
     "reason": "Older consignments with three letters and eight digits, a layout too generic to tie to Mainfreight alone."
   },
   {
+    "carrier": "major-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Major Express waybills are bare ten-digit runs that many carriers print, so no rule claims them."
+  },
+  {
+    "carrier": "mandae",
+    "pattern": "^[A-Z]{4,5}\\d{6,9}$",
+    "kind": "by_design",
+    "reason": "Mandaê codes are a store's own prefix and item number, a shape many carriers' references share."
+  },
+  {
+    "carrier": "mandae",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "A bare nine-digit code is a generic numeric shape."
+  },
+  {
     "carrier": "maritime-ontario",
     "pattern": "^F\\d{7}$",
     "kind": "open",
@@ -1547,6 +1733,12 @@
     "pattern": "^MYCV\\d{9}GB$",
     "kind": "open",
     "reason": "One Meest number of this shape; the family is not established."
+  },
+  {
+    "carrier": "messenger-cz",
+    "pattern": "^[0-9A-F]{8}$",
+    "kind": "by_design",
+    "reason": "Eight hexadecimal characters overlap the eight-digit numbers of many carriers, so Messenger's codes stay unclaimed."
   },
   {
     "carrier": "midland-transport",
@@ -1645,6 +1837,12 @@
     "reason": "Fourteen bare digits are shared with DPD and many other carriers."
   },
   {
+    "carrier": "nord-wheel",
+    "pattern": "^НФ0\\d{7}$",
+    "kind": "by_design",
+    "reason": "A Nord Wheel waybill starts with the Cyrillic letters НФ, and the library accepts only Latin letters and digits, so detection never sees it."
+  },
+  {
     "carrier": "northline",
     "pattern": "^\\d[A-Z]{3}\\d{5,11}$",
     "kind": "by_design",
@@ -1675,6 +1873,24 @@
     "reason": "This layout is shared with other carriers or too plain to claim, so detection leaves it unclaimed."
   },
   {
+    "carrier": "ocasa",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "OCASA's eleven-digit numbers are Mercado Libre shipment numbers, which other carriers also deliver and whose shape many carriers share, so the shape cannot name OCASA."
+  },
+  {
+    "carrier": "ocasa",
+    "pattern": "^(?:ECO|TCF)\\d{10}$",
+    "kind": "by_design",
+    "reason": "OCASA's ECO and TCF numbers are three letters and ten digits; TCF belongs to one merchant's shipments and ECO is unexplained, so too few public numbers back a rule."
+  },
+  {
+    "carrier": "ocasa",
+    "pattern": "^PST\\d{10}$",
+    "kind": "collision",
+    "reason": "OCASA's PST numbers fall inside Bulgarian Posts' high-confidence PS shape, and nothing else in the number names OCASA."
+  },
+  {
     "carrier": "old-dominion",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -1697,6 +1913,12 @@
     "pattern": "^AD\\d{9}$",
     "kind": "by_design",
     "reason": "Shipper references that OnTrac's tracker resolves to the parcel's own number. They are not tracking numbers, so no rule points them to OnTrac; the adapter takes them when the user picks OnTrac or opens an OnTrac link."
+  },
+  {
+    "carrier": "opt-nc",
+    "pattern": "^\\d[A-Z]\\d{11}$",
+    "kind": "by_design",
+    "reason": "Colissimo numbers of parcels sent from France to New Caledonia belong to La Poste's rules; OPT-NC only delivers them."
   },
   {
     "carrier": "osm-worldwide",
@@ -1809,6 +2031,24 @@
     "carrier": "planzer",
     "kind": "by_design",
     "reason": "A Planzer lookup needs the access key of its shared link."
+  },
+  {
+    "carrier": "pmm",
+    "pattern": "^\\d{12}[A-Z]\\d{4}$",
+    "kind": "by_design",
+    "reason": "The only PMM number seen is an example in its help chat, too little to claim the layout."
+  },
+  {
+    "carrier": "pony-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Pony Express waybills lose their hyphens in detection and become ten-digit runs that many carriers print."
+  },
+  {
+    "carrier": "pony-express",
+    "pattern": "^(?:PN\\d{8}|E\\d{15}|RU\\d{12})$",
+    "kind": "by_design",
+    "reason": "Pony Express e-commerce numbers were seen only as archived lookups without a visible result, too little to claim the layouts."
   },
   {
     "carrier": "pos-indonesia",
@@ -2102,6 +2342,12 @@
     "carrier": "shipup",
     "kind": "by_design",
     "reason": "An invented shape check; ShipUp has no number shape of its own."
+  },
+  {
+    "carrier": "shree-anjani",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Shree Anjani's ten-digit AWB numbers are a bare digit run many carriers share."
   },
   {
     "carrier": "shree-maruti",
@@ -2487,6 +2733,18 @@
     "reason": "Thirteen-digit order numbers carry no Viettel Post marker and many carriers print thirteen digits."
   },
   {
+    "carrier": "vimenpaq",
+    "pattern": "^[A-Z]{4}\\d{9}$",
+    "kind": "by_design",
+    "reason": "The only public Vimenpaq number comes from a customer's question, too little to claim its layout."
+  },
+  {
+    "carrier": "vozovoz",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Vozovoz order numbers are bare nine-digit runs that other carriers print too, so no rule claims them."
+  },
+  {
     "carrier": "vrl-logistics",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -2526,6 +2784,24 @@
     "carrier": "whistl",
     "kind": "by_design",
     "reason": "Whistl publishes no number shape; its references vary by client and service, so the user picks Whistl."
+  },
+  {
+    "carrier": "x-express-ba",
+    "pattern": "^A\\d{9}$",
+    "kind": "collision",
+    "reason": "A and nine digits falls in Allegro One's high-confidence A0 range, so detection names Allegro One for these X Express numbers."
+  },
+  {
+    "carrier": "x-express-ba",
+    "pattern": "^X\\d{9}$",
+    "kind": "by_design",
+    "reason": "X and nine digits is a short generic shape known for X Express only from one documentation example."
+  },
+  {
+    "carrier": "x-express-ba",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight bare digits are printed by many carriers."
   },
   {
     "carrier": "xde-logistics",

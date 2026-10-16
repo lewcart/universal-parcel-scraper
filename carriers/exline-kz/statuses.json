@@ -1,0 +1,16 @@
+{
+  "carrier": "exline-kz",
+  "entries": [
+    {"code": "registration_system", "wording": "Регистрация в системе", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation."},
+    {"code": "sent_to", "wording": "Убыло из города Отправителя", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation. Left the sender's city."},
+    {"code": "arrived_at", "wording": "Прибыл в город Получателя", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation. Arrived in the recipient's city."},
+    {"code": "distributed_route", "wording": "Распределено на маршрут", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation. Assigned to a route at a transit or final point."},
+    {"code": "unsuccessful_delivery", "wording": "Неудачная попытка доставки", "stage": "failed_attempt", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation."},
+    {"code": "successful_delivery", "wording": "Доставлено Получателю", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Event in Exline's tracking API documentation."},
+    {"wording": "В пути", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Current status in the tracking API's sample reply and in the tracker page's interface text."},
+    {"wording": "Отправление принято", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Label in the tracker page's interface text. Step of the progress rail."},
+    {"wording": "На сортировочном центре", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Label in the tracker page's interface text. Step of the progress rail."},
+    {"wording": "В международном транзите", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Label in the tracker page's interface text. Step of the progress rail."},
+    {"wording": "Доставлено", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Label in the tracker page's interface text. Step of the progress rail."}
+  ]
+}

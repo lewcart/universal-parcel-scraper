@@ -1,0 +1,222 @@
+{
+  "carrier": "vozovoz",
+  "records": [
+    {
+      "number": "250411646",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/121660655745/reviews/",
+        "date": "2025-05-27",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number of a shipment from Ivanovo to Saint Petersburg."
+    },
+    {
+      "number": "210376776",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/121660655745/reviews/",
+        "date": "2021-06-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the order (заказ) number."
+    },
+    {
+      "number": "200643613",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/121660655745/reviews/",
+        "date": "2020-10-30",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the waybill (накладная) of a shipment to Saint Petersburg."
+    },
+    {
+      "number": "240853931",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/121660655745/reviews/",
+        "date": "2024-10-29",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ivanovo terminal giving it as the number of a shipment to a marketplace in Kazakhstan."
+    },
+    {
+      "number": "240127163",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/147661367708/reviews/",
+        "date": "2024-02-29",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the number of a delivery booked with Vozovoz."
+    },
+    {
+      "number": "260129735",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/147661367708/reviews/",
+        "date": "2026-02-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number."
+    },
+    {
+      "number": "251116736",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/147661367708/reviews/",
+        "date": "2025-12-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt",
+          "xpo-ltl"
+        ]
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Ryazan terminal giving it as the order (заказ) number of a collected shipment."
+    },
+    {
+      "number": "220817558",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/54585329882/reviews/",
+        "date": "2023-02-01",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the number of a recent order."
+    },
+    {
+      "number": "230087671",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/54585329882/reviews/",
+        "date": "2023-02-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order number of a shipment to Novosibirsk."
+    },
+    {
+      "number": "240978964",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/54585329882/reviews/",
+        "date": "2024-12-02",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "tnt",
+          "xpo-ltl"
+        ]
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the cargo (груз) number."
+    },
+    {
+      "number": "260697314",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://yandex.com/maps/org/vozovoz/54585329882/reviews/",
+        "date": "2026-10-01",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Customer review on the Yandex Maps page of Vozovoz's Novosibirsk terminal giving it as the order (заказ) number."
+    }
+  ]
+}

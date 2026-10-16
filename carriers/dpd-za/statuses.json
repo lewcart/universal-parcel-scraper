@@ -1,0 +1,19 @@
+{
+  "carrier": "dpd-za",
+  "entries": [
+    {"wording": "SHIPMENT RECEIVED BY HUB", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker, first scan on the evening of the waybill date."},
+    {"wording": "SHIPMENT HAS BEEN DISPATCHED", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker; seen at the delivering branch on the morning of delivery, so it may mean dispatched for delivery."},
+    {"wording": "PARCEL HAS LEFT DAWN WING", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker; seen before the delivery scan."},
+    {"wording": "PARCEL HAS BEEN DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "POD IMAGE SCANNED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker; the proof of delivery was scanned at the head office after delivery."},
+    {"wording": "POD IMAGE AVAILABLE (LOG IN)", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker; the proof-of-delivery image can be seen after logging in."},
+    {"wording": "POD RECEIVED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Dawn Wing tracker's waybill status in the summary, not a scan."},
+    {"wording": "Received", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Progress-rail step in DPD South Africa's parcel tracker app (website.dpdl.co.za/parceltrack), read from its script."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Progress-rail step in DPD South Africa's parcel tracker app (website.dpdl.co.za/parceltrack), read from its script."},
+    {"wording": "At depot", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Progress-rail step in DPD South Africa's parcel tracker app (website.dpdl.co.za/parceltrack), read from its script."},
+    {"wording": "On delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Progress-rail step in DPD South Africa's parcel tracker app (website.dpdl.co.za/parceltrack), read from its script."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Progress-rail step in DPD South Africa's parcel tracker app (website.dpdl.co.za/parceltrack), read from its script."},
+    {"wording": "out on delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Quoted by a Trustpilot reviewer of dpdlaser.co.za as the tracker's status."},
+    {"wording": "failed to deliver parcel", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Quoted by a Trustpilot reviewer of dpdlaser.co.za as the tracker's status. It followed an out-for-delivery status on two days running."}
+  ]
+}

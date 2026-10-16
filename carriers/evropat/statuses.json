@@ -1,0 +1,6 @@
+{
+  "carrier": "evropat",
+  "entries": [
+    {"wording": "Разнесена", "stage": "delivered", "language": "bg", "confirmedBy": "source", "note": "Treated as delivered by the open-source tracker's code (https://github.com/drkskwlkr/unbranded-tracker/blob/main/track.php), which reads Evropat's state names."}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "horoz",
+  "displayName": "Horoz Lojistik",
+  "aliases": [
+    "Horoz",
+    "Horoz Lojistik A.Ş."
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#c31f3f"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmAtfDetay.aspx?Ptn={trackingNumber}",
+    "searchUrl": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmGonderiTakip.aspx",
+    "canaryUrl": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmGonderiTakip.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "app3.horoz.com.tr"
+      ],
+      "pathPattern": "^/wsKurumsal/_genel/frmAtfDetay\\.aspx$",
+      "params": [
+        "Ptn"
+      ]
+    }
+  ],
+  "detection": []
+}

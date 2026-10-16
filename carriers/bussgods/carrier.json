@@ -1,0 +1,55 @@
+{
+  "id": "bussgods",
+  "displayName": "Bussgods",
+  "aliases": [
+    "Bussgods i Norr AB",
+    "Bussgods Sverigefrakt AB"
+  ],
+  "region": {
+    "countries": [
+      "SE"
+    ]
+  },
+  "brand": {
+    "color": "#183963"
+  },
+  "selectable": true,
+  "timezone": "Europe/Stockholm",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://bussgods.se/spara-paket/#{trackingNumber}",
+    "searchUrl": "https://bussgods.se/spara-paket/",
+    "canaryUrl": "https://bussgods.se/spara-paket/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "bussgods.se"
+      ],
+      "pathPattern": "^/spara-paket/?$",
+      "fragment": "^([A-Za-z0-9]{8,25})$"
+    },
+    {
+      "domains": [
+        "bussgods.se"
+      ],
+      "path": "^/(?:foretag/)?sok-paket/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "bussgods-1",
+      "pattern": "^BG9\\d{9}$",
+      "confidence": "low"
+    }
+  ]
+}

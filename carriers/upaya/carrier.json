@@ -1,0 +1,52 @@
+{
+  "id": "upaya",
+  "displayName": "Upaya",
+  "aliases": [
+    "Upaya City Cargo",
+    "Upaya City Cargo Pvt. Ltd."
+  ],
+  "region": {
+    "countries": [
+      "NP"
+    ]
+  },
+  "brand": {
+    "color": "#003d87"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kathmandu",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://upaya.com.np/track/?tracking={trackingNumber}",
+    "searchUrl": "https://upaya.com.np/track/",
+    "canaryUrl": "https://upaya.com.np/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "upaya.com.np"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "tracking"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "upaya-1",
+      "pattern": "^[A-Z]{6}\\d{11,12}$",
+      "rawPattern": "^[A-Z]{6}\\d{4,5}-\\d{7}$",
+      "confidence": "low"
+    }
+  ]
+}

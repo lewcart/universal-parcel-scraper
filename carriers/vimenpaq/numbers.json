@@ -1,0 +1,24 @@
+{
+  "carrier": "vimenpaq",
+  "records": [
+    {
+      "number": "BERO405129959",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.justanswer.es/informatica-es/trzm1-buenas-tardes-asistente-del-experto-buenas-tardes-en-qu.html",
+        "date": "2025-11-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A customer on a JustAnswer thread names Vimenpaq as the carrier and gives this as the tracking number of a parcel awaited at a Vimenpaq branch; the answering expert said the number showed nothing when first checked."
+    }
+  ]
+}

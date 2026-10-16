@@ -1,0 +1,50 @@
+{
+  "id": "mailplus-au",
+  "displayName": "MailPlus",
+  "aliases": [
+    "Mail Plus",
+    "Mailplus",
+    "MailPlus Australia",
+    "MailPlus Pty Ltd"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#025d7c"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.mailplus.com.au/old/{trackingNumber}",
+    "searchUrl": "https://track.mailplus.com.au/",
+    "canaryUrl": "https://track.mailplus.com.au/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.mailplus.com.au"
+      ],
+      "path": "^/old/([A-Za-z0-9]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "mailplus-au-1",
+      "pattern": "^MPX\\d{9}$",
+      "confidence": "low"
+    }
+  ]
+}

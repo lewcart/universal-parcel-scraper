@@ -1,0 +1,50 @@
+{
+  "id": "easy-mail",
+  "displayName": "Easy Mail",
+  "aliases": [
+    "Easymail"
+  ],
+  "region": {
+    "countries": [
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#712e7e"
+  },
+  "selectable": true,
+  "timezone": "Europe/Athens",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://trackntrace.easymail.gr/{trackingNumber}",
+    "searchUrl": "https://trackntrace.easymail.gr/",
+    "canaryUrl": "https://trackntrace.easymail.gr/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "trackntrace.easymail.gr"
+      ],
+      "path": "^/(\\d{11,12})/?$"
+    },
+    {
+      "domains": [
+        "easymail.gr"
+      ],
+      "pathPattern": "^/(?:index\\.php/)?web-tracking/?$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
+  "detection": []
+}

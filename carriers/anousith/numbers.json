@@ -1,0 +1,30 @@
+{
+  "carrier": "anousith",
+  "records": [
+    {
+      "number": "8707221950159",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20250906062649/https://app.anousith.express/landing/search_tracking/bill_share?tacking_number=8707221950159",
+        "date": "2025-09-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda"
+        ]
+      },
+      "note": "Anousith's tracker page carries this bill number in its share metadata; the opened capture of its bill-share address shows only that page, so no history was visible."
+    }
+  ]
+}

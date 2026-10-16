@@ -758,7 +758,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?:(?:FR|DE|BE|UK|GB|IT|ES|NL|AT|IE|PL|SE|PT|LU|DK|FI|CZ|SK|HU|RO|BG|HR|SI|EE|LV|LT|GR|CY|MT|CH|NO|IS|LI|TR)[0-9]{10}|TB[ACM][0-9]{12})$",
+        "pattern": "^(?:(?:FR|DE|BE|UK|GB|IT|ES|NL|AT|IE|PL|SE|PT|LU|DK|FI|CZ|SK|HU|RO|HR|SI|EE|LV|LT|GR|CY|MT|CH|NO|IS|LI|TR)[0-9]{10}|TB[ACM][0-9]{12})$",
         "confidence": "high"
       }
     ]
@@ -2979,7 +2979,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -5431,6 +5431,62 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ameex": {
+    "displayName": "Ameex",
+    "color": "#132f7d",
+    "aliases": [
+      "AMEEX",
+      "Ameex.ma",
+      "AMEEX Delivery"
+    ],
+    "countries": [
+      "MA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Casablanca",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ameex.ma/en/tracking",
+    "trackingUrlTemplate": "https://ameex.ma/en/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://ameex.ma/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "ameex.ma"
+        ],
+        "path": "^/(?:en|fr|ar)/(?:tracking|suivi-colis)/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "amerijet": {
+    "displayName": "Amerijet",
+    "color": "#0d4a79",
+    "aliases": [
+      "Amerijet International"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.amerijet.com/air-waybill-tracking/",
+    "trackingSearchUrl": "https://www.amerijet.com/air-waybill-tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^810\\d{8}$",
+        "confidence": "high",
+        "rawPattern": "^810-\\d{8}$"
+      }
+    ]
+  },
   "ampm": {
     "displayName": "Grupo ampm",
     "color": "#0d298e",
@@ -5566,6 +5622,49 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "anousith": {
+    "displayName": "Anousith Logistics",
+    "color": "#e0353a",
+    "aliases": [
+      "Anousith Express",
+      "Anousith",
+      "ອານຸສິດ ໂລຈິສຕິກ",
+      "ອານຸສິດ ເອັກສເພຮດ"
+    ],
+    "countries": [
+      "LA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Vientiane",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app.anousith.express/landing/search_tracking/search_item",
+    "trackingUrlTemplate": "https://app.anousith.express/landing/search_tracking/search_item?_bill_detail={trackingNumber}&n_home=2",
+    "trackingSearchUrl": "https://app.anousith.express/landing/search_tracking/search_item",
+    "linkRules": [
+      {
+        "domains": [
+          "app.anousith.express"
+        ],
+        "pathPattern": "^/landing/search_tracking/search_item/?$",
+        "params": [
+          "_bill_detail"
+        ]
+      },
+      {
+        "domains": [
+          "app.anousith.express"
+        ],
+        "pathPattern": "^/landing/search_tracking/bill_share/?$",
+        "params": [
+          "tacking_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "anteraja": {
     "displayName": "Anteraja",
     "color": "#ed0677",
@@ -5602,6 +5701,23 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "ap-cargo": {
+    "displayName": "AP Cargo",
+    "color": "#fcaf17",
+    "countries": [
+      "PH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Manila",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://apcargo.com.ph/track/",
+    "trackingSearchUrl": "https://apcargo.com.ph/track/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "apc-overnight": {
     "displayName": "APC Overnight",
@@ -6402,6 +6518,52 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bookurier": {
+    "displayName": "Bookurier",
+    "color": "#dc2626",
+    "aliases": [
+      "Bookurier Logistics",
+      "Bookurier.ro"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://t.bookurier.ro/",
+    "trackingUrlTemplate": "https://t.bookurier.ro/?awb={trackingNumber}",
+    "trackingSearchUrl": "https://t.bookurier.ro/",
+    "linkRules": [
+      {
+        "domains": [
+          "t.bookurier.ro"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "awb"
+        ]
+      },
+      {
+        "domains": [
+          "bookurier.ro"
+        ],
+        "pathPattern": "^/colete/AWB/trackifnew\\.php$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BOK\\d{7}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "border-express": {
     "displayName": "Border Express",
     "color": "#cc092f",
@@ -6500,6 +6662,37 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "botswana-post": {
+    "displayName": "Botswana Post",
+    "color": "#e2211c",
+    "aliases": [
+      "BotswanaPost",
+      "Botswana Postal Services"
+    ],
+    "countries": [
+      "BW"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Gaborone",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://posttracking.botswanapost.co.bw/postglobal/vpo/Track.aspx",
+    "trackingSearchUrl": "https://posttracking.botswanapost.co.bw/postglobal/vpo/Track.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "posttracking.botswanapost.co.bw"
+        ],
+        "pathPattern": "^/postglobal/vpo/track\\.aspx$",
+        "params": [
+          "itemid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "box-now": {
     "displayName": "BOX NOW",
     "color": "#44d62c",
@@ -6523,6 +6716,64 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://boxnow.cy/track",
     "trackingSearchUrl": "https://boxnow.cy/track",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "bts-uz": {
+    "displayName": "BTS Express",
+    "color": "#ee6800",
+    "aliases": [
+      "BTS",
+      "BTS Express Cargo Servis"
+    ],
+    "countries": [
+      "UZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tashkent",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bts.uz/uz/search-form",
+    "trackingSearchUrl": "https://bts.uz/uz/search-form",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "budbee": {
+    "displayName": "Budbee",
+    "color": "#41cda5",
+    "countries": [
+      "SE",
+      "FI",
+      "DK",
+      "NL",
+      "BE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Stockholm",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.budbee.com/en",
+    "trackingSearchUrl": "https://track.budbee.com/en",
+    "linkRules": [
+      {
+        "domains": [
+          "track.budbee.com"
+        ],
+        "path": "^/(?:[a-z]{2}/)?((?=[A-Za-z]*[0-9])[A-Za-z0-9]{8,20})(?:/verify)?/?$"
+      },
+      {
+        "domains": [
+          "track.budbee.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "verifyTrackingId"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "buffalo-ex": {
@@ -6655,6 +6906,47 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bussgods": {
+    "displayName": "Bussgods",
+    "color": "#183963",
+    "aliases": [
+      "Bussgods i Norr AB",
+      "Bussgods Sverigefrakt AB"
+    ],
+    "countries": [
+      "SE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Stockholm",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bussgods.se/spara-paket/",
+    "trackingUrlTemplate": "https://bussgods.se/spara-paket/#{trackingNumber}",
+    "trackingSearchUrl": "https://bussgods.se/spara-paket/",
+    "linkRules": [
+      {
+        "domains": [
+          "bussgods.se"
+        ],
+        "pathPattern": "^/spara-paket/?$",
+        "fragment": "^([A-Za-z0-9]{8,25})$"
+      },
+      {
+        "domains": [
+          "bussgods.se"
+        ],
+        "path": "^/(?:foretag/)?sok-paket/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BG9\\d{9}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "cacesa": {
     "displayName": "CACESA",
     "color": "#C9032D",
@@ -6686,6 +6978,29 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "campost": {
+    "displayName": "Campost",
+    "color": "#fbd604",
+    "aliases": [
+      "CAMPOST",
+      "Cameroon Postal Services",
+      "Cameroon Post",
+      "La Campost"
+    ],
+    "countries": [
+      "CM"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Douala",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://campost.cm/",
+    "trackingSearchUrl": "https://campost.cm/",
+    "linkRules": [],
     "detectionRules": []
   },
   "cargus": {
@@ -7586,6 +7901,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "correos-bolivia": {
+    "displayName": "Correos de Bolivia",
+    "color": "#fecc36",
+    "aliases": [
+      "Agencia Boliviana de Correos",
+      "AGBC",
+      "ECOBOL",
+      "Empresa de Correos de Bolivia",
+      "Bolivia Post"
+    ],
+    "countries": [
+      "BO"
+    ],
+    "selectable": true,
+    "timezone": "America/La_Paz",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://trackingbo.correos.gob.bo/",
+    "trackingSearchUrl": "https://trackingbo.correos.gob.bo/",
+    "linkRules": [
+      {
+        "domains": [
+          "trackingbo.correos.gob.bo"
+        ],
+        "pathPattern": "^/trackingbo/?$",
+        "params": [
+          "codigo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "correos-de-mexico": {
     "displayName": "Correos de México",
     "color": "#ed007d",
@@ -7704,6 +8053,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "courier-plus-ng": {
+    "displayName": "CourierPlus",
+    "color": "#f16139",
+    "aliases": [
+      "CourierPlus Nigeria",
+      "Courier Plus",
+      "Courier Plus Nigeria",
+      "CourierPlus Services Limited"
+    ],
+    "countries": [
+      "NG"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Lagos",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://selfservice.courierplus-ng.com/track-shipment",
+    "trackingSearchUrl": "https://selfservice.courierplus-ng.com/track-shipment",
+    "linkRules": [
+      {
+        "domains": [
+          "trackplus.courierplus-ng.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "query"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "couriersplease": {
     "displayName": "CouriersPlease",
     "color": "#c21e36",
@@ -7743,6 +8125,42 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "credifin": {
+    "displayName": "Credifin Logística",
+    "color": "#001d9c",
+    "aliases": [
+      "Credifin",
+      "Credifin Express",
+      "Credifin Logistica"
+    ],
+    "countries": [
+      "AR"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://credifin.com.ar/seguimiento/",
+    "trackingUrlTemplate": "https://credifin.com.ar/seguimiento/{trackingNumber}",
+    "trackingSearchUrl": "https://credifin.com.ar/seguimiento/",
+    "linkRules": [
+      {
+        "domains": [
+          "credifin.com.ar"
+        ],
+        "path": "^/seguimiento/(\\d+)/?$"
+      },
+      {
+        "domains": [
+          "tracking.credifin.com.ar"
+        ],
+        "path": "^/(\\d+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "cruz-del-sur": {
     "displayName": "Cruz del Sur",
@@ -7955,6 +8373,39 @@ export const CARRIER_CATALOG = {
           "dexpress.rs"
         ],
         "path": "^/rs/pracenje-posiljaka/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "daewoo-fastex": {
+    "displayName": "Daewoo FastEx",
+    "color": "#0066b3",
+    "aliases": [
+      "FastEx",
+      "Daewoo FastEx Courier",
+      "Daewoo FastEX Cargo"
+    ],
+    "countries": [
+      "PK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Karachi",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://fastex.pk/trackingDetail",
+    "trackingSearchUrl": "https://fastex.pk/trackingDetail",
+    "linkRules": [
+      {
+        "domains": [
+          "fastex.pk",
+          "www.fastex.pk"
+        ],
+        "pathPattern": "^/trackingDetail/?$",
+        "params": [
+          "trackingNo"
+        ]
       }
     ],
     "detectionRules": []
@@ -8944,6 +9395,54 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "dpd-za": {
+    "displayName": "DPD South Africa",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Laser",
+      "DPD Laser Express Logistics",
+      "DPD Laser Express Logistics (Pty) Ltd",
+      "DPDLaser",
+      "Dawn Wing"
+    ],
+    "countries": [
+      "ZA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Johannesburg",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/",
+    "trackingUrlTemplate": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/tracking-details/?{trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "dpd.com"
+        ],
+        "pathPattern": "^/za/en/receiving-parcels/track-my-parcel/tracking-details/?$",
+        "query": "^([A-Za-z0-9]+)$"
+      },
+      {
+        "domains": [
+          "website.dpdl.co.za"
+        ],
+        "path": "^/parceltrack/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "dawnwing.co.za"
+        ],
+        "pathPattern": "^/business-tools/online-parcel-tracking/?$",
+        "params": [
+          "WaybillNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dropp": {
     "displayName": "Dropp",
     "color": "#00007d",
@@ -9120,6 +9619,43 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "easy-mail": {
+    "displayName": "Easy Mail",
+    "color": "#712e7e",
+    "aliases": [
+      "Easymail"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://trackntrace.easymail.gr/",
+    "trackingUrlTemplate": "https://trackntrace.easymail.gr/{trackingNumber}",
+    "trackingSearchUrl": "https://trackntrace.easymail.gr/",
+    "linkRules": [
+      {
+        "domains": [
+          "trackntrace.easymail.gr"
+        ],
+        "path": "^/(\\d{11,12})/?$"
+      },
+      {
+        "domains": [
+          "easymail.gr"
+        ],
+        "pathPattern": "^/(?:index\\.php/)?web-tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "ecms-express": {
     "displayName": "ECMS Express",
@@ -9898,6 +10434,68 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "evropat": {
+    "displayName": "Evropat",
+    "color": "#103683",
+    "aliases": [
+      "Европът",
+      "Европът-2000"
+    ],
+    "countries": [
+      "BG"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Sofia",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://evropat.bg/track/",
+    "trackingUrlTemplate": "https://evropat.bg/track/?barcode={trackingNumber}",
+    "trackingSearchUrl": "https://evropat.bg/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "evropat.bg"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "barcode",
+          "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "exline-kz": {
+    "displayName": "Exline",
+    "color": "#0535ef",
+    "countries": [
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Almaty",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://exline.kz/ru/tracking",
+    "trackingUrlTemplate": "https://exline.kz/ru/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://exline.kz/ru/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "exline.kz",
+          "www.exline.kz"
+        ],
+        "pathPattern": "^/(?:ru|kz|en|uz)/tracking/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "express-one": {
     "displayName": "Express One",
     "color": "#ec6500",
@@ -10031,6 +10629,102 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "fargo-uz": {
+    "displayName": "Fargo",
+    "color": "#ed1f2b",
+    "aliases": [
+      "Fargo Parcel Service"
+    ],
+    "countries": [
+      "UZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tashkent",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://fargo.uz/track",
+    "trackingUrlTemplate": "https://fargo.uz/track?id={trackingNumber}",
+    "trackingSearchUrl": "https://fargo.uz/track",
+    "linkRules": [
+      {
+        "domains": [
+          "fargo.uz",
+          "www.fargo.uz"
+        ],
+        "pathPattern": "^(?:/ru|/uz)?/track/?$",
+        "params": [
+          "id"
+        ]
+      },
+      {
+        "domains": [
+          "my.fargo.uz"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "fastfrate": {
+    "displayName": "Fastfrate",
+    "color": "#d70321",
+    "aliases": [
+      "Fastfrate Group",
+      "Consolidated Fastfrate"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracker.fastfrate.com/quick-track",
+    "trackingUrlTemplate": "https://apps.fastfrate.com/fastnet/FastNet.aspx?ProbillNo={trackingNumber}",
+    "trackingSearchUrl": "https://tracker.fastfrate.com/quick-track",
+    "linkRules": [
+      {
+        "domains": [
+          "fastfrate.com"
+        ],
+        "pathPattern": "^/[Ff]ast[Nn]et/[Ff]ast[Nn]et\\.aspx$",
+        "params": [
+          "ProbillNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "first-delivery-tn": {
+    "displayName": "First Delivery",
+    "color": "#51b045",
+    "aliases": [
+      "First Delivery Group",
+      "FDG",
+      "First Delivery Tunisia",
+      "First Delivery Tunisie"
+    ],
+    "countries": [
+      "TN"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Tunis",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.firstdeliverygroup.com/suivi-de-colis/",
+    "trackingSearchUrl": "https://www.firstdeliverygroup.com/suivi-de-colis/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "flash-express": {
     "displayName": "Flash Express",
@@ -10252,6 +10946,36 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "franch-express": {
+    "displayName": "Franch Express",
+    "color": "#ec1b24",
+    "aliases": [
+      "Franch Express Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://franchexpress.com/courier-tracking/",
+    "trackingSearchUrl": "https://franchexpress.com/courier-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "erp.franchexpress.com"
+        ],
+        "pathPattern": "^/awb_tracking2\\.php$",
+        "params": [
+          "keyword"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "fukuyama": {
     "displayName": "Fukuyama Transporting",
@@ -10481,6 +11205,47 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/sk/sledovanie-zasielok/?$",
         "params": [
           "p"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "gel-express": {
+    "displayName": "GEL Express",
+    "color": "#d9002b",
+    "aliases": [
+      "GEL Express Logistik",
+      "GEL Express Logistik GmbH"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gel-express.de/de/sendungsverfolgung/",
+    "trackingUrlTemplate": "https://www.gel-express.de/sendungsverfolgung/?snr={trackingNumber}",
+    "trackingSearchUrl": "https://www.gel-express.de/de/sendungsverfolgung/",
+    "linkRules": [
+      {
+        "domains": [
+          "gel-express.de"
+        ],
+        "pathPattern": "^/(?:(?:de|en)/)?sendungsverfolgung/?$",
+        "params": [
+          "snr"
+        ]
+      },
+      {
+        "domains": [
+          "thalmaier.de"
+        ],
+        "pathPattern": "^/gelsend/suche\\.php$",
+        "params": [
+          "sean"
         ]
       }
     ],
@@ -10791,6 +11556,37 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "gobolt": {
+    "displayName": "GoBolt",
+    "color": "#00282b",
+    "aliases": [
+      "Go Bolt",
+      "Second Closet"
+    ],
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.gobolt.com/tracking",
+    "trackingUrlTemplate": "https://track.gobolt.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://track.gobolt.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "track.gobolt.com",
+          "galileo.gobolt.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "gofo-fr": {
     "displayName": "GOFO France",
     "color": "#fc4c02",
@@ -10886,6 +11682,43 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:GF|CI)IT\\d{13,14}$",
         "confidence": "high"
+      }
+    ]
+  },
+  "gogo-xpress": {
+    "displayName": "GoGo Xpress",
+    "color": "#23a3dd",
+    "aliases": [
+      "GoGoXpress",
+      "GGX",
+      "QuadX",
+      "QuadX Inc."
+    ],
+    "countries": [
+      "PH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Manila",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app.gogoxpress.com/track/",
+    "trackingUrlTemplate": "https://app.gogoxpress.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://app.gogoxpress.com/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "app.gogoxpress.com"
+        ],
+        "path": "^/track/([^/?#]+)(?:/map)?/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?=.*[A-Z])[0-9A-Z]{12}$",
+        "confidence": "high",
+        "rawPattern": "^[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$"
       }
     ]
   },
@@ -11256,6 +12089,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "horoz": {
+    "displayName": "Horoz Lojistik",
+    "color": "#c31f3f",
+    "aliases": [
+      "Horoz",
+      "Horoz Lojistik A.Ş."
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmGonderiTakip.aspx",
+    "trackingUrlTemplate": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmAtfDetay.aspx?Ptn={trackingNumber}",
+    "trackingSearchUrl": "https://app3.horoz.com.tr/wsKurumsal/_genel/frmGonderiTakip.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "app3.horoz.com.tr"
+        ],
+        "pathPattern": "^/wsKurumsal/_genel/frmAtfDetay\\.aspx$",
+        "params": [
+          "Ptn"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "hrvatska-posta": {
     "displayName": "Hrvatska pošta",
     "color": "#ffd100",
@@ -11610,6 +12475,38 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/[a-z]{2}(?:-[A-Z]{2})?/[A-Za-z0-9]{4,40}(?:/locker-to-locker-recipient)?/?$",
         "path": "^/[a-z]{2}(?:-[A-Z]{2})?/([A-Za-z0-9]{4,40})(?:/locker-to-locker-recipient)?/?$",
         "keepsCapabilityUrl": true
+      }
+    ],
+    "detectionRules": []
+  },
+  "integral-pack": {
+    "displayName": "Integral Pack",
+    "color": "#004d9c",
+    "aliases": [
+      "Integral Pack Express",
+      "IntegralPack"
+    ],
+    "countries": [
+      "AR"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.integralpack.com.ar/seguimiento",
+    "trackingUrlTemplate": "https://www.integralpack.com.ar/seguimiento?codigo={trackingNumber}",
+    "trackingSearchUrl": "https://www.integralpack.com.ar/seguimiento",
+    "linkRules": [
+      {
+        "domains": [
+          "integralpack.com.ar"
+        ],
+        "pathPattern": "^/seguimiento/?$",
+        "params": [
+          "codigo"
+        ]
       }
     ],
     "detectionRules": []
@@ -12047,6 +12944,47 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "jeebly": {
+    "displayName": "Jeebly",
+    "color": "#db124b",
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://myjeebly.jeebly.com/shipment-tracking/",
+    "trackingSearchUrl": "https://myjeebly.jeebly.com/shipment-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "myjeebly.jeebly.com"
+        ],
+        "pathPattern": "^/shipment-tracking/?$",
+        "params": [
+          "awb"
+        ]
+      },
+      {
+        "domains": [
+          "myjeebly.jeebly.com"
+        ],
+        "pathPattern": "^/track-shipment/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JB\\d{7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "jersey-post": {
     "displayName": "Jersey Post",
     "color": "#e72b37",
@@ -12273,6 +13211,47 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "kargoist": {
+    "displayName": "Kargoist",
+    "color": "#18b6d6",
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://kargoist.com/tracking/",
+    "trackingUrlTemplate": "https://kargoist.com/tracking/getlink.php?barcode={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "kargoist.com"
+        ],
+        "pathPattern": "^/tracking/getlink\\.php$",
+        "params": [
+          "barcode"
+        ]
+      },
+      {
+        "domains": [
+          "kargotakip.kargoist.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "har_kod"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^KAR\\d{6,7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "kazpost": {
     "displayName": "Kazpost",
     "color": "#fed201",
@@ -12425,7 +13404,9 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "ТК КИТ",
       "Транспортная компания «КИТ»",
-      "KIT"
+      "KIT",
+      "GTD",
+      "ГТД"
     ],
     "countries": [
       "RU",
@@ -12611,6 +13592,55 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "la-poste-ci": {
+    "displayName": "La Poste de Côte d'Ivoire",
+    "color": "#00614a",
+    "aliases": [
+      "La Poste CI",
+      "Poste de Côte d'Ivoire",
+      "Poste CI",
+      "Ivory Coast Post",
+      "Côte d'Ivoire Post",
+      "Ivory Coast EMS"
+    ],
+    "countries": [
+      "CI"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Abidjan",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://laposte.ci.post/tracking-colis",
+    "trackingSearchUrl": "https://laposte.ci.post/tracking-colis",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "la-poste-senegal": {
+    "displayName": "La Poste du Sénégal",
+    "color": "#1b5cab",
+    "aliases": [
+      "La Poste Sénégal",
+      "La Poste Senegal",
+      "Poste du Sénégal",
+      "Senegal Post",
+      "Jotnaci"
+    ],
+    "countries": [
+      "SN"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Dakar",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.laposte.sn/suivi-colis/",
+    "trackingSearchUrl": "https://www.laposte.sn/suivi-colis/",
+    "linkRules": [],
     "detectionRules": []
   },
   "la-poste-tunisienne": {
@@ -13346,6 +14376,42 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "mailplus-au": {
+    "displayName": "MailPlus",
+    "color": "#025d7c",
+    "aliases": [
+      "Mail Plus",
+      "Mailplus",
+      "MailPlus Australia",
+      "MailPlus Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.mailplus.com.au/",
+    "trackingUrlTemplate": "https://track.mailplus.com.au/old/{trackingNumber}",
+    "trackingSearchUrl": "https://track.mailplus.com.au/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.mailplus.com.au"
+        ],
+        "path": "^/old/([A-Za-z0-9]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^MPX\\d{9}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "mainfreight": {
     "displayName": "Mainfreight",
     "color": "#005eb8",
@@ -13389,6 +14455,48 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "major-express": {
+    "displayName": "Major Express",
+    "color": "#ee761c",
+    "aliases": [
+      "Мэйджор Экспресс"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://major-express.ru/useful-services/track/",
+    "trackingUrlTemplate": "https://major-express.ru/useful-services/track/?type=1&tracking-number={trackingNumber}",
+    "trackingSearchUrl": "https://major-express.ru/useful-services/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "major-express.ru",
+          "www.major-express.ru"
+        ],
+        "pathPattern": "^/useful-services/track/?$",
+        "params": [
+          "tracking-number"
+        ]
+      },
+      {
+        "domains": [
+          "major-express.ru",
+          "www.major-express.ru"
+        ],
+        "pathPattern": "^/[Tt]race\\.aspx$",
+        "params": [
+          "wbnumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "maltapost": {
     "displayName": "MaltaPost",
     "color": "#d43b2c",
@@ -13427,6 +14535,42 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "mandae": {
+    "displayName": "Mandaê",
+    "color": "#0050c3",
+    "aliases": [
+      "Mandae",
+      "Nuvem Envio/Mandaê",
+      "Rastreaê"
+    ],
+    "countries": [
+      "BR"
+    ],
+    "selectable": true,
+    "timezone": "America/Sao_Paulo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://rastreae.com.br/busca",
+    "trackingUrlTemplate": "https://rastreae.com.br/resultado/{trackingNumber}",
+    "trackingSearchUrl": "https://rastreae.com.br/busca",
+    "linkRules": [
+      {
+        "domains": [
+          "rastreae.com.br"
+        ],
+        "path": "^/resultado/([A-Za-z0-9]+)/?$"
+      },
+      {
+        "domains": [
+          "app.mandae.com.br"
+        ],
+        "path": "^/rastreamento/([A-Za-z0-9]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "maritime-ontario": {
     "displayName": "Maritime-Ontario",
@@ -13663,6 +14807,35 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "messenger-cz": {
+    "displayName": "Messenger",
+    "color": "#fedf05",
+    "aliases": [
+      "Messenger a.s."
+    ],
+    "countries": [
+      "CZ",
+      "SK"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Prague",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.messenger.cz/",
+    "trackingUrlTemplate": "https://tracking.messenger.cz/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.messenger.cz/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.messenger.cz"
+        ],
+        "path": "^/(?:consignment/)?((?=[A-Za-z]*[0-9])[0-9A-Za-z]{8,15})/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "midland-transport": {
     "displayName": "Midland Transport",
@@ -14056,6 +15229,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "nord-wheel": {
+    "displayName": "Nord Wheel",
+    "color": "#0c55ff",
+    "aliases": [
+      "Норд Вил",
+      "ТК Норд Вил",
+      "Nord Vil"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://nordw.ru/tracking/",
+    "trackingUrlTemplate": "https://nordw.ru/tracking/?n={trackingNumber}",
+    "trackingSearchUrl": "https://nordw.ru/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "nordw.ru",
+          "www.nordw.ru"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "n"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "northline": {
     "displayName": "Northline",
     "color": "#000000",
@@ -14254,6 +15461,43 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ocasa": {
+    "displayName": "OCASA",
+    "color": "#0099a8",
+    "aliases": [
+      "OCASA Logística General",
+      "OCASA Logística"
+    ],
+    "countries": [
+      "AR"
+    ],
+    "selectable": true,
+    "timezone": "America/Argentina/Buenos_Aires",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.ocasa.com/TrackingOnline/index",
+    "trackingUrlTemplate": "https://tracking.ocasa.com/Tracking/index?client=&airbillnumber={trackingNumber}&i=18&url=ocasa",
+    "trackingSearchUrl": "https://tracking.ocasa.com/TrackingOnline/index",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.ocasa.com"
+        ],
+        "pathPattern": "^/(?:Tracking/index|TrackingOnline/index|tracking\\.aspx)/?$",
+        "params": [
+          "airbillnumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^EC[23](?=[A-Z0-9]{10}$)[A-Z]{2,4}\\d{6,8}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "olva-courier": {
     "displayName": "Olva Courier",
     "color": "#fcb414",
@@ -14380,6 +15624,55 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "opt-nc": {
+    "displayName": "OPT-NC",
+    "color": "#28347c",
+    "aliases": [
+      "OPT Nouvelle-Calédonie",
+      "Office des Postes et Télécommunications de Nouvelle-Calédonie",
+      "OPT New Caledonia",
+      "New Caledonia Post"
+    ],
+    "countries": [
+      "NC"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Noumea",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://monespace.opt.nc/",
+    "trackingUrlTemplate": "https://monespace.opt.nc/mes-suivis/{trackingNumber}",
+    "trackingSearchUrl": "https://monespace.opt.nc/",
+    "linkRules": [
+      {
+        "domains": [
+          "monespace.opt.nc"
+        ],
+        "path": "^/mes-suivis/([A-Za-z0-9]{13})/?$"
+      },
+      {
+        "domains": [
+          "webtrack.opt.nc"
+        ],
+        "pathPattern": "^/ipswebtracking/IPSWeb_item_events\\.asp$",
+        "params": [
+          "itemid"
+        ]
+      },
+      {
+        "domains": [
+          "webtracking-nca.ptc.post"
+        ],
+        "pathPattern": "^/(?:IPSWeb_item_events\\.aspx)?$",
+        "params": [
+          "itemid"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "orlen-paczka": {
     "displayName": "ORLEN Paczka",
@@ -15184,6 +16477,35 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "pmm": {
+    "displayName": "PMM",
+    "color": "#1e008d",
+    "aliases": [
+      "PMM Paquetería y Mensajería"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mazatlan",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pmm.com.mx/rastreo",
+    "trackingUrlTemplate": "https://pmm.com.mx/rastreo/{trackingNumber}",
+    "trackingSearchUrl": "https://pmm.com.mx/rastreo",
+    "linkRules": [
+      {
+        "domains": [
+          "pmm.com.mx",
+          "www.pmm.com.mx"
+        ],
+        "path": "^/rastreo/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "polaris-transport": {
     "displayName": "Polaris Transportation Group",
     "color": "#004c8c",
@@ -15232,6 +16554,48 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "pony-express": {
+    "displayName": "Pony Express",
+    "color": "#008752",
+    "aliases": [
+      "Пони Экспресс",
+      "PONY EXPRESS"
+    ],
+    "countries": [
+      "RU",
+      "KZ",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ponyexpress.ru/support/servisy-samoobsluzhivaniya/track/",
+    "trackingUrlTemplate": "https://www.ponyexpress.ru/support/servisy-samoobsluzhivaniya/track/?_&trace_ids={trackingNumber}",
+    "trackingSearchUrl": "https://www.ponyexpress.ru/support/servisy-samoobsluzhivaniya/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.ponyexpress.ru",
+          "ponyexpress.ru"
+        ],
+        "pathPattern": "^/support/servisy-samoobsluzhivaniya/track/?$",
+        "params": [
+          "trace_ids"
+        ]
+      },
+      {
+        "domains": [
+          "www.ponyexpress.ru",
+          "ponyexpress.ru"
+        ],
+        "path": "^/support/servisy-samoobsluzhivaniya/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "pos-indonesia": {
     "displayName": "Pos Indonesia",
@@ -17001,6 +18365,78 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "shipa": {
+    "displayName": "Shipa",
+    "color": "#0000ff",
+    "aliases": [
+      "Shipa Delivery"
+    ],
+    "countries": [
+      "AE",
+      "SA",
+      "KW"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shipa.com/track/",
+    "trackingUrlTemplate": "https://shipa.com/track/?trackingno={trackingNumber}",
+    "trackingSearchUrl": "https://shipa.com/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "shipa.com",
+          "www.shipa.com"
+        ],
+        "pathPattern": "^/(?:ar/)?track/?$",
+        "params": [
+          "trackingno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SD\\d{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "shree-anjani": {
+    "displayName": "Shree Anjani Courier",
+    "color": "#f58220",
+    "aliases": [
+      "Shree Anjani Courier Services",
+      "Anjani Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shreeanjani.co.in/tracking",
+    "trackingUrlTemplate": "https://shreeanjani.co.in/tracking?awb={trackingNumber}",
+    "trackingSearchUrl": "https://shreeanjani.co.in/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "shreeanjani.co.in",
+          "www.shreeanjani.co.in"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "shree-maruti": {
     "displayName": "Shree Maruti Courier",
@@ -19121,6 +20557,83 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ues-uy": {
+    "displayName": "UES",
+    "color": "#00295c",
+    "aliases": [
+      "UES Uruguay",
+      "UES Ecommerce"
+    ],
+    "countries": [
+      "UY"
+    ],
+    "selectable": true,
+    "timezone": "America/Montevideo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ues.com.uy/rastreo_paquete.html",
+    "trackingUrlTemplate": "https://www.ues.com.uy/rastreo_paquete.html?criterioId={trackingNumber}",
+    "trackingSearchUrl": "https://www.ues.com.uy/rastreo_paquete.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www.ues.com.uy",
+          "ues.com.uy"
+        ],
+        "pathPattern": "^/(?:en/)?rastreo_paquete\\.html$",
+        "params": [
+          "criterioId",
+          "cr"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^UES(?:M\\d{9}|\\d{13})$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "upaya": {
+    "displayName": "Upaya",
+    "color": "#003d87",
+    "aliases": [
+      "Upaya City Cargo",
+      "Upaya City Cargo Pvt. Ltd."
+    ],
+    "countries": [
+      "NP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kathmandu",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://upaya.com.np/track/",
+    "trackingUrlTemplate": "https://upaya.com.np/track/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://upaya.com.np/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "upaya.com.np"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{6}\\d{11,12}$",
+        "confidence": "low",
+        "rawPattern": "^[A-Z]{6}\\d{4,5}-\\d{7}$"
+      }
+    ]
+  },
   "urbano": {
     "displayName": "Urbano",
     "color": "#5c068c",
@@ -19368,6 +20881,25 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "vimenpaq": {
+    "displayName": "Vimenpaq",
+    "color": "#013ca6",
+    "countries": [
+      "DO",
+      "US",
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "America/Santo_Domingo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
+    "trackingSearchUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "vinted-go": {
     "displayName": "Vinted Go",
     "color": "#004654",
@@ -19433,6 +20965,40 @@ export const CARRIER_CATALOG = {
           "vnpost.vn"
         ],
         "path": "^/vi-vn/dinh-vi/buu-pham(?:-ban-in/extmid/\\d+)?/key/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "vozovoz": {
+    "displayName": "Vozovoz",
+    "color": "#ec1b22",
+    "aliases": [
+      "Возовоз"
+    ],
+    "countries": [
+      "RU",
+      "BY",
+      "KZ"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vozovoz.ru/order/manage/",
+    "trackingUrlTemplate": "https://vozovoz.ru/order/manage/?id={trackingNumber}",
+    "trackingSearchUrl": "https://vozovoz.ru/order/manage/",
+    "linkRules": [
+      {
+        "domains": [
+          "vozovoz.ru",
+          "www.vozovoz.ru"
+        ],
+        "pathPattern": "^/order/manage/?$",
+        "params": [
+          "id"
+        ]
       }
     ],
     "detectionRules": []
@@ -19688,6 +21254,27 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "x-express-ba": {
+    "displayName": "X Express",
+    "color": "#f15921",
+    "aliases": [
+      "X express brza pošta",
+      "X Express - Brza pošta"
+    ],
+    "countries": [
+      "BA"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Sarajevo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.x-express.ba/korisnicki-panel/pracenje-posiljke",
+    "trackingSearchUrl": "https://www.x-express.ba/korisnicki-panel/pracenje-posiljke",
+    "linkRules": [],
+    "detectionRules": []
   },
   "xde-logistics": {
     "displayName": "XDE Logistics",
@@ -20295,10 +21882,14 @@ export const CARRIER_IDS = [
   "alem-tat",
   "algerie-poste",
   "allegro-one",
+  "ameex",
+  "amerijet",
   "ampm",
   "andreani",
   "anjun",
+  "anousith",
   "anteraja",
+  "ap-cargo",
   "apc-overnight",
   "apc-postal-logistics",
   "aramex-au",
@@ -20319,13 +21910,19 @@ export const CARRIER_IDS = [
   "bex-express",
   "blue-express",
   "blueex",
+  "bookurier",
   "border-express",
   "bosta",
+  "botswana-post",
   "box-now",
+  "bts-uz",
+  "budbee",
   "buffalo-ex",
   "bulgarian-posts",
   "burd-delivery",
+  "bussgods",
   "cacesa",
+  "campost",
   "cargus",
   "castores",
   "cdek",
@@ -20348,16 +21945,20 @@ export const CARRIER_IDS = [
   "coordinadora",
   "correo-argentino",
   "correo-uruguayo",
+  "correos-bolivia",
   "correos-de-mexico",
   "courier-center",
   "courier-it",
+  "courier-plus-ng",
   "couriersplease",
+  "credifin",
   "cruz-del-sur",
   "cse-russia",
   "cttyex",
   "cycloon",
   "cyprus-post",
   "d-express",
+  "daewoo-fastex",
   "dai-post",
   "danske-fragtmaend",
   "dao",
@@ -20381,11 +21982,13 @@ export const CARRIER_IDS = [
   "dpd-ie",
   "dpd-pl",
   "dpd-uk",
+  "dpd-za",
   "dropp",
   "dsv",
   "dx",
   "dynalogic",
   "early-bird",
+  "easy-mail",
   "ecms-express",
   "econt",
   "ecourier",
@@ -20405,20 +22008,27 @@ export const CARRIER_IDS = [
   "euroexpress-ba",
   "europochta",
   "evri-uk",
+  "evropat",
+  "exline-kz",
   "express-one",
   "fan-courier",
   "fargo-courier",
+  "fargo-uz",
+  "fastfrate",
+  "first-delivery-tn",
   "flash-express",
   "flash-express-ph",
   "followmont",
   "forward-air",
   "forza-delivery",
   "foxpost",
+  "franch-express",
   "fukuyama",
   "gati",
   "gdex",
   "gebrueder-weiss",
   "geis",
+  "gel-express",
   "geniki-taxydromiki",
   "geodis-pl",
   "ghana-post",
@@ -20427,8 +22037,10 @@ export const CARRIER_IDS = [
   "gls-es",
   "gls-it",
   "go-express",
+  "gobolt",
   "gofo-fr",
   "gofo-it",
+  "gogo-xpress",
   "groupe-guilbault",
   "gs-postbox",
   "guatex",
@@ -20440,6 +22052,7 @@ export const CARRIER_IDS = [
   "helthjem",
   "hepsijet",
   "hi-trans",
+  "horoz",
   "hrvatska-posta",
   "hunter-express",
   "hywl",
@@ -20449,6 +22062,7 @@ export const CARRIER_IDS = [
   "ilyang-logis",
   "imile",
   "instabox",
+  "integral-pack",
   "intelcom",
   "internet-express",
   "interrapidisimo",
@@ -20460,6 +22074,7 @@ export const CARRIER_IDS = [
   "jadlog",
   "jamaica-post",
   "janio",
+  "jeebly",
   "jersey-post",
   "jhgj",
   "jitsu",
@@ -20467,6 +22082,7 @@ export const CARRIER_IDS = [
   "jordan-post",
   "jrs-express",
   "jrt",
+  "kargoist",
   "kazpost",
   "kerry-tj",
   "kex",
@@ -20476,6 +22092,8 @@ export const CARRIER_IDS = [
   "ktd",
   "kuehne-nagel",
   "kunyoung",
+  "la-poste-ci",
+  "la-poste-senegal",
   "la-poste-tunisienne",
   "laar-courier",
   "latvijas-pasts",
@@ -20494,14 +22112,18 @@ export const CARRIER_IDS = [
   "madhur-courier",
   "magyar-posta",
   "mailamericas",
+  "mailplus-au",
   "mainfreight",
+  "major-express",
   "maltapost",
+  "mandae",
   "maritime-ontario",
   "matkahuolto",
   "mauritius-post",
   "mayiyinfu",
   "mds-collivery",
   "meest",
+  "messenger-cz",
   "midland-transport",
   "mng-kargo",
   "mtscn",
@@ -20514,14 +22136,17 @@ export const CARRIER_IDS = [
   "nim-express",
   "nipost",
   "nippon-express",
+  "nord-wheel",
   "northline",
   "nova-poshta",
   "nz-couriers",
   "oak-harbor",
   "oca",
+  "ocasa",
   "olva-courier",
   "omgo",
   "omniva",
+  "opt-nc",
   "orlen-paczka",
   "osm-worldwide",
   "overseas-express",
@@ -20540,7 +22165,9 @@ export const CARRIER_IDS = [
   "pfc-express",
   "pilot-freight",
   "pitt-ohio",
+  "pmm",
   "polaris-transport",
+  "pony-express",
   "pos-indonesia",
   "post-haste",
   "post-luxembourg",
@@ -20589,6 +22216,8 @@ export const CARRIER_IDS = [
   "seven-eleven-tw",
   "sfc",
   "shadowfax",
+  "shipa",
+  "shree-anjani",
   "shree-maruti",
   "shree-nandan",
   "sicepat",
@@ -20642,20 +22271,25 @@ export const CARRIER_IDS = [
   "tst-cf-express",
   "tufesa",
   "ubi-smart-parcel",
+  "ues-uy",
+  "upaya",
   "urbano",
   "uzbekistan-post",
   "vasp-expresso",
   "venipak",
   "via-cargo",
   "viettel-post",
+  "vimenpaq",
   "vinted-go",
   "vnpost",
+  "vozovoz",
   "vrl-logistics",
   "wahana",
   "wanbexpress",
   "ward-trucking",
   "whistl",
   "winit",
+  "x-express-ba",
   "xde-logistics",
   "xdp",
   "xpo-ltl",
@@ -20795,10 +22429,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "alem-tat": [],
   "algerie-poste": ["algerie-poste-1"],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
+  "ameex": [],
+  "amerijet": ["amerijet-1"],
   "ampm": [],
   "andreani": [],
   "anjun": ["anjun-aj"],
+  "anousith": [],
   "anteraja": ["anteraja-1"],
+  "ap-cargo": [],
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],
   "aramex-au": ["aramex-au-1"],
@@ -20819,13 +22457,19 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bex-express": [],
   "blue-express": [],
   "blueex": [],
+  "bookurier": ["bookurier-1"],
   "border-express": ["border-express-1"],
   "bosta": [],
+  "botswana-post": [],
   "box-now": [],
+  "bts-uz": [],
+  "budbee": [],
   "buffalo-ex": ["buffalo-ex-1"],
   "bulgarian-posts": ["bulgarian-posts-1"],
   "burd-delivery": [],
+  "bussgods": ["bussgods-1"],
   "cacesa": [],
+  "campost": [],
   "cargus": [],
   "castores": [],
   "cdek": [],
@@ -20848,16 +22492,20 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "coordinadora": [],
   "correo-argentino": [],
   "correo-uruguayo": [],
+  "correos-bolivia": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "courier-center": [],
   "courier-it": [],
+  "courier-plus-ng": [],
   "couriersplease": ["couriersplease-1"],
+  "credifin": [],
   "cruz-del-sur": [],
   "cse-russia": [],
   "cttyex": ["cttyex-1"],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
   "d-express": [],
+  "daewoo-fastex": [],
   "dai-post": ["dai-post-1","dai-post-2"],
   "danske-fragtmaend": ["danske-fragtmaend-1"],
   "dao": ["dao-1"],
@@ -20881,11 +22529,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-ie": [],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
+  "dpd-za": [],
   "dropp": [],
   "dsv": [],
   "dx": ["dx-1"],
   "dynalogic": [],
   "early-bird": ["early-bird-1"],
+  "easy-mail": [],
   "ecms-express": ["ecms-express-1"],
   "econt": [],
   "ecourier": ["ecourier-1"],
@@ -20905,20 +22555,27 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "euroexpress-ba": [],
   "europochta": ["europochta-1"],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
+  "evropat": [],
+  "exline-kz": [],
   "express-one": [],
   "fan-courier": [],
   "fargo-courier": ["fargo-courier-1"],
+  "fargo-uz": [],
+  "fastfrate": [],
+  "first-delivery-tn": [],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
   "followmont": [],
   "forward-air": [],
   "forza-delivery": ["forza-delivery-1"],
   "foxpost": ["foxpost-1"],
+  "franch-express": [],
   "fukuyama": [],
   "gati": [],
   "gdex": ["gdex-1"],
   "gebrueder-weiss": [],
   "geis": [],
+  "gel-express": [],
   "geniki-taxydromiki": [],
   "geodis-pl": ["geodis-pl-1"],
   "ghana-post": [],
@@ -20927,8 +22584,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-es": [],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "go-express": [],
+  "gobolt": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
+  "gogo-xpress": ["gogo-xpress-1"],
   "groupe-guilbault": [],
   "gs-postbox": [],
   "guatex": [],
@@ -20940,6 +22599,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
   "hi-trans": [],
+  "horoz": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
   "hunter-express": [],
   "hywl": ["hywl-1"],
@@ -20949,6 +22609,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ilyang-logis": [],
   "imile": ["imile-1"],
   "instabox": [],
+  "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
   "internet-express": [],
   "interrapidisimo": [],
@@ -20960,6 +22621,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jadlog": [],
   "jamaica-post": [],
   "janio": ["janio-1"],
+  "jeebly": ["jeebly-1"],
   "jersey-post": [],
   "jhgj": ["jhgj-1"],
   "jitsu": [],
@@ -20967,6 +22629,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jordan-post": [],
   "jrs-express": [],
   "jrt": ["jrt-1"],
+  "kargoist": ["kargoist-1"],
   "kazpost": [],
   "kerry-tj": [],
   "kex": [],
@@ -20976,6 +22639,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kunyoung": [],
+  "la-poste-ci": [],
+  "la-poste-senegal": [],
   "la-poste-tunisienne": [],
   "laar-courier": [],
   "latvijas-pasts": ["latvijas-pasts-s10"],
@@ -20994,14 +22659,18 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "madhur-courier": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp"],
+  "mailplus-au": ["mailplus-au-1"],
   "mainfreight": [],
+  "major-express": [],
   "maltapost": ["maltapost-s10"],
+  "mandae": [],
   "maritime-ontario": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "mauritius-post": [],
   "mayiyinfu": ["mayiyinfu-1"],
   "mds-collivery": [],
   "meest": ["meest-1"],
+  "messenger-cz": [],
   "midland-transport": [],
   "mng-kargo": [],
   "mtscn": ["mtscn-1"],
@@ -21014,14 +22683,17 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nim-express": [],
   "nipost": [],
   "nippon-express": [],
+  "nord-wheel": [],
   "northline": [],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
   "nz-couriers": [],
   "oak-harbor": [],
   "oca": [],
+  "ocasa": ["ocasa-1"],
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
+  "opt-nc": [],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
   "overseas-express": [],
@@ -21040,7 +22712,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pfc-express": ["pfc-express-1"],
   "pilot-freight": [],
   "pitt-ohio": [],
+  "pmm": [],
   "polaris-transport": ["polaris-transport-1"],
+  "pony-express": [],
   "pos-indonesia": ["pos-indonesia-1"],
   "post-haste": [],
   "post-luxembourg": ["post-luxembourg-s10"],
@@ -21089,6 +22763,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "seven-eleven-tw": [],
   "sfc": ["sfc-1","sfc-ae"],
   "shadowfax": ["shadowfax-1","shadowfax-2"],
+  "shipa": ["shipa-1"],
+  "shree-anjani": [],
   "shree-maruti": [],
   "shree-nandan": [],
   "sicepat": [],
@@ -21142,20 +22818,25 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tst-cf-express": [],
   "tufesa": [],
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
+  "ues-uy": ["ues-uy-1"],
+  "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
   "uzbekistan-post": [],
   "vasp-expresso": [],
   "venipak": ["venipak-1"],
   "via-cargo": [],
   "viettel-post": ["viettel-post-1"],
+  "vimenpaq": [],
   "vinted-go": ["vinted-go-1"],
   "vnpost": [],
+  "vozovoz": [],
   "vrl-logistics": [],
   "wahana": [],
   "wanbexpress": ["wanbexpress-1"],
   "ward-trucking": [],
   "whistl": [],
   "winit": ["winit-1","winit-2"],
+  "x-express-ba": [],
   "xde-logistics": [],
   "xdp": ["xdp-1"],
   "xpo-ltl": ["xpo-ltl-1"],

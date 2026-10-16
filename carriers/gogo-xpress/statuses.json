@@ -1,0 +1,20 @@
+{
+  "carrier": "gogo-xpress",
+  "entries": [
+    {"code": "for_pickup", "wording": "Booking Confirmed", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The merchant booked the parcel; the remark gives the planned pickup day."},
+    {"code": "pickup_rider_found", "wording": "Pickup rider found", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "A rider was assigned to collect the parcel."},
+    {"code": "out_for_pickup", "wording": "Out for pickup", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The rider is on the way to collect the parcel."},
+    {"code": "picked_up", "wording": "Picked up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The rider collected the parcel from the merchant."},
+    {"code": "received_at_pickup_hub", "wording": "Received at pickup hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The origin hub received the parcel; the remark names the hub."},
+    {"code": "in_transit", "wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The parcel moves between hubs; remarks also carry partner scans under this status."},
+    {"code": "received_at_delivery_hub", "wording": "Received at delivery hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination hub received the parcel; the remark reads \"Ready for delivery\"."},
+    {"code": "for_transfer", "wording": "For transfer", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The parcel is handed to a partner for the onward leg; the remark reads \"Via land: For transfer to partner\"."},
+    {"code": "out_for_delivery", "wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The parcel is with the delivery rider."},
+    {"code": "delivered", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The parcel was delivered."},
+    {"code": "failed_pickup_attempt", "wording": "Failed pickup attempt", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "The rider could not collect the parcel; the remark gives the reason, such as a merchant cancellation."},
+    {"code": "failed_pickup", "wording": "Failed pickup", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "The pickup was closed without collecting the parcel."},
+    {"code": "failed_delivery", "wording": "Failed Delivery", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "A status filter label in the carrier's web app bundle; tracker events may differ in case."},
+    {"code": "return_in_transit", "wording": "Return In Transit", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "A status filter label in the carrier's web app bundle; tracker events may differ in case."},
+    {"code": "returned", "wording": "Returned", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "A status filter label in the carrier's web app bundle; tracker events may differ in case."}
+  ]
+}

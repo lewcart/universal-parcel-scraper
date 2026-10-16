@@ -1,0 +1,37 @@
+{
+  "id": "la-poste-senegal",
+  "displayName": "La Poste du Sénégal",
+  "aliases": [
+    "La Poste Sénégal",
+    "La Poste Senegal",
+    "Poste du Sénégal",
+    "Senegal Post",
+    "Jotnaci"
+  ],
+  "region": {
+    "countries": [
+      "SN"
+    ]
+  },
+  "brand": {
+    "color": "#1b5cab"
+  },
+  "selectable": true,
+  "timezone": "Africa/Dakar",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.laposte.sn/suivi-colis/",
+    "canaryUrl": "https://www.laposte.sn/suivi-colis/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

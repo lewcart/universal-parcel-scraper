@@ -1,0 +1,46 @@
+{
+  "id": "shree-anjani",
+  "displayName": "Shree Anjani Courier",
+  "aliases": [
+    "Shree Anjani Courier Services",
+    "Anjani Courier"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#f58220"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://shreeanjani.co.in/tracking?awb={trackingNumber}",
+    "searchUrl": "https://shreeanjani.co.in/tracking",
+    "canaryUrl": "https://shreeanjani.co.in/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "shreeanjani.co.in",
+        "www.shreeanjani.co.in"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

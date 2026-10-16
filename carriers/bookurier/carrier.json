@@ -1,0 +1,60 @@
+{
+  "id": "bookurier",
+  "displayName": "Bookurier",
+  "aliases": [
+    "Bookurier Logistics",
+    "Bookurier.ro"
+  ],
+  "region": {
+    "countries": [
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#dc2626"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://t.bookurier.ro/?awb={trackingNumber}",
+    "searchUrl": "https://t.bookurier.ro/",
+    "canaryUrl": "https://t.bookurier.ro/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "t.bookurier.ro"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "awb"
+      ]
+    },
+    {
+      "domains": [
+        "bookurier.ro"
+      ],
+      "pathPattern": "^/colete/AWB/trackifnew\\.php$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "bookurier-1",
+      "pattern": "^BOK\\d{7}$",
+      "confidence": "high"
+    }
+  ]
+}

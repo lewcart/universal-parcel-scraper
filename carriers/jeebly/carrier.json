@@ -1,0 +1,56 @@
+{
+  "id": "jeebly",
+  "displayName": "Jeebly",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#db124b"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://myjeebly.jeebly.com/shipment-tracking/",
+    "canaryUrl": "https://myjeebly.jeebly.com/shipment-tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "myjeebly.jeebly.com"
+      ],
+      "pathPattern": "^/shipment-tracking/?$",
+      "params": [
+        "awb"
+      ]
+    },
+    {
+      "domains": [
+        "myjeebly.jeebly.com"
+      ],
+      "pathPattern": "^/track-shipment/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "jeebly-1",
+      "pattern": "^JB\\d{7}$",
+      "confidence": "low"
+    }
+  ]
+}

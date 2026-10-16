@@ -1,0 +1,9 @@
+{
+  "carrier": "franch-express",
+  "entries": [
+    {"wording": "Booked", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the shipment history page; the parcel is handed in at the counter."},
+    {"wording": "In-Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the shipment history page."},
+    {"wording": "Misroute", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the shipment history page: the parcel went to the wrong hub."},
+    {"wording": "Vehicle Delay", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of the shipment history page."}
+  ]
+}

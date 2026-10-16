@@ -1,0 +1,43 @@
+{
+  "id": "exline-kz",
+  "displayName": "Exline",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "KZ"
+    ]
+  },
+  "brand": {
+    "color": "#0535ef"
+  },
+  "selectable": true,
+  "timezone": "Asia/Almaty",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://exline.kz/ru/tracking?id={trackingNumber}",
+    "searchUrl": "https://exline.kz/ru/tracking",
+    "canaryUrl": "https://exline.kz/ru/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "exline.kz",
+        "www.exline.kz"
+      ],
+      "pathPattern": "^/(?:ru|kz|en|uz)/tracking/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

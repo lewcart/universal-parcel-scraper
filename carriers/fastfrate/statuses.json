@@ -1,0 +1,6 @@
+{
+  "carrier": "fastfrate",
+  "entries": [
+    {"wording": "DELIVERED BY APPOINTMENT", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Delivery status on the FastNet quick probill tracker, shown with the delivery and appointment dates."}
+  ]
+}

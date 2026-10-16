@@ -1,0 +1,45 @@
+{
+  "id": "fastfrate",
+  "displayName": "Fastfrate",
+  "aliases": [
+    "Fastfrate Group",
+    "Consolidated Fastfrate"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#d70321"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://apps.fastfrate.com/fastnet/FastNet.aspx?ProbillNo={trackingNumber}",
+    "searchUrl": "https://tracker.fastfrate.com/quick-track",
+    "canaryUrl": "https://tracker.fastfrate.com/quick-track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fastfrate.com"
+      ],
+      "pathPattern": "^/[Ff]ast[Nn]et/[Ff]ast[Nn]et\\.aspx$",
+      "params": [
+        "ProbillNo"
+      ]
+    }
+  ],
+  "detection": []
+}

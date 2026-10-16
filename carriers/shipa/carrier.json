@@ -1,0 +1,53 @@
+{
+  "id": "shipa",
+  "displayName": "Shipa",
+  "aliases": [
+    "Shipa Delivery"
+  ],
+  "region": {
+    "countries": [
+      "AE",
+      "SA",
+      "KW"
+    ]
+  },
+  "brand": {
+    "color": "#0000ff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://shipa.com/track/?trackingno={trackingNumber}",
+    "searchUrl": "https://shipa.com/track/",
+    "canaryUrl": "https://shipa.com/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "shipa.com",
+        "www.shipa.com"
+      ],
+      "pathPattern": "^/(?:ar/)?track/?$",
+      "params": [
+        "trackingno"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "shipa-1",
+      "pattern": "^SD\\d{9}$",
+      "confidence": "high"
+    }
+  ]
+}

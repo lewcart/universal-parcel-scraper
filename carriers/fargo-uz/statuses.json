@@ -1,0 +1,32 @@
+{
+  "carrier": "fargo-uz",
+  "entries": [
+    {"code": "created", "wording": "Order created", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "created", "wording": "Заказ создан", "stage": "registered", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "accepted", "wording": "Order accepted", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "accepted", "wording": "Заказ принят", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "picked_up", "wording": "Order picked up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Collected from the sender."},
+    {"code": "picked_up", "wording": "Заказ забран", "stage": "accepted", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Collected from the sender. Russian label."},
+    {"code": "dispatched", "wording": "Dispatched", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Sent on from the origin."},
+    {"code": "in_sorting_facility", "wording": "In sorting facility", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "in_transit", "wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "in_transit", "wording": "В пути", "stage": "in_transit", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "clearing_customs", "wording": "Clearing customs", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "released_by_customs", "wording": "Released by customs", "stage": "customs", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "out_for_delivery", "wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "out_for_delivery", "wording": "Выдано для доставки", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "ready_for_issue", "wording": "Ready for issue", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Waiting for the recipient to collect it."},
+    {"code": "ready_for_issue", "wording": "Готово к выдаче", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Waiting for the recipient to collect it. Russian label."},
+    {"code": "delivery_attempt", "wording": "Delivery attempt", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "delivered_to_locker", "wording": "Delivered to locker", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Placed in a pickup locker."},
+    {"code": "issued", "wording": "Issued", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Handed to the recipient."},
+    {"code": "issued", "wording": "Выдано", "stage": "delivered", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Handed to the recipient. Russian label."},
+    {"code": "completed", "wording": "Order completed", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "delivery_failed", "wording": "Delivery failed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "delivery_failed", "wording": "Доставка не удалась", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "returned_to_origin", "wording": "Returned to origin", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "returned_to_origin", "wording": "Возвращено отправителю", "stage": "returned", "language": "ru", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script. Russian label."},
+    {"code": "lost", "wording": "Lost", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."},
+    {"code": "cancelled", "wording": "Order cancelled", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Label for this status code in the tracker page's script."}
+  ]
+}

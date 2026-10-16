@@ -1,0 +1,44 @@
+{
+  "id": "gobolt",
+  "displayName": "GoBolt",
+  "aliases": [
+    "Go Bolt",
+    "Second Closet"
+  ],
+  "region": {
+    "countries": [
+      "CA",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#00282b"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.gobolt.com/tracking/{trackingNumber}",
+    "searchUrl": "https://track.gobolt.com/tracking",
+    "canaryUrl": "https://track.gobolt.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.gobolt.com",
+        "galileo.gobolt.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

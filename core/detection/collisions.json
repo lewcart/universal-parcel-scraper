@@ -3271,5 +3271,75 @@
       "israel-post"
     ],
     "reason": "S10 identifies the postal issuer. Chronopost accepts international postal items and Israel Post confirms its own or imported items through tracking; the issuer alone does not establish the delivery network."
+  },
+  {
+    "shape": "810, a dash and eight digits",
+    "carriers": [
+      "amerijet",
+      "dhl-ecommerce-pl",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "postlogistics"
+    ],
+    "reason": "An IATA air waybill with Amerijet's 810 prefix printed with its dash also fits several carriers' broad eleven-digit candidates; the dashed Amerijet rule decides."
+  },
+  {
+    "shape": "BOK followed by seven digits",
+    "carriers": [
+      "australia-post",
+      "bookurier"
+    ],
+    "reason": "Bookurier's tracker sends BOK numbers to its own network; Australia Post's ten-character consignment rule only suggests the shape, so the high-confidence Bookurier rule decides."
+  },
+  {
+    "shape": "Twelve letters and digits in three hyphenated groups of four",
+    "carriers": [
+      "colis-prive",
+      "gogo-xpress"
+    ],
+    "reason": "Colis Privé accepts any twelve-character alphanumeric once the hyphens are removed; the GoGo Xpress rule decides."
+  },
+  {
+    "shape": "KAR followed by seven digits",
+    "carriers": [
+      "australia-post",
+      "kargoist"
+    ],
+    "reason": "Both rules are low confidence: Kargoist's Amazon numbers and Australia Post's ten-character consignments share the shape, so direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "MPX and nine digits",
+    "carriers": [
+      "colis-prive",
+      "mailplus-au"
+    ],
+    "reason": "Colis Privé accepts any twelve-character alphanumeric, so it overlaps MailPlus's MPX numbers; the MailPlus rule is low, so recognition asks both, and Purolator excludes the MPX prefix."
+  },
+  {
+    "shape": "SD followed by nine digits",
+    "carriers": [
+      "gls-it",
+      "shipa"
+    ],
+    "reason": "GLS Italy's low rule accepts eleven-character composites; the Shipa prefix rule decides."
+  },
+  {
+    "shape": "Six letters, four digits, a hyphen and seven digits",
+    "carriers": [
+      "colis-prive",
+      "upaya"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites once the hyphen is removed, and the Upaya rule is low, so recognition asks both."
+  },
+  {
+    "shape": "^[A-Z]{2}\\d{10}$",
+    "carriers": [
+      "aramex-au",
+      "aramex-nz",
+      "bussgods",
+      "colis-prive"
+    ],
+    "reason": "bussgods numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

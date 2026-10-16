@@ -647,6 +647,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^0031\\d{27}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^ESUS\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -1721,6 +1725,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^AHOY[A-Z0-9]{8}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^ESUS\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -22439,7 +22447,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "postlogistics": ["postlogistics-dashed-reference","postlogistics-compact-reference"],
   "dachser": [],
   "dhl": ["dhl-1","dhl-9","dhl-8","dhl-10","dhl-3","dhl-13","dhl-12","dhl-7"],
-  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5"],
+  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6"],
   "ups": ["ups-1","ups-3","ups-2"],
   "amazon-logistics": ["amazon-logistics-1"],
   "amazon-shipping": [],
@@ -22459,7 +22467,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "heppner": ["heppner-1"],
   "ciblex": ["ciblex-1","ciblex-full-barcode"],
   "paack": ["paack-1"],
-  "asendia": ["asendia-1","asendia-2","asendia-3"],
+  "asendia": ["asendia-1","asendia-2","asendia-3","asendia-4"],
   "shipup": [],
   "india-post": ["india-post-1"],
   "hermes-de": ["hermes-de-1","hermes-de-2","hermes-de-3"],

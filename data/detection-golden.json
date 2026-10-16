@@ -55338,6 +55338,30 @@
     ]
   },
   {
+    "input": "ESUS188691531",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-ecommerce",
+      "asendia"
+    ],
+    "asked": [
+      "dhl-ecommerce"
+    ]
+  },
+  {
+    "input": "ESUS257007812",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-ecommerce",
+      "asendia"
+    ],
+    "asked": [
+      "dhl-ecommerce"
+    ]
+  },
+  {
     "input": "ET0000035260",
     "carrier": "unknown",
     "confidence": "low",

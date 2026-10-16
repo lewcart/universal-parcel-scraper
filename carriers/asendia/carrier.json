@@ -103,6 +103,11 @@
       "id": "asendia-3",
       "pattern": "^AHOY[A-Z0-9]{8}$",
       "confidence": "high"
+    },
+    {
+      "id": "asendia-4",
+      "pattern": "^ESUS\\d{9}$",
+      "confidence": "low"
     }
   ]
 }

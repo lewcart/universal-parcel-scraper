@@ -252,6 +252,55 @@
         "confidence": "none"
       },
       "note": "An eBay International Shipping number for the United Arab Emirates, reported on Asendia's review page. Asendia USA's tracking had no data for it."
+    },
+    {
+      "number": "ESUS257007812",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://community.ebay.com/t5/Shipping/Delivery/m-p/35062626",
+        "access": "full_page",
+        "date": "2025-05-01",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "eBay International Standard Delivery",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "asendia"
+        ]
+      },
+      "note": "A seller quotes this eBay International Standard Delivery number in eBay's community, and a reply finds it in Asendia's service. Asendia's tracker no longer finds it."
+    },
+    {
+      "number": "ESUS188691531",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://community.ebay.com/t5/Report-eBay-Technical-Issues/SHIPPING-SPORTS-CARDS-USING-STANDARD-ENVELOPE-TRACKING-ISSUES/m-p/34407457",
+        "access": "full_page",
+        "date": "2024-04-14",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl-ecommerce",
+          "asendia"
+        ]
+      },
+      "note": "A seller quotes this number from eBay's shipping program in eBay's community; the thread does not name the carrier. Asendia's tracker no longer finds it."
     }
   ]
 }

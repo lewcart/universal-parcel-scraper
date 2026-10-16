@@ -118,6 +118,11 @@
       "id": "dhl-ecommerce-5",
       "pattern": "^0031\\d{27}$",
       "confidence": "low"
+    },
+    {
+      "id": "dhl-ecommerce-6",
+      "pattern": "^ESUS\\d{9}$",
+      "confidence": "low"
     }
   ]
 }

@@ -3380,5 +3380,13 @@
       "colis-prive"
     ],
     "reason": "bussgods numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "ESUS and nine digits",
+    "carriers": [
+      "asendia",
+      "dhl-ecommerce"
+    ],
+    "reason": "eBay International Standard Delivery numbers. eBay names DHL Global Mail's tracker for them, and Asendia carries some. Direct tracking must confirm the carrier."
   }
 ]

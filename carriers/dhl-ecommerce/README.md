@@ -71,6 +71,8 @@ SERVICE PROVIDER") is in transit, and so is USPS accepting the parcel after it.
 US parcels handed to USPS carry a USPS number, with or without the 420 routing
 prefix. Detection offers DHL eCommerce next to USPS for the `9261` and `9361`
 families and Webtrack's answer attributes the parcel.
+eBay International Standard Delivery's `ESUS` numbers are a low suggestion shared with
+[Asendia](../asendia/README.md), since eBay names Webtrack for them and Asendia carries some.
 
 Webtrack has regional coverage. The global route needs local Chromium because
 UTAPI challenges direct requests. The browser helper waits for successful API

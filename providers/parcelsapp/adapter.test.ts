@@ -1423,13 +1423,13 @@ describe('ParcelsApp slow lookup recovery', () => {
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
-  it('retries a timed-out POST once after two seconds, preserving input and both attempt records', async () => {
+  it('retries a POST that failed on the network once after two seconds, preserving input and both attempt records', async () => {
     const steps: StepRecord[] = [], lookups: LookupRecord[] = [];
     const recorder: StepRecorder = { step: (r) => { steps.push(r); }, lookup: (r) => { lookups.push(r); } };
-    const fetcher = timedFetch([{ afterMs: 40_000, payload: announced }, { afterMs: 100, payload: announced }]);
+    const fetcher = timedFetch([{ afterMs: 100, failure: new TypeError('connection reset') }, { afterMs: 100, payload: announced }]);
     const tracker = new ParcelsAppTracker({ fetcher, recorder, trawl: new TrawlClient('http://browser.test', fetcher) });
     const lookup = tracker.fetch(number, undefined, ' 01234 ');
-    await vi.advanceTimersByTimeAsync(31_999);
+    await vi.advanceTimersByTimeAsync(2_099);
     expect(fetcher).toHaveBeenCalledOnce();
     await vi.advanceTimersByTimeAsync(101);
     await expect(lookup).resolves.toMatchObject({ tracking_source: 'structured-web-response', current_stage: 'registered' });
@@ -1440,7 +1440,16 @@ describe('ParcelsApp slow lookup recovery', () => {
     expect(steps).toMatchObject([
       { step: 'direct', outcome: 'transport' }, { step: 'retry', outcome: 'ok', fallbackFrom: 'direct' },
     ]);
-    expect(lookups).toMatchObject([{ finalStep: 'retry', attempts: 2, outcome: 'ok', durationMs: 32_100 }]);
+    expect(lookups).toMatchObject([{ finalStep: 'retry', attempts: 2, outcome: 'ok', durationMs: 2_200 }]);
+  });
+
+  it('fails a POST ParcelsApp holds to the cap without a retry or a browser lookup', async () => {
+    const fetcher = timedFetch([{ afterMs: 40_000, payload: announced }, { afterMs: 100, payload: announced }]);
+    const failure = expect(new ParcelsAppTracker({ fetcher, trawl: new TrawlClient('http://browser.test', fetcher) }).fetch(number))
+      .rejects.toMatchObject({ kind: 'transport' });
+    await vi.advanceTimersByTimeAsync(30_000);
+    await failure;
+    expect(fetcher).toHaveBeenCalledOnce();
   });
 
   it('stops after two network failures without starting the same lookup again in a browser', async () => {
@@ -1475,7 +1484,7 @@ describe('ParcelsApp slow lookup recovery', () => {
   });
 
   it('aborts the second request at the original deadline, including its backoff time', async () => {
-    const fetcher = timedFetch([{ afterMs: 40_000, payload: announced }, { afterMs: 40_000, payload: announced }]);
+    const fetcher = timedFetch([{ afterMs: 15_000, failure: new TypeError('connection reset') }, { afterMs: 40_000, payload: announced }]);
     const failure = expect(new ParcelsAppTracker({ fetcher }).fetch(number)).rejects.toMatchObject({ kind: 'transport' });
     await vi.advanceTimersByTimeAsync(45_000);
     await failure;

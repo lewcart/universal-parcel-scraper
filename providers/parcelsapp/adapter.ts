@@ -795,6 +795,14 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     ...hints, ...(discovered ? { discovered_carrier: discovered } : {}) };
 }
 
+/** Whether a direct request failed by reaching its own cap rather than by a network failure. */
+function timedOut(error: unknown): boolean {
+  for (let cause = error, depth = 0; cause && depth < 8; cause = (cause as { cause?: unknown }).cause, depth++) {
+    if (cause instanceof DOMException && cause.name === 'TimeoutError') return true;
+  }
+  return false;
+}
+
 function browserCanRecover(error: unknown): boolean {
   // A slow uncached lookup needs more time on the same API. It has already
   // had one direct retry; a new browser lookup would repeat the work again.
@@ -904,10 +912,12 @@ export class ParcelsAppTracker {
     }, {
       id: 'retry',
       enabled: this.http !== null,
-      // Uncached carrier aggregation can outlive a timed-out HTTP request.
       // Retry a replayable network failure with the same input, within the
-      // original lookup budget.
-      recovers: (error) => error instanceof UpstreamNetworkError && deadline - performance.now() > RETRY_DELAY_MS + 1,
+      // original lookup budget. A request ParcelsApp held to its cap is not
+      // retried: the one sent two seconds later waited out the rest of the
+      // budget as well, for every Royal Mail parcel tried from production
+      // (2026-10-16), while a cold lookup answered within 16 s.
+      recovers: (error) => error instanceof UpstreamNetworkError && !timedOut(error) && deadline - performance.now() > RETRY_DELAY_MS + 1,
       run: async ({ signal }) => {
         await timers.setTimeout(RETRY_DELAY_MS, undefined, { signal });
         signal.throwIfAborted();

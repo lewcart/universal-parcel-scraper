@@ -15,10 +15,13 @@ deadline still wins.
    aggregate on demand (later requests hit ParcelsApp's cache), and at 2 MB. It uses no
    cookies, bootstrap page, cache or redirects. A stored postcode goes in
    `extra[zipcode]`, trimmed, with leading zeros, spaces and letters kept.
-2. `retry`: after a network failure, timeout or cut-off body, one more direct attempt
-   after 2 s, with the same input. The public frontend retries the same way. The deadline
-   is the smaller of 30 s and the remaining budget. The retry is skipped if the backoff
-   does not fit. Two network failures end the lookup without a browser.
+2. `retry`: after a network failure or cut-off body, one more direct attempt after 2 s,
+   with the same input. The public frontend retries the same way. The deadline is the
+   smaller of 30 s and the remaining budget. The retry is skipped if the backoff does not
+   fit. Two network failures end the lookup without a browser. A request ParcelsApp holds
+   for the whole 30 s ends the lookup: for parcels it held that long from the production
+   server, a retry waited out the rest of the budget too, while cold lookups answered
+   within 16 s.
 3. `trawl`: on a challenge (`RELOAD`) or schema drift, TRAWL (`FLARESOLVERR_URL`) loads
    the tracking page (`skipHttp`, up to tier 3) and captures `/api/v2/parcels` replies
    with a 15 s settle window. Bodies are parsed newest first, skipping polling replies

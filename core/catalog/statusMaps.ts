@@ -178,6 +178,7 @@ import { statusMap as swissPost } from '../../carriers/swiss-post/status.js';
 import { statusMap as tCat } from '../../carriers/t-cat/status.js';
 import { statusMap as tciExpress } from '../../carriers/tci-express/status.js';
 import { statusMap as tcsPakistan } from '../../carriers/tcs-pakistan/status.js';
+import { statusMap as teamGlobalExpress } from '../../carriers/team-global-express/status.js';
 import { statusMap as tforceFreight } from '../../carriers/tforce-freight/status.js';
 import { statusMap as thailandPost } from '../../carriers/thailand-post/status.js';
 import { statusMap as thhy } from '../../carriers/thhy/status.js';
@@ -231,7 +232,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'slovak-parcel-service': slovakParcelService, 'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, speedaf, speedex, speedx, speedy,
   'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy, 'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn,
   'stallion-express': stallionExpress, starken, sto, swiftx, 'swiss-post': swissPost, 't-cat': tCat, 'tci-express': tciExpress,
-  'tcs-pakistan': tcsPakistan, 'tforce-freight': tforceFreight, 'thailand-post': thailandPost, thhy, tnt, 'tnt-it': tntIt, 'total-express': totalExpress, tsjy,
+  'tcs-pakistan': tcsPakistan, 'team-global-express': teamGlobalExpress, 'tforce-freight': tforceFreight, 'thailand-post': thailandPost,
+  thhy, tnt, 'tnt-it': tntIt, 'total-express': totalExpress, tsjy,
   'ubi-smart-parcel': ubiSmartParcel, ups, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
   yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,

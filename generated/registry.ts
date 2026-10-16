@@ -250,6 +250,7 @@ import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.
 import { adapter as tCat } from '../carriers/t-cat/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as tcsPakistan } from '../carriers/tcs-pakistan/adapter.js';
+import { adapter as teamGlobalExpress } from '../carriers/team-global-express/adapter.js';
 import { adapter as tforceFreight } from '../carriers/tforce-freight/adapter.js';
 import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
 import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js';
@@ -532,6 +533,7 @@ export const REGISTRY: RegistryDefinition = {
     "t-cat": tCat,
     "tci-express": tciExpress,
     "tcs-pakistan": tcsPakistan,
+    "team-global-express": teamGlobalExpress,
     "tforce-freight": tforceFreight,
     "thailand-post": thailandPost,
     "the-courier-guy": theCourierGuy,
@@ -1046,7 +1048,7 @@ export const REGISTRY: RegistryDefinition = {
     "tci-express": "tci-express",
     "tcs-pakistan": "tcs-pakistan",
     "tealca": "universal",
-    "team-global-express": "universal",
+    "team-global-express": "team-global-express",
     "tforce-freight": "tforce-freight",
     "thailand-post": "thailand-post",
     "the-courier-guy": "the-courier-guy",

@@ -20053,7 +20053,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-global-express",
+      "recognitionRank": 932,
+      "localClocks": true
     },
     "canaryUrl": "https://www.myteamge.com/",
     "trackingUrlTemplate": "https://www.myteamge.com/?externalSearchQuery={trackingNumber}",

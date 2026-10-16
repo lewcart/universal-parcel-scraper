@@ -21,18 +21,71 @@
   "timezone": "Australia/Sydney",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "team-global-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 932
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "eta",
+    "weight",
+    "service_name",
+    "destination_country",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://www.myteamge.com/?externalSearchQuery={trackingNumber}",
     "searchUrl": "https://www.myteamge.com/",
     "canaryUrl": "https://www.myteamge.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "parcel_count",
+      "progress_rail",
+      "sender_town",
+      "destination",
+      "destination_country",
+      "customer_reference",
+      "signatory",
+      "canonical_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "destination_country",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "parcel_count",
+      "progress_rail",
+      "sender_town",
+      "destination",
+      "customer_reference",
+      "signatory"
+    ],
+    "unavailable": [
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

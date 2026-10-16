@@ -58,6 +58,8 @@ The adapter refuses S10 numbers, so mail from abroad to Italy is not handed to P
 
 - No event location for a scan at a post office's street address without its office name.
 - Day-resolution estimate only.
+- Poste's tracker also answers 13-character codes with another digit than `3` before the `C`.
+  No public sample shows one yet, so neither detection nor the adapter takes them.
 
 ## Testing
 

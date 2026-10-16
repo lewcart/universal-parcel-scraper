@@ -218,6 +218,46 @@
         ]
       },
       "note": "ParcelPanel's Sameday page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
+    },
+    {
+      "number": "1SDY241067423001",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/sameday-courier/php-sdk/blob/master/tests/Responses/SamedayGetAwbStatusHistoryResponseTest.php",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "A unit-test fixture in Sameday's own PHP SDK on GitHub uses it as the first parcel of AWB 1SDY241067423, the AWB and a three-digit suffix; test data, not a real shipment."
+    },
+    {
+      "number": "1SDY241065761001",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/sameday-courier/php-sdk/blob/master/tests/Responses/SamedayGetParcelStatusHistoryResponseTest.php",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sameday"
+        ]
+      },
+      "note": "A unit-test fixture in Sameday's own PHP SDK on GitHub uses it as the parcel number of a parcel status-history reply; test data, not a real shipment."
     }
   ]
 }

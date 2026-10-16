@@ -17849,7 +17849,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^1[A-Z]{3,5}\\d{9,11}$",
+        "pattern": "^1[A-Z]{3,5}\\d{9,12}$",
         "confidence": "low"
       }
     ]

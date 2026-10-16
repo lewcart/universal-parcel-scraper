@@ -79,7 +79,7 @@ describe('numeric checksum candidates', () => {
     expect(detectCarrierMatch('PX1234567890')).toMatchObject({ carrier: 'poczta-polska', confidence: 'high' });
   });
 
-  it('suggests DHL for twelve digits that end in the Identcode check without assigning it', () => {
+  it('suggests DHL for twelve digits that end in the Identcode check, and asks it first, without assigning it', () => {
     // The public check-digit description's worked example, and constructed numbers: weights 4 and 9 from the left.
     for (const number of ['123456789016', '201298452277', '000000000000']) expect(isValidDhlIdentcode(number)).toBe(true);
     for (const number of ['123456789015', '123456789010', '12345678901', '1234567890166', '123456789016\n', '12345 6789016']) {
@@ -88,7 +88,7 @@ describe('numeric checksum candidates', () => {
     expect(detectCarrierMatch('12.345 678.901 6')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch('123456789016').candidates).toContain('dhl');
     expect(detectCarrierMatch('123456789016').preferred).not.toContain('dhl');
-    expect(recognitionAskedCarriers('123456789016')).not.toContain('dhl');
+    expect(recognitionAskedCarriers('123456789016')[0]).toBe('dhl');
     expect(detectCarrierMatch('123456789015').candidates).not.toContain('dhl');
     expect(detectCarrierMatch('123456789015').candidates.length).toBeGreaterThan(0);
   });

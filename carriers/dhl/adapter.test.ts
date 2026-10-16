@@ -346,6 +346,24 @@ describe('DHL sessions and browser fallback', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
+  it('recognizes a parcel DHL has scanned and not one it has no data for', async () => {
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()))
+      .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDatenVerfuegbar: true } }] }));
+    const tracker = new DHLTracker({ trawlUrl: '' });
+    expect(await tracker.recognizes(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-08-10T16:30:00.000Z' });
+    expect(await tracker.recognizes(NUMBER)).toEqual({ known: false, lastActivityAt: null });
+  });
+
+  it('keeps recognition inconclusive without opening the browser', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('Challenge', { status: 403 }));
+    await expect(new DHLTracker({ trawlUrl: 'http://trawl:8191' }).recognizes(NUMBER)).rejects.toBeInstanceOf(DHLSessionError);
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([CONFIG]);
+    fetcher.mockReset().mockResolvedValueOnce(config())
+      .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDhlPaketSendung: true } }] }));
+    await expect(new DHLTracker({ trawlUrl: '' }).recognizes(NUMBER)).rejects.toThrow('own tracking website');
+  });
+
   it('reports one direct step, then the browser step, through the recorder', async () => {
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response('Challenge', { status: 403 }))

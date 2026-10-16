@@ -48,7 +48,9 @@ once.
 - Twelve-digit parcel numbers are Identcodes, closed by Deutsche Post's check
   digit (weights 4 and 9 from the left, mod 10). FedEx, Japan Post, Sagawa and
   others also use twelve digits, so a passing check only adds DHL to the
-  suggestions.
+  suggestions. Recognition asks DHL about these through the direct session alone: DHL's
+  explicit no-data answer is unknown, and a rejected session stays inconclusive rather than
+  opening the browser. Recognition does not ask DHL about the other numbers it only suggests.
 - Sessions are replaced at 100 minutes because DHL's edge stops answering a
   session about two hours old instead of rejecting it. Without the cap, the
   lookup that crosses that age waits out the 15-second timeout before renewing.

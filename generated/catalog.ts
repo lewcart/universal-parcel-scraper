@@ -516,7 +516,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "dhl"
+      "adapter": "dhl",
+      "recognitionRank": 999,
+      "recognitionPattern": "^\\d{12}$"
     },
     "canaryUrl": "https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html",
     "trackingUrlTemplate": "https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html?piececode={trackingNumber}",

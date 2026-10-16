@@ -996,11 +996,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -2253,11 +2253,11 @@
       "fedex"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -2822,11 +2822,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -3525,11 +3525,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "brt"
     ]
   },
   {
@@ -3605,11 +3605,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -3947,11 +3947,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -5124,11 +5124,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -5593,11 +5593,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -7441,11 +7441,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -7627,11 +7627,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "brt"
     ]
   },
   {
@@ -11032,11 +11032,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "purolator",
-      "brt"
+      "purolator"
     ]
   },
   {
@@ -11841,11 +11841,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -17034,11 +17034,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "j-and-t-cargo",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -17252,11 +17252,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "j-and-t-cargo",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -20188,11 +20188,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -20215,11 +20215,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -21626,11 +21626,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -22069,11 +22069,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -22123,11 +22123,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -22832,11 +22832,11 @@
       "fedex"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -24767,11 +24767,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -28293,11 +28293,11 @@
       "fedex"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -28786,11 +28786,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -29872,11 +29872,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -32135,11 +32135,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -33248,11 +33248,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -34329,11 +34329,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -34425,11 +34425,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -36631,11 +36631,11 @@
       "sagawa"
     ],
     "asked": [
+      "dhl",
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "brt"
     ]
   },
   {
@@ -38682,11 +38682,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -40358,11 +40358,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -41136,11 +41136,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -41416,11 +41416,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -41465,11 +41465,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -42842,11 +42842,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -47102,11 +47102,11 @@
       "fedex"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -48308,11 +48308,11 @@
       "lbc-express"
     ],
     "asked": [
+      "dhl",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {

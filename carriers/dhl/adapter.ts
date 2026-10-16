@@ -16,7 +16,10 @@
 
 import makeFetchCookie from 'fetch-cookie';
 import { Cookie, CookieJar } from 'tough-cookie';
-import type { AdapterFactory, LookupBudget, TrackingContext } from '../../core/adapter/index.js';
+import {
+  lookupBudget, recognizeFromLookup,
+  type AdapterFactory, type LookupBudget, type Recognition, type TrackingContext,
+} from '../../core/adapter/index.js';
 import {
   ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, RateLimitedError, SchemaError,
   type CarrierErrorOptions,
@@ -299,6 +302,26 @@ export class DHLTracker {
     return takeTurn(this.serialize, 'dhl', context, (left) => this.lookup(number, left));
   }
 
+  /**
+   * Whether DHL Paket knows the number, over HTTP alone: the direct session,
+   * renewed as for a lookup, and never the browser. DHL's explicit no-data
+   * answer is unknown; a rejected session, another DHL service or a postcode
+   * request stays inconclusive.
+   */
+  async recognizes(trackingNumber: string, context: TrackingContext = {}): Promise<Recognition> {
+    return takeTurn(this.serialize, 'dhl', context, (left) => {
+      const { signal, deadline } = lookupBudget(left, 4 * this.directTimeoutMs, PROVIDER);
+      return recognizeFromLookup(async () => {
+        try {
+          return await this.direct(normalizeDHLTrackingNumber(trackingNumber), { signal, deadline });
+        } catch (error) {
+          if (renewable(error)) this.session = null;
+          throw error;
+        }
+      });
+    });
+  }
+
   private async lookup(number: string, context: TrackingContext): Promise<CarrierResult> {
     const { signal } = context;
     // The caller may have left while the lookup waited for its turn.
@@ -370,5 +393,6 @@ export const adapter: AdapterFactory = (environment) => {
     id: 'dhl',
     steps: ['direct', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => tracker.recognizes(number, context),
   };
 };

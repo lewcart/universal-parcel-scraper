@@ -21,7 +21,11 @@
     "steps": [
       "direct",
       "trawl"
-    ]
+    ],
+    "recognition": {
+      "rank": 999,
+      "pattern": "^\\d{12}$"
+    }
   },
   "capabilities": [
     "history",

@@ -109,9 +109,13 @@ trusted publisher.
 - A push to `main` that changes the files a consumer installs is published as `X.Y.Z-main.N`
   under the `next` tag, where `N` is the commit count. A push that only touches Markdown, or
   leaves those files unchanged, publishes nothing.
-- Dispatching the workflow with the version in `package.json` validates, builds the package
-  and the container images, tags the commit and creates a GitHub release. Publishing that
-  version to npm under `latest` is opt-in.
+- Dispatching the workflow with the version in `package.json` builds the package and the
+  container images, tags the commit and creates a GitHub release. Publishing that version to
+  npm under `latest` is opt-in.
+
+Both wait for the CI workflow to pass on the same commit, and publish nothing when it fails.
+A dispatch on a commit CI has not run on fails until CI is dispatched on it. After rerunning a
+failed CI run, rerun the release run's failed jobs.
 
 The TRAWL image is published with its upstream and patch source archives, under its AGPL
 license.

@@ -202,11 +202,17 @@ describe('Ecoscooting parcel history', () => {
     await expect(instance.recognize!('ZZ')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
-  it('reads a parcel listed without scans as having no history yet', () => {
+  it('reads a parcel listed without scans as having no history yet', async () => {
     const announced = fixture(); announced.statuses = []; announced.packageParam.dimWeight = {};
     expect(() => parseEcoscooting(announced, NUMBER)).toThrow(NoHistoryError);
     const other = fixture(); other.statuses = []; other.packageParam.trackingNumber = OTHER;
     expect(() => parseEcoscooting(other, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    // The listing names the parcel, so recognition knows it before its first scan.
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response(JSON.stringify(announced)))
+      .mockResolvedValueOnce(new Response(JSON.stringify(other)));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'schema' });
   });
   it.each(['1767553200', 1767553200000, '0', '-1767553200000', '1767553200000.5', 'not a clock'])('rejects wrong epoch units or shape %s', opTimestamp => {
     const value = fixture(); value.statuses[0].opTimestamp = opTimestamp;

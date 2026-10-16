@@ -1,6 +1,6 @@
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
-import { SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { NoHistoryError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -37,5 +37,13 @@ export class EcoscootingTracker {
 export const adapter: AdapterFactory = environment => {
   const tracker = new EcoscootingTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return { id: 'ecoscooting', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeEcoscootingNumber(number))) };
+    recognize: async (number, context) => {
+      try {
+        return await recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeEcoscootingNumber(number)));
+      } catch (error) {
+        // A listing names the parcel, scans or not; a number nobody announced gets the query error.
+        if (error instanceof NoHistoryError) return { known: true, lastActivityAt: null };
+        throw error;
+      }
+    } };
 };

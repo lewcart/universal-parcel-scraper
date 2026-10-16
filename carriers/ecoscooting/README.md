@@ -11,7 +11,7 @@ the requested parcel. The gateway's query error also occurs for unavailable
 orders and remains inconclusive rather than proving absence, with the reason
 `portal_not_found`: a label is unknown until the sender announces it. A parcel announced
 but not yet handed over is listed without scans, which reads as no history yet
-rather than a failure.
+rather than a failure. Recognition knows such a parcel, since the listing names it.
 
 ## Notes
 

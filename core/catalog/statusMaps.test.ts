@@ -335,6 +335,9 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'shipment is out with courier for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('unknown', null, 'admitido.. el envío ha tenido admisión en origen.')).toEqual(mapped('accepted'));
     expect(answer('unknown', null, 'i̇ptal edildi')).toEqual(mapped('exception'));
+    // MailAmericas' hand-overs on the way to the last mile are no delivery.
+    for (const wording of ['Arrived at destination country. Delivered by Airline', 'Receiving destination mail. Delivered to Distributor',
+      'Deliver to distributor']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
     for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
@@ -359,7 +362,8 @@ describe("universal providers' answers", () => {
       ['Inbound from inehoul to terminal', 'in_transit'],
       ['Example warehouse, Example warehouse processing, order has been outbounded', 'in_transit'],
       ['Example warehouse, Example warehouse processing assembling operation', 'in_transit'],
-      ['Received in Site-Example，the pick-up is Example', 'in_transit'],
+      ['Received in Site-Example，the pick-up is Example', 'in_transit'], ['Exported', 'in_transit'], ['Plane has landed', 'in_transit'],
+      ['Received by airline', 'in_transit'],
       ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
       ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
       ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],

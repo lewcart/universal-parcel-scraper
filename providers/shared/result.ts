@@ -92,7 +92,9 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   // it as transit (17TRACK's generic code). Exact wording only, so a relabel
   // ("label voided, new label created") is not read as a cancellation.
   if (/^(?:parcel|package|shipment|(?:shipping )?label) (?:(?:has been|was|is) )?void(?:ed)?[.!]?$/i.test(description)) return 'exception';
-  if (/delivered to (?:the )?(?:local carrier|delivery partner|post office)/i.test(description)) return 'in_transit';
+  // Hand-overs on the way: also MailAmericas' airline delivering the bags in the destination
+  // country ("Delivered by Airline") and its last-mile distributor taking the item ("Deliver to distributor").
+  if (/deliver(?:ed)? to (?:the )?(?:local carrier|delivery partner|post office|distributor)|delivered by (?:the )?airline/i.test(description)) return 'in_transit';
   if (/will be available for (?:pickup|collection)/i.test(description)) return 'in_transit';
   // Sender pre-advice such as Quickpac's "Shipment recorded by sender (data delivered)".
   if (/being prepared by the sender|recorded by (?:the )?(?:foreign )?sender|\bdata delivered\b|en route to .*awaiting processing/i.test(description)) return 'registered';
@@ -130,7 +132,7 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^delivery in progress, (?:first|second|third|\d+(?:st|nd|rd|th)) attempt\b|scanned for delivery[;,] ?the courier is\b|派送员派送途中/i.test(value)) return 'out_for_delivery';
   if (/^order confirmed[.!]?$|^order received(?: successfully)?[.!]?$|^creat(?:e|ed)\. (?:parcel|shipment(?: order)?) created\b|^pre-shipment info sent to\b/i.test(value)) return 'registered';
   if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: and scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^rfid confirmed pick-?up$/i.test(value)) return 'accepted';
-  if (/^goods leave the operation cent(?:er|re)[.!]?$|^(?:package |parcel )?(?:left|leaves?) the warehouse[.!]?$|^we['’]re processing your parcel at our hub\b|^warehouse\. (?:inbound warehouse|delivery in last mile facilities|ready to hand over to last-mile supplier)[.!]?$|^hand over to last mile[.!]?$|^at destination country\/region[.!]?$|^(?:beladung|entladung)$|^entrance to the terminal from the driver$|^outbou?n?d from pickup terminal to the line ?h[ao]u?l$|^inbound from l?ine ?h[ao]u?l to (?:the )?terminal$|^[\w ]+ warehouse, .{1,80}? processing,? (?:order has been (?:in|out)bounded|assembling operation)$|^received in site[- ]|(?:邮件|快件)(?:到达|离开)处理中心|航空公司接收|已交承运商运输|已完成分拣|^出口海关\/放行|^启运|^干线中转/i.test(value)) return 'in_transit';
+  if (/^goods leave the operation cent(?:er|re)[.!]?$|^(?:package |parcel )?(?:left|leaves?) the warehouse[.!]?$|^we['’]re processing your parcel at our hub\b|^warehouse\. (?:inbound warehouse|delivery in last mile facilities|ready to hand over to last-mile supplier)[.!]?$|^hand over to last mile[.!]?$|^at destination country\/region[.!]?$|^(?:beladung|entladung)$|^entrance to the terminal from the driver$|^outbou?n?d from pickup terminal to the line ?h[ao]u?l$|^inbound from l?ine ?h[ao]u?l to (?:the )?terminal$|^[\w ]+ warehouse, .{1,80}? processing,? (?:order has been (?:in|out)bounded|assembling operation)$|^received in site[- ]|^exported[.!]?$|^(?:the )?plane has landed[.!]?$|^received by (?:the )?airline[.!]?$|(?:邮件|快件)(?:到达|离开)处理中心|航空公司接收|已交承运商运输|已完成分拣|^出口海关\/放行|^启运|^干线中转/i.test(value)) return 'in_transit';
   return undefined;
 }
 

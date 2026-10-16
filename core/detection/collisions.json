@@ -434,6 +434,15 @@
     "reason": "The Romanian issuer suffix suggests Poșta Română but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}EG with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "egypt-post",
+      "intl-post"
+    ],
+    "reason": "The Egyptian issuer suffix suggests Egypt Post but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}TY or AA9{9}MI with a valid S10 check digit",
     "carriers": [
       "aliexpress",

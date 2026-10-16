@@ -9297,7 +9297,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "egypt-post",
+      "recognitionRank": 944,
+      "localClocks": true
     },
     "canaryUrl": "https://egyptpost.gov.eg/en-us/home/",
     "trackingSearchUrl": "https://egyptpost.gov.eg/en-us/home/",
@@ -9317,6 +9319,12 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:ENO|EXP|RCC)\\d{8}EG$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}EG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ]
   },
@@ -20879,7 +20887,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ecms-express": ["ecms-express-1"],
   "econt": [],
   "ecourier": ["ecourier-1"],
-  "egypt-post": ["egypt-post-1"],
+  "egypt-post": ["egypt-post-1","egypt-post-s10"],
   "ekart": ["ekart-ecommerce"],
   "elta": ["elta-s10"],
   "emile": ["emile-1"],

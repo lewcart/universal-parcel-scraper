@@ -87,6 +87,7 @@ import { adapter as dynalogic } from '../carriers/dynalogic/adapter.js';
 import { adapter as earlyBird } from '../carriers/early-bird/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
+import { adapter as egyptPost } from '../carriers/egypt-post/adapter.js';
 import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
 import { adapter as emile } from '../carriers/emile/adapter.js';
@@ -361,6 +362,7 @@ export const REGISTRY: RegistryDefinition = {
     "early-bird": earlyBird,
     "econt": econt,
     "ecoscooting": ecoscooting,
+    "egypt-post": egyptPost,
     "ekart": ekart,
     "elta": elta,
     "emile": emile,
@@ -694,7 +696,7 @@ export const REGISTRY: RegistryDefinition = {
     "econt": "econt",
     "ecoscooting": "ecoscooting",
     "ecourier": "universal",
-    "egypt-post": "universal",
+    "egypt-post": "egypt-post",
     "ekart": "ekart",
     "elta": "elta",
     "emile": "emile",

@@ -51503,6 +51503,7 @@
       "intl-post"
     ],
     "asked": [
+      "egypt-post",
       "chronopost"
     ]
   },
@@ -52086,6 +52087,20 @@
     "confidence": "low",
     "candidates": [
       "egypt-post"
+    ],
+    "asked": [
+      "egypt-post"
+    ]
+  },
+  {
+    "input": "ENO30052041EG",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "egypt-post"
+    ],
+    "asked": [
+      "egypt-post"
     ]
   },
   {
@@ -52668,6 +52683,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "egypt-post"
+    ],
+    "asked": [
       "egypt-post"
     ]
   },
@@ -61676,6 +61694,14 @@
     ]
   },
   {
+    "input": "RB536527177SG",
+    "carrier": "singapore-post",
+    "confidence": "high",
+    "candidates": [
+      "singapore-post"
+    ]
+  },
+  {
     "input": "RB584629627SG",
     "carrier": "singapore-post",
     "confidence": "high",
@@ -61872,6 +61898,14 @@
     "confidence": "high",
     "candidates": [
       "correios-br"
+    ]
+  },
+  {
+    "input": "RE272304639SE",
+    "carrier": "postnord",
+    "confidence": "high",
+    "candidates": [
+      "postnord"
     ]
   },
   {
@@ -63325,6 +63359,14 @@
     "confidence": "high",
     "candidates": [
       "spring-gds"
+    ]
+  },
+  {
+    "input": "RU860584495CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
     ]
   },
   {

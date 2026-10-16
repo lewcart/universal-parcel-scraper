@@ -136,6 +136,7 @@ describe('Chronopost direct tracking', () => {
     ['SD', "Tri effectué dans l'agence de distribution", 'in_transit'],
     ['A2', "Colis retardé à l'agence de distribution", 'in_transit'],
     ['CR', "Colis retardé durant l'acheminement", 'in_transit'],
+    ['AT', "Colis retardé durant l'acheminement", 'in_transit'],
     ['IS', 'Livraison prévue lundi prochain', 'in_transit'],
     ['SD', 'Livraison reportée de 24h', 'in_transit'],
     ['IA', 'Livraison reportée de 24h', 'in_transit'],

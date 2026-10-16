@@ -28,7 +28,7 @@ const REGISTERED_TERMS = [
   'pre-shipment', 'preshipment', 'shipping label created', 'label created',
   'acceptance pending', 'usps awaiting item', 'awaiting item', 'order received',
 ];
-const ACCEPTED_TERMS = ['accepted', 'picked up', 'picked-up', 'tendered', 'shipment received', 'arrival at unit', 'arrived at usps'];
+const ACCEPTED_TERMS = ['accepted', 'in possession of item', 'picked up', 'picked-up', 'tendered', 'shipment received', 'arrival at unit', 'arrived at usps'];
 const CUSTOMS_TERMS = ['customs', 'clearance'];
 const IN_TRANSIT_TERMS = [
   'in transit', 'on its way', 'in-transit', 'arrived', 'departed', 'departure',

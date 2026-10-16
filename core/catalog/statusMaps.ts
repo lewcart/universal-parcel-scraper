@@ -80,6 +80,7 @@ import { statusMap as epostGlobal } from '../../carriers/epost-global/status.js'
 import { statusMap as estes } from '../../carriers/estes/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
+import { statusMap as fourPx } from '../../carriers/four-px/status.js';
 import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
 import { statusMap as fukuyama } from '../../carriers/fukuyama/status.js';
 import { statusMap as gati } from '../../carriers/gati/status.js';
@@ -225,7 +226,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, envialia, 'epost-global': epostGlobal, estes,
   'express-one': expressOne, 'fan-courier': fanCourier,
-  foxpost, fukuyama, gati, gdex, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
+  'four-px': fourPx, foxpost, fukuyama, gati, gdex, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
   instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, kazpost, kex, 'kuehne-nagel': kuehneNagel,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, 'lion-parcel': lionParcel, logen, loggi,

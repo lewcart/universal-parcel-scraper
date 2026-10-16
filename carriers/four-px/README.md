@@ -16,7 +16,8 @@ invented instant.
 
 Event codes map to stages. `FPX_O_IR` and `FPX_O_IRI` relay whatever step a
 partner reported, from a label to an arrival abroad, so their wording decides.
-Other unknown codes stay unstaged.
+A partner's transit scans relayed without a code are staged by their whole
+wording. Other unknown codes stay unstaged.
 
 The server reference can identify a delivery partner's tracking number. Shared
 result normalization keeps only a USPS routing barcode's package number, never

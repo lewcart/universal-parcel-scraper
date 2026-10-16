@@ -44,14 +44,14 @@ export function austrianPostEventStatus(code: string, reason: string, text: stri
   if (['EAW', 'HO', 'UPB', '2034'].includes(reason)) return SUMMARY.EB;
   if (/\b(?:rücksendung|zurückgesandt|return to sender)\b/i.test(text)) return SUMMARY.RE;
   if (code === 'AZT' || /\b(?:in zustellung|out for delivery)\b/i.test(text)) return SUMMARY.IZ;
-  if (code === 'BEI' || code === 'PUG' || exportConsolidation(code, text)) return SUMMARY.IV;
+  if (code === 'BEI' || code === 'PUG' || transitScan(code, text)) return SUMMARY.IV;
   // Unmapped scan codes retain their wording for the host's classifier.
   return SUMMARY[code];
 }
 
-/** The export hub gathers the item into an outgoing dispatch. */
-function exportConsolidation(code: string, text: string): boolean {
-  return code === 'TRA' && /^konsolidierung für (?:den )?export$/i.test(text.trim());
+/** A transit scan: the export hub gathers the item into an outgoing dispatch, or the item is in transit. */
+function transitScan(code: string, text: string): boolean {
+  return code === 'TRA' && /^(?:konsolidierung für (?:den )?export|transit)$/i.test(text.trim());
 }
 
 /**
@@ -60,6 +60,6 @@ function exportConsolidation(code: string, text: string): boolean {
  * delivery), so the map answers only scans the reason cannot change.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code && exportConsolidation(code, wording) ? 'in_transit' : undefined),
+  stage: (code, wording) => (code && transitScan(code, wording) ? 'in_transit' : undefined),
   gaps: [],
 };

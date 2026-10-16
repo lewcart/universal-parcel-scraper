@@ -156,6 +156,8 @@ export const statusMap: CarrierStatusMap = {
     { code: 'SPE', note: 'A delivery estimate or a changed delivery day, not a scan.' },
     { code: 'MSDLO', note: 'The notice DPD emailed for the delivery round, not a scan.' },
     { code: 'MIDLI', note: "The recipient's delivery instruction, not a scan." },
+    { code: 'MIA', note: "The receipt of the recipient's delivery instruction, not a scan." },
+    { code: 'MII', note: "The recipient's delivery instruction, as MIDLI words it, not a scan." },
     { code: 'ENA', note: "A data exchange inside DPD's systems, not a scan: it comes before the parcel reaches the origin depot." },
     { code: 'DEYY', note: 'The proof of delivery, paperwork after the delivery scan: dropped beside it, delivered alone only when the enumeration says so.' },
     { code: 'DODEYY', note: 'The proof of delivery after a collection from a pickup point, read like DEYY.' },

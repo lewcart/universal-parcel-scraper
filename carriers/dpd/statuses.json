@@ -298,6 +298,22 @@
       "note": "The recipient's delivery instruction, not a scan."
     },
     {
+      "code": "MIA",
+      "wording": "We received your delivery instructions",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "The receipt of the recipient's delivery instruction, not a scan."
+    },
+    {
+      "code": "MII",
+      "wording": "Your parcel will be delivered to a safe place according to your instructions",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "The recipient's delivery instruction, as MIDLI words it, not a scan."
+    },
+    {
       "code": "ENA",
       "wording": "We are exchanging data internally",
       "language": "en",

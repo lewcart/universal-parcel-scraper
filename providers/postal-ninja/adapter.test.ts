@@ -28,6 +28,17 @@ describe('Postal Ninja result parsing', () => {
     expect(JSON.stringify(parsed)).not.toContain('PRIVATE');
   });
 
+  it('reads a CIS feed\'s warehouse steps and leaves out its data updates', () => {
+    const parsed = parsePostalNinjaResponse(withEvents([
+      { ds: 'Example', dt: '2026-08-12T08:00:00', dsc: 'Registered in the system' },
+      { ds: 'Example', dt: '2026-08-12T10:00:00', dsc: 'Shipment parameters updated' },
+      { ds: 'Example', dt: '2026-08-14T09:00:00', dsc: 'Inventory in a warehouse' },
+    ]), number);
+    expect(parsed.events?.map(({ description, stage }) => [description, stage])).toEqual([
+      ['Inventory in a warehouse', 'in_transit'], ['Registered in the system', 'registered'],
+    ]);
+  });
+
   const times = (parsed: { events?: { time?: string | null; local_time?: string | null }[] }) =>
     parsed.events?.map((scan) => scan.time ?? `local ${scan.local_time}`);
   const postal = (tc: string, destCn: string | undefined, events: unknown[]) =>

@@ -232,6 +232,22 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08"
+    },
+    {
+      "wording": "Your shipment has departed from the transit origin",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Relayed without a code."
+    },
+    {
+      "wording": "Your shipment has arrived at the transit destination",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Relayed without a code."
     }
   ]
 }

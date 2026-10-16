@@ -639,7 +639,7 @@ describe('DPD status vocabulary', () => {
     ]);
     // ORI and SPL are left to their wording, like their PARCEL_HANDED and
     // IN_TRANSIT twins; notices and estimates are no scan, nor the proofs of delivery.
-    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
+    for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'MIA', 'MII', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {
       expect(scanStage(code)).toBeNull();
     }
   });

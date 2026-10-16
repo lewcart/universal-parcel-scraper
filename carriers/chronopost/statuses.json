@@ -183,6 +183,14 @@
       "language": "fr"
     },
     {
+      "code": "AT",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. The same delay on the way under another code: the parcel moves on by itself.",
+      "wording": "Colis retardé durant l'acheminement",
+      "language": "fr"
+    },
+    {
       "code": "IS",
       "stage": "in_transit",
       "confirmedBy": "live",

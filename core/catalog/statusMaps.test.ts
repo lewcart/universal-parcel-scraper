@@ -34,7 +34,7 @@ describe('status map answers', () => {
       kind: 'intentional_gap',
       note: "DPD's map leaves it unmapped on purpose: it moves the parcel in transit without a milestone of its own.",
     });
-    for (const code of ['IN_TRANSIT', 'AT_DELIVERY_CENTER', 'ORI', 'SPL', 'OTHER', 'SPE', 'MSDLO', 'MIDLI', 'ENA']) {
+    for (const code of ['IN_TRANSIT', 'AT_DELIVERY_CENTER', 'ORI', 'SPL', 'OTHER', 'SPE', 'MSDLO', 'MIDLI', 'MIA', 'MII', 'ENA']) {
       expect(answer('dpd', code, 'Any wording at all'), code).toEqual(gap);
     }
     // A label gap covers that wording without a code, and only then.
@@ -339,6 +339,11 @@ describe("universal providers' answers", () => {
     // MailAmericas' hand-overs on the way to the last mile are no delivery.
     for (const wording of ['Arrived at destination country. Delivered by Airline', 'Receiving destination mail. Delivered to Distributor',
       'Deliver to distributor']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
+    // Postal Ninja's, ParcelsApp's and Ship24's relayed steps, read whole.
+    for (const [wording, stage] of [['registered in the system', 'registered'], ['2) Example Center Your order has been received', 'registered'],
+      ['USPS in possession of item, EXAMPLE, ST 00000', 'accepted'], ['inventory in a warehouse', 'in_transit'], ['hand over to airline', 'in_transit'],
+      ['new delivery, flexible delivery arrangement', 'in_transit'], ['in lavorazione', 'in_transit'], ['uscita centro postale', 'in_transit'],
+      ['Your order has been shipped from 2) Example Center', 'in_transit']] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }

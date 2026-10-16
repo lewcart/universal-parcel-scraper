@@ -11,8 +11,15 @@ const EVENTS: Readonly<Record<string, Stage>> = {
   ico_almacen: 'in_transit',
   ico_recepcionalmacen: 'in_transit',
   ico_aduana: 'customs',
+  // The recipient uploaded the document customs asked for.
+  ico_subirdocu: 'customs',
   // Customs released the parcel.
   ico_okaduana: 'in_transit',
+};
+
+// Incidents CACESA names by icon: customs holding the parcel for inspection.
+const INCIDENTS: Readonly<Record<string, Stage>> = {
+  ico_aduana: 'exception',
 };
 
 /** The provider code of a milestone: its type, a slash and its icon ("EVENTO/ico_aduana"). */
@@ -22,12 +29,13 @@ export function cacesaCode(type: string, icon: string): string {
 
 /**
  * A milestone's stage from its type and icon. A delivered milestone is
- * delivered whatever its icon. Incidents, errors and icons no reply showed
- * are left to the shared wording rules.
+ * delivered whatever its icon. Errors, and incidents and icons no reply
+ * showed, are left to the shared wording rules.
  */
 export function cacesaStage(type: string, icon: string): Stage | undefined {
   if (type === 'ENTREGADO') return 'delivered';
-  return type === 'EVENTO' && Object.hasOwn(EVENTS, icon) ? EVENTS[icon] : undefined;
+  const stages = type === 'EVENTO' ? EVENTS : type === 'INCIDENCIA' ? INCIDENTS : null;
+  return stages && Object.hasOwn(stages, icon) ? stages[icon] : undefined;
 }
 
 /** What the map says about one milestone, by its provider code alone. */

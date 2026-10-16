@@ -66,7 +66,7 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   // origin scan.
   ['XD', 'accepted'], ['ZO', 'accepted'], ['PU', 'accepted'], ['PC', 'accepted'], ['OR', 'accepted'],
   // Facility scans, export and import scans.
-  ['AR', 'in_transit'], ['DP', 'in_transit'], ['DS', 'in_transit'], ['YP', 'in_transit'],
+  ['AR', 'in_transit'], ['DP', 'in_transit'], ['DS', 'in_transit'], ['YP', 'in_transit'], ['HL', 'in_transit'],
   ['EP', 'in_transit'], ['IP', 'in_transit'],
   // Delays and new delivery plans: a late flight, a possible delay, a new
   // plan, a delivery a day early.

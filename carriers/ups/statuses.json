@@ -17,6 +17,7 @@
     { "code": "DP", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: \"Departed from Facility\"." },
     { "code": "DS", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: \"Processing at UPS Facility\"." },
     { "code": "YP", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: \"Processing at UPS Facility\"." },
+    { "code": "HL", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "actCode: \"Your package was processed at our facility.\"" },
     { "code": "EP", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: \"Export Scan\"." },
     { "code": "IP", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: \"Import Scan\"." },
     { "code": "18", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-07", "note": "actCode: a late flight delayed the parcel, which still arrives that day." },

@@ -29,6 +29,7 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   ['A2', "Colis retardé à l'agence de distribution", 'in_transit'],
   // A delay on the way, like the delivery depot's: the parcel moves on by itself.
   ['CR', "Colis retardé durant l'acheminement", 'in_transit'],
+  ['AT', "Colis retardé durant l'acheminement", 'in_transit'],
   ['IS', 'Livraison prévue lundi prochain', 'in_transit'],
   // The depot holds the parcel a day without trying to deliver it: a missort, an address being
   // checked, or a recipient closed that day. Delivery resumes on its own.

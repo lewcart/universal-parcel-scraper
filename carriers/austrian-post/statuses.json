@@ -56,6 +56,14 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "note": "The export hub gathers the item into an outgoing dispatch."
+    },
+    {
+      "code": "TRA",
+      "wording": "Transit",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "The item is in transit."
     }
   ]
 }

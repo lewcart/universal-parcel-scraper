@@ -166,5 +166,6 @@ export const statusMap: CarrierStatusMap = {
   },
   gaps: [
     { code: 'GTMS_ORDER_INFO_UPDATE', note: "The order's delivery details changed, which moves no parcel." },
+    { code: 'SC_TRANS_INBOUND_FAILURE', note: 'A transit sorting center\'s inbound that did not go through, worded only "Carrier update": it names no movement and no fault, so the parcel keeps its stage.' },
   ],
 };

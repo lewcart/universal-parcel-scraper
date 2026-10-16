@@ -1,4 +1,5 @@
 import { classifyWording, languageStageStatus, type ClassifiedStatus, type Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_S_OK', { status: 'delivered', stage: 'delivered' }],
@@ -26,6 +27,11 @@ const CODES = new Map<string, ClassifiedStatus>([
 // arrival in the destination country, so the wording decides the stage.
 const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
 const WORDING: Readonly<Record<string, Stage>> = { 'Waybill generated': 'registered' };
+// Scans a partner relays without a code, by `normalizeStatusWording` wording.
+const UNCODED: ReadonlyMap<string, Stage> = new Map([
+  ['your shipment has departed from the transit origin', 'in_transit'],
+  ['your shipment has arrived at the transit destination', 'in_transit'],
+]);
 
 export interface FourPxStatus extends ClassifiedStatus {
   source: string;
@@ -34,9 +40,26 @@ export interface FourPxStatus extends ClassifiedStatus {
 export function fourPxStatus(code: string, description = ''): FourPxStatus | undefined {
   const mapped = CODES.get(code);
   if (mapped) return { ...mapped, source: 'carrier_map' };
+  const uncoded = code ? undefined : UNCODED.get(normalizeStatusWording(description));
+  if (uncoded) return { status: languageStageStatus(uncoded), stage: uncoded, source: 'carrier_map' };
   if (!WORDED.has(code)) return undefined;
   const exact = WORDING[description];
   if (exact) return { status: languageStageStatus(exact), stage: exact, source: 'carrier_map' };
   const worded = classifyWording(description, 'pending');
   return worded.source === 'none' ? undefined : { status: languageStageStatus(worded.stage), stage: worded.stage, source: worded.source };
 }
+
+const NORMALIZED_WORDING = new Map(Object.entries(WORDING).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
+
+/**
+ * What the map says about one scan: a code it maps, the exact wording of a
+ * code that relays a partner's step, or a codeless scan it knows. Other
+ * wording under those codes is left to the shared rules.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    if (!code) return UNCODED.get(wording);
+    return CODES.get(code)?.stage ?? (WORDED.has(code) ? NORMALIZED_WORDING.get(wording) : undefined);
+  },
+  gaps: [],
+};

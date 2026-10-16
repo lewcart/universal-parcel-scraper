@@ -599,6 +599,14 @@
       "note": "A processing delay before the parcel left the sorting center; a delay is not an exception."
     },
     {
+      "code": "SC_TRANS_INBOUND_FAILURE",
+      "wording": "Carrier update",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "A transit sorting center's inbound that did not go through. Cainiao words it only \"Carrier update\", so it keeps the stage the parcel had: no movement, and not an exception."
+    },
+    {
       "code": "SC_SORTING",
       "wording": "Sorting Center Sorting",
       "language": "en",

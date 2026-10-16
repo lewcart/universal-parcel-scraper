@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, FourPxTracker, parse } from './adapter.js';
+import { statusMap } from './status.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 
 const NUMBER = '4PX0000000000001CN';
@@ -157,6 +158,18 @@ describe('4PX result projection', () => {
     const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: 'FPX_O_IR', tkDesc: 'Task assigned' });
     const result = parse(payload, NUMBER);
     expect(result.status).toBe('unknown'); expect(result.current_stage).toBeUndefined(); expect(result.events?.[0]?.stage).toBeUndefined();
+  });
+
+  it('stages the transit scans a partner relays without a code, and only those', () => {
+    for (const [tkDesc, expected] of [['Your shipment has arrived at the transit destination', 'in_transit'],
+      ['Your shipment has departed from the transit origin', 'in_transit'], ['Task assigned', undefined]] as const) {
+      const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: '', tkDesc });
+      expect(parse(payload, NUMBER).events?.[0]?.stage, tkDesc).toBe(expected);
+    }
+    expect(statusMap.stage(null, 'your shipment has arrived at the transit destination')).toBe('in_transit');
+    expect(statusMap.stage('FPX_NEW', 'your shipment has arrived at the transit destination')).toBeUndefined();
+    expect(statusMap.stage('FPX_S_OK', 'delivered, in/at mailbox')).toBe('delivered');
+    expect(statusMap.stage('FPX_O_IR', 'waybill generated')).toBe('registered');
   });
 
   it('proves the declared capabilities using the synthetic response', () => {

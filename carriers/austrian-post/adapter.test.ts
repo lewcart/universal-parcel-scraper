@@ -197,6 +197,8 @@ describe('Austrian Post public tracking', () => {
     expect(austrianPostEventStatus('TRA', '', 'Konsolidierung für Export')?.stage).toBe('in_transit');
     expect(austrianPostEventStatus('TRA', '', 'Synthetic transit wording')).toBeUndefined();
     expect(statusMap.stage('TRA', 'konsolidierung für export')).toBe('in_transit');
+    expect(austrianPostEventStatus('TRA', '', 'Transit')?.stage).toBe('in_transit');
+    expect(statusMap.stage('TRA', 'transit')).toBe('in_transit');
     // A code alone says nothing the reason could not change.
     expect(statusMap.stage('IZ', 'sendung in zustellung')).toBeUndefined();
     expect(austrianPostEventStatus('IZ', 'BH', '')?.stage).toBe('failed_attempt');

@@ -17750,7 +17750,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redx",
+      "recognitionRank": 917
     },
     "canaryUrl": "https://redx.com.bd/",
     "trackingUrlTemplate": "https://redx.com.bd/track-global-parcel/?trackingId={trackingNumber}",
@@ -17769,7 +17770,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?=(?:[^A-Z]*[A-Z]){4})2\\dA[1-9][0-9A-Z]{8,10}$",
+        "pattern": "^2\\d(?:A[1-9]|1[0-2])(?:A[1-9]|[12]\\d|3[01])(?:MO|TU|WE|TH|FR|SA|SU)[0-9A-Z]{4,6}$",
         "confidence": "high"
       }
     ]

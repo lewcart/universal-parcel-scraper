@@ -53,8 +53,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
+        "carrier": "redx",
+        "confidence": "high"
       },
       "note": "An archived reply of RedX's own global tracking API for this parcel lists its history up to two holds and the delivery."
     },

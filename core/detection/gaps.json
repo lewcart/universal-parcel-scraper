@@ -2189,12 +2189,6 @@
     "reason": "Eight digits are shared by several carriers and nothing in the number points to Redpack."
   },
   {
-    "carrier": "redx",
-    "pattern": "^\\d{6}[A-Z0-9]{8}$",
-    "kind": "by_design",
-    "reason": "Six digits of date and eight letters and digits are too open a shape to point to RedX, and one sample shows it."
-  },
-  {
     "carrier": "rl-carriers",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

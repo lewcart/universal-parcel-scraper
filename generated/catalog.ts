@@ -6059,9 +6059,11 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "averitt",
+      "recognitionRank": 921,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.averitt.com/",
+    "canaryUrl": "https://tools.averitt.com/tracking/ltl/by-id",
     "trackingUrlTemplate": "https://tools.averitt.com/servlet/rsoLTLtrack?Type=PN&Number={trackingNumber}",
     "trackingSearchUrl": "https://www.averitt.com/",
     "linkRules": [

@@ -729,6 +729,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'abf-freight', number: '999999999',
     route: /^https:\/\/view\.arcb\.com\/nlo\/tools\/tracking\/999999999$/,
     marker: /Sorry, we didn.t find that shipment|did not return any valid results/ },
+  // The direct link renders the shipment on the server; its notice for an unknown PRO names no number.
+  { carrier: 'averitt', number: '9999999999',
+    route: /^https:\/\/tools\.averitt\.com\/servlet\/rsoLTLtrack\?Type=PN&Number=9999999999$/,
+    marker: /Nothing found to display|Tracking Details/, forwarding: { notFound: /Nothing found to display/ } },
   // The tracer looks the number up from its address and shows its notice for an unknown PRO.
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,

@@ -363,17 +363,21 @@ describe("universal providers' answers", () => {
       ['Example warehouse, Example warehouse processing, order has been outbounded', 'in_transit'],
       ['Example warehouse, Example warehouse processing assembling operation', 'in_transit'],
       ['Received in Site-Example，the pick-up is Example', 'in_transit'], ['Exported', 'in_transit'], ['Plane has landed', 'in_transit'],
-      ['Received by airline', 'in_transit'],
+      ['Received by airline', 'in_transit'], ['WI – Intermediate warehouse. Container received', 'in_transit'],
+      ['WI – Intermediate warehouse. Package received at Intermediate Warehouse', 'in_transit'],
+      ['Delivery branch. Received at Distribution Branch', 'in_transit'], ['Receiving destination mail. Received by Distributor', 'in_transit'],
+      ['Container reception', 'in_transit'],
       ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
       ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
       ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],
       ['Delivery in progress, second attempt', 'out_for_delivery'],
       ['Site-ExampleScanned for delivery;the courier is Example', 'out_for_delivery'],
       ['交接成功-交出（派送员派送途中）', 'out_for_delivery'],
+      ['Delivery branch. In the hands of the mailman', 'out_for_delivery'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
-      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt']) {
+      'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

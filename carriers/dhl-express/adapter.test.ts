@@ -59,7 +59,7 @@ describe('DHL Express projection', () => {
       'Arrived at DHL Delivery Facility EXAMPLE CITY - FRANCE',
       'Shipment has departed from a DHL facility EXAMPLE CITY - FRANCE',
       'Clearance processing complete at EXAMPLE CITY - FRANCE',
-    ].map(dhlExpressStage)).toEqual([
+    ].map((description) => dhlExpressStage(description))).toEqual([
       { stage: 'registered', source: 'carrier_map' }, { stage: 'in_transit', source: 'carrier_map' },
       { stage: 'in_transit', source: 'carrier_map' }, { stage: 'in_transit', source: 'carrier_map' },
       { stage: 'in_transit', source: 'carrier_map' }, { stage: 'in_transit', source: 'carrier_map' },
@@ -68,6 +68,12 @@ describe('DHL Express projection', () => {
     expect(dhlExpressStage('Processed for clearance at EXAMPLE CITY - FRANCE')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Clearance event')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Shipment accepted')).toEqual({ stage: 'accepted', source: 'carrier_map' });
+    // The unified feed's event codes stage wording the map does not know; the wording wins over them.
+    expect(dhlExpressStage('Synthetic clearance wording', 'CD')).toEqual({ stage: 'customs', source: 'carrier_map' });
+    expect(dhlExpressStage('Synthetic clearance wording', 'IC')).toEqual({ stage: 'customs', source: 'carrier_map' });
+    expect(dhlExpressStage('Synthetic acceptance wording', 'SA')).toEqual({ stage: 'accepted', source: 'carrier_map' });
+    expect(dhlExpressStage('Clearance processing complete at EXAMPLE CITY - FRANCE', 'CD').stage).toBe('in_transit');
+    expect(dhlExpressStage('Synthetic checkpoint', 'XX').source).not.toBe('carrier_map');
     expect(dhlExpressStage('Customs clearance status updated. Note - The Customs clearance process is under way.'))
       .toEqual({ stage: 'customs', source: 'carrier_map' });
   });

@@ -113,7 +113,7 @@ function unifiedResult(shipment: Record<string, unknown>): CarrierResult {
   const event = (row: unknown): CarrierEvent => {
     if (!isRecord(row) || typeof row.description !== 'string' || !row.description.trim()) throw new SchemaError(PROVIDER, 'DHL returned an invalid event');
     const description = row.statusCode === 'delivered' ? 'Delivered' : clean(row.description).slice(0, 1000);
-    const mapped = dhlExpressStage(description);
+    const mapped = dhlExpressStage(description, typeof row.status === 'string' ? row.status : null);
     const time = typeof row.timestamp === 'string' && /(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/i.test(row.timestamp)
       ? explicitOffsetTime(row.timestamp)?.iso : undefined;
     const address = isRecord(row.location) && isRecord(row.location.address) ? row.location.address : {};

@@ -32,19 +32,32 @@ const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
   ['shipment has departed from a dhl facility', 'in_transit'],
 ];
 
+/**
+ * DHL's event codes on the unified feed, each seen with the wording above: SA
+ * the shipment's acceptance, IC its processing for clearance, CD a clearance
+ * step without its outcome. They stage a scan whose wording the map does not
+ * know, as in another language.
+ */
+const CODES: ReadonlyMap<string, Stage> = new Map([['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs']]);
+
 /** The checkpoint's stage from DHL's own wording, if the wording is one of DHL's checkpoints. */
 export function dhlExpressCheckpointStage(description: string): Stage | undefined {
   const text = description.toLowerCase();
   return EXACT.get(text) ?? PREFIXES.find(([start]) => text.startsWith(start))?.[1];
 }
 
-export function dhlExpressStage(description: string): { stage: Stage; source: string } {
-  const stage = dhlExpressCheckpointStage(description);
+/** The checkpoint's stage from its wording, else from the unified feed's event code. */
+function checkpointStage(description: string, code?: string | null): Stage | undefined {
+  return dhlExpressCheckpointStage(description) ?? (code ? CODES.get(code.trim().toUpperCase()) : undefined);
+}
+
+export function dhlExpressStage(description: string, code?: string | null): { stage: Stage; source: string } {
+  const stage = checkpointStage(description, code);
   return stage ? { stage, source: 'carrier_map' } : classifyWording(description, 'pending');
 }
 
-/** What the map says about one scan: the web feed's codes are not read, only the checkpoint wording. */
+/** What the map says about one scan: its checkpoint wording, else its event code. The web feed has no codes. */
 export const statusMap: CarrierStatusMap = {
-  stage: (_code, wording) => dhlExpressCheckpointStage(wording),
+  stage: (code, wording) => checkpointStage(wording, code),
   gaps: [],
 };

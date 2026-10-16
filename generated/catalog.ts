@@ -6259,7 +6259,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Minsk",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "belpost",
+      "recognitionRank": 929,
+      "localClocks": true
     },
     "canaryUrl": "https://belpost.by/Otsleditotpravleniye",
     "trackingUrlTemplate": "https://belpost.by/Otsleditotpravleniye?number={trackingNumber}",
@@ -6276,7 +6278,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "best-express-vn": {
     "displayName": "BEST Express Vietnam",
@@ -22550,7 +22559,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "azul-cargo": [],
   "bangladesh-post": [],
   "barid-al-maghrib": [],
-  "belpost": [],
+  "belpost": ["belpost-s10"],
   "best-express-vn": [],
   "best-transport": [],
   "better-trucks": ["better-trucks-1"],

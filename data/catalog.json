@@ -6257,7 +6257,9 @@
     "timezone": "Europe/Minsk",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "belpost",
+      "recognitionRank": 929,
+      "localClocks": true
     },
     "canaryUrl": "https://belpost.by/Otsleditotpravleniye",
     "trackingUrlTemplate": "https://belpost.by/Otsleditotpravleniye?number={trackingNumber}",
@@ -6274,7 +6276,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "best-express-vn": {
     "displayName": "BEST Express Vietnam",

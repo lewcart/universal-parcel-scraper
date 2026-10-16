@@ -49574,6 +49574,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49585,6 +49586,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49719,6 +49721,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49730,6 +49733,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49741,6 +49745,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -51833,6 +51838,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -59851,6 +59857,14 @@
     ]
   },
   {
+    "input": "LK902999828CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
+    ]
+  },
+  {
     "input": "LL-KRGABB",
     "carrier": "unknown",
     "confidence": "low",
@@ -63222,6 +63236,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -66157,6 +66172,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -66332,6 +66348,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -69799,6 +69816,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -69810,6 +69828,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -71620,6 +71639,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },

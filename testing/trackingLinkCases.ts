@@ -851,6 +851,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/trackingnew\.postoffice\.co\.za\/\?ParcelId=ZZ000000014ZA$/,
     marker: /Enter Parcel Number To Track|PARCEL TRACKING RESULTS/i,
     forwarding: { notFound: /No tracking record found/ } },
+  // The page looks the number up, shows it and says it has no data on it yet.
+  { carrier: 'belpost', number: 'ZZ000000014BY',
+    route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,
+    marker: /Где мое отправление|У нас пока нет данных об этом трек-номере|Where is my postal item|any data on this tracking number/i },
 ];
 
 /**

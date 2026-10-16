@@ -21,6 +21,18 @@
     {"wording": "Вручено отправителю", "stage": "returned", "language": "ru", "confirmedBy": "official-doc", "note": "Returned and received by the sender. Belpost's tracking help page lists it."},
     {"wording": "Аннулирование операции вручения", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "A delivery scan was made by mistake and cancelled. Belpost's tracking help page lists it."},
     {"wording": "Поступило на временное хранение нерозданных отправлений", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Undeliverable item in temporary storage. Belpost's tracking help page lists it."},
-    {"wording": "Нерозданное отправление уничтожено", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Undeliverable item destroyed after six months of storage. Belpost's tracking help page lists it."}
+    {"wording": "Нерозданное отправление уничтожено", "stage": "exception", "language": "ru", "confirmedBy": "official-doc", "note": "Undeliverable item destroyed after six months of storage. Belpost's tracking help page lists it."},
+    {"code": "4", "wording": "Принято от отправителя", "stage": "accepted", "language": "ru", "confirmedBy": "live", "note": "Belpost's counter took the item from its sender."},
+    {"code": "6", "wording": "Поступило в обработку", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "Arrived at a sorting centre or the delivery office."},
+    {"code": "15", "wording": "Отправлено", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "Left a post office or sorting centre."},
+    {"code": "70", "wording": "Поступило в учреждение доставки", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "live", "note": "Arrived at the delivery office, before the delivery scan."},
+    {"code": "21", "wording": "Вручено", "stage": "delivered", "language": "ru", "confirmedBy": "live", "note": "Received by the addressee."},
+    {"code": "1", "wording": "Принято от отправителя", "stage": "accepted", "language": "ru", "confirmedBy": "live", "note": "The sending post's acceptance of mail from abroad."},
+    {"code": "3", "wording": "Принято в обработку в учреждении международного почтового обмена", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "At the sending post's office of exchange."},
+    {"code": "7", "wording": "Завершение таможенного контроля", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "Export customs in the sending country finished, at the minute of the dispatch."},
+    {"code": "8", "wording": "Направлено из страны по назначению", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "The sending post dispatched the item to Belarus."},
+    {"code": "30", "wording": "Принято в обработку в учреждении международного почтового обмена", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "At Belpost's office of exchange in Minsk."},
+    {"code": "31", "wording": "Подготовлено для проведения таможенного контроля", "stage": "customs", "language": "ru", "confirmedBy": "live", "note": "Handed to Belarusian customs; the page offers its customs details."},
+    {"code": "38", "wording": "Завершение таможенного контроля", "stage": "in_transit", "language": "ru", "confirmedBy": "live", "note": "Belarusian customs finished; Belpost sent the item on."}
   ]
 }

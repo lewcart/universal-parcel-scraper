@@ -43,6 +43,7 @@
         "candidates": [
           "apc-overnight",
           "austrian-post",
+          "seur",
           "usps",
           "estafeta"
         ]
@@ -68,6 +69,7 @@
         "candidates": [
           "apc-overnight",
           "austrian-post",
+          "seur",
           "usps",
           "estafeta"
         ]

@@ -2573,6 +2573,27 @@
     "reason": "APC Overnight waybills start with their booking date. The date lists APC Overnight first among the carriers that accept any twenty-two digits, and the number stays a low-confidence suggestion."
   },
   {
+    "shape": "Twenty-two digits starting with a 20YYDDMM date",
+    "carriers": [
+      "austrian-post",
+      "estafeta",
+      "seur",
+      "usps"
+    ],
+    "reason": "Some senders give SEUR shipments a reference that starts with its date, day before month. SEUR's rule joins the carriers that accept any twenty-two digits, and the number stays a low-confidence suggestion that SEUR's lookup has to confirm."
+  },
+  {
+    "shape": "Twenty-two digits starting with a date that reads both 20YYMMDD and 20YYDDMM",
+    "carriers": [
+      "apc-overnight",
+      "austrian-post",
+      "estafeta",
+      "seur",
+      "usps"
+    ],
+    "reason": "When the day is twelve or less, the date reads as APC Overnight's booking date and as a SEUR sender's reference. APC Overnight stays first and SEUR joins the candidates; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "MRO, MTN, SMI, SML or XTO followed by seven digits",
     "carriers": [
       "australia-post",

@@ -17903,6 +17903,7 @@
     "candidates": [
       "apc-overnight",
       "austrian-post",
+      "seur",
       "usps",
       "estafeta"
     ],
@@ -17911,6 +17912,7 @@
     ],
     "asked": [
       "apc-overnight",
+      "seur",
       "austrian-post"
     ]
   },
@@ -17921,6 +17923,7 @@
     "candidates": [
       "apc-overnight",
       "austrian-post",
+      "seur",
       "usps",
       "estafeta"
     ],
@@ -17929,6 +17932,22 @@
     ],
     "asked": [
       "apc-overnight",
+      "seur",
+      "austrian-post"
+    ]
+  },
+  {
+    "input": "2026151000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "austrian-post",
+      "seur",
+      "usps",
+      "estafeta"
+    ],
+    "asked": [
+      "seur",
       "austrian-post"
     ]
   },

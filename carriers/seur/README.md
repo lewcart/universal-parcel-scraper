@@ -1,7 +1,8 @@
 # SEUR
 
-Tracks single-piece shipments through SEUR's public simplified lookup.
-Other references and multi-piece shipments use universal providers.
+Tracks single-piece shipments through SEUR's public simplified lookup, by SEUR's
+numbers or by a sender's twenty-two-digit reference. Other references and
+multi-piece shipments use universal providers.
 
 ## How it works
 
@@ -20,6 +21,13 @@ A delivery instant needs the current delivered scan's own offset.
 
 Scan comments, names, contact details, QR codes, delivery PINs and driver
 coordinates are excluded. Shipment weight uses the portal's kilogram label.
+
+The lookup also finds a shipment by its sender's reference and names the
+reference as the identifier searched. Some senders print a twenty-two-digit
+reference as the tracking number: a date, read as year, day and month, then
+fourteen digits. `seur-4` suggests SEUR for that layout and recognition asks
+SEUR. APC Overnight's rule takes the same length with the month before the day,
+so both are suggested when the day is twelve or less.
 
 The no-history error also covers recent or out-of-range identifiers and remains
 inconclusive, with the reason `portal_not_found` so a consumer can tell it from

@@ -54,7 +54,7 @@ describe('SEUR simplified anonymous tracking', () => {
   });
 
   it('requires exact identity, nonempty single-piece history and the supported numeric shapes', () => {
-    for (const n of ['9900002', '99000000000002', '990000000000000000002']) expect(normalizeSeurNumber(n)).toBe(n);
+    for (const n of ['9900002', '99000000000002', '990000000000000000002', '9900000000000000000002']) expect(normalizeSeurNumber(n)).toBe(n);
     expect(normalizeSeurNumber('990 0002')).toBe(NUMBER);
     for (const n of ['', '123', '99000002', 'AA9900002', NUMBER + '?', NUMBER + '/']) expect(() => normalizeSeurNumber(n)).toThrow(InvalidInputError);
     for (const bad of [{ ...fixture, identificador_busqueda: '9900003' }, { ...fixture, identificador_busqueda: fixture.clave_envio },
@@ -65,6 +65,16 @@ describe('SEUR simplified anonymous tracking', () => {
     for (const pieces of [{}, [null], [{ peso: 1 }, { peso: 2 }]]) expect(() => parseSeur({ ...fixture, bultos: pieces }, NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
     for (const pieces of [null, [], [{ peso: 1.2 }]]) expect(parseSeur({ ...fixture, bultos: pieces }, NUMBER).status).toBe('delivered');
     expect(() => parseSeur({ ...fixture, situaciones: [] }, NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+  });
+
+  it("finds a shipment by its sender's twenty-two-digit reference, which the lookup names as searched", async () => {
+    // Synthetic: a sender's reference dated 15 October 2026, day before month, and SEUR's own number.
+    const reference = '2026151000000000000001';
+    const body = { ...copy(), identificador_busqueda: reference, clave_envio: '990000000000000000002' };
+    expect(parseSeur(body, reference).status).toBe('delivered');
+    expect(await adapter(environment(vi.fn<typeof fetch>().mockResolvedValue(response(body)))).recognize!(reference))
+      .toEqual({ known: true, lastActivityAt: null });
+    expect(() => parseSeur({ ...body, identificador_busqueda: body.clave_envio }, reference)).toThrowError(expect.objectContaining({ kind: 'schema' }));
   });
 
   it('keeps absent, recent and out-of-range lookup errors inconclusive', () => {

@@ -12,6 +12,19 @@ describe('continental shipment candidates', () => {
     expect(parseTrackingInput(`Tracking number: ${number}`)).toMatchObject({ trackingNumber: number, carrier: 'unknown', confidence: 'low' });
   });
 
+  it("offers SEUR a sender's reference dated day before month, beside APC Overnight's barcode dated month first", () => {
+    // Synthetic: 15 October 2026 reads only day first; 10 December or 12 October reads both ways.
+    expect(detectCarrierMatch('2026151000000000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
+    expect(detectCarrierMatch('2026151000000000000001').candidates).toContain('seur');
+    expect(detectCarrierMatch('2026151000000000000001').candidates).not.toContain('apc-overnight');
+    expect(recognitionAskedCarriers('2026151000000000000001')).toContain('seur');
+    expect(detectCarrierMatch('2026101200000000000001')).toMatchObject({ confidence: 'low', preferred: ['apc-overnight'] });
+    expect(detectCarrierMatch('2026101200000000000001').candidates).toEqual(expect.arrayContaining(['apc-overnight', 'seur']));
+    for (const number of ['2026131300000000000001', '1926151000000000000001', '202615100000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('seur');
+    }
+  });
+
   it('lets BRT take EOB customer parcel IDs without detection naming BRT for them', () => {
     expect(isBrtTrackingNumber('EOB99099100000000015')).toBe(true);
     for (const number of ['EOB9909910000000001', 'EOB990991000000000150', 'eob99099100000000015']) expect(isBrtTrackingNumber(number)).toBe(false);

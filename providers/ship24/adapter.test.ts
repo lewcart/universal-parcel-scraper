@@ -148,6 +148,19 @@ describe('Ship24 result parsing', () => {
     expect(walls('DE').at(-1)).toBe('2026-09-04T10:00:00');
   });
 
+  it('places EMS\'s origin leg in the origin post\'s country, at a place written as a code', () => {
+    // China Post's scans in China share these digits; read as UTC, export customs would follow the release.
+    const ems = { crawler_code: 'ems-tracking', translation: { name: 'EMS' } };
+    expect(parseShip24Response({ data: { tracking_number: 'ZZ123456785CN', origin_country_code: 'CN', destination_country_code: 'GB',
+      events: [
+        { timestamp: '2026-10-11T02:42:00', status: 'Released from export customs and security', location: 'GZSGJHHJ', courier: ems },
+        { timestamp: '2026-10-10T21:58:00', status: 'Presented to export customs and security', location: 'GZSGJHHJ', courier: ems },
+        { timestamp: '2026-10-10T15:55:00', status: 'Posted', location: '510000', courier: ems },
+      ] } }, 'ZZ123456785CN').events!.map((scan) => scan.time)).toEqual([
+      '2026-10-10T18:42:00.000Z', '2026-10-10T13:58:00.000Z', '2026-10-10T07:55:00.000Z',
+    ]);
+  });
+
   it('leaves an unlocated scan of a cross-border parcel a wall time, not on its relay\'s or carrier\'s clock', () => {
     const correos = { couriers: [{ translation: { name: 'Correos de España' } }] };
     expect(noonAt(undefined, correos)).toBe('2026-09-20T10:00:00.000Z');

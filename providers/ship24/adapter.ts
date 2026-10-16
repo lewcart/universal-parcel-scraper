@@ -107,11 +107,14 @@ function replyCountry(value: unknown): string | null {
  * UPU events (EMSEVT) by the side of the border they happen on: the origin
  * post's until the item leaves its outward office of exchange, the
  * destination post's from its inward office on. National posts report them in
- * these words too.
+ * these words too, and EMS's feed in its own ("Posted", "Departed from export
+ * office"), at a place written as a code ("GZSGJHHJ").
  */
 const UPU_ORIGIN = new Set(['posting/collection', 'arrival at outward office of exchange', 'departure from outward office of exchange',
   'dispatch from outward office of exchange', 'item held at outward office of exchange', 'item presented to export customs/security',
-  'item held by export customs/security', 'item returned from export customs/security']);
+  'item held by export customs/security', 'item returned from export customs/security',
+  'posted', 'arrived at export office', 'presented to export customs and security', 'released from export customs and security',
+  'departed from export office']);
 const UPU_DESTINATION = new Set(['arrival at inward office of exchange', 'item held at inward office of exchange',
   'departure from inward office of exchange', 'item presented to import customs', 'held by import customs', 'held by customs',
   'item returned from customs (import)', 'item into sorting centre', 'item out of sorting centre', 'item held at delivery depot',

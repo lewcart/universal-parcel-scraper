@@ -100,8 +100,8 @@ No account, cookie, fingerprint or issued token is used.
   2. the country of a parcel whose origin and destination are the same
      (`origin_country_code`, or an S10 number's suffix, and `destination_country_code`);
   3. for a parcel that crosses a border, the side a UPU event's words name ("Posting/
-     Collection", "Arrival at inward office of exchange"), from any courier, until the
-     item is returned to sender. The origin side needs an S10 suffix that agrees with
+     Collection", "Arrival at inward office of exchange", EMS's "Departed from export
+     office"), from any courier, until the item is returned to sender. The origin side needs an S10 suffix that agrees with
      the origin: Asendia's Swiss numbers are posted at offices of exchange abroad;
   4. for a parcel not known to cross a border, the feed's home clock (Amazon UK's
      London, CTT's Portugal).

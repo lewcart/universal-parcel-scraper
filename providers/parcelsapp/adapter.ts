@@ -25,6 +25,7 @@ import {
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
+import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
 import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
@@ -226,6 +227,31 @@ function speedafZone(payload: Record<string, unknown>, date: unknown, destinatio
   if (!wall || !departed || wall <= departed) return 'Asia/Shanghai';
   return countryTimeZone(destination) ?? undefined;
 }
+// A UPU office of exchange in Portugal leading a CTT location: "PTLISB - (OUTRO) LISBON PROV".
+const CTT_HOME_OFFICE = /^PT[A-Z0-9]{4}\s+-\s/;
+/**
+ * CTT's copies keep the digits of CTT's own tracker, whose Z is no offset:
+ * the wall clock where the scan happened (carriers/ctt/clock.ts). ParcelsApp
+ * drops CTT's event codes, so its offices of exchange tell the side of the
+ * border: an office or a CTT site names its own clock; on mail from abroad, a
+ * scan before the first at a Portuguese office is the origin post's, and on a
+ * parcel bound abroad, one after the last is the destination post's; any
+ * other is on Portugal's clock.
+ */
+function cttZone(payload: Record<string, unknown>, location: string, date: unknown, number: string, destination: string | null): string | undefined {
+  const origin = replyOrigin(payload, number);
+  const site = cttSiteZone(location, [origin, destination]);
+  if (site) return site;
+  const wall = mislabeledWallTime(date);
+  const home = (Array.isArray(payload.states) ? payload.states : []).flatMap((raw: unknown) => {
+    const name = isRecord(raw) ? stateCarrierName(payload, raw) : undefined;
+    return isRecord(raw) && typeof name === 'string' && carrierIdFromName(name) === 'ctt' && typeof raw.location === 'string'
+      && CTT_HOME_OFFICE.test(raw.location.trim()) ? [mislabeledWallTime(raw.date) ?? ''] : [];
+  }).filter(Boolean).sort();
+  const partner = !wall ? null : origin && origin !== 'PT' && (!home.length || wall < home[0]!) ? origin
+    : origin === 'PT' && destination && destination !== 'PT' && home.length && wall > home.at(-1)! ? destination : null;
+  return (partner ? countryTimeZone(partner) : portugalZone(location)) ?? undefined;
+}
 /**
  * Networks whose dates are their scans' local clocks, checked at home only
  * (2026-10-10): Korea Post's page, Bring's offsets (in Denmark too) and
@@ -307,6 +333,21 @@ function lastPlace(location: string): string | undefined {
   return /^people['’]?s republic of china$/i.test(place) ? 'CN' : UNITED_STATES.test(place.replace(POSTAL_CODE, '')) ? 'US'
     : /^hong\s*kong$/i.test(place) ? 'HK' : coded ?? place;
 }
+
+/**
+ * The origin post's scans as the postal feeds word them, UPU's and EMS's,
+ * from posting to departure from its office of exchange (UPU's EMA to EMC and
+ * EXA to EXD). They happen at the origin post, on its wall clock, wherever
+ * their place is written in a script or a code no step reads ("GZSGJHHJ",
+ * Guangzhou's office of exchange, or a postcode).
+ */
+const POSTAL_FEEDS = new Set(['universalpostalunion', 'upu', 'ems']);
+const POSTAL_ORIGIN_LEG = wordings([
+  'posting/collection', 'posted', 'item presented to export customs/security', 'presented to export customs and security',
+  'item held by export customs/security', 'item returned from export customs/security', 'released from export customs and security',
+  'arrived at export office', 'departed from export office', 'departed country of origin',
+  '(?:arrival at|departure from|dispatch from|item held at) outward office of exchange',
+]);
 
 // Mainland China's provinces, regions and municipalities, as China Post's scans name them.
 const CHINESE_PROVINCES = new Set([
@@ -424,6 +465,7 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   // scan location. Keep its clock as a guess even when the alias is catalogued.
   if (zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name))) return zone;
   const location = scanLocation(name, state.location);
+  if (carrier === 'ctt') return cttZone(payload, location, state.date, number, destination);
   // A facility's clock, whatever the label: no other step applies to it.
   if (relaysFacilityClock(name)) return facilityZone(location);
   if (carrier === 'china-post' && inChina(location)) return 'Asia/Shanghai';
@@ -435,6 +477,9 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   const located = countryTimeZone(place);
   if (located) return located;
   if (region) return region.zone;
+  if (POSTAL_FEEDS.has(key) && POSTAL_ORIGIN_LEG.test(status.trim())) {
+    return countryTimeZone(replyOrigin(payload, number)) ?? undefined;
+  }
   return undefined;
 }
 
@@ -526,9 +571,10 @@ type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' 
  * 3. as a guess, that of the scan of its network just before it by wall
  *    clock that steps 1 and 2 place, else of the one just after it; for a
  *    scan in the destination, only of one placed there;
- * 4. the zone routing passes for the parcel;
- * 5. its known clock (`KNOWN_CLOCKS`): a fixed one, for a scan that skips
+ * 4. its known clock (`KNOWN_CLOCKS`): a fixed one, for a scan that skips
  *    step 3, or the destination's single clock;
+ * 5. the zone routing passes for the parcel, which is another network's for
+ *    a parcel filed under it: Lagos's for Cainiao's copies under Speedaf;
  * 6. none: it keeps ParcelsApp's label, as it did before these steps, the
  *    last guess.
  * A zone the scan's location rules out is skipped ("USA" takes no Canadian
@@ -578,8 +624,8 @@ function wallClockZones(entries: readonly {
     }
     const borrowed = (before ?? after)?.zone;
     const known = fitsPlace(entry.known, entry.location);
-    return borrowed ? { zone: borrowed, step: 'borrowed' } : entry.fallback ? { zone: entry.fallback, step: 'routing' }
-      : known ? { zone: known, step: 'known' } : { zone: null, step: 'labeled' };
+    return borrowed ? { zone: borrowed, step: 'borrowed' } : known ? { zone: known, step: 'known' }
+      : entry.fallback ? { zone: entry.fallback, step: 'routing' } : { zone: null, step: 'labeled' };
   });
 }
 
@@ -592,6 +638,11 @@ function replyDestination(payload: Record<string, unknown>, number: string): str
   const reference = /^CN(PRT|ESP)\d{20}$/.exec(number)?.[1];
   return countryCode(payload.destinationCode) ?? countryCode(payload.destination)
     ?? (reference === 'PRT' ? 'PT' : reference === 'ESP' ? 'ES' : null);
+}
+
+/** The country the parcel comes from, as the reply names it, else the post that issued an S10 number. */
+function replyOrigin(payload: Record<string, unknown>, number: string): string | null {
+  return countryCode(payload.originCode) ?? countryCode(payload.origin) ?? countryCode(/^[A-Z]{2}\d{9}([A-Z]{2})$/.exec(number)?.[1]);
 }
 
 /**

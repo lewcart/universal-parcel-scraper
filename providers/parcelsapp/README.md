@@ -141,9 +141,11 @@ step exists for future protocol changes.
   3. a borrowed clock, a guess: the zone of the scan of the same network just before it by
      wall clock that steps 1 or 2 place, else of the one just after it; for a scan known
      to be in the destination (Known clocks below), only of one placed there;
-  4. the zone routing passes for the parcel (step 5 above), a guess;
-  5. the known clock of its network and wording, or for a scan in the destination, that
+  4. the known clock of its network and wording, or for a scan in the destination, that
      country's single clock (Known clocks below);
+  5. the zone routing passes for the parcel (step 5 above), a guess. It is the zone of the
+     carrier the parcel is filed under, so it comes after the known clock: Lagos's, for a
+     parcel filed under Speedaf, put Cainiao's copies 7 hours late;
   6. none: it keeps ParcelsApp's label, as it did before these steps, and reads as that
      label says, hours off unless the scan was on UTC. This last guess means no wall-clock
      scan is left without an instant, so none drops out or makes a reply inconclusive.
@@ -157,7 +159,7 @@ step exists for future protocol changes.
   26 scans of a 4PX parcel took 4PX's own offsets, and 27 of another's 30; the other three
   are an hour off, where the parcel or 4PX's clock changed zones around them. No source
   gives the clock of USPS's "In Transit to Next Facility", which borrows its neighbours'.
-  Routing passes no zone for a carrier on UTC in the catalog, as these are, so step 4
+  Routing passes no zone for a carrier on UTC in the catalog, as these are, so step 5
   rarely applies. Step 6 is reached by Cainiao's last mile in the UK, which is on GMT, by
   Cainiao scans of unlisted wording or in a reply that names no destination, and by EMS
   scans in a reply that places none of EMS's: a cancelled export in China, and US scans
@@ -230,7 +232,18 @@ step exists for future protocol changes.
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
-  through the steps like any.
+  through the steps like any. Its UPU and EMS scans come under those names, their place a
+  code or a postcode ("GZSGJHHJ", Guangzhou's office of exchange). Theirs from posting to
+  departure from the office of exchange are read on the origin's clock, the reply's
+  `originCode` or the country of an S10 number: they share their digits with China Post's
+  scans in China, and read as UTC export customs came after the release.
+- CTT's copies ("Portugal Post - Portugal CTT") have the digits of CTT's own tracker, the
+  clock where each scan happened, under a UTC label. An office of exchange or a CTT site
+  names its own clock ("GBLALA - …" London's, "PTLISE - …" Lisbon's). ParcelsApp drops
+  CTT's event codes, so the Portuguese offices of exchange tell the side of the border: on
+  mail from abroad, a scan before the first of them is on the origin's clock; bound
+  abroad, one after the last is on the destination's; any other is on Portugal's. Read as
+  UTC, a UK parcel's scans came an hour late in summer.
 - Speedaf's dates are its sites' wall clocks under a UTC label. Its own feed dates the
   scans up to the departing flight ("Cargo flight departured") on China time and the rest
   on the destination's, and Cainiao's copies of the same scans agree once read that way.

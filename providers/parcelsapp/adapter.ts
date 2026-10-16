@@ -241,13 +241,16 @@ const SUNYOU_DESTINATION_LEG = /^(?:arrived at destination country airport|custo
  * same scans agree once read that way. A scan whose digits come after the
  * flight's is in the destination, which gives it a zone if it has one clock.
  */
-function speedafZone(payload: Record<string, unknown>, date: unknown, destination: string | null): string | undefined {
-  const wall = mislabeledWallTime(date);
-  const departed = (Array.isArray(payload.states) ? payload.states : []).flatMap((raw: unknown) => {
+function speedafDeparture(payload: Record<string, unknown>): string | undefined {
+  return (Array.isArray(payload.states) ? payload.states : []).flatMap((raw: unknown) => {
     const name = isRecord(raw) ? stateCarrierName(payload, raw) : undefined;
     return isRecord(raw) && typeof name === 'string' && carrierIdFromName(name) === 'speedaf' && typeof raw.status === 'string'
       && /^cargo flight depart(?:ed|ured)$/i.test(raw.status.trim()) ? [mislabeledWallTime(raw.date) ?? ''] : [];
-  }).sort().at(-1);
+  }).sort().at(-1) || undefined;
+}
+function speedafZone(payload: Record<string, unknown>, date: unknown, destination: string | null): string | undefined {
+  const wall = mislabeledWallTime(date);
+  const departed = speedafDeparture(payload);
   if (!wall || !departed || wall <= departed) return 'Asia/Shanghai';
   return countryTimeZone(destination) ?? undefined;
 }
@@ -480,7 +483,8 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
   if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || ownOffset(name, state.date)) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
-  if (carrier === 'speedaf') return speedafZone(payload, state.date, destination);
+  // Cainiao's copies of Speedaf's scans keep Speedaf's digits, its arrival at the linehaul office too.
+  if (carrier === 'speedaf' || (key === 'cainiao' && speedafDeparture(payload))) return speedafZone(payload, state.date, destination);
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").

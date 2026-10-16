@@ -1071,6 +1071,20 @@ describe('ParcelsApp result parsing', () => {
     expect(parse('NG', false)?.slice(0, 2)).toEqual(['2026-07-14T07:12:31.000Z', '2026-07-14T03:05:10.000Z']);
   });
 
+  it('reads Cainiao\'s copies in a Speedaf reply on Speedaf\'s clocks, either side of the departing flight', () => {
+    // Cainiao's "Arrived at linehaul office" has the digits of Speedaf's "Cargo flight arrived" in the destination.
+    const result = parseParcelsAppResponse({ carriers: ['Speedaf', 'Cainiao'], destinationCode: 'RE', states: [
+      { date: '2026-07-14T09:30:00Z', status: 'Arrived at linehaul office', carrier: 1 },
+      { date: '2026-07-14T09:30:00Z', status: 'Cargo flight arrived', carrier: 0 },
+      { date: '2026-07-11T20:30:00Z', status: 'Cargo flight departured', carrier: 0 },
+      { date: '2026-07-09T14:22:05Z', status: 'Order received successfully', carrier: 1 },
+    ] }, number, identity(), 'Africa/Lagos');
+    expect(result.events?.map((scan) => [scan.description, scan.time])).toEqual(expect.arrayContaining([
+      ['Arrived at linehaul office', '2026-07-14T05:30:00.000Z'],
+      ['Order received successfully', '2026-07-09T06:22:05.000Z'],
+    ]));
+  });
+
   it('reads China Post\'s scans in China on Beijing\'s clock', () => {
     // 17TRACK's copies of the same scans carry "+08:00"; ParcelsApp labels the digits UTC.
     const result = parseParcelsAppResponse({ carriers: ['China Post'], states: [

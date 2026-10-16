@@ -266,7 +266,9 @@ step exists for future protocol changes.
   on the destination's, and Cainiao's copies of the same scans agree once read that way.
   Scans whose digits come after the flight's take the destination's single clock, or
   else go through the steps; the others, and all of them before the flight, are read on
-  China time.
+  China time. Cainiao's copies in a reply with that flight are read the same way, not on
+  Cainiao's known clocks: its "Arrived at linehaul office" has the digits of Speedaf's
+  "Cargo flight arrived" in the destination.
 - TNT's international scans (9-digit numbers) skip these steps. tnt.com gives them
   offsets, and ParcelsApp's `date` is already their UTC instant.
 - So do scans named "Asendia United States" or "Asendia USA", wherever they happened.

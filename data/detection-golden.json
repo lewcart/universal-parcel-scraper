@@ -57868,6 +57868,22 @@
     ]
   },
   {
+    "input": "JJD014600012743269756",
+    "carrier": "dhl-express",
+    "confidence": "high",
+    "candidates": [
+      "dhl-express"
+    ]
+  },
+  {
+    "input": "JJD014600012845358823",
+    "carrier": "dhl-express",
+    "confidence": "high",
+    "candidates": [
+      "dhl-express"
+    ]
+  },
+  {
     "input": "JJD149020000300000000173",
     "carrier": "dhl",
     "confidence": "high",

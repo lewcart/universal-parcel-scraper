@@ -18,18 +18,54 @@
   "timezone": "Europe/Athens",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "speedex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 938
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.speedex.gr/isapohi.asp?voucher_code={trackingNumber}",
     "searchUrl": "https://www.speedex.gr/isapohi.asp",
     "canaryUrl": "https://www.speedex.gr/isapohi.asp",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "recipient_name",
+      "office_addresses",
+      "office_contact_details",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "recipient_name",
+      "office_addresses",
+      "office_contact_details",
+      "coordinates"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "pickup_point",
+      "sender_name",
+      "service_name",
+      "weight",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

@@ -881,6 +881,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   servientrega: 'the tracker shows its result in a frame from mobile.servientrega.com, which does not answer connections from Europe, North America or Asia, so number forwarding cannot be verified daily',
   swiftx: 'swiftx-express.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',
+  speedex: 'www.speedex.gr passes the number only to its tracker frame, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   usps: 'tools.usps.com answers automated Chrome with an anti-bot script instead of the page',
   'xpo-ltl': 'the shipment page asks for a reCAPTCHA checkbox before it shows a result, so number forwarding cannot be verified',
 };

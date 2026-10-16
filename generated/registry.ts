@@ -228,6 +228,7 @@ import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.j
 import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
 import { adapter as speeDee } from '../carriers/spee-dee/adapter.js';
 import { adapter as speedaf } from '../carriers/speedaf/adapter.js';
+import { adapter as speedex } from '../carriers/speedex/adapter.js';
 import { adapter as speedpak } from '../carriers/speedpak/adapter.js';
 import { adapter as speedx } from '../carriers/speedx/adapter.js';
 import { adapter as speedy } from '../carriers/speedy/adapter.js';
@@ -509,6 +510,7 @@ export const REGISTRY: RegistryDefinition = {
     "smsa-express": smsaExpress,
     "spee-dee": speeDee,
     "speedaf": speedaf,
+    "speedex": speedex,
     "speedpak": speedpak,
     "speedx": speedx,
     "speedy": speedy,
@@ -1014,7 +1016,7 @@ export const REGISTRY: RegistryDefinition = {
     "southeastern-freight-lines": "universal",
     "spee-dee": "spee-dee",
     "speedaf": "speedaf",
-    "speedex": "universal",
+    "speedex": "speedex",
     "speedpak": "speedpak",
     "speedx": "speedx",
     "speedy": "speedy",

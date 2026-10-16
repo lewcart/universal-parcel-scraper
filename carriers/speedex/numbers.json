@@ -363,6 +363,46 @@
         "confidence": "high"
       },
       "note": "A DHL parcel number looked up on Speedex's own tracker; the archived capture shows only a registration scan, so Speedex knows it as a handover from DHL's network."
+    },
+    {
+      "number": "JJD014600012743269756",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260726221418/https://www.speedex.gr/speedex/NewTrackAndTrace.aspx?number=JJD014600012743269756",
+        "date": "2026-07-26",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "A DHL parcel number looked up on Speedex's own tracker; the archived capture shows Speedex's scans from its registration through a missed message to the recipient and a shop."
+    },
+    {
+      "number": "JJD014600012845358823",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20261002214242/https://www.speedex.gr/speedex/NewTrackAndTrace.aspx?number=JJD014600012845358823",
+        "date": "2026-10-02",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "scope_review"
+      },
+      "expect": {
+        "carrier": "dhl-express",
+        "confidence": "high"
+      },
+      "note": "A DHL parcel number looked up on Speedex's own tracker; the archived capture shows only a registration scan, so Speedex knows it as a handover from DHL's network."
     }
   ]
 }

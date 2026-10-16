@@ -19110,7 +19110,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speedex",
+      "recognitionRank": 938,
+      "localClocks": true
     },
     "canaryUrl": "https://www.speedex.gr/isapohi.asp",
     "trackingUrlTemplate": "https://www.speedex.gr/isapohi.asp?voucher_code={trackingNumber}",

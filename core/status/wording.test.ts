@@ -658,6 +658,29 @@ describe('classifyWording', () => {
     expect(wordingStage('Once you have collected your parcel, rate your delivery', 'pending')).not.toBe('delivered');
   });
 
+  it('reads relayed pre-advice, receipts, cross-docks and flights the providers pass on', () => {
+    for (const [wording, stage] of [
+      ['Order submitted, pending to receive.', 'registered'], ['Order created. Order submitted and pending receipt', 'registered'],
+      ['Shipment data uploaded', 'registered'], ['Sender preparing item', 'registered'],
+      ['Sender preparing item. The sender has let us know they have despatched your item', 'registered'],
+      ['Shipping info sent to BRT', 'registered'],
+      ['Information, We have received your shipment information, we will have your goods soon', 'registered'],
+      ['INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de él', 'registered'],
+      ['We will pick up the package from the sender soon', 'registered'],
+      ['Item received by Royal Mail', 'accepted'],
+      ['The shipment has been taken over by one of our operators at the post office.', 'accepted'],
+      ["We've received your parcel at the ParcelShop and will be collecting it shortly", 'accepted'],
+      ['已入库,到达收货点', 'accepted'], ['国内清关中', 'customs'],
+      ['Cross docked. Crossdock', 'in_transit'], ['Flight 202 is taking off and is expected to land on the 9th', 'in_transit'],
+      ['The second leg is taking off, expected to land on the 9th', 'in_transit'],
+      ['The flight landed, and the board was dismantled and cleared', 'in_transit'],
+    ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
+    // A notice sent to the recipient is no pre-advice, and an item received elsewhere keeps its reading.
+    expect(wordingStage('Shipping information sent to the recipient', 'pending')).not.toBe('registered');
+    expect(wordingStage('Item received at delivery office', 'pending')).toBe('accepted');
+    expect(wordingStage('Item received by customs', 'pending')).toBe('customs');
+  });
+
   it('falls back without a rule id when nothing matches', () => {
     expect(classifyWording('Estado interno 99', 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(wordingStage('Estado interno 99')).toBe('in_transit');

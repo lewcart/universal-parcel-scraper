@@ -8100,7 +8100,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "courier-center",
+      "recognitionRank": 914
     },
     "canaryUrl": "https://www.courier.gr/",
     "trackingUrlTemplate": "https://www.courier.gr/track/result/?tracknr={trackingNumber}",

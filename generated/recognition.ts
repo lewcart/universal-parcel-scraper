@@ -47,6 +47,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "correo-argentino": 978,
   "correos-de-mexico": 30,
   "correos-express": 800,
+  "courier-center": 914,
   "couriersplease": 961,
   "cse-russia": 926,
   "ctt-express": 790,

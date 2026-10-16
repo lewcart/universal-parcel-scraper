@@ -548,6 +548,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'geniki-taxydromiki', number: '9999999999',
     route: /^https:\/\/taxydromiki\.com\/track\/9999999999\/?$/,
     marker: /Ο αριθμός αποστολής που ζητήσατε δε βρέθηκε|Πορεία Αποστολής/ },
+  // The page looks the waybill up as it is served and names an unknown one in its notice.
+  { carrier: 'courier-center', number: '013000000000',
+    route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000$/,
+    marker: /Δεν βρέθηκε φορτωτική με τον αριθμό|Αριθμός Φορτωτικής/ },
   // The page looks the AWB up as it is served; an unknown one gets a notice without the number.
   { carrier: 'cargus', number: '9999999999',
     route: /^https:\/\/www\.cargus\.ro\/personal\/urmareste-coletul\/\?tracking_number=/,

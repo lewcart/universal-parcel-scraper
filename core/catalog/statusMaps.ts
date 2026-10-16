@@ -52,6 +52,7 @@ import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
 import { statusMap as correosSpain } from '../../carriers/correos-spain/status.js';
+import { statusMap as courierCenter } from '../../carriers/courier-center/status.js';
 import { statusMap as couriersPlease } from '../../carriers/couriersplease/status.js';
 import { statusMap as cseRussia } from '../../carriers/cse-russia/status.js';
 import { statusMap as cttyex } from '../../carriers/cttyex/status.js';
@@ -234,7 +235,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost, 'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics,
   'cj-packet': cjPacket,
   coordinadora, 'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-spain': correosSpain,
-  couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost,
+  'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost,
   'dai-post': daiPost, dao, 'day-ross': dayRoss,
   dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, dsv, dynalogic,
   'early-bird': earlyBird, econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, envialia, 'epost-global': epostGlobal, estes,

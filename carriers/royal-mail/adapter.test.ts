@@ -187,6 +187,21 @@ describe('Royal Mail structured response', () => {
     ]);
   });
 
+  it('reads a parcel hub receipt without an earlier acceptance as the acceptance', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'We\'ve got it', statusDescription: '**We\'ve got it**', lastEventCode: 'EVBAH',
+        lastEventDateTime: '2026-01-06T03:04:21+01:00' },
+      events: [
+        { eventCode: 'EVBAH', eventName: '**Item Received**', eventDateTime: '2026-01-06T03:04:21+01:00' },
+        { eventCode: 'EVBAH', eventName: '**Item Received**', eventDateTime: '2026-01-06T03:03:37+01:00' },
+        { eventCode: 'EVAIP', eventName: 'Sender has despatched item', eventDateTime: '2026-01-05T16:20:10+01:00' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(result.current_stage).toBe('accepted');
+    expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'accepted', 'registered']);
+  });
+
   it('reads scans abroad on their country\'s clock instead of the UK label', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: IN_TRANSIT_NUMBER,

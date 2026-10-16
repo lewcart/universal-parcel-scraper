@@ -141,6 +141,10 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   // clocks. Preserve provider order unless every scan denotes an instant.
   if (events.every(event => event.time)) {
     events.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
+    // Mail a sender hands in at a parcel hub has no acceptance scan before the
+    // hub's receipt, which the summary then calls "We've got it".
+    const first = [...events].reverse().find(event => event.stage !== 'registered' && event.stage !== 'pending');
+    if (first?.provider_code === 'EVBAH' && first.stage === 'in_transit') first.stage = 'accepted';
   }
   const trimmed = events.slice(0, MAX_EVENTS_TO_RETURN);
   const summaryCategory = cleanScalar(summary.statusCategory);

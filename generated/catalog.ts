@@ -12430,6 +12430,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "imile",
+      "recognitionRank": 997,
       "localClocks": true
     },
     "canaryUrl": "https://www.imile.com/en/track",
@@ -12450,6 +12451,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^IM\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^6(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])2[4-9]\\d{6}$",
         "confidence": "low"
       }
     ]
@@ -22626,7 +22631,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],
   "ilyang-logis": [],
-  "imile": ["imile-1"],
+  "imile": ["imile-1","imile-2"],
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],

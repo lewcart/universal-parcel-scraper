@@ -1,5 +1,5 @@
 import { constants, createHash, createPublicKey, publicEncrypt, type KeyObject } from 'node:crypto';
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { ChallengeError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
@@ -151,5 +151,7 @@ export const adapter: AdapterFactory = (environment) => {
   return {
     id: 'imile', recordsSteps: true, steps: ['direct', 'retry'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+      () => accepted(() => normalizeImileNumber(number))),
   };
 };

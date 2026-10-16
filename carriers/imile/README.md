@@ -23,7 +23,7 @@ makes.
   404 or a redirect is a moved route. Cloudflare, in front of the site, lets the package's
   default User-Agent through.
 - The shipment must echo the number asked.
-- There is no recognition. No rule claims iMile's numbers, so preflight would never ask.
+- Recognition makes the same read: a shipment with scans is known, the empty reply is not.
 
 ## Notes
 
@@ -57,8 +57,12 @@ makes.
 
 ## Numbers
 
-iMile's own waybill numbers are thirteen digits. Thirteen digits are a bare counter many
-carriers share, so no rule claims them. Its Italian parcels also carry `IM` and fourteen
+iMile's own waybill numbers are thirteen digits. Most are a 6, the day the waybill was made as
+month, day and two-digit year, then six digits: every sample was reported days or months
+after its date. `imile-2` suggests iMile for that layout, with years from 24, at low confidence.
+Other carriers' thirteen digits are a bare counter that can fit it, Korea Post's domestic
+parcels among them, so the tracker has to confirm the number. The waybills that start with 3
+show no such date, and no rule claims them. Its Italian parcels also carry `IM` and fourteen
 digits, which iMile calls their waybill number. No other carrier's rule takes that layout, so
 `imile-1` suggests iMile for it with low confidence: every sample seen so far shares one
 prefix. The samples and their sources are in [`numbers.json`](numbers.json).

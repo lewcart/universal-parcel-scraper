@@ -1348,7 +1348,7 @@
     "carrier": "imile",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
-    "reason": "Thirteen bare digits are shared with many carriers, and nothing in the number points to iMile."
+    "reason": "Thirteen bare digits are shared with many carriers. Only the dated waybills imile-2 suggests show iMile in the number; those that start with 3 do not."
   },
   {
     "carrier": "inpost",

@@ -97,6 +97,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "hermes-de": 840,
   "hrvatska-posta": 160,
   "hywl": 993,
+  "imile": 997,
   "inpost": 820,
   "interrapidisimo": 969,
   "israel-post": 81,

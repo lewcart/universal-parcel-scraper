@@ -1667,6 +1667,18 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "6, a month, a day and a year from 24, then six digits, that fail the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "imile",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and four other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "Twelve digits that pass the GLS check",
     "carriers": [
       "brt",

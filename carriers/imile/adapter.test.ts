@@ -13,6 +13,8 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = '6000000000001';
 const IN_TRANSIT = '6000000000002';
 const UNKNOWN = '6000000000000';
+// A waybill made on 1 January 2024, as the dated layout writes it.
+const DATED = '6010124000001';
 
 type Row = Record<string, unknown>;
 type Shipment = Row & { trackInfos: Row[] };
@@ -310,12 +312,27 @@ describe('iMile HTTP adapter', () => {
     expect(signal?.aborted).toBe(true);
   });
 
-  it('routes a number filed under iMile to the adapter, and leaves thirteen bare digits unclaimed', async () => {
+  it('recognizes a waybill with scans and the empty reply, keeps a refusal an error and asks nothing for another number', async () => {
+    const known = vi.fn<typeof fetch>().mockImplementation(async () => reply(changed('in-transit', (shipment) => { shipment.waybillNo = DATED; })));
+    await expect(carrier(known).recognize!(DATED)).resolves.toMatchObject({ known: true });
+    // The page still signs with the values the adapter holds, so the empty reply is an unknown number.
+    await expect(carrier(site({ privateKey: FIRST.privateKey, signing: IMILE_SIGNING }, {})).recognize!(DATED)).resolves.toEqual({ known: false });
+    await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(new Response('', { status: 429 }))).recognize!(DATED))
+      .rejects.toMatchObject({ kind: 'rate_limited' });
+    const unasked = vi.fn<typeof fetch>();
+    await expect(carrier(unasked).recognize!('SAMPLETRACKING')).resolves.toEqual({ known: false });
+    expect(unasked).not.toHaveBeenCalled();
+  });
+
+  it('routes a number filed under iMile to the adapter, and suggests iMile for a dated waybill only', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(fixture('delivered')));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'imile' }, { budgetMs: 3000 });
     expect(answer).toMatchObject({ carrier: 'imile', source: 'imile', result: { current_stage: 'delivered' } });
     expect(fetcher.mock.calls.some(([url]) => String(url).startsWith(`${IMILE_API}?`))).toBe(true);
-    expect(detectCarrierMatch(DELIVERED).carrier).not.toBe('imile');
+    expect(detectCarrierMatch(DELIVERED).candidates).not.toContain('imile');
+    expect(detectCarrierMatch(DATED)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['imile']) });
+    // Month 13 is no date.
+    expect(detectCarrierMatch('6130124000001').candidates).not.toContain('imile');
   });
 });
 

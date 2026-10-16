@@ -11001,17 +11001,19 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fukuyama",
+      "recognitionRank": 939,
+      "localClocks": true
     },
-    "canaryUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
-    "trackingUrlTemplate": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/{trackingNumber}",
-    "trackingSearchUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
+    "canaryUrl": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt",
+    "trackingUrlTemplate": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt/{trackingNumber}",
+    "trackingSearchUrl": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt",
     "linkRules": [
       {
         "domains": [
           "corp.fukutsu.co.jp"
         ],
-        "path": "^/situation/tracking_no_hunt/([^/?#]+)/?$"
+        "path": "^/(?:corp/recieve|situation)/tracking_no_hunt/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

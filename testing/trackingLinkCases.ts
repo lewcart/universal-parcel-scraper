@@ -825,6 +825,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pathao-courier', number: 'DZ010126SMPL00',
     route: /^https:\/\/merchant\.pathao\.com\/public-tracking\?consignment_id=DZ010126SMPL00$/,
     marker: /No Data Found|Tracking Details|Consignment ID/i },
+  // The page looks the number up and prints it in groups; for an unknown one it says it has no data.
+  { carrier: 'fukuyama', number: '12345678901',
+    route: /^https:\/\/corp\.fukutsu\.co\.jp\/corp\/recieve\/tracking_no_hunt\/12345678901$/,
+    marker: /お荷物配達状況詳細|該当データはありません/,
+    forwarding: { notFound: /該当データはありません/ } },
 ];
 
 /**

@@ -19,25 +19,67 @@
   "timezone": "Asia/Tokyo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fukuyama",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 939
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "weight",
+    "offset_timestamps"
+  ],
   "portal": {
-    "url": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/{trackingNumber}",
-    "searchUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
-    "canaryUrl": "https://corp.fukutsu.co.jp/situation/tracking_no_hunt/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt/{trackingNumber}",
+    "searchUrl": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt",
+    "canaryUrl": "https://corp.fukutsu.co.jp/corp/recieve/tracking_no_hunt",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "parcel_count",
+      "eta",
+      "delivered_at",
+      "office_contact_details",
+      "office_addresses",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "delivered_at"
+    ],
+    "discarded": [
+      "parcel_count",
+      "eta",
+      "office_contact_details",
+      "office_addresses",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "provider_code",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {
       "domains": [
         "corp.fukutsu.co.jp"
       ],
-      "path": "^/situation/tracking_no_hunt/([^/?#]+)/?$"
+      "path": "^/(?:corp/recieve|situation)/tracking_no_hunt/([^/?#]+)/?$"
     }
   ],
   "detection": []

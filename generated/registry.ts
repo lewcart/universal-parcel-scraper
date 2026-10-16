@@ -105,6 +105,7 @@ import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
 import { adapter as foxpost } from '../carriers/foxpost/adapter.js';
+import { adapter as fukuyama } from '../carriers/fukuyama/adapter.js';
 import { adapter as gati } from '../carriers/gati/adapter.js';
 import { adapter as gdex } from '../carriers/gdex/adapter.js';
 import { adapter as gebruederWeiss } from '../carriers/gebrueder-weiss/adapter.js';
@@ -382,6 +383,7 @@ export const REGISTRY: RegistryDefinition = {
     "fedex": fedex,
     "four-px": fourPx,
     "foxpost": foxpost,
+    "fukuyama": fukuyama,
     "gati": gati,
     "gdex": gdex,
     "gebrueder-weiss": gebruederWeiss,
@@ -752,7 +754,7 @@ export const REGISTRY: RegistryDefinition = {
     "four-px": "four-px",
     "foxpost": "foxpost",
     "franch-express": "universal",
-    "fukuyama": "universal",
+    "fukuyama": "fukuyama",
     "gati": "gati",
     "gdex": "gdex",
     "gebrueder-weiss": "gebrueder-weiss",

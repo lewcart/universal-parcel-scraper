@@ -120,6 +120,10 @@ describe('Hermes Germany', () => {
     ['PARCELSHOP_READY_FOR_COLLECTION', 'ready_for_pickup', 'out_for_delivery'],
     ['PARCELSHOP_COLLECTED_BY_CUSTOMER', 'delivered', 'delivered'],
     ['INTERNATIONAL_DELIVERED', 'delivered', 'delivered'],
+    ['INTERNATIONAL_ARRIVED_IN_COUNTRY', 'in_transit', 'in_transit'],
+    ['INTERNATIONAL_SORTED', 'in_transit', 'in_transit'],
+    ['INTERNATIONAL_DELIVERY_TOUR_STARTED', 'out_for_delivery', 'out_for_delivery'],
+    ['INTERNATIONAL_DELIVERY_FAILED_ADDRESS', 'failed_attempt', 'exception'],
     ['DELIVERY_FAILED_ADDRESS_PROBLEM', 'failed_attempt', 'exception'],
   ])('reads %s as %s', (code, stage, status) => {
     const payload = [{ barcode: NUMBER, parcelProgress: [

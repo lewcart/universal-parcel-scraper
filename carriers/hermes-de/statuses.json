@@ -303,6 +303,42 @@
       "note": "Collected by the recipient at the ParcelShop its wording names."
     },
     {
+      "code": "INTERNATIONAL_ARRIVED_IN_COUNTRY",
+      "wording": "The shipment has arrived in the destination country Italy and is prepared for the further shipping.",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Arrived in the destination country, which the wording names"
+    },
+    {
+      "code": "INTERNATIONAL_SORTED",
+      "wording": "The shipment was prepared for further shipping (Italy).",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Sorted in the destination country, named in brackets"
+    },
+    {
+      "code": "INTERNATIONAL_DELIVERY_TOUR_STARTED",
+      "wording": "The shipment was loaded into the delivery vehicle. The delivery is expected to take place today.",
+      "language": "en",
+      "stage": "out_for_delivery",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Out for delivery abroad"
+    },
+    {
+      "code": "INTERNATIONAL_DELIVERY_FAILED_ADDRESS",
+      "wording": "The shipment could not be delivered because the address was not found.",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Delivery abroad failed because the address was not found"
+    },
+    {
       "code": "INTERNATIONAL_DELIVERED",
       "wording": "Die Sendung wurde erfolgreich zugestellt.",
       "language": "de",

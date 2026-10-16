@@ -29,9 +29,11 @@ function sameNumber(value: unknown, requested: string): boolean {
 function checkError(item: JsonObject): void {
   if (!Object.hasOwn(item, 'error')) return;
   if (!isRecord(item.error) || typeof item.error.cd !== 'string' || !item.error.cd.trim()) throw new SchemaError('canada-post');
-  // The same 004 envelope is used for unknown and expired public parcels.
-  // It cannot distinguish a new reference from history that has been removed.
-  throw new IndeterminateError('canada-post', 'Canada Post returned no usable parcel history');
+  // The same 004 envelope is used for unknown, not yet scanned and expired parcels.
+  // It cannot distinguish a new reference from history that has been removed. The
+  // reason marks that known code as an answer about the number, not an outage.
+  throw new IndeterminateError('canada-post', 'Canada Post returned no usable parcel history',
+    item.error.cd.trim() === '004' ? { reason: 'portal_not_found' } : {});
 }
 
 export function resolveCanadaPostPin(payload: unknown, requested: string, kind: 'dnc' | 'reference'): string {

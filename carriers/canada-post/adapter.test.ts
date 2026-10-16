@@ -301,8 +301,10 @@ describe('Canada Post identity and negative boundaries', () => {
   });
 
   it('does not report expired/unknown 004 envelopes or generic errors as definitive absence', () => {
-    expect(() => parse({ pin: NUMBER, error: { cd: '004', descEn: 'No PIN History' } })).toThrow(IndeterminateError);
+    expect(() => parse({ pin: NUMBER, error: { cd: '004', descEn: 'No PIN History' } }))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
     expect(() => parse({ pin: NUMBER, error: { cd: 'MAINTENANCE' } })).toThrow(IndeterminateError);
+    expect(() => parse({ pin: NUMBER, error: { cd: 'MAINTENANCE' } })).not.toThrow(expect.objectContaining({ reason: 'portal_not_found' }));
     expect(() => parse({ error: { cd: '004' } })).toThrow(SchemaError);
     expect(() => parse({ pin: NUMBER, error: null })).toThrow(SchemaError);
   });
@@ -322,7 +324,9 @@ describe('Canada Post identity and negative boundaries', () => {
     expect(() => resolveCanadaPostPin([{ refNbr1: REFERENCE, pin: '000000000000002' }], REFERENCE, 'reference')).toThrow(SchemaError);
     expect(() => resolveCanadaPostPin([{ refNbr1: REFERENCE, pin: NUMBER }, { refNbr1: REFERENCE, pin: NUMBER }], REFERENCE, 'reference')).toThrow(IndeterminateError);
     expect(() => resolveCanadaPostPin([], NOTICE, 'dnc')).toThrow(IndeterminateError);
-    expect(() => resolveCanadaPostPin([{ dnc: NOTICE, error: { cd: '004', descEn: 'No PIN History' } }], NOTICE, 'dnc')).toThrow(IndeterminateError);
+    expect(() => resolveCanadaPostPin([{ dnc: NOTICE, error: { cd: '004', descEn: 'No PIN History' } }], NOTICE, 'dnc'))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => resolveCanadaPostPin([], NOTICE, 'dnc')).not.toThrow(expect.objectContaining({ reason: 'portal_not_found' }));
   });
 });
 
@@ -393,7 +397,7 @@ describe('Canada Post bounded native lookup', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(Response.json(delivered())).mockResolvedValueOnce(Response.json({ pin: NUMBER, error: { cd: '004', descEn: 'No PIN History' } }, { status: 206 }));
     const native = adapter(environment(fetcher));
     expect(await native.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-03-14T13:00:34.000Z' });
-    await expect(native.recognize!(NUMBER)).rejects.toBeInstanceOf(IndeterminateError);
+    await expect(native.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
     expect(await native.recognize!('unaccepted')).toEqual({ known: false });
   });
 

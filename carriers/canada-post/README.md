@@ -20,7 +20,7 @@ The delivery estimate is kept while the latest scan is one the adapter knows, in
 
 Delivery time comes from the matching delivery scan. Attempt dates and signature availability cannot substitute for it. A delivered summary without a matching current delivery scan is retained as an undated snapshot.
 
-Empty history, expired history and ambiguous references remain inconclusive. Reference results requiring a postcode or containing several parcels are not selected automatically. Output excludes addresses, signatories, signatures, images and service options.
+Empty history, expired history and ambiguous references remain inconclusive. Canada Post gives one no-history reply, code 004, for unknown, not yet scanned and expired parcels; it carries the reason `portal_not_found` so a consumer can tell it from an outage. Other error codes have no reason. Reference results requiring a postcode or containing several parcels are not selected automatically. Output excludes addresses, signatories, signatures, images and service options.
 
 ## Live test
 

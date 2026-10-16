@@ -801,6 +801,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bosta', number: '99999998',
     route: /^https:\/\/bosta\.co\/en-eg\/tracking-shipments\?shipment-number=99999998$/,
     marker: /Track Your Shipment|Tracking Number Not Found/ },
+  // The page looks the number up and, for an unknown one, shows its error without it.
+  { carrier: 'hepsijet', number: 'ZZ0000000000',
+    route: /^https:\/\/www\.hepsijet\.com\/gonderi-takibi\/ZZ0000000000$/,
+    marker: /Gönderi numarasını eksik|GÖNDERİ DURUMU/,
+    forwarding: { notFound: /Gönderi numarasını eksik\s+ya da hatalı girdiniz/ } },
 ];
 
 /**

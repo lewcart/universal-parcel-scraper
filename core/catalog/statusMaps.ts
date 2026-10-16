@@ -89,6 +89,7 @@ import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
 import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
 import { statusMap as hctLogistics } from '../../carriers/hct-logistics/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
+import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
@@ -203,7 +204,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'early-bird': earlyBird, econt, elta, emile, 'ems-vietnam': emsVietnam, envialia, 'epost-global': epostGlobal, estes,
   'express-one': expressOne, 'fan-courier': fanCourier,
   foxpost, gati, gdex, 'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'hct-logistics': hctLogistics, helthjem, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
+  'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hrvatska-posta': hrvatskaPosta, hywl, imile,
   instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo, jitsu, jne, jrt, kex, 'kuehne-nagel': kuehneNagel,
   'la-poste': laPoste, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, 'lion-parcel': lionParcel, logen, loggi,
   'loomis-express': loomisExpress, 'lotte-global': lotteGlobal,

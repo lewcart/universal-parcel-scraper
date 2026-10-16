@@ -124,6 +124,7 @@ import { adapter as hanjin } from '../carriers/hanjin/adapter.js';
 import { adapter as hctLogistics } from '../carriers/hct-logistics/adapter.js';
 import { adapter as helthjem } from '../carriers/helthjem/adapter.js';
 import { adapter as heppner } from '../carriers/heppner/adapter.js';
+import { adapter as hepsijet } from '../carriers/hepsijet/adapter.js';
 import { adapter as hermes } from '../carriers/hermes/adapter.js';
 import { adapter as hermesDe } from '../carriers/hermes-de/adapter.js';
 import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
@@ -393,6 +394,7 @@ export const REGISTRY: RegistryDefinition = {
     "hct-logistics": hctLogistics,
     "helthjem": helthjem,
     "heppner": heppner,
+    "hepsijet": hepsijet,
     "hermes": hermes,
     "hermes-de": hermesDe,
     "hongkong-post": hongkongPost,
@@ -744,7 +746,7 @@ export const REGISTRY: RegistryDefinition = {
     "hct-logistics": "hct-logistics",
     "helthjem": "helthjem",
     "heppner": "heppner",
-    "hepsijet": "universal",
+    "hepsijet": "hepsijet",
     "hermes": "hermes",
     "hermes-de": "hermes-de",
     "hi-trans": "universal",

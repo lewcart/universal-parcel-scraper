@@ -11196,9 +11196,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hepsijet",
+      "recognitionRank": 949
     },
     "canaryUrl": "https://www.hepsijet.com/",
+    "trackingUrlTemplate": "https://www.hepsijet.com/gonderi-takibi/{trackingNumber}",
+    "trackingSearchUrl": "https://www.hepsijet.com/",
     "linkRules": [
       {
         "domains": [

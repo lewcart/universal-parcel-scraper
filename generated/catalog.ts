@@ -2632,7 +2632,7 @@ export const CARRIER_CATALOG = {
       "IT"
     ],
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "poste-italiane",

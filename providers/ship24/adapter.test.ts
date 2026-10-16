@@ -59,6 +59,14 @@ describe('Ship24 result parsing', () => {
     expect(result).toMatchObject({ reported_carriers: ['Correos de España'], discovered_carrier: 'correos-spain' });
   });
 
+  it('reads SDA\'s offset-less scans beside Poste Italiane\'s instants on Rome\'s clock', () => {
+    const result = parseShip24Response({ data: { tracking_number: number,
+      couriers: [{ translation: { name: 'Italy SDA' } }, { translation: { name: 'Poste Italiane' } }],
+      events: [{ timestamp: '2026-10-16T16:49:00', status: 'LA SPEDIZIONE E\' STATA CONSEGNATA', location: 'CD EXAMPLE' },
+        { timestamp: '2026-10-16T14:49:30Z', status: 'la spedizione è stata consegnata', location: 'EXAMPLE (CO)' }] } }, number);
+    expect(result.events?.map((scan) => scan.time)).toEqual(['2026-10-16T14:49:30.000Z', '2026-10-16T14:49:00.000Z']);
+  });
+
   it('gives a Posti scan abroad no location rather than Posti\'s "abroad" label', () => {
     const result = parseShip24Response({ data: { tracking_number: number, couriers: [{ translation: { name: 'Posti' } }],
       events: [{ timestamp: '2026-01-13T18:00:00+02:00', status: 'Item has arrived to destination country', location: 'ULKOMAILLA' },

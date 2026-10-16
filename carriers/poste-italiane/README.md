@@ -30,6 +30,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
   neither a matching shape nor an expired reply confirms issuance.
 - Aggregators name SDA's parcels "SDA", "Italy SDA" or "SDA Express Courier". Those names are
   aliases, so a provider's naming points to Poste's tracker, which still has to know the number.
+- Poste's own scans are instants. Its catalog clock is Rome's for the providers: Ship24 relays
+  SDA's distribution-center scans as wall clocks without an offset, and they read on that clock
+  as the same moments Poste's own copies give.
 - Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
   MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker

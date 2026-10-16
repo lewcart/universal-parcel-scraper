@@ -7289,7 +7289,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Detroit",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "central-transport",
+      "localClocks": true
     },
     "canaryUrl": "https://www.centraltransport.com/tools/track-shipment.aspx",
     "trackingSearchUrl": "https://www.centraltransport.com/tools/track-shipment.aspx",

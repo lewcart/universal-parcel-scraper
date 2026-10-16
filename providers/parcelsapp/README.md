@@ -344,7 +344,8 @@ step exists for future protocol changes.
   name maps to a catalog carrier. A bare brand ("DPD Group") maps only when the number
   leaves one of its catalog networks (a DPD depot range picks DPD Switzerland or
   France); routing then confirms it with that carrier's adapter. The rendered page's
-  per-scan carrier names give the same hints.
+  per-scan carrier names give the same hints. The carrier and service ParcelsApp names
+  "url", its link to another tracker, are left out.
 - Sender, destination and estimate fields are not kept.
 
 ## Limitations

@@ -400,6 +400,8 @@ describe('ParcelsApp result parsing', () => {
     expect(reply(['TNT', 'Example Transport'], [scan(0), scan(1)]).discovered_carrier).toBeUndefined();
     expect(reply(['TNT', 'Example Transport'], [scan(0), scan()]).discovered_carrier).toBeUndefined();
     expect(reply(['Example Transport', 'TNT'], [scan(0)]).discovered_carrier).toBeUndefined();
+    // Its link to another tracker is listed as "url", which names no carrier.
+    expect(reply(['TNT', 'url'], [scan(0), scan()])).toMatchObject({ reported_carriers: ['TNT'], discovered_carrier: 'tnt' });
   });
 
   it('reads scans named "Finland Post" on Posti\'s clock and proposes Posti', () => {

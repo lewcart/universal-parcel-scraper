@@ -780,11 +780,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   }
   // The carriers ParcelsApp aggregated for this number ("DPD Group"), as
   // discovery hints; routing confirms one with its own adapter before adopting it.
+  // ParcelsApp lists its link to another tracker, among `next_tracking_ids`,
+  // as a carrier and a service named "url": no carrier's name.
   const services = Array.isArray(payload.services) ? payload.services : [];
   const carriers: unknown[] = Array.isArray(payload.carriers) ? payload.carriers : [];
   const hints = universalCarrierHints([
     ...carriers, ...services.map((service: unknown) => isRecord(service) ? service.name : undefined),
-  ].slice(0, 20), number);
+  ].filter((name) => !(typeof name === 'string' && /^url$/i.test(name.trim()))).slice(0, 20), number);
   // The list also names carriers asked without an answer. When every scan
   // names the same carrier, that carrier is the hint.
   const discovered = hints.discovered_carrier

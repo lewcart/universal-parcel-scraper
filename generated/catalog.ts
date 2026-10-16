@@ -14814,7 +14814,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pathao-courier",
+      "recognitionRank": 945
     },
     "canaryUrl": "https://pathao.com/courier/",
     "trackingUrlTemplate": "https://merchant.pathao.com/public-tracking?consignment_id={trackingNumber}",

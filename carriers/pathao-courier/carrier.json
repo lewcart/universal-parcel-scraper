@@ -17,18 +17,70 @@
   "timezone": "Asia/Dhaka",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pathao-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 945
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "offset_timestamps",
+    "eta",
+    "eta_window",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://merchant.pathao.com/public-tracking?consignment_id={trackingNumber}",
     "searchUrl": "https://pathao.com/courier/",
     "canaryUrl": "https://pathao.com/courier/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "progress_rail",
+      "eta",
+      "driver_name",
+      "contact_details",
+      "remarks",
+      "order_contents",
+      "payment_details",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "progress_rail",
+      "offset_timestamps",
+      "eta",
+      "eta_window",
+      "delivered_at"
+    ],
+    "discarded": [
+      "driver_name",
+      "contact_details",
+      "remarks",
+      "order_contents",
+      "payment_details",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "coordinates"
+    ],
+    "unavailable": [
+      "location",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

@@ -128,6 +128,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "osm-worldwide": 75,
   "paquetexpress": 35,
   "passport": 55,
+  "pathao-courier": 945,
   "poczta-polska": 750,
   "pos-indonesia": 964,
   "post-luxembourg": 80,

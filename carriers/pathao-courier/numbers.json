@@ -82,13 +82,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "pathao-courier",
         "confidence": "high"
       },
-      "note": "The consignment_id in the return-order sample payload of Pathao's own courier developer API documentation."
+      "note": "The consignment_id in the return-order sample payload of Pathao's own courier developer API documentation. Pathao's tracking lookup answers with its history."
     }
   ]
 }

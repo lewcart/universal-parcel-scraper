@@ -184,6 +184,7 @@ import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
 import { adapter as passport } from '../carriers/passport/adapter.js';
+import { adapter as pathaoCourier } from '../carriers/pathao-courier/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
@@ -455,6 +456,7 @@ export const REGISTRY: RegistryDefinition = {
     "packeta": packeta,
     "paquetexpress": paquetexpress,
     "passport": passport,
+    "pathao-courier": pathaoCourier,
     "pecom": pecom,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
@@ -864,7 +866,7 @@ export const REGISTRY: RegistryDefinition = {
     "parcelforce": "royal-mail",
     "pargo": "universal",
     "passport": "passport",
-    "pathao-courier": "universal",
+    "pathao-courier": "pathao-courier",
     "paxi": "universal",
     "pbt": "universal",
     "pecom": "pecom",

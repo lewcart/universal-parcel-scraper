@@ -810,6 +810,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.hepsijet\.com\/gonderi-takibi\/ZZ0000000000$/,
     marker: /Gönderi numarasını eksik|GÖNDERİ DURUMU/,
     forwarding: { notFound: /Gönderi numarasını eksik\s+ya da hatalı girdiniz/ } },
+  // The page reads the ID from its address and looks it up on load.
+  { carrier: 'pathao-courier', number: 'DZ010126SMPL00',
+    route: /^https:\/\/merchant\.pathao\.com\/public-tracking\?consignment_id=DZ010126SMPL00$/,
+    marker: /No Data Found|Tracking Details|Consignment ID/i },
 ];
 
 /**

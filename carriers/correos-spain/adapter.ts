@@ -144,7 +144,7 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
   const seen = new Set<string>();
   (Array.isArray(rawEvents) ? rawEvents : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const code = clean(rawEvent.codEvento, 32).toLocaleUpperCase('en-US');
-    // desTextoResumen is the backend's fixed Spanish wording.
+    // desTextoResumen is worded in the language codIdioma names.
     const description = clean(rawEvent.desTextoResumen, 500) || code;
     const time = parsedTime(rawEvent.fecEvento, rawEvent.horEvento);
     if (!time || !description) return;
@@ -285,8 +285,9 @@ export class CorreosSpainTracker {
       if (found.response.status === 204) throw new NotFoundError('Correos');
       parcel = parseCorreosSpainExpeditionResponse(parseJsonBytes(found.bytes, 'Correos tracking'), trackingNumber);
     }
+    // The localizador words its scans in Spanish, whatever Accept-Language says, unless codIdioma asks for English.
     const { bytes } = await request(`${TRACKING_ENDPOINT}/${encodeURIComponent(parcel)}`
-      + '?codAplicacion=60&codCanal=3&codIdioma=ES&indUltEvento=N');
+      + '?codAplicacion=60&codCanal=3&codIdioma=EN&indUltEvento=N');
     // A code the search returns as its own parcel is tracked as any parcel code.
     const { result, office } = parseTracking(parseJsonBytes(bytes, 'Correos tracking'), parcel,
       parcel === trackingNumber ? undefined : trackingNumber);

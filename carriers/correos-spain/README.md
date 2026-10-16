@@ -7,7 +7,7 @@ Correos de Chile (`correos-chile`) are separate carriers.
 ## How it works
 
 1. `direct`: one `GET https://localizador.correos.es/canonico/eventos_envio_servicio/{code}`
-   with the web channel's parameters (`codAplicacion=60&codCanal=3&codIdioma=ES&indUltEvento=N`).
+   with the web channel's parameters (`codAplicacion=60&codCanal=3&codIdioma=EN&indUltEvento=N`).
    No cookies, token or account. The HTTP status is always 200; the envelope decides:
    - The body is a single-element array, or a bare object for some error bodies. The echoed
      `codEnvio` must match.
@@ -46,11 +46,15 @@ Correos de Chile (`correos-chile`) are separate carriers.
   others. Each parcel can still be tracked by its own code.
 - The search endpoint is not used for history. Its events carry Spanish text and a phase but no
   `codEvento`, the only field the status map reads.
-- Only `codEvento` is mapped, never the Spanish `desTextoResumen` prose. Each event keeps it as
+- Only `codEvento` is mapped, never the `desTextoResumen` prose. Each event keeps it as
   `provider_code`, so the app reviews an unmapped scan by its code. `statusMap` answers by code,
   and by wording only for `G01L020V`, which the queue held before events kept their code.
-- `A090000V` ("Prerregistrado") is the sender's pre-registration and stays `registered`;
-  `A010000V` ("Admitido.") is Correos taking the parcel in, `accepted`.
+- The localizador words its scans in Spanish whatever `Accept-Language` says, unless `codIdioma`
+  is `EN`, so the adapter asks for English. Codes and clocks are the same in both. A scan stored in
+  Spanish takes the English wording in place: at its instant, its code identifies it. In English
+  the failed attempt `H06P010V` reads "In delivery", like the out-for-delivery codes.
+- `A090000V` ("Pre-registered") is the sender's pre-registration and stays `registered`;
+  `A010000V` ("Accepted") is Correos taking the parcel in, `accepted`.
 - `L010000V`, `I010000V`, `X120000V` and `EOL.9001` come from a community integration and
   were never re-observed (`EOL.9001` does not even match the Correos code shape). They are
   kept because they cost nothing: any other unmapped code still reports `unknown` and the

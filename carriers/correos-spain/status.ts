@@ -1,7 +1,7 @@
 /**
  * Correos (Spain) status vocabulary.
  *
- * `codEvento` is the stable key of a localizador event; the Spanish
+ * `codEvento` is the stable key of a localizador event; the
  * `desTextoResumen` next to it is display prose and is never mapped. The
  * vocabulary is explicitly still being observed, so an unmapped code yields no
  * stage at all: the event keeps its raw wording, the result reports `unknown`,

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../app.js';
 import { IndeterminateError, NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
   normalizeCorreosSpainTrackingNumber,
@@ -119,6 +120,12 @@ describe('Correos Spain response parsing', () => {
     // wording and records where the final stage came from.
     expect(unknown.events?.[0]).toMatchObject({ description: 'Algo nuevo', provider_code: 'Z999999Z' });
     expect(unknown.events?.[0]?.stage).toBeUndefined();
+  });
+
+  it('rewords a scan stored in Spanish in place, matched by its instant and code', () => {
+    // The localizador's Spanish and English replies carry the same codes and clocks.
+    expect(sameInstantIdentityPolicy('correos-spain', { supportsScanMatching: true }))
+      .toMatchObject({ storedSources: ['correos-spain'], requireProviderCode: true });
   });
 
   it('binds the envelope codEnvio and honors the codError result', () => {
@@ -326,14 +333,14 @@ describe('CorreosSpainTracker fetch', () => {
     const result = await new CorreosSpainTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER);
     expect(result.status).toBe('delivered');
     expect(seen).toEqual([
-      'https://localizador.correos.es/canonico/eventos_envio_servicio/PR123456789012345C?codAplicacion=60&codCanal=3&codIdioma=ES&indUltEvento=N',
+      'https://localizador.correos.es/canonico/eventos_envio_servicio/PR123456789012345C?codAplicacion=60&codCanal=3&codIdioma=EN&indUltEvento=N',
     ]);
   });
 
   it('resolves an expedition code through the public search, then tracks its parcel', async () => {
     const seen: string[] = [];
     const search = 'https://api1.correos.es/digital-services/searchengines/api/v1/envios?text=PL00ZZ000000001Z&language=ES';
-    const localizador = (code: string) => `https://localizador.correos.es/canonico/eventos_envio_servicio/${code}?codAplicacion=60&codCanal=3&codIdioma=ES&indUltEvento=N`;
+    const localizador = (code: string) => `https://localizador.correos.es/canonico/eventos_envio_servicio/${code}?codAplicacion=60&codCanal=3&codIdioma=EN&indUltEvento=N`;
     let found: Response = response({ type: 'expeditions', shipment: [{ shipmentCode: PARCEL, expeditionCode: EXPEDITION }] });
     vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
       seen.push(String(input));

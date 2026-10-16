@@ -3,7 +3,8 @@
  *
  * What it does: replays every record in `carriers/<id>/numbers.json` through the
  * detection engine and asserts the recorded answer, checks that no second
- * carrier claims a positive record, reports detection rules that still have no
+ * carrier claims a positive record and that no earlier rule hides a carrier's
+ * high-confidence rule, reports detection rules that still have no
  * sample, requires every carrier overlap to be declared in `collisions.json`
  * and every record whose own carrier is not offered to be declared in
  * `gaps.json`, fails on declarations in either list that no record needs, and
@@ -233,6 +234,27 @@ describe('detection expectations', () => {
       .filter(({ record, high }) => high.length !== 1 || high[0] !== record.expect.carrier)
       .map(({ record, high }) => `${record.number} → ${high.join(', ')}`);
     expect(contested).toEqual([]);
+  });
+
+  // A carrier's first matching rule sets its confidence, so a broader rule listed before a
+  // high-confidence one hides it. Every rule has a sample, so a hidden rule never decides the
+  // numbers it takes. An earlier rule that takes only some of them is a deliberate exception.
+  it('lists each high-confidence rule before any broader rule of its carrier', () => {
+    const deciders = new Map<string, Set<DetectionRule>>();
+    for (const record of records) {
+      const own = new Map<string, DetectionRule[]>();
+      for (const { carrier, rule } of matchingRules(record.number)) own.set(carrier, [...(own.get(carrier) ?? []), rule]);
+      for (const [carrier, rules] of own) {
+        for (const rule of rules.filter(({ confidence }) => confidence === 'high')) {
+          const key = `${carrier}: ${rule.id}`;
+          deciders.set(key, (deciders.get(key) ?? new Set()).add(rules[0]!));
+        }
+      }
+    }
+    const hidden = [...deciders]
+      .filter(([, rules]) => [...rules].every(({ confidence }) => confidence !== 'high'))
+      .map(([key, rules]) => `${key} behind ${[...rules].map(({ id }) => id).join(', ')}`);
+    expect(hidden).toEqual([]);
   });
 
   it('honours the carriers a negative record rules out', () => {

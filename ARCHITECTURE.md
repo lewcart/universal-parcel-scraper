@@ -48,6 +48,10 @@ separate ids, and shared number shapes remain ambiguous. A group-wide endpoint m
 number does not establish a national carrier's ownership. Catalog presence, a dedicated
 adapter and successful history retrieval are separate claims in the coverage data.
 
+A carrier's detection rules are tried in order, and the first that matches, checksum included,
+sets its confidence. A narrower high-confidence rule therefore comes before a broader one; the
+detection sweep fails when an earlier rule hides a high-confidence rule from every sample.
+
 An adapter is built by a factory that receives an `AdapterEnvironment`. That environment is
 its only way to the network, and no framework or app import is allowed. The registry creates
 one adapter per process, on first use, so a carrier that fails to load cannot take the others

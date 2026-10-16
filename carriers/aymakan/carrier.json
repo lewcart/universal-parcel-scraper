@@ -17,18 +17,53 @@
   "timezone": "Asia/Riyadh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "aymakan",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 942
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://aymakan.com/tracking/{trackingNumber}",
     "searchUrl": "https://aymakan.com/tracking",
     "canaryUrl": "https://aymakan.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "origin",
+      "destination",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin",
+      "destination",
+      "signatory"
+    ],
+    "unavailable": [
+      "location",
+      "scan_times",
+      "offset_timestamps",
+      "provider_code",
+      "eta",
+      "weight",
+      "delivered_at",
+      "proof_of_delivery",
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [
     {

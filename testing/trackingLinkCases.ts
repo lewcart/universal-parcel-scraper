@@ -809,6 +809,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bosta', number: '99999998',
     route: /^https:\/\/bosta\.co\/en-eg\/tracking-shipments\?shipment-number=99999998$/,
     marker: /Track Your Shipment|Tracking Number Not Found/ },
+  { carrier: 'aymakan', number: 'AY99999999999',
+    route: /^https:\/\/aymakan\.com\/tracking\/AY99999999999$/,
+    marker: /No shipment found|Track Shipments/ },
   // The page looks the number up and, for an unknown one, shows its error without it.
   { carrier: 'hepsijet', number: 'ZZ0000000000',
     route: /^https:\/\/www\.hepsijet\.com\/gonderi-takibi\/ZZ0000000000$/,

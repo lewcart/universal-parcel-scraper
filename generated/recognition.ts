@@ -17,6 +17,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "aras-kargo": 420,
   "australia-post": 500,
   "austrian-post": 830,
+  "aymakan": 942,
   "blue-express": 971,
   "bosta": 951,
   "box-now": 250,

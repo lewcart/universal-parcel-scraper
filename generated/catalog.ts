@@ -5935,7 +5935,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aymakan",
+      "recognitionRank": 942,
+      "localClocks": true
     },
     "canaryUrl": "https://aymakan.com/tracking",
     "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",

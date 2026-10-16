@@ -21,6 +21,7 @@ import { adapter as arasKargo } from '../carriers/aras-kargo/adapter.js';
 import { adapter as asendia } from '../carriers/asendia/adapter.js';
 import { adapter as australiaPost } from '../carriers/australia-post/adapter.js';
 import { adapter as austrianPost } from '../carriers/austrian-post/adapter.js';
+import { adapter as aymakan } from '../carriers/aymakan/adapter.js';
 import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
 import { adapter as bosta } from '../carriers/bosta/adapter.js';
@@ -296,6 +297,7 @@ export const REGISTRY: RegistryDefinition = {
     "asendia": asendia,
     "australia-post": australiaPost,
     "austrian-post": austrianPost,
+    "aymakan": aymakan,
     "blue-dart": blueDart,
     "blue-express": blueExpress,
     "bosta": bosta,
@@ -587,7 +589,7 @@ export const REGISTRY: RegistryDefinition = {
     "australia-post": "australia-post",
     "austrian-post": "austrian-post",
     "averitt": "universal",
-    "aymakan": "universal",
+    "aymakan": "aymakan",
     "azerpost": "universal",
     "azul-cargo": "universal",
     "bangladesh-post": "universal",

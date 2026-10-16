@@ -13352,12 +13352,21 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kazpost",
+      "recognitionRank": 931,
+      "localClocks": true
     },
     "canaryUrl": "https://post.kz/",
-    "trackingUrlTemplate": "https://post.kz/mail/search/track/{trackingNumber}/detail",
+    "trackingUrlTemplate": "https://post.kz/services/postal/{trackingNumber}",
     "trackingSearchUrl": "https://post.kz/",
     "linkRules": [
+      {
+        "domains": [
+          "post.kz",
+          "www.post.kz"
+        ],
+        "path": "^/services/postal/([A-Za-z]{2}\\d{9}[A-Za-z]{2})/?$"
+      },
       {
         "domains": [
           "post.kz",
@@ -13366,7 +13375,14 @@ export const CARRIER_CATALOG = {
         "path": "^/mail/search/track/([A-Za-z]{2}\\d{9}[A-Za-z]{2})(?:/detail)?/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}KZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "kerry-tj": {
     "displayName": "Kerry TJ",
@@ -22767,7 +22783,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jrs-express": [],
   "jrt": ["jrt-1"],
   "kargoist": ["kargoist-1"],
-  "kazpost": [],
+  "kazpost": ["kazpost-s10"],
   "kerry-tj": [],
   "kex": [],
   "kex-express-hk": [],

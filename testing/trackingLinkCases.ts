@@ -859,6 +859,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'belpost', number: 'ZZ000000014BY',
     route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,
     marker: /Где мое отправление|У нас пока нет данных об этом трек-номере|Where is my postal item|any data on this tracking number/i },
+  // A single-page app that looks the number up on load and shows it over its notice.
+  { carrier: 'kazpost', number: 'ZZ000000014KZ',
+    route: /^https:\/\/post\.kz\/services\/postal\/ZZ000000014KZ$/,
+    marker: /Сәлемдемені іздеу|Найти посылку|Track a parcel|Сәлемдеме бойынша ақпарат жоқ|Отсутствует информация о посылке|There is no information about the parcel/ },
 ];
 
 /**

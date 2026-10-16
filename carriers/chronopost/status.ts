@@ -12,6 +12,8 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   // Written with the label, before the parcel is handed over: it is one of several in a shipment.
   ['EA', "Colis faisant partie d'une expédition groupée", 'registered'],
   ['DB', "Colis déposé par l'expéditeur", 'accepted'],
+  // The courier takes over a parcel dropped at a pickup point, right after the point hands it over.
+  ['PC', 'Colis pris en charge par le transporteur', 'accepted'],
   // The first depot's sort, under either code, as it takes the parcel over.
   ['SC', "Tri effectué dans l'agence de départ", 'in_transit'],
   ['EC', "Tri effectué dans l'agence de départ", 'in_transit'],
@@ -25,6 +27,8 @@ const OBSERVED: ReadonlyArray<readonly [code: string, label: string, stage: Chro
   // The delivery depot's sort, ahead of its round.
   ['SD', "Tri effectué dans l'agence de distribution", 'in_transit'],
   ['A2', "Colis retardé à l'agence de distribution", 'in_transit'],
+  // A delay on the way, like the delivery depot's: the parcel moves on by itself.
+  ['CR', "Colis retardé durant l'acheminement", 'in_transit'],
   ['IS', 'Livraison prévue lundi prochain', 'in_transit'],
   // The depot holds the parcel a day without trying to deliver it: a missort, an address being
   // checked, or a recipient closed that day. Delivery resumes on its own.

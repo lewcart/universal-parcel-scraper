@@ -127,6 +127,7 @@ describe('Chronopost direct tracking', () => {
 
   it.each([
     ['EA', "Colis faisant partie d'une expédition groupée", 'registered'],
+    ['PC', 'Colis pris en charge par le transporteur', 'accepted'],
     ['EC', "Tri effectué dans l'agence de départ", 'in_transit'],
     ['T', "Entrée dans l'agence", 'in_transit'],
     ['TT', 'Colis remis par le relais Pickup au chauffeur', 'in_transit'],
@@ -134,6 +135,7 @@ describe('Chronopost direct tracking', () => {
     ['SJ', "Problème douanier résolu, colis en cours d'acheminement", 'in_transit'],
     ['SD', "Tri effectué dans l'agence de distribution", 'in_transit'],
     ['A2', "Colis retardé à l'agence de distribution", 'in_transit'],
+    ['CR', "Colis retardé durant l'acheminement", 'in_transit'],
     ['IS', 'Livraison prévue lundi prochain', 'in_transit'],
     ['SD', 'Livraison reportée de 24h', 'in_transit'],
     ['IA', 'Livraison reportée de 24h', 'in_transit'],

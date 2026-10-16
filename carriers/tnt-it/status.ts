@@ -24,5 +24,8 @@ export function tntItalyStage(code: string): Stage | undefined {
 
 export const statusMap: CarrierStatusMap = {
   stage: (code) => (code ? tntItalyStage(code) : undefined),
-  gaps: [],
+  gaps: [{
+    code: '13',
+    note: 'The delivery the recipient agreed with TNT, still to come: not a scan, so the parcel keeps the stage it had.',
+  }],
 };

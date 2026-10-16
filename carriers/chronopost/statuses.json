@@ -69,6 +69,14 @@
       "language": "fr"
     },
     {
+      "code": "PC",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. The courier takes over a parcel dropped at a pickup point, right after the point hands it over.",
+      "wording": "Colis pris en charge par le transporteur",
+      "language": "fr"
+    },
+    {
       "code": "SC",
       "stage": "in_transit",
       "confirmedBy": "live",
@@ -164,6 +172,14 @@
       "confirmedBy": "live",
       "note": "Chronopost trackSkybillV2; code mapping requires matching wording. A delay at the delivery depot, not a fault.",
       "wording": "Colis retardé à l'agence de distribution",
+      "language": "fr"
+    },
+    {
+      "code": "CR",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. A delay on the way, not a fault: the parcel moves on by itself.",
+      "wording": "Colis retardé durant l'acheminement",
       "language": "fr"
     },
     {

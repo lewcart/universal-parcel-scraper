@@ -209,6 +209,8 @@ describe('TNT Italy status vocabulary', () => {
     }
     expect(statusMapAnswer({ carrier: 'tnt-it', providerCode: '90', description: 'Spedizione consegnata' })).toEqual({ kind: 'mapped', stage: 'delivered' });
     expect(statusMapAnswer({ carrier: 'tnt-it', providerCode: 'XX', description: 'Aggiornamento di prova' })).toEqual({ kind: 'unknown' });
+    expect(statusMapAnswer({ carrier: 'tnt-it', providerCode: '13',
+      description: 'La spedizione verrà consegnata come da accordi presi con il destinatario' })).toMatchObject({ kind: 'intentional_gap' });
     expect(tntItalyStage(' p ')).toBe('accepted');
   });
 });

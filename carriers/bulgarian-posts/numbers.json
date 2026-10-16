@@ -164,13 +164,70 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Bulgarian Posts' current tracking page, as an archived address shows; the opened capture holds only the page shell, which loads results in the browser."
+      "note": "Looked up on Bulgarian Posts' current tracking page, as an archived address shows; the capture holds only the page shell. The tracker returns the item's acceptance and its arrival at the office of exchange."
+    },
+    {
+      "number": "CC242123085CA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260921204437/https://www.bgpost.bg/postal-services/track-package?itemid=CC242123085CA",
+        "date": "2026-09-21",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "canada-post",
+        "confidence": "high"
+      },
+      "note": "Item from Canada looked up on Bulgarian Posts' current tracking page, as an archived address shows. The tracker shows Canada Post's acceptance and despatch, then customs and delivery in Bulgaria."
+    },
+    {
+      "number": "LP652982376MY",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250710165911/https://www.bgpost.bg/postal-services/track-package?itemid=LP652982376MY",
+        "date": "2025-07-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "pos-malaysia",
+        "confidence": "high"
+      },
+      "note": "Item from Malaysia looked up on Bulgarian Posts' current tracking page, as an archived address shows. The tracker shows Pos Malaysia's acceptance and despatch, then customs and collection from a post office in Bulgaria."
+    },
+    {
+      "number": "LY925721025DE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260504234115/https://bgpost.bg/postal-services/track-package?itemid=LY925721025DE",
+        "date": "2026-05-04",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "Item from Germany looked up on Bulgarian Posts' current tracking page, as an archived address shows. The tracker shows Deutsche Post's acceptance and despatch, then collection from a post office in Bulgaria."
     },
     {
       "number": "PSWAPI101IF45",

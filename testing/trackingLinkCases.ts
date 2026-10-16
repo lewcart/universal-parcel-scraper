@@ -878,6 +878,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'southeastern-freight-lines', number: '9999999',
     route: /^https:\/\/www\.sefl\.com\/webconnect\/tracing\?Type=PN&RefNum1=9999999$/,
     marker: /The tracing information you requested for Pro Number 9999999 was not found in our system|Tracing Results/ },
+  // The page fills its field in from the address and looks the number up.
+  { carrier: 'bulgarian-posts', number: 'ZZ000000014BG',
+    route: /^https:\/\/www\.bgpost\.bg\/(?:en\/)?postal-services\/track-package\?itemid=ZZ000000014BG$/,
+    marker: /ПРОСЛЕДЯВАНЕ НА ПРАТКА|ITEM TRACKING/i },
   // The page looks the number up, shows it and says it has no data on it yet.
   { carrier: 'belpost', number: 'ZZ000000014BY',
     route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,

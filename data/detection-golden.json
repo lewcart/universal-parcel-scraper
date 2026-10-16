@@ -61714,6 +61714,14 @@
     ]
   },
   {
+    "input": "LP652982376MY",
+    "carrier": "pos-malaysia",
+    "confidence": "high",
+    "candidates": [
+      "pos-malaysia"
+    ]
+  },
+  {
     "input": "LP661177776MY",
     "carrier": "pos-malaysia",
     "confidence": "high",
@@ -62527,6 +62535,14 @@
   },
   {
     "input": "LY864730070DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
+    "input": "LY925721025DE",
     "carrier": "dhl",
     "confidence": "high",
     "candidates": [

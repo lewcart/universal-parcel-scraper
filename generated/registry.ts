@@ -31,6 +31,7 @@ import { adapter as boxNow } from '../carriers/box-now/adapter.js';
 import { adapter as bpost } from '../carriers/bpost/adapter.js';
 import { adapter as bringPosten } from '../carriers/bring-posten/adapter.js';
 import { adapter as brt } from '../carriers/brt/adapter.js';
+import { adapter as bulgarianPosts } from '../carriers/bulgarian-posts/adapter.js';
 import { adapter as cChezVous } from '../carriers/c-chez-vous/adapter.js';
 import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
@@ -333,6 +334,7 @@ export const REGISTRY: RegistryDefinition = {
     "bpost": bpost,
     "bring-posten": bringPosten,
     "brt": brt,
+    "bulgarian-posts": bulgarianPosts,
     "c-chez-vous": cChezVous,
     "cacesa": cacesa,
     "canada-post": canadaPost,
@@ -669,7 +671,7 @@ export const REGISTRY: RegistryDefinition = {
     "bts-uz": "universal",
     "budbee": "universal",
     "buffalo-ex": "universal",
-    "bulgarian-posts": "universal",
+    "bulgarian-posts": "bulgarian-posts",
     "burd-delivery": "universal",
     "bussgods": "universal",
     "c-chez-vous": "c-chez-vous",

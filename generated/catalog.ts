@@ -6937,7 +6937,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bulgarian-posts",
+      "recognitionRank": 915,
+      "localClocks": true
     },
     "canaryUrl": "https://www.bgpost.bg/postal-services/track-package",
     "trackingUrlTemplate": "https://www.bgpost.bg/postal-services/track-package?itemid={trackingNumber}",

@@ -82,6 +82,14 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "code": "NH",
+      "wording": "Receiver not home. We've left them a message and we're waiting for them to get in contact",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16"
+    },
+    {
       "code": "OK",
       "wording": "Shipment delivered in good condition",
       "language": "en",

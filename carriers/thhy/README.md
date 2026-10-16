@@ -24,7 +24,8 @@ browser is needed, and no portal link is published.
   Beijing time is held back.
 - A row's kind code (`ARRIVAL`, `SHIPMENT`, `CO_C_CR`) is kept as the provider code; it groups
   many wordings, so the stage comes from the wording in [status.ts](status.ts).
-- Scan times are wall clocks without an offset and stay `local_time`.
+- Scan times are wall clocks without an offset, on the tracker's Beijing clock abroad too, as
+  [GZYL's](../gzyl/README.md) are, and are read on it.
 
 ## Limitations
 

@@ -4,7 +4,8 @@ import { mayiyinfuStage } from './status.js';
 
 export const PROVIDER = 'Mayi Yinfu';
 export const MAYIYINFU_ORIGIN = 'http://www.mayiyinfu.com.cn:8082';
-export const MAYIYINFU: HualeiTenant = { carrier: 'mayiyinfu', provider: PROVIDER, origin: MAYIYINFU_ORIGIN, stage: mayiyinfuStage };
+// The delivering carrier's copied rows keep its clock.
+export const MAYIYINFU: HualeiTenant = { carrier: 'mayiyinfu', provider: PROVIDER, origin: MAYIYINFU_ORIGIN, stage: mayiyinfuStage, wallClocks: true };
 
 export const normalizeMayiyinfuNumber = (raw: string): string => normalizeHualeiNumber(raw, PROVIDER);
 /** The track interface's reply, or null when it holds no row for the number. */

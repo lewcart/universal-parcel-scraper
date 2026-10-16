@@ -38,19 +38,19 @@ describe('Meiteshun Logistics tracking adapter', () => {
     const result = parseMtscnTrack(fixture('track'), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'Arriving at the mail processing center', last_update: null, last_update_local: '2026-03-19T09:10:22',
+      last_status_text: 'Arriving at the mail processing center', last_update: '2026-03-19T09:10:22+08:00',
       service_name: 'Synthetic Small Parcel', destination_country: 'US',
     });
     expect(result.events).toHaveLength(9);
     expect(result.events!.slice(0, 2)).toEqual([
-      { local_time: '2026-03-19T09:10:22', description: 'Arriving at the mail processing center', location: 'Exampleshire, US', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-15T14:22:36', description: 'Customs clearance completed', location: 'US', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-19T09:10:22+08:00', description: 'Arriving at the mail processing center', location: 'Exampleshire, US', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-15T14:22:36+08:00', description: 'Customs clearance completed', location: 'US', stage: 'in_transit', stage_source: 'carrier_map' },
     ]);
     expect(result.events!.slice(-3)).toEqual([
-      { local_time: '2026-03-02T20:02:32', description: 'item outbound in sorting center', location: 'ShenZhen', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-02T12:56:49', description: 'item inbound in sorting center', location: 'ShenZhen', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-02T20:02:32+08:00', description: 'item outbound in sorting center', location: 'ShenZhen', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-02T12:56:49+08:00', description: 'item inbound in sorting center', location: 'ShenZhen', stage: 'in_transit', stage_source: 'carrier_map' },
       {
-        local_time: '2026-03-01T18:16:00', description: 'The package has been collected and is ready to be sent to the distribution center',
+        time: '2026-03-01T18:16:00+08:00', description: 'The package has been collected and is ready to be sent to the distribution center',
         stage: 'accepted', stage_source: 'carrier_map',
       },
     ]);
@@ -64,12 +64,12 @@ describe('Meiteshun Logistics tracking adapter', () => {
 
   it('keeps the recipient’s town from the destination rows, never the postcode or the name', () => {
     const result = parseMtscnTrack(fixture('track'), NUMBER, AFTER)!;
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update_local: '2026-03-27T21:51:15' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update: '2026-03-27T21:51:15+08:00' });
     expect(result.events!.slice(0, 3)).toEqual([
-      { local_time: '2026-03-27T21:51:15', description: 'Delivered', location: 'Sampletown', stage: 'delivered', stage_source: 'carrier_map' },
-      { local_time: '2026-03-25T14:22:41', description: 'package is on the way', location: 'Sampletown, US', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-27T21:51:15+08:00', description: 'Delivered', location: 'Sampletown', stage: 'delivered', stage_source: 'carrier_map' },
+      { time: '2026-03-25T14:22:41+08:00', description: 'package is on the way', location: 'Sampletown, US', stage: 'in_transit', stage_source: 'carrier_map' },
       {
-        local_time: '2026-03-22T14:36:40', description: 'Arrive at the sorting and distribution center', location: 'Sampletown, US',
+        time: '2026-03-22T14:36:40+08:00', description: 'Arrive at the sorting and distribution center', location: 'Sampletown, US',
         stage: 'in_transit', stage_source: 'carrier_map',
       },
     ]);
@@ -99,10 +99,10 @@ describe('Meiteshun Logistics tracking adapter', () => {
     ]);
     expect(String(fetcher.mock.calls[1]![1]!.body)).toBe(`documentCode=${REFERENCE}`);
     expect(parseMtscnPage(page('page'), NUMBER, READ_AT).events).toEqual([
-      { local_time: '2026-03-07T10:30:00', description: 'item outbound in sorting center', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-04T13:20:00', description: 'item inbound in sorting center', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-07T10:30:00+08:00', description: 'item outbound in sorting center', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-04T13:20:00+08:00', description: 'item inbound in sorting center', stage: 'in_transit', stage_source: 'carrier_map' },
       {
-        local_time: '2026-03-02T20:30:00', description: 'The package has been collected and is ready to be sent to the distribution center',
+        time: '2026-03-02T20:30:00+08:00', description: 'The package has been collected and is ready to be sent to the distribution center',
         stage: 'accepted', stage_source: 'carrier_map',
       },
     ]);

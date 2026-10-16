@@ -11996,8 +11996,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gzyl",
-      "recognitionRank": 988,
-      "localClocks": true
+      "recognitionRank": 988
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],
@@ -13352,8 +13351,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jrt",
-      "localClocks": true
+      "adapter": "jrt"
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -15157,8 +15155,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mtscn",
-      "recognitionRank": 986,
-      "localClocks": true
+      "recognitionRank": 986
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -20387,8 +20384,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "thhy",
-      "recognitionRank": 987,
-      "localClocks": true
+      "recognitionRank": 987
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [],

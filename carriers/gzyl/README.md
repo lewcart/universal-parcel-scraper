@@ -34,7 +34,10 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   adapter does not rely on that: a row dated after the lookup on Beijing time is held back, and
   an order whose rows are all ahead has no history yet. The record's own summary status is not
   read; the stage comes from the rows kept.
-- Rows carry wall clocks without an offset, abroad too, and stay `local_time`.
+- Rows carry wall clocks without an offset, abroad too, on the trackers' Beijing clock: rows
+  at the destination were shown up to seven hours before their clock read as UTC, earlier than
+  the destination's own clock allows. Every row is read on Beijing time, as on the other tenants
+  except Mayi Yinfu, which copies the delivering carrier's rows on its clock.
 - A record that names its channel and the channel's transfer number hands the parcel over when
   the channel label is in the platform's table, the delivery carrier's own detection offers the
   number and it serves the destination. The table holds Swiss Post's labels, the destination of

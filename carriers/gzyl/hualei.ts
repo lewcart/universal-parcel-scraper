@@ -20,7 +20,7 @@ import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { firstOccurrence } from '../../core/time/index.js';
+import { isoTime } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import type { CarrierId } from '../../generated/catalog.js';
@@ -37,9 +37,14 @@ export interface HualeiTenant {
   readonly stage: (code: string | null, wording: string) => Stage | undefined;
   /** The wording and place of a row whose text carries both, before the shared cleaning. */
   readonly split?: (content: string, location: string) => { readonly content: string; readonly location: string };
+  /** Rows keep their wall clocks: the tracker copies another carrier's rows on that carrier's clock. */
+  readonly wallClocks?: true;
 }
 
-/** The zone of the trackers' own clock, which decides when a row written ahead is shown. */
+/**
+ * The zone of the trackers' own clock: it decides when a row written ahead is
+ * shown, and every row is read on it, abroad too.
+ */
 export const HUALEI_ZONE = 'Asia/Shanghai';
 export const HUALEI_TRACK_PATH = '/selectTrack.htm';
 export const HUALEI_PAGE_PATH = '/trackIndex.htm';
@@ -130,11 +135,6 @@ function wallClock(value: string, provider: string): string {
   return local;
 }
 
-/** Whether a row's clock, read on the trackers' own time, is later than the lookup. */
-function ahead(local: string, readAt: number): boolean {
-  return firstOccurrence(DateTime.fromISO(local, { zone: HUALEI_ZONE })).toMillis() > readAt;
-}
-
 // Four to six digits standing alone in scan text are a postcode far more often than anything else.
 const POSTCODE_RUN = /(^|[^\p{L}\p{N}])\d{4,6}(?![\p{L}\p{N}])/gu;
 // A signatory's name follows these markers.
@@ -165,7 +165,8 @@ function scans(rows: readonly Row[], tenant: HualeiTenant, readAt: number): { ev
   const kept: { clock: string; index: number; event: CarrierEvent }[] = [];
   rows.forEach((row, index) => {
     const local = wallClock(row.clock, tenant.provider);
-    if (ahead(local, readAt)) return;
+    const placed = isoTime(local, HUALEI_ZONE)!;
+    if (placed.timestamp > readAt) return;
     const parts = tenant.split?.(row.content, row.location) ?? row;
     const place = hualeiScanText(parts.location, 200);
     const wording = hualeiScanText(parts.content);
@@ -177,7 +178,7 @@ function scans(rows: readonly Row[], tenant: HualeiTenant, readAt: number): { ev
     seen.add(key);
     const staged = stageOf(tenant, row.code, description);
     kept.push({ clock: local, index, event: {
-      local_time: local, description,
+      ...(tenant.wallClocks ? { local_time: local } : { time: placed.iso }), description,
       ...(location ? { location } : {}),
       ...(row.code ? { provider_code: row.code } : {}),
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -216,8 +217,8 @@ function result(rows: readonly Row[], facts: Facts, tenant: HualeiTenant, readAt
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time,
+    last_update: newest.time ?? null,
+    ...(newest.time ? {} : { last_update_local: newest.local_time }),
     expected_delivery: null,
     ...(facts.service ? { service_name: facts.service } : {}),
     ...(/^[A-Z]{2}$/.test(facts.destination) ? { destination_country: facts.destination } : {}),

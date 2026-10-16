@@ -26,7 +26,8 @@ answers.
   reported a parcel the script showed as delivered that never came. The adapter shows the rows
   as the tracker does: a row dated after the lookup on Beijing time is held back, and an order
   whose rows are all ahead has no history yet. The record's own summary status is not read.
-- Scan times are wall clocks without an offset and stay `local_time`.
+- Scan times are wall clocks without an offset, on the tracker's Beijing clock at the destination
+  too, as [GZYL's](../gzyl/README.md) are, and are read on it.
 - A row's place is inside its text, before a comma (`ShenZhen`, `Hong Kong`, the destination's
   country code). Destination rows add the recipient's town or region after the wording, then a
   comma and the postcode. [parser.ts](parser.ts) splits the place from the script's wording and

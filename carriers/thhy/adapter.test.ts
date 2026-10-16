@@ -33,18 +33,18 @@ describe('Tianhui Hengyuan tracking adapter', () => {
     const result = parseThhyTrack(fixture('track'), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map', last_status_text: '正在发往操作中心',
-      last_update: null, last_update_local: '2026-03-05T16:30:57', service_name: 'Synthetic Track A', destination_country: 'CH',
+      last_update: '2026-03-05T16:30:57+08:00', service_name: 'Synthetic Track A', destination_country: 'CH',
     });
     expect(result.canonical_tracking_number).toBeUndefined();
-    expect(result.events!.map((event) => event.local_time)).not.toContain('2026-03-07T20:48:57');
+    expect(result.events!.map((event) => event.time)).not.toContain('2026-03-07T20:48:57+08:00');
     expect(result.events!.slice(0, 3)).toEqual([
-      { local_time: '2026-03-05T16:30:57', description: '正在发往操作中心', location: '下一站', provider_code: 'CO_C_CR', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-05T10:54:57', description: '放行', location: '海关出口', provider_code: 'CO_C_CR', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-05T06:30:57', description: '送交出口', location: '海关', provider_code: 'CO_C_CR', stage: 'customs', stage_source: 'carrier_map' },
+      { time: '2026-03-05T16:30:57+08:00', description: '正在发往操作中心', location: '下一站', provider_code: 'CO_C_CR', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-05T10:54:57+08:00', description: '放行', location: '海关出口', provider_code: 'CO_C_CR', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-05T06:30:57+08:00', description: '送交出口', location: '海关', provider_code: 'CO_C_CR', stage: 'customs', stage_source: 'carrier_map' },
     ]);
     expect(result.events!.slice(-2)).toEqual([
-      { local_time: '2026-03-02T16:30:57', description: '货物离开操作中心', location: 'GZ', provider_code: 'SHIPMENT', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-02T16:15:01', description: 'Arrived at the receiving point', location: 'GZ', provider_code: 'ARRIVAL', stage: 'accepted', stage_source: 'carrier_map' },
+      { time: '2026-03-02T16:30:57+08:00', description: '货物离开操作中心', location: 'GZ', provider_code: 'SHIPMENT', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-02T16:15:01+08:00', description: 'Arrived at the receiving point', location: 'GZ', provider_code: 'ARRIVAL', stage: 'accepted', stage_source: 'carrier_map' },
     ]);
     expect(result.events!.every((event) => event.stage)).toBe(true);
   });

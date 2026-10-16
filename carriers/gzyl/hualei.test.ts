@@ -71,10 +71,10 @@ describe('Hualei track interface', () => {
 
   it('holds back rows written ahead of the lookup on the trackers’ clock, and reads none of the parties', () => {
     const result = parseHualeiTrack(fixture('track'), NUMBER, GZYL, READ_AT)!;
-    expect(result.events!.map((event) => event.local_time)).not.toContain('2026-03-06T15:10:42');
-    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-03-05T09:31:20', current_stage: 'customs' });
+    expect(result.events!.map((event) => event.time)).not.toContain('2026-03-06T15:10:42+08:00');
+    expect(result).toMatchObject({ last_update: '2026-03-05T09:31:20+08:00', current_stage: 'customs' });
     // An hour later in Beijing, the row is due.
-    expect(parseHualeiTrack(fixture('track'), NUMBER, GZYL, Date.parse('2026-03-06T07:11:00Z'))?.last_update_local).toBe('2026-03-06T15:10:42');
+    expect(parseHualeiTrack(fixture('track'), NUMBER, GZYL, Date.parse('2026-03-06T07:11:00Z'))?.last_update).toBe('2026-03-06T15:10:42+08:00');
     // An order whose every row is ahead has nothing to show yet.
     expect(() => parseHualeiTrack(fixture('track'), NUMBER, GZYL, Date.parse('2026-03-01T12:00:00Z'))).toThrow(NoHistoryError);
     const text = JSON.stringify(result);
@@ -153,7 +153,7 @@ describe('Hualei delivery partners', () => {
 describe('Hualei tracking page', () => {
   it('reads the waybill bound to the number without its recipient', () => {
     const result = parseHualeiPage(page('page'), NUMBER, GZYL, READ_AT);
-    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', destination_country: 'CH', last_update_local: '2026-03-05T09:31:20' });
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', destination_country: 'CH', last_update: '2026-03-05T09:31:20+08:00' });
     expect(result.service_name).toBeUndefined();
     expect(result.events!.map((event) => [event.description, event.location ?? null])).toEqual([
       ['local carrier Agent Import customs clearance', null],

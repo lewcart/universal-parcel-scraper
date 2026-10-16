@@ -20,10 +20,10 @@ describe('JRT tracking adapter', () => {
     const result = await adapter(environment(fetcher)).track({ number: REFERENCE });
     expect(result).toMatchObject({
       status: 'pending', current_stage: 'registered', current_stage_source: 'carrier_map', last_status_text: '货物电子信息已经收到',
-      last_update: null, last_update_local: '2026-03-02T14:34:18', destination_country: 'CH', canonical_tracking_number: 'JRT0000000000ZZ',
+      last_update: '2026-03-02T14:34:18+08:00', destination_country: 'CH', canonical_tracking_number: 'JRT0000000000ZZ',
     });
     expect(result.events).toEqual([
-      { local_time: '2026-03-02T14:34:18', description: '货物电子信息已经收到', stage: 'registered', stage_source: 'carrier_map' },
+      { time: '2026-03-02T14:34:18+08:00', description: '货物电子信息已经收到', stage: 'registered', stage_source: 'carrier_map' },
     ]);
     expect(JSON.stringify(result)).not.toContain('Synthetic Recipient');
     expect(fetcher.mock.calls.map(([url, init]) => [String(url), init?.method])).toEqual([

@@ -22,8 +22,8 @@ browser is needed, and no portal link is published.
 - JRT's interface lists no row for an order without scans, under either number. The page shows
   the platform's own row, `货物电子信息已经收到`, on the order's creation time: the order is
   registered.
-- Scan times are wall clocks without an offset and stay `local_time`; a row dated after the
-  lookup on Beijing time is held back.
+- Scan times are wall clocks without an offset on the platform's Beijing clock, as
+  [GZYL's](../gzyl/README.md) are, and are read on it; a row dated after the lookup is held back.
 
 ## Limitations
 

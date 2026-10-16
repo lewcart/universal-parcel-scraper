@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { describe, expect, it } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
@@ -12,9 +11,8 @@ describe('GZYL live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'gzyl', source: 'gzyl' });
     expect(answer.attempts[0]).toMatchObject({ source: 'gzyl', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    // Wall clocks only, and none still ahead on the tracker's own clock.
-    const now = DateTime.now().setZone('Asia/Shanghai').toFormat("yyyy-MM-dd'T'HH:mm:ss");
-    expect(answer.result.events.every((event) => event.description && !event.time && event.local_time! <= now)).toBe(true);
+    // Rows read on the tracker's Beijing clock, none still ahead of the lookup.
+    expect(answer.result.events.every((event) => event.description && event.time && Date.parse(event.time) <= Date.now())).toBe(true);
   });
 
   it.skipIf(!process.env.GZYL_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {

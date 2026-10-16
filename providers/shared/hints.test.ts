@@ -117,6 +117,13 @@ describe('carrier names reported by universal providers', () => {
     expect(universalCarrierHints(['DHL Express']).discovered_carrier).toBe('dhl-express');
   });
 
+  it('proposes no FedEx for twelve digits that fail its check, though its adapter tracks them', () => {
+    // A DHL Paket identcode that a provider files as FedEx's.
+    expect(checksumRejections('100000237570').map(({ rule }) => rule)).toContain('fedex-1');
+    expect(universalCarrierHints(['FedEx'], '100000237570')).toEqual({ reported_carriers: ['FedEx'] });
+    expect(universalCarrierHints(['FedEx'], '100000039595').discovered_carrier).toBe('fedex');
+  });
+
   it('proposes no such carrier when another carrier claims the number with high confidence', async () => {
     // No catalog rule claims ten or twelve digits with high confidence yet. A
     // synthetic one hides the failed waybill and GLS France checks from the

@@ -59,9 +59,18 @@ export const ADAPTER_CHECKED_RULES: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * Rules whose failed check digit rules out a provider naming their carrier,
+ * though its adapter still tracks the number. Every public 12-digit FedEx
+ * number passes FedEx's, and providers name FedEx for DHL Paket numbers that
+ * fail it.
+ */
+const NAME_CHECKED_RULES: ReadonlySet<string> = new Set(['fedex-1']);
+
+/**
  * Names are hints only. A direct adapter must confirm the shipment before
  * adoption. The looked-up number resolves a bare brand name, and rules out a
- * carrier whose adapter would refuse it for a failed check digit. A tracker
+ * carrier whose adapter would refuse it for a failed check digit, or whose
+ * numbers all pass a check it fails. A tracker
  * that also finds parcels by their delivery partner's number ("Global Eco",
  * Evri International's tracker) names the partner whose rule claims it.
  * Several names that all map to the catalog can be one journey's legs; see
@@ -72,7 +81,7 @@ export function universalCarrierHints(raw: unknown[], trackingNumber?: string): 
   const names = [...new Set(raw.filter((value): value is string => typeof value === 'string'
     && value.length <= 80 && /^[\p{L}\p{N} .&'()-]+$/u.test(value)).map((value) => value.trim()))].filter(Boolean).slice(0, 10);
   const refused = new Set(trackingNumber ? checksumFailures(trackingNumber)
-    .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
+    .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule) || NAME_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
   const detected = new Set<string>();
   // Cainiao follows a parcel from abroad under its delivery carrier's number,
   // so a brand named beside it delivers at home: Evri UK, not Evri

@@ -525,6 +525,16 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('keeps the UTC instants ParcelsApp gives Austrian Post scans', () => {
+    // Austrian Post's own instants have ParcelsApp's UTC digits; read on the
+    // Vienna clock they came out two hours early.
+    const result = parseParcelsAppResponse({ carriers: ['Austria Post'], states: [
+      { date: '2026-07-02T23:24:38Z', status: 'Item distributed', carrier: 0, location: 'Example Town, Austria' },
+      { date: '2026-07-02T09:57:03Z', status: 'The sender has provided electronic shipment information', carrier: 0 },
+    ] }, number, identity(), 'Europe/Vienna');
+    expect(result.events?.map((scan) => scan.time)).toEqual(['2026-07-02T23:24:38.000Z', '2026-07-02T09:57:03.000Z']);
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.

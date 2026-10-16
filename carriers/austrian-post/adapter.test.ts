@@ -225,6 +225,8 @@ describe('Austrian Post public tracking', () => {
 
   it('rejects invalid input before network and exposes recognition for ambiguous digits', async () => {
     expect(normalizeAustrianPostNumber(` ${NUMBER} `)).toBe(NUMBER);
+    expect(normalizeAustrianPostNumber(`${NUMBER}00`)).toBe(`${NUMBER}00`);
+    expect(() => normalizeAustrianPostNumber(`${NUMBER}0`)).toThrow(InvalidInputError);
     expect(() => normalizeAustrianPostNumber(`${NUMBER}"}`)).toThrow(InvalidInputError);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(fixture())));
     const tracker = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });

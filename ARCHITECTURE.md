@@ -223,7 +223,9 @@ carriers for the number can count the carrier and rule, without the number, to f
 check that real numbers fail. Where the carrier's adapter applies the same check before any
 request, that confirmation cannot happen, so a provider naming that carrier for the number
 does not propose it, even when another carrier's high-confidence match kept a low-confidence
-rule out of `checksumRejections`.
+rule out of `checksumRejections`. FedEx's adapter does not apply its 12-digit check, but
+every public FedEx number passes it and providers name FedEx for DHL Paket numbers that fail
+it, so such a name does not propose FedEx either.
 
 After building, `node scripts/analyze-recognition.mjs --input <private.jsonl>
 --output <private-priorities.json>` reads rows containing `number`, `carrier` and

@@ -1,7 +1,9 @@
 # Austrian Post
 
 Tracks domestic 22-digit and Austrian S10 postal numbers through the public
-tracking website's anonymous GraphQL read.
+tracking website's anonymous GraphQL read. It also takes the 24-digit EURODIS
+barcode of a parcel it sends abroad through that network, which its tracker
+follows to the partner that delivers it.
 
 ## How it works
 
@@ -39,10 +41,12 @@ than the estimate's end also drops it.
 
 ## Limitations
 
-Account-only delivery options and recipient details are not retrieved. The
-estimate follows the page's code and has not been checked against a live
-value. A shipment listed without scans is a `NoHistoryError` and GraphQL errors
-are inconclusive; either way another source can help.
+No detection rule claims 24 digits for Austrian Post: EURODIS barcodes have no
+public samples, and other carriers use that length. Account-only delivery
+options and recipient details are not retrieved. The estimate follows the
+page's code and has not been checked against a live value. A shipment listed
+without scans is a `NoHistoryError` and GraphQL errors are inconclusive;
+either way another source can help.
 
 ## Testing
 

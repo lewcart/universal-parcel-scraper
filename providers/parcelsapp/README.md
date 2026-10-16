@@ -251,6 +251,8 @@ step exists for future protocol changes.
   Read on Paack's Paris clock, they came out two hours early in summer.
 - So do Vinted Go's scans: Vinted Go's own instants, in the Netherlands and Spain, have
   ParcelsApp's UTC digits to the second.
+- So do Austrian Post's scans: its own instants have ParcelsApp's UTC digits to the second.
+  EURODIS's copies of the same scans carry the wall clock and go through the steps.
 - North American scans: the dates of UPS, FedEx, UniUni, EasyShip and DHL eCommerce are
   the scan's local clock, as UPS's own instants, FedEx's own page, UniUni's own feed,
   Ship24's offsets and DHL eCommerce's Webtrack, which names each scan's clock, show on US

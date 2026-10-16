@@ -68,7 +68,10 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * scans of the same item agree (checked 2026-09-30). So do Paack's: its
  * timeline gives instants, and Paack's own lookup has ParcelsApp's UTC scan
  * for scan (checked 2026-10-07). So do Vinted Go's: its own instants, in the
- * Netherlands and Spain, have ParcelsApp's UTC digits to the second.
+ * Netherlands and Spain, have ParcelsApp's UTC digits to the second. So do
+ * Austrian Post's: its own instants have ParcelsApp's UTC digits to the second
+ * (checked 2026-10-16), while the EURODIS copies of the same scans carry the
+ * wall clock.
  */
 function stateCarrierName(payload: Record<string, unknown>, state: Record<string, unknown>): unknown {
   const carriers = Array.isArray(payload.carriers) ? payload.carriers : [];
@@ -407,7 +410,7 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
-  if (carrier === 'paack' || carrier === 'vinted-go' || ownOffset(name, state.date)) return null;
+  if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || ownOffset(name, state.date)) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
   if (carrier === 'speedaf') return speedafZone(payload, state.date, destination);
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;

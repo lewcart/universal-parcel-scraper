@@ -47,8 +47,13 @@ describe('Ecoscooting parcel history', () => {
     const numeric = fixture(); delete numeric.statuses[0].status; delete numeric.statuses[0].statusGroup;
     expect(parseEcoscooting(numeric, NUMBER)).toMatchObject({ status: 'delivered', delivered_at: '2026-01-04T19:00:00Z' });
   });
+  it('reads GTMS_SIGNED in the last-mile wording as delivered', () => {
+    const numeric = fixture(); delete numeric.statuses[0].status; delete numeric.statuses[0].statusGroup;
+    numeric.statuses[0].description = 'Your shipment has been delivered successfully';
+    expect(parseEcoscooting(numeric, NUMBER)).toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-01-04T19:00:00Z' });
+  });
   it.each([
-    ['the other family\'s description', { description: 'Your shipment has been delivered successfully' }],
+    ['another description', { description: 'Your shipment has been collected by consignee at the parcelshop' }],
     ['another status name', { statusName: 'Different' }],
     ['one flag alone', { statusGroup: 'delivered' }],
     ['a failure flag', { status: 'error', statusGroup: 'delivered' }],

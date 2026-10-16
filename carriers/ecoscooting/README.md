@@ -20,9 +20,10 @@ text without borrowing its timezone or an older delivery timestamp. Status
 comes from the latest scan. Numeric references use one of two code families:
 `GTMS_*`/`TD_*`, or the last-mile `LM_*`/`SL_*`/`SC_*` family that every `CN`
 reference (Portuguese `CNPRT`, older Spanish `CNESP`) uses. Either may come
-with or without completion flags. A delivery or a collection at a pickup point
-needs its exact code and both affirmative labels, and flags, when present, must
-both affirm it; anything else stays inconclusive. `GTMS_DEL_FAILURE` also carries the last-mile
+with or without completion flags, and `GTMS_*` scans may carry either family's
+wording. A delivery or a collection at a pickup point needs its exact code and
+both affirmative labels, and flags, when present, must both affirm it; anything
+else stays inconclusive. `GTMS_DEL_FAILURE` also carries the last-mile
 family's exception wording ("[Parcel lost]"), which reads as a problem rather than a
 failed attempt. Arrival at a pickup point and
 the pickup point's own signature ("Delivered to PUDO") read as ready for

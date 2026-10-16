@@ -9,6 +9,13 @@
       "confirmedBy": "live"
     },
     {
+      "code": "GTMS_SIGNED",
+      "wording": "Your shipment has been delivered successfully",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live"
+    },
+    {
       "code": "GTMS_PUDO_SIGNED",
       "wording": "Your shipment has been collected by consignee at the parcelshop",
       "language": "en",

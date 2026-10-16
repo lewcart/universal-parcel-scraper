@@ -6,11 +6,13 @@ import { isRecord } from '../../core/types.js';
 import { ecoscootingRequestNumber } from './number.js';
 import { ecoscootingStatus } from './status.js';
 
-const COLLECTED = ['PUDO Sign Success', 'Your shipment has been collected by consignee at the parcelshop'] as const;
-/** Status name and description that confirm each completion code. */
-const COMPLETION_LABELS = new Map<string, readonly [string, string]>([
-  ['GTMS_SIGNED', ['Delivery Success', 'Parcel has been delivered successfully']],
-  ['LM_SIGN_SUCCESS', ['Delivery Success', 'Your shipment has been delivered successfully']],
+const DELIVERED = 'Your shipment has been delivered successfully';
+const COLLECTED = ['PUDO Sign Success', ['Your shipment has been collected by consignee at the parcelshop']] as const;
+/** Status name and descriptions that confirm each completion code. */
+const COMPLETION_LABELS = new Map<string, readonly [string, readonly string[]]>([
+  // GTMS scans come in their own wording or in the last-mile one.
+  ['GTMS_SIGNED', ['Delivery Success', ['Parcel has been delivered successfully', DELIVERED]]],
+  ['LM_SIGN_SUCCESS', ['Delivery Success', [DELIVERED]]],
   ['GTMS_PUDO_SIGNED', COLLECTED],
   ['PUDO_SIGN_SUCCESS', COLLECTED],
 ]);
@@ -53,7 +55,7 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
     const labels = COMPLETION_LABELS.get(code);
     const flagsAgree = (!Object.hasOwn(row, 'statusGroup') && !Object.hasOwn(row, 'status'))
       || (row.statusGroup === 'delivered' && row.status === 'finish');
-    const completed = !!labels && row.statusName === labels[0] && description === labels[1] && flagsAgree;
+    const completed = !!labels && row.statusName === labels[0] && labels[1].includes(description) && flagsAgree;
     if (mapped?.stage === 'delivered' && !completed) throw new IndeterminateError('Ecoscooting', 'Ecoscooting returned inconsistent delivery evidence');
     const event: CarrierEvent = { ...(time ? { time: time.iso } : display ? { provider_time_text: display } : {}), description, provider_code: code, ...(mapped ? { stage: mapped.stage } : {}) };
     const key = JSON.stringify(event);

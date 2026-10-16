@@ -7,8 +7,10 @@ Detection offers a 12-digit PIN starting with 0 to 6 only when it passes the Luh
 
 One POST requests descending package scans using the widget's public client key and browser
 user agent. The search result's indexes must select exactly one matching package.
-Ambiguous matches remain inconclusive. AWS WAF can require an image challenge; that failure
-is reported for routing fallback.
+Ambiguous matches remain inconclusive. Purolator answers NOT FOUND both for numbers it never
+issued and for PINs whose history it no longer keeps, so that reply stays inconclusive with the
+reason `portal_not_found`, which tells it from an outage. AWS WAF can require an image
+challenge; that failure is reported for routing fallback.
 
 ## Notes
 
@@ -23,5 +25,6 @@ counter. The destination country comes from the shipment. Recipient information,
 
 ## Testing
 
-Set `PUROLATOR_TRACKING_NUMBER` to an authorized real PIN and run
+Set `PUROLATOR_TRACKING_NUMBER` to an authorized real PIN, and optionally
+`PUROLATOR_UNKNOWN_NUMBER` to a PIN the tracker does not find, and run
 `npm run test:carriers:live -- carriers/purolator`.

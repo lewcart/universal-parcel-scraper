@@ -31,7 +31,10 @@ export function parsePurolator(payload: unknown, number: string): CarrierResult 
   const search = payload.searchResult[0];
   if (search.trackingId !== requested || search.sequenceId !== 1) throw new SchemaError('Purolator', 'Purolator returned a different search');
   // CONFLICT also occurs for an unknown-looking PIN. It is never a clean negative.
-  if (search.status !== 'FOUND') throw new IndeterminateError('Purolator', 'Purolator did not return a unique matching shipment');
+  // NOT FOUND covers numbers Purolator never issued and PINs whose history it no
+  // longer keeps. The reason marks it as an answer about the number, not an outage.
+  if (search.status !== 'FOUND') throw new IndeterminateError('Purolator', 'Purolator did not return a unique matching shipment',
+    search.status === 'NOT FOUND' && search.shipmentIndex === -1 && !payload.shipment.length ? { reason: 'portal_not_found' } : {});
   if (search.type !== 'PIN' || !Number.isInteger(search.shipmentIndex) || !Number.isInteger(search.packageIndex)
     || (search.shipmentIndex as number) < 0 || (search.packageIndex as number) < 0) throw new SchemaError('Purolator');
   const shipment: unknown = payload.shipment[search.shipmentIndex as number];

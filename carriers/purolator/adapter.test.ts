@@ -23,6 +23,8 @@ describe('Purolator direct tracking', () => {
     await expect(carrier.recognize!(OTHER)).rejects.toMatchObject({ kind: 'schema' });
     fetcher.mockResolvedValue(new Response('Too many requests', { status: 429, headers: { 'Retry-After': '60' } }));
     await expect(carrier.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'rate_limited', retryAfterMs: 60_000 });
+    fetcher.mockResolvedValue(Response.json({ searchResult: [{ sequenceId: 1, trackingId: NUMBER, status: 'NOT FOUND', shipmentIndex: -1 }], shipment: [] }));
+    await expect(carrier.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
   });
   it('maps each historical code and preserves cross-country clocks without assigning a zone', () => {
     const result = normalizeCarrierResult(parsePurolator(payload(), NUMBER));
@@ -139,6 +141,16 @@ describe('Purolator direct tracking', () => {
     const conflict = { searchResult: [{ sequenceId: 1, trackingId: NUMBER, status: 'CONFLICT', shipmentIndex: -1,
       errors: [{ code: '2003', description: 'The search criteria provided results in more than one PIN returned.  Please refine the search criteria.' }] }], shipment: [] };
     expect(() => parsePurolator(conflict, NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parsePurolator(conflict, NUMBER)).not.toThrowError(expect.objectContaining({ reason: 'portal_not_found' }));
+  });
+
+  it('marks a NOT FOUND reply as an answer about the number, not an outage', () => {
+    const missing = { searchResult: [{ sequenceId: 1, trackingId: NUMBER, status: 'NOT FOUND', shipmentIndex: -1 }], shipment: [] };
+    expect(() => parsePurolator(missing, NUMBER)).toThrowError(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parsePurolator({ ...missing, searchResult: [{ ...missing.searchResult[0], trackingId: OTHER }] }, NUMBER))
+      .toThrowError(expect.objectContaining({ kind: 'schema' }));
+    const listed = { ...missing, shipment: payload().shipment };
+    expect(() => parsePurolator(listed, NUMBER)).not.toThrowError(expect.objectContaining({ reason: 'portal_not_found' }));
   });
 
   it('deduplicates scans, bounds text and excludes recipient, reference and proof data', () => {

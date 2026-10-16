@@ -86,4 +86,22 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
       expect(checksumRejections(number)).toEqual([{ carrier: 'pos-malaysia', rule: 'pos-malaysia-4', checksum: 'pos-laju' }]);
     }
   });
+
+  it('gives each forwarder\'s YQ code to the carrier of its prefix alone', () => {
+    // Forwarders on one Chinese platform share the YQ ending and ten digits; the customer prefix names the forwarder.
+    const owners = { JSEJY0000000001YQ: 'js-express', WNBZZ0000000001YQ: 'wanbexpress', FEISH0000000001YQ: '17feia',
+      SFCAA0000000001YQ: 'sfc', CJPZZA0000000001YQ: 'cj-packet', BUFZA0000000001YQ: 'buffalo-ex' };
+    for (const [number, carrier] of Object.entries(owners)) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier, confidence: 'high', candidates: [carrier] });
+      expect(recognitionCandidates(number), number).toEqual([]);
+    }
+    // JS Express and WanbExpress never stand in for each other.
+    expect(detectCarrierMatch('JSEZZ0000000001YQ').candidates).not.toContain('wanbexpress');
+    expect(detectCarrierMatch('WNBJS0000000001YQ').candidates).not.toContain('js-express');
+    // A prefix no catalog forwarder uses, or a code a digit short, is left to the user.
+    for (const number of ['ABCDE0000000001YQ', 'JSEJY000000001YQ', 'WNBZZ000000001YQ', 'JSWNB0000000001YQ']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', candidates: [] });
+    }
+    expect(detectCarrierMatch('YL0000000001YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gzyl'] });
+  });
 });

@@ -217,7 +217,10 @@ for (const language of ['en', 'de', 'fr', 'it', 'es', 'nl']) {
   for (const code of REGION_CODES) {
     const name = names.of(code)!;
     // German written without umlauts puts an e after the vowel: "Oesterreich".
-    const spellings = language === 'de' ? [name, name.replace(/[äöüÄÖÜ]/g, (vowel) => `${vowel.normalize('NFD')[0]}e`)] : [name];
+    // English names Intl abbreviates are also written out: "Bosnia and
+    // Herzegovina", "Saint Lucia".
+    const spellings = language === 'de' ? [name, name.replace(/[äöüÄÖÜ]/g, (vowel) => `${vowel.normalize('NFD')[0]}e`)]
+      : language === 'en' ? [name, name.replace(/ & /g, ' and ').replace(/^St\. /, 'Saint ')] : [name];
     for (const key of spellings.map(regionKey)) {
       // A name a large town shares names the town as often as the country.
       if (!REGION_BY_NAME.has(key) && (language === 'en' || !townName(key))) REGION_BY_NAME.set(key, code);

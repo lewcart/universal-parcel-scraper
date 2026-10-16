@@ -132,6 +132,10 @@ describe('time policies', () => {
   it('names any country by code or English name, whatever its clocks', () => {
     expect(countryCode(' United States ')).toBe('US');
     expect(countryCode('south africa')).toBe('ZA');
+    expect(countryCode('Bosnia and Herzegovina')).toBe('BA');
+    expect(countryCode('Bosnia & Herzegovina')).toBe('BA');
+    expect(countryCode('Saint Kitts and Nevis')).toBe('KN');
+    expect(countryCode('Trinidad and Tobago')).toBe('TT');
     expect(countryCode('us')).toBe('US');
     expect(countryCode('Switzerland')).toBe('CH');
     expect(countryCode('Côte d’Ivoire')).toBe('CI');

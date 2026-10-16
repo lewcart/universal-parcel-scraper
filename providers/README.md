@@ -83,9 +83,11 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   has DHL Express, or with two networks in the country, stays unresolved.
 - Several names can be the legs of one journey, such as DHLink and SwiftX, its last-mile
   partner. When every name is in the catalog, the hint is the one carrier whose rules fit
-  the number, or the one a preferred rule backs. When no rule fits, a carrier whose numbers
-  all have a layout of their own (only high-confidence rules) was named for its leg, and
-  the one carrier left is the hint. Beside Cainiao, which brings parcels from abroad under
+  the number, or the one a preferred rule backs. When no rule fits, Cainiao, which follows a
+  parcel under its delivery carrier's number, leaves the one carrier named beside it, such as
+  MailAmericas for an S10 number only postal detection takes. Otherwise a carrier whose
+  numbers all have a layout of their own (only high-confidence rules) was named for its leg,
+  and the one carrier left is the hint. Beside Cainiao, which brings parcels from abroad under
   their delivery carrier's number, a bare brand names its network that delivers at home:
   "Evri Group" is Evri UK, since Evri International hands parcels to partners abroad.
   Plain "Evri" is Evri UK in any case: providers name Evri International in full or by its

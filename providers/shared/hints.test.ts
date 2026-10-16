@@ -91,6 +91,18 @@ describe('carrier names reported by universal providers', () => {
     expect(universalCarrierHints(['Evri'], barcode).discovered_carrier).toBe('evri-uk');
   });
 
+  it('names the carrier beside Cainiao for a number no rule of either fits', () => {
+    // MailAmericas delivers under an S10 number with the Marshall Islands code, which only
+    // postal detection takes; Cainiao follows the parcel under that number.
+    for (const names of [['MailAmericas', 'Cainiao'], ['Cainiao', 'MailAmericas']]) {
+      expect(universalCarrierHints(names, 'RR123456785MH').discovered_carrier).toBe('mailamericas');
+    }
+    // A number of Cainiao's own stays Cainiao's.
+    expect(universalCarrierHints(['MailAmericas', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBe('aliexpress');
+    // Two carriers beside Cainiao leave no single one.
+    expect(universalCarrierHints(['MailAmericas', 'Cainiao', 'Correos Spain'], 'RR123456785MH').discovered_carrier).toBeUndefined();
+  });
+
   it('keeps the postal union\'s feed among the reported names, where it proposes no carrier', () => {
     // An S10 number with a valid check digit.
     const finnish = 'RR123456785FI';

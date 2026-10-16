@@ -104,7 +104,9 @@ export function universalCarrierHints(raw: unknown[], trackingNumber?: string): 
 /**
  * A provider can name an origin and the carrier it hands the parcel to, such
  * as DHLink and SwiftX. The number is the one carrier's whose rules fit it,
- * or that a preferred rule backs among several. When none fits, a carrier whose numbers all have a layout of their own
+ * or that a preferred rule backs among several. When none fits, Cainiao, which
+ * follows a parcel under its delivery carrier's number, leaves the one carrier
+ * named beside it. Otherwise a carrier whose numbers all have a layout of their own
  * (only high-confidence rules, SwiftX's SWX and eighteen digits) is named for
  * its own leg, and the one carrier left is the hint.
  */
@@ -116,6 +118,8 @@ function journeyOwner(carriers: readonly string[], trackingNumber: string): stri
     const backed = fitting.filter((carrier) => preferred.includes(carrier as CarrierId));
     return backed.length === 1 ? backed[0] : undefined;
   }
+  const delivering = carriers.filter((carrier) => !followsPartnerNumbers(carrier));
+  if (delivering.length === 1 && delivering.length < carriers.length) return delivering[0];
   const open = carriers.filter((carrier) => {
     const rules = CARRIER_DEFINITIONS[carrier as CarrierId]?.detectionRules ?? [];
     return rules.length === 0 || rules.some((rule) => rule.confidence !== 'high');

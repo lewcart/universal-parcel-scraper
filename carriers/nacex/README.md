@@ -12,8 +12,10 @@ external link shows a reduced view; it is used for public links, not retrieval.
 
 ## Notes
 
-Public scans have calendar headings without a clock or zone. These remain
-provider text, with no invented midnight or delivery instant. Scans retain
+Public scans sit under calendar headings without a clock or zone. Each scan keeps
+its heading's day as a date-only `local_time`, with no invented clock, midnight or
+delivery instant; a heading that is not a date stays provider text. The headings name
+the month in the request's language, English without one. Scans retain
 their source order, including repeated descriptions on the same day. Unknown
 current wording cannot inherit an older delivery. A delivered summary must agree
 with the newest mapped physical scan; contradictory responses are rejected.

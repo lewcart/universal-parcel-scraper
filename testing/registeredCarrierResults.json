@@ -1907,98 +1907,99 @@
       "current_stage": "delivered",
       "last_status_text": "Delivered",
       "last_update": null,
+      "last_update_local": "2026-01-16",
       "events": [
         {
           "description": "Delivered",
           "provider_status": "Entregado",
-          "provider_time_text": "16 January 2026",
+          "local_time": "2026-01-16",
           "stage": "delivered"
         },
         {
           "description": "En reparto",
           "provider_status": "En reparto",
-          "provider_time_text": "16 January 2026",
+          "local_time": "2026-01-16",
           "location": "TEST LOCALITY",
           "stage": "out_for_delivery"
         },
         {
           "description": "Disponible en punto NACEX",
           "provider_status": "Disponible en punto NACEX",
-          "provider_time_text": "16 January 2026",
+          "local_time": "2026-01-16",
           "location": "TEST LOCALITY",
           "stage": "ready_for_pickup"
         },
         {
           "description": "En reparto",
           "provider_status": "En reparto",
-          "provider_time_text": "16 January 2026",
+          "local_time": "2026-01-16",
           "location": "TEST LOCALITY",
           "stage": "out_for_delivery"
         },
         {
           "description": "Cambio de dirección",
           "provider_status": "Cambio de dirección",
-          "provider_time_text": "15 January 2026",
+          "local_time": "2026-01-15",
           "stage": "in_transit"
         },
         {
           "description": "Solución de entrega concertada",
           "provider_status": "Solución de entrega concertada",
-          "provider_time_text": "15 January 2026",
+          "local_time": "2026-01-15",
           "stage": "in_transit"
         },
         {
           "description": "Ausente",
           "provider_status": "Ausente",
-          "provider_time_text": "15 January 2026",
+          "local_time": "2026-01-15",
           "stage": "failed_attempt"
         },
         {
           "description": "En reparto",
           "provider_status": "En reparto",
-          "provider_time_text": "15 January 2026",
+          "local_time": "2026-01-15",
           "location": "TEST LOCALITY",
           "stage": "out_for_delivery"
         },
         {
           "description": "En tránsito",
           "provider_status": "En tránsito",
-          "provider_time_text": "15 January 2026",
+          "local_time": "2026-01-15",
           "location": "TEST DEPOT",
           "stage": "in_transit"
         },
         {
           "description": "En tránsito",
           "provider_status": "En tránsito",
-          "provider_time_text": "14 January 2026",
+          "local_time": "2026-01-14",
           "location": "TEST ORIGIN",
           "stage": "in_transit"
         },
         {
           "description": "En tránsito",
           "provider_status": "En tránsito",
-          "provider_time_text": "14 January 2026",
+          "local_time": "2026-01-14",
           "location": "TEST ORIGIN",
           "stage": "in_transit"
         },
         {
           "description": "Notificado",
           "provider_status": "Notificado",
-          "provider_time_text": "14 January 2026",
+          "local_time": "2026-01-14",
           "stage": "accepted",
           "stage_source": "none"
         },
         {
           "description": "Aceptada",
           "provider_status": "Aceptada",
-          "provider_time_text": "14 January 2026",
+          "local_time": "2026-01-14",
           "location": "TEST ORIGIN",
           "stage": "accepted"
         },
         {
           "description": "Notificado",
           "provider_status": "Notificado",
-          "provider_time_text": "14 January 2026",
+          "local_time": "2026-01-14",
           "stage": "registered"
         }
       ]

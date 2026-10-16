@@ -1,9 +1,23 @@
 import { load } from 'cheerio';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
+import { calendarDay } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { classifyNacexStatus, isNacexMovement, isNacexNotice } from './status.js';
+
+// Headings name the month in the request's language: English without one, Spanish with `es`.
+const MONTHS = new Map([['january', 'enero'], ['february', 'febrero'], ['march', 'marzo'], ['april', 'abril'],
+  ['may', 'mayo'], ['june', 'junio'], ['july', 'julio'], ['august', 'agosto'], ['september', 'septiembre'],
+  ['october', 'octubre'], ['november', 'noviembre'], ['december', 'diciembre']]
+  .flatMap((names, index) => names.map(name => [name, index + 1] as const)));
+
+/** A calendar heading's day, or null for any other text. */
+function headingDay(text: string): string | null {
+  const match = /^(\d{1,2}) (\p{L}{3,10}) (\d{4})$/u.exec(text);
+  const month = match ? MONTHS.get(match[2]!.toLocaleLowerCase('es-ES')) : undefined;
+  return match && month ? calendarDay(Number(match[3]), month, Number(match[1])) : null;
+}
 
 const NO_HISTORY = 'No existe ningún albarán introducido en el sistema cumpliendo los criterios especificados. Consulte con su agencia NACEX más cercana.';
 
@@ -71,6 +85,7 @@ export function parseNacex(html: string, raw: string): CarrierResult {
   if (rows.length > 500) throw new SchemaError('NACEX', 'NACEX returned too many scans');
   const scans: { event: CarrierEvent; mapped?: ClassifiedStatus; notice: boolean }[] = [];
   let dayText = '';
+  let day: string | null = null;
   for (const row of rows.toArray()) {
     const cells = $(row).children('td');
     if (cells.length !== 1) throw new SchemaError('NACEX', 'NACEX history columns changed');
@@ -78,6 +93,7 @@ export function parseNacex(html: string, raw: string): CarrierResult {
     if (cell.hasClass('sg_hist_fecha')) {
       if (cell.attr('colspan') !== '2') throw new SchemaError('NACEX', 'NACEX history date layout changed');
       dayText = clean(cell.text(), 64);
+      day = headingDay(dayText);
       continue;
     }
     if (!cell.hasClass('sg_hist_desc')) throw new SchemaError('NACEX', 'NACEX history scan layout changed');
@@ -95,7 +111,8 @@ export function parseNacex(html: string, raw: string): CarrierResult {
     // observed depot/locality shape of a movement scan is a location.
     const locality = isNacexMovement(label) && /^\d{4}(?:-\d{1,3})?\s*-\s*([\p{L}][\p{L}\s.()-]{1,99})$/u.exec(trailing)?.[1];
     scans.push({ mapped, notice: isNacexNotice(label), event: { description: mapped?.status === 'delivered' ? 'Delivered' : label,
-      provider_status: label, ...(dayText ? { provider_time_text: dayText } : {}), ...(locality ? { location: locality } : {}) } });
+      provider_status: label, ...(day ? { local_time: day } : dayText ? { provider_time_text: dayText } : {}),
+      ...(locality ? { location: locality } : {}) } });
   }
   // Rows run newest first. A notice keeps the stage of the scan before it.
   let previous: ClassifiedStatus | undefined;
@@ -112,8 +129,8 @@ export function parseNacex(html: string, raw: string): CarrierResult {
   }
   const events = scans.map(scan => scan.event);
   if (!events.length || !events.some(event => event.stage)) throw new IndeterminateError('NACEX', 'NACEX returned no actual tracking scans');
-  // Calendar headings have no scan clock or zone. Preserve provider order,
-  // including same-day repeated scans, without inventing midnight instants.
+  // Calendar headings have no scan clock or zone: a scan keeps its day alone.
+  // Preserve provider order, including same-day repeated scans.
   const mapped = classifyNacexStatus(summaryLabel);
   const current = isNacexNotice(summaryLabel) ? applied.get(events[0]!) ?? mapped : mapped;
   const latestPhysical = scans.find(scan => scan.mapped && !scan.notice);
@@ -122,5 +139,5 @@ export function parseNacex(html: string, raw: string): CarrierResult {
   }
   return { status: current?.status ?? 'unknown', ...(current ? { current_stage: current.stage } : {}),
     last_status_text: mapped?.status === 'delivered' ? 'Delivered' : summaryLabel,
-    last_update: null, events: events.slice(0, 100) };
+    last_update: null, ...(events[0]!.local_time ? { last_update_local: events[0]!.local_time } : {}), events: events.slice(0, 100) };
 }

@@ -26,24 +26,37 @@ describe('NACEX direct tracking', () => {
     const result = normalizeCarrierResult(parseNacex(html, NUMBER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update: null });
     expect(result.events).toHaveLength(14);
-    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', stage: 'delivered', provider_time_text: '16 January 2026' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', stage: 'delivered', local_time: '2026-01-16' });
     expect(result.events?.[0]!.location).toBeUndefined();
     expect(result.events?.[1]).toMatchObject({ stage: 'out_for_delivery', location: 'TEST LOCALITY' });
     expect(result.events?.[2]!.stage).toBe('ready_for_pickup');
     expect(result.events?.[1]).toEqual(result.events?.[3]);
-    expect(result.events?.[4]).toMatchObject({ description: 'Cambio de dirección', provider_time_text: '15 January 2026', stage: 'in_transit' });
+    expect(result.events?.[4]).toMatchObject({ description: 'Cambio de dirección', local_time: '2026-01-15', stage: 'in_transit' });
     expect(result.events?.[5]).toMatchObject({ description: 'Solución de entrega concertada', stage: 'in_transit' });
     expect(result.events?.[5]!.location).toBeUndefined();
     expect(result.events?.[6]!.stage).toBe('failed_attempt');
     expect(result.events?.[11]).toMatchObject({ description: 'Notificado', stage: 'accepted', stage_source: 'none' });
     expect(result.events?.[13]).toMatchObject({ description: 'Notificado', stage: 'registered' });
     expect(result.events?.[13]!.stage_source).toBeUndefined();
-    expect(result.events?.every(event => !event.time && !event.local_time && !event.provider_code)).toBe(true);
-    expect(result.last_update_local).toBeUndefined();
+    // A heading dates its scans to the day: no clock time, offset or instant is invented.
+    expect(result.events?.every(event => !event.time && /^\d{4}-\d{2}-\d{2}$/.test(String(event.local_time))
+      && !event.provider_time_text && !event.provider_code)).toBe(true);
+    expect(result.events?.[13]!.local_time).toBe('2026-01-14');
+    expect(result.last_update_local).toBe('2026-01-16');
     expect(result.delivered_at).toBeUndefined();
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     for (const entry of statuses.entries.filter(entry => entry.wording !== 'Sin estado')) expect(classifyNacexStatus(entry.wording)?.stage).toBe(entry.stage);
     for (const word of ['constructor', 'toString', 'Sin estado', 'Será entregado']) expect(classifyNacexStatus(word)).toBeUndefined();
+  });
+
+  it('reads headings in Spanish as well as English', () => {
+    const body = edit($ => $('.sg_hist_fecha').each((index, node) => { $(node).text(['16 enero 2026', '15 ENERO 2026', '14 Septiembre 2026'][index]!); }));
+    expect([...new Set(parseNacex(body, NUMBER).events?.map(event => event.local_time))]).toEqual(['2026-01-16', '2026-01-15', '2026-09-14']);
+    for (const text of ['16 constructor 2026', '16 de enero de 2026', '16/01/2026']) {
+      const event = parseNacex(edit($ => $('.sg_hist_fecha').first().text(text)), NUMBER).events?.[0];
+      expect(event).toMatchObject({ provider_time_text: text });
+      expect(event?.local_time).toBeUndefined();
+    }
   });
 
   it('validates composite input and both summary and expanded detail identity', () => {
@@ -81,6 +94,8 @@ describe('NACEX direct tracking', () => {
       expect(result.delivered_at).toBeUndefined();
       expect(result.events?.[0]!.description).toBe('Nueva gestión');
       expect(result.events?.[0]!.provider_time_text).toBe(clock || undefined);
+      expect(result.events?.[0]!.local_time).toBeUndefined();
+      expect(result.last_update_local).toBeUndefined();
     }
   });
 

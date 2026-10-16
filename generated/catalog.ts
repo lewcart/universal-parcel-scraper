@@ -15053,7 +15053,7 @@ export const CARRIER_CATALOG = {
   },
   "metropolitan-warehouse": {
     "displayName": "Metropolitan Warehouse & Delivery",
-    "color": "#c9a84c",
+    "color": "#0062b7",
     "aliases": [
       "Metropolitan Warehouse and Delivery",
       "MWD"

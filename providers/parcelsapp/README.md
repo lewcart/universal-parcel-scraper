@@ -27,6 +27,10 @@ deadline still wins.
    with a 15 s settle window. Bodies are parsed newest first, skipping polling replies
    and other shipments. If no body is readable, the rendered event list
    (`.tracking-info .parcel .events > .event`) is parsed instead.
+   For a number it has no data for, ParcelsApp renders its empty view
+   (`.tracking-info.empty`), which leaves out the number, so no captured reply can be
+   bound to it. With the page's own `NO_DATA` or `NO_TRACKER` that is no history, as on
+   the direct step; without either it is inconclusive.
 
 Other outcomes:
 
@@ -34,6 +38,7 @@ Other outcomes:
   no browser attempt.
 - `NO_DATA`, `NO_TRACKER` and empty histories are inconclusive, not proof that the
   shipment does not exist. They end the lookup.
+- An error code the adapter does not know is a schema failure that names the code.
 - A reply that only asks for a postcode raises `input_required`. Browser recovery cannot
   submit a postcode and never retries a known input gate. A gate row names the carrier
   asking, as a scan does (`states[].carrier`); when every gate names the same one and it

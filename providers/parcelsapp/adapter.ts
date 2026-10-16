@@ -24,7 +24,7 @@ import {
 } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
+import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
@@ -45,6 +45,12 @@ function parcelsIdentity(html: string, number: string): boolean {
   const rows = $('.tracking-info .parcel .parcel-attributes tr').filter((_, row) =>
     $(row).children('td').first().text().trim() === 'Tracking number');
   return rows.length === 1 && rows.first().children('td').eq(1).text().trim() === number;
+}
+
+/** ParcelsApp's results without a shipment: its empty view, with no shipment's rows. */
+function emptyView(html: string): boolean {
+  const $ = load(html);
+  return $('.tracking-info.empty').length === 1 && !$('.tracking-info .parcel .parcel-attributes tr').length;
 }
 
 export function parseParcelsAppResponse(payload: unknown, trackingNumber: string, html: string, timezone: string | null = null): CarrierResult {
@@ -681,7 +687,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     throw new NoHistoryError(SOURCE, 'ParcelsApp has no usable shipment history');
   }
   if (!isRecord(payload) || payload.error || !Array.isArray(payload.states) || payload.states.length > MAX_EVENTS) {
-    throw new SchemaError(SOURCE, 'ParcelsApp lookup unavailable');
+    // An error code the adapter does not know is named, to tell drift from a new answer.
+    const code = isRecord(payload) && typeof payload.error === 'string' && /^[A-Z][A-Z_]{0,39}$/.test(payload.error) ? `: ${payload.error}` : '';
+    throw new SchemaError(SOURCE, `ParcelsApp lookup unavailable${code}`);
   }
   const number = numberOf(trackingNumber);
   const events: CarrierEvent[] = [];
@@ -933,12 +941,22 @@ export class ParcelsAppTracker {
           budgetMs: remainingMs, fetcher: this.options.fetcher, signal,
         };
         const page = await loadCapture(this.options.trawl ?? null, capture);
+        let noData = false;
         for (const body of capturedBodies(page, capture)) {
+          let payload: unknown;
           try {
-            return parseParcelsAppResponse(JSON.parse(body), number, page.html, timezone);
+            payload = JSON.parse(body);
+            return parseParcelsAppResponse(payload, number, page.html, timezone);
           } catch {
             // Polling replies, unrelated numbers and demo shipments are not history.
+            noData ||= isRecord(payload) && (payload.error === 'NO_DATA' || payload.error === 'NO_TRACKER');
           }
+        }
+        // For a number it has no data for, ParcelsApp renders its empty view, which
+        // leaves out the number, so no reply can be bound to it. With the page's own
+        // NO_DATA that is the direct step's inconclusive answer; without, inconclusive.
+        if (emptyView(page.html)) {
+          throw noData ? new NoHistoryError(SOURCE, 'ParcelsApp has no usable shipment history') : captureFailure(page, capture);
         }
         // The rendered page carries the same history when no body was readable.
         return parseParcelsAppHtml(page.html, number, timezone);

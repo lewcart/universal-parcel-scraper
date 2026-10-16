@@ -1225,6 +1225,20 @@ describe('ParcelsApp browser capture', () => {
     await expect(tracker(fetcher).fetch(number)).resolves.toMatchObject({ current_stage: 'registered', last_update: '2026-08-18T03:04:00.000Z' });
   });
 
+  it("reads ParcelsApp's empty view, which leaves out the number, as no history", async () => {
+    const empty = '<div class="tracking-info empty"><div class="parcel"></div></div>';
+    for (const error of ['NO_DATA', 'NO_TRACKER']) {
+      const fetcher = vi.fn<typeof fetch>().mockResolvedValue(captured({ error, carriers: [] }, { html: empty }));
+      await expect(tracker(fetcher).fetch(number)).rejects.toBeInstanceOf(NoHistoryError);
+    }
+    // Without the page's own answer the empty view is inconclusive, not drift.
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(captured(null, { html: empty, capturedResponses: [] }));
+    await expect(tracker(fetcher).fetch(number)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'history_missing' });
+    // A page that is neither the empty view nor the shipment's stays a schema failure.
+    fetcher.mockResolvedValue(captured({ error: 'NO_DATA' }, { html: '<div class="tracking-info"></div>' }));
+    await expect(tracker(fetcher).fetch(number)).rejects.toThrow('identity missing');
+  });
+
   it('rejects a page rendered for another shipment instead of reporting its history', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(captured(announced, { html: identity('OTHER123') }));
     await expect(tracker(fetcher).fetch(number)).rejects.toThrow('identity missing');
@@ -1339,6 +1353,13 @@ describe('ParcelsApp direct lookup', () => {
       { step: 'direct', outcome: 'indeterminate' },
       { step: 'trawl', outcome: 'ok', fallbackFrom: 'direct', fallbackReason: 'indeterminate' },
     ]);
+  });
+
+  it('names an error code it does not know in the schema failure', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply({ error: 'SOMETHING_NEW' }));
+    await expect(new ParcelsAppTracker({ fetcher }).fetch(number)).rejects.toThrow('ParcelsApp lookup unavailable: SOMETHING_NEW');
+    fetcher.mockResolvedValue(reply({ error: '<b>no</b>' }));
+    await expect(new ParcelsAppTracker({ fetcher }).fetch(number)).rejects.toThrow(/^ParcelsApp lookup unavailable$/);
   });
 
   it('starts no browser lookup for a reply within the cap that carries no usable scan', async () => {

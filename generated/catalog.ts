@@ -18566,7 +18566,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tforce-freight",
+      "recognitionRank": 946,
+      "localClocks": true
     },
     "canaryUrl": "https://www.tforcefreight.com/ltl/apps/tracking",
     "trackingUrlTemplate": "https://www.tforcefreight.com/ltl/apps/Tracking?proNumbers={trackingNumber}",

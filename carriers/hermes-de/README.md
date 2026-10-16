@@ -9,7 +9,8 @@ service the public page calls. Hermes Einrichtungs-Service (furniture) is
 ## How it works
 
 1. `direct`: `GET https://api.my-deliveries.de/tnt/v2/shipments/search/{number}`
-   with `X-Language: de`. HTTP 404 is a clean not-found; any other error status
+   with `X-Language: en`, as the page's English route asks; `de` words the scans
+   in German. HTTP 404 is a clean not-found; any other error status
    stays an upstream error.
 
 The response must contain exactly one parcel whose `barcode` equals the

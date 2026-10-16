@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../app.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { resolveResult, resultHasUpdate, resultStage } from '../../core/result/resolve.js';
 import {
@@ -46,10 +47,17 @@ describe('PostLogistics wrong-number handling', () => {
       expect(String(error)).not.toContain('Private upstream details');
     }
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const [, init] = fetcher.mock.calls[0]!;
+    const [url, init] = fetcher.mock.calls[0]!;
+    expect(String(url)).toBe('https://eosapi.swisspost-cargo.com/api/trackandtrace/public?culture=en-EN');
     expect(JSON.parse(String(init?.body))).toEqual({
       Identifier: POSTLOGISTICS_WRONG_NUMBER,
     });
+  });
+
+  it('rewords a scan stored in French in place, matched by its instant and code', () => {
+    // The endpoint's French and English replies carry the same codes, clocks and places.
+    expect(sameInstantIdentityPolicy('postlogistics', { supportsScanMatching: true }))
+      .toMatchObject({ storedSources: ['postlogistics'], requireProviderCode: true });
   });
 
   it('rejects a Type 1 answer describing a different shipment', async () => {

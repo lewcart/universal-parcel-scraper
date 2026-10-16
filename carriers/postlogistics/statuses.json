@@ -17,8 +17,8 @@
     },
     {
       "code": "POD",
-      "wording": "LIVRE SCANNE",
-      "language": "fr",
+      "wording": "DELIVERED SCANNED",
+      "language": "en",
       "stage": "delivered",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
@@ -27,7 +27,7 @@
     {
       "code": "SIG",
       "wording": "SIGNATURE",
-      "language": "fr",
+      "language": "en",
       "stage": "delivered",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
@@ -35,8 +35,8 @@
     },
     {
       "code": "NTF",
-      "wording": "réception données Poste",
-      "language": "fr",
+      "wording": "Data entry POST",
+      "language": "en",
       "stage": "registered",
       "confirmedBy": "live",
       "firstSeen": "2026-09-12",
@@ -44,8 +44,8 @@
     },
     {
       "code": "RFS",
-      "wording": "Réception des marchandises Poste",
-      "language": "fr",
+      "wording": "Received warehouse POST",
+      "language": "en",
       "stage": "accepted",
       "confirmedBy": "live",
       "firstSeen": "2026-10-04",
@@ -53,8 +53,8 @@
     },
     {
       "code": "SCA",
-      "wording": "Chargement pour livraison",
-      "language": "fr",
+      "wording": "Loaded for Delivery",
+      "language": "en",
       "stage": "out_for_delivery",
       "confirmedBy": "live",
       "firstSeen": "2026-10-04",
@@ -63,7 +63,7 @@
     {
       "code": "IMG",
       "wording": "IMAGE",
-      "language": "fr",
+      "language": "en",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": "A picture entry, not a movement: dropped when it shares a scan's instant, otherwise kept without a stage. Live histories show it a few seconds to a minute before the delivery scan."

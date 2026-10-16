@@ -13,7 +13,7 @@ carrier to be picked. Ordinary Swiss Post parcels go to
 
 ## How it works
 
-`direct`: `POST https://eosapi.swisspost-cargo.com/api/trackandtrace/public?culture=fr-FR`
+`direct`: `POST https://eosapi.swisspost-cargo.com/api/trackandtrace/public?culture=en-EN`
 with `{"Identifier": "…"}`. No session, cookie or token; 15 s total timeout.
 Stored numbers omit punctuation, so an unknown 11-digit lookup tries the dashed
 eight-plus-three spelling before returning 404. A successful undashed lookup
@@ -55,6 +55,10 @@ Recognition uses the same lookup and requires a scan before claiming a match.
 - The estimate is `DriveAndArrive.PlannedDeliveryDate`, falling back to
   `EstimatedArrival`. The newest delivery scan's time is the delivery time.
 - Each scan keeps its three-letter code as `provider_code`.
+- The endpoint words its scans in the language `culture` names and ignores
+  `Accept-Language`, so the adapter asks for English. Codes, clocks and places are the
+  same in every language. A scan stored in French takes the English wording in place:
+  at its instant, its code identifies it.
 - Timestamps are kept as sent; the host applies `Europe/Zurich` when there is no offset.
 - Recipient and signature blocks are never read; the fixture exercises this.
 

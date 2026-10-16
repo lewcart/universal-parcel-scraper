@@ -33,7 +33,8 @@ import { POSTLOGISTICS_IMAGE_CODE, postlogisticsStage, postlogisticsStatus } fro
 
 const PROVIDER = 'PostLogistics';
 const UPSTREAM = 'PostLogistics tracking';
-const TRACK_URL = 'https://eosapi.swisspost-cargo.com/api/trackandtrace/public?culture=fr-FR';
+// The endpoint words its scans in the culture's language, whatever Accept-Language says.
+const TRACK_URL = 'https://eosapi.swisspost-cargo.com/api/trackandtrace/public?culture=en-EN';
 const DEFAULT_TIMEOUT_MS = 15_000;
 const BASE_HEADERS = {
   Accept: 'application/json, text/plain, */*',

@@ -3,8 +3,8 @@
   "entries": [
     {
       "code": "ANNOUNCED",
-      "wording": "Die Sendung wurde Hermes elektronisch angekündigt. Weitere Informationen folgen, sobald Hermes die Sendung erhalten hat.",
-      "language": "de",
+      "wording": "The shipment was announced to Hermes electronically. Further information will follow as soon as Hermes received the shipment.",
+      "language": "en",
       "stage": "registered",
       "confirmedBy": "live",
       "firstSeen": "2026-09-08",
@@ -54,8 +54,8 @@
     },
     {
       "code": "TAKEN_OVER_BY_HERMES",
-      "wording": "Die Sendung wurde von Hermes in … übernommen und wird für den weiteren Versand vorbereitet.",
-      "language": "de",
+      "wording": "The shipment was taken over by Hermes in … and is prepared for further shipping.",
+      "language": "en",
       "stage": "accepted",
       "confirmedBy": "live",
       "firstSeen": "2026-09-08",
@@ -119,8 +119,8 @@
     },
     {
       "code": "DELIVERY_TOUR_STARTED",
-      "wording": "Die Sendung wurde ins Zustellfahrzeug geladen und wird voraussichtlich heute zugestellt.",
-      "language": "de",
+      "wording": "The shipment was loaded into the delivery vehicle and is expected to be delivered today.",
+      "language": "en",
       "stage": "out_for_delivery",
       "confirmedBy": "live",
       "firstSeen": "2026-09-08",
@@ -281,8 +281,8 @@
     },
     {
       "code": "DELIVERED_INHOUSE",
-      "wording": "Die Sendung wurde an der Empfangsadresse zugestellt.",
-      "language": "de",
+      "wording": "The shipment was delivered to the recipient address.",
+      "language": "en",
       "stage": "delivered",
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",

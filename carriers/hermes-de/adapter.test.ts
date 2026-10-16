@@ -95,7 +95,7 @@ describe('Hermes Germany', () => {
     await expect(new HermesGermanyTracker().fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(`https://api.my-deliveries.de/tnt/v2/shipments/search/${NUMBER}`,
-      expect.objectContaining({ cache: 'no-store', redirect: 'error', headers: expect.objectContaining({ 'X-Language': 'de' }) }));
+      expect.objectContaining({ cache: 'no-store', redirect: 'error', headers: expect.objectContaining({ 'X-Language': 'en' }) }));
   });
 
   it('reads a delivery at the address as a delivery', () => {

@@ -189,7 +189,8 @@ export class HermesGermanyTracker {
       signal: budget.signal,
       headers: {
         Accept: 'application/json',
-        'X-Language': 'de',
+        // The service words its scans in German unless asked otherwise, as the page's English route does.
+        'X-Language': 'en',
         Referer: 'https://www.myhermes.de/',
         'User-Agent': this.#userAgent,
       },

@@ -16,18 +16,67 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "lion-parcel",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 952
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "offset_timestamps",
+    "eta",
+    "eta_window",
+    "service_name",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://lionparcel.com/track/stt?q={trackingNumber}",
     "searchUrl": "https://lionparcel.com/track/stt",
     "canaryUrl": "https://lionparcel.com/track/stt",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "eta",
+      "eta_window",
+      "service_name",
+      "delivered_at",
+      "origin",
+      "destination",
+      "driver_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps",
+      "eta",
+      "eta_window",
+      "service_name",
+      "delivered_at"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "driver_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "weight",
+      "sender_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

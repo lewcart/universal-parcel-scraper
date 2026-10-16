@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "An archived lookup on Lion Parcel's own tracker; the capture was not opened."
+      "note": "An archived lookup on Lion Parcel's own tracker; Lion Parcel's tracker knows it."
     },
     {
       "number": "11LP1751526746292",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "An archived lookup on Lion Parcel's own tracker; the capture was not opened."
+      "note": "An archived lookup on Lion Parcel's own tracker; Lion Parcel's tracker knows it."
     },
     {
       "number": "11LP1751688477058",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "An archived lookup on Lion Parcel's own tracker; the capture was not opened."
+      "note": "An archived lookup on Lion Parcel's own tracker; Lion Parcel's tracker knows it."
     },
     {
       "number": "11LP1751961117502",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "An archived lookup on Lion Parcel's own tracker; the capture was not opened."
+      "note": "An archived lookup on Lion Parcel's own tracker; Lion Parcel's tracker knows it."
     },
     {
       "number": "11LP1769140544676",
@@ -145,13 +145,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "A Media Konsumen letter about a delayed Lion Parcel shipment gives it as the Lion Parcel resi."
+      "note": "A Media Konsumen letter about a delayed Lion Parcel shipment gives it as the Lion Parcel resi. Lion Parcel's tracker knows it."
     },
     {
       "number": "11LP1780468909200",
@@ -164,13 +164,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "A Media Konsumen letter about a document Lion Parcel had not delivered gives it as the Lion Parcel resi."
+      "note": "A Media Konsumen letter about a document Lion Parcel had not delivered gives it as the Lion Parcel resi. Lion Parcel's tracker knows it."
     },
     {
       "number": "88LP1756215441747",
@@ -181,13 +181,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "lion-parcel",
         "confidence": "high"
       },
-      "note": "Listed as a Lion Parcel resi example on a third-party Indonesian tracking guide; it shows the 88 prefix."
+      "note": "Listed as a Lion Parcel resi example on a third-party Indonesian tracking guide; it shows the 88 prefix. Lion Parcel's tracker knows it."
     },
     {
       "number": "99LP1665770287213",
@@ -205,6 +205,44 @@
         "confidence": "high"
       },
       "note": "Listed as a Lion Parcel resi example on a third-party Indonesian tracking guide; it shows the 99 prefix."
+    },
+    {
+      "number": "11LP1754978483422",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://mediakonsumen.com/2025/09/06/surat-pembaca/pengiriman-lion-parcel-interpack-lambat-dan-lalai-tidak-diproses",
+        "date": "2025-09-06",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "lion-parcel",
+        "confidence": "high"
+      },
+      "note": "A Media Konsumen letter about a slow Lion Parcel INTERPACK shipment gives it as the Lion Parcel resi. Lion Parcel's tracker knows it."
+    },
+    {
+      "number": "11LP1765256631774",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://mediakonsumen.com/2025/12/23/surat-pembaca/pengiriman-internasional-lion-parcel-interpack-tidak-jelas-dan-merugikan-konsumen",
+        "date": "2025-12-23",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "lion-parcel",
+        "confidence": "high"
+      },
+      "note": "A Media Konsumen letter about an international Lion Parcel INTERPACK shipment gives it as the Lion Parcel resi. Lion Parcel's tracker knows it."
     }
   ]
 }

@@ -12917,7 +12917,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lion-parcel",
+      "recognitionRank": 952
     },
     "canaryUrl": "https://lionparcel.com/track/stt",
     "trackingUrlTemplate": "https://lionparcel.com/track/stt?q={trackingNumber}",

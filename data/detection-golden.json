@@ -10297,6 +10297,22 @@
     ]
   },
   {
+    "input": "11LP1754978483422",
+    "carrier": "lion-parcel",
+    "confidence": "high",
+    "candidates": [
+      "lion-parcel"
+    ]
+  },
+  {
+    "input": "11LP1765256631774",
+    "carrier": "lion-parcel",
+    "confidence": "high",
+    "candidates": [
+      "lion-parcel"
+    ]
+  },
+  {
     "input": "11LP1769140544676",
     "carrier": "lion-parcel",
     "confidence": "high",

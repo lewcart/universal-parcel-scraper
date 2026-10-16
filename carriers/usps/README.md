@@ -66,8 +66,11 @@ Parsing, in order:
   status `out_for_delivery`.
 - There is no direct step: it would only burn the budget on a 403.
 - The package path is loaded directly because the legacy query route can return only
-  the global header. A recognizable header-only reply gets one more browser read within
-  the same budget; telemetry retains the first failure. Other challenges, identity errors
+  the global header. A recognizable header-only reply, or the tracking page's head
+  captured before its body, gets one more browser read within the same budget;
+  telemetry retains the first failure. So does the bot check's blank
+  interstitial, an untitled page holding only its script, which the browser can capture
+  before the script reloads into the tracking page. Other challenges, identity errors
   and rate limits are not repeated. Pasted legacy query links remain supported.
 
 ## Mobile API leads

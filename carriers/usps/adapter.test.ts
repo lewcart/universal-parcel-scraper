@@ -15,6 +15,9 @@ const DELIVERED_PAGE = readFileSync(new URL('./fixtures/delivered.html', import.
 const IN_TRANSIT_PAGE = readFileSync(new URL('./fixtures/in-transit.html', import.meta.url), 'utf8');
 const TIMELINE_PAGE = readFileSync(new URL('./fixtures/timeline.html', import.meta.url), 'utf8');
 const HEADER_ONLY_PAGE = '<html><head><title>USPS Tracking® | USPS</title></head><body><div class="Widgets_Container"><div id="g-navigation">Navigation</div></div></body></html>';
+// The bot check's interstitial: no title, no content, one inline script (synthetic here).
+const HEAD_ONLY_PAGE = '<!DOCTYPE html><html lang="en"><head><title>USPS Tracking® | USPS</title><script src="scripts/libs/jquery.min.js"></script></head></html>';
+const INTERSTITIAL_PAGE = '<!DOCTYPE html><html><head><title></title><style>html, body { margin: 0; }</style></head><body><script>(function () { /* synthetic check */ })();</script></body></html>';
 const CAPABILITIES = (JSON.parse(
   readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'),
 ) as { capabilities: string[] }).capabilities;
@@ -229,6 +232,37 @@ describe('USPS lookup steps', () => {
     await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'challenge', reason: 'incomplete_page' });
     expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('reads once more after the tracking page head arrives without its body', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(HEAD_ONLY_PAGE))
+      .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    expect((await new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(() => parseUSPSTrackingHtml(HEAD_ONLY_PAGE.replace('</head>', '</head><body><p>Access denied</p></body>'), DELIVERED_NUMBER))
+      .toThrowError(expect.objectContaining({ kind: 'challenge', reason: undefined }));
+  });
+
+  it('reads once more after the verification interstitial and stops after a second one', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
+      .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
+    const step = vi.fn();
+    const result = await new USPSTracker({ trawlUrl: TRAWL_URL, recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
+    expect(result.events).toHaveLength(5);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', outcome: 'ok',
+      fallbackError: expect.objectContaining({ reason: 'interstitial_page' }) }));
+    fetcher.mockReset().mockImplementation(async () => trawlReply(INTERSTITIAL_PAGE));
+    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+      .rejects.toMatchObject({ kind: 'challenge', reason: 'interstitial_page' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps a titled or worded page without the tracker an unrepeated challenge', () => {
+    for (const page of [INTERSTITIAL_PAGE.replace('<title></title>', '<title>Access</title>'),
+      INTERSTITIAL_PAGE.replace('</script>', '</script><p>Please wait</p>'), INTERSTITIAL_PAGE.replace(/<script>.*<\/script>/, '')]) {
+      expect(() => parseUSPSTrackingHtml(page, DELIVERED_NUMBER)).toThrowError(expect.objectContaining({ kind: 'challenge', reason: undefined }));
+    }
   });
 
   it('does not repeat a challenge shell, wrong identity or rate limit', async () => {

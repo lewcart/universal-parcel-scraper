@@ -24,6 +24,8 @@ const TRACKING_BASE = 'https://tools.usps.com/tracking/';
 const MAX_BYTES = 10_000_000;
 const DEFAULT_TIMEOUT_MS = 90_000;
 const MAX_EVENTS_TO_RETURN = 100;
+/** Pages a second browser read within the same budget can complete. */
+const RECOVERABLE_PAGES = new Set(['incomplete_page', 'interstitial_page']);
 
 /** The number as typed, upper case and without the spaces, dots and dashes of a printed label. */
 function cleanUSPSNumber(raw: string): string {
@@ -151,12 +153,20 @@ function parseTimelineRow(description: string, dateText: string, location: strin
 export function parseUSPSTrackingHtml(page: string, trackingNumber: string): CarrierResult {
   const number = normalizeUSPSNumber(trackingNumber);
   const $ = load(page);
+  const inlineScript = $('body script:not([src])').length > 0;
   $('script, style, noscript').remove();
   if ($('.track-bar-container').length === 0) {
-    // A completed USPS header without the tracking application is not a
-    // missing shipment. A second browser read can recover this partial page.
-    if ($('.Widgets_Container #g-navigation').length && /^USPS Tracking/.test($('title').text())) {
+    const emptyBody = !clean($('body').text()) && $('body').children().length === 0;
+    // A completed USPS header without the tracking application, or the
+    // tracking page's head captured before its body, is not a missing
+    // shipment. A second browser read can recover this partial page.
+    if (/^USPS Tracking/.test($('title').text()) && ($('.Widgets_Container #g-navigation').length || emptyBody)) {
       throw new ChallengeError('USPS', 'USPS returned an incomplete tracking page', { reason: 'incomplete_page' });
+    }
+    // A blank, untitled page holding only the bot check's script is captured
+    // before that script reloads into the tracking page. A second read passes.
+    if (inlineScript && !clean($('title').text()) && emptyBody) {
+      throw new ChallengeError('USPS', 'USPS returned its verification interstitial', { reason: 'interstitial_page' });
     }
     throw new ChallengeError('USPS', 'USPS challenged the browser tracking session');
   }
@@ -261,7 +271,7 @@ export class USPSTracker {
       recorder: this.#recorder,
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
-      { id: 'trawl', recovers: error => error instanceof ChallengeError && error.reason === 'incomplete_page',
+      { id: 'trawl', recovers: error => error instanceof ChallengeError && RECOVERABLE_PAGES.has(error.reason ?? ''),
         run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
     // A typed routing barcode opens with the recipient's ZIP code. The package

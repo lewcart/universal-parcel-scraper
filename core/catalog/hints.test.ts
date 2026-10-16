@@ -133,8 +133,16 @@ describe('carrier names reported by universal providers', () => {
   });
 
   it.each([
+    ['DPD (BE)', 'dpd-be'], ['DPD (DE)', 'dpd-de'], ['DPD (CH)', 'dpd'], ['GLS (FR)', 'gls-fr'], ['GLS IT', 'gls-it'],
+  ])('maps %s, a brand followed by the country of one of its networks', (name, expected) => {
+    expect(carrierIdFromName(name)).toBe(expected);
+  });
+
+  it.each([
     // Another company under the brand, a country without one zone, a brand with several networks.
     'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
+    // No network there, two networks there, a worldwide network, a network on another clock.
+    'DPD (NL)', 'Hermes (DE)', 'DHL (PL)', 'GLS (LI)',
   ])('does not guess a carrier from %s', (name) => {
     expect(carrierIdFromName(name)).toBeUndefined();
   });

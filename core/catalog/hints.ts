@@ -91,14 +91,26 @@ function countryQualified(name: string): { base: string; country: string } | und
   return undefined;
 }
 
+/**
+ * A brand's one network in a country ("DPD (BE)"). None when a network of the
+ * brand works worldwide, as DHL Express does, or several share the country.
+ */
+function brandNetwork(brand: string, country: string): string | undefined {
+  const networks = brandCarrierIds(brand).map((id) => [id, CARRIER_DEFINITIONS[id as CarrierId].countries ?? []] as const);
+  if (networks.some(([, countries]) => !countries.length)) return undefined;
+  const local = networks.filter(([, countries]) => countries.includes(country));
+  return local.length === 1 ? local[0]![0] : undefined;
+}
+
 /** A name is only a lookup hint; the destination adapter still has to verify the parcel. */
 export function carrierIdFromName(name: string): string | undefined {
   const exact = catalogCarrier(key(name));
   if (exact) return exact;
   // The carrier's own country names the same carrier; another country can be a
-  // different company under the brand, and a multi-zone country cannot tell.
+  // different company under the brand, and a multi-zone country cannot tell. A
+  // brand with several networks names its network there.
   const qualified = countryQualified(name);
-  const carrier = qualified && catalogCarrier(key(qualified.base));
+  const carrier = qualified && (catalogCarrier(key(qualified.base)) ?? brandNetwork(qualified.base, qualified.country));
   const zone = qualified && countryTimeZone(qualified.country);
   return carrier && zone && CARRIER_DEFINITIONS[carrier as CarrierId]?.timezone === zone ? carrier : undefined;
 }

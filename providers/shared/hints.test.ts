@@ -48,6 +48,8 @@ describe('carrier names reported by universal providers', () => {
     // Without the number a brand stays a hint, as before.
     expect(universalCarrierHints(['DPD Group'])).toEqual({ reported_carriers: ['DPD Group'] });
     expect(universalCarrierHints(['DPD Group', 'DPD Group ', 7, null], '06080000000002').discovered_carrier).toBe('dpd');
+    // 17TRACK names DPD's networks by country code; the number's depot range does not decide.
+    expect(universalCarrierHints(['DPD (BE)'], '06080000000002').discovered_carrier).toBe('dpd-be');
   });
 
   it('proposes the carrier whose leg of the journey the number belongs to', () => {

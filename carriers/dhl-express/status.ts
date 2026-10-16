@@ -10,6 +10,9 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 const EXACT: ReadonlyMap<string, Stage> = new Map([
   ['shipment information received', 'registered'],
   ['shipment picked up', 'accepted'],
+  ['shipment accepted', 'accepted'],
+  // A clearance step without its outcome: the parcel is still in customs.
+  ['clearance event', 'customs'],
   ['shipment is in transit to destination', 'in_transit'],
   ['shipment is out with courier for delivery', 'out_for_delivery'],
   ['shipment is on hold', 'exception'],
@@ -21,6 +24,7 @@ const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
   // A completed clearance puts the parcel back in transit; one still running stays in customs.
   ['clearance processing complete', 'in_transit'],
   ['clearance processing', 'customs'],
+  ['processed for clearance at ', 'customs'],
   ['customs clearance', 'customs'],
   ['processed at ', 'in_transit'],
   ['arrived at dhl sort facility', 'in_transit'],

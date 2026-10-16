@@ -64,7 +64,10 @@ describe('DHL Express projection', () => {
       { stage: 'in_transit', source: 'carrier_map' }, { stage: 'in_transit', source: 'carrier_map' },
       { stage: 'in_transit', source: 'carrier_map' }, { stage: 'in_transit', source: 'carrier_map' },
     ]);
-    expect(dhlExpressStage('Processed for clearance at EXAMPLE CITY - FRANCE').source).not.toBe('carrier_map');
+    // Not the "Processed at" checkpoint: the parcel is in customs.
+    expect(dhlExpressStage('Processed for clearance at EXAMPLE CITY - FRANCE')).toEqual({ stage: 'customs', source: 'carrier_map' });
+    expect(dhlExpressStage('Clearance event')).toEqual({ stage: 'customs', source: 'carrier_map' });
+    expect(dhlExpressStage('Shipment accepted')).toEqual({ stage: 'accepted', source: 'carrier_map' });
     expect(dhlExpressStage('Customs clearance status updated. Note - The Customs clearance process is under way.'))
       .toEqual({ stage: 'customs', source: 'carrier_map' });
   });

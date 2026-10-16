@@ -97,6 +97,27 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-10",
       "note": "Matched on its start; the clearance is still under way."
+    },
+    {
+      "wording": "Processed for clearance at",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "note": "Followed by the facility; checkpoint code IC. Not the Processed at checkpoint: the parcel is in customs."
+    },
+    {
+      "wording": "Clearance event",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "note": "Checkpoint code CD. A clearance step without its outcome; the parcel is still in customs."
+    },
+    {
+      "wording": "Shipment accepted",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "note": "Checkpoint code SA."
     }
   ]
 }

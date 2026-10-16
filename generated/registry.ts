@@ -191,6 +191,7 @@ import { adapter as osmWorldwide } from '../carriers/osm-worldwide/adapter.js';
 import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as packlink } from '../carriers/packlink/adapter.js';
+import { adapter as pakistanPost } from '../carriers/pakistan-post/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
 import { adapter as passport } from '../carriers/passport/adapter.js';
 import { adapter as pathaoCourier } from '../carriers/pathao-courier/adapter.js';
@@ -478,6 +479,7 @@ export const REGISTRY: RegistryDefinition = {
     "paack": paack,
     "packeta": packeta,
     "packlink": packlink,
+    "pakistan-post": pakistanPost,
     "paquetexpress": paquetexpress,
     "passport": passport,
     "pathao-courier": pathaoCourier,
@@ -929,7 +931,7 @@ export const REGISTRY: RegistryDefinition = {
     "paack": "paack",
     "packeta": "packeta",
     "packlink": "packlink",
-    "pakistan-post": "universal",
+    "pakistan-post": "pakistan-post",
     "palletways": "universal",
     "paperfly": "universal",
     "paquetexpress": "paquetexpress",

@@ -122,13 +122,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a parcel the customer awaits abroad."
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a parcel the customer awaits abroad. Pakistan Post's tracker shows it sent to Saudi Arabia and delivered there."
     },
     {
       "number": "RB091039471PK",
@@ -141,13 +141,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as the customer's item."
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as the customer's item. Pakistan Post's tracker shows it sent to Germany, through customs, and waiting at a collection point after failed attempts."
     },
     {
       "number": "RB084404523PK",
@@ -160,13 +160,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a packet booked at a post office for Canada."
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a packet booked at a post office for Canada. Pakistan Post's tracker shows it received at the office of exchange and sent to Canada."
     },
     {
       "number": "RB084355371PK",
@@ -179,13 +179,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as an envelope posted in Sialkot for Ukraine."
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as an envelope posted in Sialkot for Ukraine. Pakistan Post's tracker shows it sent to Ukraine, through customs, and delivered there."
     },
     {
       "number": "RB077887193PK",
@@ -198,13 +198,32 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a parcel the customer had not received."
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives it as a parcel the customer had not received. Pakistan Post's tracker shows it sent to India, released by customs and out for delivery there."
+    },
+    {
+      "number": "EK120833010SA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-pakistan-post.html",
+        "date": "2021-11-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A customer's review on TrackingMore's Pakistan Post review page gives only the number. Pakistan Post's tracker shows Saudi Post's item arriving in Pakistan and released by customs."
     }
   ]
 }

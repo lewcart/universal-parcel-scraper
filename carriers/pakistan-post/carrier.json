@@ -18,17 +18,60 @@
   "timezone": "Asia/Karachi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pakistan-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 928
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country"
+  ],
   "portal": {
+    "url": "https://ep.gov.pk/emtts/EPTrack_Live.aspx?ArticleIDz={trackingNumber}",
     "searchUrl": "https://ep.gov.pk/",
     "canaryUrl": "https://ep.gov.pk/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin_country",
+      "destination_country",
+      "acceptance_office",
+      "delivery_office",
+      "signatory",
+      "remarks",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country"
+    ],
+    "discarded": [
+      "origin_country",
+      "acceptance_office",
+      "delivery_office",
+      "signatory",
+      "remarks",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

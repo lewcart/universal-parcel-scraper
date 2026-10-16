@@ -135,6 +135,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "orlen-paczka": 495,
   "osm-worldwide": 75,
   "packlink": 981,
+  "pakistan-post": 928,
   "paquetexpress": 35,
   "passport": 55,
   "pathao-courier": 945,

@@ -15975,9 +15975,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pakistan-post",
+      "recognitionRank": 928,
+      "localClocks": true
     },
     "canaryUrl": "https://ep.gov.pk/",
+    "trackingUrlTemplate": "https://ep.gov.pk/emtts/EPTrack_Live.aspx?ArticleIDz={trackingNumber}",
     "trackingSearchUrl": "https://ep.gov.pk/",
     "linkRules": [
       {

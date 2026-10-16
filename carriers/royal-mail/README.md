@@ -35,8 +35,9 @@ deadline and cancellation signal, and the browser closes after each lookup.
 - Summary categories and individual scan codes have separate meanings. The
   sender's despatch notice and a booked collection are registrations; a
   collection or a Post Office drop-off is the acceptance. Mail handed in at a
-  parcel hub has none, so the hub's first receipt is its acceptance, as the
-  summary's "We've got it" says.
+  parcel hub, or a collection a mail centre receives first, has none, so that
+  first receipt is its acceptance, as the summary's "We've got it" says. A
+  first receipt elsewhere keeps its in-transit stage, as the summary does.
 - A delivery's scan time becomes `delivered_at`. The details reply's
   destination country becomes `destination_country`.
 - Scan places lose the postcode Royal Mail appends to a Post Office branch,

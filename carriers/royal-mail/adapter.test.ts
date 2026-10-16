@@ -202,6 +202,19 @@ describe('Royal Mail structured response', () => {
     expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'accepted', 'registered']);
   });
 
+  it('reads a mail centre receipt without an earlier acceptance as the acceptance', () => {
+    const piece = (code: string, category: string) => parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: category, statusDescription: `**${category}**`, lastEventCode: code, lastEventDateTime: '2026-01-06T17:16:17+01:00' },
+      events: [
+        { eventCode: code, eventName: '**Item Received**', eventDateTime: '2026-01-06T17:16:17+01:00', locationName: 'Example MC' },
+        { eventCode: 'EVAIP', eventName: 'Sender preparing item', eventDateTime: '2026-01-05T01:02:01+01:00' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(piece('EVDAC', 'We\'ve got it').events?.map(event => event.stage)).toEqual(['accepted', 'registered']);
+    expect(piece('EVIAV', 'In transit').events?.map(event => event.stage)).toEqual(['in_transit', 'registered']);
+  });
+
   it('reads scans abroad on their country\'s clock instead of the UK label', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: IN_TRANSIT_NUMBER,
@@ -218,7 +231,7 @@ describe('Royal Mail structured response', () => {
       ['2026-10-10T21:51:00+02:00', 'in_transit'],
       ['2026-10-10T19:08:00+02:00', 'in_transit'],
       ['2026-10-10T03:31:09+01:00', 'in_transit'],
-      ['2026-10-09T19:28:24+01:00', 'in_transit'],
+      ['2026-10-09T19:28:24+01:00', 'accepted'],
     ]);
     expect(result).toMatchObject({ last_status_text: 'In Transit', last_update: '2026-10-10T21:51:00+02:00', destination_country: 'FR' });
   });

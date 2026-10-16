@@ -15,6 +15,8 @@ const SUMMARY_API_PREFIX = 'https://api-web.royalmail.com/mailpieces/microsummar
 const EVENTS_API_PREFIX = 'https://api-web.royalmail.com/mailpieces/v3/';
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
+// A parcel hub's or a mail centre's receipt, without an acceptance before it.
+const FIRST_RECEIPTS = new Set(['EVBAH', 'EVDAC']);
 /** A Parcelforce parcel: PB, its consignment number and the parcel's place in it. */
 const PARCELFORCE_PARCEL = /^PB[A-Z]{2}\d{10}$/;
 
@@ -141,10 +143,11 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   // clocks. Preserve provider order unless every scan denotes an instant.
   if (events.every(event => event.time)) {
     events.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
-    // Mail a sender hands in at a parcel hub has no acceptance scan before the
-    // hub's receipt, which the summary then calls "We've got it".
+    // Mail a sender hands in at a parcel hub, or a collection a mail centre
+    // receives first, has no acceptance scan before that receipt, which the
+    // summary then calls "We've got it".
     const first = [...events].reverse().find(event => event.stage !== 'registered' && event.stage !== 'pending');
-    if (first?.provider_code === 'EVBAH' && first.stage === 'in_transit') first.stage = 'accepted';
+    if (first?.stage === 'in_transit' && FIRST_RECEIPTS.has(first.provider_code ?? '')) first.stage = 'accepted';
   }
   const trimmed = events.slice(0, MAX_EVENTS_TO_RETURN);
   const summaryCategory = cleanScalar(summary.statusCategory);

@@ -155,7 +155,9 @@ export class InpostTracker {
     const trackingNumber = normalizeInpostTrackingNumber(rawTrackingNumber);
     // The default budget covers the request, the pause and the one transient retry.
     const budget = lookupBudget(context, 2 * this.timeoutMs + TRANSIENT_RETRY_DELAY_MS);
-    const url = `${TRACKING_ENDPOINT}/${encodeURIComponent(trackingNumber)}`;
+    // The hub words every parcel in Polish, whatever its country or Accept-Language,
+    // unless the query names a language.
+    const url = `${TRACKING_ENDPOINT}/${encodeURIComponent(trackingNumber)}?language=en`;
     const { response, bytes } = await fetchBounded(url, {
       signal: budget.signal,
       headers: {

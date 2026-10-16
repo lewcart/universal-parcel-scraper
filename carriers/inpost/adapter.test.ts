@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../app.js';
 import { SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
   normalizeInpostTrackingNumber,
@@ -157,6 +158,16 @@ describe('InPost response parsing', () => {
     expect(alone.events?.[0]?.stage).toBeUndefined();
   });
 
+  it('rewords a scan stored in Polish in place, matched by its stage and place', () => {
+    // The hub's Polish and English replies carry the same codes, clocks and places.
+    const policy = sameInstantIdentityPolicy('inpost', { supportsScanMatching: true });
+    const english = { stage: 'accepted', description: 'Collected by the Courier', location: '', providerCode: '' };
+    expect(policy?.storedSources).toEqual(['inpost']);
+    expect(policy?.matches?.(english, { ...english, description: 'Odebrana przez Kuriera' })).toBe(true);
+    expect(policy?.matches?.(english, { ...english, description: 'Przesyłka utworzona', stage: 'registered' })).toBe(false);
+    expect(policy?.matches?.(english, { ...english, location: 'Exampletown (PL)' })).toBe(false);
+  });
+
   it('binds the returned tracking number to the requested shipment', () => {
     expect(() => parseInpostTrackingResponse(parcel({ trackingNumber: '640000000000000000000002' }), TRACKING_NUMBER))
       .toThrow(SchemaError);
@@ -210,7 +221,7 @@ describe('InpostTracker fetch', () => {
     });
     const result = await new InpostTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER);
     expect(result.status).toBe('delivered');
-    expect(seen).toEqual([`https://inposteasy.com/api/tracking/${TRACKING_NUMBER}`,
+    expect(seen).toEqual([`https://inposteasy.com/api/tracking/${TRACKING_NUMBER}?language=en`,
       `https://api-shipx-pl.easypack24.net/v1/tracking/${TRACKING_NUMBER}`]);
   });
 

@@ -5,7 +5,7 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
 
 ## How it works
 
-1. `direct`: one `GET https://inposteasy.com/api/tracking/{trackingNumber}`. No cookies,
+1. `direct`: one `GET https://inposteasy.com/api/tracking/{trackingNumber}?language=en`. No cookies,
    account or browser state. A hub-confirmed collection can also query ShipX
    for its pickup point within the remaining budget.
    - The echoed `trackingNumber` must match the request, otherwise `SchemaError`.
@@ -25,6 +25,10 @@ GB). Tracked through the keyless `inposteasy.com` hub API; no postcode or link n
   `unknown` with the raw wording kept, and the sync records it for review.
 - Timestamps are kept exactly as sent with their offset. An offset-less value is dropped,
   not stamped with `Europe/Warsaw`, because four countries share this endpoint.
+- The hub words every parcel's scans in Polish, whatever its country or the
+  `Accept-Language` header, unless `language` is set, so the adapter asks for English.
+  Codes, clocks and places are the same in every language. A scan stored in Polish takes
+  the English wording in place: at its instant, the same stage and place identify it.
 - An empty `statusTitle` falls back to the raw code so a sparse event still reads as
   something.
 - At most 20 events are returned, newest first.

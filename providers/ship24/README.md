@@ -75,6 +75,9 @@ No account, cookie, fingerprint or issued token is used.
     `tkDate`. Read back on China's clock, it gives the wall clock.
 
   Their offset is dropped and the wall clock read like an offset-less one.
+- `inpost-uk-tracking` gives UTC instants with no offset: InPost's hub dates the same
+  scans with one, and Collect+'s copies say `+01:00` on London's summer clock. They are
+  read as UTC, not as wall clocks.
 - `swiss-post-tracking` puts Swiss Post's offset on the destination post's scans it relays
   (arrival, customs, sorting and delivery, with no location), which are at that office's
   clock ([Swiss Post](../../carriers/swiss-post/README.md)). On a parcel to a country with

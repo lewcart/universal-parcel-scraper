@@ -186,6 +186,19 @@ function feedOf(scan: Record<string, unknown>): Feed | null {
   return typeof code === 'string' && Object.hasOwn(RELABELLED_FEEDS, code) ? { code, ...RELABELLED_FEEDS[code] } : null;
 }
 
+/**
+ * Feeds whose offset-less timestamps are UTC instants, not wall clocks. InPost
+ * UK's give the instants InPost's hub dates with an offset, which Collect+'s
+ * copies of the same scans date "+01:00" on London's summer clock (2026-10-16).
+ */
+const UTC_FEEDS = new Set(['inpost-uk-tracking']);
+
+function utcClock(scan: Record<string, unknown>): unknown {
+  const code = isRecord(scan.courier) ? scan.courier.crawler_code : null;
+  return typeof code === 'string' && UTC_FEEDS.has(code) && typeof scan.timestamp === 'string'
+    && !EXPLICIT_OFFSET_PATTERN.test(scan.timestamp) ? `${scan.timestamp}Z` : scan.timestamp;
+}
+
 /** A relabelling feed's timestamp as the scan's wall clock; any other is left as Ship24 sent it. */
 function feedClock(timestamp: unknown, feed: Feed | null): unknown {
   if (!feed || typeof timestamp !== 'string' || !EXPLICIT_OFFSET_PATTERN.test(timestamp)) return timestamp;
@@ -330,10 +343,11 @@ export function parseShip24Response(payload: unknown, trackingNumber: string, ti
     // datetime can end in Z while still containing the carrier's local time.
     // timestamp carries the real offset (verified against the public web app),
     // except for some carrier legs (Chronopost) that omit it entirely, the
-    // feeds that relabel the carrier's wall clock, and Swiss Post's relays.
+    // feeds that relabel the carrier's wall clock or leave UTC unlabelled, and
+    // Swiss Post's relays.
     const feed = feedOf(raw);
     const relayed = swissPostRelayZone(raw, journey);
-    const clock = relayed && typeof raw.timestamp === 'string' ? raw.timestamp.replace(EXPLICIT_OFFSET_PATTERN, '') : feedClock(raw.timestamp, feed);
+    const clock = relayed && typeof raw.timestamp === 'string' ? raw.timestamp.replace(EXPLICIT_OFFSET_PATTERN, '') : feedClock(utcClock(raw), feed);
     const parsed = localEvent(clock, raw.status, raw.dispatch_code_id === 7 ? 'Delivered' : undefined);
     if (!parsed) continue;
     const location = place(raw.location);

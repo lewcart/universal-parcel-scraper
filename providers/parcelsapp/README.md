@@ -224,9 +224,9 @@ step exists for future protocol changes.
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
   times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
-  So were "Yodel" and "InPost UK", InPost's UK network, on London time: InPost's own
-  offsets give the same instants. A name added here moves its stored scans (see
-  Limitations).
+  So were "Yodel" and "InPost UK", InPost's UK network, and "Collect+", Yodel's shop
+  network, on London time: InPost's own offsets give the same instants. A name added
+  here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go

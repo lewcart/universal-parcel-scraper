@@ -234,12 +234,13 @@ function speedafZone(payload: Record<string, unknown>, date: unknown, destinatio
  * Ship24 01:27Z (2026-10-11). Pekaes' are the offset-less digits its own
  * history gives and its page labels Polish time (2026-10-13). Yodel's, InPost's
  * UK network, are London's: InPost's own offsets give the same instants
- * (2026-10-16). Their home clock is a guess, which a location in another
- * country rules out.
+ * (2026-10-16), as they do for Collect+'s, Yodel's shop network, which Ship24
+ * dates "+01:00" in summer. Their home clock is a guess, which a location in
+ * another country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
-  pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London',
+  pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London',
 };
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;

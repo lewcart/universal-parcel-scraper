@@ -976,7 +976,7 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-30T07:38:23.000Z', '2026-09-30T04:17:37.000Z']);
     expect(times(['Royal Mail'], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
     expect(times(['Japan Post'], [scan('2026-10-02T10:27:00Z', 'Example Town')])).toEqual(['2026-10-02T01:27:00.000Z']);
-    for (const name of ['Yodel', 'InPost UK']) {
+    for (const name of ['Yodel', 'InPost UK', 'Collect+']) {
       expect(times([name], [scan('2026-09-29T21:42:44Z'), scan('2026-09-28T09:00:00Z', 'Example City, Poland')]))
         .toEqual(['2026-09-29T20:42:44.000Z', '2026-09-28T07:00:00.000Z']);
     }

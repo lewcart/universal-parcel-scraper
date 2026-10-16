@@ -7,7 +7,7 @@ import { needsInpostPickup, parseInpostPickup } from './pickup.js';
 const NUMBER = '640000000000000000000001';
 const hub = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'));
 const shipx = () => JSON.parse(readFileSync(new URL('./fixtures/shipx-collected.json', import.meta.url), 'utf8'));
-const HUB_URL = `https://inposteasy.com/api/tracking/${NUMBER}`;
+const HUB_URL = `https://inposteasy.com/api/tracking/${NUMBER}?language=en`;
 const SHIPX_URL = `https://api-shipx-pl.easypack24.net/v1/tracking/${NUMBER}`;
 const POINT = 'EXA001\nExample Street 1\n00-000 Exampletown';
 

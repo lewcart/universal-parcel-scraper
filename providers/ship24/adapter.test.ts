@@ -207,6 +207,16 @@ describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {
       ['2026-05-11T08:54:09Z', undefined]])).toEqual(['2026-05-11T10:42:39.000Z', '2026-05-11T07:54:09.000Z']);
   });
 
+  it('reads InPost UK\'s offset-less clocks as UTC, the instants of Collect+\'s London offsets', () => {
+    // Live shape (2026-10-16): one parcel's scans from both feeds, an hour apart on the digits.
+    const scan = (timestamp: string, status: string, crawler: string) => ({ timestamp, status, courier: { crawler_code: crawler } });
+    const reply = parseShip24Response({ data: { tracking_number: number,
+      couriers: [{ translation: { name: 'Collect+' } }, { translation: { name: 'Inpost (UK)' } }],
+      events: [scan('2026-10-14T19:18:43+01:00', 'Received at EXAMPLE LOCAL', 'collect-plus-tracking'),
+        scan('2026-10-14T18:18:43', 'Parcel Stored by Customer', 'inpost-uk-tracking')] } }, number);
+    expect(reply.events?.map((event) => event.time)).toEqual(['2026-10-14T18:18:43.000Z', '2026-10-14T18:18:43.000Z']);
+  });
+
   it('turns 4PX\'s instant back into the wall clock it read on China\'s, then places it', () => {
     expect(feed('4px-tracking', '4PX', [['2026-05-26T06:30:03+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-24T23:39:05+00:00', 'US     '],
       ['2026-05-21T12:35:30+00:00', 'CN'], ['2026-05-21T09:08:01+00:00', 'US  NY  EXAMPLE TOWN 12345'], ['2026-05-21T09:04:13+00:00', undefined]],

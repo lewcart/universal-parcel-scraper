@@ -1,7 +1,11 @@
 {
   "id": "poczta-polska",
   "displayName": "Poczta Polska",
-  "aliases": [],
+  "aliases": [
+    "Polish Post",
+    "Poland Post",
+    "Pocztex"
+  ],
   "region": {
     "countries": [
       "PL"

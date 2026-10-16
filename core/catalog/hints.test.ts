@@ -130,6 +130,9 @@ describe('carrier names reported by universal providers', () => {
     ['Evri International', 'evri'], ['Evri', 'evri-uk'], ['Hermes UK', 'evri-uk'], ['DPD Germany', 'dpd-de'], ['DPD UK', 'dpd-uk'],
     // Carriers whose scans are instants, followed by their home country.
     ['BRT (IT)', 'brt'], ['Bpost Belgium', 'bpost'], ['Royal Mail (UK)', 'royal-mail'],
+    // Names providers give these carriers' own parcels.
+    ['Poland Post', 'poczta-polska'], ['Pocztex', 'poczta-polska'], ['New Zealand Post', 'nz-post'],
+    ['Norway Post', 'bring-posten'], ['Amazon Swiship', 'amazon-shipping'], ['PostNord Denmark', 'postnord'],
   ])('maps %s, a carrier followed by its own country included', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });

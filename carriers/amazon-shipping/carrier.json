@@ -3,7 +3,9 @@
   "displayName": "Amazon Shipping",
   "aliases": [
     "Shipping with Amazon",
-    "SWA"
+    "SWA",
+    "Amazon Swiship",
+    "Swiship"
   ],
   "region": {
     "countries": [

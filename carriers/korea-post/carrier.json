@@ -1,7 +1,9 @@
 {
   "id": "korea-post",
   "displayName": "Korea Post",
-  "aliases": [],
+  "aliases": [
+    "South Korea Post"
+  ],
   "region": {
     "countries": [
       "KR"

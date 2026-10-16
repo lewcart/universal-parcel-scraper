@@ -1,7 +1,9 @@
 {
   "id": "nz-post",
   "displayName": "NZ Post",
-  "aliases": [],
+  "aliases": [
+    "New Zealand Post"
+  ],
   "region": {
     "countries": [
       "NZ"

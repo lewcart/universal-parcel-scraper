@@ -1,7 +1,10 @@
 {
   "id": "postnord",
   "displayName": "PostNord",
-  "aliases": [],
+  "aliases": [
+    "PostNord Danmark",
+    "PostNord Denmark"
+  ],
   "region": {
     "countries": [
       "SE",

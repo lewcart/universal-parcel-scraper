@@ -1,7 +1,9 @@
 {
   "id": "yanwen",
   "displayName": "Yanwen",
-  "aliases": [],
+  "aliases": [
+    "Yanwen Logistics"
+  ],
   "region": {
     "countries": [
       "CN"

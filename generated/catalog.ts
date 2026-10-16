@@ -128,7 +128,8 @@ export const CARRIER_CATALOG = {
     "displayName": "Planzer",
     "color": "#e30613",
     "aliases": [
-      "Planzer Group"
+      "Planzer Group",
+      "Planzer Parcel"
     ],
     "countries": [
       "CH"
@@ -776,7 +777,9 @@ export const CARRIER_CATALOG = {
     "color": "#ff9900",
     "aliases": [
       "Shipping with Amazon",
-      "SWA"
+      "SWA",
+      "Amazon Swiship",
+      "Swiship"
     ],
     "countries": [
       "FR",
@@ -2302,6 +2305,10 @@ export const CARRIER_CATALOG = {
   "postnord": {
     "displayName": "PostNord",
     "color": "#00a0d6",
+    "aliases": [
+      "PostNord Danmark",
+      "PostNord Denmark"
+    ],
     "countries": [
       "SE",
       "DK",
@@ -3619,6 +3626,9 @@ export const CARRIER_CATALOG = {
   "nz-post": {
     "displayName": "NZ Post",
     "color": "#d8291c",
+    "aliases": [
+      "New Zealand Post"
+    ],
     "countries": [
       "NZ"
     ],
@@ -3999,6 +4009,9 @@ export const CARRIER_CATALOG = {
   "korea-post": {
     "displayName": "Korea Post",
     "color": "#da291c",
+    "aliases": [
+      "South Korea Post"
+    ],
     "countries": [
       "KR"
     ],
@@ -4392,6 +4405,11 @@ export const CARRIER_CATALOG = {
   "poczta-polska": {
     "displayName": "Poczta Polska",
     "color": "#c43c2b",
+    "aliases": [
+      "Polish Post",
+      "Poland Post",
+      "Pocztex"
+    ],
     "countries": [
       "PL"
     ],
@@ -4444,7 +4462,8 @@ export const CARRIER_CATALOG = {
     "color": "#56b529",
     "aliases": [
       "Posten Norge",
-      "Posten Bring"
+      "Posten Bring",
+      "Norway Post"
     ],
     "countries": [
       "NO",
@@ -4638,6 +4657,9 @@ export const CARRIER_CATALOG = {
   "yanwen": {
     "displayName": "Yanwen",
     "color": "#8cbe1e",
+    "aliases": [
+      "Yanwen Logistics"
+    ],
     "countries": [
       "CN"
     ],
@@ -12653,7 +12675,8 @@ export const CARRIER_CATALOG = {
     "aliases": [
       "Intelcom",
       "Dragonfly",
-      "Dragonfly Shipping"
+      "Dragonfly Shipping",
+      "Intelcom Express"
     ],
     "countries": [
       "CA"

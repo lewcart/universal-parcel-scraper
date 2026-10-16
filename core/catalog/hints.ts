@@ -91,12 +91,19 @@ function countryQualified(name: string): { base: string; country: string } | und
   return undefined;
 }
 
+// DPD's networks share one guest service that answers for any DPD parcel, and
+// 17TRACK writes "DPD (BE)" for parcels DPD places in the Netherlands. Only
+// recognition, from DPD's current country for the parcel, names the network.
+const GROUP_LOOKUP_BRANDS = ['dpd'];
+
 /**
- * A brand's one network in a country ("DPD (BE)"). None when a network of the
+ * A brand's one network in a country ("GLS (FR)"). None when a network of the
  * brand works worldwide, as DHL Express does, or several share the country.
  */
 function brandNetwork(brand: string, country: string): string | undefined {
-  const networks = brandCarrierIds(brand).map((id) => [id, CARRIER_DEFINITIONS[id as CarrierId].countries ?? []] as const);
+  const ids = brandCarrierIds(brand);
+  if (ids.some((id) => GROUP_LOOKUP_BRANDS.includes(carrierBrand(id) ?? ''))) return undefined;
+  const networks = ids.map((id) => [id, CARRIER_DEFINITIONS[id as CarrierId].countries ?? []] as const);
   if (networks.some(([, countries]) => !countries.length)) return undefined;
   const local = networks.filter(([, countries]) => countries.includes(country));
   return local.length === 1 ? local[0]![0] : undefined;

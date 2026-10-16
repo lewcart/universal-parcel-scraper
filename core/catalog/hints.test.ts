@@ -133,7 +133,7 @@ describe('carrier names reported by universal providers', () => {
   });
 
   it.each([
-    ['DPD (BE)', 'dpd-be'], ['DPD (DE)', 'dpd-de'], ['DPD (CH)', 'dpd'], ['GLS (FR)', 'gls-fr'], ['GLS IT', 'gls-it'],
+    ['GLS (FR)', 'gls-fr'], ['GLS IT', 'gls-it'], ['GLS (DE)', 'gls-de'],
   ])('maps %s, a brand followed by the country of one of its networks', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });
@@ -143,6 +143,8 @@ describe('carrier names reported by universal providers', () => {
     'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
     // No network there, two networks there, a worldwide network, a network on another clock.
     'DPD (NL)', 'Hermes (DE)', 'DHL (PL)', 'GLS (LI)',
+    // DPD's networks share one lookup, and a provider's country for its parcel can be another's.
+    'DPD (BE)', 'DPD (DE)', 'DPD (CH)',
   ])('does not guess a carrier from %s', (name) => {
     expect(carrierIdFromName(name)).toBeUndefined();
   });

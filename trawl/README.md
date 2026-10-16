@@ -15,6 +15,8 @@ needs handling that this image's solvers do not provide; its
 The service reuses browser sessions, never parcel responses. FedEx keeps one verified context
 per pooled browser and discards it on expiry, mismatch or failure. Australia Post,
 DHL Express, SF Express, WanbExpress, XPO, Asendia, DHL Poland, Magyar Posta and ZTO use fresh contexts.
+SF Express solves GeeTest's slider locally and asks for at most two other puzzles when it
+cannot read one.
 ZTO solves Dingxiang's slider and ordered-character challenge locally, with at most two
 concurrent offline OCR workers. Each worker ends with its request and retains no images.
 Verification failures and the public tracker's incomplete history still need enabled providers.

@@ -178,6 +178,56 @@ test('drag plan uses rendered image scale and whole tile origin, never alpha ins
   assert.throws(() => sfExpressDragPlan(widget, { width: 300 }, { accepted: false, x: 150 }));
 });
 
+// A widget showing synthetic puzzle `n`, with its refresh button.
+function puzzleWidget(n) {
+  const image = kind => `https://static.geetest.com/pictures/v4_pic/slide_2024_09_02/group/${kind}/${String(n).repeat(32)}.png`;
+  const rect = (x, y, width, height) => ({ x, y, width, height, cssWidth: width, borderLeft: 0, borderTop: 0 });
+  return { background: { ...rect(0, 0, 300, 200), image: image('bg') }, piece: { ...rect(0, 50, 60, 60), image: image('slide') },
+    slice: rect(0, 50, 60, 60), handle: rect(10, 250, 40, 40), handleReady: true, refresh: { x: 280, y: 260, width: 20, height: 20 } };
+}
+
+function solverFixture(readable) {
+  const page = new EventEmitter(), clicks = [], drags = [], read = [];
+  let puzzle = 1, pointer;
+  const reply = () => {
+    const req = { url: () => requestUrl(NUMBER), method: () => 'GET' };
+    page.emit('request', req);
+    page.emit('response', { request: () => req, url: () => req.url(), status: () => 200,
+      headers: () => ({ 'content-type': 'application/json' }), body: async () => Buffer.from(body(NUMBER)) });
+  };
+  page.goto = async () => ({ status: () => 200 });
+  page.content = async () => '<html>Official tracking page</html>';
+  page.evaluate = async () => puzzleWidget(puzzle);
+  page.mouse = { async move(x, y) { pointer = { x, y }; }, async down() { drags.push({ from: pointer }); },
+    async up() { drags.at(-1).to = pointer; reply(); }, async click(x, y) { clicks.push([x, y]); puzzle++; } };
+  const sessions = new SfExpressSessions({ closeMs: 10, fetchImage: async url => url,
+    decodeImage: async url => ({ url, ...url.includes('/bg/') ? { width: 300, height: 200 } : { width: 60, height: 60 } }),
+    detect: background => { read.push(background.url); return readable(background.url)
+      ? { accepted: true, x: 150, y: 50 } : { accepted: false, reason: 'Weak or ambiguous contour' }; } });
+  const context = { async newPage() { return page; }, async close() {} };
+  const run = () => sessions.run({ url: pageUrl(NUMBER), handle: { browser: { async newContext() { return context; } } },
+    tier: 3, maxTimeout: 10_000, capture });
+  return { run, clicks, drags, read };
+}
+
+test('an unreadable puzzle is replaced through the refresh button and the new one is solved', async () => {
+  const f = solverFixture(url => url.includes('/2222'));
+  const result = await f.run();
+  assert.equal(result.status, 'success');
+  assert.equal(result.capturedResponses[0].body, body(NUMBER));
+  assert.deepEqual(f.clicks, [[290, 270]]);
+  assert.equal(f.read.length, 2); assert.notEqual(f.read[0], f.read[1]);
+  assert.deepEqual(f.drags, [{ from: { x: 30, y: 270 }, to: { x: 180, y: 270.6 } }]);
+});
+
+test('the solver asks for at most two other puzzles and never drags an unreadable one', async () => {
+  const f = solverFixture(() => false);
+  const result = await f.run();
+  assert.equal(result.status, 'error');
+  assert.equal(f.clicks.length, 2); assert.equal(new Set(f.read).size, 3);
+  assert.deepEqual(f.drags, []);
+});
+
 
 test('deadline abort kills an active image decoder process', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'sf-decoder-test-'));

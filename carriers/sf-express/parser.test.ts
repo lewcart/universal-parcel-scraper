@@ -34,7 +34,10 @@ describe('SF Express public route parsing', () => {
     expect(() => parse(duplicate, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const mixed = copy(); mixed.result.unshift(wrong.result[0]!);
     expect(parse(mixed, NUMBER).events).toHaveLength(6);
-    expect(() => parse({ ...fixture, result: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('keeps an empty success envelope inconclusive', () => {
+    expect(() => parse({ ...fixture, result: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
   it('keeps verification failures and server errors distinct from unknown shipments', () => {

@@ -6,6 +6,8 @@ const PAGE = '/tw/en/dynamic_function/waybill/';
 const ROUTES = '/sf-service-core-web/service/bills/';
 const MAX_RESPONSE = 2_000_000;
 const MAX_PNG = 262_144;
+// A visitor asks for another puzzle when one is hard to read; so does the solver.
+const MAX_REFRESHES = 2;
 
 export function sfExpressSessionNumber(url, capture = {}) {
   let page;
@@ -111,6 +113,11 @@ export function sfExpressWidget() {
   const { handle } = result;
   const hit = document.elementFromPoint(handle.x + handle.width / 2, handle.y + handle.height / 2);
   result.handleReady = Boolean(hit?.closest('.geetest_btn') && boxes[0].contains(hit));
+  const refresh = visible('button.geetest_refresh').filter(element => boxes[0].contains(element));
+  if (refresh.length === 1) {
+    const rect = refresh[0].getBoundingClientRect();
+    result.refresh = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  }
   return result;
 }
 
@@ -154,10 +161,12 @@ function abortable(promise, signal) {
 
 export class SfExpressSessions {
   #busy = new WeakSet();
-  constructor({ closeMs = 2_000, fetchImage = readImage, decodeImage = decodeSfExpressPng, solve = null } = {}) {
+  constructor({ closeMs = 2_000, fetchImage = readImage, decodeImage = decodeSfExpressPng,
+    detect = detectSfExpressGap, solve = null } = {}) {
     this.closeMs = closeMs;
     this.fetchImage = fetchImage;
     this.decodeImage = decodeImage;
+    this.detect = detect;
     this.solve = solve;
   }
 
@@ -286,16 +295,55 @@ export class SfExpressSessions {
       const abort = () => { clearTimeout(timer); reject(new Error('SF Express solve stopped')); };
       signal.addEventListener('abort', abort, { once: true });
     });
-    let previous, widget, stable = 0;
-    while (remaining() > 0) {
-      widget = await abortable(page.evaluate(sfExpressWidget), signal);
+    // Wait for settled geometry and, after a refresh, for the new puzzle.
+    const settle = async replaced => {
+      const until = Date.now() + 5_000;
+      let previous;
+      for (let stable = 0; ;) {
+        const widget = await abortable(page.evaluate(sfExpressWidget), signal);
+        signal.throwIfAborted();
+        stable = widget?.background.image !== replaced && sameWidget(previous, widget) ? stable + 1 : 0;
+        if (stable >= 3) return widget;
+        if (replaced && Date.now() > until) throw new Error('Challenge refresh did not load');
+        previous = widget;
+        await pause(200);
+      }
+    };
+    let widget = await settle();
+    for (let refreshes = 0; ; refreshes++) {
+      const plan = await this.#plan(widget, signal);
+      // Recheck after image I/O: a refreshed challenge must never use old geometry.
+      const current = await abortable(page.evaluate(sfExpressWidget), signal);
       signal.throwIfAborted();
-      stable = sameWidget(previous, widget) ? stable + 1 : 0;
-      if (stable >= 3) break;
-      previous = widget;
-      await pause(200);
+      const unchanged = sameWidget(widget, current);
+      if (plan && unchanged) {
+        await abortable(page.mouse.move(plan.x, plan.y), signal);
+        signal.throwIfAborted();
+        await abortable(page.mouse.down(), signal);
+        try {
+          // Camoufox already supplies natural pointer motion. Large chains of tiny
+          // moves multiply its per-call delay and exhaust the tracking deadline.
+          await abortable(page.mouse.move(plan.x + plan.distance, plan.y + 0.6), signal);
+          await pause(180);
+        } finally { if (!signal.aborted) await abortable(page.mouse.up(), signal); }
+        signal.throwIfAborted();
+        return;
+      }
+      if (refreshes >= MAX_REFRESHES) throw new Error(unchanged ? 'Challenge geometry changed' : 'Challenge changed during image analysis');
+      // A puzzle the detector cannot read is replaced through the widget's own
+      // refresh button; one that changed by itself is read again.
+      if (unchanged) {
+        if (!current.refresh) throw new Error('Challenge refresh is unavailable');
+        const { x, y, width, height } = current.refresh;
+        await abortable(page.mouse.click(x + width / 2, y + height / 2), signal);
+        signal.throwIfAborted();
+      }
+      widget = await settle(unchanged ? widget.background.image : undefined);
     }
-    if (!widget) throw new Error('SF Express challenge did not load');
+  }
+
+  // The drag for a settled widget, or null when its puzzle cannot be read.
+  async #plan(widget, signal) {
     const bgUrl = sfExpressImageUrl(widget.background.image, 'bg');
     const pieceUrl = sfExpressImageUrl(widget.piece.image, 'slide');
     if (!bgUrl || !pieceUrl || bgUrl.replace('/bg/', '/slide/') !== pieceUrl) throw new Error('Challenge images changed');
@@ -305,21 +353,8 @@ export class SfExpressSessions {
     if (piece.width > 256 || piece.height > 256) throw new Error('Challenge piece is too large');
     const renderedScale = widget.background.width / background.width;
     const expectedY = Math.round((widget.slice.y - widget.background.y) / renderedScale);
-    const match = detectSfExpressGap(background, piece, { expectedY });
-    const plan = sfExpressDragPlan(widget, background, match);
-    // Recheck after image I/O: a refreshed challenge must never use old geometry.
-    const current = await abortable(page.evaluate(sfExpressWidget), signal);
-    if (!sameWidget(widget, current)) throw new Error('Challenge changed during image analysis');
-    await abortable(page.mouse.move(plan.x, plan.y), signal);
-    signal.throwIfAborted();
-    await abortable(page.mouse.down(), signal);
-    try {
-      // Camoufox already supplies natural pointer motion. Large chains of tiny
-      // moves multiply its per-call delay and exhaust the tracking deadline.
-      await abortable(page.mouse.move(plan.x + plan.distance, plan.y + 0.6), signal);
-      await pause(180);
-    } finally { if (!signal.aborted) await abortable(page.mouse.up(), signal); }
-    signal.throwIfAborted();
+    const match = this.detect(background, piece, { expectedY });
+    try { return sfExpressDragPlan(widget, background, match); } catch { return null; }
   }
 }
 

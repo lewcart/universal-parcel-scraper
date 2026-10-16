@@ -18,7 +18,8 @@ an `SF` number that fails stays a suggestion.
    `GET https://htm.sf-express.com/sf-service-core-web/service/bills/{number}/routes?lang=en&region=tw&translate=&app=bill`.
    - The page opens a GeeTest v4 slider in bind mode with no start button, which TRAWL's generic
      solver can't drive. The scoped helper [`sf-express-session.mjs`](../../trawl/sf-express-session.mjs)
-     solves it; see [`trawl/README.md`](../../trawl/README.md).
+     solves it; see [`trawl/README.md`](../../trawl/README.md). A puzzle its detector cannot read is
+     replaced through the widget's refresh button, at most twice, rather than failing the lookup.
    - The page adds its own short-lived verification headers. Each lookup uses a fresh isolated
      context; no cookies, tokens or phone suffix are stored.
    - Only a capture whose URL matches that number and query exactly counts. A hidden widget is not
@@ -30,7 +31,8 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
 
 - There is no reliable not-found. `code: 60000` (`运单路由查询被管控`, query restricted) and captcha
   failures (`code: 1` "captcha verification failure", `70000`) are challenges; synthetic numbers get
-  `60000` too. `500` is indeterminate, and an empty success envelope proves nothing.
+  `60000` too. `500` is indeterminate, and so is an empty success envelope: SF sends one for
+  waybills it has scanned too.
 - On the capture: 401/403 is a challenge, 404/410 means the endpoint is gone, 429 is rate limited
   (honours `Retry-After`).
 - Exactly one `result` entry must have `id` equal to the number. Sibling references and

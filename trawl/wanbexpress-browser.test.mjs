@@ -15,8 +15,8 @@ const response = (value = body, status = 200, id = number) => ({
 function fixture() {
   const handlers = {}, state = { closed: 0, counted: 0, replaced: 0, policy: 0 };
   const page = { on: (name, fn) => { handlers[name] = fn; }, off: name => { delete handlers[name]; },
-    goto: async () => { handlers.response(response(challenge)); return { status: () => 200 }; },
-    evaluate: async () => { handlers.response(response(body, 200, 'WNBZZ9990000002YQ')); handlers.response(response()); },
+    goto: async target => { state.navigation = target; handlers.response(response(challenge)); return { status: () => 200 }; },
+    evaluate: async (_script, requested) => { state.requested = requested; handlers.response(response(body, 200, 'WNBZZ9990000002YQ')); handlers.response(response()); },
   };
   const context = { newPage: async () => page, close: async () => { state.closed++; } };
   const options = { url, capture, tier: 3, maxTimeout: 500, handle: { browser: { newContext: async () => context },
@@ -40,6 +40,9 @@ test('observes before navigation, retains the verification transition and ignore
   assert.deepEqual(result.capturedResponses.map(row => row.body), [challenge, body]);
   assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
   assert.equal(result.html, '');
+  assert.equal(state.navigation, 'https://tracking.wanbexpress.com/');
+  assert.equal(state.requested, number);
+  assert.equal(result.effectiveUrl, url);
   assert.equal(state.closed, 1);
   assert.equal(state.counted, 1);
   assert.equal(state.policy, 1);

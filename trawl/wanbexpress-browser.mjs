@@ -66,7 +66,8 @@ export async function runWanbBrowser({ url, handle, tier, maxTimeout, capture, i
           }).catch(() => { if (accepting) entry.error = 'WanbExpress response could not be read'; }));
         };
         page.on('response', observer);
-        const navigation = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: remaining() });
+        // The deep link selects the checkbox-only configuration; the blank form can advertise the passive guest flow.
+        const navigation = await page.goto(`${ORIGIN}/`, { waitUntil: 'domcontentloaded', timeout: remaining() });
         statusCode = navigation?.status() ?? 0;
         if (expired || statusCode !== 200) return result();
         // Prefer the current checkbox flow; its callback verifies this session.

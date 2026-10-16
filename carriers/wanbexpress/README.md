@@ -4,7 +4,8 @@ Tracks WanbExpress's own parcel identifiers through `tracking.wanbexpress.com`.
 A direct HTTP lookup is tried first; a refused session can recover through the optional
 TRAWL service. HTTP recognition never starts a browser.
 
-The scoped browser helper observes tracking responses before navigation. It tries the page's
+The scoped browser helper observes tracking responses before opening the blank form. A deep link
+can select the checkbox-only configuration. It tries the page's
 checkbox with TRAWL's reCAPTCHA solver, then the passive V3 flow while the public page still
 advertises that configuration. The carrier must accept `/Home/CaptchaVerify` before another
 tracking request is made. CAPTCHA tokens, cookies and the rendered page stay in the isolated

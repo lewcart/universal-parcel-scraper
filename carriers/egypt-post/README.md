@@ -50,8 +50,9 @@ A code ending `EG` is Egypt Post's, but the issuer of an S10 code does not estab
 it, so detection keeps such codes with the generic postal carrier. `egypt-post-s10`, at low
 confidence, makes preflight ask Egypt Post about them. The tracker's own script shows the `ENO`,
 `EXP` and `RCC` domestic prefixes, and `egypt-post-1` suggests Egypt Post for those at low
-confidence. A longer placeholder in the script, with nine digits, is not claimed. The samples and
-their sources are in [`numbers.json`](numbers.json).
+confidence. A longer placeholder in the script, with nine digits, is not claimed. Mail from abroad
+reaches Egypt Post when a caller names it, a provider names it, or a result gives Egypt as the
+destination of an S10 item. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

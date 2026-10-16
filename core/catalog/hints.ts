@@ -41,7 +41,7 @@ const CATALOG_NAMES = new Set([
 // request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['CA', 'canada-post'], ['CH', 'swiss-post'],
-  ['DE', 'dhl'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
+  ['DE', 'dhl'], ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
   ['GB', 'royal-mail'], ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['PT', 'ctt'],
   ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
 ]);

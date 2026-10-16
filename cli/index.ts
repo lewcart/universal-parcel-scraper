@@ -6,6 +6,7 @@ import { createTracker, TrackingError } from '../facade/index.js';
 import type { UniversalSource } from '../providers/types.js';
 import { CARRIER_CATALOG } from '../generated/catalog.js';
 import { createTrackingServer } from '../server/index.js';
+import { startRoyalMailBrowserService } from '../carriers/royal-mail/browser-service.js';
 
 const help = `Universal Parcel Scraper
 
@@ -14,6 +15,7 @@ const help = `Universal Parcel Scraper
   parcel-scraper track <number> [--carrier <id>] [--postcode <value>] [--tracking-url <url>]
   parcel-scraper carriers
   parcel-scraper serve [--host <address>] [--port <port>]
+  parcel-scraper royal-mail-browser
 
 SCRAPER_PROVIDERS selects comma-separated providers; default: UPU.
 FLARESOLVERR_URL and TRACKING_CHROMIUM_PATH enable browser transports.
@@ -33,6 +35,13 @@ function count(env: NodeJS.ProcessEnv, name: string): number | undefined {
 export async function main(argv = process.argv.slice(2), env = process.env): Promise<number> {
   const [command, ...args] = argv;
   if (!command || ['--help','-h','help'].includes(command)) { console.log(help); return 0; }
+  if (command === 'royal-mail-browser') {
+    if (args.length) throw new TypeError('Unexpected argument; configure the Royal Mail browser service through its environment');
+    const server = await startRoyalMailBrowserService(env);
+    console.error(JSON.stringify({ service: 'royal-mail-browser', state: 'ready' }));
+    for (const signal of ['SIGINT', 'SIGTERM'] as const) process.once(signal, () => { void server.close(); });
+    return 0;
+  }
   if (!['detect','recognize','track','carriers','serve'].includes(command)) throw new TypeError('Unknown command; use --help');
   const values: Record<string, string> = {};
   const positional: string[] = [];

@@ -389,7 +389,19 @@ describe('Royal Mail lookup steps', () => {
       env: { ROYAL_MAIL_BROWSER_PROXY: 'socks5://10.0.0.1:1080' } });
     await instance.track({ number: DELIVERED_NUMBER });
     expect(fetchRoyalMailInBrowser).toHaveBeenCalledWith(DELIVERED_NUMBER, '/test/chromium', expect.any(AbortSignal),
-      expect.any(Number), true, 'socks5://10.0.0.1:1080');
+      expect.any(Number), true, 'socks5://10.0.0.1:1080', null);
+  });
+
+  it('uses the dedicated remote browser for tracking and browser recognition without requiring local Chromium', async () => {
+    const endpoint = 'ws://browser.invalid/synthetic-capability';
+    vi.mocked(fetchRoyalMailInBrowser).mockResolvedValue({ ...parseRoyalMailTrackingResponse(DELIVERED, DELIVERED_NUMBER) });
+    const instance = adapter({ trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER,
+      env: { ROYAL_MAIL_BROWSER_WS_ENDPOINT: endpoint } });
+    await instance.track({ number: DELIVERED_NUMBER });
+    await instance.recognizeWithBrowser!(DELIVERED_NUMBER);
+    expect(instance.steps).toEqual(['browser']);
+    expect(fetchRoyalMailInBrowser).toHaveBeenCalledTimes(2);
+    expect(fetchRoyalMailInBrowser).toHaveBeenCalledWith(DELIVERED_NUMBER, '', expect.any(AbortSignal), expect.any(Number), true, null, endpoint);
   });
 
   it.each([404, 410])('keeps an unrecognized HTTP %s outside parcel absence', async status => {

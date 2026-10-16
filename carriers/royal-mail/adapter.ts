@@ -18,7 +18,9 @@ const SETTLE_TIMEOUT_MS = 15_000;
 const MAX_CAPTURED = 20;
 
 export interface RoyalMailTrackerOptions {
-  /** Fresh local Chromium; preferred when supplied. */
+  /** Private Playwright WebSocket service; preferred when supplied. Keep its capability URL outside logs and Git. */
+  browserWsEndpoint?: string | null;
+  /** Fresh local Chromium, used when no private browser endpoint is supplied. */
   executablePath?: string | null;
   /** An `http://` or `socks5://` proxy for the local Chromium's traffic. */
   browserProxy?: string | null;
@@ -42,6 +44,7 @@ export class RoyalMailTracker {
   readonly #fullHistory: boolean;
   readonly #executablePath: string | null;
   readonly #browserProxy: string | null;
+  readonly #browserWsEndpoint: string | null;
 
   constructor(options: RoyalMailTrackerOptions = {}) {
     if (options.timeoutMs !== undefined && (!Number.isFinite(options.timeoutMs) || options.timeoutMs <= 0)) {
@@ -55,6 +58,7 @@ export class RoyalMailTracker {
     this.#fullHistory = options.fullHistory ?? false;
     this.#executablePath = options.executablePath ?? null;
     this.#browserProxy = options.browserProxy?.trim() || null;
+    this.#browserWsEndpoint = options.browserWsEndpoint?.trim() || null;
   }
 
   /** The injected browser service, or one built from the configured URL. */
@@ -65,11 +69,11 @@ export class RoyalMailTracker {
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeRoyalMailNumber(trackingNumber);
-    if (this.#executablePath) {
+    if (this.#browserWsEndpoint || this.#executablePath) {
       return runSteps<CarrierResult>({ carrier: 'royal-mail', budgetMs: context.budgetMs ?? this.timeoutMs,
         signal: context.signal, recorder: this.#recorder }, [{ id: 'browser', run: ({ remainingMs, signal }) =>
-        fetchRoyalMailInBrowser(number, this.#executablePath!, signal, Math.min(60_000, remainingMs), this.#fullHistory,
-          this.#browserProxy) }]);
+        fetchRoyalMailInBrowser(number, this.#executablePath ?? '', signal, Math.min(60_000, remainingMs), this.#fullHistory,
+          this.#browserProxy, this.#browserWsEndpoint) }]);
     }
     // The legacy service remains available through explicit tracker instances.
     const trawl = this.#browserService();
@@ -190,18 +194,19 @@ export class RoyalMailTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
+  const endpoint = environment.env.ROYAL_MAIL_BROWSER_WS_ENDPOINT?.trim() || null;
   const tracker = new RoyalMailTracker({ executablePath: environment.browserExecutablePath,
-    browserProxy: environment.env.ROYAL_MAIL_BROWSER_PROXY, recorder: environment.recorder, fullHistory: true });
+    browserWsEndpoint: endpoint, browserProxy: environment.env.ROYAL_MAIL_BROWSER_PROXY, recorder: environment.recorder, fullHistory: true });
   return {
     id: 'royal-mail', recordsSteps: true, steps: ['browser'],
     track: (input, context) => {
       normalizeRoyalMailNumber(input.number);
-      if (!environment.browserExecutablePath) throw new ChallengeError('Royal Mail', 'Royal Mail requires TRACKING_CHROMIUM_PATH');
+      if (!endpoint && !environment.browserExecutablePath) throw new ChallengeError('Royal Mail', 'Royal Mail requires TRACKING_CHROMIUM_PATH or ROYAL_MAIL_BROWSER_WS_ENDPOINT');
       return tracker.fetch(input.number, context);
     },
     recognizeWithBrowser: (number, context) => recognizeFromBrowserLookup(() => {
       normalizeRoyalMailNumber(number);
-      if (!environment.browserExecutablePath) throw new ChallengeError('Royal Mail', 'Royal Mail requires TRACKING_CHROMIUM_PATH');
+      if (!endpoint && !environment.browserExecutablePath) throw new ChallengeError('Royal Mail', 'Royal Mail requires TRACKING_CHROMIUM_PATH or ROYAL_MAIL_BROWSER_WS_ENDPOINT');
       return tracker.fetch(number, context);
     }),
   };

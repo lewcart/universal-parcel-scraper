@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
 import type { Page, Request } from 'playwright-core';
 import { describe, expect, it, vi } from 'vitest';
-import { captureRoyalMailReply } from './browser.js';
+import { captureRoyalMailReply, royalMailBrowserUserAgent } from './browser.js';
 import { royalMailEventsApiUrl, royalMailSummaryApiUrl } from './parser.js';
 
 // Synthetic references and data; issued API sessions never enter fixtures.
@@ -10,6 +10,17 @@ const URL = royalMailSummaryApiUrl(NUMBER);
 const payload = { mailPieces: { mailPieceId: NUMBER, summary: { statusCategory: 'Delivered' },
   recipient: 'PRIVATE RECIPIENT', apiSession: 'PRIVATE SESSION' } };
 const tick = () => new Promise<void>(resolve => setImmediate(resolve));
+
+it('uses the remote browser platform and always releases its metadata session', async () => {
+  const cdp = { send: vi.fn(async () => ({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 HeadlessChrome/155.0.1.2 Safari/537.36' })), detach: vi.fn(async () => {}) };
+  const remote = { version: () => '155.0.1.2', newBrowserCDPSession: async () => cdp };
+  await expect(royalMailBrowserUserAgent(remote as never, true)).resolves.toBe(
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/155.0.0.0 Safari/537.36');
+  expect(cdp.detach).toHaveBeenCalledOnce();
+  cdp.send.mockResolvedValueOnce({ userAgent: 'PRIVATE' });
+  await expect(royalMailBrowserUserAgent(remote as never, true)).rejects.toMatchObject({ kind: 'schema' });
+  expect(cdp.detach).toHaveBeenCalledTimes(2);
+});
 
 function harness(phase: 'summary' | 'events' = 'summary') {
   const emitter = new EventEmitter();

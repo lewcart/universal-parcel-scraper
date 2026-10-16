@@ -1,8 +1,8 @@
 import { setTimeout as delay } from 'node:timers/promises';
-import type { Page, Request, Response as BrowserResponse } from 'playwright-core';
+import type { Browser, Page, Request, Response as BrowserResponse } from 'playwright-core';
 import { carrierErrorKind, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
-import { withLocalBrowser } from '../../core/transport/localBrowser.js';
+import { withLocalBrowser, withRemoteBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
 import { parseRoyalMailTrackingResponse, royalMailEventsApiUrl, royalMailSummaryApiUrl, royalMailTrackingUrl } from './parser.js';
 
@@ -11,6 +11,22 @@ const ORIGIN = 'https://www.royalmail.com';
 const MAX_BYTES = 2_000_000;
 // The page keeps this frame hidden off-screen until hCaptcha wants a person to solve it.
 const CAPTCHA_CHALLENGE = 'iframe[src*="hcaptcha.com"][src*="frame=challenge"]:visible';
+
+export async function royalMailBrowserUserAgent(browser: Browser, remote: boolean): Promise<string> {
+  const major = browser.version().split('.')[0];
+  if (remote) {
+    // Use the browser's OS, rather than the calling server's platform.
+    const cdp = await browser.newBrowserCDPSession();
+    try {
+      const version = await cdp.send('Browser.getVersion');
+      if (!/^Mozilla\/5\.0 [\x20-\x7E]{20,300}$/.test(version.userAgent)) throw new SchemaError(PROVIDER);
+      return version.userAgent.replace(/HeadlessChrome\/[\d.]+/, `Chrome/${major}.0.0.0`);
+    } finally { await cdp.detach(); }
+  }
+  const platform = process.platform === 'darwin' ? 'Macintosh; Intel Mac OS X 10_15_7'
+    : process.platform === 'win32' ? 'Windows NT 10.0; Win64; x64' : 'X11; Linux x86_64';
+  return `Mozilla/5.0 (${platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${major}.0.0.0 Safari/537.36`;
+}
 // The consent manager parks the address of a frame it blocks in `data-ta-src`.
 const CAPTCHA_WITHHELD = 'iframe[data-hcaptcha-widget-id][data-ta-src]';
 
@@ -124,15 +140,14 @@ export async function captureRoyalMailReply(page: Page, url: string, number: str
 }
 
 export function fetchRoyalMailInBrowser(number: string, executablePath: string, signal: AbortSignal,
-  timeoutMs: number, fullHistory: boolean, proxy: string | null = null): Promise<CarrierResult> {
-  return withLocalBrowser({ provider: PROVIDER, executablePath, signal, timeoutMs, proxy,
+  timeoutMs: number, fullHistory: boolean, proxy: string | null = null, endpoint: string | null = null): Promise<CarrierResult> {
+  const withBrowser = endpoint ? withRemoteBrowser : withLocalBrowser;
+  return withBrowser({ provider: PROVIDER, executablePath, signal, timeoutMs, proxy, endpoint: endpoint ?? '',
     args: ['--disable-blink-features=AutomationControlled'] }, async ({ browser, signal: session, remainingMs }) => {
     try {
-      const platform = process.platform === 'darwin' ? 'Macintosh; Intel Mac OS X 10_15_7'
-        : process.platform === 'win32' ? 'Windows NT 10.0; Win64; x64' : 'X11; Linux x86_64';
-      const major = browser.version().split('.')[0];
+      const userAgent = await royalMailBrowserUserAgent(browser, endpoint !== null);
       const context = await browser.newContext({ locale: 'en-GB', acceptDownloads: false, serviceWorkers: 'block',
-        userAgent: `Mozilla/5.0 (${platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${major}.0.0.0 Safari/537.36` });
+        userAgent });
       session.throwIfAborted();
       const page = await context.newPage();
       const timeout = () => Math.min(15_000, remainingMs());

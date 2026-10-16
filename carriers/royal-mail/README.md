@@ -1,7 +1,8 @@
 # Royal Mail
 
 UK S10 and domestic 2D-reference parcel history through the public tracking application. Automatic
-tracking uses a fresh local Chromium configured by `TRACKING_CHROMIUM_PATH`. The same tracker
+tracking uses a fresh browser context. `ROYAL_MAIL_BROWSER_WS_ENDPOINT` selects a private
+Playwright browser service; otherwise `TRACKING_CHROMIUM_PATH` supplies local Chromium. The same tracker
 answers for [Parcelforce](../parcelforce/README.md), whose numbers this adapter also accepts,
 including its 14-character `PB` parcel numbers, and for mail from abroad, which keeps the
 sending post's S10 number once it reaches the UK.
@@ -51,6 +52,25 @@ deadline and cancellation signal, and the browser closes after each lookup.
 
 ## Explicit browser-service calls
 
+The dedicated WebSocket service runs the same tracking flow and parser as the local browser.
+It takes precedence over local Chromium when `ROYAL_MAIL_BROWSER_WS_ENDPOINT` is set, including
+for browser recognition. The browser's own platform sets its User-Agent. Queueing, connection
+and retrieval share the lookup deadline; disconnecting disposes that lookup's contexts while
+the supervised browser process stays available for the next call. Cookies and issued tokens
+are not shared across lookups.
+
+Run `parcel-scraper royal-mail-browser` on a host whose ordinary Chrome is accepted by the
+tracking service. Set `TRACKING_CHROMIUM_PATH` to that browser, `ROYAL_MAIL_BROWSER_PORT` to
+its local port, and `ROYAL_MAIL_BROWSER_WS_PATH` to a private random path of at least 32 URL-safe
+characters after the slash. The worker binds to loopback. Carry it over an authenticated private
+tunnel and configure the resulting endpoint on the caller. The client preserves the worker's
+loopback Host header through the tunnel. Both ends need the same
+`playwright-core` version. Keep the path and endpoint outside source control and logs.
+
+The worker needs process supervision and an available host. If it is unavailable, tracking
+fails as transport and enabled providers follow their normal fallback route. The local browser
+remains available to installations without a dedicated endpoint.
+
 `RoyalMailTracker` also retains the experimental TRAWL path when configured
 with `trawl` or `trawlUrl` and no local `executablePath`. It is excluded from
 automatic routing. Constructor calls remain summary-only by default; pass
@@ -90,6 +110,6 @@ outside this adapter's scope.
 
 ## Testing
 
-Set `TRACKING_CHROMIUM_PATH`, `ROYAL_MAIL_LIVE_TRACKING_NUMBER` and optionally
+Set `ROYAL_MAIL_BROWSER_WS_ENDPOINT` or `TRACKING_CHROMIUM_PATH`, plus `ROYAL_MAIL_LIVE_TRACKING_NUMBER` and optionally
 `ROYAL_MAIL_UNKNOWN_NUMBER` outside the repository, then run
 `npm run test:carriers:live -- carriers/royal-mail`.

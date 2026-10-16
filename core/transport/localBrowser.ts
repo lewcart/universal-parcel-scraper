@@ -1,11 +1,11 @@
 /**
- * The one local Chromium a process runs. A carrier outage can send a whole
+ * The one browser session a process runs. A carrier outage can send a whole
  * batch to the browser tier, so lookups take turns instead of each spawning a
  * browser: a lookup waits for the browser inside its own deadline and fails
  * with a budget error when that deadline passes first.
  */
 import type { Browser } from 'playwright-core';
-import { BudgetExceededError, carrierErrorKind } from '../errors/index.js';
+import { BudgetExceededError, carrierErrorKind, TransportError } from '../errors/index.js';
 import { loadChromium } from './optional.js';
 
 export interface LocalBrowserOptions {
@@ -45,6 +45,27 @@ function proxyServer(value: string): string {
 }
 
 export async function withLocalBrowser<T>(options: LocalBrowserOptions, run: (session: LocalBrowserSession) => Promise<T>): Promise<T> {
+  return withBrowser(options, run);
+}
+
+/** Connects to a private Playwright browser; closing the client disposes its contexts, not the service. */
+export async function withRemoteBrowser<T>(options: Pick<LocalBrowserOptions, 'provider' | 'signal' | 'timeoutMs'> & { endpoint: string },
+  run: (session: LocalBrowserSession) => Promise<T>): Promise<T> {
+  let url: URL;
+  try { url = new URL(options.endpoint); } catch { throw new TypeError('Browser endpoint must be a WebSocket URL'); }
+  if (!['ws:', 'wss:'].includes(url.protocol) || !url.hostname || url.username || url.password || url.hash) {
+    throw new TypeError('Browser endpoint must be a WebSocket URL');
+  }
+  try { return await withBrowser({ provider: options.provider, timeoutMs: options.timeoutMs, signal: options.signal, executablePath: '' }, run, url.href); }
+  catch (error) {
+    if (options.signal?.aborted) throw options.signal.reason;
+    if (carrierErrorKind(error)) throw error;
+    // Connection diagnostics can contain the endpoint's capability path.
+    throw new TransportError(options.provider, `${options.provider} browser service is unavailable`);
+  }
+}
+
+async function withBrowser<T>(options: LocalBrowserOptions, run: (session: LocalBrowserSession) => Promise<T>, endpoint?: string): Promise<T> {
   const { provider, timeoutMs } = options;
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 60_000) {
     throw new TypeError('Browser tracking timeout must be between 1 and 60000 ms');
@@ -92,7 +113,9 @@ export async function withLocalBrowser<T>(options: LocalBrowserOptions, run: (se
     const chromium = await unlessStopped(loadChromium(provider));
     if (signal.aborted) throw stopped();
     // Do not pass the application environment (database or API secrets) to Chromium.
-    launching = chromium.launch({ executablePath: options.executablePath, headless: true, args: [...(options.args ?? [])],
+    // The private service binds to loopback; its Host check must survive a tunnel's different address.
+    launching = endpoint ? chromium.connect(endpoint, { timeout: Math.min(remainingMs(), 10_000), headers: { Host: 'localhost' } })
+      : chromium.launch({ executablePath: options.executablePath, headless: true, args: [...(options.args ?? [])],
       timeout: Math.min(remainingMs(), 10_000), ...(proxy ? { proxy: { server: proxy } } : {}),
       env: { PATH: process.env.PATH ?? '', HOME: process.env.HOME ?? '/tmp', LANG: 'en_US.UTF-8' } });
     browser = await unlessStopped(launching);

@@ -1,10 +1,10 @@
 import { chromium } from 'playwright-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { carrierErrorKind, TransportError } from '../errors/index.js';
-import { withLocalBrowser } from './localBrowser.js';
+import { withLocalBrowser, withRemoteBrowser } from './localBrowser.js';
 import { loadChromium } from './optional.js';
 
-vi.mock('playwright-core', () => ({ chromium: { launch: vi.fn() } }));
+vi.mock('playwright-core', () => ({ chromium: { launch: vi.fn(), connect: vi.fn() } }));
 vi.mock(import('./optional.js'), async (importOriginal) => {
   const actual = await importOriginal();
   return { ...actual, loadChromium: vi.fn(actual.loadChromium) };
@@ -18,7 +18,48 @@ function browser() {
 }
 /** Long enough for a lookup that is free to launch to have done so. */
 const turn = () => new Promise((resolve) => setTimeout(resolve, 10));
-afterEach(() => { vi.mocked(chromium.launch).mockReset(); vi.restoreAllMocks(); });
+afterEach(() => { vi.mocked(chromium.launch).mockReset(); vi.mocked(chromium.connect).mockReset(); vi.restoreAllMocks(); });
+
+describe('private remote browser', () => {
+  const remote = { provider: 'Synthetic', endpoint: 'ws://browser.invalid/PRIVATE_CAPABILITY', timeoutMs: 5_000 };
+
+  it('connects without launching locally, then disconnects after the work', async () => {
+    const instance = { close: vi.fn(async () => {}) };
+    vi.mocked(chromium.connect).mockResolvedValue(instance as never);
+    await expect(withRemoteBrowser(remote, async ({ browser }) => { expect(browser).toBe(instance); return 'served'; })).resolves.toBe('served');
+    expect(chromium.connect).toHaveBeenCalledWith(remote.endpoint, { timeout: expect.any(Number), headers: { Host: 'localhost' } });
+    expect(chromium.launch).not.toHaveBeenCalled();
+    expect(instance.close).toHaveBeenCalledOnce();
+  });
+
+  it('keeps capability URLs out of failed connection diagnostics', async () => {
+    vi.mocked(chromium.connect).mockRejectedValue(new Error(remote.endpoint));
+    const error = await withRemoteBrowser(remote, vi.fn()).catch((reason: unknown) => reason);
+    expect(error).toMatchObject({ kind: 'transport', message: 'Synthetic browser service is unavailable' });
+    expect(error).not.toHaveProperty('cause');
+    expect(String(error)).not.toContain('PRIVATE_CAPABILITY');
+    for (const endpoint of ['PRIVATE', 'https://browser.invalid/PRIVATE', 'ws://user:PRIVATE@browser.invalid/', 'ws://browser.invalid/#PRIVATE']) {
+      await expect(withRemoteBrowser({ ...remote, endpoint }, vi.fn())).rejects.toThrow('Browser endpoint must be a WebSocket URL');
+    }
+    expect(chromium.connect).toHaveBeenCalledOnce();
+  });
+
+  it('returns cancellation promptly and closes a connection that arrives late', async () => {
+    let connected!: (value: never) => void;
+    vi.mocked(chromium.connect).mockImplementationOnce(() => new Promise(resolve => { connected = resolve; }));
+    const controller = new AbortController();
+    const work = vi.fn();
+    const pending = withRemoteBrowser({ ...remote, signal: controller.signal }, work);
+    await vi.waitFor(() => expect(connected).toBeTypeOf('function'));
+    const reason = new Error('cancelled'); controller.abort(reason);
+    await expect(pending).rejects.toBe(reason);
+    const late = { close: vi.fn(async () => {}) }; connected(late as never);
+    await vi.waitFor(() => expect(late.close).toHaveBeenCalledOnce());
+    expect(work).not.toHaveBeenCalled();
+    const next = { close: vi.fn(async () => {}) }; vi.mocked(chromium.connect).mockResolvedValueOnce(next as never);
+    await expect(withRemoteBrowser(remote, async () => 'served')).resolves.toBe('served');
+  });
+});
 
 describe('shared local browser', () => {
   it('runs waiting lookups in arrival order, one browser at a time', async () => {

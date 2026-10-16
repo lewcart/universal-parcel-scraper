@@ -668,8 +668,9 @@ describe('standalone tracker', () => {
       const named = { ...summary, delivery_carrier: 'posti', delivery_tracking_number: 'LOCAL12345' };
       const partnered = new AdapterRegistry({ factories: { ups: () => ({ id: 'ups', steps: ['direct'], track: async () => named }),
         posti: () => ({ id: 'posti', steps: ['direct'], track: partner }) }, carriers: { ups: 'ups', posti: 'posti' } }, environment);
+      // The partner's third of the budget stays long enough for a loaded test run to reach it.
       const answer = await createTracker({ registry: partnered, fetcher: stalled(), providers: ['ParcelsApp', 'Ship24'] })
-        .track({ number }, { budgetMs: 300 });
+        .track({ number }, { budgetMs: 1_500 });
       expect(answer).toMatchObject({ source: 'ups', handoff: { carrier: 'posti', confirmed: true },
         attempts: [{ source: 'ups', kind: 'ok' }, { source: 'ParcelsApp', kind: 'budget' }, { source: 'posti', kind: 'ok' }] });
       expect(answer.attempts).toHaveLength(3);

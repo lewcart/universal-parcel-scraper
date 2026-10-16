@@ -14474,6 +14474,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^MMXQP\\d{9}[ENR]$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MH$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ]
   },
@@ -22814,7 +22819,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "m-and-p": [],
   "madhur-courier": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
-  "mailamericas": ["mailamericas-ml","mailamericas-mmxqp"],
+  "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-s10"],
   "mailplus-au": ["mailplus-au-1"],
   "mainfreight": [],
   "major-express": [],

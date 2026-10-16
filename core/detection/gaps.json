@@ -1648,7 +1648,7 @@
     "carrier": "mailamericas",
     "pattern": "^[A-Z]{2}\\d{9}(?:MH|MU)$",
     "kind": "by_design",
-    "reason": "MailAmericas also tracks parcels under numbers in the UPU S10 layout with the Marshall Islands and Mauritius codes, some of which fail the check digit. The layout belongs to postal detection and does not point to MailAmericas."
+    "reason": "MailAmericas also tracks parcels under numbers in the UPU S10 layout with the Marshall Islands and Mauritius codes, some of which fail the check digit. Only a Marshall Islands number that passes it suggests MailAmericas; the layout belongs to postal detection, and Mauritius Post's items to Mauritius Post."
   },
   {
     "carrier": "mainfreight",

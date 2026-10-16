@@ -9379,6 +9379,33 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dpd-nl": {
+    "displayName": "DPD Netherlands",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Nederland"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dpd-nl",
+      "recognitionRank": 972
+    },
+    "canaryUrl": "https://www.dpd.com/nl/en/receiving/",
+    "trackingUrlTemplate": "https://www.dpdgroup.com/nl/mydpd/my-parcels/search?lang=en&parcelNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/nl/en/receiving/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "dpd-pl": {
     "displayName": "DPD Poland",
     "color": "#dc0032",
@@ -22210,6 +22237,7 @@ export const CARRIER_IDS = [
   "dpd-be",
   "dpd-de",
   "dpd-ie",
+  "dpd-nl",
   "dpd-pl",
   "dpd-uk",
   "dpd-za",
@@ -22761,6 +22789,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-be": ["dpd-be-1"],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
+  "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],

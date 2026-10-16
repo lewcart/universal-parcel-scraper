@@ -3,7 +3,8 @@
 DPD Switzerland (myDPD), Swiss last-mile parcels only. Germany is
 [dpd-de](../dpd-de/README.md), France is [dpd-fr](../dpd-fr/README.md), the
 United Kingdom is [dpd-uk](../dpd-uk/README.md), Poland is
-[dpd-pl](../dpd-pl/README.md), and Belgium is [dpd-be](../dpd-be/README.md).
+[dpd-pl](../dpd-pl/README.md), Belgium is [dpd-be](../dpd-be/README.md), and the
+Netherlands is [dpd-nl](../dpd-nl/README.md).
 
 ## How it works
 
@@ -103,9 +104,9 @@ shops near a coordinate, with ids and addresses, from
 it cannot search by id.
 
 The [Dutch myDPD page](https://www.dpd.com/nl/nl/ontvangen/) links to the same
-Geopost Android package, `com.dpdgroup.chatbot.lemny.prod`. Its country selector
-does not establish a separate Dutch API or authorize treating Dutch parcels as
-Swiss. The German national app has a separate
+Geopost Android package, `com.dpdgroup.chatbot.lemny.prod`, and
+[dpd-nl](../dpd-nl/README.md) reads its guest API with the Dutch business unit.
+The German national app has a separate
 [SOAP service](../dpd-de/README.md#app-service), which this adapter asks only
 for Pickup shops.
 

@@ -54,7 +54,7 @@ const REMOTE_CONFIG_URL = `https://firebaseremoteconfig.googleapis.com/v1/projec
 const TIMEZONE = 'Europe/Zurich';
 
 /** A guest business unit: `businessUnit=DPD-<country>`. */
-export type DPDCountry = 'CH' | 'DE' | 'BE';
+export type DPDCountry = 'CH' | 'DE' | 'BE' | 'NL';
 
 /**
  * What the unit changes beyond its selector: the carrier a lookup is filed
@@ -66,7 +66,10 @@ const UNITS: Readonly<Record<DPDCountry, { carrier: string; name: string; adject
   CH: { carrier: 'dpd', name: 'DPD Switzerland', adjective: 'Swiss', zone: TIMEZONE },
   DE: { carrier: 'dpd-de', name: 'DPD Germany', adjective: 'German', zone: TIMEZONE },
   BE: { carrier: 'dpd-be', name: 'DPD Belgium', adjective: 'Belgian', zone: 'Europe/Brussels' },
+  NL: { carrier: 'dpd-nl', name: 'DPD Netherlands', adjective: 'Dutch', zone: 'Europe/Amsterdam' },
 };
+/** Units read through the guest API alone, with no page or app tier after it. */
+const GUEST_ONLY: ReadonlySet<DPDCountry> = new Set(['BE', 'NL']);
 const DEFAULT_TIMEOUT_MS = 90_000;
 /** How long a failed guest login answers new lookups before the next attempt. */
 const TOKEN_FAILURE_MEMORY_MS = 30_000;
@@ -319,8 +322,8 @@ function storedTime(value: string, zoneId: unknown, unitZone: string): ParsedTim
 
 /**
  * Guest API timestamps: an explicit offset wins, then the zone DPD names for
- * that scan, then the unit's zone (Swiss time but for Belgium). Unparsable
- * values keep their raw text.
+ * that scan, then the unit's zone (Swiss time but for Belgium and the
+ * Netherlands). Unparsable values keep their raw text.
  *
  * The sync keys stored events on this exact string. When the instant is the
  * one the adapter read before (with `storedZoneId`, the unit's zone for
@@ -542,7 +545,7 @@ export function parseDPDTrackingApi(
   return result;
 }
 
-/** Guard automatic scope confirmation and the German and Belgian direct services. */
+/** Guard automatic scope confirmation and the German, Belgian and Dutch direct services. */
 function requireGuestActivity(payload: JsonObject, result: CarrierResult): void {
   if (!isRecord(payload.status) || !known(payload.status.description)) {
     throw new SchemaError('DPD', 'DPD returned no usable shipment status');
@@ -728,7 +731,7 @@ export class DPDTracker {
     // DPD checks the postcode against the recipient's, and the service this
     // adapter asks also answers for parcels delivered in other countries: any
     // country's postcode goes through. The German unit reads German deliveries.
-    // DPD Belgium's catalog entry asks for none.
+    // DPD Belgium's and DPD Netherlands' catalog entries ask for none.
     const resolvedPostcode = deliveryPostcodeText(postcode);
     if (resolvedPostcode && !(this.country === 'DE' ? /^\d{5}$/ : DELIVERY_POSTCODE).test(resolvedPostcode)) {
       throw new InvalidInputError('DPD', this.country === 'DE'
@@ -816,7 +819,9 @@ export class DPDTracker {
       ? `https://tracking.dpd.de/status/en_US/parcel/${trackingNumber}`
       : this.country === 'BE'
         ? `https://www.dpdgroup.com/be/mydpd/my-parcels/track?parcelNumber=${trackingNumber}`
-        : dpdTrackingUrl(trackingNumber);
+        : this.country === 'NL'
+          ? `https://www.dpdgroup.com/nl/mydpd/my-parcels/search?parcelNumber=${trackingNumber}`
+          : dpdTrackingUrl(trackingNumber);
     return result;
   }
 
@@ -853,11 +858,11 @@ export class DPDTracker {
 
   /**
    * The Swiss page and the German app can answer after Cloudflare's challenge
-   * or DPD's rate limit, so those stay inconclusive for them. Belgium has no
-   * tier after the guest API, and reports them as what they are.
+   * or DPD's rate limit, so those stay inconclusive for them. Belgium and the
+   * Netherlands have no tier after the guest API, and report them as what they are.
    */
   private reported(error: unknown): unknown {
-    if (this.country !== 'BE' || !(error instanceof Error)) return error;
+    if (!GUEST_ONLY.has(this.country) || !(error instanceof Error)) return error;
     if (CHALLENGED.has(error)) {
       return new DPDChallengeError('DPD returned a Cloudflare challenge to its guest API', { cause: error });
     }
@@ -898,7 +903,7 @@ export class DPDTracker {
     // Without verified scans DPD gives each milestone once, with its newest
     // date and no place: the scans between, and earlier rounds of a milestone,
     // are missing. Enabled providers may hold them.
-    if (this.country === 'BE' && !(Array.isArray(payload.parcelEvents) && payload.parcelEvents.some(isRecord))) {
+    if (GUEST_ONLY.has(this.country) && !(Array.isArray(payload.parcelEvents) && payload.parcelEvents.some(isRecord))) {
       result.history_truncated = true;
     }
     return result;

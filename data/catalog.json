@@ -9377,6 +9377,33 @@
     ],
     "detectionRules": []
   },
+  "dpd-nl": {
+    "displayName": "DPD Netherlands",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Nederland"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dpd-nl",
+      "recognitionRank": 972
+    },
+    "canaryUrl": "https://www.dpd.com/nl/en/receiving/",
+    "trackingUrlTemplate": "https://www.dpdgroup.com/nl/mydpd/my-parcels/search?lang=en&parcelNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/nl/en/receiving/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "dpd-pl": {
     "displayName": "DPD Poland",
     "color": "#dc0032",

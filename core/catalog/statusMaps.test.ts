@@ -384,12 +384,13 @@ describe("universal providers' answers", () => {
       ['The shipment is handled by a return consolidator', 'exception'],
       ['Delivery. Your order has been shipped from the distribution center', 'in_transit'],
       ['NUEVO REPARTO. Concertación entrega flexible', 'in_transit'], ['NUEVO REPARTO', 'in_transit'],
+      ['Waiting for carrier to collect the order', 'registered'], ['Depositado en punto MRW', 'ready_for_pickup'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
       'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
-      'Concertación entrega flexible']) {
+      'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

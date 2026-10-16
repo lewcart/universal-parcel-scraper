@@ -133,8 +133,10 @@ function providerWordingStage(description: string): Stage | undefined {
   const value = description.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '')
     .replace(/\.,\s*(?:other|\p{Script=Han}[\p{Script=Han}\s]*)$/iu, '.');
   if (/^delivery in progress, (?:first|second|third|\d+(?:st|nd|rd|th)) attempt\b|scanned for delivery[;,] ?the courier is\b|^delivery branch\. in the hands of the mailman[.!]?$|^przesyłka wydana do doreczenia kurierowi \w{2,20}[.!]?$|派送员派送途中/i.test(value)) return 'out_for_delivery';
-  if (/^order confirmed[.!]?$|^order received(?: successfully)?[.!]?$|^creat(?:e|ed)\. (?:parcel|shipment(?: order)?) created\b|^pre-shipment info sent to\b|^the order has information pending customer confirmation[.!]?$/i.test(value)) return 'registered';
+  if (/^order confirmed[.!]?$|^order received(?: successfully)?[.!]?$|^creat(?:e|ed)\. (?:parcel|shipment(?: order)?) created\b|^pre-shipment info sent to\b|^the order has information pending customer confirmation[.!]?$|^waiting for (?:the )?carrier to collect the order[.!]?$/i.test(value)) return 'registered';
   if (/^export declaration in progress[.!]?$/i.test(value)) return 'customs';
+  // MRW's own wording for a parcel left at one of its pickup points, relayed by a provider.
+  if (/^depositado en punto mrw[.!]?$/i.test(value)) return 'ready_for_pickup';
   // A return on its way back to the sender, as other unfinished returns.
   if (/^the shipment is handled by a return consolidator[.!]?$/i.test(value)) return 'exception';
   if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: and scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^仓库收货$|^rfid confirmed pick-?up$/i.test(value)) return 'accepted';

@@ -47,7 +47,8 @@ for (const [file, tier, fresh] of [['2.ts', '2', false], ['browser.ts', 'tier', 
   if (carrierPage && australiaPostBrowserRequest(url, capture)) return await runAustraliaPostBrowser(carrierRun)
   if (carrierPage && fedexSessionNumber(url, capture)) return await fedexSessions.run(carrierRun)
   if (carrierPage && wanbBrowserNumber(url, capture)) {
-    return await runWanbBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })
+    return await runWanbBrowser({ ...carrierRun, signal: budget.signal,
+      solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout, budget.signal) })
   }
   if (carrierPage && xpoBrowserNumber(url, capture)) {
     return await runXpoBrowser({ ...carrierRun, solveCaptcha: (page, timeout) => solveRecaptchaV2(page, timeout) })

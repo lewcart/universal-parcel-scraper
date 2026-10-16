@@ -10,12 +10,15 @@ Use a browser and network accepted by the carrier, with the SDK's exact `playwri
 peer version. Keep the capability endpoint private; the [Royal Mail browser service](../royal-mail/README.md)
 can also serve this adapter. Each lookup has an isolated context and bounded deadline.
 
-The scoped browser helper observes tracking responses before opening the blank form. A deep link
-can select the checkbox-only configuration. It tries the page's
-checkbox with TRAWL's reCAPTCHA solver, then the passive V3 flow while the public page still
-advertises that configuration. The carrier must accept `/Home/CaptchaVerify` before another
-tracking request is made. CAPTCHA tokens, cookies and the rendered page stay in the isolated
-context; the adapter reads only bounded responses for the complete requested identifier.
+The scoped browser helper observes tracking responses before opening the blank form,
+which can advertise passive V3 verification. If the carrier refuses V3, the helper opens
+the public deep link for checkbox V2 within the remaining budget. When V2 is selected,
+the helper fills the number and presses Track before using TRAWL's
+reCAPTCHA solver. It waits for the carrier's `/Home/CaptchaVerify` callback and the page's
+repeated tracking request: Google's acceptance alone does not complete the lookup. V3 runs
+only while the public page advertises it. CAPTCHA tokens, cookies and the rendered page
+stay in the isolated context; the adapter reads only bounded responses for the complete
+requested identifier.
 A final rejection remains a challenge even when an earlier reply succeeded.
 
 The tracking reply must name the requested parcel and identify a parcel-ID match. Reference

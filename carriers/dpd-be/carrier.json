@@ -47,5 +47,11 @@
     "unavailable": []
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "dpd-be-1",
+      "pattern": "^\\d{14}$",
+      "confidence": "low"
+    }
+  ]
 }

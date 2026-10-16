@@ -830,12 +830,6 @@
     "reason": "Domex waybill numbers are bare runs of eight or nine digits, a shape many carriers share."
   },
   {
-    "carrier": "dpd-be",
-    "pattern": "^\\d{14}$",
-    "kind": "by_design",
-    "reason": "Fourteen digits are the parcel number of every DPD network, and DPD Belgium publishes no range of its own, so nothing in the number points to DPD Belgium."
-  },
-  {
     "carrier": "dpd-ie",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

@@ -9258,7 +9258,12 @@
     "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
     "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ]
   },
   "dpd-de": {
     "displayName": "DPD Germany",

@@ -57,9 +57,10 @@ describe('recognition candidates', () => {
 
   it('keeps the carriers that can answer, hint first, then number evidence, then popularity', () => {
     // Hermes's check digit passes, which puts Hermes ahead of popularity alone.
-    expect(recognitionCandidates('12345678901231').map((candidate) => candidate.carrier)).toEqual(['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
+    expect(recognitionCandidates('12345678901231').map((candidate) => candidate.carrier)).toEqual(['hermes-de', 'dpd-be', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
     expect(recognitionCandidates('06080000000002')).toEqual([
       { carrier: 'dpd', needsInput: null, preferred: true },
+      { carrier: 'dpd-be', needsInput: null, preferred: false },
       { carrier: 'dpd-de', needsInput: null, preferred: false },
       { carrier: 'seur', needsInput: null, preferred: false },
       { carrier: 'brt', needsInput: null, preferred: false },
@@ -76,7 +77,7 @@ describe('recognition candidates', () => {
       { carrier: 'dhl-ecommerce-pl', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('06080000000002', { skip: (carrier) => carrier === 'dpd' }).map((candidate) => candidate.carrier))
-      .toEqual(['dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
+      .toEqual(['dpd-be', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
     // A selected carrier needs no recognition.
     expect(recognitionCandidates('1Z999AA10123456784')).toEqual([]);
     // A DPD France depot: DPD France cannot be asked, and DPD Switzerland's or
@@ -176,11 +177,11 @@ describe('asking carriers', () => {
       if (carrier === 'seur' || carrier === 'brt') return { known: false };
       return new Promise(() => undefined);
     }, 20);
-    expect(started).toEqual(['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
+    expect(started).toEqual(['hermes-de', 'dpd-be', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
     expect(outcomes.map(({ carrier, status }) => [carrier, status])).toEqual([
-      ['hermes-de', 'failed'], ['dpd', 'known'], ['dpd-de', 'failed'], ['seur', 'unknown'], ['brt', 'unknown'], ['relais-colis', 'failed'], ['ciblex', 'failed'], ['dhl-ecommerce-uk', 'failed'], ['delhivery', 'failed'],
+      ['hermes-de', 'failed'], ['dpd-be', 'failed'], ['dpd', 'known'], ['dpd-de', 'failed'], ['seur', 'unknown'], ['brt', 'unknown'], ['relais-colis', 'failed'], ['ciblex', 'failed'], ['dhl-ecommerce-uk', 'failed'], ['delhivery', 'failed'],
     ]);
-    expect(outcomes[1]!.lastActivityAt).toBe('2026-09-09T08:00:00Z');
+    expect(outcomes[2]!.lastActivityAt).toBe('2026-09-09T08:00:00Z');
   });
 });
 

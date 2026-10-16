@@ -9260,7 +9260,12 @@ export const CARRIER_CATALOG = {
     "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
     "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ]
   },
   "dpd-de": {
     "displayName": "DPD Germany",
@@ -22654,7 +22659,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direct-freight-express": [],
   "dohrn-transfer": [],
   "domex": [],
-  "dpd-be": [],
+  "dpd-be": ["dpd-be-1"],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],

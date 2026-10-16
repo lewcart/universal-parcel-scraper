@@ -44,8 +44,10 @@ through the myDPD guest service with Belgium's business unit.
 
 DPD Belgium parcels carry DPD's fourteen-digit parcel number, which every DPD network shares.
 DPD Belux's label specification calls the first four digits a range code naming the sending
-entity, and its values are not published. Belgian parcels start with different ranges, so no
-rule claims the number. The samples and their sources are in [`numbers.json`](numbers.json).
+entity, and its values are not published. Belgian parcels start with different ranges, so the
+number only suggests DPD Belgium, like the other DPD networks, and recognition asks it: DPD
+Switzerland's and DPD Germany's recognition do not know a parcel DPD places in Belgium. The
+samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

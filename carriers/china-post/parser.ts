@@ -17,10 +17,15 @@ const GUEST_SCANS = 3;
 // The app's label for an accepted item (state 5).
 const ACCEPTED = '已揽收';
 
+/**
+ * S10 numbers issued in China, and ZS numbers of eleven digits. The service
+ * knows ZS numbers but opens them only after a contact phone's last four
+ * digits, so their lookups end at the check step.
+ */
 export function normalizeChinaPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^[A-Z]{2}\d{9}CN$/.test(number) || !isValidS10TrackingNumber(number)) {
-    throw new InvalidInputError(PROVIDER, 'China Post tracks international postal numbers ending in CN');
+  if (!/^ZS\d{11}$/.test(number) && (!/^[A-Z]{2}\d{9}CN$/.test(number) || !isValidS10TrackingNumber(number))) {
+    throw new InvalidInputError(PROVIDER, 'China Post tracks international postal numbers ending in CN and ZS numbers');
   }
   return number;
 }

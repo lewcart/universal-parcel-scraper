@@ -88,6 +88,16 @@ describe('China Post adapter', () => {
     await expect(instance(refused).track({ number: NUMBER })).rejects.toMatchObject({ kind: 'challenge' });
   });
 
+  it('asks the check step about a ZS number and reports its phone request', async () => {
+    const phone = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
+    await expect(instance(phone).track({ number: 'ZS00000000001' }))
+      .rejects.toMatchObject({ kind: 'input_required', field: 'recipient verification' });
+    expect(phone).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(String(phone.mock.calls[0]![1]?.body))).toEqual({ mailNo: 'ZS00000000001' });
+    const closed = transport(() => json('{"code":"000000","info":3,"msg":"SUCCESS"}'));
+    await expect(instance(closed).track({ number: 'ZS00000000001' })).rejects.toMatchObject({ kind: 'indeterminate' });
+  });
+
   it.each([
     ['no-information', 'indeterminate'],
     ['trace-not-opened', 'indeterminate'],

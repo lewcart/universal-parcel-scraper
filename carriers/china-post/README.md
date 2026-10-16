@@ -5,9 +5,11 @@ through the guest trace API of China Post's EMS app. EMS items issued in China
 (`E…CN`) are detected as China Post and read here too; the
 [EMS adapter](../ems/README.md) reads the EMS Cooperative's tracker when EMS is
 chosen. Domestic 13-digit waybills are out of scope and rejected before any
-request. So are `ZS` numbers with eleven digits: the service knows them but
-asks for a contact phone's last four digits before it shows one, and a
-provider may still have their history. Source selection is covered in
+request. `ZS` numbers with eleven digits are China Post's too, and the adapter
+takes them, but the service asks for a contact phone's last four digits before
+it shows one. A lookup that finds one therefore ends as `input_required`, and
+its history has to come from a provider. No detection rule names China Post for
+them. Source selection is covered in
 [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md);
 provider results are in [COVERAGE.md](../../providers/COVERAGE.md).
 
@@ -119,6 +121,7 @@ sender (711) reads "已退回".
 
 Fixtures are synthetic. The live test checks that an unused, well-formed number
 stays inconclusive, which also shows that the signature is accepted. It runs a
-positive lookup when `CHINA_POST_TRACKING_NUMBER` is set outside Git:
+positive lookup when `CHINA_POST_TRACKING_NUMBER` is set outside Git, and checks
+the phone request when `CHINA_POST_GATED_NUMBER` names a number the service gates:
 
 `CHINA_POST_TRACKING_NUMBER=<number> npm run test:carriers:live -- carriers/china-post`

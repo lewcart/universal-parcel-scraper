@@ -11,6 +11,11 @@ describe('China Post app trace live', () => {
     await expect(instance().track({ number: 'LZ000000005CN' })).rejects.toMatchObject({ kind: 'indeterminate' });
   });
 
+  it.skipIf(!process.env.CHINA_POST_GATED_NUMBER)('reports the phone request for a number the service opens only with it', async () => {
+    await expect(instance().track({ number: process.env.CHINA_POST_GATED_NUMBER! }))
+      .rejects.toMatchObject({ kind: 'input_required', field: 'recipient verification' });
+  });
+
   it.skipIf(!process.env.CHINA_POST_TRACKING_NUMBER)('returns the newest bound scans on local clocks without contact details', async () => {
     const result = normalizeCarrierResult(await instance().track({ number: process.env.CHINA_POST_TRACKING_NUMBER! }));
     expect(result.events?.length).toBeGreaterThan(0);

@@ -1,22 +1,25 @@
 import { load, type CheerioAPI } from 'cheerio';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
-import { isBrtTrackingNumber } from '../../core/detection/brt.js';
+import { isBrtCustomerParcelId, isBrtTrackingNumber } from '../../core/detection/brt.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { calendarDay } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyBrtStatus } from './status.js';
 
 export function normalizeBrtNumber(raw: string): string {
-  const number = raw.replace(/\s/g, '');
+  const number = raw.replace(/\s/g, '').toUpperCase();
   if (!isBrtTrackingNumber(number)) {
-    throw new InvalidInputError('BRT', 'BRT requires a twelve-digit shipment number, fourteen-digit BRTcode or fifteen-digit parcel ID');
+    throw new InvalidInputError('BRT', 'BRT requires a twelve-digit shipment number, fourteen-digit BRTcode or parcel ID');
   }
   return number;
 }
 
-/** A fifteen-digit BRT parcel ID ("ID collo"), searched through the form's customer parcel ID route. */
+/**
+ * A parcel ID ("ID collo"), searched through the form's customer parcel ID
+ * route: fifteen digits, or a customer parcel ID of EOB and seventeen digits.
+ */
 export function isBrtParcelId(number: string): boolean {
-  return /^\d{15}$/.test(number);
+  return /^\d{15}$/.test(number) || isBrtCustomerParcelId(number);
 }
 
 /** The label in a table's first cell of a row, as BRT prints it. */

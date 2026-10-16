@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { recognitionCandidates, recognitionAskedCarriers } from '../catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from './index.js';
+import { isBrtTrackingNumber } from './brt.js';
 import { isPosteItalianeTrackingNumber } from './posteItaliane.js';
 
 describe('continental shipment candidates', () => {
@@ -9,6 +10,13 @@ describe('continental shipment candidates', () => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['brt']) });
     expect(recognitionCandidates(number)).toEqual(expect.arrayContaining([expect.objectContaining({ carrier: 'brt' })]));
     expect(parseTrackingInput(`Tracking number: ${number}`)).toMatchObject({ trackingNumber: number, carrier: 'unknown', confidence: 'low' });
+  });
+
+  it('lets BRT take EOB customer parcel IDs without detection naming BRT for them', () => {
+    expect(isBrtTrackingNumber('EOB99099100000000015')).toBe(true);
+    for (const number of ['EOB9909910000000001', 'EOB990991000000000150', 'eob99099100000000015']) expect(isBrtTrackingNumber(number)).toBe(false);
+    expect(detectCarrierMatch('EOB99099100000000015').candidates).not.toContain('brt');
+    expect(recognitionCandidates('EOB99099100000000015').map(candidate => candidate.carrier)).not.toContain('brt');
   });
 
   it('prioritizes documented bpost prefixes while preserving overlapping numeric candidates', () => {

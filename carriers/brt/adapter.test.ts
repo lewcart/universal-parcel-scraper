@@ -116,6 +116,25 @@ describe('BRT direct tracking', () => {
     expect(absent).toHaveBeenCalledTimes(1);
   });
 
+  it('follows an EOB customer parcel ID through the same parcel search', async () => {
+    const customerId = 'EOB99099100000000015';
+    const list = parcelList.replace(`<td>${PARCEL_ID}</td></tr>`, `<td>${customerId}</td></tr>`);
+    expect(normalizeBrtNumber('eob 9909 9100 0000 0001 5')).toBe(customerId);
+    for (const n of [customerId.slice(0, -1), customerId + '0', 'EOC99099100000000015', 'EOB9909910000000001A']) {
+      expect(() => normalizeBrtNumber(n)).toThrow(InvalidInputError);
+    }
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(response(parcelPage)).mockResolvedValueOnce(response(list));
+    const result = await new BrtTracker({ fetcher }).fetch(customerId);
+    expect(Object.fromEntries(new URLSearchParams(String(fetcher.mock.calls[0]![1]?.body)))).toMatchObject({ ChiSono: customerId, RicercaChiSono: 'Ricerca' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    // The list must name this customer ID, and BRT's code-less negative stays inconclusive.
+    const other = vi.fn<typeof fetch>().mockResolvedValueOnce(response(parcelPage)).mockResolvedValueOnce(response(parcelList));
+    await expect(new BrtTracker({ fetcher: other }).fetch(customerId)).rejects.toMatchObject({ kind: 'schema' });
+    const absent = vi.fn<typeof fetch>().mockResolvedValue(response(notFoundPage.replace('TIS0564 ', '')));
+    await expect(new BrtTracker({ fetcher: absent }).fetch(customerId)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+  });
+
   it('reads the shipment past a held-parcel record and a DPD link box', () => {
     const result = parseBrt(parcelPage, '990000000001');
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', weight_kg: 1 });

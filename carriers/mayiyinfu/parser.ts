@@ -4,8 +4,11 @@ import { mayiyinfuStage } from './status.js';
 
 export const PROVIDER = 'Mayi Yinfu';
 export const MAYIYINFU_ORIGIN = 'http://www.mayiyinfu.com.cn:8082';
-// The delivering carrier's copied rows keep its clock.
-export const MAYIYINFU: HualeiTenant = { carrier: 'mayiyinfu', provider: PROVIDER, origin: MAYIYINFU_ORIGIN, stage: mayiyinfuStage, wallClocks: true };
+// The delivering carrier's copied rows keep its clock. Records name no channel;
+// into Europe the transfer number is Deutsche Post DHL's, whose tracker follows
+// the parcel to its delivery abroad.
+export const MAYIYINFU: HualeiTenant = { carrier: 'mayiyinfu', provider: PROVIDER, origin: MAYIYINFU_ORIGIN, stage: mayiyinfuStage,
+  wallClocks: true, unlabelledPartners: ['dhl'] };
 
 export const normalizeMayiyinfuNumber = (raw: string): string => normalizeHualeiNumber(raw, PROVIDER);
 /** The track interface's reply, or null when it holds no row for the number. */

@@ -33,12 +33,16 @@ The tracker answers plain HTTP only. No account, key, cookie, CAPTCHA or browser
   delivering carrier's clock, so one history mixes zones. A row dated after the lookup on
   Beijing time is held back.
 - The record's product name is the service name.
+- Records name no channel, but carry the delivering carrier's number as the channel's transfer
+  number. Into Europe that is a Deutsche Post DHL parcel number, and DHL's tracker follows the
+  parcel to its delivery abroad, with offset times. So DHL takes the record when its own
+  high-confidence rule claims the whole transfer number. Another carrier's number hands nothing
+  over, since an issuer does not prove who delivers.
 
 ## Limitations
 
-The record carries the delivering carrier's number as the channel's transfer number but names no
-channel, and a number's issuer does not prove who delivers, so no hand-off is set. A reference
-stored without its dashes is not found.
+A reference stored without its dashes is not found. A transfer number that no DHL rule claims
+with high confidence hands nothing over.
 
 ## Numbers
 

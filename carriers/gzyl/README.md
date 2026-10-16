@@ -48,7 +48,8 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
 ## Limitations
 
 A reference stored without its dashes is not found. A record with the delivery carrier's number
-but no channel label hands nothing over.
+but no channel label hands nothing over, except on a tenant that names the carriers it hands
+records to, as [Mayi Yinfu](../mayiyinfu/README.md) does.
 
 ## Numbers
 

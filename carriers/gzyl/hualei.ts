@@ -39,6 +39,11 @@ export interface HualeiTenant {
   readonly split?: (content: string, location: string) => { readonly content: string; readonly location: string };
   /** Rows keep their wall clocks: the tracker copies another carrier's rows on that carrier's clock. */
   readonly wallClocks?: true;
+  /**
+   * Carriers the tenant hands records to without naming a channel: one takes a
+   * record whose transfer number its own high-confidence rule claims whole.
+   */
+  readonly unlabelledPartners?: readonly CarrierId[];
 }
 
 /**
@@ -240,11 +245,18 @@ function trackRow(raw: unknown, provider: string): Row {
 
 /**
  * The delivery carrier and its number: the channel's transfer number, else the
- * tracking number, which some lines fill with the delivery carrier's.
+ * tracking number, which some lines fill with the delivery carrier's. Without
+ * a channel, only the transfer number of a carrier the tenant hands to.
  */
-function partnerOf(record: JsonObject, destination: string, provider: string): Facts['partner'] {
+function partnerOf(record: JsonObject, destination: string, tenant: HualeiTenant): Facts['partner'] {
+  const { provider } = tenant;
   const label = text(record, 'channel_name', provider, 100);
-  if (!label) return undefined;
+  if (!label) {
+    const number = identity(text(record, 'business_channeltransfercode', provider, 64));
+    const detected = number ? detectCarrierMatch(number) : undefined;
+    const carrier = detected?.confidence === 'high' ? detected.carrier : undefined;
+    return carrier && tenant.unlabelledPartners?.includes(carrier) ? { carrier, number } : undefined;
+  }
   for (const key of ['business_channeltransfercode', 'trackingNumber']) {
     const number = identity(text(record, key, provider, 64));
     const carrier = number ? hualeiPartner(label, number, destination) : undefined;
@@ -288,7 +300,7 @@ export function parseHualeiTrack(payload: unknown, raw: string, tenant: HualeiTe
   if (!Array.isArray(details) || details.length > MAX_ROWS) throw new SchemaError(provider, `${provider} returned an invalid history`);
   const destination = text(record, 'consigneeCountry', provider, 8).toUpperCase();
   return result(details.map((row) => trackRow(row, provider)), {
-    number, destination, partner: partnerOf(record, destination, provider),
+    number, destination, partner: partnerOf(record, destination, tenant),
     tracking: identity(text(record, 'trackingNumber', provider, 64)),
     service: text(record, 'productKindName', provider, 100) || undefined,
   }, tenant, readAt);

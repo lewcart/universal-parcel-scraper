@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
@@ -52,10 +53,15 @@ describe('Mayi Yinfu tracking adapter', () => {
     const airport = result.events!.filter((event) => event.description!.startsWith('货物已交机场'));
     expect(airport.map((event) => [event.stage, event.stage_source])).toEqual([['in_transit', 'carrier_map'], ['in_transit', 'carrier_map']]);
     expect(result.events!.at(-1)).toMatchObject({ stage: 'registered', stage_source: 'carrier_map' });
-    // The record names no channel: a transfer number DHL's rule fits hands nothing over.
-    expect(detectCarrierMatch('CJ000000005DE').carrier).toBe('dhl');
-    expect(result).not.toHaveProperty('delivery_carrier');
-    expect(result).not.toHaveProperty('delivery_tracking_number');
+    // The record names no channel: DHL takes the transfer number its own rule claims whole.
+    expect(detectCarrierMatch('CJ000000005DE')).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(result).toMatchObject({ delivery_carrier: 'dhl', delivery_tracking_number: 'CJ000000005DE' });
+    expect(deliveryHandoff('mayiyinfu', NUMBER, result)).toMatchObject({ carrier: 'dhl', number: 'CJ000000005DE' });
+    // A failed check digit, or a number DHL's rules do not claim, hands nothing over.
+    for (const transfer of ['CJ000000004DE', 'LX000000005CN']) {
+      const record = JSON.parse(JSON.stringify(fixture('track')).replaceAll('CJ000000005DE', transfer));
+      expect(parseMayiyinfuTrack(record, NUMBER, READ_AT)).not.toHaveProperty('delivery_carrier');
+    }
     expect(result).not.toHaveProperty('canonical_tracking_number');
     expect(JSON.stringify(result)).not.toMatch(/Synthetic (?:Recipient|Shipper)|Sintética|00000"|1\.2/);
     // Asked by the shipper's reference, the order's own number comes back.

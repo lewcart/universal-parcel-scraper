@@ -34,7 +34,9 @@
     "provider_code",
     "service_name",
     "destination_country",
-    "canonical_tracking_number"
+    "canonical_tracking_number",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "canaryUrl": "https://t.17track.net/",
@@ -66,10 +68,11 @@
       "provider_code",
       "service_name",
       "destination_country",
-      "canonical_tracking_number"
+      "canonical_tracking_number",
+      "delivery_partner",
+      "delivery_tracking_number"
     ],
     "discarded": [
-      "delivery_tracking_number",
       "parcel_count",
       "weight",
       "customer_reference",
@@ -83,7 +86,6 @@
       "payment_details"
     ],
     "unavailable": [
-      "delivery_partner",
       "eta",
       "delivered_at",
       "offset_timestamps"

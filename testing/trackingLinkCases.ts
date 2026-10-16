@@ -813,6 +813,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pecom', number: '100000000033',
     route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,
     marker: /Отследить груз|Запрашиваемые вами грузы не найдены/ },
+  // The page fills its search box in from the address, looks the number up and names it when it finds nothing.
+  { carrier: 'cse-russia', number: '100000000000',
+    route: /^https:\/\/www\.cse\.ru\/mow\/track\/\?numbers=100000000000$/,
+    marker: /По запросу \d+ ничего не найдено\. Проверьте правильность написания номера|Отслеживание посылок/ },
   // The page looks the number up itself and names it in its answer to an unknown one.
   { carrier: '5post', number: '99990000000000',
     route: /^https:\/\/fivepost\.ru\/tracking\/\?id=99990000000000$/,

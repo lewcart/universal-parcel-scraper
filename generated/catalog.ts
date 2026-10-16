@@ -8244,7 +8244,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cse-russia",
+      "recognitionRank": 926,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cse.ru/mow/track/",
     "trackingUrlTemplate": "https://www.cse.ru/mow/track/?numbers={trackingNumber}",

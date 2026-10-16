@@ -449,6 +449,21 @@ describe('ParcelsApp result parsing', () => {
     expect(reply).toMatchObject({ reported_carriers: ['Spain Post'], discovered_carrier: 'correos-spain' });
   });
 
+  it('reads scans named "Evri" on Evri UK\'s London clock and proposes Evri UK', () => {
+    // Live shape (2026-10-16): Evri UK's wall clocks labelled "+00:00", an hour
+    // after the instants of Evri UK's own history in summer.
+    const barcode = 'H00A0A0000000002';
+    const reply = parseParcelsAppResponse({
+      carriers: ['Evri'],
+      states: [
+        { date: '2026-07-02T18:30:00+00:00', status: 'We\'re processing your parcel at our hub', carrier: 0 },
+        { date: '2026-01-14T09:15:00+00:00', status: 'We\'re expecting your parcel to arrive with us soon', carrier: 0 },
+      ],
+    }, barcode, identity(barcode));
+    expect(reply.events?.map((scan) => scan.time)).toEqual(['2026-07-02T17:30:00.000Z', '2026-01-14T09:15:00.000Z']);
+    expect(reply).toMatchObject({ reported_carriers: ['Evri'], discovered_carrier: 'evri-uk' });
+  });
+
   it('reads DHL Express scans on the clock of the facility their location names', () => {
     // Live shape (2026-10-06): the facility's clock labeled UTC. Ship24 gives the
     // same clocks with the offsets below.
@@ -961,6 +976,10 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-09-30T07:38:23.000Z', '2026-09-30T04:17:37.000Z']);
     expect(times(['Royal Mail'], [scan('2026-09-16T14:39:39Z', 'Example DO')])).toEqual(['2026-09-16T13:39:39.000Z']);
     expect(times(['Japan Post'], [scan('2026-10-02T10:27:00Z', 'Example Town')])).toEqual(['2026-10-02T01:27:00.000Z']);
+    for (const name of ['Yodel', 'InPost UK']) {
+      expect(times([name], [scan('2026-09-29T21:42:44Z'), scan('2026-09-28T09:00:00Z', 'Example City, Poland')]))
+        .toEqual(['2026-09-29T20:42:44.000Z', '2026-09-28T07:00:00.000Z']);
+    }
     expect(times(['Pekaes'], [scan('2026-10-14T09:00:00Z', 'Example City, Latvia'), scan('2026-10-13T07:39:54Z', 'EXAMPLE TOWN'), scan('2026-10-13T05:10:00Z')]))
       .toEqual(['2026-10-14T06:00:00.000Z', '2026-10-13T05:39:54.000Z', '2026-10-13T03:10:00.000Z']);
     // A DPD UK depot number named "DPD France": DPD UK's clock. A French one keeps Paris.

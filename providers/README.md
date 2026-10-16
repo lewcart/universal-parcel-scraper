@@ -84,7 +84,9 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   all have a layout of their own (only high-confidence rules) was named for its leg, and
   the one carrier left is the hint. Beside Cainiao, which brings parcels from abroad under
   their delivery carrier's number, a bare brand names its network that delivers at home:
-  "Evri" is Evri UK, since Evri International hands parcels to partners abroad.
+  "Evri Group" is Evri UK, since Evri International hands parcels to partners abroad.
+  Plain "Evri" is Evri UK in any case: providers name Evri International in full or by its
+  GlobalEco tracker.
 - The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja` and `UPU` are public, and
   consumers store them. Don't rename them.
 

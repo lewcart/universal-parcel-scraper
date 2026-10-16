@@ -75,16 +75,18 @@ describe('carrier names reported by universal providers', () => {
   it('names the brand network that delivers a parcel Cainiao brings from abroad', () => {
     // An Evri barcode fits Evri International and Evri UK alike.
     const barcode = 'H00A0A0000000002';
-    expect(brandCarrierForNumber('Evri', barcode)).toBeUndefined();
-    expect(universalCarrierHints(['Evri'], barcode).discovered_carrier).toBeUndefined();
+    expect(brandCarrierForNumber('Evri Group', barcode)).toBeUndefined();
+    expect(universalCarrierHints(['Evri Group'], barcode).discovered_carrier).toBeUndefined();
     // Evri International hands parcels to partners abroad, so beside Cainiao the leg is Evri UK's.
-    for (const names of [['Evri', 'Cainiao'], ['Cainiao', 'Evri']]) {
+    for (const names of [['Evri Group', 'Cainiao'], ['Cainiao', 'Evri Group']]) {
       expect(universalCarrierHints(names, barcode)).toEqual({ reported_carriers: names, discovered_carrier: 'evri-uk' });
     }
     // A number of neither network still leaves the brand unresolved.
-    expect(universalCarrierHints(['Evri', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['Evri Group', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBeUndefined();
     // Without Cainiao another name is no reason to rule a network out.
-    expect(universalCarrierHints(['Evri', 'Royal Mail'], barcode).discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['Evri Group', 'Royal Mail'], barcode).discovered_carrier).toBeUndefined();
+    // Plain "Evri" is Evri UK's name; providers name Evri International in full.
+    expect(universalCarrierHints(['Evri'], barcode).discovered_carrier).toBe('evri-uk');
   });
 
   it('keeps the postal union\'s feed among the reported names, where it proposes no carrier', () => {

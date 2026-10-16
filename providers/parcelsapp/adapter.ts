@@ -232,12 +232,14 @@ function speedafZone(payload: Record<string, unknown>, date: unknown, destinatio
  * Parcelforce's for Royal Mail; Japan Post's, which its portal gives as local
  * times, at 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and
  * Ship24 01:27Z (2026-10-11). Pekaes' are the offset-less digits its own
- * history gives and its page labels Polish time (2026-10-13). Their home
- * clock is a guess, which a location in another country rules out.
+ * history gives and its page labels Polish time (2026-10-13). Yodel's, InPost's
+ * UK network, are London's: InPost's own offsets give the same instants
+ * (2026-10-16). Their home clock is a guess, which a location in another
+ * country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
-  pekaes: 'Europe/Warsaw',
+  pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London',
 };
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;

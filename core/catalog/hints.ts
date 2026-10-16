@@ -9,14 +9,16 @@ export { carrierBrand };
 const key = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 // These brands have several regional/service adapters.
-const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'evri', 'gofo', 'post'];
+const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'gofo', 'post'];
 // An alias also gives the name its carrier's clock, which moves the stored
-// instants, and so the event ids, of past scans under that name.
+// instants, and so the event ids, of past scans under that name. Providers
+// name Evri International in full or by its GlobalEco tracker; plain "Evri"
+// has Evri UK's scans, on London time.
 const NAME_ALIASES: Readonly<Record<string, string>> = {
   ups: 'ups', swisspost: 'swiss-post', laposte: 'la-poste', colissimo: 'la-poste',
   dhlecommerce: 'dhl-ecommerce', cainiao: 'aliexpress', postnl: 'spring-gds',
   asendiausa: 'asendia', finlandpost: 'posti', spainpost: 'correos-spain', portugalctt: 'ctt', portugalpostportugalctt: 'ctt',
-  italypost: 'poste-italiane', deutschepostdhlpaket: 'dhl', austriapost: 'austrian-post',
+  italypost: 'poste-italiane', deutschepostdhlpaket: 'dhl', austriapost: 'austrian-post', evri: 'evri-uk',
 };
 // The postal union's shared feed, which aggregators list among a parcel's carriers.
 const FEED_NAMES = ['upu', 'universalpostalunion'];

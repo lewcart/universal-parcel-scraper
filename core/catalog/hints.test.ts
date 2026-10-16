@@ -123,14 +123,14 @@ describe('carrier names reported by universal providers', () => {
     ['Portugal Post - Portugal CTT', 'ctt'], ['Italy Post', 'poste-italiane'], ['Deutsche Post - DHL Paket', 'dhl'],
     ['Correos de España', 'correos-spain'], ['Correos Spain', 'correos-spain'], ['Austria Post', 'austrian-post'],
     ['Intelcom', 'intelcom'], ['Dragonfly', 'intelcom'], ['Orange Connex', 'speedpak'],
-    ['Evri International', 'evri'], ['Hermes UK', 'evri-uk'], ['DPD Germany', 'dpd-de'], ['DPD UK', 'dpd-uk'],
+    ['Evri International', 'evri'], ['Evri', 'evri-uk'], ['Hermes UK', 'evri-uk'], ['DPD Germany', 'dpd-de'], ['DPD UK', 'dpd-uk'],
   ])('maps %s, a carrier followed by its own country included', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });
 
   it.each([
     // Another company under the brand, a country without one zone, a brand with several networks.
-    'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri',
+    'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
   ])('does not guess a carrier from %s', (name) => {
     expect(carrierIdFromName(name)).toBeUndefined();
   });

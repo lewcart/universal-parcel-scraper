@@ -1,0 +1,49 @@
+{
+  "id": "t-group",
+  "displayName": "Tgroup",
+  "aliases": [
+    "Tgroup S.p.A.",
+    "T Group",
+    "T-Group"
+  ],
+  "region": {
+    "countries": [
+      "IT"
+    ]
+  },
+  "brand": {
+    "color": "#ed7602"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",
+    "searchUrl": "https://www.tgroupspa.com/",
+    "canaryUrl": "https://www.tgroupspa.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.tgroupspa.com"
+      ],
+      "path": "^/ttnet/traccia_spedizione/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "t-group-1",
+      "pattern": "^3010TGR\\d{14}$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -4218,5 +4218,13 @@
       "seur"
     ],
     "reason": "A DPD parcel number opens with the issuing depot, and DPD Austria's depot list gives these codes to its depots, so DPD Austria is listed first; the fourteen digits stay shared with the other DPD networks and these carriers. DPD Austria cannot be asked, so, as for DPD France, recognition leaves out the DPD networks, whose guest API would file the parcel under DPD Switzerland, and asks the others."
+  },
+  {
+    "shape": "EN, two digits, a dash, six digits, a dash and a digit",
+    "carriers": [
+      "energo",
+      "gls-it"
+    ],
+    "reason": "Without its dashes the number is two letters and nine digits, which GLS Italy's low rule reads as a depot code and a shipment number; the dashed Energo rule decides, and the number typed without dashes stays a GLS Italy suggestion."
   }
 ]

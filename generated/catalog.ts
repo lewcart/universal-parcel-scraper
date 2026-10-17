@@ -10873,6 +10873,33 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "energo": {
+    "displayName": "Energo Logistic",
+    "color": "#e30613",
+    "aliases": [
+      "Energo",
+      "Energo Logistic S.p.A."
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.energologistic.it/tracking/",
+    "trackingSearchUrl": "https://www.energologistic.it/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^EN\\d{9}$",
+        "confidence": "high",
+        "rawPattern": "^EN\\d{2}-\\d{6}-\\d$"
+      }
+    ]
+  },
   "envia-colombia": {
     "displayName": "Envía",
     "color": "#ba0020",
@@ -16573,6 +16600,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "method": {
+    "displayName": "Method",
+    "color": "#1f3432",
+    "aliases": [
+      "METHOD Advanced Logistics",
+      "Method Logistics",
+      "Method XL"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://method-logistics.com/localizador-de-envios/",
+    "trackingSearchUrl": "https://method-logistics.com/localizador-de-envios/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "metropolitan-warehouse": {
     "displayName": "Metropolitan Warehouse & Delivery",
     "color": "#0062b7",
@@ -18006,7 +18055,7 @@ export const CARRIER_CATALOG = {
   },
   "parcelpoint": {
     "displayName": "ParcelPoint",
-    "color": "#f25010",
+    "color": "#000000",
     "aliases": [
       "PARCELPOINT",
       "HUBBED",
@@ -20244,6 +20293,27 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "sailpost": {
+    "displayName": "Sailpost",
+    "color": "#e5c043",
+    "aliases": [
+      "SAILPOST",
+      "Sailpost SpA"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "sameday": {
     "displayName": "Sameday",
     "color": "#e92427",
@@ -22224,6 +22294,41 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "t-group": {
+    "displayName": "Tgroup",
+    "color": "#ed7602",
+    "aliases": [
+      "Tgroup S.p.A.",
+      "T Group",
+      "T-Group"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tgroupspa.com/",
+    "trackingUrlTemplate": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",
+    "trackingSearchUrl": "https://www.tgroupspa.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.tgroupspa.com"
+        ],
+        "path": "^/ttnet/traccia_spedizione/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^3010TGR\\d{14}$",
+        "confidence": "high"
+      }
+    ]
   },
   "tanzania-posts": {
     "displayName": "Tanzania Posts Corporation",
@@ -24661,6 +24766,7 @@ export const CARRIER_IDS = [
   "emirates-post",
   "ems-vietnam",
   "energia-tk",
+  "energo",
   "envia-colombia",
   "envialia",
   "epost-global",
@@ -24812,6 +24918,7 @@ export const CARRIER_IDS = [
   "mds-collivery",
   "meest",
   "messenger-cz",
+  "method",
   "metropolitan-warehouse",
   "midland-transport",
   "mng-kargo",
@@ -24906,6 +25013,7 @@ export const CARRIER_IDS = [
   "saee",
   "sagawa",
   "saia",
+  "sailpost",
   "sameday",
   "sapx-express",
   "sat-ukraine",
@@ -24955,6 +25063,7 @@ export const CARRIER_IDS = [
   "surat-kargo",
   "swiftx",
   "t-cat",
+  "t-group",
   "tanzania-posts",
   "taxydema",
   "tci-express",
@@ -25274,6 +25383,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "emirates-post": [],
   "ems-vietnam": [],
   "energia-tk": [],
+  "energo": ["energo-1"],
   "envia-colombia": [],
   "envialia": [],
   "epost-global": ["epost-global-1"],
@@ -25425,6 +25535,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mds-collivery": [],
   "meest": ["meest-1"],
   "messenger-cz": [],
+  "method": [],
   "metropolitan-warehouse": ["metropolitan-warehouse-1"],
   "midland-transport": [],
   "mng-kargo": [],
@@ -25519,6 +25630,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "saee": ["saee-1"],
   "sagawa": ["sagawa-waybill"],
   "saia": ["saia-1"],
+  "sailpost": [],
   "sameday": ["sameday-1"],
   "sapx-express": [],
   "sat-ukraine": [],
@@ -25568,6 +25680,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "surat-kargo": [],
   "swiftx": ["swiftx-1"],
   "t-cat": [],
+  "t-group": ["t-group-1"],
   "tanzania-posts": [],
   "taxydema": [],
   "tci-express": [],

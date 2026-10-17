@@ -10871,6 +10871,33 @@
     ],
     "detectionRules": []
   },
+  "energo": {
+    "displayName": "Energo Logistic",
+    "color": "#e30613",
+    "aliases": [
+      "Energo",
+      "Energo Logistic S.p.A."
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.energologistic.it/tracking/",
+    "trackingSearchUrl": "https://www.energologistic.it/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^EN\\d{9}$",
+        "confidence": "high",
+        "rawPattern": "^EN\\d{2}-\\d{6}-\\d$"
+      }
+    ]
+  },
   "envia-colombia": {
     "displayName": "Envía",
     "color": "#ba0020",
@@ -16571,6 +16598,28 @@
     ],
     "detectionRules": []
   },
+  "method": {
+    "displayName": "Method",
+    "color": "#1f3432",
+    "aliases": [
+      "METHOD Advanced Logistics",
+      "Method Logistics",
+      "Method XL"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://method-logistics.com/localizador-de-envios/",
+    "trackingSearchUrl": "https://method-logistics.com/localizador-de-envios/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "metropolitan-warehouse": {
     "displayName": "Metropolitan Warehouse & Delivery",
     "color": "#0062b7",
@@ -18004,7 +18053,7 @@
   },
   "parcelpoint": {
     "displayName": "ParcelPoint",
-    "color": "#f25010",
+    "color": "#000000",
     "aliases": [
       "PARCELPOINT",
       "HUBBED",
@@ -20242,6 +20291,27 @@
       }
     ]
   },
+  "sailpost": {
+    "displayName": "Sailpost",
+    "color": "#e5c043",
+    "aliases": [
+      "SAILPOST",
+      "Sailpost SpA"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "sameday": {
     "displayName": "Sameday",
     "color": "#e92427",
@@ -22222,6 +22292,41 @@
       }
     ],
     "detectionRules": []
+  },
+  "t-group": {
+    "displayName": "Tgroup",
+    "color": "#ed7602",
+    "aliases": [
+      "Tgroup S.p.A.",
+      "T Group",
+      "T-Group"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tgroupspa.com/",
+    "trackingUrlTemplate": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",
+    "trackingSearchUrl": "https://www.tgroupspa.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.tgroupspa.com"
+        ],
+        "path": "^/ttnet/traccia_spedizione/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^3010TGR\\d{14}$",
+        "confidence": "high"
+      }
+    ]
   },
   "tanzania-posts": {
     "displayName": "Tanzania Posts Corporation",

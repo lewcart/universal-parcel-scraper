@@ -1,0 +1,34 @@
+{
+  "id": "sailpost",
+  "displayName": "Sailpost",
+  "aliases": [
+    "SAILPOST",
+    "Sailpost SpA"
+  ],
+  "region": {
+    "countries": [
+      "IT"
+    ]
+  },
+  "brand": {
+    "color": "#e5c043"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "canaryUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

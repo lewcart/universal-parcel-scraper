@@ -306,4 +306,18 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('precision-deliveries');
     }
   });
+
+  it('names Energo only for its dashed EN numbers', () => {
+    expect(detectCarrierMatch('EN00-000000-1')).toMatchObject({ carrier: 'energo', confidence: 'high', candidates: ['energo'] });
+    for (const number of ['EN000000001', 'EN00-000000-12', 'EN0-0000000-1']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('energo');
+    }
+  });
+
+  it('names Tgroup for 3010TGR and fourteen digits', () => {
+    expect(detectCarrierMatch('3010TGR00000000000001')).toMatchObject({ carrier: 't-group', confidence: 'high', candidates: ['t-group'] });
+    for (const number of ['3010TGR0000000000001', '3011TGR00000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('t-group');
+    }
+  });
 });

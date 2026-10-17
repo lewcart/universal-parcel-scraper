@@ -27204,6 +27204,14 @@
     ]
   },
   {
+    "input": "3010TGR82656617290945",
+    "carrier": "t-group",
+    "confidence": "high",
+    "candidates": [
+      "t-group"
+    ]
+  },
+  {
     "input": "3012330",
     "carrier": "unknown",
     "confidence": "low",
@@ -61692,6 +61700,46 @@
     "confidence": "high",
     "candidates": [
       "japan-post"
+    ]
+  },
+  {
+    "input": "EN25-161993-1",
+    "carrier": "energo",
+    "confidence": "high",
+    "candidates": [
+      "energo"
+    ]
+  },
+  {
+    "input": "EN25-243956-1",
+    "carrier": "energo",
+    "confidence": "high",
+    "candidates": [
+      "energo"
+    ]
+  },
+  {
+    "input": "EN26-105126-1",
+    "carrier": "energo",
+    "confidence": "high",
+    "candidates": [
+      "energo"
+    ]
+  },
+  {
+    "input": "EN26-145401-1",
+    "carrier": "energo",
+    "confidence": "high",
+    "candidates": [
+      "energo"
+    ]
+  },
+  {
+    "input": "EN26-175391-1",
+    "carrier": "energo",
+    "confidence": "high",
+    "candidates": [
+      "energo"
     ]
   },
   {

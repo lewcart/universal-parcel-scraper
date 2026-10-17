@@ -292,4 +292,11 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dpd-at');
     }
   });
+
+  it('suggests Drop2Shop for GLB and thirteen digits without naming it', () => {
+    expect(detectCarrierMatch('GLB0000000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['drop2shop'] });
+    for (const number of ['GLB000000000001', 'GLB00000000000001', 'GLC0000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('drop2shop');
+    }
+  });
 });

@@ -1,0 +1,63 @@
+{
+  "id": "parcelpoint",
+  "displayName": "ParcelPoint",
+  "aliases": [
+    "PARCELPOINT",
+    "HUBBED",
+    "HUBBED Parcelpoints"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#f25010"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://parcelpoint.com.au/track-your-parcel/?trackingnumber={trackingNumber}",
+    "searchUrl": "https://parcelpoint.com.au/track-your-parcel/",
+    "canaryUrl": "https://parcelpoint.com.au/track-your-parcel/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "parcelpoint.com.au"
+      ],
+      "pathPattern": "^/track-your-parcel/?$",
+      "params": [
+        "trackingnumber",
+        "trackingId"
+      ]
+    },
+    {
+      "domains": [
+        "parcelpoint.com.au"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "hubbed.com"
+      ],
+      "pathPattern": "^/track-parcel/?$",
+      "params": [
+        "locate",
+        "hubbed_track_parcel_tracking_no"
+      ]
+    }
+  ],
+  "detection": []
+}

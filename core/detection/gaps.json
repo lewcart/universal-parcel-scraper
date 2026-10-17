@@ -2148,6 +2148,12 @@
     "reason": "A consignment number. Royal Mail's tracker, which now serves Parcelforce, no longer accepts it and asks for each parcel's 14-character number."
   },
   {
+    "carrier": "parcelpoint",
+    "pattern": "^[67]0[0-9A-Z]{10,12}$",
+    "kind": "by_design",
+    "reason": "ParcelPoint's references of 60 or 70 and ten to twelve letters and digits are known only from its oldest archived lookups, and the current tracker's codes have no public layout, so no rule claims them."
+  },
+  {
     "carrier": "pargo",
     "pattern": "^O(?:DO|FT)[A-Z0-9]{10,11}$",
     "kind": "by_design",

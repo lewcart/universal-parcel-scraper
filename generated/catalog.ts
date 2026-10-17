@@ -10101,6 +10101,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "drop2shop": {
+    "displayName": "Drop2Shop",
+    "color": "#d8127d",
+    "aliases": [
+      "COLL-8",
+      "COLL-8 Logistics",
+      "Drop2Shop Return"
+    ],
+    "countries": [
+      "IE",
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Dublin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.drop2shop.ie/tracking",
+    "trackingUrlTemplate": "https://www.drop2shop.ie/tracking?trackingnumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.drop2shop.ie/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "drop2shop.ie"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackingnumber",
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GLB\\d{13}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "dropp": {
     "displayName": "Dropp",
     "color": "#00007d",
@@ -16667,6 +16707,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "neighbour-express": {
+    "displayName": "Neighbour Express",
+    "color": "#254b8d",
+    "aliases": [
+      "NeighbourExpress"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.neighbourexpress.com/track",
+    "trackingUrlTemplate": "https://www.neighbourexpress.com/track?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.neighbourexpress.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "neighbourexpress.com",
+          "neighbourexpress.ca"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackingNumber",
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "nepal-post": {
     "displayName": "Nepal Post",
     "color": "#f6c63e",
@@ -17566,6 +17639,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "packli-punkt": {
+    "displayName": "Päckli Punkt",
+    "color": "#ea5a8e",
+    "aliases": [
+      "Paeckli Punkt",
+      "Päckli-Punkt"
+    ],
+    "countries": [
+      "CH"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Zurich",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.paeckli-punkt.ch/paket-verfolgen/",
+    "trackingUrlTemplate": "https://www.paeckli-punkt.ch/paket-verfolgen/?packet={trackingNumber}",
+    "trackingSearchUrl": "https://www.paeckli-punkt.ch/paket-verfolgen/",
+    "linkRules": [
+      {
+        "domains": [
+          "paeckli-punkt.ch"
+        ],
+        "pathPattern": "^/(?:(?:fr|it|en)/)?(?:paket-verfolgen|suivre-un-colis|pacchetto-pista|track-package)/?$",
+        "params": [
+          "packet"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "packlink": {
     "displayName": "Packlink",
     "color": "#ff4f00",
@@ -17767,6 +17872,56 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "parcelpoint": {
+    "displayName": "ParcelPoint",
+    "color": "#f25010",
+    "aliases": [
+      "PARCELPOINT",
+      "HUBBED",
+      "HUBBED Parcelpoints"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://parcelpoint.com.au/track-your-parcel/",
+    "trackingUrlTemplate": "https://parcelpoint.com.au/track-your-parcel/?trackingnumber={trackingNumber}",
+    "trackingSearchUrl": "https://parcelpoint.com.au/track-your-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "parcelpoint.com.au"
+        ],
+        "pathPattern": "^/track-your-parcel/?$",
+        "params": [
+          "trackingnumber",
+          "trackingId"
+        ]
+      },
+      {
+        "domains": [
+          "parcelpoint.com.au"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "hubbed.com"
+        ],
+        "pathPattern": "^/track-parcel/?$",
+        "params": [
+          "locate",
+          "hubbed_track_parcel_tracking_no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "pargo": {
     "displayName": "Pargo",
@@ -24204,6 +24359,7 @@ export const CARRIER_IDS = [
   "dpd-pt",
   "dpd-uk",
   "dpd-za",
+  "drop2shop",
   "dropp",
   "dsv",
   "dx",
@@ -24377,6 +24533,7 @@ export const CARRIER_IDS = [
   "naqel",
   "nationex",
   "ncs-courier",
+  "neighbour-express",
   "nepal-post",
   "nhat-tin",
   "nim-express",
@@ -24399,12 +24556,14 @@ export const CARRIER_IDS = [
   "overseas-express",
   "ozon-logistics",
   "pack-man",
+  "packli-punkt",
   "packlink",
   "pakistan-post",
   "palletways",
   "pannon-xp",
   "paperfly",
   "paquetexpress",
+  "parcelpoint",
   "pargo",
   "passport",
   "pathao-courier",
@@ -24804,6 +24963,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-pt": [],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
+  "drop2shop": ["drop2shop-1"],
   "dropp": [],
   "dsv": [],
   "dx": ["dx-1"],
@@ -24977,6 +25137,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "naqel": [],
   "nationex": [],
   "ncs-courier": [],
+  "neighbour-express": [],
   "nepal-post": [],
   "nhat-tin": ["nhat-tin-1"],
   "nim-express": [],
@@ -24999,12 +25160,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "overseas-express": [],
   "ozon-logistics": ["ozon-logistics-1","ozon-logistics-2"],
   "pack-man": [],
+  "packli-punkt": [],
   "packlink": ["packlink-1"],
   "pakistan-post": ["pakistan-post-1"],
   "palletways": [],
   "pannon-xp": ["pannon-xp-1"],
   "paperfly": ["paperfly-1","paperfly-2"],
   "paquetexpress": ["paquetexpress-1"],
+  "parcelpoint": [],
   "pargo": ["pargo-1"],
   "passport": ["passport-1"],
   "pathao-courier": ["pathao-courier-1"],

@@ -132,6 +132,12 @@ step exists for future protocol changes.
   offset-less date that no zone resolves, has no instant. It is skipped and counted in
   `undated_event_count`, so it never becomes the latest scan, sets the stage or
   `last_update`, or moves the freshness watermark. A malformed date still fails the reply.
+- FedEx's pickup ("Picked Up") at 00:00 keeps its day in `local_time`, with no time:
+  FedEx's own feed sends that step with a date, a 00:00:00 time and no offset, and every
+  other scan with its offset and time. Read at midnight on the pickup's clock, it took a
+  time FedEx never gives. It stays a scan, so when it is the latest one `last_update` is
+  null. A pickup at another time, another FedEx scan at 00:00 and
+  other carriers' midnight scans keep their instants.
 - DHL Express scans carry the facility's clock, whatever the label: DHL's mobile API gives
   the same clocks scan for scan, and Ship24 gives them with the facility's offset. They
   skip the steps above and take the zone the

@@ -750,6 +750,33 @@ describe('ParcelsApp result parsing', () => {
     expect(parse(['OnTrac'], [scan('2026-07-01T21:40:00Z', '')]).events?.map((event) => event.time)).toEqual(['2026-07-01T21:40:00.000Z']);
   });
 
+  it('keeps the day of FedEx\'s pickup, which FedEx dates without a time, instead of a midnight', () => {
+    const scan = (date: string, location: string, status: string) => ({ date, status, carrier: 0, location });
+    const read = (carriers: string[], states: Record<string, unknown>[]) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity()).events?.map(({ time, local_time, stage }) => ({ time, local_time, stage }));
+    // Live shape: FedEx's own feed sends "Picked up" with a 00:00:00 time and no
+    // offset; ParcelsApp writes it at 00:00, with a no-break space.
+    expect(read(['FedEx'], [
+      scan('2026-08-12T05:41:00Z', 'Example City, GA', 'Arrived at FedEx location'),
+      scan('2026-08-11T00:00:00Z', 'Example City, GA', 'Picked\u00a0Up'),
+    ])).toEqual([
+      { time: '2026-08-12T09:41:00.000Z', local_time: undefined, stage: 'in_transit' },
+      { time: undefined, local_time: '2026-08-11', stage: 'accepted' },
+    ]);
+    // A FedEx pickup at another time, another FedEx scan at 00:00 and another
+    // carrier's pickup at 00:00 keep their instants.
+    expect(read(['FedEx'], [
+      scan('2026-08-12T00:00:00Z', 'Example City, GA', 'Departed FedEx Location'),
+      scan('2026-08-11T16:20:00Z', 'Example City, GA', 'Picked Up'),
+    ])?.map(({ time }) => time)).toEqual(['2026-08-12T04:00:00.000Z', '2026-08-11T20:20:00.000Z']);
+    expect(read(['OnTrac'], [scan('2026-08-11T00:00:00Z', 'Example City, GA', 'Picked Up')])?.map(({ time }) => time))
+      .toEqual(['2026-08-11T00:00:00.000Z']);
+    // The rendered page gives the same day.
+    expect(parseParcelsAppHtml(rendered(carrierRow('11 Aug 2026', '00:00', 'Picked Up', 'FedEx')), number).events?.[0])
+      .toMatchObject({ local_time: '2026-08-11' });
+    expect(parseParcelsAppHtml(rendered(carrierRow('11 Aug 2026', '00:00', 'Picked Up', 'FedEx')), number).events?.[0]?.time).toBeUndefined();
+  });
+
   it('reads USPS, Canada Post, GOFO and SpeedPAK scans in the state, province or country their location names', () => {
     // Live shapes (2026-10-10): each carrier's local clock labeled UTC. USPS's
     // page, Canada Post's digits, GOFO's US feed and Orange Connex's offsets

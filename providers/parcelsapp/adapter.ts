@@ -111,6 +111,25 @@ const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'e
  */
 const UNLOCATED_LOCAL_CLOCKS = new Set(['ups', 'fedex']);
 /**
+ * The day of a step its carrier dates without a time, which ParcelsApp writes
+ * at 00:00: FedEx's own feed sends its pickup ("Picked up", `PU`) with a date,
+ * a 00:00:00 time and no offset, and every other scan with its offset.
+ * ParcelsApp words it "Picked Up", with a no-break space. Read at midnight on
+ * the pickup's clock, it took a time FedEx never gives; it keeps its day in
+ * `local_time` instead.
+ */
+function datedOnly(name: unknown, status: string, date: unknown): string | null {
+  const wall = mislabeledWallTime(date);
+  return nameKey(name) === 'fedex' && /^picked\s+up$/i.test(status.trim()) && wall && /T00:00:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 10) : null;
+}
+
+/** A step dated by its day alone. */
+function dayEvent(day: string, description: string): CarrierEvent | null {
+  const parsed = localEvent(`${day}T00:00:00`, description);
+  return parsed && { ...parsed, local_time: day };
+}
+
+/**
  * Carriers whose dates are each scan's local clock under a label that is
  * never its instant, checked scan for scan on 2026-10-10: USPS's own page,
  * and the "at 8:25 am" ParcelsApp relays in its text; Canada Post's digits;
@@ -937,11 +956,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     // nothing places. Any other scan with no zone keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
-    const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date,
-      entry.wording);
+    // A step its carrier dates by its day alone keeps the day (`datedOnly`).
+    const day = datedOnly(name, relayedLabel(raw.status), date);
+    const parsed = day ? dayEvent(day, entry.wording)
+      : localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
     if (parsed) latest.see(mislabeledWallTime(date) ?? '', facility);
     // Nor has an offset-less date that no zone resolves: a wall time, not an instant.
-    if (parsed && !parsed.time) {
+    if (parsed && !parsed.time && !day) {
       undated++;
       continue;
     }
@@ -1072,7 +1093,9 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       undated++;
       continue;
     }
-    const parsed = event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
+    const day = datedOnly(name, description, state.date);
+    const parsed = day ? dayEvent(day, scan?.wording ?? description)
+      : event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
     if (parsed) events.push(parsed);
     if (parsed) carried.push({ event: parsed, carrier: nameKey(name) });
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });

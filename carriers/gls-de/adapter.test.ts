@@ -165,7 +165,14 @@ describe('GLS Germany', () => {
     await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ kind: 'indeterminate', status: 404 });
   });
 
-  it('keeps an overview 404 other than an expired parcel inconclusive', async () => {
+  it('reads the overview\'s 404 for a number GLS does not know as not found', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => Response.json({ lastError: 'E206' }, { status: 404 }));
+    const tracker = new GLSGermanyTracker({ fetcher });
+    await expect(tracker.fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'GLSGermanyTrackingError', status: 404 });
+    await expect(tracker.recognizes(NUMBER)).resolves.toBe(false);
+  });
+
+  it('keeps an overview 404 other than an expired or unknown parcel inconclusive', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ lastError: 'E609' }, { status: 404 }));
     await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ kind: 'indeterminate', status: 404 });
   });

@@ -21,9 +21,12 @@ request gets at most half of the time left, so the retry fits in the rest.
 2. `rstt028/{parcelNumber}?postalCode=…&tuOwnerCode=…`: detailed history, gated
    by the recipient postcode. `tuOwnerCode` is the overview's `REQUEST` owner.
 
-HTTP 400, 403 and 404 all mean "no such parcel" and raise
+A 404 with GLS's own `lastError` code means "no such parcel" and raises
 `GLSSwitzerlandTrackingError` (a `NotFoundError`; gls-de narrows on it with
-`instanceof`, so keep the class). Other non-OK statuses stay upstream errors.
+`instanceof`, so keep the class): `E000` for an expired parcel or `E206` for an
+unknown number on the overview, and `E000`, `E609` or `E800` for a postcode
+that does not match on the detail. Any other 404 is inconclusive, and a 400 or
+403 can be a challenge, so it stays an upstream error.
 
 ## Notes
 
@@ -58,9 +61,9 @@ HTTP 400, 403 and 404 all mean "no such parcel" and raise
   gives the name alone. The shop's id and opening hours are not read. A
   delivered parcel has none, collected there or not.
 - `recognizes(number)`, the adapter's `recognize()`, reads the overview alone.
-  Unlike a lookup, it takes only a 404 with GLS's `lastError: E000` as a
-  not-found: a 400 or 403 there can be a challenge. Carrier recognition uses it,
-  and the user is then asked for the postcode.
+  It takes the overview's not-found codes as an unknown number and keeps any
+  other failure one. Carrier recognition uses it, and the user is then asked
+  for the postcode.
 - The postcode is a tracking credential: sent only to `rstt028`, never to the
   overview, never logged. Scan locations keep ParcelShop name, country and
   city; the street and postcode in the same `address` object are dropped, as

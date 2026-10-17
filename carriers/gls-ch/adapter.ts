@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
 import { DELIVERY_POSTCODE, deliveryPostcodeText } from '../../core/catalog/postcode.js';
-import { InputRequiredError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, InputRequiredError, InvalidInputError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
 import { firstOccurrence } from '../../core/time/index.js';
@@ -23,6 +23,23 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_RESPONSE_BYTES = 1_000_000;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
+/** GLS's `lastError` on a 404 overview: an expired parcel, and a number it does not know. */
+export const GLS_OVERVIEW_NOT_FOUND: readonly string[] = ['E000', 'E206'];
+/**
+ * And on a 404 detail, for a postcode that does not match. GLS also answers E609 to a malformed
+ * detail request (a missing owner code or `millis`, a wrong `caller`), so the tests pin that request's shape.
+ */
+export const GLS_DETAIL_NOT_FOUND: readonly string[] = ['E000', 'E609', 'E800'];
+
+/** GLS's own `lastError` code in a reply's body, or nothing when the body is not GLS's reply. */
+export function glsLastError(bytes: Uint8Array): string {
+  try {
+    const payload = parseJsonBytes(bytes, PROVIDER);
+    return isRecord(payload) && typeof payload.lastError === 'string' ? payload.lastError : '';
+  } catch {
+    return '';
+  }
+}
 
 export { glsSwitzerlandStatus } from './status.js';
 
@@ -412,7 +429,7 @@ export class GLSSwitzerlandTracker {
     const trackingNumber = normalizeGLSSwitzerlandTrackingNumber(rawTrackingNumber);
     // Up to two requests, each with the full request timeout.
     const budget = lookupBudget(context, 2 * this.timeoutMs);
-    const overview = await this.request(glsSwitzerlandOverviewApiUrl(trackingNumber, this.now()), budget);
+    const overview = await this.request(glsSwitzerlandOverviewApiUrl(trackingNumber, this.now()), budget, GLS_OVERVIEW_NOT_FOUND);
     const parcel = selectGLSParcel(overview, trackingNumber);
     if (!rawPostcode.trim()) return parseGLSSwitzerlandTrackingResponse(overview, trackingNumber);
 
@@ -425,7 +442,7 @@ export class GLSSwitzerlandTracker {
       rawPostcode,
       this.now(),
       ownerCode(parcel),
-    ), budget);
+    ), budget, GLS_DETAIL_NOT_FOUND);
     const result = parseGLSSwitzerlandTrackingResponse(detail, parcelNumber);
     const overviewResult = parseGLSSwitzerlandTrackingResponse(overview, trackingNumber);
     return { ...result, ...glsDeliveryReference(overviewResult) };
@@ -433,8 +450,7 @@ export class GLSSwitzerlandTracker {
 
   /**
    * Whether GLS knows a number, from the overview alone: no postcode is sent.
-   * Only a 404 whose body carries GLS's `lastError: E000` is a not-found here;
-   * a 400 or 403 can be a challenge, so it stays a failure.
+   * Only GLS's own not-found reply says it does not; any other failure stays one.
    */
   async recognizes(rawTrackingNumber: string, context: TrackingContext = {}): Promise<boolean> {
     const trackingNumber = normalizeGLSSwitzerlandTrackingNumber(rawTrackingNumber);
@@ -450,8 +466,8 @@ export class GLSSwitzerlandTracker {
       ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
     });
     if (response.status === 404) {
-      const payload = parseJsonBytes(bytes, PROVIDER);
-      if (isRecord(payload) && payload.lastError === 'E000') return false;
+      if (GLS_OVERVIEW_NOT_FOUND.includes(glsLastError(bytes))) return false;
+      throw new IndeterminateError(PROVIDER, 'GLS returned HTTP 404 without its own not-found reply', { status: 404 });
     }
     if (!response.ok) throw new UpstreamHttpError('GLS Switzerland tracking', response.status);
     try {
@@ -466,7 +482,7 @@ export class GLSSwitzerlandTracker {
    * A request that fails to reach GLS, or hangs, is sent once more: the first gets at most half of
    * what is left, so the second fits in the rest.
    */
-  private async request(url: string, budget: LookupBudget): Promise<unknown> {
+  private async request(url: string, budget: LookupBudget, notFound: readonly string[]): Promise<unknown> {
     const { response, bytes } = await withNetworkRetry(budget, (timeoutMs) => fetchBounded(url, {
       signal: budget.signal,
       headers: pageHeaders(this.#userAgent),
@@ -477,7 +493,12 @@ export class GLSSwitzerlandTracker {
       allowHttpError: true,
       ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
     }));
-    if ([400, 403, 404].includes(response.status)) throw new GLSSwitzerlandTrackingError();
+    // GLS answers a number or postcode it does not match with a 404 carrying its own code. Any other
+    // 404 is inconclusive, and a 400 or 403 can be a challenge: neither reads as a missing parcel.
+    if (response.status === 404) {
+      if (notFound.includes(glsLastError(bytes))) throw new GLSSwitzerlandTrackingError();
+      throw new IndeterminateError(PROVIDER, 'GLS returned HTTP 404 without its own not-found reply', { status: 404 });
+    }
     if (!response.ok) throw new UpstreamHttpError('GLS Switzerland tracking', response.status);
     return parseJsonBytes(bytes, PROVIDER);
   }

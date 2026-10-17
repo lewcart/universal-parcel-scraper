@@ -6,6 +6,9 @@ import { withNetworkRetry } from '../../core/runner/networkRetry.js';
 import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import {
+  GLS_DETAIL_NOT_FOUND,
+  GLS_OVERVIEW_NOT_FOUND,
+  glsLastError,
   glsSwitzerlandDetailApiUrl,
   glsDeliveryReference,
   glsSwitzerlandOverviewApiUrl,
@@ -22,13 +25,6 @@ import {
 const PROVIDER = 'GLS Germany tracking';
 const CARRIER = 'GLS Germany';
 const DEFAULT_TIMEOUT_MS = 15_000;
-/** GLS's `lastError` for an expired parcel. */
-const OVERVIEW_NOT_FOUND: readonly string[] = ['E000'];
-/**
- * And for a postcode that does not match. GLS also answers E609 to a malformed detail request
- * (a missing owner code or `millis`, a wrong `caller`), so gls-ch's tests pin that request's shape.
- */
-const DETAIL_NOT_FOUND: readonly string[] = ['E000', 'E609', 'E800'];
 
 export interface GLSGermanyOptions {
   timeoutMs?: number;
@@ -133,18 +129,11 @@ export class GLSGermanyTracker {
       ...(this.#fetcher ? { fetcher: this.#fetcher } : {}),
     }));
     // A challenge, rate limit or outage must not become "not found". GLS's own 404 for an expired
-    // parcel does, and so does, on the detail request, its 404 for a postcode that does not match a
+    // or unknown parcel does, and so does, on the detail request, its 404 for a postcode that does not match a
     // parcel the overview found, as on GLS Switzerland. Any other 404 is inconclusive, since an
     // HTTP error with that status would read as not found; other statuses stay upstream errors.
     if (response.status === 404) {
-      let payload: unknown;
-      try {
-        payload = parseJsonBytes(bytes, PROVIDER);
-      } catch {
-        payload = undefined;
-      }
-      const code = isRecord(payload) && typeof payload.lastError === 'string' ? payload.lastError : '';
-      if ((detail ? DETAIL_NOT_FOUND : OVERVIEW_NOT_FOUND).includes(code)) throw new GLSGermanyTrackingError();
+      if ((detail ? GLS_DETAIL_NOT_FOUND : GLS_OVERVIEW_NOT_FOUND).includes(glsLastError(bytes))) throw new GLSGermanyTrackingError();
       throw new IndeterminateError(PROVIDER, 'GLS returned HTTP 404 without its own not-found reply', { status: 404 });
     }
     if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);

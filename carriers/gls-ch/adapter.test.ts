@@ -271,14 +271,18 @@ describe('GLS Switzerland tracker', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(json(deliveredOverviewFixture()))
       .mockResolvedValueOnce(json({ lastError: 'E000' }, 404))
-      .mockResolvedValueOnce(new Response('<html>blocked</html>', { status: 403 }));
+      .mockResolvedValueOnce(json({ lastError: 'E206' }, 404))
+      .mockResolvedValueOnce(new Response('<html>blocked</html>', { status: 403 }))
+      .mockResolvedValueOnce(new Response('<html>Not Found</html>', { status: 404 }));
     const tracker = new GLSSwitzerlandTracker({ timeoutMs: 1_000, now: () => FIXED_MILLIS });
     await expect(tracker.recognizes(OFFICIAL_TEST_PARCEL_NUMBER)).resolves.toBe(true);
     expect(String(fetcher.mock.calls[0]?.[0])).toBe(glsSwitzerlandOverviewApiUrl(OFFICIAL_TEST_PARCEL_NUMBER, FIXED_MILLIS));
     await expect(tracker.recognizes(OFFICIAL_TEST_PARCEL_NUMBER)).resolves.toBe(false);
+    await expect(tracker.recognizes(WRONG_PARCEL_NUMBER)).resolves.toBe(false);
     await expect(tracker.recognizes(OFFICIAL_TEST_PARCEL_NUMBER)).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 403 });
+    await expect(tracker.recognizes(OFFICIAL_TEST_PARCEL_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 404 });
     // Never the postcode-gated detail request.
-    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(fetcher).toHaveBeenCalledTimes(5);
   });
 
   it('uses the anonymous overview and postcode-gated detail requests', async () => {
@@ -321,6 +325,15 @@ describe('GLS Switzerland tracker', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it.each([
+    ['a 403 page', new Response('<html>blocked</html>', { status: 403 }), { kind: 'challenge', status: 403 }],
+    ['a 400', new Response('Bad Request', { status: 400 }), { kind: 'transport', status: 400 }],
+    ['a 404 page instead of GLS\'s reply', new Response('<html>Not Found</html>', { status: 404 }), { kind: 'indeterminate', status: 404 }],
+  ])('keeps %s from the overview from reading as a missing parcel', async (_case, response, failure) => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(response);
+    await expect(new GLSSwitzerlandTracker({ timeoutMs: 1_000, now: () => FIXED_MILLIS }).fetch(WRONG_PARCEL_NUMBER)).rejects.toMatchObject(failure);
   });
 
   it('maps the provider wrong-number response to a clean not-found error', async () => {

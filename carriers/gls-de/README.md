@@ -20,8 +20,8 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
   (weights 3, 1, 3, … from the right, plus one). Nine other carriers share
   the 12-digit shape, so detection offers GLS for it only when that digit
   passes. GLS numbers are never 13 or 14 digits.
-- HTTP 404 is a not-found when the body has GLS's `lastError: E000`, and on
-  the detail request when it has `E609` or `E800`: the postcode does not match
+- HTTP 404 is a not-found when the body has GLS's `lastError: E000` for an expired
+  parcel or `E206` for a number it does not know, and on the detail request when it has `E609` or `E800`: the postcode does not match
   the parcel the overview found, which GLS Switzerland reports the same way.
   GLS also answers `E609` to a malformed request, so gls-ch's tests pin the
   detail request's shape. Any other code, or a 404 without GLS's reply, is

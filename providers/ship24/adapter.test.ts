@@ -176,6 +176,21 @@ describe('Ship24 result parsing', () => {
     expect(noonAt(undefined, { destination_country_code: 'SV' }, 'ZZ123456785CH', 'Europe/Zurich')).toBeUndefined();
     expect(noonAt(undefined, {}, number, 'Europe/Zurich')).toBe('2026-09-20T10:00:00.000Z');
   });
+
+  it('reads a town and bracketed code on a cross-border parcel by the country of the scan\'s courier, when it keeps one clock', () => {
+    const noon = (location: string, country?: string) => parseShip24Response({ data: { tracking_number: number,
+      origin_country_code: 'CN', destination_country_code: 'DE', events: [{ timestamp: '2026-09-20T12:00:00', status: 'In transit',
+        location, courier: { crawler_code: 'example-tracking', country_code: country, translation: { name: 'Example Courier' } } }] } },
+    number).events![0]!.time;
+    // "(DE)" alone could be Delaware.
+    expect(noonAt('Example Town (DE)', { origin_country_code: 'CN', destination_country_code: 'DE' })).toBeUndefined();
+    expect(noon('Example Town (DE)', 'DE')).toBe('2026-09-20T10:00:00.000Z');
+    expect(noon('Example Town (DE)', 'AT')).toBeUndefined();
+    expect(noon('Example Town (DE)')).toBeUndefined();
+    expect(noon('Example data centre', 'DE')).toBeUndefined();
+    // The United States keep several clocks.
+    expect(noon('Example Town (US)', 'US')).toBeUndefined();
+  });
 });
 
 describe('Ship24 feeds that relabel the carrier\'s wall clock', () => {

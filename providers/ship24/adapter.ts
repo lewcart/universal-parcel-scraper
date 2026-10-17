@@ -103,6 +103,22 @@ function replyCountry(value: unknown): string | null {
   return typeof value === 'string' ? countryCode(value.trim().toUpperCase() === 'UK' ? 'GB' : value) : null;
 }
 
+/** A town and a country code in brackets: "Example Town (DE)". */
+const TOWN_CODE = /^[^()]+\(([A-Z]{2})\)$/;
+
+/**
+ * The clock of a scan located as a town and a code in brackets, when the code
+ * is the country Ship24 gives for the scan's courier and that country keeps
+ * one clock. Alone, "(DE)" could be Delaware's. DPD Germany's feed writes its
+ * scans so, without an offset, on the digits DPD Germany's own tracker dates
+ * on Berlin's clock.
+ */
+function courierCountryZone(scan: Record<string, unknown>, location: string): string | null {
+  const code = TOWN_CODE.exec(location)?.[1];
+  const country = isRecord(scan.courier) ? replyCountry(scan.courier.country_code) : null;
+  return code && country && replyCountry(code) === country ? countryTimeZone(country) : null;
+}
+
 /**
  * UPU events (EMSEVT) by the side of the border they happen on: the origin
  * post's until the item leaves its outward office of exchange, the
@@ -247,7 +263,8 @@ function upuZone(journey: Journey, scan: Record<string, unknown>, wall: string):
 /**
  * The zone of a scan whose timestamp names no offset, or a relabelling
  * feed's: it is the scanning carrier's wall clock. Its location's clock comes
- * first (as the feed reads its own sites and stations, then by the names it holds), then
+ * first (as the feed reads its own sites and stations, then by the names it holds,
+ * then a bracketed code its courier's country confirms), then
  * the country of a parcel that never leaves it, then the side of the border a
  * UPU event's words name. A courier name is the feed that relayed the scan,
  * not where it happened: a national post relays the destination's scans under
@@ -258,7 +275,7 @@ function placedZone(journey: Journey, scan: Record<string, unknown>, wall: strin
   const location = typeof scan.location === 'string' ? scan.location.trim() : '';
   const located = feed?.place?.(location, journey, typeof scan.status === 'string' ? scan.status : '')
     ?? locationZone(location, journey.northAmerican || northAmericanCourier(scan), feed?.country ?? null)
-    ?? (journey.domestic ? countryTimeZone(journey.domestic) : null) ?? upuZone(journey, scan, wall);
+    ?? courierCountryZone(scan, location) ?? (journey.domestic ? countryTimeZone(journey.domestic) : null) ?? upuZone(journey, scan, wall);
   return located || journey.international ? located : feed?.home?.(location) ?? null;
 }
 

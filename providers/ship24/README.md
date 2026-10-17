@@ -97,6 +97,10 @@ No account, cookie, fingerprint or issued token is used.
      - else a US state or Canadian province, if the parcel starts or ends in North
        America, its courier works only there (UniUni, GOFO) or the town lies in that
        state. 4PX writes them after the country: "US  NY  EXAMPLE TOWN 12345";
+     - else a bracketed code that could also name a region ("Example Town (DE)", Delaware),
+       when it is the country Ship24 gives for the scan's courier (`courier.country_code`)
+       and that country keeps one zone. DPD Germany's feed locates its scans so, without an
+       offset, on the digits DPD Germany's own tracker dates on Berlin's clock;
   2. the country of a parcel whose origin and destination are the same
      (`origin_country_code`, or an S10 number's suffix, and `destination_country_code`);
   3. for a parcel that crosses a border, the side a UPU event's words name ("Posting/

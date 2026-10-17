@@ -397,7 +397,7 @@ describe("universal providers' answers", () => {
       ['Example center Your order has been received', 'in_transit'], ['Received. Your order has been received', 'in_transit'],
       ['Your order has been shipped from Example center', 'in_transit'], ['Your order has been received', 'registered'],
       ['NUEVO REPARTO. Concertación entrega flexible', 'in_transit'], ['NUEVO REPARTO', 'in_transit'],
-      ['Waiting for carrier to collect the order', 'registered'], ['Depositado en punto MRW', 'ready_for_pickup'],
+      ['Waiting for carrier to collect the order', 'registered'], ['Depositado en punto MRW', 'ready_for_pickup'], ['Pendiente de recoger', 'registered'],
       ['Order Submited', 'registered'], ['We have received the shipment from the sender', 'accepted'], ['Center Received', 'in_transit'],
       ['Origin port warehouse receive，Flight Schedule ETD MIA <2026-01-13 07:05:00>, ETA BOG <2026-01-13 09:50:00>', 'in_transit'],
       ['The flight has taken off', 'in_transit'], ['Center Parcel shipped to EXAMPLE.DS', 'in_transit'],
@@ -422,7 +422,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

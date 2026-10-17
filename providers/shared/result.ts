@@ -183,6 +183,8 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^已出库(?:[,，]货物离开操作中心)?$|^已排航班$/u.test(value)) return 'in_transit';
   // Hermes Germany's hub steps in an aggregator's English, and the aggregator's label for an inbound one.
   if (/^shipment added to loading unit[.!]?$|^received at hub: in motherbag[.!]?$|^shipment received[.!]?$|^the shipment (?:has been|was) prepared for (?:the )?further shipping\b/i.test(value)) return 'in_transit';
+  // Hermes Germany's delivery to the safe place its recipient booked, which the aggregator pairs with its "Delivered".
+  if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
   // A bare "parcel handed" is a hand-over to a carrier, which 17TRACK files as a pickup.
   if (/^parcel handed[.!]?$/i.test(value)) return 'accepted';
   if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: (?:and|&) scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^仓库收货$|^rfid confirmed pick-?up$|^usps in possession of item\b/i.test(value)) return 'accepted';

@@ -495,6 +495,15 @@
     "reason": "The Kazakh issuer suffix suggests Kazpost but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}UZ with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "uzbekistan-post"
+    ],
+    "reason": "The Uzbek issuer suffix suggests Uzbekistan Post but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}TY or AA9{9}MI with a valid S10 check digit",
     "carriers": [
       "aliexpress",

@@ -47,9 +47,12 @@ the lookup its tracking page at uz.post makes.
 ## Numbers
 
 Uzbekistan Post prints UPU S10 numbers ending in `UZ`. Archived lookups on its tracker show
-items starting `MM`, `LA` and `RX`. Generic postal detection handles S10 numbers, so Uzbekistan
-Post has no rule of its own, and preflight does not ask it about them; it tracks the items a
-caller files under it. The samples and their sources are in [`numbers.json`](numbers.json).
+items starting `MM`, `LA` and `RX`. The issuer of an S10 code does not establish who delivers it,
+so detection keeps such codes with the generic postal carrier. `uzbekistan-post-s10`, at low
+confidence, makes preflight ask Uzbekistan Post about them. Mail from abroad keeps the suffix of
+the post that issued it, and reaches Uzbekistan Post when a caller names it, a provider names it,
+or a result gives Uzbekistan as the destination of an S10 item. The samples and their sources are
+in [`numbers.json`](numbers.json).
 
 ## Links
 

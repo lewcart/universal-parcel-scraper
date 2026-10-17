@@ -29,6 +29,7 @@ describe('national postal lookup candidates', () => {
     ['ZA', 'south-african-post-office'], ['South Africa', 'south-african-post-office'],
     ['BY', 'belpost'], ['Belarus', 'belpost'],
     ['BG', 'bulgarian-posts'], ['Bulgaria', 'bulgarian-posts'],
+    ['UZ', 'uzbekistan-post'], ['Uzbekistan', 'uzbekistan-post'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

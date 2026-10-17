@@ -96,5 +96,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "uzbekistan-post-s10",
+      "pattern": "^[A-Z]{2}\\d{9}UZ$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

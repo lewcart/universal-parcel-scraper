@@ -21520,7 +21520,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}UZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "vasp-expresso": {
     "displayName": "Vasp Expresso",
@@ -23661,7 +23668,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ues-uy": ["ues-uy-1"],
   "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
-  "uzbekistan-post": [],
+  "uzbekistan-post": ["uzbekistan-post-s10"],
   "vasp-expresso": [],
   "venipak": ["venipak-1"],
   "via-cargo": [],

@@ -21,6 +21,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "averitt": 921,
   "aymakan": 942,
   "bangladesh-post": 909,
+  "barid-al-maghrib": 901,
   "belpost": 929,
   "blue-express": 971,
   "bosta": 951,

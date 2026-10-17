@@ -6342,7 +6342,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Casablanca",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "barid-al-maghrib",
+      "recognitionRank": 901,
+      "localClocks": true
     },
     "canaryUrl": "https://www.barid.ma/bamb2cstorefront/fr/tracking/page",
     "trackingUrlTemplate": "https://www.barid.ma/bamb2cstorefront/fr/tracking/getdetailentrytracking?code={trackingNumber}",

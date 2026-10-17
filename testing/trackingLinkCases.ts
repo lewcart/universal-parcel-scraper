@@ -950,6 +950,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   '17feia': 'www.17feia.com sends a session without its cookie to cc.html, whose reload opens the home page without the number, so number forwarding cannot be verified',
   'allegro-one': 'allegro.pl answers automated Chrome with a DataDome block page instead of the tracker, so number forwarding cannot be verified',
   'an-post': 'Radware Bot Manager sends automated sessions on www.anpost.com to validate.perfdrive.com and a CAPTCHA, so number forwarding cannot be verified',
+  'barid-al-maghrib': 'the detail page sends an unknown number back to the empty search form, so only a real item verifies the link',
   'blue-express': 'blue.cl answers headless Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   cacesa: 'www.cacesa.com answers an address with a number only after about twenty seconds, past the navigation limit; the page then fills the number in and looks it up',
   'china-post': 'www.ems.com.cn answers automated Chrome with an empty HTTP 400 from its web application firewall, and its tracker asks for a click CAPTCHA before each lookup',

@@ -6276,7 +6276,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BD$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "barid-al-maghrib": {
     "displayName": "Barid Al-Maghrib",
@@ -23288,7 +23295,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aymakan": ["aymakan-1"],
   "azerpost": [],
   "azul-cargo": [],
-  "bangladesh-post": [],
+  "bangladesh-post": ["bangladesh-post-s10"],
   "barid-al-maghrib": [],
   "belpost": ["belpost-s10"],
   "best-express-vn": [],

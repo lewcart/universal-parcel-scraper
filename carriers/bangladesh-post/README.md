@@ -57,9 +57,10 @@ issued it. The adapter takes S10 codes from any post with a valid check digit; a
 invalid without a request.
 
 The issuer of an S10 code does not establish who delivers it, so detection keeps codes ending
-`BD` with the generic postal carrier, and no rule makes preflight ask Bangladesh Post. Items
-reach it when a caller or a provider names it. The samples and their sources are in
-[`numbers.json`](numbers.json).
+`BD` with the generic postal carrier. `bangladesh-post-s10`, at low confidence, makes preflight
+ask Bangladesh Post about them. Mail from abroad reaches Bangladesh Post when a caller names it, a
+provider names it, or a result gives Bangladesh as the destination of an S10 item. The samples and
+their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

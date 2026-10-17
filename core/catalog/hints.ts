@@ -44,11 +44,12 @@ const CATALOG_NAMES = new Set([
 // host also checks adapter availability and required inputs before making a
 // request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
-  ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BG', 'bulgarian-posts'], ['BY', 'belpost'],
-  ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'], ['EG', 'egypt-post'], ['ES', 'correos-spain'],
-  ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'], ['JP', 'japan-post'], ['NL', 'spring-gds'],
-  ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'],
-  ['UA', 'ukrposhta'], ['US', 'usps'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
+  ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
+  ['BG', 'bulgarian-posts'], ['BY', 'belpost'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
+  ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'],
+  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['PT', 'ctt'],
+  ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
+  ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

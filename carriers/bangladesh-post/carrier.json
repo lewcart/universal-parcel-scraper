@@ -82,5 +82,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "bangladesh-post-s10",
+      "pattern": "^[A-Z]{2}\\d{9}BD$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

@@ -149,6 +149,11 @@ function providerWordingStage(description: string): Stage | undefined {
   // Relay's notices on Vinted parcels, from the label to the parcel in its hands.
   if (/^awaiting your vinted parcel[.!]?$|^expecting your parcel[.!]?$/i.test(value)) return 'registered';
   if (/^parcel received by relay[.!]?$|^received your parcel[.!]?$/i.test(value)) return 'accepted';
+  // Metropolitan Warehouse's furniture steps, as its own map reads them: the order, the vendor
+  // pickup booked and done, and its hub, which ParcelsApp writes as Metro-<Warehouse>-Hub.
+  if (/^order registered[.!]?$|^pickup scheduled for \d{1,2}\/\d{1,2}\/\d{2,4}[.!]?$/i.test(value)) return 'registered';
+  if (/^pickup completed, no exceptions[.!]?$/i.test(value)) return 'accepted';
+  if (/^furniture received by metro-(?:[^-]{1,40}-)?hub[.!]?$/i.test(value)) return 'in_transit';
   // SF Express's pickup notice, which goes on to name the courier.
   if (/^sf express has received your package\b/i.test(value)) return 'accepted';
   // iMile's scans as aggregators relay them, its 【】 place names cut or dropped.

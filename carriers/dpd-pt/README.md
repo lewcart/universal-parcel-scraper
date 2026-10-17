@@ -10,6 +10,11 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
    the page's search form sends the browser to. It needs no cookie, token or browser. The
    server-rendered page in Portuguese names the reference asked and lists the parcel's scans,
    newest first, with a code, a day, a time, a wording, a comment and a map link.
+   `tracking.dpd.pt` sends its certificate without its intermediate, RapidSSL TLS RSA CA G1.
+   Browsers fetch it themselves; Node refuses the page. Over the global fetch the request goes
+   through Node's HTTPS client with an agent of its own that trusts Node's roots and that
+   intermediate, which [certificate.ts](certificate.ts) holds, so nothing changes for the rest of
+   the process. A host's own fetcher is used as given and has to trust the chain itself.
 2. `retry`: one more try when the request fails to reach DPD Portugal or hangs. The first try
    gets half of the budget.
 
@@ -46,9 +51,8 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
 
 ## Limitations
 
-- `tracking.dpd.pt` sends its certificate without the intermediate, RapidSSL TLS RSA CA G1.
-  Browsers fetch it; Node refuses the page with `UNABLE_TO_VERIFY_LEAF_SIGNATURE`. In Node the
-  page answers only when `NODE_EXTRA_CA_CERTS` holds that intermediate.
+- The bundled intermediate expires in November 2027. A certificate DPD Portugal takes from
+  another intermediate is refused with `UNABLE_TO_VERIFY_LEAF_SIGNATURE` until that one is added.
 - No places, delivery estimate, weight, sender or service.
 - Older parcels drop out of the tracker, which then gives its not-found notice for them.
 
@@ -70,5 +74,4 @@ The tracker reads the number from `reference` on `tracking.dpd.pt/track-and-trac
 ## Testing
 
 `npm run test:carriers:live -- carriers/dpd-pt`, with `DPD_PT_TRACKING_NUMBER` and optionally
-`DPD_PT_UNKNOWN_NUMBER` set outside the repository. The tests run when Node trusts the tracker's
-certificate chain.
+`DPD_PT_UNKNOWN_NUMBER` set outside the repository.

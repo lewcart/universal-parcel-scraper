@@ -4,11 +4,16 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { fetchTrusting } from '../../core/transport/https.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, DPD_PT_TRACKER, dpdPtLookupUrl, DpdPtTracker } from './adapter.js';
+import { RAPIDSSL_TLS_RSA_CA_G1 } from './certificate.js';
 import { normalizeDpdPtNumber, parseDpdPt } from './parser.js';
 import { dpdPtMappedStage, dpdPtStage, isDpdPtNotice, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
+
+const trusting = vi.hoisted(() => vi.fn<typeof fetch>());
+vi.mock('../../core/transport/https.js', () => ({ fetchTrusting: vi.fn(() => trusting) }));
 
 const DELIVERED = '09990000000101';
 const AT_POINT = '09990000000202';
@@ -39,6 +44,20 @@ describe('DPD Portugal tracking adapter', () => {
     expect(String(url)).toBe(`${DPD_PT_TRACKER}?reference=${DELIVERED}`);
     expect(init).toMatchObject({ method: 'GET', redirect: 'manual', signal: expect.any(AbortSignal),
       headers: { Accept: 'text/html', 'User-Agent': 'SyntheticHost/1.0' } });
+  });
+
+  it('reads the tracker over the global fetch trusting the intermediate it leaves out, and a host’s own fetcher as given', async () => {
+    trusting.mockImplementation(async () => reply(delivered));
+    await expect(new DpdPtTracker().fetch(DELIVERED)).resolves.toMatchObject({ status: 'delivered' });
+    await expect(createTracker({ providers: [], env: {} }).track({ number: DELIVERED, carrier: 'dpd-pt' }))
+      .resolves.toMatchObject({ source: 'dpd-pt' });
+    expect(trusting).toHaveBeenCalledTimes(2);
+    expect(fetchTrusting).toHaveBeenCalledWith([RAPIDSSL_TLS_RSA_CA_G1]);
+    const own = vi.fn<typeof fetch>().mockImplementation(async () => reply(delivered));
+    await expect(createTracker({ fetcher: own, providers: [], env: {} }).track({ number: DELIVERED, carrier: 'dpd-pt' }))
+      .resolves.toMatchObject({ source: 'dpd-pt' });
+    expect(own).toHaveBeenCalledTimes(1);
+    expect(trusting).toHaveBeenCalledTimes(2);
   });
 
   it('reads a delivered history as wall clocks, newest first, without the receiver, the window, the map or the proof', () => {

@@ -11187,7 +11187,7 @@ export const CARRIER_CATALOG = {
   },
   "estes-forwarding": {
     "displayName": "Estes Forwarding Worldwide",
-    "color": "#024985",
+    "color": "#00345e",
     "aliases": [
       "EFW",
       "Estes Forwarding",
@@ -23567,7 +23567,7 @@ export const CARRIER_CATALOG = {
   },
   "united-delivery-service": {
     "displayName": "United Delivery Service",
-    "color": "#1e3a8a",
+    "color": "#1e4691",
     "aliases": [
       "UDS",
       "United Delivery Service (UDS)"

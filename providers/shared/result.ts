@@ -160,6 +160,8 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^we have received the shipment from the sender[.!]?$/i.test(value)) return 'accepted';
   if (/^(?:received\.|(?:\d\) )?[a-z ]{1,40} cent(?:er|re)) your order has been received[.!]?$|^(?:\S+ )?cent(?:er|re) (?:received|parcel shipped to \S+)[.!]?$|^origin port warehouse receive\b|^the flight has taken off[.!]?$|^(?:\S+ )?dispatch task assigned to da[.!]?$/i.test(value)) return 'in_transit';
   if (/^<bad address>$/i.test(value)) return 'failed_attempt';
+  // Speedaf's issue scan ending a delivery round the recipient had moved to another day, as its own map reads it.
+  if (/^cause of problem\s*【?\s*rescheduled delivery\s*】?[.!]?$/iu.test(value)) return 'failed_attempt';
   if (/^contact error,? need to return[.!]?$|^start returning\b|^\S*devolucion\S* order closed[.!]?$/i.test(value)) return 'exception';
   // A forwarder's arrival at the destination port, worded as a delivery, and its order data sent to the last-mile carrier.
   if (/^delivery has been made at the destination port[.!]?$/i.test(value)) return 'in_transit';

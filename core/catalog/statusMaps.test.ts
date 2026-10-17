@@ -402,6 +402,7 @@ describe("universal providers' answers", () => {
       ['Origin port warehouse receive，Flight Schedule ETD MIA <2026-01-13 07:05:00>, ETA BOG <2026-01-13 09:50:00>', 'in_transit'],
       ['The flight has taken off', 'in_transit'], ['Center Parcel shipped to EXAMPLE.DS', 'in_transit'],
       ['EXAMPLE.DS Dispatch task assigned to DA', 'in_transit'], ['<Bad Address>', 'failed_attempt'],
+      ['Cause of problem Rescheduled delivery', 'failed_attempt'], ['Cause of problem【Rescheduled delivery】', 'failed_attempt'],
       ['Contact Error need to return', 'exception'], ['Start returning，reason:[Contact Error]', 'exception'],
       ['EXA-DEVOLUCION.DS Order Closed', 'exception'],
       ['Shipment added to loading unit', 'in_transit'], ['Received at hub: in motherbag', 'in_transit'], ['Shipment received', 'in_transit'],
@@ -422,7 +423,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem', 'Rescheduled delivery', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

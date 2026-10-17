@@ -61,6 +61,9 @@ describe('Tianhui Hengyuan tracking adapter', () => {
   it('maps every wording it lists by wording alone, and the app reads the map', () => {
     for (const entry of statuses.entries) expect(statusMap.stage(null, normalizeStatusWording(entry.wording)), entry.wording).toBe(entry.stage);
     expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: '送交出口' })).toEqual({ kind: 'mapped', stage: 'customs' });
+    expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: '送交境外进口海关' })).toEqual({ kind: 'mapped', stage: 'customs' });
+    expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: 'Packages ready for delivery on the next working day' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'thhy', providerCode: 'CO_C_CR', description: '合成的记录' })).toEqual({ kind: 'unknown' });
     expect(carrier.portal).not.toHaveProperty('url');
   });

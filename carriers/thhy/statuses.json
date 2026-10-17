@@ -13,6 +13,18 @@
     {"code": "CO_C_CR", "wording": "放行", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Released by customs; the item carries on."},
     {"code": "CO_C_CR", "wording": "正在发往操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "On its way to an operation centre."},
     {"code": "CO_C_CR", "wording": "直封", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Sealed into a direct dispatch."},
+    {"code": "CO_C_CR", "wording": "已交承运商", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Handed to the carrier for the international leg."},
+    {"code": "CO_C_CR", "wording": "航空公司", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "With the airline."},
+    {"code": "CO_C_CR", "wording": "飞机起飞", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The flight took off."},
+    {"code": "CO_C_CR", "wording": "飞机进港", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "The flight arrived."},
+    {"code": "CO_C_CR", "wording": "到达寄达地", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Arrived in the destination country."},
+    {"code": "CO_C_CR", "wording": "送交境外进口海关", "language": "zh", "stage": "customs", "confirmedBy": "live", "note": "Presented to the destination country's import customs."},
+    {"code": "CO_C_CR", "wording": "到达寄达地处理中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "note": "Arrived at a processing centre in the destination country."},
+    {"code": "CO_C_CR", "wording": "Goods leave the operation center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "The destination network's parcel leaves its operation centre."},
+    {"code": "CO_C_CR", "wording": "Transporting to the next facility", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
+    {"code": "CO_C_CR", "wording": "The package is waiting for processing at the station", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "At the delivery station, not yet handed to a courier."},
+    {"code": "CO_C_CR", "wording": "Packages ready for delivery on the next working day", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "At the delivery station; delivery starts the next working day, so it is not out for delivery yet."},
+    {"code": "CO_C_CR", "wording": "Packages in transit for delivery", "language": "en", "stage": "in_transit", "confirmedBy": "live"},
     {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "prior-art", "note": "The platform writes this row itself for an order without scans, on its creation time."}
   ]
 }

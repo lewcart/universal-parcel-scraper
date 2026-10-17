@@ -911,6 +911,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skroutz-last-mile', number: 'Z9SAMPLE0UNK0',
     route: /^https:\/\/www\.skroutzlastmile\.gr\/(?:#.*)?$/,
     marker: /Search for your parcel with your voucher|The voucher you provided was not found|Shipment Tracking/i },
+  // The page looks the number up on the server and names it in its not-found notice.
+  { carrier: 'olva-courier', number: '26-00000000',
+    route: /^https:\/\/tracking\.olvacourier\.com\/\?q=26-00000000$/,
+    marker: /El número ingresado 26-00000000 no se ha encontrado|Código de seguimiento inválido/ },
 ];
 
 /**

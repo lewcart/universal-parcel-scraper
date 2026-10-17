@@ -16047,7 +16047,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "olva-courier",
+      "recognitionRank": 911,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.olvacourier.com/",
     "trackingUrlTemplate": "https://tracking.olvacourier.com/?q={trackingNumber}",

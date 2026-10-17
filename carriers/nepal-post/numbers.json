@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "A customer's review on TrackingMore's Nepal Post review page gives it as an item still undelivered after twelve days."
+      "note": "A customer's review on TrackingMore's Nepal Post review page gives it as an item still undelivered after twelve days. Nepal Post's internal tracking system shows it entered at a counter of the General Post Office in Kathmandu."
     }
   ]
 }

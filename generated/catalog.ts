@@ -17351,7 +17351,20 @@ export const CARRIER_CATALOG = {
       "adapter": "universal"
     },
     "canaryUrl": "https://www.nepalpost.gov.np/",
-    "linkRules": [],
+    "trackingUrlTemplate": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={trackingNumber}",
+    "trackingSearchUrl": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient",
+    "linkRules": [
+      {
+        "domains": [
+          "pits.gpo.gov.np",
+          "202.166.194.38"
+        ],
+        "pathPattern": "^/Inquiry/InquiryIndexClient$",
+        "params": [
+          "ItemId"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "nhat-tin": {

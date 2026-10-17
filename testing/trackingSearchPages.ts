@@ -34,6 +34,7 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'la-poste-tunisienne': 'www.poste.tn does not answer connections from outside Tunisia; an archived copy of its home page shows the item-number field',
   'mailplus-au': 'the tracker names its field search, which the check reads as a site search',
   'midland-transport': 'the tracking-number field sits in the desktop navigation bar of the tracker, which the phone-size check does not show',
+  'nepal-post': 'pits.gpo.gov.np does not answer connections from outside Nepal; to a Nepali network it shows its item-number field',
   'olva-courier': 'the tracker names its field q, which the check reads as a site search',
   'ozon-logistics': 'tracking.ozon.ru answers automated browsers with a bot check; in a regular browser it shows the tracking number field',
   paxel: 'paxel.co answers automated browsers with a Cloudflare block (HTTP 403); in a regular browser its page script fills and submits the AWB field',

@@ -3078,6 +3078,9 @@ export const CARRIER_CATALOG = {
   "ontrac": {
     "displayName": "OnTrac",
     "color": "#cc2027",
+    "aliases": [
+      "LaserShip"
+    ],
     "countries": [
       "US"
     ],

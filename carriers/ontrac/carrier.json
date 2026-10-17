@@ -1,7 +1,9 @@
 {
   "id": "ontrac",
   "displayName": "OnTrac",
-  "aliases": [],
+  "aliases": [
+    "LaserShip"
+  ],
   "region": {
     "countries": [
       "US"

@@ -1,6 +1,7 @@
 # OnTrac
 
 Tracks OnTrac and LaserShip parcels through the JSON endpoint used by the official website.
+LaserShip merged into OnTrac, so a provider that names LaserShip names OnTrac.
 
 ## How it works
 

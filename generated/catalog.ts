@@ -4400,7 +4400,8 @@ export const CARRIER_CATALOG = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "packeta"
+      "adapter": "packeta",
+      "recognitionRank": 665
     },
     "canaryUrl": "https://tracking.packeta.com/",
     "trackingUrlTemplate": "https://tracking.packeta.com/en/{trackingNumber}",
@@ -4426,6 +4427,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^Z\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[1-9]\\d{9}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$|^\\d{3} \\d{4} \\d{3}$"
       }
     ]
   },
@@ -24322,7 +24328,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pos-malaysia": ["pos-malaysia-1","pos-malaysia-2","pos-malaysia-4"],
   "ninja-van": ["ninja-van-1","ninja-van-2","ninja-van-3"],
   "china-post": ["china-post-1","china-post-zs","china-post-zc"],
-  "packeta": ["packeta-1"],
+  "packeta": ["packeta-1","packeta-packet-id"],
   "poczta-polska": ["poczta-polska-1","poczta-polska-barcode","poczta-polska-2","poczta-polska-s10"],
   "bring-posten": ["bring-posten-1","bring-posten-2","bring-posten-3","bring-posten-4"],
   "aramex": ["aramex-1"],

@@ -159,6 +159,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ontrac": 650,
   "orlen-paczka": 495,
   "osm-worldwide": 75,
+  "packeta": 665,
   "packlink": 981,
   "pakistan-post": 928,
   "paquetexpress": 35,

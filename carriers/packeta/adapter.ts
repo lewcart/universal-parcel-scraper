@@ -1,5 +1,5 @@
 
-import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { carrierIdsFromPartnerLinks } from '../../core/catalog/hints.js';
 import { detectCarrierMatch } from '../../core/detection/detect.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
@@ -216,5 +216,7 @@ export const adapter: AdapterFactory = (environment) => {
     id: 'packeta',
     steps: ['direct'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+      () => accepted(() => normalizePacketaTrackingNumber(number))),
   };
 };

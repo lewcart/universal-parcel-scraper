@@ -5,11 +5,24 @@
       "dhl",
       "estafeta",
       "mondial-relay",
+      "packeta",
       "relais-colis",
       "tipsa",
       "dhl-ecommerce-es"
     ],
-    "reason": "These carriers accept the same numeric length without a DHL Express checksum. Direct tracking must confirm the carrier."
+    "reason": "These carriers accept the same numeric length without a DHL Express checksum, and Packeta's packet ID is ten digits without its Z. Direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Ten digits starting 0, or with separators Packeta does not print, that fail the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "estafeta",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "dhl-ecommerce-es"
+    ],
+    "reason": "These carriers accept the same numeric length without a DHL Express checksum. Packeta's packet ID never starts with 0. Direct tracking must confirm the carrier."
   },
   {
     "shape": "Twenty digits in Planzer's 91346097 range",
@@ -1003,12 +1016,26 @@
       "dhl",
       "estafeta",
       "mondial-relay",
+      "packeta",
       "relais-colis",
       "tipsa",
       "dhl-express",
       "dhl-ecommerce-es"
     ],
     "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "Ten digits starting 0 that pass the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "estafeta",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "dhl-express",
+      "dhl-ecommerce-es"
+    ],
+    "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion. Packeta's packet ID never starts with 0."
   },
   {
     "shape": "9{11} that passes the mod 7 and Luhn checks",

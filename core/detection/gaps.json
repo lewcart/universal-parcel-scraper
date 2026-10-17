@@ -2088,12 +2088,6 @@
     "reason": "Once the hyphen is dropped, Pack-Man's vouchers are a letter and eight digits, a shape other carriers' numbers share, so nothing in the number points to Pack-Man."
   },
   {
-    "carrier": "packeta",
-    "pattern": "^\\d{10}$",
-    "kind": "by_design",
-    "reason": "Detection selects Packeta for the Z form only; ten bare digits are a crowded shape."
-  },
-  {
     "carrier": "palletways",
     "pattern": "^\\d{11}$",
     "kind": "by_design",

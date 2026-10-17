@@ -2,8 +2,12 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { sameInstantIdentityPolicy } from '../../app.js';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch, isValidDhlExpressWaybill } from '../../core/detection/index.js';
 import { IndeterminateError, NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import {
+  adapter,
   normalizePacketaTrackingNumber,
   packetaTrackingUrl,
   parsePacketaTrackingResponse,
@@ -345,5 +349,71 @@ describe('Packeta hand-off to a delivery partner', () => {
     expect(policy?.matches?.(incoming, { ...stored, description: raw.replaceAll(DPD_NUMBER, '01234567890135W') })).toBe(false);
     expect(policy?.matches?.(incoming, { ...stored, location: 'Example' })).toBe(false);
     expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
+  });
+});
+
+describe('Packeta bare packet IDs', () => {
+  // Synthetic numbers: Packeta's API documents a packet ID as a ten-digit
+  // integer and its barcode as that ID after a Z.
+  const BARE = '1234567890';
+  const environment = (fetcher: typeof fetch) => ({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+  const carrier = (fetcher: typeof fetch) => adapter(environment(fetcher));
+
+  it('suggests Packeta at low confidence for ten bare digits and asks it', () => {
+    for (const number of [BARE, '1000000000', '9999999998', '123 4567 890']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('packeta');
+      expect(recognitionAskedCarriers(number), number).toContain('packeta');
+    }
+    expect(detectCarrierMatch(`Z${BARE}`)).toMatchObject({ carrier: 'packeta', confidence: 'high' });
+    expect(recognitionAskedCarriers(`Z${BARE}`)).toEqual([]);
+  });
+
+  it('leaves out lengths, a leading zero and separators Packeta does not print', () => {
+    for (const number of ['123456789', '12345678901', '0123456789', '123456789-0', '1234-567-890']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('packeta');
+      expect(recognitionAskedCarriers(number), number).not.toContain('packeta');
+    }
+    // Without its hyphen CDL's order number is ten digits; Packeta stays out of that shape.
+    expect(recognitionAskedCarriers('123456789-1')).toContain('cdl');
+  });
+
+  it('keeps a checksum-backed carrier among the carriers asked', () => {
+    const waybill = '1234567891';
+    expect(isValidDhlExpressWaybill(waybill)).toBe(true);
+    expect(recognitionAskedCarriers(waybill)).toEqual(['dhl-express', 'relais-colis', 'tipsa', 'packeta', 'dhl-ecommerce-es']);
+    expect(recognitionAskedCarriers(BARE)).toEqual(['relais-colis', 'tipsa', 'packeta', 'dhl-ecommerce-es']);
+  });
+
+  it('recognizes a known packet from its bare ID and a missing one as unknown', async () => {
+    const seen: string[] = [];
+    const fetcher = vi.fn<typeof fetch>(async (input) => {
+      seen.push(String(input));
+      return String(input).includes(BARE)
+        ? response({ item: { ...structuredClone(HANDOFF), barcode: BARE } })
+        : response({ error: 'notFound' }, 404);
+    });
+    await expect(carrier(fetcher).recognize!(BARE)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-03T05:45:00.000Z' });
+    await expect(carrier(fetcher).recognize!('1234567892')).resolves.toEqual({ known: false });
+    expect(seen).toEqual([
+      `https://tracking.packeta.com/api/getPacketById/Z${BARE}/en`,
+      'https://tracking.packeta.com/api/getPacketById/Z1234567892/en',
+    ]);
+    // A form Packeta does not issue is unknown without a request.
+    await expect(carrier(fetcher).recognize!('123456789')).resolves.toEqual({ known: false });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps rate limits, error pages and malformed replies apart from a missing packet', async () => {
+    for (const [reply, kind] of [
+      [() => response({}, 429), 'rate_limited'],
+      [() => response('<html>Not Found</html>', 404), 'indeterminate'],
+      [() => response({ error: 'serviceUnavailable' }, 200), 'indeterminate'],
+      [() => response({}, 200), 'schema'],
+      [() => response({ item: { ...structuredClone(HANDOFF), barcode: '1234567892' } }), 'schema'],
+    ] as const) {
+      await expect(carrier(vi.fn<typeof fetch>(async () => reply())).recognize!(BARE), kind).rejects.toMatchObject({ kind });
+    }
+    await expect(carrier(vi.fn<typeof fetch>(async () => response('not json', 200))).recognize!(BARE)).rejects.toThrow(TypeError);
   });
 });

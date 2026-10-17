@@ -4398,7 +4398,8 @@
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "packeta"
+      "adapter": "packeta",
+      "recognitionRank": 665
     },
     "canaryUrl": "https://tracking.packeta.com/",
     "trackingUrlTemplate": "https://tracking.packeta.com/en/{trackingNumber}",
@@ -4424,6 +4425,11 @@
       {
         "pattern": "^Z\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[1-9]\\d{9}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$|^\\d{3} \\d{4} \\d{3}$"
       }
     ]
   },

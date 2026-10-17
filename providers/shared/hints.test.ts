@@ -150,7 +150,8 @@ describe('carrier names reported by universal providers', () => {
       const actual = await importOriginal<typeof import('../../core/catalog/definitions.js')>();
       const packeta = actual.CARRIER_DEFINITIONS.packeta;
       return { ...actual, CARRIER_DEFINITIONS: { ...actual.CARRIER_DEFINITIONS, packeta: {
-        ...packeta, detectionRules: [...packeta.detectionRules, { pattern: '^(?:\\d{10}|\\d{12})$', confidence: 'high' }],
+        // First, ahead of Packeta's own low rule for its bare packet IDs.
+        ...packeta, detectionRules: [{ pattern: '^(?:\\d{10}|\\d{12})$', confidence: 'high' }, ...packeta.detectionRules],
       } } };
     });
     try {

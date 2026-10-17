@@ -10,12 +10,22 @@ CZ, SK, HU, RO and PL. Tracked through the keyless endpoint behind the public tr
    - The echoed `barcode` must match the request, with or without its `Z` prefix,
      otherwise `SchemaError`. The public API returns the ten barcode digits.
    - Ten digits typed without the `Z` are the same packet: the API, older links and
-     brokers show them that way. Detection only selects Packeta for the `Z` form.
+     brokers show them that way. Detection selects Packeta for the `Z` form and only
+     suggests it for the bare digits, which other carriers print too.
    - Unknown codes come back two ways, both `NotFoundError`: HTTP 404 `{"error":"notFound"}`,
      or HTTP 200 carrying the same `notFound` error instead of `item`. Expired codes answer
      the same 404, so unknown and expired look identical.
    - Other API errors, and an HTTP 404 without that error signature, remain inconclusive.
      Another unsuccessful HTTP response is `UpstreamHttpError`.
+2. `recognize` makes the same request, so recognition can ask Packeta about ten bare digits.
+
+## Packet IDs
+
+Packeta's API documents a packet ID as a ten-digit integer and the barcode as that ID after a
+`Z`, printed `Z 123 4567 890`. No check digit is documented, and neighbouring IDs belong to
+packets created months apart, so nothing narrows the bare form beyond its first digit, which
+is never 0. The bare rule takes the digits as typed, or in Packeta's 3-4-3 grouping; a dash
+after nine digits is CDL's order number.
 
 ## Notes
 

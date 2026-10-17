@@ -1,0 +1,51 @@
+{
+  "id": "torrestir",
+  "displayName": "Torrestir",
+  "aliases": [
+    "Torrestir SA"
+  ],
+  "region": {
+    "countries": [
+      "PT",
+      "ES",
+      "DE"
+    ]
+  },
+  "brand": {
+    "color": "#003d2c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Lisbon",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.torrestir.com/?id={trackingNumber}",
+    "canaryUrl": "https://tracking.torrestir.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.torrestir.com"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "torrestir-1",
+      "pattern": "^M001\\d{4}[0-9A-Z]\\d{11}$",
+      "confidence": "high"
+    }
+  ]
+}

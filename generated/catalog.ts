@@ -7699,6 +7699,44 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "citymail": {
+    "displayName": "CityMail",
+    "color": "#fc4c02",
+    "aliases": [
+      "CityMail Sweden AB",
+      "Citymail",
+      "Bring Citymail"
+    ],
+    "countries": [
+      "SE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Stockholm",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.citymail.se/spara-paket/",
+    "trackingUrlTemplate": "https://tracking.citymail.se/?search={trackingNumber}",
+    "trackingSearchUrl": "https://www.citymail.se/spara-paket/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.citymail.se"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "search"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BCM[A-Z]{1,3}\\d{7,9}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "citysprint": {
     "displayName": "CitySprint",
     "color": "#002f64",
@@ -8042,6 +8080,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "correos-cuba": {
+    "displayName": "Correos de Cuba",
+    "color": "#001ca8",
+    "aliases": [
+      "Empresa de Correos de Cuba",
+      "Cuba Post"
+    ],
+    "countries": [
+      "CU"
+    ],
+    "selectable": true,
+    "timezone": "America/Havana",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
+    "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "correos-de-mexico": {
     "displayName": "Correos de México",
     "color": "#ed007d",
@@ -8084,6 +8143,36 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "correos-el-salvador": {
+    "displayName": "Correos de El Salvador",
+    "color": "#4375d9",
+    "aliases": [
+      "Dirección General de Correos de El Salvador",
+      "Correos El Salvador",
+      "Correo El Salvador",
+      "El Salvador Post"
+    ],
+    "countries": [
+      "SV"
+    ],
+    "selectable": true,
+    "timezone": "America/El_Salvador",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.correos.gob.sv/servicios/rastrear-paquete/",
+    "trackingSearchUrl": "https://www.correos.gob.sv/servicios/rastrear-paquete/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.correos.gob.sv"
+        ],
+        "path": "^/rastrear-paquete/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "courier-center": {
     "displayName": "Courier Center",
@@ -8819,6 +8908,43 @@ export const CARRIER_CATALOG = {
         "params": [
           "rwID"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "delnext": {
+    "displayName": "Delnext",
+    "color": "#068dcf",
+    "countries": [
+      "PT",
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Lisbon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.delnext.com/PT/track_your_parcel",
+    "trackingUrlTemplate": "https://www.delnext.com/PT/track_your_parcel?tracking_code={trackingNumber}",
+    "trackingSearchUrl": "https://www.delnext.com/PT/track_your_parcel",
+    "linkRules": [
+      {
+        "domains": [
+          "www.delnext.com",
+          "delnext.com"
+        ],
+        "pathPattern": "^/[A-Z]{2}/track_your_parcel/?$",
+        "params": [
+          "tracking_code"
+        ]
+      },
+      {
+        "domains": [
+          "www.delnext.com",
+          "delnext.com"
+        ],
+        "path": "^/[A-Z]{2}/track_your_parcel/tracking_code/([A-Za-z0-9]+)(?:&reloaded=[A-Z]{2})?/?$"
       }
     ],
     "detectionRules": []
@@ -12258,6 +12384,26 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "hispapost": {
+    "displayName": "Hispapost",
+    "color": "#00548b",
+    "aliases": [
+      "Hispapost S.A."
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://intranet.hispapost.es/tracking",
+    "trackingSearchUrl": "https://intranet.hispapost.es/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "horoz": {
     "displayName": "Horoz Lojistik",
     "color": "#c31f3f",
@@ -12736,6 +12882,49 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "intereuropa": {
+    "displayName": "Intereuropa",
+    "color": "#1b5949",
+    "aliases": [
+      "Intereuropa d.d.",
+      "Intereuropa d.o.o.",
+      "InterEuropa",
+      "Intereuropa Group"
+    ],
+    "countries": [
+      "SI",
+      "HR",
+      "BA",
+      "RS"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Ljubljana",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://orders.intereuropa.si/ietracking/",
+    "trackingUrlTemplate": "https://www.intereuropa.si/si/tracking?pg=tracking&code={trackingNumber}",
+    "trackingSearchUrl": "https://orders.intereuropa.si/ietracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.intereuropa.si",
+          "intereuropa.si"
+        ],
+        "pathPattern": "^/si/tracking/?$",
+        "params": [
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^NRSI\\d{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "internet-express": {
     "displayName": "Internet Express",
     "color": "#fae80b",
@@ -12821,6 +13010,38 @@ export const CARRIER_CATALOG = {
           "siguetuenvio.interrapidisimo.com"
         ],
         "path": "^/(\\d{12,13})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "iran-post": {
+    "displayName": "Iran Post",
+    "color": "#08317d",
+    "aliases": [
+      "Islamic Republic of Iran Post Company",
+      "Iran Post Company",
+      "شرکت ملی پست جمهوری اسلامی ایران"
+    ],
+    "countries": [
+      "IR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tehran",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.post.ir/",
+    "trackingUrlTemplate": "https://tracking.post.ir/?id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.post.ir"
+        ],
+        "pathPattern": "^/(?:search\\.aspx)?$",
+        "params": [
+          "id"
+        ]
       }
     ],
     "detectionRules": []
@@ -13695,6 +13916,28 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "kronos-express": {
+    "displayName": "Kronos Express",
+    "color": "#24297a",
+    "aliases": [
+      "Kronos Express Ltd",
+      "KronosExpress"
+    ],
+    "countries": [
+      "CY",
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Nicosia",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "trackingSearchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ktd": {
     "displayName": "KTD",
     "color": "#01234d",
@@ -14463,6 +14706,39 @@ export const CARRIER_CATALOG = {
           "mulphilog.com"
         ],
         "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "m-one": {
+    "displayName": "M-ONE",
+    "color": "#024da0",
+    "aliases": [
+      "Milšped ONE",
+      "Milsped ONE",
+      "M ONE",
+      "MILŠPED ONE DOO"
+    ],
+    "countries": [
+      "RS"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Belgrade",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://m-one.rs/en",
+    "trackingUrlTemplate": "https://m-one.rs/en?{trackingNumber}",
+    "trackingSearchUrl": "https://m-one.rs/en",
+    "linkRules": [
+      {
+        "domains": [
+          "m-one.rs",
+          "www.m-one.rs"
+        ],
+        "pathPattern": "^/(?:en)?/?$",
+        "query": "^([A-Za-z0-9]+)$"
       }
     ],
     "detectionRules": []
@@ -16126,6 +16402,47 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "pack-man": {
+    "displayName": "Pack-Man",
+    "color": "#06377b",
+    "aliases": [
+      "Pack-man Courier",
+      "Pack-Man Courier"
+    ],
+    "countries": [
+      "GR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Athens",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pack-man.gr/anazitisi-apostolis.html",
+    "trackingUrlTemplate": "https://pack-man.gr/anazitisi-apostolis.html?code={trackingNumber}",
+    "trackingSearchUrl": "https://pack-man.gr/anazitisi-apostolis.html",
+    "linkRules": [
+      {
+        "domains": [
+          "pack-man.gr"
+        ],
+        "pathPattern": "^/anazitisi-apostolis\\.html$",
+        "params": [
+          "code"
+        ]
+      },
+      {
+        "domains": [
+          "courier.pack-man.gr"
+        ],
+        "pathPattern": "^/pegasus/courier04/search00\\.php$",
+        "params": [
+          "r18p01"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "packlink": {
     "displayName": "Packlink",
     "color": "#ff4f00",
@@ -16226,6 +16543,33 @@ export const CARRIER_CATALOG = {
     "trackingSearchUrl": "https://track2.palletways.com/",
     "linkRules": [],
     "detectionRules": []
+  },
+  "pannon-xp": {
+    "displayName": "Pannon XP",
+    "color": "#f68121",
+    "aliases": [
+      "PXP Futár",
+      "PXP Futar",
+      "Pannon XP Kft."
+    ],
+    "countries": [
+      "HU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Budapest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mypxp.pannonxp.hu/csomagkovetes",
+    "trackingSearchUrl": "https://mypxp.pannonxp.hu/csomagkovetes",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^35814\\d{19}$",
+        "confidence": "high"
+      }
+    ]
   },
   "paperfly": {
     "displayName": "Paperfly",
@@ -16698,6 +17042,37 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "phlpost": {
+    "displayName": "PHLPost",
+    "color": "#a6352d",
+    "aliases": [
+      "Philippine Postal Corporation",
+      "PhilPost"
+    ],
+    "countries": [
+      "PH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Manila",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.phlpost.gov.ph/",
+    "trackingSearchUrl": "https://tracking.phlpost.gov.ph/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.phlpost.gov.ph"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "TrackingNos"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "pilot-freight": {
     "displayName": "Pilot Freight Services",
@@ -17747,6 +18122,40 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.redpack.com.mx/es/inicio/",
     "trackingSearchUrl": "https://www.redpack.com.mx/es/inicio/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "redur": {
+    "displayName": "Redur",
+    "color": "#0c4c49",
+    "aliases": [
+      "Redur Spain",
+      "Redur Portugal",
+      "Redur S.A."
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://redur.es/track-trace/",
+    "trackingSearchUrl": "https://redur.es/track-trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "redur.es",
+          "www.redur.es"
+        ],
+        "pathPattern": "^/(?:(?:en|pt-pt)/)?track-trace/?$",
+        "params": [
+          "valor"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "redx": {
@@ -20556,6 +20965,43 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "torrestir": {
+    "displayName": "Torrestir",
+    "color": "#003d2c",
+    "aliases": [
+      "Torrestir SA"
+    ],
+    "countries": [
+      "PT",
+      "ES",
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Lisbon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.torrestir.com/",
+    "trackingUrlTemplate": "https://tracking.torrestir.com/?id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.torrestir.com"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^M001\\d{4}[0-9A-Z]\\d{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "total-express": {
     "displayName": "Total Express",
     "color": "#e11e25",
@@ -22288,6 +22734,7 @@ export const CARRIER_IDS = [
   "chunil",
   "city-express-rs",
   "citylink-express",
+  "citymail",
   "citysprint",
   "cj-logistics",
   "cj-packet",
@@ -22296,7 +22743,9 @@ export const CARRIER_IDS = [
   "correo-argentino",
   "correo-uruguayo",
   "correos-bolivia",
+  "correos-cuba",
   "correos-de-mexico",
+  "correos-el-salvador",
   "courier-center",
   "courier-it",
   "courier-plus-ng",
@@ -22316,6 +22765,7 @@ export const CARRIER_IDS = [
   "daylight-transport",
   "dayton-freight",
   "dellin",
+  "delnext",
   "deppon",
   "deprisa",
   "dhl-ecommerce-es",
@@ -22404,6 +22854,7 @@ export const CARRIER_IDS = [
   "helthjem",
   "hepsijet",
   "hi-trans",
+  "hispapost",
   "horoz",
   "hrvatska-posta",
   "hunter-express",
@@ -22416,8 +22867,10 @@ export const CARRIER_IDS = [
   "instabox",
   "integral-pack",
   "intelcom",
+  "intereuropa",
   "internet-express",
   "interrapidisimo",
+  "iran-post",
   "israel-post",
   "j-and-t-br",
   "j-and-t-cargo",
@@ -22442,6 +22895,7 @@ export const CARRIER_IDS = [
   "kex-express-hk",
   "kit-tk",
   "kolay-gelsin",
+  "kronos-express",
   "ktd",
   "kuehne-nagel",
   "kunyoung",
@@ -22462,6 +22916,7 @@ export const CARRIER_IDS = [
   "lotte-global",
   "lso",
   "m-and-p",
+  "m-one",
   "madhur-courier",
   "magyar-posta",
   "mailamericas",
@@ -22505,9 +22960,11 @@ export const CARRIER_IDS = [
   "osm-worldwide",
   "overseas-express",
   "ozon-logistics",
+  "pack-man",
   "packlink",
   "pakistan-post",
   "palletways",
+  "pannon-xp",
   "paperfly",
   "paquetexpress",
   "pargo",
@@ -22518,6 +22975,7 @@ export const CARRIER_IDS = [
   "pecom",
   "pelican-express",
   "pfc-express",
+  "phlpost",
   "pilot-freight",
   "pitt-ohio",
   "pmm",
@@ -22547,6 +23005,7 @@ export const CARRIER_IDS = [
   "raben",
   "ram-hand-to-hand",
   "redpack",
+  "redur",
   "redx",
   "relaytech",
   "rl-carriers",
@@ -22618,6 +23077,7 @@ export const CARRIER_IDS = [
   "tirupati-courier",
   "tnt-it",
   "toptrans",
+  "torrestir",
   "total-express",
   "trackon",
   "tracx-logis",
@@ -22841,6 +23301,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chunil": [],
   "city-express-rs": ["city-express-rs-1"],
   "citylink-express": [],
+  "citymail": ["citymail-1"],
   "citysprint": [],
   "cj-logistics": [],
   "cj-packet": ["cj-packet-1"],
@@ -22849,7 +23310,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "correo-argentino": [],
   "correo-uruguayo": [],
   "correos-bolivia": [],
+  "correos-cuba": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
+  "correos-el-salvador": [],
   "courier-center": [],
   "courier-it": [],
   "courier-plus-ng": [],
@@ -22869,6 +23332,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "daylight-transport": [],
   "dayton-freight": [],
   "dellin": [],
+  "delnext": [],
   "deppon": [],
   "deprisa": [],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],
@@ -22957,6 +23421,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
   "hi-trans": [],
+  "hispapost": [],
   "horoz": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
   "hunter-express": [],
@@ -22969,8 +23434,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
+  "intereuropa": ["intereuropa-1"],
   "internet-express": [],
   "interrapidisimo": [],
+  "iran-post": [],
   "israel-post": ["israel-post-1","israel-post-s10"],
   "j-and-t-br": [],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
@@ -22995,6 +23462,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kex-express-hk": [],
   "kit-tk": [],
   "kolay-gelsin": [],
+  "kronos-express": [],
   "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kunyoung": [],
@@ -23015,6 +23483,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lotte-global": [],
   "lso": ["lso-1"],
   "m-and-p": [],
+  "m-one": [],
   "madhur-courier": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-s10"],
@@ -23058,9 +23527,11 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
   "overseas-express": [],
   "ozon-logistics": ["ozon-logistics-1","ozon-logistics-2"],
+  "pack-man": [],
   "packlink": ["packlink-1"],
   "pakistan-post": ["pakistan-post-1"],
   "palletways": [],
+  "pannon-xp": ["pannon-xp-1"],
   "paperfly": ["paperfly-1","paperfly-2"],
   "paquetexpress": ["paquetexpress-1"],
   "pargo": ["pargo-1"],
@@ -23071,6 +23542,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pecom": [],
   "pelican-express": [],
   "pfc-express": ["pfc-express-1"],
+  "phlpost": [],
   "pilot-freight": [],
   "pitt-ohio": [],
   "pmm": [],
@@ -23100,6 +23572,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "raben": [],
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
   "redpack": [],
+  "redur": [],
   "redx": ["redx-1"],
   "relaytech": ["relaytech-1"],
   "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
@@ -23171,6 +23644,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tirupati-courier": [],
   "tnt-it": ["tnt-it-1"],
   "toptrans": [],
+  "torrestir": ["torrestir-1"],
   "total-express": ["total-express-awb"],
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],

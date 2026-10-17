@@ -1,0 +1,33 @@
+{
+  "id": "hispapost",
+  "displayName": "Hispapost",
+  "aliases": [
+    "Hispapost S.A."
+  ],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#00548b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://intranet.hispapost.es/tracking",
+    "canaryUrl": "https://intranet.hispapost.es/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

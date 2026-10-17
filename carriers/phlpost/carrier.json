@@ -1,0 +1,44 @@
+{
+  "id": "phlpost",
+  "displayName": "PHLPost",
+  "aliases": [
+    "Philippine Postal Corporation",
+    "PhilPost"
+  ],
+  "region": {
+    "countries": [
+      "PH"
+    ]
+  },
+  "brand": {
+    "color": "#a6352d"
+  },
+  "selectable": true,
+  "timezone": "Asia/Manila",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://tracking.phlpost.gov.ph/",
+    "canaryUrl": "https://tracking.phlpost.gov.ph/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.phlpost.gov.ph"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "TrackingNos"
+      ]
+    }
+  ],
+  "detection": []
+}

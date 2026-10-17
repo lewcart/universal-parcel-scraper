@@ -1,0 +1,52 @@
+{
+  "id": "citymail",
+  "displayName": "CityMail",
+  "aliases": [
+    "CityMail Sweden AB",
+    "Citymail",
+    "Bring Citymail"
+  ],
+  "region": {
+    "countries": [
+      "SE"
+    ]
+  },
+  "brand": {
+    "color": "#fc4c02"
+  },
+  "selectable": true,
+  "timezone": "Europe/Stockholm",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.citymail.se/?search={trackingNumber}",
+    "searchUrl": "https://www.citymail.se/spara-paket/",
+    "canaryUrl": "https://www.citymail.se/spara-paket/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.citymail.se"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "search"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "citymail-1",
+      "pattern": "^BCM[A-Z]{1,3}\\d{7,9}$",
+      "confidence": "high"
+    }
+  ]
+}

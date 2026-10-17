@@ -1,0 +1,20 @@
+{
+  "carrier": "torrestir",
+  "entries": [
+    {"wording": "Documentado", "stage": "registered", "language": "pt", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Portuguese), lit as the shipment advances. The shipment has been booked."},
+    {"wording": "Recolhido", "stage": "accepted", "language": "pt", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Portuguese), lit as the shipment advances."},
+    {"wording": "Em trânsito", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Portuguese), lit as the shipment advances."},
+    {"wording": "Em distribuição", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Portuguese), lit as the shipment advances."},
+    {"wording": "Entregue", "stage": "delivered", "language": "pt", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Portuguese), lit as the shipment advances."},
+    {"wording": "Documented", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (English), lit as the shipment advances."},
+    {"wording": "Collected", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (English), lit as the shipment advances."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (English), lit as the shipment advances."},
+    {"wording": "In Deliver", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (English), lit as the shipment advances. The English page prints it this way; it means out for delivery."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (English), lit as the shipment advances."},
+    {"wording": "Documentado", "stage": "registered", "language": "es", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Spanish), lit as the shipment advances."},
+    {"wording": "Recogido", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Spanish), lit as the shipment advances."},
+    {"wording": "En tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Spanish), lit as the shipment advances."},
+    {"wording": "En distribución", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Spanish), lit as the shipment advances."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "A progress step of Torrestir's tracker page (Spanish), lit as the shipment advances."}
+  ]
+}

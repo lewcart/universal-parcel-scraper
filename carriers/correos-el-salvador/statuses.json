@@ -1,0 +1,18 @@
+{
+  "carrier": "correos-el-salvador",
+  "entries": [
+    {"wording": "Item recibido por parte del cliente", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item recibido en la oficina de cambio", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item insertado en una bolsa de transporte especial de correo", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item removido de la bolsa de transporte especial de correo", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item enviado a la aduana", "stage": "customs", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item devuelto de la aduana", "stage": "customs", "language": "es", "confirmedBy": "portal", "note": "Released by customs back to the post; not a return to the sender. Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item recibido en el lugar de deposito de correo nacional", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item recibido en la oficina de entrega", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item asignado a un agente de entrega", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item entregado en destino", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Item actualizado", "language": "es", "confirmedBy": "portal", "note": "Record update without a movement. Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Registro de mas detalles del item", "language": "es", "confirmedBy": "portal", "note": "More item details recorded, not a movement. Seen in an archived capture of the former tracker, followed by the origin or destination country tag and the office."},
+    {"wording": "Su paquete aún no ha ingresado al país. Por favor consulte más adelante.", "language": "es", "confirmedBy": "portal", "note": "Shown by the current tracker page's script, built from two adjacent strings, when the tracking API has no record of the number."}
+  ]
+}

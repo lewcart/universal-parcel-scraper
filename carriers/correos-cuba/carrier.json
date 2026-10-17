@@ -1,0 +1,34 @@
+{
+  "id": "correos-cuba",
+  "displayName": "Correos de Cuba",
+  "aliases": [
+    "Empresa de Correos de Cuba",
+    "Cuba Post"
+  ],
+  "region": {
+    "countries": [
+      "CU"
+    ]
+  },
+  "brand": {
+    "color": "#001ca8"
+  },
+  "selectable": true,
+  "timezone": "America/Havana",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.correos.cu/rastreador-de-envios/",
+    "canaryUrl": "https://www.correos.cu/rastreador-de-envios/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

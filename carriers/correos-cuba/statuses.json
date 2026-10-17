@@ -1,0 +1,12 @@
+{
+  "carrier": "correos-cuba",
+  "entries": [
+    {"wording": "Recepción", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "Step label of the progress rail on the carrier's tracker page."},
+    {"wording": "En camino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Step label of the progress rail on the carrier's tracker page."},
+    {"wording": "En entrega", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "Step label of the progress rail on the carrier's tracker page."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "Step label of the progress rail on the carrier's tracker page."},
+    {"wording": "Clasificado", "stage": "in_transit", "language": "es", "confirmedBy": "source", "note": "Processed at the international office of exchange in Havana and ready for the sorting or delivery centre. Explained in a Cuban guide to the tracker's messages."},
+    {"wording": "Facturado a mipyme", "stage": "in_transit", "language": "es", "confirmedBy": "source", "note": "Delivery handed to a private small business that distributes parcels for the post. Explained in a Cuban guide to the tracker's messages."},
+    {"wording": "entregado a aduana en exportaciones", "stage": "customs", "language": "es", "confirmedBy": "source", "note": "Handed to export customs, for an item leaving Cuba. Quoted in a sender's comment on a Cuban tracking guide."}
+  ]
+}

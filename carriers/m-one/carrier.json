@@ -1,0 +1,46 @@
+{
+  "id": "m-one",
+  "displayName": "M-ONE",
+  "aliases": [
+    "Milšped ONE",
+    "Milsped ONE",
+    "M ONE",
+    "MILŠPED ONE DOO"
+  ],
+  "region": {
+    "countries": [
+      "RS"
+    ]
+  },
+  "brand": {
+    "color": "#024da0"
+  },
+  "selectable": true,
+  "timezone": "Europe/Belgrade",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://m-one.rs/en?{trackingNumber}",
+    "searchUrl": "https://m-one.rs/en",
+    "canaryUrl": "https://m-one.rs/en",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "m-one.rs",
+        "www.m-one.rs"
+      ],
+      "pathPattern": "^/(?:en)?/?$",
+      "query": "^([A-Za-z0-9]+)$"
+    }
+  ],
+  "detection": []
+}

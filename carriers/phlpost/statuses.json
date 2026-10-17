@@ -1,0 +1,18 @@
+{
+  "carrier": "phlpost",
+  "entries": [
+    {"wording": "Posting of item", "stage": "accepted", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Receive item at origin country gateway", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Item sent to office of exchange", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Dispatch item to destination country", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Receive at country of destination", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Item for customs examination", "stage": "customs", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Returned from customs", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page. The item came back from customs into the post's network; it is not a return to the sender."},
+    {"wording": "Item sent to provincial", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Item arrived at provincial office", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Turnover item in next office", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Enroute to delivery office", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Received item at delivery office", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."},
+    {"wording": "Item delivered", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "Listed for PHLPost on TrackingMore's carrier page."}
+  ]
+}

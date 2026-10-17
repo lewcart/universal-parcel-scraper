@@ -3547,5 +3547,24 @@
       "dhl-ecommerce"
     ],
     "reason": "eBay International Standard Delivery numbers. eBay names DHL Global Mail's tracker for them, and Asendia carries some. Direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Twenty-four digits starting 35814",
+    "carriers": [
+      "austrian-post",
+      "bpost",
+      "ciblex",
+      "inpost",
+      "pannon-xp"
+    ],
+    "reason": "Pannon XP's shipment numbers are 24 digits starting 35814, which the 24-digit rules of InPost, bpost, Ciblex and Austrian Post also accept with low confidence; Pannon XP's own pages say its numbers start with 35814, so it is named with high confidence."
+  },
+  {
+    "shape": "BCM, two letters and seven digits",
+    "carriers": [
+      "citymail",
+      "colis-prive"
+    ],
+    "reason": "CityMail's twelve-character BCM references also fit Colis Privé's twelve-character rule; the BCM prefix names CityMail at high confidence."
   }
 ]

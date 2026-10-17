@@ -1,0 +1,16 @@
+{
+  "carrier": "delnext",
+  "entries": [
+    {"wording": "Envio registado no sistema Delnext", "stage": "registered", "language": "pt", "confirmedBy": "portal", "note": "The first scan, before Delnext collects the parcel."},
+    {"wording": "Parcela registada no sistema Delnext", "stage": "registered", "language": "pt", "confirmedBy": "source", "note": "Quoted from the tracker in a Portal da Queixa complaint."},
+    {"wording": "Encomenda enviada: verifique a estimativa de entrega acima. Será notificado quando a encomenda entrar em distribuição", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "Delnext has the parcel and has sent it on; the estimate is shown above the history."},
+    {"wording": "Pedido enviado: por favor, consulte a estimativa de entrega acima. Será notificado no dia da entrega.", "stage": "in_transit", "language": "pt", "confirmedBy": "source", "note": "Quoted from the tracker in a Portal da Queixa complaint; another wording of the dispatch scan."},
+    {"wording": "Encomenda lida em armazém", "stage": "in_transit", "language": "pt", "confirmedBy": "portal", "note": "Scanned at a Delnext warehouse."},
+    {"wording": "Encomenda em distribuição. Esperamos fazer a entrega durante o dia de hoje", "stage": "out_for_delivery", "language": "pt", "confirmedBy": "portal"},
+    {"wording": "Destinatário ausente. Por favor ajude-nos a proceder à entrega clicando no botão 'Resolver'", "stage": "failed_attempt", "language": "pt", "confirmedBy": "portal", "note": "Nobody was home; the button lets the recipient pick a new day."},
+    {"wording": "Não foi possível entregar a sua encomenda hoje, ao contrário do previsto. Por favor ajude-nos a proceder à entrega clicando no botão 'Resolver'", "stage": "failed_attempt", "language": "pt", "confirmedBy": "portal"},
+    {"wording": "Incidência resolvida pelo cliente. Foi agendada uma nova entrega para a data selecionada", "stage": "in_transit", "language": "pt", "confirmedBy": "source", "note": "Quoted from the tracker in a Portal da Queixa complaint: after a failed delivery, a new delivery day was booked."},
+    {"wording": "O volume não foi entregue devido a morada incompleta/incorreta", "stage": "failed_attempt", "language": "pt", "confirmedBy": "portal", "note": "The heading of the tracker's address-correction screen, shown for an address incident rather than as a scan line."},
+    {"wording": "Ihr Paket wurde wegen unvollständiger / falscher Adresse nicht zugestellt", "stage": "failed_attempt", "language": "de", "confirmedBy": "portal", "note": "The German tracker page's heading of the same address-correction screen."}
+  ]
+}

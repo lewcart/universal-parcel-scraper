@@ -10,9 +10,11 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   ciblex: 'Ciblex shows parcels only in its customer extranet, behind a sign-in',
   deprisa: 'Deprisa\'s tracker opens a shipment from the number in its address; archived copies of its pages show no number field, and deprisa.com answers 403 to many networks outside Colombia',
   'forza-delivery': 'Forza\'s tracker is a script-rendered app at rastreo.forzadelivery.com; the search-page check finds no number field on it, and a guía opens at its own address',
+  'iran-post': 'post.ir and tracking.post.ir refuse many networks outside Iran; its tracker opens a parcel from the number in its address',
   kargoist: 'kargoist.com\'s tracking page asks for a code sent by text message, and its home page, whose form opened a parcel from the number, shows a maintenance notice',
   'nim-express': 'nimexpress.com\'s tracking fields are a script widget and a form that asks for a confirmation code; its own header form opens the tracking page with the number',
   'skynet-worldwide': 'SkyNet\'s tracker shows its number field only with a network parameter in the address, and skynetworldwide.com has no tracking page of its own',
+  torrestir: 'Torrestir hides its number field on phone-sized screens, in a collapsed menu; its Track & Trace button opens the tracker with the number',
   yimidida: 'www.yimidida.com answers the search-page check with its cloud firewall\'s 405 block page; a waybill opens at its own address',
 };
 

@@ -1,0 +1,10 @@
+{
+  "carrier": "m-one",
+  "entries": [
+    {"code": "ST01", "wording": "Kreiran nalog za preuzimanje", "stage": "registered", "language": "sr", "confirmedBy": "portal", "note": "A pickup order was created; the tracking API sends the wording with a trailing line break."},
+    {"code": "ST02", "wording": "Preuzeta od pošiljaoca", "stage": "accepted", "language": "sr", "confirmedBy": "portal", "note": "Collected from the sender."},
+    {"code": "ST06", "wording": "Na linijskom vozilu", "stage": "in_transit", "language": "sr", "confirmedBy": "portal", "note": "On the line-haul vehicle between depots."},
+    {"code": "ST07", "wording": "Uručena pošiljka", "stage": "delivered", "language": "sr", "confirmedBy": "official-doc", "note": "Seen in the fallback reply of the tracker script on M-ONE's Serbian home page, not in a captured history."},
+    {"code": "ST07", "wording": "Packet delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Seen in the fallback reply of the tracker script on M-ONE's English home page, not in a captured history."}
+  ]
+}

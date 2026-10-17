@@ -1,0 +1,35 @@
+{
+  "id": "kronos-express",
+  "displayName": "Kronos Express",
+  "aliases": [
+    "Kronos Express Ltd",
+    "KronosExpress"
+  ],
+  "region": {
+    "countries": [
+      "CY",
+      "GR"
+    ]
+  },
+  "brand": {
+    "color": "#24297a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Nicosia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "canaryUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

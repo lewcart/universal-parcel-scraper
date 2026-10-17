@@ -537,6 +537,12 @@
     "reason": "This layout is shared with other carriers or too plain to claim, so detection leaves it unclaimed."
   },
   {
+    "carrier": "citymail",
+    "pattern": "^AM\\d{9}$",
+    "kind": "by_design",
+    "reason": "Amazon's AM and nine-digit references travel with whichever carrier delivers the parcel, and two letters and nine digits is a reference shape several carriers share."
+  },
+  {
     "carrier": "citysprint",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -690,6 +696,12 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Thirteen digits are shared by many carriers, and the year prefix of a Delovye Linii waybill does not single it out."
+  },
+  {
+    "carrier": "delnext",
+    "pattern": "^[A-Za-z0-9]{6,7}$",
+    "kind": "by_design",
+    "reason": "Delnext's six- or seven-character letter-and-digit codes are a short shape other carriers' references share, so detection leaves them unclaimed."
   },
   {
     "carrier": "deppon",
@@ -1309,6 +1321,24 @@
     "reason": "Hi-Trans consignment numbers are a customer's account prefix and a counter, a shape many carriers print, so nothing in them points to Hi-Trans."
   },
   {
+    "carrier": "hispapost",
+    "pattern": "^CNES\\d{11}$",
+    "kind": "by_design",
+    "reason": "CNES economy numbers are AliExpress (Cainiao) numbers that several Spanish last-mile carriers deliver and CACESA clears, so the shape cannot name Hispapost."
+  },
+  {
+    "carrier": "hispapost",
+    "pattern": "^BAE\\d{5}H\\d{9}$",
+    "kind": "by_design",
+    "reason": "BAE numbers are Joom's parcel numbers, which reach Hispapost through CACESA and other partners, so the shape cannot name Hispapost."
+  },
+  {
+    "carrier": "hispapost",
+    "pattern": "^BG\\d{7}[A-Z0-9]{9}\\d{2}$",
+    "kind": "by_design",
+    "reason": "BG numbers are Temu's parcel numbers, which several carriers deliver, so the shape cannot name Hispapost."
+  },
+  {
     "carrier": "horoz",
     "pattern": "^\\d{14}$",
     "kind": "by_design",
@@ -1375,6 +1405,12 @@
     "reason": "Merchant and shipper references that Intelcom's tracker accepts. Nothing in them names Intelcom, so they need an explicit carrier or an Intelcom tracking link."
   },
   {
+    "carrier": "intereuropa",
+    "pattern": "^00\\d{18}$",
+    "kind": "by_design",
+    "reason": "Intereuropa's tracker finds a piece by its SSCC, but an SSCC carries the GS1 company prefix of whoever issued it, usually the sender, so no rule can name Intereuropa from it."
+  },
+  {
     "carrier": "internet-express",
     "pattern": "^[A-Z0-9]{9}$",
     "kind": "by_design",
@@ -1385,6 +1421,12 @@
     "pattern": "^\\d{12,13}$",
     "kind": "by_design",
     "reason": "Twelve and thirteen digits are shared by several carriers and nothing in the number points to Inter Rapidísimo."
+  },
+  {
+    "carrier": "iran-post",
+    "pattern": "^\\d{24}$",
+    "kind": "by_design",
+    "reason": "Iran Post's 24-digit domestic codes share their length with other carriers' barcodes, and no published structure sets them apart."
   },
   {
     "carrier": "j-and-t-br",
@@ -1531,6 +1573,12 @@
     "reason": "Fourteen digits are shared by several carriers and the same shape is quoted for HepsiJET."
   },
   {
+    "carrier": "kronos-express",
+    "pattern": "^[A-Z]{6}\\d{7}$",
+    "kind": "by_design",
+    "reason": "Kronos Express vouchers are seen from one shop only, so which letters are fixed is unknown and the shape cannot name Kronos Express."
+  },
+  {
     "carrier": "kuehne-nagel",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -1625,6 +1673,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve digits are shared by many carriers and no known prefix or check digit sets M&P apart."
+  },
+  {
+    "carrier": "m-one",
+    "pattern": "^RS\\d{12}$",
+    "kind": "by_design",
+    "reason": "The letters RS and twelve digits appear only once, in the tracker's fallback reply, which does not establish a layout to claim."
   },
   {
     "carrier": "madhur-courier",
@@ -1938,6 +1992,12 @@
     "reason": "Paack identifiers are retailer order numbers with no stable shape, so one can match another carrier's rule."
   },
   {
+    "carrier": "pack-man",
+    "pattern": "^A\\d{8}$",
+    "kind": "by_design",
+    "reason": "Once the hyphen is dropped, Pack-Man's vouchers are a letter and eight digits, a shape other carriers' numbers share, so nothing in the number points to Pack-Man."
+  },
+  {
     "carrier": "packeta",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -1948,6 +2008,12 @@
     "pattern": "^\\d{11}$",
     "kind": "by_design",
     "reason": "Eleven digits are printed by other carriers too and nothing in the number points to Palletways."
+  },
+  {
+    "carrier": "pannon-xp",
+    "pattern": "^\\d{6}$",
+    "kind": "by_design",
+    "reason": "A Pannon XP manual waybill's six printed digits are a short digit run many carriers share."
   },
   {
     "carrier": "paquetexpress",
@@ -2187,6 +2253,18 @@
     "pattern": "^\\d{8}$",
     "kind": "by_design",
     "reason": "Eight digits are shared by several carriers and nothing in the number points to Redpack."
+  },
+  {
+    "carrier": "redur",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "Redur's fourteen-digit shipment numbers are a bare digit run many carriers share."
+  },
+  {
+    "carrier": "redur",
+    "pattern": "^\\d{17}$",
+    "kind": "by_design",
+    "reason": "Redur's seventeen-digit number is a bare digit run other carriers share."
   },
   {
     "carrier": "rl-carriers",
@@ -2611,6 +2689,18 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "TOPTRANS piece numbers are bare thirteen-digit runs that many carriers also print."
+  },
+  {
+    "carrier": "torrestir",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Torrestir's dotted guia reference normalizes to twelve digits, a shape many carriers' rules claim, so no rule names Torrestir for it."
+  },
+  {
+    "carrier": "torrestir",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "A bare eight-digit Torrestir guia number is a short digit run many carriers share."
   },
   {
     "carrier": "total-express",

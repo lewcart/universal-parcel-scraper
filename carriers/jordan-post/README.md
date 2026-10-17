@@ -50,9 +50,14 @@ reaches by IP address.
 
 ## Numbers
 
-Jordan Post prints UPU S10 numbers ending in `JO`. The issuer of an S10 code does not establish
-who delivers it, so detection keeps such codes with the generic postal carrier, and Jordan Post
-is asked when a caller names it. The samples and their sources are in
+Jordan Post prints UPU S10 numbers ending in `JO`. The adapter takes S10 codes from any post
+with a valid check digit; anything else is invalid without a request.
+
+A code ending `JO` is Jordan Post's, but the issuer of an S10 code does not establish who
+delivers it, so detection keeps such codes with the generic postal carrier. `jordan-post-s10`,
+at low confidence, makes preflight ask Jordan Post about them. Mail from abroad keeps the suffix
+of the post that issued it, and reaches Jordan Post when a caller names it, a provider names it,
+or a result gives Jordan as the destination of an S10 item. The samples and their sources are in
 [`numbers.json`](numbers.json).
 
 ## Links

@@ -15097,7 +15097,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}JO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "jrs-express": {
     "displayName": "JRS Express",
@@ -26520,7 +26527,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jhgj": ["jhgj-1"],
   "jitsu": [],
   "jne": ["jne-1"],
-  "jordan-post": [],
+  "jordan-post": ["jordan-post-s10"],
   "jrs-express": [],
   "jrt": ["jrt-1"],
   "js-express": ["js-express-1"],

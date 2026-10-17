@@ -49,11 +49,11 @@ const CATALOG_NAMES = new Set([
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BG', 'bulgarian-posts'], ['BY', 'belpost'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
-  ['DZ', 'algerie-poste'], ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
-  ['GB', 'royal-mail'], ['JP', 'japan-post'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'],
-  ['NL', 'spring-gds'], ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'],
-  ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'], ['UZ', 'uzbekistan-post'],
-  ['ZA', 'south-african-post-office'],
+  ['DZ', 'algerie-poste'], ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'],
+  ['FR', 'la-poste'], ['GB', 'royal-mail'], ['JO', 'jordan-post'], ['JP', 'japan-post'],
+  ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'], ['PH', 'phlpost'],
+  ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'],
+  ['UA', 'ukrposhta'], ['US', 'usps'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

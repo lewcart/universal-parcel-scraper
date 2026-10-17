@@ -120,6 +120,7 @@ import { statusMap as haypost } from '../../carriers/haypost/status.js';
 import { statusMap as hctLogistics } from '../../carriers/hct-logistics/status.js';
 import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
+import { statusMap as hrParcel } from '../../carriers/hr-parcel/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
@@ -274,7 +275,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
-  helthjem, hepsijet,
+  helthjem, hepsijet, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, hywl, imile, instabox, interrapidisimo, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   jhgj, jitsu, jne, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, 'loomis-express': loomisExpress,

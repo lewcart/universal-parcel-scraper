@@ -155,6 +155,7 @@ import { adapter as hepsijet } from '../carriers/hepsijet/adapter.js';
 import { adapter as hermes } from '../carriers/hermes/adapter.js';
 import { adapter as hermesDe } from '../carriers/hermes-de/adapter.js';
 import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
+import { adapter as hrParcel } from '../carriers/hr-parcel/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as imile } from '../carriers/imile/adapter.js';
@@ -486,6 +487,7 @@ export const REGISTRY: RegistryDefinition = {
     "hermes": hermes,
     "hermes-de": hermesDe,
     "hongkong-post": hongkongPost,
+    "hr-parcel": hrParcel,
     "hrvatska-posta": hrvatskaPosta,
     "hywl": hywl,
     "imile": imile,
@@ -934,7 +936,7 @@ export const REGISTRY: RegistryDefinition = {
     "hongkong-post": "hongkong-post",
     "horoz": "universal",
     "hp-mostar": "universal",
-    "hr-parcel": "universal",
+    "hr-parcel": "hr-parcel",
     "hrvatska-posta": "hrvatska-posta",
     "hunter-express": "universal",
     "hywl": "hywl",

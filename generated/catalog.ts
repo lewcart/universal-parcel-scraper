@@ -13561,7 +13561,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hr-parcel",
+      "recognitionRank": 887,
+      "localClocks": true
     },
     "canaryUrl": "https://www.hrparcel.com/traccia-spedizioni/",
     "trackingUrlTemplate": "https://www.hrparcel.com/traccia-spedizioni/?barcode={trackingNumber}",

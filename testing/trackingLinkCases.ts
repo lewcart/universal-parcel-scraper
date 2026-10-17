@@ -646,6 +646,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dx', number: 'L0000001',
     route: /^https:\/\/my\.dxdelivery\.com\/t\/L0000001$/,
     marker: /Track my DX|Enter your postcode/ },
+  // The page fills its barcode field in from the address and looks the number up on load.
+  { carrier: 'hr-parcel', number: '10000000000001',
+    route: /^https:\/\/www\.hrparcel\.com\/traccia-spedizioni\/\?barcode=10000000000001$/,
+    marker: /Inserisci qui il tuo codice spedizione|La spedizione non è stata trovata/ },
   // The page asks the shipment service for the number in its address on load; an unknown one gets an alert.
   { carrier: 'slovak-parcel-service', number: '70399999999999',
     route: /^https:\/\/www\.sps-sro\.sk\/moja-zasielka\/\?shipment_id=70399999999999$/,

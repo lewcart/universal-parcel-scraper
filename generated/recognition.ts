@@ -119,6 +119,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "helthjem": 210,
   "hepsijet": 949,
   "hermes-de": 840,
+  "hr-parcel": 887,
   "hrvatska-posta": 160,
   "hywl": 993,
   "imile": 997,

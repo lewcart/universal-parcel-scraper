@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -33,7 +33,7 @@
           "xpressbees"
         ]
       },
-      "note": "An archived lookup on HR Parcel's own tracker address; the capture was opened and shows the barcode filled in, but the history loads separately and was not visible."
+      "note": "An archived lookup on HR Parcel's own tracker address; the capture shows the barcode filled in, and HR Parcel's tracker returns a delivered history for it."
     },
     {
       "number": "16604000006218",
@@ -46,7 +46,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -68,7 +68,7 @@
           "xpressbees"
         ]
       },
-      "note": "An archived lookup on HR Parcel's own tracker address; the capture was opened and shows the barcode filled in, but the history loads separately and was not visible."
+      "note": "An archived lookup on HR Parcel's own tracker address; the capture shows the barcode filled in, and HR Parcel's tracker returns a delivered history for it."
     },
     {
       "number": "19800000330997",
@@ -81,7 +81,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -102,7 +102,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page gives this as the parcel's barcode, with a YunExpress number as its reference."
+      "note": "A review on HR Parcel's Trustpilot page gives this as the parcel's barcode, with a YunExpress number as its reference. HR Parcel's tracker returns a delivered history for it."
     },
     {
       "number": "19800000929492",
@@ -115,7 +115,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -136,7 +136,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page gives this as the tracer of a YunExpress shipment that shows as delivered."
+      "note": "A review on HR Parcel's Trustpilot page gives this as the tracer of a YunExpress shipment that shows as delivered, as HR Parcel's tracker does."
     },
     {
       "number": "19800000913607",
@@ -149,7 +149,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -170,7 +170,7 @@
           "xpressbees"
         ]
       },
-      "note": "HR Parcel replied to a complaint quoting this number that, after its checks, it had to declare the shipment lost."
+      "note": "HR Parcel replied to a complaint quoting this number that, after its checks, it had to declare the shipment lost. Its tracker shows the parcel lost or stolen."
     },
     {
       "number": "19516001213985",
@@ -183,7 +183,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -204,7 +204,7 @@
           "xpressbees"
         ]
       },
-      "note": "A complaint about a Temu order handed to the courier HR Parcel quotes this tracking number."
+      "note": "A complaint about a Temu order handed to the courier HR Parcel quotes this tracking number. HR Parcel's tracker returns a delivered history for it."
     },
     {
       "number": "16630000636285",
@@ -217,7 +217,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -239,7 +239,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page gives this tracking number for a Zara order shown as delivered."
+      "note": "A review on HR Parcel's Trustpilot page gives this tracking number for a Zara order shown as delivered, as HR Parcel's tracker does."
     },
     {
       "number": "16139000011134",
@@ -252,7 +252,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -274,7 +274,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page gives this as the shipment's tracking code."
+      "note": "A review on HR Parcel's Trustpilot page gives this as the shipment's tracking code. HR Parcel's tracker returns a delivered history for it."
     },
     {
       "number": "16497000004159",
@@ -287,7 +287,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -308,7 +308,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page quotes this number, and HR Parcel replied that the shipment was collected."
+      "note": "A review on HR Parcel's Trustpilot page quotes this number, and HR Parcel replied that the shipment was collected, as its tracker shows."
     },
     {
       "number": "16067000035529",
@@ -321,7 +321,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -342,7 +342,7 @@
           "xpressbees"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page says this number shows as delivered."
+      "note": "A review on HR Parcel's Trustpilot page says this number shows as delivered, as HR Parcel's tracker does."
     },
     {
       "number": "00384279076027593732",
@@ -355,7 +355,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -366,7 +366,7 @@
           "nz-post"
         ]
       },
-      "note": "A review on HR Parcel's Trustpilot page quotes this Mango parcel's number, and HR Parcel replied that its systems showed the parcel out for delivery that day."
+      "note": "A review on HR Parcel's Trustpilot page quotes this Mango parcel's number, and HR Parcel replied that its systems showed the parcel out for delivery that day. HR Parcel's tracker returns a delivered history for it under this number."
     },
     {
       "number": "IHB5325323010",

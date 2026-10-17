@@ -470,6 +470,9 @@ describe('classifyWording', () => {
       ['Registered parcel data, parcel not dispatched yet', 'registered'],
       ['Not yet accepted', 'registered'],
       ['Shipment not accepted yet', 'registered'],
+      // A forwarder's hand-over to the airport for its flight, as Mayi Yinfu translates it.
+      ['The goods have been delivered to the airport and are awaiting the arrangement of flights.', 'in_transit'],
+      ['Shipment delivered to the airport', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {

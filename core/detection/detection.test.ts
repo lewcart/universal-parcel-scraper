@@ -83,6 +83,22 @@ describe('Taiwanese S10 items', () => {
   });
 });
 
+describe('Slovak S10 items', () => {
+  it.each(['CP123456785SK', 'EE123456785SK', 'LK123456785SK', 'RR123456785SK'])('names Slovenská pošta, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'slovenska-posta', confidence: 'high', candidates: ['slovenska-posta'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves its other items to international mail and asks it about them', () => {
+    expect(detectCarrierMatch('UH123456785SK')).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+    expect(recognitionAskedCarriers('UH123456785SK')[0]).toBe('slovenska-posta');
+  });
+
+  it('names nobody for a failed check digit', () => {
+    expect(detectCarrierMatch('LK123456780SK').candidates).not.toContain('slovenska-posta');
+  });
+});
+
 describe('normalization', () => {
   it('uppercases and strips the separators carriers print', () => {
     expect(normalizeTrackingNumber(' ra 123 456-789 ch ')).toBe('RA123456789CH');

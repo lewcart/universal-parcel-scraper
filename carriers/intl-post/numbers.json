@@ -247,25 +247,6 @@
       "note": "A lookup on Cainiao's global tracker archived by the Wayback Machine. The LT suffix names the postal operator of Lithuania, which has no adapter here."
     },
     {
-      "number": "LK056233672SK",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20251225115352/https://global.cainiao.com/newDetail.htm?mailNoList=LK056233672SK",
-        "date": "2025-12-25",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
-      },
-      "note": "A lookup on Cainiao's global tracker archived by the Wayback Machine. The SK suffix names the postal operator of Slovakia, which has no adapter here."
-    },
-    {
       "number": "LX000453730UZ",
       "role": "shipment",
       "evidence": "public_shipment_report",

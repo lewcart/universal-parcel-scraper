@@ -280,9 +280,10 @@ describe('Slovenská pošta tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url) === slovenskaPostaUrl(RETURNED))).toBe(true);
   });
 
-  it('is asked about Slovak S10 codes, which detection leaves with the postal fallback, and reads its links', () => {
-    expect(detectCarrierMatch(COLLECTED)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(COLLECTED)).toContain('slovenska-posta');
+  it('is named for its own S10 items, asked about its other Slovak codes, and reads its links', () => {
+    expect(detectCarrierMatch(COLLECTED)).toMatchObject({ carrier: 'slovenska-posta', confidence: 'high' });
+    expect(detectCarrierMatch('UA900000019SK')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('UA900000019SK')).toContain('slovenska-posta');
     expect(recognitionAskedCarriers('RR900000018SK')).not.toContain('slovenska-posta');
     expect(recognitionAskedCarriers('RR900000019DE')).not.toContain('slovenska-posta');
     expect(parseTrackingInput(`https://www.posta.sk/sledovanie-zasielok#parcel=${COLLECTED}`))

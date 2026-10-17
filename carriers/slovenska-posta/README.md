@@ -27,10 +27,11 @@ item state, so the adapter does not use it. Its manual lists the event codes the
 
 Slovenská pošta tracks UPU S10 items: its own end `SK`, registered items starting `R`, parcels
 `C` and EMS items `E`. The adapter takes S10 codes with a valid check digit, from any country,
-and treats anything else as invalid without a request. A code ending `SK` is
-Slovenská pošta's, but the issuer of an S10 code does not establish who delivers it, so detection
-keeps such codes with the generic postal carrier. A low-confidence rule makes preflight ask
-Slovenská pošta about them.
+and treats anything else as invalid without a request. Detection names Slovenská pošta for the
+EMS, parcel, registered and tracked-letter items it issues: `C`, `E`, `L` or `R` first, `SK` last
+and a passing check digit. Its tracker follows them to delivery, abroad included, as Chunghwa
+Post's follows its own. Its other `SK` codes stay with the generic postal carrier, and a
+low-confidence rule makes preflight ask Slovenská pošta about them.
 
 ## Notes
 

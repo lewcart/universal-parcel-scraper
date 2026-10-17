@@ -15,7 +15,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -34,7 +34,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -53,7 +53,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -72,7 +72,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -91,7 +91,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -129,7 +129,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -148,7 +148,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -167,7 +167,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -186,7 +186,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
@@ -205,10 +205,29 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "LK056233672SK",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251225115352/https://global.cainiao.com/newDetail.htm?mailNoList=LK056233672SK",
+        "date": "2025-12-25",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "slovenska-posta",
+        "confidence": "high"
+      },
+      "note": "A lookup on Cainiao's global tracker archived by the Wayback Machine."
     },
     {
       "number": "RG998541170SK",
@@ -224,7 +243,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "slovenska-posta",
         "confidence": "high"
       },
       "note": "Looked up on Slovenská pošta's former tracker, as an archived address shows; the capture was not opened."

@@ -402,6 +402,8 @@ describe("universal providers' answers", () => {
       ['The shipment has been prepared for further shipping in Example', 'in_transit'],
       ['The shipment was prepared for further shipping in Example (Example)', 'in_transit'],
       ['Notice card left indicating where and when to pick up item', 'failed_attempt'],
+      ['Delivery has been made at the destination port', 'in_transit'], ['Order information has been sent to DPD.', 'registered'],
+      ['Package received & scanned at warehouse', 'accepted'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
@@ -412,7 +414,8 @@ describe("universal providers' answers", () => {
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
-      'Ready for delivery', 'Shipment received from retailer', 'Received at hub']) {
+      'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
+      'Delivery has been made at the destination port of Example', 'Order information has been sent']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

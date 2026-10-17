@@ -23693,7 +23693,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vasp-expresso",
+      "recognitionRank": 885,
+      "localClocks": true
     },
     "canaryUrl": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/",
     "trackingUrlTemplate": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/?search={trackingNumber}",

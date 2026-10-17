@@ -314,6 +314,7 @@ import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
 import { adapter as ups } from '../carriers/ups/adapter.js';
 import { adapter as usps } from '../carriers/usps/adapter.js';
 import { adapter as uzbekistanPost } from '../carriers/uzbekistan-post/adapter.js';
+import { adapter as vaspExpresso } from '../carriers/vasp-expresso/adapter.js';
 import { adapter as venipak } from '../carriers/venipak/adapter.js';
 import { adapter as viettelPost } from '../carriers/viettel-post/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
@@ -647,6 +648,7 @@ export const REGISTRY: RegistryDefinition = {
     "ups": ups,
     "usps": usps,
     "uzbekistan-post": uzbekistanPost,
+    "vasp-expresso": vaspExpresso,
     "venipak": venipak,
     "viettel-post": viettelPost,
     "vinted-go": vintedGo,
@@ -1249,7 +1251,7 @@ export const REGISTRY: RegistryDefinition = {
     "urbano": "universal",
     "usps": "usps",
     "uzbekistan-post": "uzbekistan-post",
-    "vasp-expresso": "universal",
+    "vasp-expresso": "vasp-expresso",
     "venipak": "venipak",
     "via-cargo": "universal",
     "viettel-post": "viettel-post",

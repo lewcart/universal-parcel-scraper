@@ -239,6 +239,7 @@ import { statusMap as twsExpress } from '../../carriers/tws-express/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as uzbekistanPost } from '../../carriers/uzbekistan-post/status.js';
+import { statusMap as vaspExpresso } from '../../carriers/vasp-expresso/status.js';
 import { statusMap as venipak } from '../../carriers/venipak/status.js';
 import { statusMap as viettelPost } from '../../carriers/viettel-post/status.js';
 import { statusMap as vintedGo } from '../../carriers/vinted-go/status.js';
@@ -293,7 +294,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'stallion-express': stallionExpress, starken, sto, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, 'team-global-express': teamGlobalExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, tnt, 'tnt-it': tntIt, 'total-express': totalExpress, tsjy, 'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel, ups,
-  'uzbekistan-post': uzbekistanPost, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
+  'uzbekistan-post': uzbekistanPost, 'vasp-expresso': vaspExpresso, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
   'yilong-logistics': yilongLogistics, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,
 };

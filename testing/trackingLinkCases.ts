@@ -76,6 +76,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'redur', number: '10000000000000',
     route: /^https:\/\/redur\.es\/track-trace\/\?idioma=es&buscarpor=NTRACKING&valor=10000000000000$/,
     marker: /Seguimiento de envío|Nº de envío/ },
+  // The page prefills its search field from the address and looks the number up.
+  { carrier: 'vasp-expresso', number: '9990000000000',
+    route: /^https:\/\/www\.vaspexpresso\.pt\/pt\/geral\/track-and-trace\/\?search=9990000000000$/,
+    marker: /Encontre a sua encomenda|Localizar Encomenda/ },
   { carrier: 'seur', number: '9900002',
     route: /^https:\/\/www\.seur\.com\/miseur\/mis-envios(?:\?|$)/,
     marker: /Seguimiento de envíos|Mis envíos|localizador|shipment|IDENTIFIER|Tracking|NÚMERO DE ENVÍO/i, renderTimeoutMs: 20_000 },

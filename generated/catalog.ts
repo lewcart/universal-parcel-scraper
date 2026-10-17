@@ -9407,6 +9407,7 @@ export const CARRIER_CATALOG = {
       "DHL Freight GmbH",
       "DHL ActiveTracing",
       "DHL Active Tracing",
+      "DHL Freight Active Tracing",
       "DHL Frachtverfolgung"
     ],
     "countries": [

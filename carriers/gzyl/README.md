@@ -2,8 +2,8 @@
 
 Tracks shipments of GZYL (广州云链货运代理有限公司), a Guangzhou forwarder, on its own tenant of
 the Hualei (华磊) forwarder platform. [Tianhui Hengyuan](../thhy/README.md),
-[JRT](../jrt/README.md), [Meiteshun Logistics](../mtscn/README.md) and
-[Mayi Yinfu](../mayiyinfu/README.md) run tenants of the same
+[JRT](../jrt/README.md), [Meiteshun Logistics](../mtscn/README.md),
+[Mayi Yinfu](../mayiyinfu/README.md) and [BYHD](../byhd/README.md) run tenants of the same
 platform; they share the client in [hualei.ts](hualei.ts) and keep their own hosts and status
 maps.
 
@@ -28,7 +28,8 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
 - The service matches a number exactly as written: the order's tracking number, the shipper's
   reference, the waybill code or the channel's transfer number, dashes included. A record counts
   only when one of those is the whole number asked. Two orders under one reference stay
-  inconclusive.
+  inconclusive. [BYHD's](../byhd/README.md) page hides the number it found an order by, so there
+  a lone record counts for the one number the page's form echoes back.
 - GZYL writes a shipment's timeline ahead: every row carries the same creation time, days before
   most of the scan times. The tracker's latest row was never later than the lookup, but the
   adapter does not rely on that: a row dated after the lookup on Beijing time is held back, and

@@ -7165,6 +7165,34 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "byhd": {
+    "displayName": "BYHD",
+    "color": "#084282",
+    "aliases": [
+      "Boyi Hongda",
+      "Bo Yi Hong Da",
+      "博益弘达",
+      "博益弘达物流",
+      "深圳市博益弘达物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "byhd"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^BYHD\\d{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "cacesa": {
     "displayName": "CACESA",
     "color": "#C9032D",
@@ -23768,6 +23796,7 @@ export const CARRIER_IDS = [
   "bulgarian-posts",
   "burd-delivery",
   "bussgods",
+  "byhd",
   "cacesa",
   "campost",
   "cargus",
@@ -24361,6 +24390,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bulgarian-posts": ["bulgarian-posts-1","bulgarian-posts-s10"],
   "burd-delivery": [],
   "bussgods": ["bussgods-1"],
+  "byhd": ["byhd-1"],
   "cacesa": [],
   "campost": [],
   "cargus": [],

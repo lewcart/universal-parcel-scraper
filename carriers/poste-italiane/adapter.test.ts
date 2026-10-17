@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
   normalizePosteItalianeTrackingNumber,
@@ -57,6 +58,16 @@ describe('Poste Italiane tracking normalization', () => {
     expect(posteItalianeTrackingUrl(TRACKING_NUMBER)).toBe(
       'https://www.poste.it/cerca/index.html#/risultati-spedizioni/RA00000000001',
     );
+  });
+
+  it('takes the DHL Parcel Connect plates partners hand over, which detection leaves to DHL', () => {
+    expect(normalizePosteItalianeTrackingNumber('jjd 000000000000000000001')).toBe('JJD000000000000000000001');
+    for (const raw of ['JJD00000000000000000001', 'JJD0000000000000000000001', 'JJD0000000000000001', 'JJD00000000000000000000A']) {
+      expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
+    }
+    const detected = detectCarrierMatch('JJD000000000000000000001');
+    expect(detected).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+    expect(detected.candidates).not.toContain('poste-italiane');
   });
 
   it('uses complete SDA candidates for the request and recognition identity', async () => {

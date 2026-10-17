@@ -1,3 +1,4 @@
+import { carrierIdFromPartner } from '../../core/catalog/hints.js';
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -63,6 +64,18 @@ function estimatedDay(payload: Record<string, unknown>, stage: Stage | undefined
   return typeof latest.time === 'string' && day < latest.time.slice(0, 10) ? null : day;
 }
 
+/**
+ * The partner abroad that delivers the parcel, from the link to its tracker the reply gives. The
+ * link must carry the partner's number, and its host and path must name one catalog carrier.
+ */
+function partnerHandoff(payload: Record<string, unknown>, number: string): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+  const reference = normalizeTrackingNumber(clean(payload.externalShipmentId, 64)).toUpperCase();
+  const link = clean(payload.partnerUrl, 500);
+  if (!/^[A-Z0-9]{4,40}$/.test(reference) || reference === number || !link.toUpperCase().includes(reference)) return {};
+  const partner = carrierIdFromPartner('', link);
+  return partner && partner !== 'ppl' ? { delivery_carrier: partner, delivery_tracking_number: reference } : {};
+}
+
 export function parsePpl(payload: unknown, rawNumber: string): CarrierResult {
   const number = normalizePplNumber(rawNumber);
   if (!isRecord(payload)) throw new SchemaError(PPL);
@@ -105,6 +118,7 @@ export function parsePpl(payload: unknown, rawNumber: string): CarrierResult {
     ...(typeof deliveredAt === 'string' ? { delivered_at: deliveredAt } : {}),
     ...(typeof weight === 'number' && Number.isFinite(weight) && weight > 0 && weight < 10_000 ? { weight_kg: weight } : {}),
     ...(point ? { pickup_point: point } : {}),
+    ...partnerHandoff(payload, number),
     ...(events.length > 100 ? { history_truncated: true } : {}),
     events: events.slice(0, 100),
   };

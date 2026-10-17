@@ -33,6 +33,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
 - Poste's own scans are instants. Its catalog clock is Rome's for the providers: Ship24 relays
   SDA's distribution-center scans as wall clocks without an offset, and they read on that clock
   as the same moments Poste's own copies give.
+- Partners abroad hand Poste Italiane parcels under a DHL Parcel Connect plate, `JJD` and
+  twenty-one digits, and link to Poste's tracker with it, as PPL does. The adapter takes those
+  plates for that hand-off. DHL issues them, so no detection rule names Poste for them.
 - Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
   MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker

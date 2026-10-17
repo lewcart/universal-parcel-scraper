@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../app.js';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { CARRIER_DEFINITIONS, tracksAutomatically } from '../../core/catalog/index.js';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
@@ -68,6 +69,25 @@ describe('PPL tracking through its tracking page’s service', () => {
       weight: result.weight_kg === 1.25, delivered_at: Boolean(result.delivered_at), pickup_point: Boolean(result.pickup_point),
       eta: parsePpl(ahead, NUMBER).expected_delivery === '2026-01-07' };
     for (const capability of declared.capabilities) expect(evidence[capability], capability).toBe(true);
+  });
+
+  it('names the partner abroad and its number only when the partner link carries that number', () => {
+    const plate = 'JJD000000000000000000001';
+    const abroad = (fields: Record<string, unknown>) => {
+      const body = payload();
+      body.events = body.events.slice(0, 3);
+      return parsePpl(Object.assign(body, fields), NUMBER);
+    };
+    const handed = abroad({ externalShipmentId: plate, partnerUrl: `https://www.poste.it/cerca/#/risultati-spedizioni/${plate}` });
+    expect(handed).toMatchObject({ delivery_carrier: 'poste-italiane', delivery_tracking_number: plate });
+    expect(deliveryHandoff('ppl', NUMBER, handed)).toEqual({ carrier: 'poste-italiane', number: plate, basis: 'partner' });
+    for (const fields of [{ externalShipmentId: plate }, { externalShipmentId: plate, partnerUrl: 'https://www.poste.it/cerca/' },
+      { externalShipmentId: plate, partnerUrl: `https://tracking.example.com/${plate}` },
+      { externalShipmentId: NUMBER, partnerUrl: `https://www.poste.it/cerca/#/risultati-spedizioni/${NUMBER}` }]) {
+      const result = abroad(fields);
+      expect(result.delivery_carrier).toBeUndefined();
+      expect(result.delivery_tracking_number).toBeUndefined();
+    }
   });
 
   it('shows the expected day only while the portal would and the parcel is still on its way', () => {

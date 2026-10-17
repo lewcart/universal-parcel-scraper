@@ -40,11 +40,15 @@ the maintainer's approval. A rejected key is a challenge.
 - Recognition makes the same search. A Czech caller, or a provider that names PPL, asks PPL
   first; otherwise the commoner eleven-digit carriers are asked before it. Providers name PPL
   beside the DHL networks that take a parcel abroad, and only PPL's rule fits its number.
+- A parcel handed to a partner abroad carries the partner's number and a link to the
+  partner's tracker, such as Poste Italiane's with a DHL Parcel Connect `JJD` plate. When the
+  link carries that number and names one catalog carrier, the result names both, so the host
+  can follow the parcel there.
 
 ## Limitations
 
-Scans carry no place, so events have no location. Once a parcel is handed to a partner abroad,
-the partner's own tracker is not asked. SmartPIN and other search forms are not supported. The
+Scans carry no place, so events have no location. A partner abroad whose link names no catalog
+carrier is not named. SmartPIN and other search forms are not supported. The
 sender, customer reference, delivery window, payment details and proof of delivery are not
 read.
 

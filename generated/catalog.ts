@@ -20010,9 +20010,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redur",
+      "recognitionRank": 886,
+      "localClocks": true
     },
     "canaryUrl": "https://redur.es/track-trace/",
+    "trackingUrlTemplate": "https://redur.es/track-trace/?idioma=es&buscarpor=NTRACKING&valor={trackingNumber}",
     "trackingSearchUrl": "https://redur.es/track-trace/",
     "linkRules": [
       {

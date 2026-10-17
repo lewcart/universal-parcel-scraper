@@ -72,6 +72,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.nacex\.es\/seguimientoFormularioExterno\.do(?:\?|$)/,
     marker: /Formulario de Seguimiento|Formulaire de Suivi|Track and trace form/,
     forwarding: { notFound: /No existe ningún albarán introducido en el sistema cumpliendo los criterios especificados|Il n.y a aucun bordereau introduit dans le système correspondant aux critères indiqués|There are no delivery notes entered into the system that comply with the specified criteria/ } },
+  // The server renders the lookup; its answer to an unknown number repeats the number.
+  { carrier: 'redur', number: '10000000000000',
+    route: /^https:\/\/redur\.es\/track-trace\/\?idioma=es&buscarpor=NTRACKING&valor=10000000000000$/,
+    marker: /Seguimiento de envío|Nº de envío/ },
   { carrier: 'seur', number: '9900002',
     route: /^https:\/\/www\.seur\.com\/miseur\/mis-envios(?:\?|$)/,
     marker: /Seguimiento de envíos|Mis envíos|localizador|shipment|IDENTIFIER|Tracking|NÚMERO DE ENVÍO/i, renderTimeoutMs: 20_000 },

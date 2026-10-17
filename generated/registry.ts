@@ -245,6 +245,7 @@ import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
 import { adapter as raben } from '../carriers/raben/adapter.js';
 import { adapter as redpack } from '../carriers/redpack/adapter.js';
+import { adapter as redur } from '../carriers/redur/adapter.js';
 import { adapter as redx } from '../carriers/redx/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as relaytech } from '../carriers/relaytech/adapter.js';
@@ -575,6 +576,7 @@ export const REGISTRY: RegistryDefinition = {
     "purolator": purolator,
     "raben": raben,
     "redpack": redpack,
+    "redur": redur,
     "redx": redx,
     "relais-colis": relaisColis,
     "relaytech": relaytech,
@@ -1128,7 +1130,7 @@ export const REGISTRY: RegistryDefinition = {
     "raben": "raben",
     "ram-hand-to-hand": "universal",
     "redpack": "redpack",
-    "redur": "universal",
+    "redur": "redur",
     "redx": "redx",
     "relais-colis": "relais-colis",
     "relaytech": "relaytech",

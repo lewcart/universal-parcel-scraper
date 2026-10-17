@@ -878,6 +878,12 @@
     "reason": "Domex waybill numbers are bare runs of eight or nine digits, a shape many carriers share."
   },
   {
+    "carrier": "dpd-at",
+    "pattern": "^\\d{14}$",
+    "kind": "collision",
+    "reason": "DPD Austria also delivers parcels numbered at other DPD networks' depots; other DPD entries suggest those, and DPD Austria's rule takes only its own depots' codes."
+  },
+  {
     "carrier": "dpd-ie",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

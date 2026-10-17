@@ -1,6 +1,15 @@
 {
   "carrier": "dpd-at",
   "entries": [
+    {"code": "ORDER_DATA", "wording": "Auftragsdaten übermittelt", "stage": "registered", "language": "de", "confirmedBy": "live", "note": "myDPD's state for the sender's data reaching DPD."},
+    {"code": "ON_THE_WAY", "wording": "Paket unterwegs", "stage": "in_transit", "language": "de", "confirmedBy": "live", "note": "Collected at the first depot or scanned through a hub."},
+    {"code": "IN_DEPOT", "wording": "Im Paketzustellzentrum", "stage": "in_transit", "language": "de", "confirmedBy": "live", "note": "At the depot that delivers the parcel."},
+    {"code": "IN_DELIVERY", "wording": "In Zustellung", "stage": "out_for_delivery", "language": "de", "confirmedBy": "live"},
+    {"code": "IN_DELIVERY/BOX", "wording": "In Zustellung an Pickup Paketstation", "stage": "out_for_delivery", "language": "de", "confirmedBy": "live", "note": "After a failed attempt the driver takes the parcel on to a Pickup station."},
+    {"code": "NAB", "wording": "Empfänger leider nicht angetroffen.", "stage": "failed_attempt", "language": "de", "confirmedBy": "live"},
+    {"code": "HANDOVER/BOX", "wording": "Paket wurde in der Pickup Paketstation hinterlegt", "stage": "ready_for_pickup", "language": "de", "confirmedBy": "live", "note": "Left in a Pickup station for the recipient to collect."},
+    {"code": "RECEIVER_PICKUP", "wording": "Paket durch Empfänger abgeholt", "stage": "delivered", "language": "de", "confirmedBy": "live", "note": "Collected by the recipient from a Pickup point."},
+    {"code": "DELIVERED/ASG", "wording": "Paket wurde erfolgreich abgestellt", "stage": "delivered", "language": "de", "confirmedBy": "live", "note": "Left at the place the recipient chose for parcels when nobody is in."},
     {"code": "18", "wording": "Auftragsdaten übermittelt", "stage": "registered", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels: the sender's data reached DPD."},
     {"code": "18", "wording": "Order information has been transmitted to DPD.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
     {"code": "15", "wording": "Paket an DPD übergeben", "stage": "accepted", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker at DPD Austria's Obertrum depot."},

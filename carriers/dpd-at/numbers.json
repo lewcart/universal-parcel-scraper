@@ -182,7 +182,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -203,7 +203,7 @@
           "dpd-uk"
         ]
       },
-      "note": "Archived lookup on DPD Austria's myDPD tracker; the capture was not opened and the history was not visible."
+      "note": "Archived lookup on DPD Austria's myDPD tracker; myDPD's lookup knows it, from DPD Austria's Leopoldsdorf depot to a delivery from its Obertrum depot."
     },
     {
       "number": "06245146806199",
@@ -272,6 +272,39 @@
         ]
       },
       "note": "Archived lookup on DPD Austria's myDPD tracker, under the Sulz depot code; the capture was not opened and the history was not visible."
+    },
+    {
+      "number": "01955023696290",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260923101655/https://www.mydpd.at/meine-pakete?ipn=01955023696290",
+        "date": "2026-09-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "dpd-fr",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-be",
+          "dpd-de",
+          "dpd-nl",
+          "dpd-uk"
+        ]
+      },
+      "note": "Archived lookup on DPD Austria's myDPD tracker, under a German depot's code; myDPD's lookup knows it, from German depots to a Pickup station of DPD Austria's Leobendorf depot."
     }
   ]
 }

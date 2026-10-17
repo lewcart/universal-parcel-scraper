@@ -10035,7 +10035,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-at",
+      "recognitionRank": 878,
+      "localClocks": true
     },
     "canaryUrl": "https://www.mydpd.at/",
     "trackingUrlTemplate": "https://www.mydpd.at/?f=parcel.load&p={trackingNumber}",

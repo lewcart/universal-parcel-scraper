@@ -91,6 +91,7 @@ import { adapter as dhlExpress } from '../carriers/dhl-express/adapter.js';
 import { adapter as dhlFreight } from '../carriers/dhl-freight/adapter.js';
 import { adapter as dhlink } from '../carriers/dhlink/adapter.js';
 import { adapter as dpd } from '../carriers/dpd/adapter.js';
+import { adapter as dpdAt } from '../carriers/dpd-at/adapter.js';
 import { adapter as dpdBe } from '../carriers/dpd-be/adapter.js';
 import { adapter as dpdDe } from '../carriers/dpd-de/adapter.js';
 import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
@@ -429,6 +430,7 @@ export const REGISTRY: RegistryDefinition = {
     "dhl-freight": dhlFreight,
     "dhlink": dhlink,
     "dpd": dpd,
+    "dpd-at": dpdAt,
     "dpd-be": dpdBe,
     "dpd-de": dpdDe,
     "dpd-fr": dpdFr,
@@ -839,7 +841,7 @@ export const REGISTRY: RegistryDefinition = {
     "dohrn-transfer": "universal",
     "domex": "universal",
     "dpd": "dpd",
-    "dpd-at": "universal",
+    "dpd-at": "dpd-at",
     "dpd-be": "dpd-be",
     "dpd-de": "dpd-de",
     "dpd-fr": "dpd-fr",

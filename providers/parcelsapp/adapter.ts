@@ -12,8 +12,8 @@ import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import timers from 'node:timers/promises';
 import type { AdapterFactory } from '../../core/adapter/index.js';
-import { carrierTimezone } from '../../core/catalog/index.js';
-import { brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
+import { carrierDefinition, carrierTimezone } from '../../core/catalog/index.js';
+import { brandCarrierIds, brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
 import { CarrierError, carrierErrorKind, ChallengeError, IndeterminateError, InputRequiredError, NoHistoryError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -65,9 +65,10 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * (both shapes checked 2026-09-22). Its UTC digits are re-read in the zone
  * of the scan's carrier, else its location's country, else the country the
  * carrier name ends with ("DPD UK"), else, for a scan with no location, the
- * clock that all catalog networks of a bare brand share at that moment ("DPD
- * Group": DPD Switzerland and France), else the zone routing passes for the
- * parcel. Without one it stays as labeled, as it does when the name's
+ * clock that all catalog networks of a bare brand share at that moment
+ * ("GLS"), or that the network which labelled the parcel shares with its
+ * destination ("DPD Group", `brandNetworkZones`), else the zone routing passes
+ * for the parcel. Without one it stays as labeled, as it does when the name's
  * country or the parcel's zone meets a location in another country. TNT's
  * international scans stay as labeled too: tnt.com gives them offsets, and
  * ParcelsApp's UTC matches them. So do Asendia USA's, wherever they happened:
@@ -295,12 +296,16 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
  * DHLink records its warehouse scans within seconds on its system clock,
  * which is China's. On that clock XZG's scans stay one with DHLink's copies,
  * which take DHLink's catalog zone, whether or not a reply has them and
- * whatever zone routing passes. Their home clock is a guess, which a location
- * in another country rules out.
+ * whatever zone routing passes. Saudi Post's (SPL's) are Riyadh's at home and
+ * their place's abroad: its own tracker dates an origin post's scans and an EMS
+ * partner's on their own place's clock (carriers/saudi-post), and its copy of
+ * a departure from Sydney has the digits of EMS's there. Their home clock is
+ * a guess, which a location in another country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
   pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
+  spl: 'Asia/Riyadh', saudipost: 'Asia/Riyadh',
 };
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
@@ -527,12 +532,34 @@ function numberNetworkZone(carrier: string | undefined, number: string): string 
 }
 
 /**
- * The zone a scan's carrier or place gives it: null for a date that is its
- * instant, or a DHL Express facility the rule cannot place, and undefined for
- * a scan only a guess can place (`guessedZone`).
+ * The clocks a bare brand's scan with no location can be on when its catalog
+ * networks keep several (DPD's, with the UK's): the clock of the network that
+ * labelled the parcel, which the number asked or a number ParcelsApp names
+ * next for it (`next_tracking_ids`) gives by its depot range, with the
+ * destination's and, where the brand has a network, the origin's. A line
+ * carrier's parcel from China that DPD Switzerland delivers names DPD's number
+ * next, and its "DPD Group" scan has the digits DPD Switzerland's own tracker
+ * dates "+02:00". With no such number, or no destination with one clock, there
+ * is none.
  */
-function placedZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false,
-  status = '', destination: string | null = null): string | null | undefined {
+function brandNetworkZones(payload: Record<string, unknown>, name: string, number: string, destination: string | null,
+  origin: string | null): string[] {
+  const next = Array.isArray(payload.next_tracking_ids) ? payload.next_tracking_ids : [];
+  const numbers = [number, ...next.filter((id): id is string => typeof id === 'string' && id.length <= 40).slice(0, 10)];
+  const labelled = new Set(numbers.flatMap((candidate) => brandCarrierForNumber(name, candidate) ?? []));
+  const arrival = countryTimeZone(destination);
+  if (!labelled.size || !arrival) return [];
+  const departure = origin ? brandCarrierIds(name).filter((id) => carrierDefinition(id).countries?.includes(origin)) : [];
+  return [...new Set([...[...labelled, ...departure].map((id) => carrierTimezone(id)), arrival])];
+}
+
+/**
+ * The zone a scan's carrier gives it wherever it was: null for a date that is
+ * its instant, and undefined for a scan its place dates (`siteZone`) or only a
+ * guess does (`guessedZone`).
+ */
+function carrierClock(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, status = '',
+  destination: string | null = null): string | null | undefined {
   const name = stateCarrierName(payload, state);
   const key = nameKey(name);
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
@@ -548,7 +575,18 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   const zone = carrier && !Object.hasOwn(HOME_COUNTRIES, key) ? carrierTimezone(carrier) : 'UTC';
   // A country-qualified routing name can identify a branch rather than the
   // scan location. Keep its clock as a guess even when the alias is catalogued.
-  if (zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name))) return zone;
+  return zone !== 'UTC' && !(typeof name === 'string' && carrierNameCountryZone(name)) ? zone : undefined;
+}
+
+/**
+ * The zone a scan's place gives it: null for a DHL Express facility the rule
+ * cannot place, and undefined for a scan only a guess can place (`guessedZone`).
+ */
+function siteZone(payload: Record<string, unknown>, state: Record<string, unknown>, number: string, inNorthAmerica = false,
+  status = '', destination: string | null = null): string | null | undefined {
+  const name = stateCarrierName(payload, state);
+  const key = nameKey(name);
+  const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   const location = scanLocation(name, state.location);
   if (carrier === 'ctt') return cttZone(payload, location, state.date, number, destination);
   // A facility's clock, whatever the label: no other step applies to it.
@@ -574,7 +612,8 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   return undefined;
 }
 
-function guessedZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string): string | null {
+function guessedZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string,
+  destination: string | null = null, origin: string | null = null): string | null {
   const name = stateCarrierName(payload, state);
   const key = nameKey(name);
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
@@ -592,7 +631,8 @@ function guessedZone(payload: Record<string, unknown>, state: Record<string, unk
   // can be a network of the brand outside the catalog, on another clock.
   const brand = location ? [] : brandTimeZones(name);
   const wall = brand.length ? mislabeledWallTime(state.date) : null;
-  return (wall ? sharedClockZone(brand, wall) : null) ?? guess(fallback);
+  return (wall ? sharedClockZone(brand, wall) ?? sharedClockZone(brandNetworkZones(payload, name, number, destination, origin), wall) : null)
+    ?? guess(fallback);
 }
 
 /**
@@ -607,15 +647,18 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const location = scanLocation(name, raw.location);
   const offset = ownOffset(name, raw.date);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
-  const placed = placedZone(payload, raw, number, inNorthAmerica, status, destination);
+  const own = carrierClock(payload, raw, number, status, destination);
+  const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
+  const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).
   const office = placed === undefined ? postingOffice(name, status, location, replyOrigin(payload, number)) : null;
-  const zone = placed !== undefined ? placed : wallClock || office ? null : guessedZone(payload, raw, fallback, number);
+  const zone = placed !== undefined ? placed : wallClock || office ? null : guessedZone(payload, raw, fallback, number, destination, origin);
   const known = wallClock ? knownClock(name, status, destination, origin) : null;
   // A local clock that nothing places, in the US or Canada alone ("US 12345").
   const country = countryCode(lastPlace(location));
   const nationwide = placed === undefined && zone === null && LOCAL_CLOCK_CARRIERS.has(nameKey(name)) && (country === 'US' || country === 'CA');
-  return { name, date: raw.date, zone, placed: placed ?? null, offset, location, wallClock, nationwide, office,
+  return { name, date: raw.date, zone, placed: placed ?? null, sited: sited ?? null, guessed: placed === undefined && !wallClock,
+    offset, location, wallClock, nationwide, office,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null };
 }
@@ -691,6 +734,34 @@ function wallClockZones(entries: readonly {
     return borrowed ? { zone: borrowed, step: 'borrowed' } : known ? { zone: known, step: 'known' }
       : entry.office ? { zone: entry.office, step: 'place' }
         : entry.fallback ? { zone: entry.fallback, step: 'routing' } : { zone: null, step: 'labeled' };
+  });
+}
+
+/**
+ * The zone of a scan that only a guess dates, or none, from another carrier's
+ * scan at the same digits and place that its place dates (`siteZone`): the
+ * same scan, relayed at the digits of where it happened. Saudi Post's copy of
+ * a departure from Sydney, in SPL's words at its office "SYDNEY", has the
+ * digits of EMS's "Departed from export office" at "Sydney". The place is the
+ * location's first part, so "SYDNEY EMS, Australia" is another. Copies on
+ * different clocks give none.
+ */
+function placeCopies(items: readonly { name: unknown; date: unknown; location: string; sited: string | null; guessed: boolean }[]): (string | null)[] {
+  const site = ({ date, location }: typeof items[number]) => {
+    const wall = mislabeledWallTime(date);
+    const place = nameKey(location.split(',')[0]);
+    return wall && place ? `${wall}|${place}` : '';
+  };
+  const sited = new Map<string, (readonly [string, string])[]>();
+  for (const item of items) {
+    const key = site(item);
+    if (key && item.sited) sited.set(key, [...sited.get(key) ?? [], [nameKey(item.name), item.sited]]);
+  }
+  return items.map((item) => {
+    const copies = item.guessed ? sited.get(site(item)) ?? [] : [];
+    const zones = new Set(copies.filter(([network]) => network !== nameKey(item.name)).map(([, zone]) => zone));
+    const [zone] = zones.size === 1 ? [...zones] : [];
+    return zone ? fitsPlace(zone, item.location, true) : null;
   });
 }
 
@@ -842,6 +913,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   const zones = wallClockZones(entries.map((entry) => ({ ...entry,
     zone: entry.wallClock ? entry.zone : (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone,
     copy: entry.wallClock && !entry.zone ? placedClocks.get(copyKey(entry)) || undefined : undefined })));
+  placeCopies(entries).forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   copiedNetworkZones(entries.map((entry, index) => ({ name: entry.name, key: copyKey(entry), zone: zones[index]!.zone,
     fixed: Boolean(entry.offset) || relaysFacilityClock(entry.name), location: entry.location })))
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });

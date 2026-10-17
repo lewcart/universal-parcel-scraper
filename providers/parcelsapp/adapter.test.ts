@@ -1279,6 +1279,63 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('reads Saudi Post\'s scans abroad at their place or their copy\'s, and at home on Riyadh\'s clock', () => {
+    // Live shape: SPL's copy of the departure from Sydney, in its own words at its
+    // office, has the digits of EMS's and UPU's there; SPL's tracker gives them too.
+    const times = (states: Record<string, unknown>[], timezone: string | null = null) => parseParcelsAppResponse({
+      carriers: ['Universal Postal Union', 'SPL', 'EMS'], originCode: 'AU', destinationCode: 'SA', states,
+    }, number, identity(), timezone).events?.map(({ time, description }) => [time, description]);
+    const spl = (location: string) => ({ date: '2026-07-08T05:12:00Z', status: 'Your Shipment Is On Its Way To Destination', carrier: 1, location });
+    const departed = [
+      { date: '2026-07-08T05:12:00Z', status: 'Departed country of origin', carrier: 0, location: 'SYDNEY EMS, Australia' },
+      { date: '2026-07-08T05:12:00+00:00', status: 'Departed from export office', carrier: 2, location: 'Sydney' },
+    ];
+    // Sydney keeps +10:00 in July, Riyadh +03:00.
+    for (const timezone of [null, 'Asia/Riyadh']) {
+      expect(times([spl('SYDNEY'), ...departed], timezone)?.map(([time]) => time)).toEqual(Array(3).fill('2026-07-07T19:12:00.000Z'));
+    }
+    // With no copy at its place, its home clock stays the guess; a location abroad rules it out.
+    expect(times([spl('SYDNEY')])).toEqual([['2026-07-08T02:12:00.000Z', 'Your Shipment Is On Its Way To Destination']]);
+    expect(times([spl('MELBOURNE'), ...departed])?.[0]).toEqual(['2026-07-08T02:12:00.000Z', 'Your Shipment Is On Its Way To Destination']);
+    expect(times([spl('Example Town, Japan')])?.[0]?.[0]).toBe('2026-07-07T20:12:00.000Z');
+    expect(times([{ ...spl('RIYADH'), date: '2026-07-14T09:10:00Z', status: 'Delivered' }])?.[0]?.[0]).toBe('2026-07-14T06:10:00.000Z');
+    // Copies at its place on different clocks give none.
+    expect(parseParcelsAppResponse({ carriers: ['SPL', 'Example Post', 'Other Post'], states: [
+      { date: '2026-07-08T05:12:00Z', status: 'In transit', carrier: 0, location: 'Example Hub' },
+      { date: '2026-07-08T05:12:00Z', status: 'Dispatched', carrier: 1, location: 'Example Hub, Switzerland' },
+      { date: '2026-07-08T05:12:00Z', status: 'Dispatched', carrier: 2, location: 'Example Hub, United Kingdom' },
+    ] }, number, identity()).events?.map(({ time }) => time)).toEqual([
+      '2026-07-08T04:12:00.000Z', '2026-07-08T03:12:00.000Z', '2026-07-08T02:12:00.000Z',
+    ]);
+  });
+
+  it('reads a DPD Group scan on the clock its labelling network shares with the destination', () => {
+    // Live shape: a line carrier's parcel from China that DPD Switzerland delivers. ParcelsApp
+    // names DPD's number next, and DPD Switzerland's own tracker dates the scan "+02:00".
+    const swiss = '06080000000002';
+    const time = (reply: Record<string, unknown>, trackingNumber = number, timezone: string | null = null) => parseParcelsAppResponse({
+      carriers: ['Example Line', 'DPD Group'], originCode: 'CN', destinationCode: 'CH', next_tracking_ids: [swiss],
+      states: [{ date: '2026-07-02T10:37:00+00:00', status: 'Parcel handed', carrier: 1 }], ...reply,
+    }, trackingNumber, identity(trackingNumber), timezone).events?.[0]?.time;
+    expect(time({})).toBe('2026-07-02T08:37:00.000Z');
+    expect(time({}, number, 'Europe/London')).toBe('2026-07-02T08:37:00.000Z');
+    // The number asked can be DPD's own.
+    expect(time({ next_tracking_ids: undefined }, swiss)).toBe('2026-07-02T08:37:00.000Z');
+    // Without a network's number, the zone is not known: the label, or routing's zone, stays.
+    expect(time({ next_tracking_ids: undefined })).toBe('2026-07-02T10:37:00.000Z');
+    expect(time({ next_tracking_ids: ['06460000000002'] })).toBe('2026-07-02T10:37:00.000Z');
+    expect(time({ next_tracking_ids: undefined }, number, 'Europe/Zurich')).toBe('2026-07-02T08:37:00.000Z');
+    // Nor is it when the destination, or an origin with a DPD network, keeps another clock, or none is named.
+    for (const reply of [{ destinationCode: 'GB' }, { originCode: 'GB' }, { destinationCode: 'US' }, { destinationCode: undefined }]) {
+      expect(time(reply)).toBe('2026-07-02T10:37:00.000Z');
+    }
+    // An origin without a DPD network, or one on the same clock, leaves it.
+    expect(time({ originCode: 'DE' })).toBe('2026-07-02T08:37:00.000Z');
+    // A scan with a location is read there.
+    expect(time({ states: [{ date: '2026-07-02T10:37:00+00:00', status: 'Parcel handed', carrier: 1, location: 'Example Hub, United Kingdom' }] }))
+      .toBe('2026-07-02T09:37:00.000Z');
+  });
+
   it('reads a scan on its known clock before the zone routing passes for the parcel', () => {
     // Filed under Speedaf, the parcel gets Lagos from routing; Cainiao's own feed dates
     // these scans on China time and on the destination's.

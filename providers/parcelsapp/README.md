@@ -96,7 +96,9 @@ step exists for future protocol changes.
      below);
   4. for a bare brand or brand group ("DPD Group", "GLS", "Hermes") on a scan with no
      location, the zone of that brand's catalog carriers, if every one of them reads the
-     digits as the same instant;
+     digits as the same instant, else the zone the network that labelled the parcel shares
+     with the parcel's destination and, where the brand has a network, its origin (Brand
+     zones below);
   5. the zone routing passes for the parcel.
 
   Steps 3 and 5 only guess where the scan was. A `location` ending with any other country,
@@ -117,6 +119,10 @@ step exists for future protocol changes.
 
   A network that no step places, whose scans other carriers copy at the same digits and
   wording on one shared zone, takes that zone, so each scan stays one with its copies.
+  A scan that only steps 3 to 5 date, or none, takes the zone of another carrier's scan
+  at the same digits and place (the location's first part) that its place dates: Saudi
+  Post's copy of a departure from Sydney, in SPL's words at its office "SYDNEY", has the
+  digits of EMS's at "Sydney". Copies on different clocks give none.
 
   With no zone, an offset is taken as given, which for the carriers whose dates are never
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
@@ -249,8 +255,11 @@ step exists for future protocol changes.
   Shenzhen line provider that DHLink relays, on China time: XZG's own tracker and DHLink's
   give its digits, and DHLink records its warehouse scans within seconds on its system
   clock, which is China's. DHLink's copies take DHLink's catalog zone, so XZG's scans stay
-  one with them whether a reply has them or not, whatever zone routing passes. A name
-  added here moves its stored scans (see Limitations).
+  one with them whether a reply has them or not, whatever zone routing passes. So was
+  "SPL", Saudi Post, on Riyadh time: its own tracker dates an origin post's scans and an
+  EMS partner's abroad on their own place's clock ([Saudi Post](../../carriers/saudi-post/README.md)),
+  so a location in another country, or a copy at the same place (above), dates them
+  instead. A name added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
@@ -332,16 +341,24 @@ step exists for future protocol changes.
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
-- Brand zones: a bare brand does not say which network scanned. The DPD, GLS and Hermes
+- Brand zones: a bare brand does not say which network scanned. The GLS and Hermes
   carriers in the catalog all keep Central European time, which step 4 checks for each
-  scan, DST changes included. A brand with a UTC carrier (DHL, through DHL eCommerce) gets
-  no zone. A location that names no single-clock country ("Toronto, ON", "Chicago, US")
-  can be one of the brand's networks outside the catalog, so step 4 skips any scan with
-  a location. A location-less scan from such a network (a UK depot shown only as "DPD
-  Group") would still be read as Central European time.
-- Brand zones follow the catalog. A new DPD, GLS or Hermes carrier, or a changed
-  `timezone`, on another clock turns step 4 off for that brand and moves its stored scans,
-  and so their event ids (see Limitations).
+  scan, DST changes included. DPD's do not (DPD UK's, Ireland's, Portugal's and South
+  Africa's). A "DPD Group" scan takes the zone of the DPD network whose depot range the
+  number asked, or a number ParcelsApp names next for the parcel (`next_tracking_ids`),
+  falls in, when the destination and, if DPD has a network there, the origin keep the
+  same clock. A line carrier's parcel from China that DPD Switzerland delivers names DPD
+  Switzerland's number next, and its "DPD Group" scan has the digits DPD Switzerland's
+  own tracker dates "+02:00". Otherwise the scan stays as labeled unless routing passes a
+  zone. A brand with a UTC carrier (DHL, through DHL eCommerce) gets no zone. A location
+  that names no single-clock country ("Toronto, ON", "Chicago, US") can be one of the
+  brand's networks outside the catalog, so step 4 skips any scan with a location. A
+  location-less GLS or Hermes scan from such a network would still be read as Central
+  European time.
+- Brand zones follow the catalog. A new GLS or Hermes carrier, or a changed `timezone`, on
+  another clock turns step 4's shared zone off for that brand, and a new DPD network or
+  depot range changes which parcels it dates. Either moves stored scans, and so their
+  event ids (see Limitations).
   `hints.test.ts` pins the current zone sets so the change cannot pass unnoticed.
 - The rendered page prints the same UTC digits (`dd LLL yyyy HH:mm`) and names each
   scan's carrier under its wording (`.event-content .carrier`), so it goes through the
@@ -350,7 +367,8 @@ step exists for future protocol changes.
   wall-clock carrier's scan there has no place to be read in and no placed scan to copy or
   borrow from, so routing's zone, a guess, dates it, else its known clock, else its label,
   and its UTC digits carry no offset for GOFO France's copies to take. The page names no
-  destination, so only an EcoScooting reference gives one there. The server's
+  destination, so only an EcoScooting reference gives one there, and a "DPD Group" scan
+  takes no clock from DPD's networks (step 4). The server's
   timezone is never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
   is counted the same way.
 - An acceptance by one carrier after another already moved the parcel (in transit or in

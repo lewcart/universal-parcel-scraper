@@ -16,6 +16,10 @@ import { isYunExpressNotice, yunExpressCodeStatus, yunExpressStatus } from './st
 
 const API = 'https://services.yuntrack.com/Track/Query';
 const MAX_BYTES = 1_000_000;
+// A partner's line can carry its tracking page's markup, such as a link holding the parcel's
+// number around "CARD LEFT". The scan keeps the link's text, never the tag or its address.
+const MARKUP = /<\/?(?:a|b|i|u|em|strong|span|font|br|p|div)\b[^<>]{0,1000}>/gi;
+const withoutMarkup = (text: string) => text.replace(MARKUP, ' ');
 
 export function normalizeYunExpressNumber(raw: string): string {
   const number = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -100,8 +104,8 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
       const isLast = (split: { fullDescription: string; fullLocation: string }) => rawTime === last.ProcessDate
         && split.fullDescription === clean(last.ProcessContent, MAX_BYTES) && split.fullLocation === clean(last.ProcessLocation, MAX_BYTES);
       const { fullDescription, fullLocation } = (events.length === 0 ? splits.find(isLast) : undefined) ?? splits[0]!;
-      const description = clean(fullDescription, 500);
-      const location = /^-+$/.test(fullLocation) ? '' : clean(fullLocation, 200);
+      const description = clean(withoutMarkup(fullDescription), 500);
+      const location = /^-+$/.test(fullLocation) ? '' : clean(withoutMarkup(fullLocation), 200);
       // The portal can list an older row with a place but no wording. It names
       // no status, so it is skipped; the newest row must still say something.
       if (!description && events.length) continue;

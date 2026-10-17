@@ -117,6 +117,15 @@ describe('YunExpress captured response projection', () => {
     expect(result.events?.some((event) => !event.description)).toBe(false);
   });
 
+  it("keeps a partner link's text and drops its markup and the number it holds", () => {
+    const payload = fixture();
+    const rows = payload.ResultList[0].TrackData.ProcessGroupList.flatMap((group: { ProcessDetailList: unknown[] }) => group.ProcessDetailList);
+    rows[3].ProcessContent = "1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CP000000000001'>CARD LEFT</a></b>----Example facility";
+    const event = parse(payload, NUMBER).events?.[3];
+    expect(event).toMatchObject({ description: '1 item has been transferred to Example (synthville) CARD LEFT', location: 'Example facility' });
+    expect(JSON.stringify(event)).not.toMatch(/CP000000000001|href|</);
+  });
+
   it('keeps a dash given as the place out of a relayed line, newest or older', () => {
     const payload = fixture();
     const item = payload.ResultList[0];

@@ -66,6 +66,7 @@ import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
+import { statusMap as delnext } from '../../carriers/delnext/status.js';
 import { statusMap as deppon } from '../../carriers/deppon/status.js';
 import { statusMap as dhlExpress } from '../../carriers/dhl-express/status.js';
 import { statusMap as dhlFreight } from '../../carriers/dhl-freight/status.js';
@@ -261,9 +262,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, coordinadora,
   'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'dai-post': daiPost,
-  dao, 'day-ross': dayRoss, dellin, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-be': dpdBe, 'dpd-de': dpdDe,
-  'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, dsv, dynalogic, 'early-bird': earlyBird, econt,
-  'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
+  dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-be': dpdBe,
+  'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, dsv, dynalogic, 'early-bird': earlyBird,
+  econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, estes,
   'express-one': expressOne, 'fan-courier': fanCourier, 'flash-express': flashExpress, 'flash-express-ph': flashExpressPh,
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,

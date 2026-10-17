@@ -31,7 +31,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -50,7 +50,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -92,7 +92,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -111,7 +111,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -130,7 +130,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -149,7 +149,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -168,7 +168,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -191,7 +191,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -210,7 +210,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -229,7 +229,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -248,13 +248,260 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
       "note": "Looked up on Delnext's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "V36XII",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-atraso-e-inconsistencias-na-entrega-de-encomenda-158073926",
+        "date": "2026-07-02",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a delayed Delnext delivery gives it as the parcel's code."
+    },
+    {
+      "number": "FWN6EB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-atraso-encomenda-2-153483926",
+        "date": "2026-04-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a delayed Delnext delivery gives it as the tracking code."
+    },
+    {
+      "number": "T3LUTM",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-atraso-na-entrega-18-156021926",
+        "date": "2026-05-27",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a late Delnext delivery names the parcel by it."
+    },
+    {
+      "number": "6M0ZVZ",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-atraso-na-entrega-de-encomenda-e-falta-de-resposta-ao-cliente-1-157995626",
+        "date": "2026-07-01",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext delivery gives it as the code in Delnext's text messages, beside the sender's order number."
+    },
+    {
+      "number": "RX11M7",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-burla-fuga-aos-impostos-e-talvez-lavagem-de-dinheiro-com-a-encomenda-rx11m7-148874426",
+        "date": "2026-01-22",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The title of a Portal da Queixa complaint about a Delnext delivery gives it as the parcel's code."
+    },
+    {
+      "number": "3M0MI9",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-devolucao-encomenda-149608026",
+        "date": "2026-02-03",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext return gives it as the parcel number."
+    },
+    {
+      "number": "URE6VI",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-encomenda-dada-como-entregue-mas-nao-recebida-151815026",
+        "date": "2026-03-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a parcel Delnext reported delivered gives it as the tracking code."
+    },
+    {
+      "number": "RB1NNX",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-entrega-nao-realizada-9-151787526",
+        "date": "2026-03-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext delivery that was not made gives it as the parcel's code."
+    },
+    {
+      "number": "YYXWE0",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-ignoram-cliente-zero-apoio-telefones-inexistentes-e-encomenda-sem-previsao-150200426",
+        "date": "2026-02-11",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext delivery links Delnext's tracker for it."
+    },
+    {
+      "number": "WX6Z9T",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-no-envian-mi-paquete-se-lo-han-quedado-150401526",
+        "date": "2026-02-15",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint in Spanish about a parcel sent with Delnext gives it as the tracking number."
+    },
+    {
+      "number": "JNXMP9",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-quero-saber-o-que-se-passou-155761426",
+        "date": "2026-05-22",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext delivery gives it as the tracking code."
+    },
+    {
+      "number": "ENL7U3",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-reclamacao-e-devolucao-do-valor-pago-155270526",
+        "date": "2026-05-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a shipment booked with Delnext gives it as the parcel's number."
+    },
+    {
+      "number": "7M1617",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://portaldaqueixa.com/brands/delnext/complaints/delnext-transportadora-148164426",
+        "date": "2026-01-13",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Portal da Queixa complaint about a Delnext delivery gives it as the tracking code."
     }
   ]
 }

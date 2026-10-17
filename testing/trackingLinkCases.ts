@@ -959,6 +959,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'flash-express-ph', number: 'P9999000000Z',
     route: /^https:\/\/www\.flashexpress\.ph\/fle\/tracking\?se=P9999000000Z$/,
     marker: /No information found for this tracking number|未查到此运单信息/, renderTimeoutMs: 20_000 },
+  // The server answers an unknown code with its empty search page, which clears the code; a known
+  // one first gets a script that adds `reloaded` to the address.
+  { carrier: 'delnext', number: 'ZZ0000',
+    route: /^https:\/\/www\.delnext\.com\/PT\/track_your_parcel\?tracking_code=ZZ0000(?:&reloaded=PT)?$/,
+    marker: /Acompanhe a entrega da sua encomenda/,
+    forwarding: { notFound: /Acompanhe a entrega da sua encomenda/ } },
 ];
 
 /**

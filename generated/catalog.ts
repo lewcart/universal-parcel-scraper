@@ -9194,7 +9194,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "delnext",
+      "recognitionRank": 889,
+      "localClocks": true
     },
     "canaryUrl": "https://www.delnext.com/PT/track_your_parcel",
     "trackingUrlTemplate": "https://www.delnext.com/PT/track_your_parcel?tracking_code={trackingNumber}",

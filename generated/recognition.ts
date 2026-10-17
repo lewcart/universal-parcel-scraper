@@ -60,6 +60,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dao": 515,
   "day-ross": 38,
   "delhivery": 600,
+  "delnext": 889,
   "dhl": 999,
   "dhl-ecommerce": 670,
   "dhl-ecommerce-es": 630,

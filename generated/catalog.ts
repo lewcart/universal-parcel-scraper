@@ -8105,6 +8105,28 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "codexpress": {
+    "displayName": "CODExpress",
+    "color": "#292d42",
+    "aliases": [
+      "COD Express",
+      "CODEX",
+      "COD Express Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://cbd-tracking.locate2u.com/",
+    "trackingSearchUrl": "https://cbd-tracking.locate2u.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "coordinadora": {
     "displayName": "Coordinadora",
     "color": "#0b63ad",
@@ -9256,6 +9278,23 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "designer-transport": {
+    "displayName": "Designer Transport",
+    "color": "#000000",
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.designertransport.com.au/",
+    "trackingSearchUrl": "https://track.designertransport.com.au/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "dhl-ecommerce-es": {
     "displayName": "DHL eCommerce Iberia",
     "color": "#ffcc00",
@@ -9570,6 +9609,24 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "direct-couriers": {
+    "displayName": "Direct Couriers",
+    "color": "#f2852d",
+    "countries": [
+      "AU",
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://appsrv.directcouriers.com.au/online/jobtrackgen.cl",
+    "trackingSearchUrl": "https://appsrv.directcouriers.com.au/online/jobtrackgen.cl",
+    "linkRules": [],
+    "detectionRules": []
   },
   "direct-freight-express": {
     "displayName": "Direct Freight Express",
@@ -11200,6 +11257,59 @@ export const CARRIER_CATALOG = {
         "params": [
           "barcode",
           "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "ewe": {
+    "displayName": "EWE Group",
+    "color": "#f3e127",
+    "aliases": [
+      "EWE",
+      "EWE Global Express",
+      "EWE Logistics"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.ewe.com.au/pages/tracking-order",
+    "trackingUrlTemplate": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",
+    "trackingSearchUrl": "https://www.ewe.com.au/pages/tracking-order",
+    "linkRules": [
+      {
+        "domains": [
+          "www.ewe.com.au",
+          "ewe.com.au"
+        ],
+        "pathPattern": "^/pages/tracking-order/?$",
+        "params": [
+          "cno"
+        ]
+      },
+      {
+        "domains": [
+          "www.ewe.com.au",
+          "ewe.com.au"
+        ],
+        "pathPattern": "^/html/track\\.html$",
+        "params": [
+          "cno"
+        ]
+      },
+      {
+        "domains": [
+          "trace.ewe.com.au"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "no"
         ]
       }
     ],
@@ -13167,6 +13277,27 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://intranet.hispapost.es/tracking",
     "trackingSearchUrl": "https://intranet.hispapost.es/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "homexpress": {
+    "displayName": "HOMEXPRESS",
+    "color": "#ff9800",
+    "aliases": [
+      "HomeExpress",
+      "Home Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.homexpress.com.au/",
+    "trackingSearchUrl": "https://www.homexpress.com.au/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -19207,6 +19338,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "postmedia-parcel-services": {
+    "displayName": "Postmedia Parcel Services",
+    "color": "#ffd100",
+    "aliases": [
+      "BNI",
+      "BNICA",
+      "Brunswick News",
+      "Brunswick News Inc."
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://postmediaparcelservices.com/",
+    "trackingSearchUrl": "https://postmediaparcelservices.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "postmediaparcelservices.com",
+          "www.postmediaparcelservices.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "bniTrackingID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "posturinn": {
     "displayName": "Pósturinn",
     "color": "#ff0000",
@@ -19277,6 +19442,44 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{11}$",
         "confidence": "low"
+      }
+    ]
+  },
+  "precision-deliveries": {
+    "displayName": "Precision Deliveries",
+    "color": "#0000fe",
+    "aliases": [
+      "Precision Parcel and Package Deliveries",
+      "Precision Parcel & Package Deliveries",
+      "Precision Parcel Deliveries",
+      "Precision Parcel",
+      "ASL Distribution",
+      "ASL Distribution Services"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.precisiondeliveries.com/",
+    "trackingUrlTemplate": "https://track.precisiondeliveries.com/{trackingNumber}",
+    "trackingSearchUrl": "https://track.precisiondeliveries.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.precisiondeliveries.com"
+        ],
+        "path": "^/([A-Z]{3}\\d[0-9A-Z]{9,})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ASL\\d{10}$",
+        "confidence": "high"
       }
     ]
   },
@@ -22665,6 +22868,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "transport-rdl": {
+    "displayName": "Transport RDL",
+    "color": "#0a2240",
+    "aliases": [
+      "RDL",
+      "Transport Rivière-du-Loup"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://transportrdl.com/suivre-un-colis/",
+    "trackingUrlTemplate": "https://transportrdl.com/suivre-un-colis/?tracking-number={trackingNumber}",
+    "trackingSearchUrl": "https://transportrdl.com/suivre-un-colis/",
+    "linkRules": [
+      {
+        "domains": [
+          "transportrdl.com",
+          "www.transportrdl.com"
+        ],
+        "pathPattern": "^/suivre-un-colis/?$",
+        "params": [
+          "tracking-number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "trendyol-express": {
     "displayName": "Trendyol Express",
     "color": "#f16623",
@@ -24354,6 +24590,7 @@ export const CARRIER_IDS = [
   "cj-logistics",
   "cj-packet",
   "cne",
+  "codexpress",
   "coordinadora",
   "corre",
   "correo-argentino",
@@ -24385,6 +24622,7 @@ export const CARRIER_IDS = [
   "delnext",
   "deppon",
   "deprisa",
+  "designer-transport",
   "dhl-ecommerce-es",
   "dhl-ecommerce-nl",
   "dhl-ecommerce-pl",
@@ -24392,6 +24630,7 @@ export const CARRIER_IDS = [
   "dhl-express",
   "dhl-freight",
   "dhlink",
+  "direct-couriers",
   "direct-freight-express",
   "direx",
   "dohrn-transfer",
@@ -24433,6 +24672,7 @@ export const CARRIER_IDS = [
   "europochta",
   "evri-uk",
   "evropat",
+  "ewe",
   "exline-kz",
   "express-one",
   "fan-courier",
@@ -24485,6 +24725,7 @@ export const CARRIER_IDS = [
   "hermes-at",
   "hi-trans",
   "hispapost",
+  "homexpress",
   "horoz",
   "hp-mostar",
   "hr-parcel",
@@ -24640,8 +24881,10 @@ export const CARRIER_IDS = [
   "posta-srbije",
   "postaplus",
   "postex",
+  "postmedia-parcel-services",
   "posturinn",
   "ppl",
+  "precision-deliveries",
   "professional-couriers",
   "prompt-xpress",
   "pronto-lanka",
@@ -24729,6 +24972,7 @@ export const CARRIER_IDS = [
   "trackon",
   "tracx-logis",
   "trans-o-flex",
+  "transport-rdl",
   "trendyol-express",
   "tsjy",
   "tst-cf-express",
@@ -24959,6 +25203,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cj-logistics": [],
   "cj-packet": ["cj-packet-1"],
   "cne": ["cne-1"],
+  "codexpress": [],
   "coordinadora": [],
   "corre": [],
   "correo-argentino": [],
@@ -24990,6 +25235,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "delnext": [],
   "deppon": [],
   "deprisa": [],
+  "designer-transport": [],
   "dhl-ecommerce-es": ["dhl-ecommerce-es-1","dhl-ecommerce-es-2"],
   "dhl-ecommerce-nl": ["dhl-ecommerce-nl-1","dhl-ecommerce-nl-2","dhl-ecommerce-nl-3"],
   "dhl-ecommerce-pl": ["dhl-ecommerce-pl-1"],
@@ -24997,6 +25243,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label"],
   "dhl-freight": ["dhl-freight-2"],
   "dhlink": ["dhlink-1","dhlink-xzg"],
+  "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
   "dohrn-transfer": [],
@@ -25038,6 +25285,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "europochta": ["europochta-1"],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
   "evropat": [],
+  "ewe": [],
   "exline-kz": [],
   "express-one": [],
   "fan-courier": [],
@@ -25090,6 +25338,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hermes-at": [],
   "hi-trans": [],
   "hispapost": [],
+  "homexpress": [],
   "horoz": [],
   "hp-mostar": [],
   "hr-parcel": [],
@@ -25245,8 +25494,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posta-srbije": ["posta-srbije-s10"],
   "postaplus": [],
   "postex": [],
+  "postmedia-parcel-services": [],
   "posturinn": [],
   "ppl": ["ppl-1"],
+  "precision-deliveries": ["precision-deliveries-1"],
   "professional-couriers": [],
   "prompt-xpress": ["prompt-xpress-1"],
   "pronto-lanka": [],
@@ -25334,6 +25585,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],
+  "transport-rdl": [],
   "trendyol-express": [],
   "tsjy": ["tsjy-1"],
   "tst-cf-express": [],

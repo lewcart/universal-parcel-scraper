@@ -1,0 +1,8 @@
+{
+  "carrier": "ewe",
+  "entries": [
+    {"code": "create_order", "wording": "Order created by BNE1 to be collected", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "EWE has the order and waits to collect the parcel; BNE1 names the Brisbane depot, so the wording changes with the depot."},
+    {"code": "collect_order", "wording": "Parcel arrived at warehouse BNEDC-1. We will deliver within 3 working days", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "First scan in EWE's Brisbane warehouse; the warehouse name changes with the site."},
+    {"code": "sign_image", "wording": "Your parcel has been delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Delivery with a proof-of-delivery photo."}
+  ]
+}

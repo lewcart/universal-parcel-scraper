@@ -55163,6 +55163,12 @@
     ]
   },
   {
+    "input": "AMZ0001085019",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "AMZB664764467tx",
     "carrier": "total-express",
     "confidence": "high",
@@ -55349,6 +55355,22 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "ASL0055543060",
+    "carrier": "precision-deliveries",
+    "confidence": "high",
+    "candidates": [
+      "precision-deliveries"
+    ]
+  },
+  {
+    "input": "ASL0058308233",
+    "carrier": "precision-deliveries",
+    "confidence": "high",
+    "candidates": [
+      "precision-deliveries"
+    ]
   },
   {
     "input": "AT0000000001",
@@ -60235,6 +60257,12 @@
     ]
   },
   {
+    "input": "E961065432E",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "EA003204665TN",
     "carrier": "intl-post",
     "confidence": "high",
@@ -61623,6 +61651,12 @@
     "candidates": [
       "india-post"
     ]
+  },
+  {
+    "input": "EMC00001245313",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "EMSPRI0268635021",
@@ -71460,6 +71494,12 @@
     "candidates": [
       "correos-spain"
     ]
+  },
+  {
+    "input": "PRE260619CZGQ1",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "PRO18216642",

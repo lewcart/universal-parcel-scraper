@@ -1033,6 +1033,24 @@
     "reason": "Ten digits starting with 91 are printed by DHL Express and other carriers, and some Evropat numbers pass the DHL Express check, so the shape cannot name Evropat."
   },
   {
+    "carrier": "ewe",
+    "pattern": "^AMZ\\d{10}$",
+    "kind": "by_design",
+    "reason": "One archived EWE reply shows AMZ and ten digits; a single sample is too thin to claim a prefix that names Amazon, not EWE, and HOMEXPRESS runs the same tracking software."
+  },
+  {
+    "carrier": "ewe",
+    "pattern": "^EMC\\d{11}$",
+    "kind": "by_design",
+    "reason": "One archived lookup on EWE's tracker has this layout; a single sample is too thin to claim it."
+  },
+  {
+    "carrier": "ewe",
+    "pattern": "^E\\d{9}E$",
+    "kind": "by_design",
+    "reason": "One number from EWE's older tracker has this layout; a single sample is too thin to claim it."
+  },
+  {
     "carrier": "exline-kz",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -2307,6 +2325,12 @@
     "pattern": "^\\d{14}$",
     "kind": "by_design",
     "reason": "A DPD parcel number that PostNord delivered. The shape is DPD's; PostNord's tracker also knows the parcel it delivers."
+  },
+  {
+    "carrier": "precision-deliveries",
+    "pattern": "^PRE\\d{6}[0-9A-Z]{5}$",
+    "kind": "by_design",
+    "reason": "One archived reply of Precision's tracking API shows PRE, six digits and five letters or digits; a single sample is too thin to claim it."
   },
   {
     "carrier": "professional-couriers",

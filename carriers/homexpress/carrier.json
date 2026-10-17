@@ -1,0 +1,34 @@
+{
+  "id": "homexpress",
+  "displayName": "HOMEXPRESS",
+  "aliases": [
+    "HomeExpress",
+    "Home Express"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#ff9800"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.homexpress.com.au/",
+    "canaryUrl": "https://www.homexpress.com.au/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

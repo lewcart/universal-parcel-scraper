@@ -1,0 +1,47 @@
+{
+  "id": "postmedia-parcel-services",
+  "displayName": "Postmedia Parcel Services",
+  "aliases": [
+    "BNI",
+    "BNICA",
+    "Brunswick News",
+    "Brunswick News Inc."
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#ffd100"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://postmediaparcelservices.com/",
+    "canaryUrl": "https://postmediaparcelservices.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "postmediaparcelservices.com",
+        "www.postmediaparcelservices.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "bniTrackingID"
+      ]
+    }
+  ],
+  "detection": []
+}

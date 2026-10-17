@@ -25,6 +25,7 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'best-express-vn': 'www.best-inc.vn sends phone-sized screens to a tracking page that renders blank in automated browsers; the desktop page has the waybill field',
   'daylight-transport': 'the Track PRO # field sits in the desktop header of dylt.com, which the phone-size check does not show',
   dellin: 'the tracker answers automated browsers with a Qrator check (HTTP 401); in a regular browser it shows its order-number field',
+  'designer-transport': 'the tracker names its field search, which the check reads as a site search',
   dtdc: 'www.dtdc.com refuses connections from many networks outside India; an archived phone-size copy shows its number field',
   'emirates-post': 'emiratespost.ae answers 403 to many networks outside the UAE; an archived copy shows its number field',
   'hi-trans': 'www.hi-trans.com.au challenges automated browsers; in a regular browser its home page has the consignment number field',

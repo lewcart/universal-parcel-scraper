@@ -299,4 +299,11 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('drop2shop');
     }
   });
+
+  it('names Precision Deliveries for ASL and ten digits, its former name', () => {
+    expect(detectCarrierMatch('ASL0000000001')).toMatchObject({ carrier: 'precision-deliveries', confidence: 'high', candidates: ['precision-deliveries'] });
+    for (const number of ['ASL000000001', 'ASL00000000001', 'ASM0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('precision-deliveries');
+    }
+  });
 });

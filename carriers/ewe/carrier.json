@@ -1,0 +1,66 @@
+{
+  "id": "ewe",
+  "displayName": "EWE Group",
+  "aliases": [
+    "EWE",
+    "EWE Global Express",
+    "EWE Logistics"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#f3e127"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",
+    "searchUrl": "https://www.ewe.com.au/pages/tracking-order",
+    "canaryUrl": "https://www.ewe.com.au/pages/tracking-order",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.ewe.com.au",
+        "ewe.com.au"
+      ],
+      "pathPattern": "^/pages/tracking-order/?$",
+      "params": [
+        "cno"
+      ]
+    },
+    {
+      "domains": [
+        "www.ewe.com.au",
+        "ewe.com.au"
+      ],
+      "pathPattern": "^/html/track\\.html$",
+      "params": [
+        "cno"
+      ]
+    },
+    {
+      "domains": [
+        "trace.ewe.com.au"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "no"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,11 @@
+{
+  "carrier": "precision-deliveries",
+  "entries": [
+    {"code": "1", "wording": "Manifest Scan", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The shipper's manifest has reached Precision; the parcel is not yet scanned."},
+    {"code": "1", "wording": "Analyse du Manifeste", "stage": "registered", "language": "fr", "confirmedBy": "portal", "note": "French wording of Manifest Scan."},
+    {"code": "X4NS1", "wording": "Received at Terminal", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "First physical scan at a Precision terminal; Amazon inbound parcels show the code AMZ_INBOUND_X4_NS with the same wording."},
+    {"code": "AMZ_INBOUND_X4_NS", "wording": "Reçu au Terminal", "stage": "accepted", "language": "fr", "confirmedBy": "portal", "note": "French wording of Received at Terminal."},
+    {"code": "AMNS1", "wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"code": "D1NS2", "wording": "Delivered - Mailroom/Mailbox", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Delivered to the building's mailroom or mailbox."}
+  ]
+}

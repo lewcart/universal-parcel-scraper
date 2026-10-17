@@ -1,0 +1,52 @@
+{
+  "id": "precision-deliveries",
+  "displayName": "Precision Deliveries",
+  "aliases": [
+    "Precision Parcel and Package Deliveries",
+    "Precision Parcel & Package Deliveries",
+    "Precision Parcel Deliveries",
+    "Precision Parcel",
+    "ASL Distribution",
+    "ASL Distribution Services"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#0000fe"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.precisiondeliveries.com/{trackingNumber}",
+    "searchUrl": "https://track.precisiondeliveries.com/",
+    "canaryUrl": "https://track.precisiondeliveries.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.precisiondeliveries.com"
+      ],
+      "path": "^/([A-Z]{3}\\d[0-9A-Z]{9,})/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "precision-deliveries-1",
+      "pattern": "^ASL\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

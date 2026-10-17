@@ -49,10 +49,16 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
     throw new NotFoundError('Landmark Global');
   }
   const canonical = identities.length === 1 ? clean(identities.next('div').text(), 64) : '';
-  // A merchant reference must be the parcel's order or package reference; its LTN then names the parcel.
+  // The partner's page link carries its number, or a form field does.
+  const partner = $('.delivery-details-col h6').filter((_, node) => clean($(node).text()) === 'Delivery Partner').next('div');
+  const links = partner.find('a.track');
+  const inputs = partner.find('input[name="id"]');
+  const partnerNumber = partner.length !== 1 ? '' : clean(links.length === 1 ? links.text() : inputs.length === 1 ? inputs.val() : '', 64).toUpperCase();
+  // A merchant reference must be the parcel's order or package reference, or its delivery
+  // partner's number; its LTN then names the parcel.
   const references = $('.shipment-details-col h6').filter((_, node) => ['Order Reference', 'Package Reference'].includes(clean($(node).text())))
     .map((_, node) => returnedTrackingNumber($(node).next('div').text())).get();
-  if (identities.length !== 1 || (merchant ? !/^LTN\d{8,9}$/.test(canonical) || !references.includes(number)
+  if (identities.length !== 1 || (merchant ? !/^LTN\d{8,9}$/.test(canonical) || !(references.includes(number) || partnerNumber === number)
     : canonical !== number.replace(/N1$/, ''))) throw new SchemaError('Landmark Global', 'Landmark returned a different or ambiguous parcel');
   if (tables.length !== 1 || tables.find('thead th').map((_, node) => clean($(node).text())).get().join('|') !== 'Description|Date/Time|Location') throw new SchemaError('Landmark Global');
   const rows = tables.find('tbody > tr');
@@ -84,11 +90,6 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
   // A parcel sent back travels under a new reference; its own history stops before that.
   const returned = heading.find('a').length > 0 && clean(summary.find('h2').text()) === 'Returned';
   const current = returned ? { status: 'exception' as const, stage: 'returned' as const } : currentStatus(clean(firstCells.eq(0).text(), 500));
-  // The partner's page link carries its number, or a form field does.
-  const partner = $('.delivery-details-col h6').filter((_, node) => clean($(node).text()) === 'Delivery Partner').next('div');
-  const links = partner.find('a.track');
-  const inputs = partner.find('input[name="id"]');
-  const partnerNumber = partner.length !== 1 ? '' : clean(links.length === 1 ? links.text() : inputs.length === 1 ? inputs.val() : '', 64).toUpperCase();
   const partnerName = clean(partner.clone().find('form').remove().end().text(), 100);
   const partnerCarrier = carrierIdFromPartner(partnerName, clean(partner.find('form').attr('action'), 500));
   // Only the country of the ship-to place is read; the town is the recipient's.

@@ -10,7 +10,8 @@ and its tracker now sends visitors to Landmark's, so those names count as Landma
 
 One bounded GET retrieves the complete server-rendered event table. The canonical parcel
 identity must match. A merchant reference must be the parcel's order or package reference,
-and the parcel's LTN becomes `canonical_tracking_number`. It needs at least eight
+or its delivery partner's number, which other carriers hand over, and the parcel's LTN
+becomes `canonical_tracking_number`. It needs at least eight
 letters and digits, one of them a digit: the page searches every merchant, so a shorter
 value could be another merchant's order reference. Detection leaves merchant references out, since nothing in
 them is Landmark's own. The latest summary must agree with the first scan: its clock

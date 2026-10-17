@@ -60,6 +60,10 @@ describe('Landmark Global history', () => {
     expect(JSON.stringify(byOrder)).not.toMatch(/SHOP|PRIVATE/);
     const pack = load(fixture()); pack('.shipment-details-col').append('<h6>Package Reference</h6><div class="text-truncate">PK000000002</div>');
     expect(parseLandmark(pack.html(), 'PK000000002')).toMatchObject({ canonical_tracking_number: 'LTN00000001' });
+    // The page also finds a parcel by its delivery partner's number, which another carrier hands over.
+    const byPartner = parseLandmark(fixture(), 'AA000000005AU');
+    expect(byPartner).toMatchObject({ status: 'delivered', canonical_tracking_number: 'LTN00000001' });
+    expect(byPartner).not.toHaveProperty('delivery_tracking_number');
     const elsewhere = load(pack.html()); elsewhere('.shipment-details-col h6').last().text('Customer Reference');
     const alias = load(pack.html()); alias('.delivery-details-col h6').last().next('div').text('LTN00000001N1');
     const duplicate = load(pack.html()); duplicate('.delivery-details-col').append('<h6>Landmark Tracking Number</h6><div>LTN00000002</div>');

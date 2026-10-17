@@ -9612,7 +9612,7 @@ export const CARRIER_CATALOG = {
   },
   "direct-couriers": {
     "displayName": "Direct Couriers",
-    "color": "#f2852d",
+    "color": "#f3852e",
     "countries": [
       "AU",
       "NZ"
@@ -11291,7 +11291,7 @@ export const CARRIER_CATALOG = {
   },
   "ewe": {
     "displayName": "EWE Group",
-    "color": "#f3e127",
+    "color": "#0036a9",
     "aliases": [
       "EWE",
       "EWE Global Express",
@@ -13309,7 +13309,7 @@ export const CARRIER_CATALOG = {
   },
   "homexpress": {
     "displayName": "HOMEXPRESS",
-    "color": "#ff9800",
+    "color": "#ffcd00",
     "aliases": [
       "HomeExpress",
       "Home Express"

@@ -68,6 +68,8 @@ const EVENT_STATUS: Record<string, ClassifiedStatus> = {
   'L03D320R': { status: 'exception', stage: 'returned' },
   // The sender left the parcel in a Citypaq locker; Correos admits it later.
   'A170000V': { status: 'pending', stage: 'registered' },
+  // Collected from the address a pickup request gave, before admission.
+  'HI10002V': { status: 'in_transit', stage: 'accepted' },
   // Observed live on public certified letters in the number corpus.
   'E000001V': { status: 'in_transit', stage: 'customs' },
   'E040990V': { status: 'in_transit', stage: 'customs' },
@@ -78,6 +80,16 @@ const EVENT_STATUS: Record<string, ClassifiedStatus> = {
   'L031070R': { status: 'exception', stage: 'returned' },
   'L03D240R': { status: 'exception', stage: 'returned' },
 };
+
+// Codes the English reply leaves without a summary, worded from the Spanish one.
+const ENGLISH_SUMMARY: Readonly<Record<string, string>> = {
+  'HI10002V': 'Shipment collected',
+};
+
+/** The English summary of a code the localizador gives none in English. */
+export function correosSpainEnglishSummary(code: string): string {
+  return ENGLISH_SUMMARY[code] ?? '';
+}
 
 /** The stage and status for a Correos `codEvento`, or undefined when unmapped. */
 export function classifyCorreosSpainStatus(code: string): ClassifiedStatus | undefined {

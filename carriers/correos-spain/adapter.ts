@@ -7,7 +7,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { zonedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { classifyCorreosSpainStatus } from './status.js';
+import { classifyCorreosSpainStatus, correosSpainEnglishSummary } from './status.js';
 
 // Protocol provenance:
 // - Prior art (structure + vocabulary, verified independently below, MIT):
@@ -145,7 +145,7 @@ function parseTracking(payload: unknown, trackingNumber: string, expeditionCode?
   (Array.isArray(rawEvents) ? rawEvents : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const code = clean(rawEvent.codEvento, 32).toLocaleUpperCase('en-US');
     // desTextoResumen is worded in the language codIdioma names.
-    const description = clean(rawEvent.desTextoResumen, 500) || code;
+    const description = clean(rawEvent.desTextoResumen, 500) || correosSpainEnglishSummary(code) || code;
     const time = parsedTime(rawEvent.fecEvento, rawEvent.horEvento);
     if (!time || !description) return;
     const identity = `${time.iso}\u0000${description}\u0000${code}`;

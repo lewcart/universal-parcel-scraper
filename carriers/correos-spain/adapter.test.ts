@@ -185,6 +185,13 @@ describe('Correos Spain response parsing', () => {
     expect(result.events?.map((item) => item.description)).toEqual(['Entregado', 'I01H210V']);
   });
 
+  it('words a collection the English reply leaves without a summary', () => {
+    const result = parseCorreosSpainTrackingResponse([envelope({
+      eventos: [event('A090000V', '28/04/2026', '09:00:00', 'Pre-registered'), event('HI10002V', '28/04/2026', '13:00:00', '')],
+    })], TRACKING_NUMBER);
+    expect(result.events?.[0]).toMatchObject({ description: 'Shipment collected', provider_code: 'HI10002V', stage: 'accepted' });
+  });
+
   it('retains weight and parcel data, never the customer name or raw keys', () => {
     const result = parseCorreosSpainTrackingResponse([envelope()], TRACKING_NUMBER);
     expect(result.receiver_name).toBeUndefined();

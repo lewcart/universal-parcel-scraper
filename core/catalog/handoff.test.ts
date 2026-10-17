@@ -197,6 +197,27 @@ describe('delivery partners with an optional input', () => {
   });
 });
 
+describe('delivery partners that look up only their own references', () => {
+  it('asks Poste Italiane about its own numbers and the partner plates it takes over, not an S10 item from abroad', async () => {
+    // DHL names Poste Italiane for parcels bound for Italy, under DHL's own postal number.
+    expect(deliveryHandoff('dhl', 'LF123456785DE', { destination_country: 'IT', delivery_carrier: 'poste-italiane' })).toBeNull();
+    expect(hasDirectHandoffAdapter('poste-italiane', 'LF123456785DE')).toBe(false);
+    const plate = 'JJD000000000000000000001';
+    expect(deliveryHandoff('ppl', plate, { destination_country: 'IT', delivery_carrier: 'poste-italiane' }))
+      .toEqual({ carrier: 'poste-italiane', number: plate, basis: 'partner' });
+    expect(hasDirectHandoffAdapter('poste-italiane', '990001A000001')).toBe(true);
+    // The check mirrors the adapter, which refuses the S10 item before any request.
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new Error('offline'));
+    vi.stubGlobal('fetch', fetcher);
+    const registry = new AdapterRegistry(REGISTRY, { fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const outcome = (number: string) => (async () => registry.for('poste-italiane')!.track({ number, postcode: null }, { budgetMs: 2_000 }))()
+      .then(() => null, (caught: unknown) => carrierErrorKind(caught));
+    expect(await outcome('LF123456785DE')).toBe('invalid_input');
+    for (const number of [plate, '990001A000001']) expect(await outcome(number)).not.toBe('invalid_input');
+    expect(fetcher).toHaveBeenCalled();
+  });
+});
+
 describe('a partner number another tracker also knows', () => {
   // Synthetic: an Evri barcode, and a number Paack gives a parcel from Evri International.
   const barcode = 'H000000000000001';

@@ -5,6 +5,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 import { carrierIdsFromPartnerLinks, nationalPostCandidate } from './hints.js';
 import { followsPartnerNumbers } from './partners.js';
 import { detectCarrierMatch, isValidS10TrackingNumber, supportsSwissPostHandoff } from '../detection/index.js';
+import { isPosteItalianePartnerPlate, isPosteItalianeTrackingNumber } from '../detection/posteItaliane.js';
 import { countryCode } from '../time/index.js';
 
 export interface DeliveryHandoff {
@@ -13,8 +14,15 @@ export interface DeliveryHandoff {
   basis: 'partner' | 'destination' | 'reference';
 }
 
+// Adapters that refuse every other reference before a request: asking them
+// about a partner's number only fails, however often the hand-off is retried.
+const REFERENCES_LOOKED_UP: Readonly<Record<string, (number: string) => boolean>> = {
+  'poste-italiane': (number) => isPosteItalianeTrackingNumber(number) || isPosteItalianePartnerPlate(number),
+};
+
 export function hasDirectHandoffAdapter(carrier: string, number: string): boolean {
   if (!AUTOMATIC_CARRIER_IDS.has(carrier) || carrierAdapter(carrier) === 'universal') return false;
+  if (REFERENCES_LOOKED_UP[carrier]?.(number) === false) return false;
   // Another carrier's inputs are never borrowed, so a required one rules the carrier out.
   if (requiredRequirements(carrier, number).length > 0) return false;
   // A carrier with only an optional input (DPD's postcode) looks parcels up by

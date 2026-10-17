@@ -1613,6 +1613,7 @@ export const CARRIER_CATALOG = {
       "ES",
       "PT",
       "FR",
+      "IT",
       "GB"
     ],
     "selectable": true,

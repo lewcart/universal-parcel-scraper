@@ -64,11 +64,14 @@ describe('classifyWording', () => {
       "We're sorry but we were unable to complete your delivery. Please continue to check your tracking for real time updates",
       'The driver tried to deliver the package, but the business was closed. We will reattempt up to 3 times. Contact us with any access or delivery instructions',
       'Business closed. Please provide hours',
+      // The card a missed round leaves, as YunExpress relays Australia Post's scan.
+      '1 item has been transferred to 0000 (example) card left', 'Card left - item held at post office', 'Carded',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'failed_attempt', source: 'wording:language' });
     // A scheduled attempt, a sender pickup attempt or a hypothetical absence is not a missed round.
     for (const wording of [
       'Attempted delivery tomorrow', 'Attempted delivery scheduled for tomorrow', 'Delivery will be attempted tomorrow',
       'Pickup attempted', 'Pickup attempted - business closed', 'Attempted pickup, customer not available',
+      'Pickup attempted - card left', 'Parcel discarded',
       'If you are not at home, the courier will leave the parcel with a neighbour',
       'If the recipient is not available, the parcel goes to the nearest pickup point',
     ]) expect(wordingStage(wording, 'pending')).not.toBe('failed_attempt');

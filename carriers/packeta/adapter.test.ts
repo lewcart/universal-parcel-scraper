@@ -87,6 +87,10 @@ describe('Packeta response parsing', () => {
       ['20', 'exception', 'returned'],
       ['998', 'exception', 'returned'],
       ['21', 'exception', 'returned'],
+      ['4', 'exception', 'exception'],
+      ['22', 'exception', 'exception'],
+      ['24', 'exception', 'returned'],
+      ['33', 'exception', 'exception'],
     ];
     for (const [code, status, stage] of cases) {
       expect(classifyPacketaStatus(code)).toEqual({ status, stage });

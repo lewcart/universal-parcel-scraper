@@ -23,7 +23,7 @@ import { packetaEventLinks, packetaEventText, type PacketaEventLink } from './te
 // - Shape reference: the prior-art payload samples (confirmed live 2026-08-19
 //   against real delivered parcels; values fictionalized there). The
 //   packetStatusId names come from the public tracking page's own script;
-//   only "3" (delivered), "5" and "21" (returns) are live-confirmed, the other
+//   only "3" (delivered), "4" (cancelled), "5" and "21" (returns) are live-confirmed, the other
 //   codes are reconstructed — an unmapped code is schema drift, never a guess.
 //   The maps live in status.ts.
 const TRACKING_ENDPOINT = 'https://tracking.packeta.com/api/getPacketById';

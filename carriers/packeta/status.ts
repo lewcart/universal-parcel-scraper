@@ -13,14 +13,17 @@
  * Provenance: derived from the prior-art client
  * https://github.com/ha-parcel-integrations/ha-packeta (MIT), and from the id
  * names the public tracking page's own script declares (read 2026-10-09).
- * `packetStatusId` "3" (delivered), "5" (returned to sender) and "21" are
- * live-confirmed; the other ids are reconstructed. The event sentences were
+ * `packetStatusId` "3" (delivered), "4" (cancelled), "5" (returned to sender)
+ * and "21" are live-confirmed; the other ids are reconstructed. The script also
+ * names SENT_BY_MAIL, TO_BE_SENT_BY_MAIL and PROBLEMATIC_CAPTURE, left unmapped
+ * because their names do not say where the parcel is. The event sentences were
  * confirmed live on 2026-08-19 against real delivered parcels (values
  * fictionalized in that project's fixtures); the return's sentence on 2026-10-09.
  */
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
 
 const RETURNED: ClassifiedStatus = { status: 'exception', stage: 'returned' };
+const EXCEPTION: ClassifiedStatus = { status: 'exception', stage: 'exception' };
 
 const PACKET_STATUS: Record<string, ClassifiedStatus> = {
   // TO_BE_PROCESSED
@@ -36,6 +39,8 @@ const PACKET_STATUS: Record<string, ClassifiedStatus> = {
   // ISSUED_AND_ACCOUNTED (live-confirmed delivered wording:
   // "The package has been delivered")
   '3': { status: 'delivered', stage: 'delivered' },
+  // CANCELLED
+  '4': EXCEPTION,
   // RETURNED_AND_ACCOUNTED (live wording "Returned to sender")
   '5': RETURNED,
   // RETURN
@@ -45,6 +50,12 @@ const PACKET_STATUS: Record<string, ClassifiedStatus> = {
   // Named LOST_OR_UNKNOWN in the page's script, but worded "Return (on the way
   // back)" live.
   '21': RETURNED,
+  // CLOSED_BY_PROTOCOL
+  '22': EXCEPTION,
+  // LONG_TERM_RETURN
+  '24': RETURNED,
+  // TO_BE_DISPOSED
+  '33': EXCEPTION,
 };
 
 const EVENT_TEXT_STAGES: Array<[substring: string, stage: Stage]> = [

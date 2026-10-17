@@ -153,6 +153,8 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^parcel received by relay[.!]?$|^received your parcel[.!]?$/i.test(value)) return 'accepted';
   // Relay's last notice, after its "Available for pickup": the recipient collected the parcel from the shop.
   if (/^collection complete[.!]?$/i.test(value)) return 'delivered';
+  // UPS's scan as the parcel leaves the origin country, as UPS's own map reads it. The shared rules read its "Import Scan".
+  if (/^export scan[.!]?$/i.test(value)) return 'in_transit';
   // A parcel at its local warehouse, after the central one; the promise of news that follows is no scan.
   if (/^the (?:package|parcel) is in the local warehouse(?:[.!]?$|\. we will come back with details about (?:the next steps|the delivery)[.!]?$)/i.test(value)) return 'in_transit';
   // Metropolitan Warehouse's furniture steps, as its own map reads them: the order, the vendor

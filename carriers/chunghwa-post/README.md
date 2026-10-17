@@ -16,6 +16,12 @@ wording, event codes and processing locations. Overseas and domestic facility cl
 their local time without invented offsets. Recipient, dispatch-bag and expanded remark fields
 are omitted. Only the server's explicit absence message for the requested item is not found.
 
+## Numbers
+
+Detection names Chunghwa Post for the EMS, parcel, registered and tracked-letter S10 items it
+issues: C, E, L or R first, TW last and a passing check digit. Its U-prefixed letter-post items
+stay with international mail, since its tracker does not read them.
+
 ## Limitations
 
 The direct path supports international EMS, parcel, registered and tracked-letter S10 items.

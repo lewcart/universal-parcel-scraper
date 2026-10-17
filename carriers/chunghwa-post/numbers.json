@@ -15,7 +15,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "chunghwa-post",
         "confidence": "high"
       },
       "note": "The README of an open-source Chunghwa Post tracker uses it as the example number for the international query."
@@ -91,7 +91,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "chunghwa-post",
         "confidence": "high"
       },
       "note": "A customer quotes it as their tracking number in a review on TrackingMore's Taiwan Post page."
@@ -110,7 +110,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "chunghwa-post",
         "confidence": "high"
       },
       "note": "ParcelPanel's Taiwan Post page offered it as a sample to try on 13 Oct 2026; it is not described as a live shipment."

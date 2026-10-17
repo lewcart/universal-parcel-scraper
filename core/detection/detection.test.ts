@@ -68,6 +68,21 @@ describe('Chronopost numbers with an S10 check digit', () => {
   });
 });
 
+describe('Taiwanese S10 items', () => {
+  it.each(['CP123456785TW', 'EE123456785TW', 'LX123456785TW', 'RR123456785TW'])('names Chunghwa Post, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chunghwa-post', confidence: 'high', candidates: ['chunghwa-post'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves letter-post items, which its tracker does not read, to international mail', () => {
+    expect(detectCarrierMatch('UH123456785TW')).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+  });
+
+  it('names nobody for a failed check digit', () => {
+    expect(detectCarrierMatch('LX123456780TW').candidates).not.toContain('chunghwa-post');
+  });
+});
+
 describe('normalization', () => {
   it('uppercases and strips the separators carriers print', () => {
     expect(normalizeTrackingNumber(' ra 123 456-789 ch ')).toBe('RA123456789CH');

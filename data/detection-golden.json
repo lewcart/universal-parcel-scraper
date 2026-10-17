@@ -58455,13 +58455,10 @@
   },
   {
     "input": "EE787485919TW",
-    "carrier": "intl-post",
+    "carrier": "chunghwa-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "chunghwa-post"
     ]
   },
   {
@@ -58510,13 +58507,10 @@
   },
   {
     "input": "EG026268050TW",
-    "carrier": "intl-post",
+    "carrier": "chunghwa-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "chunghwa-post"
     ]
   },
   {
@@ -64268,13 +64262,10 @@
   },
   {
     "input": "LH038196094TW",
-    "carrier": "intl-post",
+    "carrier": "chunghwa-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "chunghwa-post"
     ]
   },
   {

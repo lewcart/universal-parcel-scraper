@@ -54,8 +54,8 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   carrier's time zone is passed too. It is used only for scans with no trustworthy zone of
   their own. So is the carrier's catalog id: 17TRACK asks again for that carrier when its own
   detection finds no history from it ([its README](seventeentrack/README.md)).
-- UI notices (postcode or country prompts, sign-in requests, "no information") never
-  become events. A result made only of input prompts raises `input_required`.
+- UI notices (postcode or country prompts, sign-in requests, "no information") and the
+  recipient's delivery preferences never become events. A result made only of input prompts raises `input_required`.
 - `fetchSource()` treats a history in which no scan has an instant (only wall times with
   no known zone) as inconclusive: `indeterminate` with reason `undated_history`, so the
   chain moves on. UPU is exempt, because its local clocks are by design.

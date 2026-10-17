@@ -398,6 +398,9 @@ describe("universal providers' answers", () => {
       ['EXAMPLE.DS Dispatch task assigned to DA', 'in_transit'], ['<Bad Address>', 'failed_attempt'],
       ['Contact Error need to return', 'exception'], ['Start returning，reason:[Contact Error]', 'exception'],
       ['EXA-DEVOLUCION.DS Order Closed', 'exception'],
+      ['Shipment added to loading unit', 'in_transit'], ['Received at hub: in motherbag', 'in_transit'], ['Shipment received', 'in_transit'],
+      ['The shipment has been prepared for further shipping in Example', 'in_transit'],
+      ['The shipment was prepared for further shipping in Example (Example)', 'in_transit'],
       ['Notice card left indicating where and when to pick up item', 'failed_attempt'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
@@ -409,7 +412,7 @@ describe("universal providers' answers", () => {
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
-      'Ready for delivery']) {
+      'Ready for delivery', 'Shipment received from retailer', 'Received at hub']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

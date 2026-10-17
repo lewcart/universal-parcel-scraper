@@ -131,9 +131,9 @@ describe('ParcelsApp result parsing', () => {
     expect(result.events).toHaveLength(1);
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
     expect(() => parseParcelsAppResponse({ states: [{ date: '2026-08-18T00:00:00Z', status: 'Enter the recipient postal code', require_fields: [{}] }] }, number, identity())).toThrow();
-    // A prompt to track the parcel on a partner's site is no scan either.
+    // A prompt to track the parcel on a partner's site, or a drop-off place the recipient booked, is no scan either.
     const prompted = parseParcelsAppResponse({ states: [{ date: '2026-08-19T00:00:00Z', status: 'Track Sendcloud shipment by tapping the button' },
-      ...announced.states] }, number, identity());
+      { date: '2026-08-18T12:00:00Z', status: 'A preferred drop-off location was booked for the shipment' }, ...announced.states] }, number, identity());
     expect(prompted.events?.map(({ description }) => description)).toEqual(result.events?.map(({ description }) => description));
   });
 

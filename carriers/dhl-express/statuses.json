@@ -121,6 +121,14 @@
       "stage": "accepted",
       "confirmedBy": "live",
       "note": "The unified feed codes it SA, which stages it in any wording."
+    },
+    {
+      "code": "MS",
+      "wording": "Shipment arrived at incorrect facility. It will be sent to the correct destination",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "note": "A missort: the parcel goes on to the right facility, late. The unified feed codes it MS; the web feed sends the wording alone."
     }
   ]
 }

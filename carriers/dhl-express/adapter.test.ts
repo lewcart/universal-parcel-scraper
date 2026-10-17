@@ -72,6 +72,12 @@ describe('DHL Express projection', () => {
     expect(dhlExpressStage('Synthetic clearance wording', 'CD')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Synthetic clearance wording', 'IC')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Synthetic acceptance wording', 'SA')).toEqual({ stage: 'accepted', source: 'carrier_map' });
+    // A missort delays the parcel, coded or not.
+    for (const code of ['MS', null]) {
+      expect(dhlExpressStage('Shipment arrived at incorrect facility. It will be sent to the correct destination', code))
+        .toEqual({ stage: 'exception', source: 'carrier_map' });
+    }
+    expect(dhlExpressStage('Synthetic missort wording', 'MS')).toEqual({ stage: 'exception', source: 'carrier_map' });
     expect(dhlExpressStage('Clearance processing complete at EXAMPLE CITY - FRANCE', 'CD').stage).toBe('in_transit');
     expect(dhlExpressStage('Synthetic checkpoint', 'XX').source).not.toBe('carrier_map');
     expect(dhlExpressStage('Customs clearance status updated. Note - The Customs clearance process is under way.'))

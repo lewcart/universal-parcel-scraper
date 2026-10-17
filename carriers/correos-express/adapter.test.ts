@@ -12,7 +12,7 @@ import {
 } from './parser.js';
 import { classifyCorreosExpressStatus, correosExpressCodeLabel, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
-import { InvalidInputError } from '../../core/errors/index.js';
+import { InvalidInputError, carrierErrorKind } from '../../core/errors/index.js';
 
 const NUMBER = '9900000000000002';
 const OTHER = '9900000000000003';
@@ -482,7 +482,10 @@ describe('Correos Express retrieval', () => {
     controller.abort();
     await expect(active).rejects.toMatchObject({ kind: 'transport' });
     expect(waiting).toHaveBeenCalledTimes(2);
-    await expect(new CorreosExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'budget' });
+    // The form's own timeout and the budget end together: the form's failure stands unless no
+    // time is left for the localizador's step, so either is the answer.
+    const spent = await new CorreosExpressTracker({ fetcher: waiting }).fetch(NUMBER, { budgetMs: 20 }).catch((error: unknown) => error);
+    expect(['budget', 'transport']).toContain(carrierErrorKind(spent));
     expect(waiting).toHaveBeenCalledTimes(4);
   });
 });

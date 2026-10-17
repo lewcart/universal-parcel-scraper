@@ -18,6 +18,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "algerie-poste",
           "chronopost"
         ]
       },
@@ -40,6 +41,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "algerie-poste",
           "chronopost"
         ]
       },
@@ -62,6 +64,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "algerie-poste",
           "chronopost"
         ]
       },
@@ -205,6 +208,27 @@
         "confidence": "high"
       },
       "note": "Quoted in a review on TrackingMore's Algeria Post page by a customer awaiting the parcel after a failed delivery; its DZ suffix names Algérie Poste as the issuing post."
+    },
+    {
+      "number": "ET81001199916",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.ems.dz/track/mobilessl.php",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "algerie-poste"
+        ]
+      },
+      "note": "The tracking form of the mobile page that EMS Champion Post Algérie's Android app opens gives it as an example number, next to two more of the same series."
     }
   ]
 }

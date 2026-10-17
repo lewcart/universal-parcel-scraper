@@ -192,9 +192,12 @@ describe('Algérie Poste tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(ALGERIE_POSTE_TRACKER))).toBe(true);
   });
 
-  it('is asked about the domestic numbers detection suggests it for, and reads the tracker\'s address', () => {
+  it('is asked about its own codes and the domestic numbers, and reads the tracker\'s address', () => {
     expect(detectCarrierMatch(DOMESTIC)).toMatchObject({ confidence: 'low', candidates: expect.arrayContaining(['algerie-poste']) });
     expect(recognitionAskedCarriers(DOMESTIC)).toContain('algerie-poste');
+    // Its own S10 codes, and its EY codes whose check digit fails.
+    for (const number of [UNKNOWN, 'EY000000020DZ']) expect(recognitionAskedCarriers(number), number).toContain('algerie-poste');
+    expect(recognitionAskedCarriers(INBOUND)).not.toContain('algerie-poste');
     for (const link of [`https://ems.dz/track/index.php?icd=${UNKNOWN}`, `https://www.ems.dz/track/index.php?icd=${UNKNOWN}`]) {
       expect(parseTrackingInput(link)).toMatchObject({ trackingNumber: UNKNOWN, carrier: 'algerie-poste', source: 'link' });
     }

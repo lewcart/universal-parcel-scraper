@@ -570,6 +570,23 @@
     "reason": "The North Macedonian issuer suffix suggests Pošta na Severna Makedonija but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}DZ with a valid S10 check digit",
+    "carriers": [
+      "algerie-poste",
+      "chronopost",
+      "intl-post"
+    ],
+    "reason": "The Algerian issuer suffix suggests Algérie Poste but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
+    "shape": "EY9{9}DZ without a valid S10 check digit",
+    "carriers": [
+      "algerie-poste",
+      "chronopost"
+    ],
+    "reason": "Algérie Poste's EY items do not always carry a valid S10 check digit, and Chronopost's low-confidence rule takes any S10 shape; both stay suggestions, Algérie Poste's backed by its own samples."
+  },
+  {
     "shape": "AA9{9}TY or AA9{9}MI with a valid S10 check digit",
     "carriers": [
       "aliexpress",
@@ -3626,7 +3643,7 @@
     "reason": "Aeropost's Costa Rica shipments are CR and ten digits, which Aramex Australia and Aramex New Zealand accept as any two letters and ten digits and Colis Privé as any twelve characters; all rules are low-confidence, so recognition decides."
   },
   {
-    "shape": "EC or ED and eleven digits",
+    "shape": "EC, ED or ET and eleven digits",
     "carriers": [
       "algerie-poste",
       "la-poste"

@@ -5559,8 +5559,19 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^E[CD]\\d{11}$",
+        "pattern": "^E[CDT]\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}DZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      },
+      {
+        "pattern": "^EY\\d{9}DZ$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },
@@ -24376,7 +24387,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "akash-ganga": [],
   "aks-express": [],
   "alem-tat": [],
-  "algerie-poste": ["algerie-poste-1"],
+  "algerie-poste": ["algerie-poste-1","algerie-poste-s10","algerie-poste-ey"],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
   "ameex": [],
   "amerijet": ["amerijet-1"],

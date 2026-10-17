@@ -57415,6 +57415,7 @@
       "intl-post"
     ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },
@@ -59398,6 +59399,7 @@
       "intl-post"
     ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },
@@ -60971,6 +60973,19 @@
     ]
   },
   {
+    "input": "ET81001199916",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "algerie-poste"
+    ],
+    "asked": [
+      "la-poste",
+      "algerie-poste"
+    ]
+  },
+  {
     "input": "ETS188",
     "carrier": "unknown",
     "confidence": "none",
@@ -61059,6 +61074,7 @@
       "intl-post"
     ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },
@@ -61067,9 +61083,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "algerie-poste",
       "chronopost"
     ],
+    "preferred": [
+      "algerie-poste"
+    ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },
@@ -61078,9 +61099,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "algerie-poste",
       "chronopost"
     ],
+    "preferred": [
+      "algerie-poste"
+    ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },
@@ -61089,9 +61115,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "algerie-poste",
       "chronopost"
     ],
+    "preferred": [
+      "algerie-poste"
+    ],
     "asked": [
+      "algerie-poste",
       "chronopost"
     ]
   },

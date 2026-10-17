@@ -50,11 +50,14 @@ forms' examples show. The adapter takes S10 codes from any post with a valid che
 Algérie Poste's own codes ending `DZ` without one, and those domestic numbers; anything else is
 invalid without a request.
 
-`algerie-poste-1` suggests Algérie Poste for `EC` and `ED` and eleven digits with low confidence;
-La Poste's broad rule for two characters and eleven digits matches them too. S10 numbers stay
-with generic postal detection: the issuer of an S10 code does not establish who delivers it. Mail
-from abroad reaches Algérie Poste when a caller or a provider names it. The samples and their
-sources are in [`numbers.json`](numbers.json).
+The issuer of an S10 code does not establish who delivers it, so detection keeps codes ending
+`DZ` with the generic postal carrier. `algerie-poste-s10`, at low confidence, makes preflight ask
+Algérie Poste about them, and `algerie-poste-ey` about its `EY` codes without a valid check
+digit, which Chronopost's broad rule matches too. `algerie-poste-1` suggests Algérie Poste for
+the domestic numbers with low confidence; La Poste's broad rule for two characters and eleven
+digits matches them too. Mail from abroad reaches Algérie Poste when a caller names it, a
+provider names it, or a result gives Algeria as the destination of an S10 item. The samples and
+their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

@@ -18,17 +18,59 @@
   "timezone": "America/Lima",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "serpost",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 893
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at",
+    "destination_country"
+  ],
   "portal": {
     "searchUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "canaryUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "coordinates",
+      "office_contact_details",
+      "event_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "coordinates",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "destination_country"
+    ],
+    "discarded": [
+      "office_contact_details",
+      "event_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "origin_country",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "postcodes",
+      "proof_of_delivery"
+    ]
   },
   "links": [],
   "detection": []

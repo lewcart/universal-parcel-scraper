@@ -20011,7 +20011,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "serpost",
+      "recognitionRank": 893
     },
     "canaryUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "trackingSearchUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",

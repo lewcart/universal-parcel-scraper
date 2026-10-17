@@ -188,6 +188,7 @@ import { statusMap as sagawa } from '../../carriers/sagawa/status.js';
 import { statusMap as sameday } from '../../carriers/sameday/status.js';
 import { statusMap as saudiPost } from '../../carriers/saudi-post/status.js';
 import { statusMap as seino } from '../../carriers/seino/status.js';
+import { statusMap as serpost } from '../../carriers/serpost/status.js';
 import { statusMap as servientrega } from '../../carriers/servientrega/status.js';
 import { statusMap as sfc } from '../../carriers/sfc/status.js';
 import { statusMap as shadowfax } from '../../carriers/shadowfax/status.js';
@@ -273,7 +274,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'post-luxembourg': postLuxembourg, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, raben, redpack, redx, 'rl-carriers': rlCarriers, 'rpx-indonesia': rpxIndonesia, sagawa, saia, sameday, 'saudi-post': saudiPost, seino,
-  servientrega, sfc, shadowfax, 'skroutz-last-mile': skroutzLastMile, 'slovak-parcel-service': slovakParcelService,
+  serpost, servientrega, sfc, shadowfax, 'skroutz-last-mile': skroutzLastMile, 'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
   'southeastern-freight-lines': southeasternFreightLines, speedaf, speedex, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'stallion-express': stallionExpress, starken, sto, swiftx, 'swiss-post': swissPost,

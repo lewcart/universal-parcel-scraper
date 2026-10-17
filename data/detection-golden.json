@@ -59594,6 +59594,17 @@
     ]
   },
   {
+    "input": "EE010045134PE",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "EE010741846PE",
     "carrier": "intl-post",
     "confidence": "high",
@@ -71311,6 +71322,17 @@
     ],
     "asked": [
       "elta",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RE104856140PE",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
       "chronopost"
     ]
   },

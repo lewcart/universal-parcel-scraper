@@ -477,6 +477,12 @@ describe('Cainiao projection', () => {
     expect(refused.events?.map((event) => event.stage)).toEqual(['exception', 'accepted']);
   });
 
+  it('reads an order the seller is still preparing, before any scan, as registered', () => {
+    const preparing = parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000005', status: 'SELLER_PREPARING', detailList: [] }] },
+      'LP00000000000005');
+    expect(preparing).toMatchObject({ status: 'pending', current_stage: 'registered', events: [] });
+  });
+
   it('files every recorded code under the stage statuses.json gives it', () => {
     const recorded = JSON.parse(readFileSync(path.join(folder, 'statuses.json'), 'utf8')) as {
       entries: Array<{ code: string; wording?: string; stage: string }>;

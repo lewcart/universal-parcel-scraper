@@ -16,6 +16,13 @@
       "note": "Parcel-level order token; only consulted when the newest trace carries no action code."
     },
     {
+      "code": "SELLER_PREPARING",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17",
+      "note": "Parcel-level order token for an order the seller is still preparing, with no scan yet; only consulted when the newest trace carries no action code."
+    },
+    {
       "code": "WAIT_BUYER_ACCEPT_GOODS",
       "stage": "in_transit",
       "confirmedBy": "prior-art",

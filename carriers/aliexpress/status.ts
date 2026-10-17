@@ -22,6 +22,7 @@ import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 export const CAINIAO_STATUS = new Map<string, CarrierStatus>([
   ['WAIT_SELLER_SEND_GOODS', 'pending'],
   ['SELLER_SEND_GOODS', 'pending'],
+  ['SELLER_PREPARING', 'pending'],
   ['WAIT_BUYER_ACCEPT_GOODS', 'in_transit'],
   ['DELIVERING', 'in_transit'],
   ['SIGN', 'delivered'],

@@ -902,6 +902,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'raben', number: '999999000000033',
     route: /^https:\/\/oftc\.myraben\.com\/index\.html$/,
     marker: /Shipment number: \d+ could not be found|Shipment, reference number or Colli/i },
+  // The page reads the voucher from its address fragment and looks it up on load; for an unknown
+  // one it clears the fragment and says so for a few seconds.
+  { carrier: 'skroutz-last-mile', number: 'Z9SAMPLE0UNK0',
+    route: /^https:\/\/www\.skroutzlastmile\.gr\/(?:#.*)?$/,
+    marker: /Search for your parcel with your voucher|The voucher you provided was not found|Shipment Tracking/i },
 ];
 
 /**

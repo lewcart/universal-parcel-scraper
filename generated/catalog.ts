@@ -18914,7 +18914,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skroutz-last-mile",
+      "recognitionRank": 913
     },
     "canaryUrl": "https://www.skroutzlastmile.gr/",
     "trackingUrlTemplate": "https://www.skroutzlastmile.gr/#{trackingNumber}",

@@ -182,6 +182,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "seur": 870,
   "sfc": 955,
   "shadowfax": 595,
+  "skroutz-last-mile": 913,
   "slovak-parcel-service": 180,
   "slovenska-posta": 170,
   "smsa-express": 448,

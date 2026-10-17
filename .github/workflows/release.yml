@@ -84,8 +84,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    outputs:
-      listed: ${{ steps.listed.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -109,7 +107,7 @@ jobs:
           npm version "$PRERELEASE_VERSION" --no-git-tag-version
           npm publish --tag next --access public --provenance --ignore-scripts
       # npm accepts a publish before it serves the version. The job holds its
-      # place until then, so the next plan and the app both find the version.
+      # place until then, so the next plan finds the version.
       - name: Wait until npm lists the version
         id: listed
         if: ${{ steps.plan.outputs.notify == 'true' }}
@@ -130,8 +128,6 @@ jobs:
       contents: write
       packages: write
       id-token: write
-    outputs:
-      listed: ${{ steps.listed.outputs.version }}
     env:
       RELEASE_VERSION: ${{ inputs.version }}
       GH_TOKEN: ${{ github.token }}
@@ -201,23 +197,3 @@ jobs:
           files=("universal-parcel-scraper-$RELEASE_VERSION.tgz")
           if [ -f trawl-upstream-source.tar.gz ]; then files+=(trawl-upstream-source.tar.gz trawl-patch-source.tar.gz); fi
           gh release create "v$RELEASE_VERSION" "${files[@]}" --verify-tag --title "v$RELEASE_VERSION" --notes-file release-notes.md
-  # Tells the app about a version npm lists. The token that reaches the app's
-  # repository is used here only, on a runner that installed and built nothing.
-  notify:
-    name: Notify the app
-    needs: [prerelease, publish]
-    if: ${{ always() && (needs.prerelease.outputs.listed != '' || needs.publish.outputs.listed != '') }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions: {}
-    env:
-      ADOPTION_TOKEN: ${{ secrets.SCRAPER_ADOPTION_TOKEN }}
-      PUBLISHED_VERSION: ${{ needs.prerelease.outputs.listed || needs.publish.outputs.listed }}
-    steps:
-      - run: |
-          if [ -z "$ADOPTION_TOKEN" ]; then
-            echo "::notice::SCRAPER_ADOPTION_TOKEN is not set, so the app was not told about $PUBLISHED_VERSION."
-            exit 0
-          fi
-          GH_TOKEN="$ADOPTION_TOKEN" gh api --method POST repos/plhery/peek-delivery-tracker/dispatches \
-            -f event_type=scraper-release -f "client_payload[version]=$PUBLISHED_VERSION"

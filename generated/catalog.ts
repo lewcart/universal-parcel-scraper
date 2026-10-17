@@ -8166,7 +8166,7 @@ export const CARRIER_CATALOG = {
   },
   "correos-el-salvador": {
     "displayName": "Correos de El Salvador",
-    "color": "#4375d9",
+    "color": "#08416b",
     "aliases": [
       "Dirección General de Correos de El Salvador",
       "Correos El Salvador",
@@ -17067,7 +17067,7 @@ export const CARRIER_CATALOG = {
   },
   "phlpost": {
     "displayName": "PHLPost",
-    "color": "#a6352d",
+    "color": "#9e0000",
     "aliases": [
       "Philippine Postal Corporation",
       "PhilPost"
@@ -20989,7 +20989,7 @@ export const CARRIER_CATALOG = {
   },
   "torrestir": {
     "displayName": "Torrestir",
-    "color": "#003d2c",
+    "color": "#417c47",
     "aliases": [
       "Torrestir SA"
     ],

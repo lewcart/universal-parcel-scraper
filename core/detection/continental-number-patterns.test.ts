@@ -398,4 +398,12 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('starlinks');
     }
   });
+
+  it('suggests Copa Courier for H and seven digits without naming it', () => {
+    expect(detectCarrierMatch('H0000001')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('H0000001').candidates).toContain('copa-courier');
+    for (const number of ['H000001', 'H00000001', 'HA000001', 'G0000001', '00000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('copa-courier');
+    }
+  });
 });

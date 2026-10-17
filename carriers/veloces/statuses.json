@@ -1,0 +1,16 @@
+{
+  "carrier": "veloces",
+  "entries": [
+    {"wording": "Orden Recibida", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "Status 1 in the tracking script's status map."},
+    {"wording": "En Bodega", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "Status 2: the parcel is in a Veloces warehouse."},
+    {"wording": "En Ruta Nacional", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Status 3: on a national route between cities."},
+    {"wording": "En Tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Status 4 in the tracking script's status map."},
+    {"wording": "Bodega Destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Status 10: at the destination warehouse."},
+    {"wording": "En Camino a Destino", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "Status 8, shown with a motorcycle icon for the last leg to the recipient."},
+    {"wording": "Novedad", "stage": "exception", "language": "es", "confirmedBy": "official-doc", "note": "Status 5: an incident was reported, with evidence attached."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "Status 6 in the tracking script's status map."},
+    {"wording": "Devolución", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Status 9 in the tracking script's status map."},
+    {"wording": "Devolución en Ruta", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Status 12: the return is on its way back."},
+    {"wording": "Devolución Proveedor", "stage": "returned", "language": "es", "confirmedBy": "official-doc", "note": "Status 11: the parcel went back to the supplier."}
+  ]
+}

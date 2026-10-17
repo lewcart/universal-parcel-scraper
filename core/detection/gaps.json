@@ -1495,6 +1495,18 @@
     "reason": "Fourteen bare digits are printed by many carriers, so the shape cannot name Horoz Lojistik."
   },
   {
+    "carrier": "hound-express",
+    "pattern": "^\\d{16}$",
+    "kind": "collision",
+    "reason": "Sixteen-digit Hound Express guides are a bare digit run that other carriers' rules already offer."
+  },
+  {
+    "carrier": "hound-express",
+    "pattern": "^HP\\d{16}$",
+    "kind": "by_design",
+    "reason": "HP and sixteen digits appears only as one example in Hound Express's partner API documentation."
+  },
+  {
     "carrier": "hr-parcel",
     "pattern": "^\\d{14}$",
     "kind": "by_design",
@@ -2692,6 +2704,18 @@
     "reason": "Thirteen capital letters and digits without a prefix or check digit are shared with UPU numbers and other carriers' codes, so nothing in a voucher points to Skroutz Last Mile."
   },
   {
+    "carrier": "skyking",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "SkyKing consignment numbers are a bare nine-digit run with no prefix or check digit that would set them apart from other carriers' numbers."
+  },
+  {
+    "carrier": "skyking",
+    "pattern": "^\\d{8}$",
+    "kind": "collision",
+    "reason": "Eight-digit SkyKing consignment numbers share a bare digit run that several carriers' rules already offer."
+  },
+  {
     "carrier": "skynet-sa",
     "pattern": "^[A-Z]{2,4}\\d{6,10}$",
     "kind": "by_design",
@@ -3079,6 +3103,12 @@
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Vasp Expresso service numbers are bare thirteen-digit runs that many carriers also print."
+  },
+  {
+    "carrier": "veloces",
+    "pattern": "^V\\d{10}$",
+    "kind": "collision",
+    "reason": "V and ten digits is a shape the UPS and DTDC rules already offer, so it cannot name Veloces."
   },
   {
     "carrier": "venipak",

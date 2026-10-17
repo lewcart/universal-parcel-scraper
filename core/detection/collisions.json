@@ -4410,5 +4410,16 @@
       "zto"
     ],
     "reason": "sagawa-global numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "H and seven digits",
+    "carriers": [
+      "copa-courier",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "loggi"
+    ],
+    "reason": "The GLS and Loggi low rules accept any eight-character code mixing letters and digits; copa-courier-1 adds Copa Courier for an H followed by seven digits."
   }
 ]

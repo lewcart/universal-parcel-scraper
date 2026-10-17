@@ -8432,6 +8432,49 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "copa-courier": {
+    "displayName": "Copa Airlines Courier",
+    "color": "#233e93",
+    "aliases": [
+      "Copa Courier"
+    ],
+    "countries": [
+      "PA",
+      "BO",
+      "CL",
+      "CO",
+      "CR",
+      "CU",
+      "DO",
+      "EC",
+      "GT",
+      "HN",
+      "MX",
+      "NI",
+      "PE",
+      "PR",
+      "PY",
+      "SV",
+      "US",
+      "UY",
+      "VE"
+    ],
+    "selectable": true,
+    "timezone": "America/Panama",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.copacourier.com/",
+    "trackingSearchUrl": "https://www.copacourier.com/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^H\\d{7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "corre": {
     "displayName": "CORRE",
     "color": "#e4002b",
@@ -13895,6 +13938,27 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "hound-express": {
+    "displayName": "Hound Express",
+    "color": "#18233e",
+    "aliases": [
+      "HoundExpress"
+    ],
+    "countries": [
+      "MX",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hound-express.com/tracking.html",
+    "trackingSearchUrl": "https://www.hound-express.com/tracking.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hp-mostar": {
     "displayName": "Hrvatska pošta Mostar",
     "color": "#ffed00",
@@ -19101,6 +19165,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "pdq-chile": {
+    "displayName": "PDQ Cargo Trader",
+    "color": "#ed1c24",
+    "aliases": [
+      "PDQ",
+      "Cargo Trader PDQ",
+      "Transportes PDQ"
+    ],
+    "countries": [
+      "CL"
+    ],
+    "selectable": true,
+    "timezone": "America/Santiago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.pdq.cl/tracking",
+    "trackingUrlTemplate": "https://www.pdq.cl/tracking?q={trackingNumber}",
+    "trackingSearchUrl": "https://www.pdq.cl/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.pdq.cl",
+          "pdq.cl"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "pecom": {
     "displayName": "PEC",
     "color": "#242265",
@@ -22014,6 +22112,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "skyking": {
+    "displayName": "SkyKing",
+    "color": "#007dc6",
+    "aliases": [
+      "Skyking",
+      "SkyKing Courier Services"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://skyking.co/track",
+    "trackingUrlTemplate": "https://skyking.co/track?cno={trackingNumber}",
+    "trackingSearchUrl": "https://skyking.co/track",
+    "linkRules": [
+      {
+        "domains": [
+          "skyking.co"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "cno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "skynet-sa": {
     "displayName": "SkyNet South Africa",
     "color": "#fe0000",
@@ -24606,6 +24736,34 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "veloces": {
+    "displayName": "Veloces",
+    "color": "#fd026f",
+    "countries": [
+      "CO",
+      "MX",
+      "EC",
+      "CL"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.veloces.app/",
+    "trackingUrlTemplate": "https://tracking.veloces.app/tracking-client/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.veloces.app/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.veloces.app"
+        ],
+        "path": "^/tracking-client/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "venipak": {
     "displayName": "Venipak",
     "color": "#9339f2",
@@ -25865,6 +26023,7 @@ export const CARRIER_IDS = [
   "cne",
   "codexpress",
   "coordinadora",
+  "copa-courier",
   "corre",
   "correo-argentino",
   "correo-uruguayo",
@@ -26006,6 +26165,7 @@ export const CARRIER_IDS = [
   "hispapost",
   "homexpress",
   "horoz",
+  "hound-express",
   "hp-mostar",
   "hr-parcel",
   "hrvatska-posta",
@@ -26141,6 +26301,7 @@ export const CARRIER_IDS = [
   "paxel",
   "paxi",
   "pbt",
+  "pdq-chile",
   "pecom",
   "peddler",
   "pelican-express",
@@ -26217,6 +26378,7 @@ export const CARRIER_IDS = [
   "shree-nandan",
   "sicepat",
   "skroutz-last-mile",
+  "skyking",
   "skynet-sa",
   "skynet-worldwide",
   "slgtrax",
@@ -26282,6 +26444,7 @@ export const CARRIER_IDS = [
   "urbano",
   "uzbekistan-post",
   "vasp-expresso",
+  "veloces",
   "venipak",
   "via-cargo",
   "viettel-post",
@@ -26508,6 +26671,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cne": ["cne-1"],
   "codexpress": [],
   "coordinadora": [],
+  "copa-courier": ["copa-courier-1"],
   "corre": [],
   "correo-argentino": [],
   "correo-uruguayo": [],
@@ -26649,6 +26813,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hispapost": [],
   "homexpress": [],
   "horoz": [],
+  "hound-express": [],
   "hp-mostar": [],
   "hr-parcel": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
@@ -26784,6 +26949,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "paxel": ["paxel-1"],
   "paxi": [],
   "pbt": [],
+  "pdq-chile": [],
   "pecom": [],
   "peddler": ["peddler-1","peddler-2"],
   "pelican-express": [],
@@ -26860,6 +27026,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shree-nandan": [],
   "sicepat": [],
   "skroutz-last-mile": [],
+  "skyking": [],
   "skynet-sa": [],
   "skynet-worldwide": [],
   "slgtrax": [],
@@ -26925,6 +27092,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "urbano": ["urbano-1"],
   "uzbekistan-post": ["uzbekistan-post-s10"],
   "vasp-expresso": [],
+  "veloces": [],
   "venipak": ["venipak-1"],
   "via-cargo": [],
   "viettel-post": ["viettel-post-1"],

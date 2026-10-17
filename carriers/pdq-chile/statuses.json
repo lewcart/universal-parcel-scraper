@@ -1,0 +1,11 @@
+{
+  "carrier": "pdq-chile",
+  "entries": [
+    {"wording": "En preparación", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "First step label in the tracking page's script, before the shipment leaves."},
+    {"wording": "En tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Step label in the tracking page's script."},
+    {"wording": "En tu ciudad", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "Step label: the shipment reached the destination city."},
+    {"wording": "En reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "official-doc", "note": "Step label in the tracking page's script."},
+    {"wording": "LISTA PARA RETIRO", "stage": "ready_for_pickup", "language": "es", "confirmedBy": "official-doc", "note": "Replaces the delivery step when the shipment waits for collection at a branch."},
+    {"wording": "Entregada", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "Step label in the tracking page's script."}
+  ]
+}

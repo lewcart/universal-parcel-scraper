@@ -1,0 +1,47 @@
+{
+  "id": "pdq-chile",
+  "displayName": "PDQ Cargo Trader",
+  "aliases": [
+    "PDQ",
+    "Cargo Trader PDQ",
+    "Transportes PDQ"
+  ],
+  "region": {
+    "countries": [
+      "CL"
+    ]
+  },
+  "brand": {
+    "color": "#ed1c24"
+  },
+  "selectable": true,
+  "timezone": "America/Santiago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.pdq.cl/tracking?q={trackingNumber}",
+    "searchUrl": "https://www.pdq.cl/tracking",
+    "canaryUrl": "https://www.pdq.cl/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.pdq.cl",
+        "pdq.cl"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": []
+}

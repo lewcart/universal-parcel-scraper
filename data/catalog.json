@@ -8430,6 +8430,49 @@
     ],
     "detectionRules": []
   },
+  "copa-courier": {
+    "displayName": "Copa Airlines Courier",
+    "color": "#233e93",
+    "aliases": [
+      "Copa Courier"
+    ],
+    "countries": [
+      "PA",
+      "BO",
+      "CL",
+      "CO",
+      "CR",
+      "CU",
+      "DO",
+      "EC",
+      "GT",
+      "HN",
+      "MX",
+      "NI",
+      "PE",
+      "PR",
+      "PY",
+      "SV",
+      "US",
+      "UY",
+      "VE"
+    ],
+    "selectable": true,
+    "timezone": "America/Panama",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.copacourier.com/",
+    "trackingSearchUrl": "https://www.copacourier.com/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^H\\d{7}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "corre": {
     "displayName": "CORRE",
     "color": "#e4002b",
@@ -13893,6 +13936,27 @@
     ],
     "detectionRules": []
   },
+  "hound-express": {
+    "displayName": "Hound Express",
+    "color": "#18233e",
+    "aliases": [
+      "HoundExpress"
+    ],
+    "countries": [
+      "MX",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hound-express.com/tracking.html",
+    "trackingSearchUrl": "https://www.hound-express.com/tracking.html",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "hp-mostar": {
     "displayName": "Hrvatska pošta Mostar",
     "color": "#ffed00",
@@ -19099,6 +19163,40 @@
     ],
     "detectionRules": []
   },
+  "pdq-chile": {
+    "displayName": "PDQ Cargo Trader",
+    "color": "#ed1c24",
+    "aliases": [
+      "PDQ",
+      "Cargo Trader PDQ",
+      "Transportes PDQ"
+    ],
+    "countries": [
+      "CL"
+    ],
+    "selectable": true,
+    "timezone": "America/Santiago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.pdq.cl/tracking",
+    "trackingUrlTemplate": "https://www.pdq.cl/tracking?q={trackingNumber}",
+    "trackingSearchUrl": "https://www.pdq.cl/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.pdq.cl",
+          "pdq.cl"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "pecom": {
     "displayName": "PEC",
     "color": "#242265",
@@ -22012,6 +22110,38 @@
     ],
     "detectionRules": []
   },
+  "skyking": {
+    "displayName": "SkyKing",
+    "color": "#007dc6",
+    "aliases": [
+      "Skyking",
+      "SkyKing Courier Services"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://skyking.co/track",
+    "trackingUrlTemplate": "https://skyking.co/track?cno={trackingNumber}",
+    "trackingSearchUrl": "https://skyking.co/track",
+    "linkRules": [
+      {
+        "domains": [
+          "skyking.co"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "cno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "skynet-sa": {
     "displayName": "SkyNet South Africa",
     "color": "#fe0000",
@@ -24600,6 +24730,34 @@
         "params": [
           "search"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "veloces": {
+    "displayName": "Veloces",
+    "color": "#fd026f",
+    "countries": [
+      "CO",
+      "MX",
+      "EC",
+      "CL"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.veloces.app/",
+    "trackingUrlTemplate": "https://tracking.veloces.app/tracking-client/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.veloces.app/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.veloces.app"
+        ],
+        "path": "^/tracking-client/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

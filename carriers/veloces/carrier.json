@@ -1,0 +1,42 @@
+{
+  "id": "veloces",
+  "displayName": "Veloces",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "CO",
+      "MX",
+      "EC",
+      "CL"
+    ]
+  },
+  "brand": {
+    "color": "#fd026f"
+  },
+  "selectable": true,
+  "timezone": "America/Bogota",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.veloces.app/tracking-client/{trackingNumber}",
+    "searchUrl": "https://tracking.veloces.app/",
+    "canaryUrl": "https://tracking.veloces.app/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.veloces.app"
+      ],
+      "path": "^/tracking-client/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

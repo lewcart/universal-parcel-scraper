@@ -1,0 +1,45 @@
+{
+  "id": "skyking",
+  "displayName": "SkyKing",
+  "aliases": [
+    "Skyking",
+    "SkyKing Courier Services"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#007dc6"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://skyking.co/track?cno={trackingNumber}",
+    "searchUrl": "https://skyking.co/track",
+    "canaryUrl": "https://skyking.co/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "skyking.co"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "cno"
+      ]
+    }
+  ],
+  "detection": []
+}

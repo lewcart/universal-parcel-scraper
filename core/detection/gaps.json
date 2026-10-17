@@ -854,6 +854,18 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to DPD Ireland."
   },
   {
+    "carrier": "dpd-pt",
+    "pattern": "^\\d{14}$",
+    "kind": "collision",
+    "reason": "DPD Portugal prints the fourteen-digit DPD parcel number every DPD network issues; other DPD entries suggest it and DPD Poland's preferred rule takes those starting with 13."
+  },
+  {
+    "carrier": "dpd-pt",
+    "pattern": "^\\d{14}[0-9A-Z]$",
+    "kind": "collision",
+    "reason": "The same DPD parcel number with its check character, shared with every DPD network."
+  },
+  {
     "carrier": "dpd-za",
     "pattern": "^[A-Z]{2,3}\\d{5,11}$",
     "kind": "by_design",
@@ -1181,6 +1193,18 @@
     "pattern": "^\\d{15}GLS$",
     "kind": "open",
     "reason": "The long GLS parcel ID with its suffix was reported once; GLS publishes no rule for it."
+  },
+  {
+    "carrier": "gls-pl",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "GLS Poland's eleven-digit parcel numbers are the GLS group layout that other GLS networks issue and their low rules suggest, and nothing in the number names the Polish network."
+  },
+  {
+    "carrier": "gls-pl",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "The twelve-digit form adds the GLS check digit to the same group layout, which other GLS networks and carriers share."
   },
   {
     "carrier": "go-express",

@@ -1,0 +1,48 @@
+{
+  "id": "kyrgyz-post",
+  "displayName": "Kyrgyz Post",
+  "aliases": [
+    "Кыргыз почтасы",
+    "Kyrgyz Pochtasy",
+    "Почта Кыргызстана",
+    "Kyrgyzstan Post",
+    "Kyrgyzpost"
+  ],
+  "region": {
+    "countries": [
+      "KG"
+    ]
+  },
+  "brand": {
+    "color": "#184cec"
+  },
+  "selectable": true,
+  "timezone": "Asia/Bishkek",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://post.kg/language/ru/treking-posylok/",
+    "canaryUrl": "https://post.kg/language/ru/treking-posylok/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "kyrgyzpost.kg",
+        "www.kyrgyzpost.kg"
+      ],
+      "pathPattern": "^/ru/zip-search\\.html$",
+      "params": [
+        "searchword"
+      ]
+    }
+  ],
+  "detection": []
+}

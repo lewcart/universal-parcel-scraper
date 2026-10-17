@@ -1,0 +1,49 @@
+{
+  "id": "corre",
+  "displayName": "CORRE",
+  "aliases": [
+    "Correio Expresso de Moçambique",
+    "Correio Expresso de Mocambique",
+    "Corre",
+    "Correios de Moçambique",
+    "Mozambique Post"
+  ],
+  "region": {
+    "countries": [
+      "MZ"
+    ]
+  },
+  "brand": {
+    "color": "#e4002b"
+  },
+  "selectable": true,
+  "timezone": "Africa/Maputo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",
+    "searchUrl": "https://www.corremz.com/trace/",
+    "canaryUrl": "https://www.corremz.com/trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.corremz.com",
+        "corremz.com"
+      ],
+      "pathPattern": "^/cgi-bin/(?:tracktrace|trace)\\.cgi$",
+      "params": [
+        "OBJ"
+      ]
+    }
+  ],
+  "detection": []
+}

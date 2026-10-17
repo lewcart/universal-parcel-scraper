@@ -1,0 +1,43 @@
+{
+  "carrier": "kyrgyz-post",
+  "records": [
+    {
+      "number": "RF727913178SG",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://post.kg/language/ru/treking-posylok/",
+        "date": "2026-10-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "singapore-post",
+        "confidence": "high"
+      },
+      "note": "The example number Kyrgyz Post's tracking page gives under its search field; the page tracks items arriving in Kyrgyzstan, and this one carries Singapore Post's suffix."
+    },
+    {
+      "number": "RV293017307CN",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kyrgyzpost.html",
+        "date": "2020-03-09",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "china-post",
+        "confidence": "high"
+      },
+      "note": "A customer review of Kyrgyz Post quotes this China Post parcel as having reached Kyrgyzstan and then gone missing."
+    }
+  ]
+}

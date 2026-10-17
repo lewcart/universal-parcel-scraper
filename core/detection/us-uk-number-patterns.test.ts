@@ -315,3 +315,18 @@ describe('Metropolitan Warehouse twelve-digit numbers', () => {
     }
   });
 });
+
+describe('Pitney Bowes cross-border labels', () => {
+  // Synthetic numbers in the three label layouts; none is a real parcel.
+  it('names Pitney Bowes for its UPAA, hexadecimal UPBE and PBX labels', () => {
+    for (const number of ['UPAAA000000000000001', 'UPBE0000000000ABCDEF', 'PBXSA000000001', 'PBXGA000000000ABCDEF']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'pitney-bowes', confidence: 'high', candidates: ['pitney-bowes'] });
+    }
+  });
+
+  it('leaves Pitney Bowes out for other lengths, letters beyond hexadecimal and a missing service code', () => {
+    for (const number of ['UPAAA00000000000001', 'UPAA0000000000000001', 'UPBE0000000000ABCDEG', 'UPBE0000000000ABCDE', 'PBXSA00000000', 'PBXS000000001', 'PBXGA000000000ABCDEFG']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('pitney-bowes');
+    }
+  });
+});

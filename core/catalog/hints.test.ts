@@ -6,7 +6,7 @@ import {
 
 describe('brand networks', () => {
   it('lists the catalog networks of a bare or group brand name', () => {
-    expect(new Set(brandCarrierIds('DPD Group'))).toEqual(new Set(['dpd', 'dpd-fr', 'dpd-de', 'dpd-uk', 'dpd-pl', 'dpd-ie', 'dpd-za', 'dpd-be', 'dpd-nl']));
+    expect(new Set(brandCarrierIds('DPD Group'))).toEqual(new Set(['dpd', 'dpd-fr', 'dpd-de', 'dpd-uk', 'dpd-pl', 'dpd-ie', 'dpd-za', 'dpd-be', 'dpd-nl', 'dpd-pt']));
     expect(brandCarrierIds('gls')).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
     expect(brandCarrierIds('GOFO')).toEqual(expect.arrayContaining(['gofo', 'gofo-fr', 'gofo-it']));
     expect(carrierIdFromName('GOFO')).toBeUndefined();
@@ -148,7 +148,7 @@ describe('carrier names reported by universal providers', () => {
 
   it.each([
     // Another company under the brand, a country without one zone, a brand with several networks.
-    'Chronopost Portugal', 'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
+    'Correos Chile', 'UPS United States', 'DHL Germany', 'GLS', 'France', 'Evri Group',
     // A carrier whose scans are instants, followed by a country other than its home.
     'Bpost Netherlands', 'Aramex Jordan',
     // No network there, two networks there, a worldwide network, a network on another clock.
@@ -207,17 +207,20 @@ describe('zones implied by carrier names', () => {
     expect(carrierIdFromName('DHL Parcel UK')).toBe('dhl-ecommerce-uk');
     expect(carrierIdFromName('DHL Parcel Poland')).toBe('dhl-ecommerce-pl');
     expect(carrierIdFromName('GLS Italy')).toBe('gls-it');
-    for (const name of ['GLS Poland', 'DHL Parcel Italy', 'DPD Group']) expect(carrierIdFromName(name)).toBeUndefined();
+    expect(carrierIdFromName('GLS Poland')).toBe('gls-pl');
+    // DPD Portugal took over Chronopost Portugal's network.
+    expect(carrierIdFromName('Chronopost Portugal')).toBe('dpd-pt');
+    for (const name of ['GLS Hungary', 'DHL Parcel Italy', 'DPD Group']) expect(carrierIdFromName(name)).toBeUndefined();
   });
 
   it('lists the zones of a bare brand only when all of its carriers keep a local clock', () => {
     // ParcelsApp reads brand-only scans in these zones. A catalog change here moves
     // stored scan instants, and so event ids: plan a re-key before updating the sets.
     // London never shares the others' clock, so DPD's brand zone stays off whatever networks join.
-    expect(new Set(brandTimeZones('DPD Group'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London', 'Europe/Dublin', 'Africa/Johannesburg', 'Europe/Brussels', 'Europe/Amsterdam']));
-    expect(new Set(brandTimeZones('dpd'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London', 'Europe/Dublin', 'Africa/Johannesburg', 'Europe/Brussels', 'Europe/Amsterdam']));
-    // GLS Italy and Spain keep the same clock as the other networks, so GLS scans keep their instants.
-    expect(new Set(brandTimeZones('GLS'))).toEqual(new Set(['Europe/Zurich', 'Europe/Berlin', 'Europe/Paris', 'Europe/Rome', 'Europe/Madrid']));
+    expect(new Set(brandTimeZones('DPD Group'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London', 'Europe/Dublin', 'Africa/Johannesburg', 'Europe/Brussels', 'Europe/Amsterdam', 'Europe/Lisbon']));
+    expect(new Set(brandTimeZones('dpd'))).toEqual(new Set(['Europe/Zurich', 'Europe/Paris', 'Europe/Berlin', 'Europe/Warsaw', 'Europe/London', 'Europe/Dublin', 'Africa/Johannesburg', 'Europe/Brussels', 'Europe/Amsterdam', 'Europe/Lisbon']));
+    // GLS Italy, Spain and Poland keep the same clock as the other networks, so GLS scans keep their instants.
+    expect(new Set(brandTimeZones('GLS'))).toEqual(new Set(['Europe/Zurich', 'Europe/Berlin', 'Europe/Paris', 'Europe/Rome', 'Europe/Madrid', 'Europe/Warsaw']));
     expect(brandTimeZones('Hermes')).toEqual(['Europe/Berlin']);
     // DHL eCommerce is UTC, so the brand's clock is unknown.
     for (const name of ['DHL', 'DHL Group', 'DPD Local', 'DPD UK', 'Post', 'Example Parcel Co']) expect(brandTimeZones(name)).toEqual([]);

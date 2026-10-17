@@ -1,0 +1,48 @@
+{
+  "id": "gls-pl",
+  "displayName": "GLS Poland",
+  "aliases": [
+    "GLS Polska",
+    "General Logistics Systems Poland"
+  ],
+  "region": {
+    "countries": [
+      "PL"
+    ]
+  },
+  "brand": {
+    "color": "#ffdd00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Warsaw",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://gls-group.com/PL/pl/sledzenie-paczek/?match={trackingNumber}",
+    "searchUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/",
+    "canaryUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gls-group.com",
+        "gls-group.eu"
+      ],
+      "pathPattern": "^/PL/",
+      "params": [
+        "match",
+        "parcelNumber",
+        "matchParcelNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

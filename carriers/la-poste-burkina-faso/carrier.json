@@ -1,0 +1,47 @@
+{
+  "id": "la-poste-burkina-faso",
+  "displayName": "La Poste Burkina Faso",
+  "aliases": [
+    "La Poste BF",
+    "La Poste du Burkina Faso",
+    "SONAPOST",
+    "Société nationale des Postes",
+    "Burkina Faso Post"
+  ],
+  "region": {
+    "countries": [
+      "BF"
+    ]
+  },
+  "brand": {
+    "color": "#155bab"
+  },
+  "selectable": true,
+  "timezone": "Africa/Ouagadougou",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://laposte.bf/suivi-de-colis/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "webtracking.laposte.bf",
+        "webtracking.sonapost.bf"
+      ],
+      "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+      "params": [
+        "itemid"
+      ]
+    }
+  ],
+  "detection": []
+}

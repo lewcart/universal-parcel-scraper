@@ -5322,6 +5322,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "afghan-post": {
+    "displayName": "Afghan Post",
+    "color": "#115fa2",
+    "aliases": [
+      "افغان پست",
+      "Afghanistan Post"
+    ],
+    "countries": [
+      "AF"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kabul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.afghanpost.gov.af/",
+    "trackingSearchUrl": "https://track.afghanpost.gov.af/",
+    "linkRules": [
+      {
+        "domains": [
+          "afghanpost.gov.af",
+          "www.afghanpost.gov.af"
+        ],
+        "pathPattern": "^/track/index\\.php$",
+        "params": [
+          "ID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "akash-ganga": {
     "displayName": "Akash Ganga Courier",
     "color": "#024182",
@@ -8000,6 +8032,42 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "corre": {
+    "displayName": "CORRE",
+    "color": "#e4002b",
+    "aliases": [
+      "Correio Expresso de Moçambique",
+      "Correio Expresso de Mocambique",
+      "Corre",
+      "Correios de Moçambique",
+      "Mozambique Post"
+    ],
+    "countries": [
+      "MZ"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Maputo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.corremz.com/trace/",
+    "trackingUrlTemplate": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",
+    "trackingSearchUrl": "https://www.corremz.com/trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.corremz.com",
+          "corremz.com"
+        ],
+        "pathPattern": "^/cgi-bin/(?:tracktrace|trace)\\.cgi$",
+        "params": [
+          "OBJ"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "correo-argentino": {
     "displayName": "Correo Argentino",
     "color": "#ffce00",
@@ -8192,6 +8260,28 @@ export const CARRIER_CATALOG = {
         "path": "^/rastrear-paquete/([^/?#]+)/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "correos-nicaragua": {
+    "displayName": "Correos de Nicaragua",
+    "color": "#4078c0",
+    "aliases": [
+      "Nicaragua Post",
+      "Nicaraguan Postal Service",
+      "Correos Nicaragua"
+    ],
+    "countries": [
+      "NI"
+    ],
+    "selectable": true,
+    "timezone": "America/Managua",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://rastreo.correos.gob.ni:8084/SICRastreo",
+    "trackingSearchUrl": "https://rastreo.correos.gob.ni:8084/SICRastreo",
+    "linkRules": [],
     "detectionRules": []
   },
   "courier-center": {
@@ -9649,6 +9739,39 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "dpd-pt": {
+    "displayName": "DPD Portugal",
+    "color": "#dc0032",
+    "aliases": [
+      "Chronopost Portugal",
+      "DPD PT"
+    ],
+    "countries": [
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Lisbon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.dpd.pt/track-and-trace",
+    "trackingUrlTemplate": "https://tracking.dpd.pt/track-and-trace?reference={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.dpd.pt/track-and-trace",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dpd.pt",
+          "dpd.pt"
+        ],
+        "pathPattern": "^/(?:track-and-trace|en/getting-parcel/track-trace)/?$",
+        "params": [
+          "reference"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "dpd-uk": {
     "displayName": "DPD UK",
@@ -11829,6 +11952,41 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "gls-pl": {
+    "displayName": "GLS Poland",
+    "color": "#ffdd00",
+    "aliases": [
+      "GLS Polska",
+      "General Logistics Systems Poland"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/",
+    "trackingUrlTemplate": "https://gls-group.com/PL/pl/sledzenie-paczek/?match={trackingNumber}",
+    "trackingSearchUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/",
+    "linkRules": [
+      {
+        "domains": [
+          "gls-group.com",
+          "gls-group.eu"
+        ],
+        "pathPattern": "^/PL/",
+        "params": [
+          "match",
+          "parcelNumber",
+          "matchParcelNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "go-express": {
     "displayName": "GO! Express",
@@ -14080,6 +14238,75 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "kyrgyz-post": {
+    "displayName": "Kyrgyz Post",
+    "color": "#184cec",
+    "aliases": [
+      "Кыргыз почтасы",
+      "Kyrgyz Pochtasy",
+      "Почта Кыргызстана",
+      "Kyrgyzstan Post",
+      "Kyrgyzpost"
+    ],
+    "countries": [
+      "KG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bishkek",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://post.kg/language/ru/treking-posylok/",
+    "trackingSearchUrl": "https://post.kg/language/ru/treking-posylok/",
+    "linkRules": [
+      {
+        "domains": [
+          "kyrgyzpost.kg",
+          "www.kyrgyzpost.kg"
+        ],
+        "pathPattern": "^/ru/zip-search\\.html$",
+        "params": [
+          "searchword"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "la-poste-burkina-faso": {
+    "displayName": "La Poste Burkina Faso",
+    "color": "#155bab",
+    "aliases": [
+      "La Poste BF",
+      "La Poste du Burkina Faso",
+      "SONAPOST",
+      "Société nationale des Postes",
+      "Burkina Faso Post"
+    ],
+    "countries": [
+      "BF"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Ouagadougou",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://laposte.bf/suivi-de-colis/",
+    "linkRules": [
+      {
+        "domains": [
+          "webtracking.laposte.bf",
+          "webtracking.sonapost.bf"
+        ],
+        "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+        "params": [
+          "itemid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "la-poste-ci": {
     "displayName": "La Poste de Côte d'Ivoire",
     "color": "#00614a",
@@ -14202,6 +14429,40 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/Tracking/Guia[Cc]ompleta\\.aspx$",
         "params": [
           "Guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "lao-post": {
+    "displayName": "Lao Post",
+    "color": "#f6871f",
+    "aliases": [
+      "ໄປສະນີລາວ",
+      "Laos Postal Service",
+      "Entreprise des Postes Lao"
+    ],
+    "countries": [
+      "LA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Vientiane",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://laopost.com.la/online-service/tracking",
+    "trackingUrlTemplate": "https://laopost.com.la/online-service/tracking?tracking-number={trackingNumber}",
+    "trackingSearchUrl": "https://laopost.com.la/online-service/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "laopost.com.la",
+          "www.laopost.com.la"
+        ],
+        "pathPattern": "^/online-service/tracking/?$",
+        "params": [
+          "tracking-number"
         ]
       }
     ],
@@ -17136,6 +17397,66 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "pitney-bowes": {
+    "displayName": "Pitney Bowes",
+    "color": "#3e53a4",
+    "aliases": [
+      "Pitney Bowes Global Ecommerce",
+      "Pitney Bowes Expedited Parcel Service",
+      "eBay Global Shipping Program",
+      "PBI"
+    ],
+    "countries": [
+      "GB",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://trackpb.shipment.co/track",
+    "trackingUrlTemplate": "https://trackpb.shipment.co/track/{trackingNumber}",
+    "trackingSearchUrl": "https://trackpb.shipment.co/track",
+    "linkRules": [
+      {
+        "domains": [
+          "trackpb.shipment.co"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "trackpb.shipment.co"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "number"
+        ]
+      },
+      {
+        "domains": [
+          "parceltracking.pb.com"
+        ],
+        "path": "^/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^UPAA[A-Z]\\d{15}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^UPBE[0-9A-F]{16}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^PBX[A-Z]{2}(?:\\d{9}|[0-9A-F]{15})$",
+        "confidence": "high"
+      }
+    ]
   },
   "pitt-ohio": {
     "displayName": "Pitt Ohio",
@@ -22704,6 +23025,7 @@ export const CARRIER_IDS = [
   "acs-courier",
   "aeropost",
   "aex-paraguay",
+  "afghan-post",
   "akash-ganga",
   "aks-express",
   "alem-tat",
@@ -22771,12 +23093,14 @@ export const CARRIER_IDS = [
   "cj-packet",
   "cne",
   "coordinadora",
+  "corre",
   "correo-argentino",
   "correo-uruguayo",
   "correos-bolivia",
   "correos-cuba",
   "correos-de-mexico",
   "correos-el-salvador",
+  "correos-nicaragua",
   "courier-center",
   "courier-it",
   "courier-plus-ng",
@@ -22814,6 +23138,7 @@ export const CARRIER_IDS = [
   "dpd-ie",
   "dpd-nl",
   "dpd-pl",
+  "dpd-pt",
   "dpd-uk",
   "dpd-za",
   "dropp",
@@ -22869,6 +23194,7 @@ export const CARRIER_IDS = [
   "ghtk",
   "gls-es",
   "gls-it",
+  "gls-pl",
   "go-express",
   "gobolt",
   "gofo-fr",
@@ -22930,10 +23256,13 @@ export const CARRIER_IDS = [
   "ktd",
   "kuehne-nagel",
   "kunyoung",
+  "kyrgyz-post",
+  "la-poste-burkina-faso",
   "la-poste-ci",
   "la-poste-senegal",
   "la-poste-tunisienne",
   "laar-courier",
+  "lao-post",
   "latvijas-pasts",
   "lbc-express",
   "leopards-courier",
@@ -23008,6 +23337,7 @@ export const CARRIER_IDS = [
   "pfc-express",
   "phlpost",
   "pilot-freight",
+  "pitney-bowes",
   "pitt-ohio",
   "pmm",
   "polaris-transport",
@@ -23271,6 +23601,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "acs-courier": [],
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
+  "afghan-post": [],
   "akash-ganga": [],
   "aks-express": [],
   "alem-tat": [],
@@ -23338,12 +23669,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cj-packet": ["cj-packet-1"],
   "cne": ["cne-1"],
   "coordinadora": [],
+  "corre": [],
   "correo-argentino": [],
   "correo-uruguayo": [],
   "correos-bolivia": [],
   "correos-cuba": [],
   "correos-de-mexico": ["correos-de-mexico-s10"],
   "correos-el-salvador": [],
+  "correos-nicaragua": [],
   "courier-center": [],
   "courier-it": [],
   "courier-plus-ng": [],
@@ -23381,6 +23714,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-ie": [],
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
+  "dpd-pt": [],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
   "dropp": [],
@@ -23436,6 +23770,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghtk": ["ghtk-1"],
   "gls-es": [],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
+  "gls-pl": [],
   "go-express": [],
   "gobolt": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
@@ -23497,10 +23832,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kunyoung": [],
+  "kyrgyz-post": [],
+  "la-poste-burkina-faso": [],
   "la-poste-ci": [],
   "la-poste-senegal": [],
   "la-poste-tunisienne": [],
   "laar-courier": [],
+  "lao-post": [],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
   "leopards-courier": [],
@@ -23575,6 +23913,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pfc-express": ["pfc-express-1"],
   "phlpost": [],
   "pilot-freight": [],
+  "pitney-bowes": ["pitney-bowes-1","pitney-bowes-2","pitney-bowes-3"],
   "pitt-ohio": [],
   "pmm": [],
   "polaris-transport": ["polaris-transport-1"],

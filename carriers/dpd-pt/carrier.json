@@ -1,0 +1,46 @@
+{
+  "id": "dpd-pt",
+  "displayName": "DPD Portugal",
+  "aliases": [
+    "Chronopost Portugal",
+    "DPD PT"
+  ],
+  "region": {
+    "countries": [
+      "PT"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Lisbon",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.dpd.pt/track-and-trace?reference={trackingNumber}",
+    "searchUrl": "https://tracking.dpd.pt/track-and-trace",
+    "canaryUrl": "https://tracking.dpd.pt/track-and-trace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.dpd.pt",
+        "dpd.pt"
+      ],
+      "pathPattern": "^/(?:track-and-trace|en/getting-parcel/track-trace)/?$",
+      "params": [
+        "reference"
+      ]
+    }
+  ],
+  "detection": []
+}

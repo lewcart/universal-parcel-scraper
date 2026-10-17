@@ -2172,7 +2172,17 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://inposteasy.com/",
     "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek?number={trackingNumber}",
     "trackingSearchUrl": "https://inpost.pl/sledzenie-przesylek",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "inpost.pl"
+        ],
+        "pathPattern": "^/(?:en/find-parcel|sledzenie-przesylek)/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^\\d{24}$",

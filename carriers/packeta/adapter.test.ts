@@ -344,6 +344,18 @@ describe('Packeta hand-off to a delivery partner', () => {
     expect(handedOver([dpd.replace(DPD_NUMBER, '01234567890129U'), '01234567890129U'])).not.toHaveProperty('delivery_tracking_number');
   });
 
+  it('names InPost and its parcel number from its find-parcel link', () => {
+    const INPOST_NUMBER = '600000000000000000000001';
+    const result = parsePacketaTrackingResponse({ item: packet({
+      packetStatusId: '31', courierId: '1',
+      trackingDetails: [{
+        text: `The parcel has been handed over to the carrier. Tracking number: <a href="https://inpost.pl/en/find-parcel?number=${INPOST_NUMBER}" rel="noopener noreferrer">${INPOST_NUMBER}</a>`,
+        time: '2026-03-01 06:45:00',
+      }],
+    }) }, TRACKING_NUMBER);
+    expect(result).toMatchObject({ delivery_carrier: 'inpost', delivery_tracking_number: INPOST_NUMBER });
+  });
+
   it('lets a hand-off scan stored with its link markup keep its row', () => {
     const policy = sameInstantIdentityPolicy('packeta', { supportsScanMatching: true });
     const raw = (HANDOFF.trackingDetails as Array<{ text: string }>)[4]!.text;

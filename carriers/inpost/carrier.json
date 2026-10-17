@@ -61,7 +61,17 @@
     ],
     "unavailable": []
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "inpost.pl"
+      ],
+      "pathPattern": "^/(?:en/find-parcel|sledzenie-przesylek)/?$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "inpost-1",

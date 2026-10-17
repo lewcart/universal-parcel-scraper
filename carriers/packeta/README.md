@@ -53,8 +53,7 @@ after nine digits is CDL's order number.
   wording keeps the number and loses the link; a scan stored with the link keeps its row in
   the app. A host the catalog knows names the partner in `delivery_carrier`, and the number
   becomes `delivery_tracking_number` when the link holds it and the partner's own rules offer
-  it, so DPD Germany is asked about its own parcel number. InPost's links name no carrier in
-  the catalog, so its hand-offs name no partner.
+  it, so DPD Germany and InPost are asked about their own parcel numbers.
 - Links use the canonical `/en/{code}` path; the legacy `?id=` form 301-redirects to it and
   is still recognized.
 

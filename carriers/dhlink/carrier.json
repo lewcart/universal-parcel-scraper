@@ -87,6 +87,11 @@
       "id": "dhlink-1",
       "pattern": "^FC\\d{13}$",
       "confidence": "low"
+    },
+    {
+      "id": "dhlink-xzg",
+      "pattern": "^XZG\\d{9}WL$",
+      "confidence": "low"
     }
   ]
 }

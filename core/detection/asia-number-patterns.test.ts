@@ -118,4 +118,12 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
     expect(detectCarrierMatch('YL0000000001YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gzyl'] });
   });
+
+  it('asks DHLink about its line provider\'s XZG tracking numbers without naming it from the shape', () => {
+    expect(detectCarrierMatch('XZG000000001WL')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('XZG000000001WL')).toEqual(['dhlink']);
+    for (const number of ['XZG00000001WL', 'XZG0000000001WL', 'XZG000000001WX', 'XZH000000001WL', 'YIL000000001WL']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
+    }
+  });
 });

@@ -20017,7 +20017,14 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "trackingSearchUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "servientrega": {
     "displayName": "Servientrega",
@@ -24792,7 +24799,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "seko": [],
   "sendex": [],
   "sending": [],
-  "serpost": [],
+  "serpost": ["serpost-s10"],
   "servientrega": [],
   "seven-eleven-tw": [],
   "sfc": ["sfc-1","sfc-ae"],

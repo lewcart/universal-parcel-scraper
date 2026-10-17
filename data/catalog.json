@@ -20015,7 +20015,14 @@
     "canaryUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "trackingSearchUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "servientrega": {
     "displayName": "Servientrega",

@@ -73,5 +73,13 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "serpost-s10",
+      "pattern": "^[A-Z]{2}\\d{9}PE$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

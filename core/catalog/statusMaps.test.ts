@@ -340,7 +340,7 @@ describe("universal providers' answers", () => {
     for (const wording of ['Arrived at destination country. Delivered by Airline', 'Receiving destination mail. Delivered to Distributor',
       'Deliver to distributor']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
     // Postal Ninja's, ParcelsApp's and Ship24's relayed steps, read whole.
-    for (const [wording, stage] of [['registered in the system', 'registered'], ['2) Example Center Your order has been received', 'registered'],
+    for (const [wording, stage] of [['registered in the system', 'registered'], ['2) Example Center Your order has been received', 'in_transit'],
       ['USPS in possession of item, EXAMPLE, ST 00000', 'accepted'], ['inventory in a warehouse', 'in_transit'], ['hand over to airline', 'in_transit'],
       ['new delivery, flexible delivery arrangement', 'in_transit'], ['in lavorazione', 'in_transit'], ['uscita centro postale', 'in_transit'],
       ['Your order has been shipped from 2) Example Center', 'in_transit']] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
@@ -390,6 +390,9 @@ describe("universal providers' answers", () => {
       ['Przesyłka wydana do doręczenia kurierowi FedEx.', 'out_for_delivery'],
       ['The shipment is handled by a return consolidator', 'exception'],
       ['Delivery. Your order has been shipped from the distribution center', 'in_transit'],
+      // iMile's receipt at a centre in the destination country, and its dispatch from there.
+      ['Example center Your order has been received', 'in_transit'], ['Received. Your order has been received', 'in_transit'],
+      ['Your order has been shipped from Example center', 'in_transit'], ['Your order has been received', 'registered'],
       ['NUEVO REPARTO. Concertación entrega flexible', 'in_transit'], ['NUEVO REPARTO', 'in_transit'],
       ['Waiting for carrier to collect the order', 'registered'], ['Depositado en punto MRW', 'ready_for_pickup'],
       ['Order Submited', 'registered'], ['We have received the shipment from the sender', 'accepted'], ['Center Received', 'in_transit'],
@@ -415,7 +418,8 @@ describe("universal providers' answers", () => {
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
-      'Delivery has been made at the destination port of Example', 'Order information has been sent']) {
+      'Delivery has been made at the destination port of Example', 'Order information has been sent',
+      'Received.', 'Received. Your order has been received by the store', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

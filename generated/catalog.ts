@@ -13059,7 +13059,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "happy-post",
+      "recognitionRank": 888,
+      "localClocks": true
     },
     "canaryUrl": "https://happy-post.com/fr/suivi/",
     "trackingUrlTemplate": "https://happy-post.com/fr/suivi/?id={trackingNumber}",

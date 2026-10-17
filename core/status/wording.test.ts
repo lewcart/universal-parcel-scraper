@@ -211,6 +211,9 @@ describe('classifyWording', () => {
     // Travelling to the pickup point, or handed back to the seller, is not availability.
     expect(wordingStage('Colis en cours de livraison au point de retrait')).toBe('in_transit');
     expect(wordingStage('Colis mis à disposition du vendeur suite à un retour')).toBe('returned');
+    // A carrier collecting the parcel is no pickup by the recipient, as DHLink words the hand-over after clearance.
+    expect(wordingStage('Awaiting pickup by local carrier')).not.toBe('ready_for_pickup');
+    expect(wordingStage('Customs import clearance completed, awaiting pickup by local carrier')).toBe('in_transit');
   });
 
   it('reads French missed attempts, same-day delivery notices and mailbox deliveries', () => {
@@ -473,6 +476,9 @@ describe('classifyWording', () => {
       // A forwarder's hand-over to the airport for its flight, as Mayi Yinfu translates it.
       ['The goods have been delivered to the airport and are awaiting the arrangement of flights.', 'in_transit'],
       ['Shipment delivered to the airport', 'in_transit'],
+      // A forwarder's hand-over to its destination agent after clearance, as Linhan relays it.
+      ['transfer to local acting company International self-operation team', 'in_transit'],
+      ['Transfer to the destination delivery partner', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {

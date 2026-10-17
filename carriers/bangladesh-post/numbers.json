@@ -57,6 +57,25 @@
         "confidence": "high"
       },
       "note": "A customer review of Bangladesh EMS consists of this EMS number alone; its BD suffix and valid check digit tie it to Bangladesh Post."
+    },
+    {
+      "number": "DL636643547BD",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/naimurhasan/unified-parcel-tracker/blob/main/note.txt",
+        "date": "2025-08-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "An open-source tracker's notes use this number as their example of Bangladesh Post's domestic tracking and quote its domestic tracker's reply for it."
     }
   ]
 }

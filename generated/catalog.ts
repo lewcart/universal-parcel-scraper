@@ -6258,11 +6258,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bangladesh-post",
+      "recognitionRank": 909,
+      "localClocks": true
     },
     "canaryUrl": "https://ipsbd.bdpost.gov.bd/mail-tracking.html",
     "trackingSearchUrl": "https://ipsbd.bdpost.gov.bd/mail-tracking.html",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "report.dms.bdpost.gov.bd"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "v",
+          "V"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "barid-al-maghrib": {

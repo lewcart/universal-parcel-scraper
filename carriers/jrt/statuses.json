@@ -1,6 +1,10 @@
 {
   "carrier": "jrt",
   "entries": [
-    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "live", "note": "The platform writes this row itself for an order without scans, on its creation time."}
+    {"wording": "货物电子信息已经收到", "language": "zh", "stage": "registered", "confirmedBy": "live", "note": "The platform writes this row itself for an order without scans, on its creation time."},
+    {"wording": "Shipment information received", "language": "en", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-16"},
+    {"wording": "到达收货点", "language": "zh", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "The first scan in JRT's hands; GZYL's tenant of the same platform words it \"Arrive at the cross border receiving point\"."},
+    {"wording": "货物离开操作中心", "language": "zh", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16", "note": "GZYL's tenant of the same platform words it \"Goods leave the operation center\"."},
+    {"wording": "Shipment arrived at facility", "language": "en", "stage": "in_transit", "confirmedBy": "live", "firstSeen": "2026-10-16"}
   ]
 }

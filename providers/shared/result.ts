@@ -67,6 +67,8 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   if (/colis en preparation chez l'expediteur/.test(french)) return 'registered';
   // Mondial Relay's hub scan, after the parcel was handed in at a relay or locker.
   if (/prise en charge de votre colis sur notre site logistique/.test(french)) return 'in_transit';
+  // A sender's parcel left at a pick-up point for a courier to collect: an acceptance, not a parcel awaiting its recipient.
+  if (/^the (?:parcel|package) has been delivered to the pick-?up point\. a courier will pick it up\b/i.test(description)) return 'accepted';
   // Posti's handling labels survive in aggregator histories. Registration is
   // a repeated physical scan here, and the reason can describe future customs
   // or delivery without making either the event's stage.

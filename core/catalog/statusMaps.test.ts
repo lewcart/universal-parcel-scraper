@@ -419,6 +419,8 @@ describe("universal providers' answers", () => {
       ['Furniture Received by Metro-Example-Hub', 'in_transit'],
       ['The package is in the local warehouse. We will come back with details about the next steps', 'in_transit'],
       ['The package is in the local warehouse. We will come back with details about the delivery', 'in_transit'],
+      ['The parcel has been delivered to the pick-up point. A courier will pick it up soon and take it to storage', 'accepted'],
+      ['The parcel has been delivered to the pick-up point', 'ready_for_pickup'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.

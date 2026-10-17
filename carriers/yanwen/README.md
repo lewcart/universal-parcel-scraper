@@ -21,6 +21,8 @@ icon marks the delivery scan whatever the last-mile carrier wrote. Otherwise
 the category on the identity field, which the page's status filter labels,
 gives the status. In transit names no stage, because it spans customs and the
 partners' legs, and a delivery still needs a delivered scan.
+Information input and a label created in the seconds after Yanwen's pickup scan
+are its intake, so they read as accepted rather than as an announcement.
 
 Some relayed histories come twice: once on the local wall clock and once on
 the UTC wall clock under the same offset, so their US scans read hours late. A

@@ -114,6 +114,20 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "wording": "Processing information input",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17"
+    },
+    {
+      "wording": "shipping label created",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17"
+    },
+    {
       "wording": "Order processed by shipper",
       "language": "en",
       "stage": "registered",

@@ -113,9 +113,9 @@ trusted publisher.
   container images, tags the commit and creates a GitHub release. Publishing that version to
   npm under `latest` is opt-in.
 
-Both wait for the CI workflow to pass on the same commit, and publish nothing when it fails.
-A dispatch on a commit CI has not run on fails until CI is dispatched on it. After rerunning a
-failed CI run, rerun the release run's failed jobs.
+Both wait for the CI and secret scanning workflows to pass on the same commit, and publish nothing
+when either fails. A dispatch on a commit they have not run on fails until they are dispatched on
+it. After rerunning a failed run of either, rerun the release run's failed jobs.
 
 Raising the version sets it in `package.json`, `package-lock.json` and `server/openapi.json`.
 

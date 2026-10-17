@@ -2,7 +2,7 @@ name: Release
 # npm trusts this workflow file to publish the package, so both channels
 # publish from here: a push to main publishes a prerelease under `next`, and a
 # dispatch publishes the package.json version under `latest`. Either publishes
-# only once the CI workflow has passed on the same commit.
+# only once the CI and secret scanning workflows have passed on the same commit.
 on:
   push:
     branches: [main]
@@ -33,8 +33,8 @@ concurrency:
   group: release-${{ github.event_name }}
   cancel-in-progress: false
 jobs:
-  ci:
-    name: CI passed on this commit
+  checks:
+    name: CI and secret scanning passed on this commit
     # A push to a fork does nothing.
     if: ${{ github.event_name == 'workflow_dispatch' || github.repository == 'plhery/universal-parcel-scraper' }}
     runs-on: ubuntu-latest
@@ -43,34 +43,37 @@ jobs:
       actions: read
     env:
       GH_TOKEN: ${{ github.token }}
-    # CI tests every supported Node version and the container. A push starts
-    # it beside this workflow, so this waits for its pushed or dispatched runs
-    # on this commit: one that passed lets the release go on, and once all
-    # have finished without passing, the release stops. After rerunning CI,
+    # CI tests every supported Node version and the container, and secret
+    # scanning runs Gitleaks over the history. A push starts both beside this
+    # workflow, so this waits for each one's pushed or dispatched runs on this
+    # commit: one that passed lets the release go on, and once all have
+    # finished without passing, the release stops. After rerunning either,
     # rerun this workflow's failed jobs.
     steps:
       - run: |
           started=$SECONDS
-          while true; do
-            state=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?head_sha=$GITHUB_SHA&per_page=100" --jq '
-              [.workflow_runs[] | select(.event == "push" or .event == "workflow_dispatch")]
-              | if any(.conclusion == "success") then "passed"
-                elif length == 0 then "missing"
-                elif any(.status != "completed") then "running"
-                else "failed" end')
-            elapsed=$((SECONDS - started))
-            case "$state" in
-              passed) echo "CI passed on $GITHUB_SHA."; exit 0 ;;
-              failed) echo "::error::CI failed on $GITHUB_SHA, so nothing is published."; exit 1 ;;
-              missing) if [ "$elapsed" -ge 600 ]; then
-                  echo "::error::CI has not run on $GITHUB_SHA. Dispatch it on this ref, then rerun this job."; exit 1
-                fi ;;
-            esac
-            if [ "$elapsed" -ge 4200 ]; then echo "::error::CI is still running on $GITHUB_SHA."; exit 1; fi
-            sleep 30
+          for workflow in ci.yml secrets.yml; do
+            while true; do
+              state=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$workflow/runs?head_sha=$GITHUB_SHA&per_page=100" --jq '
+                [.workflow_runs[] | select(.event == "push" or .event == "workflow_dispatch")]
+                | if any(.conclusion == "success") then "passed"
+                  elif length == 0 then "missing"
+                  elif any(.status != "completed") then "running"
+                  else "failed" end')
+              elapsed=$((SECONDS - started))
+              case "$state" in
+                passed) echo "$workflow passed on $GITHUB_SHA."; break ;;
+                failed) echo "::error::$workflow failed on $GITHUB_SHA, so nothing is published."; exit 1 ;;
+                missing) if [ "$elapsed" -ge 600 ]; then
+                    echo "::error::$workflow has not run on $GITHUB_SHA. Dispatch it on this ref, then rerun this job."; exit 1
+                  fi ;;
+              esac
+              if [ "$elapsed" -ge 4200 ]; then echo "::error::$workflow is still running on $GITHUB_SHA."; exit 1; fi
+              sleep 30
+            done
           done
   prerelease:
-    needs: ci
+    needs: checks
     if: ${{ github.event_name == 'push' && github.repository == 'plhery/universal-parcel-scraper' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -116,7 +119,7 @@ jobs:
           node scripts/prerelease.mjs --await "$PUBLISHED_VERSION"
           echo "version=$PUBLISHED_VERSION" >> "$GITHUB_OUTPUT"
   publish:
-    needs: ci
+    needs: checks
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60

@@ -601,6 +601,7 @@ describe('classifyWording', () => {
       'Retiré par le destinataire', 'Colis retiré par son destinataire', 'Votre colis a été retiré au point relais',
       'Le destinataire a retiré son colis', 'Vom Empfänger abgeholt', 'Die Sendung wurde vom Empfänger in der Filiale abgeholt.',
       'Der Empfänger hat die Sendung in der Filiale abgeholt.', 'Die Sendung wurde aus der Packstation abgeholt.',
+      'Abholung im Paketshop durch Empfänger',
       'Ritirato dal destinatario', "La spedizione è stata ritirata dal destinatario presso l'ufficio postale",
       'Il destinatario ha ritirato la spedizione', 'Recogido por el destinatario', 'Retirado por el destinatario',
       'El destinatario ha retirado el envío de la tienda SEUR Pickup seleccionada.', 'Levantado pelo destinatário',
@@ -618,7 +619,8 @@ describe('classifyWording', () => {
     for (const wording of ['The shipment has been collected from the ServicePoint', 'Collected from the pickup point by the courier',
       'Parcel collected by pickup point', 'Shipment collected from the shipper', 'We successfully picked it up from your mailbox.',
       'Die Sendung wurde beim Absender abgeholt', 'Die Sendung wurde vom Paketboten in der Filiale abgeholt', 'Ritirato dal corriere',
-      'Colis retiré de la tournée', 'Picked up by customer service']) {
+      'Colis retiré de la tournée', 'Picked up by customer service', 'Abholung im Paketshop durch den Kurier',
+      'Abholung durch Empfänger möglich']) {
       expect(wordingStage(wording, 'pending'), wording).not.toBe('delivered');
     }
     // A parcel still to collect.

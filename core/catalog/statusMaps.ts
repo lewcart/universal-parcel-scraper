@@ -239,6 +239,7 @@ import { statusMap as xdp } from '../../carriers/xdp/status.js';
 import { statusMap as xpoLtl } from '../../carriers/xpo-ltl/status.js';
 import { statusMap as zto } from '../../carriers/zto/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
+import { statusMap as yilongLogistics } from '../../carriers/yilong-logistics/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
 import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
@@ -284,7 +285,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   't-cat': tCat, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, 'team-global-express': teamGlobalExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, tnt, 'tnt-it': tntIt, 'total-express': totalExpress, tsjy, 'ubi-smart-parcel': ubiSmartParcel, ups,
   'uzbekistan-post': uzbekistanPost, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, xdp, 'xpo-ltl': xpoLtl,
-  yunexpress, zto,
+  'yilong-logistics': yilongLogistics, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,
 };
 

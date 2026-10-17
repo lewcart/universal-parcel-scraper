@@ -78419,6 +78419,14 @@
     ]
   },
   {
+    "input": "YIL990000001WL",
+    "carrier": "yilong-logistics",
+    "confidence": "high",
+    "candidates": [
+      "yilong-logistics"
+    ]
+  },
+  {
     "input": "YJF0019250",
     "carrier": "unknown",
     "confidence": "low",

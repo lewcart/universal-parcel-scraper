@@ -23851,6 +23851,33 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "yilong-logistics": {
+    "displayName": "Yilong Logistics",
+    "color": "#ec0307",
+    "aliases": [
+      "YIL",
+      "YXHL",
+      "一龙物流",
+      "莆田市城厢区一龙物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "yilong-logistics"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^YIL\\d{9}WL$",
+        "confidence": "high"
+      }
+    ]
+  },
   "yimidida": {
     "displayName": "Yimidida",
     "color": "#f5a91a",
@@ -24714,6 +24741,7 @@ export const CARRIER_IDS = [
   "xpo-ltl",
   "xpressbees",
   "yalidine",
+  "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
   "zajil",
@@ -25318,6 +25346,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "xpo-ltl": ["xpo-ltl-1"],
   "xpressbees": ["xpressbees-awb"],
   "yalidine": ["yalidine-1"],
+  "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],
   "zajil": [],

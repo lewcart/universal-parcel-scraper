@@ -32,6 +32,12 @@ other postal-shaped identifiers do. A fifteen-character numeric identifier
 must pass the shared DPD check-character validation. These shapes suggest a
 lookup, not carrier ownership.
 
+Chronopost also answers for other posts' letter and parcel items that pass
+through one of its hubs, often with that single scan. La Poste delivers those
+in France and its overseas departments and holds their whole history, so such
+an item names La Poste as its delivery carrier. EMS items, French items and
+Chronopost's own codes do not: Chronopost delivers inbound EMS itself.
+
 A scan's location is its office, or the depot Chronopost names for a partner's
 scan abroad. Office labels that name a service rather than a place give none:
 "Web Services" on the shipper's preparation, "Service d'avisage" on

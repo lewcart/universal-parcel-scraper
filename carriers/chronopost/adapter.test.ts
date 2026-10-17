@@ -30,6 +30,15 @@ const outForDelivery = scan('TA', '2026-06-27T07:05:43+02:00', 'Colis en cours d
 const relay = { 'Type de retrait': 'Relais CHRONOPOST', 'Point de livraison': 'EXAMPLE RELAY - 1 EXAMPLE STREET - 00000 - EXAMPLE CITY - FR' };
 
 describe('Chronopost direct tracking', () => {
+  it("names La Poste for another post's letter or parcel item it scans on the way, but not for EMS or its own codes", () => {
+    const transit = scan('TS ', '2026-06-26T22:00:00+02:00', "Colis en cours d'acheminement");
+    const reply = (skybill: string) => parseChronopostTrackingXml(history(transit).split(number).join(skybill), skybill);
+    expect(reply('LX123456785TW')).toMatchObject({ delivery_carrier: 'la-poste' });
+    expect(reply('CP123456785CN')).toMatchObject({ delivery_carrier: 'la-poste' });
+    for (const own of ['EE123456785TW', 'LX123456785FR', 'XT123456785TS', 'LX123456785JF']) {
+      expect(reply(own)).not.toHaveProperty('delivery_carrier');
+    }
+  });
   it('keeps the complete international history, precise clocks and a checked partner reference', () => {
     const result = parseChronopostTrackingXml(fixture, number);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',

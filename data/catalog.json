@@ -4161,6 +4161,10 @@
   "australia-post": {
     "displayName": "Australia Post",
     "color": "#dc1928",
+    "aliases": [
+      "StarTrack",
+      "Star Track Express"
+    ],
     "countries": [
       "AU"
     ],
@@ -22742,7 +22746,8 @@
     "displayName": "Vinted Go",
     "color": "#004654",
     "aliases": [
-      "VintedGo"
+      "VintedGo",
+      "Homerr"
     ],
     "countries": [
       "FR",

@@ -1,7 +1,10 @@
 {
   "id": "australia-post",
   "displayName": "Australia Post",
-  "aliases": [],
+  "aliases": [
+    "StarTrack",
+    "Star Track Express"
+  ],
   "region": {
     "countries": [
       "AU"

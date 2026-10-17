@@ -4163,6 +4163,10 @@ export const CARRIER_CATALOG = {
   "australia-post": {
     "displayName": "Australia Post",
     "color": "#dc1928",
+    "aliases": [
+      "StarTrack",
+      "Star Track Express"
+    ],
     "countries": [
       "AU"
     ],
@@ -22744,7 +22748,8 @@ export const CARRIER_CATALOG = {
     "displayName": "Vinted Go",
     "color": "#004654",
     "aliases": [
-      "VintedGo"
+      "VintedGo",
+      "Homerr"
     ],
     "countries": [
       "FR",

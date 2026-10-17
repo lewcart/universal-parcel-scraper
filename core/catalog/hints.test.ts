@@ -139,6 +139,8 @@ describe('carrier names reported by universal providers', () => {
     ['Poland Post', 'poczta-polska'], ['Pocztex', 'poczta-polska'], ['New Zealand Post', 'nz-post'],
     ['Norway Post', 'bring-posten'], ['Amazon Swiship', 'amazon-shipping'], ['PostNord Denmark', 'postnord'],
     ['DHL Freight Active Tracing', 'dhl-freight'],
+    // Brands their network's tracker answers for.
+    ['StarTrack', 'australia-post'], ['Star Track Express', 'australia-post'], ['Homerr', 'vinted-go'],
   ])('maps %s, a carrier followed by its own country included', (name, expected) => {
     expect(carrierIdFromName(name)).toBe(expected);
   });

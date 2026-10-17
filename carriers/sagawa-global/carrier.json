@@ -1,0 +1,51 @@
+{
+  "id": "sagawa-global",
+  "displayName": "SGH Global Japan",
+  "aliases": [
+    "Sagawa Global",
+    "SGHグローバル・ジャパン",
+    "SGH Global Japan Co., Ltd.",
+    "SGX",
+    "Sagawa Global Express",
+    "佐川グローバルエクスプレス",
+    "Sagawa Global Logistics",
+    "佐川グローバルロジスティクス"
+  ],
+  "region": {
+    "countries": [
+      "JP"
+    ]
+  },
+  "brand": {
+    "color": "#3b499f"
+  },
+  "selectable": true,
+  "timezone": "Asia/Tokyo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",
+    "searchUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
+    "canaryUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.sagawa-sgx.com"
+      ],
+      "pathPattern": "^/sgx/trackeng\\.asp$",
+      "params": [
+        "AWB"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1783,6 +1783,12 @@
     "reason": "KwickBox's twelve-digit shipment numbers share their shape with many carriers' numeric numbers."
   },
   {
+    "carrier": "kyoungdong",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Kyungdong Express waybills are bare thirteen-digit runs without a known check digit, a shape Korea Post and other carriers share."
+  },
+  {
     "carrier": "la-poste-senegal",
     "pattern": "^JT\\d{13}$",
     "kind": "by_design",
@@ -2513,6 +2519,18 @@
     "reason": "Fourteen digits are shared by several carriers and nothing in the number points to Russian Post."
   },
   {
+    "carrier": "sagawa-global",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "SGX air waybills are twelve digits with the Sagawa Express modulo-7 check digit and double as the Sagawa Express domestic waybill, so the shape names Sagawa Express."
+  },
+  {
+    "carrier": "sagawa-global",
+    "pattern": "^IDA\\d{12}$",
+    "kind": "by_design",
+    "reason": "SGX air waybills from Los Angeles start with IDA and twelve digits; one waybill shows the layout, so no rule claims it."
+  },
+  {
     "carrier": "saia",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -3198,6 +3216,12 @@
     "pattern": "^S\\d{14}$",
     "kind": "open",
     "reason": "A public experience table attributes this reference to Yanwen; no official source establishes the family."
+  },
+  {
+    "carrier": "yc-delivery",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "YC Delivery numbers are twelve digits with a modulo-7 check digit, the shape Yamato, Sagawa and other Japanese carriers print."
   },
   {
     "carrier": "yimidida",

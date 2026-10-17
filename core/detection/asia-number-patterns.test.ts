@@ -166,6 +166,13 @@ describe('wave seven South-East Asian courier rules', () => {
     }
   });
 
+  it('keeps IDexpress for its ID waybills and leaves SGX IDA air waybills unnamed', () => {
+    for (const number of ['IDS000000000001', 'IDE0000000000001', 'IDA0000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'idexpress', confidence: 'high' });
+    }
+    expect(detectCarrierMatch('IDA000000000001').candidates ?? []).not.toContain('idexpress');
+  });
+
   it('names the Pickupp network its region suffix shows', () => {
     expect(detectCarrierMatch('PU000000000001HK')).toMatchObject({ carrier: 'pickupp', confidence: 'high', candidates: ['pickupp'] });
     expect(detectCarrierMatch('PU000000000001SG')).toMatchObject({ carrier: 'pickupp-sg', confidence: 'high', candidates: ['pickupp-sg'] });

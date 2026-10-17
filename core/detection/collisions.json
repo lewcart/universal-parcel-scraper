@@ -4389,5 +4389,26 @@
       "colis-prive"
     ],
     "reason": "colis-prive-1 is a low rule for any 17-character alphanumeric ending in a postcode-like group; the APPL prefix decides for Apple Express."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "sagawa-global numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

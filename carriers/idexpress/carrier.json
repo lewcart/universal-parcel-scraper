@@ -46,7 +46,7 @@
   "detection": [
     {
       "id": "idexpress-1",
-      "pattern": "^ID[A-Z]\\d{12,13}$",
+      "pattern": "^ID(?!A\\d{12}$)[A-Z]\\d{12,13}$",
       "confidence": "high"
     }
   ]

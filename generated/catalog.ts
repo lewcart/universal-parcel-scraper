@@ -14132,7 +14132,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^ID[A-Z]\\d{12,13}$",
+        "pattern": "^ID(?!A\\d{12}$)[A-Z]\\d{12,13}$",
         "confidence": "high"
       }
     ]
@@ -15648,6 +15648,54 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://www.kwick-box.com/",
     "trackingSearchUrl": "https://www.kwick-box.com/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "kyoungdong": {
+    "displayName": "Kyungdong Express",
+    "color": "#141991",
+    "aliases": [
+      "경동택배",
+      "Kyoungdong Express",
+      "KYOUNGDONG",
+      "Kyungdong Parcel",
+      "KDEXP",
+      "경동물류",
+      "Kyungdong Logistics"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://kdexp.com/index.do",
+    "trackingUrlTemplate": "https://kdexp.com/service/delivery/etc/delivery.do?barcode={trackingNumber}",
+    "trackingSearchUrl": "https://kdexp.com/index.do",
+    "linkRules": [
+      {
+        "domains": [
+          "kdexp.com",
+          "www.kdexp.com"
+        ],
+        "pathPattern": "^/service/delivery/(?:etc|ns)/delivery\\.do$",
+        "params": [
+          "barcode"
+        ]
+      },
+      {
+        "domains": [
+          "kdexp.com",
+          "www.kdexp.com"
+        ],
+        "pathPattern": "^/(?:basicNewDelivery|del_search)\\.kd$",
+        "params": [
+          "barcode"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "kyrgyz-post": {
@@ -21004,6 +21052,44 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "sagawa-global": {
+    "displayName": "SGH Global Japan",
+    "color": "#3b499f",
+    "aliases": [
+      "Sagawa Global",
+      "SGHグローバル・ジャパン",
+      "SGH Global Japan Co., Ltd.",
+      "SGX",
+      "Sagawa Global Express",
+      "佐川グローバルエクスプレス",
+      "Sagawa Global Logistics",
+      "佐川グローバルロジスティクス"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
+    "trackingUrlTemplate": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.sagawa-sgx.com"
+        ],
+        "pathPattern": "^/sgx/trackeng\\.asp$",
+        "params": [
+          "AWB"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "saia": {
     "displayName": "Saia",
     "color": "#d52027",
@@ -25226,6 +25312,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "yc-delivery": {
+    "displayName": "YC Delivery",
+    "color": "#004092",
+    "aliases": [
+      "YCお届け便",
+      "YC お届け便",
+      "yc-otodoke"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.e1.yc-otodoke.com/inquiry/",
+    "trackingUrlTemplate": "https://www.e1.yc-otodoke.com/inquiry/?deliveryNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.e1.yc-otodoke.com/inquiry/",
+    "linkRules": [
+      {
+        "domains": [
+          "e1.yc-otodoke.com"
+        ],
+        "pathPattern": "^/inquiry/?$",
+        "params": [
+          "deliveryNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "yilong-logistics": {
     "displayName": "Yilong Logistics",
     "color": "#ec0307",
@@ -25905,6 +26024,7 @@ export const CARRIER_IDS = [
   "kuehne-nagel",
   "kunyoung",
   "kwick-box",
+  "kyoungdong",
   "kyrgyz-post",
   "la-poste-burkina-faso",
   "la-poste-ci",
@@ -26043,6 +26163,7 @@ export const CARRIER_IDS = [
   "russian-post",
   "saee",
   "sagawa",
+  "sagawa-global",
   "saia",
   "sailpost",
   "sameday",
@@ -26151,6 +26272,7 @@ export const CARRIER_IDS = [
   "xpo-ltl",
   "xpressbees",
   "yalidine",
+  "yc-delivery",
   "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
@@ -26545,6 +26667,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kunyoung": [],
   "kwick-box": [],
+  "kyoungdong": [],
   "kyrgyz-post": [],
   "la-poste-burkina-faso": [],
   "la-poste-ci": [],
@@ -26683,6 +26806,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "russian-post": [],
   "saee": ["saee-1"],
   "sagawa": ["sagawa-waybill"],
+  "sagawa-global": [],
   "saia": ["saia-1"],
   "sailpost": [],
   "sameday": ["sameday-1"],
@@ -26791,6 +26915,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "xpo-ltl": ["xpo-ltl-1"],
   "xpressbees": ["xpressbees-awb"],
   "yalidine": ["yalidine-1"],
+  "yc-delivery": [],
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],

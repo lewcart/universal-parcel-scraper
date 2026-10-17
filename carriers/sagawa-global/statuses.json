@@ -1,0 +1,19 @@
+{
+  "carrier": "sagawa-global",
+  "entries": [
+    {"wording": "Preparing for dispatch", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The first scan, at the origin station abroad."},
+    {"wording": "出荷準備中", "stage": "accepted", "language": "ja", "confirmedBy": "portal", "note": "The Japanese page's first scan, at the origin station abroad."},
+    {"wording": "On Board Aircraft", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "現地へ輸送中", "stage": "in_transit", "language": "ja", "confirmedBy": "portal", "note": "In transit to the destination country."},
+    {"code": "TA", "wording": "ARRIVED AT TRANSIT POINT", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Quoted with its code from a reply of the tracker's XML endpoint in an open-source shop's SGX tracking code."},
+    {"wording": "フライト到着予定日", "language": "ja", "confirmedBy": "portal", "note": "The flight's expected arrival date, listed as a row of the history; not an event."},
+    {"wording": "Arrived At Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Arrived at the Japanese airport before customs."},
+    {"wording": "現地に到着/通関中", "stage": "customs", "language": "ja", "confirmedBy": "portal", "note": "Arrived in Japan and in customs."},
+    {"wording": "CLEARANCE RELEASE", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "Released by customs."},
+    {"wording": "通関許可", "stage": "customs", "language": "ja", "confirmedBy": "portal", "note": "Released by customs."},
+    {"wording": "お荷物を発送しました", "stage": "in_transit", "language": "ja", "confirmedBy": "portal", "note": "Sent on from the airport for domestic delivery by Sagawa Express."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"wording": "配達完了", "stage": "delivered", "language": "ja", "confirmedBy": "portal", "note": "The history shows it followed by [STAMP]."},
+    {"wording": "配達完了(Delivered)(派送完毕，已签收)", "stage": "delivered", "language": "ja", "confirmedBy": "portal", "note": "The status column of the list the tracker shows when a lookup matches an air waybill, in Japanese, English and Chinese."}
+  ]
+}

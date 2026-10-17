@@ -356,6 +356,7 @@ describe("universal providers' answers", () => {
       ['China Post has received the mail', 'accepted'], ['Envío recogido en origen', 'accepted'],
       ['First parcel scan along Poste Italiane’s logistic network', 'accepted'], ['RFID Confirmed Pickup', 'accepted'],
       ['示例处理中心已收寄【示例市】', 'accepted'],
+      ['parcel handed', 'accepted'],
       ['Instruction data transmitted to DPD', 'registered'], ['Order confirmed.', 'registered'], ['Order received successfully', 'registered'],
       ['Package finished', 'registered'],
       ['Created. Parcel created by Example Shop at EXA', 'registered'], ['create. Shipment order created', 'registered'],
@@ -423,7 +424,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem', 'Rescheduled delivery', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem', 'Rescheduled delivery', 'Parcel handed to the recipient', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

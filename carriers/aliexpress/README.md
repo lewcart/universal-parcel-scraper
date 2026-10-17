@@ -59,8 +59,8 @@ activity confirms the Cainiao tracking leg; an empty internal pending module doe
   than an error.
 - The newest `latestTrace.actionCode` decides the status. The parcel-level `status` token
   (`DELIVERED`, `CLEAR_CUSTOMS`, `transport`…) has no stable vocabulary, so it is only a fallback
-  when no action code exists. The action-code map started from the MIT client
-  [ha-cainiao](https://github.com/ha-parcel-integrations/ha-cainiao).
+  when no action code exists, and an unknown token before any scan states no stage. The
+  action-code map started from the MIT client [ha-cainiao](https://github.com/ha-parcel-integrations/ha-cainiao).
 - `GTMS_STA_SIGNED` means a pickup station signed, not the recipient: it maps to
   `ready_for_pickup`, never `delivered`. A pickup point's own delivery scan, `GSTA_SIGN`, is the
   recipient collecting the parcel.

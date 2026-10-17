@@ -207,10 +207,13 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
       throw new NotFoundError(PROVIDER);
     }
   }
+  // A token the map does not know reads as moving only once Cainiao has a
+  // scan; before one it states nothing.
+  const scanned = details.length > 0 || Object.keys(latest).length > 0;
   const status = cainiaoActionCode(latest.actionCode)
     ? (CAINIAO_ACTION_STATUS.get(cainiaoActionCode(latest.actionCode)) ?? 'unknown')
     : (CAINIAO_STATUS.get(rawStatus)
-      ?? (rawStatus ? 'in_transit' : details.length === 0 ? 'pending' : 'unknown'));
+      ?? (rawStatus ? (scanned ? 'in_transit' : 'unknown') : details.length === 0 ? 'pending' : 'unknown'));
   const latestAction = cainiaoActionCode(latest.actionCode);
   const currentStage = cainiaoActionStage(latestAction) ?? cainiaoStageByStatus()[status];
   const carriers = carrierNames(trackingModule, details);

@@ -483,6 +483,13 @@ describe('Cainiao projection', () => {
     expect(preparing).toMatchObject({ status: 'pending', current_stage: 'registered', events: [] });
   });
 
+  it('claims no stage for an order token it does not know before any scan', () => {
+    const unread = parseCainiaoTrackingResponse({ module: [{ mailNo: 'LP00000000000006', status: 'SELLER_SOMETHING_NEW', detailList: [] }] },
+      'LP00000000000006');
+    expect(unread).toMatchObject({ status: 'unknown', last_status_text: 'SELLER_SOMETHING_NEW', events: [] });
+    expect(unread.current_stage).toBeUndefined();
+  });
+
   it('files every recorded code under the stage statuses.json gives it', () => {
     const recorded = JSON.parse(readFileSync(path.join(folder, 'statuses.json'), 'utf8')) as {
       entries: Array<{ code: string; wording?: string; stage: string }>;

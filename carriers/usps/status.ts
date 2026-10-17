@@ -23,12 +23,13 @@ const FAILED_ATTEMPT_TERMS = [
 const EXCEPTION_TERMS = ['alert', 'exception', 'damaged', 'lost', 'seized', 'dispute', 'held at post office', 'held for pickup'];
 const DELIVERED_TERMS = ['delivered'];
 const OUT_FOR_DELIVERY_TERMS = ['out for delivery'];
-const READY_FOR_PICKUP_TERMS = ['available for pickup', 'available for pick-up', 'pickup', 'pick up', 'arrived at post office', 'arrived at unit', 'at post office'];
+const READY_FOR_PICKUP_TERMS = ['available for pickup', 'available for pick-up', 'pickup', 'pick up', 'arrived at post office', 'arrived at unit', 'arrival at unit', 'at post office'];
 const REGISTERED_TERMS = [
   'pre-shipment', 'preshipment', 'shipping label created', 'label created',
   'acceptance pending', 'usps awaiting item', 'awaiting item', 'order received',
 ];
-const ACCEPTED_TERMS = ['accepted', 'in possession of item', 'picked up', 'picked-up', 'tendered', 'shipment received', 'arrival at unit', 'arrived at usps'];
+// A facility arrival ("Arrived at USPS Facility") follows acceptance: it is transit.
+const ACCEPTED_TERMS = ['accepted', 'in possession of item', 'picked up', 'picked-up', 'tendered', 'shipment received'];
 const CUSTOMS_TERMS = ['customs', 'clearance'];
 const IN_TRANSIT_TERMS = [
   'in transit', 'on its way', 'in-transit', 'arrived', 'departed', 'departure',

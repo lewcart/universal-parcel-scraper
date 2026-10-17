@@ -61,6 +61,9 @@ describe('USPS status vocabulary', () => {
     expect(uspsStage('Notice Left')).toBe('failed_attempt');
     expect(uspsStage('Pre-Shipment')).toBe('registered');
     expect(uspsStage('Available for Pickup')).toBe('ready_for_pickup');
+    expect(uspsStage('Accepted at USPS Origin Facility')).toBe('accepted');
+    expect(uspsStage('Arrived at USPS Facility')).toBe('in_transit');
+    expect(uspsStage('Arrived at USPS Regional Facility')).toBe('in_transit');
     expect(uspsStatus('Delivered')).toBe('delivered');
     expect(uspsStatus('Out for Delivery')).toBe('out_for_delivery');
     // Unrecognized wording only means "moving" once the shipment has scans.

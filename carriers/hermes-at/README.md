@@ -31,8 +31,8 @@ both legs.
   at `/en/tracking/` translates them and prints a twelve-hour clock.
 - While Austrian Post delivers, the page shows a banner that offers to redirect the parcel on
   Austrian Post's site, with Austrian Post's number for it. That number becomes the hand-off to
-  `austrian-post` only when Austrian Post's adapter looks such numbers up. The banners seen
-  carry Hermes's fourteen-digit number, which it does not.
+  `austrian-post` when Austrian Post's adapter looks such numbers up. The banners seen carry
+  Hermes's fourteen-digit number, which Austrian Post's tracker also knows.
 - A parcel left in an Austrian Post receiving box is ready for pickup, as Austrian Post's
   tracker records the same scan. A later scan records the recipient taking it out.
 - A handover after a scan that sends the parcel back is its return to the sender.

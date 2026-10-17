@@ -88,9 +88,8 @@ describe('Hermes Austria HTTP adapter', () => {
         [null, '2026-06-01T09:00:00', 'Esimerkki, Finnland'],
         ['2026-05-31T14:23:20+02:00', null, 'Österreich'],
       ]);
-      // Austrian Post's redirect banner names Hermes's number, which Austrian Post's adapter does not look up.
-      expect(result).not.toHaveProperty('delivery_carrier');
-      expect(result).not.toHaveProperty('delivery_tracking_number');
+      // Austrian Post's redirect banner names Hermes's fourteen-digit number, which Austrian Post's adapter looks up.
+      expect(result).toMatchObject({ delivery_carrier: 'austrian-post', delivery_tracking_number: CROSS_BORDER });
     }
     const local = parseHermesAt(newest('cross-border', row('05.06.2026  08:00:00', 'Sendung in Sortierung', 'Esimerkki, Finnland')), CROSS_BORDER);
     expect(local).toMatchObject({ current_stage: 'in_transit', last_update: null, last_update_local: '2026-06-05T08:00:00' });
@@ -102,7 +101,8 @@ describe('Hermes Austria HTTP adapter', () => {
       last_update: '2026-10-15T09:12:00+02:00', delivery_carrier: 'austrian-post', delivery_tracking_number: IN_BOX });
     expect(inBox).not.toHaveProperty('delivered_at');
     expect(deliveryHandoff('hermes-at', IN_BOX, inBox)).toEqual({ carrier: 'austrian-post', number: IN_BOX, basis: 'partner' });
-    expect(deliveryHandoff('hermes-at', CROSS_BORDER, parseHermesAt(fixture('cross-border'), CROSS_BORDER))).toBeNull();
+    expect(deliveryHandoff('hermes-at', H_NUMBER, parseHermesAt(fixture('cross-border'), H_NUMBER)))
+      .toEqual({ carrier: 'austrian-post', number: CROSS_BORDER, basis: 'partner' });
 
     const taken = parseHermesAt(newest('receiving-box', row('15.10.2026  17:40:00', 'Sendung aus Postempfangsbox entnommen')), IN_BOX);
     expect(taken).toMatchObject({ status: 'delivered', current_stage: 'delivered', delivered_at: '2026-10-15T17:40:00+02:00' });

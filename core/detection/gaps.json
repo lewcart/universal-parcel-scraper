@@ -265,8 +265,8 @@
   {
     "carrier": "austrian-post",
     "pattern": "^\\d{14}$",
-    "kind": "open",
-    "reason": "A public Austrian parcel report uses fourteen digits; the national request builder does not establish this family."
+    "kind": "collision",
+    "reason": "Austrian Post delivers Hermes Austria's fourteen-digit parcels and its tracker looks them up; Hermes Germany's and the DPD networks' rules already suggest fourteen digits, and nothing in the number names Austrian Post."
   },
   {
     "carrier": "averitt",

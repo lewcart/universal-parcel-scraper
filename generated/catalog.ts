@@ -13504,7 +13504,7 @@ export const CARRIER_CATALOG = {
   },
   "intex-paketdienst": {
     "displayName": "INTEX Paketdienst",
-    "color": "#072F40",
+    "color": "#023051",
     "aliases": [
       "INTEX Paketdienst GmbH",
       "Intex Paketdienst"
@@ -18313,7 +18313,7 @@ export const CARRIER_CATALOG = {
   },
   "posta-faroe": {
     "displayName": "Posta (Faroe Islands)",
-    "color": "#006fb9",
+    "color": "#006fb4",
     "aliases": [
       "Posta",
       "Postverk Føroya",

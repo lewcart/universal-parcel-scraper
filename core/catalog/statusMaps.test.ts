@@ -383,6 +383,7 @@ describe("universal providers' answers", () => {
       ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
       ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
       ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],
+      ['已出库,货物离开操作中心', 'in_transit'], ['已出库', 'in_transit'], ['已排航班', 'in_transit'],
       ['Delivery in progress, second attempt', 'out_for_delivery'],
       ['Site-ExampleScanned for delivery;the courier is Example', 'out_for_delivery'],
       ['交接成功-交出（派送员派送途中）', 'out_for_delivery'],
@@ -421,7 +422,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

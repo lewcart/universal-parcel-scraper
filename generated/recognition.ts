@@ -77,6 +77,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dpd-nl": 972,
   "dpd-pl": 520,
   "dpd-pt": 894,
+  "dpd-za": 883,
   "dynalogic": 120,
   "early-bird": 350,
   "econt": 290,

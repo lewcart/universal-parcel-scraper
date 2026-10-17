@@ -10207,7 +10207,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-za",
+      "recognitionRank": 883,
+      "localClocks": true
     },
     "canaryUrl": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/",
     "trackingUrlTemplate": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/tracking-details/?{trackingNumber}",

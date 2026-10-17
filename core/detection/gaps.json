@@ -879,6 +879,12 @@
   },
   {
     "carrier": "dpd-za",
+    "pattern": "^[A-Z]{2}\\d{13}$",
+    "kind": "by_design",
+    "reason": "Two letters naming an account or shop and thirteen digits is a shape other carriers' references share, so it cannot name DPD South Africa."
+  },
+  {
+    "carrier": "dpd-za",
     "pattern": "^ODO[A-Z]{2}\\d{7}S\\d$",
     "kind": "by_design",
     "reason": "ODO is the shop OneDayOnly's waybill prefix, which also reaches Pargo, so it names the shop rather than DPD South Africa."

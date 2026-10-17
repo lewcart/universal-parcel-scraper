@@ -40,6 +40,8 @@ export interface TrackedParcel {
   originalCarrier?: CarrierId;
   originalTrackingNumber?: string;
   originalTrackingUrl?: string;
+  /** Where the parcel is delivered; for an Amazon number that names no country, it chooses the store. */
+  destinationCountry?: string;
 }
 
 export function carrierTrackingHintKey(carrierId: CarrierId) {
@@ -74,11 +76,11 @@ export function parcelTrackingNumbers(parcel: Pick<TrackedParcel,
 
 /** Link to the source of the displayed result, never a speculative routing preference. */
 export function parcelTrackingLinks(
-  parcel: Parameters<typeof carrierTrackingLinks>[0], locale?: string,
+  parcel: Parameters<typeof carrierTrackingLinks>[0] & Pick<TrackedParcel, 'destinationCountry'>, locale?: string,
 ): ParcelTrackingLink[] {
   if (requiresAmazonAccount(parcel.carrier, parcel.trackingNumber)) {
     const carrier = carrierInfo('amazon-logistics', locale);
-    return [{ carrier, name: carrier.name, url: amazonOrdersUrl(parcel.trackingNumber), active: true, ready: true, role: 'active' }];
+    return [{ carrier, name: carrier.name, url: amazonOrdersUrl(parcel.trackingNumber, parcel.destinationCountry), active: true, ready: true, role: 'active' }];
   }
   const links = carrierTrackingLinks(parcel, locale);
   const number = encodeURIComponent(parcel.originalCarrier && parcel.trackingSource

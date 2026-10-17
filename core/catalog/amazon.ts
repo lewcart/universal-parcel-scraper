@@ -13,21 +13,35 @@ export function requiresAmazonAccount(carrier: string, trackingNumber = ''): boo
   return carrier !== 'amazon-shipping' && (carrier === 'amazon-logistics' || isAmazonTrackingNumber(trackingNumber));
 }
 
-export function amazonMarketplace(raw: string): string {
+// Amazon's store for each country it delivers in. Amazon sends visitors from a
+// European country without a store of its own to amazon.de (Iceland's to
+// amazon.co.uk), so its parcels' orders are there.
+const STORES: Readonly<Record<string, string>> = {
+  FR: 'fr', DE: 'de', AT: 'de', BE: 'com.be', UK: 'co.uk', GB: 'co.uk',
+  IT: 'it', ES: 'es', PT: 'es', NL: 'nl', IE: 'ie', PL: 'pl', SE: 'se', TR: 'com.tr',
+  CH: 'de', LI: 'de', LU: 'de', DK: 'de', NO: 'de', FI: 'de', CZ: 'de', HU: 'de', RO: 'de',
+  HR: 'de', SI: 'de', EE: 'de', LV: 'de', LT: 'de', GR: 'de', IS: 'co.uk',
+};
+
+const DELIVERY_STORES: Readonly<Record<string, string>> = { ...STORES, CA: 'ca', MX: 'com.mx' };
+
+/**
+ * The Amazon store whose order history holds the parcel. A number's country
+ * prefix decides. TBA names no country, and amazon.ca orders ship under it too,
+ * so the delivery country decides there, and when there is no number.
+ */
+export function amazonMarketplace(raw: string, country = ''): string {
   const number = raw.replace(/[\s.-]/g, '').toUpperCase();
-  // TBA names no country; its Canadian and Mexican siblings do.
+  const destination = country.trim().toUpperCase();
   if (number.startsWith('TBC')) return 'ca';
   if (number.startsWith('TBM')) return 'com.mx';
-  const prefix = number.slice(0, 2);
-  const marketplaces: Record<string, string> = {
-    FR: 'fr', DE: 'de', AT: 'de', BE: 'com.be', UK: 'co.uk', GB: 'co.uk',
-    IT: 'it', ES: 'es', PT: 'es', NL: 'nl', IE: 'ie', PL: 'pl', SE: 'se', TR: 'com.tr',
-  };
-  return marketplaces[prefix] ?? 'com';
+  if (number.startsWith('TBA')) return destination === 'CA' ? 'ca' : 'com';
+  if (!number) return DELIVERY_STORES[destination] ?? 'com';
+  return STORES[number.slice(0, 2)] ?? 'com';
 }
 
-export function amazonOrdersUrl(raw: string): string {
-  return `https://www.amazon.${amazonMarketplace(raw)}/gp/your-account/order-history`;
+export function amazonOrdersUrl(raw: string, country = ''): string {
+  return `https://www.amazon.${amazonMarketplace(raw, country)}/gp/your-account/order-history`;
 }
 
 // These public portals share Amazon's European tracker; DE/BE have no portal of their own.

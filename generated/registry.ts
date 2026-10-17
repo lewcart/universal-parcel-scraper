@@ -243,6 +243,7 @@ import { adapter as raben } from '../carriers/raben/adapter.js';
 import { adapter as redpack } from '../carriers/redpack/adapter.js';
 import { adapter as redx } from '../carriers/redx/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
+import { adapter as relaytech } from '../carriers/relaytech/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
@@ -568,6 +569,7 @@ export const REGISTRY: RegistryDefinition = {
     "redpack": redpack,
     "redx": redx,
     "relais-colis": relaisColis,
+    "relaytech": relaytech,
     "rl-carriers": rlCarriers,
     "royal-mail": royalMail,
     "rpx-indonesia": rpxIndonesia,
@@ -1109,7 +1111,7 @@ export const REGISTRY: RegistryDefinition = {
     "redur": "universal",
     "redx": "redx",
     "relais-colis": "relais-colis",
-    "relaytech": "universal",
+    "relaytech": "relaytech",
     "rl-carriers": "rl-carriers",
     "roadie": "universal",
     "roadrunner": "universal",

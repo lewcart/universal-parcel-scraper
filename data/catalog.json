@@ -20369,7 +20369,9 @@
     "timezone": "Atlantic/Reykjavik",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posturinn",
+      "recognitionRank": 875,
+      "localClocks": true
     },
     "canaryUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
     "trackingUrlTemplate": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/?q={trackingNumber}",
@@ -20387,7 +20389,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IS$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "ppl": {
     "displayName": "PPL",

@@ -58834,6 +58834,7 @@
       "intl-post"
     ],
     "asked": [
+      "posturinn",
       "chronopost"
     ]
   },
@@ -58845,6 +58846,7 @@
       "intl-post"
     ],
     "asked": [
+      "posturinn",
       "chronopost"
     ]
   },
@@ -58856,6 +58858,7 @@
       "intl-post"
     ],
     "asked": [
+      "posturinn",
       "chronopost"
     ]
   },
@@ -58867,6 +58870,7 @@
       "intl-post"
     ],
     "asked": [
+      "posturinn",
       "chronopost"
     ]
   },
@@ -60341,6 +60345,18 @@
     ],
     "asked": [
       "algerie-poste",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "CP257233008PL",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "poczta-polska",
       "chronopost"
     ]
   },
@@ -68588,6 +68604,7 @@
       "intl-post"
     ],
     "asked": [
+      "posturinn",
       "chronopost"
     ]
   },

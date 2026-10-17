@@ -1008,6 +1008,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/212\.35\.69\.85\/webtracking\/IPSWeb_item_events\.aspx\?itemid=ZZ000000014JO&Submit=Submit$/,
     marker: /No information, please check your item identifier|IPS Web Tracking/,
     forwarding: { notFound: /No information, please check your item identifier/ } },
+  // The page looks the code up in the browser, keeps it in the search box and calls an unknown one "Óþekkt númer".
+  { carrier: 'posturinn', number: 'ZZ000000014IS',
+    route: /^https:\/\/(?:www\.)?posturinn\.is\/einstaklingar\/mottaka\/fylgstu-med-sendingunni-thinni\/\?q=ZZ000000014IS$/,
+    marker: /Fylgstu með sendingunni þinni|Óþekkt númer/ },
 ];
 
 /**

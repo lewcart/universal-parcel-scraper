@@ -19,18 +19,57 @@
   "timezone": "Atlantic/Reykjavik",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "posturinn",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 875
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "eta",
+    "service_name",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/?q={trackingNumber}",
     "searchUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
     "canaryUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "eta",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "eta",
+      "delivered_at",
+      "destination_country"
+    ],
+    "discarded": [
+      "progress_rail"
+    ],
+    "unavailable": [
+      "weight",
+      "origin_country",
+      "offset_timestamps",
+      "pickup_point",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -45,5 +84,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "posturinn-s10",
+      "pattern": "^[A-Z]{2}\\d{9}IS$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

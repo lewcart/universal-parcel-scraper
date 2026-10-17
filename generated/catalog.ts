@@ -20371,7 +20371,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Atlantic/Reykjavik",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posturinn",
+      "recognitionRank": 875,
+      "localClocks": true
     },
     "canaryUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/",
     "trackingUrlTemplate": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/?q={trackingNumber}",
@@ -20389,7 +20391,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IS$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "ppl": {
     "displayName": "PPL",
@@ -26978,7 +26987,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "postaplus": [],
   "postex": [],
   "postmedia-parcel-services": [],
-  "posturinn": [],
+  "posturinn": ["posturinn-s10"],
   "ppl": ["ppl-1"],
   "precision-deliveries": ["precision-deliveries-1"],
   "professional-couriers": [],

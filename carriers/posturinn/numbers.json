@@ -95,6 +95,25 @@
         "confidence": "high"
       },
       "note": "An archived lookup on Pósturinn's own tracking page; the capture holds only the page shell and the tracker's API capture of the number was not opened."
+    },
+    {
+      "number": "CP257233008PL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251128223000/https://api.mobiz.posturinn.is/api/v1/shipments/CP257233008PL",
+        "date": "2025-11-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "An archived reply of the API behind Pósturinn's tracking page for a parcel from Poland, under the Polish post's number; it shows the parcel held at Pósturinn's import department."
     }
   ]
 }

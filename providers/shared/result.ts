@@ -119,8 +119,8 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   if (!includeBroadMovement) return undefined;
   const providerStage = providerWordingStage(description);
   if (providerStage) return providerStage;
-  // A recipient collecting the parcel and a hand-over to an airline are no acceptance.
-  if (/package received at dhl ecommerce|^pick-up was successful[.!]?$|accepted|(?<!\byou(?: have|'ve|’ve)? )collected|picked up|handed over(?! to (?:the |an )?(?:airline|air carrier))/i.test(description)) return 'accepted';
+  // A recipient collecting the parcel, a hand-over to an airline and one to the recipient's side are no acceptance.
+  if (/package received at dhl ecommerce|^pick-up was successful[.!]?$|accepted|(?<!\byou(?: have|'ve|’ve)? )collected|picked up|handed over(?! to (?:the |an |a |your )?(?:airline|air carrier|recipient|addressee|consignee|customer|receiver|neighbou?r|you)\b)/i.test(description)) return 'accepted';
   if (/transit|arrived|departed|processed|processing completed at origin|sorting|sorted|transport|dispatched|en route|loaded to movement/i.test(description)) return 'in_transit';
   return undefined;
 }

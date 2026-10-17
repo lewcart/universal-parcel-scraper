@@ -434,7 +434,7 @@ describe("universal providers' answers", () => {
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
       'Received.', 'Received. Your order has been received by the store', 'Package finished at the store',
       'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem',
-      'Rescheduled delivery', 'Parcel handed to the recipient', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',
+      'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',
       'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection',
       // A forecast sent to the last-mile carrier, detail lines, a store hand-over that is a drop-off or a
       // collection, and headings with no step of their own.

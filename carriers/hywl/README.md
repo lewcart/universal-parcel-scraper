@@ -13,7 +13,8 @@ sellers. Tracked through the lookup its tracking page makes.
    half of the budget.
 
 - The service matches the number case-sensitively, in capitals: `TRK` and twelve hexadecimal
-  characters. Other shapes are not looked up.
+  characters, or four letters, two digits, `D`, four digits and four letters. Other shapes are
+  not looked up.
 - A shipment counts only when the reply names the number asked and the label `SZHYWL`.
 - HTTP 404 with `tracking number not found` is the unknown-number answer. The web server's own
   404 page is a moved route, not a missing parcel, and redirects are not followed.
@@ -46,7 +47,9 @@ sellers. Tracked through the lookup its tracking page makes.
 
 The site gives `TRK` and twelve uppercase hexadecimal characters as its example, and its
 tracker answers that example as its own parcel. `hywl-1` suggests Huiyi Logistics for the
-layout at low confidence, since a `TRK` prefix can come from other systems.
+layout at low confidence, since a `TRK` prefix can come from other systems. Its tracker also
+answers parcels under four letters, two digits, `D`, four digits and four letters, which
+`hywl-2` suggests at low confidence: one parcel is the only evidence for that layout.
 
 ## Testing
 

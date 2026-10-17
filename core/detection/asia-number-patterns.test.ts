@@ -119,6 +119,14 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     expect(detectCarrierMatch('YL0000000001YQ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gzyl'] });
   });
 
+  it('asks Huiyi Logistics about its lettered numbers without naming it from the shape', () => {
+    expect(detectCarrierMatch('ABCD00D0000EFGH')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['hywl'] });
+    expect(recognitionAskedCarriers('ABCD00D0000EFGH')).toEqual(['hywl']);
+    for (const number of ['ABCD00E0000EFGH', 'ABCD00D0000EFG', 'ABC00D0000EFGH', 'ABCD000D0000EFGH', 'ABCD00D00000EFGH']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('hywl');
+    }
+  });
+
   it('asks DHLink about its line provider\'s XZG tracking numbers without naming it from the shape', () => {
     expect(detectCarrierMatch('XZG000000001WL')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
     expect(recognitionAskedCarriers('XZG000000001WL')).toEqual(['dhlink']);

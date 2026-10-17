@@ -13344,6 +13344,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^TRK[0-9A-F]{12}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{4}\\d{2}D\\d{4}[A-Z]{4}$",
+        "confidence": "low"
       }
     ]
   },
@@ -24884,7 +24888,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hr-parcel": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
   "hunter-express": [],
-  "hywl": ["hywl-1"],
+  "hywl": ["hywl-1","hywl-2"],
   "ics-courier": ["ics-courier-1"],
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],

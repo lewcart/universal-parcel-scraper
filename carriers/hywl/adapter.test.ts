@@ -12,6 +12,8 @@ const IN_TRANSIT = 'TRK00000000A1B2';
 // The site's own example number.
 const DELIVERED = 'TRKB879BE6E9D8E';
 const UNKNOWN = 'TRK999999999999';
+// Synthetic, in the layout of the other numbers its tracker answers.
+const LETTERED = 'ABCD00D0000EFGH';
 const LATER = Date.parse('2026-04-01T00:00:00Z');
 
 type Row = Record<string, unknown>;
@@ -166,6 +168,16 @@ describe('Huiyi Logistics HTTP adapter', () => {
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');
     expect(fetcher).not.toHaveBeenCalled();
     expect(normalizeHywlNumber('trkb879-be6e.9d8e')).toBe(DELIVERED);
+  });
+
+  it('looks up its lettered numbers, and no near miss of their layout', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(changed('in-transit', (body) => { body.tracking_number = LETTERED; })));
+    await expect(carrier(fetcher).track({ number: LETTERED.toLowerCase() })).resolves.toMatchObject({ current_stage: 'in_transit' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe(`${HYWL_API}${LETTERED}`);
+    for (const number of ['ABCD00E0000EFGH', 'ABCD00D0000EFG', 'ABC00D0000EFGH', 'ABCD000D0000EFGH', 'ABCD00D00000EFGH']) {
+      await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
+    }
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('sends a read that failed to reach the site once more', async () => {

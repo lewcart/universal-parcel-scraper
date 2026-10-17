@@ -10,8 +10,9 @@ import { hywlStage } from './status.js';
 export const PROVIDER = 'Huiyi Logistics';
 // A history is a few kilobytes.
 export const HYWL_MAX_BYTES = 256 * 1024;
-// TRK and twelve upper-case hexadecimal characters; the tracker matches the number case-sensitively.
-const NUMBER = /^TRK[0-9A-F]{12}$/;
+// TRK and twelve upper-case hexadecimal characters, or four letters, two digits, D, four digits and
+// four letters; the tracker matches the number case-sensitively.
+const NUMBER = /^(?:TRK[0-9A-F]{12}|[A-Z]{4}\d{2}D\d{4}[A-Z]{4})$/;
 // The reply's own label for every shipment it holds.
 const CARRIER_LABEL = 'SZHYWL';
 const STAMP = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})(?:\.\d{1,6})?(?:Z|[+-]\d{2}:?\d{2})?$/;
@@ -21,7 +22,7 @@ const MAX_EVENTS = 100;
 /** A Huiyi Logistics number; anything else is a number its tracker is not asked for. */
 export function normalizeHywlNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'Huiyi Logistics numbers are TRK and twelve hexadecimal characters');
+  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'Huiyi Logistics numbers are TRK and twelve hexadecimal characters, or four letters, two digits, D, four digits and four letters');
   return number;
 }
 

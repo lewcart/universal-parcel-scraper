@@ -54552,6 +54552,17 @@
     ]
   },
   {
+    "input": "ABCD00D0000EFGH",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "hywl"
+    ],
+    "asked": [
+      "hywl"
+    ]
+  },
+  {
     "input": "ABSINE1031240022",
     "carrier": "unknown",
     "confidence": "none",

@@ -201,10 +201,9 @@ export class PacketaTracker {
     });
     if (response.status === 404) {
       let payload: unknown;
-      try { payload = parseJsonBytes(bytes, 'Packeta tracking'); }
-      catch { throw new UpstreamHttpError('Packeta tracking', response.status); }
+      try { payload = parseJsonBytes(bytes, 'Packeta tracking'); } catch { /* An error page proves no shipment outcome. */ }
       if (isRecord(payload) && payload.error === 'notFound') throw new NotFoundError('Packeta');
-      throw new UpstreamHttpError('Packeta tracking', response.status);
+      throw new IndeterminateError('Packeta', 'Packeta returned an unrecognized not-found response');
     }
     if (!response.ok) throw new UpstreamHttpError('Packeta tracking', response.status);
     return parsePacketaTrackingResponse(parseJsonBytes(bytes, 'Packeta tracking'), trackingNumber);

@@ -280,9 +280,10 @@ describe('PacketaTracker fetch', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch');
     fetcher.mockResolvedValue(response({ error: 'serviceUnavailable' }, 200));
     await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toBeInstanceOf(IndeterminateError);
+    // A 404 without Packeta's notFound error proves no shipment outcome.
     for (const value of [{ error: 'serviceUnavailable' }, '<html>Not Found</html>', {}]) {
       fetcher.mockResolvedValue(response(value, 404));
-      await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
+      await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ name: 'IndeterminateError', kind: 'indeterminate' });
     }
   });
 });

@@ -14,8 +14,8 @@ CZ, SK, HU, RO and PL. Tracked through the keyless endpoint behind the public tr
    - Unknown codes come back two ways, both `NotFoundError`: HTTP 404 `{"error":"notFound"}`,
      or HTTP 200 carrying the same `notFound` error instead of `item`. Expired codes answer
      the same 404, so unknown and expired look identical.
-   - Other API errors remain inconclusive. An HTTP 404 without that error signature, or
-     another unsuccessful HTTP response, is `UpstreamHttpError`.
+   - Other API errors, and an HTTP 404 without that error signature, remain inconclusive.
+     Another unsuccessful HTTP response is `UpstreamHttpError`.
 
 ## Notes
 

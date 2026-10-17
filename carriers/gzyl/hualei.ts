@@ -1,6 +1,6 @@
 /**
  * The Hualei (华磊) forwarder platform, which GZYL, Tianhui Hengyuan, JRT,
- * Meiteshun and Mayi Yinfu each run as a tenant: a Tomcat tracker on port 8082
+ * Meiteshun, Mayi Yinfu and BYHD each run as a tenant: a Tomcat tracker on port 8082
  * of a bare IP or the carrier's own domain, plain HTTP only. `selectTrack.htm` is the platform's documented track
  * interface, JSON encoded in GBK; `trackIndex.htm` is the tracking page the
  * carriers' sites open, in HTML. Each carrier keeps its own host and status
@@ -44,6 +44,13 @@ export interface HualeiTenant {
    * record whose transfer number its own high-confidence rule claims whole.
    */
   readonly unlabelledPartners?: readonly CarrierId[];
+  /**
+   * The tracking page finds an order by the tenant's own number without showing
+   * it, only the delivery carrier's number and the shipper's reference: a lone
+   * record then answers the one number the page's form echoes back, and the
+   * tracking number it shows is the delivery carrier's.
+   */
+  readonly pageEcho?: true;
 }
 
 /**
@@ -201,6 +208,8 @@ interface Facts {
   readonly destination: string;
   readonly service?: string;
   readonly partner?: { readonly carrier: CarrierId; readonly number: string };
+  /** The delivery carrier's number, its carrier unnamed. */
+  readonly downstream?: string;
 }
 
 /**
@@ -229,7 +238,8 @@ function result(rows: readonly Row[], facts: Facts, tenant: HualeiTenant, readAt
     ...(/^[A-Z]{2}$/.test(facts.destination) ? { destination_country: facts.destination } : {}),
     ...(canonical ? { canonical_tracking_number: canonical } : {}),
     ...(partner ? { delivery_carrier: partner.carrier } : {}),
-    ...(partner && partner.number !== identity(facts.number) ? { delivery_tracking_number: partner.number } : {}),
+    ...(partner && partner.number !== identity(facts.number) ? { delivery_tracking_number: partner.number }
+      : facts.downstream && facts.downstream !== identity(facts.number) ? { delivery_tracking_number: facts.downstream } : {}),
     events,
     ...(truncated ? { history_truncated: true } : {}),
   };
@@ -358,13 +368,24 @@ export function parseHualeiPage(html: string, raw: string, tenant: HualeiTenant,
   if (!blocks.length || blocks.length > MAX_RECORDS) throw new SchemaError(provider, `${provider} returned a page without its results`);
   const waybills = blocks.map((block) => pageWaybill($, block, provider));
   if (waybills.length === 1 && isUnknown(waybills[0]!, number)) throw new NotFoundError(provider);
-  const bound = waybills.filter((waybill) => (waybill.pieces || waybill.rows.length || waybill.cells.get('目的地'))
+  const shown = (waybill: PageWaybill) => Boolean(waybill.pieces || waybill.rows.length || waybill.cells.get('目的地'));
+  const bound = waybills.filter((waybill) => shown(waybill)
     && PAGE_IDENTITY_COLUMNS.some((column) => identity(waybill.cells.get(column) ?? '') === identity(number)));
+  // The page shows one block per number its form echoes back, one per line: on
+  // a tenant that hides the number it found an order by, a lone record answers
+  // the only number echoed.
+  const echo = ($('input#codes').attr('value') ?? '').split(/[\r\n]+/).map(identity).filter(Boolean);
+  const echoed = tenant.pageEcho && !bound.length && waybills.length === 1 && shown(waybills[0]!)
+    && echo.length === 1 && echo[0] === identity(number);
+  if (echoed) bound.push(waybills[0]!);
   if (bound.length !== 1) throw new IndeterminateError(provider, `${provider} did not show the number as one shipment`);
   const waybill = bound[0]!;
   if (waybill.rows.length > MAX_ROWS) throw new SchemaError(provider, `${provider} returned an invalid history`);
+  const tracking = identity(waybill.cells.get('跟踪号码') ?? '');
+  // The numbers such a tenant's page shows are the delivery carrier's, never its own.
+  const downstream = tenant.pageEcho ? identity(waybill.cells.get('渠道转单号') ?? '') || tracking : '';
   return result(waybill.rows, {
-    number, tracking: identity(waybill.cells.get('跟踪号码') ?? ''),
+    number, tracking: tenant.pageEcho ? '' : tracking, ...(downstream ? { downstream } : {}),
     destination: (waybill.cells.get('目的地') ?? '').toUpperCase(),
   }, tenant, readAt);
 }

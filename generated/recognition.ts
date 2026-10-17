@@ -212,6 +212,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,
   "uniuni": 770,
+  "uzbekistan-post": 906,
   "venipak": 240,
   "vinted-go": 410,
   "wanbexpress": 33,

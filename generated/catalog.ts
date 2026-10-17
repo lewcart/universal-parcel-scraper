@@ -21494,7 +21494,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tashkent",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "uzbekistan-post",
+      "recognitionRank": 906,
+      "localClocks": true
     },
     "canaryUrl": "https://uz.post/ru/tracking",
     "trackingUrlTemplate": "https://uz.post/ru/tracking/{trackingNumber}",

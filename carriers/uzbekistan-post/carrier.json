@@ -19,18 +19,63 @@
   "timezone": "Asia/Tashkent",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "uzbekistan-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 906
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://uz.post/ru/tracking/{trackingNumber}",
     "searchUrl": "https://uz.post/ru/tracking",
     "canaryUrl": "https://uz.post/ru/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin_country",
+      "destination_country",
+      "sender_address",
+      "recipient_address",
+      "postcodes",
+      "event_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "destination_country",
+      "event_details"
+    ],
+    "discarded": [
+      "origin_country",
+      "sender_address",
+      "recipient_address",
+      "postcodes"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "recipient_name",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

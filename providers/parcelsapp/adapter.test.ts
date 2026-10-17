@@ -135,6 +135,10 @@ describe('ParcelsApp result parsing', () => {
     const prompted = parseParcelsAppResponse({ states: [{ date: '2026-08-19T00:00:00Z', status: 'Track Sendcloud shipment by tapping the button' },
       { date: '2026-08-18T12:00:00Z', status: 'A preferred drop-off location was booked for the shipment' }, ...announced.states] }, number, identity());
     expect(prompted.events?.map(({ description }) => description)).toEqual(result.events?.map(({ description }) => description));
+    // ParcelsApp's own check of the number comes as a state dated at the lookup: no scan, so no history.
+    expect(() => parseParcelsAppResponse({ states: [{ date: '2026-08-19T00:00:00Z',
+      status: 'Tracking number must contain only capital letters and digits. Please check that tracking number is correct.' }] }, number, identity()))
+      .toThrow('No usable tracking events');
   });
 
   it.each(['json', 'html'])('classifies French preparation and a Mondial Relay hub scan separately (%s)', (transport) => {

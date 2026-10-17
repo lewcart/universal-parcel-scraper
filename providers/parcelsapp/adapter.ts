@@ -654,6 +654,19 @@ function relayedLabel(value: unknown): string {
   return Number.isInteger(half) && label.slice(0, half) === label.slice(half) ? label.slice(0, half) : label;
 }
 
+/**
+ * Mayi Yinfu's hand-over to the airport, "货物已交机场", which its own rows
+ * translate as "The goods have been delivered to the airport". ParcelsApp has
+ * relayed those rows as a bare "Delivered" placed in China, before the flight:
+ * transit, not a delivery. The forwarder's rows of the delivery are the
+ * delivering carrier's, worded in full and placed in the destination.
+ */
+function airportHandOver(carrier: string | undefined, status: string, location: string, destination: string | null): CarrierScan | undefined {
+  return carrier === 'mayiyinfu' && destination !== 'CN' && /^delivered[.!]?$/i.test(status)
+    && (countryCode(lastPlace(location)) === 'CN' || inChina(location))
+    ? { stage: 'in_transit', wording: 'The goods have been delivered to the airport' } : undefined;
+}
+
 function parseHistory(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
   if (isRecord(payload) && payload.error === 'RELOAD') throw new ChallengeError(SOURCE);
   if (isRecord(payload) && (payload.error === 'NO_DATA' || payload.error === 'NO_TRACKER')) {
@@ -690,7 +703,8 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     }
     const status = relayedLabel(raw.status);
     const state = readState(payload, raw, status, timezone, number, inNorthAmerica, destination, origin);
-    const scan = carrierScan(typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined, status);
+    const carrier = typeof state.name === 'string' ? carrierIdFromName(state.name) : undefined;
+    const scan = carrierScan(carrier, status) ?? airportHandOver(carrier, status, state.location, destination);
     entries.push({ ...state, raw, scan, wording: scan?.wording ?? status });
   }
   // Another carrier's copy of a scan placed in its state or province (Cainiao

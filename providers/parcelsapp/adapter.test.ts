@@ -113,6 +113,22 @@ describe('ParcelsApp YTO scans', () => {
     expect(unknown.events?.[0]).toMatchObject({ description: '问题件扫描', stage: 'pending', stage_source: 'none' });
   });
 
+  it("reads Mayi Yinfu's relayed airport hand-over as transit, and its delivery abroad as a delivery", () => {
+    const parcel = (states: Record<string, unknown>[]) => parseParcelsAppResponse({ carriers: ['DHL Parcel Spain', 'Mayiyinfu'],
+      originCode: 'CN', destinationCode: 'ES', states }, number, identity());
+    const handOver = parcel([
+      { date: '2026-10-03T19:41:20Z', status: 'Delivered', carrier: 1, location: 'China' },
+      { date: '2026-10-03T12:50:07Z', status: '已排航班', carrier: 1, location: 'SZ' },
+    ]);
+    expect(handOver).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(handOver.events?.[0]).toMatchObject({ description: 'The goods have been delivered to the airport', stage: 'in_transit', stage_source: 'carrier_map' });
+    // The delivery the forwarder copies, and another carrier's bare "Delivered", stay deliveries.
+    for (const state of [{ status: 'The shipment has been successfully delivered', carrier: 1, location: 'ES' },
+      { status: 'Delivered', carrier: 1, location: 'Example City, Spain' }, { status: 'Delivered', carrier: 0, location: 'China' }]) {
+      expect(parcel([{ date: '2026-10-16T15:10:00Z', ...state }])).toMatchObject({ status: 'delivered' });
+    }
+  });
+
   it('reads the same scans from the rendered page', () => {
     const scan = (day: string, description: string) =>
       `<li class="event"><div class="event-time"><strong>0${day} May 2026</strong><span>18:00</span></div><div class="event-content"><strong>${description}</strong><span class="carrier">YTO Express</span></div></li>`;

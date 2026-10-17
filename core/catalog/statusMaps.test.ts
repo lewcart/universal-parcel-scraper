@@ -398,6 +398,7 @@ describe("universal providers' answers", () => {
       ['EXAMPLE.DS Dispatch task assigned to DA', 'in_transit'], ['<Bad Address>', 'failed_attempt'],
       ['Contact Error need to return', 'exception'], ['Start returning，reason:[Contact Error]', 'exception'],
       ['EXA-DEVOLUCION.DS Order Closed', 'exception'],
+      ['Notice card left indicating where and when to pick up item', 'failed_attempt'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],

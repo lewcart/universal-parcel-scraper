@@ -78,6 +78,8 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   if (nonterminalEnglishReturn(description)) return 'exception';
   if (/returned to (?:the )?sender/i.test(description)) return 'returned';
   if (/not delivered|could not.*deliver|unable to deliver|delivery failed/i.test(description)) return 'failed_attempt';
+  // A notice card left for the recipient ends the attempt, as Canada Post reads it.
+  if (/^notice (?:card )?left\b/i.test(description)) return 'failed_attempt';
   // A new attempt announced for the next round is no failure; the shared rules tell them apart.
   if (/delivery attempt/i.test(description) && [undefined, 'failed_attempt'].includes(trackingLanguageStage(description))) return 'failed_attempt';
   // Carrier-reported problems that are neither a missed attempt nor a return.

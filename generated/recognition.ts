@@ -111,6 +111,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "gofo-it": 460,
   "gzyl": 988,
   "hanjin": 545,
+  "haypost": 898,
   "hct-logistics": 967,
   "helthjem": 210,
   "hepsijet": 949,

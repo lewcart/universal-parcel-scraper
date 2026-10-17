@@ -12724,11 +12724,13 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Yerevan",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "haypost",
+      "recognitionRank": 898,
+      "localClocks": true
     },
     "canaryUrl": "https://www.haypost.am/en/track-trace",
-    "trackingUrlTemplate": "https://www.haypost.am/track-trace#{trackingNumber}",
-    "trackingSearchUrl": "https://www.haypost.am/en/track-trace",
+    "trackingUrlTemplate": "https://www.haypost.am/am/track-trace#{trackingNumber}",
+    "trackingSearchUrl": "https://www.haypost.am/am/track-trace",
     "linkRules": [],
     "detectionRules": []
   },

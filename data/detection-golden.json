@@ -55369,6 +55369,17 @@
     ]
   },
   {
+    "input": "CC001555871AM",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "CC014356389ID",
     "carrier": "intl-post",
     "confidence": "high",

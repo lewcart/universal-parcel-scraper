@@ -142,6 +142,7 @@ import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
 import { adapter as gzyl } from '../carriers/gzyl/adapter.js';
 import { adapter as hanjin } from '../carriers/hanjin/adapter.js';
+import { adapter as haypost } from '../carriers/haypost/adapter.js';
 import { adapter as hctLogistics } from '../carriers/hct-logistics/adapter.js';
 import { adapter as helthjem } from '../carriers/helthjem/adapter.js';
 import { adapter as heppner } from '../carriers/heppner/adapter.js';
@@ -461,6 +462,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo-it": gofoIt,
     "gzyl": gzyl,
     "hanjin": hanjin,
+    "haypost": haypost,
     "hct-logistics": hctLogistics,
     "helthjem": helthjem,
     "heppner": heppner,
@@ -883,7 +885,7 @@ export const REGISTRY: RegistryDefinition = {
     "hanjin": "hanjin",
     "hapdong": "universal",
     "happy-post": "universal",
-    "haypost": "universal",
+    "haypost": "haypost",
     "hct-logistics": "hct-logistics",
     "helthjem": "helthjem",
     "heppner": "heppner",

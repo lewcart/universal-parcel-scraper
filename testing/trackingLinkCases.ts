@@ -908,6 +908,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'posta-north-macedonia', number: 'ZZ000000014MK',
     route: /^https:\/\/www\.posta\.com\.mk\/Tracking\/index\.html\?tn=ZZ000000014MK$/,
     marker: /Не се пронајдени податоци за \(ZZ000000014MK\)/ },
+  // The page reads the code from the fragment and looks it up. An address without the language
+  // redirects to one with it and drops the fragment, and an English one shows its labels' keys.
+  { carrier: 'haypost', number: 'ZZ000000045AM',
+    route: /^https:\/\/www\.haypost\.am\/am\/track-trace#ZZ000000045AM$/,
+    marker: /Հետևել բեռնային համարով|Տվյալը չի գտնվել/ },
   // The page looks the number from its path up once it loads, and names it in its not-found notice.
   { carrier: 'nipost', number: 'ZZ000000014NG',
     route: /^https:\/\/tracking\.nipost\.gov\.ng\/ZZ000000014NG$/,

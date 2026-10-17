@@ -2,6 +2,25 @@
   "carrier": "haypost",
   "records": [
     {
+      "number": "CC001555871AM",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-armenia-post.html",
+        "date": "2018-01-25",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A customer on the Armenia Post review page asks HayPost where this parcel is. HayPost's tracker no longer finds it."
+    },
+    {
       "number": "PAS105759416AM",
       "role": "shipment",
       "evidence": "open_source_example",

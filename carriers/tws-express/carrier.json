@@ -17,18 +17,57 @@
   "timezone": "Europe/Rome",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tws-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 884
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "eta"
+  ],
   "portal": {
     "url": "https://www.mytws.it/tracking-status;ldv={trackingNumber}",
     "searchUrl": "https://twsexpresscourier.it/traccia-spedizione/",
     "canaryUrl": "https://twsexpresscourier.it/traccia-spedizione/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "parcel_count",
+      "customer_reference",
+      "order_reference",
+      "depot_code",
+      "signatory",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "eta"
+    ],
+    "discarded": [
+      "parcel_count",
+      "customer_reference",
+      "order_reference",
+      "depot_code",
+      "signatory",
+      "remarks"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

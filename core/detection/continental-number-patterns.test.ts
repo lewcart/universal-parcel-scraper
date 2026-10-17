@@ -248,9 +248,9 @@ describe('wave six courier rules', () => {
     }
   });
 
-  it('suggests TWS Express after Poste Italiane for the SDA-shaped waybills it delivers, and asks only Poste', () => {
+  it('suggests TWS Express after Poste Italiane for the SDA-shaped waybills it delivers, and asks both', () => {
     expect(detectCarrierMatch('280000A000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['poste-italiane', 'tws-express'] });
-    expect(recognitionAskedCarriers('280000A000001')).toEqual(['poste-italiane']);
+    expect(recognitionAskedCarriers('280000A000001')).toEqual(['poste-italiane', 'tws-express']);
     for (const number of ['270000A000001', '280000A00001', '2800000000001']) {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tws-express');
     }

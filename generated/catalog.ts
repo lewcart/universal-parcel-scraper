@@ -23398,7 +23398,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tws-express",
+      "recognitionRank": 884,
+      "localClocks": true
     },
     "canaryUrl": "https://twsexpresscourier.it/traccia-spedizione/",
     "trackingUrlTemplate": "https://www.mytws.it/tracking-status;ldv={trackingNumber}",

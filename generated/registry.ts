@@ -307,6 +307,7 @@ import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
+import { adapter as twsExpress } from '../carriers/tws-express/adapter.js';
 import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.js';
 import { adapter as ukrposhta } from '../carriers/ukrposhta/adapter.js';
 import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
@@ -639,6 +640,7 @@ export const REGISTRY: RegistryDefinition = {
     "tnt-it": tntIt,
     "total-express": totalExpress,
     "tsjy": tsjy,
+    "tws-express": twsExpress,
     "ubi-smart-parcel": ubiSmartParcel,
     "ukrposhta": ukrposhta,
     "uniuni": uniuni,
@@ -1235,7 +1237,7 @@ export const REGISTRY: RegistryDefinition = {
     "tst-cf-express": "universal",
     "tufesa": "universal",
     "tusass": "universal",
-    "tws-express": "universal",
+    "tws-express": "tws-express",
     "ubi-smart-parcel": "ubi-smart-parcel",
     "ues-uy": "universal",
     "ukrposhta": "ukrposhta",

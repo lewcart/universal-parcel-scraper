@@ -222,7 +222,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -252,7 +252,7 @@
         "carrier": "poste-italiane",
         "confidence": "high"
       },
-      "note": "A complaint says the sender gave this parcel to the courier TWS, but the number is a Poste Delivery Business waybill that Poste Italiane's rule claims."
+      "note": "A complaint says the sender gave this parcel to the courier TWS, and TWS's tracker follows it, but the number is a Poste Delivery Business waybill that Poste Italiane's rule claims."
     },
     {
       "number": "1UW0S16122102",

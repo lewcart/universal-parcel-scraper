@@ -775,6 +775,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tsjy', number: 'TSJY900000000CN',
     route: /^https:\/\/www\.tsjy56\.com\/orderResult\.html\?nos=TSJY900000000CN$/,
     marker: /未找到相关的轨迹信息/ },
+  // The page posts the waybill in its address to the tracking lookup on load.
+  { carrier: 'tws-express', number: '280000Z000001',
+    route: /^https:\/\/www\.mytws\.it\/tracking-status;ldv=280000Z000001$/,
+    marker: /La tua lettera di vettura non è presente|Inserisci la lettera di vettura/ },
   // The page reads the number from its address and asks the tracking service on load.
   { carrier: 'hywl', number: 'TRK999999999999',
     route: /^https:\/\/www\.szhywl\.it\.com\/track\.html\?number=TRK999999999999$/,

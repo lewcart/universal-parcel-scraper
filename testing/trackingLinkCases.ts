@@ -927,6 +927,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'flash-express', number: 'TH9999000000Z',
     route: /^https:\/\/www\.flashexpress\.co\.th\/fle\/tracking\?se=TH9999000000Z$/,
     marker: /ไม่พบข้อมูลของเลขพัสดุนี้|No information found for this tracking number|未查到此运单信息/ },
+  // The site's browser check reloads the page after a few seconds; the page then posts the number
+  // in its address to the tracking lookup, and an unknown one gets the not-found line.
+  { carrier: 'flash-express-ph', number: 'P9999000000Z',
+    route: /^https:\/\/www\.flashexpress\.ph\/fle\/tracking\?se=P9999000000Z$/,
+    marker: /No information found for this tracking number|未查到此运单信息/, renderTimeoutMs: 20_000 },
 ];
 
 /**

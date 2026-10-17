@@ -11228,7 +11228,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flash-express-ph",
+      "recognitionRank": 902
     },
     "canaryUrl": "https://www.flashexpress.ph/fle/tracking",
     "trackingUrlTemplate": "https://www.flashexpress.ph/fle/tracking?se={trackingNumber}",

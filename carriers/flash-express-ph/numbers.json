@@ -90,6 +90,28 @@
       "note": "An archived lookup on Flash Express Philippines' own tracker; the capture was opened, but the page loads the history by script, so the history was not visible."
     },
     {
+      "number": "P3224MZ3G86AE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260825113910/https://www.flashexpress.ph/fle/tracking?se=p3224MZ3G86Ae",
+        "date": "2026-08-25",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "flash-express-ph"
+        ]
+      },
+      "note": "An archived lookup on Flash Express Philippines' own tracker, typed in mixed case; the capture was opened, but the page loads the history by script, so the history was not visible."
+    },
+    {
       "number": "P17277HCAEAM",
       "role": "shipment",
       "evidence": "public_shipment_report",

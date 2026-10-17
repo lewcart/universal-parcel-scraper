@@ -195,6 +195,13 @@
       "confirmedBy": "live"
     },
     {
+      "code": "RT_RETURN_CREATED",
+      "wording": "Return initiated, will start return",
+      "language": "en",
+      "stage": "returned",
+      "confirmedBy": "live"
+    },
+    {
       "code": "RT_LM_SIGN_SUCCESS",
       "wording": "Your shipment has been returned successfully to sender",
       "language": "en",
@@ -227,6 +234,13 @@
       "wording": "Your return shipment arrived at sorting center",
       "language": "en",
       "stage": "returned",
+      "confirmedBy": "live"
+    },
+    {
+      "code": "LM_DELIVERY_ARRIVE",
+      "wording": "Your shipment has arrived at last mile station",
+      "language": "en",
+      "stage": "in_transit",
       "confirmedBy": "live"
     },
     {

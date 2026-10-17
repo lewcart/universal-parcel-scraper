@@ -97,6 +97,7 @@ import { statusMap as epostGlobal } from '../../carriers/epost-global/status.js'
 import { statusMap as estes } from '../../carriers/estes/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
+import { statusMap as fedexPl } from '../../carriers/fedex-pl/status.js';
 import { statusMap as flashExpress } from '../../carriers/flash-express/status.js';
 import { statusMap as flashExpressPh } from '../../carriers/flash-express-ph/status.js';
 import { statusMap as fourPx } from '../../carriers/four-px/status.js';
@@ -274,7 +275,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-za': dpdZa, dsv, dx, dynalogic, 'early-bird': earlyBird,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, estes,
-  'express-one': expressOne, 'fan-courier': fanCourier, 'flash-express': flashExpress, 'flash-express-ph': flashExpressPh,
+  'express-one': expressOne, 'fan-courier': fanCourier, 'fedex-pl': fedexPl, 'flash-express': flashExpress, 'flash-express-ph': flashExpressPh,
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,

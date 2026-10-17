@@ -11854,7 +11854,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fedex-pl",
+      "recognitionRank": 882
     },
     "canaryUrl": "https://fds2tracking.emea.fedex.com/",
     "trackingUrlTemplate": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",

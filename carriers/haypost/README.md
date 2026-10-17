@@ -48,10 +48,13 @@ through the lookup its tracking page at haypost.am makes.
 
 ## Numbers
 
-HayPost items carry UPU S10 numbers ending in `AM`, which generic postal detection handles.
-Orders created through HayPost's business API carry ids of `PAS`, nine digits and `AM`; one
-public example is too little for a rule, so HayPost has no rule of its own. The samples and their
-sources are in [`numbers.json`](numbers.json).
+HayPost items carry UPU S10 numbers ending in `AM`. The issuer of an S10 code does not establish
+who delivers it, so detection keeps such codes with the generic postal carrier. `haypost-s10`, at
+low confidence, makes preflight ask HayPost about them. Mail from abroad keeps the suffix of the
+post that issued it, and reaches HayPost when a caller names it, a provider names it, or a result
+gives Armenia as the destination of an S10 item. Orders created through HayPost's business API
+carry ids of `PAS`, nine digits and `AM`; one public example is too little for a rule. The
+samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

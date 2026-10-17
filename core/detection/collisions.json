@@ -587,6 +587,15 @@
     "reason": "Algérie Poste's EY items do not always carry a valid S10 check digit, and Chronopost's low-confidence rule takes any S10 shape; both stay suggestions, Algérie Poste's backed by its own samples."
   },
   {
+    "shape": "AA9{9}AM with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "haypost",
+      "intl-post"
+    ],
+    "reason": "The Armenian issuer suffix suggests HayPost but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}TY or AA9{9}MI with a valid S10 check digit",
     "carriers": [
       "aliexpress",

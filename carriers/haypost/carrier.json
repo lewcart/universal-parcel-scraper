@@ -67,5 +67,13 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "haypost-s10",
+      "pattern": "^[A-Z]{2}\\d{9}AM$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

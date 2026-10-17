@@ -47,7 +47,7 @@ const CATALOG_NAMES = new Set([
 // from abroad, not for registered mail. The host also checks adapter
 // availability and required inputs before making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
-  ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
+  ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BG', 'bulgarian-posts'], ['BY', 'belpost'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
   ['DZ', 'algerie-poste'], ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'],
   ['GB', 'royal-mail'], ['JP', 'japan-post'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'],

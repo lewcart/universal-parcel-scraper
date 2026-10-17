@@ -12732,7 +12732,14 @@ export const CARRIER_CATALOG = {
     "trackingUrlTemplate": "https://www.haypost.am/am/track-trace#{trackingNumber}",
     "trackingSearchUrl": "https://www.haypost.am/am/track-trace",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AM$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "hct-logistics": {
     "displayName": "HCT Logistics",
@@ -24572,7 +24579,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hanjin": [],
   "hapdong": [],
   "happy-post": [],
-  "haypost": [],
+  "haypost": ["haypost-s10"],
   "hct-logistics": [],
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],

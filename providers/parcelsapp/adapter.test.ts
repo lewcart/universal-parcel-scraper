@@ -274,6 +274,48 @@ describe('ParcelsApp result parsing', () => {
       .toThrow('No usable tracking events');
   });
 
+  describe('a 1 January 00:00 placeholder', () => {
+    const carriers = ['DPD', 'Chronopost France'];
+    const dated = [
+      { date: '2026-09-24T14:05:00Z', status: 'Package delivered', carrier: 0 },
+      { date: '2026-09-23T08:30:00Z', status: 'Colis en cours d\'acheminement', carrier: 1 },
+      { date: '2026-09-22T19:10:00Z', status: 'Colis pris en charge', carrier: 1 },
+    ];
+    // The steps of DPD's progress bar, which ParcelsApp lists after the dated scans.
+    const steps = (date: string) => ['Package info handed over to DPD', 'Package on the way', 'Package at the parcel delivery center',
+      'Package out for delivery'].map((status) => ({ date, status, carrier: 0 }));
+    const page = (states: { date: string; status: string; carrier: number }[]) => rendered(states.map(({ date, status, carrier }) => {
+      const labeled = DateTime.fromISO(date, { zone: 'UTC', locale: 'en' });
+      return carrierRow(labeled.toFormat('dd LLL yyyy'), labeled.toFormat('HH:mm'), status, carriers[carrier]!);
+    }).join(''));
+
+    it('is counted as undated when it lies months before every other scan, in the JSON reply and on the page', () => {
+      const states = [...dated, ...steps('2026-01-01T00:00:00Z')];
+      const json = parseParcelsAppResponse({ carriers, states }, number, identity());
+      expect(json).toMatchObject({ current_stage: 'delivered', last_update: '2026-09-24T14:05:00.000Z', undated_event_count: 4 });
+      expect(json.events?.map((scan) => scan.description)).toEqual(['Delivered', 'Colis en cours d\'acheminement', 'Colis pris en charge']);
+      const html = parseParcelsAppHtml(page(states), number);
+      expect(html).toMatchObject({ undated_event_count: 4, last_update: json.last_update, current_stage: json.current_stage });
+      expect(html.events).toEqual(json.events);
+    });
+
+    it('keeps a scan at that minute among the scans of the turn of the year, or with no other scan', () => {
+      const yearEnd = [
+        { date: '2026-01-02T09:00:00Z', status: 'Package delivered', carrier: 0 },
+        { date: '2026-01-01T00:00:00Z', status: 'Package on the way', carrier: 0 },
+        { date: '2025-12-31T17:00:00Z', status: 'Package info handed over to DPD', carrier: 0 },
+      ];
+      // Sixty days before the first other scan is still within a shipment's span.
+      const early = [{ ...dated[2]!, date: '2026-03-02T00:00:00Z' }, ...steps('2026-01-01T00:00:00Z')];
+      for (const states of [yearEnd, steps('2026-01-01T00:00:00Z'), early, [...dated, ...steps('2026-01-01T00:01:00Z')]]) {
+        const json = parseParcelsAppResponse({ carriers, states }, number, identity());
+        expect(json.undated_event_count, states[0]!.date).toBeUndefined();
+        expect(json.events?.length).toBe(new Set(states.map(({ date, status }) => `${date}|${status}`)).size);
+        expect(parseParcelsAppHtml(page(states), number).events).toEqual(json.events);
+      }
+    });
+  });
+
   it('keeps unknown historical wording pending rather than inheriting delivered', () => {
     const result = parseParcelsAppResponse({ states: [
       { date: '2026-08-18T03:04:00Z', status: 'Delivered by mailbox, PIN: PRIVATE' },

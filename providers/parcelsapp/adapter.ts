@@ -37,6 +37,8 @@ const MAX_EVENTS = 1000;
 export const PARCELSAPP_BUDGET_MS = 45_000;
 const DIRECT_BUDGET_MS = 30_000;
 const RETRY_DELAY_MS = 2_000;
+// How long before every other scan a 1 January 00:00 must lie to be a placeholder.
+const PLACEHOLDER_LEAD_DAYS = 60;
 
 // ParcelsApp's response omits the number. Bind it to the rendered result's
 // tracking-number row, never merely to the input field or the requested URL.
@@ -879,6 +881,23 @@ function airportHandOver(carrier: string | undefined, status: string, location: 
     ? { stage: 'in_transit', wording: 'The goods have been delivered to the airport' } : undefined;
 }
 
+/**
+ * The dates among a reply's that stand for none: 1 January at 00:00, more
+ * than PLACEHOLDER_LEAD_DAYS before every other dated scan. ParcelsApp relays
+ * the steps of DPD's progress bar and gives that date to those DPD leaves
+ * undated, months before the parcel's scans. A real scan at that minute lies
+ * among the scans of the turn of the year, and keeps its date.
+ */
+function placeholderDates(dates: readonly unknown[]): Set<string> {
+  const walls = dates.map((date) => mislabeledWallTime(date));
+  const newYear = (wall: string | null): wall is string => wall !== null && /^\d{4}-01-01T00:00:00(?:\.0+)?$/.test(wall);
+  const others = walls.filter((wall): wall is string => wall !== null && !newYear(wall)).sort();
+  if (!others.length) return new Set();
+  const first = DateTime.fromISO(others[0]!, { zone: 'utc' });
+  return new Set(walls.filter(newYear)
+    .filter((wall) => first.diff(DateTime.fromISO(wall, { zone: 'utc' }), 'days').days > PLACEHOLDER_LEAD_DAYS));
+}
+
 function parseHistory(payload: unknown, trackingNumber: string, timezone: string | null = null): CarrierResult {
   if (isRecord(payload) && payload.error === 'RELOAD') throw new ChallengeError(SOURCE);
   if (isRecord(payload) && (payload.error === 'NO_DATA' || payload.error === 'NO_TRACKER')) {
@@ -905,12 +924,14 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   const destination = replyDestination(payload, number);
   const origin = countryCode(payload.originCode) ?? countryCode(payload.origin);
   const entries: (ReturnType<typeof readState> & { raw: Record<string, unknown>; scan: CarrierScan | undefined; wording: string })[] = [];
+  const placeholders = placeholderDates(payload.states.flatMap((raw: unknown) => isRecord(raw) && !raw.require_fields && !raw.error ? [raw.date] : []));
   for (const raw of payload.states) {
     if (!isRecord(raw)) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event');
     if (raw.require_fields || raw.error) continue;
-    // A state can come without a date (an Asendia Spain leg). It has no place
-    // among the dated scans, so it is counted instead of read as the latest.
-    if (raw.date == null || raw.date === '') {
+    // A state can come without a date (an Asendia Spain leg), or with a
+    // placeholder for one. It has no place among the dated scans, so it is
+    // counted instead of read as the latest.
+    if (raw.date == null || raw.date === '' || placeholders.has(mislabeledWallTime(raw.date) ?? '')) {
       undated++;
       continue;
     }
@@ -1074,6 +1095,11 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
     rows.push({ name, description, state, scan });
   });
+  // A placeholder date is counted, as in the JSON reply.
+  const placeholders = placeholderDates(rows.map(({ state }) => state.date));
+  const placeholder = ({ state }: typeof rows[number]) => placeholders.has(mislabeledWallTime(state.date) ?? '');
+  undated += rows.filter(placeholder).length;
+  rows.splice(0, rows.length, ...rows.filter((row) => !placeholder(row)));
   // The page prints no location, so no DHL Express scan has a facility to
   // read its clock in, and no other wall clock a place, a copy to take or a
   // placed scan of its network to borrow from: routing's zone, its known

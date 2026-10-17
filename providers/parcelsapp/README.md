@@ -132,6 +132,12 @@ step exists for future protocol changes.
   offset-less date that no zone resolves, has no instant. It is skipped and counted in
   `undated_event_count`, so it never becomes the latest scan, sets the stage or
   `last_update`, or moves the freshness watermark. A malformed date still fails the reply.
+- A state at 1 January 00:00 more than 60 days before every other dated scan has a
+  placeholder for a date, and is counted the same way. ParcelsApp relays the steps of
+  DPD's progress bar ("Package on the way") and gives this date to those DPD leaves
+  undated, months before the parcel's scans. A real scan at that minute lies among the
+  scans of the turn of the year and keeps its date, as does a reply with no other dated
+  scan to compare with.
 - FedEx's pickup ("Picked Up") at 00:00 keeps its day in `local_time`, with no time:
   FedEx's own feed sends that step with a date, a 00:00:00 time and no offset, and every
   other scan with its offset and time. Read at midnight on the pickup's clock, it took a
@@ -382,7 +388,7 @@ step exists for future protocol changes.
   their label. The page names no destination, so only an EcoScooting reference gives one there, and a
   "DPD Group" scan takes no clock from DPD's networks (step 4). The server's timezone is
   never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
-  is counted the same way.
+  is counted the same way, as is a placeholder date.
 - An acceptance by one carrier after another already moved the parcel (in transit or in
   customs) reads as in transit: DPD's "Parcel handed" when it takes a cleared parcel from
   the line carrier is a hand-over, not a new start.

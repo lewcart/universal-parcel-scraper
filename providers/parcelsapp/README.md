@@ -336,8 +336,13 @@ step exists for future protocol changes.
   of its network that a place gives a zone: FedEx's "Shipment information sent to FedEx"
   under the shipper's ZIP code took the zone of the pickup's state, as FedEx's own page
   dates it. Their other scans that nothing places, and those with nothing to borrow, still
-  stay as labeled. Adding a carrier, a town or a province moves stored scans (see
-  Limitations).
+  stay as labeled, except a UPS or FedEx scan with no location. Their own trackers date
+  those at the same digits on a local clock: "Shipper created a label" and "Order
+  Created" not always on the pickup's, UPS's customs scan at the clearing agency on the
+  destination's. So such a scan is a wall time, left out and counted like an undated
+  state, unless routing's zone dates it. UniUni's "UNI DATA CENTER" scans have the UTC
+  instants of UniUni's own feed and keep their label. Adding a carrier, a town or a
+  province moves stored scans (see Limitations).
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
@@ -366,10 +371,11 @@ step exists for future protocol changes.
   scan location, so step 2 never applies there and nothing rules out steps 3 and 5. A
   wall-clock carrier's scan there has no place to be read in and no placed scan to copy or
   borrow from, so routing's zone, a guess, dates it, else its known clock, else its label,
-  and its UTC digits carry no offset for GOFO France's copies to take. The page names no
-  destination, so only an EcoScooting reference gives one there, and a "DPD Group" scan
-  takes no clock from DPD's networks (step 4). The server's
-  timezone is never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
+  and its UTC digits carry no offset for GOFO France's copies to take. Nor can it tell
+  which UPS or FedEx scans have no location, so routing's zone dates all of theirs, else
+  their label. The page names no destination, so only an EcoScooting reference gives one there, and a
+  "DPD Group" scan takes no clock from DPD's networks (step 4). The server's timezone is
+  never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
   is counted the same way.
 - An acceptance by one carrier after another already moved the parcel (in transit or in
   customs) reads as in transit: DPD's "Parcel handed" when it takes a cleared parcel from

@@ -717,13 +717,37 @@ describe('ParcelsApp result parsing', () => {
       scan('2026-07-01T08:00:00Z', 'Canada'),
       scan('2026-06-30T14:05:00Z', 'Example City, ON, CA'),
     ])).toEqual(['2026-07-02T16:00:00.000Z', '2026-07-02T05:10:00.000Z', '2026-07-01T12:00:00.000Z', '2026-06-30T18:05:00.000Z']);
-    // No scan of its network in that country, another network's, or no place at all: as labeled.
+    // No scan of its network in that country, or only another network's: as labeled.
     expect(times(['FedEx'], [scan('2026-07-02T09:00:00Z', 'US 12345'), scan('2026-07-01T14:05:00Z', 'Example City, ON, CA')]))
       .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-01T18:05:00.000Z']);
     expect(times(['FedEx', 'UPS'], [scan('2026-07-02T09:00:00Z', 'US 12345'), scan('2026-07-01T22:10:00Z', 'Example City, NY', 'In transit', 1)]))
       .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-02T02:10:00.000Z']);
-    expect(times(['FedEx'], [scan('2026-07-02T09:00:00Z', ''), scan('2026-07-01T22:10:00Z', 'Example City, NY')]))
-      .toEqual(['2026-07-02T09:00:00.000Z', '2026-07-02T02:10:00.000Z']);
+  });
+
+  it('leaves a UPS or FedEx scan with no location that nothing places a wall time, not the label\'s instant', () => {
+    const parse = (carriers: string[], states: Record<string, unknown>[], timezone: string | null = null) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity(), timezone);
+    const scan = (date: string, location: string, status = 'In transit', carrier = 0) => ({ date, status, carrier, location });
+    // Live shape: UPS's own tracker dates its customs scan at the clearing
+    // agency on the destination's clock; read as labeled, it came 11 hours after it.
+    const ups = [
+      scan('2026-10-17T23:41:00Z', '', 'The package is at the clearing agency awaiting final release.'),
+      scan('2026-10-17T07:15:00Z', 'Example City, HI, US', 'Arrived at Facility'),
+      scan('2026-10-16T22:30:00Z', 'Example City, KY, US', 'Arrived at Facility'),
+    ];
+    const read = parse(['UPS'], ups);
+    expect(read.events?.map((event) => event.time)).toEqual(['2026-10-17T17:15:00.000Z', '2026-10-17T02:30:00.000Z']);
+    expect(read.undated_event_count).toBe(1);
+    expect(read.current_stage).not.toBe('customs');
+    // Routing's zone still dates it, as it dates any scan nothing places.
+    expect(parse(['UPS'], ups, 'Australia/Sydney').events?.map((event) => event.time))
+      .toEqual(['2026-10-17T17:15:00.000Z', '2026-10-17T12:41:00.000Z', '2026-10-17T02:30:00.000Z']);
+    // FedEx's own page dates "Order Created" on a local clock, not always the pickup's.
+    const fedex = parse(['FedEx'], [scan('2026-07-02T09:00:00Z', 'Example City, NY'), scan('2026-07-01T21:40:00Z', '', 'Order Created')]);
+    expect(fedex.events?.map((event) => event.time)).toEqual(['2026-07-02T13:00:00.000Z']);
+    expect(fedex.undated_event_count).toBe(1);
+    // Another carrier's scan with no location keeps its label.
+    expect(parse(['OnTrac'], [scan('2026-07-01T21:40:00Z', '')]).events?.map((event) => event.time)).toEqual(['2026-07-01T21:40:00.000Z']);
   });
 
   it('reads USPS, Canada Post, GOFO and SpeedPAK scans in the state, province or country their location names', () => {

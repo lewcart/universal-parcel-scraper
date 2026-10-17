@@ -100,6 +100,17 @@ const nameKey = (name: unknown) => typeof name === 'string' ? name.toLowerCase()
 // ones below.
 const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'easyship', 'dhlecommerce']);
 /**
+ * Of those, the carriers whose scans with no location are on a local clock
+ * too, so that one nothing places is a wall time, not the label's instant.
+ * Their own trackers date UPS's "Shipper created a label" and FedEx's "Order
+ * Created" at the same digits, on a clock that is not always the pickup's
+ * (Eastern time for a parcel picked up on Pacific time), and UPS's customs
+ * scan at the clearing agency on the destination's: read as labeled, it came
+ * 11 hours after UPS's own instant. UniUni's "UNI DATA CENTER" scans, by
+ * contrast, have the UTC instants of UniUni's own feed.
+ */
+const UNLOCATED_LOCAL_CLOCKS = new Set(['ups', 'fedex']);
+/**
  * Carriers whose dates are each scan's local clock under a label that is
  * never its instant, checked scan for scan on 2026-10-10: USPS's own page,
  * and the "at 8:25 am" ParcelsApp relays in its text; Canada Post's digits;
@@ -922,11 +933,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const { raw, name, scan, date } = entry;
     const { zone } = zones[index]!;
     // A DHL Express scan whose facility the rule cannot place is a wall clock
-    // with no instant. Any other scan with no zone keeps ParcelsApp's label.
-    const unplaced = !zone && relaysFacilityClock(name);
+    // with no instant, and so is a UPS or FedEx scan with no location that
+    // nothing places. Any other scan with no zone keeps ParcelsApp's label.
+    const facility = !zone && relaysFacilityClock(name);
+    const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
     const parsed = localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date,
       entry.wording);
-    if (parsed) latest.see(mislabeledWallTime(date) ?? '', unplaced);
+    if (parsed) latest.see(mislabeledWallTime(date) ?? '', facility);
     // Nor has an offset-less date that no zone resolves: a wall time, not an instant.
     if (parsed && !parsed.time) {
       undated++;

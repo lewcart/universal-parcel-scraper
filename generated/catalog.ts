@@ -2769,6 +2769,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^\\d{15}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EOB\\d{17}$",
+        "confidence": "low"
       }
     ]
   },
@@ -24364,7 +24368,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
   "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d","poste-italiane-registered"],
-  "brt": ["brt-1","brt-shipment-number","brt-parcel-id"],
+  "brt": ["brt-1","brt-shipment-number","brt-parcel-id","brt-customer-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],
   "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],

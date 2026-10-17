@@ -25,11 +25,15 @@ describe('continental shipment candidates', () => {
     }
   });
 
-  it('lets BRT take EOB customer parcel IDs without detection naming BRT for them', () => {
+  it('asks BRT about EOB customer parcel IDs without naming BRT from the shape', () => {
     expect(isBrtTrackingNumber('EOB99099100000000015')).toBe(true);
-    for (const number of ['EOB9909910000000001', 'EOB990991000000000150', 'eob99099100000000015']) expect(isBrtTrackingNumber(number)).toBe(false);
-    expect(detectCarrierMatch('EOB99099100000000015').candidates).not.toContain('brt');
-    expect(recognitionCandidates('EOB99099100000000015').map(candidate => candidate.carrier)).not.toContain('brt');
+    expect(detectCarrierMatch('EOB99099100000000015')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['brt'], preferred: [] });
+    expect(recognitionAskedCarriers('EOB99099100000000015')).toEqual(['brt']);
+    for (const number of ['EOB9909910000000001', 'EOB990991000000000150', 'EOC99099100000000015', 'XEOB99099100000000015', 'EOB9909910000000001A']) {
+      expect(isBrtTrackingNumber(number)).toBe(false);
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('brt');
+    }
+    expect(isBrtTrackingNumber('eob99099100000000015')).toBe(false);
   });
 
   it('prioritizes documented bpost prefixes while preserving overlapping numeric candidates', () => {

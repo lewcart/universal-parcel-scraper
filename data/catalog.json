@@ -2767,6 +2767,10 @@
       {
         "pattern": "^\\d{15}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EOB\\d{17}$",
+        "confidence": "low"
       }
     ]
   },

@@ -13,8 +13,7 @@ form's POST route; BRTcodes use its linked event page. The [official tracking fo
 keeps these identifier types separate. The modern consumer portal exposes a shorter
 progress view and requires recipient verification for more details; the linked
 event portal supplies the scan history without that extra input.
-Detection and adapter eligibility use the same catalog shapes, apart from
-customer parcel IDs of `EOB` and seventeen digits.
+Detection and adapter eligibility use the same catalog shapes.
 
 Fifteen-digit parcel IDs, printed on the parcel label, go through the form's
 parcel search, which only covers about the last two months. Its result page does
@@ -23,9 +22,10 @@ list and the result is accepted only when that list names the requested ID.
 
 The same search finds a customer parcel ID ("ID collo cliente"), the barcode a
 sender applies to its parcels. The adapter takes those of `EOB` and seventeen
-digits. Because the sender chooses them, no detection rule names BRT for them.
-BRT reads them case sensitively. Several shipments can share one, and the
-adapter only reads a reply that shows a single shipment.
+digits. Because the sender chooses them, their rule is low confidence: BRT is
+asked and named only when it finds the ID. BRT reads them case sensitively.
+Several shipments can share one, and the adapter only reads a reply that shows
+a single shipment.
 
 ## Notes
 

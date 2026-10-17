@@ -91,6 +91,11 @@
       "id": "brt-parcel-id",
       "pattern": "^\\d{15}$",
       "confidence": "low"
+    },
+    {
+      "id": "brt-customer-parcel-id",
+      "pattern": "^EOB\\d{17}$",
+      "confidence": "low"
     }
   ]
 }

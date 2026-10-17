@@ -638,6 +638,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'xdp', number: 'ZDBZZZ000000',
     route: /^https:\/\/xdp\.co\.uk\/track\/ZDBZZZ000000\/?$/,
     marker: /Track your XDP parcel|Please confirm delivery or collection postcode/ },
+  // The page prefills the number from its address and asks a freight number's postcode.
+  { carrier: 'dx', number: 'L0000001',
+    route: /^https:\/\/my\.dxdelivery\.com\/t\/L0000001$/,
+    marker: /Track my DX|Enter your postcode/ },
   // The page asks the shipment service for the number in its address on load; an unknown one gets an alert.
   { carrier: 'slovak-parcel-service', number: '70399999999999',
     route: /^https:\/\/www\.sps-sro\.sk\/moja-zasielka\/\?shipment_id=70399999999999$/,

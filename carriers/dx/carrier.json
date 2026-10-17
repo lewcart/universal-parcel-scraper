@@ -20,18 +20,74 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dx",
+    "requirements": [
+      {
+        "field": "postcode",
+        "whenTrackingNumber": "^(?:[A-Z]\\d{7}|\\d{8})$",
+        "validator": "internationalPostcode",
+        "optional": true,
+        "label": "Delivery postcode",
+        "type": "text",
+        "placeholder": "SW1A 1AA",
+        "help": "DX Freight shows a consignment only with its delivery postcode. Without it, other sources are asked.",
+        "pattern": "^(?=.{3,8}$)(?=.*[0-9])[A-Za-z0-9]+(?: [A-Za-z0-9]+)*$",
+        "maxLength": 8,
+        "inputMode": "text",
+        "autoComplete": "postal-code"
+      }
+    ],
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "weight",
+    "service_name"
+  ],
   "portal": {
     "url": "https://my.dxdelivery.com/query?tracking_number={trackingNumber}",
     "searchUrl": "https://www.dxlogistics.com/track",
     "canaryUrl": "https://www.dxlogistics.com/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "parcel_count",
+      "customer_reference",
+      "departure_date",
+      "signatory",
+      "delivery_options"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "service_name"
+    ],
+    "discarded": [
+      "parcel_count",
+      "customer_reference",
+      "departure_date",
+      "signatory",
+      "delivery_options"
+    ],
+    "unavailable": [
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

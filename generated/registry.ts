@@ -100,6 +100,7 @@ import { adapter as dpdPt } from '../carriers/dpd-pt/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dsv } from '../carriers/dsv/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
+import { adapter as dx } from '../carriers/dx/adapter.js';
 import { adapter as dynalogic } from '../carriers/dynalogic/adapter.js';
 import { adapter as earlyBird } from '../carriers/early-bird/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
@@ -428,6 +429,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-uk": dpdUk,
     "dsv": dsv,
     "dtdc": dtdc,
+    "dx": dx,
     "dynalogic": dynalogic,
     "early-bird": earlyBird,
     "econt": econt,
@@ -829,7 +831,7 @@ export const REGISTRY: RegistryDefinition = {
     "dropp": "universal",
     "dsv": "dsv",
     "dtdc": "dtdc",
-    "dx": "universal",
+    "dx": "dx",
     "dynalogic": "dynalogic",
     "early-bird": "early-bird",
     "easy-mail": "universal",

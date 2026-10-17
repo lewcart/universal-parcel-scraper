@@ -10309,7 +10309,24 @@
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dx",
+      "requirements": [
+        {
+          "field": "postcode",
+          "whenTrackingNumber": "^(?:[A-Z]\\d{7}|\\d{8})$",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "SW1A 1AA",
+          "help": "DX Freight shows a consignment only with its delivery postcode. Without it, other sources are asked.",
+          "pattern": "^(?=.{3,8}$)(?=.*[0-9])[A-Za-z0-9]+(?: [A-Za-z0-9]+)*$",
+          "maxLength": 8,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
+      "localClocks": true
     },
     "canaryUrl": "https://www.dxlogistics.com/track",
     "trackingUrlTemplate": "https://my.dxdelivery.com/query?tracking_number={trackingNumber}",

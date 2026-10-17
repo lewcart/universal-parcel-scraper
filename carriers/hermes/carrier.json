@@ -20,7 +20,10 @@
     "adapter": "hermes",
     "steps": [
       "direct"
-    ]
+    ],
+    "recognition": {
+      "rank": 602
+    }
   },
   "capabilities": [
     "history",
@@ -60,5 +63,11 @@
     ]
   },
   "links": [],
-  "detection": []
+  "detection": [
+    {
+      "id": "hermes-delivery-note",
+      "pattern": "^\\d(?:00[1-9]|0[1-9]\\d|[12]\\d\\d|3[0-5]\\d|36[0-6])\\d{6}0000\\d{3}(?:\\d{2}){0,2}$",
+      "confidence": "low"
+    }
+  ]
 }

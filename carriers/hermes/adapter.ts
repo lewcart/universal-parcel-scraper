@@ -1,4 +1,4 @@
-import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isValidSscc } from '../../core/detection/numericChecksums.js';
 import { NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
@@ -161,5 +161,6 @@ export const adapter: AdapterFactory = (environment) => {
     id: 'hermes',
     steps: ['direct'],
     track: (input, context) => tracker.fetch(input.number, context),
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context)),
   };
 };

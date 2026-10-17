@@ -122,7 +122,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Official documentation example, not a real shipment."
@@ -496,7 +497,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Estonia to Germany."
@@ -526,7 +528,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "A waybill typed into DHL's tracking page, archived by the Wayback Machine. DHL's tracking returned an Express shipment delivered from Turkey to Spain."

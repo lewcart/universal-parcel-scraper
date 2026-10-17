@@ -1211,6 +1211,7 @@ export const REGISTRY: RegistryDefinition = {
     "swiss-post-cargo": "swiss-post-cargo",
     "t-cat": "t-cat",
     "t-group": "universal",
+    "tamdis": "universal",
     "tanzania-posts": "universal",
     "taxydema": "universal",
     "tci-express": "tci-express",

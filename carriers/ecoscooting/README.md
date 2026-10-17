@@ -43,10 +43,11 @@ Destination addresses, postcodes, coordinates, delivery photos, order
 identifiers and routing features are excluded. References
 start with the destination postcode, after any `CN` country prefix, so samples
 and fixtures use zeros there. An 18-digit label is a Spanish postcode, four zeros and
-a nine-digit counter. That layout puts Ecoscooting ahead of bpost, whose numbers
-share the length, when a number is recognised. Other 18-digit numbers are not
-asked: the query error that also answers a label not yet announced cannot settle
-that Ecoscooting does not know one.
+a nine-digit counter. No other carrier's 18-digit numbers in the corpus follow that
+layout, so detection names Ecoscooting for it. A label that starts like bpost's
+`3232` numbers or Quickpac's `44` ones only puts Ecoscooting first when a number is
+recognised. Other 18-digit numbers are not asked: the query error that also
+answers a label not yet announced cannot settle that Ecoscooting does not know one.
 A `CN` reference typed without its `CN` gets it back before the request and in the
 tracking link, since neither Ecoscooting nor Cainiao answers it without, and the
 result names the full reference as `canonical_tracking_number`. Without the prefix,

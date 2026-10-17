@@ -19,7 +19,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Publicly reported short tracking code. Estafeta's tracker pairs it with the reported full guide and with another guide, so the short code alone stays inconclusive.",

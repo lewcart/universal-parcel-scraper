@@ -352,13 +352,19 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "hermes"
+      "adapter": "hermes",
+      "recognitionRank": 602
     },
     "canaryUrl": "https://myhes.de/",
     "trackingUrlTemplate": "https://myhes.de/",
     "trackingSearchUrl": "https://myhes.de/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d(?:00[1-9]|0[1-9]\\d|[12]\\d\\d|3[0-5]\\d|36[0-6])\\d{6}0000\\d{3}(?:\\d{2}){0,2}$",
+        "confidence": "low"
+      }
+    ]
   },
   "spring-gds": {
     "displayName": "PostNL",
@@ -655,6 +661,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^ESUS\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^UU\\d{9}DE$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ]
   },
@@ -2806,6 +2817,10 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
+        "pattern": "^(?!3232|44)(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
         "confidence": "low",
         "preferred": true
@@ -3063,7 +3078,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -10103,7 +10118,19 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd",
+        "preferred": true
+      }
+    ]
   },
   "dpd-uk": {
     "displayName": "DPD UK",
@@ -12647,7 +12674,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^1\\d{9}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gls-it": {
     "displayName": "GLS Italy",
@@ -22486,6 +22518,27 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "tamdis": {
+    "displayName": "Tamdis",
+    "color": "#0c2d6b",
+    "aliases": [
+      "Tamdis by JP",
+      "Transporte y Logística Tamdis"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tamdisbyjp.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "tanzania-posts": {
     "displayName": "Tanzania Posts Corporation",
     "color": "#dd1f2e",
@@ -25304,6 +25357,7 @@ export const CARRIER_IDS = [
   "swiftx",
   "t-cat",
   "t-group",
+  "tamdis",
   "tanzania-posts",
   "taxydema",
   "tci-express",
@@ -25374,12 +25428,12 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "planzer": ["planzer-1","planzer-2"],
   "aliexpress": ["aliexpress-1","aliexpress-cnfr","aliexpress-2","aliexpress-lp-reference","aliexpress-ap-reference","aliexpress-cnbr","aliexpress-cnmex","aliexpress-cnusup","aliexpress-cacainiao","aliexpress-rl","aliexpress-jncn","aliexpress-ecsc-aaro","aliexpress-pa","aliexpress-f","aliexpress-9c-i","aliexpress-sda-waybill","aliexpress-ty","aliexpress-mi"],
   "sunyou": ["sunyou-1","sunyou-2","sunyou-3"],
-  "hermes": [],
+  "hermes": ["hermes-delivery-note"],
   "spring-gds": ["spring-gds-1","spring-gds-2","spring-gds-3"],
   "postlogistics": ["postlogistics-dashed-reference","postlogistics-compact-reference"],
   "dachser": [],
   "dhl": ["dhl-1","dhl-9","dhl-8","dhl-10","dhl-3","dhl-13","dhl-12","dhl-7"],
-  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6"],
+  "dhl-ecommerce": ["dhl-ecommerce-1","dhl-ecommerce-2","dhl-ecommerce-4","dhl-ecommerce-5","dhl-ecommerce-6","dhl-ecommerce-7"],
   "ups": ["ups-1","ups-3","ups-2"],
   "amazon-logistics": ["amazon-logistics-1"],
   "amazon-shipping": [],
@@ -25424,7 +25478,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
   "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d","poste-italiane-registered"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id","brt-customer-parcel-id"],
-  "ecoscooting": ["ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
+  "ecoscooting": ["ecoscooting-postcode-label","ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
   "tipsa": ["tipsa-1","tipsa-2"],
   "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],
   "usps": ["usps-impb","usps-impb-26","usps-3","usps-1","usps-2","usps-impb-routing","usps-4","usps-s10"],
@@ -25606,7 +25660,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-ie": [],
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
-  "dpd-pt": [],
+  "dpd-pt": ["dpd-pt-1","dpd-pt-2"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
   "drop2shop": ["drop2shop-1"],
@@ -25670,7 +25724,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghtk": ["ghtk-1"],
   "globalpost": ["globalpost-1"],
   "gls-at": [],
-  "gls-es": [],
+  "gls-es": ["gls-es-1"],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "gls-pl": [],
   "go-express": [],
@@ -25926,6 +25980,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "swiftx": ["swiftx-1"],
   "t-cat": [],
   "t-group": ["t-group-1"],
+  "tamdis": [],
   "tanzania-posts": [],
   "taxydema": [],
   "tci-express": [],

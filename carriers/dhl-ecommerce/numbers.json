@@ -398,6 +398,17 @@
         ]
       },
       "note": "Public tracking link; the tracking page returned the history."
+    },
+    {
+      "number": "UU000000005DE",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Synthetic number with a valid S10 check digit in the UU series issued under DE, which Webtrack answers for."
     }
   ]
 }

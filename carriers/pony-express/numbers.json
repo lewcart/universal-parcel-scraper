@@ -133,7 +133,8 @@
           "relais-colis",
           "tipsa",
           "estafeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Archived lookup on Pony Express's own tracker address; the capture is a redirect and was not opened, so the history was not visible."
@@ -160,7 +161,8 @@
           "relais-colis",
           "tipsa",
           "estafeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Archived lookup on Pony Express's own tracker address; the capture is a redirect and was not opened, so the history was not visible."

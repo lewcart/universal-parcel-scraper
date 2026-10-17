@@ -83,7 +83,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "An archived lookup address on HCT's own site whose no parameter is the Base64 form of this ten-digit number; the capture is a redirect to the home page, so no history is visible and the capture was not opened."

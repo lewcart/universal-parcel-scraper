@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NotFoundError, SchemaError } from '../../core/errors/index.js';
-import { HermesTracker, parseHermesTrackingResponse } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, HermesTracker, parseHermesTrackingResponse } from './adapter.js';
 import { hermesStatus } from './status.js';
 
 const WRONG_HERMES_NUMBER = '12345678';
@@ -210,5 +211,19 @@ describe('Hermes no-data response', () => {
     const request = new URL(String(fetcher.mock.calls[0]?.[0]));
     expect(request.origin + request.pathname).toBe('https://myhes.de/api/request/auftragsdaten');
     expect(request.searchParams.get('parcelNumber')).toBe(WRONG_HERMES_NUMBER);
+  });
+
+  it('recognizes an order with scans and the empty-order placeholder as unknown', async () => {
+    const reply = (payload: unknown) => new Response(JSON.stringify(payload), { headers: { 'Content-Type': 'application/json' } });
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(delivered()))
+      .mockResolvedValueOnce(reply(emptyOrder()))
+      .mockResolvedValueOnce(reply(delivered()));
+    const hes = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
+    // Local clocks cannot date the order's last activity.
+    await expect(hes.recognize!(DELIVERED_NUMBER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(hes.recognize!(WRONG_HERMES_NUMBER)).resolves.toEqual({ known: false });
+    // An order for another delivery note is no recognition.
+    await expect(hes.recognize!('62100000000000001')).rejects.toBeInstanceOf(SchemaError);
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
 });

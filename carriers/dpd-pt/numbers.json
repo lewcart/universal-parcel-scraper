@@ -18,6 +18,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "chronopost",
           "dpd-de",
@@ -111,6 +112,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "chronopost",
           "dpd-de",
@@ -136,6 +138,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "dpd-fr",
           "relais-colis",
@@ -239,6 +242,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "chronopost",
           "dpd-de",
@@ -328,6 +332,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "chronopost",
           "dpd-de",
@@ -353,6 +358,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-pt",
           "dpd",
           "chronopost",
           "dpd-de",
@@ -392,6 +398,32 @@
         ]
       },
       "note": "DPD's reply to a Portal da Queixa complaint says the parcel with this waybill was delivered to the address the sender gave."
+    },
+    {
+      "number": "09841373001531R",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260916215417/https://tracking.dpd.pt/track-and-trace?reference=09841373001531R",
+        "date": "2026-09-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-pt",
+          "dpd",
+          "chronopost",
+          "dpd-de",
+          "dpd-uk"
+        ]
+      },
+      "note": "Archived lookup on DPD Portugal's tracker, with the label's check letter; the opened capture shows a warehouse entry and a hub scan."
     }
   ]
 }

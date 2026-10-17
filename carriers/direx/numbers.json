@@ -108,7 +108,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Direx's own API documentation gives this item number, sent from Bulgaria to the United States, in its tracking example with a full Direx history."

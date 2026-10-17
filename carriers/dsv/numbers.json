@@ -122,7 +122,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Example value in the tool schema of an open-source DB Schenker tracking client; not a real shipment."

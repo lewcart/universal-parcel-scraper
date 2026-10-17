@@ -61,8 +61,11 @@ Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com`
 Parcels carry DPD's fourteen-digit parcel number, which labels and shipping messages may follow
 with a check character. Archived lookups on the tracker and complaints answered by DPD Portugal
 show both forms. Every DPD network issues the same layout and the other DPD entries suggest it
-with low rules; DPD Poland's preferred rule takes those starting with 13, a range DPD Portugal
-issues too. No rule claims them for DPD Portugal, so detection does not offer it.
+with low rules. The first four digits are the sending depot: DPD's routing depot table gives
+Portugal 0955 to 0979, and the tracker's archived lookups and Portuguese complaints add 0980
+to 0988, which no other network uses. A preferred low rule puts DPD Portugal first for those
+depots. Parcels from other depots stay unclaimed: DPD Poland's preferred rule takes those
+starting with 13, a range DPD Portugal issues too.
 
 ## Links
 

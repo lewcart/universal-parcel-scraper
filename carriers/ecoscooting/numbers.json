@@ -13,12 +13,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -34,12 +30,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -52,12 +44,8 @@
         "date": "2025-09-09"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Ecoscooting, which stays one candidate among several."
     },
@@ -73,12 +61,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -94,12 +78,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Public complaint naming Ecoscooting. Ecoscooting's tracker returns its history."
     },
@@ -115,12 +95,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -136,12 +112,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -157,12 +129,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -178,12 +146,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -199,12 +163,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -220,12 +180,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Public complaint naming Ecoscooting. Ecoscooting's tracker returns its history."
     },
@@ -241,12 +197,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Public complaint naming Ecoscooting. Ecoscooting's tracker returns its history."
     },
@@ -262,12 +214,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "The anonymous native gateway identifies this reference as an Ecoscooting parcel."
     },
@@ -365,12 +313,8 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Tracking number explicitly identified; leading zero preserved."
     },
@@ -389,12 +333,8 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Customer explicitly identifies two separate parcels delivered by Ecoscooting; its tracker returns this one's history. A third number labelled complaint ID is excluded."
     },
@@ -413,12 +353,8 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Customer explicitly identifies two separate parcels delivered by Ecoscooting; its tracker returns this one's history. A third number labelled complaint ID is excluded."
     },
@@ -455,12 +391,8 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "ecoscooting",
-          "bpost"
-        ]
+        "carrier": "ecoscooting",
+        "confidence": "high"
       },
       "note": "Spanish numeric reference from a review of Ecoscooting. Ecoscooting's tracker returns its history."
     }

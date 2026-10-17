@@ -46,10 +46,13 @@ a Portuguese postcode.
 
 ## Numbers
 
-Shipment numbers are nine or ten digits, and those in public OCU complaints are ten digits
-starting `1`. Labels also carry longer parcel barcodes, and the sender's reference works too.
-GLS publishes no length or check-digit rule, and these lengths are shared with several
-carriers, so no rule claims them and the user picks GLS Spain.
+The shipment number is the expedition number (`codexp` in GLS Spain's web service): ten
+digits starting `1`, nine digits on older shipments. Labels also carry the customer's
+14-digit `codbarras` and an 18-digit parcel barcode built on it, and the sender's reference
+works too. None has a check digit, and these lengths are shared with several carriers. A
+low-confidence rule suggests GLS Spain for ten digits starting `1`, among the other carriers
+that take ten digits; the user picks it, since recognition cannot ask without the postcode.
+The same counter numbers GLS Portugal's shipments.
 
 ## Links
 

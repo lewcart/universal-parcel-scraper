@@ -318,7 +318,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "ParcelsApp's CDEK page gives it as an example of a ten-digit CDEK tracking number; it is not described as a live shipment."
@@ -346,7 +347,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "ParcelPanel's CDEK page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."

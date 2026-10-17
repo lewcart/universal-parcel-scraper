@@ -2,6 +2,9 @@
 
 Tracks individual Purolator PINs through the anonymous JSON endpoint used by the official portal.
 Detection offers a 12-digit PIN starting with 0 to 6 only when it passes the Luhn check.
+Three letters and nine digits name Purolator outright, except prefixes other services use for
+the same shape. Among them is Cubyn's `CUB`: Cubyn was a French fulfilment service, now closed,
+whose parcels are tracked under the number of the carrier it handed them to.
 
 ## How it works
 

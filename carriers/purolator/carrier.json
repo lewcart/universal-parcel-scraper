@@ -82,7 +82,7 @@
     },
     {
       "id": "purolator-2",
-      "pattern": "^(?!(?:BYS|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+      "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
       "confidence": "high"
     }
   ]

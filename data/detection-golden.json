@@ -2998,18 +2998,10 @@
   },
   {
     "input": "010050000023791274",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -4731,18 +4723,10 @@
   },
   {
     "input": "024000000109776633",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -5604,18 +5588,10 @@
   },
   {
     "input": "035010000109668280",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -7814,34 +7790,18 @@
   },
   {
     "input": "081730000038942441",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
     "input": "081980000095765434",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -7860,18 +7820,10 @@
   },
   {
     "input": "083030000063547779",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -7884,18 +7836,10 @@
   },
   {
     "input": "083300000108897658",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -7912,18 +7856,10 @@
   },
   {
     "input": "083920000098172383",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -8074,18 +8010,10 @@
   },
   {
     "input": "084700000100323091",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -8269,12 +8197,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "chronopost",
       "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
       "dpd",
       "dpd-de",
       "chronopost"
@@ -8285,12 +8218,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "chronopost",
       "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
       "dpd",
       "dpd-de",
       "chronopost"
@@ -8301,12 +8239,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "chronopost",
       "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
       "dpd",
       "dpd-de",
       "chronopost"
@@ -8323,16 +8266,42 @@
     ]
   },
   {
-    "input": "09853970275121E",
+    "input": "09841373001531R",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "chronopost",
       "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
+      "dpd",
+      "dpd-de",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "09853970275121E",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-pt",
+      "dpd",
+      "chronopost",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "preferred": [
+      "dpd-pt"
+    ],
+    "asked": [
+      "dpd-pt",
       "dpd",
       "dpd-de",
       "chronopost"
@@ -8343,6 +8312,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "dpd-fr",
       "relais-colis",
@@ -8357,12 +8327,15 @@
       "dpd-nl",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
       "hermes-de",
       "dpd-be",
       "dpd",
-      "dpd-nl",
-      "dpd-de"
+      "dpd-nl"
     ]
   },
   {
@@ -8370,12 +8343,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dpd-pt",
       "dpd",
       "chronopost",
       "dpd-de",
       "dpd-uk"
     ],
+    "preferred": [
+      "dpd-pt"
+    ],
     "asked": [
+      "dpd-pt",
       "dpd",
       "dpd-de",
       "chronopost"
@@ -8546,7 +8524,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9317,7 +9296,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9430,7 +9410,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9478,7 +9459,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9498,7 +9480,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9560,7 +9543,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9867,7 +9851,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -9946,7 +9931,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -10097,7 +10083,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10249,7 +10236,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10442,7 +10430,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10545,7 +10534,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10565,7 +10555,29 @@
       "tipsa",
       "estafeta",
       "packeta",
+      "dhl-ecommerce-es",
+      "gls-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "1065551890",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10605,7 +10617,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10651,7 +10664,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10671,7 +10685,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10738,7 +10753,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10882,7 +10898,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -10992,7 +11009,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -11403,7 +11421,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11506,7 +11525,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11526,7 +11546,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11786,7 +11807,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11806,7 +11828,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11826,7 +11849,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11863,7 +11887,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -11964,7 +11989,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12159,7 +12185,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12180,7 +12207,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -12204,7 +12232,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12425,7 +12454,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12500,7 +12530,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12609,7 +12640,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12764,7 +12796,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -12912,7 +12945,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12928,6 +12962,27 @@
     "candidates": []
   },
   {
+    "input": "1277384144",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es",
+      "gls-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
     "input": "1277774393",
     "carrier": "unknown",
     "confidence": "low",
@@ -12938,7 +12993,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12958,7 +13014,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -12996,7 +13053,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13118,7 +13176,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13138,7 +13197,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13209,7 +13269,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13260,7 +13321,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13339,7 +13401,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13359,7 +13422,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13501,7 +13565,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13707,7 +13772,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -13925,7 +13991,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14220,7 +14287,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14274,7 +14342,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14294,7 +14363,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14314,7 +14384,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14334,7 +14405,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14429,7 +14501,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14746,7 +14819,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -14806,7 +14880,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -15438,7 +15513,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -15470,7 +15546,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -15625,7 +15702,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -15655,7 +15733,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -15713,7 +15792,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -15769,7 +15849,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -15932,7 +16013,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -15970,7 +16052,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16090,7 +16173,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16110,7 +16194,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16131,7 +16216,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -16155,7 +16241,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16195,7 +16282,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16215,7 +16303,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16235,7 +16324,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16399,7 +16489,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16419,7 +16510,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16439,7 +16531,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16490,7 +16583,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16571,7 +16665,8 @@
       "relais-colis",
       "tipsa",
       "estafeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -16736,7 +16831,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16842,7 +16938,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -16984,18 +17081,10 @@
   },
   {
     "input": "174570000102955436",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -17206,7 +17295,8 @@
       "relais-colis",
       "tipsa",
       "estafeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17275,7 +17365,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17438,7 +17529,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17546,7 +17638,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17567,7 +17660,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -17591,7 +17685,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17611,7 +17706,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17631,7 +17727,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17651,7 +17748,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17671,7 +17769,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17711,7 +17810,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17731,7 +17831,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -17882,7 +17983,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -18022,7 +18124,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -18221,7 +18324,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "asked": [
       "relais-colis",
@@ -18265,7 +18369,8 @@
       "tipsa",
       "estafeta",
       "packeta",
-      "dhl-ecommerce-es"
+      "dhl-ecommerce-es",
+      "gls-es"
     ],
     "preferred": [
       "dhl-express"
@@ -20407,6 +20512,19 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "20620019490000169",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "hermes",
+      "dhl-ecommerce"
+    ],
+    "asked": [
+      "dhl-ecommerce",
+      "hermes"
     ]
   },
   {
@@ -25750,34 +25868,18 @@
   },
   {
     "input": "280270000102949702",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
     "input": "280270000104132526",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -26338,18 +26440,10 @@
   },
   {
     "input": "289700000110328320",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -31371,34 +31465,18 @@
   },
   {
     "input": "380030000066362966",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
     "input": "380030000066782505",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -33182,18 +33260,10 @@
   },
   {
     "input": "419400000112555834",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -33362,10 +33432,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "hermes",
       "poczta-polska"
     ],
     "asked": [
-      "poczta-polska"
+      "poczta-polska",
+      "hermes"
     ]
   },
   {
@@ -33456,6 +33528,19 @@
       "dpd",
       "dpd-nl",
       "dpd-de"
+    ]
+  },
+  {
+    "input": "4232206772000001794",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "hermes",
+      "poczta-polska"
+    ],
+    "asked": [
+      "poczta-polska",
+      "hermes"
     ]
   },
   {
@@ -34579,18 +34664,10 @@
   },
   {
     "input": "460150000103706789",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "ecoscooting",
+    "confidence": "high",
     "candidates": [
-      "ecoscooting",
-      "bpost"
-    ],
-    "preferred": [
       "ecoscooting"
-    ],
-    "asked": [
-      "ecoscooting",
-      "bpost"
     ]
   },
   {
@@ -40658,6 +40735,19 @@
     ]
   },
   {
+    "input": "611321262100006223285",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "hermes",
+      "seur"
+    ],
+    "asked": [
+      "seur",
+      "hermes"
+    ]
+  },
+  {
     "input": "6117109003",
     "carrier": "unknown",
     "confidence": "low",
@@ -41203,10 +41293,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "hermes",
       "dhl-ecommerce"
     ],
     "asked": [
-      "dhl-ecommerce"
+      "dhl-ecommerce",
+      "hermes"
     ]
   },
   {
@@ -41367,10 +41459,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "hermes",
       "dhl-ecommerce"
     ],
     "asked": [
-      "dhl-ecommerce"
+      "dhl-ecommerce",
+      "hermes"
     ]
   },
   {
@@ -41425,10 +41519,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "hermes",
       "poczta-polska"
     ],
     "asked": [
-      "poczta-polska"
+      "poczta-polska",
+      "hermes"
     ]
   },
   {
@@ -44499,10 +44595,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "hermes",
       "poczta-polska"
     ],
     "asked": [
-      "poczta-polska"
+      "poczta-polska",
+      "hermes"
     ]
   },
   {
@@ -59552,6 +59650,17 @@
     ]
   },
   {
+    "input": "CUB300700315",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
     "input": "CV000562646ES",
     "carrier": "unknown",
     "confidence": "low",
@@ -59940,6 +60049,12 @@
     "asked": [
       "colis-prive"
     ]
+  },
+  {
+    "input": "D30054795100049714T4",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "D3009327142",
@@ -77978,6 +78093,18 @@
     "confidence": "high",
     "candidates": [
       "spring-gds"
+    ]
+  },
+  {
+    "input": "UU000000005DE",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "dhl-ecommerce",
+      "chronopost"
     ]
   },
   {

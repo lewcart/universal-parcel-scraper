@@ -99,7 +99,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Shared numeric shape that must stay a suggestion rather than a carrier."

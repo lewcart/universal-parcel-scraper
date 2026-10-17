@@ -131,5 +131,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "gls-es-1",
+      "pattern": "^1\\d{9}$",
+      "confidence": "low"
+    }
+  ]
 }

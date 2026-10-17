@@ -260,7 +260,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "A Voxya complaint against Trackon Courier gives it as the shipment number of an undelivered package."
@@ -288,7 +289,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "A Voxya complaint against Trackon Courier gives it as the courier tracking number of a parcel later called undeliverable."
@@ -316,7 +318,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "A Voxya complaint against Trackon Courier gives it as the tracking id of a parcel held at the Mumbai hub."

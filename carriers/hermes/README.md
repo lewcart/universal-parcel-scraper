@@ -2,9 +2,7 @@
 
 Two-man delivery of furniture and white goods into the home by appointment, in Germany. A
 different company and tracking system from Hermes Germany's parcel network
-([`hermes-de`](../hermes-de/)). No detection rule: myhes.de's FAQ gives the tracking number
-only as 16 to 25 digits, and says each sender sets its own piece numbers (Kollinummern), so the
-user picks the carrier by hand. A piece's SSCC tracks too, but no rule claims it either.
+([`hermes-de`](../hermes-de/)).
 
 ## How it works
 
@@ -44,6 +42,15 @@ user picks the carrier by hand. A piece's SSCC tracks too, but no rule claims it
 - Not used: the appointment/address endpoints on myhes.de — they return the recipient address
   and drop-off permission, which we don't keep. The recipient block and `abstellgenehmigung`
   in the order response are never read.
+
+## Numbers
+
+myhes.de's FAQ gives the tracking number only as 16 to 25 digits, and says each sender sets its
+own piece numbers (Kollinummern). Every archived delivery note has the same layout, though: the
+year's last digit, the day of the year, six digits, `0000`, then three, five or seven digits. A
+low-confidence rule suggests Hermes Einrichtungs-Service for that layout, and recognition asks
+myhes.de, since these lengths are shared with other carriers. A piece's SSCC tracks too, but no
+rule claims it: its company prefix is the shipper's.
 
 ## Limitations
 

@@ -73,6 +73,10 @@ prefix. Detection offers DHL eCommerce next to USPS for the `9261` and `9361`
 families and Webtrack's answer attributes the parcel.
 eBay International Standard Delivery's `ESUS` numbers are a low suggestion shared with
 [Asendia](../asendia/README.md), since eBay names Webtrack for them and Asendia carries some.
+S10 numbers starting `UU` and ending `DE` are a low suggestion too. The `U` range marks
+letter-post items with goods and no customer tracking, and Deutsche Post's offices abroad,
+such as DHL eCommerce's in Chicago, issue them under `DE`, so the series is not DHL
+eCommerce's alone. Detection keeps the postal answer, and recognition asks Webtrack first.
 
 Webtrack has regional coverage. The global route needs local Chromium because
 UTAPI challenges direct requests. The browser helper waits for successful API

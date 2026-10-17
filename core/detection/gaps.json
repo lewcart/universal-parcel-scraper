@@ -869,13 +869,7 @@
     "carrier": "dpd-pt",
     "pattern": "^\\d{14}$",
     "kind": "collision",
-    "reason": "DPD Portugal prints the fourteen-digit DPD parcel number every DPD network issues; other DPD entries suggest it and DPD Poland's preferred rule takes those starting with 13."
-  },
-  {
-    "carrier": "dpd-pt",
-    "pattern": "^\\d{14}[0-9A-Z]$",
-    "kind": "collision",
-    "reason": "The same DPD parcel number with its check character, shared with every DPD network."
+    "reason": "DPD Portugal also delivers parcels numbered at other DPD networks' depots; other DPD entries suggest those and DPD Poland's preferred rule takes those starting with 13."
   },
   {
     "carrier": "dpd-za",
@@ -1255,12 +1249,6 @@
     "reason": "The eight-character Track ID is the GLS group's, which other GLS networks issue and their low rules suggest."
   },
   {
-    "carrier": "gls-es",
-    "pattern": "^\\d{10}$",
-    "kind": "by_design",
-    "reason": "Ten digits are shared by several carriers and nothing in the number points to GLS Spain."
-  },
-  {
     "carrier": "gls-it",
     "pattern": "^[A-Z]{2}\\d{10}$",
     "kind": "open",
@@ -1415,18 +1403,6 @@
     "pattern": "^(?:ITX|GLV|IPH|OTO|EBHJ)\\d{8,17}$|^HM\\d{16}TR$",
     "kind": "by_design",
     "reason": "These prefixes belong to the merchants that print the labels, not to HepsiJET."
-  },
-  {
-    "carrier": "hermes",
-    "pattern": "^\\d{17}$",
-    "kind": "by_design",
-    "reason": "The delivery-note number is too generic for a rule; the carrier is picked by hand."
-  },
-  {
-    "carrier": "hermes",
-    "pattern": "^\\d{19}$",
-    "kind": "by_design",
-    "reason": "The nineteen-digit delivery-note number is too generic for a rule; the carrier is picked by hand."
   },
   {
     "carrier": "hermes",
@@ -2761,6 +2737,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve digits without a known check digit are printed by many carriers, and nothing in the number points to T-CAT."
+  },
+  {
+    "carrier": "tamdis",
+    "pattern": "^D\\d{17}T\\d$",
+    "kind": "open",
+    "reason": "One public reference, which ParcelsApp tracks under Tamdis; one sample does not establish the family."
   },
   {
     "carrier": "taxydema",

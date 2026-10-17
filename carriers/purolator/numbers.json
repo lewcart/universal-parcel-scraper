@@ -470,6 +470,31 @@
         ]
       },
       "note": "A twelve-digit PIN starting with a 6 that passes the Luhn check, archived on Purolator's tracking page with a ship date years old. Purolator's tracker no longer finds it."
+    },
+    {
+      "number": "CUB300700315",
+      "role": "negative",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20201117144524/https://track.cubyn.com/CUB300700315",
+        "date": "2020-11-17",
+        "access": "full_page",
+        "dateKind": "capture"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ],
+        "not": [
+          "purolator"
+        ]
+      },
+      "note": "A Cubyn number whose tracking page the Wayback Machine archived with its history. Cubyn's numbers are CUB and nine digits; the service has closed, and the carrier it handed a parcel to tracks it under its own number."
     }
   ]
 }

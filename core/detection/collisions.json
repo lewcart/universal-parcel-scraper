@@ -183,7 +183,7 @@
       "bpost",
       "ecoscooting"
     ],
-    "reason": "18-digit numbers are shared by bpost and Ecoscooting; the number stays a low-confidence suggestion."
+    "reason": "18-digit numbers are shared by bpost and Ecoscooting. Ecoscooting's postcode layout names it; any other 18-digit number stays a low-confidence suggestion."
   },
   {
     "shape": "AA9{9}AA",
@@ -4226,5 +4226,125 @@
       "gls-it"
     ],
     "reason": "Without its dashes the number is two letters and nine digits, which GLS Italy's low rule reads as a depot code and a shipment number; the dashed Energo rule decides, and the number typed without dashes stays a GLS Italy suggestion."
+  },
+  {
+    "shape": "Ten digits starting 1 that fail the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "dhl-ecommerce-es",
+      "estafeta",
+      "gls-es",
+      "mondial-relay",
+      "packeta",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept, and Packeta's packet ID is ten digits without its Z. Direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Ten digits starting 1 that pass the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "dhl-ecommerce-es",
+      "dhl-express",
+      "estafeta",
+      "gls-es",
+      "mondial-relay",
+      "packeta",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing waybill check prioritizes DHL Express but does not establish it; direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Ten digits starting 1, with separators Packeta does not print, that fail the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "dhl-ecommerce-es",
+      "estafeta",
+      "gls-es",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. Direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Ten digits starting 1, with separators Packeta does not print, that pass the DHL Express waybill check",
+    "carriers": [
+      "dhl",
+      "dhl-ecommerce-es",
+      "dhl-express",
+      "estafeta",
+      "gls-es",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "GLS Spain's expedition numbers are ten digits starting 1, which these carriers also accept. A passing waybill check prioritizes DHL Express but does not establish it; direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "Seventeen digits in the Hermes Einrichtungs-Service delivery-note layout",
+    "carriers": [
+      "dhl-ecommerce",
+      "hermes"
+    ],
+    "reason": "A year digit, the day of the year, six digits and 0000 also fit DHL eCommerce's seventeen-digit rule. Both stay low-confidence suggestions and recognition confirms the carrier."
+  },
+  {
+    "shape": "Nineteen digits in the Hermes Einrichtungs-Service delivery-note layout",
+    "carriers": [
+      "hermes",
+      "poczta-polska"
+    ],
+    "reason": "Poczta Polska's nineteen-digit rule takes the same length, and OCA's numbers, which no rule names, can fit the layout too. Both stay low-confidence suggestions and recognition confirms the carrier."
+  },
+  {
+    "shape": "Twenty-one digits in the Hermes Einrichtungs-Service delivery-note layout",
+    "carriers": [
+      "hermes",
+      "seur"
+    ],
+    "reason": "SEUR's twenty-one-digit references share the length. Both stay low-confidence suggestions and recognition confirms the carrier."
+  },
+  {
+    "shape": "Fourteen digits from a DPD Portugal depot (0955 to 0988) and their DPD check character",
+    "carriers": [
+      "chronopost",
+      "dpd",
+      "dpd-de",
+      "dpd-pt",
+      "dpd-uk"
+    ],
+    "reason": "A DPD parcel number opens with the issuing depot, and these depots are DPD Portugal's, so DPD Portugal is listed first; Chronopost and the other DPD networks print the same label. Direct tracking must confirm the carrier."
+  },
+  {
+    "shape": "14 digits starting with a DPD Portugal depot code (0955 to 0988)",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-nl",
+      "dpd-pt",
+      "dpd-uk",
+      "hermes-de",
+      "relais-colis",
+      "seur"
+    ],
+    "reason": "A DPD parcel number opens with the issuing depot, and these depots are DPD Portugal's, so DPD Portugal is listed first and recognition asks it first; the fourteen digits stay shared with the other DPD networks and these carriers."
+  },
+  {
+    "shape": "UU, nine digits and DE with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "dhl-ecommerce",
+      "intl-post"
+    ],
+    "reason": "Deutsche Post and its offices abroad, DHL eCommerce's among them, issue the series under DE, so the postal fallback stays selected; recognition asks DHL eCommerce's Webtrack first and confirms the carrier."
   }
 ]

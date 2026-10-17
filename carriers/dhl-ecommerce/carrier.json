@@ -124,6 +124,12 @@
       "id": "dhl-ecommerce-6",
       "pattern": "^ESUS\\d{9}$",
       "confidence": "low"
+    },
+    {
+      "id": "dhl-ecommerce-7",
+      "pattern": "^UU\\d{9}DE$",
+      "confidence": "low",
+      "checksum": "s10"
     }
   ]
 }

@@ -78,7 +78,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Ship24's Averitt Express page gives it as an example tracking number."
@@ -133,7 +134,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Ship24's Averitt tracking-number page gives it as an example of a ten-digit LTL number."

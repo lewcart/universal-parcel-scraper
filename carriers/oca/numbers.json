@@ -194,6 +194,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "hermes",
           "poczta-polska"
         ]
       },
@@ -238,6 +239,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "hermes",
           "poczta-polska"
         ]
       },

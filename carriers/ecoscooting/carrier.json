@@ -68,6 +68,11 @@
   ],
   "detection": [
     {
+      "id": "ecoscooting-postcode-label",
+      "pattern": "^(?!3232|44)(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+      "confidence": "high"
+    },
+    {
       "id": "ecoscooting-postcode",
       "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
       "confidence": "low",

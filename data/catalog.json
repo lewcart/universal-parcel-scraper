@@ -350,13 +350,19 @@
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "hermes"
+      "adapter": "hermes",
+      "recognitionRank": 602
     },
     "canaryUrl": "https://myhes.de/",
     "trackingUrlTemplate": "https://myhes.de/",
     "trackingSearchUrl": "https://myhes.de/",
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d(?:00[1-9]|0[1-9]\\d|[12]\\d\\d|3[0-5]\\d|36[0-6])\\d{6}0000\\d{3}(?:\\d{2}){0,2}$",
+        "confidence": "low"
+      }
+    ]
   },
   "spring-gds": {
     "displayName": "PostNL",
@@ -653,6 +659,11 @@
       {
         "pattern": "^ESUS\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^UU\\d{9}DE$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ]
   },
@@ -2804,6 +2815,10 @@
     ],
     "detectionRules": [
       {
+        "pattern": "^(?!3232|44)(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
         "confidence": "low",
         "preferred": true
@@ -3061,7 +3076,7 @@
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -10101,7 +10116,19 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd",
+        "preferred": true
+      }
+    ]
   },
   "dpd-uk": {
     "displayName": "DPD UK",
@@ -12645,7 +12672,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^1\\d{9}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gls-it": {
     "displayName": "GLS Italy",
@@ -22483,6 +22515,27 @@
         "confidence": "high"
       }
     ]
+  },
+  "tamdis": {
+    "displayName": "Tamdis",
+    "color": "#0c2d6b",
+    "aliases": [
+      "Tamdis by JP",
+      "Transporte y Logística Tamdis"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tamdisbyjp.com/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "tanzania-posts": {
     "displayName": "Tanzania Posts Corporation",

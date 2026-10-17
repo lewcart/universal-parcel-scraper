@@ -83,5 +83,19 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "dpd-pt-1",
+      "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
+      "id": "dpd-pt-2",
+      "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}[0-9A-Z]$",
+      "confidence": "low",
+      "checksum": "dpd",
+      "preferred": true
+    }
+  ]
 }

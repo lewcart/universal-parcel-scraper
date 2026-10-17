@@ -191,7 +191,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "ParcelPanel's BOX NOW page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -529,7 +530,8 @@
           "tipsa",
           "estafeta",
           "packeta",
-          "dhl-ecommerce-es"
+          "dhl-ecommerce-es",
+          "gls-es"
         ]
       },
       "note": "Looked up on BOX NOW's own tracker, as an archived address shows; the capture was not opened."

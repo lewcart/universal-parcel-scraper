@@ -18509,7 +18509,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-romana": {
     "displayName": "Poșta Română",
@@ -24700,7 +24707,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posta-faroe": [],
   "posta-kenya": [],
   "posta-moldovei": ["posta-moldovei-1"],
-  "posta-north-macedonia": [],
+  "posta-north-macedonia": ["posta-north-macedonia-s10"],
   "posta-romana": ["posta-romana-s10"],
   "posta-shqiptare": [],
   "posta-slovenije": ["posta-slovenije-s10"],

@@ -48,8 +48,12 @@ Macedonia, through the lookup its tracking page on posta.com.mk makes.
 
 ## Numbers
 
-Pošta na Severna Makedonija prints UPU S10 numbers ending in `MK`, and its tracker answers for
-items other posts send to North Macedonia. These stay with the generic postal carrier. The
+Pošta na Severna Makedonija prints UPU S10 numbers ending in `MK`. Archived lookups show items
+starting `RB` and parcels starting `CA`. The issuer of an S10 code does not establish who delivers
+it, so detection keeps such codes with the generic postal carrier. `posta-north-macedonia-s10`, at
+low confidence, makes preflight ask Pošta na Severna Makedonija about them. Mail from abroad keeps
+the suffix of the post that issued it, and reaches Pošta na Severna Makedonija when a caller names
+it, a provider names it, or a result gives North Macedonia as the destination of an S10 item. The
 samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links

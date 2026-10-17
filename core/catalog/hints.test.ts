@@ -32,6 +32,7 @@ describe('national postal lookup candidates', () => {
     ['UZ', 'uzbekistan-post'], ['Uzbekistan', 'uzbekistan-post'],
     ['BD', 'bangladesh-post'], ['Bangladesh', 'bangladesh-post'],
     ['MA', 'barid-al-maghrib'], ['Morocco', 'barid-al-maghrib'],
+    ['MK', 'posta-north-macedonia'], ['North Macedonia', 'posta-north-macedonia'],
     ['PH', 'phlpost'], ['Philippines', 'phlpost'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);

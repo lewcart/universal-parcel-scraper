@@ -87,6 +87,25 @@
       "note": "An archived lookup on the EMS Champion Post Algérie tracker shows this item with two dated rows at the national routing centre; the event names are blank."
     },
     {
+      "number": "EX248479776SG",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240224112652/https://ems.dz/track/index.php?icd=EX248479776SG",
+        "date": "2024-02-24",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "singapore-post",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on the EMS Champion Post Algérie tracker shows this EMS item from Singapore, with SingPost's scans from its posting to its departure and then its arrival at the Algiers international centre."
+    },
+    {
       "number": "ED04006675609",
       "role": "shipment",
       "evidence": "public_shipment_report",

@@ -826,6 +826,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pakistan-post', number: 'ZZ000000014PK',
     route: /^https:\/\/ep\.gov\.pk\/emtts\/EPTrack_Live\.aspx\?ArticleIDz=ZZ000000014PK$/,
     marker: /Article Track Detail/ },
+  // The server renders the lookup and names the number above an empty timeline for an unknown code.
+  { carrier: 'algerie-poste', number: 'ZZ000000014DZ',
+    route: /^https:\/\/ems\.dz\/track\/index\.php\?icd=ZZ000000014DZ$/,
+    marker: /Détails d'envoi Nº/ },
   // The page fills its field in from the address, looks the code up and names the codes it did not find.
   { carrier: 'pecom', number: '100000000033',
     route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,

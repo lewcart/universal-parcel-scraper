@@ -59148,7 +59148,8 @@
       "algerie-poste"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "algerie-poste"
     ]
   },
   {
@@ -59322,7 +59323,8 @@
       "algerie-poste"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "algerie-poste"
     ]
   },
   {
@@ -59334,7 +59336,8 @@
       "algerie-poste"
     ],
     "asked": [
-      "la-poste"
+      "la-poste",
+      "algerie-poste"
     ]
   },
   {
@@ -61015,6 +61018,14 @@
   },
   {
     "input": "EX232685554SG",
+    "carrier": "singapore-post",
+    "confidence": "high",
+    "candidates": [
+      "singapore-post"
+    ]
+  },
+  {
+    "input": "EX248479776SG",
     "carrier": "singapore-post",
     "confidence": "high",
     "candidates": [

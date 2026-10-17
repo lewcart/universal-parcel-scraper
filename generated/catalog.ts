@@ -5529,7 +5529,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "algerie-poste",
+      "recognitionRank": 897,
+      "localClocks": true
     },
     "canaryUrl": "https://www.ems.dz/",
     "trackingUrlTemplate": "https://ems.dz/track/index.php?icd={trackingNumber}",

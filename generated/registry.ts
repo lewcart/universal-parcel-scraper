@@ -6,6 +6,7 @@ import { adapter as carrier5post } from '../carriers/5post/adapter.js';
 import { adapter as carrier99minutos } from '../carriers/99minutos/adapter.js';
 import { adapter as abfFreight } from '../carriers/abf-freight/adapter.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
+import { adapter as algeriePoste } from '../carriers/algerie-poste/adapter.js';
 import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
 import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
 import { adapter as amazonShipping } from '../carriers/amazon-shipping/adapter.js';
@@ -324,6 +325,7 @@ export const REGISTRY: RegistryDefinition = {
     "99minutos": carrier99minutos,
     "abf-freight": abfFreight,
     "acs-courier": acsCourier,
+    "algerie-poste": algeriePoste,
     "aliexpress": aliexpress,
     "allegro-one": allegroOne,
     "amazon-shipping": amazonShipping,
@@ -653,7 +655,7 @@ export const REGISTRY: RegistryDefinition = {
     "akash-ganga": "universal",
     "aks-express": "universal",
     "alem-tat": "universal",
-    "algerie-poste": "universal",
+    "algerie-poste": "algerie-poste",
     "aliexpress": "aliexpress",
     "allegro-one": "allegro-one",
     "amazon-logistics": null,

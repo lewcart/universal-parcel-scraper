@@ -18,18 +18,44 @@
   "timezone": "Europe/Rome",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fg-delivery",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 879
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
     "searchUrl": "https://fgdelivery.it/tracciabilita/",
     "canaryUrl": "https://fgdelivery.it/tracciabilita/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "canonical_tracking_number"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {
@@ -43,6 +69,11 @@
     }
   ],
   "detection": [
+    {
+      "id": "fg-delivery-fgd",
+      "pattern": "^FGD\\d{22}$",
+      "confidence": "high"
+    },
     {
       "id": "fg-delivery-1",
       "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",

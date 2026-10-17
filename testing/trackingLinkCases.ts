@@ -655,6 +655,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/my\.dxdelivery\.com\/t\/L0000001$/,
     marker: /Track my DX|Enter your postcode/ },
   // The page fills its barcode field in from the address and looks the number up on load.
+  { carrier: 'fg-delivery', number: 'FGD0000000000000000000101',
+    route: /^https:\/\/fgdelivery\.it\/tracciabilita\/\?barcode=FGD0000000000000000000101$/,
+    marker: /Inserisci il codice di spedizione|TRACCIA IL TUO PACCO/i },
+  // The page fills its barcode field in from the address and looks the number up on load.
   { carrier: 'hr-parcel', number: '10000000000001',
     route: /^https:\/\/www\.hrparcel\.com\/traccia-spedizioni\/\?barcode=10000000000001$/,
     marker: /Inserisci qui il tuo codice spedizione|La spedizione non è stata trovata/ },

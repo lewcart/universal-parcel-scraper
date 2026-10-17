@@ -11935,7 +11935,9 @@
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fg-delivery",
+      "recognitionRank": 879,
+      "localClocks": true
     },
     "canaryUrl": "https://fgdelivery.it/tracciabilita/",
     "trackingUrlTemplate": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
@@ -11952,6 +11954,10 @@
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^FGD\\d{22}$",
+        "confidence": "high"
+      },
       {
         "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
         "confidence": "high"

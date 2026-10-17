@@ -125,6 +125,7 @@ import { adapter as expressOne } from '../carriers/express-one/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fedexPl } from '../carriers/fedex-pl/adapter.js';
+import { adapter as fgDelivery } from '../carriers/fg-delivery/adapter.js';
 import { adapter as flashExpress } from '../carriers/flash-express/adapter.js';
 import { adapter as flashExpressPh } from '../carriers/flash-express-ph/adapter.js';
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
@@ -461,6 +462,7 @@ export const REGISTRY: RegistryDefinition = {
     "fan-courier": fanCourier,
     "fedex": fedex,
     "fedex-pl": fedexPl,
+    "fg-delivery": fgDelivery,
     "flash-express": flashExpress,
     "flash-express-ph": flashExpressPh,
     "four-px": fourPx,
@@ -889,7 +891,7 @@ export const REGISTRY: RegistryDefinition = {
     "fedex": "fedex",
     "fedex-pl": "fedex-pl",
     "fermopoint": "universal",
-    "fg-delivery": "universal",
+    "fg-delivery": "fg-delivery",
     "first-delivery-tn": "universal",
     "flash-express": "flash-express",
     "flash-express-ph": "flash-express-ph",

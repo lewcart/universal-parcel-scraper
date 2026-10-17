@@ -11937,7 +11937,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fg-delivery",
+      "recognitionRank": 879,
+      "localClocks": true
     },
     "canaryUrl": "https://fgdelivery.it/tracciabilita/",
     "trackingUrlTemplate": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
@@ -11954,6 +11956,10 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^FGD\\d{22}$",
+        "confidence": "high"
+      },
       {
         "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
         "confidence": "high"
@@ -26185,7 +26191,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fastfrate": [],
   "fedex-pl": [],
   "fermopoint": ["fermopoint-1"],
-  "fg-delivery": ["fg-delivery-1"],
+  "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],
   "first-delivery-tn": [],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],

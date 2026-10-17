@@ -185,6 +185,15 @@
       "note": "Scan code (Delivery - Proof of delivery), minutes after DEY with no place. Dropped when a delivery scan is listed or the enumeration is not DELIVERED; staged delivered only when it is the sole delivery evidence of a delivered parcel. Its podUrl is never kept."
     },
     {
+      "code": "PKY",
+      "wording": "We have collected your parcel",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-16",
+      "note": "Scan code, the driver's pickup from the sender, seen on a German parcel between ENA and the origin depot."
+    },
+    {
       "code": "SPX",
       "wording": "Your parcel is on our premises, it will soon be on its way",
       "language": "en",

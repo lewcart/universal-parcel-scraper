@@ -631,8 +631,8 @@ describe('DPD status vocabulary', () => {
   });
 
   it('maps only the scan codes a live lookup paired or labelled with one movement', () => {
-    expect(['CCO', 'SPX', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
-      'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
+    expect(['PKY', 'CCO', 'SPX', 'HUI', 'HUS', 'DLI', 'DLS', 'DLQ', 'DLO', 'DEY'].map(scanStage)).toEqual([
+      'accepted', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'out_for_delivery', 'delivered',
     ]);
     expect(['DEX', 'DLR', 'DLW', 'DEHD', 'DEHDY', 'DODEI', 'DOMSDLO', 'DODEY'].map(scanStage)).toEqual([
       'failed_attempt', 'failed_attempt', 'failed_attempt', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'delivered',

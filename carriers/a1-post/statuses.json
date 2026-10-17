@@ -1,0 +1,12 @@
+{
+  "carrier": "a1-post",
+  "entries": [
+    {"wording": "Shipment information uploaded to A1 Post", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker; the sender's shipment data reached A1 POST."},
+    {"wording": "Shipping Label Created, USPS Awaiting Item", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, followed by the USPS location: the USPS label exists, USPS has not received the parcel."},
+    {"wording": "Arrive in office", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, followed by the office name."},
+    {"wording": "Loaded to line-haul", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, followed by the office name."},
+    {"wording": "Received by employee", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, followed by the office name."},
+    {"wording": "The shipment has been processed A1 Post", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, after the Bulgarian office scans and before the USPS hand-off."},
+    {"wording": "Departed Shipping Partner Facility, USPS Awaiting Item", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived capture of A1 POST's tracker, followed by the location: the parcel left the partner's facility for USPS."}
+  ]
+}

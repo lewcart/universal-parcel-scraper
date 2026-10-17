@@ -213,3 +213,51 @@ describe('wave six European prefixes', () => {
     }
   });
 });
+
+describe('wave six courier rules', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('names FG Delivery for the Cainiao codes its FLM suffix hands to Fulmine', () => {
+    expect(detectCarrierMatch('CNITAB00000001FLM')).toMatchObject({ carrier: 'fg-delivery', confidence: 'high', candidates: ['fg-delivery'] });
+    for (const number of ['CNITAB0000001FLM', 'CNITA000000001FLM', 'CNITAB00000001FLX']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fg-delivery');
+    }
+  });
+
+  it('names LogoiX only for LIX and ten digits', () => {
+    expect(detectCarrierMatch('LIX0000000001')).toMatchObject({ carrier: 'logoix', confidence: 'high' });
+    for (const number of ['LIX000000001', 'LIX00000000001', 'LIXA000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('logoix');
+    }
+  });
+
+  it('suggests Fermopoint for Fermoticket codes without naming it', () => {
+    expect(detectCarrierMatch('A0B0CDE000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['fermopoint'] });
+    for (const number of ['00B0CDE000001', 'A0B0CD0000001']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fermopoint');
+  });
+
+  it('names Peddler for its P and NLEXP labels', () => {
+    for (const number of ['P000000000000000001', 'NLEXP0000000001INTPED']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'peddler', confidence: 'high', candidates: ['peddler'] });
+    }
+    for (const number of ['P00000000000000001', 'P0000000000000000001', 'NLEXP000000001INTPED', 'NLEXP0000000001INTPOD']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('peddler');
+    }
+  });
+
+  it('suggests TWS Express after Poste Italiane for the SDA-shaped waybills it delivers, and asks only Poste', () => {
+    expect(detectCarrierMatch('280000A000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['poste-italiane', 'tws-express'] });
+    expect(recognitionAskedCarriers('280000A000001')).toEqual(['poste-italiane']);
+    for (const number of ['270000A000001', '280000A00001', '2800000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tws-express');
+    }
+  });
+
+  it('suggests nox for its dated 22000 barcodes beside the other 24-digit carriers', () => {
+    const barcode = `22000${'0000001'}261017${'000001'}`;
+    expect(detectCarrierMatch(barcode)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(barcode).candidates).toEqual(expect.arrayContaining(['nox', 'inpost']));
+    for (const number of [`22000${'0000001'}261317${'000001'}`, `22000${'0000001'}261032${'000001'}`, `23000${'0000001'}261017${'000001'}`]) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('nox');
+    }
+  });
+});

@@ -48,6 +48,12 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to A. Duie Pyle."
   },
   {
+    "carrier": "a1-post",
+    "pattern": "^92\\d{20}$",
+    "kind": "by_design",
+    "reason": "A USPS label number that A1 POST's tracker follows for parcels it sends to the United States; detection names USPS."
+  },
+  {
     "carrier": "aaa-cooper",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -830,6 +836,12 @@
     "reason": "Thirteen digits are shared by many carriers, and nothing in the number points to Direct Freight Express."
   },
   {
+    "carrier": "direx",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Direx's ten-digit item numbers share their shape with DHL Express waybills and many carriers' numeric references, so nothing in them names Direx."
+  },
+  {
     "carrier": "dohrn-transfer",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -1213,6 +1225,12 @@
     "reason": "Twelve digits are shared by several carriers, FedEx and GLS among them, and nothing in the number points to GO! Express."
   },
   {
+    "carrier": "go4",
+    "pattern": "^2\\d{10}$",
+    "kind": "by_design",
+    "reason": "GO4 shipment numbers are bare runs of ten or eleven digits, which many carriers share."
+  },
+  {
     "carrier": "gobolt",
     "pattern": "^(?:\\d{12}|[A-Z0-9]{12})$",
     "kind": "by_design",
@@ -1259,6 +1277,18 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Hapdong Express numbers are bare ten-digit runs without a known check digit, a shape many Korean carriers share."
+  },
+  {
+    "carrier": "happy-post",
+    "pattern": "^\\d{8}$",
+    "kind": "collision",
+    "reason": "Eight-digit Happy-Post parcel numbers share their shape with Mondial Relay, Colisweb and Heppner numbers, so the shape cannot name Happy-Post."
+  },
+  {
+    "carrier": "happy-post",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "Seven-digit numbers from Happy-Post's earlier series are a bare counter that SEUR numbers share, so nothing in them points to Happy-Post."
   },
   {
     "carrier": "haypost",
@@ -1369,6 +1399,18 @@
     "reason": "Fourteen bare digits are printed by many carriers, so the shape cannot name Horoz Lojistik."
   },
   {
+    "carrier": "hr-parcel",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "HR Parcel's barcodes are fourteen digits, a length many carriers share, so no rule claims them."
+  },
+  {
+    "carrier": "hr-parcel",
+    "pattern": "^00\\d{18}$",
+    "kind": "by_design",
+    "reason": "Some senders' parcels carry a twenty-digit SSCC, which no carrier rule claims."
+  },
+  {
     "carrier": "hunter-express",
     "pattern": "^[A-Z]{3}\\d{6}$",
     "kind": "by_design",
@@ -1445,6 +1487,12 @@
     "pattern": "^\\d{12,13}$",
     "kind": "by_design",
     "reason": "Twelve and thirteen digits are shared by several carriers and nothing in the number points to Inter Rapidísimo."
+  },
+  {
+    "carrier": "intex-paketdienst",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "INTEX shipment numbers are seven digits, a hyphen and one digit, eight digits once the hyphen is removed, a length several carriers share, so no rule claims them."
   },
   {
     "carrier": "iran-post",
@@ -1667,6 +1715,18 @@
     "pattern": "^PX\\d{11}$",
     "kind": "by_design",
     "reason": "LibanPost's PX numbers have a single public lookup, too little to claim the layout."
+  },
+  {
+    "carrier": "liccardi",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Liccardi's counter numbers reach eight digits, a length several carriers share, so no rule claims them."
+  },
+  {
+    "carrier": "liccardi",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Liccardi's thirteen-digit numbers start 66, a prefix too short to claim among the five carriers that already match thirteen digits."
   },
   {
     "carrier": "line-clear",
@@ -1921,6 +1981,18 @@
     "reason": "A digit, three letters and digits is also the shape of Sameday, DHL eCommerce Netherlands and other carriers' numbers, and nothing in it points to Northline."
   },
   {
+    "carrier": "nox",
+    "pattern": "^SWR\\d{21}$",
+    "kind": "by_design",
+    "reason": "Barcodes of SWR and 21 digits are known from one sender block only, outside the layout nox's label specification defines."
+  },
+  {
+    "carrier": "nox",
+    "pattern": "^RA[12][0-9A-Z]{12}\\d{9}$",
+    "kind": "by_design",
+    "reason": "nox return barcodes are agreed separately with each sender and only the specification's layout example is known."
+  },
+  {
     "carrier": "nz-couriers",
     "pattern": "^[A-Z][A-Z0-9]{1,2}\\d{7,8}$",
     "kind": "by_design",
@@ -2098,6 +2170,18 @@
     "pattern": "^\\d{15}$",
     "kind": "by_design",
     "reason": "The fifteen-digit form is the twelve-digit number with its 001 piece suffix, and bare fifteen-digit numbers are printed by many carriers."
+  },
+  {
+    "carrier": "pigeon-express",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Pigeon Express's twelve-digit reference numbers share their shape with FedEx and many other carriers' numeric waybills."
+  },
+  {
+    "carrier": "pigeon-express",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "A Pigeon Express package barcode is the reference number, a dash and the package index, which normalizes to thirteen digits many carriers share."
   },
   {
     "carrier": "pilot-freight",
@@ -2767,6 +2851,12 @@
     "pattern": "^[A-Z]{4}\\d{6}$",
     "kind": "by_design",
     "reason": "C chez vous, Team Global Express and Border Express print the same shape, and two public TufesaPack samples are too few for a rule."
+  },
+  {
+    "carrier": "tws-express",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "TWS's older all-digit waybills are thirteen digits, a length many carriers share, so no rule claims them."
   },
   {
     "carrier": "ubi-smart-parcel",

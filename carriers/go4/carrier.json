@@ -1,0 +1,46 @@
+{
+  "id": "go4",
+  "displayName": "GO4",
+  "aliases": [
+    "Kuriér GO4",
+    "Kurier GO4",
+    "GO4, s.r.o."
+  ],
+  "region": {
+    "countries": [
+      "SK"
+    ]
+  },
+  "brand": {
+    "color": "#ef1f23"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bratislava",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://zona.go4.eu/status/?parcelId={trackingNumber}",
+    "searchUrl": "https://zona.go4.eu/status/",
+    "canaryUrl": "https://zona.go4.eu/status/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "zona.go4.eu"
+      ],
+      "pathPattern": "^/status/?$",
+      "params": [
+        "parcelId"
+      ]
+    }
+  ],
+  "detection": []
+}

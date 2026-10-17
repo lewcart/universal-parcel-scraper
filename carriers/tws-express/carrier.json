@@ -1,0 +1,57 @@
+{
+  "id": "tws-express",
+  "displayName": "TWS Express Courier",
+  "aliases": [
+    "T.W.S. Express Courier",
+    "TWS Express"
+  ],
+  "region": {
+    "countries": [
+      "IT"
+    ]
+  },
+  "brand": {
+    "color": "#FFED00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mytws.it/tracking-status;ldv={trackingNumber}",
+    "searchUrl": "https://twsexpresscourier.it/traccia-spedizione/",
+    "canaryUrl": "https://twsexpresscourier.it/traccia-spedizione/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mytws.it"
+      ],
+      "path": "^/tracking-status;ldv=([^/?#;]+)$"
+    },
+    {
+      "domains": [
+        "twsexpresscourier.it"
+      ],
+      "pathPattern": "^/Ricerca\\.aspx$",
+      "params": [
+        "ldv"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "tws-express-1",
+      "pattern": "^28\\d{4}[A-Z]\\d{6}$",
+      "confidence": "low"
+    }
+  ]
+}

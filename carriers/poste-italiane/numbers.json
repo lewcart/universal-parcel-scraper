@@ -159,7 +159,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "poste-italiane"
+          "poste-italiane",
+          "tws-express"
         ]
       },
       "note": "Public report names this carrier; shipment identity remains unconfirmed."
@@ -183,7 +184,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "poste-italiane"
+          "poste-italiane",
+          "tws-express"
         ]
       },
       "note": "The supplied report is unavailable and the identifier cannot be independently checked against its source.",

@@ -1,0 +1,45 @@
+{
+  "id": "liccardi",
+  "displayName": "Liccardi Express Courier",
+  "aliases": [
+    "Liccardi Trasporti",
+    "F.lli Liccardi S.r.l.",
+    "Liccardi Express"
+  ],
+  "region": {
+    "countries": [
+      "IT"
+    ]
+  },
+  "brand": {
+    "color": "#014895"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",
+    "canaryUrl": "https://www.liccarditrasporti.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "my.liccarditrasporti.com"
+      ],
+      "pathPattern": "^/segui/?$",
+      "params": [
+        "ldv"
+      ]
+    }
+  ],
+  "detection": []
+}

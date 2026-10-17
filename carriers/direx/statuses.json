@@ -1,0 +1,16 @@
+{
+  "carrier": "direx",
+  "entries": [
+    {"code": "CRD", "wording": "Created", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "The shipment was created. Direx tracking status in its API documentation."},
+    {"code": "APO", "wording": "Accepted by Direx", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Direx received the parcel. Direx tracking status in its API documentation."},
+    {"code": "DED", "wording": "Dispatched", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Direx sent the parcel on. Direx tracking status in its API documentation."},
+    {"code": "ITT", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Direx tracking status in its API documentation."},
+    {"code": "ITT", "wording": "Departed Transit Country", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Shown with the ITT code in the partner status example of Direx's API documentation."},
+    {"wording": "Processing at Partner", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "The partner carrier is handling the parcel; shown without a code in the partner status example of Direx's API documentation."},
+    {"code": "ADC", "wording": "In Destination Country", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Direx tracking status in its API documentation."},
+    {"code": "DAT", "wording": "Delivery Attempt", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Direx tracking status in its API documentation."},
+    {"code": "DLD", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Direx tracking status in its API documentation."},
+    {"code": "RND", "wording": "Returned", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "The parcel is going back to the sender. Direx tracking status in its API documentation."},
+    {"code": "RCD", "wording": "Return Completed", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "The parcel is back with the sender. Direx tracking status in its API documentation."}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "happy-post",
+  "displayName": "Happy-Post",
+  "aliases": [
+    "Happy Post"
+  ],
+  "region": {
+    "countries": [
+      "FR",
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#ff8500"
+  },
+  "selectable": true,
+  "timezone": "Europe/Paris",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
+    "searchUrl": "https://happy-post.com/fr/suivi/",
+    "canaryUrl": "https://happy-post.com/fr/suivi/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "happy-post.com"
+      ],
+      "pathPattern": "^/(?:fr/suivi|en/track)/?$",
+      "params": [
+        "id"
+      ]
+    },
+    {
+      "domains": [
+        "uk.happy-post.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

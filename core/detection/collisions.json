@@ -3648,5 +3648,32 @@
       "colis-prive"
     ],
     "reason": "CityMail's twelve-character BCM references also fit Colis Privé's twelve-character rule; the BCM prefix names CityMail at high confidence."
+  },
+  {
+    "shape": "Three letters, two digits, two letters and six digits",
+    "carriers": [
+      "fermopoint",
+      "paquetexpress"
+    ],
+    "reason": "Fermopoint's Fermoticket and Paquetexpress's guide numbers can both be three letters, two digits, two letters and six digits; both rules name them with low confidence."
+  },
+  {
+    "shape": "Twenty-four digits starting 22000",
+    "carriers": [
+      "austrian-post",
+      "bpost",
+      "ciblex",
+      "inpost",
+      "nox"
+    ],
+    "reason": "nox's shipping barcode is 24 digits starting 22000 with a print date, which the 24-digit rules of InPost, bpost, Ciblex and Austrian Post also accept; all of them, nox included, name it with low confidence."
+  },
+  {
+    "shape": "28, four digits, a letter and six digits",
+    "carriers": [
+      "poste-italiane",
+      "tws-express"
+    ],
+    "reason": "TWS waybills and SDA's own waybills share this layout; both rules are low-confidence, so recognition decides."
   }
 ]

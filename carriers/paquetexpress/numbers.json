@@ -567,6 +567,7 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "fermopoint",
           "paquetexpress"
         ]
       },

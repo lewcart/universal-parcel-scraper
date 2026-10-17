@@ -1,0 +1,52 @@
+{
+  "id": "fg-delivery",
+  "displayName": "FG Delivery",
+  "aliases": [
+    "Fulmine Group",
+    "Fulmine Group Servizi Notificazione",
+    "Fulmine"
+  ],
+  "region": {
+    "countries": [
+      "IT"
+    ]
+  },
+  "brand": {
+    "color": "#393d78"
+  },
+  "selectable": true,
+  "timezone": "Europe/Rome",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
+    "searchUrl": "https://fgdelivery.it/tracciabilita/",
+    "canaryUrl": "https://fgdelivery.it/tracciabilita/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fgdelivery.it"
+      ],
+      "pathPattern": "^/tracciabilita/?$",
+      "params": [
+        "barcode"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "fg-delivery-1",
+      "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
+      "confidence": "high"
+    }
+  ]
+}

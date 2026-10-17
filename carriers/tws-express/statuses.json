@@ -1,0 +1,13 @@
+{
+  "carrier": "tws-express",
+  "entries": [
+    {"code": "NV", "wording": "NUOVA", "stage": "registered", "language": "it", "confirmedBy": "portal", "note": "Seen in an archived answer of the tracking API behind mytws.it; the waybill has been created."},
+    {"code": "CF", "wording": "CONFERMATA", "stage": "registered", "language": "it", "confirmedBy": "portal", "note": "Seen in an archived answer of the tracking API behind mytws.it; the sender has confirmed the shipment."},
+    {"wording": "IN PARTENZA", "stage": "accepted", "language": "it", "confirmedBy": "portal", "note": "First scan at TWS before the parcel leaves; one older capture writes it In partenza."},
+    {"wording": "PARTITA", "stage": "in_transit", "language": "it", "confirmedBy": "portal", "note": "The parcel has left the origin depot."},
+    {"wording": "IN TRANSITO", "stage": "in_transit", "language": "it", "confirmedBy": "portal", "note": "Seen in archived lookups on TWS's tracker."},
+    {"wording": "IN CONSEGNA (MATT)", "stage": "out_for_delivery", "language": "it", "confirmedBy": "portal", "note": "Out for delivery on the morning round (MATT for mattina)."},
+    {"wording": "CONSEGNATA", "stage": "delivered", "language": "it", "confirmedBy": "portal", "note": "Seen in archived lookups on TWS's tracker, with the signer's name beside it."},
+    {"wording": "in giacenza", "stage": "exception", "language": "it", "confirmedBy": "source", "note": "A complaint says TWS's tracking showed the parcel held at a depot after no delivery took place."}
+  ]
+}

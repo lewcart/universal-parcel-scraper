@@ -1,0 +1,7 @@
+{
+  "carrier": "nox",
+  "entries": [
+    {"wording": "Collo in der nox Niederlassung eingetroffen", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "The package arrived at a nox branch, which the location column names. Seen in an archived capture of nox's former tracker."},
+    {"wording": "Sendung eingetroffen", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "The remark the former tracker shows beside the branch arrival scan."}
+  ]
+}

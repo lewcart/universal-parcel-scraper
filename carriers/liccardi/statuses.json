@@ -1,0 +1,11 @@
+{
+  "carrier": "liccardi",
+  "entries": [
+    {"wording": "Spedizione registrata", "stage": "registered", "language": "it", "confirmedBy": "portal", "note": "First of the five progress steps named in the tracker's archived script on my.liccarditrasporti.com."},
+    {"wording": "Ritirata", "stage": "accepted", "language": "it", "confirmedBy": "portal", "note": "Progress step for a collected shipment, named in the tracker's archived script."},
+    {"wording": "In transito", "stage": "in_transit", "language": "it", "confirmedBy": "portal", "note": "Progress step named in the tracker's archived script."},
+    {"wording": "In consegna", "stage": "out_for_delivery", "language": "it", "confirmedBy": "portal", "note": "Progress step named in the tracker's archived script."},
+    {"wording": "Consegnata", "stage": "delivered", "language": "it", "confirmedBy": "portal", "note": "Last progress step named in the tracker's archived script."},
+    {"wording": "in giacenza", "stage": "exception", "language": "it", "confirmedBy": "official-doc", "note": "Liccardi's recipient help page asks why a shipment is in giacenza, held at a branch after a failed delivery."}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "logoix",
+  "displayName": "LogoiX",
+  "aliases": [
+    "LogoiX GmbH"
+  ],
+  "region": {
+    "countries": [
+      "DE",
+      "AT"
+    ]
+  },
+  "brand": {
+    "color": "#ea5b0c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Berlin",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.logoix.com/cgi-bin/tnt.pl?q={trackingNumber}",
+    "searchUrl": "https://www.logoix.com/cgi-bin/tnt.pl",
+    "canaryUrl": "https://www.logoix.com/cgi-bin/tnt.pl",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.logoix.com",
+        "logoix.com",
+        "www2.logoix.com",
+        "mein.logoix.com"
+      ],
+      "pathPattern": "^/cgi-bin/tnt\\.pl$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "logoix-1",
+      "pattern": "^LIX\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

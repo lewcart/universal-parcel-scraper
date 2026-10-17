@@ -1,0 +1,13 @@
+{
+  "carrier": "hr-parcel",
+  "entries": [
+    {"wording": "in consegna", "stage": "out_for_delivery", "language": "it", "confirmedBy": "official-doc", "note": "HR Parcel's FAQ: Il pacco risulta in consegna oggi."},
+    {"wording": "consegnato", "stage": "delivered", "language": "it", "confirmedBy": "official-doc", "note": "HR Parcel's FAQ on a parcel whose tracking shows it delivered."},
+    {"wording": "in rispedizione al mittente", "stage": "returned", "language": "it", "confirmedBy": "official-doc", "note": "HR Parcel's FAQ says the parcel is on its way back to the seller and cannot be stopped."},
+    {"wording": "in giacenza", "stage": "exception", "language": "it", "confirmedBy": "official-doc", "note": "HR Parcel's FAQ on collecting a parcel held at a depot."},
+    {"wording": "consegnata", "stage": "delivered", "language": "it", "confirmedBy": "source", "note": "Quoted from HR Parcel's tracking in a Trustpilot review."},
+    {"wording": "pronto per il ritiro", "stage": "ready_for_pickup", "language": "it", "confirmedBy": "source", "note": "Quoted from HR Parcel's tracking in a Trustpilot review."},
+    {"wording": "presa in carico", "stage": "accepted", "language": "it", "confirmedBy": "source", "note": "Quoted from HR Parcel's tracking in a Trustpilot review, before the parcel left for the hub."},
+    {"wording": "indirizzo errato", "stage": "failed_attempt", "language": "it", "confirmedBy": "source", "note": "Quoted in a complaint as the reason HR Parcel's tracking gave for a failed delivery."}
+  ]
+}

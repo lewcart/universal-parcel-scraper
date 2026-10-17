@@ -407,11 +407,37 @@ function scanLocation(name: unknown, location: unknown): string {
   return [...fields.reverse(), country].filter(Boolean).join(', ');
 }
 
-// The countries of the US and Canadian zones a state or province gives.
-const NORTH_AMERICAN_ZONES: ReadonlyMap<string, string> = new Map([
+// Australia's states and territories by abbreviation, each on its capital's clock.
+const AUSTRALIAN_STATE_ZONES: ReadonlyMap<string, string> = new Map([
+  ['ACT', 'Australia/Sydney'], ['NSW', 'Australia/Sydney'], ['NT', 'Australia/Darwin'], ['QLD', 'Australia/Brisbane'],
+  ['SA', 'Australia/Adelaide'], ['TAS', 'Australia/Hobart'], ['VIC', 'Australia/Melbourne'], ['WA', 'Australia/Perth'],
+]);
+
+// The countries of the US, Canadian and Australian zones a state or province gives.
+const STATE_ZONES: ReadonlyMap<string, string> = new Map([
   ...[...US_STATE_NAMES.values()].map((code) => [usStateTimeZone(code)!, 'US'] as const),
   ...['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'].map((code) => [canadaProvinceTimeZone(code)!, 'CA'] as const),
+  ...[...AUSTRALIAN_STATE_ZONES.values()].map((zone) => [zone, 'AU'] as const),
 ]);
+
+// Australia's state capitals, by which the postal feeds name its offices ("SYDNEY EMS").
+const AUSTRALIAN_CAPITALS: ReadonlyMap<string, string> = new Map([
+  ['adelaide', 'SA'], ['brisbane', 'QLD'], ['canberra', 'ACT'], ['darwin', 'NT'],
+  ['hobart', 'TAS'], ['melbourne', 'VIC'], ['perth', 'WA'], ['sydney', 'NSW'],
+]);
+
+/**
+ * The clock of a scan in Australia, which has several: that of the state its
+ * location names ("EXAMPLE TOWN NSW 2000"), else of the state capital it
+ * names ("SYDNEY EMS, Australia"). It is read only for a scan known to be in
+ * Australia, since "WA" and "SA" name other places too.
+ */
+function australianZone(location: string): string | null {
+  const words = location.split(/[^A-Za-z]+/).filter(Boolean);
+  const state = words.find((word) => AUSTRALIAN_STATE_ZONES.has(word))
+    ?? words.map((word) => AUSTRALIAN_CAPITALS.get(word.toLowerCase())).find(Boolean);
+  return state ? AUSTRALIAN_STATE_ZONES.get(state)! : null;
+}
 
 /**
  * A guessed zone, unless the location names a country it is not in: a guess
@@ -422,7 +448,7 @@ const NORTH_AMERICAN_ZONES: ReadonlyMap<string, string> = new Map([
  */
 function fitsPlace(zone: string | null, location: string, borrowed = false): string | null {
   const country = countryCode(lastPlace(location));
-  const zoneCountry = zone ? timeZoneCountry(zone) ?? (borrowed ? NORTH_AMERICAN_ZONES.get(zone) : undefined) : undefined;
+  const zoneCountry = zone ? timeZoneCountry(zone) ?? (borrowed ? STATE_ZONES.get(zone) : undefined) : undefined;
   return zone && (!country || zoneCountry === country) ? zone : null;
 }
 
@@ -506,11 +532,13 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   if (region?.certain) return region.zone;
   // A town of the state or province whose code a country shares is not in
   // that country: "Denver, CO" is not in Colombia, whoever scanned it.
-  const located = regionClock(location)?.certain ? null : countryTimeZone(place);
+  const located = regionClock(location)?.certain ? null
+    : countryTimeZone(place) ?? (countryCode(place) === 'AU' ? australianZone(location) : null);
   if (located) return located;
   if (region) return region.zone;
   if (POSTAL_FEEDS.has(key) && POSTAL_ORIGIN_LEG.test(status.trim())) {
-    return countryTimeZone(replyOrigin(payload, number)) ?? undefined;
+    const origin = replyOrigin(payload, number);
+    return countryTimeZone(origin) ?? (origin === 'AU' ? australianZone(location) : null) ?? undefined;
   }
   return undefined;
 }
@@ -615,7 +643,7 @@ function wallClockZones(entries: readonly {
         const zone = other.wallClock !== entry.wallClock ? null : entry.wallClock ? found[at]?.zone : other.placed;
         const near = { wall: walls[at]!, zone: zone ?? '' };
         if (!zone || nameKey(other.name) !== key || !fitsPlace(zone, entry.location, true)) return;
-        if (entry.arrival && (timeZoneCountry(zone) ?? NORTH_AMERICAN_ZONES.get(zone)) !== entry.arrival) return;
+        if (entry.arrival && (timeZoneCountry(zone) ?? STATE_ZONES.get(zone)) !== entry.arrival) return;
         if (near.wall <= wall) {
           if (!before || near.wall > before.wall) before = near;
         } else if (!after || near.wall < after.wall) after = near;

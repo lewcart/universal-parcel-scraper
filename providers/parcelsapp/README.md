@@ -84,7 +84,8 @@ step exists for future protocol changes.
      Denmark, 4600") or by the code FedEx writes before one, after a town and its region
      ("EXAMPLE TOWN, RR, IT 12345"), if `COUNTRY_ZONES` ([core/time](../../core/time/index.ts))
      gives it a single clock, else, for the North American scans of a few carriers, their state's
-     or province's zone (see North American scans below);
+     or province's zone (see North American scans below), or for a scan in Australia, the
+     zone of the state or state capital it names ("EXAMPLE TOWN NSW 2000", "SYDNEY EMS");
   3. the country that name ends with, after a catalog carrier or brand ("DPD UK",
      "GLS Italy", "DHL Parcel Netherlands"), if that country has a single clock. It comes
      after the location because the name can be a branch, not the scan's place
@@ -254,7 +255,12 @@ step exists for future protocol changes.
   code or a postcode ("GZSGJHHJ", Guangzhou's office of exchange). Theirs from posting to
   departure from the office of exchange are read on the origin's clock, the reply's
   `originCode` or the country of an S10 number: they share their digits with China Post's
-  scans in China, and read as UTC export customs came after the release.
+  scans in China, and read as UTC export customs came after the release. Australia has
+  several clocks, so an Australian origin's scans take the state or state capital their
+  place names, as Australia Post's own offsets do; one naming neither stays a guess. UPU
+  names the office, not always the scan's state: its "BRISBANE" posting of an item Australia
+  Post received in New South Wales reads an hour late while New South Wales is on summer
+  time.
 - CTT's copies ("Portugal Post - Portugal CTT") have the digits of CTT's own tracker, the
   clock where each scan happened, under a UTC label. An office of exchange or a CTT site
   names its own clock ("GBLALA - …" London's, "PTLISE - …" Lisbon's). ParcelsApp drops

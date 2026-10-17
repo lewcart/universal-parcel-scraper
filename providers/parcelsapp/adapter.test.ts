@@ -1214,6 +1214,23 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('reads the Australian scans of the postal feeds on the clock of the state or state capital they name', () => {
+    // Australia Post dates the same scans in Sydney at +11:00 in October; Brisbane keeps +10:00.
+    const result = parseParcelsAppResponse({ carriers: ['Universal Postal Union', 'EMS'], originCode: 'AU', destinationCode: 'SA', states: [
+      { date: '2026-10-08T05:46:00Z', status: 'Departed country of origin', carrier: 0, location: 'SYDNEY EMS, Australia' },
+      { date: '2026-10-07T23:47:00+00:00', status: 'Arrived at export office', carrier: 1, location: 'Sydney' },
+      { date: '2026-10-07T20:15:00+00:00', status: 'Item presented to export customs/security', carrier: 1, location: 'EXAMPLE TOWN WA 6000' },
+      { date: '2026-10-06T16:28:00Z', status: 'Posting/Collection', carrier: 0, location: 'BRISBANE, Australia' },
+    ] }, number, identity());
+    expect(result.events?.map((scan) => scan.time)).toEqual([
+      '2026-10-07T18:46:00.000Z', '2026-10-07T12:47:00.000Z', '2026-10-07T12:15:00.000Z', '2026-10-06T06:28:00.000Z',
+    ]);
+    // A state's abbreviation places no scan outside Australia: "SA" is not South Australia here.
+    expect(parseParcelsAppResponse({ carriers: ['Universal Postal Union'], originCode: 'CN', destinationCode: 'GB', states: [
+      { date: '2026-10-06T16:28:00Z', status: 'Arrival at inward office of exchange', carrier: 0, location: 'EXAMPLE SA' },
+    ] }, number, identity()).events?.[0]?.time).toBe('2026-10-06T16:28:00.000Z');
+  });
+
   it('reads a scan on its known clock before the zone routing passes for the parcel', () => {
     // Filed under Speedaf, the parcel gets Lagos from routing; Cainiao's own feed dates
     // these scans on China time and on the destination's.

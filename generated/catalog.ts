@@ -15179,7 +15179,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jrt"
+      "adapter": "jrt",
+      "recognitionRank": 984
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -15197,6 +15198,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^JRT\\d{10}MM$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^UP\\d{16}$",
+        "confidence": "low"
       }
     ]
   },
@@ -26673,7 +26678,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jne": ["jne-1"],
   "jordan-post": ["jordan-post-s10"],
   "jrs-express": [],
-  "jrt": ["jrt-1"],
+  "jrt": ["jrt-1","jrt-2"],
   "js-express": ["js-express-1"],
   "kargoist": ["kargoist-1"],
   "kazpost": ["kazpost-s10"],

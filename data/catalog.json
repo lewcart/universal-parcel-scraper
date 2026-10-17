@@ -15177,7 +15177,8 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jrt"
+      "adapter": "jrt",
+      "recognitionRank": 984
     },
     "canaryUrl": "https://t.17track.net/",
     "linkRules": [
@@ -15195,6 +15196,10 @@
       {
         "pattern": "^JRT\\d{10}MM$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^UP\\d{16}$",
+        "confidence": "low"
       }
     ]
   },

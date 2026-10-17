@@ -25,7 +25,10 @@
     "steps": [
       "direct",
       "retry"
-    ]
+    ],
+    "recognition": {
+      "rank": 984
+    }
   },
   "capabilities": [
     "history",
@@ -107,6 +110,11 @@
       "id": "jrt-1",
       "pattern": "^JRT\\d{10}MM$",
       "confidence": "high"
+    },
+    {
+      "id": "jrt-2",
+      "pattern": "^UP\\d{16}$",
+      "confidence": "low"
     }
   ]
 }

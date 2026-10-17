@@ -79469,6 +79469,17 @@
     ]
   },
   {
+    "input": "UP9900000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "jrt"
+    ],
+    "asked": [
+      "jrt"
+    ]
+  },
+  {
     "input": "UPAAD000000054360735",
     "carrier": "pitney-bowes",
     "confidence": "high",

@@ -22,19 +22,30 @@ browser is needed, and no portal link is published.
 - JRT's interface lists no row for an order without scans, under either number. The page shows
   the platform's own row, `货物电子信息已经收到`, on the order's creation time: the order is
   registered.
+- JRT's own rows mix Chinese and an English translation, and the map reads each one whole. The
+  airport row books a flight on a day it names in both halves; [status.ts](status.ts) reads the
+  day as an ellipsis. `已交服务商` (handed to the delivering carrier) and `货物已交机场` (handed to
+  the airport) stay in transit, though their translations read "delivered".
+- Lines into Europe end with DHL. After the hand-off the tracker copies DHL's rows into its own
+  history, in lower case English. The record names neither a channel nor DHL's number, so
+  nothing is handed over.
 - Scan times are wall clocks without an offset on the platform's Beijing clock, as
   [GZYL's](../gzyl/README.md) are, and are read on it; a row dated after the lookup is held back.
 
 ## Limitations
 
-A reference stored without its dashes is not found. Only the platform's own row has been seen at
-JRT, so its scan wordings fall back to the shared wording rules.
+A reference stored without its dashes is not found. A wording the map does not hold falls back to
+the shared wording rules. Without DHL's number, DHL's own tracker cannot follow the parcel to its
+delivery.
 
 ## Numbers
 
 JRT's own numbers are JRT, ten digits and MM, made by a Hualei number rule; JRT is 今日通's
-initials. The tracker also accepts the customer's reference, which no rule claims because the
-shipper chooses it. No public JRT number has been found, so the corpus holds a synthetic one.
+initials. The tracker also accepts the customer's reference, which the shipper chooses. References
+made of UP and sixteen digits find JRT orders, but nothing shows that only JRT's shippers use the
+shape, so `jrt-2` offers them with low confidence and recognition asks the tracker, which must
+hold the whole reference. No public number of either shape has been found, so the corpus holds
+synthetic ones.
 
 ## Testing
 

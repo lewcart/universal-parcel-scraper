@@ -398,6 +398,86 @@
         ]
       },
       "note": "Archived reply of GLS Austria's tracking service for a Track ID; it resolves to an eleven-digit parcel in transit, without the event list or an owner."
+    },
+    {
+      "number": "39203874085",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260613054002/https://gls-group.eu/app/service/open/rest/AT/de/rstt029?match=39203874085&type=&caller=witt002&millis=1781329202149",
+        "date": "2026-06-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "ppl"
+        ]
+      },
+      "note": "Archived reply of GLS Austria's tracking service showing the parcel in transit, without the event list or an owner."
+    },
+    {
+      "number": "95389069659",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260714181706/https://gls-group.eu/app/service/open/rest/AT/de/rstt029?match=95389069659&type=&caller=witt002&millis=1784053026369",
+        "date": "2026-07-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "old-dominion",
+          "dhl-ecommerce-pl",
+          "ppl"
+        ]
+      },
+      "note": "Archived reply of GLS Austria's tracking service showing the parcel in transit, without the event list or an owner."
+    },
+    {
+      "number": "Z4EH7KMK",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260803102455/https://gls-group.eu/app/service/open/rest/AT/de/rstt029?match=Z4EH7KMK&type=&caller=witt002&millis=1785752694802",
+        "date": "2026-08-03",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "loggi"
+        ]
+      },
+      "note": "Archived reply of GLS Austria's tracking service for a Track ID; it resolves to an eleven-digit parcel whose data GLS has received, without the event list or an owner."
     }
   ]
 }

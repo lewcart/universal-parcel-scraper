@@ -921,7 +921,7 @@ export const REGISTRY: RegistryDefinition = {
     "ghn": "universal",
     "ghtk": "universal",
     "globalpost": "universal",
-    "gls-at": "universal",
+    "gls-at": "gls-de",
     "gls-ch": "gls-ch",
     "gls-de": "gls-de",
     "gls-es": "gls-es",

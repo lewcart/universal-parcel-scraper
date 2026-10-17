@@ -17,17 +17,70 @@
   "timezone": "Europe/Vienna",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gls-de",
+    "requirements": [
+      {
+        "field": "postcode",
+        "optional": true,
+        "validator": "internationalPostcode",
+        "label": "Delivery postcode",
+        "type": "text",
+        "help": "Optional. GLS shows the scans only with the delivery postcode; without it, other sources are asked.",
+        "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+        "maxLength": 12,
+        "inputMode": "text",
+        "autoComplete": "postal-code"
+      }
+    ],
+    "steps": [
+      "direct"
+    ],
+    "refresh": {
+      "minMinutes": 60,
+      "afterFailureMinutes": 240
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "pickup_point",
+    "weight",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
     "searchUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
     "canaryUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point",
+      "weight",
+      "recipient_name",
+      "recipient_address",
+      "recipient_contact",
+      "signature",
+      "customer_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point",
+      "weight",
+      "delivered_at"
+    ],
+    "discarded": [
+      "recipient_name",
+      "recipient_address",
+      "recipient_contact",
+      "signature",
+      "customer_reference"
+    ],
     "unavailable": []
   },
   "links": [

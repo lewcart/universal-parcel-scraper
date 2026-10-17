@@ -1,27 +1,67 @@
 # GLS Austria
 
-GLS Austria parcels use enabled universal providers. There is no dedicated adapter.
+GLS Austria is the GLS group's network in Austria. Its tracking page runs the group's tracking
+widget against the same recipient service as GLS Germany's, Switzerland's and Poland's, so it
+has no adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose folder
+and [gls-ch](../gls-ch/README.md)'s explain the requests, identity checks and status handling.
 
-GLS Austria is the GLS group's network in Austria. Its tracker is the group's tracking page
-under `gls-group.com/AT/`, which asks the group's tracking service for Austrian parcels, apart
-from the German, Polish and other country pages that the other `gls-*` entries read.
+## How it works
+
+1. `direct`, through gls-de: the anonymous `rstt029` overview, then `rstt028` with the parcel
+   number and the delivery postcode, under `https://gls-group.eu/app/service/open/rest/GROUP/en`.
+   The overview must name the whole number before the postcode is sent.
+
+- The Austrian page asks the same service under `/AT/de/` or `/AT/en/` rather than
+  `/GROUP/en/`. The path sets only the language: both answer the same parcel with the same
+  progress codes, event codes and delivery time, and an unknown number with the same
+  `E000`. The group path is enough, and keeps one request builder for every network that
+  uses it.
+- The Austrian service is not limited to Austrian parcels. It shows parcels GLS Austria takes
+  in and delivers, Austrian parcels delivered in Germany and parcels from other GLS networks
+  delivered in Austria, and the group path shows the same ones. Whichever network handled it,
+  the reply is bound to the requested number, or to its first eleven digits when the number
+  was typed with its check digit.
+- Like the group's other pages, the Austrian page shows the progress bar to anyone and the
+  scans only after the delivery postcode. The postcode is optional in the catalog, so a parcel
+  saved without it is tracked through enabled universal providers instead; the adapter then
+  asks GLS nothing.
+- An expired number is GLS's `E000` on the overview and an unknown one `E206`, and a postcode
+  that does not match is `E609` or `E800` on the detail; both are not found.
+
+## Notes
+
+- The postcode is the recipient's, in any country's format, since an Austrian parcel can be
+  delivered in Germany or elsewhere in GLS's network. GLS refuses a malformed one, such as a
+  single digit, with HTTP 400.
+- The service gives each scan's date and time without an offset, and the shared GLS parser
+  reads them in Central European time, which Austria keeps. Results carry gls-de's
+  `Europe/Berlin` label, so only the label differs from this carrier's zone.
+- The scans' wording is the English of the GROUP path, which the shared GLS map reads.
+  `statuses.json` also keeps the Austrian page's German wording of the same steps.
+- No recognition: no rule offers the group's numbers for this network, and the overview of an
+  Austrian parcel names no owner, so it cannot tell an Austrian parcel from a German or Swiss
+  one.
+
+## Limitations
+
+- No scans without the delivery postcode.
+- The service keeps a parcel for a few months, after which it answers `E000`.
 
 ## Numbers
 
 Parcels carry the GLS group's eleven-digit parcel number, printed on labels with a twelfth
-check digit, and an eight-character Track ID. Archived replies of GLS Austria's tracking
-service show parcels GLS Austria takes in and delivers, Austrian parcels delivered in Germany,
-and parcels from other GLS networks delivered in Austria. Every GLS network issues the same
-layouts, and the GLS Germany, Switzerland and France entries already suggest them with low
-rules, so no rule claims them for GLS Austria and detection does not offer it.
+check digit, and an eight-character Track ID. Every GLS network issues the same layouts, and
+the GLS Germany, Switzerland and France entries already suggest them with low rules, so no
+rule claims them for GLS Austria and detection does not offer it.
 
 ## Links
 
 The tracking page `gls-group.com/AT/de/paket-verfolgen/` reads the number from `match`, so
-`?match={number}` opens one parcel. Links on `gls-group.com` or `gls-group.eu` under `/AT/` are
-read for GLS Austria.
+`?match={number}` opens one parcel; the English page under `/AT/en/parcel-tracking/` does the
+same. Links on `gls-group.com` or `gls-group.eu` under `/AT/` are read for GLS Austria.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/gls-at`, with `GLS_AT_TRACKING_NUMBER` and optionally
+`GLS_AT_POSTCODE`, its delivery postcode, and `GLS_AT_UNKNOWN_NUMBER` set outside the
+repository.

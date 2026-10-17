@@ -48,7 +48,7 @@ const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BG', 'bulgarian-posts'], ['BY', 'belpost'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
   ['EG', 'egypt-post'], ['ES', 'correos-spain'], ['FI', 'posti'], ['FR', 'la-poste'], ['GB', 'royal-mail'],
-  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PL', 'poczta-polska'], ['PT', 'ctt'],
+  ['JP', 'japan-post'], ['NL', 'spring-gds'], ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'],
   ['RO', 'posta-romana'], ['SA', 'saudi-post'], ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'],
   ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);

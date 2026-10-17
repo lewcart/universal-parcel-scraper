@@ -17385,7 +17385,14 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PH$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "pilot-freight": {
     "displayName": "Pilot Freight Services",

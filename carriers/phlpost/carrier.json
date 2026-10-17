@@ -83,5 +83,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "phlpost-s10",
+      "pattern": "^[A-Z]{2}\\d{9}PH$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

@@ -51,9 +51,10 @@ the Philippines, through the lookup its tracking page at tracking.phlpost.gov.ph
 
 PHLPost prints UPU S10 numbers ending in `PH`: registered letters, EMS, parcels and others. The
 issuer of an S10 code does not establish who delivers it, so detection keeps such codes with the
-generic postal carrier and no rule claims the layout. Mail from abroad keeps the suffix of the
-post that issued it, and reaches PHLPost when a caller or a provider names it. The samples and
-their sources are in [`numbers.json`](numbers.json).
+generic postal carrier. `phlpost-s10`, at low confidence, makes preflight ask PHLPost about them.
+Mail from abroad keeps the suffix of the post that issued it, and reaches PHLPost when a caller
+names it, a provider names it, or a result gives the Philippines as the destination of an S10
+item. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

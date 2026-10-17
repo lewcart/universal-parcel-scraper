@@ -17387,7 +17387,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PH$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "pilot-freight": {
     "displayName": "Pilot Freight Services",
@@ -23943,7 +23950,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pecom": [],
   "pelican-express": [],
   "pfc-express": ["pfc-express-1"],
-  "phlpost": [],
+  "phlpost": ["phlpost-s10"],
   "pilot-freight": [],
   "pitney-bowes": ["pitney-bowes-1","pitney-bowes-2","pitney-bowes-3"],
   "pitt-ohio": [],

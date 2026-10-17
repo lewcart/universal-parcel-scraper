@@ -4990,7 +4990,7 @@ export const CARRIER_CATALOG = {
   },
   "247express": {
     "displayName": "247Express",
-    "color": "#d92923",
+    "color": "#ed1f24",
     "aliases": [
       "247 Express",
       "Công ty Cổ phần Hai Bốn Bảy"
@@ -15850,7 +15850,7 @@ export const CARRIER_CATALOG = {
   },
   "labaih": {
     "displayName": "LaBaih",
-    "color": "#ff8e00",
+    "color": "#f8931d",
     "aliases": [
       "لبيه",
       "MyLabaih"
@@ -18869,7 +18869,7 @@ export const CARRIER_CATALOG = {
   },
   "paxel": {
     "displayName": "Paxel",
-    "color": "#ff434f",
+    "color": "#5f51a1",
     "aliases": [
       "Paxel Indonesia",
       "PT Global Unggul Mandiri"
@@ -21676,7 +21676,7 @@ export const CARRIER_CATALOG = {
   },
   "shipblu": {
     "displayName": "ShipBlu",
-    "color": "#0a3266",
+    "color": "#1c5bfe",
     "aliases": [
       "شيب بلو",
       "ShipBlu Technology"
@@ -22952,7 +22952,7 @@ export const CARRIER_CATALOG = {
   },
   "starlinks": {
     "displayName": "Starlinks",
-    "color": "#1f6a4a",
+    "color": "#0d714c",
     "aliases": [
       "StarLinks"
     ],

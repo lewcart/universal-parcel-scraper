@@ -19,8 +19,8 @@ are omitted. Only the server's explicit absence message for the requested item i
 ## Limitations
 
 The direct path supports international EMS, parcel, registered and tracked-letter S10 items.
-Other postal services, numeric domestic references and proprietary mainland formats use
-enabled universal providers.
+It refuses other postal services, numeric domestic references and proprietary mainland
+formats as invalid input before any request; enabled universal providers follow them.
 The tracker retains six months of history, and destination posts can withhold scans.
 No cheap HTTP recognition is declared. Changed image geometry remains a challenge.
 

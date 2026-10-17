@@ -3,7 +3,7 @@ import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
 import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { BudgetExceededError, ChallengeError, IndeterminateError, SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
+import { BudgetExceededError, ChallengeError, InvalidInputError, SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
@@ -20,12 +20,15 @@ export class ChunghwaPostTracker {
 
   async fetch(raw: string, context: TrackingContext = {}) {
     const normalized = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-    const otherService = /^(?:\d{14}|\d{20}|(?:PB|FT|FZ)[A-Z0-9]{11})$/.test(normalized)
-      || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(normalized) && !/^[CELR]/.test(normalized);
-    const number = otherService ? normalized : normalizeChunghwaPostNumber(raw);
+    // Domestic, proprietary and other S10 services' references are refused before any request:
+    // the international gateway cannot read them, and enabled universal providers follow them.
+    if (/^(?:\d{14}|\d{20}|(?:PB|FT|FZ)[A-Z0-9]{11})$/.test(normalized)
+      || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(normalized) && !/^[CELR]/.test(normalized)) {
+      throw new InvalidInputError(PROVIDER, 'This Chunghwa Post reference uses another tracking service');
+    }
+    const number = normalizeChunghwaPostNumber(raw);
     return runSteps({ carrier: 'chunghwa-post', budgetMs: context.budgetMs ?? 25_000, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [{ id: 'direct', run: async ({ signal, remainingMs }) => {
-      if (otherService) throw new IndeterminateError(PROVIDER, 'This Chunghwa Post reference uses another tracking service');
       const deadline = performance.now() + remainingMs;
       const left = () => {
         signal.throwIfAborted(); const remaining = Math.floor(deadline - performance.now());

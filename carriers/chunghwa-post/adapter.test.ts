@@ -1,6 +1,7 @@
 import sharp from 'sharp';
 import { describe, expect, it, vi } from 'vitest';
-import { ChunghwaPostTracker, normalizeChunghwaPostNumber, parseChunghwaPost } from './adapter.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { adapter, ChunghwaPostTracker, normalizeChunghwaPostNumber, parseChunghwaPost } from './adapter.js';
 import { ChunghwaPostOcr } from './ocr.js';
 
 const NUMBER = 'EE000000005TW';
@@ -38,10 +39,13 @@ describe('Chunghwa Post international tracking', () => {
     for (const value of ['00000000000001', 'PB00000000000']) expect(() => normalizeChunghwaPostNumber(value)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
   });
 
-  it('leaves domestic and proprietary references recoverable by providers without querying the international gateway', async () => {
+  it('refuses domestic, proprietary and other S10 references before any request, even when already cancelled', async () => {
     const fetcher = vi.fn<typeof fetch>();
+    const carrier = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
     for (const number of ['00000000000001', '00000000000000000001', 'PB00000000000', 'FT000000005TW', 'VA000000005TW', 'UA000000005TW']) {
-      await expect(new ChunghwaPostTracker({ fetcher }).fetch(number)).rejects.toMatchObject({ kind: 'indeterminate' });
+      const refusal = { kind: 'invalid_input', message: expect.stringContaining('another tracking service') };
+      await expect(new ChunghwaPostTracker({ fetcher }).fetch(number)).rejects.toMatchObject(refusal);
+      await expect(carrier.track({ number }, { signal: AbortSignal.abort(), budgetMs: 1 })).rejects.toMatchObject(refusal);
     }
     expect(fetcher).not.toHaveBeenCalled();
   });

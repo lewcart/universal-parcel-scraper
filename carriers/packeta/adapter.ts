@@ -1,5 +1,7 @@
 
 import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { carrierIdsFromPartnerLinks } from '../../core/catalog/hints.js';
+import { detectCarrierMatch } from '../../core/detection/detect.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
@@ -7,6 +9,7 @@ import { zonedTime } from '../../core/time/index.js';
 import { clean, cleanScalar, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { classifyPacketaStatus, packetaEventStage } from './status.js';
+import { packetaEventLinks, packetaEventText, type PacketaEventLink } from './text.js';
 
 // Protocol provenance:
 // - Prior art (structure + contract, verified independently below, MIT):
@@ -56,6 +59,21 @@ export function packetaTrackingUrl(rawTrackingNumber: string): string {
   return `https://tracking.packeta.com/en/${encodeURIComponent(normalizePacketaTrackingNumber(rawTrackingNumber))}`;
 }
 
+/**
+ * The delivery partner a hand-off sentence links to, when the catalog knows
+ * the link's host. Its number is kept only when the link holds it and that
+ * carrier's own rules offer it: a brand's host can serve other networks.
+ */
+function deliveryPartner(links: readonly PacketaEventLink[]): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+  const [partner, ...others] = carrierIdsFromPartnerLinks(links.map(({ url }) => url), 'packeta');
+  if (!partner || others.length) return {};
+  const number = links.map(({ url, text }) => ({ url, number: text.replace(/\s/g, '').toUpperCase() }))
+    .find(({ url, number }) => number && url.toUpperCase().includes(number)
+      && carrierIdsFromPartnerLinks([url], 'packeta')[0] === partner
+      && (detectCarrierMatch(number).candidates as string[]).includes(partner))?.number;
+  return { delivery_carrier: partner, ...(number ? { delivery_tracking_number: number } : {}) };
+}
+
 export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: string): CarrierResult {
   const requested = normalizePacketaTrackingNumber(trackingNumber);
   if (!isRecord(payload)) throw new SchemaError('Packeta', 'Packeta returned an invalid tracking response');
@@ -79,11 +97,14 @@ export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: s
   if (rawDetails !== undefined && !Array.isArray(rawDetails)) {
     throw new SchemaError('Packeta', 'Packeta returned invalid tracking history');
   }
-  const parsed: Array<{ event: CarrierEvent; timestamp: number; index: number }> = [];
+  const parsed: Array<{ event: CarrierEvent; links: PacketaEventLink[]; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
   (Array.isArray(rawDetails) ? rawDetails : []).filter(isRecord).slice(0, 500).forEach((rawEvent, index) => {
     const time = parsedTime(rawEvent.time);
-    const description = clean(rawEvent.text, 500);
+    // A hand-off sentence links the partner's number to its tracker. The
+    // number stays in the wording; the link names the partner.
+    const raw = typeof rawEvent.text === 'string' ? rawEvent.text : '';
+    const description = packetaEventText(raw);
     if (!time || !description) return;
     const identity = `${time.iso}\u0000${description}`;
     if (seen.has(identity)) return;
@@ -93,12 +114,14 @@ export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: s
       // Unrecognized sentences keep no stage so schema drift surfaces as a
       // data outcome instead of a wrong movement claim.
       event: { time: time.iso, location: '', description, ...(stage ? { stage } : {}) },
+      links: packetaEventLinks(raw),
       timestamp: time.timestamp,
       index,
     });
   });
   parsed.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
   const events = parsed.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);
+  const partner = deliveryPartner(parsed.flatMap(({ links }) => links));
   // Sender (merchant) and branchAddress (Z-BOX/partner shop) carry no
   // recipient PII and are the only pickup signal — Packeta exposes no ETA.
   // For a parcel a courier brings to the door, courierId is "1" and
@@ -120,6 +143,7 @@ export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: s
       timezone: 'Europe/Prague',
       ...(sender ? { sender_name: sender } : {}),
       ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
+      ...partner,
       events,
     };
   }
@@ -135,6 +159,7 @@ export function parsePacketaTrackingResponse(payload: unknown, trackingNumber: s
     ...(sender ? { sender_name: sender } : {}),
     ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
+    ...partner,
     events,
   };
 }

@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { sameInstantIdentityPolicy } from '../../app.js';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { IndeterminateError, NotFoundError, SchemaError, InvalidInputError } from '../../core/errors/index.js';
 import {
   normalizePacketaTrackingNumber,
@@ -16,6 +18,10 @@ const TRACKING_NUMBER = 'Z1234567890';
 const DELIVERED = JSON.parse(
   readFileSync(new URL('./fixtures/delivered.json', import.meta.url), 'utf8'),
 ) as Record<string, unknown>;
+const HANDOFF = JSON.parse(
+  readFileSync(new URL('./fixtures/handoff.json', import.meta.url), 'utf8'),
+) as Record<string, unknown>;
+const DPD_NUMBER = '01234567890128U';
 const CAPABILITIES = (JSON.parse(
   readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'),
 ) as { capabilities: string[] }).capabilities;
@@ -278,5 +284,65 @@ describe('PacketaTracker fetch', () => {
       fetcher.mockResolvedValue(response(value, 404));
       await expect(tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
     }
+  });
+});
+
+describe('Packeta hand-off to a delivery partner', () => {
+  it('keeps the partner number in the wording and names the partner its link points to', () => {
+    const result = parsePacketaTrackingResponse({ item: structuredClone(HANDOFF) }, TRACKING_NUMBER);
+    expect(result).toMatchObject({
+      status: 'in_transit', current_stage: 'in_transit',
+      delivery_carrier: 'dpd-de', delivery_tracking_number: DPD_NUMBER,
+    });
+    expect(result).not.toHaveProperty('pickup_point');
+    expect(result.events?.map((event) => [event.description, event.stage])).toEqual([
+      [`The parcel has been handed over to the carrier. Tracking number: ${DPD_NUMBER}`, 'in_transit'],
+      ['We have successfully received the parcel for transport. DEPO Example', 'in_transit'],
+      ['The parcel is currently on its way to the depot.', 'in_transit'],
+      [`The parcel has been assigned a tracking number: ${DPD_NUMBER} and will soon be handed over to the carrier.`, 'registered'],
+      ['We are aware of your parcel and are waiting for the sender to hand it over to us.', 'registered'],
+    ]);
+    expect(JSON.stringify(result)).not.toMatch(/<a|href|tracking\.dpd\.de/);
+    // The tracker then asks DPD Germany about DPD's own number.
+    expect(deliveryHandoff('packeta', TRACKING_NUMBER, result)).toEqual({ carrier: 'dpd-de', number: DPD_NUMBER, basis: 'partner' });
+  });
+
+  it('names no partner for its own link, an unknown host or two partners, and keeps a number only where it belongs', () => {
+    const handedOver = (...links: Array<[url: string, text: string]>) => parsePacketaTrackingResponse({ item: packet({
+      packetStatusId: '31', courierId: '1',
+      trackingDetails: links.map(([url, text], index) => ({
+        text: `The parcel has been handed over to the carrier. Tracking number: <a href="${url}" rel="noopener noreferrer">${text}</a>`,
+        time: `2026-03-0${index + 1} 06:45:00`,
+      })),
+    }) }, TRACKING_NUMBER);
+    const dpd = `https://tracking.dpd.de/status/en_DE/parcel/${DPD_NUMBER}`;
+    for (const result of [
+      handedOver([`https://tracking.packeta.com/en_GB/?id=${TRACKING_NUMBER}`, TRACKING_NUMBER]),
+      handedOver(['https://parcels.example/track?number=EXAMPLE1', 'EXAMPLE1']),
+      handedOver([dpd, DPD_NUMBER], ['https://foxpost.hu/en/parcel-tracking?code=CLFOX000000000000001', 'CLFOX000000000000001']),
+    ]) {
+      expect(result).not.toHaveProperty('delivery_carrier');
+      expect(result).not.toHaveProperty('delivery_tracking_number');
+      expect(result.events?.[0]?.description).not.toContain('<');
+    }
+    expect(handedOver([`https://tracking.packeta.com/en_GB/?id=${TRACKING_NUMBER}`, TRACKING_NUMBER]).events?.[0]?.description)
+      .toBe(`The parcel has been handed over to the carrier. Tracking number: ${TRACKING_NUMBER}`);
+    // A number the link does not hold, or DPD's rules do not offer, is not DPD's reference.
+    for (const text of ['01234567890129U', '0123456789012']) {
+      expect(handedOver([dpd, text])).toEqual(expect.objectContaining({ delivery_carrier: 'dpd-de' }));
+      expect(handedOver([dpd, text])).not.toHaveProperty('delivery_tracking_number');
+    }
+    expect(handedOver([dpd.replace(DPD_NUMBER, '01234567890129U'), '01234567890129U'])).not.toHaveProperty('delivery_tracking_number');
+  });
+
+  it('lets a hand-off scan stored with its link markup keep its row', () => {
+    const policy = sameInstantIdentityPolicy('packeta', { supportsScanMatching: true });
+    const raw = (HANDOFF.trackingDetails as Array<{ text: string }>)[4]!.text;
+    const stored = { stage: 'in_transit', description: raw, location: '', providerCode: '' };
+    const incoming = { ...stored, description: `The parcel has been handed over to the carrier. Tracking number: ${DPD_NUMBER}` };
+    expect(policy?.matches?.(incoming, stored)).toBe(true);
+    expect(policy?.matches?.(incoming, { ...stored, description: raw.replaceAll(DPD_NUMBER, '01234567890135W') })).toBe(false);
+    expect(policy?.matches?.(incoming, { ...stored, location: 'Example' })).toBe(false);
+    expect(policy?.matches?.({ ...incoming, description: '' }, { ...stored, description: '' })).toBe(false);
   });
 });

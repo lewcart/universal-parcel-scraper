@@ -178,6 +178,7 @@ import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js'
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as leopardsCourier } from '../carriers/leopards-courier/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
+import { adapter as linhan } from '../carriers/linhan/adapter.js';
 import { adapter as lionParcel } from '../carriers/lion-parcel/adapter.js';
 import { adapter as logen } from '../carriers/logen/adapter.js';
 import { adapter as loggi } from '../carriers/loggi/adapter.js';
@@ -499,6 +500,7 @@ export const REGISTRY: RegistryDefinition = {
     "lbc-express": lbcExpress,
     "leopards-courier": leopardsCourier,
     "lietuvos-pastas": lietuvosPastas,
+    "linhan": linhan,
     "lion-parcel": lionParcel,
     "logen": logen,
     "loggi": loggi,
@@ -967,6 +969,7 @@ export const REGISTRY: RegistryDefinition = {
     "liccardi": "universal",
     "lietuvos-pastas": "lietuvos-pastas",
     "line-clear": "universal",
+    "linhan": "linhan",
     "lion-parcel": "lion-parcel",
     "logen": "logen",
     "loggi": "loggi",

@@ -65761,6 +65761,14 @@
     ]
   },
   {
+    "input": "LHGJ32071042CD",
+    "carrier": "linhan",
+    "confidence": "high",
+    "candidates": [
+      "linhan"
+    ]
+  },
+  {
     "input": "LI12976442",
     "carrier": "ontrac",
     "confidence": "high",

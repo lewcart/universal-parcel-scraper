@@ -15188,6 +15188,48 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "linhan": {
+    "displayName": "LinHan International",
+    "color": "#eb5c20",
+    "aliases": [
+      "LinHan",
+      "林瀚国际",
+      "林瀚國際",
+      "林瀚国际物流",
+      "深圳市林瀚国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "linhan",
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.linhan56.com/",
+    "trackingUrlTemplate": "https://www.linhan56.com/index/tracknumber/track?nos={trackingNumber}",
+    "trackingSearchUrl": "https://www.linhan56.com/index/tracknumber/track",
+    "linkRules": [
+      {
+        "domains": [
+          "linhan56.com",
+          "www.linhan56.com"
+        ],
+        "pathPattern": "^/index/tracknumber/track/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^LHGJ\\d{8}CD$",
+        "confidence": "high"
+      }
+    ]
+  },
   "lion-parcel": {
     "displayName": "Lion Parcel",
     "color": "#ff0000",
@@ -24095,6 +24137,7 @@ export const CARRIER_IDS = [
   "liccardi",
   "lietuvos-pastas",
   "line-clear",
+  "linhan",
   "lion-parcel",
   "logen",
   "loggi",
@@ -24689,6 +24732,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "liccardi": [],
   "lietuvos-pastas": ["lietuvos-pastas-1","lietuvos-pastas-s10"],
   "line-clear": [],
+  "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
   "logen": [],
   "loggi": ["loggi-1"],

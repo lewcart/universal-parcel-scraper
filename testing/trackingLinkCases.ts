@@ -879,6 +879,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'cttyex', number: 'CTTY9900000001CN',
     route: /^https:\/\/www\.cttyvip888\.com\/index\/tracknumber\/track\?nos=CTTY9900000001CN$/,
     marker: /快件跟踪|跟踪\(Track\)/ },
+  // The same tracker system as CTTYEX's: the number in the form, looked up on load.
+  { carrier: 'linhan', number: 'LHGJ99000001CD',
+    route: /^https:\/\/www\.linhan56\.com\/index\/tracknumber\/track\?nos=LHGJ99000001CD$/,
+    marker: /快件跟踪|跟踪\(Track\)/ },
   // The page runs its quick search for the number on load and names it beside the count.
   { carrier: 'team-global-express', number: '9900000000000',
     route: /^https:\/\/www\.myteamge\.com\/\?externalSearchQuery=9900000000000$/,

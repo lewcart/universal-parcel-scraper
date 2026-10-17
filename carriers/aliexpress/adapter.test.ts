@@ -471,6 +471,12 @@ describe('Cainiao projection', () => {
     ]);
   });
 
+  it('reads a sorting center turning the parcel away as a fault, not an acceptance', () => {
+    const refused = journey(['SC_INBOUND_FAILURE', 'PU_PICKUP_SUCCESS']);
+    expect(refused).toMatchObject({ status: 'exception', current_stage: 'exception' });
+    expect(refused.events?.map((event) => event.stage)).toEqual(['exception', 'accepted']);
+  });
+
   it('files every recorded code under the stage statuses.json gives it', () => {
     const recorded = JSON.parse(readFileSync(path.join(folder, 'statuses.json'), 'utf8')) as {
       entries: Array<{ code: string; wording?: string; stage: string }>;

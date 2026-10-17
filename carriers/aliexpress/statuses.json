@@ -590,6 +590,15 @@
       "note": ""
     },
     {
+      "code": "SC_INBOUND_FAILURE",
+      "wording": "Package not accepted by sorting center",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17",
+      "note": "The sorting center turned the parcel away on arrival: not an acceptance, and unlike a processing delay, a fault."
+    },
+    {
       "code": "SC_OUTBOUND_FAILURE",
       "wording": "Processing delay at sorting center",
       "language": "en",

@@ -53,6 +53,8 @@ export const CAINIAO_ACTION_STATUS = new Map<string, CarrierStatus>([
   ['SC_TRANS_OUTBOUND_SUCCESS', 'in_transit'],
   ['SC_HO_OUT_SUCCESS', 'in_transit'],
   ['SC_INBOUND', 'in_transit'],
+  // "Package not accepted by sorting center": the sorting center turned the parcel away.
+  ['SC_INBOUND_FAILURE', 'exception'],
   ['SC_SORTING', 'in_transit'],
   ['SC_OUTBOUND', 'in_transit'],
   // "Processing delay at sorting center": a delay before the parcel leaves, not a fault.

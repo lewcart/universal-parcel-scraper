@@ -24,14 +24,18 @@ coordinates, operators and proof images are excluded.
 
 After a handover, a partner courier's scans arrive without UniUni's English
 summary, as does a Uni Store drop-off, which also has no status code. Their own
-short scan text is kept as the description; they carry local clocks only. The
-parcel's country, the United States or Canada, is the destination.
+short scan text is kept as the description; they carry local clocks only.
+Cross-border shippers' scans arrive the same way, but with code 202 on every row
+until delivery, so code 202 on such a row is read by its wording: it otherwise
+means out for delivery. The parcel's country, the United States or Canada, is the
+destination.
 Detection claims the `UUS`, `UUSC`, `4C…US` and `U9999` formats and suggests
 UniUni for other `U` and fifteen-digit references, which Canadian parcels carry.
 Cross-border shippers' references of two letters, two digits, `CAA0`, a letter
-and nine digits only suggest UniUni: Intelcom's tracker accepts them too. Those for
-the United States carry `USA0` instead; no public sample shows one, but UniUni's
-tracker follows them.
+and nine digits only suggest UniUni: Intelcom's tracker accepts them too. Detection
+names UniUni when that letter is `U`: every public one is on UniUni's tracker and
+unknown to Intelcom's. Those for the United States carry `USA0` instead; no public
+sample shows one, but UniUni's tracker follows them.
 Recognition looks them up at UniUni, whose tracker lists a reference it does not
 know as invalid.
 

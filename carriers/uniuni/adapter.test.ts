@@ -104,6 +104,29 @@ describe('UniUni parcel history', () => {
     expect(parseUniuni(value, NUMBER)).not.toHaveProperty('destination_country');
   });
 
+  it('reads code 202 on cross-border shipper scans by their wording', () => {
+    const reference = 'ZZ00CAA0U000000001';
+    const scan = (pathInfo: string, state: number, localTime: string) => ({ pathInfo, pathAddress: 'PRIVATE_SYNTHETIC_ADDRESS', state,
+      city: 'Example City', province: 'EX', dateTime: { timezone: 'America/Toronto', localTime } });
+    const scans = [
+      scan('Shipping information received. Your parcel is on its way to UniUni for delivery to you', 202, '2026-01-01 09:00:00'),
+      scan('Parcel received by UniUni', 202, '2026-01-04 18:00:00'),
+      scan('Your parcel has been assigned to a delivery driver', 202, '2026-01-05 07:00:00'),
+      scan('Out for delivery', 202, '2026-01-05 08:00:00'),
+      scan('Delivered', 203, '2026-01-05 12:00:00'),
+    ];
+    const reply = (count: number) => ({ status: 'SUCCESS', data: { invalid_tno: '',
+      valid_tno: [{ tno: reference, urlType: 'ltian', state: count === scans.length ? 203 : 202, spath_list: scans.slice(0, count) }] } });
+    expect(parseUniuni(reply(1), reference)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
+      last_status_text: scans[0]!.pathInfo, last_update_local: '2026-01-01T09:00:00' });
+    expect(parseUniuni(reply(3), reference)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(parseUniuni(reply(4), reference)).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery' });
+    const delivered = parseUniuni(reply(5), reference);
+    expect(delivered).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+    expect(delivered.events?.map(event => event.stage)).toEqual(['delivered', 'out_for_delivery', 'in_transit', 'in_transit', 'in_transit']);
+    expect(JSON.stringify(delivered)).not.toContain('PRIVATE');
+  });
+
   it('never falls back to a mismatching first parcel or merges ambiguous identities', () => {
     const wrong = fixture(); wrong.data.valid_tno[0].tno = OTHER;
     const duplicate = fixture(); duplicate.data.valid_tno.push(duplicate.data.valid_tno[0]);

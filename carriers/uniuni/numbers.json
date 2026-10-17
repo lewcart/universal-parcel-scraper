@@ -237,13 +237,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "uniuni"
-        ]
+        "carrier": "uniuni",
+        "confidence": "high"
       },
-      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history."
+      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history; Intelcom's does not know it."
     },
     {
       "number": "JY25CAA0D002430567",
@@ -303,13 +300,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "uniuni"
-        ]
+        "carrier": "uniuni",
+        "confidence": "high"
       },
-      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history."
+      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history; Intelcom's does not know it."
     },
     {
       "number": "JY25CAA0U024161162",
@@ -325,13 +319,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "uniuni"
-        ]
+        "carrier": "uniuni",
+        "confidence": "high"
       },
-      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history."
+      "note": "A UniUni tracking link archived by the Wayback Machine. UniUni's tracker returns its history; Intelcom's does not know it."
     },
     {
       "number": "GV00USA0U000000001",

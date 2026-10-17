@@ -242,8 +242,11 @@ it('selects Old Dominion by its PRO prefixes only when the Luhn check passes', (
   expect(checksumRejections('80000000003')).toContainEqual({ carrier: 'old-dominion', rule: 'old-dominion-2', checksum: 'luhn' });
 });
 
-it('suggests UniUni for cross-border shipper references without selecting it', () => {
-  for (const number of ['GV00CAA0U000000001', 'JY00CAA0D000000001', 'GV00USA0U000000001']) {
+it('names UniUni for Canadian cross-border shipper references marked U and only suggests it for the rest', () => {
+  for (const number of ['GV00CAA0U000000001', 'JY00CAA0U000000001']) {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'uniuni', confidence: 'high' });
+  }
+  for (const number of ['JY00CAA0D000000001', 'JY00CAA0T000000001', 'GV00USA0U000000001']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['uniuni'] });
   }
   for (const number of ['GV00CAA1U000000001', 'GV00CAA0U00000001', 'G100CAA0U000000001', 'GV00CAA0U0000000001', 'GV00UKA0U000000001']) {

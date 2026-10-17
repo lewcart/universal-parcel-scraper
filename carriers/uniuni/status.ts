@@ -1,4 +1,4 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import { languageStageStatus, wordingStage, type ClassifiedStatus } from '../../core/status/index.js';
 
 // The official client's milestone groups distinguish delivery, transfer and
 // completed return. Failed attempts are observed individual scan states.
@@ -16,6 +16,17 @@ const STATES = new Map<number, ClassifiedStatus>([
 
 export function uniuniStatus(code: number): ClassifiedStatus | undefined {
   return STATES.get(code);
+}
+
+/**
+ * A scan without UniUni's English summary is read by its own code, except 202:
+ * cross-border shippers' scans carry it on every row until delivery, so there
+ * only the wording tells a received label from a parcel out for delivery.
+ */
+export function uniuniPartnerStatus(code: number, text: string): ClassifiedStatus | undefined {
+  if (code !== 202) return uniuniStatus(code);
+  const stage = wordingStage(text);
+  return { status: languageStageStatus(stage), stage };
 }
 
 /** A Uni Store drop-off carries no status code, only this wording. */

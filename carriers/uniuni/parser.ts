@@ -6,7 +6,7 @@ import type { ClassifiedStatus } from '../../core/status/index.js';
 import { epochSecondsTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { uniuniDropOffStage, uniuniStatus } from './status.js';
+import { uniuniDropOffStage, uniuniPartnerStatus, uniuniStatus } from './status.js';
 
 const PROVIDER = 'UniUni';
 
@@ -94,7 +94,7 @@ export function parseUniuni(payload: unknown, rawNumber: string): CarrierResult 
     if (!description || (state === undefined && !(partner && scan.state === undefined))) {
       throw new SchemaError(PROVIDER, 'UniUni returned a scan without status or public wording');
     }
-    const mapped = state === undefined ? uniuniDropOffStage(description) : uniuniStatus(state);
+    const mapped = state === undefined ? uniuniDropOffStage(description) : partner ? uniuniPartnerStatus(state, description) : uniuniStatus(state);
     const location = [clean(scan.city, 100), clean(scan.province, 20)].filter(Boolean).join(', ');
     // UniUni's own detailed pathInfo, addresses, coordinates, operators and POD
     // data can contain recipient or courier information; retain its English summary.

@@ -414,7 +414,7 @@ describe("universal providers' answers", () => {
       ['Package received & scanned at warehouse', 'accepted'],
       ['Manifested - Out for Pickup', 'registered'], ['Manifested', 'registered'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
-      ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
+      ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'], ['Collection Complete', 'delivered'],
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],
       ['Pickup completed, No exceptions', 'accepted'], ['Furniture Received by Metro-<Warehouse>-Hub', 'in_transit'],
       ['Furniture Received by Metro-Example-Hub', 'in_transit'],
@@ -436,6 +436,7 @@ describe("universal providers' answers", () => {
       'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem',
       'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',
       'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection',
+      'Courier collection complete', 'Collection complete from sender',
       // A forecast sent to the last-mile carrier, detail lines, a store hand-over that is a drop-off or a
       // collection, and headings with no step of their own.
       'Last-mile delivery forecast', 'Keine weiteren Details erforderlich', 'Filiale / Agentur', 'Parcel to be taken to a Yodel Store',

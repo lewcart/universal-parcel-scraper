@@ -151,6 +151,8 @@ function providerWordingStage(description: string): Stage | undefined {
   // Relay's notices on Vinted parcels, from the label to the parcel in its hands.
   if (/^awaiting your vinted parcel[.!]?$|^expecting your parcel[.!]?$/i.test(value)) return 'registered';
   if (/^parcel received by relay[.!]?$|^received your parcel[.!]?$/i.test(value)) return 'accepted';
+  // Relay's last notice, after its "Available for pickup": the recipient collected the parcel from the shop.
+  if (/^collection complete[.!]?$/i.test(value)) return 'delivered';
   // A parcel at its local warehouse, after the central one; the promise of news that follows is no scan.
   if (/^the (?:package|parcel) is in the local warehouse(?:[.!]?$|\. we will come back with details about (?:the next steps|the delivery)[.!]?$)/i.test(value)) return 'in_transit';
   // Metropolitan Warehouse's furniture steps, as its own map reads them: the order, the vendor

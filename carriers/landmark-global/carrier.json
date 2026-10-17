@@ -1,7 +1,10 @@
 {
   "id": "landmark-global",
   "displayName": "Landmark Global",
-  "aliases": [],
+  "aliases": [
+    "IMX France",
+    "IMX Postal"
+  ],
   "region": {
     "countries": []
   },

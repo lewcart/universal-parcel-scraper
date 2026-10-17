@@ -2,7 +2,7 @@
 
 Tracks Envialia shipments in Spain through the guest search of Alina, the official app that
 `www.envialia.com` links. Envialia is now part of Ontime, and the same service answers for
-Ontime's own consignment notes in this shape.
+Ontime's own consignment notes in this shape, so Ontime's names count as Envialia's.
 
 ## How it works
 

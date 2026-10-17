@@ -3222,6 +3222,10 @@ export const CARRIER_CATALOG = {
   "landmark-global": {
     "displayName": "Landmark Global",
     "color": "#e62337",
+    "aliases": [
+      "IMX France",
+      "IMX Postal"
+    ],
     "selectable": true,
     "timezone": "UTC",
     "tracking": {
@@ -10607,7 +10611,10 @@ export const CARRIER_CATALOG = {
     "displayName": "Envialia",
     "color": "#ff5a00",
     "aliases": [
-      "Envialia Urgente"
+      "Envialia Urgente",
+      "Ontime",
+      "Ontime Logística",
+      "Ontime Transportes y Logística"
     ],
     "countries": [
       "ES"

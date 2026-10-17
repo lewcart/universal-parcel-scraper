@@ -3,7 +3,8 @@
 Tracks individual LTN references through the official anonymous portal,
 including the portal's canonical identity for references ending in N1. When the
 user picks Landmark, or opens a Landmark link carrying one, it also takes the merchant
-references the portal finds.
+references the portal finds. IMX France, which sold as IMX Postal, belongs to Landmark Global
+and its tracker now sends visitors to Landmark's, so those names count as Landmark's.
 
 ## How it works
 

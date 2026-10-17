@@ -1831,12 +1831,6 @@
     "reason": "Twelve digits are shared by several carriers and nothing in the number points to DHL eCommerce Türkiye."
   },
   {
-    "carrier": "mylerz",
-    "pattern": "^\\d{14}$",
-    "kind": "by_design",
-    "reason": "This layout is shared with other carriers or too plain to claim, so detection leaves it unclaimed."
-  },
-  {
     "carrier": "naqel",
     "pattern": "^\\d{8}$",
     "kind": "by_design",

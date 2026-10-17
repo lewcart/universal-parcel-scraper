@@ -3223,6 +3223,43 @@
     "reason": "City Express shipment numbers start with one of its centre codes; the same fourteen digits fit other carriers' low-confidence rules, so recognition asks each of them."
   },
   {
+    "shape": "14 digits starting 63",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "mylerz",
+      "relais-colis",
+      "seur"
+    ],
+    "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits starting 63 that pass the Hermes checksum",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "mylerz",
+      "relais-colis",
+      "seur"
+    ],
+    "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules; some also pass the Hermes checksum. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "16 digits starting 688001, 688002 or 688005",
     "carriers": [
       "canada-post",

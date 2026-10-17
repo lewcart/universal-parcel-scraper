@@ -15783,7 +15783,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mylerz",
+      "recognitionRank": 904,
+      "localClocks": true
     },
     "canaryUrl": "https://mylerz.net/track",
     "trackingUrlTemplate": "https://mylerz.net/track/{trackingNumber}",
@@ -15796,7 +15798,12 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^63\\d{12}$",
+        "confidence": "low"
+      }
+    ]
   },
   "naqel": {
     "displayName": "Naqel Express",
@@ -23895,7 +23902,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "midland-transport": [],
   "mng-kargo": [],
   "mtscn": ["mtscn-1"],
-  "mylerz": [],
+  "mylerz": ["mylerz-1"],
   "naqel": [],
   "nationex": [],
   "ncs-courier": [],

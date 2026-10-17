@@ -15781,7 +15781,9 @@
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mylerz",
+      "recognitionRank": 904,
+      "localClocks": true
     },
     "canaryUrl": "https://mylerz.net/track",
     "trackingUrlTemplate": "https://mylerz.net/track/{trackingNumber}",
@@ -15794,7 +15796,12 @@
         "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^63\\d{12}$",
+        "confidence": "low"
+      }
+    ]
   },
   "naqel": {
     "displayName": "Naqel Express",

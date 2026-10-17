@@ -20,18 +20,61 @@
   "timezone": "Africa/Cairo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "mylerz",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 904
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://mylerz.net/track/{trackingNumber}",
     "searchUrl": "https://mylerz.net/track",
     "canaryUrl": "https://mylerz.net/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "sender_name",
+      "recipient_address",
+      "driver_name",
+      "contact_details",
+      "payment_details",
+      "parcel_count",
+      "origin",
+      "destination",
+      "delivery_options"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_address",
+      "driver_name",
+      "contact_details",
+      "payment_details",
+      "parcel_count",
+      "origin",
+      "destination",
+      "delivery_options"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {
@@ -41,5 +84,11 @@
       "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "mylerz-1",
+      "pattern": "^63\\d{12}$",
+      "confidence": "low"
+    }
+  ]
 }

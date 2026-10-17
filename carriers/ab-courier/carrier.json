@@ -1,0 +1,53 @@
+{
+  "id": "ab-courier",
+  "displayName": "A&B Courier",
+  "aliases": [
+    "A&B Courier Service",
+    "A&B Courier Service Limited",
+    "AB Courier",
+    "A & B Courier"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#004890"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://abcourier.com/CCWebClient/General/TrackingInfo/{trackingNumber}",
+    "searchUrl": "https://abcourier.com/",
+    "canaryUrl": "https://abcourier.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "abcourier.com"
+      ],
+      "path": "^/CCWebClient/General/TrackingInfo/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "abcourier.com"
+      ],
+      "pathPattern": "^/tracking-info/?$",
+      "params": [
+        "tracking-number"
+      ]
+    }
+  ],
+  "detection": []
+}

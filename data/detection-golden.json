@@ -20590,6 +20590,16 @@
     ]
   },
   {
+    "input": "20699421",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "20700717592877",
     "carrier": "unknown",
     "confidence": "low",
@@ -25940,6 +25950,16 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "27846810",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -34858,6 +34878,16 @@
     ]
   },
   {
+    "input": "46136991",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "4616/14822082",
     "carrier": "nacex",
     "confidence": "high",
@@ -36039,6 +36069,16 @@
     ],
     "asked": [
       "rl-carriers"
+    ]
+  },
+  {
+    "input": "49913242",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -43002,6 +43042,16 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "66098931",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -51130,6 +51180,14 @@
     ]
   },
   {
+    "input": "9104518",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "9107345678",
     "carrier": "unknown",
     "confidence": "low",
@@ -51163,6 +51221,14 @@
     "asked": [
       "tnt",
       "xpo-ltl"
+    ]
+  },
+  {
+    "input": "9111953",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
     ]
   },
   {
@@ -51548,6 +51614,16 @@
       "dpd",
       "dpd-nl",
       "dpd-de"
+    ]
+  },
+  {
+    "input": "92274200",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -55896,6 +55972,22 @@
     "confidence": "high",
     "candidates": [
       "ecms-express"
+    ]
+  },
+  {
+    "input": "APPL9640004279332",
+    "carrier": "apple-express",
+    "confidence": "high",
+    "candidates": [
+      "apple-express"
+    ]
+  },
+  {
+    "input": "APPL9640004330095",
+    "carrier": "apple-express",
+    "confidence": "high",
+    "candidates": [
+      "apple-express"
     ]
   },
   {
@@ -63391,6 +63483,14 @@
     ]
   },
   {
+    "input": "FCLR000000169086",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
     "input": "FD 10125098",
     "carrier": "unknown",
     "confidence": "low",
@@ -63460,6 +63560,22 @@
     ]
   },
   {
+    "input": "FDAV2511000000254601",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
+    "input": "FDYNS00000003ZY5",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
     "input": "FEIAA0123456789YQ",
     "carrier": "17feia",
     "confidence": "high",
@@ -63521,6 +63637,14 @@
     "confidence": "high",
     "candidates": [
       "17feia"
+    ]
+  },
+  {
+    "input": "FEPO250800000160282",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
     ]
   },
   {
@@ -63652,6 +63776,30 @@
     ]
   },
   {
+    "input": "FOAESH0464839",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
+    "input": "FOAESH0483966",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
+    "input": "FONSP00001696441",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
+    ]
+  },
+  {
     "input": "FR0000000001",
     "carrier": "amazon-logistics",
     "confidence": "high",
@@ -63696,6 +63844,14 @@
       "colis-prive",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "FSLS260900001711954",
+    "carrier": "fleetoptics",
+    "confidence": "high",
+    "candidates": [
+      "fleetoptics"
     ]
   },
   {
@@ -65369,6 +65525,12 @@
   },
   {
     "input": "IN20260609105455253",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "IND9640000624161",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -76298,6 +76460,12 @@
     ]
   },
   {
+    "input": "SON10008355215",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "SP0000000000000001",
     "carrier": "spee-dee",
     "confidence": "high",
@@ -76753,6 +76921,81 @@
     "confidence": "high",
     "candidates": [
       "australia-post"
+    ]
+  },
+  {
+    "input": "STRCA6096486792700",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD1030115078480397",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD11068471712023044",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD655481920",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD661396250",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD708435380",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD876741840",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STRTD917564850",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
+    "input": "STSHYW01001236541",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
     ]
   },
   {

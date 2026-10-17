@@ -1,0 +1,25 @@
+{
+  "carrier": "apple-express",
+  "entries": [
+    {"wording": "Order Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "First step of the tracker's progress bar."},
+    {"wording": "Waiting for Parcel", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API."},
+    {"wording": "Parcel Received, Out for Delivery Soon", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API. The parcel is at the delivering depot."},
+    {"wording": "In Transit to Local Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Processed for Delivery", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Arrived at Local Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Step of the tracker's progress bar."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"wording": "The package is Out For Delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Summary text under the latest status."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Last step of the tracker's progress bar."},
+    {"wording": "In Transit to Canada Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen on the tracker of SprintStar, Apple Express's residential brand, which used Apple Express's order numbers."},
+    {"wording": "Arrived at Canada Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen on the tracker of SprintStar, Apple Express's residential brand, which used Apple Express's order numbers."},
+    {"wording": "Delivered - Left at door", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen on the tracker of SprintStar, Apple Express's residential brand, which used Apple Express's order numbers."},
+    {"wording": "Return to Shipper", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Label of a status icon in the current tracking page's script."},
+    {"wording": "Pending Delivery Notification Sent", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API. Logged with the out-for-delivery scan."},
+    {"wording": "Great news! Your parcel is out for delivery by 9pm today.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Summary text in an archived reply of the tracker's own API."},
+    {"wording": "Package Processed", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API. First scan at the origin depot."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API."},
+    {"wording": "En Route to Destination Sort Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Current status in an archived reply of the tracker's own API."},
+    {"wording": "Your parcel is enroute to our local sort facility in your area.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Summary text in an archived reply of the tracker's own API."},
+    {"wording": "Delivery Instructions Added", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API. Logged when the recipient adds instructions; not a movement."}
+  ]
+}

@@ -5282,6 +5282,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ab-courier": {
+    "displayName": "A&B Courier",
+    "color": "#004890",
+    "aliases": [
+      "A&B Courier Service",
+      "A&B Courier Service Limited",
+      "AB Courier",
+      "A & B Courier"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://abcourier.com/",
+    "trackingUrlTemplate": "https://abcourier.com/CCWebClient/General/TrackingInfo/{trackingNumber}",
+    "trackingSearchUrl": "https://abcourier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "abcourier.com"
+        ],
+        "path": "^/CCWebClient/General/TrackingInfo/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "abcourier.com"
+        ],
+        "pathPattern": "^/tracking-info/?$",
+        "params": [
+          "tracking-number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "abf-freight": {
     "displayName": "ABF Freight",
     "color": "#1e6630",
@@ -6103,6 +6143,62 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^\\d{5}A\\d{9,10}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "apple-express": {
+    "displayName": "Apple Express",
+    "color": "#f20036",
+    "aliases": [
+      "Apple Express Ltd.",
+      "Apple Express Courier",
+      "AppleExpress",
+      "SprintStar",
+      "Sprintstar"
+    ],
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.appleexpress.com/",
+    "trackingUrlTemplate": "https://track.appleexpress.com/orderNumber/{trackingNumber}",
+    "trackingSearchUrl": "https://track.appleexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.appleexpress.com"
+        ],
+        "path": "^/(?:[a-z]{2}(?:-[a-z]{2})?/)?(?:orderNumber|reference)/([^/?#]+)(?:/.*)?$"
+      },
+      {
+        "domains": [
+          "goapple.appleexpress.com"
+        ],
+        "pathPattern": "^/(?:clientordertracking|clientspecificordertracking|OrderTrackingMultipleDetails)\\.aspx$",
+        "params": [
+          "OrderNo"
+        ]
+      },
+      {
+        "domains": [
+          "sprintstar.ca"
+        ],
+        "pathPattern": "^/ShipmentTrackingdetails\\.aspx$",
+        "params": [
+          "Orderno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^APPL\\d{13}$",
         "confidence": "high"
       }
     ]
@@ -12069,6 +12165,62 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "fleetoptics": {
+    "displayName": "FleetOptics",
+    "color": "#e33952",
+    "aliases": [
+      "FleetOptics Inc.",
+      "Fleet Optics",
+      "FleetOptics (CA)"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.fleetopticsinc.com/",
+    "trackingUrlTemplate": "https://track.fleetopticsinc.com/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://track.fleetopticsinc.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.fleetopticsinc.com"
+        ],
+        "pathPattern": "^/(?:fr/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      },
+      {
+        "domains": [
+          "delivery.fleetopticsinc.com"
+        ],
+        "pathPattern": "^/tracking/(?:fr/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      },
+      {
+        "domains": [
+          "fleetopticsinc.ca"
+        ],
+        "pathPattern": "^/(?:cons_portal\\.php|tracking/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^F(?:OAESH\\d{7}|ONSP\\d{11}|DAV\\d{16}|DYNS[0-9A-Z]{11}|CLR\\d{12}|SLS\\d{15}|EPO\\d{15})$",
+        "confidence": "high"
+      }
+    ]
+  },
   "followmont": {
     "displayName": "Followmont Transport",
     "color": "#022160",
@@ -15978,6 +16130,37 @@ export const CARRIER_CATALOG = {
         "preferred": true
       }
     ]
+  },
+  "lightning-express": {
+    "displayName": "Lightning Express",
+    "color": "#4898e0",
+    "aliases": [
+      "Lightening Express"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.lightningexpressca.com/",
+    "trackingUrlTemplate": "https://www.lightningexpressca.com/track.html?id={trackingNumber}",
+    "trackingSearchUrl": "https://www.lightningexpressca.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "lightningexpressca.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "line-clear": {
     "displayName": "Line Clear Express",
@@ -22832,6 +23015,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "straightship": {
+    "displayName": "Straightship",
+    "color": "#6aae66",
+    "aliases": [
+      "StraightShip"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Vancouver",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.straightship.com/",
+    "trackingUrlTemplate": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",
+    "trackingSearchUrl": "https://www.straightship.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "straightship.com"
+        ],
+        "path": "^/track-your-shipment/tracking-id/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
+        "confidence": "high"
+      }
+    ]
+  },
   "sundarban-courier": {
     "displayName": "Sundarban Courier Service",
     "color": "#0b4c9f",
@@ -25403,6 +25619,7 @@ export const CARRIER_IDS = [
   "a-duie-pyle",
   "a1-post",
   "aaa-cooper",
+  "ab-courier",
   "abf-freight",
   "acs-courier",
   "aeropost",
@@ -25424,6 +25641,7 @@ export const CARRIER_IDS = [
   "ap-cargo",
   "apc-overnight",
   "apc-postal-logistics",
+  "apple-express",
   "aramex-au",
   "aramex-nz",
   "aras-kargo",
@@ -25575,6 +25793,7 @@ export const CARRIER_IDS = [
   "first-delivery-tn",
   "flash-express",
   "flash-express-ph",
+  "fleetoptics",
   "followmont",
   "forward-air",
   "forza-delivery",
@@ -25680,6 +25899,7 @@ export const CARRIER_IDS = [
   "libanpost",
   "liccardi",
   "lietuvos-pastas",
+  "lightning-express",
   "line-clear",
   "linhan",
   "lion-parcel",
@@ -25853,6 +26073,7 @@ export const CARRIER_IDS = [
   "starken",
   "starlinks",
   "steadfast",
+  "straightship",
   "sundarban-courier",
   "surat-kargo",
   "swiftx",
@@ -26038,6 +26259,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "a-duie-pyle": [],
   "a1-post": [],
   "aaa-cooper": [],
+  "ab-courier": [],
   "abf-freight": [],
   "acs-courier": [],
   "aeropost": ["aeropost-1"],
@@ -26059,6 +26281,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ap-cargo": [],
   "apc-overnight": ["apc-overnight-1"],
   "apc-postal-logistics": ["apc-postal-logistics-1","apc-postal-logistics-2"],
+  "apple-express": ["apple-express-1"],
   "aramex-au": ["aramex-au-1"],
   "aramex-nz": ["aramex-nz-1","aramex-nz-2"],
   "aras-kargo": [],
@@ -26210,6 +26433,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "first-delivery-tn": [],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
+  "fleetoptics": ["fleetoptics-1"],
   "followmont": [],
   "forward-air": [],
   "forza-delivery": ["forza-delivery-1"],
@@ -26315,6 +26539,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "libanpost": [],
   "liccardi": [],
   "lietuvos-pastas": ["lietuvos-pastas-1","lietuvos-pastas-s10"],
+  "lightning-express": [],
   "line-clear": [],
   "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
@@ -26488,6 +26713,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "starken": [],
   "starlinks": ["starlinks-1"],
   "steadfast": ["steadfast-1"],
+  "straightship": ["straightship-1"],
   "sundarban-courier": [],
   "surat-kargo": [],
   "swiftx": ["swiftx-1"],

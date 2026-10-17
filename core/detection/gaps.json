@@ -72,6 +72,12 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to AAA Cooper."
   },
   {
+    "carrier": "ab-courier",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "A&B Courier's order numbers are bare digit runs that many carriers' references share."
+  },
+  {
     "carrier": "abf-freight",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -189,6 +195,12 @@
     "pattern": "^PF\\d{13}$",
     "kind": "open",
     "reason": "Only aggregator samples of this APC shape; the family is not established."
+  },
+  {
+    "carrier": "apple-express",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Apple Express order numbers are a bare eight-digit run that many carriers share."
   },
   {
     "carrier": "aramex",
@@ -1133,6 +1145,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve bare digits are shared by many carriers and nothing in the number points to First Delivery."
+  },
+  {
+    "carrier": "fleetoptics",
+    "pattern": "^(?:SON1\\d{10}|IND\\d{13})$",
+    "kind": "by_design",
+    "reason": "Retailers' own package IDs that FleetOptics tracks as given; their prefixes name the shipper, not the carrier."
   },
   {
     "carrier": "followmont",
@@ -2744,6 +2762,12 @@
     "pattern": "^[0-9A-F]{8,11}$",
     "kind": "by_design",
     "reason": "Older Steadfast codes are eight to eleven hexadecimal characters, too generic to claim."
+  },
+  {
+    "carrier": "straightship",
+    "pattern": "^STSHYW\\d{11}$",
+    "kind": "by_design",
+    "reason": "One client's label layout seen once; too little evidence to claim the prefix."
   },
   {
     "carrier": "sundarban-courier",

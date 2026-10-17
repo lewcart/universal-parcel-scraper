@@ -348,6 +348,31 @@ describe('wave seven courier rules', () => {
     }
   });
 
+  it('names FleetOptics only for the shipper codes and lengths its tracker shows', () => {
+    for (const number of ['FOAESH0000001', 'FONSP00000000001', 'FDAV0000000000000001', 'FDYNS0000000000A', 'FCLR000000000001', 'FSLS000000000000001', 'FEPO000000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'fleetoptics', confidence: 'high', candidates: ['fleetoptics'] });
+    }
+    for (const number of ['FOAESH000001', 'FONSP0000000001', 'FDAV000000000000001', 'FCLR00000000001', 'FXYZ000000000001', 'SON10000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fleetoptics');
+    }
+  });
+
+  it('names Straightship for STRTD and STRCA numbers at their lengths', () => {
+    for (const number of ['STRTD000000001', 'STRTD0000000000000001', 'STRTD00000000000000001', 'STRCA0000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'straightship', confidence: 'high', candidates: ['straightship'] });
+    }
+    for (const number of ['STRTD00000001', 'STRTD000000000001', 'STRCA000000000001', 'STSHYW00000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('straightship');
+    }
+  });
+
+  it('names Apple Express for APPL references and leaves its bare order numbers open', () => {
+    expect(detectCarrierMatch('APPL0000000000001')).toMatchObject({ carrier: 'apple-express', confidence: 'high' });
+    for (const number of ['APPL000000000001', 'APPL00000000000001', 'APPX0000000000001', '00000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('apple-express');
+    }
+  });
+
   it('names AJEX for AJA or AJS and twelve digits', () => {
     for (const number of ['AJA000000000001', 'AJS000000000001']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'ajex', confidence: 'high', candidates: ['ajex'] });

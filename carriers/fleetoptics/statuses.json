@@ -1,0 +1,23 @@
+{
+  "carrier": "fleetoptics",
+  "entries": [
+    {"wording": "Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "First history row: FleetOptics has the shipment details; the summary under it says whether the package is still with the sender."},
+    {"wording": "Good news! We've received your shipment details, but the package is still with the sender.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Summary text under the Received heading."},
+    {"wording": "We're waiting to receive your package from the sender.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Summary text under the Received heading on another capture."},
+    {"wording": "Awaiting parcel from shipper", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Status of the first event in an archived reply of the tracker's own API; the page shows it as Received."},
+    {"wording": "Scanned at Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Your package is out for delivery and will be arriving today.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Summary text under the Out for Delivery heading."},
+    {"wording": "Driver Started Route", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of the tracker's own API; the page shows it as Out for Delivery."},
+    {"wording": "Unable to Deliver - Business Closed", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Delivered - Safe Drop", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Delivered - Left with 3rd Party", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Delivered - To Consumer", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Your package was successfully delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Summary text under a Delivered heading."},
+    {"wording": "Détails de la commande reçue", "stage": "registered", "language": "fr", "confirmedBy": "portal", "note": "French page's wording for the Received row."},
+    {"wording": "Scanné au terminal de livraison", "stage": "in_transit", "language": "fr", "confirmedBy": "portal"},
+    {"wording": "En cours de livraison", "stage": "out_for_delivery", "language": "fr", "confirmedBy": "portal"},
+    {"wording": "Livré - Dépôt sécurisé", "stage": "delivered", "language": "fr", "confirmedBy": "portal"},
+    {"wording": "Votre colis a été livré avec succès.", "stage": "delivered", "language": "fr", "confirmedBy": "portal", "note": "Summary text under a delivered heading on the French page."}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "carrier": "straightship",
+  "entries": [
+    {"wording": "Package information is created in the system", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Package Received with Origin Scan warehouse", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The history row adds the city in parentheses."},
+    {"wording": "Package is received at a Straightship station", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The history row adds the city in parentheses."},
+    {"wording": "Arrived at Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The history row adds the city in parentheses."},
+    {"wording": "Package arrived at transit station", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Shipment delayed", "stage": "exception", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Package will be delivered before 9:00pm", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "The history row adds the city in parentheses."},
+    {"wording": "Ready For Shipping", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Package Status summary field; the newer page writes it as ReadyForShipping and it can stay after scans."},
+    {"wording": "ReadyForShipping", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Package Status summary field on the newer page."},
+    {"wording": "Shipped", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Package Status summary field, seen while the parcel was at stations and due for delivery."}
+  ]
+}

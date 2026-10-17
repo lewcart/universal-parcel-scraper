@@ -5280,6 +5280,46 @@
     ],
     "detectionRules": []
   },
+  "ab-courier": {
+    "displayName": "A&B Courier",
+    "color": "#004890",
+    "aliases": [
+      "A&B Courier Service",
+      "A&B Courier Service Limited",
+      "AB Courier",
+      "A & B Courier"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://abcourier.com/",
+    "trackingUrlTemplate": "https://abcourier.com/CCWebClient/General/TrackingInfo/{trackingNumber}",
+    "trackingSearchUrl": "https://abcourier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "abcourier.com"
+        ],
+        "path": "^/CCWebClient/General/TrackingInfo/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "abcourier.com"
+        ],
+        "pathPattern": "^/tracking-info/?$",
+        "params": [
+          "tracking-number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "abf-freight": {
     "displayName": "ABF Freight",
     "color": "#1e6630",
@@ -6101,6 +6141,62 @@
       },
       {
         "pattern": "^\\d{5}A\\d{9,10}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "apple-express": {
+    "displayName": "Apple Express",
+    "color": "#f20036",
+    "aliases": [
+      "Apple Express Ltd.",
+      "Apple Express Courier",
+      "AppleExpress",
+      "SprintStar",
+      "Sprintstar"
+    ],
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.appleexpress.com/",
+    "trackingUrlTemplate": "https://track.appleexpress.com/orderNumber/{trackingNumber}",
+    "trackingSearchUrl": "https://track.appleexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.appleexpress.com"
+        ],
+        "path": "^/(?:[a-z]{2}(?:-[a-z]{2})?/)?(?:orderNumber|reference)/([^/?#]+)(?:/.*)?$"
+      },
+      {
+        "domains": [
+          "goapple.appleexpress.com"
+        ],
+        "pathPattern": "^/(?:clientordertracking|clientspecificordertracking|OrderTrackingMultipleDetails)\\.aspx$",
+        "params": [
+          "OrderNo"
+        ]
+      },
+      {
+        "domains": [
+          "sprintstar.ca"
+        ],
+        "pathPattern": "^/ShipmentTrackingdetails\\.aspx$",
+        "params": [
+          "Orderno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^APPL\\d{13}$",
         "confidence": "high"
       }
     ]
@@ -12067,6 +12163,62 @@
       }
     ]
   },
+  "fleetoptics": {
+    "displayName": "FleetOptics",
+    "color": "#e33952",
+    "aliases": [
+      "FleetOptics Inc.",
+      "Fleet Optics",
+      "FleetOptics (CA)"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.fleetopticsinc.com/",
+    "trackingUrlTemplate": "https://track.fleetopticsinc.com/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://track.fleetopticsinc.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.fleetopticsinc.com"
+        ],
+        "pathPattern": "^/(?:fr/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      },
+      {
+        "domains": [
+          "delivery.fleetopticsinc.com"
+        ],
+        "pathPattern": "^/tracking/(?:fr/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      },
+      {
+        "domains": [
+          "fleetopticsinc.ca"
+        ],
+        "pathPattern": "^/(?:cons_portal\\.php|tracking/?)?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^F(?:OAESH\\d{7}|ONSP\\d{11}|DAV\\d{16}|DYNS[0-9A-Z]{11}|CLR\\d{12}|SLS\\d{15}|EPO\\d{15})$",
+        "confidence": "high"
+      }
+    ]
+  },
   "followmont": {
     "displayName": "Followmont Transport",
     "color": "#022160",
@@ -15976,6 +16128,37 @@
         "preferred": true
       }
     ]
+  },
+  "lightning-express": {
+    "displayName": "Lightning Express",
+    "color": "#4898e0",
+    "aliases": [
+      "Lightening Express"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.lightningexpressca.com/",
+    "trackingUrlTemplate": "https://www.lightningexpressca.com/track.html?id={trackingNumber}",
+    "trackingSearchUrl": "https://www.lightningexpressca.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "lightningexpressca.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "line-clear": {
     "displayName": "Line Clear Express",
@@ -22826,6 +23009,39 @@
     "detectionRules": [
       {
         "pattern": "^SFR\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])ST[0-9A-F]{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "straightship": {
+    "displayName": "Straightship",
+    "color": "#6aae66",
+    "aliases": [
+      "StraightShip"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Vancouver",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.straightship.com/",
+    "trackingUrlTemplate": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",
+    "trackingSearchUrl": "https://www.straightship.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "straightship.com"
+        ],
+        "path": "^/track-your-shipment/tracking-id/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
         "confidence": "high"
       }
     ]

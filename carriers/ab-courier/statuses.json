@@ -1,0 +1,14 @@
+{
+  "carrier": "ab-courier",
+  "entries": [
+    {"wording": "Dispatched", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Order status in archived captures of the tracking page while the pickup is still scheduled; a driver has been assigned but has not collected the package."},
+    {"wording": "Open", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Order status the tracker script groups with Assigned and Dispatched as the step before pickup."},
+    {"wording": "Assigned", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Order status the tracker script groups with Open and Dispatched as the step before pickup."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker script compares against to show the pickup step."},
+    {"wording": "Picked Up  In Transit On Time", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Composite status the tracker script compares against, with two spaces after Picked Up."},
+    {"wording": "Picked Up  Destination Dock", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Composite status the tracker script compares against, with two spaces after Picked Up; the package is at the destination dock."},
+    {"wording": "Picked Up  Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Composite status the tracker script compares against, with two spaces after Picked Up."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracker script compares against to show the delivery step."},
+    {"wording": "Finalized", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "The tracker script shows it as delivered; the order is closed after delivery."}
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "apple-express",
+  "displayName": "Apple Express",
+  "aliases": [
+    "Apple Express Ltd.",
+    "Apple Express Courier",
+    "AppleExpress",
+    "SprintStar",
+    "Sprintstar"
+  ],
+  "region": {
+    "countries": [
+      "CA",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#f20036"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.appleexpress.com/orderNumber/{trackingNumber}",
+    "searchUrl": "https://track.appleexpress.com/",
+    "canaryUrl": "https://track.appleexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.appleexpress.com"
+      ],
+      "path": "^/(?:[a-z]{2}(?:-[a-z]{2})?/)?(?:orderNumber|reference)/([^/?#]+)(?:/.*)?$"
+    },
+    {
+      "domains": [
+        "goapple.appleexpress.com"
+      ],
+      "pathPattern": "^/(?:clientordertracking|clientspecificordertracking|OrderTrackingMultipleDetails)\\.aspx$",
+      "params": [
+        "OrderNo"
+      ]
+    },
+    {
+      "domains": [
+        "sprintstar.ca"
+      ],
+      "pathPattern": "^/ShipmentTrackingdetails\\.aspx$",
+      "params": [
+        "Orderno"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "apple-express-1",
+      "pattern": "^APPL\\d{13}$",
+      "confidence": "high"
+    }
+  ]
+}

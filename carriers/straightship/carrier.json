@@ -1,0 +1,47 @@
+{
+  "id": "straightship",
+  "displayName": "Straightship",
+  "aliases": [
+    "StraightShip"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#6aae66"
+  },
+  "selectable": true,
+  "timezone": "America/Vancouver",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",
+    "searchUrl": "https://www.straightship.com/",
+    "canaryUrl": "https://www.straightship.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "straightship.com"
+      ],
+      "path": "^/track-your-shipment/tracking-id/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "straightship-1",
+      "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
+      "confidence": "high"
+    }
+  ]
+}

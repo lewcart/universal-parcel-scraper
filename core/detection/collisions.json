@@ -4372,5 +4372,13 @@
       "spx-sg"
     ],
     "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Singapore prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "APPL and thirteen digits",
+    "carriers": [
+      "apple-express",
+      "colis-prive"
+    ],
+    "reason": "colis-prive-1 is a low rule for any 17-character alphanumeric ending in a postcode-like group; the APPL prefix decides for Apple Express."
   }
 ]

@@ -1,0 +1,44 @@
+{
+  "id": "lightning-express",
+  "displayName": "Lightning Express",
+  "aliases": [
+    "Lightening Express"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#4898e0"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.lightningexpressca.com/track.html?id={trackingNumber}",
+    "searchUrl": "https://www.lightningexpressca.com/",
+    "canaryUrl": "https://www.lightningexpressca.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "lightningexpressca.com"
+      ],
+      "pathPattern": "^/track\\.html$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

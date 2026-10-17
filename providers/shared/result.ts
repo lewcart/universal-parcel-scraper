@@ -132,7 +132,8 @@ function providerWordingStage(description: string): Stage | undefined {
   // after the sentence: "Order confirmed., OTHER", "Warehouse receipt., 仓库收货".
   const value = description.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '')
     .replace(/\.,\s*(?:other|\p{Script=Han}[\p{Script=Han}\s]*)$/iu, '.');
-  if (/^delivery in progress, (?:first|second|third|\d+(?:st|nd|rd|th)) attempt\b|scanned for delivery[;,] ?the courier is\b|^delivery branch\. in the hands of the mailman[.!]?$|^przesyłka wydana do doreczenia kurierowi \w{2,20}[.!]?$|派送员派送途中/i.test(value)) return 'out_for_delivery';
+  // BRT's English status for a parcel on its delivery round reads "FOR DELIVERY" alone.
+  if (/^for delivery[.!]?$|^delivery in progress, (?:first|second|third|\d+(?:st|nd|rd|th)) attempt\b|scanned for delivery[;,] ?the courier is\b|^delivery branch\. in the hands of the mailman[.!]?$|^przesyłka wydana do doreczenia kurierowi \w{2,20}[.!]?$|派送员派送途中/i.test(value)) return 'out_for_delivery';
   if (/^order confirmed[.!]?$|^order received(?: successfully)?[.!]?$|^creat(?:e|ed)\. (?:parcel|shipment(?: order)?) created\b|^pre-shipment info sent to\b|^the order has information pending customer confirmation[.!]?$|^waiting for (?:the )?carrier to collect the order[.!]?$|^registered in the system[.!]?$|^(?:\d\) [a-z ]{1,40} cent(?:er|re) )?your order has been received[.!]?$/i.test(value)) return 'registered';
   if (/^export declaration in progress[.!]?$/i.test(value)) return 'customs';
   // MRW's own wording for a parcel left at one of its pickup points, relayed by a provider.

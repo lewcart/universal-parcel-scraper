@@ -385,6 +385,7 @@ describe("universal providers' answers", () => {
       ['Site-ExampleScanned for delivery;the courier is Example', 'out_for_delivery'],
       ['交接成功-交出（派送员派送途中）', 'out_for_delivery'],
       ['Delivery branch. In the hands of the mailman', 'out_for_delivery'],
+      ['FOR DELIVERY', 'out_for_delivery'],
       ['The shipment has left origin country', 'in_transit'], ['Przesyłka w oddziale FedEx.', 'in_transit'],
       ['Przesyłka wydana do doręczenia kurierowi FedEx.', 'out_for_delivery'],
       ['The shipment is handled by a return consolidator', 'exception'],
@@ -406,7 +407,8 @@ describe("universal providers' answers", () => {
       'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
-      'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point']) {
+      'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
+      'Ready for delivery']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

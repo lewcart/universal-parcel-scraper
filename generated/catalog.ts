@@ -15616,6 +15616,8 @@ export const CARRIER_CATALOG = {
       "adapter": "universal"
     },
     "canaryUrl": "https://www.poste.tn/",
+    "trackingUrlTemplate": "https://rapidposte.poste.tn/fr/Item_Events.asp?ItemId={trackingNumber}",
+    "trackingSearchUrl": "https://www.poste.tn/",
     "linkRules": [
       {
         "domains": [

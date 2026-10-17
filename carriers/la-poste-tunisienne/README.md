@@ -11,8 +11,19 @@ items handed to DHL also show a DHL waybill on the tracker; that number is DHL's
 
 ## Links
 
-Rapid-Poste's tracker and the earlier e-suivi tracker read a number from `ItemId` on
-`Item_Events.asp`, under `/fr/`, `/an/` and `/ar/` for French, English and Arabic.
+The tracking form on poste.tn's home page opens
+`rapidposte.poste.tn/fr/Item_Events.asp?ItemId={number}`. Rapid-Poste's tracker and the earlier
+e-suivi tracker read a number from `ItemId` on `Item_Events.asp`, under `/fr/`, `/an/` and
+`/ar/` for French, English and Arabic.
+
+## Why there is no adapter
+
+The tracker renders an item's scans on its server for a plain `GET` of that address, without an
+account, token or captcha, as archived lookups show. It and poste.tn do not answer connections
+from outside Tunisia: from Europe, the Americas, Asia and the Middle East the connection times
+out, while a Tunisian network gets the page. La Poste Tunisienne's Android apps locate post
+offices, open postal accounts and make payments; none tracks an item, so La Poste Tunisienne
+stays on universal providers.
 
 ## Testing
 

@@ -171,6 +171,22 @@
         "confidence": "high"
       },
       "note": "Quoted in a review on TrackingMore's Tunisia Post page for an item sent from a Tunisian post office agency to Poland; its TN suffix names La Poste Tunisienne as the issuing post."
+    },
+    {
+      "number": "EE995454657TN",
+      "role": "negative",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20260501054737/http://www.poste.tn/index.php"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "chronopost"
+        ]
+      },
+      "note": "The example in the tracking form on La Poste Tunisienne's home page, not a real shipment. The S10 check digit does not validate."
     }
   ]
 }

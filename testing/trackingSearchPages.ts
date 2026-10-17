@@ -31,6 +31,7 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'hi-trans': 'www.hi-trans.com.au challenges automated browsers; in a regular browser its home page has the consignment number field',
   'hr-parcel': 'the tracker names its field q, which the check reads as a site search',
   'israel-post': 'israelpost.co.il answers 403 to many networks outside Israel; an archived copy shows its item-number field',
+  'la-poste-tunisienne': 'www.poste.tn does not answer connections from outside Tunisia; an archived copy of its home page shows the item-number field',
   'mailplus-au': 'the tracker names its field search, which the check reads as a site search',
   'midland-transport': 'the tracking-number field sits in the desktop navigation bar of the tracker, which the phone-size check does not show',
   'olva-courier': 'the tracker names its field q, which the check reads as a site search',

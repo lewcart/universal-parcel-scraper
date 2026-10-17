@@ -25,6 +25,8 @@
   },
   "capabilities": [],
   "portal": {
+    "url": "https://rapidposte.poste.tn/fr/Item_Events.asp?ItemId={trackingNumber}",
+    "searchUrl": "https://www.poste.tn/",
     "canaryUrl": "https://www.poste.tn/",
     "shows": [],
     "scraped": [],

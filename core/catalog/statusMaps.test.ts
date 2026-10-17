@@ -412,6 +412,7 @@ describe("universal providers' answers", () => {
       ['Notice card left indicating where and when to pick up item', 'failed_attempt'],
       ['Delivery has been made at the destination port', 'in_transit'], ['Order information has been sent to DPD.', 'registered'],
       ['Package received & scanned at warehouse', 'accepted'],
+      ['Manifested - Out for Pickup', 'registered'], ['Manifested', 'registered'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'],
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],

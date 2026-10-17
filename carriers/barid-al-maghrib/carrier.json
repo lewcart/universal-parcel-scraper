@@ -100,5 +100,13 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "barid-al-maghrib-s10",
+      "pattern": "^[A-Z]{2}\\d{9}MA$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

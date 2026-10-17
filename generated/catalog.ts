@@ -6370,7 +6370,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "belpost": {
     "displayName": "Belpost",
@@ -23668,7 +23675,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "azerpost": [],
   "azul-cargo": [],
   "bangladesh-post": ["bangladesh-post-s10"],
-  "barid-al-maghrib": [],
+  "barid-al-maghrib": ["barid-al-maghrib-s10"],
   "belpost": ["belpost-s10"],
   "best-express-vn": [],
   "best-transport": [],

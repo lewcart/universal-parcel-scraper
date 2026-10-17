@@ -53,9 +53,10 @@ it, and the tracker answers for it too. The adapter takes S10 codes from any pos
 check digit; anything else is invalid without a request.
 
 The issuer of an S10 code does not establish who delivers it, so detection keeps codes ending
-`MA` with the generic postal carrier, and no rule makes preflight ask Barid Al-Maghrib. Items
-reach it when a caller or a provider names it. The samples and their sources are in
-[`numbers.json`](numbers.json).
+`MA` with the generic postal carrier, Amana's `CP` codes included. `barid-al-maghrib-s10`, at low
+confidence, makes preflight ask Barid Al-Maghrib about them. Mail from abroad reaches Barid
+Al-Maghrib when a caller names it, a provider names it, or a result gives Morocco as the
+destination of an S10 item. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

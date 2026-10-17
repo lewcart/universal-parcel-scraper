@@ -15999,7 +15999,9 @@
     "timezone": "Africa/Lagos",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nipost",
+      "recognitionRank": 908,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.nipost.gov.ng/",
     "trackingUrlTemplate": "https://tracking.nipost.gov.ng/{trackingNumber}",
@@ -16012,7 +16014,14 @@
         "path": "^/([A-Za-z0-9]{13,16})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}NG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "nippon-express": {
     "displayName": "Nippon Express",

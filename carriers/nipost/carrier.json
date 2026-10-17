@@ -20,18 +20,58 @@
   "timezone": "Africa/Lagos",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "nipost",
+    "steps": [
+      "direct",
+      "action",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 908
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://tracking.nipost.gov.ng/{trackingNumber}",
     "searchUrl": "https://tracking.nipost.gov.ng/",
     "canaryUrl": "https://tracking.nipost.gov.ng/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "origin",
+      "destination_country",
+      "delivered_at",
+      "payment_link"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "destination_country",
+      "delivered_at"
+    ],
+    "discarded": [
+      "origin",
+      "payment_link"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "recipient_name",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -41,5 +81,13 @@
       "path": "^/([A-Za-z0-9]{13,16})/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "nipost-s10",
+      "pattern": "^[A-Z]{2}\\d{9}NG$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    }
+  ]
 }

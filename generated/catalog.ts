@@ -16001,7 +16001,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Lagos",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nipost",
+      "recognitionRank": 908,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.nipost.gov.ng/",
     "trackingUrlTemplate": "https://tracking.nipost.gov.ng/{trackingNumber}",
@@ -16014,7 +16016,14 @@ export const CARRIER_CATALOG = {
         "path": "^/([A-Za-z0-9]{13,16})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}NG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "nippon-express": {
     "displayName": "Nippon Express",
@@ -23886,7 +23895,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nepal-post": [],
   "nhat-tin": ["nhat-tin-1"],
   "nim-express": [],
-  "nipost": [],
+  "nipost": ["nipost-s10"],
   "nippon-express": [],
   "nord-wheel": [],
   "northline": [],

@@ -103,11 +103,14 @@ export function parseCttExpress(payload: unknown, number: string): CarrierResult
   const weight = [data.final_weight, data.declared_weight]
     .find((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0 && value <= 100_000);
   // A parcel that entered from another postal network keeps its first number.
+  // CTT Portugal tracks its own numbers, which also name its leg of the parcel.
   const prime = clean(data.prime_shipping_code, 32);
+  const postal = isValidS10TrackingNumber(prime);
   return { status: returned ? 'exception' : mapped?.status ?? 'unknown', ...(latest.stage ? { current_stage: latest.stage } : {}),
     last_status_text: latest.description, last_update: latest.time ?? null, last_update_local: latest.local_time ?? null,
     expected_delivery: expected, ...(mapped?.status === 'delivered' && !returned && latest.time ? { delivered_at: latest.time } : {}),
     ...(weight !== undefined ? { weight_kg: weight } : {}),
-    ...(isValidS10TrackingNumber(prime) ? { international_tracking_number: prime } : {}),
+    ...(postal ? { international_tracking_number: prime } : {}),
+    ...(postal && prime.endsWith('PT') ? { delivery_carrier: 'ctt', delivery_tracking_number: prime } : {}),
     events: unique.slice(0, 100) };
 }

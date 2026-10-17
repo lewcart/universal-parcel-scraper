@@ -27,7 +27,9 @@
   "capabilities": [
     "history",
     "eta",
-    "weight"
+    "weight",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "url": "https://shipping-tracking.production.cloud2.cttexpress.com/?sc={trackingNumber}",
@@ -42,7 +44,8 @@
       "status",
       "history",
       "estimated_delivery",
-      "weight"
+      "weight",
+      "delivery_partner"
     ],
     "discarded": [],
     "unavailable": []

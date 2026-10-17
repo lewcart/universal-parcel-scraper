@@ -30,7 +30,9 @@ for active deliveries when they are no older than the latest dated scan. Pickup,
 delivery, incidents and document holds suppress estimates. A rescheduled
 delivery day replaces the committed one. The weight is the one measured in the
 network, else the one the sender declared. A parcel that entered from another
-postal network keeps that network's S10 number as its international number.
+postal network keeps that network's S10 number as its international number. CTT Portugal
+tracks its own numbers, those ending in `PT`, so such a number also names CTT Portugal as the
+delivery partner and the tracker asks it about the parcel.
 Customer service cases are skipped: they are not scans and carry the
 recipient's contact details. Other measurements, contact information and
 free-form delivery comments are excluded.

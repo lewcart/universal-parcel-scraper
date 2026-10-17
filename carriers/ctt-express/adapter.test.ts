@@ -8,6 +8,7 @@ import { classifyCttExpressStatus } from './status.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 
 const NUMBER = '0000000000000000000001';
 const OTHER = '0000000000000000000002';
@@ -213,15 +214,21 @@ describe('CTT Express direct tracking', () => {
     Object.assign(payload.data, { new_delivery_date: '2026-01-06', final_weight: 0, declared_weight: 1.25, prime_shipping_code: 'RR123456785PT' });
     const held = normalizeCarrierResult(parseCttExpress(payload, NUMBER));
     expect(held).toMatchObject({ status: 'exception', current_stage: 'exception', last_status_text: 'Almacenado temporalmente', weight_kg: 1.25,
-      international_tracking_number: 'RR123456785PT', expected_delivery: null });
+      international_tracking_number: 'RR123456785PT', delivery_carrier: 'ctt', delivery_tracking_number: 'RR123456785PT', expected_delivery: null });
+    expect(deliveryHandoff('ctt-express', NUMBER, held)).toEqual({ carrier: 'ctt', number: 'RR123456785PT', basis: 'partner' });
     expect(held.events?.map((event) => [event.provider_code, event.stage])).toEqual([['1700', 'exception'], ['1600', 'exception'],
       ['1500', 'out_for_delivery'], ['3900', 'in_transit'], ['0500', 'accepted'], ['0000', 'registered']]);
     expect(JSON.stringify(held)).not.toContain('PRIVATE_SYNTHETIC');
     payload.data.shipping_history.events.push(scan('2400', 'Nuevo reparto', '2026-01-05T08:00:00Z') as never);
     expect(parseCttExpress(payload, NUMBER)).toMatchObject({ status: 'out_for_delivery', expected_delivery: '2026-01-06' });
+    // Another post's number names no CTT Portugal leg.
+    Object.assign(payload.data, { prime_shipping_code: 'RR123456785CN' });
+    expect(parseCttExpress(payload, NUMBER)).toMatchObject({ international_tracking_number: 'RR123456785CN' });
+    expect(parseCttExpress(payload, NUMBER).delivery_carrier).toBeUndefined();
     for (const prime of ['RR123456784PT', '0000000000000000000003', 'PRIVATE_SYNTHETIC_REFERENCE']) {
       Object.assign(payload.data, { prime_shipping_code: prime });
-      expect(parseCttExpress(payload, NUMBER).international_tracking_number).toBeUndefined();
+      const result = parseCttExpress(payload, NUMBER);
+      expect([result.international_tracking_number, result.delivery_carrier, result.delivery_tracking_number]).toEqual([undefined, undefined, undefined]);
     }
     payload.data.shipping_history.events.push(scan('2700', 'Devuelto a remitente', '2026-01-08T08:00:00Z') as never);
     expect(parseCttExpress(payload, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'returned', expected_delivery: null });

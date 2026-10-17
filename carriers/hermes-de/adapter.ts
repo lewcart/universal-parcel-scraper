@@ -87,7 +87,7 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
   const events: Array<{ event: CarrierEvent; timestamp: number; metadata?: Milestone }> = [];
   for (const entry of progress) {
     if (!isRecord(entry) || typeof entry.timestamp !== 'string'
-      || typeof entry.parcelStatus !== 'string' || !/^[A-Z_]{1,64}$/.test(entry.parcelStatus)) {
+      || typeof entry.parcelStatus !== 'string' || !/^[A-Z][A-Z0-9_]{0,63}$/.test(entry.parcelStatus)) {
       throw new SchemaError(CARRIER, 'Hermes Germany returned an invalid tracking event');
     }
     const date = firstOccurrence(DateTime.fromISO(entry.timestamp, { zone: 'Europe/Berlin', setZone: true }));

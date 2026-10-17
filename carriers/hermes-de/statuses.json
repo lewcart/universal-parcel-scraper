@@ -232,6 +232,13 @@
       "note": "Delivery attempt unsuccessful"
     },
     {
+      "code": "DELIVERY_FAILED_NOT_MET_1X",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17",
+      "note": "Recipient could not be met; a new attempt follows on the next working day or the preferred day"
+    },
+    {
       "code": "NOT_DELIVERABLE",
       "stage": "exception",
       "confirmedBy": "official-doc",

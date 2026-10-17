@@ -125,6 +125,7 @@ describe('Hermes Germany', () => {
     ['INTERNATIONAL_DELIVERY_TOUR_STARTED', 'out_for_delivery', 'out_for_delivery'],
     ['INTERNATIONAL_DELIVERY_FAILED_ADDRESS', 'failed_attempt', 'exception'],
     ['DELIVERY_FAILED_ADDRESS_PROBLEM', 'failed_attempt', 'exception'],
+    ['DELIVERY_FAILED_NOT_MET_1X', 'failed_attempt', 'exception'],
   ])('reads %s as %s', (code, stage, status) => {
     const payload = [{ barcode: NUMBER, parcelProgress: [
       { parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
@@ -133,6 +134,16 @@ describe('Hermes Germany', () => {
     const result = parseHermesGermanyResponse(payload, NUMBER);
     expect(result).toMatchObject({ status, current_stage: stage });
     expect(result.events?.[0]).toMatchObject({ stage, provider_code: code });
+  });
+
+  it('takes a code with digits, and leaves an unknown one to the wording rules', () => {
+    const payload = [{ barcode: NUMBER, parcelProgress: [
+      { parcelStatus: 'SORTED', timestamp: '2026-09-02T09:00:00Z' },
+      { parcelStatus: 'FUTURE_STATUS_2X', timestamp: '2026-09-03T09:00:00Z', historyText: 'Synthetic wording' },
+    ] }];
+    const result = parseHermesGermanyResponse(payload, NUMBER);
+    expect(result.events?.[0]).toMatchObject({ provider_code: 'FUTURE_STATUS_2X' });
+    expect(result.events?.[0]).not.toHaveProperty('stage');
   });
 
   it('drops a booked ParcelShop like a booked safe place', () => {

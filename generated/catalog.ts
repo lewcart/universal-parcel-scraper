@@ -6144,7 +6144,23 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "arrow-xl",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "SW1A 1AA",
+          "help": "ArrowXL shows a delivery only with its delivery postcode. Without it, other sources are asked.",
+          "pattern": "^(?:[Gg][Ii][Rr]|[A-PR-UWYZa-pr-uwyz](?:[0-9][0-9A-HJKPSTUWa-hjkpstuw]?|[A-HK-Ya-hk-y][0-9][0-9ABEHMNPRVWXYabehmnprvwxy]?)) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$",
+          "maxLength": 8,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
+      "localClocks": true
     },
     "canaryUrl": "https://askaxl.co.uk/tracking",
     "trackingSearchUrl": "https://askaxl.co.uk/tracking",

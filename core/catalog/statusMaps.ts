@@ -26,6 +26,7 @@ import { statusMap as apcOvernight } from '../../carriers/apc-overnight/status.j
 import { statusMap as aramexAu } from '../../carriers/aramex-au/status.js';
 import { statusMap as aramexNz } from '../../carriers/aramex-nz/status.js';
 import { statusMap as arasKargo } from '../../carriers/aras-kargo/status.js';
+import { statusMap as arrowXl } from '../../carriers/arrow-xl/status.js';
 import { statusMap as austrianPost } from '../../carriers/austrian-post/status.js';
 import { statusMap as averitt } from '../../carriers/averitt/status.js';
 import { statusMap as aymakan } from '../../carriers/aymakan/status.js';
@@ -257,7 +258,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '5post': fivePost, '99minutos': ninetynineMinutos, 'abf-freight': abfFreight, 'acs-courier': acsCourier,
   'algerie-poste': algeriePoste, aliexpress,
   'allegro-one': allegroOne, 'an-post': anPost, andreani, anjun, anteraja, 'apc-overnight': apcOvernight, 'aramex-au': aramexAu,
-  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
+  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'blue-express': blueExpress, bosta, 'box-now': boxNow, 'bulgarian-posts': bulgarianPosts,
   byhd, cacesa, cargus, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,

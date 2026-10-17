@@ -290,12 +290,17 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
  * history gives and its page labels Polish time (2026-10-13). Yodel's, InPost's
  * UK network, are London's: InPost's own offsets give the same instants
  * (2026-10-16), as they do for Collect+'s, Yodel's shop network, which Ship24
- * dates "+01:00" in summer. Their home clock is a guess, which a location in
- * another country rules out.
+ * dates "+01:00" in summer. XZG's, a Shenzhen line provider's, are China's:
+ * XZG's own tracker and DHLink's, which relays it, give the same digits, and
+ * DHLink records its warehouse scans within seconds on its system clock,
+ * which is China's. On that clock XZG's scans stay one with DHLink's copies,
+ * which take DHLink's catalog zone, whether or not a reply has them and
+ * whatever zone routing passes. Their home clock is a guess, which a location
+ * in another country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
-  pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London',
+  pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
 };
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
@@ -377,6 +382,8 @@ const POSTAL_ORIGIN_LEG = wordings([
   'arrived at export office', 'departed from export office', 'departed country of origin',
   '(?:arrival at|departure from|dispatch from|item held at) outward office of exchange',
 ]);
+// The posting itself, UPU's "Posting/Collection" and EMS's "Posted" (EMA).
+const POSTAL_POSTING = wordings(['posting/collection', 'posted']);
 
 // Mainland China's provinces, regions and municipalities, as China Post's scans name them.
 const CHINESE_PROVINCES = new Set([
@@ -428,15 +435,37 @@ const AUSTRALIAN_CAPITALS: ReadonlyMap<string, string> = new Map([
 
 /**
  * The clock of a scan in Australia, which has several: that of the state its
- * location names ("EXAMPLE TOWN NSW 2000"), else of the state capital it
- * names ("SYDNEY EMS, Australia"). It is read only for a scan known to be in
- * Australia, since "WA" and "SA" name other places too.
+ * location names ("EXAMPLE TOWN NSW 2000"), else, with `capitals`, of the
+ * state capital it names ("SYDNEY EMS, Australia"). It is read only for a scan
+ * known to be in Australia, since "WA" and "SA" name other places too.
  */
-function australianZone(location: string): string | null {
+function australianZone(location: string, capitals = true): string | null {
   const words = location.split(/[^A-Za-z]+/).filter(Boolean);
   const state = words.find((word) => AUSTRALIAN_STATE_ZONES.has(word))
-    ?? words.map((word) => AUSTRALIAN_CAPITALS.get(word.toLowerCase())).find(Boolean);
+    ?? (capitals ? words.map((word) => AUSTRALIAN_CAPITALS.get(word.toLowerCase())).find(Boolean) : undefined);
   return state ? AUSTRALIAN_STATE_ZONES.get(state)! : null;
+}
+
+/**
+ * Whether a scan is a postal feed's posting, whose place names the posting
+ * office: in Australia that office's capital need not be the scan's state.
+ */
+function postalPosting(name: unknown, status: string): boolean {
+  return POSTAL_FEEDS.has(nameKey(name)) && POSTAL_POSTING.test(status.trim());
+}
+
+/**
+ * The clock of the capital a postal feed's posting in Australia names, which
+ * is its office's and can be another state's than the scan's: UPU named
+ * "BRISBANE" for the posting of an item Australia Post received in New South
+ * Wales, at its "+11:00" there, Sydney's summer clock, where Brisbane keeps
+ * "+10:00". EMS's copy, under the office's code, has the same digits. Such a
+ * posting borrows its feed's clock first (`wallClockZones`), and only then
+ * takes the capital's.
+ */
+function postingOffice(name: unknown, status: string, location: string, origin: string | null): string | null {
+  const country = countryCode(lastPlace(location));
+  return origin === 'AU' && (!country || country === 'AU') && postalPosting(name, status) ? australianZone(location) : null;
 }
 
 /**
@@ -530,15 +559,17 @@ function placedZone(payload: Record<string, unknown>, state: Record<string, unkn
   // names ("Chicago, IL"); a merely possible one comes after ("Koeln, DE").
   const region = regionScanZone(name, location, inNorthAmerica);
   if (region?.certain) return region.zone;
+  // A posting's capital names its office, not the scan's state (`postingOffice`).
+  const capitals = !postalPosting(name, status);
   // A town of the state or province whose code a country shares is not in
   // that country: "Denver, CO" is not in Colombia, whoever scanned it.
   const located = regionClock(location)?.certain ? null
-    : countryTimeZone(place) ?? (countryCode(place) === 'AU' ? australianZone(location) : null);
+    : countryTimeZone(place) ?? (countryCode(place) === 'AU' ? australianZone(location, capitals) : null);
   if (located) return located;
   if (region) return region.zone;
   if (POSTAL_FEEDS.has(key) && POSTAL_ORIGIN_LEG.test(status.trim())) {
     const origin = replyOrigin(payload, number);
-    return countryTimeZone(origin) ?? (origin === 'AU' ? australianZone(location) : null) ?? undefined;
+    return countryTimeZone(origin) ?? (origin === 'AU' ? australianZone(location, capitals) : null) ?? undefined;
   }
   return undefined;
 }
@@ -577,14 +608,16 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const offset = ownOffset(name, raw.date);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const placed = placedZone(payload, raw, number, inNorthAmerica, status, destination);
-  const zone = placed !== undefined ? placed : wallClock ? null : guessedZone(payload, raw, fallback, number);
+  // A posting that only its office's capital places borrows first (`postingOffice`).
+  const office = placed === undefined ? postingOffice(name, status, location, replyOrigin(payload, number)) : null;
+  const zone = placed !== undefined ? placed : wallClock || office ? null : guessedZone(payload, raw, fallback, number);
   const known = wallClock ? knownClock(name, status, destination, origin) : null;
   // A local clock that nothing places, in the US or Canada alone ("US 12345").
   const country = countryCode(lastPlace(location));
   const nationwide = placed === undefined && zone === null && LOCAL_CLOCK_CARRIERS.has(nameKey(name)) && (country === 'US' || country === 'CA');
-  return { name, date: raw.date, zone, placed: placed ?? null, offset, location, wallClock, nationwide,
+  return { name, date: raw.date, zone, placed: placed ?? null, offset, location, wallClock, nationwide, office,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
-    fallback: wallClock ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null };
+    fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null };
 }
 
 type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
@@ -622,13 +655,17 @@ type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' 
  * FedEx's "Shipment information sent to FedEx" under the shipper's ZIP code
  * took the zone of the pickup's state after it, as FedEx's own page dates it
  * (checked 2026-10-11).
+ *
+ * A postal feed's posting in Australia that only its office's capital places
+ * (`postingOffice`) borrows as in step 3 too, and takes that capital's clock
+ * after any known clock, before routing's.
  */
 function wallClockZones(entries: readonly {
   name: unknown; date: unknown; location: string; zone: string | null; placed: string | null; copy: string | undefined;
-  wallClock: boolean; nationwide: boolean; fallback: string | null; known: string | null; arrival: string | null;
+  wallClock: boolean; nationwide: boolean; office: string | null; fallback: string | null; known: string | null; arrival: string | null;
 }[]): { zone: string | null; step: ZoneStep }[] {
   const found = entries.map((entry): { zone: string | null; step: ZoneStep } | null => !entry.wallClock
-    ? entry.zone || !entry.nationwide ? { zone: entry.zone, step: 'carrier' } : null
+    ? entry.zone || !(entry.nationwide || entry.office) ? { zone: entry.zone, step: 'carrier' } : null
     : entry.zone ? { zone: entry.zone, step: 'place' } : entry.copy ? { zone: entry.copy, step: 'copy' } : null);
   const walls = entries.map((entry) => mislabeledWallTime(entry.date) ?? '');
   return entries.map((entry, index) => {
@@ -652,15 +689,16 @@ function wallClockZones(entries: readonly {
     const borrowed = (before ?? after)?.zone;
     const known = fitsPlace(entry.known, entry.location);
     return borrowed ? { zone: borrowed, step: 'borrowed' } : known ? { zone: known, step: 'known' }
-      : entry.fallback ? { zone: entry.fallback, step: 'routing' } : { zone: null, step: 'labeled' };
+      : entry.office ? { zone: entry.office, step: 'place' }
+        : entry.fallback ? { zone: entry.fallback, step: 'routing' } : { zone: null, step: 'labeled' };
   });
 }
 
 /**
- * The clock of a network that nothing places, as its copies show. XZG, a line
- * provider DHLink relays, files the same scans as DHLink at the same digits,
- * with no place and no catalog zone, so ParcelsApp's UTC label stayed on them
- * and each scan came twice, hours apart. When every scan of a network has no
+ * The clock of a network that nothing places, as its copies show. A line
+ * provider outside the catalog can file the same scans as the carrier that
+ * relays it, at the same digits, with no place: under ParcelsApp's UTC label
+ * each scan would come twice, hours apart. When every scan of a network has no
  * zone and the other carriers' copies of its scans, at the same digits and
  * wording, share one zone, that zone is the network's: its copies stay one
  * scan with theirs, and its own scans keep the same clock.

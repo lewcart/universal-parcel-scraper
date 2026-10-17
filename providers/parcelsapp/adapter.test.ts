@@ -1041,8 +1041,8 @@ describe('ParcelsApp result parsing', () => {
   });
 
   it('reads a network nothing places on its copies\' clock, and a later acceptance by another carrier as a hand-over', () => {
-    // Live shape: XZG, a line provider DHLink relays, files DHLink's scans at
-    // the same digits with no place; DPD takes the parcel once it is cleared.
+    // A line provider outside the catalog files DHLink's scans at the same
+    // digits with no place; DPD takes the parcel once it is cleared.
     const xzg = 'XZG000000000WL';
     const scans: [string, string, number][] = [
       ['2026-06-20T02:25:00+00:00', 'Parcel handed', 2],
@@ -1054,7 +1054,7 @@ describe('ParcelsApp result parsing', () => {
       ['2026-06-09T19:04:00Z', 'Package received & scanned at warehouse', 0],
       ['2026-06-09T19:04:00Z', 'Package received & scanned at warehouse', 1],
     ];
-    const carriers = ['XZG', 'DHLink', 'DPD Group'];
+    const carriers = ['Example Line', 'DHLink', 'DPD Group'];
     const json = parseParcelsAppResponse({ carriers, states: scans.map(([date, status, carrier]) => ({ date, status, carrier })) }, xzg, identity(xzg));
     const page = identity(xzg).replace('</table>', `</table><ul class="events">${scans.map(([date, status, carrier]) =>
       carrierRow(DateTime.fromISO(date, { zone: 'UTC' }).toFormat('dd LLL yyyy'), date.slice(11, 16), status, carriers[carrier]!)).join('')}</ul>`);
@@ -1069,6 +1069,29 @@ describe('ParcelsApp result parsing', () => {
     // DPD's own acceptance, before any other carrier moved the parcel, stays one.
     expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-20T02:25:00+00:00', status: 'Parcel handed', carrier: 2 },
       { date: '2026-06-09T20:51:00Z', status: 'Order information has been sent to DPD.', carrier: 0 }] }, xzg, identity(xzg)).current_stage).toBe('accepted');
+  });
+
+  it('reads XZG on China\'s clock with or without DHLink\'s copies, whatever zone routing passes', () => {
+    // Live shape: XZG's own tracker and DHLink's give these digits, on China's clock.
+    const xzg = 'XZG000000000WL';
+    const times = (carriers: string[], states: [string, string, number][], timezone: string | null = null) =>
+      parseParcelsAppResponse({ carriers, destinationCode: 'CH', states: states.map(([date, status, carrier]) => ({ date, status, carrier })) },
+        xzg, identity(xzg), timezone).events?.map(({ time }) => time);
+    const own: [string, string, number][] = [
+      ['2026-06-16T18:40:00Z', 'Customs import clearance completed, awaiting pickup by local carrier', 0],
+      ['2026-06-09T20:51:26Z', 'Order information has been sent to DPD.', 0],
+      ['2026-06-09T19:04:07Z', 'Package received & scanned at warehouse', 0],
+    ];
+    const expected = ['2026-06-16T10:40:00.000Z', '2026-06-09T12:51:26.000Z', '2026-06-09T11:04:07.000Z'];
+    expect(times(['XZG'], own)).toEqual(expected);
+    expect(times(['XZG', 'DPD Group'], own, 'Europe/Zurich')).toEqual(expected);
+    // DHLink's copies take DHLink's catalog zone, so each scan stays one.
+    expect(times(['XZG', 'DHLink'], [...own, ['2026-06-16T18:40:00Z', own[0]![1], 1], ['2026-06-09T19:04:07Z', own[2]![1], 1]],
+      'Europe/Zurich')).toEqual(expected);
+    // A location in another country rules the home clock out.
+    expect(parseParcelsAppResponse({ carriers: ['XZG'], states: [
+      { date: '2026-06-16T18:40:00Z', status: 'Arrived', carrier: 0, location: 'Example Town, Switzerland' },
+    ] }, xzg, identity(xzg)).events?.[0]?.time).toBe('2026-06-16T16:40:00.000Z');
   });
 
   it('reads the networks ParcelsApp names its own way on their home clock', () => {
@@ -1220,15 +1243,40 @@ describe('ParcelsApp result parsing', () => {
       { date: '2026-10-08T05:46:00Z', status: 'Departed country of origin', carrier: 0, location: 'SYDNEY EMS, Australia' },
       { date: '2026-10-07T23:47:00+00:00', status: 'Arrived at export office', carrier: 1, location: 'Sydney' },
       { date: '2026-10-07T20:15:00+00:00', status: 'Item presented to export customs/security', carrier: 1, location: 'EXAMPLE TOWN WA 6000' },
-      { date: '2026-10-06T16:28:00Z', status: 'Posting/Collection', carrier: 0, location: 'BRISBANE, Australia' },
     ] }, number, identity());
     expect(result.events?.map((scan) => scan.time)).toEqual([
-      '2026-10-07T18:46:00.000Z', '2026-10-07T12:47:00.000Z', '2026-10-07T12:15:00.000Z', '2026-10-06T06:28:00.000Z',
+      '2026-10-07T18:46:00.000Z', '2026-10-07T12:47:00.000Z', '2026-10-07T12:15:00.000Z',
     ]);
     // A state's abbreviation places no scan outside Australia: "SA" is not South Australia here.
     expect(parseParcelsAppResponse({ carriers: ['Universal Postal Union'], originCode: 'CN', destinationCode: 'GB', states: [
       { date: '2026-10-06T16:28:00Z', status: 'Arrival at inward office of exchange', carrier: 0, location: 'EXAMPLE SA' },
     ] }, number, identity()).events?.[0]?.time).toBe('2026-10-06T16:28:00.000Z');
+  });
+
+  it('reads an Australian posting its office\'s capital names on its feed\'s clock first', () => {
+    // Live shape: UPU names the office "BRISBANE" and EMS gives its code for the posting
+    // Australia Post received in New South Wales at +11:00, Sydney's summer clock.
+    const posting = (states: Record<string, unknown>[], carriers = ['Universal Postal Union', 'EMS']) =>
+      parseParcelsAppResponse({ carriers, originCode: 'AU', destinationCode: 'SA', states }, number, identity()).events
+        ?.map(({ time, description }) => [time, description]);
+    const exported = [
+      { date: '2026-10-08T05:46:00Z', status: 'Departed country of origin', carrier: 0, location: 'SYDNEY EMS, Australia' },
+      { date: '2026-10-07T23:47:00+00:00', status: 'Arrived at export office', carrier: 1, location: 'Sydney' },
+    ];
+    expect(posting([...exported,
+      { date: '2026-10-06T16:28:00Z', status: 'Posting/Collection', carrier: 0, location: 'BRISBANE, Australia' },
+      { date: '2026-10-06T16:28:00+00:00', status: 'Posted', carrier: 1, location: 'EXAMPLE1' },
+    ])?.slice(2)).toEqual([['2026-10-06T05:28:00.000Z', 'Posting/Collection'], ['2026-10-06T05:28:00.000Z', 'Posted']]);
+    // With no placed scan of its feed to borrow from, the capital's clock dates it.
+    expect(posting([{ date: '2026-10-06T16:28:00Z', status: 'Posting/Collection', carrier: 0, location: 'BRISBANE, Australia' }]))
+      .toEqual([['2026-10-06T06:28:00.000Z', 'Posting/Collection']]);
+    // A posting whose place names its state is read there; other scans keep their capital's clock.
+    expect(posting([...exported,
+      { date: '2026-10-07T10:00:00Z', status: 'Item presented to export customs/security', carrier: 0, location: 'BRISBANE, Australia' },
+      { date: '2026-10-06T16:28:00Z', status: 'Posting/Collection', carrier: 0, location: 'EXAMPLE TOWN QLD 4000, Australia' },
+    ])?.slice(2)).toEqual([
+      ['2026-10-07T00:00:00.000Z', 'Item presented to export customs/security'], ['2026-10-06T06:28:00.000Z', 'Posting/Collection'],
+    ]);
   });
 
   it('reads a scan on its known clock before the zone routing passes for the parcel', () => {

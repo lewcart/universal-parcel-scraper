@@ -116,8 +116,7 @@ step exists for future protocol changes.
   for what that does to stored rows.
 
   A network that no step places, whose scans other carriers copy at the same digits and
-  wording on one shared zone, takes that zone: XZG, a line provider DHLink relays, files
-  DHLink's scans with no place, and on DHLink's clock each scan stays one.
+  wording on one shared zone, takes that zone, so each scan stays one with its copies.
 
   With no zone, an offset is taken as given, which for the carriers whose dates are never
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
@@ -246,8 +245,12 @@ step exists for future protocol changes.
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local
   times, 10:27 for a delivery in Japan that Cainiao dates 10:27 GMT+9 and Ship24 01:27Z.
   So were "Yodel" and "InPost UK", InPost's UK network, and "Collect+", Yodel's shop
-  network, on London time: InPost's own offsets give the same instants. A name added
-  here moves its stored scans (see Limitations).
+  network, on London time: InPost's own offsets give the same instants. So was "XZG", a
+  Shenzhen line provider that DHLink relays, on China time: XZG's own tracker and DHLink's
+  give its digits, and DHLink records its warehouse scans within seconds on its system
+  clock, which is China's. DHLink's copies take DHLink's catalog zone, so XZG's scans stay
+  one with them whether a reply has them or not, whatever zone routing passes. A name
+  added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
@@ -257,10 +260,12 @@ step exists for future protocol changes.
   `originCode` or the country of an S10 number: they share their digits with China Post's
   scans in China, and read as UTC export customs came after the release. Australia has
   several clocks, so an Australian origin's scans take the state or state capital their
-  place names, as Australia Post's own offsets do; one naming neither stays a guess. UPU
-  names the office, not always the scan's state: its "BRISBANE" posting of an item Australia
-  Post received in New South Wales reads an hour late while New South Wales is on summer
-  time.
+  place names, as Australia Post's own offsets do; one naming neither stays a guess. A
+  posting names its office, which can be in another state than the scan: UPU's "BRISBANE"
+  posting of an item Australia Post received in New South Wales has the digits of Australia
+  Post's "+11:00", as does EMS's copy under the office's code. A posting that only its
+  office's capital places therefore borrows the clock of its feed's other scans, as a wall
+  clock does (step 3 of Wall clocks), and takes the capital's only when there is none.
 - CTT's copies ("Portugal Post - Portugal CTT") have the digits of CTT's own tracker, the
   clock where each scan happened, under a UTC label. An office of exchange or a CTT site
   names its own clock ("GBLALA - …" London's, "PTLISE - …" Lisbon's). ParcelsApp drops

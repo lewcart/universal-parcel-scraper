@@ -87,7 +87,7 @@ const HANDED_TO_COURIER = new RegExp(`${HANDED_TO}${COURIER}`);
 const HANDED_TO_NETWORK = new RegExp(String.raw`${HANDED_TO}(?!${COURIER})(?:the |a |an |our |your )?(?:[\w-]+ ){0,2}?(?:courier|carrier)s?\b`);
 
 /** Customs or clearance named in any language. */
-const CUSTOMS = /customs|clearance|douan|formalites (?:d')?(?:import|export)|zoll|dogan|\b(?:des)?aduan[ae]|alfandeg|\bceln|government agency|autorite gouvernementale|staatliche behorde|autorita governativa/;
+const CUSTOMS = /customs|clearance|\bclearing agen(?:cy|t)\b|douan|formalites (?:d')?(?:import|export)|zoll|dogan|\b(?:des)?aduan[ae]|alfandeg|\bceln|government agency|autorite gouvernementale|staatliche behorde|autorita governativa/;
 /** The side of customs a scan may name: "import", "export", "import/export". */
 const CUSTOMS_SIDE = String.raw`(?:(?:import|export)(?:\/(?:import|export))? |local |destination |origin )?`;
 /**
@@ -114,7 +114,7 @@ const CUSTOMS_RELEASED = new RegExp([
   String.raw`\bclearance\b${SENTENCE}*?\b(?:complete|completed|finished|done|success|successful|successfully|concluded|granted|approved|obtained)\b`,
   String.raw`\b(?:import|export) (?:procedures|formalities)\b${SENTENCE}*?\b(?:are|were|have been|has been) (?:now )?(?:complete|completed|finished|done)\b`,
   String.raw`(?:leaving|departed from|left|exited|exiting|out of|passed(?: through)?) (?:the )?${CUSTOMS_SIDE}customs\b(?! (?:to|for) (?:the )?(?:sender|shipper)\b)`,
-  String.raw`completion of customs|released by (?:(?:the )?${CUSTOMS_SIDE}customs|a government agency)|\breleased (?:from|out of|at) (?:the )?${CUSTOMS_SIDE}customs\b|\breturned from (?:the )?${CUSTOMS_SIDE}customs\b(?! to\b)`,
+  String.raw`completion of customs|released by (?:(?:the )?${CUSTOMS_SIDE}customs|a government agency|(?:the |a )?clearing agen(?:cy|t))|\breleased (?:from|out of|at) (?:the )?${CUSTOMS_SIDE}customs\b|\breturned from (?:the )?${CUSTOMS_SIDE}customs\b(?! to\b)`,
   String.raw`customs (?:cleared|(?:has |have )?released)|\bcustoms[.:] released$|\bcustoms (?:release|inspection|examination|check|control) (?:has been |was |is )?(?:granted|completed?|finished|done|passed)\b|\bcleared (?:through |by |the )?${CUSTOMS_SIDE}customs\b`,
   String.raw`formalites.*(?:terminee|achevee)|dedouanement.*(?:termine|acheve)|fin du dedouanement|\bdedouanement (?:(?:du colis|de (?:votre |l'|ce )?(?:colis|envoi)) )?(?:(?:a ete|est) )?(?:effectue|realise|reussi|valide|finalise)e?s?\b|\bdedouane(?:e|s|es)?\b|libere.*(?:douane|autorite)|douane.*libere|\bsorti(?:e|s|es)? de (?:la )?douane\b`,
   String.raw`zollabfertigung.*abgeschlossen|(?:zoll|behorde).*freigegeben|\bverzollt\b|\b(?:verzollung|zollabfertigung|zollkontrolle|zollprufung|zollformalitaten)\b${SENTENCE}*?\b(?:abgeschlossen|erledigt|beendet)\b|\b(?:verzollung|zollfreigabe) (?:ist |wurde )?(?:erfolgt|erteilt)\b(?! durch)|\b(?:den zoll|das zolllager|die zollstelle|das zollamt) verlassen\b`,

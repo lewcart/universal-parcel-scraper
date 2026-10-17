@@ -273,6 +273,8 @@ describe('classifyWording', () => {
       'Held by customs', 'Held by Custom', 'Shipment held at customs', 'Parcel on hold at customs', 'Customs hold',
       'Detained by customs', 'Colis retenu en douane', 'Vom Zoll zurückgehalten', 'Fermo in dogana', 'Retenido en aduana',
       'Retido na alfândega', 'Przesyłka zatrzymana przez urząd celny',
+      // UPS's customs broker, which it calls the clearing agency.
+      'The package is at the clearing agency awaiting final release.', 'Your package is being held by the clearing agency.',
     ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'customs', source: 'wording:language' });
     for (const wording of ['Customs issue', 'Customs problem, documents missing', 'Problème de douane', 'Zollproblem',
       'Problema doganale', 'Problema de aduana', 'Problem celny', 'Shipment on hold']) {
@@ -289,6 +291,7 @@ describe('classifyWording', () => {
       'Left the customs terminal', 'Item returned from import customs', 'Released from customs hold',
       // A heading and its line, as MailAmericas words its release and providers relay it.
       'Destination customs: Released', 'Destination customs. Released',
+      'The package was released by the clearing agency.',
       'Problème douanier résolu, colis en cours d’acheminement', 'Colis dédouané', 'Dédouanement effectué', 'Sorti de la douane',
       'Verzollung abgeschlossen', 'Sendung verzollt', 'Zollfreigabe erfolgt', 'Die Sendung hat den Zoll verlassen',
       'Spedizione sdoganata', 'Sdoganamento effettuato', 'Svincolo avvenuto', 'Uscito dalla dogana',

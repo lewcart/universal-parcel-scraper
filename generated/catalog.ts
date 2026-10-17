@@ -13767,7 +13767,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hermes-at",
+      "recognitionRank": 876,
+      "localClocks": true
     },
     "canaryUrl": "https://www.myhermes.at/sendungsverfolgung/",
     "trackingUrlTemplate": "https://www.myhermes.at/sendungsverfolgung/trackingnummer/{trackingNumber}/",

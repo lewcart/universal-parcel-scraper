@@ -40,6 +40,8 @@ const CONTACT = /(?:投递员|快递员|派送员|联系电话|电话[:：]|手�
 export const DHLINK_LAST_LEGS: readonly { readonly carrier: string; readonly number: RegExp }[] = [
   // SwiftX's own numbers: SWX and eighteen digits, the layout `swiftx-1` claims.
   { carrier: 'swiftx', number: /^SWX\d{18}$/ },
+  // GOFO's US waybills: GFUS and fourteen digits, the layout `gofo-1` claims.
+  { carrier: 'gofo', number: /^GFUS\d{14}$/ },
 ];
 
 /** A number DHLink's tracker can be asked for; anything else is not sent. */

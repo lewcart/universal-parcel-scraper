@@ -9848,6 +9848,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^XZG\\d{9}WL$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^YLUS\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -26541,7 +26545,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dhl-ecommerce-uk": ["dhl-ecommerce-uk-2","dhl-ecommerce-uk-1"],
   "dhl-express": ["dhl-express-waybill","dhl-express-piece","dhl-express-piece-label"],
   "dhl-freight": ["dhl-freight-2"],
-  "dhlink": ["dhlink-1","dhlink-xzg"],
+  "dhlink": ["dhlink-1","dhlink-xzg","dhlink-ylus"],
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],

@@ -80775,6 +80775,17 @@
     ]
   },
   {
+    "input": "YLUS0000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhlink"
+    ],
+    "asked": [
+      "dhlink"
+    ]
+  },
+  {
     "input": "YP005928287CO",
     "carrier": "intl-post",
     "confidence": "high",

@@ -9846,6 +9846,10 @@
       {
         "pattern": "^XZG\\d{9}WL$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^YLUS\\d{10}$",
+        "confidence": "low"
       }
     ]
   },

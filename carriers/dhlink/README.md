@@ -17,11 +17,12 @@ page makes.
 - The lookup finds a parcel by its tracking number. A DHLink number (FC and thirteen digits)
   finds it only when it is also the tracking number, as on DHLink's own line; the last leg's
   number finds nothing. A line provider's number can be the tracking number: `XZG`, nine
-  digits and `WL` is one. Its rule is low confidence, so DHLink is asked before it is named.
+  digits and `WL` is one, and `YLUS` and ten digits, on a US line GOFO delivers, is another.
+  Their rules are low confidence, so DHLink is asked before it is named.
 - The parcel counts only when the number asked is its tracking number or its DHLink number:
   the search can find a parcel by its other numbers.
-- An empty parcel with state 1 is the unknown-number answer. For a DHLink number or a SwiftX
-  last-leg number it is inconclusive, since the search gives it for parcels it has too. A
+- An empty parcel with state 1 is the unknown-number answer. For a DHLink number or a last
+  leg's number in the partner table it is inconclusive, since the search gives it for parcels it has too. A
   refusal in the envelope, or a parcel without rows, is inconclusive.
 - DHLink's firewall answers clients it refuses, such as a headless browser's User-Agent, with a
   block page and HTTP 403, on the page and the lookup alike. A block is a challenge, never a
@@ -43,8 +44,8 @@ page makes.
   destination's, so every row keeps its wall clock. A row still after the read at UTC+14, the
   earliest instant it can stand for, is dropped, and the delivered count is then not trusted.
 - The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
-  the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX. Other
-  numbers give no hand-off.
+  the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX, `GFUS`
+  and fourteen digits is GOFO. Other numbers give no hand-off.
 - Places lose postcodes, placeholders and the destination code one feed appends to Chinese
   places. Wordings lose US ZIP codes, British and Canadian postcodes, and contact or signature
   details a post appends. The order id, the DHLink number and the feeds' and rows' ids are

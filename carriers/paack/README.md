@@ -4,6 +4,9 @@ Last-mile carrier for online retailers in Spain, Portugal, France and the UK. Tr
 the public recipient page, which needs the order number or label barcode and the delivery
 postcode. Parcels Paack delivers for Evri International carry a number of Paack's own, `PK`
 and 18 digits, which Evri International's tracker answers without the postcode.
+SHEIN's Spanish parcels carry SHEIN's package number: `C` or `E`, the order date and eight
+digits. Paack's page takes it with the postcode. SHEIN ships elsewhere with other carriers, so
+that shape only suggests Paack.
 
 ## How it works
 

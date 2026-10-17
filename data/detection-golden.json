@@ -54507,14 +54507,34 @@
   {
     "input": "C24110206842444",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "paack"
+    ]
   },
   {
     "input": "C25062001456003",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "paack"
+    ]
+  },
+  {
+    "input": "C25080103559470",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paack"
+    ]
+  },
+  {
+    "input": "C26043003070529",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paack"
+    ]
   },
   {
     "input": "C26H2F8S35",
@@ -58268,6 +58288,14 @@
     "confidence": "low",
     "candidates": [
       "royal-mail"
+    ]
+  },
+  {
+    "input": "E25080100275696",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "paack"
     ]
   },
   {

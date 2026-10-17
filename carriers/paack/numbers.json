@@ -132,9 +132,63 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "paack"
+        ]
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack; it fails OnTrac's check digit and no other rule matches."
+      "note": "Publicly reported shipment number of a SHEIN package, which Paack delivers in Spain; the attribution was not independently verified."
+    },
+    {
+      "number": "C26043003070529",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/mala-praxis-del-transportista-/2c5f16c6ef8fa3f214",
+        "date": "2026-05-13"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "paack"
+        ]
+      },
+      "note": "A SHEIN customer's complaint quotes it as the tracking number of an order Paack's courier delivered."
+    },
+    {
+      "number": "C25080103559470",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/entrega-de-pedido-a-otra-perso/96205b6ce401a920f5",
+        "date": "2025-08-14"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "paack"
+        ]
+      },
+      "note": "A complaint to Paack quotes it as one of two SHEIN orders Paack delivered to someone else."
+    },
+    {
+      "number": "E25080100275696",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/entrega-de-pedido-a-otra-perso/96205b6ce401a920f5",
+        "date": "2025-08-14"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "paack"
+        ]
+      },
+      "note": "A complaint to Paack quotes it as one of two SHEIN orders Paack delivered to someone else."
     }
   ]
 }

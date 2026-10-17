@@ -261,3 +261,17 @@ describe('wave six courier rules', () => {
     }
   });
 });
+
+describe('SHEIN package numbers Paack delivers in Spain', () => {
+  it.each(['C26010100000001', 'E25123100000001', 'C24022900000001'])('suggests Paack for %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['paack'] });
+    // Paack needs the postcode, so recognition cannot confirm it.
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it.each(['C26130100000001', 'C26003100000001', 'C26013200000001', 'D26010100000001', 'C16010100000001', 'C2601010000001', 'C260101000000001'])(
+    'leaves %s, not a dated SHEIN number, without Paack', (number) => {
+      expect(detectCarrierMatch(number).candidates).not.toContain('paack');
+    },
+  );
+});

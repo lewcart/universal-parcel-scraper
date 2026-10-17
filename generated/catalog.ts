@@ -1659,6 +1659,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^PK\\d{18}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8}$",
+        "confidence": "low"
       }
     ]
   },
@@ -24219,7 +24223,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "c-chez-vous": ["c-chez-vous-1"],
   "heppner": ["heppner-1"],
   "ciblex": ["ciblex-1","ciblex-full-barcode"],
-  "paack": ["paack-1"],
+  "paack": ["paack-1","paack-shein"],
   "asendia": ["asendia-1","asendia-2","asendia-3","asendia-4"],
   "shipup": [],
   "india-post": ["india-post-1"],

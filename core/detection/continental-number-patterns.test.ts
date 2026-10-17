@@ -179,3 +179,37 @@ describe('DHL piece identifiers', () => {
     }
   });
 });
+
+describe('wave six European prefixes', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('names CityMail for its BCM references, including the twelve-character ones Colis Privé also fits', () => {
+    for (const number of ['BCMAB0000001', 'BCMA00000001', 'BCMABC000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'citymail', confidence: 'high', candidates: ['citymail'] });
+    }
+    for (const number of ['BCM0000001', 'BCMAB00000', 'BCMABCD0000000']) expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('citymail');
+  });
+
+  it('names Intereuropa only for NRSI and nine digits', () => {
+    expect(detectCarrierMatch('NRSI000000001')).toMatchObject({ carrier: 'intereuropa', confidence: 'high' });
+    for (const number of ['NRSI00000001', 'NRSI0000000001', 'NRSIA00000001', 'NRSE000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('intereuropa');
+    }
+  });
+
+  it('names Pannon XP for its 35814 parcels and leaves other 24-digit numbers to the carriers sharing that length', () => {
+    expect(detectCarrierMatch('358140000000000000000001')).toMatchObject({ carrier: 'pannon-xp', confidence: 'high' });
+    expect(detectCarrierMatch('358150000000000000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    for (const number of ['358150000000000000000001', '35814000000000000000001', '3581400000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('pannon-xp');
+    }
+  });
+
+  it('names Torrestir for M001 numbers with their service character, and nothing else', () => {
+    for (const number of ['M0010000A00000000001', 'M0010000000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'torrestir', confidence: 'high' });
+    }
+    for (const number of ['M001000000000000000001', 'M0020000A00000000001', 'M0010000AB0000000001', 'M001000A00000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('torrestir');
+    }
+  });
+});

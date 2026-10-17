@@ -95,6 +95,7 @@ import { adapter as dpdFr } from '../carriers/dpd-fr/adapter.js';
 import { adapter as dpdIe } from '../carriers/dpd-ie/adapter.js';
 import { adapter as dpdNl } from '../carriers/dpd-nl/adapter.js';
 import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
+import { adapter as dpdPt } from '../carriers/dpd-pt/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dsv } from '../carriers/dsv/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
@@ -417,6 +418,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-ie": dpdIe,
     "dpd-nl": dpdNl,
     "dpd-pl": dpdPl,
+    "dpd-pt": dpdPt,
     "dpd-uk": dpdUk,
     "dsv": dsv,
     "dtdc": dtdc,
@@ -805,7 +807,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-ie": "dpd-ie",
     "dpd-nl": "dpd-nl",
     "dpd-pl": "dpd-pl",
-    "dpd-pt": "universal",
+    "dpd-pt": "dpd-pt",
     "dpd-uk": "dpd-uk",
     "dpd-za": "universal",
     "dropp": "universal",

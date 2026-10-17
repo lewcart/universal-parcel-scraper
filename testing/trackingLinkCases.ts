@@ -466,6 +466,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dpd-pl', number: '9999999999999U',
     route: /^https:\/\/tracktrace\.dpd\.com\.pl\/EN\/parcelDetails\?/,
     marker: /There is no trace for this parcel|Parcel history/ },
+  // The server-rendered page names the reference and its not-found notice repeats it.
+  { carrier: 'dpd-pt', number: '09999999999999',
+    route: /^https:\/\/tracking\.dpd\.pt\/track-and-trace\?reference=09999999999999$/,
+    marker: /Não encontrámos resultados para 09999999999999/ },
   { carrier: 'fan-courier', number: '9999999999990',
     route: /^https:\/\/www\.fancourier\.ro\/awb-tracking\/\?tracking=/,
     marker: /AWB-ul nu a fost gasit|Detalii expediție/i },

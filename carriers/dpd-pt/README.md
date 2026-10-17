@@ -1,10 +1,56 @@
 # DPD Portugal
 
-DPD Portugal parcels use enabled universal providers. There is no dedicated adapter.
-
 DPD Portugal is DPDgroup's network in Portugal, formed from Chronopost Portugal and SEUR
 Portugal. It runs its own tracker on `tracking.dpd.pt`, apart from the `dpd.com` and
-`dpdgroup.com` pages that the other `dpd-*` entries read.
+`dpdgroup.com` pages that the other `dpd-*` entries read. Tracked through that tracker's page.
+
+## How it works
+
+1. `direct`: one `GET https://tracking.dpd.pt/track-and-trace?reference={number}`, the address
+   the page's search form sends the browser to. It needs no cookie, token or browser. The
+   server-rendered page in Portuguese names the reference asked and lists the parcel's scans,
+   newest first, with a code, a day, a time, a wording, a comment and a map link.
+2. `retry`: one more try when the request fails to reach DPD Portugal or hangs. The first try
+   gets half of the budget.
+
+- The page's heading must name the number asked.
+- An unknown number gets the page's notice that it found no results for it: not found. A
+  reference the page holds no scans for gets an empty table without that notice, which is no
+  history. A 404 or a redirect says nothing about the parcel.
+- A page without the tracker's heading is a bot check when it looks like one, otherwise a
+  changed page.
+- Recognition makes the same request. The tracker knows only parcels in DPD Portugal's network:
+  current parcels of other DPD networks are unknown to it.
+- DPD Portugal promotes the group's myDPD app, whose guest service in [dpd](../dpd/README.md)
+  answers current DPD Portugal parcels with Portugal as the country, but only with a few
+  milestones and nothing for older parcels. The page is read instead.
+
+## Notes
+
+- A number typed with the label's check character is looked up by its fourteen digits, as in
+  [dpd](../dpd/README.md); a character that does not match is refused as a typo. The tracker
+  itself answers a wrong character with its not-found notice.
+- Times have no zone, and DPD Portugal also delivers on the Azores and lists hub scans abroad,
+  so they stay wall clocks.
+- The codes are mapped in [status.ts](status.ts). A courier's collection accepts the parcel
+  unless an earlier scan already moved it, as at the pickup point where the sender dropped it.
+  Once a return to the sender is ordered, the proof of delivery is the delivery back to the
+  sender, so the parcel is returned. Messages to the recipient and requests for a new delivery
+  or address keep the stage of the scan before them.
+- The comment column mixes the receiver's name, delivery windows, depot numbers, country
+  codes, pickup point codes and references. Only the name the pickup point's own scan gives
+  is kept, as the pickup point of a parcel that waits there or was collected there.
+- The map links give coordinates, which for a delivery or a failed attempt point at the
+  recipient's address; they are not kept, and the scans have no place. The proof of delivery
+  image is not read.
+
+## Limitations
+
+- `tracking.dpd.pt` sends its certificate without the intermediate, RapidSSL TLS RSA CA G1.
+  Browsers fetch it; Node refuses the page with `UNABLE_TO_VERIFY_LEAF_SIGNATURE`. In Node the
+  page answers only when `NODE_EXTRA_CA_CERTS` holds that intermediate.
+- No places, delivery estimate, weight, sender or service.
+- Older parcels drop out of the tracker, which then gives its not-found notice for them.
 
 ## Numbers
 
@@ -23,5 +69,6 @@ The tracker reads the number from `reference` on `tracking.dpd.pt/track-and-trac
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/dpd-pt`, with `DPD_PT_TRACKING_NUMBER` and optionally
+`DPD_PT_UNKNOWN_NUMBER` set outside the repository. The tests run when Node trusts the tracker's
+certificate chain.

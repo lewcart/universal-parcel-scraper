@@ -56291,6 +56291,14 @@
     ]
   },
   {
+    "input": "EA463657474CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
+    ]
+  },
+  {
     "input": "EAA23011108883814SG",
     "carrier": "unknown",
     "confidence": "none",
@@ -69403,6 +69411,17 @@
     ]
   },
   {
+    "input": "RR081922489PH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR089892227SA",
     "carrier": "intl-post",
     "confidence": "high",
@@ -72455,6 +72474,17 @@
     ],
     "asked": [
       "latvijas-pasts",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "UC093868096PH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
       "chronopost"
     ]
   },

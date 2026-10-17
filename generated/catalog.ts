@@ -17370,7 +17370,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "phlpost",
+      "recognitionRank": 903,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.phlpost.gov.ph/",
     "trackingSearchUrl": "https://tracking.phlpost.gov.ph/",

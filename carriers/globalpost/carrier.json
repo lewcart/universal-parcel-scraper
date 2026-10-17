@@ -1,0 +1,56 @@
+{
+  "id": "globalpost",
+  "displayName": "GlobalPost",
+  "aliases": [
+    "Go GlobalPost",
+    "GoGlobalPost",
+    "Global Post",
+    "Go Global Post",
+    "GlobalPost UK"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#11003a"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",
+    "searchUrl": "https://www.goglobalpost.com/tracking/",
+    "canaryUrl": "https://www.goglobalpost.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.goglobalpost.com",
+        "goglobalpost.com"
+      ],
+      "pathPattern": "^/(?:track-detail|track)/?$",
+      "params": [
+        "t"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "globalpost-1",
+      "pattern": "^GP[A-Z]{4}\\d{10}(?:US|GB)$",
+      "confidence": "high"
+    }
+  ]
+}

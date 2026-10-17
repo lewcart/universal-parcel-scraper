@@ -1,0 +1,17 @@
+{
+  "carrier": "united-delivery-service",
+  "entries": [
+    {"wording": "Shipment Request Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Older tracker table: the shipper's data reached UDS."},
+    {"wording": "Package Received", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Older tracker table: scanned in at a UDS terminal; can repeat at the delivery terminal."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Older tracker table."},
+    {"wording": "Shipment Notification", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Current tracker step, described as 'Shipment notification has been received.'"},
+    {"wording": "Received", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Current tracker step, described as 'Package has been received by UDS.'"},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Current tracker step, described as 'Package is loaded and out for delivery.'"},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Both tracker versions; the current one adds proof-of-delivery details such as front or back door."},
+    {"wording": "The shipment information has been sent to UDS. The status will update when UDS receives the package.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Summary line before the first scan."},
+    {"wording": "This shipment has not been received by UDS. Please check back at a later time.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Shown under the steps before the first scan."},
+    {"wording": "The package has been received by UDS.", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Summary line after the inbound scan."},
+    {"wording": "The package is delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Summary line once delivered."},
+    {"wording": "Expected Delivery", "language": "en", "confirmedBy": "portal", "note": "Heading of the delivery estimate."}
+  ]
+}

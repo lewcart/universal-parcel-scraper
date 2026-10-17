@@ -1,0 +1,8 @@
+{
+  "carrier": "best-overnite-express",
+  "entries": [
+    {"wording": "LINE", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status column of the PRO trace: the shipment left the origin terminal on a line-haul trip."},
+    {"wording": "DELVR", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Status column of the PRO trace: delivery from the destination terminal."},
+    {"wording": "DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Signature line of the PRO trace, next to the receiver's name and the delivery times."}
+  ]
+}

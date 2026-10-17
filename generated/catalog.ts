@@ -6549,6 +6549,37 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "best-overnite-express": {
+    "displayName": "Best Overnite Express",
+    "color": "#1e3b91",
+    "aliases": [
+      "Best Overnite"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bestovernite.com/shipment-tracking/",
+    "trackingSearchUrl": "https://www.bestovernite.com/shipment-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "tgif.bestovernite.com",
+          "www.bestovernite.com"
+        ],
+        "pathPattern": "^/cgi-bin/wbprotrk/?$",
+        "params": [
+          "wbfb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "best-transport": {
     "displayName": "Best Transport",
     "color": "#ef7d00",
@@ -11090,6 +11121,47 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "estes-forwarding": {
+    "displayName": "Estes Forwarding Worldwide",
+    "color": "#024985",
+    "aliases": [
+      "EFW",
+      "Estes Forwarding",
+      "EFW Track"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://efwtrack.com/",
+    "trackingUrlTemplate": "https://efwtrack.com/track/{trackingNumber}",
+    "trackingSearchUrl": "https://efwtrack.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "efwtrack.com",
+          "www.efwtrack.com"
+        ],
+        "path": "^/track/([^/?#]+)(?:/\\d{5})?/?$"
+      },
+      {
+        "domains": [
+          "www.efwnow.com",
+          "efwnow.com"
+        ],
+        "pathPattern": "^/(?:track|my-efw)/?$",
+        "params": [
+          "txtInputNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ethiopian-post": {
     "displayName": "Ethiopian Postal Service",
     "color": "#f8ac19",
@@ -12398,6 +12470,48 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^S\\d{5,9}[A-Z][A-Z0-9]{1,14}\\d{9,10}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "globalpost": {
+    "displayName": "GlobalPost",
+    "color": "#11003a",
+    "aliases": [
+      "Go GlobalPost",
+      "GoGlobalPost",
+      "Global Post",
+      "Go Global Post",
+      "GlobalPost UK"
+    ],
+    "countries": [
+      "US",
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goglobalpost.com/tracking/",
+    "trackingUrlTemplate": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",
+    "trackingSearchUrl": "https://www.goglobalpost.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.goglobalpost.com",
+          "goglobalpost.com"
+        ],
+        "pathPattern": "^/(?:track-detail|track)/?$",
+        "params": [
+          "t"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GP[A-Z]{4}\\d{10}(?:US|GB)$",
         "confidence": "high"
       }
     ]
@@ -22608,6 +22722,48 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tforce-logistics": {
+    "displayName": "TForce Logistics",
+    "color": "#054b8b",
+    "aliases": [
+      "TForce Final Mile",
+      "TForce Final Mile Canada",
+      "Dynamex",
+      "Dynamex Canada",
+      "Dynamex U.S.",
+      "Hazen Final Mile"
+    ],
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tforcelogistics.com/",
+    "trackingUrlTemplate": "https://direct.tfesg.com/finalmiletrack/Track?trackingNumber={trackingNumber}&brand=0",
+    "trackingSearchUrl": "https://www.tforcelogistics.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "direct.tfesg.com"
+        ],
+        "pathPattern": "^/finalmiletrack/(?:Track|track/externalTracking\\.jsp)$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^TF(?:\\d{12,13}|1\\d{17})$",
+        "confidence": "high"
+      }
+    ]
+  },
   "thhy": {
     "displayName": "Tianhui Hengyuan",
     "color": "#00a2e9",
@@ -23308,6 +23464,41 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^UES(?:M\\d{9}|\\d{13})$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "united-delivery-service": {
+    "displayName": "United Delivery Service",
+    "color": "#1e3a8a",
+    "aliases": [
+      "UDS",
+      "United Delivery Service (UDS)"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.uniteddeliveryservice.com/track/",
+    "trackingUrlTemplate": "https://www.uniteddeliveryservice.com/track/barcode/{trackingNumber}",
+    "trackingSearchUrl": "https://www.uniteddeliveryservice.com/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.uniteddeliveryservice.com",
+          "uniteddeliveryservice.com"
+        ],
+        "path": "^/track/barcode/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:\\d{2}UDS\\d{11}|APUDS\\d{8})$",
         "confidence": "high"
       }
     ]
@@ -24660,6 +24851,7 @@ export const CARRIER_IDS = [
   "barid-al-maghrib",
   "belpost",
   "best-express-vn",
+  "best-overnite-express",
   "best-transport",
   "better-trucks",
   "bex-express",
@@ -24776,6 +24968,7 @@ export const CARRIER_IDS = [
   "epost-global",
   "equick",
   "estes",
+  "estes-forwarding",
   "ethiopian-post",
   "eurodis",
   "euroexpress-ba",
@@ -24811,6 +25004,7 @@ export const CARRIER_IDS = [
   "ghana-post",
   "ghn",
   "ghtk",
+  "globalpost",
   "gls-at",
   "gls-es",
   "gls-it",
@@ -25075,6 +25269,7 @@ export const CARRIER_IDS = [
   "tealca",
   "team-global-express",
   "tforce-freight",
+  "tforce-logistics",
   "thhy",
   "tiki",
   "tirupati-courier",
@@ -25094,6 +25289,7 @@ export const CARRIER_IDS = [
   "tws-express",
   "ubi-smart-parcel",
   "ues-uy",
+  "united-delivery-service",
   "upaya",
   "urbano",
   "uzbekistan-post",
@@ -25277,6 +25473,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "barid-al-maghrib": ["barid-al-maghrib-s10"],
   "belpost": ["belpost-s10"],
   "best-express-vn": [],
+  "best-overnite-express": [],
   "best-transport": [],
   "better-trucks": ["better-trucks-1"],
   "bex-express": [],
@@ -25393,6 +25590,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "epost-global": ["epost-global-1"],
   "equick": [],
   "estes": [],
+  "estes-forwarding": [],
   "ethiopian-post": [],
   "eurodis": [],
   "euroexpress-ba": [],
@@ -25428,6 +25626,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghana-post": [],
   "ghn": [],
   "ghtk": ["ghtk-1"],
+  "globalpost": ["globalpost-1"],
   "gls-at": [],
   "gls-es": [],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
@@ -25692,6 +25891,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tealca": [],
   "team-global-express": [],
   "tforce-freight": [],
+  "tforce-logistics": ["tforce-logistics-1"],
   "thhy": ["thhy-1"],
   "tiki": [],
   "tirupati-courier": [],
@@ -25711,6 +25911,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tws-express": ["tws-express-1"],
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
   "ues-uy": ["ues-uy-1"],
+  "united-delivery-service": ["united-delivery-service-1"],
   "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
   "uzbekistan-post": ["uzbekistan-post-s10"],

@@ -275,6 +275,12 @@
     "reason": "TK and nine digits was seen once, in an archived lookup on BEST Express Vietnam's tracker, too little to establish the family."
   },
   {
+    "carrier": "best-overnite-express",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Best Overnite's eight-digit PRO numbers share their shape with many carriers' numbers."
+  },
+  {
     "carrier": "best-transport",
     "pattern": "^DLT\\d{10}$",
     "kind": "by_design",
@@ -1009,6 +1015,18 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to Estes."
   },
   {
+    "carrier": "estes-forwarding",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "EFW's seven-digit housebill numbers share their shape with many carriers' numbers."
+  },
+  {
+    "carrier": "estes-forwarding",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen-digit references on EFW's tracker are bare digit runs many carriers share."
+  },
+  {
     "carrier": "eurodis",
     "pattern": "^\\d{13}$",
     "kind": "collision",
@@ -1211,6 +1229,12 @@
     "pattern": "^\\d{9,10}$",
     "kind": "by_design",
     "reason": "GHTK's order number alone is nine or ten digits, a length many carriers print, so nothing in it points to GHTK."
+  },
+  {
+    "carrier": "globalpost",
+    "pattern": "^SDC\\d{15}$",
+    "kind": "by_design",
+    "reason": "GlobalPost's older SDC numbers appear once in public sources, too few to claim the layout."
   },
   {
     "carrier": "gls-at",
@@ -2817,6 +2841,24 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to TForce Freight."
   },
   {
+    "carrier": "tforce-logistics",
+    "pattern": "^\\d{20}$",
+    "kind": "by_design",
+    "reason": "Twenty-digit retailer package IDs that TForce Logistics tracks share their shape with USPS and other carriers' numbers."
+  },
+  {
+    "carrier": "tforce-logistics",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve-digit retailer package IDs share their shape with many carriers' numeric waybills."
+  },
+  {
+    "carrier": "tforce-logistics",
+    "pattern": "^(?:WCA\\d{10}|WM00AK\\d{15}|BBYC\\d{9}T\\d{14}|CD\\d{7}\\d|GGC\\d{10}|A90M\\d{7})$",
+    "kind": "by_design",
+    "reason": "Retailers' own package IDs, which TForce Logistics tracks as given; their prefixes name the shipper, not the carrier."
+  },
+  {
     "carrier": "the-courier-guy",
     "pattern": "^[A-Z0-9]{5,6}$",
     "kind": "by_design",
@@ -2929,6 +2971,24 @@
     "pattern": "^\\d{16}$",
     "kind": "by_design",
     "reason": "Sixteen digits are shared by several carriers and nothing in the number points to UBI Smart Parcel."
+  },
+  {
+    "carrier": "united-delivery-service",
+    "pattern": "^(?:\\d{11}|\\d{12}|\\d{18})$",
+    "kind": "by_design",
+    "reason": "Shipper barcodes of these lengths share their shape with many carriers' numbers."
+  },
+  {
+    "carrier": "united-delivery-service",
+    "pattern": "^[Ee][Zz]\\d{14}(?:\\d{4})?$",
+    "kind": "by_design",
+    "reason": "EZ numbers come from a shipping platform that issues them for several carriers."
+  },
+  {
+    "carrier": "united-delivery-service",
+    "pattern": "^(?:BBC\\d{8}|DY\\d{13}|C\\d{13})$",
+    "kind": "by_design",
+    "reason": "Shipper references name the shipper rather than UDS."
   },
   {
     "carrier": "uniuni",

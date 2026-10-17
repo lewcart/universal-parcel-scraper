@@ -1,0 +1,44 @@
+{
+  "id": "best-overnite-express",
+  "displayName": "Best Overnite Express",
+  "aliases": [
+    "Best Overnite"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#1e3b91"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.bestovernite.com/shipment-tracking/",
+    "canaryUrl": "https://www.bestovernite.com/shipment-tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tgif.bestovernite.com",
+        "www.bestovernite.com"
+      ],
+      "pathPattern": "^/cgi-bin/wbprotrk/?$",
+      "params": [
+        "wbfb"
+      ]
+    }
+  ],
+  "detection": []
+}

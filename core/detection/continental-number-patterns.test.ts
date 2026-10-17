@@ -320,4 +320,31 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('t-group');
     }
   });
+
+  it('names TForce Logistics for TF and twelve, thirteen or eighteen digits', () => {
+    for (const number of ['TF000000000001', 'TF0000000000001', 'TF100000000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'tforce-logistics', confidence: 'high', candidates: ['tforce-logistics'] });
+    }
+    for (const number of ['TF00000000001', 'TF00000000000001', 'TF200000000000000001', 'TG000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tforce-logistics');
+    }
+  });
+
+  it('names GlobalPost for GP, a service code, ten digits and its origin', () => {
+    for (const number of ['GPABCD0000000001US', 'GPABCD0000000001GB']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'globalpost', confidence: 'high', candidates: ['globalpost'] });
+    }
+    for (const number of ['GPABCD0000000001DE', 'GPABC0000000001US', 'GPABCD000000001US']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('globalpost');
+    }
+  });
+
+  it('names United Delivery Service only for its UDS labels', () => {
+    for (const number of ['01UDS00000000001', 'APUDS00000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'united-delivery-service', confidence: 'high', candidates: ['united-delivery-service'] });
+    }
+    for (const number of ['01UDS0000000001', 'APUDS0000001', '01UDT00000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('united-delivery-service');
+    }
+  });
 });

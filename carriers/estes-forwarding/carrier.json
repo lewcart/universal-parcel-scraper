@@ -1,0 +1,54 @@
+{
+  "id": "estes-forwarding",
+  "displayName": "Estes Forwarding Worldwide",
+  "aliases": [
+    "EFW",
+    "Estes Forwarding",
+    "EFW Track"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#024985"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://efwtrack.com/track/{trackingNumber}",
+    "searchUrl": "https://efwtrack.com/",
+    "canaryUrl": "https://efwtrack.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "efwtrack.com",
+        "www.efwtrack.com"
+      ],
+      "path": "^/track/([^/?#]+)(?:/\\d{5})?/?$"
+    },
+    {
+      "domains": [
+        "www.efwnow.com",
+        "efwnow.com"
+      ],
+      "pathPattern": "^/(?:track|my-efw)/?$",
+      "params": [
+        "txtInputNo"
+      ]
+    }
+  ],
+  "detection": []
+}

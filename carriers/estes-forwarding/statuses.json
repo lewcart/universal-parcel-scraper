@@ -1,0 +1,12 @@
+{
+  "carrier": "estes-forwarding",
+  "entries": [
+    {"code": "PUR", "wording": "Shipment Created", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"code": "PUP", "wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"code": "OHO", "wording": "Arrived at Origin City", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The shipment reached EFW's origin terminal."},
+    {"code": "INT", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "OHD", "wording": "Arrived at Destination City", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The shipment reached the EFW terminal that delivers it."},
+    {"code": "APP", "wording": "Appointment Created", "language": "en", "confirmedBy": "portal", "note": "A delivery appointment was booked; the tracker skips this event when it picks the current status."},
+    {"wording": "Pickup Appointment Pending", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Status the tracker's script shows for pickup services before the shipment date is set; seen in the tracker's code, not in a capture."}
+  ]
+}

@@ -12208,7 +12208,25 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gls-de",
+      "requirements": [
+        {
+          "field": "postcode",
+          "optional": true,
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Optional. GLS shows the scans only with the delivery postcode; without it, other sources are asked.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
+      "refresh": {
+        "minMinutes": 60,
+        "afterFailureMinutes": 240
+      }
     },
     "canaryUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/",
     "trackingUrlTemplate": "https://gls-group.com/PL/pl/sledzenie-paczek/?match={trackingNumber}",

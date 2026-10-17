@@ -1,10 +1,41 @@
 # GLS Poland
 
-GLS Poland parcels use enabled universal providers. There is no dedicated adapter.
+GLS Poland is the GLS group's network in Poland. Its tracking page runs the group's tracking
+widget against the same recipient service as GLS Germany's and GLS Switzerland's, so it has no
+adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose folder and
+[gls-ch](../gls-ch/README.md)'s explain the requests, identity checks and status handling.
 
-GLS Poland is the GLS group's network in Poland. Its tracker is the group's tracking page under
-`gls-group.com/PL/`, which asks the group's tracking service for Polish parcels, apart from the
-German, Italian and other country pages that the other `gls-*` entries read.
+## How it works
+
+1. `direct`, through gls-de: the anonymous `rstt029` overview, then `rstt028` with the parcel
+   number and the delivery postcode, under `https://gls-group.eu/app/service/open/rest/GROUP/en`.
+   The overview must name the whole number before the postcode is sent.
+
+- The Polish page asks the same service under `/PL/pl/` rather than `/GROUP/en/`. The path
+  sets only the language: both answer the same parcels with the same codes and clocks.
+- Like the group's other pages, the Polish page shows the progress bar to anyone and the
+  scans only after the delivery postcode. The postcode is optional in the catalog, so a
+  parcel saved without it is tracked through enabled universal providers instead; the
+  adapter then asks GLS nothing.
+- An unknown or expired number is GLS's `E000` on the overview, and a postcode that does not
+  match is `E609` or `E800` on the detail; both are not found.
+
+## Notes
+
+- The postcode is sent as typed, as the Polish page sends it. GLS refuses a malformed one,
+  such as a single digit, with HTTP 400, and takes a Polish postcode with its hyphen, a space
+  or neither as well-formed.
+- Results carry gls-de's `Europe/Berlin` label. Poland keeps the same clocks and every scan
+  carries its offset, so only the label differs from this carrier's zone.
+- The scans' wording is the English of the GROUP path, which the shared GLS map reads.
+  `statuses.json` also keeps the Polish page's wording of the same steps.
+- No recognition: no rule offers the group's numbers for this network, and the overview of a
+  Polish parcel names no owner, so it cannot tell a Polish parcel from a German or Swiss one.
+
+## Limitations
+
+- No scans without the delivery postcode.
+- The service keeps a parcel for a few months, after which it answers `E000`.
 
 ## Numbers
 
@@ -21,5 +52,6 @@ same. Links on `gls-group.com` or `gls-group.eu` under `/PL/` are read for GLS P
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/gls-pl`, with `GLS_PL_TRACKING_NUMBER` and optionally
+`GLS_PL_POSTCODE`, its delivery postcode, and `GLS_PL_UNKNOWN_NUMBER` set outside the
+repository.

@@ -3,7 +3,8 @@
 GLS parcels in Germany. Same GROUP recipient service as GLS Switzerland, so the
 parser, status map and URL builders are imported from `../gls-ch/`; see
 [gls-ch](../gls-ch/README.md) for the endpoints, identity checks and status
-handling. This folder only adds what differs.
+handling. This folder only adds what differs. [GLS Poland](../gls-pl/README.md),
+whose page asks the same service, points `tracking.adapter` here.
 
 ## How it works
 

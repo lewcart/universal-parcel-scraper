@@ -870,7 +870,7 @@ export const REGISTRY: RegistryDefinition = {
     "gls-es": "gls-es",
     "gls-fr": "gls-fr",
     "gls-it": "gls-it",
-    "gls-pl": "universal",
+    "gls-pl": "gls-de",
     "go-express": "go-express",
     "go4": "universal",
     "gobolt": "universal",

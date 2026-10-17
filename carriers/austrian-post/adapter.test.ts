@@ -11,6 +11,9 @@ const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/delivered.json
 // A returned letter, scanned in the destination country under its delivery area.
 const RETURNED = 'LP123456785AT';
 const returned = () => JSON.parse(readFileSync(new URL('./fixtures/returned.json', import.meta.url), 'utf8'));
+// A Hermes Austria parcel under Hermes's number, left in a Post Empfangsbox and taken out of it.
+const HERMES = '10000000000005';
+const receivingBox = () => JSON.parse(readFileSync(new URL('./fixtures/receiving-box.json', import.meta.url), 'utf8'));
 
 describe('Austrian Post public tracking', () => {
   it('binds history to the item and classifies scans independently of the summary', () => {
@@ -59,10 +62,47 @@ describe('Austrian Post public tracking', () => {
     ]) expect(austrianPostPlace(place), place).toBe(place);
   });
 
+  describe('a parcel in a Post Empfangsbox', () => {
+    it('is ready for collection in the box and delivered once taken out, though that scan carries IZ', () => {
+      const result = parseAustrianPostResponse(receivingBox(), HERMES);
+      expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Sendung aus Postempfangsbox abgeholt',
+        delivered_at: '2026-07-03T16:00:00Z', weight_kg: 2.5 });
+      expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual([
+        ['IZ', 'delivered'], ['PUG', 'ready_for_pickup'], ['ONT', 'out_for_delivery'], ['BEI', 'in_transit'],
+        ['BAU', undefined], ['PUP', undefined], ['AN', 'accepted'], ['AV', 'registered'],
+      ]);
+      expect(JSON.stringify(result)).not.toContain('PLZ');
+    });
+
+    it('stays ready for collection until the recipient takes it out', () => {
+      const payload = receivingBox();
+      payload.data.einzelsendung.status = 'EB';
+      payload.data.einzelsendung.sendungsEvents.pop();
+      const result = parseAustrianPostResponse(payload, HERMES);
+      expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup', last_status_text: 'Sendung in Postempfangsbox abholbereit',
+        expected_delivery: null });
+      expect(result).not.toHaveProperty('delivered_at');
+    });
+
+    it('reads the collection by its reason or its wording alone', () => {
+      expect(austrianPostEventStatus('IZ', 'ZPB', 'Synthetic wording')?.stage).toBe('delivered');
+      expect(austrianPostEventStatus('IZ', '', 'Sendung aus Postempfangsbox abgeholt')?.stage).toBe('delivered');
+      expect(austrianPostEventStatus('PUG', '2034', 'Synthetic wording')?.stage).toBe('ready_for_pickup');
+      expect(statusMap.stage('IZ', 'sendung aus postempfangsbox abgeholt')).toBe('delivered');
+      expect(statusMap.stage(null, 'sendung wurde zugestellt')).toBe('delivered');
+      // The reason decides a box scan's stage, so its wording alone does not.
+      expect(statusMap.stage('PUG', 'sendung in postempfangsbox abholbereit')).toBeUndefined();
+    });
+  });
+
   it('rejects a different returned item', () => {
     const payload = fixture();
     payload.data.einzelsendung.sendungsnummer = '1000000000000000000002';
     expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow('different shipment');
+    // A Hermes number binds the whole reply's number too.
+    const box = receivingBox();
+    box.data.einzelsendung.sendungsnummer = `00000000${HERMES}`;
+    expect(() => parseAustrianPostResponse(box, HERMES)).toThrow('different shipment');
   });
 
   it('separates positive not-found from missing data, query errors and a shipment without scans', () => {
@@ -235,6 +275,9 @@ describe('Austrian Post public tracking', () => {
     expect(normalizeAustrianPostNumber(`${NUMBER}00`)).toBe(`${NUMBER}00`);
     expect(() => normalizeAustrianPostNumber(`${NUMBER}0`)).toThrow(InvalidInputError);
     expect(() => normalizeAustrianPostNumber(`${NUMBER}"}`)).toThrow(InvalidInputError);
+    // Hermes Austria's fourteen-digit numbers, whole.
+    expect(normalizeAustrianPostNumber(HERMES)).toBe(HERMES);
+    for (const near of [HERMES.slice(1), `${HERMES}0`, `H${HERMES}`]) expect(() => normalizeAustrianPostNumber(near), near).toThrow(InvalidInputError);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(fixture())));
     const tracker = adapter({ fetcher, trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
     await expect(tracker.recognize!('123')).resolves.toEqual({ known: false });

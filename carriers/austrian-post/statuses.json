@@ -64,6 +64,47 @@
       "stage": "in_transit",
       "confirmedBy": "live",
       "note": "The item is in transit."
+    },
+    {
+      "wording": "Sendungsannahme durchgeführt",
+      "language": "de",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-18"
+    },
+    {
+      "wording": "Sendung zum Transport abgeholt",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-18",
+      "note": "The collecting service picked the parcel up, here at a Hermes PaketShop."
+    },
+    {
+      "wording": "Annahme im Hermes Shop",
+      "language": "de",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-18",
+      "note": "A Hermes Austria parcel's acceptance at the PaketShop, recorded as the collecting service picks it up."
+    },
+    {
+      "code": "PUG",
+      "wording": "Sendung in Postempfangsbox abholbereit",
+      "language": "de",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-18",
+      "note": "Left in a Post Empfangsbox for the recipient to take out, with reason UPB. The page then sums the parcel up as ready for collection."
+    },
+    {
+      "code": "IZ",
+      "wording": "Sendung aus Postempfangsbox abgeholt",
+      "language": "de",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-18",
+      "note": "The recipient took the parcel out of the Post Empfangsbox, with reason ZPB. The page then sums the parcel up as delivered, although the scan carries status IZ."
     }
   ]
 }

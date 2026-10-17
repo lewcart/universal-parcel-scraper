@@ -47,11 +47,15 @@ function estimateOf(range: unknown): Estimate | null {
   return { expected_delivery: toDay, ...(fromDay !== toDay ? { expected_delivery_from: fromDay } : {}), end: to.endOf('day').toMillis() };
 }
 
-/** Its 22-digit parcels, the 24-digit EURODIS barcodes of parcels it sends abroad, and its S10 items. */
+/**
+ * Its 22-digit parcels, the 24-digit EURODIS barcodes of parcels it sends
+ * abroad, its S10 items, and the 14-digit numbers of the Hermes Austria
+ * parcels it delivers.
+ */
 export function normalizeAustrianPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^(?:\d{22}|\d{24})$/.test(number) && !(/^[A-Z]{2}\d{9}AT$/.test(number) && isValidS10TrackingNumber(number))) {
-    throw new InvalidInputError(PROVIDER, 'Austrian Post requires a 22- or 24-digit or valid AT postal identifier');
+  if (!/^(?:\d{14}|\d{22}|\d{24})$/.test(number) && !(/^[A-Z]{2}\d{9}AT$/.test(number) && isValidS10TrackingNumber(number))) {
+    throw new InvalidInputError(PROVIDER, 'Austrian Post requires a 14-, 22- or 24-digit or valid AT postal identifier');
   }
   return number;
 }

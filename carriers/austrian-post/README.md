@@ -3,7 +3,9 @@
 Tracks domestic 22-digit and Austrian S10 postal numbers through the public
 tracking website's anonymous GraphQL read. It also takes the 24-digit EURODIS
 barcode of a parcel it sends abroad through that network, which its tracker
-follows to the partner that delivers it.
+follows to the partner that delivers it, and the fourteen-digit number of a
+Hermes Austria parcel it delivers, which Hermes's tracker links to Austrian
+Post's.
 
 ## How it works
 
@@ -14,6 +16,9 @@ to match. The optional Post account flow is unnecessary for public history.
 
 Summary codes and scan codes use different vocabularies. A scan marked `IZ` can
 describe completed delivery; its reason and wording determine the event stage.
+A parcel left in a Post Empfangsbox, a receiving box the recipient opens, is
+ready for collection, and the `IZ` scan of the recipient taking it out is its
+delivery, as the page's summary has them.
 Timestamps carry explicit offsets, which are preserved. A scan place given
 only as `PLZ` and a postcode, or as `PLZ` and a country code with or without
 part of a postcode (`PLZ DE`), is the delivery area and is dropped, also when a
@@ -44,7 +49,10 @@ than the estimate's end also drops it.
 `austrian-post-3` suggests Austrian Post for 24 digits at low confidence, beside
 the other carriers whose rules take that length, so recognition can ask its
 tracker. No public EURODIS barcode has been found, so the corpus holds a
-synthetic one. Account-only delivery
+synthetic one. No rule suggests Austrian Post for fourteen digits, which
+Hermes Germany's and DPD's numbers share, so a Hermes number reaches it when
+Hermes Austria's lookup hands the parcel over or the caller names Austrian
+Post. Account-only delivery
 options and recipient details are not retrieved. The estimate follows the
 page's code and has not been checked against a live value. A shipment listed
 without scans is a `NoHistoryError` and GraphQL errors are inconclusive;
@@ -52,5 +60,6 @@ either way another source can help.
 
 ## Testing
 
-Set `AUSTRIAN_POST_TRACKING_NUMBER` outside the repository, then run
+Set `AUSTRIAN_POST_TRACKING_NUMBER`, and optionally a Hermes Austria number as
+`AUSTRIAN_POST_HERMES_NUMBER`, outside the repository, then run
 `npm run test:carriers:live -- carriers/austrian-post`.

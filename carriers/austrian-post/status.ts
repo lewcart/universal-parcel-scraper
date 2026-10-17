@@ -38,8 +38,14 @@ export function austrianPostShowsEstimate(summary: string, newestReason: string)
   return !ESTIMATE_HIDDEN.has(newestReason);
 }
 
+// A delivery's wording. The recipient taking the parcel out of a Post
+// Empfangsbox (reason ZPB) is its delivery, which the page sums up as ZU
+// although the scan carries status IZ; putting it in the box (UPB or 2034)
+// made it ready for collection, as the page's summary EB then says.
+const DELIVERED = /\b(?:wurde zugestellt|aus postempfangsbox abgeholt|successfully delivered)\b/i;
+
 export function austrianPostEventStatus(code: string, reason: string, text: string): ClassifiedStatus | undefined {
-  if (reason === 'ZA' || /\b(?:wurde zugestellt|successfully delivered)\b/i.test(text)) return SUMMARY.ZU;
+  if (reason === 'ZA' || reason === 'ZPB' || DELIVERED.test(text)) return SUMMARY.ZU;
   if (['BH', 'BN', 'HB', 'NZ', '2055', '2065'].includes(reason)) return { status: 'exception', stage: 'failed_attempt' };
   if (['EAW', 'HO', 'UPB', '2034'].includes(reason)) return SUMMARY.EB;
   if (/\b(?:rücksendung|zurückgesandt|return to sender)\b/i.test(text)) return SUMMARY.RE;
@@ -57,9 +63,13 @@ function transitScan(code: string, text: string): boolean {
 /**
  * What the map says about one scan by its code and wording. Most scans take
  * their stage from the reason as well (an IZ scan with reason BH is a missed
- * delivery), so the map answers only scans the reason cannot change.
+ * delivery), so the map answers only scans the reason cannot change: a
+ * delivery's wording and the transit scans.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code && transitScan(code, wording) ? 'in_transit' : undefined),
+  stage: (code, wording) => {
+    if (DELIVERED.test(wording)) return 'delivered';
+    return code && transitScan(code, wording) ? 'in_transit' : undefined;
+  },
   gaps: [],
 };

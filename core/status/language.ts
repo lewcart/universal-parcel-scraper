@@ -47,7 +47,7 @@ export function deliveryForecastRemainder(description: string): string | undefin
 }
 
 /** What a carrier does once it has the parcel. */
-const CARRIER_STEP = String.raw`(?:dispatched|despatched|shipped|sent|received|processed|handed (?:over|in)|posted)\b`;
+const CARRIER_STEP = String.raw`(?:dispatched|despatched|shipped|sent|received|accepted|processed|handed (?:over|in)|posted)\b`;
 /** A handover to a carrier or courier, not to the recipient's side or to customs. */
 const HANDED_TO_CARRIER = String.raw`handed (?:over )?to (?!(?:the |a |an |your )?(?:recipient|addressee|consignee|customer|receiver|neighbou?r|customs|you|person)\b)`;
 /** A carrier by its brand, as handovers to one are worded. */
@@ -311,6 +311,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (/^(?:load vehicle|scan ok gateway)$/.test(text)
     || /^(?:the )?item in process in office of exchange\b/.test(text)) return 'in_transit';
   if (/^(?:posting\/collection|posted|origin scan)$|received at (?:our |the )?(?:[a-z]+ )?origin (?:office|facility|hub)|dropped off (?:after|before) (?:the )?latest drop ?off time/.test(text)) return 'accepted';
+  // Turned away rather than taken in: "Package not accepted by sorting center".
+  if (/(?:\b(?:not|never)|n't)(?: (?:be|been|being))? accepted\b/.test(text)) return 'exception';
   if (/accepted|picked up|pick up was successful|^drop off$|pick ?up scan|prepared the package for return to ups or pickup by ups|handed (?:over )?to (?:dpd|gls)|package received at dhl|item booked|consignment was mailed|posted at a postal point|pris en charge|prise en charge|collecte.*(?:reussi|effectue)|recupere.*boite aux lettres|depose.*point postal|remis a (?:dpd|gls)|envoi.*depose|abholung.*erfolgreich|eingeliefert|an (?:dpd|gls) ubergeben|paket.*(?:angenommen|ubernommen)|ritiro.*(?:riuscito|effettuato)|pres[oa] in carico|affidat[oa] a (?:dpd|gls)|depositat.*punto postale|spedizione.*impostata/.test(text)) return 'accepted';
   // Taken in by the carrier: Royal Mail's "Item received by Royal Mail", a parcel shop's or a warehouse's
   // receipt. A bare "Item received" names no receiver and stays unread.

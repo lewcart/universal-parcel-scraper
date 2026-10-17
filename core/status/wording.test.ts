@@ -465,6 +465,8 @@ describe('classifyWording', () => {
       ['No payment, new delivery attempt on the next delivery day', 'failed_attempt'],
       ['Shipment not yet received or processed', 'registered'],
       ['Registered parcel data, parcel not dispatched yet', 'registered'],
+      ['Not yet accepted', 'registered'],
+      ['Shipment not accepted yet', 'registered'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {
@@ -477,6 +479,14 @@ describe('classifyWording', () => {
     expect(wordingStage('New delivery attempt failed')).toBe('failed_attempt');
     expect(wordingStage('We missed each other, ready for collection at the sorting centre')).toBe('ready_for_pickup');
     expect(wordingStage('Item not yet received at the destination office')).not.toBe('registered');
+  });
+
+  it('reads a parcel turned away as a fault, not an acceptance', () => {
+    for (const wording of ['Package not accepted by sorting center', "Parcel wasn't accepted at the depot", 'Could not be accepted',
+      'Not accepted by the recipient']) expect(wordingStage(wording), wording).toBe('exception');
+    for (const wording of ['Accepted', 'Parcel accepted at the post office', 'Item accepted, not yet dispatched']) {
+      expect(wordingStage(wording), wording).toBe('accepted');
+    }
   });
 
   it('lets the rest of a scan outrank a step not yet taken and a courier handover', () => {

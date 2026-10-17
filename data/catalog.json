@@ -2695,6 +2695,11 @@
       {
         "pattern": "^D\\d{5}[A-Z]\\d{6}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "poste-italiane"
       }
     ]
   },

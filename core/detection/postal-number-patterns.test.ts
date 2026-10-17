@@ -113,6 +113,37 @@ describe('Magyar Posta numbers', () => {
   });
 });
 
+describe('Poste Italiane registered mail', () => {
+  it('suggests Poste Italiane for twelve digits whose check digit holds, typed with or without the dash', () => {
+    for (const number of ['990000000010', '99000000001-0', '99000000001 0']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates).toContain('poste-italiane');
+      expect(checksumRejections(number).map(({ carrier }) => carrier)).not.toContain('poste-italiane');
+    }
+    // The check is the digit sum of the weighted total, 109 here, not the total itself.
+    expect(detectCarrierMatch('990000001000').candidates).toContain('poste-italiane');
+  });
+
+  it('leaves out other lengths and a failed check digit', () => {
+    for (const number of ['99000000001', '9900000000100', '990000000011', '990000001009']) {
+      expect(detectCarrierMatch(number).candidates).not.toContain('poste-italiane');
+      expect(recognitionAskedCarriers(number, { countryHint: 'IT' })).not.toContain('poste-italiane');
+    }
+    expect(checksumRejections('990000001009')).toContainEqual({
+      carrier: 'poste-italiane', rule: 'poste-italiane-registered', checksum: 'poste-italiane',
+    });
+  });
+
+  it('keeps a valid FedEx number first and asks Poste Italiane before the unchecked twelve-digit carriers', () => {
+    expect(detectCarrierMatch('990000001000')).toMatchObject({ preferred: ['fedex'] });
+    expect(detectCarrierMatch('990000001000').candidates[0]).toBe('fedex');
+    const asked = recognitionAskedCarriers('200000000013');
+    expect(asked).toContain('poste-italiane');
+    expect(asked.indexOf('poste-italiane')).toBeLessThan(asked.indexOf('brt'));
+    expect(recognitionAskedCarriers('200000000013', { countryHint: 'IT' })[0]).toBe('poste-italiane');
+  });
+});
+
 describe('Nordic SSCCs behind the 00 identifier', () => {
   it.each(['00357123456789012348', '00073123456789012347', '00573123456789012342'])(
     'lists PostNord first for %s, a Danish or Swedish GS1 prefix',

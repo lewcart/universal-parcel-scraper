@@ -62,6 +62,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -72,10 +73,10 @@
     ],
     "asked": [
       "dhl",
+      "poste-italiane",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -326,6 +327,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -335,11 +337,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -826,6 +828,33 @@
     "confidence": "high",
     "candidates": [
       "ctt-express"
+    ]
+  },
+  {
+    "input": "000920018274",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto"
     ]
   },
   {
@@ -2066,6 +2095,7 @@
       "colis-prive",
       "gls-de",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -2078,8 +2108,8 @@
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "poste-italiane",
+      "brt"
     ]
   },
   {
@@ -2176,6 +2206,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -2185,11 +2216,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -2201,6 +2232,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -2210,11 +2242,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -3540,6 +3572,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -3549,11 +3582,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -3641,6 +3674,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -3650,11 +3684,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -3790,6 +3824,7 @@
       "colis-prive",
       "gls-de",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -3802,8 +3837,8 @@
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "poste-italiane",
+      "brt"
     ]
   },
   {
@@ -5136,6 +5171,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "sf-express",
@@ -5146,11 +5182,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -5162,6 +5198,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -5171,11 +5208,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -5941,6 +5978,32 @@
     ]
   },
   {
+    "input": "050000201242",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "050066554846",
     "carrier": "unknown",
     "confidence": "low",
@@ -6116,6 +6179,38 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "05082730515-2",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "japan-post",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sagawa"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -6819,6 +6914,35 @@
     "asked": [
       "tnt",
       "xpo-ltl"
+    ]
+  },
+  {
+    "input": "066799146592",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -7835,6 +7959,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -7844,11 +7969,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -8144,6 +8269,35 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "10005004501-1",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -8957,6 +9111,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -8969,11 +9124,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -9450,6 +9605,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "japan-post",
@@ -9463,11 +9619,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -9934,6 +10090,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -9943,11 +10100,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -10400,6 +10557,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "japan-post",
@@ -10414,11 +10572,11 @@
       "scg-express"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -11930,6 +12088,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -11942,11 +12101,11 @@
       "fedex"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -13442,6 +13601,32 @@
     ]
   },
   {
+    "input": "14546206533-3",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "1458297C072540367P",
     "carrier": "zeleris",
     "confidence": "high",
@@ -13927,6 +14112,33 @@
       "relais-colis",
       "tipsa",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "15341341448-0",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "purolator",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "purolator",
+      "brt",
+      "colis-prive",
+      "sto"
     ]
   },
   {
@@ -17036,6 +17248,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -17045,11 +17258,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -18476,6 +18689,33 @@
     "candidates": []
   },
   {
+    "input": "200736191962",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "purolator",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "j-and-t-cargo",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "purolator",
+      "j-and-t-cargo",
+      "brt",
+      "colis-prive"
+    ]
+  },
+  {
     "input": "200812063341",
     "carrier": "unknown",
     "confidence": "low",
@@ -18575,6 +18815,32 @@
     ]
   },
   {
+    "input": "20083780300-0",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "j-and-t-cargo",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "j-and-t-cargo",
+      "brt",
+      "colis-prive",
+      "sto"
+    ]
+  },
+  {
     "input": "200843783524",
     "carrier": "unknown",
     "confidence": "low",
@@ -18597,6 +18863,36 @@
       "colis-prive",
       "sto",
       "j-and-t"
+    ]
+  },
+  {
+    "input": "20087968426-7",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "j-and-t-cargo",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "poste-italiane"
     ]
   },
   {
@@ -19103,6 +19399,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -19113,11 +19410,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "j-and-t-cargo",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -21760,6 +22057,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -21773,10 +22071,10 @@
     ],
     "asked": [
       "dhl",
+      "poste-italiane",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -22546,6 +22844,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -22558,11 +22857,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -23743,6 +24042,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "japan-post",
@@ -23757,10 +24057,10 @@
     ],
     "asked": [
       "dhl",
+      "poste-italiane",
       "purolator",
       "brt",
-      "colis-prive",
-      "sto"
+      "colis-prive"
     ]
   },
   {
@@ -23887,6 +24187,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -23896,11 +24197,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -23957,6 +24258,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -23966,11 +24268,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -25421,6 +25723,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "sf-express",
@@ -25434,11 +25737,11 @@
       "fedex"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -25958,6 +26261,7 @@
       "colis-prive",
       "gls-de",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -25970,8 +26274,8 @@
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "poste-italiane",
+      "brt"
     ]
   },
   {
@@ -27014,6 +27318,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -27023,11 +27328,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -27834,6 +28139,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "sf-express",
@@ -27844,11 +28150,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -28977,6 +29283,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -28989,11 +29296,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -29058,6 +29365,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -29070,11 +29378,11 @@
       "fedex"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -29285,6 +29593,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -29300,11 +29609,11 @@
       "fedex"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -30492,6 +30801,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "sf-express",
@@ -30502,11 +30812,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -31264,6 +31574,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "purolator",
       "japan-post",
@@ -31279,11 +31590,11 @@
       "sf-express"
     ],
     "asked": [
+      "poste-italiane",
       "purolator",
       "brt",
       "colis-prive",
-      "sto",
-      "j-and-t"
+      "sto"
     ]
   },
   {
@@ -31498,6 +31809,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -31507,11 +31819,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -34577,6 +34889,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -34586,11 +34899,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -37106,6 +37419,31 @@
     ]
   },
   {
+    "input": "572739713813",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "5746700000000096306",
     "carrier": "unknown",
     "confidence": "low",
@@ -37661,6 +37999,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -37673,11 +38012,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -38753,6 +39092,36 @@
     ]
   },
   {
+    "input": "61000000001-9",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "fedex",
+      "sf-express",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "fedex",
+      "sf-express"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "6101409256327",
     "carrier": "unknown",
     "confidence": "low",
@@ -39159,6 +39528,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -39168,11 +39538,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -39193,6 +39563,31 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "618145969064",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -39219,6 +39614,31 @@
     ]
   },
   {
+    "input": "618652792067",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "6192602607450",
     "carrier": "unknown",
     "confidence": "low",
@@ -39232,6 +39652,32 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "619658011771",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto"
     ]
   },
   {
@@ -40217,6 +40663,34 @@
     ]
   },
   {
+    "input": "64891308754-2",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "poste-italiane",
+      "brt"
+    ]
+  },
+  {
     "input": "64941010000022",
     "carrier": "unknown",
     "confidence": "low",
@@ -40821,6 +41295,31 @@
     ]
   },
   {
+    "input": "668443799118",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "670332550",
     "carrier": "unknown",
     "confidence": "none",
@@ -41156,6 +41655,31 @@
     ]
   },
   {
+    "input": "684895173473",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "688 001 57085647",
     "carrier": "unknown",
     "confidence": "low",
@@ -41392,6 +41916,32 @@
     ]
   },
   {
+    "input": "697967111614",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto"
+    ]
+  },
+  {
     "input": "69852269",
     "carrier": "unknown",
     "confidence": "low",
@@ -41582,6 +42132,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -41591,11 +42142,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -41669,6 +42220,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -41678,11 +42230,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -41841,6 +42393,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -41850,11 +42403,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -42494,6 +43047,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -42506,11 +43060,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -42623,6 +43177,7 @@
       "colis-prive",
       "gls-de",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -42638,8 +43193,8 @@
       "gls-fr",
       "gls-de",
       "gls-ch",
-      "brt",
-      "colis-prive"
+      "poste-italiane",
+      "brt"
     ]
   },
   {
@@ -43336,6 +43891,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -43345,11 +43901,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -43722,6 +44278,31 @@
     ]
   },
   {
+    "input": "766307622479",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "76732148920",
     "carrier": "unknown",
     "confidence": "low",
@@ -43742,6 +44323,31 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "76765913820-8",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -44506,6 +45112,32 @@
     ]
   },
   {
+    "input": "780809030943",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto"
+    ]
+  },
+  {
     "input": "781644913880",
     "carrier": "unknown",
     "confidence": "low",
@@ -44683,6 +45315,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -44692,11 +45325,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -44827,6 +45460,31 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "785058598372",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -45821,6 +46479,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -45833,11 +46492,11 @@
       "fedex"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -48048,6 +48707,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "sf-express",
       "sto",
@@ -48057,11 +48717,11 @@
       "metropolitan-warehouse"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {
@@ -51295,6 +51955,7 @@
       "mondial-relay",
       "colis-prive",
       "mrw",
+      "poste-italiane",
       "brt",
       "japan-post",
       "sf-express",
@@ -51307,11 +51968,11 @@
       "sagawa"
     ],
     "asked": [
+      "poste-italiane",
       "brt",
       "colis-prive",
       "sto",
-      "j-and-t",
-      "zto"
+      "j-and-t"
     ]
   },
   {

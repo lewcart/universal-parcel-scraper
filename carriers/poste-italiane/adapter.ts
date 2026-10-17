@@ -112,6 +112,12 @@ export function parsePosteItalianeTrackingResponse(payload: unknown, trackingNum
     throw new SchemaError('Poste Italiane', 'Poste Italiane returned an invalid result envelope');
   }
   const rawMovements = payload.listaMovimenti;
+  // A letter-post code Poste does not know, such as one whose check digit fails, answers as
+  // letter post (tipoSpedizione C) at stato 1 with neither a product nor a movement list.
+  if (esito === '3' && payload.tipoSpedizione === 'C' && clean(payload.stato, 8) === '1'
+    && !Object.hasOwn(payload, 'listaMovimenti') && !Object.hasOwn(payload, 'tipoProdotto')) {
+    throw new NotFoundError('Poste Italiane');
+  }
   if (!Array.isArray(rawMovements)) {
     throw new SchemaError('Poste Italiane', 'Poste Italiane returned invalid tracking history');
   }

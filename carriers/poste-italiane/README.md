@@ -19,6 +19,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
      Unknown and expired look identical to an anonymous caller.
    - `esitoRicerca` `3` with no movements: the parcel exists but is unscanned, so
      `pending`/`registered`, not unknown.
+   - `esitoRicerca` `3` for letter post (`tipoSpedizione` `C`) at `stato` `1`, with neither a
+     product nor a movement list: a code Poste does not know, so not-found. A code whose check
+     digit fails answers that way.
    - HTTP 404/410 means the tracking endpoint is unavailable. Other non-200 replies remain upstream errors.
    - Missing or unusable history is a schema failure. Unrecognized empty envelopes remain inconclusive.
 
@@ -47,6 +50,15 @@ mail from abroad to Italy is not handed to Poste Italiane.
 - SDA's 13-character codes with a digit before the `C` start with `3`, as complaints quote
   them, or with `1`, which Poste's tracker follows for Crono Express parcels. No public sample
   starts with `1`.
+- Registered mail (Raccomandata, Raccomandata 1, A.R. and judicial documents) carries eleven
+  digits and a check digit, printed after a dash or a space. Poste's
+  [barcode specification](https://business.poste.it/business/files/1473808025319/raccomandatagiudiziaria-codice-a-barre.pdf)
+  defines the check: eleven times the sum of the digits in even places, plus the sum of those
+  in odd places, gives a number whose digit sum mod 10 is the last digit. Every public number
+  passes it. The leading digits vary with the product and the sender, so the low-confidence
+  rule `poste-italiane-registered` takes any twelve digits whose check holds. FedEx, BRT and
+  other carriers take twelve digits too, so the shape only suggests Poste Italiane and
+  recognition asks it.
 - Envelope `stato` `5` forces `delivered` whatever the movement wording says: a delivered
   parcel sometimes carries a truncated last line. A parcel sent back ends with its delivery
   to the sender; that delivery carries the return flag (`flagRitorno`) and reads as

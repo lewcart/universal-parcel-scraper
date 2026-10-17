@@ -37,6 +37,8 @@ export function classifyPosteItalianeStatus(rawWording: unknown): ClassifiedStat
       : { status: 'in_transit', stage: 'in_transit' };
   }
   if (value.startsWith('in restituzione al mittente')) return { status: 'exception', stage: 'returned' };
+  // Registered mail held at a post office from the date the line gives.
+  if (value.startsWith('la spedizione sarà disponibile per il ritiro')) return { status: 'out_for_delivery', stage: 'ready_for_pickup' };
   switch (value) {
     case 'la spedizione è in consegna':
       return { status: 'out_for_delivery', stage: 'out_for_delivery' };

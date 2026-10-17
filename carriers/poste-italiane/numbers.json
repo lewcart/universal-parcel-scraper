@@ -441,6 +441,777 @@
         ]
       },
       "note": "Made-up number in the shape of an SDA Crono Express code with 1 before the C, which Poste's own tracker follows."
+    },
+    {
+      "number": "050000201242",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.poste.it/faq-spedizioni-e-consegne.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "The example code Poste Italiane's FAQ gives for tracking a Raccomandata or Raccomandata 1. Its check digit holds."
+    },
+    {
+      "number": "000920018274",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.poste.it/faq-spedizioni-e-consegne.html",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "One of the example codes Poste Italiane's FAQ lists for a search of several shipments. Its check digit holds."
+    },
+    {
+      "number": "61000000001-9",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://business.poste.it/business/files/1473808025319/raccomandatagiudiziaria-codice-a-barre.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "barcode_text"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fedex",
+          "sf-express",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "The example Poste Italiane's barcode specification for registered mail prints under its sample barcode: eleven digits, a dash and the check digit."
+    },
+    {
+      "number": "10005004501-1",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://business.poste.it/business/files/1473808025319/raccomandatagiudiziaria-codice-a-barre.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "reportedRole": "barcode_text"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "The example Poste Italiane's barcode specification gives for the printed code, with the check digit after a dash."
+    },
+    {
+      "number": "05082730515-2",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2013-DSP-23.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "japan-post",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse",
+          "sagawa"
+        ]
+      },
+      "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes; the same decision also prints it without the dash."
+    },
+    {
+      "number": "15341341448-0",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2023-DSP-23.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata A.R.",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "purolator",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "14546206533-3",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2033-DSP-22.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata A.R.",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes; Poste's reply in it gives the same code without the dash."
+    },
+    {
+      "number": "20083780300-0",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2022-DSP-24.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata A.R.",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "j-and-t-cargo",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Raccomandata A.R. an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "200736191962",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/provvedimenti/determina/2024/Determina%2035_24_DSP%20Versione%20web.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "purolator",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "j-and-t-cargo",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "618145969064",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2011-DSP-22.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter carrying a refund cheque that an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "618652792067",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2036-DSP-23.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "64891308754-2",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%209-DSP-23.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter with a tax demand that an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "668443799118",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2035-DSP-22.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Atti giudiziari",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Judicial document sent by registered post that an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "684895173473",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2018-DSP-23.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "766307622479",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/delibera/Delibera%20339-16-CONS.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Atti giudiziari",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Item code of a judicial notification's return card that an AGCOM sanction against Poste Italiane lists."
+    },
+    {
+      "number": "780809030943",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/delibera/Delibera%20339-16-CONS.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Atti giudiziari",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Item code of a judicial notification's return card that an AGCOM sanction against Poste Italiane lists."
+    },
+    {
+      "number": "76765913820-8",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2038-DSP-21%201634125365280.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Atti giudiziari",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Judicial notification of a traffic fine that an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "785058598372",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.agcom.it/sites/default/files/migration/determina/Determina%2034-DSP-22.pdf",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Atti giudiziari",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Judicial document sent by registered post that an AGCOM decision on a complaint against Poste Italiane quotes."
+    },
+    {
+      "number": "619658011771",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/raccomandata-on-line/c8109ab70312297052",
+        "access": "full_page",
+        "date": "2026-07-03",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata Online",
+        "reportedRole": "tracking_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Tracking code of a registered letter sent through Poste Italiane's online service, quoted in a complaint against Poste Italiane."
+    },
+    {
+      "number": "572739713813",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/avviso-giacenza-raccomandata/c4177953516a2b2135",
+        "access": "full_page",
+        "date": "2024-07-05",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Code of a registered letter from a public office, quoted in a complaint about a Poste Italiane delivery notice."
+    },
+    {
+      "number": "066799146592",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/mancata-consegna-nei-tempi-pre/CPTIT01696030-82",
+        "access": "full_page",
+        "date": "2023-01-12",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_code"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Code of a registered letter on a Poste Italiane delivery notice, quoted in a complaint against Poste Italiane."
+    },
+    {
+      "number": "697967111614",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/raccomandata-non-consegnata/e514d655dff4b733df",
+        "access": "full_page",
+        "date": "2026-04-20",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Registered letter held at a post office, quoted in a complaint against Poste Italiane."
+    },
+    {
+      "number": "20087968426-7",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.altroconsumo.it/reclamare/bacheca-dei-reclami/raccomandata-non-arrivata-al-d/03e12886b5887a46c3",
+        "access": "full_page",
+        "date": "2025-08-19",
+        "dateKind": "publication"
+      },
+      "context": {
+        "assessment": "candidate",
+        "service": "Raccomandata A.R.",
+        "reportedRole": "shipment_tracking"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "gls-ch",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "poste-italiane",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "j-and-t-cargo",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Raccomandata A.R. its sender quotes, with the check digit after a dash, in a complaint against Poste Italiane."
     }
   ]
 }

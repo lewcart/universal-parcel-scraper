@@ -406,6 +406,22 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(completeBy(hasGs1CheckDigit, r.string(18)), completeBy(hasGs1CheckDigit, r.string(20)));
   },
 
+  'poste-italiane'(r) {
+    // Eleven digits and the check digit; the barcode specification's own examples.
+    const valid = Array.from({ length: 8 }, () => r.complete(r.string(11)));
+    standard(r, valid);
+    r.add('123456789012', '610000000019', '100050045011');
+    // A digit in an even place weighs eleven, one in an odd place one: a swapped pair changes the check.
+    const first = valid.find((value) => value[0] !== value[1])!;
+    r.add(`${first[1]}${first[0]}${first.slice(2)}`);
+    // The check is the digit sum of the total, not the total itself, mod 10.
+    const total = (digits: string) => [...digits].reduce((sum, digit, index) => sum + Number(digit) * (index % 2 ? 11 : 1), 0);
+    const digitSum = (value: number) => [...String(value)].reduce((sum, digit) => sum + Number(digit), 0);
+    const carried = r.find(() => r.string(11), (digits) => total(digits) % 10 !== digitSum(total(digits)) % 10);
+    r.add(`${carried}${total(carried) % 10}`, r.complete(carried));
+    r.add(r.complete('00000000000'), r.complete('99999999999'), r.complete('09090909090'));
+  },
+
   'pos-laju'(r) {
     // Three letters, nine digits whose last is the S10 check digit, then MY.
     const valid = ['EHE', 'ERA', 'ENE', 'ERD', 'ENB', 'ERB', 'REL', 'XYZ'].map((letters) => r.complete(letters + r.string(8), 'MY'));

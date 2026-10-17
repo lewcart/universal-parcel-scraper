@@ -42,6 +42,7 @@ import {
   hasLuhnCheckDigit,
   hasMod7CheckDigit,
   isValidFedExTrackingNumber,
+  isValidPosteItalianeRegisteredNumber,
   isValidSaiaPro,
   isValidUkrposhtaBarcode,
 } from '../detection/numericChecksums.js';
@@ -68,7 +69,7 @@ interface DetectionRule {
   readonly checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta' | 'poste-italiane';
   readonly preferred?: true;
 }
 
@@ -128,6 +129,7 @@ function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
   if (rule.checksum === 'pos-laju') return isValidPosLajuConsignment(value);
   if (rule.checksum === 'saia') return isValidSaiaPro(value);
   if (rule.checksum === 'magyar-posta') return isValidMagyarPostaNumber(value);
+  if (rule.checksum === 'poste-italiane') return isValidPosteItalianeRegisteredNumber(value);
   return true;
 }
 

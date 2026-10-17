@@ -117,6 +117,12 @@
       "id": "poste-italiane-d",
       "pattern": "^D\\d{5}[A-Z]\\d{6}$",
       "confidence": "low"
+    },
+    {
+      "id": "poste-italiane-registered",
+      "pattern": "^\\d{12}$",
+      "confidence": "low",
+      "checksum": "poste-italiane"
     }
   ]
 }

@@ -25,6 +25,7 @@ import {
   isValidDhlExpressWaybill,
   isValidFedExTrackingNumber,
   isValidPocztaPolskaBarcode,
+  isValidPosteItalianeRegisteredNumber,
   isValidSaiaPro,
   isValidSscc,
   isValidTntConsignmentNumber,
@@ -66,4 +67,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   'pos-laju': isValidPosLajuConsignment,
   saia: isValidSaiaPro,
   'magyar-posta': isValidMagyarPostaNumber,
+  'poste-italiane': isValidPosteItalianeRegisteredNumber,
 };

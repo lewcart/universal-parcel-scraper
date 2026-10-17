@@ -51,8 +51,11 @@ describe('Poste Italiane tracking normalization', () => {
     expect(normalizePosteItalianeTrackingNumber('f990d00000001')).toBe('F990D00000001');
     // D, five digits, a letter and six digits.
     expect(normalizePosteItalianeTrackingNumber('d99000a000001')).toBe('D99000A000001');
+    // Registered mail: eleven digits and the check digit, printed after a dash or a space.
+    expect(normalizePosteItalianeTrackingNumber('99000000001-0')).toBe('990000000010');
+    expect(normalizePosteItalianeTrackingNumber('99000000001 0')).toBe('990000000010');
     for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785IT', 'F990D0000001', 'F990E00000001',
-      'D9900A000001', 'D990000000001', 'E99000A000001', '']) {
+      'D9900A000001', 'D990000000001', 'E99000A000001', '990000000011', '99000000001', '9900000000100', '']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
     }
     expect(posteItalianeTrackingUrl(TRACKING_NUMBER)).toBe(
@@ -87,6 +90,11 @@ describe('Poste Italiane tracking normalization', () => {
     }
     const empty = vi.fn<typeof fetch>().mockResolvedValue(response(parcel({ idTracciatura: '990001A000001', esitoRicerca: '2', listaMovimenti: [] })));
     expect(await adapter(environment(empty)).recognize!('990001A000001')).toEqual({ known: false });
+    const letter = vi.fn<typeof fetch>().mockResolvedValue(response({ idTracciatura: '990000000010', tipoSpedizione: 'C', esitoRicerca: '3', stato: '1' }));
+    expect(await adapter(environment(letter)).recognize!('990000000010')).toEqual({ known: false });
+    const failedCheck = vi.fn<typeof fetch>();
+    expect(await adapter(environment(failedCheck)).recognize!('990000000011')).toEqual({ known: false });
+    expect(failedCheck).not.toHaveBeenCalled();
     for (const number of ['990001AA000001', '3C9900A0000010', '2C9900A000001', 'ABCDEF0000001']) {
       expect(() => normalizePosteItalianeTrackingNumber(number)).toThrow(InvalidInputError);
     }
@@ -218,6 +226,36 @@ describe('Poste Italiane response parsing', () => {
     expect(() => parsePosteItalianeTrackingResponse(null, TRACKING_NUMBER)).toThrow(SchemaError);
     expect(() => parsePosteItalianeTrackingResponse(parcel({ listaMovimenti: {} }), TRACKING_NUMBER))
       .toThrow(SchemaError);
+  });
+
+  it('reads registered mail held at a post office for collection', () => {
+    const REGISTERED = JSON.parse(readFileSync(new URL('./fixtures/registered-mail.json', import.meta.url), 'utf8')) as unknown;
+    const result = parsePosteItalianeTrackingResponse(REGISTERED, '99000000001-0');
+    expect(result).toMatchObject({
+      status: 'out_for_delivery',
+      current_stage: 'ready_for_pickup',
+      last_update: '2026-01-03T08:00:00.000Z',
+      service_name: 'RACC. GENERICHE',
+    });
+    expect(result.events?.map((event) => [event.stage, event.location, event.time])).toEqual([
+      ['ready_for_pickup', 'PROVA CENTRO', '2026-01-03T08:00:00.000Z'],
+      ['in_transit', 'CENTRO DI PROVA', '2026-01-02T21:30:00.000Z'],
+      ['registered', 'PROVA 99', '2026-01-01T10:00:00.000Z'],
+    ]);
+    const serialized = JSON.stringify(result);
+    for (const secret of ['VIA DI PROVA', '00000', '9999', '08:20', 'frazionario']) expect(serialized).not.toContain(secret);
+  });
+
+  it('reads the bare letter-post answer for a code Poste does not know as not found', () => {
+    const unknown = { idTracciatura: '990000000010', tipoSpedizione: 'C', esitoRicerca: '3', stato: '1', sintesiStato: '', azioni: '',
+      actionsMap: {}, statoDaVerificare: false };
+    expect(() => parsePosteItalianeTrackingResponse(unknown, '990000000010')).toThrow(NotFoundError);
+    // A product, a movement list, another state or a parcel type is not that answer.
+    for (const changed of [{ tipoProdotto: 'RACC. GENERICHE' }, { stato: '4' }, { tipoSpedizione: 'P' }, { esitoRicerca: undefined }]) {
+      expect(() => parsePosteItalianeTrackingResponse({ ...unknown, ...changed }, '990000000010')).not.toThrow(NotFoundError);
+    }
+    expect(parsePosteItalianeTrackingResponse({ ...unknown, listaMovimenti: [] }, '990000000010'))
+      .toMatchObject({ status: 'pending', current_stage: 'registered' });
   });
 
   it('skips unusable rows without losing the shipment', () => {

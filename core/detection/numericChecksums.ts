@@ -82,6 +82,18 @@ export function isValidFedExTrackingNumber(value: string): boolean {
   return sum % 11 % 10 === Number(value[11]);
 }
 
+/**
+ * Poste Italiane registered mail: eleven digits and a check digit, as its barcode specification
+ * defines it. Eleven times the sum of the digits in even places, plus the sum of those in odd
+ * places, gives a number whose digit sum mod 10 is the check.
+ */
+export function isValidPosteItalianeRegisteredNumber(value: string): boolean {
+  if (!/^\d{12}$/.test(value)) return false;
+  const [odd, even] = [...value.slice(0, 11)].reduce(([oddSum, evenSum], digit, index) =>
+    index % 2 ? [oddSum, evenSum + Number(digit)] : [oddSum + Number(digit), evenSum], [0, 0]);
+  return [...String(11 * even + odd)].reduce((total, digit) => total + Number(digit), 0) % 10 === Number(value[11]);
+}
+
 /** The eMonitoring widget appends this GS1 digit to its 19-digit numeric alias. */
 export function isValidPocztaPolskaBarcode(value: string): boolean {
   return value.length === 20 && /^\d{20}$/.test(value) && hasGs1CheckDigit(value);

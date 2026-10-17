@@ -898,6 +898,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mainfreight', number: 'S00000000',
     route: /^https:\/\/www\.mainfreight\.com\/tracking\?trackingnumber=S00000000$/,
     marker: /Tracking Results for|No results found for the provided tracking number/i },
+  // A single-page app that puts the guía in its search field, looks it up on load and names it when it finds nothing.
+  { carrier: 'envia-colombia', number: '999000000001',
+    route: /^https:\/\/envia\.co\/tracking\?guia=999000000001$/,
+    marker: /Rastreo de\s+tu env[ií]o|No se encontr[óo] informaci[óo]n de rastreo para la gu[ií]a|Track\s+your shipment|No tracking information found for guide/i },
   // The deep link opens an anonymous session on the number and redirects to the app, which says it cannot find it.
   { carrier: 'raben', number: '999999000000033',
     route: /^https:\/\/oftc\.myraben\.com\/index\.html$/,

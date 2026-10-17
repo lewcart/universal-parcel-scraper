@@ -18,18 +18,67 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "envia-colombia",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 912
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "eta",
+    "service_name",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://envia.co/tracking?guia={trackingNumber}",
     "searchUrl": "https://envia.co/tracking",
     "canaryUrl": "https://envia.co/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "eta",
+      "service_name",
+      "delivered_at",
+      "progress_rail",
+      "contact_details",
+      "payment_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "eta",
+      "service_name",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "progress_rail",
+      "contact_details",
+      "payment_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "pickup_point",
+      "signatory"
+    ]
   },
   "links": [
     {

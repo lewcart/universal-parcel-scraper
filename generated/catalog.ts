@@ -10296,7 +10296,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "envia-colombia",
+      "recognitionRank": 912,
+      "localClocks": true
     },
     "canaryUrl": "https://envia.co/tracking",
     "trackingUrlTemplate": "https://envia.co/tracking?guia={trackingNumber}",

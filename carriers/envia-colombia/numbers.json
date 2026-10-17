@@ -327,6 +327,69 @@
         ]
       },
       "note": "Sent as the guía to Envía's own tracker on enviacolvanes.com.co, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "034038751459",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://colombiarastreo.com/tracking/envia",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "gls-ch",
+          "dpd-fr",
+          "mondial-relay",
+          "gls-fr",
+          "colis-prive",
+          "gls-de",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Example guía on a third-party tracking site's Envía page; Envía's own tracker returns its history through delivery."
+    },
+    {
+      "number": "014140328382",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.studocu.com/co/document/sena-sofiaplus/tecnologia-de-la-informacion-y-comunicacion/014140328382-guia/101418500",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "Title of a shared Envía guía document, as a search engine indexed it; Envía's own tracker returns its history through delivery."
     }
   ]
 }

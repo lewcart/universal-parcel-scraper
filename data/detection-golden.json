@@ -3749,6 +3749,34 @@
     ]
   },
   {
+    "input": "014140328382",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "01415130681967",
     "carrier": "unknown",
     "confidence": "low",
@@ -5116,6 +5144,34 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "034038751459",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "dpd-fr",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "brt",
+      "colis-prive"
     ]
   },
   {

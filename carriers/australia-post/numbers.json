@@ -240,7 +240,7 @@
         "url": "https://github.com/clooney/australia-post-tracking-api/blob/master/australia-post-tracking-api-python.md"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Open-source project example, not a real shipment. The suffix names Australia Post as the issuing postal operator. Detection falls back to the generic postal rule."
@@ -253,7 +253,7 @@
         "url": "https://github.com/clooney/australia-post-tracking-api/blob/master/australia-post-tracking-api-python.md"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Open-source project example, not a real shipment. The suffix names Australia Post as the issuing postal operator. Detection falls back to the generic postal rule."
@@ -274,7 +274,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Sender explicitly names Australia Post and requests shipment recall."
@@ -295,7 +295,7 @@
         "reportedRole": "reported_shipment"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Another customer posts their own Australia Post shipment."
@@ -314,7 +314,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "An Australia Post tracking link archived by the Wayback Machine; the tracker returns its history. An Australian-issued postal number, which other posts deliver too."
@@ -333,7 +333,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "An Australia Post tracking link archived by the Wayback Machine; the tracker returns its history. An Australian-issued postal number, which other posts deliver too."
@@ -352,7 +352,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "An Australia Post tracking link archived by the Wayback Machine; the tracker returns its history. An Australian-issued postal number, which other posts deliver too."
@@ -371,7 +371,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "An Australia Post tracking link archived by the Wayback Machine; the tracker returns its history. An Australian-issued postal number, which other posts deliver too."

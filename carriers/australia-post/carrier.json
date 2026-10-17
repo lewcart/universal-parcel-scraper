@@ -108,6 +108,12 @@
       "checksum": "gs1"
     },
     {
+      "id": "australia-post-s10-tracked",
+      "pattern": "^[CEL][A-Z]\\d{9}AU$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "australia-post-s10",
       "pattern": "^[A-Z]{2}\\d{9}AU$",
       "confidence": "low",

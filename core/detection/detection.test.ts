@@ -83,6 +83,25 @@ describe('Taiwanese S10 items', () => {
   });
 });
 
+describe('Australian S10 items', () => {
+  it.each(['CF123456785AU', 'EY123456785AU', 'LH123456785AU'])('names Australia Post, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'australia-post', confidence: 'high', candidates: ['australia-post'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves registered and letter-post items to international mail, asking Australia Post first', () => {
+    for (const number of ['RR123456785AU', 'UH123456785AU']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+      expect(recognitionAskedCarriers(number)[0], number).toBe('australia-post');
+    }
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('EY123456780AU').candidates).not.toContain('australia-post');
+    expect(detectCarrierMatch('EY123456785NZ').candidates).not.toContain('australia-post');
+  });
+});
+
 describe('Slovak S10 items', () => {
   it.each(['CP123456785SK', 'EE123456785SK', 'LK123456785SK', 'RR123456785SK'])('names Slovenská pošta, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'slovenska-posta', confidence: 'high', candidates: ['slovenska-posta'] });

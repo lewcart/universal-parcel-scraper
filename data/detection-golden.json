@@ -57105,26 +57105,18 @@
   },
   {
     "input": "CF154260298AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "CF173866139AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
@@ -61139,26 +61131,18 @@
   },
   {
     "input": "EJ205870830AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "EJ206359769AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
@@ -66798,38 +66782,26 @@
   },
   {
     "input": "LH290032509AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "LH433912417AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "LH435360977AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
@@ -66969,38 +66941,26 @@
   },
   {
     "input": "LK201223662AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "LK285238791AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {
     "input": "LK286032428AU",
-    "carrier": "intl-post",
+    "carrier": "australia-post",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "australia-post",
-      "chronopost"
+      "australia-post"
     ]
   },
   {

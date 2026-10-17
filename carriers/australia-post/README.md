@@ -41,8 +41,9 @@ cache headers of the `no-store` mode. The app also sends an
 ## Notes
 
 - Detection selects Australia Post for an article ID: an optional two-digit prefix, a
-  three-character merchant location ID, nine digits, `000` and six digits. It only suggests
-  Australia Post for:
+  three-character merchant location ID, nine digits, `000` and six digits. It also selects it for
+  the EMS, parcel and tracked-letter S10 items it issues: C, E or L first, AU last and a passing
+  check digit, since its tracker reads them abroad too. It only suggests Australia Post for:
   - A consignment number: an optional two-digit prefix, a location ID with a letter, seven
     digits. With the prefix, Australia Post comes before Colis Privé's rule for any twelve
     characters. Without it, a location ID of two letters and a digit is left out, since other
@@ -51,8 +52,8 @@ cache headers of the `no-store` mode. The app also sends an
     in a GS1 check digit. Other carriers' rules take any 22 digits; the passing check digit moves
     Australia Post ahead of them in recognition. TIPSA stays first for a barcode in its layout, and
     CTT Express's prefix selects CTT Express outright.
-  - An Australian-issued postal number, which Australia Post is asked about first. The S10 suffix
-    names the issuing country, not the deliverer, so it never selects Australia Post.
+  - Any other Australian-issued postal number, which Australia Post is asked about first. No
+    public registered or letter-post item has shown that its tracker reads them.
 - All-digit consignments have no rule: other carriers' rules take those lengths, and no check
   digit sets Australia Post's apart. Neither do 18-digit barcodes starting `9979`: Swiss Post's
   rule takes them, and none with scans has shown they are Australia Post's.

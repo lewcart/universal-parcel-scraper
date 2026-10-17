@@ -1984,7 +1984,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -4233,6 +4233,11 @@ export const CARRIER_CATALOG = {
         "pattern": "^0[0-3]\\d{20}$",
         "confidence": "low",
         "checksum": "gs1"
+      },
+      {
+        "pattern": "^[CEL][A-Z]\\d{9}AU$",
+        "confidence": "high",
+        "checksum": "s10"
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}AU$",
@@ -24648,7 +24653,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "korea-post": ["korea-post-1","korea-post-2","korea-post-3"],
   "thailand-post": ["thailand-post-1"],
   "dtdc": ["dtdc-1","dtdc-2","dtdc-3","dtdc-4","dtdc-5"],
-  "australia-post": ["australia-post-article","australia-post-consignment","australia-post-consignment-10","australia-post-prepaid","australia-post-s10"],
+  "australia-post": ["australia-post-article","australia-post-consignment","australia-post-consignment-10","australia-post-prepaid","australia-post-s10-tracked","australia-post-s10"],
   "hongkong-post": ["hongkong-post-1"],
   "pos-malaysia": ["pos-malaysia-1","pos-malaysia-2","pos-malaysia-4"],
   "ninja-van": ["ninja-van-1","ninja-van-2","ninja-van-3"],

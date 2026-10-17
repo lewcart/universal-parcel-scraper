@@ -691,7 +691,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Mail from Australia whose Canada Post tracking page the Wayback Machine archived. Canada Post's tracker returns its journey in Canada under the sending post's number."

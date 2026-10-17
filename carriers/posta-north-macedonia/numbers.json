@@ -34,7 +34,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "australia-post",
         "confidence": "high"
       },
       "note": "Inbound international item looked up on Pošta na Severna Makedonija's tracking service, which its tracking page calls; the archived reply lists its events."

@@ -38,6 +38,25 @@
         "confidence": "high"
       },
       "note": "A customer review on Jordan Post's TrackingMore page says this item from Nigeria had reached Jordan and was still awaited."
+    },
+    {
+      "number": "RL851146956IE",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-jordan-post.html",
+        "date": "2024-09-14",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "an-post",
+        "confidence": "high"
+      },
+      "note": "A customer review on Jordan Post's TrackingMore page says this item from Ireland was in Jordan on its way to Turkey and had not moved since."
     }
   ]
 }

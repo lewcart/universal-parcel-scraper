@@ -16,20 +16,67 @@
   "timezone": "Asia/Amman",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "jordan-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 881
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "destination_country"
+  ],
   "portal": {
-    "url": "https://212.35.69.84/JordanWebTrack/Result.aspx?itemid={trackingNumber}",
+    "url": "https://212.35.69.85/webtracking/IPSWeb_item_events.aspx?itemid={trackingNumber}&Submit=Submit",
     "searchUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
     "canaryUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "event_details",
+      "next_office",
+      "item_category",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "event_details",
+      "delivered_at",
+      "destination_country"
+    ],
+    "discarded": [
+      "next_office",
+      "item_category",
+      "signatory"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "offset_timestamps",
+      "recipient_name",
+      "sender_name"
+    ]
   },
   "links": [
+    {
+      "domains": [
+        "212.35.69.85"
+      ],
+      "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+      "params": [
+        "itemid"
+      ]
+    },
     {
       "domains": [
         "212.35.69.84"

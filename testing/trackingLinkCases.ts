@@ -1000,6 +1000,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fedex-pl', number: '6230000000005',
     route: /^https:\/\/fds2tracking\.emea\.fedex\.com\/#\/(?:preview|tracking\/list)\?packages=6230000000005(?:&|$)/,
     marker: /Monitorowanie przesyłek krajowych|Track (?:your )?domestic shipment/ },
+  // The IPS page answers a code it holds nothing for with a notice that does not repeat the code.
+  { carrier: 'jordan-post', number: 'ZZ000000014JO',
+    route: /^https:\/\/212\.35\.69\.85\/webtracking\/IPSWeb_item_events\.aspx\?itemid=ZZ000000014JO&Submit=Submit$/,
+    marker: /No information, please check your item identifier|IPS Web Tracking/,
+    forwarding: { notFound: /No information, please check your item identifier/ } },
 ];
 
 /**

@@ -15070,12 +15070,23 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Amman",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jordan-post",
+      "recognitionRank": 881,
+      "localClocks": true
     },
     "canaryUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
-    "trackingUrlTemplate": "https://212.35.69.84/JordanWebTrack/Result.aspx?itemid={trackingNumber}",
+    "trackingUrlTemplate": "https://212.35.69.85/webtracking/IPSWeb_item_events.aspx?itemid={trackingNumber}&Submit=Submit",
     "trackingSearchUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx",
     "linkRules": [
+      {
+        "domains": [
+          "212.35.69.85"
+        ],
+        "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+        "params": [
+          "itemid"
+        ]
+      },
       {
         "domains": [
           "212.35.69.84"

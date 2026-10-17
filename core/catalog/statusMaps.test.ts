@@ -417,6 +417,8 @@ describe("universal providers' answers", () => {
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],
       ['Pickup completed, No exceptions', 'accepted'], ['Furniture Received by Metro-<Warehouse>-Hub', 'in_transit'],
       ['Furniture Received by Metro-Example-Hub', 'in_transit'],
+      ['The package is in the local warehouse. We will come back with details about the next steps', 'in_transit'],
+      ['The package is in the local warehouse. We will come back with details about the delivery', 'in_transit'],
       ['SF Express has received your package, we sincerely protect your expectations, and will not let you down. If you have any questions, please contact courier Example at 10000000000.', 'accepted'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
@@ -427,7 +429,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem', 'Rescheduled delivery', 'Parcel handed to the recipient', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled', 'Order registered by the recipient', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem', 'Rescheduled delivery', 'Parcel handed to the recipient', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled', 'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

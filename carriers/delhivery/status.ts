@@ -11,7 +11,7 @@ const statuses: Record<string, ClassifiedStatus> = {
   'PICKED UP': { status: 'in_transit', stage: 'accepted' },
   MANIFESTED: { status: 'pending', stage: 'registered' },
   'RTO DELIVERED': { status: 'exception', stage: 'returned' },
-  DELIVERED_SELLER: { status: 'exception', stage: 'returned' },
+  'DELIVERED SELLER': { status: 'exception', stage: 'returned' },
   // Return to origin and a customer return, each scanned on delivery to the seller.
   RTO: { status: 'exception', stage: 'returned' },
   DTO: { status: 'exception', stage: 'returned' },
@@ -20,6 +20,7 @@ const statuses: Record<string, ClassifiedStatus> = {
   CANCELED: { status: 'exception', stage: 'exception' },
 };
 
+// The current status can come as a token ("IN_TRANSIT") rather than words.
 export function classifyDelhiveryStatus(value: string): ClassifiedStatus | undefined {
-  return statuses[value.toUpperCase()];
+  return statuses[value.toUpperCase().replaceAll('_', ' ')];
 }

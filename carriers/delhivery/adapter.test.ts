@@ -51,6 +51,10 @@ describe('Delhivery direct tracking', () => {
     expect(() => parseDelhivery({ statusCode: 200, data: [], message: 'invalid AWB or very old package' }, NUMBER))
       .toThrowError(expect.objectContaining({ kind: 'not_found' }));
   });
+  it('reads a current status given as a token like its words', () => {
+    const value = payload(); value.data[0].status = { status: 'IN_TRANSIT', statusDateTime: '2026-01-03T14:00:00' };
+    expect(parseDelhivery(value, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+  });
   it('keeps unknown status and historical scan semantics separate', () => {
     const value = payload(); value.data[0].status = { status: 'New current status', statusDateTime: 'not a date' };
     value.data[0].trackingStates[0].scans[0].scan = 'New scan';

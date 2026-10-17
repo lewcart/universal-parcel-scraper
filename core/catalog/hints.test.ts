@@ -168,6 +168,12 @@ describe('carrier names reported by universal providers', () => {
     expect(isKnownCarrierName(name)).toBe(true);
   });
 
+  it('reads a name typed without its accents as the accented catalog name', () => {
+    expect(carrierIdFromName('DHL eCommerce Turkiye')).toBe('mng-kargo');
+    expect(carrierIdFromName('Kuhne + Nagel')).toBe('kuehne-nagel');
+    expect(carrierIdFromName('La Poste du Senegal')).toBe('la-poste-senegal');
+  });
+
   it.each(['Example Parcel Co', 'Example Express Italy', 'Postexample Courier'])('treats %s as new', (name) => {
     expect(isKnownCarrierName(name)).toBe(false);
   });

@@ -6,7 +6,8 @@ import type { CarrierId } from '../../generated/catalog.js';
 
 export { carrierBrand };
 
-const key = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+// Accents fold to their letter, so "Turkiye" reads as the catalog's "Türkiye".
+const key = (name: string) => name.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
 // These brands have several regional/service adapters.
 const AMBIGUOUS_BRANDS = ['dhl', 'dpd', 'gls', 'hermes', 'gofo', 'post'];

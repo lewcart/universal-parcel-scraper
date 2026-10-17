@@ -379,6 +379,7 @@ describe("universal providers' answers", () => {
       ['WI – Intermediate warehouse. Package received at Intermediate Warehouse', 'in_transit'],
       ['Delivery branch. Received at Distribution Branch', 'in_transit'], ['Receiving destination mail. Received by Distributor', 'in_transit'],
       ['Container reception', 'in_transit'],
+      ['Internationaliy Package received at processing center', 'in_transit'], ['Leave the email processing center', 'in_transit'],
       ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
       ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
       ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],
@@ -420,7 +421,7 @@ describe("universal providers' answers", () => {
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', 'Order information has been sent',
-      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Your order has been shipped from Example center to the store']) {
+      'Received.', 'Received. Your order has been received by the store', 'Package finished at the store', 'Package received at processing center', 'Your order has been shipped from Example center to the store']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

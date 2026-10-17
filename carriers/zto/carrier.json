@@ -21,9 +21,6 @@
     ],
     "recognition": {
       "rank": 51
-    },
-    "browserRecognition": {
-      "rank": 51
     }
   },
   "capabilities": [

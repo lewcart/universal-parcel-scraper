@@ -22,7 +22,7 @@ describe('ZTO', () => {
   it('shares domestic candidate validation and requires the complete identity', () => {
     expect(detectCarrierMatch(number).candidates).toContain('zto');
     expect(detectCarrierMatch(number).carrier).not.toBe('zto');
-    expect(recognitionCandidates(number, { phase: 'browser' }).map(row => row.carrier)).toContain('zto');
+    expect(recognitionCandidates(number, { phase: 'browser' }).map(row => row.carrier)).not.toContain('zto');
     expect(recognitionCandidates(number, { hint: 'zto' })[0]?.carrier).toBe('zto');
     expect(normalizeZtoNumber('7999 0000000001')).toBe(number);
     expect(normalizeZtoNumber('999000000001')).toBe('999000000001');

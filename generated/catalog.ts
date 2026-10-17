@@ -3930,8 +3930,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "zto",
-      "recognitionRank": 51,
-      "browserRecognitionRank": 51
+      "recognitionRank": 51
     },
     "canaryUrl": "https://www.zto.com/check",
     "trackingUrlTemplate": "https://www.zto.com/",

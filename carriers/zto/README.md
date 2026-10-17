@@ -16,8 +16,9 @@ remain available for those failures and for fuller history: the public PC tracke
 suppresses earlier traces even after verification. The adapter marks its history
 as incomplete and keeps the carrier's epoch scan clocks.
 
-HTTP recognition never starts a browser. Browser recognition is a separate opt-in
-phase and can require more time than a short preflight budget permits.
+HTTP recognition never starts a browser. ZTO takes no part in browser recognition:
+the page's verification is not solved within a probe's budget, and most twelve-digit
+numbers it would be asked about belong to FedEx, which issues the same shape.
 
 The legacy image endpoint does not supply the page's plain-code challenge. Mobile
 H5 tracking requires a signed-in ZTO account, and the Android app

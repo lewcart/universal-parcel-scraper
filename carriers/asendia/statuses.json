@@ -322,6 +322,22 @@
       "note": "A1 Manifested Data: Dispatched by Asendia (USA)."
     },
     {
+      "code": "ME3",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17",
+      "note": "A1 Manual Entry: Flight Departed, Asendia's hand-keyed linehaul scan."
+    },
+    {
+      "code": "ME4",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-17",
+      "note": "A1 Manual Entry: Flight Arrived, Asendia's hand-keyed linehaul scan."
+    },
+    {
       "code": "ELECNOT",
       "language": "en",
       "stage": "registered",

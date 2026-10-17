@@ -132,6 +132,12 @@ const A1_CODES: Readonly<Record<string, ClassifiedAsendiaStatus>> = {
   '2.3': IN_TRANSIT,
 };
 
+/** Asendia's own linehaul scans keyed in by hand (eventSource "A1 Manual Entry"). */
+const MANUAL_CODES: Readonly<Record<string, ClassifiedAsendiaStatus>> = {
+  ME3: IN_TRANSIT,
+  ME4: IN_TRANSIT,
+};
+
 /**
  * Asendia's harmonized codes (eventSource "FullTrack API"). The codes and
  * their categories follow the list at
@@ -187,7 +193,8 @@ export function classifyAsendiaA1Event(
   const origin = comparableText(source);
   const byCode = /^a1 [a-z ]*data$/.test(origin) ? A1_CODES
     : origin === 'fulltrack api' ? HARMONIZED_CODES
-      : null;
+      : origin === 'a1 manual entry' ? MANUAL_CODES
+        : null;
   if (byCode) return Object.hasOwn(byCode, code) ? byCode[code]! : null;
   const wording = comparableText(description);
   return Object.hasOwn(PARTNER_WORDING, wording) ? PARTNER_WORDING[wording]! : null;

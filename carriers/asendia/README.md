@@ -71,6 +71,8 @@ a summary through universal providers (see [routing](https://github.com/plhery/d
   uses `B8`), so codes are read only for Asendia's own sources:
   - `A1 … Data` sources: A1 codes (`1` to `1.2` registered, `2` accepted, `2.1` to `2.3` in
     transit).
+  - `A1 Manual Entry`: Asendia's hand-keyed linehaul scans (`ME3` flight departed, `ME4` flight
+    arrived, in transit).
   - `FullTrack API`: Asendia's harmonized codes from a published list (linked in
     [status.ts](status.ts)). Consumer-return `RET*` and inquiry `CLAIM*` codes are unmapped.
   - Partners (`USPS TrackV2 API`, `BROADREACH API`, `DAI API`, …): exact wording, else the

@@ -309,6 +309,8 @@ describe('Asendia A1 status vocabulary', () => {
     ['A1 Manifested to Asendia Data', '1.2', 'Manifest to Asendia created', 'pending', 'registered'],
     ['A1 Manifested Data', '2.2', 'Dispatched by Asendia', 'in_transit', 'in_transit'],
     ['A1 Shipment Manifested Data', '2.3', 'Shipment Dispatched by Asendia', 'in_transit', 'in_transit'],
+    ['A1 Manual Entry', 'ME3', 'Flight Departed', 'in_transit', 'in_transit'],
+    ['A1 Manual Entry', 'ME4', 'Flight Arrived', 'in_transit', 'in_transit'],
     ['USPS TrackV2 API', 'MA', 'Pre-Shipment, USPS Awaiting Item', 'pending', 'registered'],
     ['DAI API', 'FD21', 'Your parcel is ready for pick up.', 'out_for_delivery', 'ready_for_pickup'],
     ['DAI API', 'FP05', 'It\u2019s happening, your parcel will be delivered today. Get ready!', 'out_for_delivery', 'out_for_delivery'],
@@ -327,6 +329,7 @@ describe('Asendia A1 status vocabulary', () => {
     expect(classifyAsendiaA1Event('A1 Imported Data', 'DELIVERY', 'Delivered')).toBeNull();
     expect(classifyAsendiaA1Event('FullTrack API', 'RETCENTERIN', 'Checked in return centre')).toBeNull();
     expect(classifyAsendiaA1Event('A1 Imported Data', '9', 'Something new')).toBeNull();
+    expect(classifyAsendiaA1Event('A1 Manual Entry', 'ME9', 'Delivered')).toBeNull();
     expect(classifyAsendiaA1Event('BROADREACH API', 'B99', 'Not delivered')).toBeNull();
     expect(classifyAsendiaA1Event('', '', 'Delivered')).toEqual({ status: 'delivered', stage: 'delivered' });
   });

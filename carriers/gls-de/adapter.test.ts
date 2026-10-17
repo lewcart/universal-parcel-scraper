@@ -158,16 +158,16 @@ describe('GLS Germany', () => {
     ['another GLS code', JSON.stringify({ lastError: 'E206' })],
     ['no GLS code', JSON.stringify({ message: 'Not Found' })],
     ['a page instead of GLS\'s reply', '<html><body>Not Found</body></html>'],
-  ])('keeps a detail 404 with %s an upstream error', async (_case, body) => {
+  ])('keeps a detail 404 with %s inconclusive', async (_case, body) => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(Response.json({ tuStatus: [parcel()] }))
       .mockResolvedValueOnce(new Response(body, { status: 404 }));
-    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ kind: 'indeterminate', status: 404 });
   });
 
-  it('keeps an overview 404 other than an expired parcel an upstream error', async () => {
+  it('keeps an overview 404 other than an expired parcel inconclusive', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ lastError: 'E609' }, { status: 404 }));
-    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'UpstreamHttpError', status: 404 });
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ kind: 'indeterminate', status: 404 });
   });
 
   it('sends a request that hangs once more, inside the budget', async () => {

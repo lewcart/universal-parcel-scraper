@@ -1,6 +1,6 @@
 
 import { lookupBudget, type AdapterFactory, type LookupBudget, type TrackingContext } from '../../core/adapter/index.js';
-import { NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
+import { IndeterminateError, NotFoundError, SchemaError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { withNetworkRetry } from '../../core/runner/networkRetry.js';
 import { cleanScalar, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
@@ -134,8 +134,8 @@ export class GLSGermanyTracker {
     }));
     // A challenge, rate limit or outage must not become "not found". GLS's own 404 for an expired
     // parcel does, and so does, on the detail request, its 404 for a postcode that does not match a
-    // parcel the overview found, as on GLS Switzerland. Any other code, or a 404 without GLS's
-    // reply, stays an upstream error.
+    // parcel the overview found, as on GLS Switzerland. Any other 404 is inconclusive, since an
+    // HTTP error with that status would read as not found; other statuses stay upstream errors.
     if (response.status === 404) {
       let payload: unknown;
       try {
@@ -145,6 +145,7 @@ export class GLSGermanyTracker {
       }
       const code = isRecord(payload) && typeof payload.lastError === 'string' ? payload.lastError : '';
       if ((detail ? DETAIL_NOT_FOUND : OVERVIEW_NOT_FOUND).includes(code)) throw new GLSGermanyTrackingError();
+      throw new IndeterminateError(PROVIDER, 'GLS returned HTTP 404 without its own not-found reply', { status: 404 });
     }
     if (!response.ok) throw new UpstreamHttpError(PROVIDER, response.status);
     return parseJsonBytes(bytes, PROVIDER);

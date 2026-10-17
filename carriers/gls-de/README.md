@@ -24,8 +24,8 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
   the detail request when it has `E609` or `E800`: the postcode does not match
   the parcel the overview found, which GLS Switzerland reports the same way.
   GLS also answers `E609` to a malformed request, so gls-ch's tests pin the
-  detail request's shape. Any other code, or a 404 without GLS's reply, stays an
-  upstream error: the service also returns 404 for challenges, which must not
+  detail request's shape. Any other code, or a 404 without GLS's reply, is
+  inconclusive: the service also returns 404 for challenges, which must not
   look like an expired parcel. Delivered parcels age out of public history and
   then return `E000`.
 - The postcode is the recipient's, in any country's format: the GROUP service

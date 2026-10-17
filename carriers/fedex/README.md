@@ -77,8 +77,12 @@ fallback')`.
   names the USPS number. Most Ground Economy parcels say instead that FedEx Ground delivers
   them, and name no partner.
 - Delivered scans are rewritten to "Delivered" because FedEx's line names the signatory.
-- Scan times come from `date` + `time` + `gmtOffset`. A scan without a usable triple keeps no
-  time rather than a guessed zone.
+- Scan times come from `date` + `time` + `gmtOffset`. FedEx sends its pickup (`PU`) with a
+  00:00:00 time and no offset. That scan keeps its day in `local_time`, and in
+  `last_update_local` when it is the newest, instead of an invented midnight. It sorts by the
+  span its day could cover, from UTC+14 to UTC−12, and in FedEx's own order where that span
+  overlaps other scans. Any other scan without a usable triple keeps no time rather than a
+  guessed zone.
 
 ## Mobile API lead
 

@@ -131,7 +131,7 @@ describe('FedEx structured response', () => {
     expect(result.events).toEqual([
       { time: '2026-09-02T11:58:00+02:00', location: 'ZUERICH, CH', description: 'Delivered', stage: 'delivered' },
       { time: '2026-09-01T08:12:00+02:00', location: 'KOELN, DE', description: 'Departed FedEx location', stage: 'in_transit' },
-      { time: '2026-08-31T15:00:00+09:00', location: 'SEOUL, KR', description: 'Picked up', stage: 'accepted' },
+      { local_time: '2026-08-31', location: 'SEOUL, KR', description: 'Picked up', stage: 'accepted' },
       { time: '2026-08-30T09:05:00+09:00', location: 'SEOUL, KR', description: 'Shipment information sent to FedEx', stage: 'registered' },
     ]);
   });
@@ -166,6 +166,66 @@ describe('FedEx structured response', () => {
     expect(result.events?.map((event) => event.time))
       .toEqual(['2026-09-10T05:00:00-10:00', '2026-09-11T00:00:00+10:00', undefined]);
     expect(result.last_update).toBe('2026-09-10T05:00:00-10:00');
+  });
+
+  it('keeps the day of a scan FedEx dates without a time, in its place, instead of a midnight', () => {
+    const payload = inTransitFixture();
+    const shipment = (payload.output as { packages: Record<string, unknown>[] }).packages[0]!;
+    const scan = (date: string, time: string, gmtOffset: string | undefined, status: string, statusCD: string) =>
+      ({ date, time, ...(gmtOffset === undefined ? {} : { gmtOffset }), scanLocation: 'EXAMPLE CITY, KR', status, statusCD, scanDetails: '' });
+    const read = (scans: Record<string, unknown>[]) => {
+      shipment.keyStatusCD = scans[0]!.statusCD;
+      shipment.keyStatus = scans[0]!.status;
+      shipment.scanEventList = scans;
+      return parseFedExTrackingResponse(payload, IN_TRANSIT_NUMBER);
+    };
+    // Live shape: the pickup comes with its date, a 00:00:00 time and no
+    // offset, every other scan with its offset. Across the date line the
+    // departure's local day is later than the arrival's, and the pickup still
+    // keeps its place in FedEx's list.
+    const picked = read([
+      scan('2026-09-10', '21:00:00', '-08:00', 'Arrived at FedEx location', 'AR'),
+      scan('2026-09-11', '06:00:00', '+09:00', 'Departed FedEx location', 'DP'),
+      scan('2026-09-11', '00:00:00', '', 'Picked up', 'PU'),
+      scan('2026-09-09', '17:30:00', '+09:00', 'Shipment information sent to FedEx', 'OC'),
+    ]);
+    expect(picked.events?.map(({ time, local_time, stage }) => ({ time, local_time, stage }))).toEqual([
+      { time: '2026-09-10T21:00:00-08:00', local_time: undefined, stage: 'in_transit' },
+      { time: '2026-09-11T06:00:00+09:00', local_time: undefined, stage: 'in_transit' },
+      { time: undefined, local_time: '2026-09-11', stage: 'accepted' },
+      { time: '2026-09-09T17:30:00+09:00', local_time: undefined, stage: 'registered' },
+    ]);
+    expect(picked).toMatchObject({ last_update: '2026-09-10T21:00:00-08:00' });
+    expect(picked).not.toHaveProperty('last_update_local');
+
+    // The newest scan has no instant: the result keeps its day, never a midnight.
+    const fresh = read([
+      scan('2026-09-11', '00:00', undefined, 'Picked up', 'PU'),
+      scan('2026-09-11', '09:15:00', '+09:00', 'Shipment information sent to FedEx', 'OC'),
+      scan('2026-09-10', '20:00:00', '+09:00', 'Shipment information sent to FedEx', 'OC'),
+    ]);
+    expect(fresh.events?.map(({ time, local_time }) => time ?? local_time))
+      .toEqual(['2026-09-11', '2026-09-11T09:15:00+09:00', '2026-09-10T20:00:00+09:00']);
+    expect(fresh).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_update: null, last_update_local: '2026-09-11' });
+
+    // A day ahead of every timed scan goes on top, one behind them goes below.
+    expect(read([
+      scan('2026-09-10', '08:00:00', '+09:00', 'Departed FedEx location', 'DP'),
+      scan('2026-09-12', '00:00:00', '', 'Picked up', 'PU'),
+    ]).events?.map(({ local_time }) => local_time)).toEqual(['2026-09-12', undefined]);
+    expect(read([
+      scan('2026-09-07', '00:00:00', '', 'Picked up', 'PU'),
+      scan('2026-09-10', '08:00:00', '+09:00', 'Departed FedEx location', 'DP'),
+    ]).events?.map(({ local_time }) => local_time)).toEqual([undefined, '2026-09-07']);
+
+    // A real midnight with its offset keeps its instant; a time without an
+    // offset, or an impossible day, still keeps no clock.
+    expect(read([
+      scan('2026-09-11', '00:00:00', '+09:00', 'Picked up', 'PU'),
+      scan('2026-09-11', '13:20:00', '', 'Departed FedEx location', 'DP'),
+      scan('2026-02-30', '00:00:00', '', 'Shipment information sent to FedEx', 'OC'),
+    ]).events?.map(({ time, local_time }) => [time, local_time]))
+      .toEqual([['2026-09-11T00:00:00+09:00', undefined], [undefined, undefined], [undefined, undefined]]);
   });
 
   it('keeps the recipient, shipper and service blocks out of the result', () => {

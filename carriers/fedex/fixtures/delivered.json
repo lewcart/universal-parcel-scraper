@@ -49,8 +49,8 @@
           },
           {
             "date": "2026-08-31",
-            "time": "15:00:00",
-            "gmtOffset": "+09:00",
+            "time": "00:00:00",
+            "gmtOffset": "",
             "scanLocation": "SEOUL, KR",
             "status": "Picked up",
             "statusCD": "PU",

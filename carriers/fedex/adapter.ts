@@ -15,7 +15,7 @@ import {
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { explicitOffsetTime } from '../../core/time/index.js';
+import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
 import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { FEDEX_CODE_STAGE, fedexStage, fedexStatus } from './status.js';
@@ -47,6 +47,7 @@ const SETTLE_TIMEOUT_MS = 15_000;
 const MAX_CAPTURED = 20;
 const MAX_EVENTS_TO_INSPECT = 500;
 const MAX_EVENTS_TO_RETURN = 100;
+const HOUR_MS = 3_600_000;
 
 export function normalizeFedExTrackingNumber(raw: string): string {
   const value = raw.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '');
@@ -68,21 +69,54 @@ export function fedexTrackingUrl(trackingNumber: string): string {
   return url.toString();
 }
 
-/** A scan timestamp. FedEx sends a local wall-clock pair plus its explicit
+/**
+ * A scan's clock. FedEx sends a local wall-clock pair plus its explicit
  * offset, assembled into an offset-carrying ISO string rather than parsed, so
- * no zone is ever guessed; a scan with an unusable pair keeps no time. */
-function scanTime(scan: JsonObject): string {
+ * no zone is ever guessed. A step FedEx dates by its day alone, as it does its
+ * pickup, comes with a 00:00:00 time and no offset; it keeps the day in
+ * `local_time` rather than a midnight. Any other unusable triple keeps no clock.
+ */
+function scanClock(scan: JsonObject): Pick<CarrierEvent, 'time'> & { local_time?: string } {
   const date = cleanScalar(scan.date);
   const time = cleanScalar(scan.time);
   const offset = cleanScalar(scan.gmtOffset);
-  if (/^\d{4}-\d{2}-\d{2}$/.test(date)
-    && /^\d{2}:\d{2}(?::\d{2})?$/.test(time)
-    && /^[+-]\d{2}:?\d{2}$/.test(offset)) {
+  const day = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!day) return {};
+  if (/^\d{2}:\d{2}(?::\d{2})?$/.test(time) && /^[+-]\d{2}:?\d{2}$/.test(offset)) {
     const clock = time.length === 5 ? `${time}:00` : time;
     const parsed = explicitOffsetTime(`${date}T${clock}${offset}`);
-    if (parsed) return parsed.iso;
+    return parsed ? { time: parsed.iso } : {};
   }
-  return '';
+  const local = !offset && /^00:00(?::00)?$/.test(time)
+    ? calendarDay(Number(day[1]), Number(day[2]), Number(day[3])) : null;
+  return local ? { local_time: local } : {};
+}
+
+interface ListedScan {
+  event: CarrierEvent;
+  /** Its place in FedEx's list, which runs newest first. */
+  index: number;
+  /** The day of a scan dated by its day alone, else empty. */
+  day: string;
+}
+
+/**
+ * Newest first. A scan with a time sorts by its instant, since each carries
+ * its own offset, and one without a clock comes last. A scan dated by its day
+ * alone could be any time from the day's start at UTC+14 to its end at UTC−12:
+ * it goes below every scan certainly later, above every scan certainly earlier,
+ * and in FedEx's own order among the rest.
+ */
+function newestFirst(scans: readonly ListedScan[]): CarrierEvent[] {
+  const instant = (scan: ListedScan) => Date.parse(scan.event.time ?? '') || 0;
+  const ordered = scans.filter((scan) => !scan.day).sort((left, right) => instant(right) - instant(left));
+  for (const scan of scans.filter((scan) => scan.day)) {
+    const start = Date.parse(`${scan.day}T00:00:00Z`);
+    const at = ordered.findIndex((other) => other.day ? other.index > scan.index
+      : instant(other) < start - 14 * HOUR_MS || (instant(other) < start + 36 * HOUR_MS && other.index > scan.index));
+    ordered.splice(at < 0 ? ordered.length : at, 0, scan);
+  }
+  return ordered.map((scan) => scan.event);
 }
 
 function scanDescription(scan: JsonObject): string {
@@ -208,33 +242,32 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     }
     throw new SchemaError('FedEx', 'FedEx returned no usable tracking status');
   }
-  const events: CarrierEvent[] = [];
+  const listed: ListedScan[] = [];
   const seen = new Set<string>();
-  for (const raw of scans.slice(0, MAX_EVENTS_TO_INSPECT)) {
+  for (const [index, raw] of scans.slice(0, MAX_EVENTS_TO_INSPECT).entries()) {
     const description = scanDescription(raw);
     if (!description) continue;
     const statusCD = cleanScalar(raw.statusCD).toLocaleUpperCase('en-US');
     const stage = FEDEX_CODE_STAGE[statusCD]
       ?? fedexStage(`${clean(raw.status)} ${clean(raw.scanDetails)}`)
       ?? undefined;
-    const time = scanTime(raw);
+    const clock = scanClock(raw);
     const location = clean(raw.scanLocation);
     // A delivered scan names its signatory; the event keeps the fact, not the name.
     const event: CarrierEvent = {
-      ...(time ? { time } : {}),
+      ...clock,
       ...(location ? { location } : {}),
       description: stage === 'delivered' ? 'Delivered' : description,
       ...(stage ? { stage } : {}),
     };
-    const identity = JSON.stringify([event.time ?? '', event.location ?? '', event.description]);
+    const identity = JSON.stringify([clock.time ?? clock.local_time ?? '', event.location ?? '', event.description]);
     if (seen.has(identity)) continue;
     seen.add(identity);
-    events.push(event);
+    listed.push({ event, index, day: clock.local_time ?? '' });
   }
-  // Scans carry their own offsets, so their text does not sort by instant.
-  events.sort((left, right) => (Date.parse(right.time || '') || 0) - (Date.parse(left.time || '') || 0));
-  const trimmed = events.slice(0, MAX_EVENTS_TO_RETURN);
-  const statusText = keyStatus || trimmed[0]?.description || 'Tracking information received';
+  const trimmed = newestFirst(listed).slice(0, MAX_EVENTS_TO_RETURN);
+  const newest = trimmed[0];
+  const statusText = keyStatus || newest?.description || 'Tracking information received';
   const stage = FEDEX_CODE_STAGE[keyStatusCD.toUpperCase()]
     ?? fedexStage(`${keyStatus} ${statusDetails}`) ?? undefined;
   const status = fedexStatus(keyStatusCD, `${keyStatus} ${statusDetails}`, trimmed.length > 0);
@@ -246,7 +279,9 @@ export function parseFedExTrackingResponse(payload: unknown, trackingNumber: str
     status,
     ...(stage ? { current_stage: stage } : {}),
     last_status_text: delivered ? 'Delivered' : statusText,
-    last_update: trimmed[0]?.time || null,
+    last_update: newest?.time || null,
+    // A newest scan dated by its day alone has no instant, only that day.
+    ...(!newest?.time && typeof newest?.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
     expected_delivery: estimate,
     ...(delivered && deliveredAt(shipment.actDeliveryDt)
       ? { delivered_at: deliveredAt(shipment.actDeliveryDt) } : {}),

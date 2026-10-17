@@ -12,8 +12,15 @@ claims.
 
 ## Links
 
-Peddler's tracker opens one parcel at `track.pdlr.nl/trackntrace/{number}`, as archived
-lookups show. The library reads the number from that address.
+Peddler's tracker links one parcel as `track.pdlr.nl/trackntrace/{number}`, as archived
+lookups show, and the library reads the number from that address. The address fills the
+tracking form with the number, which shows a history only after a Cloudflare Turnstile check.
+
+## Limitations
+
+Peddler's server verifies the Turnstile token before it looks a number up, and the history page
+opens only for the number just verified. Peddler's apps are a shopping app and staff apps, and
+its shipping API needs a client account, so Peddler stays on universal providers.
 
 ## Testing
 

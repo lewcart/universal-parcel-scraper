@@ -17,6 +17,8 @@
     {"wording": "Verzending aangemeld door klant bij Peddler", "stage": "registered", "language": "nl", "confirmedBy": "portal", "note": "Dutch form of Shipment registered by client with Peddler."},
     {"wording": "Pakket bij distributiecentrum", "stage": "accepted", "language": "nl", "confirmedBy": "portal", "note": "Dutch form of Package at distribution center."},
     {"wording": "Onderweg naar depot", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "Dutch form of Enroute to local depot."},
+    {"wording": "Pakket in lokaal depot", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "Dutch form of Package in local depot."},
+    {"wording": "Onderweg naar afleveradres", "stage": "out_for_delivery", "language": "nl", "confirmedBy": "portal", "note": "Dutch form of Out for delivery."},
     {"wording": "Afgelevered", "stage": "delivered", "language": "nl", "confirmedBy": "portal", "note": "Delivered label in the tracker's archived Dutch locale file, spelled this way there."}
   ]
 }

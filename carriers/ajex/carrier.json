@@ -1,0 +1,62 @@
+{
+  "id": "ajex",
+  "displayName": "AJEX",
+  "aliases": [
+    "AJEX Logistics Services",
+    "AJEX Logistic Services",
+    "AJ-EX"
+  ],
+  "region": {
+    "countries": [
+      "SA",
+      "AE",
+      "BH"
+    ]
+  },
+  "brand": {
+    "color": "#ec171c"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://aj-ex.com/shipment-status/{trackingNumber}",
+    "searchUrl": "https://aj-ex.com/shipment-tracking",
+    "canaryUrl": "https://aj-ex.com/shipment-tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "aj-ex.com",
+        "www.aj-ex.com"
+      ],
+      "path": "^/(?:ar/)?shipment-status/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "aj-ex.com",
+        "www.aj-ex.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "ajex-1",
+      "pattern": "^AJ[AS]\\d{12}$",
+      "confidence": "high"
+    }
+  ]
+}

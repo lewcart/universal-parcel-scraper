@@ -347,4 +347,29 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('united-delivery-service');
     }
   });
+
+  it('names AJEX for AJA or AJS and twelve digits', () => {
+    for (const number of ['AJA000000000001', 'AJS000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'ajex', confidence: 'high', candidates: ['ajex'] });
+    }
+    for (const number of ['AJB000000000001', 'AJA00000000001', 'AJA0000000000001', 'A0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('ajex');
+    }
+  });
+
+  it('names Exelot for XLT and nine digits and leaves other prefixes to Purolator', () => {
+    expect(detectCarrierMatch('XLT000000001')).toMatchObject({ carrier: 'exelot', confidence: 'high' });
+    expect(detectCarrierMatch('XLU000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+    for (const number of ['XLT00000001', 'XLT0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('exelot');
+    }
+  });
+
+  it('suggests Starlinks for SL and ten digits without naming it', () => {
+    expect(detectCarrierMatch('SL0000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('SL0000000001').candidates).toContain('starlinks');
+    for (const number of ['SL000000001', 'SL00000000001', 'S0000000001', 'SM0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('starlinks');
+    }
+  });
 });

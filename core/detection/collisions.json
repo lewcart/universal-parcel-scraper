@@ -4346,5 +4346,23 @@
       "intl-post"
     ],
     "reason": "Deutsche Post and its offices abroad, DHL eCommerce's among them, issue the series under DE, so the postal fallback stays selected; recognition asks DHL eCommerce's Webtrack first and confirms the carrier."
+  },
+  {
+    "shape": "XLT9{9}",
+    "carriers": [
+      "colis-prive",
+      "exelot"
+    ],
+    "reason": "Colis Privé accepts any twelve-character alphanumeric, so it overlaps Exelot numbers; the specific high-confidence rule decides."
+  },
+  {
+    "shape": "SL9{10}",
+    "carriers": [
+      "aramex-au",
+      "aramex-nz",
+      "colis-prive",
+      "starlinks"
+    ],
+    "reason": "Aramex Australia and New Zealand accept any two letters and ten digits and Colis Privé any twelve characters; all these rules are low confidence, so the number stays a suggestion for each."
   }
 ]

@@ -3076,7 +3076,7 @@
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -5453,6 +5453,54 @@
       }
     ],
     "detectionRules": []
+  },
+  "ajex": {
+    "displayName": "AJEX",
+    "color": "#ec171c",
+    "aliases": [
+      "AJEX Logistics Services",
+      "AJEX Logistic Services",
+      "AJ-EX"
+    ],
+    "countries": [
+      "SA",
+      "AE",
+      "BH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://aj-ex.com/shipment-tracking",
+    "trackingUrlTemplate": "https://aj-ex.com/shipment-status/{trackingNumber}",
+    "trackingSearchUrl": "https://aj-ex.com/shipment-tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "aj-ex.com",
+          "www.aj-ex.com"
+        ],
+        "path": "^/(?:ar/)?shipment-status/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "aj-ex.com",
+          "www.aj-ex.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^AJ[AS]\\d{12}$",
+        "confidence": "high"
+      }
+    ]
   },
   "akash-ganga": {
     "displayName": "Akash Ganga Courier",
@@ -11480,6 +11528,51 @@
     ],
     "detectionRules": []
   },
+  "exelot": {
+    "displayName": "Exelot",
+    "color": "#2e00ab",
+    "aliases": [
+      "אקסלוט"
+    ],
+    "countries": [
+      "IL",
+      "GB",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.exelot.com/",
+    "trackingUrlTemplate": "https://go.exelot.com/tracking?barcodes={trackingNumber}",
+    "trackingSearchUrl": "https://www.exelot.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "go.exelot.com",
+          "myparcel.exelot.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "barcodes"
+        ]
+      },
+      {
+        "domains": [
+          "public.exelot.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^XLT\\d{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "exline-kz": {
     "displayName": "Exline",
     "color": "#0535ef",
@@ -15288,6 +15381,26 @@
     ],
     "detectionRules": []
   },
+  "kwick-box": {
+    "displayName": "KwickBox",
+    "color": "#254b66",
+    "aliases": [
+      "Kwick Box"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.kwick-box.com/",
+    "trackingSearchUrl": "https://www.kwick-box.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "kyrgyz-post": {
     "displayName": "Kyrgyz Post",
     "color": "#184cec",
@@ -15479,6 +15592,38 @@
         "pathPattern": "^/Tracking/Guia[Cc]ompleta\\.aspx$",
         "params": [
           "Guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "labaih": {
+    "displayName": "LaBaih",
+    "color": "#ff8e00",
+    "aliases": [
+      "لبيه",
+      "MyLabaih"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mylabaih.com/",
+    "trackingUrlTemplate": "https://track.mylabaih.com/track/?cn={trackingNumber}",
+    "trackingSearchUrl": "https://mylabaih.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.mylabaih.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "cn"
         ]
       }
     ],
@@ -21104,6 +21249,35 @@
       }
     ]
   },
+  "shipblu": {
+    "displayName": "ShipBlu",
+    "color": "#0a3266",
+    "aliases": [
+      "شيب بلو",
+      "ShipBlu Technology"
+    ],
+    "countries": [
+      "EG"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Cairo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://go.shipblu.com/en/",
+    "trackingUrlTemplate": "https://go.shipblu.com/en/{trackingNumber}",
+    "trackingSearchUrl": "https://go.shipblu.com/en/",
+    "linkRules": [
+      {
+        "domains": [
+          "go.shipblu.com"
+        ],
+        "path": "^/(?:en|ar)/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
     "color": "#f58220",
@@ -22304,6 +22478,49 @@
       }
     ],
     "detectionRules": []
+  },
+  "starlinks": {
+    "displayName": "Starlinks",
+    "color": "#1f6a4a",
+    "aliases": [
+      "StarLinks"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.starlinks-me.com/tracking",
+    "trackingUrlTemplate": "https://consignee.starlinks-me.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.starlinks-me.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "consignee.starlinks-me.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "www.starlinks-me.com",
+          "starlinks-me.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "search"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SL\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "steadfast": {
     "displayName": "Steadfast Courier",

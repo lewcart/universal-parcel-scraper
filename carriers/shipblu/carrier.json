@@ -1,0 +1,42 @@
+{
+  "id": "shipblu",
+  "displayName": "ShipBlu",
+  "aliases": [
+    "شيب بلو",
+    "ShipBlu Technology"
+  ],
+  "region": {
+    "countries": [
+      "EG"
+    ]
+  },
+  "brand": {
+    "color": "#0a3266"
+  },
+  "selectable": true,
+  "timezone": "Africa/Cairo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://go.shipblu.com/en/{trackingNumber}",
+    "searchUrl": "https://go.shipblu.com/en/",
+    "canaryUrl": "https://go.shipblu.com/en/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "go.shipblu.com"
+      ],
+      "path": "^/(?:en|ar)/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

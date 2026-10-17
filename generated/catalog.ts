@@ -3078,7 +3078,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -5455,6 +5455,54 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "ajex": {
+    "displayName": "AJEX",
+    "color": "#ec171c",
+    "aliases": [
+      "AJEX Logistics Services",
+      "AJEX Logistic Services",
+      "AJ-EX"
+    ],
+    "countries": [
+      "SA",
+      "AE",
+      "BH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://aj-ex.com/shipment-tracking",
+    "trackingUrlTemplate": "https://aj-ex.com/shipment-status/{trackingNumber}",
+    "trackingSearchUrl": "https://aj-ex.com/shipment-tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "aj-ex.com",
+          "www.aj-ex.com"
+        ],
+        "path": "^/(?:ar/)?shipment-status/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "aj-ex.com",
+          "www.aj-ex.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^AJ[AS]\\d{12}$",
+        "confidence": "high"
+      }
+    ]
   },
   "akash-ganga": {
     "displayName": "Akash Ganga Courier",
@@ -11482,6 +11530,51 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "exelot": {
+    "displayName": "Exelot",
+    "color": "#2e00ab",
+    "aliases": [
+      "אקסלוט"
+    ],
+    "countries": [
+      "IL",
+      "GB",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.exelot.com/",
+    "trackingUrlTemplate": "https://go.exelot.com/tracking?barcodes={trackingNumber}",
+    "trackingSearchUrl": "https://www.exelot.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "go.exelot.com",
+          "myparcel.exelot.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "barcodes"
+        ]
+      },
+      {
+        "domains": [
+          "public.exelot.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^XLT\\d{9}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "exline-kz": {
     "displayName": "Exline",
     "color": "#0535ef",
@@ -15290,6 +15383,26 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "kwick-box": {
+    "displayName": "KwickBox",
+    "color": "#254b66",
+    "aliases": [
+      "Kwick Box"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.kwick-box.com/",
+    "trackingSearchUrl": "https://www.kwick-box.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "kyrgyz-post": {
     "displayName": "Kyrgyz Post",
     "color": "#184cec",
@@ -15481,6 +15594,38 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/Tracking/Guia[Cc]ompleta\\.aspx$",
         "params": [
           "Guia"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "labaih": {
+    "displayName": "LaBaih",
+    "color": "#ff8e00",
+    "aliases": [
+      "لبيه",
+      "MyLabaih"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mylabaih.com/",
+    "trackingUrlTemplate": "https://track.mylabaih.com/track/?cn={trackingNumber}",
+    "trackingSearchUrl": "https://mylabaih.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.mylabaih.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "cn"
         ]
       }
     ],
@@ -21106,6 +21251,35 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "shipblu": {
+    "displayName": "ShipBlu",
+    "color": "#0a3266",
+    "aliases": [
+      "شيب بلو",
+      "ShipBlu Technology"
+    ],
+    "countries": [
+      "EG"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Cairo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://go.shipblu.com/en/",
+    "trackingUrlTemplate": "https://go.shipblu.com/en/{trackingNumber}",
+    "trackingSearchUrl": "https://go.shipblu.com/en/",
+    "linkRules": [
+      {
+        "domains": [
+          "go.shipblu.com"
+        ],
+        "path": "^/(?:en|ar)/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
     "color": "#f58220",
@@ -22306,6 +22480,49 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "starlinks": {
+    "displayName": "Starlinks",
+    "color": "#1f6a4a",
+    "aliases": [
+      "StarLinks"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.starlinks-me.com/tracking",
+    "trackingUrlTemplate": "https://consignee.starlinks-me.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.starlinks-me.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "consignee.starlinks-me.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "www.starlinks-me.com",
+          "starlinks-me.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "search"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SL\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "steadfast": {
     "displayName": "Steadfast Courier",
@@ -24924,6 +25141,7 @@ export const CARRIER_IDS = [
   "aeropost",
   "aex-paraguay",
   "afghan-post",
+  "ajex",
   "akash-ganga",
   "aks-express",
   "alem-tat",
@@ -25077,6 +25295,7 @@ export const CARRIER_IDS = [
   "evri-uk",
   "evropat",
   "ewe",
+  "exelot",
   "exline-kz",
   "express-one",
   "fan-courier",
@@ -25178,12 +25397,14 @@ export const CARRIER_IDS = [
   "ktd",
   "kuehne-nagel",
   "kunyoung",
+  "kwick-box",
   "kyrgyz-post",
   "la-poste-burkina-faso",
   "la-poste-ci",
   "la-poste-senegal",
   "la-poste-tunisienne",
   "laar-courier",
+  "labaih",
   "lao-post",
   "latvijas-pasts",
   "lbc-express",
@@ -25329,6 +25550,7 @@ export const CARRIER_IDS = [
   "sfc",
   "shadowfax",
   "shipa",
+  "shipblu",
   "shree-anjani",
   "shree-maruti",
   "shree-nandan",
@@ -25357,6 +25579,7 @@ export const CARRIER_IDS = [
   "st-courier",
   "stallion-express",
   "starken",
+  "starlinks",
   "steadfast",
   "sundarban-courier",
   "surat-kargo",
@@ -25547,6 +25770,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
+  "ajex": ["ajex-1"],
   "akash-ganga": [],
   "aks-express": [],
   "alem-tat": [],
@@ -25700,6 +25924,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
   "evropat": [],
   "ewe": [],
+  "exelot": ["exelot-1"],
   "exline-kz": [],
   "express-one": [],
   "fan-courier": [],
@@ -25801,12 +26026,14 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
   "kunyoung": [],
+  "kwick-box": [],
   "kyrgyz-post": [],
   "la-poste-burkina-faso": [],
   "la-poste-ci": [],
   "la-poste-senegal": [],
   "la-poste-tunisienne": [],
   "laar-courier": [],
+  "labaih": [],
   "lao-post": [],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
@@ -25952,6 +26179,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sfc": ["sfc-1","sfc-ae"],
   "shadowfax": ["shadowfax-1","shadowfax-2"],
   "shipa": ["shipa-1"],
+  "shipblu": [],
   "shree-anjani": [],
   "shree-maruti": [],
   "shree-nandan": [],
@@ -25980,6 +26208,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "st-courier": [],
   "stallion-express": ["stallion-express-1","stallion-express-2"],
   "starken": [],
+  "starlinks": ["starlinks-1"],
   "steadfast": ["steadfast-1"],
   "sundarban-courier": [],
   "surat-kargo": [],

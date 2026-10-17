@@ -1,0 +1,14 @@
+{
+  "carrier": "ajex",
+  "entries": [
+    {"wording": "Shipper generated a new shipment label, but the shipment has not been handed over to AJEX yet. Shipment will be updated once collected from shipper and received at AJEX office", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Shipment received at AJEX origin office - shipment will keep moving to reach its destination country", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Your shipment is on the way", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Status heading; text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Shipment is out for delievry", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "Spelling as on the site. Text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Shipment Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Your shipment is Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status heading; text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Your shipment has been cancelled", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status heading; text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Your shipment's return has been initiated", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status heading; text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."},
+    {"wording": "Your shipment has been returned to origin", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status heading; text from the English strings AJEX's site ships for its shipment-status page; not seen in a captured history."}
+  ]
+}

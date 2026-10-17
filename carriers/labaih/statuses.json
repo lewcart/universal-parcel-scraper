@@ -1,0 +1,14 @@
+{
+  "carrier": "labaih",
+  "entries": [
+    {"wording": "تم إنشاء الشحنة", "stage": "registered", "language": "ar", "confirmedBy": "portal", "note": "Shipment created; the first event of every captured history."},
+    {"wording": "تم استلام الشحنة من الشريك", "stage": "accepted", "language": "ar", "confirmedBy": "portal", "note": "Shipment collected from the partner, the online shop that sends it."},
+    {"wording": "العميل قام بإرسال إحداثيات التوصيل", "language": "ar", "confirmedBy": "portal", "note": "The recipient sent the delivery location; not a parcel movement."},
+    {"wording": "وصلت الشحنة إلى مركز التوزيع", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "Shipment arrived at the distribution centre."},
+    {"wording": "وصلت الشحنة إلى مركز التوزيع بـالرياض", "stage": "in_transit", "language": "ar", "confirmedBy": "portal", "note": "The same event with the city appended; Jeddah appears the same way."},
+    {"wording": "الشحنة في طريقها إلى العميل", "stage": "out_for_delivery", "language": "ar", "confirmedBy": "portal", "note": "Shipment on its way to the customer."},
+    {"wording": "محاولة توصيل غير ناجحة", "stage": "failed_attempt", "language": "ar", "confirmedBy": "portal", "note": "Unsuccessful delivery attempt."},
+    {"wording": "تم استلام الشحنة", "stage": "accepted", "language": "ar", "confirmedBy": "portal", "note": "Step label in the tracker's progress bar."},
+    {"wording": "تم التوصيل", "stage": "delivered", "language": "ar", "confirmedBy": "portal", "note": "Step label in the tracker's progress bar."}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "exelot",
+  "displayName": "Exelot",
+  "aliases": [
+    "אקסלוט"
+  ],
+  "region": {
+    "countries": [
+      "IL",
+      "GB",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#2e00ab"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jerusalem",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://go.exelot.com/tracking?barcodes={trackingNumber}",
+    "searchUrl": "https://www.exelot.com/",
+    "canaryUrl": "https://www.exelot.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "go.exelot.com",
+        "myparcel.exelot.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "barcodes"
+      ]
+    },
+    {
+      "domains": [
+        "public.exelot.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "exelot-1",
+      "pattern": "^XLT\\d{9}$",
+      "confidence": "high"
+    }
+  ]
+}

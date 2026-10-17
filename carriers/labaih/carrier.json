@@ -1,0 +1,45 @@
+{
+  "id": "labaih",
+  "displayName": "LaBaih",
+  "aliases": [
+    "لبيه",
+    "MyLabaih"
+  ],
+  "region": {
+    "countries": [
+      "SA"
+    ]
+  },
+  "brand": {
+    "color": "#ff8e00"
+  },
+  "selectable": true,
+  "timezone": "Asia/Riyadh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.mylabaih.com/track/?cn={trackingNumber}",
+    "searchUrl": "https://mylabaih.com/",
+    "canaryUrl": "https://mylabaih.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.mylabaih.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "cn"
+      ]
+    }
+  ],
+  "detection": []
+}

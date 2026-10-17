@@ -84,6 +84,12 @@
     "reason": "AEX guías of the A series fall inside Allegro One's high-confidence A0 shape, and nothing else in the number names AEX."
   },
   {
+    "carrier": "ajex",
+    "pattern": "^A\\d{10}$",
+    "kind": "by_design",
+    "reason": "AJEX's eleven-character numbers share their shape with GLS Italy's depot numbers."
+  },
+  {
     "carrier": "akash-ganga",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -1741,6 +1747,12 @@
     "reason": "Kunyoung Express numbers are bare ten-digit runs without a known check digit, a shape many carriers share."
   },
   {
+    "carrier": "kwick-box",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "KwickBox's twelve-digit shipment numbers share their shape with many carriers' numeric numbers."
+  },
+  {
     "carrier": "la-poste-senegal",
     "pattern": "^JT\\d{13}$",
     "kind": "by_design",
@@ -1751,6 +1763,12 @@
     "pattern": "^GYE\\d{10}$",
     "kind": "by_design",
     "reason": "Only one public Laar guía is known, so a rule for its letter prefix would rest on a single sample."
+  },
+  {
+    "carrier": "labaih",
+    "pattern": "^\\d{14}$",
+    "kind": "by_design",
+    "reason": "LaBaih's fourteen-digit numbers share their shape with many carriers' numeric numbers."
   },
   {
     "carrier": "landmark-global",
@@ -2573,6 +2591,12 @@
     "reason": "Shadowfax's tracker knows AWBs whose merchant code has one or two letters, but too few samples show these shorter codes to widen the three-letter rule."
   },
   {
+    "carrier": "shipblu",
+    "pattern": "^[1-4]\\d{10,11}$",
+    "kind": "by_design",
+    "reason": "ShipBlu's all-digit numbers share their shape with many carriers' numeric numbers."
+  },
+  {
     "carrier": "shipup",
     "kind": "by_design",
     "reason": "An invented shape check; ShipUp has no number shape of its own."
@@ -2702,6 +2726,12 @@
     "pattern": "^\\d{9}$",
     "kind": "by_design",
     "reason": "Nine digits are printed by many carriers and nothing in the number points to Starken."
+  },
+  {
+    "carrier": "starlinks",
+    "pattern": "^S\\d{10}$",
+    "kind": "by_design",
+    "reason": "Starlinks' S plus ten digits numbers share their shape with GLS Italy's depot numbers."
   },
   {
     "carrier": "steadfast",

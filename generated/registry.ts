@@ -251,6 +251,7 @@ import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as saudiPost } from '../carriers/saudi-post/adapter.js';
 import { adapter as seino } from '../carriers/seino/adapter.js';
+import { adapter as sending } from '../carriers/sending/adapter.js';
 import { adapter as serpost } from '../carriers/serpost/adapter.js';
 import { adapter as servientrega } from '../carriers/servientrega/adapter.js';
 import { adapter as seur } from '../carriers/seur/adapter.js';
@@ -575,6 +576,7 @@ export const REGISTRY: RegistryDefinition = {
     "sameday": sameday,
     "saudi-post": saudiPost,
     "seino": seino,
+    "sending": sending,
     "serpost": serpost,
     "servientrega": servientrega,
     "seur": seur,
@@ -1126,7 +1128,7 @@ export const REGISTRY: RegistryDefinition = {
     "seino": "seino",
     "seko": "universal",
     "sendex": "universal",
-    "sending": "universal",
+    "sending": "sending",
     "serpost": "serpost",
     "servientrega": "servientrega",
     "seur": "seur",

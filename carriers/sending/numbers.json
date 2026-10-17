@@ -139,7 +139,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -158,7 +158,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An OCU complaint against Sending / InPost gives it as the shipment number."
+      "note": "An OCU complaint against Sending / InPost gives it as the shipment number. Sending's tracker shows it delivered after failed attempts."
     },
     {
       "number": "316271635450",
@@ -267,7 +267,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -288,7 +288,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An OCU complaint addressed to Sending gives it as the parcel's tracking reference."
+      "note": "An OCU complaint addressed to Sending gives it as the parcel's tracking reference. Sending's tracker shows its failed delivery attempts and writes it off as missing."
     },
     {
       "number": "920102399675",
@@ -423,6 +423,100 @@
         ]
       },
       "note": "An OCU complaint addressed to Sending gives it as the shipment number handled by a Sending branch."
+    },
+    {
+      "number": "782002857007",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/sending-dos-intentos-de-entr/c7ac6de0744fb449a8",
+        "date": "2026-10-16",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "An OCU complaint addressed to Sending gives it as the shipment number. Sending's tracker shows it on its delivery rounds."
+    },
+    {
+      "number": "920102677892",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/robo-no-entrega-de-paquetes/c01328dafb533c8d89",
+        "date": "2026-09-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "An OCU complaint addressed to Sending gives it as the parcel's number. Sending's tracker shows it delivered after failed attempts."
+    },
+    {
+      "number": "999989593965",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/problema-con-entrega/71b1b5543ae56afcbe",
+        "date": "2026-07-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "An OCU complaint addressed to Sending gives it as the reference of one of two undelivered parcels."
     }
   ]
 }

@@ -20396,7 +20396,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sending",
+      "recognitionRank": 891,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sending.es/localiza-tu-envio/",
     "trackingSearchUrl": "https://www.sending.es/localiza-tu-envio/",

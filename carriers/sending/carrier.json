@@ -18,17 +18,62 @@
   "timezone": "Europe/Madrid",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sending",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 891
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://www.sending.es/localiza-tu-envio/",
     "canaryUrl": "https://www.sending.es/localiza-tu-envio/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "customer_reference",
+      "eta_window",
+      "origin",
+      "destination",
+      "postcodes",
+      "delivery_office",
+      "depot_code",
+      "signatory",
+      "delivery_options"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "progress_rail"
+    ],
+    "discarded": [
+      "customer_reference",
+      "eta_window",
+      "origin",
+      "destination",
+      "postcodes",
+      "delivery_office",
+      "depot_code",
+      "signatory",
+      "delivery_options"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [],
   "detection": []

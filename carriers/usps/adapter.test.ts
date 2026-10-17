@@ -94,6 +94,16 @@ describe('USPS rendered page', () => {
     expect(() => parseUSPSTrackingHtml(TIMELINE_PAGE, IN_TRANSIT_NUMBER)).toThrow('requested parcel');
   });
 
+  it('reads the state a facility names before its kind', () => {
+    for (const [facility, time] of [['EXAMPLE NY DISTRIBUTION CENTER', '2025-03-14T12:17:00-04:00'],
+      ['EXAMPLE CITY CA NETWORK DISTRIBUTION CENTER', '2025-03-14T12:17:00-07:00'], ['ISC EXAMPLE CITY IL (USPS)', '2025-03-14T12:17:00-05:00']] as const) {
+      const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', facility), DELIVERED_NUMBER);
+      expect(result.events?.[0], facility).toMatchObject({ location: facility, time });
+    }
+    const unnamed = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('EXAMPLE CITY, NY 00000', 'EXAMPLE DISTRIBUTION CENTER'), DELIVERED_NUMBER);
+    expect(unnamed.events?.[0]).toMatchObject({ local_time: '2025-03-14T12:17:00' });
+  });
+
   it('preserves a date-only update without inventing a clock time', () => {
     const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replace('March 14, 2025 12:17 PM', 'March 14, 2025'), DELIVERED_NUMBER);
     expect(result.events?.[0]).toMatchObject({ description: 'Delivered', raw_time: 'March 14, 2025' });

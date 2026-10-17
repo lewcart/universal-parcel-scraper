@@ -58,7 +58,8 @@ Parsing, in order:
   USPS has no HTTP lookup. Other suffixes reach USPS when callers select it or through
   the delivery-partner handoff route.
 - Scan times are facility-local. The state in the location maps to a zone (multi-zone states
-  use their majority zone). With no resolvable state the event keeps an offset-free
+  use their majority zone); a facility without a comma names its state before its kind, as in
+  `EXAMPLE CITY NY DISTRIBUTION CENTER`. With no resolvable state the event keeps an offset-free
   `local_time`, or `raw_time` for date-only text, and the page's newest-first order is kept
   rather than re-sorted.
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.

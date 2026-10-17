@@ -12,6 +12,17 @@ const API = `https://dhle.dhl.com/access/access/${APP}`;
 const APPLICATION_BEARER = "Bearer MtX6uKNcGM295BXaJGa83GFhTHCL9a";
 /** How long a confirmed plaintext-waybill setting is reused before it is read again. */
 export const SETTINGS_TTL_MS = 15 * 60_000;
+/** The codes of the CAPTCHA the app would show, which DHL turns on for a whole address at a time. */
+const CAPTCHA_CODES = ['DRG10012', 'DRG10013'];
+/**
+ * How long after a CAPTCHA tracking is not asked again. Asked every two
+ * minutes, the address kept its CAPTCHA past a quarter of an hour; left alone
+ * for half an hour, it was gone.
+ */
+export const CAPTCHA_MEMORY_MS = 30 * 60_000;
+
+/** The mobile API's CAPTCHA, which the instance remembers. */
+class CaptchaError extends ChallengeError {}
 
 /** Mobile errors can arrive as JSON strings or envelopes with HTTP 200. */
 function checkReply(payload: unknown, httpStatus: number): void {
@@ -22,19 +33,24 @@ function checkReply(payload: unknown, httpStatus: number): void {
     .filter((value): value is string | number => typeof value === 'string' || typeof value === 'number')
     .map((value) => String(value).trim());
   if (codes.some((code) => ['429', 'temporary_blocked', 'max_attempts_reached'].includes(code))) throw new RateLimitedError(PROVIDER);
-  if (codes.some((code) => ['401', '403', '428', 'DRG10012', 'DRG10013'].includes(code))) throw new ChallengeError(PROVIDER, 'DHL mobile tracking requires verification', httpStatus === 200 ? undefined : { status: httpStatus });
+  const status = httpStatus === 200 ? undefined : { status: httpStatus };
+  if (codes.some((code) => CAPTCHA_CODES.includes(code))) throw new CaptchaError(PROVIDER, 'DHL mobile tracking requires verification', status);
+  if (codes.some((code) => ['401', '403', '428'].includes(code))) throw new ChallengeError(PROVIDER, 'DHL mobile tracking requires verification', status);
   const serverError = codes.find((code) => /^5\d{2}$/.test(code));
   if (serverError) throw new UpstreamHttpError(PROVIDER, Number(serverError));
 }
 
 /**
- * The guest mobile API for one adapter instance: its device identity and the
- * last time the application configuration allowed a plaintext waybill.
+ * The guest mobile API for one adapter instance: its device identity, the last
+ * time the application configuration allowed a plaintext waybill and its last
+ * CAPTCHA.
  */
 export class DhlMobileApi {
   private readonly device = randomUUID();
   /** When `api_awb_encryption` last read N; null until it is read again. */
   private settingsCheckedAt: number | null = null;
+  /** When the mobile API last answered with its CAPTCHA. */
+  private captchaAt: number | null = null;
 
   constructor(private readonly environment: AdapterEnvironment) {}
 
@@ -43,9 +59,13 @@ export class DhlMobileApi {
    * confirmed within the TTL, so an empty list counts as missing only under a
    * recently verified configuration. Any reply other than a shipment list
    * discards the setting. A request that got no reply, including one its own
-   * lookup cancelled or ran out of time for, says nothing about it.
+   * lookup cancelled or ran out of time for, says nothing about it. A CAPTCHA
+   * holds for every waybill and device from the address for a while, so for
+   * `CAPTCHA_MEMORY_MS` after one, lookups fail as a challenge without a request.
    */
   async tracking(number: string, budget: LookupBudget): Promise<unknown> {
+    const captchaAt = this.captchaAt;
+    if (captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
     const checkedAt = this.settingsCheckedAt;
     if (checkedAt === null || Date.now() - checkedAt >= SETTINGS_TTL_MS) await this.checkSettings(budget);
     let payload: unknown;
@@ -54,6 +74,7 @@ export class DhlMobileApi {
         addShipmentToODD: 'N', moreDetails: 'Y', iv: Buffer.from(randomBytes(8).toString('hex')).toString('base64'), captchaVerificationData: {} });
     } catch (error) {
       if (!(error instanceof UpstreamNetworkError) && !budget.signal.aborted) this.settingsCheckedAt = null;
+      if (error instanceof CaptchaError) this.captchaAt = Date.now();
       throw error;
     }
     if (!Array.isArray(payload)) this.settingsCheckedAt = null;

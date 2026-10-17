@@ -3,7 +3,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
 import { adapter, DhlExpressTracker, normalizeNumber, normalizePieceId, parse, parseMobile, parseUnified, parseUnifiedPiece } from './adapter.js';
-import { SETTINGS_TTL_MS } from './mobile.js';
+import { CAPTCHA_MEMORY_MS, SETTINGS_TTL_MS } from './mobile.js';
 import { dhlExpressStage } from './status.js';
 
 const number = '1234567891';
@@ -268,7 +268,7 @@ describe('DHL mobile API', () => {
     expect(await carrier.recognize!(number)).toEqual({ known: false });
     expect(await carrier.recognize!(number)).toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(3);
-    for (const [reply, kind] of [['DRG10012', ChallengeError], [{ statusCode: 401 }, ChallengeError], ['temporary_blocked', RateLimitedError],
+    for (const [reply, kind] of [[{ statusCode: 401 }, ChallengeError], ['temporary_blocked', RateLimitedError],
       [{ statusCode: 404, error: 'Not Found' }, SchemaError]] as const) {
       fetcher.mockClear().mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? reply : settings)));
       await expect(carrier.recognize!(number)).rejects.toThrow(kind);
@@ -277,6 +277,40 @@ describe('DHL mobile API', () => {
       fetcher.mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? [] : settings)));
       expect(await carrier.recognize!(number)).toEqual({ known: false });
     }
+  });
+  it('asks nothing for any waybill while a CAPTCHA may hold, and recovers through the browser meanwhile', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => JSON.parse(String(init?.body)).method === 'tracking'
+        ? new Response(JSON.stringify({ error: 'DRG10012' }), { status: 503 }) : new Response(JSON.stringify(settings)));
+      const trawl = new TrawlClient('https://browser.example');
+      const scrape = vi.spyOn(trawl, 'scrape').mockResolvedValue({ url: '', html: '', cookies: [], userAgent: null, tier: 2, statusCode: 200, raw: {},
+        capturedResponses: [captured()] });
+      const recorder = { ...NOOP_RECORDER, step: vi.fn() };
+      const tracker = new DhlExpressTracker({ ...environment(fetcher, trawl), recorder });
+      await expect(tracker.direct(number)).rejects.toMatchObject({ kind: 'challenge', status: 503 });
+      expect(services(fetcher)).toEqual(['common-countrySettingsBySettingName', 'shipments-tracking']);
+      fetcher.mockClear();
+      await expect(tracker.direct('1234567880')).rejects.toThrow('recently required verification');
+      await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
+      expect(recorder.step).toHaveBeenLastCalledWith(expect.objectContaining({ step: 'trawl', fallbackFrom: 'direct', fallbackErrorType: 'ChallengeError' }));
+      expect(scrape).toHaveBeenCalledOnce();
+      vi.setSystemTime(Date.now() + CAPTCHA_MEMORY_MS - 1);
+      await expect(tracker.direct(number)).rejects.toThrow(ChallengeError);
+      expect(fetcher).not.toHaveBeenCalled();
+      vi.setSystemTime(Date.now() + 1);
+      fetcher.mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? mobilePayload() : settings)));
+      await expect(tracker.direct(number)).resolves.toMatchObject({ status: 'delivered' });
+      expect(services(fetcher)).toEqual(['common-countrySettingsBySettingName', 'shipments-tracking']);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it('does not remember another verification requirement', async () => {
+    const fetcher = mobileFetcher({ statusCode: 401 }); const tracker = new DhlExpressTracker(environment(fetcher));
+    await expect(tracker.direct(number)).rejects.toThrow(ChallengeError);
+    await expect(tracker.direct(number)).rejects.toThrow(ChallengeError);
+    expect(services(fetcher)).toEqual(Array(2).fill(['common-countrySettingsBySettingName', 'shipments-tracking']).flat());
   });
   it('does not keep a refused setting or a failed settings read', async () => {
     const fetcher = mobileFetcher([], [{ name: 'api_awb_encryption', value: 'Y' }]); const tracker = new DhlExpressTracker(environment(fetcher));

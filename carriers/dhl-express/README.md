@@ -78,6 +78,9 @@ The mobile API can report its CAPTCHA code inside HTTP 503; that explicit code
 is verification evidence rather than a maintenance or missing-shipment answer.
 A few tracking requests in quick succession from one address draw that code for
 every waybill and device for a while; the settings read keeps answering.
+Asked every two minutes, the code stayed on past a quarter of an hour; after
+half an hour without requests it was gone. So after one, the adapter asks the
+mobile API nothing for half an hour and its lookups go to the browser.
 
 Checkpoint stages come from [status.ts](status.ts). DHL's fixed sentences match
 whole, and those that end with the facility ("Processed at CITY - COUNTRY")

@@ -336,15 +336,15 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'shipment is out with courier for delivery')).toEqual(mapped('out_for_delivery'));
     expect(answer('unknown', null, 'admitido.. el envío ha tenido admisión en origen.')).toEqual(mapped('accepted'));
     expect(answer('unknown', null, 'i̇ptal edildi')).toEqual(mapped('exception'));
-    // MailAmericas' hand-overs on the way to the last mile are no delivery.
+    // MailAmericas' hand-overs on the way to the last mile are no delivery, and its customs release moves the parcel on.
     for (const wording of ['Arrived at destination country. Delivered by Airline', 'Receiving destination mail. Delivered to Distributor',
-      'Deliver to distributor']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
+      'Deliver to distributor', 'Destination customs. Released']) expect(answer('unknown', null, wording), wording).toEqual(mapped('in_transit'));
     // Postal Ninja's, ParcelsApp's and Ship24's relayed steps, read whole.
     for (const [wording, stage] of [['registered in the system', 'registered'], ['2) Example Center Your order has been received', 'in_transit'],
       ['USPS in possession of item, EXAMPLE, ST 00000', 'accepted'], ['inventory in a warehouse', 'in_transit'], ['hand over to airline', 'in_transit'],
       ['new delivery, flexible delivery arrangement', 'in_transit'], ['in lavorazione', 'in_transit'], ['uscita centro postale', 'in_transit'],
       ['Your order has been shipped from 2) Example Center', 'in_transit']] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
-    for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward']) {
+    for (const wording of ["in paack's distribution centre", 'girildi', 'order triggered by recipient: forward', 'Released']) {
       expect(answer('unknown', null, wording), wording).toEqual(unknown);
     }
   });

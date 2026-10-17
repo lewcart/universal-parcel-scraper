@@ -1,7 +1,10 @@
 {
   "id": "mondial-relay",
   "displayName": "Mondial Relay",
-  "aliases": [],
+  "aliases": [
+    "InPost Spain",
+    "InPost España"
+  ],
   "region": {
     "countries": [
       "FR",

@@ -1071,6 +1071,10 @@ export const CARRIER_CATALOG = {
   "mondial-relay": {
     "displayName": "Mondial Relay",
     "color": "#ef3026",
+    "aliases": [
+      "InPost Spain",
+      "InPost España"
+    ],
     "countries": [
       "FR",
       "BE",

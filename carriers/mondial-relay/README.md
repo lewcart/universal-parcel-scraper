@@ -5,6 +5,10 @@ the consumer app's backend when an InPost account is configured, else through
 the French recipient website in a real browser, because Cloudflare blocks
 direct requests to that flow.
 
+In Spain and Portugal the network trades as InPost: `inpost.es` and `inpost.pt` run its site
+and tracker, with the same 8-character shipment numbers. InPost's own hub also serves Portugal,
+so only the Spanish names resolve here.
+
 ## How it works
 
 1. `app` (only with `MONDIAL_RELAY_REFRESH_TOKEN`): the app backend, signed in

@@ -900,6 +900,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'uzbekistan-post', number: 'ZZ000000014UZ',
     route: /^https:\/\/uz\.post\/ru\/tracking\/ZZ000000014UZ\/?$/,
     marker: /CC123456789UZ/ },
+  // The page puts the number in its address into its field, looks it up and names it in its not-found row.
+  { carrier: 'posta-north-macedonia', number: 'ZZ000000014MK',
+    route: /^https:\/\/www\.posta\.com\.mk\/Tracking\/index\.html\?tn=ZZ000000014MK$/,
+    marker: /Не се пронајдени податоци за \(ZZ000000014MK\)/ },
   // The page looks the number from its path up once it loads, and names it in its not-found notice.
   { carrier: 'nipost', number: 'ZZ000000014NG',
     route: /^https:\/\/tracking\.nipost\.gov\.ng\/ZZ000000014NG$/,

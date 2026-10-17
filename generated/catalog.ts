@@ -18491,7 +18491,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Skopje",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-north-macedonia",
+      "recognitionRank": 899,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.com.mk/Tracking/index.html",
     "trackingUrlTemplate": "https://www.posta.com.mk/Tracking/index.html?tn={trackingNumber}",

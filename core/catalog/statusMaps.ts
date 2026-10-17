@@ -169,6 +169,7 @@ import { statusMap as pecom } from '../../carriers/pecom/status.js';
 import { statusMap as phlpost } from '../../carriers/phlpost/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
+import { statusMap as postaNorthMacedonia } from '../../carriers/posta-north-macedonia/status.js';
 import { statusMap as postaRomana } from '../../carriers/posta-romana/status.js';
 import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/status.js';
 import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
@@ -265,7 +266,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, oca,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, packlink,
   'pakistan-post': pakistanPost, paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom, phlpost, 'pos-indonesia': posIndonesia,
-  'post-luxembourg': postLuxembourg, 'posta-romana': postaRomana, 'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
+  'post-luxembourg': postLuxembourg, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
+  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, ppl,
   ptt, raben, redpack, redx, 'rl-carriers': rlCarriers, 'rpx-indonesia': rpxIndonesia, sagawa, saia, sameday, 'saudi-post': saudiPost, seino,
   servientrega, sfc, shadowfax, 'skroutz-last-mile': skroutzLastMile, 'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,

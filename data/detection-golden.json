@@ -55204,6 +55204,17 @@
     ]
   },
   {
+    "input": "CA000264254MK",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "CA000558528BF",
     "carrier": "intl-post",
     "confidence": "high",
@@ -57669,6 +57680,14 @@
     "asked": [
       "slovenska-posta",
       "chronopost"
+    ]
+  },
+  {
+    "input": "CQ117742716DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
     ]
   },
   {
@@ -70838,6 +70857,17 @@
     ]
   },
   {
+    "input": "RB084423377MK",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "RB091039471PK",
     "carrier": "intl-post",
     "confidence": "high",
@@ -70850,6 +70880,17 @@
   },
   {
     "input": "RB109494650PK",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RB155440897MK",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [
@@ -71233,6 +71274,14 @@
   },
   {
     "input": "RF426331371SG",
+    "carrier": "singapore-post",
+    "confidence": "high",
+    "candidates": [
+      "singapore-post"
+    ]
+  },
+  {
+    "input": "RF485517880SG",
     "carrier": "singapore-post",
     "confidence": "high",
     "candidates": [
@@ -75385,6 +75434,18 @@
   },
   {
     "input": "UB209300714LV",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "latvijas-pasts",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "UB589844375LV",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

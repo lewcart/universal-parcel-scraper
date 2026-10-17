@@ -401,8 +401,8 @@ describe('ParcelsApp result parsing', () => {
       reported_carriers: ['DPD Group'], discovered_carrier: 'dpd',
     });
     // Another depot matches both DPD networks: the brand stays a hint only.
-    const austrian = '06200000000002';
-    const unresolved = parseParcelsAppResponse(reply(['DPD Group']), austrian, identity(austrian));
+    const other = '06460000000002';
+    const unresolved = parseParcelsAppResponse(reply(['DPD Group']), other, identity(other));
     expect(unresolved.reported_carriers).toEqual(['DPD Group']);
     expect(unresolved.discovered_carrier).toBeUndefined();
     // Of two carriers on one journey, the one whose rules fit the number.

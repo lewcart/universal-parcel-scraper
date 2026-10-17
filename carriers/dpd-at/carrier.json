@@ -1,0 +1,61 @@
+{
+  "id": "dpd-at",
+  "displayName": "DPD Austria",
+  "aliases": [
+    "DPD Österreich",
+    "DPD AT"
+  ],
+  "region": {
+    "countries": [
+      "AT"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Vienna",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mydpd.at/?f=parcel.load&p={trackingNumber}",
+    "searchUrl": "https://www.mydpd.at/",
+    "canaryUrl": "https://www.mydpd.at/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "mydpd.at"
+      ],
+      "pathPattern": "^/$",
+      "params": [
+        "p"
+      ]
+    },
+    {
+      "domains": [
+        "mydpd.at"
+      ],
+      "pathPattern": "^/meine-pakete/?$",
+      "params": [
+        "ipn"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "dpd-at-1",
+      "pattern": "^06(?:2\\d|3[02-5]|4[3-59])\\d{10}$",
+      "confidence": "low",
+      "preferred": true
+    }
+  ]
+}

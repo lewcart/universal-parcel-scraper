@@ -183,8 +183,9 @@ describe('the detection engine', () => {
       carrier: 'unknown', confidence: 'low', preferred: ['dpd-fr'],
     });
     expect(detectCarrierMatch('10000000000001').candidates[0]).toBe('dpd-fr');
-    // An Austrian depot (0620+) is still a DPD shape, but without the preference.
-    expect(detectCarrierMatch('06200000000002')).toMatchObject({ confidence: 'low', preferred: [] });
+    // DPD Austria's depot codes prefer it; a code its depot list skips stays a plain DPD shape.
+    expect(detectCarrierMatch('06200000000002')).toMatchObject({ confidence: 'low', preferred: ['dpd-at'] });
+    expect(detectCarrierMatch('06310000000002')).toMatchObject({ confidence: 'low', preferred: [] });
   });
 
   it('reads a number out of a pasted carrier link', () => {

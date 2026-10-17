@@ -22,8 +22,9 @@ afterEach(() => { vi.unstubAllGlobals(); });
 
 describe('carrier names reported by universal providers', () => {
   it('resolves a bare brand only when the number leaves one of its networks', () => {
-    // DPD's depot prefix: 0600-0619 Switzerland, 10xx France (ex-Exapaq).
+    // DPD's depot prefix: 0600-0619 Switzerland, most of 0620-0649 Austria, 10xx France (ex-Exapaq).
     expect(brandCarrierForNumber('DPD Group', '06080000000002')).toBe('dpd');
+    expect(brandCarrierForNumber('DPD Group', '06200000000002')).toBe('dpd-at');
     expect(brandCarrierForNumber('DPD Group', '06030000000002')).toBe('dpd');
     expect(brandCarrierForNumber('dpd', '10000000000001')).toBe('dpd-fr');
     // A DPD France 250… number is its own high-confidence shape.
@@ -32,7 +33,7 @@ describe('carrier names reported by universal providers', () => {
     expect(brandCarrierForNumber('DPD', '1000000000002U')).toBe('dpd-pl');
     expect(brandCarrierForNumber('DPD Group', '13000000000002')).toBe('dpd-pl');
     // Both DPD networks match and neither is preferred.
-    expect(brandCarrierForNumber('DPD Group', '06200000000002')).toBeUndefined();
+    expect(brandCarrierForNumber('DPD Group', '06460000000002')).toBeUndefined();
     // Germany and the UK share the number shape; the bare brand cannot pick a country.
     expect(brandCarrierForNumber('DPD Group', '20000000000002')).toBeUndefined();
     // The number is no network of the brand at all.

@@ -1,0 +1,48 @@
+{
+  "id": "gls-at",
+  "displayName": "GLS Austria",
+  "aliases": [
+    "GLS Österreich",
+    "General Logistics Systems Austria"
+  ],
+  "region": {
+    "countries": [
+      "AT"
+    ]
+  },
+  "brand": {
+    "color": "#ffdd00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Vienna",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
+    "searchUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
+    "canaryUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gls-group.com",
+        "gls-group.eu"
+      ],
+      "pathPattern": "^/AT/",
+      "params": [
+        "match",
+        "parcelNumber",
+        "matchParcelNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

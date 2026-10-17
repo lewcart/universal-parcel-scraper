@@ -1,0 +1,59 @@
+{
+  "id": "fedex-pl",
+  "displayName": "FedEx Poland",
+  "aliases": [
+    "FedEx Polska",
+    "Opek"
+  ],
+  "region": {
+    "countries": [
+      "PL"
+    ]
+  },
+  "brand": {
+    "color": "#4d148c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Warsaw",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",
+    "searchUrl": "https://fds2tracking.emea.fedex.com/",
+    "canaryUrl": "https://fds2tracking.emea.fedex.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fds2tracking.emea.fedex.com"
+      ],
+      "pathPattern": "^/$",
+      "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+    },
+    {
+      "domains": [
+        "fedex.com"
+      ],
+      "pathPattern": "^/(?:pl-pl|en-pl)/online/domestic-tracking\\.html$",
+      "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+    },
+    {
+      "domains": [
+        "poland.fedex.com"
+      ],
+      "pathPattern": "^/domestic-shipping/pub/tracktrace\\.do$",
+      "params": [
+        "packageId"
+      ]
+    }
+  ],
+  "detection": []
+}

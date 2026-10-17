@@ -9717,6 +9717,53 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dpd-at": {
+    "displayName": "DPD Austria",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Österreich",
+      "DPD AT"
+    ],
+    "countries": [
+      "AT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Vienna",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.mydpd.at/",
+    "trackingUrlTemplate": "https://www.mydpd.at/?f=parcel.load&p={trackingNumber}",
+    "trackingSearchUrl": "https://www.mydpd.at/",
+    "linkRules": [
+      {
+        "domains": [
+          "mydpd.at"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "p"
+        ]
+      },
+      {
+        "domains": [
+          "mydpd.at"
+        ],
+        "pathPattern": "^/meine-pakete/?$",
+        "params": [
+          "ipn"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^06(?:2\\d|3[02-5]|4[3-59])\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "dpd-be": {
     "displayName": "DPD Belgium",
     "color": "#dc0032",
@@ -10933,6 +10980,38 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "eurodis": {
+    "displayName": "EURODIS",
+    "color": "#0b418b",
+    "aliases": [
+      "EURODIS GmbH"
+    ],
+    "countries": [
+      "DE",
+      "AT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://eurodis.com/",
+    "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
+    "trackingSearchUrl": "https://eurodis.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "eurodis.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?track-trace/?$",
+        "params": [
+          "trackCollo-input-of"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "euroexpress-ba": {
     "displayName": "EuroExpress",
     "color": "#da212e",
@@ -11311,6 +11390,52 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/[Ff]ast[Nn]et/[Ff]ast[Nn]et\\.aspx$",
         "params": [
           "ProbillNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "fedex-pl": {
+    "displayName": "FedEx Poland",
+    "color": "#4d148c",
+    "aliases": [
+      "FedEx Polska",
+      "Opek"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://fds2tracking.emea.fedex.com/",
+    "trackingUrlTemplate": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",
+    "trackingSearchUrl": "https://fds2tracking.emea.fedex.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "fds2tracking.emea.fedex.com"
+        ],
+        "pathPattern": "^/$",
+        "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+      },
+      {
+        "domains": [
+          "fedex.com"
+        ],
+        "pathPattern": "^/(?:pl-pl|en-pl)/online/domestic-tracking\\.html$",
+        "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+      },
+      {
+        "domains": [
+          "poland.fedex.com"
+        ],
+        "pathPattern": "^/domestic-shipping/pub/tracktrace\\.do$",
+        "params": [
+          "packageId"
         ]
       }
     ],
@@ -12091,6 +12216,41 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "gls-at": {
+    "displayName": "GLS Austria",
+    "color": "#ffdd00",
+    "aliases": [
+      "GLS Österreich",
+      "General Logistics Systems Austria"
+    ],
+    "countries": [
+      "AT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Vienna",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
+    "trackingUrlTemplate": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
+    "trackingSearchUrl": "https://gls-group.com/AT/de/paket-verfolgen/",
+    "linkRules": [
+      {
+        "domains": [
+          "gls-group.com",
+          "gls-group.eu"
+        ],
+        "pathPattern": "^/AT/",
+        "params": [
+          "match",
+          "parcelNumber",
+          "matchParcelNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "gls-es": {
     "displayName": "GLS Spain",
@@ -12876,6 +13036,36 @@ export const CARRIER_CATALOG = {
           "hepsijet.com"
         ],
         "path": "^/(?:coklu-)?gonderi-takibi/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "hermes-at": {
+    "displayName": "Hermes Austria",
+    "color": "#0091cd",
+    "aliases": [
+      "Hermes Österreich",
+      "Hermes Logistik Österreich",
+      "myHermes.at"
+    ],
+    "countries": [
+      "AT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Vienna",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.myhermes.at/sendungsverfolgung/",
+    "trackingUrlTemplate": "https://www.myhermes.at/sendungsverfolgung/trackingnummer/{trackingNumber}/",
+    "trackingSearchUrl": "https://www.myhermes.at/sendungsverfolgung/",
+    "linkRules": [
+      {
+        "domains": [
+          "myhermes.at"
+        ],
+        "path": "^/(?:sendungsverfolgung|en/tracking)/trackingnummer/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []
@@ -23995,6 +24185,7 @@ export const CARRIER_IDS = [
   "direx",
   "dohrn-transfer",
   "domex",
+  "dpd-at",
   "dpd-be",
   "dpd-de",
   "dpd-ie",
@@ -24025,6 +24216,7 @@ export const CARRIER_IDS = [
   "equick",
   "estes",
   "ethiopian-post",
+  "eurodis",
   "euroexpress-ba",
   "europochta",
   "evri-uk",
@@ -24035,6 +24227,7 @@ export const CARRIER_IDS = [
   "fargo-courier",
   "fargo-uz",
   "fastfrate",
+  "fedex-pl",
   "fermopoint",
   "fg-delivery",
   "first-delivery-tn",
@@ -24056,6 +24249,7 @@ export const CARRIER_IDS = [
   "ghana-post",
   "ghn",
   "ghtk",
+  "gls-at",
   "gls-es",
   "gls-it",
   "gls-pl",
@@ -24076,6 +24270,7 @@ export const CARRIER_IDS = [
   "hct-logistics",
   "helthjem",
   "hepsijet",
+  "hermes-at",
   "hi-trans",
   "hispapost",
   "horoz",
@@ -24590,6 +24785,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direx": [],
   "dohrn-transfer": [],
   "domex": [],
+  "dpd-at": ["dpd-at-1"],
   "dpd-be": ["dpd-be-1"],
   "dpd-de": ["dpd-de-1","dpd-de-2"],
   "dpd-ie": [],
@@ -24620,6 +24816,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "equick": [],
   "estes": [],
   "ethiopian-post": [],
+  "eurodis": [],
   "euroexpress-ba": [],
   "europochta": ["europochta-1"],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
@@ -24630,6 +24827,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fargo-courier": ["fargo-courier-1"],
   "fargo-uz": [],
   "fastfrate": [],
+  "fedex-pl": [],
   "fermopoint": ["fermopoint-1"],
   "fg-delivery": ["fg-delivery-1"],
   "first-delivery-tn": [],
@@ -24651,6 +24849,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghana-post": [],
   "ghn": [],
   "ghtk": ["ghtk-1"],
+  "gls-at": [],
   "gls-es": [],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "gls-pl": [],
@@ -24671,6 +24870,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hct-logistics": [],
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
+  "hermes-at": [],
   "hi-trans": [],
   "hispapost": [],
   "horoz": [],

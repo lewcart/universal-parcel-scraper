@@ -1,0 +1,43 @@
+{
+  "id": "hermes-at",
+  "displayName": "Hermes Austria",
+  "aliases": [
+    "Hermes Österreich",
+    "Hermes Logistik Österreich",
+    "myHermes.at"
+  ],
+  "region": {
+    "countries": [
+      "AT"
+    ]
+  },
+  "brand": {
+    "color": "#0091cd"
+  },
+  "selectable": true,
+  "timezone": "Europe/Vienna",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.myhermes.at/sendungsverfolgung/trackingnummer/{trackingNumber}/",
+    "searchUrl": "https://www.myhermes.at/sendungsverfolgung/",
+    "canaryUrl": "https://www.myhermes.at/sendungsverfolgung/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "myhermes.at"
+      ],
+      "path": "^/(?:sendungsverfolgung|en/tracking)/trackingnummer/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

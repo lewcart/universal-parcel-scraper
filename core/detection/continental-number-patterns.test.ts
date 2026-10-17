@@ -279,3 +279,17 @@ describe('SHEIN package numbers Paack delivers in Spain', () => {
     },
   );
 });
+
+describe('wave seven courier rules', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('suggests DPD Austria first for its depot codes and keeps the DPD networks out of recognition', () => {
+    for (const number of ['06200000000001', '06300000000001', '06350000000001', '06430000000001', '06490000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates?.[0], number).toBe('dpd-at');
+      expect(recognitionAskedCarriers(number).filter((carrier) => carrier.startsWith('dpd')), number).toEqual([]);
+    }
+    for (const number of ['06310000000001', '06460000000001', '06100000000001', '0620000000001', '062000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dpd-at');
+    }
+  });
+});

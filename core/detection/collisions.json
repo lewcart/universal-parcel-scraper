@@ -4200,5 +4200,24 @@
       "zto"
     ],
     "reason": "Passing check digits add GLS, DHL's Identcode and Poste Italiane's registered mail, and the 20 prefix adds J&T Cargo, to the carriers that accept any twelve digits; a check digit does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "14 digits starting with a DPD Austria depot code (0620 to 0630, 0632 to 0635, 0643 to 0645 or 0649)",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-at",
+      "dpd-be",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-nl",
+      "dpd-uk",
+      "relais-colis",
+      "seur"
+    ],
+    "reason": "A DPD parcel number opens with the issuing depot, and DPD Austria's depot list gives these codes to its depots, so DPD Austria is listed first; the fourteen digits stay shared with the other DPD networks and these carriers. DPD Austria cannot be asked, so, as for DPD France, recognition leaves out the DPD networks, whose guest API would file the parcel under DPD Switzerland, and asks the others."
   }
 ]

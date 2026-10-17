@@ -1009,6 +1009,18 @@
     "reason": "Ten digits are shared by several carriers and nothing in the number points to Estes."
   },
   {
+    "carrier": "eurodis",
+    "pattern": "^\\d{13}$",
+    "kind": "collision",
+    "reason": "EURODIS shipment numbers are thirteen digits, a length several carriers' rules take, and nothing in them names the network."
+  },
+  {
+    "carrier": "eurodis",
+    "pattern": "^\\d{24}$",
+    "kind": "collision",
+    "reason": "EURODIS collo barcodes are 24 digits, the length Austrian Post, trans-o-flex, bpost, InPost, Ciblex and Express One use, and Austrian Post's tracker follows the barcodes of parcels it sends abroad through EURODIS."
+  },
+  {
     "carrier": "euroexpress-ba",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -1061,6 +1073,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Fastfrate probill numbers are ten bare digits that many carriers share."
+  },
+  {
+    "carrier": "fedex-pl",
+    "pattern": "^\\d{13}$",
+    "kind": "collision",
+    "reason": "FedEx Poland's domestic shipment numbers are thirteen digits, a length several carriers' rules take; every one seen starts with 6 and passes the GS1 check, as many other carriers' numbers do, so nothing in the number names the network."
   },
   {
     "carrier": "first-delivery-tn",
@@ -1175,6 +1193,24 @@
     "pattern": "^\\d{9,10}$",
     "kind": "by_design",
     "reason": "GHTK's order number alone is nine or ten digits, a length many carriers print, so nothing in it points to GHTK."
+  },
+  {
+    "carrier": "gls-at",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "GLS Austria's eleven-digit parcel numbers are the GLS group layout that other GLS networks issue and their low rules suggest, and nothing in the number names the Austrian network."
+  },
+  {
+    "carrier": "gls-at",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "The twelve-digit form adds the GLS check digit to the same group layout, which other GLS networks and carriers share."
+  },
+  {
+    "carrier": "gls-at",
+    "pattern": "^[A-Z0-9]{8}$",
+    "kind": "collision",
+    "reason": "The eight-character Track ID is the GLS group's, which other GLS networks issue and their low rules suggest."
   },
   {
     "carrier": "gls-es",
@@ -1355,6 +1391,12 @@
     "pattern": "^00\\d{18}$",
     "kind": "by_design",
     "reason": "A piece's SSCC carries the shipper's GS1 company prefix, not the carrier's, so no rule can tell a Hermes Einrichtungs-Service piece from any other SSCC."
+  },
+  {
+    "carrier": "hermes-at",
+    "pattern": "^\\d{14}$",
+    "kind": "collision",
+    "reason": "Hermes Austria prints Hermes's fourteen-digit parcel number, which Hermes Germany's checksum rule and the DPD networks' rules already suggest, and nothing in the number names the Austrian network."
   },
   {
     "carrier": "hermes-de",

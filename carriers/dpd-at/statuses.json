@@ -1,0 +1,22 @@
+{
+  "carrier": "dpd-at",
+  "entries": [
+    {"code": "18", "wording": "Auftragsdaten übermittelt", "stage": "registered", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels: the sender's data reached DPD."},
+    {"code": "18", "wording": "Order information has been transmitted to DPD.", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "15", "wording": "Paket an DPD übergeben", "stage": "accepted", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker at DPD Austria's Obertrum depot."},
+    {"code": "5", "wording": "Paket unterwegs.", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "10", "wording": "Paket unterwegs.", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker at a German hub for a parcel leaving Austria."},
+    {"code": "5", "wording": "In transit.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "2", "wording": "Im Paketzustellzentrum.", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "At the delivering depot; seen on DPD's group tracker."},
+    {"code": "2", "wording": "At parcel delivery centre.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "At the delivering depot; seen on DPD's group tracker."},
+    {"code": "3", "wording": "In Zustellung.", "stage": "out_for_delivery", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "3", "wording": "Out for delivery.", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "14", "wording": "Unsuccessful delivery attempt.", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "23", "wording": "Delivered by driver to Pickup parcelshop.", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "portal", "note": "The driver left the parcel at a Pickup parcelshop for collection."},
+    {"code": "13", "wording": "Collected by consignee from Pickup parcelshop", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen on DPD's group tracker for DPD Austria parcels."},
+    {"code": "13", "wording": "Erfolgreich zugestellt.", "stage": "delivered", "language": "de", "confirmedBy": "portal", "note": "Seen on DPD's group tracker at DPD Austria's Hörsching depot."},
+    {"wording": "Paket im Paketzustellzentrum", "stage": "in_transit", "language": "de", "confirmedBy": "portal", "note": "A step of the group tracker's progress bar, not a scan."},
+    {"wording": "Paket in Zustellung", "stage": "out_for_delivery", "language": "de", "confirmedBy": "portal", "note": "A step of the group tracker's progress bar, not a scan."},
+    {"wording": "Paket zugestellt", "stage": "delivered", "language": "de", "confirmedBy": "portal", "note": "A step of the group tracker's progress bar, not a scan."}
+  ]
+}

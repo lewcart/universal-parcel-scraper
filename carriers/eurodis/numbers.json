@@ -1,0 +1,80 @@
+{
+  "carrier": "eurodis",
+  "records": [
+    {
+      "number": "7490097368029",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20171012052232/http://eurodis.com/trackresults/",
+        "date": "2017-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda"
+        ]
+      },
+      "note": "The EURODIS shipment number of the sample result EURODIS's own results page showed without a search, delivered in Spain with two colli listed; it is the page's example, not a lookup."
+    },
+    {
+      "number": "000251681270000013408820",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20171012052232/http://eurodis.com/trackresults/",
+        "date": "2017-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "ciblex",
+          "inpost",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "First collo barcode of the same sample result on EURODIS's own results page, listed under that shipment with its delivery in Spain."
+    },
+    {
+      "number": "000251681270000013408821",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://web.archive.org/web/20171012052232/http://eurodis.com/trackresults/",
+        "date": "2017-10-12",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "ciblex",
+          "inpost",
+          "bpost",
+          "austrian-post"
+        ]
+      },
+      "note": "Second collo barcode of the same sample result on EURODIS's own results page, listed under that shipment with its delivery in Spain."
+    }
+  ]
+}

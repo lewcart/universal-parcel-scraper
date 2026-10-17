@@ -16,7 +16,9 @@ const WORDINGS = new Map<string, ClassifiedStatus>([
     // A delivery partner's hub after Landmark's export, not the parcel's acceptance.
     'Parcel received at HUB', 'Received at Hermes hub',
     // Evri's depot handing the parcel to its courier, who confirms receipt before delivering.
-    'Out For Delivery To Courier'].map(wording => [wording, { status: 'in_transit', stage: 'in_transit' }] as [string, ClassifiedStatus]),
+    'Out For Delivery To Courier',
+    // The hand-over to the destination's postal operator for the last mile, which the shared rules read as a delivery.
+    'Item deposited to local postal operator'].map(wording => [wording, { status: 'in_transit', stage: 'in_transit' }] as [string, ClassifiedStatus]),
 ]);
 
 export function landmarkStatus(wording: string): ClassifiedStatus | undefined { return WORDINGS.get(wording); }

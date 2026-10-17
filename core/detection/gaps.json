@@ -6,6 +6,12 @@
     "reason": "Twelve-digit 139 Express waybills share their shape with many carriers' numeric waybills, so the shape cannot name 139 Express."
   },
   {
+    "carrier": "247express",
+    "pattern": "^\\d{11}$",
+    "kind": "collision",
+    "reason": "Eleven-digit 247Express waybills share their shape with other carriers' numeric numbers, so the shape cannot name 247Express."
+  },
+  {
     "carrier": "2go",
     "pattern": "^AA\\d{7}$",
     "kind": "by_design",

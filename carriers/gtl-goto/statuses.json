@@ -1,0 +1,8 @@
+{
+  "carrier": "gtl-goto",
+  "entries": [
+    {"wording": "Proceeding to carrier facility", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "First scan of the archived history: the parcel is on its way to the carrier's facility after pickup."},
+    {"wording": "Arrived at sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Shipment en route", "stage": "in_transit", "language": "en", "confirmedBy": "portal"}
+  ]
+}

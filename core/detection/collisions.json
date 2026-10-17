@@ -4364,5 +4364,13 @@
       "starlinks"
     ],
     "reason": "Aramex Australia and New Zealand accept any two letters and ten digits and Colis Privé any twelve characters; all these rules are low confidence, so the number stays a suggestion for each."
+  },
+  {
+    "shape": "SPXSG followed by twelve digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "spx-sg"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SPX Express Singapore prefix is the only high-confidence rule."
   }
 ]

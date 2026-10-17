@@ -4986,6 +4986,35 @@
       }
     ]
   },
+  "247express": {
+    "displayName": "247Express",
+    "color": "#d92923",
+    "aliases": [
+      "247 Express",
+      "Công ty Cổ phần Hai Bốn Bảy"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://247express.vn/",
+    "trackingUrlTemplate": "https://247express.vn/tra-cuu-van-don/{trackingNumber}",
+    "trackingSearchUrl": "https://247express.vn/",
+    "linkRules": [
+      {
+        "domains": [
+          "247express.vn"
+        ],
+        "path": "^/tra-cuu-van-don/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "2go": {
     "displayName": "2GO Express",
     "color": "#ec008c",
@@ -13188,6 +13217,45 @@
     ],
     "detectionRules": []
   },
+  "gtl-goto": {
+    "displayName": "GoTo Logistics",
+    "color": "#14922c",
+    "aliases": [
+      "GTL",
+      "GoTo Logistics (GTL)",
+      "PT Paket Anak Bangsa"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gtl.id/tracking",
+    "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://gtl.id/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "gtl.id",
+          "www.gtl.id"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^TKGTL[0-9A-Z]{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "guatex": {
     "displayName": "Guatex",
     "color": "#282f6a",
@@ -18572,6 +18640,43 @@
       }
     ]
   },
+  "paxel": {
+    "displayName": "Paxel",
+    "color": "#ff434f",
+    "aliases": [
+      "Paxel Indonesia",
+      "PT Global Unggul Mandiri"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://paxel.co/en/track-shipments",
+    "trackingUrlTemplate": "https://paxel.co/id/track-shipments?awb_req={trackingNumber}",
+    "trackingSearchUrl": "https://paxel.co/en/track-shipments",
+    "linkRules": [
+      {
+        "domains": [
+          "paxel.co"
+        ],
+        "pathPattern": "^/(?:id|en)/track-shipments/?$",
+        "params": [
+          "awb_req"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^EM[0-9A-Z]{10}20\\d{7}[0-9A-Z]{6}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "paxi": {
     "displayName": "PAXI",
     "color": "#fa751e",
@@ -18910,6 +19015,99 @@
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "pickupp": {
+    "displayName": "Pickupp",
+    "color": "#ef3b3b",
+    "aliases": [
+      "Pickupp HK",
+      "Pickupp (HK)",
+      "Pickupp Hong Kong"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://hk.pickupp.io/en/tracking",
+    "trackingUrlTemplate": "https://hk.pickupp.io/en/tracking?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://hk.pickupp.io/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "hk.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en|zh)/tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      },
+      {
+        "domains": [
+          "portal.hk.pickupp.io"
+        ],
+        "pathPattern": "^/(?:(?:en|zh)/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PU\\d{12}HK$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "pickupp-sg": {
+    "displayName": "Pickupp Singapore",
+    "color": "#ef3b3b",
+    "aliases": [
+      "Pickupp SG",
+      "Pickupp (SG)"
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sg.pickupp.io/en/tracking",
+    "trackingUrlTemplate": "https://sg.pickupp.io/tracking/?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://sg.pickupp.io/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "sg.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      },
+      {
+        "domains": [
+          "portal.sg.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PU\\d{12}SG$",
+        "confidence": "high"
       }
     ]
   },
@@ -22219,6 +22417,52 @@
       },
       {
         "pattern": "^PH\\d{12,14}[A-Z]?$",
+        "confidence": "low"
+      }
+    ]
+  },
+  "spx-sg": {
+    "displayName": "SPX Express Singapore",
+    "color": "#ee4d2d",
+    "aliases": [
+      "Shopee Xpress Singapore",
+      "Shopee Express Singapore",
+      "SPX Singapore"
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://spx.sg/track",
+    "trackingUrlTemplate": "https://spx.sg/track?{trackingNumber}",
+    "trackingSearchUrl": "https://spx.sg/track",
+    "linkRules": [
+      {
+        "domains": [
+          "spx.sg"
+        ],
+        "pathPattern": "^/(?:m/)?track/?$",
+        "query": "^(SPXSG\\d{11}[0-9A-Z])$"
+      },
+      {
+        "domains": [
+          "spx.sg"
+        ],
+        "path": "^/detail/(SPXSG\\d{11}[0-9A-Z])/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SPXSG\\d{11}[0-9A-Z]$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SG\\d{12}[0-9A-Z]$",
         "confidence": "low"
       }
     ]

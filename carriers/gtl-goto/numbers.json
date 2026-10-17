@@ -1,0 +1,24 @@
+{
+  "carrier": "gtl-goto",
+  "records": [
+    {
+      "number": "TKGTL-000003YN5VT",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20230811104514/https://www.gtl.id/api/tracking?number=TKGTL-000003YN5VT",
+        "date": "2023-08-11",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "gtl-goto",
+        "confidence": "high"
+      },
+      "note": "An archived reply of GoTo Logistics' own tracking API shows this shipment's scans, from proceeding to the carrier facility to arrival at a sorting center."
+    }
+  ]
+}

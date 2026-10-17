@@ -35,6 +35,7 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'midland-transport': 'the tracking-number field sits in the desktop navigation bar of the tracker, which the phone-size check does not show',
   'olva-courier': 'the tracker names its field q, which the check reads as a site search',
   'ozon-logistics': 'tracking.ozon.ru answers automated browsers with a bot check; in a regular browser it shows the tracking number field',
+  paxel: 'paxel.co answers automated browsers with a Cloudflare block (HTTP 403); in a regular browser its page script fills and submits the AWB field',
   'polaris-transport': 'polaristransport.com does not answer from many networks; its trace page has the PRO number field',
   'pony-express': 'www.ponyexpress.ru answers 403 to many networks outside Russia; an archived copy shows its waybill field',
   postaplus: 'postaplus.com draws its tracking form late in a script app, after the automated check gives up',

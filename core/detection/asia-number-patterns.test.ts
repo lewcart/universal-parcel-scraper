@@ -135,3 +135,44 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
     }
   });
 });
+
+describe('wave seven South-East Asian courier rules', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('names SPX Express Singapore for SPXSG numbers and only suggests it for SLS numbers', () => {
+    for (const number of ['SPXSG000000000011', 'SPXSG00000000001A']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'spx-sg', confidence: 'high' });
+    }
+    expect(detectCarrierMatch('SG0000000000011')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['spx-sg'] });
+    for (const number of ['SPXSG0000000001', 'SPXSG0000000000001', 'SG000000000001', 'SG00000000000011']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('spx-sg');
+    }
+  });
+
+  it('names GoTo Logistics for TKGTL numbers, with or without the hyphen', () => {
+    for (const number of ['TKGTL-0000000000A', 'TKGTL0000000000A']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'gtl-goto', confidence: 'high', candidates: ['gtl-goto'] });
+    }
+    for (const number of ['TKGTL000000000A', 'TKGTL00000000000A', 'TKGTM0000000000A']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('gtl-goto');
+    }
+  });
+
+  it('names Paxel for its dated AWB, written with or without separators', () => {
+    for (const number of ['EM.000000000A-20260101-0-00000A', 'EM000000000A20260101000000A']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'paxel', confidence: 'high', candidates: ['paxel'] });
+    }
+    for (const number of ['EM000000000A19260101000000A', 'EM00000000A20260101000000A', 'EN000000000A20260101000000A']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('paxel');
+    }
+  });
+
+  it('names the Pickupp network its region suffix shows', () => {
+    expect(detectCarrierMatch('PU000000000001HK')).toMatchObject({ carrier: 'pickupp', confidence: 'high', candidates: ['pickupp'] });
+    expect(detectCarrierMatch('PU000000000001SG')).toMatchObject({ carrier: 'pickupp-sg', confidence: 'high', candidates: ['pickupp-sg'] });
+    for (const number of ['PU000000000001MY', 'PU00000000001HK', 'PU0000000000001SG']) {
+      const candidates = detectCarrierMatch(number).candidates ?? [];
+      expect(candidates, number).not.toContain('pickupp');
+      expect(candidates, number).not.toContain('pickupp-sg');
+    }
+  });
+});

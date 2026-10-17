@@ -4988,6 +4988,35 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "247express": {
+    "displayName": "247Express",
+    "color": "#d92923",
+    "aliases": [
+      "247 Express",
+      "Công ty Cổ phần Hai Bốn Bảy"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://247express.vn/",
+    "trackingUrlTemplate": "https://247express.vn/tra-cuu-van-don/{trackingNumber}",
+    "trackingSearchUrl": "https://247express.vn/",
+    "linkRules": [
+      {
+        "domains": [
+          "247express.vn"
+        ],
+        "path": "^/tra-cuu-van-don/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "2go": {
     "displayName": "2GO Express",
     "color": "#ec008c",
@@ -13190,6 +13219,45 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "gtl-goto": {
+    "displayName": "GoTo Logistics",
+    "color": "#14922c",
+    "aliases": [
+      "GTL",
+      "GoTo Logistics (GTL)",
+      "PT Paket Anak Bangsa"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gtl.id/tracking",
+    "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://gtl.id/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "gtl.id",
+          "www.gtl.id"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^TKGTL[0-9A-Z]{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "guatex": {
     "displayName": "Guatex",
     "color": "#282f6a",
@@ -18574,6 +18642,43 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "paxel": {
+    "displayName": "Paxel",
+    "color": "#ff434f",
+    "aliases": [
+      "Paxel Indonesia",
+      "PT Global Unggul Mandiri"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://paxel.co/en/track-shipments",
+    "trackingUrlTemplate": "https://paxel.co/id/track-shipments?awb_req={trackingNumber}",
+    "trackingSearchUrl": "https://paxel.co/en/track-shipments",
+    "linkRules": [
+      {
+        "domains": [
+          "paxel.co"
+        ],
+        "pathPattern": "^/(?:id|en)/track-shipments/?$",
+        "params": [
+          "awb_req"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^EM[0-9A-Z]{10}20\\d{7}[0-9A-Z]{6}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "paxi": {
     "displayName": "PAXI",
     "color": "#fa751e",
@@ -18912,6 +19017,99 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "pickupp": {
+    "displayName": "Pickupp",
+    "color": "#ef3b3b",
+    "aliases": [
+      "Pickupp HK",
+      "Pickupp (HK)",
+      "Pickupp Hong Kong"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://hk.pickupp.io/en/tracking",
+    "trackingUrlTemplate": "https://hk.pickupp.io/en/tracking?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://hk.pickupp.io/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "hk.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en|zh)/tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      },
+      {
+        "domains": [
+          "portal.hk.pickupp.io"
+        ],
+        "pathPattern": "^/(?:(?:en|zh)/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PU\\d{12}HK$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "pickupp-sg": {
+    "displayName": "Pickupp Singapore",
+    "color": "#ef3b3b",
+    "aliases": [
+      "Pickupp SG",
+      "Pickupp (SG)"
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sg.pickupp.io/en/tracking",
+    "trackingUrlTemplate": "https://sg.pickupp.io/tracking/?orderNumber={trackingNumber}",
+    "trackingSearchUrl": "https://sg.pickupp.io/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "sg.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      },
+      {
+        "domains": [
+          "portal.sg.pickupp.io"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "orderNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PU\\d{12}SG$",
+        "confidence": "high"
       }
     ]
   },
@@ -22225,6 +22423,52 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "spx-sg": {
+    "displayName": "SPX Express Singapore",
+    "color": "#ee4d2d",
+    "aliases": [
+      "Shopee Xpress Singapore",
+      "Shopee Express Singapore",
+      "SPX Singapore"
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://spx.sg/track",
+    "trackingUrlTemplate": "https://spx.sg/track?{trackingNumber}",
+    "trackingSearchUrl": "https://spx.sg/track",
+    "linkRules": [
+      {
+        "domains": [
+          "spx.sg"
+        ],
+        "pathPattern": "^/(?:m/)?track/?$",
+        "query": "^(SPXSG\\d{11}[0-9A-Z])$"
+      },
+      {
+        "domains": [
+          "spx.sg"
+        ],
+        "path": "^/detail/(SPXSG\\d{11}[0-9A-Z])/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SPXSG\\d{11}[0-9A-Z]$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SG\\d{12}[0-9A-Z]$",
+        "confidence": "low"
+      }
+    ]
+  },
   "spx-th": {
     "displayName": "SPX Express Thailand",
     "color": "#ee4d2d",
@@ -25129,6 +25373,7 @@ export const CARRIER_IDS = [
   "ems",
   "139express",
   "17feia",
+  "247express",
   "2go",
   "4-72",
   "5post",
@@ -25337,6 +25582,7 @@ export const CARRIER_IDS = [
   "gogo-xpress",
   "groupe-guilbault",
   "gs-postbox",
+  "gtl-goto",
   "guatex",
   "gzyl",
   "hanjin",
@@ -25481,6 +25727,7 @@ export const CARRIER_IDS = [
   "pargo",
   "passport",
   "pathao-courier",
+  "paxel",
   "paxi",
   "pbt",
   "pecom",
@@ -25488,6 +25735,8 @@ export const CARRIER_IDS = [
   "pelican-express",
   "pfc-express",
   "phlpost",
+  "pickupp",
+  "pickupp-sg",
   "pigeon-express",
   "pilot-freight",
   "pitney-bowes",
@@ -25572,6 +25821,7 @@ export const CARRIER_IDS = [
   "spx-id",
   "spx-my",
   "spx-ph",
+  "spx-sg",
   "spx-th",
   "spx-tw",
   "spx-vn",
@@ -25758,6 +26008,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ems": [],
   "139express": [],
   "17feia": ["17feia-1"],
+  "247express": [],
   "2go": ["2go-1"],
   "4-72": [],
   "5post": [],
@@ -25966,6 +26217,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gogo-xpress": ["gogo-xpress-1"],
   "groupe-guilbault": [],
   "gs-postbox": [],
+  "gtl-goto": ["gtl-goto-1"],
   "guatex": [],
   "gzyl": ["gzyl-1"],
   "hanjin": [],
@@ -26110,6 +26362,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pargo": ["pargo-1"],
   "passport": ["passport-1"],
   "pathao-courier": ["pathao-courier-1"],
+  "paxel": ["paxel-1"],
   "paxi": [],
   "pbt": [],
   "pecom": [],
@@ -26117,6 +26370,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pelican-express": [],
   "pfc-express": ["pfc-express-1"],
   "phlpost": ["phlpost-s10"],
+  "pickupp": ["pickupp-1"],
+  "pickupp-sg": ["pickupp-sg-1"],
   "pigeon-express": [],
   "pilot-freight": [],
   "pitney-bowes": ["pitney-bowes-1","pitney-bowes-2","pitney-bowes-3"],
@@ -26201,6 +26456,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "spx-id": ["spx-id-1","spx-id-2"],
   "spx-my": ["spx-my-1","spx-my-2"],
   "spx-ph": ["spx-ph-prefixed","spx-ph-shopee-express","spx-ph-domestic"],
+  "spx-sg": ["spx-sg-1","spx-sg-2"],
   "spx-th": ["spx-th-1","spx-th-2"],
   "spx-tw": ["spx-tw-1"],
   "spx-vn": ["spx-vn-1","spx-vn-2"],

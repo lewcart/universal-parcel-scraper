@@ -189,6 +189,13 @@ describe('UPS structured response', () => {
       scan('OT', 'Out For Delivery Today', '20260903 07:26:42'),
     ], { progressBarType: 'OutForDelivery' }), TRACKING_NUMBER, TODAY))
       .toMatchObject({ status: 'exception', current_stage: 'failed_attempt' });
+    // The final attempt failed too; a hold, an access point or a return comes as its own scan.
+    expect(parseUPSTrackingResponse(withScans([
+      scan('49', 'The receiver was not available at the time of the final delivery attempt.', '20260905 15:02:10'),
+      scan('OT', 'Out For Delivery Today', '20260905 07:31:02'),
+      scan('48', 'The receiver was not available for delivery. We&#39;ll make a second attempt the next business day.', '20260904 14:40:51'),
+    ], { progressBarType: 'Exception' }), TRACKING_NUMBER, TODAY))
+      .toMatchObject({ status: 'exception', current_stage: 'failed_attempt', current_stage_source: 'carrier_map' });
 
     // A code the map does not know leaves the stage to the shared classifier.
     const unmapped = parseUPSTrackingResponse(withScans([

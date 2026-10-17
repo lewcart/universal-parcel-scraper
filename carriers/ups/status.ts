@@ -82,9 +82,9 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['3P', 'in_transit'], ['6B', 'in_transit'],
   // Loaded on the delivery vehicle, and out for delivery.
   ['OF', 'out_for_delivery'], ['OT', 'out_for_delivery'],
-  // Receiver absent, business closed, or diverted to an access point after a
-  // failed attempt.
-  ['48', 'failed_attempt'], ['G3', 'failed_attempt'], ['5R', 'failed_attempt'],
+  // Receiver absent, absent again at the final attempt, business closed, or
+  // diverted to an access point after a failed attempt.
+  ['48', 'failed_attempt'], ['49', 'failed_attempt'], ['G3', 'failed_attempt'], ['5R', 'failed_attempt'],
   // Delivered to an access point, and held there.
   ['2Q', 'ready_for_pickup'], ['ZP', 'ready_for_pickup'],
   // Delivered, including collection from an access point and delivery by the

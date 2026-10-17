@@ -114,6 +114,10 @@ step exists for future protocol changes.
   [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. See Limitations
   for what that does to stored rows.
 
+  A network that no step places, whose scans other carriers copy at the same digits and
+  wording on one shared zone, takes that zone: XZG, a line provider DHLink relays, files
+  DHLink's scans with no place, and on DHLink's clock each scan stays one.
+
   With no zone, an offset is taken as given, which for the carriers whose dates are never
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
   `carrierIdFromName` still treats these brands as ambiguous, so discovery and routing
@@ -338,6 +342,9 @@ step exists for future protocol changes.
   destination, so only an EcoScooting reference gives one there. The server's
   timezone is never used. It prints a state with no date as `aN Inv NaN` at `aN:aN`, which
   is counted the same way.
+- An acceptance by one carrier after another already moved the parcel (in transit or in
+  customs) reads as in transit: DPD's "Parcel handed" when it takes a cleared parcel from
+  the line carrier is a hand-over, not a new start.
 - Cross-border replies stay uncertain: scans can be filed under the wrong operator (an
   India-to-France parcel listed La Poste scans under India Post).
 - Notices are skipped, not events: `require_fields` rows, postcode, sign-in and

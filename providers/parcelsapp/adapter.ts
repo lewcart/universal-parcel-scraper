@@ -629,6 +629,51 @@ function wallClockZones(entries: readonly {
 }
 
 /**
+ * The clock of a network that nothing places, as its copies show. XZG, a line
+ * provider DHLink relays, files the same scans as DHLink at the same digits,
+ * with no place and no catalog zone, so ParcelsApp's UTC label stayed on them
+ * and each scan came twice, hours apart. When every scan of a network has no
+ * zone and the other carriers' copies of its scans, at the same digits and
+ * wording, share one zone, that zone is the network's: its copies stay one
+ * scan with theirs, and its own scans keep the same clock.
+ */
+function copiedNetworkZones(items: readonly { name: unknown; key: string; zone: string | null; fixed: boolean; location: string }[]): (string | null)[] {
+  const zoned = new Map<string, string>();
+  for (const { key, zone } of items) if (key && zone) zoned.set(key, zoned.has(key) && zoned.get(key) !== zone ? '' : zone);
+  const unplaced = new Map<string, Set<string>>();
+  for (const { name, key, zone, fixed } of items) {
+    const network = nameKey(name);
+    if (!network) continue;
+    if (zone || fixed) unplaced.set(network, new Set(['']));
+    else if (!unplaced.has(network)) unplaced.set(network, new Set());
+    const copied = zoned.get(key);
+    if (!zone && !fixed && copied !== undefined) unplaced.get(network)!.add(copied);
+  }
+  return items.map(({ name, zone, fixed, location }) => {
+    const copies = unplaced.get(nameKey(name));
+    const [clock] = copies?.size === 1 ? [...copies] : [];
+    return !zone && !fixed && clock ? fitsPlace(clock, location) : null;
+  });
+}
+
+/**
+ * A carrier's acceptance after another carrier already moved the parcel is the
+ * hand-over to it, as DPD's "parcel handed" is when it takes a cleared parcel
+ * from the line carrier: the parcel moves on rather than starting over.
+ */
+function markHandovers(carried: readonly { event: CarrierEvent; carrier: string }[]): void {
+  const moved = new Map<string, string>();
+  for (const { event: { stage, time }, carrier } of carried) {
+    const earliest = moved.get(carrier);
+    if (carrier && time && (stage === 'in_transit' || stage === 'customs') && (!earliest || time < earliest)) moved.set(carrier, time);
+  }
+  for (const { event, carrier } of carried) {
+    if (event.stage !== 'accepted' || !carrier || !event.time) continue;
+    if ([...moved].some(([other, time]) => other !== carrier && time < event.time!)) event.stage = 'in_transit';
+  }
+}
+
+/**
  * The country the parcel is bound for, as the reply names it, or for a reply
  * that does not, as an EcoScooting reference does ("CNPRT" for Portugal,
  * "CNESP" for Spain).
@@ -679,6 +724,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   }
   const number = numberOf(trackingNumber);
   const events: CarrierEvent[] = [];
+  const carried: { event: CarrierEvent; carrier: string }[] = [];
   const scans: { event: CarrierEvent; scan: CarrierScan }[] = [];
   const scanCarriers = new Set<unknown>();
   let undated = 0;
@@ -730,6 +776,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   const zones = wallClockZones(entries.map((entry) => ({ ...entry,
     zone: entry.wallClock ? entry.zone : (localClocks.size && !entry.local && !entry.offset ? localClocks.get(copyKey(entry)) : undefined) ?? entry.zone,
     copy: entry.wallClock && !entry.zone ? placedClocks.get(copyKey(entry)) || undefined : undefined })));
+  copiedNetworkZones(entries.map((entry, index) => ({ name: entry.name, key: copyKey(entry), zone: zones[index]!.zone,
+    fixed: Boolean(entry.offset) || relaysFacilityClock(entry.name), location: entry.location })))
+    .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
   const latest = new LatestScan(SOURCE);
   for (const [index, entry] of entries.entries()) {
     const { raw, name, scan, date } = entry;
@@ -750,11 +799,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
       const location = reportedPlace(raw.location);
       if (location && !/^Type de livraison\s*:/i.test(location)) parsed.location = location;
       events.push(parsed);
+      carried.push({ event: parsed, carrier: nameKey(name) });
       scanCarriers.add(name);
     }
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
   }
   markReturnLeg(scans);
+  markHandovers(carried);
   latest.check();
   if (!events.length) {
     const gates = payload.states.filter((raw: unknown): raw is Record<string, unknown> => isRecord(raw)
@@ -819,7 +870,9 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
   // reply's `carriers` index does: the same zone rules then give the same
   // instants, and so the same event ids, whichever tier answered.
   const carriers: string[] = [];
+  const carried: { event: CarrierEvent; carrier: string }[] = [];
   const scans: { event: CarrierEvent; scan: CarrierScan }[] = [];
+  const rows: { name: string; description: string; state: ReturnType<typeof readState>; scan: CarrierScan | undefined }[] = [];
   let undated = 0;
   const latest = new LatestScan(SOURCE);
   nodes.each((_, node) => {
@@ -846,23 +899,35 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     if (!labeled.isValid) throw new SchemaError(SOURCE, 'ParcelsApp returned an invalid event date');
     const state = readState({ carriers }, { date: labeled.toISO(), ...(name ? { carrier: carriers.indexOf(name) } : {}) },
       description, timezone, numberOf(trackingNumber), false, replyDestination({}, numberOf(trackingNumber)));
-    // The page prints no location, so no DHL Express scan has a facility to
-    // read its clock in, and no other wall clock a place, a copy to take or a
-    // placed scan of its network to borrow from: routing's zone, its known
-    // clock or its label.
-    const zone = state.zone ?? state.fallback ?? state.known;
     const scan = carrierScan(name ? carrierIdFromName(name) : undefined, description);
+    rows.push({ name, description, state, scan });
+  });
+  // The page prints no location, so no DHL Express scan has a facility to
+  // read its clock in, and no other wall clock a place, a copy to take or a
+  // placed scan of its network to borrow from: routing's zone, its known
+  // clock or its label, else the clock its copies show, as in the JSON reply.
+  const zones = rows.map(({ state }) => state.zone ?? state.fallback ?? state.known);
+  copiedNetworkZones(rows.map(({ name, description, state, scan }, index) => {
+    const wall = mislabeledWallTime(state.date);
+    const text = wall ? localEvent(state.date, scan?.wording ?? description)?.description : undefined;
+    return { name, key: wall && text ? `${wall}|${text}` : '', zone: zones[index]!,
+      fixed: Boolean(state.offset) || relaysFacilityClock(name), location: '' };
+  })).forEach((zone, index) => { if (zone) zones[index] = zone; });
+  for (const [index, { name, description, state, scan }] of rows.entries()) {
+    const zone = zones[index]!;
     const unplaced = !zone && relaysFacilityClock(name);
     latest.see(mislabeledWallTime(state.date) ?? '', unplaced);
     if (unplaced) {
       undated++;
-      return;
+      continue;
     }
     const parsed = event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
     if (parsed) events.push(parsed);
+    if (parsed) carried.push({ event: parsed, carrier: nameKey(name) });
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });
-  });
+  }
   markReturnLeg(scans);
+  markHandovers(carried);
   latest.check();
   return { ...result(events, SOURCE), ...(undated ? { undated_event_count: undated } : {}),
     ...universalCarrierHints(carriers.slice(0, 20), numberOf(trackingNumber)) };

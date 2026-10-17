@@ -1040,6 +1040,37 @@ describe('ParcelsApp result parsing', () => {
     expect(result.undated_event_count).toBeUndefined();
   });
 
+  it('reads a network nothing places on its copies\' clock, and a later acceptance by another carrier as a hand-over', () => {
+    // Live shape: XZG, a line provider DHLink relays, files DHLink's scans at
+    // the same digits with no place; DPD takes the parcel once it is cleared.
+    const xzg = 'XZG000000000WL';
+    const scans: [string, string, number][] = [
+      ['2026-06-20T02:25:00+00:00', 'Parcel handed', 2],
+      ['2026-06-16T18:40:00Z', 'Customs import clearance completed, awaiting pickup by local carrier', 0],
+      ['2026-06-16T18:40:00Z', 'Customs import clearance completed, awaiting pickup by local carrier', 1],
+      ['2026-06-11T16:43:00Z', 'Package handed over to airline', 0],
+      ['2026-06-11T16:43:00Z', 'Package handed over to airline', 1],
+      ['2026-06-09T20:51:00Z', 'Order information has been sent to DPD.', 0],
+      ['2026-06-09T19:04:00Z', 'Package received & scanned at warehouse', 0],
+      ['2026-06-09T19:04:00Z', 'Package received & scanned at warehouse', 1],
+    ];
+    const carriers = ['XZG', 'DHLink', 'DPD Group'];
+    const json = parseParcelsAppResponse({ carriers, states: scans.map(([date, status, carrier]) => ({ date, status, carrier })) }, xzg, identity(xzg));
+    const page = identity(xzg).replace('</table>', `</table><ul class="events">${scans.map(([date, status, carrier]) =>
+      carrierRow(DateTime.fromISO(date, { zone: 'UTC' }).toFormat('dd LLL yyyy'), date.slice(11, 16), status, carriers[carrier]!)).join('')}</ul>`);
+    const expected = [
+      ['2026-06-20T02:25:00.000Z', 'in_transit'], ['2026-06-16T10:40:00.000Z', 'in_transit'], ['2026-06-11T08:43:00.000Z', 'in_transit'],
+      ['2026-06-09T12:51:00.000Z', 'registered'], ['2026-06-09T11:04:00.000Z', 'accepted'],
+    ];
+    for (const parsed of [json, parseParcelsAppHtml(page, xzg)]) {
+      expect(parsed.events?.map(({ time, stage }) => [time, stage])).toEqual(expected);
+      expect(parsed.current_stage).toBe('in_transit');
+    }
+    // DPD's own acceptance, before any other carrier moved the parcel, stays one.
+    expect(parseParcelsAppResponse({ carriers, states: [{ date: '2026-06-20T02:25:00+00:00', status: 'Parcel handed', carrier: 2 },
+      { date: '2026-06-09T20:51:00Z', status: 'Order information has been sent to DPD.', carrier: 0 }] }, xzg, identity(xzg)).current_stage).toBe('accepted');
+  });
+
   it('reads the networks ParcelsApp names its own way on their home clock', () => {
     const times = (carriers: string[], states: Record<string, unknown>[], trackingNumber = number) =>
       parseParcelsAppResponse({ carriers, states }, trackingNumber, identity(trackingNumber)).events?.map((scan) => scan.time);

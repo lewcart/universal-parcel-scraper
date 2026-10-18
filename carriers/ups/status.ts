@@ -83,8 +83,9 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['ZW', 'in_transit'], ['LX', 'in_transit'], ['YH', 'in_transit'],
   // Collected back from an access point, or moved off one that is closing.
   ['3P', 'in_transit'], ['6B', 'in_transit'],
-  // Duties or taxes are due, and the parcel held until the receiver pays them.
-  ['7F', 'customs'], ['OQ', 'customs'],
+  // Prepared for clearance, duties or taxes due, and the parcel held until the
+  // receiver pays them.
+  ['Z1', 'customs'], ['7F', 'customs'], ['OQ', 'customs'],
   // Loaded on the delivery vehicle, and out for delivery.
   ['OF', 'out_for_delivery'], ['OT', 'out_for_delivery'],
   // Receiver absent, absent again at the final attempt, business closed, or

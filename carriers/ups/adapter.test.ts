@@ -212,15 +212,17 @@ describe('UPS structured response', () => {
     });
   });
 
-  it('reads duties to pay, and the hold until they are paid, as customs', () => {
+  it('reads the preparation for clearance, duties to pay, and the hold until they are paid, as customs', () => {
     const held = parseUPSTrackingResponse(withScans([
       scan('OQ', 'Your package is being held until duties and taxes are paid. Awaiting customer action.', '20260807 09:33:49'),
       scan('7F', 'Duties or taxes are due on this package.', '20260807 09:12:07'),
+      scan('Z1', 'Your package is prepared for clearance.', '20260806 18:20:00'),
       scan('AR', 'Arrived at Facility', '20260806 10:00:00'),
     ], { progressBarType: 'Exception' }), TRACKING_NUMBER, TODAY);
     expect(held).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map' });
     expect(held.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
-      ['OQ', 'customs', 'carrier_map'], ['7F', 'customs', 'carrier_map'], ['AR', 'in_transit', 'carrier_map'],
+      ['OQ', 'customs', 'carrier_map'], ['7F', 'customs', 'carrier_map'], ['Z1', 'customs', 'carrier_map'],
+      ['AR', 'in_transit', 'carrier_map'],
     ]);
   });
 

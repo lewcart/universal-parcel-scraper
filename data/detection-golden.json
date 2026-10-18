@@ -9627,6 +9627,31 @@
     ]
   },
   {
+    "input": "100019472631",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "100025269904",
     "carrier": "unknown",
     "confidence": "low",
@@ -43068,6 +43093,30 @@
     ]
   },
   {
+    "input": "535821090-0",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-express",
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "cdl",
+      "dhl-ecommerce-es"
+    ],
+    "preferred": [
+      "dhl-express"
+    ],
+    "asked": [
+      "dhl-express",
+      "relais-colis",
+      "dhl-ecommerce-es",
+      "cdl"
+    ]
+  },
+  {
     "input": "53603643",
     "carrier": "unknown",
     "confidence": "low",
@@ -71723,6 +71772,17 @@
     ]
   },
   {
+    "input": "GAIH00148316",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
     "input": "GATVWVXK",
     "carrier": "unknown",
     "confidence": "low",
@@ -72318,6 +72378,17 @@
     "confidence": "high",
     "candidates": [
       "royal-mail"
+    ]
+  },
+  {
+    "input": "GWD000943442",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
     ]
   },
   {
@@ -80610,6 +80681,21 @@
     "confidence": "low",
     "candidates": [
       "spx-ph"
+    ]
+  },
+  {
+    "input": "PH8001877691",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "asked": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
     ]
   },
   {

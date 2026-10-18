@@ -3125,7 +3125,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -13949,6 +13949,41 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "gaash": {
+    "displayName": "GAASH Worldwide",
+    "color": "#153d6b",
+    "aliases": [
+      "GAASH",
+      "Gaash Worldwide",
+      "GAASH Worldwide Ltd",
+      "Gaash"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gaashwd.com/track-parcel/",
+    "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://gaashwd.com/track-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "gaashwd.com",
+          "www.gaashwd.com"
+        ],
+        "pathPattern": "^/(?:track-parcel/?|he/(?:%D7%90%D7%99%D7%AA%D7%95%D7%A8-%D7%97%D7%91%D7%99%D7%9C%D7%94|איתור-חבילה)/?)?$",
+        "params": [
+          "TrackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "gati": {
     "displayName": "AllcargoGATI",
     "color": "#1781a4",
@@ -21041,6 +21076,51 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/(?:IPSWeb_item_events\\.aspx)?$",
         "params": [
           "itemid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "orian": {
+    "displayName": "Orian",
+    "color": "#d01b21",
+    "aliases": [
+      "Orian Express",
+      "OEX Orian",
+      "אוריין",
+      "אוריין אקספרס"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search",
+    "trackingUrlTemplate": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search?searchKey={trackingNumber}",
+    "trackingSearchUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking-ecom.orian.com"
+        ],
+        "pathPattern": "^/CargoTracking/public-tracking/search/?$",
+        "params": [
+          "searchKey"
+        ]
+      },
+      {
+        "domains": [
+          "www.orian.com",
+          "orian.com"
+        ],
+        "pathPattern": "^/OrianBarcodeTracking/?$",
+        "params": [
+          "barcode",
+          "b"
         ]
       }
     ],
@@ -30519,6 +30599,7 @@ export const CARRIER_IDS = [
   "foxpost",
   "franch-express",
   "fukuyama",
+  "gaash",
   "gati",
   "gdex",
   "gebrueder-weiss",
@@ -30707,6 +30788,7 @@ export const CARRIER_IDS = [
   "omniva",
   "one-world-express",
   "opt-nc",
+  "orian",
   "orlen-paczka",
   "osm-worldwide",
   "overseas-express",
@@ -31282,6 +31364,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "foxpost": ["foxpost-1"],
   "franch-express": [],
   "fukuyama": [],
+  "gaash": [],
   "gati": [],
   "gdex": ["gdex-1"],
   "gebrueder-weiss": [],
@@ -31470,6 +31553,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
   "one-world-express": ["one-world-express-1"],
   "opt-nc": [],
+  "orian": [],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
   "overseas-express": [],

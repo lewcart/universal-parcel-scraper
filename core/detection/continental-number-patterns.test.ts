@@ -601,4 +601,10 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).carrier, number).not.toBe('rpx-hk');
     }
   });
+
+  it("leaves GAASH WorldWide's GWD and nine digits out of Purolator's rule", () => {
+    expect(detectCarrierMatch('GWD000000001').carrier).not.toBe('purolator');
+    expect(detectCarrierMatch('GWD000000001').candidates ?? []).not.toContain('purolator');
+    expect(detectCarrierMatch('GWE000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
+  });
 });

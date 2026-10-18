@@ -3123,7 +3123,7 @@
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]
@@ -13947,6 +13947,41 @@
     ],
     "detectionRules": []
   },
+  "gaash": {
+    "displayName": "GAASH Worldwide",
+    "color": "#153d6b",
+    "aliases": [
+      "GAASH",
+      "Gaash Worldwide",
+      "GAASH Worldwide Ltd",
+      "Gaash"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gaashwd.com/track-parcel/",
+    "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://gaashwd.com/track-parcel/",
+    "linkRules": [
+      {
+        "domains": [
+          "gaashwd.com",
+          "www.gaashwd.com"
+        ],
+        "pathPattern": "^/(?:track-parcel/?|he/(?:%D7%90%D7%99%D7%AA%D7%95%D7%A8-%D7%97%D7%91%D7%99%D7%9C%D7%94|איתור-חבילה)/?)?$",
+        "params": [
+          "TrackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "gati": {
     "displayName": "AllcargoGATI",
     "color": "#1781a4",
@@ -21039,6 +21074,51 @@
         "pathPattern": "^/(?:IPSWeb_item_events\\.aspx)?$",
         "params": [
           "itemid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "orian": {
+    "displayName": "Orian",
+    "color": "#d01b21",
+    "aliases": [
+      "Orian Express",
+      "OEX Orian",
+      "אוריין",
+      "אוריין אקספרס"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search",
+    "trackingUrlTemplate": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search?searchKey={trackingNumber}",
+    "trackingSearchUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking-ecom.orian.com"
+        ],
+        "pathPattern": "^/CargoTracking/public-tracking/search/?$",
+        "params": [
+          "searchKey"
+        ]
+      },
+      {
+        "domains": [
+          "www.orian.com",
+          "orian.com"
+        ],
+        "pathPattern": "^/OrianBarcodeTracking/?$",
+        "params": [
+          "barcode",
+          "b"
         ]
       }
     ],

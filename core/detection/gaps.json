@@ -1441,6 +1441,24 @@
     "reason": "Ten digits are shared by many carriers, Seino among them, and nothing in the number points to Fukuyama."
   },
   {
+    "carrier": "gaash",
+    "pattern": "^GWD\\d{9}$",
+    "kind": "by_design",
+    "reason": "Only one archived lookup shows GAASH's GWD layout, too little to claim it. Purolator's three-letter rule leaves the prefix out."
+  },
+  {
+    "carrier": "gaash",
+    "pattern": "^GAIH\\d{8}$",
+    "kind": "by_design",
+    "reason": "Only one archived lookup shows this GAASH layout, too little to claim it."
+  },
+  {
+    "carrier": "gaash",
+    "pattern": "^PH\\d{10}$",
+    "kind": "by_design",
+    "reason": "Only one GAASH lookup shows this layout, and the tracker names Cainiao as that parcel's courier, so the prefix may come from the sender's label."
+  },
+  {
     "carrier": "gati",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -2591,6 +2609,18 @@
     "pattern": "^\\d[A-Z]\\d{11}$",
     "kind": "by_design",
     "reason": "Colissimo numbers of parcels sent from France to New Caledonia belong to La Poste's rules; OPT-NC only delivers them."
+  },
+  {
+    "carrier": "orian",
+    "pattern": "^\\d{10}$",
+    "kind": "collision",
+    "reason": "Orian's e-commerce house numbers are nine digits, a hyphen and a digit, ten bare digits once normalized, a shape many carriers' rules already suggest."
+  },
+  {
+    "carrier": "orian",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Orian's domestic delivery order numbers are bare twelve-digit numbers, a shape many carriers' rules already suggest."
   },
   {
     "carrier": "osm-worldwide",

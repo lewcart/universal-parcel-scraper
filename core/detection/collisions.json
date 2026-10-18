@@ -4757,5 +4757,19 @@
       "zto"
     ],
     "reason": "dpex numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{10}$",
+    "carriers": [
+      "cdl",
+      "dhl",
+      "dhl-ecommerce-es",
+      "dhl-express",
+      "estafeta",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa"
+    ],
+    "reason": "orian numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

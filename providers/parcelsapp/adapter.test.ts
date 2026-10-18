@@ -1374,6 +1374,8 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-07-21T09:24:00.000Z', '2026-07-21T08:05:00.000Z', '2026-07-17T03:12:09.000Z', '2026-07-16T17:40:00.000Z']);
     expect(times('FR', [scan('2026-07-21T19:30:00Z', 'Item has left the overseas International Processing Centre', 'EXAMPLE IPC, France')]))
       .toEqual(['2026-07-21T17:30:00.000Z']);
+    // No sample shows the relays beyond Europe: a scan in the US keeps the clock it had.
+    expect(times('US', [scan('2026-09-11T23:38:00Z', 'Item Received', 'Example City, USA')])).toEqual(['2026-09-11T23:38:00.000Z']);
     // Bound for the UK, a customs scan with no place is Royal Mail's own, at home, as are the Crown Dependencies'.
     expect(times('GB', [
       scan('2026-07-21T11:24:00Z', 'Your item is currently with Customs in the destination country.'),

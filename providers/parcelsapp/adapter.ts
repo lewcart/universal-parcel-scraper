@@ -367,17 +367,20 @@ const HOME_COUNTRIES: Readonly<Record<string, string>> = {
  * departure at the French office of exchange had the digits of La Poste's own
  * scans, Paris time; on one to Portugal, its "Item Received" and customs scans
  * came an hour after CTT's own digits, Lisbon time, at the same minute. A scan
- * located outside the UK and the Crown Dependencies is such a relay, and so is
- * one with no place in Royal Mail's words for the destination ("Your item is
- * currently with Customs in the destination country.").
+ * located in another European country is such a relay, and so is one with no
+ * place in Royal Mail's words for the destination ("Your item is currently with
+ * Customs in the destination country.") on a parcel bound there. No sample
+ * shows the relays beyond Europe, so their scans keep the country's clock.
  */
 const ROYAL_MAIL_RELAY_CLOCK = 'Europe/Brussels';
 const ROYAL_MAIL_HOME = new Set(['GB', 'JE', 'GG', 'IM']);
 const ROYAL_MAIL_ABROAD = /\bin the destination country\b/i;
+const europeanAbroad = (country: string | null) => Boolean(country && !ROYAL_MAIL_HOME.has(country)
+  && countryTimeZone(country)?.startsWith('Europe/'));
 function royalMailRelay(location: string, status: string, destination: string | null): boolean {
   const country = countryCode(lastPlace(location));
-  if (country) return !ROYAL_MAIL_HOME.has(country);
-  return !location && !ROYAL_MAIL_HOME.has(destination ?? '') && ROYAL_MAIL_ABROAD.test(status);
+  if (country) return europeanAbroad(country);
+  return !location && europeanAbroad(destination) && ROYAL_MAIL_ABROAD.test(status);
 }
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;

@@ -284,8 +284,9 @@ step exists for future protocol changes.
   whatever the country's clock: its receipt and departure at France's office of exchange
   have the digits of La Poste's own scans, and its "Item Received" and customs scans in
   Portugal come an hour after CTT's digits, at the same minute. Step 1 reads a Royal Mail
-  scan located outside the UK and the Crown Dependencies on Brussels time, and so one with
-  no place that puts the item "in the destination country" on a parcel bound abroad. A
+  scan located in another European country on Brussels time, and so one with no place that
+  puts the item "in the destination country" on a parcel bound there. No sample shows the
+  relays beyond Europe, so those keep the country's clock. A
   name or relay added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read

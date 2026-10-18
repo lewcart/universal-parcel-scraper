@@ -1,0 +1,15 @@
+{
+  "carrier": "proships",
+  "entries": [
+    {"wording": "Orden Creda", "stage": "registered", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture. The page spells it this way."},
+    {"wording": "Almacen de Origen", "stage": "accepted", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture."},
+    {"wording": "Tránsito A País Destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture."},
+    {"wording": "Arribado A País Destino", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture."},
+    {"wording": "Aduana", "stage": "customs", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture."},
+    {"wording": "Recepción Correo", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture. The delivering network has received the parcel."},
+    {"wording": "Sucursal De Entrega", "stage": "in_transit", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture. The parcel is at the delivery branch."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "official-doc", "note": "A step of the progress bar on ProShips' tracking-mla page, a post on its site, in an archived capture."},
+    {"wording": "Retener", "stage": "exception", "language": "es", "confirmedBy": "portal", "note": "The current status on a printed ProShips tracking page uploaded to Scribd; the parcel is held."},
+    {"wording": "recepción en aduana / almacén intermedio", "stage": "customs", "language": "es", "confirmedBy": "source", "note": "Quoted in a complaint as the status ProShips' platform showed; the complaint site lowercases text."}
+  ]
+}

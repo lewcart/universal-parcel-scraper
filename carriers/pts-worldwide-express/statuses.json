@@ -1,0 +1,10 @@
+{
+  "carrier": "pts-worldwide-express",
+  "entries": [
+    {"wording": "Operasyon Merkezinden Çıktı", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "An event in an archived capture of PTS's former tracker (ptstrack.aspx); the parcel left an operations centre."},
+    {"wording": "Gümrükten Çekildi", "stage": "customs", "language": "tr", "confirmedBy": "portal", "note": "An event in an archived capture of PTS's former tracker (ptstrack.aspx); the parcel was cleared through customs."},
+    {"wording": "Operasyon Merkezine Ulaştı", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "An event in an archived capture of PTS's former tracker (ptstrack.aspx); the parcel reached an operations centre."},
+    {"wording": "Dağıtıma Çıktı", "stage": "out_for_delivery", "language": "tr", "confirmedBy": "portal", "note": "An event in an archived capture of PTS's former tracker (ptstrack.aspx)."},
+    {"wording": "Teslim Edildi", "stage": "delivered", "language": "tr", "confirmedBy": "portal", "note": "An event in an archived capture of PTS's former tracker (ptstrack.aspx)."}
+  ]
+}

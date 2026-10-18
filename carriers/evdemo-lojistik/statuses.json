@@ -1,0 +1,13 @@
+{
+  "carrier": "evdemo-lojistik",
+  "entries": [
+    {"wording": "Gönderi Bildirimi", "stage": "registered", "language": "tr", "confirmedBy": "portal", "note": "An event in the history of an archived capture of Evdemo Lojistik's tracker; the shipper announced the parcel."},
+    {"wording": "Yeni Gönderi", "stage": "accepted", "language": "tr", "confirmedBy": "portal", "note": "An event in the history of an archived capture of Evdemo Lojistik's tracker and the headline status; the departure branch registered the parcel."},
+    {"wording": "Çıkış Dağıtım Merkezinde", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "An event in the history of an archived capture of Evdemo Lojistik's tracker; the parcel is at the departure distribution centre."},
+    {"wording": "Taşıma Durumunda", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "An event in the history of an archived capture of Evdemo Lojistik's tracker and the headline status; the parcel is being carried."},
+    {"wording": "Kargonuz Alındı.", "stage": "accepted", "language": "tr", "confirmedBy": "portal", "note": "A step of the progress bar in archived captures of Evdemo Lojistik's tracker, with its full stop."},
+    {"wording": "Transfer Sürecinde", "stage": "in_transit", "language": "tr", "confirmedBy": "portal", "note": "A step of the progress bar in archived captures of Evdemo Lojistik's tracker."},
+    {"wording": "Dağıtıma Çıkarıldı", "stage": "out_for_delivery", "language": "tr", "confirmedBy": "portal", "note": "A step of the progress bar in archived captures of Evdemo Lojistik's tracker."},
+    {"wording": "Teslim Edildi.", "stage": "delivered", "language": "tr", "confirmedBy": "portal", "note": "A step of the progress bar in archived captures of Evdemo Lojistik's tracker, with its full stop."}
+  ]
+}

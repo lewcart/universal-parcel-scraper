@@ -1,0 +1,56 @@
+{
+  "id": "nova-global",
+  "displayName": "Nova Global",
+  "aliases": [
+    "Nova Poshta Global",
+    "NP Global",
+    "Нова Пошта Глобал",
+    "Nova Poshta International"
+  ],
+  "region": {
+    "countries": [
+      "UA",
+      "US",
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#da291c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Kyiv",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nova.global/track/?Tracking_ID={trackingNumber}",
+    "searchUrl": "https://nova.global/track/",
+    "canaryUrl": "https://nova.global/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nova.global",
+        "novaposhtaglobal.ua"
+      ],
+      "pathPattern": "^/(?:(?:en|ru|uk)/)?track/?$",
+      "params": [
+        "Tracking_ID"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "nova-global-1",
+      "pattern": "^[A-Z]{2}\\d{9,16}NPG$",
+      "confidence": "high"
+    }
+  ]
+}

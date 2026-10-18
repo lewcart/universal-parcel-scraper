@@ -6953,6 +6953,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "big-smart": {
+    "displayName": "Big Smart",
+    "color": "#f0bd18",
+    "aliases": [
+      "BigSmart",
+      "BIG Pack"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bigsmart.mx/en/tracking/",
+    "trackingUrlTemplate": "https://bigsmart.mx/en/tracking/?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://bigsmart.mx/en/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "bigsmart.mx",
+          "www.bigsmart.mx"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "bjs-home-delivery": {
     "displayName": "BJS Home Delivery",
     "color": "#feba30",
@@ -11940,6 +11973,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "evdemo-lojistik": {
+    "displayName": "Evdemo Lojistik",
+    "color": "#f77a00",
+    "aliases": [
+      "Evdemo",
+      "Evdemo Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.evdemolojistik.com/takip",
+    "trackingUrlTemplate": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",
+    "trackingSearchUrl": "https://www.evdemolojistik.com/takip",
+    "linkRules": [
+      {
+        "domains": [
+          "www.evdemolojistik.com",
+          "evdemolojistik.com"
+        ],
+        "pathPattern": "^/takip/?$",
+        "params": [
+          "kargo_kodu"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "evri-uk": {
     "displayName": "Evri UK",
     "color": "#00014d",
@@ -13903,6 +13969,47 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "gta-airskip": {
+    "displayName": "GTA AirSkip",
+    "color": "#1081c4",
+    "aliases": [
+      "GTA GSM",
+      "GTAGSM"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gtaairskip.com/tracking/",
+    "trackingUrlTemplate": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",
+    "trackingSearchUrl": "https://gtaairskip.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "gtaairskip.com",
+          "www.gtaairskip.com",
+          "gtagsm.com",
+          "www.gtagsm.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}(?:-[a-zA-Z]{2})?/)?tracking/?$",
+        "params": [
+          "trackingid",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GR[GS]\\d{5}[0-9A-Z]{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gtl-goto": {
     "displayName": "GoTo Logistics",
@@ -18672,6 +18779,48 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "nova-global": {
+    "displayName": "Nova Global",
+    "color": "#da291c",
+    "aliases": [
+      "Nova Poshta Global",
+      "NP Global",
+      "Нова Пошта Глобал",
+      "Nova Poshta International"
+    ],
+    "countries": [
+      "UA",
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Kyiv",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://nova.global/track/",
+    "trackingUrlTemplate": "https://nova.global/track/?Tracking_ID={trackingNumber}",
+    "trackingSearchUrl": "https://nova.global/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "nova.global",
+          "novaposhtaglobal.ua"
+        ],
+        "pathPattern": "^/(?:(?:en|ru|uk)/)?track/?$",
+        "params": [
+          "Tracking_ID"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9,16}NPG$",
+        "confidence": "high"
+      }
+    ]
+  },
   "nova-poshta": {
     "displayName": "Nova Poshta (Ukraine)",
     "color": "#e30613",
@@ -21447,6 +21596,71 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "proships": {
+    "displayName": "ProShips",
+    "color": "#f8b909",
+    "aliases": [
+      "PROSHIPS",
+      "ProShips e-commerce Logistics"
+    ],
+    "countries": [
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://proships.com/tracking/",
+    "trackingUrlTemplate": "https://proships.com/tracking?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://proships.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "proships.com",
+          "www.proships.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking",
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pts-worldwide-express": {
+    "displayName": "PTS Worldwide Express",
+    "color": "#be1722",
+    "aliases": [
+      "PTS Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://wp.pts.net/gonderi-takip",
+    "trackingSearchUrl": "https://wp.pts.net/gonderi-takip",
+    "linkRules": [
+      {
+        "domains": [
+          "pts.net",
+          "www.pts.net"
+        ],
+        "pathPattern": "^/sqlptstrack\\.php$",
+        "params": [
+          "trackid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ptt": {
     "displayName": "PTT",
     "color": "#00a9ce",
@@ -22860,6 +23074,42 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "shipentegra": {
+    "displayName": "ShipEntegra",
+    "color": "#0db6dc",
+    "aliases": [
+      "Ship Entegra"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.shipentegra.com/",
+    "trackingUrlTemplate": "https://track.shipentegra.com/?trackno={trackingNumber}",
+    "trackingSearchUrl": "https://track.shipentegra.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.shipentegra.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/?)?(?:track/?)?$",
+        "params": [
+          "trackno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^1SE\\d{9}$",
+        "confidence": "high"
+      }
+    ]
   },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
@@ -27389,6 +27639,7 @@ export const CARRIER_IDS = [
   "best-transport",
   "better-trucks",
   "bex-express",
+  "big-smart",
   "bjs-home-delivery",
   "blue-express",
   "blueex",
@@ -27516,6 +27767,7 @@ export const CARRIER_IDS = [
   "eurodis",
   "euroexpress-ba",
   "europochta",
+  "evdemo-lojistik",
   "evri-uk",
   "evropat",
   "ewe",
@@ -27564,6 +27816,7 @@ export const CARRIER_IDS = [
   "gogo-xpress",
   "groupe-guilbault",
   "gs-postbox",
+  "gta-airskip",
   "gtl-goto",
   "guatex",
   "gzyl",
@@ -27694,6 +27947,7 @@ export const CARRIER_IDS = [
   "nord-wheel",
   "norsk-global",
   "northline",
+  "nova-global",
   "nova-poshta",
   "nox",
   "nz-couriers",
@@ -27762,6 +28016,8 @@ export const CARRIER_IDS = [
   "professional-couriers",
   "prompt-xpress",
   "pronto-lanka",
+  "proships",
+  "pts-worldwide-express",
   "ptt",
   "pullman-cargo",
   "quantium-solutions",
@@ -27800,6 +28056,7 @@ export const CARRIER_IDS = [
   "shadowfax",
   "shipa",
   "shipblu",
+  "shipentegra",
   "shree-anjani",
   "shree-mahavir",
   "shree-maruti",
@@ -28074,6 +28331,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "best-transport": [],
   "better-trucks": ["better-trucks-1"],
   "bex-express": [],
+  "big-smart": [],
   "bjs-home-delivery": ["bjs-home-delivery-1"],
   "blue-express": [],
   "blueex": [],
@@ -28201,6 +28459,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "eurodis": [],
   "euroexpress-ba": [],
   "europochta": ["europochta-1"],
+  "evdemo-lojistik": [],
   "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
   "evropat": [],
   "ewe": [],
@@ -28249,6 +28508,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gogo-xpress": ["gogo-xpress-1"],
   "groupe-guilbault": [],
   "gs-postbox": [],
+  "gta-airskip": ["gta-airskip-1"],
   "gtl-goto": ["gtl-goto-1"],
   "guatex": [],
   "gzyl": ["gzyl-1"],
@@ -28379,6 +28639,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nord-wheel": [],
   "norsk-global": [],
   "northline": [],
+  "nova-global": ["nova-global-1"],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
   "nox": ["nox-1"],
   "nz-couriers": [],
@@ -28447,6 +28708,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "professional-couriers": [],
   "prompt-xpress": ["prompt-xpress-1"],
   "pronto-lanka": [],
+  "proships": [],
+  "pts-worldwide-express": [],
   "ptt": ["ptt-1","ptt-s10"],
   "pullman-cargo": [],
   "quantium-solutions": [],
@@ -28485,6 +28748,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shadowfax": ["shadowfax-1","shadowfax-2"],
   "shipa": ["shipa-1"],
   "shipblu": [],
+  "shipentegra": ["shipentegra-1"],
   "shree-anjani": [],
   "shree-mahavir": [],
   "shree-maruti": [],

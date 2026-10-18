@@ -1,0 +1,29 @@
+{
+  "carrier": "nova-global",
+  "entries": [
+    {"wording": "Оформлено замовлення на доставку в країну призначення", "stage": "registered", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the order for delivery to the destination country was placed."},
+    {"wording": "Доставлено в аеропорт", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel reached the departure airport."},
+    {"wording": "Вибуло з аеропорту", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel left an airport."},
+    {"wording": "Вибуло з країни", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel left a country on its route."},
+    {"wording": "Вантаж прибув до транзитного аеропорту", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the cargo reached a transit airport."},
+    {"wording": "Відправлення знаходиться в транзиті", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; seen at the arrival airport in Ukraine."},
+    {"wording": "Доставлено до митного терміналу", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel reached the customs terminal."},
+    {"wording": "В процесі митного декларування", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker."},
+    {"wording": "Відправлення потребує митного оформлення", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel needs customs clearance."},
+    {"wording": "Нестача /невідповідність супровідних документів", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; documents are missing or do not match, which holds the parcel in customs. Spacing as the tracker prints it."},
+    {"wording": "Супровідні документи отримані", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the missing documents arrived."},
+    {"wording": "Митне декларування завершене", "stage": "customs", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; customs clearance finished."},
+    {"wording": "Відправлено в місто призначення", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the parcel was sent on to the destination city."},
+    {"wording": "Доставлено в транзитний сортувальний центр", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker."},
+    {"wording": "Відправлення одержано", "stage": "delivered", "language": "uk", "confirmedBy": "portal", "note": "An event in an archived capture of Nova Poshta Global's tracker; the recipient collected the parcel."},
+    {"wording": "Order is processed for delivery to the country of destination", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."},
+    {"wording": "Departure from airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."},
+    {"wording": "Depature from country", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker, misspelt as the tracker prints it."},
+    {"wording": "Arrived to transit sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."},
+    {"wording": "Shipment is in transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker, seen at the arrival airport in Ukraine."},
+    {"wording": "Delivered to the customs terminalr", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker, misspelt as the tracker prints it."},
+    {"wording": "In the process of customs declaration", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."},
+    {"wording": "Customs declaration finished", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "An event in an archived capture of the English tracker."}
+  ]
+}

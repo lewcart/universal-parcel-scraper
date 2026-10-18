@@ -6951,6 +6951,39 @@
     ],
     "detectionRules": []
   },
+  "big-smart": {
+    "displayName": "Big Smart",
+    "color": "#f0bd18",
+    "aliases": [
+      "BigSmart",
+      "BIG Pack"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://bigsmart.mx/en/tracking/",
+    "trackingUrlTemplate": "https://bigsmart.mx/en/tracking/?trackingNumber={trackingNumber}",
+    "trackingSearchUrl": "https://bigsmart.mx/en/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "bigsmart.mx",
+          "www.bigsmart.mx"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "bjs-home-delivery": {
     "displayName": "BJS Home Delivery",
     "color": "#feba30",
@@ -11938,6 +11971,39 @@
       }
     ]
   },
+  "evdemo-lojistik": {
+    "displayName": "Evdemo Lojistik",
+    "color": "#f77a00",
+    "aliases": [
+      "Evdemo",
+      "Evdemo Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.evdemolojistik.com/takip",
+    "trackingUrlTemplate": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",
+    "trackingSearchUrl": "https://www.evdemolojistik.com/takip",
+    "linkRules": [
+      {
+        "domains": [
+          "www.evdemolojistik.com",
+          "evdemolojistik.com"
+        ],
+        "pathPattern": "^/takip/?$",
+        "params": [
+          "kargo_kodu"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "evri-uk": {
     "displayName": "Evri UK",
     "color": "#00014d",
@@ -13901,6 +13967,47 @@
       }
     ],
     "detectionRules": []
+  },
+  "gta-airskip": {
+    "displayName": "GTA AirSkip",
+    "color": "#1081c4",
+    "aliases": [
+      "GTA GSM",
+      "GTAGSM"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://gtaairskip.com/tracking/",
+    "trackingUrlTemplate": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",
+    "trackingSearchUrl": "https://gtaairskip.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "gtaairskip.com",
+          "www.gtaairskip.com",
+          "gtagsm.com",
+          "www.gtagsm.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}(?:-[a-zA-Z]{2})?/)?tracking/?$",
+        "params": [
+          "trackingid",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GR[GS]\\d{5}[0-9A-Z]{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gtl-goto": {
     "displayName": "GoTo Logistics",
@@ -18670,6 +18777,48 @@
     ],
     "detectionRules": []
   },
+  "nova-global": {
+    "displayName": "Nova Global",
+    "color": "#da291c",
+    "aliases": [
+      "Nova Poshta Global",
+      "NP Global",
+      "Нова Пошта Глобал",
+      "Nova Poshta International"
+    ],
+    "countries": [
+      "UA",
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Kyiv",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://nova.global/track/",
+    "trackingUrlTemplate": "https://nova.global/track/?Tracking_ID={trackingNumber}",
+    "trackingSearchUrl": "https://nova.global/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "nova.global",
+          "novaposhtaglobal.ua"
+        ],
+        "pathPattern": "^/(?:(?:en|ru|uk)/)?track/?$",
+        "params": [
+          "Tracking_ID"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9,16}NPG$",
+        "confidence": "high"
+      }
+    ]
+  },
   "nova-poshta": {
     "displayName": "Nova Poshta (Ukraine)",
     "color": "#e30613",
@@ -21445,6 +21594,71 @@
     ],
     "detectionRules": []
   },
+  "proships": {
+    "displayName": "ProShips",
+    "color": "#f8b909",
+    "aliases": [
+      "PROSHIPS",
+      "ProShips e-commerce Logistics"
+    ],
+    "countries": [
+      "CO"
+    ],
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://proships.com/tracking/",
+    "trackingUrlTemplate": "https://proships.com/tracking?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://proships.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "proships.com",
+          "www.proships.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking",
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pts-worldwide-express": {
+    "displayName": "PTS Worldwide Express",
+    "color": "#be1722",
+    "aliases": [
+      "PTS Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://wp.pts.net/gonderi-takip",
+    "trackingSearchUrl": "https://wp.pts.net/gonderi-takip",
+    "linkRules": [
+      {
+        "domains": [
+          "pts.net",
+          "www.pts.net"
+        ],
+        "pathPattern": "^/sqlptstrack\\.php$",
+        "params": [
+          "trackid"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ptt": {
     "displayName": "PTT",
     "color": "#00a9ce",
@@ -22858,6 +23072,42 @@
       }
     ],
     "detectionRules": []
+  },
+  "shipentegra": {
+    "displayName": "ShipEntegra",
+    "color": "#0db6dc",
+    "aliases": [
+      "Ship Entegra"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.shipentegra.com/",
+    "trackingUrlTemplate": "https://track.shipentegra.com/?trackno={trackingNumber}",
+    "trackingSearchUrl": "https://track.shipentegra.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.shipentegra.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/?)?(?:track/?)?$",
+        "params": [
+          "trackno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^1SE\\d{9}$",
+        "confidence": "high"
+      }
+    ]
   },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",

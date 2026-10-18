@@ -1,0 +1,18 @@
+{
+  "carrier": "gta-airskip",
+  "entries": [
+    {"code": "Created", "wording": "Order Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Created'."},
+    {"code": "Created", "wording": "Label Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Created'."},
+    {"code": "Shipped", "wording": "Received at sort hub", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Shipped'. The first scan at GTA GSM, shown in Mississauga."},
+    {"code": "Shipped", "wording": "Received from Prior Carrier: Normal Status", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Shipped'."},
+    {"code": "Shipped", "wording": "Arrived at Terminal Location: Normal Status", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Shipped'."},
+    {"code": "Shipped", "wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Shipped'. The same wording is also a step of the progress bar."},
+    {"code": "Out For Delivery", "wording": "Loaded on Truck: Normal Status", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Out For Delivery'."},
+    {"code": "Delivered", "wording": "Completed Unloading at Delivery Location: Normal Status", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Delivered'."},
+    {"code": "Delayed", "wording": "Attempted Delivery AI Shipment has been Reconsigned: Unable to access", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "An event status in archived lookups on GTA GSM's tracker, listed under the detail 'Delayed'. The page also showed a banner that there is a problem with the shipment."},
+    {"wording": "Received by GTAGSM", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in archived lookups on GTA GSM's tracker."},
+    {"wording": "Received by GTA GSM", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The same progress-bar step in a second panel of the tracker page."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in archived lookups on GTA GSM's tracker."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in archived lookups on GTA GSM's tracker."}
+  ]
+}

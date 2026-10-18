@@ -304,6 +304,25 @@ describe('FedEx Poland domestic numbers', () => {
   });
 });
 
+describe('Nova Global and ShipEntegra numbers', () => {
+  // Synthetic numbers in the layouts Nova Global and ShipEntegra print; none is a real parcel.
+  it('names Nova Global for two letters, nine to sixteen digits and NPG', () => {
+    for (const number of ['NP00000000000001NPG', 'WB0000000000000001NPG', 'YW000000001NPG']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'nova-global', confidence: 'high' });
+    }
+    for (const number of ['NP00000001NPG', 'NP00000000000000001NPG', 'NP00000000000001NPX']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('nova-global');
+    }
+  });
+
+  it('names ShipEntegra for 1SE and nine digits only', () => {
+    expect(detectCarrierMatch('1SE000000001')).toMatchObject({ carrier: 'shipentegra', confidence: 'high' });
+    for (const number of ['1SE00000001', '1SE0000000001', '2SE000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('shipentegra');
+    }
+  });
+});
+
 describe('J&T Express Middle East waybills', () => {
   // Synthetic numbers in the layout J&T Express Middle East's tracking form checks; none is a real parcel.
   it('names J&T Express Middle East for JTE and twelve digits only', () => {

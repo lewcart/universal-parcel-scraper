@@ -1,0 +1,55 @@
+{
+  "id": "gta-airskip",
+  "displayName": "GTA AirSkip",
+  "aliases": [
+    "GTA GSM",
+    "GTAGSM"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#1081c4"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",
+    "searchUrl": "https://gtaairskip.com/tracking/",
+    "canaryUrl": "https://gtaairskip.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gtaairskip.com",
+        "www.gtaairskip.com",
+        "gtagsm.com",
+        "www.gtagsm.com"
+      ],
+      "pathPattern": "^/(?:[a-z]{2}(?:-[a-zA-Z]{2})?/)?tracking/?$",
+      "params": [
+        "trackingid",
+        "tracking"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "gta-airskip-1",
+      "pattern": "^GR[GS]\\d{5}[0-9A-Z]{11}$",
+      "confidence": "low"
+    }
+  ]
+}

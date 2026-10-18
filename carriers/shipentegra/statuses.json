@@ -1,0 +1,20 @@
+{
+  "carrier": "shipentegra",
+  "entries": [
+    {"wording": "ShipEntegra Currently Awaiting Shipment and Tracking Will Be Updated When Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The event in an archived reply of ShipEntegra's tracking API for a parcel not yet scanned."},
+    {"wording": "Pending", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script; the parcel is waiting to be shipped."},
+    {"wording": "Bekliyor", "stage": "registered", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish); the parcel is waiting to be shipped."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "Alındı", "stage": "accepted", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "Transit Halinde", "stage": "in_transit", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "Teslim Edildi", "stage": "delivered", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."},
+    {"wording": "Shipment Exception", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "Gönderi İstisnası", "stage": "exception", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."},
+    {"wording": "Undelivered", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "Teslim Edilemedi", "stage": "failed_attempt", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."},
+    {"wording": "Returned", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script."},
+    {"wording": "İade Edildi", "stage": "returned", "language": "tr", "confirmedBy": "official-doc", "note": "A status label in the tracker's own script (Turkish)."}
+  ]
+}

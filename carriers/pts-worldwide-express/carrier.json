@@ -1,0 +1,44 @@
+{
+  "id": "pts-worldwide-express",
+  "displayName": "PTS Worldwide Express",
+  "aliases": [
+    "PTS Kargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#be1722"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://wp.pts.net/gonderi-takip",
+    "canaryUrl": "https://wp.pts.net/gonderi-takip",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pts.net",
+        "www.pts.net"
+      ],
+      "pathPattern": "^/sqlptstrack\\.php$",
+      "params": [
+        "trackid"
+      ]
+    }
+  ],
+  "detection": []
+}

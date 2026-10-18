@@ -1,0 +1,46 @@
+{
+  "id": "evdemo-lojistik",
+  "displayName": "Evdemo Lojistik",
+  "aliases": [
+    "Evdemo",
+    "Evdemo Kargo"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#f77a00"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",
+    "searchUrl": "https://www.evdemolojistik.com/takip",
+    "canaryUrl": "https://www.evdemolojistik.com/takip",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.evdemolojistik.com",
+        "evdemolojistik.com"
+      ],
+      "pathPattern": "^/takip/?$",
+      "params": [
+        "kargo_kodu"
+      ]
+    }
+  ],
+  "detection": []
+}

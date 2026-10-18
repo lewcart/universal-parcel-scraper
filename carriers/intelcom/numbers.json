@@ -242,7 +242,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "gta-airskip"
+        ]
       },
       "note": "A shipper reference that Intelcom's tracker accepts and returns history for. Nothing in it names Intelcom."
     },

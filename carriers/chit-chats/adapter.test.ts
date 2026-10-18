@@ -166,7 +166,7 @@ describe('Chit Chats tracking adapter', () => {
       }), DELIVERED);
       expect(result.delivery_tracking_number, String(code)).toBe(expected);
     }
-    for (const [partner, expected] of [['canada_post', 'canada-post'], ['usps', 'usps'], ['gtagsm', undefined], [null, undefined], ['chit_chats', undefined]] as const) {
+    for (const [partner, expected] of [['canada_post', 'canada-post'], ['usps', 'usps'], ['gtagsm', 'gta-airskip'], ['synthetic_courier', undefined], [null, undefined], ['chit_chats', undefined]] as const) {
       expect(parseChitChats(edited('delivered', (shipment) => {
         shipment.carrier = partner;
       }), DELIVERED).delivery_carrier, String(partner)).toBe(expected);

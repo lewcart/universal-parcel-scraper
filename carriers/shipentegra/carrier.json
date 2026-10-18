@@ -1,0 +1,50 @@
+{
+  "id": "shipentegra",
+  "displayName": "ShipEntegra",
+  "aliases": [
+    "Ship Entegra"
+  ],
+  "region": {
+    "countries": [
+      "TR"
+    ]
+  },
+  "brand": {
+    "color": "#0db6dc"
+  },
+  "selectable": true,
+  "timezone": "Europe/Istanbul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://track.shipentegra.com/?trackno={trackingNumber}",
+    "searchUrl": "https://track.shipentegra.com/",
+    "canaryUrl": "https://track.shipentegra.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "track.shipentegra.com"
+      ],
+      "pathPattern": "^/(?:[a-z]{2}/?)?(?:track/?)?$",
+      "params": [
+        "trackno"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "shipentegra-1",
+      "pattern": "^1SE\\d{9}$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -329,6 +329,24 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to BEX Express."
   },
   {
+    "carrier": "big-smart",
+    "pattern": "^\\d{16}$",
+    "kind": "collision",
+    "reason": "Big Smart's 16-digit tracking numbers have no prefix or known check digit and fall inside other carriers' all-digit shapes, so detection leaves them to those carriers' low-confidence candidates."
+  },
+  {
+    "carrier": "big-smart",
+    "pattern": "^\\d{10}$",
+    "kind": "collision",
+    "reason": "A ten-digit Big Smart tracking number has no prefix and falls inside several other carriers' all-digit shapes."
+  },
+  {
+    "carrier": "big-smart",
+    "pattern": "^MXFDD\\d{6,7}$",
+    "kind": "by_design",
+    "reason": "An alternative tracking number that Big Smart's tracker accepts beside its own; its shape comes from one shipper's system, so no rule claims it."
+  },
+  {
     "carrier": "blue-express",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -1115,6 +1133,12 @@
     "pattern": "^\\d{9}$",
     "kind": "by_design",
     "reason": "Nine digits are printed by many carriers, and EuroExpress publishes no prefix or check that would set its shipment codes apart."
+  },
+  {
+    "carrier": "evdemo-lojistik",
+    "pattern": "^1(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{7}$",
+    "kind": "by_design",
+    "reason": "Evdemo Lojistik's twelve-digit numbers, 1 then the registration day and month and a serial, share their shape with many carriers' numeric waybills."
   },
   {
     "carrier": "evropat",
@@ -2531,6 +2555,30 @@
     "reason": "Eight digits are printed by many carriers and nothing in the number points to Pronto Lanka."
   },
   {
+    "carrier": "proships",
+    "pattern": "^WSHCO\\d{10}[A-Z]{2}$",
+    "kind": "by_design",
+    "reason": "A SHEIN parcel's number that ProShips delivered; ProShips does not issue the shape and one sample is too little for a rule."
+  },
+  {
+    "carrier": "proships",
+    "pattern": "^MLCO\\d{9}EX$",
+    "kind": "by_design",
+    "reason": "MailAmericas numbers, which MailAmericas' own rule claims; ProShips delivers such parcels as MailAmericas' last-mile partner in Colombia."
+  },
+  {
+    "carrier": "pts-worldwide-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "PTS Worldwide Express's ten-digit waybills share their shape with many carriers' numeric waybills."
+  },
+  {
+    "carrier": "pts-worldwide-express",
+    "pattern": "^9001\\d{10}$",
+    "kind": "by_design",
+    "reason": "Fourteen-digit PTS numbers starting 9001 have only been seen on one shipper's parcels and share their length with DPD's parcel numbers and other carriers' waybills."
+  },
+  {
     "carrier": "ptt",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -2775,6 +2823,12 @@
     "pattern": "^[1-4]\\d{10,11}$",
     "kind": "by_design",
     "reason": "ShipBlu's all-digit numbers share their shape with many carriers' numeric numbers."
+  },
+  {
+    "carrier": "shipentegra",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "ShipEntegra's bare nine-digit label numbers are a short digit run that many carriers share."
   },
   {
     "carrier": "shipup",

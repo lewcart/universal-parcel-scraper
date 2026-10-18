@@ -371,3 +371,13 @@ describe('wave eight British courier rules', () => {
     }
   });
 });
+
+describe('GTA AirSkip references', () => {
+  // Synthetic references in GTA AirSkip's layout; Intelcom's tracker also answers this shape.
+  it('offers GTA AirSkip for GRG or GRS, five digits and eleven characters without naming it', () => {
+    expect(detectCarrierMatch('GRG00001AAAAA000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['gta-airskip'] });
+    for (const number of ['GRS00001AAAAA00000', 'GRX00001AAAAA000001', 'GRG0001AAAAAA000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('gta-airskip');
+    }
+  });
+});

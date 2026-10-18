@@ -2579,6 +2579,12 @@
     "reason": "Eleven digits are shared by several carriers and nothing in the number points to Saia."
   },
   {
+    "carrier": "sailpost",
+    "pattern": "^\\d{16}$",
+    "kind": "by_design",
+    "reason": "The one public Sailpost code is sixteen digits, a length many carriers share, and one sample shows no layout, so no rule claims it."
+  },
+  {
     "carrier": "sapx-express",
     "pattern": "^[A-Z]{3}\\d{11}(?:\\d{2})?$",
     "kind": "by_design",

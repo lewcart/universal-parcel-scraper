@@ -21487,11 +21487,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sailpost",
+      "localClocks": true
     },
     "canaryUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "trackingUrlTemplate": "https://www.sailpost.it/traccia-il-pacco/?codice={trackingNumber}",
     "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "sailpost.it",
+          "www.sailpost.it"
+        ],
+        "pathPattern": "^/traccia-il-pacco/?$",
+        "params": [
+          "codice"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "sameday": {

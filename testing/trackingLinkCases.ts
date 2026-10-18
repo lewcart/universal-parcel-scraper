@@ -665,6 +665,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'hr-parcel', number: '10000000000001',
     route: /^https:\/\/www\.hrparcel\.com\/traccia-spedizioni\/\?barcode=10000000000001$/,
     marker: /Inserisci qui il tuo codice spedizione|La spedizione non è stata trovata/ },
+  // The page fills its code field in from the address and looks the code up on load.
+  { carrier: 'sailpost', number: '9000000000000041',
+    route: /^https:\/\/www\.sailpost\.it\/traccia-il-pacco\/\?codice=9000000000000041$/,
+    marker: /Cerca la tua spedizione|non abbiamo trovato nei nostri sistemi il codice di spedizione/ },
   // The page asks the shipment service for the number in its address on load; an unknown one gets an alert.
   { carrier: 'slovak-parcel-service', number: '70399999999999',
     route: /^https:\/\/www\.sps-sro\.sk\/moja-zasielka\/\?shipment_id=70399999999999$/,

@@ -26829,7 +26829,21 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "transmission",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "1234 AB",
+          "help": "TransMission shows a shipment only with the recipient's postcode.",
+          "pattern": "^[1-9][0-9]{3} ?(?:[A-Za-z]{2})?$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "canaryUrl": "https://api.trans-mission.nl/Search-shipment",
     "trackingSearchUrl": "https://api.trans-mission.nl/Search-shipment",

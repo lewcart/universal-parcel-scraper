@@ -364,6 +364,7 @@ import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
 import { adapter as torrestir } from '../carriers/torrestir/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as transaher } from '../carriers/transaher/adapter.js';
+import { adapter as transmission } from '../carriers/transmission/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
 import { adapter as twsExpress } from '../carriers/tws-express/adapter.js';
 import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.js';
@@ -759,6 +760,7 @@ export const REGISTRY: RegistryDefinition = {
     "torrestir": torrestir,
     "total-express": totalExpress,
     "transaher": transaher,
+    "transmission": transmission,
     "tsjy": tsjy,
     "tws-express": twsExpress,
     "ubi-smart-parcel": ubiSmartParcel,
@@ -1449,7 +1451,7 @@ export const REGISTRY: RegistryDefinition = {
     "trans-o-flex": "universal",
     "transaher": "transaher",
     "transcorp": "universal",
-    "transmission": "universal",
+    "transmission": "transmission",
     "transport-rdl": "universal",
     "trendyol-express": "universal",
     "tsjy": "tsjy",

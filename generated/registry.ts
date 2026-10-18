@@ -248,6 +248,7 @@ import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
 import { adapter as nipost } from '../carriers/nipost/adapter.js';
 import { adapter as nipponExpress } from '../carriers/nippon-express/adapter.js';
 import { adapter as norskGlobal } from '../carriers/norsk-global/adapter.js';
+import { adapter as novaGlobal } from '../carriers/nova-global/adapter.js';
 import { adapter as novaPoshta } from '../carriers/nova-poshta/adapter.js';
 import { adapter as nox } from '../carriers/nox/adapter.js';
 import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
@@ -648,6 +649,7 @@ export const REGISTRY: RegistryDefinition = {
     "nipost": nipost,
     "nippon-express": nipponExpress,
     "norsk-global": norskGlobal,
+    "nova-global": novaGlobal,
     "nova-poshta": novaPoshta,
     "nox": nox,
     "nz-post": nzPost,
@@ -1245,7 +1247,7 @@ export const REGISTRY: RegistryDefinition = {
     "nord-wheel": "universal",
     "norsk-global": "norsk-global",
     "northline": "universal",
-    "nova-global": "universal",
+    "nova-global": "nova-global",
     "nova-poshta": "nova-poshta",
     "nox": "nox",
     "nz-couriers": "universal",

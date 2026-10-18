@@ -870,6 +870,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/(?:(?:en|pt)\/)?tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
+  // The page puts the number in its field and posts it to the tracker; an unknown one gets its generic error in Ukrainian.
+  { carrier: 'nova-global', number: 'NP00000000000000NPG',
+    route: /^https:\/\/nova\.global\/track\/\?Tracking_ID=NP00000000000000NPG$/,
+    marker: /Enter the parcel number|Status history|Щось пішло не так/ },
   // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
   { carrier: 'drop2shop', number: 'GLB9000000000003',
     route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,

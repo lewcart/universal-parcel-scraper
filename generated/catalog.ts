@@ -19612,7 +19612,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nova-global",
+      "recognitionRank": 834,
+      "localClocks": true
     },
     "canaryUrl": "https://nova.global/track/",
     "trackingUrlTemplate": "https://nova.global/track/?Tracking_ID={trackingNumber}",

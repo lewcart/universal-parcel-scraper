@@ -102,6 +102,7 @@ import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdPt } from '../carriers/dpd-pt/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dpdZa } from '../carriers/dpd-za/adapter.js';
+import { adapter as drop2shop } from '../carriers/drop2shop/adapter.js';
 import { adapter as dsv } from '../carriers/dsv/adapter.js';
 import { adapter as dtdc } from '../carriers/dtdc/adapter.js';
 import { adapter as dx } from '../carriers/dx/adapter.js';
@@ -448,6 +449,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-pt": dpdPt,
     "dpd-uk": dpdUk,
     "dpd-za": dpdZa,
+    "drop2shop": drop2shop,
     "dsv": dsv,
     "dtdc": dtdc,
     "dx": dx,
@@ -868,7 +870,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-pt": "dpd-pt",
     "dpd-uk": "dpd-uk",
     "dpd-za": "dpd-za",
-    "drop2shop": "universal",
+    "drop2shop": "drop2shop",
     "dropp": "universal",
     "dsv": "dsv",
     "dtdc": "dtdc",

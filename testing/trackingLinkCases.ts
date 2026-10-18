@@ -814,6 +814,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/(?:(?:en|pt)\/)?tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
+  // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
+  { carrier: 'drop2shop', number: 'GLB9000000000003',
+    route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,
+    marker: /Shipment not found|could not find the shipment details for this tracking number/,
+    forwarding: { notFound: /could not find the shipment details for this tracking number/ } },
   // The tracker looks up the barcode from its address and names an unknown one in an alert.
   { carrier: 'mylerz', number: '63000000000000',
     route: /^https:\/\/mylerz\.net\/track\/63000000000000$/,

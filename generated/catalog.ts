@@ -10586,7 +10586,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Dublin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "drop2shop",
+      "recognitionRank": 871
     },
     "canaryUrl": "https://www.drop2shop.ie/tracking",
     "trackingUrlTemplate": "https://www.drop2shop.ie/tracking?trackingnumber={trackingNumber}",

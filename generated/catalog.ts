@@ -11048,7 +11048,8 @@ export const CARRIER_CATALOG = {
     "color": "#dd7f4a",
     "aliases": [
       "Earlybird",
-      "Early Bird AB"
+      "Early Bird AB",
+      "Morgontidig Distribution"
     ],
     "countries": [
       "SE"
@@ -23196,7 +23197,8 @@ export const CARRIER_CATALOG = {
       "Shree Maruti",
       "Shree Maruti Courier Services",
       "Shree Maruti Courier Services Private Limited",
-      "Shree Maruti Courier Service"
+      "Shree Maruti Courier Service",
+      "Innofulfill"
     ],
     "countries": [
       "IN"

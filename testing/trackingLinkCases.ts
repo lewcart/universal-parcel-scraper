@@ -935,6 +935,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'connect-couriers', number: '00000000000',
     route: /^https:\/\/www\.connectcouriers\.eu\/tracking\/\?tracking_number=00000000000$/,
     marker: /Track and Trace Your Parcel|This tracking number is invalid/ },
+  // The page puts the number in its field; it names one below its current series as an earlier year's instead of looking it up.
+  { carrier: 'bex-express', number: '000000000',
+    route: /^https:\/\/bexexpress\.rs\/pracenje-posiljke\?broj-posiljke=000000000$/,
+    marker: /Praćenje pošiljke|je iz prethodne godine/ },
   // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
   { carrier: 'drop2shop', number: 'GLB9000000000003',
     route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,

@@ -41,6 +41,25 @@
         ]
       },
       "note": "Looked up on BEX Express's own tracking service, which its tracking page calls; the archived reply lists the shipment's events."
+    },
+    {
+      "number": "255658625",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://bexexpress.rs/DevDocumentation/shipmentHistory/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The example request of the history lookup in BEX Express's API documentation; the tracking service knows it."
     }
   ]
 }

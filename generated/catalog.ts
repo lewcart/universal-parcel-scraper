@@ -7234,7 +7234,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bex-express",
+      "recognitionRank": 827,
+      "localClocks": true
     },
     "canaryUrl": "https://bexexpress.rs/pracenje-posiljke",
     "trackingUrlTemplate": "https://bexexpress.rs/pracenje-posiljke?broj-posiljke={trackingNumber}",

@@ -18,18 +18,68 @@
   "timezone": "Europe/Belgrade",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bex-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 827
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://bexexpress.rs/pracenje-posiljke?broj-posiljke={trackingNumber}",
     "searchUrl": "https://bexexpress.rs/pracenje-posiljke",
     "canaryUrl": "https://bexexpress.rs/pracenje-posiljke",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "eta",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "delivery_comments",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "delivery_comments",
+      "payment_details"
+    ],
+    "unavailable": [
+      "service_name",
+      "weight",
+      "dimensions",
+      "pickup_point",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "sender_name",
+      "signatory",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

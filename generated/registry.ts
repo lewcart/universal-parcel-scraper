@@ -32,6 +32,7 @@ import { adapter as aymakan } from '../carriers/aymakan/adapter.js';
 import { adapter as bangladeshPost } from '../carriers/bangladesh-post/adapter.js';
 import { adapter as baridAlMaghrib } from '../carriers/barid-al-maghrib/adapter.js';
 import { adapter as belpost } from '../carriers/belpost/adapter.js';
+import { adapter as bexExpress } from '../carriers/bex-express/adapter.js';
 import { adapter as bjsHomeDelivery } from '../carriers/bjs-home-delivery/adapter.js';
 import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
@@ -452,6 +453,7 @@ export const REGISTRY: RegistryDefinition = {
     "bangladesh-post": bangladeshPost,
     "barid-al-maghrib": baridAlMaghrib,
     "belpost": belpost,
+    "bex-express": bexExpress,
     "bjs-home-delivery": bjsHomeDelivery,
     "blue-dart": blueDart,
     "blue-express": blueExpress,
@@ -904,7 +906,7 @@ export const REGISTRY: RegistryDefinition = {
     "best-overnite-express": "universal",
     "best-transport": "universal",
     "better-trucks": "universal",
-    "bex-express": "universal",
+    "bex-express": "bex-express",
     "big-smart": "universal",
     "bjs-home-delivery": "bjs-home-delivery",
     "blue-dart": "blue-dart",

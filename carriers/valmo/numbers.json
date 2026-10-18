@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "valmo",
         "confidence": "high"
       },
-      "note": "A customer comment on a Valmo customer-care page gives this as the tracking number of a parcel showing a failed delivery attempt."
+      "note": "A customer comment on a Valmo customer-care page gives this as the tracking number of a parcel showing a failed delivery attempt. Valmo's tracker returns its delivered history."
     },
     {
       "number": "VL0084953550207",
@@ -126,13 +126,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "valmo",
         "confidence": "high"
       },
-      "note": "A customer comment addressed to the Valmo team gives this tracking ID for an order whose status was set to Customer Unreachable."
+      "note": "A customer comment addressed to the Valmo team gives this tracking ID for an order whose status was set to Customer Unreachable. Valmo's tracker returns its delivered history."
     },
     {
       "number": "VL0084568767868",
@@ -145,13 +145,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "valmo",
         "confidence": "high"
       },
-      "note": "A customer comment on a Valmo customer-care page gives this AWB for a parcel waiting at its nearest hub."
+      "note": "A customer comment on a Valmo customer-care page gives this AWB for a parcel waiting at its nearest hub. Valmo's tracker returns its delivered history."
     },
     {
       "number": "VL0082352997564",

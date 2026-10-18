@@ -18,18 +18,51 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "valmo",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.valmo.in/track/{trackingNumber}",
     "searchUrl": "https://www.valmo.in/track",
     "canaryUrl": "https://www.valmo.in/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "progress_rail"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point",
+      "delivery_partner",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

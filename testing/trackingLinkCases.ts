@@ -606,6 +606,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'sundarban-courier', number: '00000000000000',
     route: /^https:\/\/operation\.sundarbancourierltd\.com\/\?cnnumber=00000000000000$/,
     marker: /Track your CN/i },
+  // The page looks up the tracking ID in its address on load and shows it beside the tracker's answer.
+  { carrier: 'valmo', number: 'VL0000000000000',
+    route: /^https:\/\/www\.valmo\.in\/track\/VL0000000000000$/,
+    marker: /Invalid AWB\/Tracking ID|Order Details/ },
   // The site adds the slash; the page then posts the number in its address to its lookup and names an unknown one.
   { carrier: 'proships', number: '0000000000000',
     route: /^https:\/\/proships\.com\/tracking\/\?tracking=0000000000000$/,

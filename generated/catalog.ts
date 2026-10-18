@@ -28111,7 +28111,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "valmo"
     },
     "canaryUrl": "https://www.valmo.in/track",
     "trackingUrlTemplate": "https://www.valmo.in/track/{trackingNumber}",

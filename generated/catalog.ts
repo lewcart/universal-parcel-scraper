@@ -6974,7 +6974,7 @@ export const CARRIER_CATALOG = {
   },
   "big-smart": {
     "displayName": "Big Smart",
-    "color": "#f0bd18",
+    "color": "#2f2f5e",
     "aliases": [
       "BigSmart",
       "BIG Pack"
@@ -11997,7 +11997,7 @@ export const CARRIER_CATALOG = {
   },
   "evdemo-lojistik": {
     "displayName": "Evdemo Lojistik",
-    "color": "#f77a00",
+    "color": "#e3590f",
     "aliases": [
       "Evdemo",
       "Evdemo Kargo"

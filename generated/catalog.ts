@@ -22976,11 +22976,20 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pts-worldwide-express",
+      "recognitionRank": 818,
+      "localClocks": true
     },
     "canaryUrl": "https://wp.pts.net/gonderi-takip",
+    "trackingUrlTemplate": "https://tracking.pts.net/{trackingNumber}",
     "trackingSearchUrl": "https://wp.pts.net/gonderi-takip",
     "linkRules": [
+      {
+        "domains": [
+          "tracking.pts.net"
+        ],
+        "path": "^/([0-9]+)/?$"
+      },
       {
         "domains": [
           "pts.net",

@@ -96,7 +96,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -111,7 +111,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A Şikayetvar complaint about PTS Kargo gives this as the tracking number of a Trendyol parcel it had not delivered."
+      "note": "A Şikayetvar complaint about PTS Kargo gives this as the tracking number of a Trendyol parcel it had not delivered; PTS's tracker shows the parcel going back after a failed delivery abroad."
     },
     {
       "number": "2600002952",
@@ -124,7 +124,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -140,7 +140,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A Şikayetvar complaint about PTS gives this as the number of a shipment PTS carried."
+      "note": "A Şikayetvar complaint about PTS gives this as the number of a shipment PTS carried; PTS's tracker shows its export and delivery by a partner abroad."
     },
     {
       "number": "90010173208496",
@@ -153,7 +153,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -173,7 +173,7 @@
           "xpressbees"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the number of a Nike parcel PTS Kargo had not delivered."
+      "note": "A Şikayetvar complaint gives this as the number of a Nike parcel PTS Kargo had not delivered. PTS's tracker finds the shipment by it and gives it as the number of HepsiJET, which delivers the parcel."
     },
     {
       "number": "90010173230787",

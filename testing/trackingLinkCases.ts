@@ -614,6 +614,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'proships', number: '0000000000000',
     route: /^https:\/\/proships\.com\/tracking\/\?tracking=0000000000000$/,
     marker: /No se encontraron paquetes para el c[óo]digo|Seguimiento de Env[íi]o/i },
+  // The page puts the number in its address in its form and asks its lookup on load; an unknown one gets a notice.
+  { carrier: 'pts-worldwide-express', number: '1000000000',
+    route: /^https:\/\/tracking\.pts\.net\/1000000000$/,
+    marker: /Parcel Not Founded!|G[öo]nderi Bulunamad[ıi]!|Track & Trace Parcel/ },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

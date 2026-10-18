@@ -2339,7 +2339,9 @@ export const CARRIER_CATALOG = {
     "color": "#00a0d6",
     "aliases": [
       "PostNord Danmark",
-      "PostNord Denmark"
+      "PostNord Denmark",
+      "Direct Link",
+      "Direct Link Worldwide"
     ],
     "countries": [
       "SE",
@@ -2394,8 +2396,17 @@ export const CARRIER_CATALOG = {
   "posti": {
     "displayName": "Posti",
     "color": "#ff8000",
+    "aliases": [
+      "SmartPosti",
+      "Smartpost Itella",
+      "Itella SmartPOST",
+      "Itella Estonia"
+    ],
     "countries": [
-      "FI"
+      "FI",
+      "EE",
+      "LV",
+      "LT"
     ],
     "selectable": true,
     "timezone": "Europe/Helsinki",
@@ -2413,6 +2424,13 @@ export const CARRIER_CATALOG = {
           "posti.fi"
         ],
         "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)(?:/[0-9]+)?/?$"
+      },
+      {
+        "domains": [
+          "smartposti.ee",
+          "smartposti.lt"
+        ],
+        "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
       }
     ],
     "detectionRules": [

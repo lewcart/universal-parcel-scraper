@@ -1,10 +1,18 @@
 {
   "id": "posti",
   "displayName": "Posti",
-  "aliases": [],
+  "aliases": [
+    "SmartPosti",
+    "Smartpost Itella",
+    "Itella SmartPOST",
+    "Itella Estonia"
+  ],
   "region": {
     "countries": [
-      "FI"
+      "FI",
+      "EE",
+      "LV",
+      "LT"
     ]
   },
   "brand": {
@@ -67,6 +75,13 @@
         "posti.fi"
       ],
       "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)(?:/[0-9]+)?/?$"
+    },
+    {
+      "domains": [
+        "smartposti.ee",
+        "smartposti.lt"
+      ],
+      "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
     }
   ],
   "detection": [

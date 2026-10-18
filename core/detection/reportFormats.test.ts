@@ -146,6 +146,17 @@ describe('evidence-backed tracking formats', () => {
     }
   });
 
+  it('reads SmartPosti tracking links as Posti, whose tracker they use', () => {
+    for (const link of [
+      'https://www.smartposti.ee/en/tracking/JJFI65432155555123456',
+      'https://www.smartposti.ee/saadetise-jalgimine/JJFI65432155555123456',
+      'https://www.smartposti.lt/siuntos-sekimas/JJFI65432155555123456',
+    ]) {
+      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: 'JJFI65432155555123456', carrier: 'posti', source: 'link' });
+    }
+    expect(parseTrackingInput('https://www.smartposti.ee/en/pakiautomaadid')?.source).not.toBe('link');
+  });
+
   it('suggests Ukrposhta for a thirteen-digit domestic barcode among the carriers sharing that length', () => {
     const match = detectCarrierMatch('0500000000003');
     expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });

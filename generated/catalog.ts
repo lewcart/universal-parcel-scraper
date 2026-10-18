@@ -19143,7 +19143,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "next-level-delivery",
+      "localClocks": true
     },
     "canaryUrl": "https://nextlevel.delivery/",
     "trackingUrlTemplate": "https://nextlevel.delivery/track?awb={trackingNumber}",

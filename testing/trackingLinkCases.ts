@@ -1200,6 +1200,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/tracking\.apc-pli\.com\/00000P0000000000000000$/,
     marker: /Package Not Found|Track a Package/,
     forwarding: { notFound: /The package you are trying to track could not be found/ } },
+  // The page prefills its search box from the address and asks Next Level's lookup; the number heads the answer.
+  { carrier: 'next-level-delivery', number: '0000000000000',
+    route: /^https:\/\/nextlevel\.delivery\/track\?awb=0000000000000$/,
+    marker: /Waybill #: 0000000000000|SHIPMENTS TRACKING/i },
 ];
 
 /**

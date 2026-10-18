@@ -25,18 +25,54 @@
   "timezone": "Europe/Sofia",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "next-level-delivery",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://nextlevel.delivery/track?awb={trackingNumber}",
     "searchUrl": "https://nextlevel.delivery/",
     "canaryUrl": "https://nextlevel.delivery/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "postcodes",
+      "remarks",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "postcodes",
+      "remarks"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "signatory",
+      "delivery_partner",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

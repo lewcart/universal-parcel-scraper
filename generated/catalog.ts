@@ -5234,7 +5234,7 @@ export const CARRIER_CATALOG = {
   },
   "a-tu-hora-express": {
     "displayName": "A Tu Hora Express",
-    "color": "#27348b",
+    "color": "#1d2a84",
     "aliases": [
       "A TU HORA EXPRESS",
       "A Tu Hora"
@@ -8174,7 +8174,7 @@ export const CARRIER_CATALOG = {
   },
   "chronodiali": {
     "displayName": "Chronodiali",
-    "color": "#0060a2",
+    "color": "#009adf",
     "aliases": [
       "Chrono Diali"
     ],
@@ -9271,7 +9271,7 @@ export const CARRIER_CATALOG = {
   },
   "cst-italia": {
     "displayName": "CST Italia",
-    "color": "#e81c3a",
+    "color": "#005baa",
     "aliases": [
       "CST Corriere Espresso",
       "CST Italia Scarl",
@@ -25799,7 +25799,7 @@ export const CARRIER_CATALOG = {
   },
   "urvaam": {
     "displayName": "Urvaam",
-    "color": "#ff7b3a",
+    "color": "#e84417",
     "aliases": [
       "URVAAM",
       "Servicios Urbanos Vaam"

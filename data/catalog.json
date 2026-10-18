@@ -5232,7 +5232,7 @@
   },
   "a-tu-hora-express": {
     "displayName": "A Tu Hora Express",
-    "color": "#27348b",
+    "color": "#1d2a84",
     "aliases": [
       "A TU HORA EXPRESS",
       "A Tu Hora"
@@ -8172,7 +8172,7 @@
   },
   "chronodiali": {
     "displayName": "Chronodiali",
-    "color": "#0060a2",
+    "color": "#009adf",
     "aliases": [
       "Chrono Diali"
     ],
@@ -9269,7 +9269,7 @@
   },
   "cst-italia": {
     "displayName": "CST Italia",
-    "color": "#e81c3a",
+    "color": "#005baa",
     "aliases": [
       "CST Corriere Espresso",
       "CST Italia Scarl",
@@ -25797,7 +25797,7 @@
   },
   "urvaam": {
     "displayName": "Urvaam",
-    "color": "#ff7b3a",
+    "color": "#e84417",
     "aliases": [
       "URVAAM",
       "Servicios Urbanos Vaam"

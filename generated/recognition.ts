@@ -49,6 +49,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "chit-chats": 115,
   "chronopost": 890,
   "ciblex": 640,
+  "city-express-rs": 817,
   "citymail": 868,
   "cj-logistics": 977,
   "cj-packet": 956,

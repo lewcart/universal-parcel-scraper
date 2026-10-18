@@ -61,6 +61,7 @@ import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
 import { statusMap as chunghwaPost } from '../../carriers/chunghwa-post/status.js';
+import { statusMap as cityExpressRs } from '../../carriers/city-express-rs/status.js';
 import { statusMap as citymail } from '../../carriers/citymail/status.js';
 import { statusMap as cjLogistics } from '../../carriers/cj-logistics/status.js';
 import { statusMap as cjPacket } from '../../carriers/cj-packet/status.js';
@@ -348,7 +349,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'barid-al-maghrib': baridAlMaghrib, belpost, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino, bookurier, bosta, 'box-now': boxNow,
   'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods, byhd, cacesa, cargus, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,
-  'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
+  'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'city-express-rs': cityExpressRs, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost,
   'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, direx, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,

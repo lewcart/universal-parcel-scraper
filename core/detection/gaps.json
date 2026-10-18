@@ -630,7 +630,7 @@
     "carrier": "city-express-rs",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
-    "reason": "The eight digits City Express asks for beside its centre code are a length other carriers print too, so detection leaves them to recognition or a carrier link."
+    "reason": "The eight digits City Express asks for beside its centre code are a length other carriers print too, and its tracker cannot look them up without the centre, so detection leaves them unclaimed."
   },
   {
     "carrier": "citylink-express",

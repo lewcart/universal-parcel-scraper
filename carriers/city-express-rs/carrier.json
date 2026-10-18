@@ -18,17 +18,59 @@
   "timezone": "Europe/Belgrade",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "city-express-rs",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 817
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://www.cityexpress.rs/pracenje-posiljke",
     "canaryUrl": "https://www.cityexpress.rs/pracenje-posiljke",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination",
+      "origin",
+      "postcodes",
+      "customer_reference",
+      "parcel_count",
+      "departure_date",
+      "weight"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "destination",
+      "origin",
+      "postcodes",
+      "customer_reference",
+      "parcel_count",
+      "departure_date",
+      "weight"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "delivered_at",
+      "service_name",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [],
   "detection": [

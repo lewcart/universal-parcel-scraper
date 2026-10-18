@@ -8629,7 +8629,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "city-express-rs",
+      "recognitionRank": 817,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cityexpress.rs/pracenje-posiljke",
     "trackingSearchUrl": "https://www.cityexpress.rs/pracenje-posiljke",

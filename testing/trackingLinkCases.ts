@@ -590,6 +590,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tealca', number: '00000000',
     route: /^https:\/\/www\.tealca\.com\/rastrear-envio\/\?tracking=00000000$/,
     marker: /N[úu]mero de shipment no existe|Conoce el estatus de tu env[íi]o/i },
+  // The page looks the guide in its address up on load and names it in an unknown one's notice.
+  { carrier: 'veloces', number: 'V0000000003',
+    route: /^https:\/\/tracking\.veloces\.app\/tracking-client\/V0000000003$/,
+    marker: /No encontramos esa gu[íi]a|No existe un env[íi]o con el n[úu]mero/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

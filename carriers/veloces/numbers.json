@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -23,7 +23,7 @@
           "gls-it"
         ]
       },
-      "note": "An archived lookup on Veloces's own tracker carries this guide; the capture holds only the page shell, so the history was not visible."
+      "note": "An archived lookup on Veloces's own tracker carries this guide; the capture holds only the page shell, so the history was not visible. Veloces's own tracking lookup answers it with its history."
     },
     {
       "number": "V4002519864",
@@ -36,7 +36,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -47,7 +47,7 @@
           "gls-it"
         ]
       },
-      "note": "Placeholder of the tracking field on Veloces's home page."
+      "note": "Placeholder of the tracking field on Veloces's home page. Veloces's own tracking lookup answers it with its history."
     },
     {
       "number": "V4002556538",
@@ -60,7 +60,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -71,7 +71,7 @@
           "gls-it"
         ]
       },
-      "note": "A comment in the tracking script that veloces.app loads cites it as a real guide checked against the tracking API for the supplier-return status."
+      "note": "A comment in the tracking script that veloces.app loads cites it as a real guide checked against the tracking API for the supplier-return status. Veloces's own tracking lookup answers it with its history."
     }
   ]
 }

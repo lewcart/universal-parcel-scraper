@@ -27751,7 +27751,7 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "veloces"
     },
     "canaryUrl": "https://tracking.veloces.app/",
     "trackingUrlTemplate": "https://tracking.veloces.app/tracking-client/{trackingNumber}",

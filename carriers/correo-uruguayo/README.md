@@ -58,8 +58,9 @@ Correo Uruguayo's tracker asks for the full thirteen-character code: two letters
 and two letters, the UPU S10 layout. Domestic items carry it too and end in UY, as archived
 lookups show; inbound items keep the origin post's number, and the post assigns a new one
 when an inbound purchase arrives without a valid code. Generic postal detection handles the
-layout, so Correo Uruguayo adds no rule of its own. The samples and their sources are in
-[`numbers.json`](numbers.json).
+layout, so Correo Uruguayo adds no rule of its own. Mail from abroad reaches Correo Uruguayo when
+a caller names it, a provider names it, or a result gives Uruguay as the destination of an S10
+item. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

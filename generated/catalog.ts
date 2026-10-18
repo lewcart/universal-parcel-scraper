@@ -7527,7 +7527,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Stockholm",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bussgods",
+      "recognitionRank": 867
     },
     "canaryUrl": "https://bussgods.se/spara-paket/",
     "trackingUrlTemplate": "https://bussgods.se/spara-paket/#{trackingNumber}",

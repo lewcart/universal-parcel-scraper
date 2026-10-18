@@ -17,18 +17,58 @@
   "timezone": "Europe/Stockholm",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bussgods",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 867
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "delivered_at",
+    "pickup_point",
+    "service_name"
+  ],
   "portal": {
     "url": "https://bussgods.se/spara-paket/#{trackingNumber}",
     "searchUrl": "https://bussgods.se/spara-paket/",
     "canaryUrl": "https://bussgods.se/spara-paket/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "service_name",
+      "parcel_count",
+      "destination"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "delivered_at",
+      "pickup_point",
+      "service_name"
+    ],
+    "discarded": [
+      "parcel_count",
+      "destination"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

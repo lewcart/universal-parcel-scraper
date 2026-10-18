@@ -1037,6 +1037,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'citymail', number: 'BCMZZ0000000',
     route: /^https:\/\/tracking\.citymail\.se\/\?search=BCMZZ0000000$/,
     marker: /Ingen spårningsinformation hittades för den angivna referensen|Ange paketreferens nedan/ },
+  // The page reads the number from the fragment, looks it up and names it over its notice for an unknown one.
+  { carrier: 'bussgods', number: 'BG9000000000',
+    route: /^https:\/\/bussgods\.se\/spara-paket\/#BG9000000000$/,
+    marker: /Hittade inget resultat för BG9000000000|Sökresultat/ },
 ];
 
 /**

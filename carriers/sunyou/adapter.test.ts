@@ -192,7 +192,7 @@ describe('SunYou declared capabilities and privacy', () => {
       status: 'delivered',
       current_stage: 'delivered',
       last_status_text: 'Delivered',
-      last_update: '2026-09-03 11:20:00',
+      last_update: '2026-09-03T11:20:00+02:00',
       expected_delivery: null,
     });
     expect(delivered.events?.map((event) => [event.description, event.time])).toEqual([

@@ -142,7 +142,8 @@ export function parseSunYouTrackingResponse(value: unknown, trackingNumber: stri
     status: classified?.status ?? 'in_transit',
     ...(classified ? { current_stage: classified.stage } : {}),
     last_status_text: text(item.lastContent) || newest?.description || '',
-    last_update: text(item.lastUpdate) || newest?.time || null,
+    // The shipment's lastUpdate is a wall clock with no zone; the newest scan carries its leg's offset.
+    last_update: newest?.time || text(item.lastUpdate) || null,
     expected_delivery: null,
     ...(classified?.stage === 'delivered' && newest?.stage === 'delivered' && EXPLICIT_OFFSET.test(newest.time ?? '')
       ? { delivered_at: newest.time } : {}),

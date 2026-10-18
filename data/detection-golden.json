@@ -66723,6 +66723,14 @@
     ]
   },
   {
+    "input": "EXTRA02507913918",
+    "carrier": "x-trac",
+    "confidence": "high",
+    "candidates": [
+      "x-trac"
+    ]
+  },
+  {
     "input": "EY000077129DZ",
     "carrier": "intl-post",
     "confidence": "high",
@@ -69027,6 +69035,14 @@
     "confidence": "high",
     "candidates": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "HVUB47RTK3",
+    "carrier": "c-chez-vous",
+    "confidence": "high",
+    "candidates": [
+      "c-chez-vous"
     ]
   },
   {
@@ -75547,6 +75563,126 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "PDN0013911461",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0035475774",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0056048681",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0060478863",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0063439823",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0065236666",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0065780541",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0066478515",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0069048524",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0069745508",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0070164947",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0070715330",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0070846706",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0072736685",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
+  },
+  {
+    "input": "PDN0072835142",
+    "carrier": "pdn-express",
+    "confidence": "high",
+    "candidates": [
+      "pdn-express"
+    ]
   },
   {
     "input": "PE 09999658",

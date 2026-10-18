@@ -1543,6 +1543,12 @@
     "reason": "HP and sixteen digits appears only as one example in Hound Express's partner API documentation."
   },
   {
+    "carrier": "hovership",
+    "pattern": "^HV[A-Z0-9]{8}$",
+    "kind": "collision",
+    "reason": "Some Hovership numbers fall inside C chez vous's high-confidence shape, and shippers may print their own numbers instead, so detection leaves HV numbers unclaimed."
+  },
+  {
     "carrier": "hr-parcel",
     "pattern": "^\\d{14}$",
     "kind": "by_design",

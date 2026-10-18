@@ -1,0 +1,50 @@
+{
+  "id": "pdn-express",
+  "displayName": "PDN Express",
+  "aliases": [
+    "PDN",
+    "PDN Express B.V.",
+    "PDN Express Nederland"
+  ],
+  "region": {
+    "countries": [
+      "NL"
+    ]
+  },
+  "brand": {
+    "color": "#0b63f6"
+  },
+  "selectable": true,
+  "timezone": "Europe/Amsterdam",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pdn.express/en/track/{trackingNumber}",
+    "searchUrl": "https://pdn.express/en/track/",
+    "canaryUrl": "https://pdn.express/en/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pdn.express",
+        "tracking.pdn.express"
+      ],
+      "path": "^/(?:en|nl|de|fr)/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "pdn-express-1",
+      "pattern": "^PDN\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

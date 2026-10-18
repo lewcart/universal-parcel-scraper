@@ -1,0 +1,8 @@
+{
+  "carrier": "pdn-express",
+  "entries": [
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Quoted from PDN Express's tracker in a review on its Trustpilot page."},
+    {"wording": "Unable to Deliver - Recipient not found", "stage": "failed_attempt", "language": "en", "confirmedBy": "source", "note": "Quoted from PDN Express's tracker in reviews on its Trustpilot page and repeated in PDN's reply; the courier could not find or reach the recipient."},
+    {"wording": "Delivery Delayed – Change the delivery time", "stage": "exception", "language": "en", "confirmedBy": "source", "note": "Quoted from PDN Express's tracker in a review on its Trustpilot page and repeated in PDN's reply; the delivery was postponed and the recipient may choose another time."}
+  ]
+}

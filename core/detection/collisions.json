@@ -4552,5 +4552,13 @@
       "paack"
     ],
     "reason": "SHEIN's package number is printed on parcels Paack and Ecoscooting deliver in Spain, and on parcels other carriers deliver elsewhere, so both low rules take it and recognition or the reader settles the carrier."
+  },
+  {
+    "shape": "PDN and ten digits",
+    "carriers": [
+      "magyar-posta",
+      "pdn-express"
+    ],
+    "reason": "Magyar Posta's low-confidence domestic rule takes any P, a letter, three characters and eight digits; PDN Express numbers whose last digit fits its check digit fall inside it and pdn-express-1 decides."
   }
 ]

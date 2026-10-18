@@ -14415,6 +14415,36 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "hovership": {
+    "displayName": "Hovership",
+    "color": "#6768fe",
+    "aliases": [
+      "Hovership Delivery",
+      "Hovership Logistics"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hovership.com/track/",
+    "trackingUrlTemplate": "https://www.hovership.com/track/{trackingNumber}/",
+    "trackingSearchUrl": "https://www.hovership.com/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.hovership.com",
+          "hovership.com"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "hp-mostar": {
     "displayName": "Hrvatska pošta Mostar",
     "color": "#ffed00",
@@ -19946,6 +19976,42 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "pdn-express": {
+    "displayName": "PDN Express",
+    "color": "#0b63f6",
+    "aliases": [
+      "PDN",
+      "PDN Express B.V.",
+      "PDN Express Nederland"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pdn.express/en/track/",
+    "trackingUrlTemplate": "https://pdn.express/en/track/{trackingNumber}",
+    "trackingSearchUrl": "https://pdn.express/en/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "pdn.express",
+          "tracking.pdn.express"
+        ],
+        "path": "^/(?:en|nl|de|fr)/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PDN\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   },
   "pdq-chile": {
     "displayName": "PDQ Cargo Trader",
@@ -26558,6 +26624,33 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "x-trac": {
+    "displayName": "X-TRAC",
+    "color": "#082799",
+    "aliases": [
+      "XTRAC",
+      "X-TRAC Express",
+      "XTRAC Express"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.xtrac-express.com/tracking",
+    "trackingSearchUrl": "https://www.xtrac-express.com/tracking",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^EXTRA\\d{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "xde-logistics": {
     "displayName": "XDE Logistics",
     "color": "#071a2b",
@@ -27475,6 +27568,7 @@ export const CARRIER_IDS = [
   "homexpress",
   "horoz",
   "hound-express",
+  "hovership",
   "hp-mostar",
   "hr-parcel",
   "hrvatska-posta",
@@ -27619,6 +27713,7 @@ export const CARRIER_IDS = [
   "paxel",
   "paxi",
   "pbt",
+  "pdn-express",
   "pdq-chile",
   "pecom",
   "peddler",
@@ -27790,6 +27885,7 @@ export const CARRIER_IDS = [
   "whistl",
   "winit",
   "x-express-ba",
+  "x-trac",
   "xde-logistics",
   "xdp",
   "xlcourier",
@@ -28157,6 +28253,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "homexpress": [],
   "horoz": [],
   "hound-express": [],
+  "hovership": [],
   "hp-mostar": [],
   "hr-parcel": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
@@ -28301,6 +28398,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "paxel": ["paxel-1"],
   "paxi": [],
   "pbt": [],
+  "pdn-express": ["pdn-express-1"],
   "pdq-chile": [],
   "pecom": [],
   "peddler": ["peddler-1","peddler-2"],
@@ -28472,6 +28570,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "whistl": [],
   "winit": ["winit-1","winit-2"],
   "x-express-ba": [],
+  "x-trac": ["x-trac-1"],
   "xde-logistics": [],
   "xdp": ["xdp-1"],
   "xlcourier": ["xlcourier-1"],

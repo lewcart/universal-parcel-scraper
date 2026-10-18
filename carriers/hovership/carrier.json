@@ -1,0 +1,43 @@
+{
+  "id": "hovership",
+  "displayName": "Hovership",
+  "aliases": [
+    "Hovership Delivery",
+    "Hovership Logistics"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#6768fe"
+  },
+  "selectable": true,
+  "timezone": "America/Los_Angeles",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.hovership.com/track/{trackingNumber}/",
+    "searchUrl": "https://www.hovership.com/track/",
+    "canaryUrl": "https://www.hovership.com/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.hovership.com",
+        "hovership.com"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

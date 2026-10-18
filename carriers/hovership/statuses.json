@@ -1,0 +1,12 @@
+{
+  "carrier": "hovership",
+  "entries": [
+    {"wording": "Label Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "An event title in an archived capture of Hovership's tracker."},
+    {"wording": "Shipment label created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The description under Label Created in an archived capture of Hovership's tracker."},
+    {"wording": "In Possession", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "An event title in an archived capture of Hovership's tracker; Hovership has the parcel at a facility."},
+    {"wording": "In our possession", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The headline status of an archived capture of Hovership's tracker while the parcel was In Possession."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in an archived capture of Hovership's tracker."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in an archived capture of Hovership's tracker."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A step of the progress bar in an archived capture of Hovership's tracker."}
+  ]
+}

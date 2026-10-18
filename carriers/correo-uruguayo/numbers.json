@@ -57,6 +57,25 @@
         "confidence": "high"
       },
       "note": "Archived lookup on Correo Uruguayo's tracking page; the capture holds only the page shell because the history loads from a script, so it does not show the item."
+    },
+    {
+      "number": "RR580125558UY",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250402060407/https://parcelsapp.com/en/tracking/RR580125558UY",
+        "date": "2025-04-02",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Archived ParcelsApp lookup of a code ending UY, which names Correo Uruguayo; the capture holds only the page shell."
     }
   ]
 }

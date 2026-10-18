@@ -1117,6 +1117,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'belpost', number: 'ZZ000000014BY',
     route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,
     marker: /Где мое отправление|У нас пока нет данных об этом трек-номере|Where is my postal item|any data on this tracking number/i },
+  // The page looks the code up and heads its answer with it, here the notice for service letters the post does not use.
+  { carrier: 'correo-uruguayo', number: 'ZZ000000014UY',
+    route: /^https:\/\/ahiva\.correo\.com\.uy\/servicioConsultaTntIps-web\/SeguimientoJSNuevo\?codigoPieza=ZZ000000014UY$/,
+    marker: /Consultas para el env[ií]o con c[óo]digo|Producto inv[áa]lido/i },
   // The page fills its field in from the address and looks the code up.
   { carrier: 'uzbekistan-post', number: 'ZZ000000014UZ',
     route: /^https:\/\/uz\.post\/ru\/tracking\/ZZ000000014UZ\/?$/,

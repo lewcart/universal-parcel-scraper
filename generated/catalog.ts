@@ -9368,7 +9368,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Montevideo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correo-uruguayo",
+      "recognitionRank": 922,
+      "localClocks": true
     },
     "canaryUrl": "https://www.correo.com.uy/seguimientodeenvios",
     "trackingUrlTemplate": "https://ahiva.correo.com.uy/servicioConsultaTntIps-web/SeguimientoJSNuevo?codigoPieza={trackingNumber}",

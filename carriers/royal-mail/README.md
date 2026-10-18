@@ -29,6 +29,8 @@ Both replies must identify the requested `mailPieceId`. Missing or failed
 details cannot become a history result; a valid empty events feed is marked
 `summary_only`. Browser launch, queueing and retrieval share the caller's
 deadline and cancellation signal, and the browser closes after each lookup.
+A lookup takes at most 30 seconds of that deadline: an unavailable browser
+fails every parcel alike, so it should fail fast.
 
 ## Notes
 

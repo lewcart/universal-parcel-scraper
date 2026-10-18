@@ -163,7 +163,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
         userAgent });
       session.throwIfAborted();
       const page = await context.newPage();
-      const timeout = () => Math.min(15_000, remainingMs());
+      const timeout = () => Math.min(10_000, remainingMs());
       // The consent manager withholds hCaptcha's frame unless functional cookies
       // are allowed, and the tracking application sends nothing without its token.
       // Allow that category alone.
@@ -222,7 +222,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       await input.pressSequentially(number, { delay: 80, timeout: timeout() });
       session.throwIfAborted();
       const summary = await captureRoyalMailReply(page, royalMailSummaryApiUrl(number), number, 'summary', session,
-        Math.min(25_000, remainingMs()), async () => {
+        Math.min(15_000, remainingMs()), async () => {
           if (await input.inputValue() !== number) throw new TransportError(PROVIDER, 'Royal Mail tracking form was reset');
           await page.locator('#submit:not(:disabled)').click({ timeout: timeout() });
         });
@@ -230,7 +230,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       // uses it, or performs its own CAPTCHA refresh when the session expires.
       parseRoyalMailTrackingResponse({ mailPieces: summary }, number);
       const history = fullHistory ? await captureRoyalMailReply(page, royalMailEventsApiUrl(number), number, 'events', session,
-        Math.min(25_000, remainingMs()), () => page.locator('#btn-more-details').click({ timeout: timeout() })) : undefined;
+        Math.min(15_000, remainingMs()), () => page.locator('#btn-more-details').click({ timeout: timeout() })) : undefined;
       session.throwIfAborted();
       return { ...parseRoyalMailTrackingResponse({ mailPieces: { ...summary, ...(history ?? {}),
         summary: { ...(summary.summary as Record<string, unknown>), ...(history?.summary as Record<string, unknown> | undefined) } } }, number),

@@ -15,6 +15,9 @@ export { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTra
 const MAX_BYTES = 10_000_000;
 const DEFAULT_TIMEOUT_MS = 60_000;
 const SETTLE_TIMEOUT_MS = 15_000;
+// A healthy lookup needs a fraction of this. A browser that is down fails every
+// parcel the same way, and each failure must not hold a consumer's run for a minute.
+const BROWSER_TIMEOUT_MS = 30_000;
 const MAX_CAPTURED = 20;
 
 export interface RoyalMailTrackerOptions {
@@ -72,7 +75,7 @@ export class RoyalMailTracker {
     if (this.#browserWsEndpoint || this.#executablePath) {
       return runSteps<CarrierResult>({ carrier: 'royal-mail', budgetMs: context.budgetMs ?? this.timeoutMs,
         signal: context.signal, recorder: this.#recorder }, [{ id: 'browser', run: ({ remainingMs, signal }) =>
-        fetchRoyalMailInBrowser(number, this.#executablePath ?? '', signal, Math.min(60_000, remainingMs), this.#fullHistory,
+        fetchRoyalMailInBrowser(number, this.#executablePath ?? '', signal, Math.min(BROWSER_TIMEOUT_MS, remainingMs), this.#fullHistory,
           this.#browserProxy, this.#browserWsEndpoint) }]);
     }
     // The legacy service remains available through explicit tracker instances.

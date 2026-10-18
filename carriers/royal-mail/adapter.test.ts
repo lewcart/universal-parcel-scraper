@@ -420,6 +420,15 @@ describe('Royal Mail lookup steps', () => {
       expect.any(Number), true, 'socks5://10.0.0.1:1080', null);
   });
 
+  it('gives the browser lookup at most 30 seconds of a longer budget', async () => {
+    vi.mocked(fetchRoyalMailInBrowser).mockResolvedValueOnce({ events: [] });
+    const instance = adapter({ trawl: null, browserExecutablePath: '/test/chromium', recorder: NOOP_RECORDER, env: {} });
+    await instance.track({ number: DELIVERED_NUMBER }, { budgetMs: 60_000 });
+    const timeoutMs = vi.mocked(fetchRoyalMailInBrowser).mock.lastCall![3];
+    expect(timeoutMs).toBeLessThanOrEqual(30_000);
+    expect(timeoutMs).toBeGreaterThan(29_000);
+  });
+
   it('uses the dedicated remote browser for tracking and browser recognition without requiring local Chromium', async () => {
     const endpoint = 'ws://browser.invalid/synthetic-capability';
     vi.mocked(fetchRoyalMailInBrowser).mockResolvedValue({ ...parseRoyalMailTrackingResponse(DELIVERED, DELIVERED_NUMBER) });

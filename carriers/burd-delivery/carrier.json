@@ -17,18 +17,46 @@
   "timezone": "Europe/Copenhagen",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "burd-delivery",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 861
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://burd.dk/track?code={trackingNumber}",
     "searchUrl": "https://burd.dk/",
     "canaryUrl": "https://burd.dk/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "pickup_point",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

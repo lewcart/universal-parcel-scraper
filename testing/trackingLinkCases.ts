@@ -1066,6 +1066,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bussgods', number: 'BG9000000000',
     route: /^https:\/\/bussgods\.se\/spara-paket\/#BG9000000000$/,
     marker: /Hittade inget resultat för BG9000000000|Sökresultat/ },
+  // The page reads the number from its parameter, shows it, looks it up and says when it does not know it.
+  { carrier: 'burd-delivery', number: '012345600000000098',
+    route: /^https:\/\/burd\.dk\/track\?code=012345600000000098$/,
+    marker: /Det indtastede forsendelses nummer findes ikke|Forsendelsesnummer/ },
   // The page looks the number up from its parameter and says when it does not know it.
   { carrier: 'bookurier', number: 'BOK0000000',
     route: /^https:\/\/t\.bookurier\.ro\/\?awb=BOK0000000$/,

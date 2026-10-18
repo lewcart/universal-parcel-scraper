@@ -7552,7 +7552,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "burd-delivery",
+      "recognitionRank": 861
     },
     "canaryUrl": "https://burd.dk/",
     "trackingUrlTemplate": "https://burd.dk/track?code={trackingNumber}",

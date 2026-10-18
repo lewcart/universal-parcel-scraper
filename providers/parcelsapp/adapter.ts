@@ -944,8 +944,12 @@ function markHandovers(carried: readonly { event: CarrierEvent; carrier: string 
  */
 function replyDestination(payload: Record<string, unknown>, number: string): string | null {
   const reference = /^CN(PRT|ESP)\d{20}$/.exec(number)?.[1];
-  return countryCode(payload.destinationCode) ?? countryCode(payload.destination)
-    ?? (reference === 'PRT' ? 'PT' : reference === 'ESP' ? 'ES' : null);
+  return statedDestination(payload) ?? (reference === 'PRT' ? 'PT' : reference === 'ESP' ? 'ES' : null);
+}
+
+/** The destination the reply names, which the result reports; a reference's country only dates scans. */
+function statedDestination(payload: Record<string, unknown>): string | null {
+  return countryCode(payload.destinationCode) ?? countryCode(payload.destination);
 }
 
 /** The country the parcel comes from, as the reply names it, else the post that issued an S10 number. */
@@ -1128,8 +1132,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   // names the same carrier, that carrier is the hint.
   const discovered = hints.discovered_carrier
     ?? (scanCarriers.size === 1 ? universalCarrierHints([...scanCarriers], number).discovered_carrier : undefined);
+  const stated = statedDestination(payload);
   return { ...result(events, SOURCE), ...(undated ? { undated_event_count: undated } : {}),
-    ...hints, ...(discovered ? { discovered_carrier: discovered } : {}) };
+    ...hints, ...(discovered ? { discovered_carrier: discovered } : {}), ...(stated ? { destination_country: stated } : {}) };
 }
 
 /** Whether a direct request failed by reaching its own cap rather than by a network failure. */

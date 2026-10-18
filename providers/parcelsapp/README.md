@@ -446,7 +446,10 @@ step exists for future protocol changes.
   France); routing then confirms it with that carrier's adapter. The rendered page's
   per-scan carrier names give the same hints. The carrier and service ParcelsApp names
   "url", its link to another tracker, are left out.
-- Sender, destination and estimate fields are not kept.
+- The destination country the reply names (`destinationCode`, else a `destination` that
+  is a country name) becomes `destination_country`, which routing uses to propose the
+  destination's post for a postal number. A country only read off a reference ("CNPRT")
+  dates scans but is not reported. Sender and estimate fields are not kept.
 
 ## Limitations
 

@@ -146,6 +146,8 @@ describe('ParcelsApp result parsing', () => {
     expect(result).toMatchObject({ status: 'pending', current_stage: 'registered', tracking_provider: 'ParcelsApp' });
     expect(result.events).toHaveLength(1);
     expect(JSON.stringify(result)).not.toContain('PRIVATE');
+    // An address in place of the destination names no country.
+    expect(result.destination_country).toBeUndefined();
     expect(() => parseParcelsAppResponse({ states: [{ date: '2026-08-18T00:00:00Z', status: 'Enter the recipient postal code', require_fields: [{}] }] }, number, identity())).toThrow();
     // A prompt to track the parcel on a partner's site, or a drop-off place the recipient booked, is no scan either.
     const prompted = parseParcelsAppResponse({ states: [{ date: '2026-08-19T00:00:00Z', status: 'Track Sendcloud shipment by tapping the button' },
@@ -1062,6 +1064,7 @@ describe('ParcelsApp result parsing', () => {
       '2026-10-14T20:18:58.000Z',
       '2026-10-07T11:45:38.000Z',
     ]);
+    expect(result.destination_country).toBe('FR');
   });
 
   it('reads 4PX scans whose places ParcelsApp rewrote on the wall clock of their dates', () => {
@@ -1088,6 +1091,7 @@ describe('ParcelsApp result parsing', () => {
       '2026-03-09T07:04:41.000Z',
     ]);
     expect(result.undated_event_count).toBeUndefined();
+    expect(result.destination_country).toBe('US');
   });
 
   it('reads Cainiao\'s import customs and last mile on the destination\'s clock, the UK\'s last mile as labeled', () => {
@@ -1177,6 +1181,10 @@ describe('ParcelsApp result parsing', () => {
     const reference = 'CNPRT00000000000000000001';
     expect(times(reference)).toEqual(['2026-07-10T08:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T01:00:00.000Z']);
     expect(times(number)).toEqual(['2026-07-10T07:00:00.000Z', '2026-07-08T07:00:00.000Z', '2026-07-01T01:00:00.000Z']);
+    // The reference's country dates the scans; the result reports only a destination the reply names.
+    expect(parseParcelsAppResponse({ carriers: ['EcoScooting'], states: [
+      { date: '2026-07-10T09:00:00Z', status: 'Out for Delivery. Your shipment is out for delivery', carrier: 0 },
+    ] }, reference, identity(reference)).destination_country).toBeUndefined();
     const page = identity(reference).replace('</table>', `</table><ul class="events">${
       carrierRow('10 Jul 2026', '09:00', 'Out for Delivery. Your shipment is out for delivery', 'EcoScooting')}</ul>`);
     expect(parseParcelsAppHtml(page, reference).events?.[0]?.time).toBe('2026-07-10T08:00:00.000Z');

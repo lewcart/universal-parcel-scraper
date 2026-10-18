@@ -35,6 +35,9 @@
     "steps": [
       "direct"
     ],
+    "recognition": {
+      "rank": 604
+    },
     "refresh": {
       "minMinutes": 60,
       "afterFailureMinutes": 240
@@ -97,5 +100,11 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "gls-at-1",
+      "pattern": "^\\d{11}$",
+      "confidence": "low"
+    }
+  ]
 }

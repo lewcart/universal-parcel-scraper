@@ -13054,6 +13054,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 604,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -13076,7 +13077,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gls-es": {
     "displayName": "GLS Spain",
@@ -13224,6 +13230,7 @@ export const CARRIER_CATALOG = {
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 606,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -13246,7 +13253,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "go-express": {
     "displayName": "GO! Express",
@@ -27362,10 +27374,10 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ghn": [],
   "ghtk": ["ghtk-1"],
   "globalpost": ["globalpost-1"],
-  "gls-at": [],
+  "gls-at": ["gls-at-1"],
   "gls-es": ["gls-es-1"],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
-  "gls-pl": [],
+  "gls-pl": ["gls-pl-1"],
   "go-express": [],
   "go4": [],
   "gobolt": [],

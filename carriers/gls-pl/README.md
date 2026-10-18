@@ -29,8 +29,10 @@ adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose
   carries its offset, so only the label differs from this carrier's zone.
 - The scans' wording is the English of the GROUP path, which the shared GLS map reads.
   `statuses.json` also keeps the Polish page's wording of the same steps.
-- No recognition: no rule offers the group's numbers for this network, and the overview of a
-  Polish parcel names no owner, so it cannot tell a Polish parcel from a German or Swiss one.
+- Recognition asks the same overview, which names no owner, so it cannot tell a Polish parcel
+  from a German or Swiss one. The network is asked about eleven digits only for a caller in
+  Poland: its rank sits below the other carriers that take the layout, and the caller's country
+  then settles between the GLS networks that know the number.
 
 ## Limitations
 
@@ -41,8 +43,9 @@ adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose
 
 Parcels carry the GLS group's eleven-digit parcel number, printed on labels with a twelfth
 check digit. Archived replies of GLS Poland's tracking service show both forms. Every GLS
-network issues the same layout, and the GLS Germany, Switzerland and France entries already
-suggest it with low rules, so no rule claims it for GLS Poland and detection does not offer it.
+network issues the same layout. A low rule offers GLS Poland for eleven digits, beside the GLS
+Germany, Switzerland and France entries. The twelve-digit form has no rule here: a passing GLS
+check digit would rank this network ahead of other carriers' candidates for every caller.
 
 ## Links
 

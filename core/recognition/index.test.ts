@@ -30,6 +30,23 @@ describe('recognition candidates', () => {
     expect(recognitionCandidates('1Z999AA10123456784', { countryHint: 'GB', priorities: { dpd: 1e6 } })).toEqual([]);
   });
 
+  it('asks GLS Poland and GLS Austria about 11 digits only for a caller in their country', () => {
+    // Synthetic: the GLS group's 11-digit layout names no network.
+    const number = '12345678901';
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['gls-at', 'gls-pl']));
+    expect(recognitionAskedCarriers(number)).toEqual(['gls-fr', 'gls-de', 'gls-ch', 'postlogistics', 'dhl-ecommerce-pl']);
+    expect(recognitionAskedCarriers(number, { countryHint: 'PL' })).toContain('gls-pl');
+    expect(recognitionAskedCarriers(number, { countryHint: 'AT' })[0]).toBe('gls-at');
+    for (const country of ['DE', 'CH', 'FR', 'CZ', 'GB']) {
+      const asked = recognitionAskedCarriers(number, { countryHint: country });
+      expect(asked, country).not.toContain('gls-pl');
+      expect(asked, country).not.toContain('gls-at');
+    }
+    // Twelve digits stay with the networks that already take them.
+    for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch('123456789011').candidates).not.toContain(network);
+  });
+
   it('keeps direct hints and number evidence ahead of weak ordering hints', () => {
     expect(recognitionCandidates('06080000000002', { countryHint: 'GB', priorities: { 'dhl-ecommerce-uk': 1e6 } })[0]?.carrier).toBe('dpd');
     expect(recognitionCandidates('06080000000002', { hint: 'seur', countryHint: 'GB' })[0]?.carrier).toBe('seur');
@@ -77,6 +94,8 @@ describe('recognition candidates', () => {
       { carrier: 'postlogistics', needsInput: null, preferred: false },
       { carrier: 'dhl-ecommerce-pl', needsInput: null, preferred: false },
       { carrier: 'ppl', needsInput: null, preferred: false },
+      { carrier: 'gls-pl', needsInput: null, preferred: false },
+      { carrier: 'gls-at', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('06080000000002', { skip: (carrier) => carrier === 'dpd' }).map((candidate) => candidate.carrier))
       .toEqual(['dpd-be', 'dpd-nl', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
@@ -100,6 +119,8 @@ describe('recognition candidates', () => {
       .filter(({ carrier }) => carrier.startsWith('gls-')).map(({ carrier, countryMatch }) => [carrier, countryMatch]));
     expect(marks('ch')).toEqual({ 'gls-ch': 'home', 'gls-de': undefined, 'gls-fr': undefined });
     expect(marks('LI')).toEqual({ 'gls-ch': 'served', 'gls-de': undefined, 'gls-fr': undefined });
+    expect(marks('PL')).toEqual({ 'gls-pl': 'home', 'gls-at': undefined, 'gls-ch': undefined, 'gls-de': undefined, 'gls-fr': undefined });
+    expect(marks('AT')).toEqual({ 'gls-at': 'home', 'gls-pl': undefined, 'gls-ch': undefined, 'gls-de': undefined, 'gls-fr': undefined });
     expect(marks()).toEqual({ 'gls-ch': undefined, 'gls-de': undefined, 'gls-fr': undefined });
     expect(marks('XX')).toEqual(marks());
   });
@@ -203,6 +224,11 @@ describe('settling on a carrier', () => {
     // GLS France's own tracker answers only French parcels, with the history and no postcode.
     expect(settleRecognition([outcome('gls-ch', 'known'), outcome('gls-de', 'known'), outcome('gls-fr', 'known')], now))
       .toEqual({ carrier: 'gls-fr', choices: [] });
+    // GLS's group service answers every network's parcels: the caller's country names the network.
+    expect(settleRecognition([outcome('gls-pl', 'known', { countryMatch: 'home' }), outcome('gls-de', 'known'), outcome('gls-ch', 'known')], now))
+      .toEqual({ carrier: 'gls-pl', choices: [] });
+    expect(settleRecognition([outcome('gls-at', 'known'), outcome('gls-de', 'known')], now))
+      .toEqual({ carrier: 'gls-de', choices: [] });
     expect(settleRecognition([outcome('dpd', 'known'), outcome('hermes-de', 'known')], now))
       .toEqual({ choices: ['dpd', 'hermes-de'] });
     expect(settleRecognition([outcome('seur', 'known'), outcome('brt', 'known')], now))

@@ -13052,6 +13052,7 @@
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 604,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -13074,7 +13075,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "gls-es": {
     "displayName": "GLS Spain",
@@ -13222,6 +13228,7 @@
           "autoComplete": "postal-code"
         }
       ],
+      "recognitionRank": 606,
       "refresh": {
         "minMinutes": 60,
         "afterFailureMinutes": 240
@@ -13244,7 +13251,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ]
   },
   "go-express": {
     "displayName": "GO! Express",

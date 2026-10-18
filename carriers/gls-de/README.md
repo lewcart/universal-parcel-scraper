@@ -53,9 +53,10 @@ to reach GLS, or hangs, is sent once more, as in gls-ch.
   group-wide service whatever its country path (the path only sets the language),
   and its overview of a delivered parcel names no owner. When both networks
   recognize a number, the caller's country decides: Switzerland or
-  Liechtenstein chooses GLS Switzerland. Otherwise GLS Germany is chosen: it is
-  the more common network, and its tracker takes any country's postcode, so it
-  reaches the history of either network's parcel. Group-wide `/EU/` and
+  Liechtenstein chooses GLS Switzerland, Poland GLS Poland and Austria GLS
+  Austria, which are asked about eleven digits only then. Otherwise GLS Germany
+  is chosen: it is the more common network, and its tracker takes any country's
+  postcode, so it reaches the history of either network's parcel. Group-wide `/EU/` and
   `/GROUP/` links come here too, except a `/GROUP/` link whose number alone
   names a carrier, such as GLS France's. GLS Switzerland is also reached
   through a `/CH/` link or by picking it. GLS France still comes first when it

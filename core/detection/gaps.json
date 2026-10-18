@@ -1280,12 +1280,6 @@
   },
   {
     "carrier": "gls-at",
-    "pattern": "^\\d{11}$",
-    "kind": "collision",
-    "reason": "GLS Austria's eleven-digit parcel numbers are the GLS group layout that other GLS networks issue and their low rules suggest, and nothing in the number names the Austrian network."
-  },
-  {
-    "carrier": "gls-at",
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "The twelve-digit form adds the GLS check digit to the same group layout, which other GLS networks and carriers share."
@@ -1313,12 +1307,6 @@
     "pattern": "^\\d{15}GLS$",
     "kind": "open",
     "reason": "The long GLS parcel ID with its suffix was reported once; GLS publishes no rule for it."
-  },
-  {
-    "carrier": "gls-pl",
-    "pattern": "^\\d{11}$",
-    "kind": "collision",
-    "reason": "GLS Poland's eleven-digit parcel numbers are the GLS group layout that other GLS networks issue and their low rules suggest, and nothing in the number names the Polish network."
   },
   {
     "carrier": "gls-pl",

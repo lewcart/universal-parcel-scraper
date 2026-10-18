@@ -20268,7 +20268,20 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "packs",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Packs shows a shipment only with the recipient's postcode.",
+          "pattern": "^(?:[1-9][0-9]{3} ?[A-Za-z]{2}|(?:(?:[Bb][Ee]?|[Ll][Uu]?)[ \\-]?)?[1-9][0-9]{3})$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "canaryUrl": "https://www.packs.nl/track-trace/",
     "trackingSearchUrl": "https://www.packs.nl/track-trace/",

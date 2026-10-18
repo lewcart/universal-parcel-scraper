@@ -262,6 +262,7 @@ import { adapter as paack } from '../carriers/paack/adapter.js';
 import { adapter as packMan } from '../carriers/pack-man/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as packlink } from '../carriers/packlink/adapter.js';
+import { adapter as packs } from '../carriers/packs/adapter.js';
 import { adapter as pakistanPost } from '../carriers/pakistan-post/adapter.js';
 import { adapter as palletways } from '../carriers/palletways/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
@@ -656,6 +657,7 @@ export const REGISTRY: RegistryDefinition = {
     "pack-man": packMan,
     "packeta": packeta,
     "packlink": packlink,
+    "packs": packs,
     "pakistan-post": pakistanPost,
     "palletways": palletways,
     "paquetexpress": paquetexpress,
@@ -1252,7 +1254,7 @@ export const REGISTRY: RegistryDefinition = {
     "packeta": "packeta",
     "packli-punkt": "universal",
     "packlink": "packlink",
-    "packs": "universal",
+    "packs": "packs",
     "pakistan-post": "pakistan-post",
     "palletways": "palletways",
     "pannon-xp": "universal",

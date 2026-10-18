@@ -634,6 +634,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.evdemolojistik\.com\/takip\?kargo_kodu=000000000000$/,
     marker: /Detayl[ıi]\s+G[öo]nderi Durumu|Takip numaras[ıi] hatal[ıi] olabilir/,
     forwarding: { notFound: /Takip numaras[ıi] hatal[ıi] olabilir, l[üu]tfen bilgileri kontrol ediniz/ } },
+  // The page reads the number from its address when the fragment its own result links add is there, and asks its lookup; an unknown one gets a notice naming it.
+  { carrier: 'ewe', number: 'AMZ0000000000',
+    route: /^https:\/\/www\.ewe\.com\.au\/pages\/tracking-order\?cno=AMZ0000000000#track-results$/,
+    marker: /couldn't find your consignment\/article number|Consignment Number/i },
   // The page reads the code from its address and posts it to its lookup; an unknown one gets a notice.
   { carrier: 'd-express', number: 'ZZ0000000000',
     route: /^https:\/\/www\.dexpress\.rs\/rs\/pracenje-posiljaka\/ZZ0000000000$/,

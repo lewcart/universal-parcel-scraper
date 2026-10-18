@@ -12712,7 +12712,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ewe",
+      "localClocks": true
     },
     "canaryUrl": "https://www.ewe.com.au/pages/tracking-order",
     "trackingUrlTemplate": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",

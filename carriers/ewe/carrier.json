@@ -18,18 +18,58 @@
   "timezone": "Australia/Sydney",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ewe",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location"
+  ],
   "portal": {
     "url": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",
     "searchUrl": "https://www.ewe.com.au/pages/tracking-order",
     "canaryUrl": "https://www.ewe.com.au/pages/tracking-order",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "parcel_count",
+      "related_tracking_numbers",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "parcel_count",
+      "related_tracking_numbers",
+      "proof_of_delivery",
+      "postcodes",
+      "coordinates",
+      "driver_name"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point"
+    ]
   },
   "links": [
     {

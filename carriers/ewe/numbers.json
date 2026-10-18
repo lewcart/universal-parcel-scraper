@@ -18,7 +18,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived reply of EWE's own tracking API shows this Amazon-channel parcel from order creation through its Brisbane warehouse to delivery."
+      "note": "An archived reply of EWE's own tracking API shows this Amazon-channel parcel from order creation through its Brisbane warehouse to delivery. EWE's trackers return its history."
     },
     {
       "number": "EMC00001245313",
@@ -31,13 +31,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup on EWE's own tracking page carries this number; the capture shows only the page shell, so the history was not visible."
+      "note": "An archived lookup on EWE's own tracking page carries this number; the capture shows only the page shell, so the history was not visible. EWE's tracking page returns its history, an eMetro consignment of five articles through to delivery."
     },
     {
       "number": "E961065432E",

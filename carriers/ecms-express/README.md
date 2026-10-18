@@ -1,6 +1,8 @@
 # ECMS Express
 
-ECMS Express parcels use enabled universal providers. There is no dedicated adapter.
+ECMS Express parcels use enabled universal providers. There is no dedicated adapter: the
+tracker's lookup answers only after a picture CAPTCHA, an arithmetic question asked again for
+every lookup, and the older consignee and oms trackers no longer answer.
 
 ## Numbers
 

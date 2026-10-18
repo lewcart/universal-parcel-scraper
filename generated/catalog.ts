@@ -30243,7 +30243,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zr-express",
+      "recognitionRank": 801
     },
     "canaryUrl": "https://www.zrexpress.net/suivi",
     "trackingUrlTemplate": "https://www.zrexpress.net/suivi?tn={trackingNumber}",

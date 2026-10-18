@@ -10,13 +10,32 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "zr-express",
         "confidence": "high"
       },
-      "note": "The example in the search field of ZR Express's own tracking page, also quoted in its format error message."
+      "note": "The example in the search field of ZR Express's own tracking page, also quoted in its format error message. ZR's tracker answers it as a delivered parcel."
+    },
+    {
+      "number": "39-5A7FQMPQGV-ZR",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260807200911/https://www.zrexpress.net/en/track?tn=39-5A7FQMPQGV-ZR",
+        "date": "2026-08-07",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "zr-express",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on ZR Express's English tracker shows its history. ZR's tracker answers it as a delivered parcel."
     },
     {
       "number": "16-AJXL7ORFOL-ZR",

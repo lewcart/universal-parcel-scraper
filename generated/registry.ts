@@ -447,6 +447,7 @@ import { adapter as yunexpress } from '../carriers/yunexpress/adapter.js';
 import { adapter as yurticiKargo } from '../carriers/yurtici-kargo/adapter.js';
 import { adapter as zajil } from '../carriers/zajil/adapter.js';
 import { adapter as zeleris } from '../carriers/zeleris/adapter.js';
+import { adapter as zrExpress } from '../carriers/zr-express/adapter.js';
 import { adapter as zto } from '../carriers/zto/adapter.js';
 
 export const REGISTRY: RegistryDefinition = {
@@ -897,6 +898,7 @@ export const REGISTRY: RegistryDefinition = {
     "yurtici-kargo": yurticiKargo,
     "zajil": zajil,
     "zeleris": zeleris,
+    "zr-express": zrExpress,
     "zto": zto,
   },
   carriers: {
@@ -1658,7 +1660,7 @@ export const REGISTRY: RegistryDefinition = {
     "zeleris": "zeleris",
     "zheldor": "universal",
     "zoom-ve": "universal",
-    "zr-express": "universal",
+    "zr-express": "zr-express",
     "zto": "zto",
   },
 };

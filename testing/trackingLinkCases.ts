@@ -1390,6 +1390,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fargo-uz', number: 'TEZ000000',
     route: /^https:\/\/fargo\.uz\/track\?id=TEZ000000$/,
     marker: /We could not find that order|Track ID or order number/ },
+  // The server looks up the number in the address and shows it in an unknown one's notice. A browser in
+  // English or Arabic is sent to that language's page with the same number.
+  { carrier: 'zr-express', number: '00-000000-ZR',
+    route: /^https:\/\/www\.zrexpress\.net\/(?:suivi|en\/track|ar\/suivi)\?tn=00-000000-ZR$/,
+    marker: /Aucun colis ne correspond à ce numéro/ },
 ];
 
 /**

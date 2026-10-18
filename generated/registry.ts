@@ -215,6 +215,7 @@ import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
 import { adapter as mayiyinfu } from '../carriers/mayiyinfu/adapter.js';
 import { adapter as meest } from '../carriers/meest/adapter.js';
+import { adapter as messengerCz } from '../carriers/messenger-cz/adapter.js';
 import { adapter as metropolitanWarehouse } from '../carriers/metropolitan-warehouse/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
@@ -575,6 +576,7 @@ export const REGISTRY: RegistryDefinition = {
     "matkahuolto": matkahuolto,
     "mayiyinfu": mayiyinfu,
     "meest": meest,
+    "messenger-cz": messengerCz,
     "metropolitan-warehouse": metropolitanWarehouse,
     "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
@@ -1110,7 +1112,7 @@ export const REGISTRY: RegistryDefinition = {
     "mayiyinfu": "mayiyinfu",
     "mds-collivery": "universal",
     "meest": "meest",
-    "messenger-cz": "universal",
+    "messenger-cz": "messenger-cz",
     "method": "universal",
     "metropolitan-warehouse": "metropolitan-warehouse",
     "midland-transport": "universal",

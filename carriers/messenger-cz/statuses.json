@@ -18,6 +18,11 @@
     {"code": "4", "wording": "doručena", "stage": "delivered", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. The courier delivered the parcel."},
     {"code": "18", "wording": "vrací se zpět", "stage": "returned", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. The parcel is going back to the sender after failed delivery."},
     {"code": "7", "wording": "stornovaná", "stage": "exception", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. Cancelled without delivery."},
-    {"code": "6", "wording": "uzavřena", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. Final state of the order, after its last event."}
+    {"code": "6", "wording": "uzavřena", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. Final state of the order, after its last event."},
+    {"code": "8", "wording": "chyba", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. An error state the documentation gives no meaning."},
+    {"code": "12", "wording": "fakturovaná", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. The journey was invoiced."},
+    {"code": "13", "wording": "odebrána z faktury", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. The journey was taken off an invoice."},
+    {"code": "14", "wording": "odebrána", "language": "cs", "confirmedBy": "official-doc", "note": "Status list of Messenger's shipment-status API documentation. The order was taken from a courier before collection."},
+    {"code": "7", "wording": "stornována", "stage": "exception", "language": "cs", "confirmedBy": "official-doc", "note": "The spelling of the documentation's JSON example for the cancelled state."}
   ]
 }

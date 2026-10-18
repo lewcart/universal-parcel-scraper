@@ -1072,6 +1072,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'intex-paketdienst', number: '0000000-0',
     route: /^https:\/\/www\.intex-paketdienst\.de\/sendungsstatus\/index\.php\?sdnr=0000000-0&mid=1$/,
     marker: /konnte nicht ermittelt werden/ },
+  // The page looks the number up from its path and answers an unknown one with a notice that does not repeat it.
+  { carrier: 'messenger-cz', number: 'ZZZZ0000',
+    route: /^https:\/\/tracking\.messenger\.cz\/ZZZZ0000$/,
+    marker: /Zásilku se nám nepodařilo vyhledat/,
+    forwarding: { notFound: /Zásilku se nám nepodařilo vyhledat/ } },
   // The page looks the barcode up from its path, keeps it in its search box and says when it does not know it.
   { carrier: 'nox', number: '220000000000000101000000',
     route: /^https:\/\/trackandtrace\.app\.nox\.express\/scannungen\/220000000000000101000000$/,

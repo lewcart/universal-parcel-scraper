@@ -17869,7 +17869,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "messenger-cz"
     },
     "canaryUrl": "https://tracking.messenger.cz/",
     "trackingUrlTemplate": "https://tracking.messenger.cz/{trackingNumber}",

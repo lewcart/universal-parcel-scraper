@@ -65,13 +65,10 @@ describe('S10-shaped numbers', () => {
   it('asks Australia Post and Ukrposhta first about the numbers they issue without selecting them', () => {
     expect(detectCarrierMatch('rr 123 456 785 au')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('rr 123 456 785 au')).toEqual([
+      { carrier: 'australia-post', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    // Australia Post answers in the browser phase only.
-    expect(recognitionCandidates('rr 123 456 785 au', { phase: 'browser' })).toEqual([
-      { carrier: 'australia-post', needsInput: null, preferred: true },
-    ]);
-    expect(recognitionCandidates('RR123456789AU', { phase: 'browser' })).toEqual([]);
+    expect(recognitionAskedCarriers('RR123456789AU')).not.toContain('australia-post');
     expect(detectCarrierMatch('RR123456785UA')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('RR123456785UA')).toEqual([
       { carrier: 'ukrposhta', needsInput: null, preferred: true },
@@ -212,8 +209,7 @@ describe('Australia Post barcodes', () => {
     expect(detectCarrierMatch('33ABC1234567')).toEqual({
       carrier: 'unknown', confidence: 'low', candidates: ['australia-post', 'colis-prive'], preferred: ['australia-post'],
     });
-    expect(recognitionAskedCarriers('33ABC1234567')).toEqual(['colis-prive']);
-    expect(recognitionAskedCarriers('33ABC1234567', { phase: 'browser' })).toEqual(['australia-post']);
+    expect(recognitionAskedCarriers('33ABC1234567')).toEqual(['australia-post', 'colis-prive']);
     expect(detectCarrierMatch('343AY1234567').candidates).toContain('australia-post');
     expect(detectCarrierMatch('331231234567').candidates).not.toContain('australia-post');
   });
@@ -232,7 +228,7 @@ describe('Australia Post barcodes', () => {
   it('suggests Australia Post for a 22-digit prepaid barcode only when its GS1 check passes', () => {
     expect(detectCarrierMatch('0208061234567890123456')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch('0208061234567890123456').candidates).toContain('australia-post');
-    expect(recognitionAskedCarriers('0208061234567890123456', { phase: 'browser' })[0]).toBe('australia-post');
+    expect(recognitionAskedCarriers('0208061234567890123456')[0]).toBe('australia-post');
     expect(detectCarrierMatch('0208061234567890123457').candidates).not.toContain('australia-post');
     expect(checksumRejections('0208061234567890123457')).toEqual([
       { carrier: 'australia-post', rule: 'australia-post-prepaid', checksum: 'gs1' },

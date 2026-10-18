@@ -3,8 +3,8 @@
 Australia Post articles and consignments (10–34 alphanumeric characters), tracked through the
 anonymous shipments API behind the official [tracking app](https://auspost.com.au/mypost/track/).
 Plain HTTP answers when the request looks like the official Android app's; the TRAWL browser
-service takes over when it is refused. Production's plain HTTP is refused, so recognition asks the
-browser alone, in the browser phase.
+service takes over when it is refused. Recognition asks the same API over plain HTTP only, so a
+refusal there leaves the number unchecked instead of starting the browser.
 
 ## How it works
 
@@ -21,9 +21,8 @@ browser alone, in the browser phase.
    - Each lookup gets a fresh browser context that is closed afterwards.
 
 Budget: 45 s by default (max 60 s). `trawl` keeps a 15 s transport allowance and fails when less
-remains; recognition's shorter browser budget keeps 2 s to close the context. Either reply is
-capped at 1 MB. On the capture, 401/403 is a challenge and 429 is rate limited; a missing capture
-or changed schema is an error for normal provider fallback.
+remains. Either reply is capped at 1 MB. On the capture, 401/403 is a challenge and 429 is rate
+limited; a missing capture or changed schema is an error for normal provider fallback.
 
 ## Mobile app
 
@@ -36,7 +35,8 @@ same gateway route as the website through OkHttp, with `AP_APP_ID: MYPOST` and
 The gateway's DataDome protection decides on the HTTP client name: the app's OkHttp name gets JSON,
 and any other name gets a captcha reply with HTTP 403, whatever the channel. Two defaults of
 `fetch` get the same refusal, so the adapter replaces them: `Accept-Language: *`, and the reload
-cache headers of the `no-store` mode. The app also sends an
+cache headers of the `no-store` mode. So does a `baggage` header, which Sentry's Node SDK adds to
+every outgoing request unless the consumer sets `tracePropagationTargets: []`. The app also sends an
 `API-KEY` and carries the DataDome SDK; the gateway answers without the key or a DataDome cookie.
 
 ## Notes

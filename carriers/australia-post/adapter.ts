@@ -1,5 +1,5 @@
 
-import { recognizeFromBrowserLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
@@ -16,8 +16,6 @@ const DETAIL = 'https://auspost.com.au/mypost/track/details/';
 const API = 'https://digitalapi.auspost.com.au/shipments-gateway/v1/watchlist/shipments';
 const MAX_BYTES = 1_000_000;
 const TRANSPORT_ALLOWANCE_MS = 15_000;
-// Recognition's browser budget is shorter than a lookup's: it keeps only the time to close the context.
-const RECOGNITION_ALLOWANCE_MS = 2_000;
 const DIRECT_TIMEOUT_MS = 10_000;
 // The gateway's bot protection passes the official Android app's HTTP client and
 // channel; other clients get a captcha reply. So does fetch's default `Accept-Language: *`.
@@ -192,8 +190,6 @@ export interface AustraliaPostTrackerOptions {
   fetcher?: typeof fetch;
   timeoutMs?: number;
   recorder?: StepRecorder;
-  /** The browser alone, for recognition: production's plain HTTP is refused. */
-  browserOnly?: boolean;
 }
 
 export class AustraliaPostTracker {
@@ -205,11 +201,8 @@ export class AustraliaPostTracker {
     if (!Number.isFinite(budgetMs) || budgetMs <= 0 || budgetMs > 60_000) throw new TypeError('Australia Post budget must be between 1 and 60000 ms');
     context.signal?.throwIfAborted();
     const trawl = this.options.trawl;
-    const browserOnly = this.options.browserOnly === true;
-    if (browserOnly && !trawl) throw new ChallengeError(PROVIDER, 'Australia Post requires the browser tracking service');
-    const allowanceMs = browserOnly ? RECOGNITION_ALLOWANCE_MS : TRANSPORT_ALLOWANCE_MS;
     return runSteps({ carrier: 'australia-post', budgetMs, signal: context.signal, recorder: this.options.recorder }, [{
-      enabled: !browserOnly, id: 'direct', run: async ({ signal, remainingMs }) => {
+      id: 'direct', run: async ({ signal, remainingMs }) => {
         const { response, bytes } = await fetchBounded(australiaPostApiUrl(number), { signal, headers: APP_HEADERS }, {
           provider: PROVIDER, timeoutMs: Math.max(1, Math.min(DIRECT_TIMEOUT_MS, Math.floor(remainingMs))),
           maxBytes: MAX_BYTES, allowHttpStatuses: [401, 403, 429], fetcher: asApp(this.options.fetcher),
@@ -229,7 +222,7 @@ export class AustraliaPostTracker {
       // The browser reads the same gateway, so it cannot improve on an inconclusive entry.
       enabled: trawl !== null, recovers: (error) => recoverableByDefault(error) && !(error instanceof IndeterminateError),
       id: 'trawl', run: async ({ signal, remainingMs }) => {
-        const timeoutMs = Math.floor(remainingMs - allowanceMs);
+        const timeoutMs = Math.floor(remainingMs - TRANSPORT_ALLOWANCE_MS);
         if (timeoutMs < 1) throw new BudgetExceededError(PROVIDER, budgetMs);
         const apiUrl = australiaPostApiUrl(number);
         const page = await trawl!.scrape({ url: australiaPostTrackingUrl(number), skipHttp: true, maxTier: 3,
@@ -262,9 +255,10 @@ export class AustraliaPostTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new AustraliaPostTracker({ trawl: environment.trawl, fetcher: environment.fetcher, recorder: environment.recorder });
-  // The gateway refuses plain HTTP from production, so recognition asks the browser alone.
+  // Recognition is plain HTTP: it asks the gateway alone, and a refusal there fails instead of starting a browser.
   // A recognition budget can be longer than the minute a lookup takes at most.
-  const browser = new AustraliaPostTracker({ trawl: environment.trawl, fetcher: environment.fetcher, recorder: environment.recorder, browserOnly: true });
+  const gateway = new AustraliaPostTracker({ trawl: null, fetcher: environment.fetcher, recorder: environment.recorder });
   return { id: 'australia-post', recordsSteps: true, steps: ['direct', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
-    recognizeWithBrowser: (number, context) => recognizeFromBrowserLookup(() => browser.fetch(number, { ...context, budgetMs: Math.min(context?.budgetMs ?? 45_000, 60_000) })) };
+    recognize: (number, context) => recognizeFromLookup(() => gateway.fetch(number, { ...context, budgetMs: Math.min(context?.budgetMs ?? 45_000, 60_000) }),
+      () => accepted(() => normalizeAustraliaPostNumber(number))) };
 };

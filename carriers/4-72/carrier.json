@@ -18,18 +18,70 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "4-72",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "service_name"
+  ],
   "portal": {
     "url": "https://svc2.sipost.co/TrazabilidadWeb?guia={trackingNumber}",
     "searchUrl": "https://svc2.sipost.co/TrazabilidadWeb",
     "canaryUrl": "https://svc2.sipost.co/TrazabilidadWeb",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "departure_date",
+      "weight",
+      "parcel_count",
+      "payment_details",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "signatory",
+      "related_tracking_numbers",
+      "event_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "event_details"
+    ],
+    "discarded": [
+      "departure_date",
+      "weight",
+      "parcel_count",
+      "payment_details",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "signatory",
+      "related_tracking_numbers",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "destination_country",
+      "pickup_point"
+    ]
   },
   "links": [
     {

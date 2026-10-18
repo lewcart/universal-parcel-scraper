@@ -606,6 +606,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'sundarban-courier', number: '00000000000000',
     route: /^https:\/\/operation\.sundarbancourierltd\.com\/\?cnnumber=00000000000000$/,
     marker: /Track your CN/i },
+  // The page puts the guía in its address into its search box and looks it up on load; an unknown one gets a notice naming it.
+  { carrier: '4-72', number: 'QQ000000005QQ',
+    route: /^https:\/\/svc2\.sipost\.co\/TrazabilidadWeb\?guia=QQ000000005QQ$/,
+    marker: /Trazabilidad Web|No se encontr[óo] la gu[íi]a/i },
   // The page looks up the tracking ID in its address on load and shows it beside the tracker's answer.
   { carrier: 'valmo', number: 'VL0000000000000',
     route: /^https:\/\/www\.valmo\.in\/track\/VL0000000000000$/,

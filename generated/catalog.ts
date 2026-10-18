@@ -5133,7 +5133,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "4-72",
+      "localClocks": true
     },
     "canaryUrl": "https://svc2.sipost.co/TrazabilidadWeb",
     "trackingUrlTemplate": "https://svc2.sipost.co/TrazabilidadWeb?guia={trackingNumber}",

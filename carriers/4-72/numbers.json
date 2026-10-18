@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Opened capture of 4-72's own tracker shows the delivery certificate page for this guía; the scan history was not visible."
+      "note": "Opened capture of 4-72's own tracker shows the delivery certificate page for this guía; the scan history was not visible. 4-72's own tracker returns its history."
     },
     {
       "number": "YG295909222CO",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Opened capture of 4-72's own tracker shows the delivery certificate page for this guía; the scan history was not visible."
+      "note": "Opened capture of 4-72's own tracker shows the delivery certificate page for this guía; the scan history was not visible. 4-72's own tracker returns its history."
     },
     {
       "number": "MN338172153CO",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to 4-72's own tracker, as the archived address shows; the opened capture holds only the search page, so the history was not visible."
+      "note": "Sent as the guía to 4-72's own tracker, as the archived address shows; the opened capture holds only the search page, so the history was not visible. 4-72's own tracker returns its history."
     },
     {
       "number": "RA476724209CO",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "RA514786311CO",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "RA515331736CO",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "RA525178246CO",
@@ -145,13 +145,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YG295994605CO",
@@ -164,13 +164,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YG296301362CO",
@@ -183,13 +183,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YG296301376CO",
@@ -202,13 +202,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YG296301380CO",
@@ -221,13 +221,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YP005928287CO",
@@ -240,13 +240,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     },
     {
       "number": "YP005971705CO",
@@ -259,13 +259,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to the delivery certificate page of 4-72's own tracker, as an archived address shows; the capture was not opened. 4-72's own tracker returns its history."
     }
   ]
 }

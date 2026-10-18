@@ -134,6 +134,8 @@ export interface CarrierDefinition {
     browserRecognitionRank?: number;
     refresh?: { minMinutes: number; afterFailureMinutes?: number };
     localClocks?: boolean;
+    /** A lookup can open a browser: the private browser service or a local or remote Chromium. */
+    browser?: boolean;
   };
   trackingUrlTemplate?: string;
   trackingSearchUrl?: string;

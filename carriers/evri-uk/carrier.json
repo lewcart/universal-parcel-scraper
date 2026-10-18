@@ -26,7 +26,8 @@
     "recognition": {
       "rank": 615,
       "pattern": "^(?:[HT][0-9A-Z]{5}|C00HHA)\\d{10}$"
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

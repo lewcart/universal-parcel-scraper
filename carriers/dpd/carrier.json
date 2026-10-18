@@ -38,7 +38,8 @@
     ],
     "recognition": {
       "rank": 980
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

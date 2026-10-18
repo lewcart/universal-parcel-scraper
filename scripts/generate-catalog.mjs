@@ -193,6 +193,8 @@ function contractTracking(tracking) {
   if (tracking.browserRecognition !== undefined) contractValue.browserRecognitionRank = tracking.browserRecognition.rank;
   if (tracking.refresh !== undefined) contractValue.refresh = tracking.refresh;
   if (tracking.localClocks !== undefined) contractValue.localClocks = tracking.localClocks;
+  // Clients space out repeated lookups that can open a browser.
+  if (tracking.browser !== undefined) contractValue.browser = tracking.browser;
   return contractValue;
 }
 

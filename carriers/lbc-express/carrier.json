@@ -21,7 +21,8 @@
       "direct",
       "browser"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history"

@@ -18,7 +18,8 @@
     ],
     "browserRecognition": {
       "rank": 1000
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

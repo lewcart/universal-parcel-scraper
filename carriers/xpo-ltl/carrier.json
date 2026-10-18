@@ -32,7 +32,8 @@
     "localClocks": true,
     "browserRecognition": {
       "rank": 25
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

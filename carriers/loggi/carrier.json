@@ -19,7 +19,8 @@
     "mode": "automatic",
     "adapter": "loggi",
     "steps": ["trawl"],
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": ["history", "location"],
   "portal": {

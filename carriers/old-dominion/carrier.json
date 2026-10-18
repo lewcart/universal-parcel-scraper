@@ -17,7 +17,8 @@
     "adapter": "old-dominion",
     "steps": [
       "browser"
-    ]
+    ],
+    "browser": true
   },
   "capabilities": [
     "history",

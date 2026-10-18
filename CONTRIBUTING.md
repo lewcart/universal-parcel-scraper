@@ -75,6 +75,9 @@ Every adapter follows these rules:
 - It declares recognition only when a cheap anonymous HTTP lookup can positively tell a known
   parcel from an unknown one. When its rules offer numbers that lookup cannot bind as a whole,
   `tracking.recognition.pattern` names the ones it can.
+- Its carriers set `tracking.browser` when a lookup can open a browser through the environment's
+  `trawl` or `browserExecutablePath`, or a remote one. `testing/adapterBrowserSource.test.ts`
+  reads that from the adapter's code.
 
 [CORPUS.md](CORPUS.md) describes the sample numbers and status records, and
 [ARCHITECTURE.md](ARCHITECTURE.md) the rest of what an adapter lives by.

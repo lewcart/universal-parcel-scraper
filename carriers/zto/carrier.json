@@ -21,7 +21,8 @@
     ],
     "recognition": {
       "rank": 51
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

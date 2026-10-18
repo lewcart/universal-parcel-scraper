@@ -179,6 +179,10 @@
           "description": "True when the adapter can return scans without an instant: a wall clock with no UTC offset, or provider text. Consumers can keep that history beside instants and ask fallback providers for dated scans.",
           "type": "boolean"
         },
+        "browser": {
+          "description": "True when a lookup through the adapter can open a browser: the private browser service or a local or remote Chromium. Consumers can space out repeated lookups.",
+          "const": true
+        },
         "browserRecognition": {
           "description": "Present when the adapter implements recognizeWithBrowser(): opt-in browser confirmation without recipient inputs, requiring dated shipment activity. Higher rank is asked first after HTTP checks are inconclusive.",
           "type": "object",

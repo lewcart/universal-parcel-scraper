@@ -27,7 +27,8 @@
     "recognition": {
       "rank": 620
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "eta",

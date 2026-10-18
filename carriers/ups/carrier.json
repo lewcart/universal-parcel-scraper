@@ -18,7 +18,8 @@
     "steps": [
       "direct",
       "trawl"
-    ]
+    ],
+    "browser": true
   },
   "capabilities": [
     "history",

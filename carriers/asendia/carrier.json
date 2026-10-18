@@ -44,7 +44,8 @@
     "recognition": {
       "rank": 675
     },
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

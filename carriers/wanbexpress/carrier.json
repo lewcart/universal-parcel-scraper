@@ -29,7 +29,8 @@
     },
     "browserRecognition": {
       "rank": 33
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

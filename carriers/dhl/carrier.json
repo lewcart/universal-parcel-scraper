@@ -25,7 +25,8 @@
     "recognition": {
       "rank": 999,
       "pattern": "^\\d{12}$"
-    }
+    },
+    "browser": true
   },
   "capabilities": [
     "history",

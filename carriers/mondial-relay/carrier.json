@@ -39,7 +39,8 @@
     "steps": [
       "app",
       "trawl"
-    ]
+    ],
+    "browser": true
   },
   "capabilities": [
     "history",

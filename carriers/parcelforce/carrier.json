@@ -19,7 +19,8 @@
     "adapter": "royal-mail",
     "steps": [
       "browser"
-    ]
+    ],
+    "browser": true
   },
   "capabilities": [
     "history",

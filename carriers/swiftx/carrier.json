@@ -19,7 +19,8 @@
     "adapter": "swiftx",
     "steps": [
       "trawl"
-    ]
+    ],
+    "browser": true
   },
   "capabilities": [
     "history",

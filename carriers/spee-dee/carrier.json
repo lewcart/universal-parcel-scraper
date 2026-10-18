@@ -19,7 +19,8 @@
       "direct",
       "trawl"
     ],
-    "localClocks": true
+    "localClocks": true,
+    "browser": true
   },
   "capabilities": [
     "history",

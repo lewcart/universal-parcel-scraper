@@ -123,6 +123,16 @@ describe('MRW anonymous tracking', () => {
     expect(() => parseMrwHistory(empty, NUMBER, summary())).toThrowError(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
+  it('matches the summary’s unpadded hour to the history’s padded one', () => {
+    // Live shape: before 10:00 the summary writes "9:29" and the history "09:29".
+    const early = parseMrwSummary(fixture('summary').replace('<td>19:29</td>', '<td>9:29</td>'), NUMBER);
+    expect(early.hour).toBe('09:29');
+    const history = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>', '<tr class="past"><td>10/09/2026</td><td>09:29</td>');
+    expect(parseMrwHistory(history, NUMBER, early)).toMatchObject({ status: 'delivered', current_stage: 'delivered',
+      last_update_local: '2026-09-10T09:29:00' });
+    expect(parseMrwHistory(fixture('blank-history'), NUMBER, early).last_update_local).toBe('2026-09-10T09:29:00');
+  });
+
   it('follows a history that runs ahead of the summary once the summary’s own row is in it', () => {
     const reopened = fixture('history').replace('<tr class="past"><td>10/09/2026</td><td>19:29</td>',
       '<tr class="past"><td>10/09/2026</td><td>19:41</td><td>Dirección entrega incorrecta</td><td>28000 Madrid</td></tr>'

@@ -19,7 +19,9 @@ unknown number without a shipment table is inconclusive.
 The summary can lag the history: a delivery reopened and attempted again is
 listed above the delivery the summary still shows. The newest history row
 decides when the summary's own row is in the history with only later rows above
-it; any other disagreement is inconclusive.
+it; any other disagreement is inconclusive. Before 10:00 the summary writes the
+hour without its leading zero ("9:29") and the history with it, so hours are
+padded before they are compared.
 
 Some history rows are followed by a breakdown of each parcel's own scans. Only
 the shipment's rows are read. Hub offices keep their bracketed kind, such as

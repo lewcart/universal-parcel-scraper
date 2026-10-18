@@ -10,6 +10,11 @@ const SUMMARY_HEADERS = 'Número de albarán|Fecha|Hora|Estado envío|Histórico
 const HISTORY_HEADERS = 'Fecha|Hora|Estado envío|Ubicación';
 const NEUTRAL = 'Actualización de seguimiento';
 
+/** A clock with its hour zero-padded: the summary writes "1:59" where the history writes "01:59". */
+function paddedHour(value: string): string {
+  return value.replace(/^(\d):/, '0$1:');
+}
+
 export function normalizeMrwNumber(raw: string): string {
   if (raw.length > 48) throw new InvalidInputError('MRW', 'MRW tracking number is too long');
   const number = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -54,7 +59,7 @@ export function parseMrwSummary(html: string, raw: string): MrwSummary {
   }
   const status = clean(cells.eq(3).text(), 200);
   const date = clean(cells.eq(1).text(), 32);
-  const hour = clean(cells.eq(2).text(), 16);
+  const hour = paddedHour(clean(cells.eq(2).text(), 16));
   if (!status || status.length > 160) throw new SchemaError('MRW', 'Summary has no bounded status');
   const button = cells.eq(4).find('button[title="Consultar histórico"]');
   const relative = /^javascript:location\.href='([^'\r\n]{1,300})'$/.exec(button.attr('onclick') ?? '')?.[1];
@@ -130,7 +135,7 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
     const cells = $(row).children('td');
     if (cells.length !== 4) throw new SchemaError('MRW', 'Incomplete history row');
     const date = clean(cells.eq(0).text(), 32);
-    const hour = clean(cells.eq(1).text(), 16);
+    const hour = paddedHour(clean(cells.eq(1).text(), 16));
     const rawStatus = clean(cells.eq(2).text(), 500);
     if (!rawStatus || rawStatus.length > 160) throw new SchemaError('MRW', 'History row lacks a bounded status');
     const clock = buildLocalDate(date, hour);
@@ -148,7 +153,7 @@ export function parseMrwHistory(html: string, raw: string, summary: MrwSummary):
   const latest = events[0]!;
   const listed = rows.toArray().map((row) => {
     const cells = $(row).children('td');
-    return { status: clean(cells.eq(2).text(), 500), date: clean(cells.eq(0).text(), 32), hour: clean(cells.eq(1).text(), 16) };
+    return { status: clean(cells.eq(2).text(), 500), date: clean(cells.eq(0).text(), 32), hour: paddedHour(clean(cells.eq(1).text(), 16)) };
   });
   // The summary can lag the history: a delivery reopened and attempted again
   // is listed above the delivery the summary still shows. The summary's own

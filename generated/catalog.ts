@@ -11344,7 +11344,7 @@ export const CARRIER_CATALOG = {
   },
   "dpex": {
     "displayName": "DPEX Worldwide",
-    "color": "#d6151f",
+    "color": "#ec3a43",
     "aliases": [
       "DPEX"
     ],
@@ -19661,7 +19661,7 @@ export const CARRIER_CATALOG = {
   },
   "mrl-global": {
     "displayName": "MRL Global",
-    "color": "#012148",
+    "color": "#0071a6",
     "aliases": [
       "MRL Logistics",
       "Sampson Express"

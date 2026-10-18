@@ -230,6 +230,7 @@ import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.j
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaNorthMacedonia } from '../../carriers/posta-north-macedonia/status.js';
 import { statusMap as postaRomana } from '../../carriers/posta-romana/status.js';
+import { statusMap as postaShqiptare } from '../../carriers/posta-shqiptare/status.js';
 import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/status.js';
 import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
@@ -362,6 +363,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pfc-express': pfcExpress, phlpost,
   'pitney-bowes': pitneyBowes, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
+  'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier,
   ptt, raben, redpack, redur, redx, relaytech, 'rl-carriers': rlCarriers, 'rpx-indonesia': rpxIndonesia, sagawa, saia, sailpost, sameday, 'saudi-post': saudiPost, seino, seko,
   sending, serpost, servientrega, sfc, shadowfax, shipentegra, 'skroutz-last-mile': skroutzLastMile, 'skynet-worldwide': skynetWorldwide, 'slovak-parcel-service': slovakParcelService,

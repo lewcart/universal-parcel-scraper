@@ -285,6 +285,7 @@ import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
 import { adapter as postLuxembourg } from '../carriers/post-luxembourg/adapter.js';
 import { adapter as postaNorthMacedonia } from '../carriers/posta-north-macedonia/adapter.js';
 import { adapter as postaRomana } from '../carriers/posta-romana/adapter.js';
+import { adapter as postaShqiptare } from '../carriers/posta-shqiptare/adapter.js';
 import { adapter as postaSlovenije } from '../carriers/posta-slovenije/adapter.js';
 import { adapter as postaSrbije } from '../carriers/posta-srbije/adapter.js';
 import { adapter as posteItaliane } from '../carriers/poste-italiane/adapter.js';
@@ -690,6 +691,7 @@ export const REGISTRY: RegistryDefinition = {
     "post-luxembourg": postLuxembourg,
     "posta-north-macedonia": postaNorthMacedonia,
     "posta-romana": postaRomana,
+    "posta-shqiptare": postaShqiptare,
     "posta-slovenije": postaSlovenije,
     "posta-srbije": postaSrbije,
     "poste-italiane": posteItaliane,
@@ -1323,7 +1325,7 @@ export const REGISTRY: RegistryDefinition = {
     "posta-moldovei": "universal",
     "posta-north-macedonia": "posta-north-macedonia",
     "posta-romana": "posta-romana",
-    "posta-shqiptare": "universal",
+    "posta-shqiptare": "posta-shqiptare",
     "posta-slovenije": "posta-slovenije",
     "posta-srbije": "posta-srbije",
     "postaplus": "universal",

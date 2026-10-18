@@ -12,13 +12,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Looked up on Posta Shqiptare's e-Posta tracker; the opened capture holds only the app shell, which loads the history by script."
+      "note": "Looked up on Posta Shqiptare's e-Posta tracker; the opened capture holds only the app shell, which loads the history by script. Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "EE200190509AL",
@@ -30,13 +30,13 @@
       },
       "context": {
         "service": "EMS",
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "CP339538880AL",
@@ -48,13 +48,13 @@
       },
       "context": {
         "service": "Parcel",
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LG014636582AL",
@@ -65,13 +65,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LG014771021AL",
@@ -82,13 +82,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
     },
     {
       "number": "LG010568652AL",
@@ -99,13 +99,33 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Albania Post page offered it as a sample to try; it is not described as a live shipment."
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history. Detection selects the generic postal carrier."
+    },
+    {
+      "number": "EE200190512AL",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/posta-shqiptare/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "service": "EMS",
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Albania Post page offered it as a sample to try; Posta Shqiptare's own tracker returns its history, with the scans of the courier that carried it abroad. Detection selects the generic postal carrier."
     }
   ]
 }

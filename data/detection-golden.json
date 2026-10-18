@@ -64492,6 +64492,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },
@@ -64562,6 +64563,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },
@@ -67006,6 +67008,19 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "EE200190512AL",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },
@@ -73651,6 +73666,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },
@@ -73662,6 +73678,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },
@@ -73673,6 +73690,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-shqiptare",
       "chronopost"
     ]
   },

@@ -22119,9 +22119,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Tirane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-shqiptare",
+      "recognitionRank": 829,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.postashqiptare.al/c/207/tracked",
+    "canaryUrl": "https://eposta.postashqiptare.al/tracking",
     "trackingUrlTemplate": "https://eposta.postashqiptare.al/tracking/{trackingNumber}",
     "trackingSearchUrl": "https://www.postashqiptare.al/c/207/tracked",
     "linkRules": [
@@ -22132,7 +22134,14 @@ export const CARRIER_CATALOG = {
         "path": "^/tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AL$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "posta-slovenije": {
     "displayName": "Pošta Slovenije",
@@ -30218,7 +30227,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posta-moldovei": ["posta-moldovei-1"],
   "posta-north-macedonia": ["posta-north-macedonia-s10"],
   "posta-romana": ["posta-romana-s10"],
-  "posta-shqiptare": [],
+  "posta-shqiptare": ["posta-shqiptare-s10"],
   "posta-slovenije": ["posta-slovenije-s10"],
   "posta-srbije": ["posta-srbije-s10"],
   "postaplus": [],

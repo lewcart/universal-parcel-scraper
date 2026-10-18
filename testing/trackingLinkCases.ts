@@ -882,6 +882,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'nova-global', number: 'NP00000000000000NPG',
     route: /^https:\/\/nova\.global\/track\/\?Tracking_ID=NP00000000000000NPG$/,
     marker: /Enter the parcel number|Status history|Щось пішло не так/ },
+  // The e-Posta page reads the code from its address, shows it in its heading and asks the tracker's lookup.
+  { carrier: 'posta-shqiptare', number: 'ZZ000000005AL',
+    route: /^https:\/\/eposta\.postashqiptare\.al\/tracking\/ZZ000000005AL$/,
+    marker: /Kodi:|Nuk ka ngjarje për këtë barkod|Gjurmo dërgesën/ },
   // The page posts the number from its address to the tracker's lookup, which refuses the 1SE prefix and leaves the card empty.
   { carrier: 'shipentegra', number: '1SE000000000',
     route: /^https:\/\/track\.shipentegra\.com\/\?trackno=1SE000000000$/,

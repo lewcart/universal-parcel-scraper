@@ -1361,6 +1361,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/portal\.hunterexpress\.com\.au\/Track\/55010\/ZZZ000000$/,
     marker: /Missing or incorrect tracking number|Consignment Details/,
     forwarding: { notFound: /Missing or incorrect tracking number/ } },
+  // The tracker looks up the number in its address as it is served and shows it in a read-only field over the statuses or an unknown one's notice.
+  { carrier: 'quicksilver-sa', number: 'QS000000000',
+    route: /^https:\/\/erp\.quick-silver\.express\/v2\/tracking\/QS000000000$/,
+    marker: /Tracking number not found|Place an order|Ready For Dispatch|Out For Delivery/ },
 ];
 
 /**

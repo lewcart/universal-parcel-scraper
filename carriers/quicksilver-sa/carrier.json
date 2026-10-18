@@ -21,18 +21,51 @@
   "timezone": "Asia/Riyadh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "quicksilver-sa",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://erp.quick-silver.express/v2/tracking/{trackingNumber}",
     "searchUrl": "https://quick-silver.express/Tracking",
     "canaryUrl": "https://quick-silver.express/Tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "proof_of_delivery",
+      "contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code"
+    ],
+    "discarded": [
+      "proof_of_delivery",
+      "contact_details"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "delivery_partner",
+      "service_name"
+    ]
   },
   "links": [
     {

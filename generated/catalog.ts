@@ -23625,7 +23625,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quicksilver-sa",
+      "localClocks": true
     },
     "canaryUrl": "https://quick-silver.express/Tracking",
     "trackingUrlTemplate": "https://erp.quick-silver.express/v2/tracking/{trackingNumber}",

@@ -309,6 +309,11 @@ step exists for future protocol changes.
   mail from abroad, a scan before the first of them is on the origin's clock; bound
   abroad, one after the last is on the destination's; any other is on Portugal's. Read as
   UTC, a UK parcel's scans came an hour late in summer.
+- bpost's copies ("Bpost Belgium") of an office of exchange abroad, which name the office
+  and its country, are on that office's clock, and step 2 reads them so: Landmark's page
+  relays a London office's departure at that instant, and bpost's unplaced "Item has passed
+  a checkpoint" falls at the same instant on Brussels time, as bpost's copies with no place
+  do (step 3).
 - Speedaf's dates are its sites' wall clocks under a UTC label. Its own feed dates the
   scans up to the departing flight ("Cargo flight departured") on China time and the rest
   on the destination's, and Cainiao's copies of the same scans agree once read that way.

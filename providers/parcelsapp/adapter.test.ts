@@ -1381,6 +1381,14 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-07-21T10:24:00.000Z', '2026-07-20T08:02:00.000Z']);
   });
 
+  it('reads bpost\'s office of exchange abroad on its own clock, and bpost\'s copies of its scans on Brussels\'s', () => {
+    // bpost's own feed copies an office's departure at the same instant, an hour later by the digits for an office in London.
+    expect(parseParcelsAppResponse({ carriers: ['Bpost Belgium'], originCode: 'GB', destinationCode: 'DE', states: [
+      { date: '2026-07-21T15:44:00Z', status: 'Item has passed a checkpoint', carrier: 0 },
+      { date: '2026-07-21T14:44:00Z', status: 'Departure from office of exchange', carrier: 0, location: 'EXAMPLE OFFICE, United Kingdom' },
+    ] }, number, identity()).events?.map((scan) => scan.time)).toEqual(['2026-07-21T13:44:00.000Z', '2026-07-21T13:44:00.000Z']);
+  });
+
   it('reads the origin post\'s leg in UPU\'s and EMS\'s copies on the origin\'s clock, wherever their place is a code', () => {
     // China Post's scans in China share these digits; read as UTC, export customs would follow the release.
     const result = parseParcelsAppResponse({ carriers: ['Universal Postal Union', 'EMS'], originCode: 'CN', destinationCode: 'GB', states: [

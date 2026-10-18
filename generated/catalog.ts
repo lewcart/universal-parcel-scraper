@@ -12588,7 +12588,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "evdemo-lojistik",
+      "recognitionRank": 813,
+      "localClocks": true
     },
     "canaryUrl": "https://www.evdemolojistik.com/takip",
     "trackingUrlTemplate": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",

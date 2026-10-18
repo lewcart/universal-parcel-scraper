@@ -142,6 +142,7 @@ import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
 import { adapter as estes } from '../carriers/estes/adapter.js';
 import { adapter as eurodis } from '../carriers/eurodis/adapter.js';
 import { adapter as euroexpressBa } from '../carriers/euroexpress-ba/adapter.js';
+import { adapter as evdemoLojistik } from '../carriers/evdemo-lojistik/adapter.js';
 import { adapter as evri } from '../carriers/evri/adapter.js';
 import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
 import { adapter as evropat } from '../carriers/evropat/adapter.js';
@@ -560,6 +561,7 @@ export const REGISTRY: RegistryDefinition = {
     "estes": estes,
     "eurodis": eurodis,
     "euroexpress-ba": euroexpressBa,
+    "evdemo-lojistik": evdemoLojistik,
     "evri": evri,
     "evri-uk": evriUk,
     "evropat": evropat,
@@ -1066,7 +1068,7 @@ export const REGISTRY: RegistryDefinition = {
     "eurodis": "eurodis",
     "euroexpress-ba": "euroexpress-ba",
     "europochta": "universal",
-    "evdemo-lojistik": "universal",
+    "evdemo-lojistik": "evdemo-lojistik",
     "evri": "evri",
     "evri-uk": "evri-uk",
     "evropat": "evropat",

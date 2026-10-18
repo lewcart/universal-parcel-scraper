@@ -626,6 +626,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pts-worldwide-express', number: '1000000000',
     route: /^https:\/\/tracking\.pts\.net\/1000000000$/,
     marker: /Parcel Not Founded!|G[öo]nderi Bulunamad[ıi]!|Track & Trace Parcel/ },
+  // The page looks up the number in its address; an unknown one gets a notice under an empty form.
+  { carrier: 'evdemo-lojistik', number: '000000000000',
+    route: /^https:\/\/www\.evdemolojistik\.com\/takip\?kargo_kodu=000000000000$/,
+    marker: /Detayl[ıi]\s+G[öo]nderi Durumu|Takip numaras[ıi] hatal[ıi] olabilir/,
+    forwarding: { notFound: /Takip numaras[ıi] hatal[ıi] olabilir, l[üu]tfen bilgileri kontrol ediniz/ } },
   // The page reads the code from its address and posts it to its lookup; an unknown one gets a notice.
   { carrier: 'd-express', number: 'ZZ0000000000',
     route: /^https:\/\/www\.dexpress\.rs\/rs\/pracenje-posiljaka\/ZZ0000000000$/,

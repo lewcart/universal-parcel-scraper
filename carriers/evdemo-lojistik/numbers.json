@@ -31,7 +31,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel registered in Kayseri for Istanbul."
+      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel registered in Kayseri for Istanbul. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "114030171189",
@@ -64,7 +64,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel registered in Kayseri, at the departure distribution centre and then on its way to Antalya."
+      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel registered in Kayseri, at the departure distribution centre and then on its way to Antalya. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "118070251508",
@@ -96,7 +96,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel announced and then registered in Kayseri for Konya."
+      "note": "An archived lookup on Evdemo Lojistik's own tracker shows this parcel announced and then registered in Kayseri for Konya. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "105100981910",
@@ -109,7 +109,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -132,7 +132,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a wardrobe Evdemo Lojistik carried from Kayseri to Istanbul."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a wardrobe Evdemo Lojistik carried from Kayseri to Istanbul. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "128090973207",
@@ -145,7 +145,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -165,7 +165,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a parcel Evdemo Lojistik carried from Kayseri to Istanbul."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a parcel Evdemo Lojistik carried from Kayseri to Istanbul. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "114090949100",
@@ -178,7 +178,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -197,7 +197,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a furniture parcel Evdemo Lojistik collected in Ankara."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a furniture parcel Evdemo Lojistik collected in Ankara. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "121090960923",
@@ -210,7 +210,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -229,7 +229,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this number for a built-in appliance set Evdemo Lojistik delivered in Istanbul."
+      "note": "A Şikayetvar complaint gives this number for a built-in appliance set Evdemo Lojistik delivered in Istanbul. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "115090951169",
@@ -242,7 +242,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -265,7 +265,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of furniture Evdemo Lojistik was carrying."
+      "note": "A Şikayetvar complaint gives this as the tracking number of furniture Evdemo Lojistik was carrying. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "128080927796",
@@ -278,7 +278,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -300,7 +300,7 @@
           "sagawa"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of an armchair Evdemo Lojistik delivered."
+      "note": "A Şikayetvar complaint gives this as the tracking number of an armchair Evdemo Lojistik delivered. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "119080914328",
@@ -313,7 +313,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -332,7 +332,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a parcel Evdemo Lojistik carried from Kayseri to its Elazığ branch, separate from the marketplace order number."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a parcel Evdemo Lojistik carried from Kayseri to its Elazığ branch, separate from the marketplace order number. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "109060840583",
@@ -345,7 +345,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -365,7 +365,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a furniture parcel Evdemo Lojistik held."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a furniture parcel Evdemo Lojistik held. Evdemo Lojistik's tracker returns its history."
     },
     {
       "number": "104050802360",
@@ -378,7 +378,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -397,7 +397,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the tracking number of a bathroom cabinet sent with Evdemo Lojistik."
+      "note": "A Şikayetvar complaint gives this as the tracking number of a bathroom cabinet sent with Evdemo Lojistik. Evdemo Lojistik's tracker returns its history."
     }
   ]
 }

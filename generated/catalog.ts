@@ -28781,7 +28781,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zajil",
+      "localClocks": true
     },
     "canaryUrl": "https://zajil-express.com/track",
     "trackingUrlTemplate": "https://zajil-express.com/track?tracking_id={trackingNumber}",

@@ -1260,6 +1260,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'kyoungdong', number: '0000000000000',
     route: /^https:\/\/kdexp\.com\/service\/delivery\/etc\/delivery\.do\?barcode=0000000000000$/,
     marker: /검색정보|기본정보/ },
+  // The page puts the number from its address in its search box and looks it up on load; an unknown one gets a notice.
+  { carrier: 'zajil', number: '00000000000',
+    route: /^https:\/\/zajil-express\.com\/track\?tracking_id=00000000000$/,
+    marker: /No Shipment Found|Shipment Summary/ },
 ];
 
 /**

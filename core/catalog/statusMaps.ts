@@ -324,6 +324,7 @@ import { statusMap as zto } from '../../carriers/zto/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
 import { statusMap as yilongLogistics } from '../../carriers/yilong-logistics/status.js';
 import { statusMap as yurticiKargo } from '../../carriers/yurtici-kargo/status.js';
+import { statusMap as zajil } from '../../carriers/zajil/status.js';
 import { statusMap as zeleris } from '../../carriers/zeleris/status.js';
 import type { CarrierId, Stage } from '../../generated/catalog.js';
 import { statusMap as universal } from '../../providers/status.js';
@@ -377,7 +378,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel, ups, urbano, urvaam,
   'uzbekistan-post': uzbekistanPost, 'vasp-expresso': vaspExpresso, veloces, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, winit, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   'yilong-logistics': yilongLogistics, yunexpress, zto,
-  'yurtici-kargo': yurticiKargo, zeleris,
+  'yurtici-kargo': yurticiKargo, zajil, zeleris,
 };
 
 /** The carrier the app files the universal providers' scans under. */

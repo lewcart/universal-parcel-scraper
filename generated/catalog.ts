@@ -25352,7 +25352,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipblu",
+      "recognitionRank": 789
     },
     "canaryUrl": "https://go.shipblu.com/en/",
     "trackingUrlTemplate": "https://go.shipblu.com/en/{trackingNumber}",

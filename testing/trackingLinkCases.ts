@@ -1155,6 +1155,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'exline-kz', number: '0000000000',
     route: /^https:\/\/exline\.kz\/ru\/tracking\?id=0000000000$/,
     marker: /Отслеживайте вашу посылку|Отправление с таким номером не найдено/ },
+  // The page looks the number in its address up on load.
+  { carrier: 'shipblu', number: '1000000000000',
+    route: /^https:\/\/go\.shipblu\.com\/en\/1000000000000$/,
+    marker: /We have an eye on your shipment|Not found!/i },
   // The page looks the number up on the server and heads its results with it.
   { carrier: 'mainfreight', number: 'S00000000',
     route: /^https:\/\/www\.mainfreight\.com\/tracking\?trackingnumber=S00000000$/,

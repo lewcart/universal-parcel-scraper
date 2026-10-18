@@ -295,6 +295,7 @@ import { statusMap as servientrega } from '../../carriers/servientrega/status.js
 import { statusMap as sfc } from '../../carriers/sfc/status.js';
 import { statusMap as shadowfax } from '../../carriers/shadowfax/status.js';
 import { statusMap as shipa } from '../../carriers/shipa/status.js';
+import { statusMap as shipblu } from '../../carriers/shipblu/status.js';
 import { statusMap as shipentegra } from '../../carriers/shipentegra/status.js';
 import { statusMap as shreeMaruti } from '../../carriers/shree-maruti/status.js';
 import { statusMap as skroutzLastMile } from '../../carriers/skroutz-last-mile/status.js';
@@ -420,7 +421,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions, 'quicksilver-sa': quicksilverSa, raben, redpack, redur, redx, relaytech,
   'rl-carriers': rlCarriers,
   'rpx-indonesia': rpxIndonesia, sagawa, saia, sailpost, sameday, 'saudi-post': saudiPost, seino, seko, sending, serpost, servientrega, sfc,
-  shadowfax, shipa, shipentegra, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile, 'skynet-worldwide': skynetWorldwide,
+  shadowfax, shipa, shipblu, shipentegra, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile, 'skynet-worldwide': skynetWorldwide,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, speedaf, speedex, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,

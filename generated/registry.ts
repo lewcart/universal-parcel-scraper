@@ -358,6 +358,7 @@ import { adapter as sfExpress } from '../carriers/sf-express/adapter.js';
 import { adapter as sfc } from '../carriers/sfc/adapter.js';
 import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as shipa } from '../carriers/shipa/adapter.js';
+import { adapter as shipblu } from '../carriers/shipblu/adapter.js';
 import { adapter as shipentegra } from '../carriers/shipentegra/adapter.js';
 import { adapter as shreeMaruti } from '../carriers/shree-maruti/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
@@ -809,6 +810,7 @@ export const REGISTRY: RegistryDefinition = {
     "sfc": sfc,
     "shadowfax": shadowfax,
     "shipa": shipa,
+    "shipblu": shipblu,
     "shipentegra": shipentegra,
     "shree-maruti": shreeMaruti,
     "singapore-post": singaporePost,
@@ -1510,7 +1512,7 @@ export const REGISTRY: RegistryDefinition = {
     "sfc": "sfc",
     "shadowfax": "shadowfax",
     "shipa": "shipa",
-    "shipblu": "universal",
+    "shipblu": "shipblu",
     "shipentegra": "shipentegra",
     "shipup": "universal",
     "shree-anjani": "universal",

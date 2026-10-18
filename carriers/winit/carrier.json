@@ -24,18 +24,65 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "winit",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 855
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "offset_timestamps",
+    "provider_code",
+    "eta",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://track.winit.com/tracking/Mobile/result?trackingNos={trackingNumber}",
     "searchUrl": "https://track.winit.com/tracking/Mobile",
     "canaryUrl": "https://track.winit.com/tracking/Mobile",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivered_at",
+      "tracking_alias"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "provider_code",
+      "eta",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "delivered_at"
+    ],
+    "discarded": [
+      "tracking_alias"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -72,6 +119,11 @@
     {
       "id": "winit-2",
       "pattern": "^WO\\d{11}(?:\\d{3})?[A-Z]{2}$",
+      "confidence": "high"
+    },
+    {
+      "id": "winit-3",
+      "pattern": "^WO\\d{10,11}[A-Z]$",
       "confidence": "high"
     }
   ]

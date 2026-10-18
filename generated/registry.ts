@@ -356,6 +356,7 @@ import { adapter as viettelPost } from '../carriers/viettel-post/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
+import { adapter as winit } from '../carriers/winit/adapter.js';
 import { adapter as xdp } from '../carriers/xdp/adapter.js';
 import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
 import { adapter as xpressbees } from '../carriers/xpressbees/adapter.js';
@@ -726,6 +727,7 @@ export const REGISTRY: RegistryDefinition = {
     "vinted-go": vintedGo,
     "wanbexpress": wanbexpress,
     "whistl": whistl,
+    "winit": winit,
     "xdp": xdp,
     "xpo-ltl": xpoLtl,
     "xpressbees": xpressbees,
@@ -1396,7 +1398,7 @@ export const REGISTRY: RegistryDefinition = {
     "wanbexpress": "wanbexpress",
     "ward-trucking": "universal",
     "whistl": "whistl",
-    "winit": "universal",
+    "winit": "winit",
     "x-express-ba": "universal",
     "x-trac": "universal",
     "xde-logistics": "universal",

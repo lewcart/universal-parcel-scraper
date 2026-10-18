@@ -26565,7 +26565,9 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "winit",
+      "recognitionRank": 855,
+      "localClocks": true
     },
     "canaryUrl": "https://track.winit.com/tracking/Mobile",
     "trackingUrlTemplate": "https://track.winit.com/tracking/Mobile/result?trackingNos={trackingNumber}",
@@ -26603,6 +26605,10 @@
       },
       {
         "pattern": "^WO\\d{11}(?:\\d{3})?[A-Z]{2}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^WO\\d{10,11}[A-Z]$",
         "confidence": "high"
       }
     ]

@@ -3368,6 +3368,12 @@
     "reason": "Whistl publishes no number shape; its references vary by client and service, so the user picks Whistl."
   },
   {
+    "carrier": "winit",
+    "pattern": "^WO\\d{10,11}$",
+    "kind": "collision",
+    "reason": "WINIT order numbers, WO and ten or eleven digits, share their shape with Colis Privé, Aramex and La Poste references; a WINIT rule needs those overlaps declared first. The package numbers that add a letter are detected."
+  },
+  {
     "carrier": "x-express-ba",
     "pattern": "^A\\d{9}$",
     "kind": "collision",

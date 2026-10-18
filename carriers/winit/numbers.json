@@ -133,6 +133,114 @@
         "confidence": "high"
       },
       "note": "An archived lookup on WINIT's tracker shows this number in its tracking-number column with the German warehouse history from order to dispatch."
+    },
+    {
+      "number": "WO9152844585",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250128095859/https://track.winit.com.cn/tracking/Index/getTracking",
+        "date": "2025-01-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "aramex-au",
+          "aramex-nz"
+        ]
+      },
+      "note": "An archived reply of WINIT's tracking lookup lists this order from a German warehouse, handed to UPS. WINIT's tracker returns its history."
+    },
+    {
+      "number": "WO9152844585A",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250128095859/https://track.winit.com.cn/tracking/Index/getTracking",
+        "date": "2025-01-28",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "winit",
+        "confidence": "high"
+      },
+      "note": "The order's package in the same archived reply. WINIT's tracker returns its history.",
+      "relationships": [
+        {
+          "kind": "child_of",
+          "number": "WO9152844585",
+          "source": {
+            "url": "https://web.archive.org/web/20250128095859/https://track.winit.com.cn/tracking/Index/getTracking",
+            "date": "2025-01-28",
+            "dateKind": "capture",
+            "access": "full_page"
+          }
+        }
+      ]
+    },
+    {
+      "number": "WO11242021592",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260331044112/https://track.winit.com/tracking/Index/getTracking",
+        "date": "2026-03-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste"
+        ]
+      },
+      "note": "An archived reply of WINIT's tracking lookup lists this order from a US warehouse, handed to FedEx. WINIT's tracker returns its history."
+    },
+    {
+      "number": "WO11242021592A",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260331044112/https://track.winit.com/tracking/Index/getTracking",
+        "date": "2026-03-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "winit",
+        "confidence": "high"
+      },
+      "note": "The order's package in the same archived reply. WINIT's tracker returns its history.",
+      "relationships": [
+        {
+          "kind": "child_of",
+          "number": "WO11242021592",
+          "source": {
+            "url": "https://web.archive.org/web/20260331044112/https://track.winit.com/tracking/Index/getTracking",
+            "date": "2026-03-31",
+            "dateKind": "capture",
+            "access": "full_page"
+          }
+        }
+      ]
     }
   ]
 }

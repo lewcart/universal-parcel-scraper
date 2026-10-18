@@ -26567,7 +26567,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "winit",
+      "recognitionRank": 855,
+      "localClocks": true
     },
     "canaryUrl": "https://track.winit.com/tracking/Mobile",
     "trackingUrlTemplate": "https://track.winit.com/tracking/Mobile/result?trackingNos={trackingNumber}",
@@ -26605,6 +26607,10 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^WO\\d{11}(?:\\d{3})?[A-Z]{2}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^WO\\d{10,11}[A-Z]$",
         "confidence": "high"
       }
     ]
@@ -28574,7 +28580,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wanbexpress": ["wanbexpress-1"],
   "ward-trucking": [],
   "whistl": [],
-  "winit": ["winit-1","winit-2"],
+  "winit": ["winit-1","winit-2","winit-3"],
   "x-express-ba": [],
   "x-trac": ["x-trac-1"],
   "xde-logistics": [],

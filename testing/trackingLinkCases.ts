@@ -716,6 +716,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/web\.parcelhub\.net\/Tracking\/reference\/WHI0000GB00000000001$/,
     marker: /Unable to find shipment|Postcode \(If applicable\)/,
     forwarding: { notFound: /Unable to find shipment/ } },
+  // The mobile page looks up the number in its address on load and says when it has nothing for it.
+  { carrier: 'winit', number: 'WO0000000000A',
+    route: /^https:\/\/track\.winit\.com\/tracking\/Mobile\/result\?trackingNos=WO0000000000A$/,
+    marker: /Temporarily query no tracking information/ },
   // The page moves to its new route in the browser, searches the number and repeats it in the notice it shows when nothing matches.
   { carrier: 'dsv', number: 'ZZ99999999',
     route: /^https:\/\/mydsv\.com\/(?:new\/tracking\/)?track-shipment\?query=ZZ99999999$/,

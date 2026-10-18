@@ -83766,10 +83766,52 @@
     ]
   },
   {
+    "input": "WO11242021592",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
+    "input": "WO11242021592A",
+    "carrier": "winit",
+    "confidence": "high",
+    "candidates": [
+      "winit"
+    ]
+  },
+  {
     "input": "WO7IWI",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "WO9152844585",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "asked": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ]
+  },
+  {
+    "input": "WO9152844585A",
+    "carrier": "winit",
+    "confidence": "high",
+    "candidates": [
+      "winit"
+    ]
   },
   {
     "input": "WRL2408001AZSN",

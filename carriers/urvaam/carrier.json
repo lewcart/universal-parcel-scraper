@@ -17,18 +17,60 @@
   "timezone": "Europe/Madrid",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "urvaam",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 848
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.urvaam.es/track/result?no={trackingNumber}",
     "searchUrl": "https://www.urvaam.es/track",
     "canaryUrl": "https://www.urvaam.es/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "customer_reference",
+      "proof_of_delivery",
+      "pickup_point",
+      "pickup_point_address",
+      "office_opening_hours"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point",
+      "pickup_point_address"
+    ],
+    "discarded": [
+      "customer_reference",
+      "proof_of_delivery",
+      "office_opening_hours"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

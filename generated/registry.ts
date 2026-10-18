@@ -357,6 +357,7 @@ import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.
 import { adapter as ukrposhta } from '../carriers/ukrposhta/adapter.js';
 import { adapter as uniuni } from '../carriers/uniuni/adapter.js';
 import { adapter as ups } from '../carriers/ups/adapter.js';
+import { adapter as urvaam } from '../carriers/urvaam/adapter.js';
 import { adapter as usps } from '../carriers/usps/adapter.js';
 import { adapter as uzbekistanPost } from '../carriers/uzbekistan-post/adapter.js';
 import { adapter as vaspExpresso } from '../carriers/vasp-expresso/adapter.js';
@@ -737,6 +738,7 @@ export const REGISTRY: RegistryDefinition = {
     "ukrposhta": ukrposhta,
     "uniuni": uniuni,
     "ups": ups,
+    "urvaam": urvaam,
     "usps": usps,
     "uzbekistan-post": uzbekistanPost,
     "vasp-expresso": vaspExpresso,
@@ -1410,7 +1412,7 @@ export const REGISTRY: RegistryDefinition = {
     "upaya": "universal",
     "ups": "ups",
     "urbano": "universal",
-    "urvaam": "universal",
+    "urvaam": "urvaam",
     "usps": "usps",
     "uzbekistan-post": "uzbekistan-post",
     "valmo": "universal",

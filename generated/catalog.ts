@@ -26431,7 +26431,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "urvaam",
+      "recognitionRank": 848,
+      "localClocks": true
     },
     "canaryUrl": "https://www.urvaam.es/track",
     "trackingUrlTemplate": "https://www.urvaam.es/track/result?no={trackingNumber}",

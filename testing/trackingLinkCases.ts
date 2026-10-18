@@ -853,6 +853,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'speedaf', number: 'MA000000000000',
     route: /^https:\/\/www\.speedaf\.com\/cn-en\/send-parcel\?tradeNo=MA000000000000$/,
     marker: /Track[\s\S]*Inquiry/ },
+  // The page reads the number from its address and posts it to the tracker's lookup; its status counters come from the reply.
+  { carrier: 'urvaam', number: '2000000000000000',
+    route: /^https:\/\/www\.urvaam\.es\/track\/result\?no=2000000000000000$/,
+    marker: /Entregado al punto de Recogida|Entregado ao ponto de auto-entrega|Problem piece/ },
   // The page moves to the browser's language prefix, then looks the number up from its address.
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/(?:(?:en|pt)\/)?tracking\?number_id=MLAR000000000EX$/,

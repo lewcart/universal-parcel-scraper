@@ -20,6 +20,9 @@ const dhlSpellings = new Map([
 const chinaNames = new Map([['en', 'China'], ['de', 'China'], ['fr', 'Chine'], ['it', 'Cina'], ['es', 'China'], ['pt', 'China'], ['pl', 'Chiny'], ['uk', 'Китай']]);
 // "Mexico City" is a city, not Mexico followed by one.
 const settlementWords = new Set(['city', 'town', 'ville', 'stadt', 'ciudad', 'cidade', 'citta']);
+// A US military post office: the Army, Fleet or Diplomatic Post Office ("APO, AE 09001",
+// "FPO AP") of the Armed Forces Americas, Europe or Pacific.
+const MILITARY_POST_OFFICE = /(?:^|[\s,;|(])[ADF]PO[\s,;]+A[AEP](?:\s+\d{5}(?:-\d{4})?)?$/i;
 const normalized = (value: string) => value.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 let countryNames: Map<string, string> | undefined;
 const displayNames = new Map<string, Intl.DisplayNames>();
@@ -45,6 +48,16 @@ function namedCountry(name: string, display: boolean): string | null {
   return countryNames.get(bare) ?? carrierSpellings.get(bare) ?? null;
 }
 
+/**
+ * Whether a location is a US military post office ("Fpo, AE", "APO AP 96001").
+ * Its base can be anywhere in the region the code names (Europe's also covers
+ * Africa, the Middle East and Canada), so it names no country: AE there is not
+ * the United Arab Emirates.
+ */
+export function militaryPostOffice(location: string): boolean {
+  return MILITARY_POST_OFFICE.test(location.trim());
+}
+
 function fieldCountry(field: string, location: string, display: boolean): string | null {
   if (regionCodes.has(field)) return location === field || !ambiguousAddressCodes.has(field) ? field : null;
   return namedCountry(field, display);
@@ -54,7 +67,7 @@ function fieldCountry(field: string, location: string, display: boolean): string
 export function trackingLocationCountry(location?: string): string | null {
   const text = location?.trim();
   const field = text?.split(/[,;|()]/).map((value) => value.trim()).filter(Boolean).at(-1);
-  return field ? fieldCountry(field, text!, false) : null;
+  return field && !militaryPostOffice(text!) ? fieldCountry(field, text!, false) : null;
 }
 
 export interface TrackingPlace {
@@ -79,6 +92,7 @@ function dashCountry(part: string): string | null {
  */
 export function trackingPlace(location: string): TrackingPlace {
   const text = location.trim();
+  if (militaryPostOffice(text)) return { country: null, place: text };
   const dashed = /^(.*\S)\s+-\s+(.+)$/.exec(text);
   const dashedCountry = dashed ? dashCountry(dashed[2]!) : null;
   if (dashedCountry) return { country: dashedCountry, place: dashed![1]! };

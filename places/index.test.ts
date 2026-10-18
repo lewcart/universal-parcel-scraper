@@ -212,6 +212,8 @@ describe('locatePlace', () => {
     for (const location of [
       '', '   ', 'CENTRE DE TRI', 'Return location', 'Livré au destinataire', 'Example City', 'Home', 'Post branch',
       'Your neighbourhood', '示例市', 'FR0012', 'Maker SO 841215', 'EXAMPLE AIR HUB', 'Hub', 'CDG', 'GOFO-PR',
+      // A US military post office, anywhere in its region.
+      'Fpo, AE', 'APO AE', 'FPO, AP 96001',
     ]) expect(place(location), location).toBeNull();
     expect(place('Warehouse 2024', ['CH'])).toBeNull();
     expect(locatePlace(undefined)).toBeNull();

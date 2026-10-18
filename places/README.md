@@ -38,6 +38,10 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
   parcel is, then, for a code no comma or bracket sets apart, any town of that name. With no
   town at all, a code in brackets or after a space is no country on a parcel known to be
   elsewhere, and the scan gets no place.
+- A US military post office ("Fpo, AE", "APO AP 96001") names a region of the US armed
+  forces, not a country: AE there is not the Emirates, and the base can be anywhere in the
+  region. The scan gets no place, and `trackingPlace` and `trackingLocationCountry` give it
+  no country.
 - A field that only names a region is that region: it places a town of that name only if
   the town lies in it, and otherwise places the region's country ("Guangdong Province").
   The words of a region's name are not towns elsewhere: "Cabo Delgado" is in Mozambique,

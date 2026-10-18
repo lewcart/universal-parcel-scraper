@@ -117,6 +117,12 @@ step exists for future protocol changes.
   [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. See Limitations
   for what that does to stored rows.
 
+  A US military post office ("Fpo, AE", "APO AP 96001") names no country: AE there is the
+  Armed Forces Europe, not the Emirates, and the base can be anywhere in its region. No
+  guess and no zone of the scans around it fits such a scan, and with no zone it keeps its
+  wall clock in `local_time`, with no instant. It stays a scan, so when it is the latest
+  one `last_update` is null.
+
   A network that no step places, whose scans other carriers copy at the same digits and
   wording on one shared zone, takes that zone, so each scan stays one with its copies.
   A scan that only steps 3 to 5 date, or none, takes the zone of another carrier's scan

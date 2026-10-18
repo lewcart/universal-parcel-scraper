@@ -24,6 +24,7 @@ import {
 } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
@@ -437,9 +438,11 @@ function regionClock(location: string): { zone: string; certain: boolean } | nul
  * States in full for SpeedPAK, Canada Post writes "USA", 4PX "US 12345", and
  * Hong Kong is not the name Intl gives it. FedEx writes a town, its region and
  * the country's code before the postcode ("EXAMPLE TOWN, RR, IT 12345"); with
- * two parts, "EXAMPLE TOWN, IN 12345" is a US state and its ZIP code.
+ * two parts, "EXAMPLE TOWN, IN 12345" is a US state and its ZIP code. A
+ * US military post office ("Fpo, AE") has none (`militaryPostOffice`).
  */
 function lastPlace(location: string): string | undefined {
+  if (militaryPostOffice(location)) return undefined;
   const parts = location.split(',').map((part) => part.trim()).filter((part) => part && !/^\d[\d\s-]*$/.test(part));
   const place = parts.at(-1);
   if (!place) return place;
@@ -554,8 +557,10 @@ function postingOffice(name: unknown, status: string, location: string, origin: 
  * from the name or from routing are single-clock countries' zones, so a
  * location in the US or Canada rules them out too. A borrowed zone can be a
  * state's or a province's, and must then be in the country the location names.
+ * A US military post office can be anywhere in its region, so nothing fits it.
  */
 function fitsPlace(zone: string | null, location: string, borrowed = false): string | null {
+  if (militaryPostOffice(location)) return null;
   const country = countryCode(lastPlace(location));
   const zoneCountry = zone ? timeZoneCountry(zone) ?? (borrowed ? STATE_ZONES.get(zone) : undefined) : undefined;
   return zone && (!country || zoneCountry === country) ? zone : null;
@@ -1022,16 +1027,18 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const { zone } = zones[index]!;
     // A DHL Express scan whose facility the rule cannot place is a wall clock
     // with no instant, and so is a UPS or FedEx scan with no location that
-    // nothing places. Any other scan with no zone keeps ParcelsApp's label.
+    // nothing places. A scan at a US military post office keeps its wall
+    // clock as its local time. Any other scan with no zone keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
+    const localOnly = !zone && !unplaced && militaryPostOffice(entry.location);
     // A step its carrier dates by its day alone keeps the day (`datedOnly`).
     const day = datedOnly(name, relayedLabel(raw.status), date);
     const parsed = day ? dayEvent(day, entry.wording)
-      : localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
+      : localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced || localOnly ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
     if (parsed) latest.see(mislabeledWallTime(date) ?? '', facility);
     // Nor has an offset-less date that no zone resolves: a wall time, not an instant.
-    if (parsed && !parsed.time && !day) {
+    if (parsed && !parsed.time && !day && !localOnly) {
       undated++;
       continue;
     }

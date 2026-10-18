@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { brotliDecompressSync } from 'node:zlib';
 import { CARRIER_DEFINITIONS } from '../core/catalog/definitions.js';
 import { timeZoneCountry } from '../core/time/index.js';
-import { ambiguousAddressCodes, trackingPlace } from './trackingLocation.js';
+import { ambiguousAddressCodes, militaryPostOffice, trackingPlace } from './trackingLocation.js';
 import facilityList from './facilities.json' with { type: 'json' };
 import hubList from './hubs.json' with { type: 'json' };
 import { nameKey, nameKeys } from './names.mjs';
@@ -444,7 +444,8 @@ export function locatePlace(location: string | null | undefined, hints: PlaceHin
 
 function locate(location: string | null | undefined, hints: PlaceHints): Located | null {
   const text = location?.trim();
-  if (!text) return null;
+  // A military post office's base can be anywhere in its region (`militaryPostOffice`).
+  if (!text || militaryPostOffice(text)) return null;
   const facility = facilityPlace(text);
   if (facility) return { place: facility, text: true };
   const data = gazetteer();

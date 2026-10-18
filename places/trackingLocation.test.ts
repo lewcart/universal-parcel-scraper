@@ -31,6 +31,15 @@ describe('tracking places', () => {
     expect(trackingPlace(location)).toEqual({ country: null, place: location });
   });
 
+  it('reads a US military post office as no country', () => {
+    // "AE" after APO, FPO or DPO is the Armed Forces Europe, not the United Arab Emirates.
+    for (const location of ['Fpo, AE', 'APO, AE 09001', 'DPO AP', 'EXAMPLE BASE, APO AA 34001']) {
+      expect(trackingPlace(location), location).toEqual({ country: null, place: location });
+      expect(trackingLocationCountry(location), location).toBeNull();
+    }
+    expect(trackingPlace('Example City, AE')).toEqual({ country: 'AE', place: 'Example City' });
+  });
+
   it('reads a localized country name a large town shares as the town', () => {
     for (const location of ['Granada', 'GRANADA', 'Franca', 'Salvador', 'Santa Helena', 'Włochy', 'Granada Centro']) {
       expect(trackingPlace(location), location).toEqual({ country: null, place: location });

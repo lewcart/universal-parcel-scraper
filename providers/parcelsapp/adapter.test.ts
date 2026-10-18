@@ -390,6 +390,29 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-07-02T18:30:00.000Z']);
   });
 
+  it('keeps a scan at a US military post office on its wall clock', () => {
+    // APO, FPO and DPO with AA, AE or AP name a region of the US armed forces:
+    // "AE" there is not the United Arab Emirates, and the base can be anywhere
+    // in the region. Synthetic scans.
+    const parse = (location: string) => parseParcelsAppResponse({
+      carriers: ['bpost'], states: [{ date: '2026-07-02T18:30:00Z', status: 'Delivered', carrier: 0, location }],
+    }, number, identity(), 'Europe/Brussels');
+    for (const location of ['Fpo, AE', 'APO, AE 09001', 'DPO AP', 'FPO, AA 34001']) {
+      const result = parse(location);
+      expect(result.events, location).toEqual([expect.objectContaining({ local_time: '2026-07-02T18:30:00.000', location })]);
+      expect(result.events?.[0], location).not.toHaveProperty('time');
+      expect(result, location).toMatchObject({ status: 'delivered', last_update: null });
+      expect(result, location).not.toHaveProperty('undated_event_count');
+    }
+    expect(parse('Example City, AE').events?.[0]?.time).toBe('2026-07-02T14:30:00.000Z');
+    // A wall clock borrows no zone from its network's scans in the US for it.
+    const usps = parseParcelsAppResponse({ carriers: ['USPS'], states: [
+      { date: '2026-07-04T09:10:00Z', status: 'Delivered', carrier: 0, location: 'APO, AE 09001' },
+      { date: '2026-06-28T07:00:00Z', status: 'Departed', carrier: 0, location: 'EXAMPLE CITY, NY 10001' },
+    ] }, number, identity(), 'America/New_York');
+    expect(usps.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(['2026-07-04T09:10:00.000', '2026-06-28T11:00:00.000Z']);
+  });
+
   it.each([
     ['DPD UK', '2026-07-02T17:30:00.000Z'],
     ['DPD Germany', '2026-07-02T16:30:00.000Z'],

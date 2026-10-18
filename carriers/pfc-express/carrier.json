@@ -38,18 +38,64 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pfc-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 856
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "service_name",
+    "destination_country",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.pfctrack.com/?nums={trackingNumber}",
     "searchUrl": "https://www.pfctrack.com/",
     "canaryUrl": "https://www.pfctrack.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "delivery_tracking_number",
+      "customer_reference",
+      "contact_details",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "destination_country",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "origin_country",
+      "customer_reference",
+      "contact_details",
+      "signatory"
+    ],
+    "unavailable": [
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "weight",
+      "delivery_partner",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -78,7 +124,7 @@
   "detection": [
     {
       "id": "pfc-express-1",
-      "pattern": "^R\\d{16}$",
+      "pattern": "^R(?=\\d{13,17}$)\\d{5,6}2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{1,4}$",
       "confidence": "low"
     }
   ]

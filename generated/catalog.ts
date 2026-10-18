@@ -20195,7 +20195,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pfc-express",
+      "recognitionRank": 856,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pfctrack.com/",
     "trackingUrlTemplate": "https://www.pfctrack.com/?nums={trackingNumber}",
@@ -20226,7 +20228,7 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^R\\d{16}$",
+        "pattern": "^R(?=\\d{13,17}$)\\d{5,6}2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{1,4}$",
         "confidence": "low"
       }
     ]

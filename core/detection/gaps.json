@@ -2394,6 +2394,12 @@
     "reason": "The fifteen-digit form is the twelve-digit number with its 001 piece suffix, and bare fifteen-digit numbers are printed by many carriers."
   },
   {
+    "carrier": "pfc-express",
+    "pattern": "^R\\d{12}$",
+    "kind": "collision",
+    "reason": "A five-digit account and a one-digit serial make a thirteen-character PFC order number, which La Poste's rule for two characters and eleven digits also takes. PFC's rule starts at fourteen characters, so these need PFC chosen or its tracking link."
+  },
+  {
     "carrier": "pigeon-express",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

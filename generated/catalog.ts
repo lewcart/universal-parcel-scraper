@@ -5681,7 +5681,7 @@ export const CARRIER_CATALOG = {
   },
   "airpak-express": {
     "displayName": "Airpak Express",
-    "color": "#cd2727",
+    "color": "#f5333f",
     "aliases": [
       "Airpak",
       "Airpak Express Singapore",
@@ -15201,7 +15201,7 @@ export const CARRIER_CATALOG = {
   },
   "houng-ah-loun": {
     "displayName": "HAL Express",
-    "color": "#ef4444",
+    "color": "#ea2127",
     "aliases": [
       "Houng Ah Loun Logistics",
       "Houng AH Loun Logistics",
@@ -19485,7 +19485,7 @@ export const CARRIER_CATALOG = {
   },
   "netpost-vn": {
     "displayName": "Netpost",
-    "color": "#0083cb",
+    "color": "#ed1c24",
     "aliases": [
       "Netpost Việt Nam",
       "NETPOST VIETNAM",
@@ -20810,7 +20810,7 @@ export const CARRIER_CATALOG = {
   },
   "pandu-logistics": {
     "displayName": "Pandu Logistics",
-    "color": "#d71921",
+    "color": "#052f66",
     "aliases": [
       "Pandu Express",
       "Pandu Logistik",
@@ -23641,7 +23641,7 @@ export const CARRIER_CATALOG = {
   },
   "rr-express-sg": {
     "displayName": "RR Express",
-    "color": "#00008e",
+    "color": "#002f75",
     "aliases": [
       "RR Express (S) Pte. Ltd.",
       "TCK Express",

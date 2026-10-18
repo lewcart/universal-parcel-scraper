@@ -1261,6 +1261,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tmm-express', number: '0000000000',
     route: /^https:\/\/ukr\.tmm-express\.com\/en\/trackparcels\?num=0000000000&mark=is_code$/,
     marker: /Common information|Detailed information/ },
+  // The server looks the AWB number in the query up. An unknown one gets the page's notice,
+  // which does not repeat it.
+  { carrier: 'dragon-star-curier', number: '00000000',
+    route: /^https:\/\/dragonstarcurier\.ro\/tracking-awb\?awb=00000000$/,
+    marker: /VERIFICARE AWB|Codul AWB introdus este invalid/,
+    forwarding: { notFound: /Codul AWB introdus este invalid/ } },
   // The page reads the number from its address on load and shows it over the answer.
   { carrier: 'xlcourier', number: 'XLC00000000000',
     route: /^https:\/\/www\.xlcourier\.com\/trackOrder\?number=XLC00000000000$/,

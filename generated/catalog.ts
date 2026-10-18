@@ -11353,7 +11353,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dragon-star-curier",
+      "recognitionRank": 828,
+      "localClocks": true
     },
     "canaryUrl": "https://dragonstarcurier.ro/tracking-awb",
     "trackingUrlTemplate": "https://dragonstarcurier.ro/tracking-awb?awb={trackingNumber}",

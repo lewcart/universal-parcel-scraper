@@ -21,7 +21,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup on the AWB script of DSC's former site shows this AWB leaving its Bucharest hub."
+      "note": "An archived lookup on the AWB script of DSC's former site shows this AWB leaving its Bucharest hub. The current tracker no longer knows it."
     },
     {
       "number": "79828449",
@@ -34,7 +34,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -45,7 +45,7 @@
           "heppner"
         ]
       },
-      "note": "A sender's review on DSC's Trustpilot page gives this AWB for a parcel from Sibiu to Bucharest that DSC failed to deliver."
+      "note": "A sender's review on DSC's Trustpilot page gives this AWB for a parcel from Sibiu to Bucharest that DSC failed to deliver. DSC's tracker shows it picked up in Sibiu and returned."
     }
   ]
 }

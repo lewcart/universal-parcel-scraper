@@ -129,13 +129,14 @@ step exists for future protocol changes.
   `carrierIdFromName` still treats these brands as ambiguous, so discovery and routing
   are unchanged.
 
-  Two kinds of scan with no zone keep their wall clock in `local_time` instead, with no
-  instant. One names no carrier, or a network that neither the catalog nor the tables here
-  know ("Example Parcel Co"): nothing says its label is an instant. The other is at a US
-  military post office ("Fpo, AE", "APO AP 96001"), which names no country: AE there is the
-  Armed Forces Europe, not the Emirates, and the base can be anywhere in its region, so no
-  guess and no zone of the scans around it fits. Either stays a scan: as the latest one it
-  sets the stage with `last_update` null, and it moves no freshness watermark.
+  Two kinds of scan with no zone, and CTTYEX's later scans (below), keep their wall clock
+  in `local_time` instead, with no instant. One names no carrier, or a network that
+  neither the catalog nor the tables here know ("Example Parcel Co"): nothing says its
+  label is an instant. The other is at a US military post office ("Fpo, AE", "APO AP
+  96001"), which names no country: AE there is the Armed Forces Europe, not the Emirates,
+  and the base can be anywhere in its region, so no guess and no zone of the scans around
+  it fits. Each stays a scan: as the latest one it sets the stage with `last_update` null,
+  and it moves no freshness watermark.
 - A state with no `date` (an Asendia Spain leg listed after dated US scans), or with an
   offset-less date that no zone resolves, but for the scans above that keep their wall
   clock, has no instant. It is skipped and counted in `undated_event_count`, so it never
@@ -389,6 +390,12 @@ step exists for future protocol changes.
 - TIPSA's `date` has the digits of TIPSA's own shipment page, which keeps Madrid time for
   every agency ([TIPSA](../../carriers/tipsa/README.md)), so step 1 reads its Portuguese
   scans on Madrid time too.
+- CTTYEX's own steps in China, from the order data to the flight out, take its catalog
+  zone in step 1, Beijing time, as its tracker's do
+  ([CTTYEX](../../carriers/cttyex/README.md)). Its later scans, which its tracker does not
+  show ("Item arrives at destination airport"), keep their wall clock wherever they are
+  located: LinHan, on the same system, dates such scans on China's clock or the
+  destination's, and nothing says which.
 - Brand zones: a bare brand does not say which network scanned. The GLS and Hermes
   carriers in the catalog all keep Central European time, which step 4 checks for each
   scan, DST changes included. DPD's do not (DPD UK's, Ireland's, Portugal's and South

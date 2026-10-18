@@ -29,6 +29,7 @@ import { isRecord } from '../../core/types.js';
 import { militaryPostOffice } from '../../places/trackingLocation.js';
 import { captureFailure, capturedBodies, loadCapture, type CaptureSpec } from '../shared/capture.js';
 import { cttSiteZone, portugalZone } from '../../carriers/ctt/clock.js';
+import { cttyexChinaStep } from '../../carriers/cttyex/status.js';
 import { facilityZone, LatestScan, relaysFacilityClock } from '../shared/facilityClock.js';
 import { brandCarrierForNumber, universalCarrierHints } from '../shared/hints.js';
 import { event, isNotice, localEvent, numberOf, place as reportedPlace, result, type UniversalSource } from '../shared/result.js';
@@ -714,6 +715,19 @@ function unknownNetwork(name: unknown): boolean {
     && ![WALL_CLOCKS, LOCAL_CLOCK_CARRIERS, POSTAL_FEEDS].some((keys) => keys.has(key)) && !KNOWN_CLOCKS.has(key);
 }
 
+/**
+ * Whether a scan is CTTYEX's from a leg after its own in China. Its own
+ * tracker words only its steps in China, from the order data to the flight
+ * out, on Beijing time ([CTTYEX](../../carriers/cttyex/README.md)), and those
+ * take its catalog zone. ParcelsApp also relays later ones ("Item arrives at
+ * destination airport"), which LinHan, on the same system, dates on China's
+ * clock or the destination's. Nothing says which, so neither its carrier's
+ * zone nor its place dates such a scan: it keeps its wall clock.
+ */
+function cttyexLaterLeg(name: unknown, status: string): boolean {
+  return typeof name === 'string' && carrierIdFromName(name) === 'cttyex' && !cttyexChinaStep(status);
+}
+
 function guessedZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string,
   destination: string | null = null, origin: string | null = null): string | null {
   const name = stateCarrierName(payload, state);
@@ -749,7 +763,8 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const location = scanLocation(name, raw.location);
   const offset = ownOffset(name, raw.date);
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
-  const own = carrierClock(payload, raw, number, status, destination);
+  const laterLeg = cttyexLaterLeg(name, status);
+  const own = laterLeg ? null : carrierClock(payload, raw, number, status, destination);
   const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
   const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).
@@ -762,7 +777,9 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   return { name, date: raw.date, zone, placed: placed ?? null, sited: sited ?? null, guessed: placed === undefined && !wallClock,
     offset, location, wallClock, nationwide, office,
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
-    fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null };
+    fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null,
+    // With no zone, a scan whose label nothing vouches for keeps its wall clock.
+    wallOnly: laterLeg || unknownNetwork(name) || militaryPostOffice(location) };
 }
 
 type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
@@ -1044,12 +1061,13 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const { zone } = zones[index]!;
     // A DHL Express scan whose facility the rule cannot place is a wall clock
     // with no instant, and so is a UPS or FedEx scan with no location that
-    // nothing places. A scan at a US military post office, or of a network no
-    // table knows (`unknownNetwork`), keeps its wall clock as its local time.
-    // Any other scan with no zone keeps ParcelsApp's label.
+    // nothing places. A scan at a US military post office, of a network no
+    // table knows (`unknownNetwork`) or of CTTYEX after China (`cttyexLaterLeg`)
+    // keeps its wall clock as its local time. Any other scan with no zone
+    // keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
-    const localOnly = !zone && !unplaced && (militaryPostOffice(entry.location) || unknownNetwork(name));
+    const localOnly = !zone && !unplaced && entry.wallOnly;
     // A step its carrier dates by its day alone keeps the day (`datedOnly`).
     const day = datedOnly(name, relayedLabel(raw.status), date);
     const parsed = day ? dayEvent(day, entry.wording)
@@ -1193,8 +1211,8 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       continue;
     }
     const day = datedOnly(name, description, state.date);
-    // A network no table knows keeps its wall clock, as in the JSON reply.
-    const wall = !zone && unknownNetwork(name) ? mislabeledWallTime(state.date) : null;
+    // A scan whose label nothing vouches for keeps its wall clock, as in the JSON reply.
+    const wall = !zone && state.wallOnly ? mislabeledWallTime(state.date) : null;
     const parsed = day ? dayEvent(day, scan?.wording ?? description)
       : wall ? localEvent(wall, scan?.wording ?? description)
         : event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);

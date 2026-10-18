@@ -411,6 +411,25 @@ describe('ParcelsApp result parsing', () => {
       .toEqual([undefined]);
   });
 
+  it('reads CTTYEX\'s own steps in China on Beijing time and keeps the wall clock of its later scans', () => {
+    // CTTYEX's wording, as its tracker and the aggregators write it; synthetic dates and place.
+    const states = [
+      { date: '2026-07-08T09:10:00Z', status: 'Item arrives at destination airport', carrier: 0, location: 'EXAMPLE CITY, Germany' },
+      { date: '2026-07-06T23:40:00Z', status: 'Departure from the airport of origin domestic', carrier: 0 },
+      { date: '2026-07-05T10:00:00Z', status: 'Order information received', carrier: 0 },
+    ];
+    const json = parseParcelsAppResponse({ carriers: ['CTTYEX'], states }, number, identity(), 'Asia/Shanghai');
+    expect(json.events?.map((scan) => [scan.time, scan.local_time])).toEqual([
+      [undefined, '2026-07-08T09:10:00.000'], // neither China's clock nor its place's
+      ['2026-07-06T15:40:00.000Z', undefined],
+      ['2026-07-05T02:00:00.000Z', undefined],
+    ]);
+    expect(json).toMatchObject({ current_stage: 'in_transit', last_update: null });
+    const html = parseParcelsAppHtml(rendered(carrierRow('08 Jul 2026', '09:10', 'Item arrives at destination airport', 'CTTYEX')
+      + carrierRow('06 Jul 2026', '23:40', 'Departure from the airport of origin domestic', 'CTTYEX')), number, 'Asia/Shanghai');
+    expect(html.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(['2026-07-08T09:10:00.000', '2026-07-06T15:40:00.000Z']);
+  });
+
   it('keeps a scan at a US military post office on its wall clock', () => {
     // APO, FPO and DPO with AA, AE or AP name a region of the US armed forces:
     // "AE" there is not the United Arab Emirates, and the base can be anywhere

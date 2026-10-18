@@ -54,8 +54,9 @@ One lookup takes three requests, as a visitor's browser makes them:
 
 The Postal Corporation of Kenya tracks letters, parcels and EMS items by UPU S10 numbers ending
 in `KE`, and mail from abroad by the sending post's number. Generic postal detection handles these
-numbers, so no rule for Posta Kenya claims them. The samples and their sources are in
-[`numbers.json`](numbers.json).
+numbers, so no rule for Posta Kenya claims them. Mail from abroad reaches Posta Kenya when a caller
+names it, a provider names it, or a result gives Kenya as the destination of an S10 item. The samples
+and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 

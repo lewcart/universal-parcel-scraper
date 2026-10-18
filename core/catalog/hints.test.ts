@@ -48,6 +48,7 @@ describe('national postal lookup candidates', () => {
     ['AM', 'haypost'], ['Armenia', 'haypost'],
     ['JO', 'jordan-post'], ['Jordan', 'jordan-post'],
     ['IS', 'posturinn'], ['Iceland', 'posturinn'],
+    ['KE', 'posta-kenya'], ['Kenya', 'posta-kenya'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

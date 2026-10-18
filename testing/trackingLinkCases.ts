@@ -650,6 +650,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dobropost', number: 'DBRPST0000000000',
     route: /^https:\/\/tracking\.dobropost\.com\/\?trackNumber=DBRPST0000000000$/,
     marker: /Отследить посылку|не найден\(а\)/ },
+  // The page puts the number in its address into its form and looks it up in a frame on load.
+  { carrier: 'quantium-solutions', number: 'UQ000000000TH',
+    route: /^https:\/\/track\.quantiumworldwide\.com\/\?trackno=UQ000000000TH$/,
+    marker: /Tracking Summary|Track Your Shipments/ },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

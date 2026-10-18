@@ -237,6 +237,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "pts-worldwide-express": 818,
   "ptt": 400,
   "purolator": 560,
+  "quantium-solutions": 809,
   "raben": 924,
   "redpack": 15,
   "redur": 886,

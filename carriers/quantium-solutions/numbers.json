@@ -2,6 +2,25 @@
   "carrier": "quantium-solutions",
   "records": [
     {
+      "number": "RQ726289734SG",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/quantium/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "singapore-post",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Quantium page offered it to try. Quantium's tracker answers it as the order number of a delivered parcel from Malaysia to the United States; Singapore Post issued the number."
+    },
+    {
       "number": "8627811161",
       "role": "shipment",
       "evidence": "public_shipment_report",

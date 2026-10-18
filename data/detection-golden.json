@@ -82403,6 +82403,14 @@
     ]
   },
   {
+    "input": "RQ726289734SG",
+    "carrier": "singapore-post",
+    "confidence": "high",
+    "candidates": [
+      "singapore-post"
+    ]
+  },
+  {
     "input": "RQ755373244VN",
     "carrier": "intl-post",
     "confidence": "high",

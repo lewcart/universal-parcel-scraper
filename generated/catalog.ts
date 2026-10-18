@@ -23358,7 +23358,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quantium-solutions",
+      "recognitionRank": 809,
+      "localClocks": true
     },
     "canaryUrl": "https://track.quantiumworldwide.com/",
     "trackingUrlTemplate": "https://track.quantiumworldwide.com/?trackno={trackingNumber}",

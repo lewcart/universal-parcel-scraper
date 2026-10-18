@@ -314,6 +314,7 @@ import { adapter as proships } from '../carriers/proships/adapter.js';
 import { adapter as ptsWorldwideExpress } from '../carriers/pts-worldwide-express/adapter.js';
 import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
+import { adapter as quantiumSolutions } from '../carriers/quantium-solutions/adapter.js';
 import { adapter as raben } from '../carriers/raben/adapter.js';
 import { adapter as redpack } from '../carriers/redpack/adapter.js';
 import { adapter as redur } from '../carriers/redur/adapter.js';
@@ -742,6 +743,7 @@ export const REGISTRY: RegistryDefinition = {
     "pts-worldwide-express": ptsWorldwideExpress,
     "ptt": ptt,
     "purolator": purolator,
+    "quantium-solutions": quantiumSolutions,
     "raben": raben,
     "redpack": redpack,
     "redur": redur,
@@ -1407,7 +1409,7 @@ export const REGISTRY: RegistryDefinition = {
     "pullman-cargo": "universal",
     "purolator": "purolator",
     "pushpak-courier": "universal",
-    "quantium-solutions": "universal",
+    "quantium-solutions": "quantium-solutions",
     "quickpac": "planzer",
     "quicksilver-sa": "universal",
     "quiqup": "universal",

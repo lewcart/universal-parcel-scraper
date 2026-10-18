@@ -8602,7 +8602,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chazki",
+      "localClocks": true
     },
     "canaryUrl": "https://www.chazki.com/centro-de-ayuda",
     "trackingUrlTemplate": "https://nintendo.chazki.com/trackcodeTracking/{trackingNumber}",

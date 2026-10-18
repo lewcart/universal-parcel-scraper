@@ -60,6 +60,7 @@ import { statusMap as celeritas } from '../../carriers/celeritas/status.js';
 import { statusMap as centralTransport } from '../../carriers/central-transport/status.js';
 import { statusMap as ceskaPosta } from '../../carriers/ceska-posta/status.js';
 import { statusMap as cevaLogistics } from '../../carriers/ceva-logistics/status.js';
+import { statusMap as chazki } from '../../carriers/chazki/status.js';
 import { statusMap as chilexpress } from '../../carriers/chilexpress/status.js';
 import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
@@ -378,7 +379,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino, bookurier, bosta, 'box-now': boxNow,
   'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods, byhd, cacesa, cargus, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
-  'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,
+  'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'city-express-rs': cityExpressRs, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress,

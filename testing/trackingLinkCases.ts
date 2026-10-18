@@ -896,6 +896,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,
     marker: /No records found for Number/ },
+  // The page asks the service for the code's orders on load; its notice for an unknown code names no number.
+  { carrier: 'chazki', number: '000000000000',
+    route: /^https:\/\/nintendo\.chazki\.com\/trackcodeTracking\/000000000000$/,
+    marker: /No se encontró información sobre la orden/,
+    forwarding: { notFound: /No se encontró información sobre la orden/ } },
   // The page asks the service for the number's summary on load and goes back to its search for an unknown one.
   { carrier: '99minutos', number: '9999999999',
     route: /^https:\/\/tracking\.99minutos\.com\/(?:search\/9999999999)?$/,

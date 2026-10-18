@@ -18,18 +18,74 @@
   "timezone": "America/Lima",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "chazki",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "service_name"
+  ],
   "portal": {
     "url": "https://nintendo.chazki.com/trackcodeTracking/{trackingNumber}",
     "searchUrl": "https://www.chazki.com/centro-de-ayuda",
     "canaryUrl": "https://www.chazki.com/centro-de-ayuda",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "service_name",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_contact",
+      "recipient_address",
+      "postcodes",
+      "parcel_count",
+      "order_contents",
+      "payment_details",
+      "delivery_instructions",
+      "driver_name",
+      "route_number",
+      "coordinates",
+      "proof_of_delivery",
+      "delivery_photo"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "service_name"
+    ],
+    "discarded": [
+      "progress_rail",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_contact",
+      "recipient_address",
+      "postcodes",
+      "parcel_count",
+      "order_contents",
+      "payment_details",
+      "delivery_instructions",
+      "driver_name",
+      "route_number",
+      "coordinates",
+      "proof_of_delivery",
+      "delivery_photo"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

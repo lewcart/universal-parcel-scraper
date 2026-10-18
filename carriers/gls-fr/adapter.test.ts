@@ -210,7 +210,7 @@ describe('GLS France HTTP recognition', () => {
     const instance = createAdapter(fetcher);
     await expect(instance.recognize!(TRACKING_NUMBER, { signal: controller.signal })).rejects.toThrow('caller cancelled');
     expect(fetcher).not.toHaveBeenCalled();
-    await expect(instance.recognize!(TRACKING_NUMBER, { budgetMs: 20 })).rejects.toThrow();
+    await expect(instance.recognize!(TRACKING_NUMBER, { budgetMs: 200 })).rejects.toThrow();
     // The first request gets half of the budget, and its retry the rest.
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(fetcher.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);

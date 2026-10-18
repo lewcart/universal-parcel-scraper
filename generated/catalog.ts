@@ -25884,7 +25884,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "transaher",
+      "recognitionRank": 852,
+      "localClocks": true
     },
     "canaryUrl": "https://transaher.es/",
     "trackingUrlTemplate": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",

@@ -12,13 +12,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "transaher",
         "confidence": "high"
       },
-      "note": "An archived lookup on Transaher's own tracker address carries this 27-digit number; the opened capture shows only the page shell, so the parcel history was not visible."
+      "note": "An archived lookup on Transaher's own tracker address carries this 27-digit number. The tracker returns a delivered history for it."
     },
     {
       "number": "103024281026650820001108013",
@@ -37,7 +37,7 @@
         "carrier": "transaher",
         "confidence": "high"
       },
-      "note": "An archived lookup on Transaher's own tracker address carries this 27-digit number; the capture was not opened, so the parcel history was not visible."
+      "note": "An archived lookup on Transaher's own tracker address carries this 27-digit number. The tracker no longer finds it."
     }
   ]
 }

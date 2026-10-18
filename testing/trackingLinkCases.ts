@@ -1144,6 +1144,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tdn', number: '999916276898',
     route: /^(?:https:\/\/www\.tdn\.es\/tracking\/?\?envio=999916276898&autoredir=1|http:\/\/tracking\.tdnonline\.com\/consulta_expediciones\/tracking\?REFERENCIA=999916276898&Aceptar=Aceptar)$/,
     marker: /Envío no registrado|Entregado|En reparto/ },
+  // The page checks the device, moves a desktop to its `tracking` route and renders over Blazor's
+  // connection; an unknown number gets the sentence in place of the shipment.
+  { carrier: 'transaher', number: '103000000000000000000000000',
+    route: /^https:\/\/clientes\.transaher\.es\/webclient\/h?tracking\/-5,0,103000000000000000000000000$/,
+    marker: /No se ha encontrado la expedición indicada/i,
+    forwarding: { notFound: /No se ha encontrado la expedición indicada/i } },
 ];
 
 /**

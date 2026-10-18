@@ -99,6 +99,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dpd-za": 883,
   "dragon-star-curier": 828,
   "drop2shop": 871,
+  "dropp": 807,
   "dynalogic": 120,
   "early-bird": 350,
   "econt": 290,

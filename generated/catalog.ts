@@ -11635,7 +11635,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Atlantic/Reykjavik",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dropp",
+      "recognitionRank": 807,
+      "localClocks": true
     },
     "canaryUrl": "https://dropp.is/",
     "trackingUrlTemplate": "https://api.dropp.is/dropp/track/{trackingNumber}",

@@ -14,18 +14,50 @@
   "timezone": "Atlantic/Reykjavik",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dropp",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 807
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://api.dropp.is/dropp/track/{trackingNumber}",
     "searchUrl": "https://dropp.is/",
     "canaryUrl": "https://dropp.is/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "eta",
+      "sender_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta",
+      "sender_name"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "delivered_at",
+      "offset_timestamps",
+      "pickup_point",
+      "recipient_name",
+      "service_name"
+    ]
   },
   "links": [
     {

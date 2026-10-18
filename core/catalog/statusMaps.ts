@@ -135,6 +135,7 @@ import { statusMap as exlineKz } from '../../carriers/exline-kz/status.js';
 import { statusMap as exmate } from '../../carriers/exmate/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
+import { statusMap as fargoUz } from '../../carriers/fargo-uz/status.js';
 import { statusMap as fastdrop } from '../../carriers/fastdrop/status.js';
 import { statusMap as fedexPl } from '../../carriers/fedex-pl/status.js';
 import { statusMap as fermopoint } from '../../carriers/fermopoint/status.js';
@@ -390,7 +391,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, equick, estes, eurodis, 'euroexpress-ba': euroexpressBa, 'evdemo-lojistik': evdemoLojistik, evropat, ewe, exelot,
-  'exline-kz': exlineKz, exmate, 'express-one': expressOne, 'fan-courier': fanCourier, fastdrop, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery,
+  'exline-kz': exlineKz, exmate, 'express-one': expressOne, 'fan-courier': fanCourier, 'fargo-uz': fargoUz, fastdrop, 'fedex-pl': fedexPl,
+  fermopoint, 'fg-delivery': fgDelivery,
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,

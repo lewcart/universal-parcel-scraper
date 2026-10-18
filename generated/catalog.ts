@@ -13223,7 +13223,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tashkent",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fargo-uz",
+      "recognitionRank": 802
     },
     "canaryUrl": "https://fargo.uz/track",
     "trackingUrlTemplate": "https://fargo.uz/track?id={trackingNumber}",

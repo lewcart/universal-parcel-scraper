@@ -16,18 +16,52 @@
   "timezone": "Asia/Tashkent",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fargo-uz",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 802
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://fargo.uz/track?id={trackingNumber}",
     "searchUrl": "https://fargo.uz/track",
     "canaryUrl": "https://fargo.uz/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "driver_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "driver_name"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point",
+      "proof_of_delivery",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

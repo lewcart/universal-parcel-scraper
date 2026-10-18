@@ -161,6 +161,7 @@ import { adapter as exlineKz } from '../carriers/exline-kz/adapter.js';
 import { adapter as exmate } from '../carriers/exmate/adapter.js';
 import { adapter as expressOne } from '../carriers/express-one/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
+import { adapter as fargoUz } from '../carriers/fargo-uz/adapter.js';
 import { adapter as fastdrop } from '../carriers/fastdrop/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fedexPl } from '../carriers/fedex-pl/adapter.js';
@@ -610,6 +611,7 @@ export const REGISTRY: RegistryDefinition = {
     "exmate": exmate,
     "express-one": expressOne,
     "fan-courier": fanCourier,
+    "fargo-uz": fargoUz,
     "fastdrop": fastdrop,
     "fedex": fedex,
     "fedex-pl": fedexPl,
@@ -1144,7 +1146,7 @@ export const REGISTRY: RegistryDefinition = {
     "express-one": "express-one",
     "fan-courier": "fan-courier",
     "fargo-courier": "universal",
-    "fargo-uz": "universal",
+    "fargo-uz": "fargo-uz",
     "fastdrop": "fastdrop",
     "fastfrate": "universal",
     "fedex": "fedex",

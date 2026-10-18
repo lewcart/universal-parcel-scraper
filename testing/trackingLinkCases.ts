@@ -1386,6 +1386,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gogo-xpress', number: 'ZXQA-0000-0009',
     route: /^https:\/\/app\.gogoxpress\.com\/track\/ZXQA-0000-0009$/,
     marker: /Track your package|Check your Tracking Number and try again/i },
+  // The page puts the ID in its address into its field, looks it up and answers an unknown one with its own notice.
+  { carrier: 'fargo-uz', number: 'TEZ000000',
+    route: /^https:\/\/fargo\.uz\/track\?id=TEZ000000$/,
+    marker: /We could not find that order|Track ID or order number/ },
 ];
 
 /**

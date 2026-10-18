@@ -1,17 +1,18 @@
 import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { IndeterminateError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { clean, textFromHtml } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { normalizeGogoXpressNumber } from './number.js';
 import { GOGO_XPRESS_CLAIMS, gogoXpressStage, gogoXpressSummaryStage } from './status.js';
+
+export { normalizeGogoXpressNumber };
 
 export const PROVIDER = 'GoGo Xpress';
 // A long history is about five kilobytes.
 export const GOGO_XPRESS_MAX_BYTES = 256 * 1024;
-// Twelve letters and digits, at least one of them a letter.
-const NUMBER = /^(?=\d*[A-Z])[A-Z0-9]{12}$/;
 const CODE = /^[a-z][a-z0-9_]{0,63}$/;
 // A clock to the second, sometimes with microseconds, and its offset: "2026-03-02 09:15:00+08".
 const CLOCK = /^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}:\d{2})(?:\.\d{1,9})?(Z|[+-]\d{2}(?::?\d{2})?)$/;
@@ -28,16 +29,6 @@ const PERSON = /\s*[,;:.\-–/]?\s*\b(?:(?:received|signed|accepted|claimed)\s+b
 const PHONE = /(?<![A-Z\d])\+?\d(?:[\s().-]{0,2}\d){8,}(?![A-Z\d])/gi;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
-
-/**
- * A GoGo Xpress number as its tracker asks for it: in capitals, in three
- * groups of four joined by hyphens. The tracker finds nothing without them.
- */
-export function normalizeGogoXpressNumber(raw: string): string {
-  const number = typeof raw === 'string' && raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number)) throw new InvalidInputError(PROVIDER, 'GoGo Xpress numbers are twelve letters and digits');
-  return `${number.slice(0, 4)}-${number.slice(4, 8)}-${number.slice(8)}`;
-}
 
 /** Whether a reply is the tracker's own answer for a number it does not know. */
 export function isGogoXpressNotFound(payload: unknown): boolean {

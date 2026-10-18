@@ -65,7 +65,8 @@ them. The samples and their sources are in [`numbers.json`](numbers.json).
 ## Links
 
 GoGo Xpress's tracker opens one parcel at `app.gogoxpress.com/track/` followed by the number.
-It looks the number up as it stands in the address, so it finds one only with its hyphens.
+It looks the number up as it stands in the address, so it finds one only with its hyphens; the
+library puts them back when a number is stored without them.
 
 ## Testing
 

@@ -574,6 +574,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'courier-center', number: '013000000000',
     route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000$/,
     marker: /Δεν βρέθηκε φορτωτική με τον αριθμό|Αριθμός Φορτωτικής/ },
+  // The tracker looks the voucher in its address up as it is served; an unknown one gets a notice without it.
+  { carrier: 'easy-mail', number: '19999999990',
+    route: /^https:\/\/trackntrace\.easymail\.gr\/19999999990$/,
+    marker: /Δεν βρέθηκε η Αποστολή|Αναλυτικά Στοιχεία Αποστολής/,
+    forwarding: { notFound: /Δεν βρέθηκε η Αποστολή/ } },
   // The page looks the AWB up as it is served; an unknown one gets a notice without the number.
   { carrier: 'cargus', number: '9999999999',
     route: /^https:\/\/www\.cargus\.ro\/personal\/urmareste-coletul\/\?tracking_number=/,

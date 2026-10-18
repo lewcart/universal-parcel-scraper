@@ -16,18 +16,49 @@
   "timezone": "Europe/Athens",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "easy-mail",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://trackntrace.easymail.gr/{trackingNumber}",
     "searchUrl": "https://trackntrace.easymail.gr/",
     "canaryUrl": "https://trackntrace.easymail.gr/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "recipient_name",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "recipient_name",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point",
+      "sender_name",
+      "provider_code"
+    ]
   },
   "links": [
     {

@@ -10818,7 +10818,7 @@
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "easy-mail"
     },
     "canaryUrl": "https://trackntrace.easymail.gr/",
     "trackingUrlTemplate": "https://trackntrace.easymail.gr/{trackingNumber}",

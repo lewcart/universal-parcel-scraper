@@ -1045,6 +1045,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bookurier', number: 'BOK0000000',
     route: /^https:\/\/t\.bookurier\.ro\/\?awb=BOK0000000$/,
     marker: /Situația AWB-ului: BOK0000000|AWB not found/ },
+  // The server renders the page; an unknown shipment gets the table with only its not-found heading.
+  { carrier: 'toptrans', number: '00000000000',
+    route: /^https:\/\/apis\.toptrans\.cz\/tracking\?parcel_number=00000000000$/,
+    marker: /Vyhledávání zásilek/,
+    forwarding: { notFound: /Zásilka nenalezena/ } },
 ];
 
 /**

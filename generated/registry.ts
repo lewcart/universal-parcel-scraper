@@ -321,6 +321,7 @@ import { adapter as tiki } from '../carriers/tiki/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
+import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
 import { adapter as twsExpress } from '../carriers/tws-express/adapter.js';
@@ -671,6 +672,7 @@ export const REGISTRY: RegistryDefinition = {
     "tipsa": tipsa,
     "tnt": tnt,
     "tnt-it": tntIt,
+    "toptrans": toptrans,
     "total-express": totalExpress,
     "tsjy": tsjy,
     "tws-express": twsExpress,
@@ -1295,7 +1297,7 @@ export const REGISTRY: RegistryDefinition = {
     "tirupati-courier": "universal",
     "tnt": "tnt",
     "tnt-it": "tnt-it",
-    "toptrans": "universal",
+    "toptrans": "toptrans",
     "torrestir": "universal",
     "total-express": "total-express",
     "trackon": "universal",

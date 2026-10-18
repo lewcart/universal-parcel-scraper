@@ -24449,7 +24449,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "toptrans"
     },
     "canaryUrl": "https://www.toptrans.cz/preprava/en/sledovani-zasilky",
     "trackingUrlTemplate": "https://apis.toptrans.cz/tracking?parcel_number={trackingNumber}",

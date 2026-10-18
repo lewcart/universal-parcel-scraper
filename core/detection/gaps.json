@@ -3046,6 +3046,12 @@
   },
   {
     "carrier": "toptrans",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "TOPTRANS's ten-digit piece numbers are bare digit runs that many carriers also print."
+  },
+  {
+    "carrier": "toptrans",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
     "reason": "TOPTRANS shipment numbers are bare eleven-digit runs that other carriers also print."

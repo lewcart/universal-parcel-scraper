@@ -5820,7 +5820,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ajex",
+      "recognitionRank": 812
     },
     "canaryUrl": "https://aj-ex.com/shipment-tracking",
     "trackingUrlTemplate": "https://aj-ex.com/shipment-status/{trackingNumber}",

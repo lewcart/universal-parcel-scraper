@@ -9,6 +9,7 @@ import { adapter as aTuHoraExpress } from '../carriers/a-tu-hora-express/adapter
 import { adapter as a1Post } from '../carriers/a1-post/adapter.js';
 import { adapter as abfFreight } from '../carriers/abf-freight/adapter.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
+import { adapter as ajex } from '../carriers/ajex/adapter.js';
 import { adapter as algeriePoste } from '../carriers/algerie-poste/adapter.js';
 import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
 import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
@@ -432,6 +433,7 @@ export const REGISTRY: RegistryDefinition = {
     "a1-post": a1Post,
     "abf-freight": abfFreight,
     "acs-courier": acsCourier,
+    "ajex": ajex,
     "algerie-poste": algeriePoste,
     "aliexpress": aliexpress,
     "allegro-one": allegroOne,
@@ -867,7 +869,7 @@ export const REGISTRY: RegistryDefinition = {
     "afghan-post": "universal",
     "air-star-xpress": "universal",
     "airpak-express": "universal",
-    "ajex": "universal",
+    "ajex": "ajex",
     "akash-ganga": "universal",
     "aks-express": "universal",
     "alem-tat": "universal",

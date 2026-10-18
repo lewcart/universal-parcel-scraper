@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was opened but holds only the page shell, since the history loads by script, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "AJA100000871615",
@@ -31,13 +31,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "AJA100000968539",
@@ -50,13 +50,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "AJA100000009286",
@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own tracking page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own tracking page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "AJA100002817889",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own tracking page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own tracking page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "AJS120046028502",
@@ -113,7 +113,7 @@
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was opened but holds only the page shell, since the history loads by script, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page; the capture was opened but holds only the page shell, since the history loads by script, so no history is visible. AJEX's tracker now refuses numbers of this format, so it cannot confirm it."
     },
     {
       "number": "AJS120046046259",
@@ -132,7 +132,7 @@
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible. AJEX's tracker now refuses numbers of this format, so it cannot confirm it."
     },
     {
       "number": "AJS120035795985",
@@ -151,7 +151,7 @@
         "carrier": "ajex",
         "confidence": "high"
       },
-      "note": "An archived lookup on AJEX's own tracking page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own tracking page; the capture was not opened, so no history is visible. AJEX's tracker now refuses numbers of this format, so it cannot confirm it."
     },
     {
       "number": "A1010717597",
@@ -164,7 +164,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -173,7 +173,7 @@
           "gls-it"
         ]
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was opened but holds only the page shell, since the history loads by script, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "A1010804082",
@@ -186,7 +186,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -195,7 +195,7 @@
           "gls-it"
         ]
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     },
     {
       "number": "A1010851020",
@@ -208,7 +208,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -217,7 +217,7 @@
           "gls-it"
         ]
       },
-      "note": "An archived lookup on AJEX's own shipment-status page; the capture was not opened, so no history is visible."
+      "note": "An archived lookup on AJEX's own shipment-status page. AJEX's tracker returns a delivered history for it."
     }
   ]
 }

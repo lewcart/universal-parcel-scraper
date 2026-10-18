@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Named in the title of a complaint against ProShips; the customer calls ProShips the local carrier in Bogotá for this number and that the order shows as delivered. Kept in the complaint title's case."
+      "note": "Named in the title of a complaint against ProShips; the customer calls ProShips the local carrier in Bogotá for this number and that the order shows as delivered. Kept in the complaint title's case. ProShips' tracker returns its delivered history."
     },
     {
       "number": "ml621041112mh",
@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Named in the title of a complaint against ProShips; the customer says ProShips' platform shows the parcel at customs or an intermediate warehouse; the complaint also names MailAmericas. Kept in the complaint title's case."
+      "note": "Named in the title of a complaint against ProShips; the customer says ProShips' platform shows the parcel at customs or an intermediate warehouse; the complaint also names MailAmericas. Kept in the complaint title's case. ProShips' tracker returns its history, waiting at customs."
     },
     {
       "number": "Ml614236970mh",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Named in the title of a complaint against ProShips about a late parcel that stayed in a sorting centre; the complaint names MailAmericas and ProShips. Kept in the complaint title's case."
+      "note": "Named in the title of a complaint against ProShips about a late parcel that stayed in a sorting centre; the complaint names MailAmericas and ProShips. Kept in the complaint title's case. ProShips' tracker returns its delivered history."
     },
     {
       "number": "ml594249402mh",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Named in the title of a complaint against ProShips about an incorrect delivery of an AliExpress order shown as delivered; the customer says MailAmericas subcontracts ProShips. Kept in the complaint title's case."
+      "note": "Named in the title of a complaint against ProShips about an incorrect delivery of an AliExpress order shown as delivered; the customer says MailAmericas subcontracts ProShips. Kept in the complaint title's case. ProShips' tracker returns its delivered history."
     },
     {
       "number": "wshco1623528065yq",

@@ -606,6 +606,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'sundarban-courier', number: '00000000000000',
     route: /^https:\/\/operation\.sundarbancourierltd\.com\/\?cnnumber=00000000000000$/,
     marker: /Track your CN/i },
+  // The site adds the slash; the page then posts the number in its address to its lookup and names an unknown one.
+  { carrier: 'proships', number: '0000000000000',
+    route: /^https:\/\/proships\.com\/tracking\/\?tracking=0000000000000$/,
+    marker: /No se encontraron paquetes para el c[óo]digo|Seguimiento de Env[íi]o/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

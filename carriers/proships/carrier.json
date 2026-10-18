@@ -17,18 +17,43 @@
   "timezone": "America/Bogota",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "proships",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://proships.com/tracking?tracking={trackingNumber}",
     "searchUrl": "https://proships.com/tracking/",
     "canaryUrl": "https://proships.com/tracking/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "service_name",
+      "weight",
+      "pickup_point",
+      "delivery_partner",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

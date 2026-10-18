@@ -22628,7 +22628,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "proships",
+      "localClocks": true
     },
     "canaryUrl": "https://proships.com/tracking/",
     "trackingUrlTemplate": "https://proships.com/tracking?tracking={trackingNumber}",

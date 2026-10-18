@@ -294,6 +294,7 @@ import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posIndonesia } from '../carriers/pos-indonesia/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
 import { adapter as postLuxembourg } from '../carriers/post-luxembourg/adapter.js';
+import { adapter as postaFaroe } from '../carriers/posta-faroe/adapter.js';
 import { adapter as postaNorthMacedonia } from '../carriers/posta-north-macedonia/adapter.js';
 import { adapter as postaRomana } from '../carriers/posta-romana/adapter.js';
 import { adapter as postaShqiptare } from '../carriers/posta-shqiptare/adapter.js';
@@ -718,6 +719,7 @@ export const REGISTRY: RegistryDefinition = {
     "pos-indonesia": posIndonesia,
     "pos-malaysia": posMalaysia,
     "post-luxembourg": postLuxembourg,
+    "posta-faroe": postaFaroe,
     "posta-north-macedonia": postaNorthMacedonia,
     "posta-romana": postaRomana,
     "posta-shqiptare": postaShqiptare,
@@ -1370,7 +1372,7 @@ export const REGISTRY: RegistryDefinition = {
     "pos-malaysia": "pos-malaysia",
     "post-haste": "universal",
     "post-luxembourg": "post-luxembourg",
-    "posta-faroe": "universal",
+    "posta-faroe": "posta-faroe",
     "posta-kenya": "universal",
     "posta-moldovei": "universal",
     "posta-north-macedonia": "posta-north-macedonia",

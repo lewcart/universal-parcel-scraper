@@ -1168,6 +1168,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'posturinn', number: 'ZZ000000014IS',
     route: /^https:\/\/(?:www\.)?posturinn\.is\/einstaklingar\/mottaka\/fylgstu-med-sendingunni-thinni\/\?q=ZZ000000014IS$/,
     marker: /Fylgstu með sendingunni þinni|Óþekkt númer/ },
+  // The single-page tracker reads the number from the path, keeps it in its field and looks it up.
+  { carrier: 'posta-faroe', number: 'RR123456785FO',
+    route: /^https:\/\/www\.posta\.fo\/en\/private\/send-receive\/track-trace\/RR123456785FO$/,
+    marker: /Track & Trace|Trace & trace number was not found/i },
   // The network's tracker writes the number into its heading, over its notice for an unknown one.
   { carrier: 'skynet-worldwide', number: 'ZZ0000000000',
     route: /^https:\/\/tracking\.skynetexpress\.com\/go\/plm-tracking\?stid=skynet&cn=ZZ0000000000$/,

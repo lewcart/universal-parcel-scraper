@@ -220,6 +220,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "poczta-polska": 750,
   "pos-indonesia": 964,
   "post-luxembourg": 80,
+  "posta-faroe": 814,
   "posta-north-macedonia": 899,
   "posta-romana": 948,
   "posta-shqiptare": 829,

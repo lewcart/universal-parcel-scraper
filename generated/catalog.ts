@@ -22486,7 +22486,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Atlantic/Faroe",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-faroe",
+      "recognitionRank": 814,
+      "localClocks": true
     },
     "canaryUrl": "https://www.posta.fo/en/private/send-receive/track-trace/",
     "trackingUrlTemplate": "https://www.posta.fo/en/private/send-receive/track-trace/{trackingNumber}",

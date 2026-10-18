@@ -11719,7 +11719,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "eurodis",
+      "localClocks": true
     },
     "canaryUrl": "https://eurodis.com/",
     "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",

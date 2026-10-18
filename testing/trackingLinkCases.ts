@@ -650,6 +650,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.dhlecommerce\.com\.tr\/gonderitakip(?:[?#]|$)/,
     marker: /Gönderim Nerede\?|Gönderi Takip Numarası ile Sorgulama/, forwarding: 'none' },
   // The server renders the page; an unknown parcel ID comes back in the form under a notice.
+  // The page prefills the barcode form from its address and answers an unknown barcode with its notice.
+  { carrier: 'eurodis', number: '999999999999000000000000',
+    route: /^https:\/\/eurodis\.com\/track-trace\?track_and_trace_hidden_field=trackCollo&trackCollo-input-of=999999999999000000000000$/,
+    marker: /No shipment matching with the entered tracking criteria|Tracking by collo barcode/ },
   { carrier: 'express-one', number: '999999999999000000000000',
     route: /^https:\/\/tracking\.expressone\.hu\/\?plc_number=999999999999000000000000$/,
     marker: /Company ID \(5 digits\)|Cégkód \(5 jegyű\)/,

@@ -57,6 +57,8 @@ describe('ZTO', () => {
       recorder: { ...NOOP_RECORDER, step: event => { recorded.push(event); } } });
     await expect(carrier.recognize!(number)).rejects.toMatchObject({ kind: 'challenge' });
     expect(browserFetcher).not.toHaveBeenCalled();
+    // Recognition's request is a recorded step too.
+    expect(recorded.splice(0)).toMatchObject([{ step: 'direct', outcome: 'challenge' }]);
     await expect(carrier.track({ number }, { budgetMs: 8000 })).resolves.toMatchObject({ current_stage: 'delivered', history_truncated: true });
     expect(recorded).toMatchObject([{ step: 'direct', outcome: 'challenge' }, { step: 'trawl', outcome: 'ok' }]);
     expect(JSON.parse(String(env.fetcher.mock.calls[0]![1]!.body))).toEqual({ items: [{ billCode: number }] });

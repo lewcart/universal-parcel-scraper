@@ -55,6 +55,8 @@ export class ChinaPostTracker {
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new ChinaPostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent,
     trawl: environment.trawl, recorder: environment.recorder });
+  // Recognition asks the check step alone, through the step runner so its requests are recorded.
+  const check = new ChinaPostTracker({ fetcher: environment.fetcher, userAgent: environment.userAgent, recorder: environment.recorder });
   return {
     id: 'china-post',
     recordsSteps: true,
@@ -62,7 +64,7 @@ export const adapter: AdapterFactory = (environment) => {
     track: (input, context) => tracker.fetch(input.number, context),
     recognize: async (number, context) => {
       try {
-        return await recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeChinaPostNumber(number)));
+        return await recognizeFromLookup(() => check.fetch(number, context), () => accepted(() => normalizeChinaPostNumber(number)));
       } catch (error) {
         // The check step asks for a contact phone's digits only about an item China Post holds;
         // other numbers get its "no information" answer, which stays inconclusive.

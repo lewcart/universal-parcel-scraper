@@ -57,8 +57,10 @@ export class ZtoTracker {
 
 export const adapter: AdapterFactory = environment => {
   const tracker = new ZtoTracker(environment);
+  // Recognition asks the API alone, through the step runner so its requests are recorded.
+  const api = new ZtoTracker({ ...environment, trawl: null });
   return { id: 'zto', recordsSteps: true, steps: ['direct', 'trawl'], track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.direct(number, context), () => accepted(() => normalizeZtoNumber(number))),
+    recognize: (number, context) => recognizeFromLookup(() => api.fetch(number, context), () => accepted(() => normalizeZtoNumber(number))),
     recognizeWithBrowser: (number, context, previous) => {
       if (previous instanceof SchemaError || previous instanceof RateLimitedError) return Promise.reject(previous);
       return recognizeFromBrowserLookup(() => runSteps({ carrier: 'zto', budgetMs: context?.budgetMs ?? 45000,

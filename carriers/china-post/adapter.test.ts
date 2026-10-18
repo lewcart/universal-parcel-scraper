@@ -117,6 +117,11 @@ describe('China Post adapter', () => {
     await expect(instance(fetcher).recognize!('ZS0000000001')).resolves.toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
     await expect(instance(transport(open, () => json(text('delivered')))).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    // Recognition's request is a recorded step.
+    const step = vi.fn();
+    await adapter({ fetcher: transport(open, () => json(text('delivered'))), env: {}, userAgent: HOST_USER_AGENT,
+      recorder: { ...NOOP_RECORDER, step }, trawl: null, browserExecutablePath: null }).recognize!(NUMBER);
+    expect(step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'china-post', step: 'direct', outcome: 'ok' }));
   });
 
   it.each([

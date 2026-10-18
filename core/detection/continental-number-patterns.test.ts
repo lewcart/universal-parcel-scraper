@@ -304,6 +304,21 @@ describe('FedEx Poland domestic numbers', () => {
   });
 });
 
+describe('J&T Express Middle East waybills', () => {
+  // Synthetic numbers in the layout J&T Express Middle East's tracking form checks; none is a real parcel.
+  it('names J&T Express Middle East for JTE and twelve digits only', () => {
+    for (const number of ['JTE300000000001', 'JTE000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'j-and-t-middle-east', confidence: 'high' });
+    }
+    for (const number of ['JTE30000000001', 'JTE3000000000001', 'JTF300000000001', 'JT300000000001']) {
+      const match = detectCarrierMatch(number);
+      expect(match.carrier, number).not.toBe('j-and-t-middle-east');
+      expect(match.candidates ?? [], number).not.toContain('j-and-t-middle-east');
+    }
+    expect(detectCarrierMatch('JMX300000000001')).toMatchObject({ carrier: 'j-and-t-mx', confidence: 'high' });
+  });
+});
+
 describe('wave seven courier rules', () => {
   // Synthetic numbers in each carrier's layout; none is a real parcel.
   it('suggests DPD Austria first for its depot codes and asks it first in recognition', () => {

@@ -70509,6 +70509,30 @@
     ]
   },
   {
+    "input": "JTE000013652109",
+    "carrier": "j-and-t-middle-east",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-middle-east"
+    ]
+  },
+  {
+    "input": "JTE300000000001",
+    "carrier": "j-and-t-middle-east",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-middle-east"
+    ]
+  },
+  {
+    "input": "JTE300295786072",
+    "carrier": "j-and-t-middle-east",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-middle-east"
+    ]
+  },
+  {
     "input": "JVGL0099999999",
     "carrier": "dhl-ecommerce-nl",
     "confidence": "high",

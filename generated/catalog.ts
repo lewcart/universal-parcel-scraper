@@ -15391,6 +15391,52 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "j-and-t-middle-east": {
+    "displayName": "J&T Express Middle East",
+    "color": "#e60000",
+    "aliases": [
+      "J&T Express (SA)",
+      "J&T Express Saudi Arabia",
+      "J&T Express KSA",
+      "J&T Express UAE",
+      "J&T Express (UAE)",
+      "J&T Express Kuwait"
+    ],
+    "countries": [
+      "SA",
+      "AE",
+      "KW"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jtexpress.me/KSA/trackOrder",
+    "trackingUrlTemplate": "https://www.jtexpress.me/KSA/trajectoryList?waybillNo={trackingNumber}&type=0",
+    "trackingSearchUrl": "https://www.jtexpress.me/KSA/trackOrder",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.me",
+          "jtexpress.me",
+          "www.jtexpress.ae",
+          "jtexpress.ae"
+        ],
+        "pathPattern": "^/(?:KSA|UAE|KW)/(?:trajectoryList|trajectoryQuery|subBillCode)/?$",
+        "params": [
+          "waybillNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTE\\d{12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "j-and-t-mx": {
     "displayName": "J&T Express Mexico",
     "color": "#e60012",
@@ -27453,6 +27499,7 @@ export const CARRIER_IDS = [
   "j-and-t-br",
   "j-and-t-cargo",
   "j-and-t-cn",
+  "j-and-t-middle-east",
   "j-and-t-mx",
   "jadlog",
   "jamaica-post",
@@ -28134,6 +28181,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t-br": [],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "j-and-t-cn": ["j-and-t-cn-1"],
+  "j-and-t-middle-east": ["j-and-t-middle-east-1"],
   "j-and-t-mx": ["j-and-t-mx-1"],
   "jadlog": [],
   "jamaica-post": [],

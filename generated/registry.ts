@@ -1051,6 +1051,7 @@ export const REGISTRY: RegistryDefinition = {
     "j-and-t-br": "universal",
     "j-and-t-cargo": "j-and-t-cargo",
     "j-and-t-cn": "universal",
+    "j-and-t-middle-east": "universal",
     "j-and-t-mx": "universal",
     "jadlog": "universal",
     "jamaica-post": "universal",

@@ -166,6 +166,12 @@ const COLLECTION_PENDING = new RegExp(String.raw`(?:\b(?:not|never|nothing|non|p
 /** A courier, a driver or the sender's side collecting it, in each language. */
 const COLLECTED_BY_CARRIER = new RegExp(String.raw`\b(?:by|from|par|de|du|vom|von|beim|dal|dalla|dallo|por|del|pelo|przez) (?:the |a |an |our |your |le |la |l'|den |der |dem |il |lo |el |o )?(?:[\w-]+ )?(?:couriers?|drivers?|carriers?|senders?|shippers?|sellers?|merchants?|consignors?|chauffeur|livreur|transporteur|coursier|expediteur|\w*(?:fahrer|kurier|zusteller|boten?)|absender|corriere|autista|vettore|mittente|repartidor|mensajero|transportista|remitente|motorista|estafeta|remetente|kuriera|nadawcy)\b(?!')`);
 /**
+ * A waybill or label generated for the parcel ("Waybill generated for <id>",
+ * "AWB created"), from the start of the scan: the sender's paperwork, not the
+ * parcel.
+ */
+const WAYBILL_CREATED = /^(?:the |your |a |new )?(?:(?:air ?|e )?way ?bill|awb|(?:shipping |shipment )?label)(?: (?:number|no\.?|#))? (?:(?:has been|have been|was|is) )?(?:successfully )?(?:generated|created|issued|printed)(?: successfully)?(?: for [a-z0-9#&./]+)?(?=$|[\s,;:.!?])/;
+/**
  * A shipment, order or label cancelled, and nothing else in the scan, in each
  * language and Turkish ("İptal Edildi"). A cancelled return, pickup or hold,
  * which lets the parcel go on, is not one.
@@ -184,6 +190,13 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // Every rule below reads only what happened, never a delivery still to come.
   const reported = deliveryForecastRemainder(text);
   if (reported !== undefined) return reported ? trackingLanguageStage(reported) : undefined;
+  // A waybill or label generated is registration, unless the rest of the scan
+  // reports more: "Waybill generated, departed facility" is in transit.
+  const paperwork = WAYBILL_CREATED.exec(text);
+  if (paperwork) {
+    const rest = text.slice(paperwork[0].length).replace(/^[\s,;:.!?]+/, '');
+    return (rest ? trackingLanguageStage(rest) : undefined) ?? 'registered';
+  }
 
   // Specific negatives, future steps and handoffs precede broad delivery words.
   if (nonterminalEnglishReturn(text)) return 'exception';

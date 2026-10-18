@@ -711,6 +711,27 @@ describe('classifyWording', () => {
     expect(wordingStage('Item received by customs', 'pending')).toBe('customs');
   });
 
+  it('reads a waybill or label generated as registration, unless the scan reports more', () => {
+    for (const wording of ['Waybill generated', 'WAYBILL GENERATED', 'Waybill generated for 4PX0000000000001CN',
+      'Waybill created', 'Waybill has been created', 'E-waybill generated', 'Air waybill created', 'AWB created at origin',
+      'Waybill number generated', 'Shipping label generated', 'Label created for EXAMPLESHOP',
+      'Waybill created. Shipment has not been received from the retailer']) {
+      expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'registered', source: 'wording:language' });
+    }
+    for (const [wording, stage] of [
+      ['Waybill generated, departed facility', 'in_transit'],
+      ['Waybill generated for 4PX0000000000001CN, arrived at sorting center', 'in_transit'],
+      ['Label created, parcel handed to DPD', 'accepted'],
+      ['Waybill created. Returned to sender', 'returned'],
+      ['Waybill allocated to linehaul', 'in_transit'],
+      ['Waybill delivered', 'delivered'],
+    ] as const) expect(wordingStage(wording, 'pending'), wording).toBe(stage);
+    // Paperwork not generated or cancelled is no registration.
+    for (const wording of ['Waybill not generated', 'Waybill cancelled', 'Label creation failed']) {
+      expect(trackingLanguageStage(wording), wording).not.toBe('registered');
+    }
+  });
+
   it('falls back without a rule id when nothing matches', () => {
     expect(classifyWording('Estado interno 99', 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(wordingStage('Estado interno 99')).toBe('in_transit');

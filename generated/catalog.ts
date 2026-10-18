@@ -20667,7 +20667,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nz-couriers"
     },
     "canaryUrl": "https://nzcouriers.co.nz/tools/track-a-parcel/",
     "trackingUrlTemplate": "https://nzcouriers.co.nz/track?query={trackingNumber}",

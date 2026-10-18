@@ -12,13 +12,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was opened, but the page loads the history by script, so it does not show the parcel."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration to collection with the cash on delivery paid."
     },
     {
       "number": "BY080012223332",
@@ -31,13 +31,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was opened, but the page loads the history by script, so it does not show the parcel."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration to collection."
     },
     {
       "number": "BY080009097581",
@@ -50,13 +50,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration to collection with the cash on delivery paid."
     },
     {
       "number": "BY080014349856",
@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration to collection with the cash on delivery paid."
     },
     {
       "number": "BY080018997680",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration through a storage reminder to collection with the cash on delivery paid."
     },
     {
       "number": "BY080020995772",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Looked up on Europochta's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Europochta's own tracker, as an archived address shows. Europochta's tracker returns its history, from the online registration to collection with the cash on delivery paid."
     },
     {
       "number": "BY080004154557",
@@ -132,7 +132,7 @@
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Entered on Europochta's page for choosing a parcel's delivery address and time, as an archived address shows; the capture was opened, but the page loads the parcel by script and does not show it."
+      "note": "Entered on Europochta's page for choosing a parcel's delivery address and time, as an archived address shows; the capture was opened, but the page loads the parcel by script and does not show it. Europochta's tracker no longer knows it."
     },
     {
       "number": "BY080036402363",
@@ -145,13 +145,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Carried in the number parameter that Europochta's site keeps on its menu links after a lookup, as an archived address on its own host shows; the capture was not opened."
+      "note": "Carried in the number parameter that Europochta's site keeps on its menu links after a lookup, as an archived address on its own host shows. Europochta's tracker returns its history, from the registration through a new label at the office of posting to collection."
     },
     {
       "number": "BY080046868514",
@@ -164,13 +164,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "europochta",
         "confidence": "high"
       },
-      "note": "Carried in the number parameter that Europochta's site keeps on its menu links after a lookup, as an archived address on its own host shows; the capture was not opened."
+      "note": "Carried in the number parameter that Europochta's site keeps on its menu links after a lookup, as an archived address on its own host shows. Europochta's tracker returns its history, from the online registration to collection with the cash on delivery paid."
     },
     {
       "number": "BY080013226227",

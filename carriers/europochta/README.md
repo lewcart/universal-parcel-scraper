@@ -14,6 +14,12 @@ from Europochta's own site and a recorded reply of its tracking service show the
 Europochta's home page reads a number from `number`, so `evropochta.by/?number={number}` opens
 one parcel; the history loads by script after the page.
 
+## Limitations
+
+Europochta's whole site, its tracker's own lookup included, sits behind a bot check that runs a
+script in the browser before any page or lookup answers. Europochta has no app of its own, and
+its shipping API needs a business account, so Europochta stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

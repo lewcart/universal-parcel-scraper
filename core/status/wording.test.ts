@@ -482,7 +482,13 @@ describe('classifyWording', () => {
       // A forwarder's hand-over to its destination agent after clearance, as Linhan relays it.
       ['transfer to local acting company International self-operation team', 'in_transit'],
       ['Transfer to the destination delivery partner', 'in_transit'],
+      // The last-mile carrier taking the parcel over, as DHLink relays it, is a handover, not the acceptance.
+      ['Package picked up by last-mile carrier', 'in_transit'],
+      ['Collected by the final mile courier', 'in_transit'],
+      ['Package picked up', 'accepted'],
+      ['Picked up by the carrier', 'accepted'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
+    expect(wordingStage('Not yet picked up by the last-mile carrier')).not.toBe('in_transit');
     // A notice the carrier failed to send is no scan; a failed delivery still is.
     for (const wording of ['REMINDER EMAIL SENT FAILED', 'SMS notification failed', 'Failed to send notification for collection']) {
       expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'pending', source: 'none' });

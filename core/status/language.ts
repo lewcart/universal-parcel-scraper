@@ -319,6 +319,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
 
   // A handover to another network, a carrier or a courier set apart, takes the parcel on.
   if (HANDED_TO_NETWORK.test(text)) return 'in_transit';
+  // The same handover seen from the network that delivers the parcel, not the first carrier's acceptance.
+  if (/(?<!\bnot (?:yet )?(?:been )?)\b(?:picked up|collected) by (?:the |a |our )?(?:last|final)[- ]mile (?:carrier|courier|delivery partner)s?\b/.test(text)) return 'in_transit';
   // Posting/collection by the carrier, not recipient pickup or data submission.
   if (/^(?:the |your )?(?:item|package|parcel|shipment) (?:has been |was |is )?(?:received for transport|(?:dropped off|deposited) by (?:the )?sender (?:at|with) (?:our |the |a )?postal partner)\b/.test(text)) return 'accepted';
   // A vehicle load and a gateway scan prove handling, but do not name the delivery round.

@@ -1356,6 +1356,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'zajil', number: '00000000000',
     route: /^https:\/\/zajil-express\.com\/track\?tracking_id=00000000000$/,
     marker: /No Shipment Found|Shipment Summary/ },
+  // The tracker looks up the number in its address as it is served; an unknown one gets the empty form and a notice.
+  { carrier: 'hunter-express', number: 'ZZZ000000',
+    route: /^https:\/\/portal\.hunterexpress\.com\.au\/Track\/55010\/ZZZ000000$/,
+    marker: /Missing or incorrect tracking number|Consignment Details/,
+    forwarding: { notFound: /Missing or incorrect tracking number/ } },
 ];
 
 /**

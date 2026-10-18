@@ -201,6 +201,7 @@ import { adapter as hispapost } from '../carriers/hispapost/adapter.js';
 import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
 import { adapter as hrParcel } from '../carriers/hr-parcel/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
+import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js';
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as idsLogistik } from '../carriers/ids-logistik/adapter.js';
 import { adapter as imile } from '../carriers/imile/adapter.js';
@@ -638,6 +639,7 @@ export const REGISTRY: RegistryDefinition = {
     "hongkong-post": hongkongPost,
     "hr-parcel": hrParcel,
     "hrvatska-posta": hrvatskaPosta,
+    "hunter-express": hunterExpress,
     "hywl": hywl,
     "ids-logistik": idsLogistik,
     "imile": imile,
@@ -1198,7 +1200,7 @@ export const REGISTRY: RegistryDefinition = {
     "hp-mostar": "universal",
     "hr-parcel": "hr-parcel",
     "hrvatska-posta": "hrvatska-posta",
-    "hunter-express": "universal",
+    "hunter-express": "hunter-express",
     "hywl": "hywl",
     "icc-worldwide": "universal",
     "icl-express": "universal",

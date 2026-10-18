@@ -15703,7 +15703,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hunter-express",
+      "localClocks": true
     },
     "canaryUrl": "https://portal.hunterexpress.com.au/track/55010",
     "trackingUrlTemplate": "https://portal.hunterexpress.com.au/Track/55010/{trackingNumber}",

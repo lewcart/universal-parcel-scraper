@@ -147,6 +147,7 @@ import { adapter as geis } from '../carriers/geis/adapter.js';
 import { adapter as genikiTaxydromiki } from '../carriers/geniki-taxydromiki/adapter.js';
 import { adapter as geodis } from '../carriers/geodis/adapter.js';
 import { adapter as geodisPl } from '../carriers/geodis-pl/adapter.js';
+import { adapter as globalpost } from '../carriers/globalpost/adapter.js';
 import { adapter as glsCh } from '../carriers/gls-ch/adapter.js';
 import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
 import { adapter as glsEs } from '../carriers/gls-es/adapter.js';
@@ -508,6 +509,7 @@ export const REGISTRY: RegistryDefinition = {
     "geniki-taxydromiki": genikiTaxydromiki,
     "geodis": geodis,
     "geodis-pl": geodisPl,
+    "globalpost": globalpost,
     "gls-ch": glsCh,
     "gls-de": glsDe,
     "gls-es": glsEs,
@@ -975,7 +977,7 @@ export const REGISTRY: RegistryDefinition = {
     "ghana-post": "universal",
     "ghn": "universal",
     "ghtk": "universal",
-    "globalpost": "universal",
+    "globalpost": "globalpost",
     "gls-at": "gls-de",
     "gls-ch": "gls-ch",
     "gls-de": "gls-de",

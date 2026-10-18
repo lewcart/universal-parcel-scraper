@@ -13291,7 +13291,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "globalpost",
+      "localClocks": true
     },
     "canaryUrl": "https://www.goglobalpost.com/tracking/",
     "trackingUrlTemplate": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",

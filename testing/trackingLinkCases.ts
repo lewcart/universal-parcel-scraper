@@ -775,6 +775,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'epost-global', number: 'EPG999999999999999',
     route: /^https:\/\/epgtrack\.com\/EPG999999999999999$/,
     marker: /We haven.t received any tracking updates|Track your shipments here/ },
+  // The server renders the shipment for the number in its address and sends an unknown one to its search page with a notice.
+  { carrier: 'globalpost', number: 'GPZZZZ9999999999US',
+    route: /^https:\/\/www\.goglobalpost\.com\/tracking\/\?t=GPZZZZ9999999999US&status=not_found$/,
+    marker: /We couldn.t locate any details for the tracking number you entered/,
+    forwarding: { notFound: /We couldn.t locate any details for the tracking number you entered/ } },
   // The MyEstes page fills its field in from its address.
   { carrier: 'estes', number: '9999999999',
     route: /^https:\/\/www\.estes-express\.com\/myestes\/shipment-tracking\/\?type=PRO&query=9999999999$/,

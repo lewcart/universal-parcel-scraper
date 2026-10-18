@@ -447,6 +447,12 @@
     "reason": "The guía shape has a single documentation example, too little to claim it."
   },
   {
+    "carrier": "cbl-logistica",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "The one CBL number seen is eleven bare digits, a length other carriers share, so no rule claims it."
+  },
+  {
     "carrier": "cdek",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -589,6 +595,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "CJ waybills are bare twelve digits without a check digit, a shape shared by many carriers."
+  },
+  {
+    "carrier": "connect-couriers",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "The one Connect Couriers number seen is eleven bare digits, a length other carriers share, so no rule claims it."
   },
   {
     "carrier": "coordinadora",
@@ -926,6 +938,18 @@
     "reason": "ODO is the shop OneDayOnly's waybill prefix, which also reaches Pargo, so it names the shop rather than DPD South Africa."
   },
   {
+    "carrier": "dragon-star-curier",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "DSC's older AWB numbers are seven bare digits, a length other carriers share, so no rule claims them."
+  },
+  {
+    "carrier": "dragon-star-curier",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "DSC's AWB numbers are eight bare digits, a length other carriers share, so no rule claims them."
+  },
+  {
     "carrier": "dropp",
     "pattern": "^DR[0-9A-Z]{11}$",
     "kind": "by_design",
@@ -1139,6 +1163,12 @@
     "pattern": "^(?:\\d{9}|\\d{14}|TEZ\\d{6})$",
     "kind": "by_design",
     "reason": "Fargo tracks by track ids and shop order numbers whose layouts are shared or come from its delivery platform, so no rule claims them."
+  },
+  {
+    "carrier": "fastdrop",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Fastdrop's tracking IDs are ten bare digits with leading zeros, a length other carriers share, so no rule claims them."
   },
   {
     "carrier": "fastfrate",
@@ -1583,6 +1613,12 @@
     "pattern": "^(?!INTLCM|CRIN)[A-Z0-9]{12,20}$",
     "kind": "by_design",
     "reason": "Merchant and shipper references that Intelcom's tracker accepts. Nothing in them names Intelcom, so they need an explicit carrier or an Intelcom tracking link."
+  },
+  {
+    "carrier": "inter-courier",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Intercourier's shipment numbers are twelve bare digits, a length many carriers share, so no rule claims them."
   },
   {
     "carrier": "intereuropa",
@@ -2812,6 +2848,12 @@
     "reason": "Seven digits are shared by several carriers and nothing in the number points to Southeastern Freight Lines."
   },
   {
+    "carrier": "sp-express",
+    "pattern": "^(?:CZ|NL|PL)\\d{12}$",
+    "kind": "by_design",
+    "reason": "SP Express's Cainiao-page numbers, a destination country code and twelve digits, are too few to tie the layout to SP Express alone, so no rule claims them."
+  },
+  {
     "carrier": "speedex",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -2953,6 +2995,12 @@
     "pattern": "^\\d{14}$",
     "kind": "by_design",
     "reason": "Fourteen digits are shared by many carriers and no known prefix or check digit sets TCS apart."
+  },
+  {
+    "carrier": "tdn",
+    "pattern": "^9999\\d{8}$",
+    "kind": "by_design",
+    "reason": "TDN's expedition numbers are twelve digits starting with 9999, a range PEC, Sending and DHL eCommerce Spain corpus numbers also use, so no rule claims them."
   },
   {
     "carrier": "tealca",

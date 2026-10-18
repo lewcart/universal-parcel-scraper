@@ -1,0 +1,15 @@
+{
+  "carrier": "fastdrop",
+  "entries": [
+    {"wording": "Picked up from the sender", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Pickup from the sender failed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script. The collection from the sender failed."},
+    {"wording": "In transit to the hub", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Arrived at the hub", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Pickup at the hub failed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Drop-off at the hub failed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Left the hub", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."},
+    {"wording": "Delivery failed", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "From the tracker's own script."}
+  ]
+}

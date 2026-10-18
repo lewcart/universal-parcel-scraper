@@ -1,0 +1,48 @@
+{
+  "id": "dragon-star-curier",
+  "displayName": "Dragon Star Curier",
+  "aliases": [
+    "DSC",
+    "DSC Dragon Star Curier",
+    "DSC-DragonStarCurier",
+    "Dragon Star"
+  ],
+  "region": {
+    "countries": [
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#000b8c"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://dragonstarcurier.ro/tracking-awb?awb={trackingNumber}",
+    "searchUrl": "https://dragonstarcurier.ro/tracking-awb",
+    "canaryUrl": "https://dragonstarcurier.ro/tracking-awb",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dragonstarcurier.ro",
+        "www.dragonstarcurier.ro"
+      ],
+      "pathPattern": "^/tracking-awb/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

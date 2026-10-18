@@ -1,0 +1,34 @@
+{
+  "carrier": "cbl-logistica",
+  "records": [
+    {
+      "number": "99935077931",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6a0dde8436e82a32accbf4b6",
+        "date": "2026-05-20",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "A customer's review on CBL's Trustpilot page gives this shipment number for a parcel that CBL's A Coruña branch failed to deliver and then reported lost."
+    }
+  ]
+}

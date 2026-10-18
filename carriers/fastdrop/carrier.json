@@ -1,0 +1,42 @@
+{
+  "id": "fastdrop",
+  "displayName": "Fastdrop",
+  "aliases": [
+    "FastDrop",
+    "eCabs Fastdrop"
+  ],
+  "region": {
+    "countries": [
+      "MT"
+    ]
+  },
+  "brand": {
+    "color": "#26bed3"
+  },
+  "selectable": true,
+  "timezone": "Europe/Malta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
+    "searchUrl": "https://tracking.fastdrop.mt/",
+    "canaryUrl": "https://tracking.fastdrop.mt/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "booking.fastdrop.mt"
+      ],
+      "path": "^/package-tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

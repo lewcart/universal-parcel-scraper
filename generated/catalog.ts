@@ -7742,6 +7742,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "cbl-logistica": {
+    "displayName": "CBL Logística",
+    "color": "#e31d1a",
+    "aliases": [
+      "CBL Logistica",
+      "CBL",
+      "Cbl Logistica"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cbl-logistica.com/track-and-go",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "cdek": {
     "displayName": "CDEK",
     "color": "#00b33c",
@@ -8478,6 +8500,40 @@ export const CARRIER_CATALOG = {
     "canaryUrl": "https://cbd-tracking.locate2u.com/",
     "trackingSearchUrl": "https://cbd-tracking.locate2u.com/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "connect-couriers": {
+    "displayName": "Connect Couriers",
+    "color": "#9c231b",
+    "aliases": [
+      "Connect Express",
+      "Connect Express Couriers",
+      "Connect Services Ltd"
+    ],
+    "countries": [
+      "MT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Malta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.connectcouriers.eu/tracking/",
+    "trackingUrlTemplate": "https://www.connectcouriers.eu/tracking/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.connectcouriers.eu/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.connectcouriers.eu",
+          "connectcouriers.eu"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "coordinadora": {
@@ -10577,6 +10633,41 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dragon-star-curier": {
+    "displayName": "Dragon Star Curier",
+    "color": "#000b8c",
+    "aliases": [
+      "DSC",
+      "DSC Dragon Star Curier",
+      "DSC-DragonStarCurier",
+      "Dragon Star"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dragonstarcurier.ro/tracking-awb",
+    "trackingUrlTemplate": "https://dragonstarcurier.ro/tracking-awb?awb={trackingNumber}",
+    "trackingSearchUrl": "https://dragonstarcurier.ro/tracking-awb",
+    "linkRules": [
+      {
+        "domains": [
+          "dragonstarcurier.ro",
+          "www.dragonstarcurier.ro"
+        ],
+        "pathPattern": "^/tracking-awb/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "drop2shop": {
     "displayName": "Drop2Shop",
     "color": "#d8127d",
@@ -12069,6 +12160,35 @@ export const CARRIER_CATALOG = {
         "params": [
           "id"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "fastdrop": {
+    "displayName": "Fastdrop",
+    "color": "#26bed3",
+    "aliases": [
+      "FastDrop",
+      "eCabs Fastdrop"
+    ],
+    "countries": [
+      "MT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Malta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.fastdrop.mt/",
+    "trackingUrlTemplate": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.fastdrop.mt/",
+    "linkRules": [
+      {
+        "domains": [
+          "booking.fastdrop.mt"
+        ],
+        "path": "^/package-tracking/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []
@@ -14658,6 +14778,40 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "inter-courier": {
+    "displayName": "Intercourier",
+    "color": "#76ba59",
+    "aliases": [
+      "Inter Courier",
+      "INTERCOURIER",
+      "INTERCOURIER - Serviço Expresso Global"
+    ],
+    "countries": [
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Lisbon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://intercourier.pt/pt/tracking",
+    "trackingUrlTemplate": "https://intercourier.pt/pt/tracking?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://intercourier.pt/pt/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "intercourier.pt",
+          "www.intercourier.pt"
+        ],
+        "pathPattern": "^/(?:pt|en)/tracking/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "intereuropa": {
     "displayName": "Intereuropa",
@@ -22937,6 +23091,51 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "sp-express": {
+    "displayName": "SP Express",
+    "color": "#247c00",
+    "aliases": [
+      "SP EXPRESS",
+      "SP Express Sp. z o.o.",
+      "Świat Przesyłek",
+      "Swiat Przesylek"
+    ],
+    "countries": [
+      "PL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Warsaw",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://sp.express/tt",
+    "trackingUrlTemplate": "https://en.sp.express/tt/{trackingNumber}",
+    "trackingSearchUrl": "https://sp.express/tt",
+    "linkRules": [
+      {
+        "domains": [
+          "sp.express",
+          "en.sp.express",
+          "swiatprzesylek.pl"
+        ],
+        "path": "^/tt/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "sp.express",
+          "swiatprzesylek.pl"
+        ],
+        "path": "^/tt-cainiao/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^483\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "speedaf": {
     "displayName": "Speedaf",
     "color": "#ff8300",
@@ -24109,6 +24308,49 @@ export const CARRIER_CATALOG = {
           "tcsexpress.com"
         ],
         "path": "^/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "tdn": {
+    "displayName": "TDN",
+    "color": "#ffc72c",
+    "aliases": [
+      "TDN, S.A.U."
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tdn.es/tracking/",
+    "trackingUrlTemplate": "https://www.tdn.es/tracking?envio={trackingNumber}&autoredir=1",
+    "trackingSearchUrl": "https://www.tdn.es/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.tdnonline.com"
+        ],
+        "pathPattern": "^/consulta_expediciones/tracking/?$",
+        "params": [
+          "REFERENCIA"
+        ]
+      },
+      {
+        "domains": [
+          "www.tdn.es",
+          "tdn.es"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "envio",
+          "Envio"
+        ]
       }
     ],
     "detectionRules": []
@@ -26585,6 +26827,7 @@ export const CARRIER_IDS = [
   "campost",
   "cargus",
   "castores",
+  "cbl-logistica",
   "cdek",
   "cdl",
   "celeritas",
@@ -26604,6 +26847,7 @@ export const CARRIER_IDS = [
   "cj-packet",
   "cne",
   "codexpress",
+  "connect-couriers",
   "coordinadora",
   "copa-courier",
   "corre",
@@ -26658,6 +26902,7 @@ export const CARRIER_IDS = [
   "dpd-pt",
   "dpd-uk",
   "dpd-za",
+  "dragon-star-curier",
   "drop2shop",
   "dropp",
   "dsv",
@@ -26695,6 +26940,7 @@ export const CARRIER_IDS = [
   "fan-courier",
   "fargo-courier",
   "fargo-uz",
+  "fastdrop",
   "fastfrate",
   "fedex-pl",
   "fermopoint",
@@ -26762,6 +27008,7 @@ export const CARRIER_IDS = [
   "instabox",
   "integral-pack",
   "intelcom",
+  "inter-courier",
   "intereuropa",
   "internet-express",
   "interrapidisimo",
@@ -26977,6 +27224,7 @@ export const CARRIER_IDS = [
   "smsa-express",
   "south-african-post-office",
   "southeastern-freight-lines",
+  "sp-express",
   "speedaf",
   "speedex",
   "speedpak",
@@ -27007,6 +27255,7 @@ export const CARRIER_IDS = [
   "tccs",
   "tci-express",
   "tcs-pakistan",
+  "tdn",
   "tealca",
   "team-global-express",
   "tej-couriers",
@@ -27248,6 +27497,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "campost": [],
   "cargus": [],
   "castores": [],
+  "cbl-logistica": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],
   "celeritas": [],
@@ -27267,6 +27517,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cj-packet": ["cj-packet-1"],
   "cne": ["cne-1"],
   "codexpress": [],
+  "connect-couriers": [],
   "coordinadora": [],
   "copa-courier": ["copa-courier-1"],
   "corre": [],
@@ -27321,6 +27572,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-pt": ["dpd-pt-1","dpd-pt-2"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
+  "dragon-star-curier": [],
   "drop2shop": ["drop2shop-1"],
   "dropp": [],
   "dsv": [],
@@ -27358,6 +27610,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fan-courier": [],
   "fargo-courier": ["fargo-courier-1"],
   "fargo-uz": [],
+  "fastdrop": [],
   "fastfrate": [],
   "fedex-pl": [],
   "fermopoint": ["fermopoint-1"],
@@ -27425,6 +27678,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
+  "inter-courier": [],
   "intereuropa": ["intereuropa-1"],
   "internet-express": [],
   "interrapidisimo": [],
@@ -27640,6 +27894,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "smsa-express": [],
   "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
+  "sp-express": ["sp-express-1"],
   "speedaf": ["speedaf-12","speedaf-r"],
   "speedex": [],
   "speedpak": ["speedpak-1"],
@@ -27670,6 +27925,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tccs": [],
   "tci-express": [],
   "tcs-pakistan": [],
+  "tdn": [],
   "tealca": [],
   "team-global-express": [],
   "tej-couriers": [],

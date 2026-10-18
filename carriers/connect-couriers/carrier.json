@@ -1,0 +1,47 @@
+{
+  "id": "connect-couriers",
+  "displayName": "Connect Couriers",
+  "aliases": [
+    "Connect Express",
+    "Connect Express Couriers",
+    "Connect Services Ltd"
+  ],
+  "region": {
+    "countries": [
+      "MT"
+    ]
+  },
+  "brand": {
+    "color": "#9c231b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Malta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.connectcouriers.eu/tracking/?tracking_number={trackingNumber}",
+    "searchUrl": "https://www.connectcouriers.eu/tracking/",
+    "canaryUrl": "https://www.connectcouriers.eu/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.connectcouriers.eu",
+        "connectcouriers.eu"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
+  "detection": []
+}

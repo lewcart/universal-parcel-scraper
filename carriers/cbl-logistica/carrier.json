@@ -1,0 +1,35 @@
+{
+  "id": "cbl-logistica",
+  "displayName": "CBL Logística",
+  "aliases": [
+    "CBL Logistica",
+    "CBL",
+    "Cbl Logistica"
+  ],
+  "region": {
+    "countries": [
+      "ES",
+      "PT"
+    ]
+  },
+  "brand": {
+    "color": "#e31d1a"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://www.cbl-logistica.com/track-and-go",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

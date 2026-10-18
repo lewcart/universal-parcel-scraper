@@ -4456,5 +4456,14 @@
       "emile"
     ],
     "reason": "Emile's barcode on parcels 4PX hands to Emile in Canada. Both trackers know the number: 4PX's holds the whole journey and is preferred, and Emile's holds the Canadian leg. Recognition confirms the carrier."
+  },
+  {
+    "shape": "483, a six-digit sending date and six digits, failing the GS1 check",
+    "carriers": [
+      "brt",
+      "sp-express",
+      "yunda"
+    ],
+    "reason": "SP Express order numbers are fifteen digits, which BRT's parcel IDs and Yunda's fifteen-digit rule also accept; the 483 prefix and sending date only suggest SP Express, so the number stays a low-confidence suggestion."
   }
 ]

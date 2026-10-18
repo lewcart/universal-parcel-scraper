@@ -18,18 +18,57 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "exmate",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://pod.exmate.net/pod/?exmno={trackingNumber}",
     "searchUrl": "https://pod.exmate.net/",
     "canaryUrl": "https://pod.exmate.net/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "progress_rail",
+      "origin",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

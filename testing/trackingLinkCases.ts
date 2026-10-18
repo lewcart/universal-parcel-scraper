@@ -1259,6 +1259,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/a1post\.bg\/track\.php\?t=A10000000000$/,
     marker: /Package not found|Track at partner website/,
     forwarding: { notFound: /Package not found/ } },
+  // The tracker answers a number it has no record of with a bare notice instead of its page.
+  { carrier: 'exmate', number: 'EXK00000000J',
+    route: /^https:\/\/pod\.exmate\.net\/pod\/\?exmno=EXK00000000J$/,
+    marker: /No Data!!|Tracking Visibility/,
+    forwarding: { notFound: /No Data!!/ } },
   // The page looks the number up from its path, shows it under the shipping details and has no
   // not-found answer: an unknown one gets its notice that it cannot retrieve tracking.
   { carrier: 'pitney-bowes', number: 'UPAAA000000000000000',

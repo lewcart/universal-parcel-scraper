@@ -103,6 +103,11 @@
       "id": "dhlink-eyt",
       "pattern": "^EYT\\d{10}HZ$",
       "confidence": "low"
+    },
+    {
+      "id": "dhlink-qh",
+      "pattern": "^QH\\d{12}FS$",
+      "confidence": "low"
     }
   ]
 }

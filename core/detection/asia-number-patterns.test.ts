@@ -151,6 +151,14 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
+
+  it('asks DHLink about QH tracking numbers on its GOFO line without naming it from the shape', () => {
+    expect(detectCarrierMatch('QH000000000001FS')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('QH000000000001FS')).toEqual(['dhlink']);
+    for (const number of ['QH00000000001FS', 'QH0000000000001FS', 'QH000000000001FX', 'QX000000000001FS', 'QH000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
+    }
+  });
 });
 
 describe('wave seven South-East Asian courier rules', () => {

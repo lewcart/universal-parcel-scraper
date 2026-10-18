@@ -7010,7 +7010,7 @@
   },
   "bombino": {
     "displayName": "Bombino Express",
-    "color": "#0f172a",
+    "color": "#06567f",
     "aliases": [
       "Bombino",
       "Bombino Express Worldwide"
@@ -17217,7 +17217,7 @@
   },
   "maruti-air": {
     "displayName": "Maruti Air Couriers & Cargo",
-    "color": "#0c1f38",
+    "color": "#ed3237",
     "aliases": [
       "Maruti Air",
       "Maruti Air Couriers",
@@ -18006,7 +18006,7 @@
   },
   "noest": {
     "displayName": "NOEST Express",
-    "color": "#0880e8",
+    "color": "#003462",
     "aliases": [
       "NOEST",
       "Noest Express",
@@ -21073,7 +21073,7 @@
   },
   "rivigo": {
     "displayName": "Rivigo",
-    "color": "#dd712f",
+    "color": "#f4162d",
     "aliases": [
       "RIVIGO",
       "Rivigo by Mahindra Logistics",
@@ -23837,7 +23837,7 @@
   },
   "tccs": {
     "displayName": "TCCS",
-    "color": "#e01e1e",
+    "color": "#2e458d",
     "aliases": [
       "Total Couriers Cargo Services",
       "Total Courier and Cargo Services"
@@ -25020,7 +25020,7 @@
   },
   "valmo": {
     "displayName": "Valmo",
-    "color": "#0378b6",
+    "color": "#092d5e",
     "aliases": [
       "VALMO",
       "Valmo Logistics",

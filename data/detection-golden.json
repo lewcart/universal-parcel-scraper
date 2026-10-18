@@ -41554,6 +41554,16 @@
     ]
   },
   {
+    "input": "51176258",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "5119102006866",
     "carrier": "unknown",
     "confidence": "low",
@@ -66074,6 +66084,17 @@
     ]
   },
   {
+    "input": "CP001469492ME",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "CP001635036GL",
     "carrier": "intl-post",
     "confidence": "high",
@@ -72828,6 +72849,86 @@
     ],
     "asked": [
       "australia-post"
+    ]
+  },
+  {
+    "input": "HKGL1600235268",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600235271",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600243661",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600273822",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600359188",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600431537",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600574836",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600700295",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600810129",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
+    ]
+  },
+  {
+    "input": "HKGL1600899007",
+    "carrier": "rpx-hk",
+    "confidence": "high",
+    "candidates": [
+      "rpx-hk"
     ]
   },
   {
@@ -83112,6 +83213,39 @@
     ]
   },
   {
+    "input": "RR120203708ME",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR120203711ME",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR122647797ME",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR123456785CS",
     "carrier": "unknown",
     "confidence": "low",
@@ -83201,6 +83335,17 @@
     "confidence": "high",
     "candidates": [
       "postnord"
+    ]
+  },
+  {
+    "input": "RR138886049ME",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {

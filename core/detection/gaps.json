@@ -3765,6 +3765,12 @@
     "reason": "The only public Vimenpaq number comes from a customer's question, too little to claim its layout."
   },
   {
+    "carrier": "vitran-express",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Vitran PRO bill numbers are bare eight-digit runs that other carriers' numbers and rules share."
+  },
+  {
     "carrier": "vozovoz",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

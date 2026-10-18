@@ -593,4 +593,12 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('exmate');
     }
   });
+
+  it('names RPX Online for HKGL and ten digits', () => {
+    expect(detectCarrierMatch('HKGL0000000001')).toMatchObject({ carrier: 'rpx-hk', confidence: 'high' });
+    for (const number of ['HKGL000000001', 'HKGL00000000001', 'HKGX0000000001', 'HKG0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('rpx-hk');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('rpx-hk');
+    }
+  });
 });

@@ -19583,6 +19583,39 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "montenegro-post": {
+    "displayName": "Pošta Crne Gore",
+    "color": "#fab900",
+    "aliases": [
+      "Montenegro Post",
+      "Posta Crne Gore",
+      "Post of Montenegro"
+    ],
+    "countries": [
+      "ME"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Podgorica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://webpostar.postacg.me/web_services/track_and_trace",
+    "trackingUrlTemplate": "https://webpostar.postacg.me/web_services/track_and_trace?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://webpostar.postacg.me/web_services/track_and_trace",
+    "linkRules": [
+      {
+        "domains": [
+          "webpostar.postacg.me"
+        ],
+        "pathPattern": "^/web_services/track_and_trace/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "morning-global": {
     "displayName": "Morning Global",
     "color": "#050059",
@@ -24038,6 +24071,52 @@ export const CARRIER_CATALOG = {
     "trackingSearchUrl": "https://royalx.net/tracking",
     "linkRules": [],
     "detectionRules": []
+  },
+  "rpx-hk": {
+    "displayName": "RPX Online",
+    "color": "#eb1d4d",
+    "aliases": [
+      "RPX Ltd",
+      "RPX Hong Kong",
+      "RPX eCommerce"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.rpxonline.com/",
+    "trackingUrlTemplate": "https://tracking.rpxonline.com/?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.rpxonline.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.rpxonline.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackNo",
+          "trackingNumber"
+        ]
+      },
+      {
+        "domains": [
+          "www.rpxonline.com",
+          "rpxonline.com"
+        ],
+        "path": "^/component/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^HKGL\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   },
   "rpx-indonesia": {
     "displayName": "RPX",
@@ -28868,6 +28947,38 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "vitran-express": {
+    "displayName": "Vitran Express",
+    "color": "#004bac",
+    "aliases": [
+      "Vitran"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.vitran.com/quicktrack.aspx",
+    "trackingUrlTemplate": "https://www.vitran.com/quicktrack.aspx?p={trackingNumber}",
+    "trackingSearchUrl": "https://www.vitran.com/quicktrack.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.vitran.com",
+          "vitran.com"
+        ],
+        "pathPattern": "^/quicktrack\\.aspx$",
+        "params": [
+          "p"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "vnpost": {
     "displayName": "VNPost",
     "color": "#004b8e",
@@ -30352,6 +30463,7 @@ export const CARRIER_IDS = [
   "midland-transport",
   "mng-kargo",
   "mongol-infinity-post",
+  "montenegro-post",
   "morning-global",
   "mrl-global",
   "mtscn",
@@ -30466,6 +30578,7 @@ export const CARRIER_IDS = [
   "roadie",
   "roadrunner",
   "royal-express-mm",
+  "rpx-hk",
   "rpx-indonesia",
   "rr-express-sg",
   "russian-post",
@@ -30592,6 +30705,7 @@ export const CARRIER_IDS = [
   "viettel-post",
   "vimenpaq",
   "vinted-go",
+  "vitran-express",
   "vnpost",
   "vozovoz",
   "vrl-logistics",
@@ -31107,6 +31221,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "midland-transport": [],
   "mng-kargo": [],
   "mongol-infinity-post": [],
+  "montenegro-post": [],
   "morning-global": [],
   "mrl-global": [],
   "mtscn": ["mtscn-1"],
@@ -31221,6 +31336,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],
   "royal-express-mm": [],
+  "rpx-hk": ["rpx-hk-1"],
   "rpx-indonesia": [],
   "rr-express-sg": [],
   "russian-post": [],
@@ -31347,6 +31463,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],
   "vinted-go": ["vinted-go-1"],
+  "vitran-express": [],
   "vnpost": [],
   "vozovoz": [],
   "vrl-logistics": [],

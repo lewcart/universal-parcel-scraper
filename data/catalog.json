@@ -19581,6 +19581,39 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "montenegro-post": {
+    "displayName": "Pošta Crne Gore",
+    "color": "#fab900",
+    "aliases": [
+      "Montenegro Post",
+      "Posta Crne Gore",
+      "Post of Montenegro"
+    ],
+    "countries": [
+      "ME"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Podgorica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://webpostar.postacg.me/web_services/track_and_trace",
+    "trackingUrlTemplate": "https://webpostar.postacg.me/web_services/track_and_trace?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://webpostar.postacg.me/web_services/track_and_trace",
+    "linkRules": [
+      {
+        "domains": [
+          "webpostar.postacg.me"
+        ],
+        "pathPattern": "^/web_services/track_and_trace/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "morning-global": {
     "displayName": "Morning Global",
     "color": "#050059",
@@ -24036,6 +24069,52 @@
     "trackingSearchUrl": "https://royalx.net/tracking",
     "linkRules": [],
     "detectionRules": []
+  },
+  "rpx-hk": {
+    "displayName": "RPX Online",
+    "color": "#eb1d4d",
+    "aliases": [
+      "RPX Ltd",
+      "RPX Hong Kong",
+      "RPX eCommerce"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.rpxonline.com/",
+    "trackingUrlTemplate": "https://tracking.rpxonline.com/?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.rpxonline.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.rpxonline.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackNo",
+          "trackingNumber"
+        ]
+      },
+      {
+        "domains": [
+          "www.rpxonline.com",
+          "rpxonline.com"
+        ],
+        "path": "^/component/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^HKGL\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   },
   "rpx-indonesia": {
     "displayName": "RPX",
@@ -28865,6 +28944,38 @@
         "checksum": "luhn"
       }
     ]
+  },
+  "vitran-express": {
+    "displayName": "Vitran Express",
+    "color": "#004bac",
+    "aliases": [
+      "Vitran"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.vitran.com/quicktrack.aspx",
+    "trackingUrlTemplate": "https://www.vitran.com/quicktrack.aspx?p={trackingNumber}",
+    "trackingSearchUrl": "https://www.vitran.com/quicktrack.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.vitran.com",
+          "vitran.com"
+        ],
+        "pathPattern": "^/quicktrack\\.aspx$",
+        "params": [
+          "p"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "vnpost": {
     "displayName": "VNPost",

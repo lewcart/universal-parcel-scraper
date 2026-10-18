@@ -1187,7 +1187,7 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       },
       {
-        "pattern": "^(?:\\d{10}|\\d{14})$",
+        "pattern": "^\\d{10}$",
         "confidence": "low"
       },
       {
@@ -2885,7 +2885,8 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tipsa",
-      "recognitionRank": 680
+      "recognitionRank": 680,
+      "recognitionPattern": "^\\d{22}$"
     },
     "canaryUrl": "https://dinapaqweb.tipsa-dinapaq.com/dinapaqweb/detalle_envio.php",
     "trackingUrlTemplate": "https://www.tip-sa.com/cliente/datos_env.php?id={trackingNumber}",

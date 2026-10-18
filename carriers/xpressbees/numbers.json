@@ -16,7 +16,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -42,7 +41,6 @@
         "candidates": [
           "dpd-fr",
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -124,7 +122,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "ciblex",
           "hermes-de",
           "seur",
@@ -159,7 +156,6 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",

@@ -47,7 +47,6 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -81,7 +80,6 @@
         "candidates": [
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -141,7 +139,6 @@
           "dpd-pt",
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "hermes-de",
           "seur",
@@ -175,7 +172,6 @@
         "candidates": [
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -209,7 +205,6 @@
           "dpd-pl",
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "hermes-de",
           "seur",
@@ -269,7 +264,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -301,7 +295,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -385,7 +378,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",

@@ -2657,6 +2657,12 @@
     "reason": "Redur's seventeen-digit number is a bare digit run other carriers share."
   },
   {
+    "carrier": "relais-colis",
+    "pattern": "^\\d{14}$",
+    "kind": "collision",
+    "reason": "An old customer report is the only public fourteen-digit Relais Colis reference, and fourteen digits are DPD's parcel number and several other carriers' waybills, so detection does not offer Relais Colis for the shape."
+  },
+  {
     "carrier": "rivigo",
     "pattern": "^\\d{10}$",
     "kind": "by_design",

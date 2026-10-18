@@ -21,7 +21,8 @@
       "direct"
     ],
     "recognition": {
-      "rank": 680
+      "rank": 680,
+      "pattern": "^\\d{22}$"
     }
   },
   "capabilities": [

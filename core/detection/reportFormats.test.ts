@@ -28,8 +28,10 @@ describe('evidence-backed tracking formats', () => {
   });
 
   it('keeps a Relais Colis numeric parcel ambiguous', () => {
-    expect(detectCarrierMatch('12345678901234')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
-    expect(detectCarrierMatch('12345678901234').candidates).toContain('relais-colis');
+    expect(detectCarrierMatch('1234567890')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('1234567890').candidates).toContain('relais-colis');
+    // Fourteen digits are DPD's parcel number; Relais Colis is not offered for them.
+    expect(detectCarrierMatch('12345678901234').candidates).not.toContain('relais-colis');
   });
 
   it('offers a normalized legacy DTDC reference without selecting it', () => {

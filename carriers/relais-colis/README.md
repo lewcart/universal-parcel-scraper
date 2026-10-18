@@ -19,7 +19,9 @@ second or unlabelled banner or a conflicting form value are rejected, and so is
 history without a banner: the form value only echoes the request.
 
 Numeric references remain detection candidates because other carriers share
-their shapes. The adapter submits the complete normalized reference and never
+their shapes. Detection offers Relais Colis for ten digits only: an old customer
+report is the only public fourteen-digit reference, and fourteen digits are
+DPD's parcel number. The adapter submits the complete normalized reference and never
 shortens it to make a returned parcel match.
 
 The [official tracking help](https://aide.relaiscolis.com/hc/fr/articles/12437714695837-Comment-suivre-mon-colis)

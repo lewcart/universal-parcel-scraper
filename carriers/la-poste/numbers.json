@@ -457,7 +457,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "la-poste",
           "ciblex",
           "seur",
@@ -491,7 +490,6 @@
         "confidence": "low",
         "candidates": [
           "dpd",
-          "relais-colis",
           "la-poste",
           "ciblex",
           "seur",

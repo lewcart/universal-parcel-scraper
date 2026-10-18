@@ -190,15 +190,15 @@ describe('standalone tracker', () => {
   });
 
   it('asks the next five carriers only when none of the first five knows the number', async () => {
-    // A 14-digit number nine carriers can be asked about, best first.
+    // A 14-digit number eight carriers can be asked about, best first.
     const number = '12345678901231';
-    const carriers = ['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'relais-colis', 'ciblex', 'dhl-ecommerce-uk', 'delhivery'];
+    const carriers = ['hermes-de', 'dpd', 'dpd-de', 'seur', 'brt', 'ciblex', 'dhl-ecommerce-uk', 'delhivery'];
     const unknown = async () => ({ known: false });
     const knows = async () => ({ known: true });
     let tracker = createTracker({ providers: [], registry: recognizers({
-      ...Object.fromEntries(carriers.map(id => [id, unknown])), 'relais-colis': knows,
+      ...Object.fromEntries(carriers.map(id => [id, unknown])), ciblex: knows,
     }) });
-    await expect(tracker.recognize(number)).resolves.toEqual({ carrier: 'relais-colis', choices: [], asked: carriers, unanswered: [] });
+    await expect(tracker.recognize(number)).resolves.toEqual({ carrier: 'ciblex', choices: [], asked: carriers, unanswered: [] });
     const rest = vi.fn<NonNullable<CarrierAdapter['recognize']>>().mockImplementation(knows);
     tracker = createTracker({ providers: [], registry: recognizers({
       ...Object.fromEntries(carriers.map((id, index) => [id, index < 5 ? unknown : rest])), dpd: knows,

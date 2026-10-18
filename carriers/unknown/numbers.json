@@ -30,7 +30,6 @@
         "candidates": [
           "dpd",
           "dpd-fr",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",
@@ -56,7 +55,6 @@
         "candidates": [
           "dpd-fr",
           "dpd",
-          "relais-colis",
           "ciblex",
           "seur",
           "brt",

@@ -1263,11 +1263,10 @@
       "dpd-de",
       "dpd-fr",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1281,12 +1280,11 @@
       "dpd-de",
       "dpd-fr",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1299,11 +1297,10 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1318,11 +1315,10 @@
       "dpd-fr",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1337,12 +1333,11 @@
       "dpd-fr",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits starting 13",
@@ -1357,7 +1352,6 @@
       "dpd-fr",
       "dpd-pl",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
@@ -1378,7 +1372,6 @@
       "dpd-pl",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
@@ -1397,11 +1390,10 @@
       "dpd-de",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1416,11 +1408,10 @@
       "dpd-uk",
       "hermes-de",
       "la-poste",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1434,11 +1425,10 @@
       "dpd-de",
       "dpd-uk",
       "la-poste",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1452,11 +1442,10 @@
       "dpd-de",
       "dpd-uk",
       "nova-poshta",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1469,12 +1458,11 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery, Relais Colis and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14-digit Nova Poshta family passing the Hermes checksum",
@@ -1489,7 +1477,6 @@
       "dpd-uk",
       "hermes-de",
       "nova-poshta",
-      "relais-colis",
       "seur",
       "dhl-ecommerce-uk"
     ],
@@ -2892,7 +2879,6 @@
       "dpd-de",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "xpressbees",
       "dhl-ecommerce-uk"
@@ -3109,7 +3095,6 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "slovak-parcel-service",
       "zto"
@@ -3129,7 +3114,6 @@
       "dpd-de",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "slovak-parcel-service",
       "zto"
@@ -3465,7 +3449,6 @@
       "dpd-de",
       "dpd-fr",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "xpressbees"
     ],
@@ -3486,7 +3469,6 @@
       "dpd-fr",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "xpressbees"
     ],
@@ -3504,7 +3486,6 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "relais-colis",
       "seur",
       "zto"
     ],
@@ -3523,7 +3504,6 @@
       "dpd-de",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur",
       "zto"
     ],
@@ -3740,7 +3720,6 @@
       "dpd-nl",
       "dpd-de",
       "dpd-uk",
-      "relais-colis",
       "seur"
     ],
     "reason": "City Express shipment numbers start with one of its centre codes; the same fourteen digits fit other carriers' low-confidence rules, so recognition asks each of them."
@@ -3758,7 +3737,6 @@
       "dpd-de",
       "dpd-uk",
       "mylerz",
-      "relais-colis",
       "seur"
     ],
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
@@ -3777,7 +3755,6 @@
       "dpd-uk",
       "hermes-de",
       "mylerz",
-      "relais-colis",
       "seur"
     ],
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules; some also pass the Hermes checksum. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
@@ -4242,7 +4219,6 @@
       "dpd-fr",
       "dpd-nl",
       "dpd-uk",
-      "relais-colis",
       "seur"
     ],
     "reason": "A DPD parcel number opens with the issuing depot, and DPD Austria's depot list gives these codes to its depots, so DPD Austria is listed first; the fourteen digits stay shared with the other DPD networks and these carriers. DPD Austria cannot be asked, so, as for DPD France, recognition leaves out the DPD networks, whose guest API would file the parcel under DPD Switzerland, and asks the others."
@@ -4361,7 +4337,6 @@
       "dpd-pt",
       "dpd-uk",
       "hermes-de",
-      "relais-colis",
       "seur"
     ],
     "reason": "A DPD parcel number opens with the issuing depot, and these depots are DPD Portugal's, so DPD Portugal is listed first and recognition asks it first; the fourteen digits stay shared with the other DPD networks and these carriers."

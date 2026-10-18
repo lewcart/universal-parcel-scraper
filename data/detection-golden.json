@@ -484,7 +484,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -808,7 +807,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1165,7 +1163,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1183,7 +1180,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1275,7 +1271,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1293,7 +1288,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1382,7 +1376,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -1465,7 +1458,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -2011,7 +2003,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -2532,7 +2523,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -2858,7 +2848,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -3184,7 +3173,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -3501,7 +3489,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -3913,7 +3900,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -3962,7 +3948,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4412,7 +4397,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4445,7 +4429,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -4456,7 +4439,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4482,7 +4464,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4545,7 +4526,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4571,7 +4551,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4617,7 +4596,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -4684,7 +4662,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -4739,7 +4716,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4765,7 +4741,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -4832,7 +4807,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -4891,7 +4865,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -4937,7 +4910,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -4964,7 +4936,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -4991,7 +4962,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5018,7 +4988,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5045,7 +5014,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5072,7 +5040,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5099,7 +5066,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5126,7 +5092,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5372,7 +5337,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -5395,7 +5359,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -5577,7 +5540,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -5649,7 +5611,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -5880,7 +5841,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -6047,7 +6007,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -6090,7 +6049,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -6329,7 +6287,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -6355,7 +6312,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -6544,7 +6500,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -6825,7 +6780,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -6851,7 +6805,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -6941,7 +6894,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -6967,7 +6919,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7015,7 +6966,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7089,7 +7039,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7145,7 +7094,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7178,7 +7126,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -7352,7 +7299,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7416,7 +7362,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7446,7 +7391,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7476,7 +7420,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7506,7 +7449,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7536,7 +7478,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7622,7 +7563,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7652,7 +7592,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7682,7 +7621,6 @@
       "dpd-at",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -7723,7 +7661,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -7747,7 +7684,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -7810,7 +7746,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -8016,7 +7951,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8073,7 +8007,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8111,7 +8044,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -8138,7 +8070,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -8370,7 +8301,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8396,7 +8326,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8422,7 +8351,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8448,7 +8376,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8563,7 +8490,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -8574,7 +8500,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8616,7 +8541,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8649,7 +8573,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -8776,7 +8699,6 @@
       "dpd-pt",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -8857,7 +8779,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -8877,8 +8798,8 @@
       "seur",
       "brt",
       "anteraja",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -9007,7 +8928,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -9047,7 +8967,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9067,8 +8986,8 @@
       "seur",
       "brt",
       "anteraja",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -9100,7 +9019,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9120,8 +9038,8 @@
       "seur",
       "brt",
       "anteraja",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -9290,7 +9208,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9310,8 +9227,8 @@
       "seur",
       "brt",
       "anteraja",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -9417,7 +9334,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -9429,7 +9345,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9447,9 +9362,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9468,7 +9383,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -9489,7 +9403,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -9515,7 +9428,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9533,9 +9445,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9545,7 +9457,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9563,9 +9474,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9575,7 +9486,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9593,9 +9503,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9605,7 +9515,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9623,9 +9532,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9635,7 +9544,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9653,9 +9561,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9665,7 +9573,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9683,9 +9590,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9695,7 +9602,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9713,9 +9619,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9725,7 +9631,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9743,9 +9648,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9755,7 +9660,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -9773,9 +9677,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -9808,7 +9712,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -9828,8 +9731,8 @@
       "hermes-de",
       "seur",
       "brt",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -9848,7 +9751,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -9964,7 +9866,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10013,7 +9914,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10034,7 +9934,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10101,7 +10000,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10187,7 +10085,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -10205,9 +10102,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -10217,7 +10114,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -10235,9 +10131,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -10269,7 +10165,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -10287,9 +10182,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -10346,7 +10241,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -10364,9 +10258,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -10415,7 +10309,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10503,7 +10396,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10671,7 +10563,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -10713,7 +10604,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -10731,9 +10621,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -10849,7 +10739,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11072,7 +10961,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11084,7 +10972,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -11102,9 +10989,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -11139,7 +11026,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -11157,9 +11043,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -11178,7 +11064,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11199,7 +11084,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11220,7 +11104,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11263,7 +11146,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11310,7 +11192,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11331,7 +11212,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11343,7 +11223,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -11361,9 +11240,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -11399,7 +11278,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11536,7 +11414,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11595,7 +11472,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11607,7 +11483,6 @@
     "candidates": [
       "dpd-fr",
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -11627,8 +11502,8 @@
       "hermes-de",
       "seur",
       "brt",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -11712,7 +11587,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -11724,7 +11598,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -11752,7 +11625,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -11781,7 +11653,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -12120,7 +11991,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12252,7 +12122,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12273,7 +12142,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12396,7 +12264,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -12449,7 +12316,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -12634,7 +12500,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12655,7 +12520,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12705,7 +12569,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12743,7 +12606,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12849,7 +12711,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -12996,7 +12857,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -13070,7 +12930,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13096,7 +12955,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13142,7 +13000,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13154,7 +13011,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -13368,7 +13224,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13469,7 +13324,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13581,7 +13435,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13654,7 +13507,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -13741,7 +13593,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13753,7 +13604,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -13886,7 +13736,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13913,7 +13762,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -13934,7 +13782,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14009,7 +13856,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14048,7 +13894,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14083,7 +13928,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -14115,7 +13959,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14146,7 +13989,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14193,7 +14035,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14214,7 +14055,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14288,7 +14128,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14301,7 +14140,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14340,7 +14178,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14420,7 +14257,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14441,7 +14277,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14492,7 +14327,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14584,7 +14418,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14614,7 +14447,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14645,7 +14477,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -14724,7 +14555,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14755,7 +14585,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -14795,7 +14624,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -14808,7 +14636,6 @@
       "dpd-pl",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -14980,7 +14807,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -15016,7 +14842,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15256,7 +15081,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -15350,7 +15174,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15405,7 +15228,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15426,7 +15248,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15447,7 +15268,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15468,7 +15288,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15505,7 +15324,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -15564,7 +15382,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15778,7 +15595,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -15806,7 +15622,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -15888,7 +15703,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -15949,7 +15763,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16009,7 +15822,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16026,9 +15838,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16039,7 +15851,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16056,9 +15867,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16155,7 +15966,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16172,9 +15982,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16185,7 +15995,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16202,9 +16011,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16215,7 +16024,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16232,9 +16040,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16245,7 +16053,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16262,9 +16069,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16275,7 +16082,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16292,9 +16098,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16305,7 +16111,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16322,9 +16127,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16335,7 +16140,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16352,9 +16156,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16365,7 +16169,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16382,9 +16185,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16395,7 +16198,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16412,9 +16214,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16425,7 +16227,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16442,9 +16243,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16455,7 +16256,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -16474,8 +16274,8 @@
       "hermes-de",
       "seur",
       "brt",
-      "relais-colis",
-      "ciblex"
+      "ciblex",
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -16486,7 +16286,6 @@
       "dpd-uk",
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -16503,9 +16302,9 @@
     "asked": [
       "seur",
       "brt",
-      "relais-colis",
       "ciblex",
-      "dhl-ecommerce-uk"
+      "dhl-ecommerce-uk",
+      "delhivery"
     ]
   },
   {
@@ -16588,7 +16387,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16617,7 +16415,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16807,7 +16604,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16838,7 +16634,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16903,7 +16698,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -16981,7 +16775,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17018,7 +16811,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -17046,7 +16838,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -17073,7 +16864,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -17100,7 +16890,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -17149,7 +16938,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17184,7 +16972,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17196,7 +16983,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -17305,7 +17091,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17326,7 +17111,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17352,7 +17136,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17373,7 +17156,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17416,7 +17198,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17437,7 +17218,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17458,7 +17238,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17480,7 +17259,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -17560,7 +17338,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -17588,7 +17365,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -17625,7 +17401,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17646,7 +17421,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17667,7 +17441,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17719,7 +17492,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -17805,7 +17577,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -17967,7 +17738,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18074,7 +17844,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18137,7 +17906,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18463,7 +18231,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -18533,7 +18300,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18573,7 +18339,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18600,7 +18365,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18627,7 +18391,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18654,7 +18417,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18681,7 +18443,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -18717,7 +18478,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18846,7 +18606,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18872,7 +18631,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18893,7 +18651,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18914,7 +18671,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18935,7 +18691,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18956,7 +18711,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -18977,7 +18731,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19030,7 +18783,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19051,7 +18803,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19207,7 +18958,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19344,7 +19094,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19386,7 +19135,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -19454,7 +19202,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -19481,7 +19228,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -19508,7 +19254,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -19544,7 +19289,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -19593,7 +19337,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -20571,7 +20314,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -20591,7 +20333,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -20611,7 +20352,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -20841,7 +20581,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -20989,7 +20728,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -21162,7 +20900,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -21284,7 +21021,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -21432,7 +21168,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21475,7 +21210,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21525,7 +21259,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21653,7 +21386,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21679,7 +21411,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21724,7 +21455,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -21748,7 +21478,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21774,7 +21503,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -21801,7 +21529,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -21827,7 +21554,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -21949,7 +21675,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -21990,7 +21715,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -22001,7 +21725,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -22028,7 +21751,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -22055,7 +21777,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -22082,7 +21803,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -22180,7 +21900,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -22231,7 +21950,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -22258,7 +21976,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -22276,7 +21993,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -22530,7 +22246,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -22743,7 +22458,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -22769,7 +22483,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -22826,7 +22539,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -22932,7 +22644,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -23040,7 +22751,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23112,7 +22822,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -23138,7 +22847,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -23347,7 +23055,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23504,7 +23211,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23595,7 +23301,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -23649,7 +23354,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23691,7 +23395,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23702,7 +23405,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -23833,7 +23535,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23860,7 +23561,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -23945,7 +23645,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -23970,7 +23669,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24015,7 +23713,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24035,7 +23732,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24055,7 +23751,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24089,7 +23784,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24109,7 +23803,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24129,7 +23822,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24149,7 +23841,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24179,7 +23870,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24199,7 +23889,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24250,7 +23939,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24270,7 +23958,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24414,7 +24101,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -24439,7 +24125,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -24473,7 +24158,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24637,7 +24321,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24672,7 +24355,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24742,7 +24424,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -24838,7 +24519,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -24906,7 +24586,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -25156,7 +24835,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25201,7 +24879,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -25259,7 +24936,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -25284,7 +24960,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -25351,7 +25026,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -25527,7 +25201,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25561,7 +25234,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25655,7 +25327,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25706,7 +25377,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25732,7 +25402,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25758,7 +25427,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25807,7 +25475,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25833,7 +25500,6 @@
     "candidates": [
       "dpd",
       "dpd-fr",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -25880,7 +25546,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -25964,7 +25629,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -26079,7 +25743,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -26113,7 +25776,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -26247,7 +25909,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -26288,7 +25949,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -26373,7 +26033,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -26797,7 +26456,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -27203,7 +26861,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -27327,7 +26984,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -27361,7 +27017,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -27507,7 +27162,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -27861,7 +27515,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -27911,7 +27564,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -27945,7 +27597,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28133,7 +27784,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -28166,7 +27816,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28191,7 +27840,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28399,7 +28047,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28424,7 +28071,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28620,7 +28266,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -28792,7 +28437,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -28817,7 +28461,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -28883,7 +28526,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -28894,7 +28536,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -28933,7 +28574,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29112,7 +28752,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -29161,7 +28800,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -29368,7 +29006,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29475,7 +29112,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -29514,7 +29150,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29600,7 +29235,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29680,7 +29314,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29730,7 +29363,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29750,7 +29382,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29802,7 +29433,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29846,7 +29476,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -29915,7 +29544,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -30314,7 +29942,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -30339,7 +29966,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -30364,7 +29990,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -30389,7 +30014,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -30473,7 +30097,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -30499,7 +30122,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -30545,7 +30167,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -30581,7 +30202,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -31126,7 +30746,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31162,7 +30781,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31210,7 +30828,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31368,7 +30985,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31379,7 +30995,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -31620,7 +31235,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31794,7 +31408,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31814,7 +31427,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31839,7 +31451,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -31900,7 +31511,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -31975,7 +31585,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -32074,7 +31683,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -32151,7 +31759,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -32495,7 +32102,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -33174,7 +32780,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -33185,7 +32790,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -33498,7 +33102,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -34010,7 +33613,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -34170,7 +33772,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -34479,7 +34080,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -35029,7 +34629,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -35181,7 +34780,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35287,7 +34885,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35334,7 +34931,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35345,7 +34941,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -35464,7 +35059,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35519,7 +35113,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35613,7 +35206,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -35661,7 +35253,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -35728,7 +35319,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -35739,7 +35329,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -36020,7 +35609,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -36414,7 +36002,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -36483,7 +36070,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -36638,7 +36224,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -36879,7 +36464,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -36931,7 +36515,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -37432,7 +37015,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -37585,7 +37167,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -37610,7 +37191,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -37732,7 +37312,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -37766,7 +37345,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -37917,7 +37495,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -37937,7 +37514,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38126,7 +37702,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -38206,7 +37781,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -38231,7 +37805,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -38346,7 +37919,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -38385,7 +37957,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38486,7 +38057,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38763,7 +38333,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38783,7 +38352,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38892,7 +38460,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38912,7 +38479,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -38959,7 +38525,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39005,7 +38570,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39055,7 +38619,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39075,7 +38638,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39094,7 +38656,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -39195,7 +38756,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39206,7 +38766,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -39241,7 +38800,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39267,7 +38825,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39287,7 +38844,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39307,7 +38863,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39327,7 +38882,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39347,7 +38901,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39367,7 +38920,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39519,7 +39071,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39720,7 +39271,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -39821,7 +39371,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39869,7 +39418,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -39983,7 +39531,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40041,7 +39588,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40066,7 +39612,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40159,7 +39704,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40215,7 +39759,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40240,7 +39783,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40265,7 +39807,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40290,7 +39831,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40310,7 +39850,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40691,7 +40230,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -40702,7 +40240,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -40954,7 +40491,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -41052,7 +40588,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -41293,7 +40828,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -41428,7 +40962,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -41465,7 +40998,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -41526,7 +41058,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -41763,7 +41294,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -41975,7 +41505,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42000,7 +41529,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42057,7 +41585,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42083,7 +41610,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42109,7 +41635,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42135,7 +41660,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42161,7 +41685,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42187,7 +41710,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42213,7 +41735,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42265,7 +41786,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42290,7 +41810,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42350,7 +41869,6 @@
     "candidates": [
       "nova-poshta",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42379,7 +41897,6 @@
     "candidates": [
       "nova-poshta",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42408,7 +41925,6 @@
     "candidates": [
       "nova-poshta",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42437,7 +41953,6 @@
     "candidates": [
       "nova-poshta",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42466,7 +41981,6 @@
     "candidates": [
       "nova-poshta",
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -42888,7 +42402,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42916,7 +42429,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42944,7 +42456,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -42972,7 +42483,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -43001,7 +42511,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43029,7 +42538,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43057,7 +42565,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43085,7 +42592,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43113,7 +42619,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43141,7 +42646,6 @@
     "candidates": [
       "dhl-ecommerce-uk",
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -43911,7 +43415,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -43922,7 +43425,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -44287,7 +43789,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -44417,7 +43918,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -44473,7 +43973,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -44746,7 +44245,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -44771,7 +44269,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -44797,7 +44294,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -44868,7 +44364,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -44926,7 +44421,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -44937,7 +44431,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -44963,7 +44456,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -44989,7 +44481,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -45032,7 +44523,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -45127,7 +44617,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -45243,7 +44732,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -45296,7 +44784,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -45476,7 +44963,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -45512,7 +44998,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -45532,7 +45017,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -45571,7 +45055,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -45596,7 +45079,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -45704,7 +45186,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -45746,7 +45227,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es",
       "cdl"
     ]
@@ -45790,7 +45270,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -45801,7 +45280,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -46138,7 +45616,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46163,7 +45640,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46198,7 +45674,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46244,7 +45719,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -46358,7 +45832,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46560,7 +46033,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46666,7 +46138,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -46725,7 +46196,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46763,7 +46233,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46783,7 +46252,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46803,7 +46271,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46828,7 +46295,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46900,7 +46366,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -46953,7 +46418,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -47017,7 +46481,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -47037,7 +46500,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -47062,7 +46524,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -47082,7 +46543,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -47725,7 +47185,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -47751,7 +47210,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -47833,7 +47291,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -47879,7 +47336,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -47906,7 +47362,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -47934,7 +47389,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -48139,7 +47593,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48150,7 +47603,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -48200,7 +47652,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -48312,7 +47763,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -48585,7 +48035,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48610,7 +48059,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48635,7 +48083,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48660,7 +48107,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48685,7 +48131,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48812,7 +48257,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48865,7 +48309,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -48876,7 +48319,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -49008,7 +48450,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49028,7 +48469,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49061,7 +48501,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49203,7 +48642,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49228,7 +48666,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49384,7 +48821,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49409,7 +48845,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49508,7 +48943,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49655,7 +49089,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49738,7 +49171,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -49867,7 +49299,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -50030,7 +49461,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -50153,7 +49583,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -50290,7 +49719,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -50424,7 +49852,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -50564,7 +49991,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -50878,7 +50304,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51022,7 +50447,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -51049,7 +50473,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -51076,7 +50499,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -51328,7 +50750,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51375,7 +50796,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51665,7 +51085,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51685,7 +51104,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51696,7 +51114,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -51736,7 +51153,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51763,7 +51179,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es"
     ]
   },
@@ -51782,7 +51197,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51834,7 +51248,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51881,7 +51294,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51892,7 +51304,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -51969,7 +51380,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -51989,7 +51399,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52009,7 +51418,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52029,7 +51437,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52049,7 +51456,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52069,7 +51475,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52413,7 +51818,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52440,7 +51844,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -52499,7 +51902,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52576,7 +51978,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52618,7 +52019,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52660,7 +52060,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52740,7 +52139,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52780,7 +52178,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52791,7 +52188,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -52816,7 +52212,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -52905,7 +52300,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -52925,7 +52319,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -53019,7 +52412,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -53056,7 +52448,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -53109,7 +52500,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -53263,7 +52653,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "la-poste",
       "ciblex",
       "seur",
@@ -53428,7 +52817,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "la-poste",
       "ciblex",
       "seur",
@@ -53537,7 +52925,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -53848,7 +53235,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -53998,7 +53384,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54121,7 +53506,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54148,7 +53532,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54175,7 +53558,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54202,7 +53584,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54229,7 +53610,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54256,7 +53636,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54283,7 +53662,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -54319,7 +53697,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54339,7 +53716,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54452,7 +53828,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54556,7 +53931,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54867,7 +54241,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54895,7 +54268,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -54957,7 +54329,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55044,7 +54415,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es",
       "cdl"
     ]
@@ -55064,7 +54434,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55090,7 +54459,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55110,7 +54478,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55130,7 +54497,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55288,7 +54654,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "hermes-de",
       "seur",
@@ -55339,7 +54704,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55550,7 +54914,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55600,7 +54963,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55821,7 +55183,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55841,7 +55202,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -55916,7 +55276,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es",
       "cdl"
     ]
@@ -56275,7 +55634,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "dhl-ecommerce-es",
       "cdl"
     ]
@@ -56286,7 +55644,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -56376,7 +55733,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -56909,7 +56265,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -56934,7 +56289,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57030,7 +56384,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57055,7 +56408,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57123,7 +56475,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57150,7 +56501,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -57239,7 +56589,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57340,7 +56689,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57394,7 +56742,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57498,7 +56845,6 @@
     ],
     "asked": [
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57662,7 +57008,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -57796,7 +57141,6 @@
     "asked": [
       "dhl-express",
       "relais-colis",
-      "tipsa",
       "packeta",
       "dhl-ecommerce-es"
     ]
@@ -57995,7 +57339,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -58021,7 +57364,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -58404,7 +57746,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -58430,7 +57771,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -58456,7 +57796,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",
@@ -58482,7 +57821,6 @@
     "confidence": "low",
     "candidates": [
       "dpd",
-      "relais-colis",
       "ciblex",
       "seur",
       "brt",

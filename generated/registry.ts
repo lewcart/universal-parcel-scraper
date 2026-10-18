@@ -218,6 +218,7 @@ import { adapter as janio } from '../carriers/janio/adapter.js';
 import { adapter as japanPost } from '../carriers/japan-post/adapter.js';
 import { adapter as jdLogistics } from '../carriers/jd-logistics/adapter.js';
 import { adapter as jerseyPost } from '../carriers/jersey-post/adapter.js';
+import { adapter as jetLogistic } from '../carriers/jet-logistic/adapter.js';
 import { adapter as jhgj } from '../carriers/jhgj/adapter.js';
 import { adapter as jitsu } from '../carriers/jitsu/adapter.js';
 import { adapter as jne } from '../carriers/jne/adapter.js';
@@ -651,6 +652,7 @@ export const REGISTRY: RegistryDefinition = {
     "japan-post": japanPost,
     "jd-logistics": jdLogistics,
     "jersey-post": jerseyPost,
+    "jet-logistic": jetLogistic,
     "jhgj": jhgj,
     "jitsu": jitsu,
     "jne": jne,
@@ -1226,7 +1228,7 @@ export const REGISTRY: RegistryDefinition = {
     "jd-logistics": "jd-logistics",
     "jeebly": "universal",
     "jersey-post": "jersey-post",
-    "jet-logistic": "universal",
+    "jet-logistic": "jet-logistic",
     "jetline-couriers": "universal",
     "jhgj": "jhgj",
     "jitsu": "jitsu",

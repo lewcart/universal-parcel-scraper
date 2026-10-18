@@ -16911,7 +16911,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jet-logistic",
+      "recognitionRank": 823,
+      "localClocks": true
     },
     "canaryUrl": "https://jetlogistic.kz/",
     "trackingSearchUrl": "https://jetlogistic.kz/",

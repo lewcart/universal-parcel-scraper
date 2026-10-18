@@ -25881,7 +25881,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sundarban-courier",
+      "localClocks": true
     },
     "canaryUrl": "https://operation.sundarbancourierltd.com/",
     "trackingUrlTemplate": "https://operation.sundarbancourierltd.com/?cnnumber={trackingNumber}",

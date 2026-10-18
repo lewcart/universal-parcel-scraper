@@ -347,6 +347,7 @@ import { adapter as spxVn } from '../carriers/spx-vn/adapter.js';
 import { adapter as stallionExpress } from '../carriers/stallion-express/adapter.js';
 import { adapter as starken } from '../carriers/starken/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
+import { adapter as sundarbanCourier } from '../carriers/sundarban-courier/adapter.js';
 import { adapter as sunyou } from '../carriers/sunyou/adapter.js';
 import { adapter as swiftx } from '../carriers/swiftx/adapter.js';
 import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
@@ -755,6 +756,7 @@ export const REGISTRY: RegistryDefinition = {
     "stallion-express": stallionExpress,
     "starken": starken,
     "sto": sto,
+    "sundarban-courier": sundarbanCourier,
     "sunyou": sunyou,
     "swiftx": swiftx,
     "swiss-post": swissPost,
@@ -1442,7 +1444,7 @@ export const REGISTRY: RegistryDefinition = {
     "steadfast": "universal",
     "sto": "sto",
     "straightship": "universal",
-    "sundarban-courier": "universal",
+    "sundarban-courier": "sundarban-courier",
     "sunyou": "sunyou",
     "surat-kargo": "universal",
     "swiftx": "swiftx",

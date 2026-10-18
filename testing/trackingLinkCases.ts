@@ -602,6 +602,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'urbano', number: 'G00000000',
     route: /^https:\/\/www\.urbano\.com\.pe\/tracking\/G00000000$/,
     marker: /Rastrea tu env[íi]o/i },
+  // The page puts the CN number in its address into its form and looks it up on load; an unknown one gets an error notice.
+  { carrier: 'sundarban-courier', number: '00000000000000',
+    route: /^https:\/\/operation\.sundarbancourierltd\.com\/\?cnnumber=00000000000000$/,
+    marker: /Track your CN/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

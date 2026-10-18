@@ -18,18 +18,64 @@
   "timezone": "Asia/Dhaka",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sundarban-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://operation.sundarbancourierltd.com/?cnnumber={trackingNumber}",
     "searchUrl": "https://operation.sundarbancourierltd.com/",
     "canaryUrl": "https://operation.sundarbancourierltd.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "pickup_point",
+      "origin",
+      "destination",
+      "departure_date",
+      "parcel_count",
+      "order_contents",
+      "recipient_contact",
+      "event_details",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "pickup_point"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "departure_date",
+      "parcel_count",
+      "order_contents",
+      "recipient_contact",
+      "event_details",
+      "remarks"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "scan_times",
+      "eta",
+      "weight",
+      "delivered_at",
+      "service_name",
+      "proof_of_delivery",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

@@ -1,12 +1,12 @@
 {
   "carrier": "sundarban-courier",
   "entries": [
-    {"wording": "Booking Complete", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Booked at the sending branch. Seen in an archived reply of the tracking service; the page shows it as a Bengali sentence naming the branch."},
-    {"wording": "Out for Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Sent on from a branch or hub towards the next one. Seen in an archived reply of the tracking service; the page shows it as a Bengali sentence naming the branch."},
-    {"wording": "Received by Dest.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Received at the next hub or the delivering branch. Seen in an archived reply of the tracking service; the page shows it as a Bengali sentence naming the branch."},
-    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of the tracking service; the page shows it as a Bengali sentence naming the branch."},
+    {"wording": "Booking Complete", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Booked at the sending branch; the page shows it as a Bengali sentence naming the branch."},
+    {"wording": "Out for Destination", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Sent on from a branch or hub towards the next one; the page shows it as a Bengali sentence naming both."},
+    {"wording": "Received by Dest.", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Received at the next hub or the delivering branch; the page shows it as a Bengali sentence naming the branch."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "The page shows it as a Bengali sentence naming the branch."},
     {"wording": "Ready for C/D", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracking page's script expects: ready for collection at the branch counter."},
-    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracking page's script expects."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The page shows it as a Bengali sentence."},
     {"wording": "Return", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracking page's script expects: returned to the sender."},
     {"wording": "Return at office", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracking page's script expects."},
     {"wording": "Return & Delivered", "stage": "returned", "language": "en", "confirmedBy": "official-doc", "note": "Status the tracking page's script expects: the return has reached the sender."},

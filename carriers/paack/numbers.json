@@ -79,11 +79,12 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "paack",
           "bpost",
           "ecoscooting"
         ]
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, which no rule claims."
+      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, whose 5340 rule suggests it."
     },
     {
       "number": "534000021265325582",
@@ -97,11 +98,12 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "paack",
           "bpost",
           "ecoscooting"
         ]
       },
-      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, which no rule claims. Amazon order."
+      "note": "Publicly reported shipment number; the attribution was not independently verified. The source attributes it to Paack, whose 5340 rule suggests it. Amazon order."
     },
     {
       "number": "9451162004086887",

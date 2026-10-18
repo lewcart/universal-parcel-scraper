@@ -290,6 +290,20 @@ describe('SHEIN package numbers Paack and Ecoscooting deliver in Spain', () => {
   });
 });
 
+describe('Paack label numbers of eighteen digits', () => {
+  it('suggests Paack first for 5340 and fourteen digits, beside the bare eighteen-digit rules', () => {
+    const detected = detectCarrierMatch('534000000000000001');
+    expect(detected).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['paack'] });
+    expect(detected.candidates[0]).toBe('paack');
+    expect(detected.candidates).toEqual(expect.arrayContaining(['bpost', 'ecoscooting']));
+    // Paack needs the postcode, so recognition does not ask it.
+    expect(recognitionAskedCarriers('534000000000000001')).not.toContain('paack');
+    for (const number of ['534100000000000001', '53400000000000001', '5340000000000000001', '354000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('paack');
+    }
+  });
+});
+
 describe('FedEx Poland domestic numbers', () => {
   // Synthetic numbers in FedEx Poland's layout; none is a real parcel.
   it('suggests FedEx Poland for thirteen digits starting with 6 and a GS1 check digit, and asks it first in Poland', () => {

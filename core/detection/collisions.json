@@ -1032,6 +1032,15 @@
     "reason": "Swiss Post claims the 98/99-prefixed 18-digit range that bpost and Ecoscooting match broadly; the Swiss Post rule decides."
   },
   {
+    "shape": "9{18}",
+    "carriers": [
+      "bpost",
+      "ecoscooting",
+      "paack"
+    ],
+    "reason": "Paack's preferred rule takes 5340 and fourteen digits, which bpost and Ecoscooting match broadly; Paack comes first, and none is selected."
+  },
+  {
     "shape": "9{16}",
     "carriers": [
       "canada-post",

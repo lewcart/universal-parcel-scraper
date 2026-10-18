@@ -886,6 +886,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'shipentegra', number: '1SE000000000',
     route: /^https:\/\/track\.shipentegra\.com\/\?trackno=1SE000000000$/,
     marker: /Where can I find my ShipEntegra tracking number|ShipEntegra takip numaramı nerede bulabilirim|Dónde puedo encontrar mi número de seguimiento de ShipEntegra/ },
+  // The page puts the number in its field and posts it to the tracker; an unknown one gets its invalid-number notice.
+  { carrier: 'connect-couriers', number: '00000000000',
+    route: /^https:\/\/www\.connectcouriers\.eu\/tracking\/\?tracking_number=00000000000$/,
+    marker: /Track and Trace Your Parcel|This tracking number is invalid/ },
   // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
   { carrier: 'drop2shop', number: 'GLB9000000000003',
     route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,

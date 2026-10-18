@@ -8883,7 +8883,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "connect-couriers",
+      "recognitionRank": 831,
+      "localClocks": true
     },
     "canaryUrl": "https://www.connectcouriers.eu/tracking/",
     "trackingUrlTemplate": "https://www.connectcouriers.eu/tracking/?tracking_number={trackingNumber}",

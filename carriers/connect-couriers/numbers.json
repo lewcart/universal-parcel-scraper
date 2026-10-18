@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -28,7 +28,7 @@
           "ppl"
         ]
       },
-      "note": "An archived lookup on Connect Couriers' own tracker; the capture was opened but shows only the page shell, so the history is not visible."
+      "note": "An archived lookup on Connect Couriers' own tracker address; the capture shows only the page shell, and Connect Couriers' tracker returns a delivered history for it."
     }
   ]
 }

@@ -54,6 +54,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "cj-packet": 956,
   "closer-logistics": 849,
   "colis-prive": 740,
+  "connect-couriers": 831,
   "coordinadora": 973,
   "correo-argentino": 978,
   "correos-de-mexico": 30,

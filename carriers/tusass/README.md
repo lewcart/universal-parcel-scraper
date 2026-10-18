@@ -16,7 +16,9 @@ DHL and FedEx.
 
 The tracker reads the number from the fragment of its page address and writes it back there
 after a search, so `tusass.gl/en/track-and-trace/#{number}` opens one parcel; the Greenlandic
-and Danish pages work the same way.
+and Danish pages work the same way. The page posts a GraphQL `tracking` query with the barcode
+and language to `/api/track-trace`; an unknown or expired number answers an empty log. No found
+reply has been seen, so there is no adapter yet.
 
 ## Testing
 

@@ -26167,7 +26167,8 @@
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "teleship",
+      "recognitionRank": 842
     },
     "canaryUrl": "https://teleship.com/tracking",
     "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
@@ -26185,7 +26186,12 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
+        "confidence": "low"
+      }
+    ]
   },
   "tfm-express": {
     "displayName": "TFM Express",

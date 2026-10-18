@@ -1163,6 +1163,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tdn', number: '999916276898',
     route: /^(?:https:\/\/www\.tdn\.es\/tracking\/?\?envio=999916276898&autoredir=1|http:\/\/tracking\.tdnonline\.com\/consulta_expediciones\/tracking\?REFERENCIA=999916276898&Aceptar=Aceptar)$/,
     marker: /Envío no registrado|Entregado|En reparto/ },
+  // The page fills its field with the number in the address, asks Teleship's API and answers an
+  // unknown number with its notice in place of the shipment.
+  { carrier: 'teleship', number: 'TSGBUS000000000000000',
+    route: /^https:\/\/teleship\.com\/tracking\?number=TSGBUS000000000000000$/,
+    marker: /We could not find a parcel with this tracking ID|Teleship Tracking Number/ },
   // The page checks the device, moves a desktop to its `tracking` route and renders over Blazor's
   // connection; an unknown number gets the sentence in place of the shipment.
   { carrier: 'transaher', number: '103000000000000000000000000',

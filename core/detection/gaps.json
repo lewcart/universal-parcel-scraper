@@ -3303,12 +3303,6 @@
     "reason": "Tej Couriers consignment numbers are plain eight-digit runs, a shape many carriers share."
   },
   {
-    "carrier": "teleship",
-    "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
-    "kind": "open",
-    "reason": "One documentation example of Teleship's own tracking ID, whose length disagrees with its FAQ; the family is not established."
-  },
-  {
     "carrier": "tfm-express",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

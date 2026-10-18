@@ -26169,7 +26169,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "teleship",
+      "recognitionRank": 842
     },
     "canaryUrl": "https://teleship.com/tracking",
     "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
@@ -26187,7 +26188,12 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
+        "confidence": "low"
+      }
+    ]
   },
   "tfm-express": {
     "displayName": "TFM Express",
@@ -29987,7 +29993,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "team-express-ae": [],
   "team-global-express": [],
   "tej-couriers": [],
-  "teleship": [],
+  "teleship": ["teleship-ts"],
   "tfm-express": [],
   "tforce-freight": [],
   "tforce-logistics": ["tforce-logistics-1"],

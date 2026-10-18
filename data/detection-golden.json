@@ -83593,10 +83593,37 @@
     ]
   },
   {
+    "input": "TSGBUS4Q309S081173715",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "teleship"
+    ],
+    "asked": [
+      "teleship"
+    ]
+  },
+  {
+    "input": "TSGBUSA54UHK092337564",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "teleship"
+    ],
+    "asked": [
+      "teleship"
+    ]
+  },
+  {
     "input": "TSGBUSSR9EMI013412826",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "teleship"
+    ],
+    "asked": [
+      "teleship"
+    ]
   },
   {
     "input": "TSJY990000006CN",

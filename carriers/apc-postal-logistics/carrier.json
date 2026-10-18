@@ -18,18 +18,70 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "apc-postal-logistics",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta_window",
+    "service_name",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://tracking.apc-pli.com/{trackingNumber}",
     "searchUrl": "https://tracking.apc-pli.com/",
     "canaryUrl": "https://tracking.apc-pli.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "eta_window",
+      "delivered_at",
+      "event_details",
+      "service_name",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "customer_reference",
+      "recipient_address",
+      "offset_timestamps"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "eta_window",
+      "service_name",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "delivered_at",
+      "event_details",
+      "customer_reference",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "signatory"
+    ]
   },
   "links": [
     {

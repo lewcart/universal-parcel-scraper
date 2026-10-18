@@ -12,13 +12,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "16889P0904250000848753",
@@ -50,13 +50,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "17837A0003020119",
@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "19313A0003491271",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "18047A000264492",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "18047A000328833",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "apc-postal-logistics",
         "confidence": "high"
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "1921403230062435",
@@ -145,7 +145,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -156,7 +156,7 @@
           "evri-uk"
         ]
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "1921403230088942",
@@ -169,7 +169,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -180,7 +180,7 @@
           "evri-uk"
         ]
       },
-      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script."
+      "note": "An archived lookup on APC's own tracker; the capture was not opened, as the tracker draws its results by script. APC's tracking lookup answers it as a delivered parcel."
     },
     {
       "number": "1717401220416474",

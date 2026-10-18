@@ -6277,7 +6277,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "apc-postal-logistics",
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.apc-pli.com/",
     "trackingUrlTemplate": "https://tracking.apc-pli.com/{trackingNumber}",

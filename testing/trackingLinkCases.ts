@@ -1182,6 +1182,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'exelot', number: 'XLT000000000',
     route: /^https:\/\/go\.exelot\.com\/tracking\?barcodes=XLT000000000$/,
     marker: /We couldn.t find this shipment|Track your shipment|לא הצלחנו למצוא את המשלוח/ },
+  // The server looks the number in the path up while it renders; one it has nothing for gets the notice.
+  { carrier: 'apc-postal-logistics', number: '00000P0000000000000000',
+    route: /^https:\/\/tracking\.apc-pli\.com\/00000P0000000000000000$/,
+    marker: /Package Not Found|Track a Package/,
+    forwarding: { notFound: /The package you are trying to track could not be found/ } },
 ];
 
 /**

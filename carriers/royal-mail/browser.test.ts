@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
 import type { Page, Request } from 'playwright-core';
 import { describe, expect, it, vi } from 'vitest';
-import { captureRoyalMailReply, royalMailBrowserUserAgent } from './browser.js';
+import { captureRoyalMailReply, royalMailBrowserUserAgent, royalMailTrackingForm } from './browser.js';
 import { royalMailEventsApiUrl, royalMailSummaryApiUrl } from './parser.js';
 
 // Synthetic references and data; issued API sessions never enter fixtures.
@@ -195,5 +195,20 @@ describe('Royal Mail browser response capture', () => {
     release(Buffer.from(JSON.stringify(payload)));
     await tick();
     expect(h.emitter.eventNames()).toEqual([]);
+  });
+});
+
+describe('Royal Mail tracking form', () => {
+  // A page showing either the form or the application's outage heading.
+  const page = (outage: boolean) => {
+    const node = (kind: 'input' | 'outage' | 'either'): unknown => ({ filter: () => node('outage'), or: () => node('either'),
+      first: () => node(kind), waitFor: async () => {}, isVisible: async () => kind === 'outage' ? outage : !outage });
+    return { locator: (selector: string) => node(selector === '#barcode-input' ? 'input' : 'outage') } as unknown as Page;
+  };
+
+  it('ends at once as maintenance when the tracking application shows its outage page', async () => {
+    await expect(royalMailTrackingForm(page(true), 1000)).rejects.toMatchObject({ kind: 'maintenance',
+      message: 'Royal Mail tracking is temporarily unavailable' });
+    await expect(royalMailTrackingForm(page(false), 1000)).resolves.toBeDefined();
   });
 });

@@ -52,6 +52,8 @@ deadline and cancellation signal, and the browser closes after each lookup.
   issued credentials are discarded.
 - An unable-to-confirm response remains inconclusive. A generic HTTP 404
   does not establish parcel absence.
+- While the tracking application is down, its page answers 200 with a "Service temporarily
+  unavailable" notice in place of the form. The lookup ends there at once as maintenance.
 
 ## Explicit browser-service calls
 

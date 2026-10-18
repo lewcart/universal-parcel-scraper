@@ -1,6 +1,6 @@
 import { setTimeout as delay } from 'node:timers/promises';
-import type { Browser, Page, Request, Response as BrowserResponse } from 'playwright-core';
-import { carrierErrorKind, ChallengeError, IndeterminateError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import type { Browser, Locator, Page, Request, Response as BrowserResponse } from 'playwright-core';
+import { carrierErrorKind, ChallengeError, IndeterminateError, MaintenanceError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { withLocalBrowser, withRemoteBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
@@ -29,6 +29,19 @@ export async function royalMailBrowserUserAgent(browser: Browser, remote: boolea
 }
 // The consent manager parks the address of a frame it blocks in `data-ta-src`.
 const CAPTCHA_WITHHELD = 'iframe[data-hcaptcha-widget-id][data-ta-src]';
+
+// While the tracking application is down, its address answers 200 with this
+// page in place of the form.
+const OUTAGE = /^\s*Service temporarily unavailable\s*$/i;
+
+/** The tracking form, or a maintenance error as soon as the application shows its outage page instead. */
+export async function royalMailTrackingForm(page: Page, timeoutMs: number): Promise<Locator> {
+  const input = page.locator('#barcode-input');
+  const outage = page.locator('h1').filter({ hasText: OUTAGE });
+  await input.or(outage).first().waitFor({ state: 'visible', timeout: timeoutMs });
+  if (await outage.first().isVisible()) throw new MaintenanceError(PROVIDER, 'Royal Mail tracking is temporarily unavailable');
+  return input;
+}
 
 /** The destination the full-history reply adds to the summary, and nothing else from it. */
 export function royalMailDestination(summary: unknown): { summary?: { destinationCountryCode: string } } {
@@ -200,8 +213,7 @@ export function fetchRoyalMailInBrowser(number: string, executablePath: string, 
       if ([401, 403].includes(trackingPage.status())) throw new ChallengeError(PROVIDER);
       if ([404, 410].includes(trackingPage.status())) throw new TransportError(PROVIDER, 'Royal Mail tracking page is unavailable');
       if (trackingPage.status() !== 200) throw new UpstreamHttpError(PROVIDER, trackingPage.status());
-      const input = page.locator('#barcode-input');
-      await input.waitFor({ state: 'visible', timeout: timeout() });
+      const input = await royalMailTrackingForm(page, timeout());
       await consent();
       await input.waitFor({ state: 'visible', timeout: timeout() });
       const landed = new URL(page.url());

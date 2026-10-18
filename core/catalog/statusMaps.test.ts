@@ -352,7 +352,7 @@ describe("universal providers' answers", () => {
   it("close the aggregators' whole scans no shared rule reads, and nothing like them", () => {
     for (const [wording, stage] of [
       ['Warehouse receipt.', 'accepted'], ['Received by warehouse', 'accepted'], ['Package received and scanned at warehouse', 'accepted'],
-      ["We've got it", 'accepted'], ['Received at Evri', 'accepted'], ['Acceptance, Sent To Spain', 'accepted'],
+      ["We've got it", 'accepted'], ['Received at Evri', 'accepted'], ['Received by our network', 'accepted'], ['Acceptance, Sent To Spain', 'accepted'],
       ['China Post has received the mail', 'accepted'], ['Envío recogido en origen', 'accepted'],
       ['First parcel scan along Poste Italiane’s logistic network', 'accepted'], ['RFID Confirmed Pickup', 'accepted'],
       ['示例处理中心已收寄【示例市】', 'accepted'],
@@ -410,7 +410,8 @@ describe("universal providers' answers", () => {
       ['The shipment has been prepared for further shipping in Example', 'in_transit'],
       ['The shipment was prepared for further shipping in Example (Example)', 'in_transit'],
       ['Notice card left indicating where and when to pick up item', 'failed_attempt'],
-      ['Delivery has been made at the destination port', 'in_transit'], ['The shipment was left at a drop-off location', 'delivered'], ['Order information has been sent to DPD.', 'registered'],
+      ['Delivery has been made at the destination port', 'in_transit'], ['目的港已提货 Delivery has been made at the destination port', 'in_transit'],
+      ['目的港已提货', 'in_transit'], ['The shipment was left at a drop-off location', 'delivered'], ['Order information has been sent to DPD.', 'registered'],
       ['Package received & scanned at warehouse', 'accepted'],
       ['Manifested - Out for Pickup', 'registered'], ['Manifested', 'registered'],
       ['Awaiting your Vinted parcel', 'registered'], ['Expecting Your Parcel', 'registered'],
@@ -433,7 +434,7 @@ describe("universal providers' answers", () => {
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
       'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
-      'Delivery has been made at the destination port of Example', 'The shipment was left at a drop-off location for the courier', 'Order information has been sent',
+      'Delivery has been made at the destination port of Example', '目的港已提货待清关', 'Received by our network partner in Example', 'The shipment was left at a drop-off location for the courier', 'Order information has been sent',
       'Received.', 'Received. Your order has been received by the store', 'Package finished at the store',
       'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Cause of problem',
       'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',

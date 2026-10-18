@@ -13,6 +13,8 @@
     {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
     {"wording": "Delivered Time", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The delivery row; its time column holds the delivery time."},
     {"wording": "Delivered To", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Companion row to the delivery that names where the package was left, such as the front door."},
+    {"wording": "Return to Sender", "stage": "returned", "language": "en", "confirmedBy": "portal", "note": "The delivery facility sends the package back to the shipper; a Status row with the reason follows it."},
+    {"wording": "Status", "language": "en", "confirmedBy": "portal", "note": "Companion row whose time column holds a reason, such as Not Performed: RTS after a return to sender; not an event."},
     {"wording": "No Access", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "The driver could not reach the delivery point."},
     {"wording": "Shortage", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "The package was expected but missing from the load."},
     {"wording": "Exception", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "A generic exception row; the reason, such as short cartons, is printed in its location column."},

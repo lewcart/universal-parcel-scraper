@@ -22,6 +22,16 @@ The tracking form on `tforcelogistics.com` opens
 use `trackingNumber` on the tracker's older `track/externalTracking.jsp` page; the library reads
 the number from either address.
 
+## Why there is no adapter
+
+The tracker answers a plain GET of that address with server-rendered HTML, with no token,
+captcha or sign-in: the package's scans, each with its time-zone abbreviation, or TForce's own
+"no shipments found" notice. Its firewall refuses whole countries, though: from Germany,
+Switzerland, the Netherlands, Italy, Japan, Australia and Brazil, among others, Sucuri answers
+HTTP 403 with its "Access from your Country was disabled" page, while the United States, Canada
+and the United Kingdom get through. TForce's only app is an iPhone app for its operations and
+business customers, so TForce Logistics stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

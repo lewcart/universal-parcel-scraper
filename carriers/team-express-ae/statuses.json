@@ -1,0 +1,9 @@
+{
+  "carrier": "team-express-ae",
+  "entries": [
+    {"code": "In Transit", "wording": "Shipment Collected at Despatch Center", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "The first scan of an export at Team Express's own center; the tracker files it under the status \"In Transit\"."},
+    {"code": "Collected", "wording": "Shipment Collected from Shipper", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Filed under the status \"Collected\"."},
+    {"code": "OTHERS", "wording": "FORWARDED TO DESTINATION", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "An export handed on toward the destination country; the tracker files it under \"OTHERS\" and can show the onward carrier's forwarding number."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Shown as the current status, with the delivery date and who received it."}
+  ]
+}

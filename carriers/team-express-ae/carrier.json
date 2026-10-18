@@ -1,0 +1,45 @@
+{
+  "id": "team-express-ae",
+  "displayName": "Team Express",
+  "aliases": [
+    "Team Express Services",
+    "Team Express Services, LLC"
+  ],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#e94e1e"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://teamexpressme.com/tracking?trackno={trackingNumber}",
+    "searchUrl": "https://teamexpressme.com/tracking",
+    "canaryUrl": "https://teamexpressme.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "teamexpressme.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "trackno"
+      ]
+    }
+  ],
+  "detection": []
+}

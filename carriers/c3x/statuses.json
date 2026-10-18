@@ -1,0 +1,6 @@
+{
+  "carrier": "c3x",
+  "entries": [
+    {"code": "POD", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "source", "note": "From the tracking reply example in the same copy of C3X's API documentation, where the remark Delivered comes with the status code POD."}
+  ]
+}

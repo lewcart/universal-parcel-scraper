@@ -1,0 +1,34 @@
+{
+  "id": "tfm-express",
+  "displayName": "TFM Express",
+  "aliases": [
+    "TFM Express Shipping L.L.C",
+    "TFM EXPRESS LLC"
+  ],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#ef4129"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "canaryUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,34 @@
+{
+  "id": "c3x",
+  "displayName": "C3X",
+  "aliases": [
+    "C3Xpress",
+    "C3X Delivery Services"
+  ],
+  "region": {
+    "countries": [
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#2ca2c6"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://c3xpress.com/",
+    "canaryUrl": "https://c3xpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

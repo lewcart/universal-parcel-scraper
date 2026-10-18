@@ -4609,5 +4609,13 @@
       "zto"
     ],
     "reason": "domain-logistics numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^QS\\d{9}$",
+    "carriers": [
+      "gls-it",
+      "quicksilver-sa"
+    ],
+    "reason": "GLS Italy's low rule takes any two letters and nine digits; QS and nine digits is Quicksilver's tracker numbering, so both stay low suggestions."
   }
 ]

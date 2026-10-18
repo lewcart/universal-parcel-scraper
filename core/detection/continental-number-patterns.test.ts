@@ -538,4 +538,12 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dobropost');
     }
   });
+
+  it('suggests Quicksilver for QS and nine digits beside GLS Italy without naming it', () => {
+    expect(detectCarrierMatch('QS000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+    expect(detectCarrierMatch('QS000000001').candidates).toEqual(expect.arrayContaining(['quicksilver-sa', 'gls-it']));
+    for (const number of ['QS00000001', 'QS0000000001', 'QT000000001', 'XQS000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('quicksilver-sa');
+    }
+  });
 });

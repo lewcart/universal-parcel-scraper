@@ -7787,6 +7787,27 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "c3x": {
+    "displayName": "C3X",
+    "color": "#2ca2c6",
+    "aliases": [
+      "C3Xpress",
+      "C3X Delivery Services"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://c3xpress.com/",
+    "trackingSearchUrl": "https://c3xpress.com/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "cacesa": {
     "displayName": "CACESA",
     "color": "#C9032D",
@@ -11414,6 +11435,34 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "eco-express-ae": {
+    "displayName": "Eco Express",
+    "color": "#1d447d",
+    "aliases": [
+      "ECO EXPRESS"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app.ecofreight.ae/en/tracking",
+    "trackingUrlTemplate": "https://app.ecofreight.ae/en/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://app.ecofreight.ae/en/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "app.ecofreight.ae"
+        ],
+        "path": "^/en/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "econt": {
     "displayName": "Econt",
@@ -17605,6 +17654,33 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "logistiq": {
+    "displayName": "Logistiq",
+    "color": "#2e65f3",
+    "countries": [
+      "AE",
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://logistiq.io/track/",
+    "trackingUrlTemplate": "https://gecko.logistiq.io/#/order/tracking?awb={trackingNumber}",
+    "trackingSearchUrl": "https://logistiq.io/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "gecko.logistiq.io"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/order/tracking\\?(?:[^#]*&)?awb=([^&]+)"
+      }
+    ],
+    "detectionRules": []
+  },
   "logoix": {
     "displayName": "LogoiX",
     "color": "#ea5b0c",
@@ -22280,6 +22356,54 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "quicksilver-sa": {
+    "displayName": "Quicksilver",
+    "color": "#805fa4",
+    "aliases": [
+      "Quick Silver Express",
+      "QuickSilver",
+      "Quicksilver company for transportation and storage",
+      "كويك سيلفر",
+      "كويك سلفر",
+      "شركة كويك سيلفر للنقل والتخزين"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://quick-silver.express/Tracking",
+    "trackingUrlTemplate": "https://erp.quick-silver.express/v2/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://quick-silver.express/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "erp.quick-silver.express"
+        ],
+        "path": "^/v2/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "quick-silver.express",
+          "www.quick-silver.express"
+        ],
+        "pathPattern": "^/Tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QS\\d{9}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "quiqup": {
     "displayName": "Quiqup",
     "color": "#6c65f7",
@@ -23858,6 +23982,38 @@ export const CARRIER_CATALOG = {
           "skroutz.gr"
         ],
         "path": "^/track/([A-Z0-9]{13})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "skyex-ae": {
+    "displayName": "Sky Express International",
+    "color": "#0080c0",
+    "aliases": [
+      "Sky Express International LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://skyexpressinternational.com/Home/Tracking",
+    "trackingUrlTemplate": "https://www.skyexpressinternational.com/Home/Tracking?trackingType=AWB&tid={trackingNumber}",
+    "trackingSearchUrl": "https://skyexpressinternational.com/Home/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "skyexpressinternational.com",
+          "www.skyexpressinternational.com"
+        ],
+        "pathPattern": "^/Home/Tracking/?$",
+        "params": [
+          "tid"
+        ]
       }
     ],
     "detectionRules": []
@@ -25609,6 +25765,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "team-express-ae": {
+    "displayName": "Team Express",
+    "color": "#e94e1e",
+    "aliases": [
+      "Team Express Services",
+      "Team Express Services, LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://teamexpressme.com/tracking",
+    "trackingUrlTemplate": "https://teamexpressme.com/tracking?trackno={trackingNumber}",
+    "trackingSearchUrl": "https://teamexpressme.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "teamexpressme.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "team-global-express": {
     "displayName": "Team Global Express",
     "color": "#143200",
@@ -25709,6 +25897,27 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "tfm-express": {
+    "displayName": "TFM Express",
+    "color": "#ef4129",
+    "aliases": [
+      "TFM Express Shipping L.L.C",
+      "TFM EXPRESS LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "trackingSearchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "linkRules": [],
     "detectionRules": []
   },
   "tforce-freight": {
@@ -26238,6 +26447,55 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "transcorp": {
+    "displayName": "Transcorp",
+    "color": "#142763",
+    "aliases": [
+      "Transcorp International",
+      "Transcorp International Logistics LLC",
+      "Elite Co.",
+      "Elite Airborne Express L.L.C.",
+      "Elite Express Cargo"
+    ],
+    "countries": [
+      "AE",
+      "SA",
+      "QA",
+      "BH",
+      "KW",
+      "OM"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app.elite-co.com/shipments/track",
+    "trackingUrlTemplate": "https://app.elite-co.com/shipments/track?references={trackingNumber}",
+    "trackingSearchUrl": "https://app.elite-co.com/shipments/track",
+    "linkRules": [
+      {
+        "domains": [
+          "app.elite-co.com"
+        ],
+        "pathPattern": "^/shipments/track/?$",
+        "params": [
+          "references",
+          "awbno"
+        ]
+      },
+      {
+        "domains": [
+          "transcorpuae.suitefleet.com",
+          "transcorp.suitefleet.com",
+          "transcorpqatar.suitefleet.com"
+        ],
+        "path": "^/task/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "transmission": {
     "displayName": "TransMission",
@@ -28237,6 +28495,7 @@ export const CARRIER_IDS = [
   "burd-delivery",
   "bussgods",
   "byhd",
+  "c3x",
   "cacesa",
   "campost",
   "cargus",
@@ -28330,6 +28589,7 @@ export const CARRIER_IDS = [
   "early-bird",
   "easy-mail",
   "ecms-express",
+  "eco-express-ae",
   "econt",
   "ecourier",
   "egypt-post",
@@ -28492,6 +28752,7 @@ export const CARRIER_IDS = [
   "lion-parcel",
   "logen",
   "loggi",
+  "logistiq",
   "logoix",
   "loomis-express",
   "lotte-global",
@@ -28612,6 +28873,7 @@ export const CARRIER_IDS = [
   "ptt",
   "pullman-cargo",
   "quantium-solutions",
+  "quicksilver-sa",
   "quiqup",
   "raben",
   "ram-hand-to-hand",
@@ -28654,6 +28916,7 @@ export const CARRIER_IDS = [
   "shree-nandan",
   "sicepat",
   "skroutz-last-mile",
+  "skyex-ae",
   "skyking",
   "skynet-sa",
   "skynet-worldwide",
@@ -28697,9 +28960,11 @@ export const CARRIER_IDS = [
   "tcs-pakistan",
   "tdn",
   "tealca",
+  "team-express-ae",
   "team-global-express",
   "tej-couriers",
   "teleship",
+  "tfm-express",
   "tforce-freight",
   "tforce-logistics",
   "thhy",
@@ -28714,6 +28979,7 @@ export const CARRIER_IDS = [
   "tracx-logis",
   "trans-o-flex",
   "transaher",
+  "transcorp",
   "transmission",
   "transport-rdl",
   "trendyol-express",
@@ -28943,6 +29209,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "burd-delivery": [],
   "bussgods": ["bussgods-1"],
   "byhd": ["byhd-1"],
+  "c3x": [],
   "cacesa": [],
   "campost": [],
   "cargus": [],
@@ -29036,6 +29303,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "early-bird": ["early-bird-1"],
   "easy-mail": [],
   "ecms-express": ["ecms-express-1"],
+  "eco-express-ae": [],
   "econt": [],
   "ecourier": ["ecourier-1"],
   "egypt-post": ["egypt-post-1","egypt-post-s10"],
@@ -29198,6 +29466,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lion-parcel": ["lion-parcel-1"],
   "logen": [],
   "loggi": ["loggi-1"],
+  "logistiq": [],
   "logoix": ["logoix-1"],
   "loomis-express": ["loomis-express-1","loomis-express-2"],
   "lotte-global": [],
@@ -29318,6 +29587,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ptt": ["ptt-1","ptt-s10"],
   "pullman-cargo": [],
   "quantium-solutions": [],
+  "quicksilver-sa": ["quicksilver-sa-1"],
   "quiqup": [],
   "raben": [],
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
@@ -29360,6 +29630,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shree-nandan": [],
   "sicepat": [],
   "skroutz-last-mile": [],
+  "skyex-ae": [],
   "skyking": [],
   "skynet-sa": [],
   "skynet-worldwide": [],
@@ -29403,9 +29674,11 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tcs-pakistan": [],
   "tdn": [],
   "tealca": [],
+  "team-express-ae": [],
   "team-global-express": [],
   "tej-couriers": [],
   "teleship": [],
+  "tfm-express": [],
   "tforce-freight": [],
   "tforce-logistics": ["tforce-logistics-1"],
   "thhy": ["thhy-1"],
@@ -29420,6 +29693,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],
   "transaher": ["transaher-1"],
+  "transcorp": [],
   "transmission": ["transmission-1"],
   "transport-rdl": [],
   "trendyol-express": [],

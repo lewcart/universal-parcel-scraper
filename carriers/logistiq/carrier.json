@@ -1,0 +1,41 @@
+{
+  "id": "logistiq",
+  "displayName": "Logistiq",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "AE",
+      "SA"
+    ]
+  },
+  "brand": {
+    "color": "#2e65f3"
+  },
+  "selectable": true,
+  "timezone": "Asia/Dubai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://gecko.logistiq.io/#/order/tracking?awb={trackingNumber}",
+    "searchUrl": "https://logistiq.io/track/",
+    "canaryUrl": "https://logistiq.io/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "gecko.logistiq.io"
+      ],
+      "pathPattern": "^/?$",
+      "fragment": "^/order/tracking\\?(?:[^#]*&)?awb=([^&]+)"
+    }
+  ],
+  "detection": []
+}

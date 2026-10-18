@@ -1063,6 +1063,12 @@
     "reason": "Eleven-digit vouchers, twelve with the leading zero the tracker prints, share their shape with Courier Center's numbers and other numeric waybills, so the shape cannot name Easy Mail."
   },
   {
+    "carrier": "eco-express-ae",
+    "pattern": "^ECO\\d{10}$",
+    "kind": "collision",
+    "reason": "OCASA in Argentina prints the same ECO and ten-digit layout, so the shape cannot name Eco Express."
+  },
+  {
     "carrier": "econt",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -1985,6 +1991,12 @@
     "pattern": "^\\d{11}$",
     "kind": "by_design",
     "reason": "Eleven digits with a mod-7 check digit are shared with Japan Post and several other carriers, and nothing in the number points to Logen."
+  },
+  {
+    "carrier": "logistiq",
+    "pattern": "^[A-Z]{7,9}\\d{9}$",
+    "kind": "by_design",
+    "reason": "Logistiq airwaybills start with letters that vary by client and service, and two public numbers do not show which letters are fixed, so no rule claims them."
   },
   {
     "carrier": "lotte-global",
@@ -2944,6 +2956,12 @@
     "reason": "Thirteen capital letters and digits without a prefix or check digit are shared with UPU numbers and other carriers' codes, so nothing in a voucher points to Skroutz Last Mile."
   },
   {
+    "carrier": "skyex-ae",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Sky Express airwaybills are ten digits, a plain run many carriers share, so no rule claims them."
+  },
+  {
     "carrier": "skyking",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -3165,6 +3183,12 @@
     "reason": "Seven or eight bare digits are shared by many carriers and nothing in a Tealca guía points to Tealca."
   },
   {
+    "carrier": "team-express-ae",
+    "pattern": "^SMART\\d{7}$",
+    "kind": "by_design",
+    "reason": "The SMART prefix may come from the tracking software Team Express shares with other Dubai couriers, and the public numbers are one series from one period, so no rule claims it."
+  },
+  {
     "carrier": "team-global-express",
     "pattern": "^\\d{12,13}$",
     "kind": "by_design",
@@ -3205,6 +3229,12 @@
     "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
     "kind": "open",
     "reason": "One documentation example of Teleship's own tracking ID, whose length disagrees with its FAQ; the family is not established."
+  },
+  {
+    "carrier": "tfm-express",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "TFM Express airwaybills are twelve digits, a plain run FedEx and other carriers share, so no rule claims them."
   },
   {
     "carrier": "tforce-freight",
@@ -3319,6 +3349,12 @@
     "pattern": "^\\d{24}$",
     "kind": "by_design",
     "reason": "Without its hyphen the number is twenty-four digits, a length shared by several carriers."
+  },
+  {
+    "carrier": "transcorp",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Elite airwaybills are ten digits, a plain run many carriers share, so no rule claims them."
   },
   {
     "carrier": "trendyol-express",

@@ -843,6 +843,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'direx', number: '9999999999',
     route: /^https:\/\/direx\.bg\/track\/\?code=9999999999$/,
     marker: /Хм, не можахме да намерим нищо за проследяващ номер|Текущ статус/ },
+  // The site serves the page's script with a 404 at every tracking address; the script asks the tracking lookup for
+  // the number in the address and shows a notice for an unknown one.
+  { carrier: 'closer-logistics', number: '000000000000',
+    route: /^https:\/\/tracking\.closerlogistics\.com\/tracking\/000000000000$/,
+    marker: /El paquete que intenta buscar no existe o ha caducado la información|Último estado del envío/,
+    shipmentNotFound: { status: 404, marker: /El paquete que intenta buscar no existe o ha caducado la información/ } },
   // The page puts the number in its search box and posts it to the tracking service on load.
   { carrier: 'speedaf', number: 'MA000000000000',
     route: /^https:\/\/www\.speedaf\.com\/cn-en\/send-parcel\?tradeNo=MA000000000000$/,

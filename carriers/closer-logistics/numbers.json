@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -30,7 +30,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A public OCU complaint filed against Closer Logistics gives this as Closer's tracking number for a Zara order, next to Zara's own order number."
+      "note": "A public OCU complaint filed against Closer Logistics gives this as Closer's tracking number for a Zara order, next to Zara's own order number. Closer Logistics' tracker answers it as a delivered Zara order."
     },
     {
       "number": "464088037371",
@@ -43,7 +43,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -61,7 +61,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A public OCU complaint filed against Closer Logistics gives this as the shipment number of a Zara order it was delivering."
+      "note": "A public OCU complaint filed against Closer Logistics gives this as the shipment number of a Zara order it was delivering. Closer Logistics' tracker answers it as a delivered Zara order."
     },
     {
       "number": "464016556441",
@@ -74,7 +74,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -95,7 +95,7 @@
           "sagawa"
         ]
       },
-      "note": "A review on Closer Logistics' Trustpilot page about a failed Zara delivery gives this number, labelled as the order, in Closer's twelve-digit layout."
+      "note": "A review on Closer Logistics' Trustpilot page about a failed Zara delivery gives this number, labelled as the order, in Closer's twelve-digit layout. Closer Logistics' tracker answers it as a delivered Zara order."
     }
   ]
 }

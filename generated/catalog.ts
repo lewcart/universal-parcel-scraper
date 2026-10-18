@@ -8663,7 +8663,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "closer-logistics",
+      "recognitionRank": 849,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.closerlogistics.com/",
     "trackingUrlTemplate": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",

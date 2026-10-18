@@ -61442,6 +61442,22 @@
     ]
   },
   {
+    "input": "CINL00000000000001",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "CINL0000000000001",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
     "input": "CJ060328561IE",
     "carrier": "an-post",
     "confidence": "high",
@@ -67423,6 +67439,62 @@
     "confidence": "high",
     "candidates": [
       "gofo-it"
+    ]
+  },
+  {
+    "input": "GFNL0000000000001",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26142036286842",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26182162374644",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26185177154798",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26217169446982",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26249186643391",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
+    ]
+  },
+  {
+    "input": "GFNL26285136973694",
+    "carrier": "gofo-nl",
+    "confidence": "high",
+    "candidates": [
+      "gofo-nl"
     ]
   },
   {

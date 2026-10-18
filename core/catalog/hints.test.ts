@@ -8,10 +8,12 @@ describe('brand networks', () => {
   it('lists the catalog networks of a bare or group brand name', () => {
     expect(new Set(brandCarrierIds('DPD Group'))).toEqual(new Set(['dpd', 'dpd-fr', 'dpd-de', 'dpd-uk', 'dpd-pl', 'dpd-ie', 'dpd-za', 'dpd-be', 'dpd-nl', 'dpd-pt', 'dpd-at']));
     expect(brandCarrierIds('gls')).toEqual(expect.arrayContaining(['gls-ch', 'gls-de', 'gls-fr']));
-    expect(brandCarrierIds('GOFO')).toEqual(expect.arrayContaining(['gofo', 'gofo-fr', 'gofo-it']));
+    expect(brandCarrierIds('GOFO')).toEqual(expect.arrayContaining(['gofo', 'gofo-fr', 'gofo-it', 'gofo-nl']));
     expect(carrierIdFromName('GOFO')).toBeUndefined();
     expect(carrierIdFromName('GOFO France')).toBe('gofo-fr');
     expect(carrierIdFromName('GOFO Italy')).toBe('gofo-it');
+    expect(carrierIdFromName('GOFO Netherlands')).toBe('gofo-nl');
+    expect(carrierIdFromName('CIRRO E-Commerce')).toBe('gofo-nl');
     expect(brandCarrierIds('DPD UK')).toEqual([]);
     expect(brandCarrierIds('Swiss Post')).toEqual([]);
   });

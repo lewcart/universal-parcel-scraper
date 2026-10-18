@@ -50,6 +50,8 @@ function scanClock(value: unknown, provider: string): Pick<CarrierEvent, 'time'>
   return { time: instant.iso };
 }
 
+const DELIVERED: Record<GofoRegion, string> = { FR: 'Livré', IT: 'Consegnato', NL: 'Bezorgd' };
+
 export function parseRegionalGofo(payload: unknown, rawNumber: string, region: GofoRegion,
   stageOf: (code: string, description: string) => Stage | undefined): CarrierResult {
   const provider = `GOFO ${region}`;
@@ -82,7 +84,7 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
     throw new IndeterminateError(provider, 'GOFO latest summary does not match its first scan');
   }
   const events: CarrierEvent[] = [], seen = new Set<string>();
-  // Both regional clients render the latest-first list as returned. Equal or
+  // The regional clients render the latest-first list as returned. Equal or
   // unresolved clocks keep this order instead of acquiring an invented zone.
   for (const row of rows) {
     if (row.waybillNo != null && identity(row.waybillNo, provider) !== waybill
@@ -98,7 +100,7 @@ export function parseRegionalGofo(payload: unknown, rawNumber: string, region: G
     if (code === '205' && stage !== 'delivered') throw new IndeterminateError(provider, 'GOFO returned contradictory delivery wording');
     // Delivery prose can embed recipient details. Keep its milestone alone;
     // subContent, notices, POD data and unrelated references are not projected.
-    const description = code === '205' ? region === 'FR' ? 'Livré' : 'Consegnato' : wording;
+    const description = code === '205' ? DELIVERED[region] : wording;
     const location = clean(row.processLocation, 160);
     const event: CarrierEvent = { ...scanClock(row.processDate, provider), description, provider_code: code,
       ...(location ? { location } : {}), ...(stage ? { stage, stage_source: 'carrier_map' } : {}) };

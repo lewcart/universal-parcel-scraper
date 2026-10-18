@@ -122,6 +122,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "go-express": 70,
   "gofo-fr": 470,
   "gofo-it": 460,
+  "gofo-nl": 455,
   "gzyl": 988,
   "hanjin": 545,
   "happy-post": 888,

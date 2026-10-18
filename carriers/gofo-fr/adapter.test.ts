@@ -2,11 +2,13 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter as italyAdapter, GofoItalyTracker } from '../gofo-it/adapter.js';
+import { adapter as netherlandsAdapter, GofoNetherlandsTracker } from '../gofo-nl/adapter.js';
 import { adapter as franceAdapter, GofoFranceTracker } from './adapter.js';
 
 const cases = [
   { region: 'fr', number: 'GFFR00000000000001', adapter: franceAdapter, Tracker: GofoFranceTracker },
   { region: 'it', number: 'GFIT00000000000001', adapter: italyAdapter, Tracker: GofoItalyTracker },
+  { region: 'nl', number: 'GFNL00000000000001', adapter: netherlandsAdapter, Tracker: GofoNetherlandsTracker },
 ];
 const reply = (region: string) => new Response(readFileSync(new URL(`../gofo-${region}/fixtures/delivered.json`, import.meta.url), 'utf8'));
 

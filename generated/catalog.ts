@@ -13755,6 +13755,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "gofo-nl": {
+    "displayName": "GOFO Netherlands",
+    "color": "#fc4c02",
+    "aliases": [
+      "GOFO NL",
+      "CIRRO E-Commerce"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "gofo-nl",
+      "recognitionRank": 455,
+      "localClocks": true
+    },
+    "canaryUrl": "https://www.gofo.com/nl/",
+    "trackingUrlTemplate": "https://www.gofo.com/nl/tracking-results/?id={trackingNumber}",
+    "trackingSearchUrl": "https://www.gofo.com/nl/tracking-results/",
+    "linkRules": [
+      {
+        "domains": [
+          "gofo.com"
+        ],
+        "pathPattern": "^/nl(?:/|$)",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:GF|CI)NL\\d{13,14}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "gogo-xpress": {
     "displayName": "GoGo Xpress",
     "color": "#23a3dd",
@@ -27286,6 +27325,7 @@ export const CARRIER_IDS = [
   "gobolt",
   "gofo-fr",
   "gofo-it",
+  "gofo-nl",
   "gogo-xpress",
   "groupe-guilbault",
   "gs-postbox",
@@ -27964,6 +28004,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gobolt": [],
   "gofo-fr": ["gofo-fr-1","gofo-fr-2"],
   "gofo-it": ["gofo-it-1"],
+  "gofo-nl": ["gofo-nl-1"],
   "gogo-xpress": ["gogo-xpress-1"],
   "groupe-guilbault": [],
   "gs-postbox": [],

@@ -70,6 +70,9 @@ describe('status map answers', () => {
     expect(answer('gofo-fr', '206', "Échec de la livraison, motif : Le destinataire n'est pas chez lui")).toEqual(mapped('failed_attempt'));
     expect(answer('gofo-it', '206', 'Consegna fallita, tipo:Destinatario assente')).toEqual(mapped('failed_attempt'));
     expect(answer('gofo-fr', '206', 'Alerte')).toEqual(mapped('exception'));
+    expect(answer('gofo-nl', '205', 'Bezorgd in de brievenbus')).toEqual(mapped('delivered'));
+    expect(answer('gofo-nl', '205', 'Consegnato')).toEqual(unknown);
+    expect(answer('gofo-nl', '206', 'Waarschuwing')).toEqual(mapped('exception'));
     expect(answer('omgo', null, 'Completed Unloading at Delivery Location')).toEqual(mapped('in_transit'));
     expect(answer('omgo', null, 'Tendered for Delivery')).toEqual(mapped('in_transit'));
     expect(answer('tnt', 'RES', 'Shipment delivered in good condition')).toEqual(mapped('delivered'));

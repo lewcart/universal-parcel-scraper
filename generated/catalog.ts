@@ -6583,7 +6583,7 @@ export const CARRIER_CATALOG = {
   },
   "atlantic-courier": {
     "displayName": "Atlantic International Express",
-    "color": "#0066b3",
+    "color": "#e31e24",
     "aliases": [
       "Atlantic International Express Courier"
     ],
@@ -19903,7 +19903,7 @@ export const CARRIER_CATALOG = {
   },
   "ocs-ana": {
     "displayName": "OCS ANA Group",
-    "color": "#004c9a",
+    "color": "#0a3382",
     "aliases": [
       "OCS",
       "Overseas Courier Service",

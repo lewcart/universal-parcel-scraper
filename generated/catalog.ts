@@ -16220,7 +16220,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "internet-express"
     },
     "canaryUrl": "https://portal.internetexpress.co.za/track",
     "trackingUrlTemplate": "https://portal.internetexpress.co.za/track?ref={trackingNumber}",

@@ -166,6 +166,7 @@ import { statusMap as hywl } from '../../carriers/hywl/status.js';
 import { statusMap as idsLogistik } from '../../carriers/ids-logistik/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
+import { statusMap as internetExpress } from '../../carriers/internet-express/status.js';
 import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/status.js';
 import { statusMap as intexPaketdienst } from '../../carriers/intex-paketdienst/status.js';
 import { statusMap as israelPost } from '../../carriers/israel-post/status.js';
@@ -373,7 +374,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, globalpost, go4, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
-  'hrvatska-posta': hrvatskaPosta, hywl, 'ids-logistik': idsLogistik, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
+  'hrvatska-posta': hrvatskaPosta, hywl, 'ids-logistik': idsLogistik, imile, instabox, 'internet-express': internetExpress, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, 'jersey-post': jerseyPost, jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress,
   kazpost, kex, 'kuehne-nagel': kuehneNagel, kyoungdong, 'la-poste': laPoste, 'la-poste-senegal': laPosteSenegal, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,

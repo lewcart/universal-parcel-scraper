@@ -72,6 +72,9 @@ describe('GZYL tracking adapter', () => {
     for (const entry of statuses.entries) expect(statusMap.stage(null, normalizeStatusWording(entry.wording)), entry.wording).toBe(entry.stage);
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Goods leave the operation center' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Synthetic wording' })).toEqual({ kind: 'unknown' });
+    // The destination network writes its distribution centre's town into the wording.
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Arrival sorting, distribution center Sampletown' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Arrival sorting, distribution centers' })).toEqual({ kind: 'unknown' });
   });
 
   it('links no plain-HTTP page', () => {

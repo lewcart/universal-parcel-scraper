@@ -1243,6 +1243,24 @@
     "reason": "Retailers' own package IDs that FleetOptics tracks as given; their prefixes name the shipper, not the carrier."
   },
   {
+    "carrier": "flippost",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "A Flip Post waybill of two digits and seven loses its dash and becomes nine digits, a shape shared by several carriers."
+  },
+  {
+    "carrier": "flippost",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Flip Post waybills of two digits and two groups of three, or of four digits and four, lose their dashes and become eight digits, a shape shared by several carriers."
+  },
+  {
+    "carrier": "flippost",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "A Flip Post waybill of three digits and four loses its dash and becomes seven digits, too plain to claim."
+  },
+  {
     "carrier": "followmont",
     "pattern": "^\\d{7,8}$",
     "kind": "by_design",
@@ -3397,6 +3415,12 @@
     "pattern": "^0?\\d{8}$",
     "kind": "by_design",
     "reason": "Eight digits, sometimes typed with a leading zero, are shared by several carriers and nothing in the number points to Venipak."
+  },
+  {
+    "carrier": "vestovoy",
+    "pattern": "^DPV\\d{10}$",
+    "kind": "by_design",
+    "reason": "Vestovoy tracks the sender's own order code and one report cannot show whether the letters are the carrier's or a shop's, so no rule claims it."
   },
   {
     "carrier": "via-cargo",

@@ -25550,6 +25550,16 @@
     ]
   },
   {
+    "input": "2422-4540",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "2430200218223",
     "carrier": "unknown",
     "confidence": "low",
@@ -37302,6 +37312,16 @@
     ]
   },
   {
+    "input": "4607-1850",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "461011156937000013601054",
     "carrier": "unknown",
     "confidence": "low",
@@ -49020,6 +49040,14 @@
     "candidates": []
   },
   {
+    "input": "738-3044",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "73800244620101503002000732",
     "carrier": "mondial-relay",
     "confidence": "high",
@@ -49601,6 +49629,46 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "77-000-032",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-000-045",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-000-987",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-001-068",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
   },
   {
     "input": "770585926102",
@@ -57439,6 +57507,12 @@
     ]
   },
   {
+    "input": "99-0087856",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "99.34.123456.12345678",
     "carrier": "swiss-post",
     "confidence": "high",
@@ -59041,6 +59115,102 @@
       "gls-fr",
       "gls-de",
       "gls-ch"
+    ]
+  },
+  {
+    "input": "ABC26197473",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC31545586",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC35864375",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC41257863",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC49882484",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC53832318",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC58162633",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC61872752",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC75211956",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC81521332",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC92739222",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC93372693",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
     ]
   },
   {
@@ -64554,6 +64724,70 @@
     ]
   },
   {
+    "input": "DBRPST0000000278",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST3000001549",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032002859",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032002860",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032003031",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6032004207",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6052043122",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6062045367",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
     "input": "DC010822S3ZDUD",
     "carrier": "pathao-courier",
     "confidence": "high",
@@ -64829,6 +65063,12 @@
   },
   {
     "input": "DPK212604897303",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "DPV 0016700348",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -67919,6 +68159,17 @@
       "colis-prive",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "FS026362381RU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {

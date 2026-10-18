@@ -1,0 +1,6 @@
+{
+  "carrier": "dobropost",
+  "entries": [
+    {"wording": "выпуск с таможни", "stage": "customs", "language": "ru", "confirmedBy": "source", "note": "DobroPost quotes this tracking status in a reply in its VK review topic and says it is also shown when customs refuses release and the parcel goes back to China; capitalisation on the tracker is not seen."}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "carrier": "flippost",
+  "entries": [
+    {"wording": "В пути", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Followed by the origin and destination cities of the leg, as in an archived reply of Flip Post's tracking API."},
+    {"wording": "Прибыло в г.", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Arrived in the named city; followed by the city name in an archived reply of Flip Post's tracking API."},
+    {"wording": "Планируемая дата отправки", "language": "ru", "confirmedBy": "portal", "note": "Planned dispatch date for the next leg, followed by its cities; an estimate, not an event. Seen in an archived reply of Flip Post's tracking API."},
+    {"wording": "Доставлено", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Followed by a colon and the name of the person who signed, which is not copied. Seen in an archived reply of Flip Post's tracking API."},
+    {"code": "22", "wording": "НЕВЕРНО ОФОРМЛЕНЫ СОПРОВОДИТЕЛЬНЫЕ ДОКУМЕНТЫ", "stage": "exception", "language": "ru", "confirmedBy": "portal", "note": "Exception: the accompanying documents were filled in wrongly. Seen with its code in an archived reply of Flip Post's waybill exceptions API, which its API manual also quotes."}
+  ]
+}

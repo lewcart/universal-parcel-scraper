@@ -5155,6 +5155,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "4sides": {
+    "displayName": "4Sides",
+    "color": "#bd4d47",
+    "aliases": [
+      "4 SIDES",
+      "FOUR SIDES",
+      "Four Sides"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://4sides.ru/tracking",
+    "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
+    "trackingSearchUrl": "https://4sides.ru/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "4sides.ru",
+          "www.4sides.ru"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "5post": {
     "displayName": "5Post",
     "color": "#64b441",
@@ -10435,6 +10469,47 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dobropost": {
+    "displayName": "DobroPost",
+    "color": "#ffc33a",
+    "aliases": [
+      "ДоброПост",
+      "Добропост",
+      "Dobropost",
+      "DobroPost International Logistics"
+    ],
+    "countries": [
+      "RU",
+      "CN",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.dobropost.com/",
+    "trackingUrlTemplate": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.dobropost.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dobropost.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DBRPST\\d{10}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "dohrn-transfer": {
     "displayName": "Dohrn Transfer",
     "color": "#ee3631",
@@ -12902,6 +12977,42 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "flippost": {
+    "displayName": "Flip Post",
+    "color": "#2f4e77",
+    "aliases": [
+      "FLIPPOST",
+      "FlipPost",
+      "Флиппост",
+      "Флип Пост",
+      "Flip Post Worldwide Express"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://flippost.com/instruments/online/",
+    "trackingUrlTemplate": "https://flippost.com/instruments/online/?number={trackingNumber}",
+    "trackingSearchUrl": "https://flippost.com/instruments/online/",
+    "linkRules": [
+      {
+        "domains": [
+          "flippost.com",
+          "www.flippost.com"
+        ],
+        "pathPattern": "^/instruments/online/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "followmont": {
     "displayName": "Followmont Transport",
@@ -16746,6 +16857,45 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "l-post": {
+    "displayName": "L-POST",
+    "color": "#5b2599",
+    "aliases": [
+      "Л-Пост",
+      "Лабиринт-Пост",
+      "Labirint Post",
+      "L Post"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://l-post.ru/tracking",
+    "trackingUrlTemplate": "https://l-post.ru/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://l-post.ru/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "l-post.ru"
+        ],
+        "pathPattern": "^/tracking(?:/order)?/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ABC\\d{8}$",
+        "confidence": "high"
+      }
+    ]
   },
   "la-poste-burkina-faso": {
     "displayName": "La Poste Burkina Faso",
@@ -26760,6 +26910,27 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "vestovoy": {
+    "displayName": "Vestovoy",
+    "color": "#00a3d3",
+    "aliases": [
+      "Вестовой",
+      "Vestovoi"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vestovoi.ru/monitoring_dostavki/",
+    "trackingSearchUrl": "https://vestovoi.ru/monitoring_dostavki/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "via-cargo": {
     "displayName": "Via Cargo",
     "color": "#589b50",
@@ -27957,6 +28128,7 @@ export const CARRIER_IDS = [
   "247express",
   "2go",
   "4-72",
+  "4sides",
   "5post",
   "99minutos",
   "a-duie-pyle",
@@ -28092,6 +28264,7 @@ export const CARRIER_IDS = [
   "direct-couriers",
   "direct-freight-express",
   "direx",
+  "dobropost",
   "dohrn-transfer",
   "domain-logistics",
   "domex",
@@ -28153,6 +28326,7 @@ export const CARRIER_IDS = [
   "flash-express-ph",
   "fleetex",
   "fleetoptics",
+  "flippost",
   "followmont",
   "forward-air",
   "forza-delivery",
@@ -28254,6 +28428,7 @@ export const CARRIER_IDS = [
   "kwick-box",
   "kyoungdong",
   "kyrgyz-post",
+  "l-post",
   "la-poste-burkina-faso",
   "la-poste-ci",
   "la-poste-senegal",
@@ -28514,6 +28689,7 @@ export const CARRIER_IDS = [
   "vasp-expresso",
   "veloces",
   "venipak",
+  "vestovoy",
   "via-cargo",
   "viettel-post",
   "vimenpaq",
@@ -28658,6 +28834,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "247express": [],
   "2go": ["2go-1"],
   "4-72": [],
+  "4sides": [],
   "5post": [],
   "99minutos": [],
   "a-duie-pyle": [],
@@ -28793,6 +28970,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
+  "dobropost": ["dobropost-1"],
   "dohrn-transfer": [],
   "domain-logistics": [],
   "domex": [],
@@ -28854,6 +29032,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "flash-express-ph": ["flash-express-ph-1"],
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
+  "flippost": [],
   "followmont": [],
   "forward-air": [],
   "forza-delivery": ["forza-delivery-1"],
@@ -28955,6 +29134,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kwick-box": [],
   "kyoungdong": [],
   "kyrgyz-post": [],
+  "l-post": ["l-post-1"],
   "la-poste-burkina-faso": [],
   "la-poste-ci": [],
   "la-poste-senegal": [],
@@ -29215,6 +29395,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "vasp-expresso": [],
   "veloces": [],
   "venipak": ["venipak-1"],
+  "vestovoy": [],
   "via-cargo": [],
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],

@@ -1,0 +1,24 @@
+{
+  "carrier": "4sides",
+  "records": [
+    {
+      "number": "FS026362381RU",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://zoon.ru/msk/utility_service/kurerskaya_sluzhba_4sides/reviews/",
+        "date": "2021-04-09",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "A customer's review on 4Sides' Zoon page gives this as the waybill (накладная) of a parcel handed to a 4Sides courier in Saint Petersburg that did not show in tracking."
+    }
+  ]
+}

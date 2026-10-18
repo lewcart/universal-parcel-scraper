@@ -5153,6 +5153,40 @@
     ],
     "detectionRules": []
   },
+  "4sides": {
+    "displayName": "4Sides",
+    "color": "#bd4d47",
+    "aliases": [
+      "4 SIDES",
+      "FOUR SIDES",
+      "Four Sides"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://4sides.ru/tracking",
+    "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
+    "trackingSearchUrl": "https://4sides.ru/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "4sides.ru",
+          "www.4sides.ru"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "5post": {
     "displayName": "5Post",
     "color": "#64b441",
@@ -10433,6 +10467,47 @@
     ],
     "detectionRules": []
   },
+  "dobropost": {
+    "displayName": "DobroPost",
+    "color": "#ffc33a",
+    "aliases": [
+      "ДоброПост",
+      "Добропост",
+      "Dobropost",
+      "DobroPost International Logistics"
+    ],
+    "countries": [
+      "RU",
+      "CN",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.dobropost.com/",
+    "trackingUrlTemplate": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.dobropost.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dobropost.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DBRPST\\d{10}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "dohrn-transfer": {
     "displayName": "Dohrn Transfer",
     "color": "#ee3631",
@@ -12900,6 +12975,42 @@
         "confidence": "high"
       }
     ]
+  },
+  "flippost": {
+    "displayName": "Flip Post",
+    "color": "#2f4e77",
+    "aliases": [
+      "FLIPPOST",
+      "FlipPost",
+      "Флиппост",
+      "Флип Пост",
+      "Flip Post Worldwide Express"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://flippost.com/instruments/online/",
+    "trackingUrlTemplate": "https://flippost.com/instruments/online/?number={trackingNumber}",
+    "trackingSearchUrl": "https://flippost.com/instruments/online/",
+    "linkRules": [
+      {
+        "domains": [
+          "flippost.com",
+          "www.flippost.com"
+        ],
+        "pathPattern": "^/instruments/online/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "followmont": {
     "displayName": "Followmont Transport",
@@ -16744,6 +16855,45 @@
       }
     ],
     "detectionRules": []
+  },
+  "l-post": {
+    "displayName": "L-POST",
+    "color": "#5b2599",
+    "aliases": [
+      "Л-Пост",
+      "Лабиринт-Пост",
+      "Labirint Post",
+      "L Post"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://l-post.ru/tracking",
+    "trackingUrlTemplate": "https://l-post.ru/tracking?id={trackingNumber}",
+    "trackingSearchUrl": "https://l-post.ru/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "l-post.ru"
+        ],
+        "pathPattern": "^/tracking(?:/order)?/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ABC\\d{8}$",
+        "confidence": "high"
+      }
+    ]
   },
   "la-poste-burkina-faso": {
     "displayName": "La Poste Burkina Faso",
@@ -26757,6 +26907,27 @@
         "confidence": "high"
       }
     ]
+  },
+  "vestovoy": {
+    "displayName": "Vestovoy",
+    "color": "#00a3d3",
+    "aliases": [
+      "Вестовой",
+      "Vestovoi"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Moscow",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://vestovoi.ru/monitoring_dostavki/",
+    "trackingSearchUrl": "https://vestovoi.ru/monitoring_dostavki/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "via-cargo": {
     "displayName": "Via Cargo",

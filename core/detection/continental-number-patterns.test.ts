@@ -524,4 +524,18 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('cst-italia');
     }
   });
+
+  it('names L-POST for ABC and eight digits', () => {
+    expect(detectCarrierMatch('ABC00000001')).toMatchObject({ carrier: 'l-post', confidence: 'high', candidates: ['l-post'] });
+    for (const number of ['ABC0000001', 'ABC000000001', 'ABD00000001', 'XABC00000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('l-post');
+    }
+  });
+
+  it('names DobroPost for DBRPST and ten digits', () => {
+    expect(detectCarrierMatch('DBRPST0000000001')).toMatchObject({ carrier: 'dobropost', confidence: 'high', candidates: ['dobropost'] });
+    for (const number of ['DBRPST000000001', 'DBRPST00000000001', 'DBRPSX0000000001', 'DBPST0000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dobropost');
+    }
+  });
 });

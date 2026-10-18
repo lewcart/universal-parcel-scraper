@@ -1,0 +1,55 @@
+{
+  "id": "dobropost",
+  "displayName": "DobroPost",
+  "aliases": [
+    "ДоброПост",
+    "Добропост",
+    "Dobropost",
+    "DobroPost International Logistics"
+  ],
+  "region": {
+    "countries": [
+      "RU",
+      "CN",
+      "BY"
+    ]
+  },
+  "brand": {
+    "color": "#ffc33a"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",
+    "searchUrl": "https://tracking.dobropost.com/",
+    "canaryUrl": "https://tracking.dobropost.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.dobropost.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "trackNumber"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "dobropost-1",
+      "pattern": "^DBRPST\\d{10}$",
+      "confidence": "high"
+    }
+  ]
+}

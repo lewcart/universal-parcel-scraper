@@ -1,0 +1,49 @@
+{
+  "id": "flippost",
+  "displayName": "Flip Post",
+  "aliases": [
+    "FLIPPOST",
+    "FlipPost",
+    "Флиппост",
+    "Флип Пост",
+    "Flip Post Worldwide Express"
+  ],
+  "region": {
+    "countries": [
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#2f4e77"
+  },
+  "selectable": true,
+  "timezone": "Europe/Moscow",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://flippost.com/instruments/online/?number={trackingNumber}",
+    "searchUrl": "https://flippost.com/instruments/online/",
+    "canaryUrl": "https://flippost.com/instruments/online/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "flippost.com",
+        "www.flippost.com"
+      ],
+      "pathPattern": "^/instruments/online/?$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
+  "detection": []
+}

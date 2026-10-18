@@ -24119,7 +24119,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "t-group",
+      "recognitionRank": 877,
+      "localClocks": true
     },
     "canaryUrl": "https://www.tgroupspa.com/",
     "trackingUrlTemplate": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",

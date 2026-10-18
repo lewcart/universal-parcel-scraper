@@ -1055,6 +1055,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/apis\.toptrans\.cz\/tracking\?parcel_number=00000000000$/,
     marker: /Vyhledávání zásilek/,
     forwarding: { notFound: /Zásilka nenalezena/ } },
+  // The server renders the page for the number in its path, and only a notice for an unknown one.
+  { carrier: 't-group', number: '3010TGR00000000000000',
+    route: /^https:\/\/track\.tgroupspa\.com\/ttnet\/traccia_spedizione\/3010TGR00000000000000$/,
+    marker: /NUMERO SPEDIZIONE NON TROVATO/,
+    forwarding: { notFound: /NUMERO SPEDIZIONE NON TROVATO/ } },
 ];
 
 /**

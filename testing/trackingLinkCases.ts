@@ -1174,6 +1174,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/norsk\.trackmyparcel\.info\/gb\/tracking\/PKG000000000000$/,
     marker: /Nothing found using that tracking number|HAWB/,
     forwarding: { notFound: /Nothing found using that tracking number/ } },
+  // The page's script prefills the waybill from the address and looks it up; an unknown one gets the notice.
+  { carrier: 'evropat', number: '00000000000000',
+    route: /^https:\/\/evropat\.bg\/track\/\?barcode=00000000000000$/,
+    marker: /Няма намерена пратка с този номер|Проследяване на пратка/ },
 ];
 
 /**

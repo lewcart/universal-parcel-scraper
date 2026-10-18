@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -28,7 +28,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Sample result link for Evropat in the README of an open-source tracker that queries Evropat's own tracking service."
+      "note": "Sample result link for Evropat in the README of an open-source tracker that queries Evropat's own tracking service. Evropat's tracking lookup answers it as a delivered waybill."
     },
     {
       "number": "9107345678",
@@ -41,7 +41,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -56,7 +56,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Example in the number field of Evropat's own tracking page."
+      "note": "Example in the number field of Evropat's own tracking page. Evropat's tracking lookup answers it as a delivered waybill."
     }
   ]
 }

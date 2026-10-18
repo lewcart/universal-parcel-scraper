@@ -12278,7 +12278,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "evropat",
+      "localClocks": true
     },
     "canaryUrl": "https://evropat.bg/track/",
     "trackingUrlTemplate": "https://evropat.bg/track/?barcode={trackingNumber}",

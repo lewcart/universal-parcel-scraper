@@ -111,6 +111,7 @@ import { statusMap as epostGlobal } from '../../carriers/epost-global/status.js'
 import { statusMap as equick } from '../../carriers/equick/status.js';
 import { statusMap as estes } from '../../carriers/estes/status.js';
 import { statusMap as eurodis } from '../../carriers/eurodis/status.js';
+import { statusMap as evropat } from '../../carriers/evropat/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
 import { statusMap as fedexPl } from '../../carriers/fedex-pl/status.js';
@@ -323,7 +324,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, direx, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,
   'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-za': dpdZa, drop2shop, dsv, dx, dynalogic, 'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
-  'epost-global': epostGlobal, equick, estes, eurodis,
+  'epost-global': epostGlobal, equick, estes, eurodis, evropat,
   'express-one': expressOne, 'fan-courier': fanCourier, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,

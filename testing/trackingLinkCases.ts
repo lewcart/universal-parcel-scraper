@@ -1041,6 +1041,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bussgods', number: 'BG9000000000',
     route: /^https:\/\/bussgods\.se\/spara-paket\/#BG9000000000$/,
     marker: /Hittade inget resultat för BG9000000000|Sökresultat/ },
+  // The page looks the number up from its parameter and says when it does not know it.
+  { carrier: 'bookurier', number: 'BOK0000000',
+    route: /^https:\/\/t\.bookurier\.ro\/\?awb=BOK0000000$/,
+    marker: /Situația AWB-ului: BOK0000000|AWB not found/ },
 ];
 
 /**

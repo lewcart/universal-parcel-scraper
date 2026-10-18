@@ -7131,7 +7131,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bookurier"
     },
     "canaryUrl": "https://t.bookurier.ro/",
     "trackingUrlTemplate": "https://t.bookurier.ro/?awb={trackingNumber}",

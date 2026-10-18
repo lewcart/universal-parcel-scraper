@@ -17,18 +17,51 @@
   "timezone": "Europe/Bucharest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bookurier",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "weight"
+  ],
   "portal": {
     "url": "https://t.bookurier.ro/?awb={trackingNumber}",
     "searchUrl": "https://t.bookurier.ro/",
     "canaryUrl": "https://t.bookurier.ro/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "weight"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "eta",
+      "offset_timestamps",
+      "pickup_point",
+      "service_name",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

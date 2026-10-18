@@ -30,6 +30,7 @@ import { adapter as baridAlMaghrib } from '../carriers/barid-al-maghrib/adapter.
 import { adapter as belpost } from '../carriers/belpost/adapter.js';
 import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
+import { adapter as bookurier } from '../carriers/bookurier/adapter.js';
 import { adapter as bosta } from '../carriers/bosta/adapter.js';
 import { adapter as boxNow } from '../carriers/box-now/adapter.js';
 import { adapter as bpost } from '../carriers/bpost/adapter.js';
@@ -379,6 +380,7 @@ export const REGISTRY: RegistryDefinition = {
     "belpost": belpost,
     "blue-dart": blueDart,
     "blue-express": blueExpress,
+    "bookurier": bookurier,
     "bosta": bosta,
     "box-now": boxNow,
     "bpost": bpost,
@@ -761,7 +763,7 @@ export const REGISTRY: RegistryDefinition = {
     "blue-express": "blue-express",
     "blueex": "universal",
     "bombino": "universal",
-    "bookurier": "universal",
+    "bookurier": "bookurier",
     "border-express": "universal",
     "bosta": "bosta",
     "botswana-post": "universal",

@@ -151,6 +151,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "israel-post": 81,
   "j-and-t": 530,
   "j-and-t-cargo": 910,
+  "jersey-post": 832,
   "jhgj": 907,
   "jitsu": 85,
   "jordan-post": 881,

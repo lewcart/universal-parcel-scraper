@@ -16393,7 +16393,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Jersey",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jersey-post",
+      "recognitionRank": 832,
+      "localClocks": true
     },
     "canaryUrl": "https://www.jerseypost.com/tools/track-trace/",
     "trackingUrlTemplate": "https://www.jerseypost.com/tools/track-trace/?tq={trackingNumber}",
@@ -16409,7 +16411,14 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}JE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "jet-logistic": {
     "displayName": "Jet Logistic",
@@ -30059,7 +30068,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jamaica-post": [],
   "janio": ["janio-1"],
   "jeebly": ["jeebly-1"],
-  "jersey-post": [],
+  "jersey-post": ["jersey-post-s10"],
   "jet-logistic": [],
   "jetline-couriers": [],
   "jhgj": ["jhgj-1"],

@@ -220,6 +220,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/webapp\.hongkongpost\.hk\/en\/mail_tracking2\/index\.html/,
     marker: /Track and Trace|Enter The Tracking Number|Recently tracked items/i,
     forwarding: 'none' },
+  // The page renders the lookup's reply for the number in its address, with the number over it.
+  { carrier: 'jersey-post', number: 'LX000000005JE',
+    route: /^https:\/\/www\.jerseypost\.com\/tools\/track-trace\/\?tq=LX000000005JE$/,
+    marker: /No tracking information available/ },
   { carrier: 'korea-post', number: 'EE000000005KR',
     route: /^https:\/\/trace\.epost\.go\.kr\/xtts\//,
     marker: /Track.*Trace|Tracking|Item Number|Delivery Status/i },

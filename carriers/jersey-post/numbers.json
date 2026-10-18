@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "ParcelPanel's Jersey Post courier page offers it as a sample to try."
+      "note": "ParcelPanel's Jersey Post courier page offers it as a sample to try; Jersey Post's own tracker returns its history. Detection selects the generic postal carrier."
     }
   ]
 }

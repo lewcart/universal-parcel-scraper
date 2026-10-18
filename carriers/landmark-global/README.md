@@ -26,11 +26,12 @@ as printed or without it, so a merchant reference's absence stays inconclusive.
 
 ## Notes
 
-Scans retain their local clocks and provider order. The page supplies one
-current server offset for browser display, which does not establish historical
-DST offsets. No instant or delivery timestamp is inferred from it or the scan's
-country. The host archives unresolved clocks and asks providers for dated
-progress.
+The page writes every scan's clock in US Central time, wherever the scan was, and
+names its offset beside it, CDT or CST. A clock becomes an instant only when that
+name is the offset Chicago keeps at that clock, which also tells the repeated autumn
+hour apart. Otherwise it stays a local clock, which the host archives while it asks
+providers for dated progress. The single current offset the page's script applies to
+every scan is not used. Scans keep the provider's order.
 
 The page relays the delivery partner's scans in the partner's own wording. Landmark's
 wording sets the stage first, then the shared rules, for the parcel as for each scan. A

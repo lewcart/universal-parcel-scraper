@@ -29,11 +29,11 @@ describe('Landmark Global history', () => {
     const different = load(nineDigitFixture()); different('.delivery-details-col h6').last().next('div').text('LTN000000008');
     expect(() => parseLandmark(different.html(), 'LTN000000009')).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
-  it('binds canonical parcel identity and retains local clocks without applying the current display offset', () => {
+  it('binds canonical parcel identity and dates scans by the Central offset the page names beside each', () => {
     const result = normalizeCarrierResult(parseLandmark(fixture(), NUMBER));
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', canonical_tracking_number: 'LTN00000001', last_update: null, last_update_local: '2026-01-04T12:00:00', expected_delivery: null, delivery_tracking_number: 'AA000000005AU', delivery_carrier: 'australia-post' });
-    expect(result.events).toHaveLength(4); expect(result.events?.[0]).toMatchObject({ local_time: '2026-01-04T12:00:00', description: 'Delivered', location: 'Example City, EX' });
-    expect(result).not.toHaveProperty('delivered_at'); expect(result.events?.some(event => event.time)).toBe(false);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', canonical_tracking_number: 'LTN00000001', last_update: '2026-01-04T12:00:00-06:00', last_update_local: null, expected_delivery: null, delivery_tracking_number: 'AA000000005AU', delivery_carrier: 'australia-post' });
+    expect(result.events).toHaveLength(4); expect(result.events?.[0]).toMatchObject({ time: '2026-01-04T12:00:00-06:00', description: 'Delivered', location: 'Example City, EX' });
+    expect(result).not.toHaveProperty('delivered_at'); expect(result.events?.every(event => event.time && !event.local_time)).toBe(true);
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|utc_server_offset|Australia"/);
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
     const evidence: Record<string, boolean> = { history: !!result.events?.length, location: !!result.events?.some(event => event.location),
@@ -41,9 +41,24 @@ describe('Landmark Global history', () => {
       canonical_tracking_number: !!result.canonical_tracking_number };
     for (const capability of metadata.capabilities) expect(evidence[capability], capability).toBe(true);
   });
-  it.each(['-360', '-300', '0', '330', 'INVALID'])('does not turn a current server offset %s into a historical instant', offset => {
+  it.each(['-360', '-300', '0', '330', 'INVALID'])('does not let the current server offset %s change a scan\'s clock', offset => {
     const $ = load(fixture()); $('#utc_server_offset').val(offset);
-    expect(parseLandmark($.html(), NUMBER).events?.every(event => !event.time && event.local_time)).toBe(true);
+    expect(parseLandmark($.html(), NUMBER).events).toEqual(parseLandmark(fixture(), NUMBER).events);
+  });
+  it('dates a clock only by a named offset Chicago keeps then, and otherwise keeps the wall clock', () => {
+    const newest = (time: string, shown: string) => {
+      const $ = load(fixture()); $('.current-status .time,tbody tr:first-child .time').attr('data-time', time).text(shown);
+      return parseLandmark($.html(), NUMBER).events?.[0];
+    };
+    expect(newest('2026-07-01 08:00:00', 'Wed, Jul 01, 8:00 AM CDT')).toMatchObject({ time: '2026-07-01T08:00:00-05:00' });
+    // The hour repeated when Chicago leaves summer time is told apart by its name.
+    expect(newest('2026-11-01 01:30:00', 'Sun, Nov 01, 1:30 AM CDT')).toMatchObject({ time: '2026-11-01T01:30:00-05:00' });
+    expect(newest('2026-11-01 01:30:00', 'Sun, Nov 01, 1:30 AM CST')).toMatchObject({ time: '2026-11-01T01:30:00-06:00' });
+    for (const [time, shown] of [['2026-01-04 12:00:00', 'Sun, Jan 04, 12:00 PM CDT'], ['2026-03-08 02:30:00', 'Sun, Mar 08, 2:30 AM CST'],
+      ['2026-01-04 12:00:00', 'Sun, Jan 04, 12:00 PM GMT+1'], ['2026-01-04 12:00:00', 'January 4']] as const) {
+      const event = newest(time, shown);
+      expect(event, shown).toMatchObject({ local_time: time.replace(' ', 'T') }); expect(event, shown).not.toHaveProperty('time');
+    }
   });
   it('accepts the canonical bare identity and rejects other identities and multi-parcel pages', () => {
     expect(parseLandmark(fixture(), 'LTN00000001')).not.toHaveProperty('canonical_tracking_number');
@@ -111,13 +126,13 @@ describe('Landmark Global history', () => {
     first.remove(); $('.current-status h3').text('Onboard for delivery'); $('.current-status .time').attr('data-time', $('tbody tr').first().find('.time').attr('data-time'));
     expect(parseLandmark($.html(), NUMBER)).toMatchObject({ status: 'out_for_delivery' });
   });
-  it('maps deposit delivery explicitly without exposing the delivery permission or inventing an instant', () => {
+  it('maps deposit delivery explicitly without exposing the delivery permission', () => {
     const $ = load(fixture());
     const wording = 'Delivered - Delivery / deposit with non-recurring authority';
     $('tbody tr:first-child td').first().text(wording); $('.current-status h3').text(wording);
     const result = parseLandmark($.html(), NUMBER);
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update: null });
-    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', stage: 'delivered', local_time: '2026-01-04T12:00:00' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update: '2026-01-04T12:00:00-06:00' });
+    expect(result.events?.[0]).toMatchObject({ description: 'Delivered', stage: 'delivered', time: '2026-01-04T12:00:00-06:00' });
     expect(result).not.toHaveProperty('delivered_at');
     expect(landmarkStatus('One-time recipient permission for deposit')).toBeUndefined();
   });

@@ -1519,33 +1519,33 @@
       "status": "delivered",
       "current_stage": "delivered",
       "last_status_text": "Delivered",
-      "last_update": null,
-      "last_update_local": "2026-01-04T12:00:00",
+      "last_update": "2026-01-04T12:00:00-06:00",
+      "last_update_local": null,
       "expected_delivery": null,
       "canonical_tracking_number": "LTN00000001",
       "delivery_tracking_number": "AA000000005AU",
       "delivery_carrier": "australia-post",
       "events": [
         {
-          "local_time": "2026-01-04T12:00:00",
+          "time": "2026-01-04T12:00:00-06:00",
           "description": "Delivered",
           "location": "Example City, EX",
           "stage": "delivered"
         },
         {
-          "local_time": "2026-01-04T08:00:00",
+          "time": "2026-01-04T08:00:00-06:00",
           "description": "Onboard for delivery",
           "location": "Example City, EX",
           "stage": "out_for_delivery"
         },
         {
-          "local_time": "2026-01-03T10:00:00",
+          "time": "2026-01-03T10:00:00-06:00",
           "description": "Customs cleared",
           "location": "Example Gateway",
           "stage": "in_transit"
         },
         {
-          "local_time": "2026-01-01T12:00:00",
+          "time": "2026-01-01T12:00:00-06:00",
           "description": "Shipment Data Uploaded",
           "location": "Example Origin",
           "stage": "registered"

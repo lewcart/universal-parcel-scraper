@@ -25,11 +25,18 @@ export function normalizeLandmarkNumber(raw: string): string {
   return number;
 }
 
-function clock(raw: string): Pick<CarrierEvent, 'time'> & { local_time?: string; provider_time_text?: string } {
+/** The page writes every scan's clock in US Central time and names its offset beside it. */
+const CENTRAL_OFFSETS: Readonly<Record<string, string>> = { CDT: '-05:00', CST: '-06:00' };
+
+function clock(raw: string, shown: string): Pick<CarrierEvent, 'time'> & { local_time?: string; provider_time_text?: string } {
   const validated = /^\d{4}-\d{2}-\d{2} (?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(raw)
     ? DateTime.fromFormat(raw, 'yyyy-MM-dd HH:mm:ss', { zone: 'UTC' }) : null;
   if (!validated?.isValid) return raw ? { provider_time_text: raw } : {};
-  return { local_time: validated.toISO({ includeOffset: false, suppressMilliseconds: true }) };
+  const wall = validated.toISO({ includeOffset: false, suppressMilliseconds: true });
+  const offset = CENTRAL_OFFSETS[/ (C[DS]T)$/.exec(shown)?.[1] ?? ''];
+  // The named offset must be Chicago's at that clock, which also settles the hour repeated in autumn.
+  if (offset && DateTime.fromISO(`${wall}${offset}`).setZone('America/Chicago').toISO({ includeOffset: false, suppressMilliseconds: true }) === wall) return { time: `${wall}${offset}` };
+  return { local_time: wall };
 }
 
 export function parseLandmark(html: string, rawNumber: string): CarrierResult {
@@ -80,7 +87,7 @@ export function parseLandmark(html: string, rawNumber: string): CarrierResult {
     const wording = clean(cells.eq(0).text(), 500);
     if (!wording) throw new SchemaError('Landmark Global', 'Landmark returned an empty scan');
     const mapped = landmarkStatus(wording);
-    const event: CarrierEvent = { ...clock(clean(cells.eq(1).attr('data-time') ?? cells.eq(1).text(), 64)),
+    const event: CarrierEvent = { ...clock(clean(cells.eq(1).attr('data-time') ?? cells.eq(1).text(), 64), clean(cells.eq(1).text(), 64)),
       description: mapped?.stage === 'delivered' ? 'Delivered' : wording, location: clean(cells.eq(2).text(), 200),
       ...(mapped ? { stage: mapped.stage } : {}) };
     const key = JSON.stringify(event);

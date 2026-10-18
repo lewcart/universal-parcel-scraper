@@ -254,7 +254,8 @@ step exists for future protocol changes.
   Zealand Post" has NZ Post's UTC instants on Auckland time, also for the scans it relays
   from abroad ("Hong Kong"). "Singapore Post" has SingPost's "+08:00" digits, also for its
   scans in China, and "SunYou - Sytrack" those of the origin leg of SunYou's feed, on
-  "+08:00". Step 1 reads them on that clock. SunYou's feed dates its destination leg,
+  "+08:00". "Landmark Global" has its tracking page's US Central clock, also for the
+  partner scans it relays. Step 1 reads them on that clock. SunYou's feed dates its destination leg,
   from "Arrived At Destination Country Airport" to the delivery, on the destination's clock
   ("+02:00" for Spain, where EcoScooting's own instants agree), so those scans take the
   destination's single clock, or else only a guess. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
@@ -342,8 +343,8 @@ step exists for future protocol changes.
   scan certainly is, or one names a state or province and none names another country. A
   copy of such a scan from another carrier, at the same minute with the same wording
   (Cainiao relaying UniUni, YunExpress relaying GOFO), takes the same zone. Other carriers
-  keep their readings: OnTrac's dates are UTC, and Landmark's keep one clock in every
-  country. A scan of these carriers that its location places only in the US or Canada
+  keep their readings: OnTrac's dates are UTC. A scan of these carriers that its location
+  places only in the US or Canada
   ("US 12345", "United States") borrows like a wall-clock scan (step 3 above), from a scan
   of its network that a place gives a zone: FedEx's "Shipment information sent to FedEx"
   under the shipper's ZIP code took the zone of the pickup's state, as FedEx's own page

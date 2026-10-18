@@ -1198,6 +1198,12 @@ describe('ParcelsApp result parsing', () => {
       .toEqual(['2026-01-10T18:40:00.000Z', '2025-12-16T22:15:00.000Z']);
     expect(times(['Singapore Post'], [scan('2026-07-07T14:44:00+00:00')])).toEqual(['2026-07-07T06:44:00.000Z']);
     expect(times(['SunYou - Sytrack'], [scan('2021-07-20T11:30:00Z', '1000')])).toEqual(['2021-07-20T03:30:00.000Z']);
+    // Landmark Global's page clock is US Central's, whatever zone the check suggests.
+    const landmark = { carriers: ['Landmark Global'], states: [scan('2026-10-14T09:00:00Z', 'Example City, Germany'), scan('2026-01-14T09:00:00Z')] };
+    for (const hint of [null, 'Europe/Zurich']) {
+      expect(parseParcelsAppResponse(landmark, number, identity(number), hint).events?.map((event) => event.time))
+        .toEqual(['2026-10-14T14:00:00.000Z', '2026-01-14T15:00:00.000Z']);
+    }
     // Local clocks checked at home: another country's location comes first.
     expect(times(['South Korea Post'], [scan('2026-09-30T13:48:00Z', 'Example Post Office'), scan('2026-09-29T12:00:00Z', 'Example City, Germany')]))
       .toEqual(['2026-09-30T04:48:00.000Z', '2026-09-29T10:00:00.000Z']);

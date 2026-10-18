@@ -98,8 +98,8 @@ const nameKey = (name: unknown) => typeof name === 'string' ? name.toLowerCase()
 // also in Germany, the Netherlands and Spain). So does DHL eCommerce's
 // Webtrack, which names each scan's clock, on all 25 scans of three parcels
 // in seven states and the UK (2026-10-11). OnTrac's are UTC and Landmark's
-// keep one clock everywhere, so no other carrier gets this step beyond the
-// ones below.
+// keep its home clock everywhere (HOME_CLOCKS), so no other carrier gets this
+// step beyond the ones below.
 const LOCAL_CLOCK_CARRIERS = new Set(['ups', 'fedex', 'uniuni', 'uniexpress', 'easyship', 'dhlecommerce']);
 /**
  * Of those, the carriers whose scans with no location are on a local clock
@@ -257,10 +257,13 @@ function knownClock(name: unknown, status: string, destination: string | null, o
  * are NZ Post's UTC instants on Auckland time, also for the scans it relays
  * from abroad ("Hong Kong"). Singapore Post's are SingPost's "+08:00" digits,
  * also for its scans in China, and SunYou's those of its feed's origin leg,
- * on "+08:00".
+ * on "+08:00". Landmark Global's are its tracking page's US Central clock,
+ * also for the delivery partner's scans it relays: guessed from the check's
+ * zone instead, the same scan moved by two hours.
  */
 const HOME_CLOCKS: Readonly<Record<string, string>> = {
-  italypost: 'Europe/Rome', newzealandpost: 'Pacific/Auckland', singaporepost: 'Asia/Singapore', sunyousytrack: 'Asia/Shanghai',
+  italypost: 'Europe/Rome', landmarkglobal: 'America/Chicago', newzealandpost: 'Pacific/Auckland', singaporepost: 'Asia/Singapore',
+  sunyousytrack: 'Asia/Shanghai',
 };
 /**
  * SunYou's feed dates its destination leg, from the arrival at the

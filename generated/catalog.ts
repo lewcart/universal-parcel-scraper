@@ -12184,7 +12184,7 @@ export const CARRIER_CATALOG = {
   },
   "fastdrop": {
     "displayName": "Fastdrop",
-    "color": "#26bed3",
+    "color": "#5dbbd1",
     "aliases": [
       "FastDrop",
       "eCabs Fastdrop"
@@ -23111,7 +23111,7 @@ export const CARRIER_CATALOG = {
   },
   "sp-express": {
     "displayName": "SP Express",
-    "color": "#247c00",
+    "color": "#007d00",
     "aliases": [
       "SP EXPRESS",
       "SP Express Sp. z o.o.",

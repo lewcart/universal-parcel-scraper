@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -21,7 +21,7 @@
           "jeebly"
         ]
       },
-      "note": "Archived lookup on Jeebly's own tracker under its last-mile service; the capture holds no readable page, so no history was visible."
+      "note": "Archived lookup on the signed-in tracker of Jeebly's customer portal under its last-mile service; the capture is a sign-in redirect. Jeebly's public tracker shows its history under the Scheduled service."
     },
     {
       "number": "JB9321864",
@@ -34,7 +34,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -43,7 +43,7 @@
           "jeebly"
         ]
       },
-      "note": "Archived lookup on Jeebly's own tracker under its express service, with a last-mile lookup of the same number minutes earlier; the captures hold no readable page, so no history was visible."
+      "note": "Archived lookup on the signed-in tracker of Jeebly's customer portal under its express service, with a last-mile lookup of the same number minutes earlier; the captures are sign-in redirects. Jeebly's public tracker shows its history under the Scheduled service."
     },
     {
       "number": "JB9528177",
@@ -56,7 +56,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -65,7 +65,29 @@
           "jeebly"
         ]
       },
-      "note": "Archived lookup on Jeebly's own tracker under its last-mile service; the capture holds no readable page, so no history was visible, and a lookup two days earlier under the scheduled service showed No Shipment Found."
+      "note": "Archived lookup on the signed-in tracker of Jeebly's customer portal under its last-mile service; the capture is a sign-in redirect. A lookup two days earlier on the public tracker sent the number after a space and a tab, which the tracker does not strip, and showed No Shipment Found; the public tracker shows its history for the number itself under the Scheduled service."
+    },
+    {
+      "number": "JB9531851",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260916072219/https://myjeebly.jeebly.com/shipment-tracking/?uae=uae&service_type=Scheduled&awb=+JB9531851",
+        "date": "2026-09-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "jeebly"
+        ]
+      },
+      "note": "Archived lookup on Jeebly's public tracker under its Scheduled service. It sent the number after a space, which the tracker does not strip, so the capture shows No Shipment Found; the tracker shows its history for the number itself."
     },
     {
       "number": "JB112951",

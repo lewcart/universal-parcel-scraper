@@ -17048,7 +17048,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jeebly",
+      "recognitionRank": 805,
+      "localClocks": true
     },
     "canaryUrl": "https://myjeebly.jeebly.com/shipment-tracking/",
     "trackingSearchUrl": "https://myjeebly.jeebly.com/shipment-tracking/",

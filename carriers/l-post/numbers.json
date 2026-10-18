@@ -173,6 +173,25 @@
       "note": "An archived lookup on L-POST's own tracking page; the capture was not opened, and the page loads the history by script, so none is visible."
     },
     {
+      "number": "ABC81696332",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220807160211/https://l-post.ru/tracking/order?id=ABC81696332",
+        "date": "2022-08-07",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "l-post",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on L-POST's own tracking page; the capture was not opened, and the page loads the history by script, so none is visible."
+    },
+    {
       "number": "ABC92739222",
       "role": "shipment",
       "evidence": "public_shipment_report",

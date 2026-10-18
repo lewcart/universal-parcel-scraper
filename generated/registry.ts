@@ -227,6 +227,7 @@ import { adapter as kex } from '../carriers/kex/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
 import { adapter as kyoungdong } from '../carriers/kyoungdong/adapter.js';
+import { adapter as lPost } from '../carriers/l-post/adapter.js';
 import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
 import { adapter as laPosteSenegal } from '../carriers/la-poste-senegal/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
@@ -656,6 +657,7 @@ export const REGISTRY: RegistryDefinition = {
     "korea-post": koreaPost,
     "kuehne-nagel": kuehneNagel,
     "kyoungdong": kyoungdong,
+    "l-post": lPost,
     "la-poste": laPoste,
     "la-poste-senegal": laPosteSenegal,
     "landmark-global": landmarkGlobal,
@@ -1242,7 +1244,7 @@ export const REGISTRY: RegistryDefinition = {
     "kwick-box": "universal",
     "kyoungdong": "kyoungdong",
     "kyrgyz-post": "universal",
-    "l-post": "universal",
+    "l-post": "l-post",
     "la-poste": "la-poste",
     "la-poste-burkina-faso": "universal",
     "la-poste-ci": "universal",

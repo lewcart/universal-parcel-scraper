@@ -17736,7 +17736,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "l-post",
+      "recognitionRank": 808,
+      "localClocks": true
     },
     "canaryUrl": "https://l-post.ru/tracking",
     "trackingUrlTemplate": "https://l-post.ru/tracking?id={trackingNumber}",

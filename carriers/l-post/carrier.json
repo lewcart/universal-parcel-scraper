@@ -19,18 +19,65 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "l-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 808
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "eta",
+    "pickup_point",
+    "sender_name"
+  ],
   "portal": {
     "url": "https://l-post.ru/tracking?id={trackingNumber}",
     "searchUrl": "https://l-post.ru/tracking",
     "canaryUrl": "https://l-post.ru/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "eta_window",
+      "pickup_point",
+      "pickup_deadline",
+      "sender_name",
+      "recipient_address",
+      "payment_details",
+      "office_contact_details",
+      "delivery_method",
+      "customer_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "eta",
+      "pickup_point",
+      "sender_name"
+    ],
+    "discarded": [
+      "eta_window",
+      "pickup_deadline",
+      "recipient_address",
+      "payment_details",
+      "office_contact_details",
+      "delivery_method",
+      "customer_reference"
+    ],
+    "unavailable": [
+      "location",
+      "offset_timestamps",
+      "recipient_name",
+      "weight",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

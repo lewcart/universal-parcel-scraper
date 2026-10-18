@@ -39,6 +39,11 @@ once.
   `JD01` range, is still DHL Paket's: DHL's global tracking lists that form as
   the piece of a DHL Paket shipment. It only suggests DHL, because this
   endpoint's answer for that form is unconfirmed.
+- `R`, a letter, nine digits and `DE` are Deutsche Post registered letters,
+  national and international. This endpoint answers them from Deutsche Post's
+  letter tracking, the lookup deutschepost.de embeds as well, so they are DHL's
+  when their S10 check digit holds rather than international mail. A letter
+  without scans yet comes back with `briefNichtGefunden` and reads as no data.
 - `0034043…` numbers are SSCCs. DHL Paket issues its own under GS1 company
   prefixes from `4043383` up, where its numbers fall. Manufacturers hold
   prefixes below and among them for their own SSCCs. A number under a prefix

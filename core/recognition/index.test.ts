@@ -177,7 +177,7 @@ describe('recognition candidates', () => {
       { carrier: 'posti', needsInput: null, preferred: true },
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
-    expect(recognitionCandidates('RA123456785DE')).toEqual([
+    expect(recognitionCandidates('RA123456785IR')).toEqual([
       { carrier: 'chronopost', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('CE123456785FI', { hint: 'chronopost' }).map(({ carrier }) => carrier))

@@ -135,7 +135,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "dhl",
         "confidence": "high"
       },
       "note": "Inbound item looked up on Poșta Română's former tracker, as an archived address shows; the capture was not opened."

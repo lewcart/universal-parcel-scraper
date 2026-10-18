@@ -95,6 +95,12 @@
       "checksum": "s10"
     },
     {
+      "id": "dhl-14",
+      "pattern": "^R[A-Z]\\d{9}DE$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "dhl-9",
       "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
       "confidence": "high"

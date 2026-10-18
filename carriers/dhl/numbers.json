@@ -515,6 +515,18 @@
         "confidence": "high"
       },
       "note": "A German postal parcel number typed into DHL's tracking page, archived by the Wayback Machine. DHL's recipient page returned its delivery in the Netherlands and linked DHL eCommerce Netherlands' tracking."
+    },
+    {
+      "number": "RA123456785DE",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-09-12",
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "Made-up Deutsche Post registered letter number that follows the S10 format."
     }
   ]
 }

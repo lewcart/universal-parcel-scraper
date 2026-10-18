@@ -78229,13 +78229,10 @@
   },
   {
     "input": "RA123456785DE",
-    "carrier": "intl-post",
+    "carrier": "dhl",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "dhl"
     ]
   },
   {
@@ -78969,13 +78966,10 @@
   },
   {
     "input": "RF774057545DE",
-    "carrier": "intl-post",
+    "carrier": "dhl",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "dhl"
     ]
   },
   {

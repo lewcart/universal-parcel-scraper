@@ -42,6 +42,17 @@ describe('S10-shaped numbers', () => {
     expect(detectCarrierMatch('RR123456785EE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
   });
 
+  it('names DHL for Deutsche Post registered letters whose check digit holds', () => {
+    for (const number of ['RR123456785DE', 'rk 123 456 785 de']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'dhl', confidence: 'high', candidates: ['dhl'] });
+    }
+    expect(detectCarrierMatch('RR123456789DE').candidates).not.toContain('dhl');
+    expect(detectCarrierMatch('RR123456789DE').candidates).not.toContain('intl-post');
+    expect(checksumRejections('RR123456789DE')).toEqual([{ carrier: 'dhl', rule: 'dhl-14', checksum: 's10' }]);
+    // Other German-issued services stay international mail.
+    expect(detectCarrierMatch('EE123456785DE')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+  });
+
   it('asks Poczta Polska first about a Polish-issued number without selecting it', () => {
     expect(detectCarrierMatch('cp 123 456 785 pl')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
     expect(recognitionCandidates('cp 123 456 785 pl')).toEqual([

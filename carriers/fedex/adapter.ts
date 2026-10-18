@@ -358,6 +358,10 @@ export class FedExTracker {
       recorder: this.#recorder,
     }, [
       { id: 'trawl', run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
+      // The service discards a context whose tracking call was refused, so a
+      // second read starts a fresh one: Akamai's 403 is intermittent.
+      { id: 'trawl', recovers: (error) => error instanceof ChallengeError && error.reason === 'api_denied' && error.status === 403,
+        run: ({ remainingMs, signal }) => this.#trawlResult(trawl, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal) },
     ]);
   }
 
@@ -390,7 +394,7 @@ export class FedExTracker {
       // Preserve that failure instead of reporting a missing capture or falling
       // back to an older successful reply from the same page.
       if (entry.status === 401 || entry.status === 403) {
-        throw new ChallengeError('FedEx', 'FedEx rejected the browser tracking request', { status: entry.status });
+        throw new ChallengeError('FedEx', 'FedEx rejected the browser tracking request', { status: entry.status, reason: 'api_denied' });
       }
       if (entry.status === 429) {
         const header = entry.headers['retry-after'] ?? entry.headers['Retry-After'];

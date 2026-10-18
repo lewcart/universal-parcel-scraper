@@ -524,8 +524,8 @@ describe('FedEx lookup steps', () => {
       .rejects.toMatchObject({ name: 'TransportError', kind: 'transport' });
   });
 
-  it.each([401, 403])('preserves an API HTTP %s rejection even when the page looks normal', async (status) => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
+  it.each([[401, 1], [403, 2]])('preserves an API HTTP %s rejection even when the page looks normal', async (status, reads) => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json({
       tier: 2, statusCode: 200, html: '<body>Tracking app</body>',
       capturedResponses: [
         { url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) },
@@ -534,8 +534,29 @@ describe('FedEx lookup steps', () => {
     }));
     const { recorder, records } = stepRecorder();
     await expect(new FedExTracker({ trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER))
-      .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge', status });
-    expect(records).toEqual(['trawl:challenge', 'lookup:trawl:challenge']);
+      .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge', status, reason: 'api_denied' });
+    expect(fetcher).toHaveBeenCalledTimes(reads);
+    expect(records).toEqual([...Array<string>(reads).fill('trawl:challenge'), 'lookup:trawl:challenge']);
+  });
+
+  it('reads once more in a fresh context after the tracking API\'s 403', async () => {
+    const reply = (capture: Record<string, unknown>) => Response.json({
+      tier: 3, statusCode: 200, html: '<body>Tracking app</body>', capturedResponses: [capture],
+    });
+    const fetcher = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(reply({ url: TRACK_API, status: 403, body: null }))
+      .mockResolvedValueOnce(reply({ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }));
+    const { recorder, records } = stepRecorder();
+    await expect(new FedExTracker({ trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER))
+      .resolves.toMatchObject({ status: 'delivered' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(records).toEqual(['trawl:challenge', 'trawl:ok', 'lookup:trawl:ok']);
+    // A challenged page, unlike a refused tracking call, is not read again.
+    fetcher.mockReset().mockResolvedValueOnce(Response.json({
+      tier: 3, statusCode: 200, html: '<html><body><h1>Access Denied</h1></body></html>', capturedResponses: [],
+    }));
+    await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ name: 'ChallengeError' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('accepts a successful reply after an earlier browser rejection', async () => {

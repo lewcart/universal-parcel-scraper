@@ -37,6 +37,9 @@ fallback')`.
 
 - The newest captured reply decides. A captured 401/403 is a `ChallengeError`, so routing
   applies cooldown and fallback; it is not hidden behind an older 200 from the same page.
+- A captured 403 gets one more browser read within the same budget. The service discards
+  the refused context, so the second read starts a fresh one, and Akamai's 403 is
+  intermittent. A 401 or a challenged page is not repeated.
 - Other captured errors: 429 is `RateLimitedError` with its `Retry-After`; 5xx is
   `UpstreamHttpError`; any other 4xx, including 404, is a `TransportError`, never
   not-found.
@@ -106,7 +109,8 @@ application identifiers and issued tokens stay outside the repository.
   serve anonymous lookups. Reconsider if the browser path stays unreliable.
 - Copying cookies into a fresh browser context: acceptance does not carry over, while the
   original context keeps working. Hence the retained session in TRAWL.
-- Blind retries after a 403: replies carry no `Retry-After`, and retries did not recover.
+- Retries in the same context after a 403: replies carry no `Retry-After`, and retries did
+  not recover.
 - Other browsers: stock headless Chrome gets FedEx's `System Down` shell before the form
   loads; headful Chrome loads the form but its tracking POST gets the same 403. Extra waits
   and pointer or Enter events don't change the outcome.

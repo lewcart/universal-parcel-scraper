@@ -6149,7 +6149,7 @@ export const CARRIER_CATALOG = {
   },
   "apple-express": {
     "displayName": "Apple Express",
-    "color": "#f20036",
+    "color": "#cc2131",
     "aliases": [
       "Apple Express Ltd.",
       "Apple Express Courier",
@@ -8491,7 +8491,7 @@ export const CARRIER_CATALOG = {
   },
   "copa-courier": {
     "displayName": "Copa Airlines Courier",
-    "color": "#233e93",
+    "color": "#0032a0",
     "aliases": [
       "Copa Courier"
     ],
@@ -12274,7 +12274,7 @@ export const CARRIER_CATALOG = {
   },
   "fleetoptics": {
     "displayName": "FleetOptics",
-    "color": "#e33952",
+    "color": "#02001e",
     "aliases": [
       "FleetOptics Inc.",
       "Fleet Optics",
@@ -15849,7 +15849,7 @@ export const CARRIER_CATALOG = {
   },
   "kyoungdong": {
     "displayName": "Kyungdong Express",
-    "color": "#141991",
+    "color": "#2f308d",
     "aliases": [
       "경동택배",
       "Kyoungdong Express",
@@ -22378,7 +22378,7 @@ export const CARRIER_CATALOG = {
   },
   "skyking": {
     "displayName": "SkyKing",
-    "color": "#007dc6",
+    "color": "#ed1c24",
     "aliases": [
       "Skyking",
       "SkyKing Courier Services"

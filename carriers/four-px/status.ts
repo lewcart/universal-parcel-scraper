@@ -26,7 +26,10 @@ const CODES = new Map<string, ClassifiedStatus>([
 // These codes relay whatever step a partner reported, from a label to an
 // arrival in the destination country, so the wording decides the stage.
 const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
-const WORDING: Readonly<Record<string, Stage>> = { 'Waybill generated': 'registered' };
+// By `normalizeStatusWording` wording. A partner's label can name its own
+// waybill: "Waybill generated for …", as Emile words it.
+const WORDING: ReadonlyMap<string, Stage> = new Map([['waybill generated', 'registered']]);
+const LABEL_FOR = /^waybill generated for [a-z0-9]+$/;
 // Scans a partner relays without a code, by `normalizeStatusWording` wording.
 const UNCODED: ReadonlyMap<string, Stage> = new Map([
   ['your shipment has departed from the transit origin', 'in_transit'],
@@ -43,23 +46,25 @@ export function fourPxStatus(code: string, description = ''): FourPxStatus | und
   const uncoded = code ? undefined : UNCODED.get(normalizeStatusWording(description));
   if (uncoded) return { status: languageStageStatus(uncoded), stage: uncoded, source: 'carrier_map' };
   if (!WORDED.has(code)) return undefined;
-  const exact = WORDING[description];
+  const exact = wordedStage(normalizeStatusWording(description));
   if (exact) return { status: languageStageStatus(exact), stage: exact, source: 'carrier_map' };
   const worded = classifyWording(description, 'pending');
   return worded.source === 'none' ? undefined : { status: languageStageStatus(worded.stage), stage: worded.stage, source: worded.source };
 }
 
-const NORMALIZED_WORDING = new Map(Object.entries(WORDING).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
+function wordedStage(wording: string): Stage | undefined {
+  return WORDING.get(wording) ?? (LABEL_FOR.test(wording) ? 'registered' : undefined);
+}
 
 /**
- * What the map says about one scan: a code it maps, the exact wording of a
+ * What the map says about one scan: a code it maps, the known wording of a
  * code that relays a partner's step, or a codeless scan it knows. Other
  * wording under those codes is left to the shared rules.
  */
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => {
     if (!code) return UNCODED.get(wording);
-    return CODES.get(code)?.stage ?? (WORDED.has(code) ? NORMALIZED_WORDING.get(wording) : undefined);
+    return CODES.get(code)?.stage ?? (WORDED.has(code) ? wordedStage(wording) : undefined);
   },
   gaps: [],
 };

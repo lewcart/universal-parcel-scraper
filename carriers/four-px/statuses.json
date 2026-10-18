@@ -175,7 +175,8 @@
       "language": "en",
       "stage": "registered",
       "confirmedBy": "live",
-      "firstSeen": "2026-10-08"
+      "firstSeen": "2026-10-08",
+      "note": "Also relayed as \"Waybill generated for\" and the partner's waybill number, staged the same."
     },
     {
       "code": "FPX_O_IR",

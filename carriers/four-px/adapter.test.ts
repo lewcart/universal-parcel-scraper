@@ -145,6 +145,7 @@ describe('4PX result projection', () => {
     ['FPX_D_AOPC', 'Arrive in transit center', 'in_transit', 'in_transit', 'carrier_map'],
     ['FPX_C_SPQS', '4px received shipment.', 'in_transit', 'accepted', 'carrier_map'],
     ['FPX_O_IR', 'Waybill generated', 'pending', 'registered', 'carrier_map'],
+    ['FPX_O_IR', 'Waybill generated for EM000000000001CA', 'pending', 'registered', 'carrier_map'],
     ['FPX_O_IR', 'The shipment item has arrived at the country of destination.', 'in_transit', 'in_transit', 'wording:language'],
     ['FPX_O_IRI', 'Picked up by shipping partner, usps awaiting item', 'in_transit', 'accepted', 'wording:language'],
   ])('reads %s "%s" as %s', (code, description, status, stage, source) => {
@@ -170,6 +171,8 @@ describe('4PX result projection', () => {
     expect(statusMap.stage('FPX_NEW', 'your shipment has arrived at the transit destination')).toBeUndefined();
     expect(statusMap.stage('FPX_S_OK', 'delivered, in/at mailbox')).toBe('delivered');
     expect(statusMap.stage('FPX_O_IR', 'waybill generated')).toBe('registered');
+    expect(statusMap.stage('FPX_O_IR', 'waybill generated for em000000000001ca')).toBe('registered');
+    expect(statusMap.stage('FPX_O_IR', 'waybill generated for the sender, picked up')).toBeUndefined();
   });
 
   it('proves the declared capabilities using the synthetic response', () => {

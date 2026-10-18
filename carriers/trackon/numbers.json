@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -35,7 +35,39 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Voxya complaint against Trackon Courier gives it as the tracking id of a parcel the courier would not deliver to the door."
+      "note": "A Voxya complaint against Trackon Courier gives it as the tracking id of a parcel the courier would not deliver to the door. Trackon's tracking knew it."
+    },
+    {
+      "number": "100449931424",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.complaintsboard.com/trackon-couriers-b121228",
+        "date": "2026-07-25",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd-fr",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "A ComplaintsBoard review of Trackon Couriers gives it as the consignment number of a shipment booked in Gujarat. Trackon's tracking knew it."
     },
     {
       "number": "900018827783",

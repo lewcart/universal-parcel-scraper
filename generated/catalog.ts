@@ -27835,7 +27835,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "trackon",
+      "recognitionRank": 821
     },
     "canaryUrl": "https://www.trackon.in/",
     "trackingUrlTemplate": "https://www.trackon.in/courier-tracking?awb={trackingNumber}",

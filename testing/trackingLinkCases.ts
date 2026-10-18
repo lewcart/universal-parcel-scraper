@@ -1397,6 +1397,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'tci-express': 'the page answers an unknown docket with an empty result and neither the number nor a notice, so only a real parcel verifies the link',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the page often stays empty past the render window',
   'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page, so number forwarding cannot be verified daily; the page puts the number from its address in its search field',
+  trackon: 'the page answers an unknown number with its empty search form, without the number or a notice, and shows only consignments of the last 75 days, so only a recent real consignment verifies the link',
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
   servientrega: 'the tracker shows its result in a frame from mobile.servientrega.com, which does not answer connections from Europe, North America or Asia, so number forwarding cannot be verified daily',
   'shree-maruti': 'shreemaruti.com shows the tracker in a frame from tracking.shreemaruti.com, which looks the number up on load, and the page itself holds only the menu and notices the home page has, so the rendered-page check cannot tell it is a tracker',

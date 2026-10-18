@@ -260,6 +260,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "sfc": 955,
   "shadowfax": 595,
   "shipentegra": 833,
+  "shree-maruti": 822,
   "skroutz-last-mile": 913,
   "slovak-parcel-service": 180,
   "slovenska-posta": 170,

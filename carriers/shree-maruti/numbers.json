@@ -163,7 +163,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -182,7 +182,7 @@
           "dpd-uk"
         ]
       },
-      "note": "Looked up on Shree Maruti's own tracker at clients.shreemaruti.com, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Shree Maruti's own tracker at clients.shreemaruti.com, as an archived address shows; Shree Maruti's tracker returns a delivered history for it."
     },
     {
       "number": "21014200072415",
@@ -418,7 +418,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -437,7 +437,7 @@
           "dpd-uk"
         ]
       },
-      "note": "A Voxya complaint against Shree Maruti Courier gives it as the consignment number of a partly lost shipment."
+      "note": "A Voxya complaint against Shree Maruti Courier gives it as the consignment number of a partly lost shipment. Shree Maruti's tracker returns a delivered history for it."
     },
     {
       "number": "24034200454699",
@@ -469,6 +469,37 @@
         ]
       },
       "note": "A Voxya complaint against Shree Maruti Courier Services gives it as the courier tracking number of a misrouted parcel."
+    },
+    {
+      "number": "25197300008725",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/shreemaruticourier/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-be",
+          "dpd-de",
+          "dpd-nl",
+          "dpd-uk"
+        ]
+      },
+      "note": "ParcelPanel's Shree Maruti Courier page offered it to try. Shree Maruti's tracker returns a delivered history for it."
     }
   ]
 }

@@ -1399,6 +1399,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page, so number forwarding cannot be verified daily; the page puts the number from its address in its search field',
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
   servientrega: 'the tracker shows its result in a frame from mobile.servientrega.com, which does not answer connections from Europe, North America or Asia, so number forwarding cannot be verified daily',
+  'shree-maruti': 'shreemaruti.com shows the tracker in a frame from tracking.shreemaruti.com, which looks the number up on load, and the page itself holds only the menu and notices the home page has, so the rendered-page check cannot tell it is a tracker',
   swiftx: 'swiftx-express.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',
   speedex: 'www.speedex.gr passes the number only to its tracker frame, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',

@@ -25252,7 +25252,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shree-maruti",
+      "recognitionRank": 822
     },
     "canaryUrl": "https://shreemaruti.com/track-shipment/",
     "trackingUrlTemplate": "https://shreemaruti.com/track-shipment/?awb={trackingNumber}",

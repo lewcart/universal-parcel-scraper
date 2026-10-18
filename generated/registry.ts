@@ -377,6 +377,7 @@ import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
 import { adapter as winit } from '../carriers/winit/adapter.js';
 import { adapter as xdp } from '../carriers/xdp/adapter.js';
+import { adapter as xlcourier } from '../carriers/xlcourier/adapter.js';
 import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
 import { adapter as xpressbees } from '../carriers/xpressbees/adapter.js';
 import { adapter as yamato } from '../carriers/yamato/adapter.js';
@@ -767,6 +768,7 @@ export const REGISTRY: RegistryDefinition = {
     "whistl": whistl,
     "winit": winit,
     "xdp": xdp,
+    "xlcourier": xlcourier,
     "xpo-ltl": xpoLtl,
     "xpressbees": xpressbees,
     "yamato": yamato,
@@ -1480,7 +1482,7 @@ export const REGISTRY: RegistryDefinition = {
     "x-trac": "universal",
     "xde-logistics": "universal",
     "xdp": "xdp",
-    "xlcourier": "universal",
+    "xlcourier": "xlcourier",
     "xpo-ltl": "xpo-ltl",
     "xpressbees": "xpressbees",
     "yalidine": "universal",

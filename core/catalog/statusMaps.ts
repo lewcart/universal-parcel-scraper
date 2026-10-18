@@ -302,6 +302,7 @@ import { statusMap as wanbexpress } from '../../carriers/wanbexpress/status.js';
 import { statusMap as whistl } from '../../carriers/whistl/status.js';
 import { statusMap as winit } from '../../carriers/winit/status.js';
 import { statusMap as xdp } from '../../carriers/xdp/status.js';
+import { statusMap as xlcourier } from '../../carriers/xlcourier/status.js';
 import { statusMap as xpoLtl } from '../../carriers/xpo-ltl/status.js';
 import { statusMap as zto } from '../../carriers/zto/status.js';
 import { statusMap as yunexpress } from '../../carriers/yunexpress/status.js';
@@ -354,7 +355,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   't-cat': tCat, 't-group': tGroup, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, 'team-global-express': teamGlobalExpress,
   teleship, 'tforce-freight': tforceFreight, 'thailand-post': thailandPost, thhy, tiki, tnt, 'tnt-it': tntIt, toptrans, torrestir,
   'total-express': totalExpress, transaher, tsjy, 'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel, ups, urvaam,
-  'uzbekistan-post': uzbekistanPost, 'vasp-expresso': vaspExpresso, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, winit, xdp, 'xpo-ltl': xpoLtl,
+  'uzbekistan-post': uzbekistanPost, 'vasp-expresso': vaspExpresso, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, winit, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   'yilong-logistics': yilongLogistics, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zeleris,
 };

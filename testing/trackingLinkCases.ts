@@ -1172,6 +1172,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'teleship', number: 'TSGBUS000000000000000',
     route: /^https:\/\/teleship\.com\/tracking\?number=TSGBUS000000000000000$/,
     marker: /We could not find a parcel with this tracking ID|Teleship Tracking Number/ },
+  // The page reads the number from its address on load and shows it over the answer.
+  { carrier: 'xlcourier', number: 'XLC00000000000',
+    route: /^https:\/\/www\.xlcourier\.com\/trackOrder\?number=XLC00000000000$/,
+    marker: /We couldn't find any package with the tracking number you provided|Tracking Number/ },
   // The page checks the device, moves a desktop to its `tracking` route and renders over Blazor's
   // connection; an unknown number gets the sentence in place of the shipment.
   { carrier: 'transaher', number: '103000000000000000000000000',

@@ -30,15 +30,14 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "xlcourier",
         "confidence": "high"
       },
-      "note": "ParcelPanel's XL Courier page offers it to try; an aggregator sample that fits the tracker's own number check."
+      "note": "ParcelPanel's XL Courier page offers it to try. XLCourier's tracker knows it."
     }
   ]
 }

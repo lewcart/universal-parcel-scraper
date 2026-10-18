@@ -28163,11 +28163,25 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xlcourier",
+      "recognitionRank": 841,
+      "localClocks": true
     },
     "canaryUrl": "https://www.xlcourier.com/trackOrder",
+    "trackingUrlTemplate": "https://www.xlcourier.com/trackOrder?number={trackingNumber}",
     "trackingSearchUrl": "https://www.xlcourier.com/trackOrder",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.xlcourier.com",
+          "xlcourier.com"
+        ],
+        "pathPattern": "^/trackOrder(?:\\.html)?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^XLC\\d{10,12}$",

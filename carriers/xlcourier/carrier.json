@@ -17,19 +17,64 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "xlcourier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 841
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
+    "url": "https://www.xlcourier.com/trackOrder?number={trackingNumber}",
     "searchUrl": "https://www.xlcourier.com/trackOrder",
     "canaryUrl": "https://www.xlcourier.com/trackOrder",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "failed_delivery_reason",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "failed_delivery_reason",
+      "provider_code"
+    ],
+    "discarded": [
+      "recipient_address"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "www.xlcourier.com",
+        "xlcourier.com"
+      ],
+      "pathPattern": "^/trackOrder(?:\\.html)?$",
+      "params": [
+        "number"
+      ]
+    }
+  ],
   "detection": [
     {
       "id": "xlcourier-1",

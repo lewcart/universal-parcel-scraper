@@ -14,6 +14,10 @@ digits. One example is too little to claim the layout, so no rule is proposed.
 
 The tracker's route `pmm.com.mx/rastreo/{number}` looks the number up on load, and is read as a
 link.
+The page looks the number up with an anonymous GET to
+`apibase.pmm.com.mx/pagepmm/api/v1/rastreo?numero={number}`. An unknown number answers HTTP 404
+`NOT_FOUND`, "El numero de rastreo no existe". No found reply has been seen, so there is no
+adapter yet.
 
 ## Testing
 

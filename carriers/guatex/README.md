@@ -13,6 +13,9 @@ samples in two variants are too few for a rule, so no rule claims them.
 
 Guatex's site opens its tracker at `servicios.guatex.gt/Guatex/RastreoTracking` with `tipo=G`
 and the guía in `dato`. The tracker page also takes a guía typed into its own field.
+It looks the guía up with a POST of `noguia` to `servicios.guatex.gt/Guatex/Login/ObtengoTrackingGuia`,
+which needs no login. An unknown guía answers code 204, "El número de guía no existe". No found
+reply has been seen, so there is no adapter yet.
 
 ## Testing
 

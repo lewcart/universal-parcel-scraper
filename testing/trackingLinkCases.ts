@@ -1033,6 +1033,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fermopoint', number: 'Z0000ZZ000000',
     route: /^https:\/\/www\.fermopoint\.it\/prenotazione\/Z0000ZZ000000$/,
     marker: /non ci risulta essere attivo|Fermoticket n\./ },
+  // The tracker keeps the reference in its search box and names it in its notice for an unknown one.
+  { carrier: 'citymail', number: 'BCMZZ0000000',
+    route: /^https:\/\/tracking\.citymail\.se\/\?search=BCMZZ0000000$/,
+    marker: /Ingen spårningsinformation hittades för den angivna referensen|Ange paketreferens nedan/ },
 ];
 
 /**

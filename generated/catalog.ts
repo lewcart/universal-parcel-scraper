@@ -8251,7 +8251,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Stockholm",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "citymail",
+      "recognitionRank": 868
     },
     "canaryUrl": "https://www.citymail.se/spara-paket/",
     "trackingUrlTemplate": "https://tracking.citymail.se/?search={trackingNumber}",

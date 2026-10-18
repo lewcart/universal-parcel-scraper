@@ -47,16 +47,16 @@
         "url": "https://web.archive.org/web/20250118184900/https://tracking.citymail.se/?search=BCMIG00488908",
         "date": "2025-01-18",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "citymail",
         "confidence": "high"
       },
-      "note": "Looked up on CityMail's own tracker, as an archived address shows; the capture was not opened, so the history was not seen."
+      "note": "Archived lookup on CityMail's own tracker; the capture shows the parcel from pre-advice through the terminal to delivery at the door."
     },
     {
       "number": "BCMTF2357119",
@@ -142,16 +142,16 @@
         "url": "https://web.archive.org/web/20241211135706/https://tracking.citymail.se/?search=BCMU113378012",
         "date": "2024-12-11",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "citymail",
         "confidence": "high"
       },
-      "note": "Looked up on CityMail's own tracker, as an archived address shows; the capture was not opened, so the history was not seen."
+      "note": "Archived lookup on CityMail's own tracker; the capture shows a letterbox delivery scan, then a failed delivery because the address had no letterbox."
     },
     {
       "number": "BCMU118177365",
@@ -161,16 +161,16 @@
         "url": "https://web.archive.org/web/20260803052346/https://tracking.citymail.se/?search=BCMU118177365",
         "date": "2026-08-03",
         "dateKind": "capture",
-        "access": "indexed_excerpt"
+        "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "citymail",
         "confidence": "high"
       },
-      "note": "Looked up on CityMail's own tracker, as an archived address shows; the capture was not opened, so the history was not seen."
+      "note": "Archived lookup on CityMail's own tracker; the capture shows a parcel sent to a service point after a failed delivery, not collected and sent back to the sender."
     },
     {
       "number": "AM010404344",

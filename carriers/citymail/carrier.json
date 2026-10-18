@@ -18,18 +18,62 @@
   "timezone": "Europe/Stockholm",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "citymail",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 868
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "eta",
+    "sender_name",
+    "service_name",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://tracking.citymail.se/?search={trackingNumber}",
     "searchUrl": "https://www.citymail.se/spara-paket/",
     "canaryUrl": "https://www.citymail.se/spara-paket/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "eta",
+      "sender_name",
+      "service_name",
+      "pickup_point",
+      "postcodes",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "eta",
+      "sender_name",
+      "service_name",
+      "pickup_point"
+    ],
+    "discarded": [
+      "postcodes",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "provider_code",
+      "weight",
+      "recipient_name",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

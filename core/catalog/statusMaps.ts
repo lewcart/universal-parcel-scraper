@@ -51,6 +51,7 @@ import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
 import { statusMap as chunghwaPost } from '../../carriers/chunghwa-post/status.js';
+import { statusMap as citymail } from '../../carriers/citymail/status.js';
 import { statusMap as cjLogistics } from '../../carriers/cj-logistics/status.js';
 import { statusMap as cjPacket } from '../../carriers/cj-packet/status.js';
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
@@ -279,7 +280,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'barid-al-maghrib': baridAlMaghrib, belpost, 'blue-express': blueExpress, bosta, 'box-now': boxNow, 'bulgarian-posts': bulgarianPosts,
   byhd, cacesa, cargus, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,
-  'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, coordinadora,
+  'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, coordinadora,
   'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'dai-post': daiPost,
   'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,

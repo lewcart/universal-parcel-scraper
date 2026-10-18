@@ -3,6 +3,7 @@
 /** Carriers whose adapter can recognize a number, by popularity rank (carrier.json tracking.recognition). */
 export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "17feia": 991,
+  "2go": 799,
   "99minutos": 40,
   "a-tu-hora-express": 847,
   "abf-freight": 10,

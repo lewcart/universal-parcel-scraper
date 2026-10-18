@@ -12,13 +12,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup on 2GO Express's tracking API; the capture was not opened."
+      "note": "An archived lookup on 2GO Express's tracking API; that API still knows it as a delivered air waybill."
     },
     {
       "number": "T2331954D",
@@ -163,7 +163,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -172,7 +172,7 @@
           "2go"
         ]
       },
-      "note": "A ComplaintsBoard complaint about 2GO Group quotes 2GO Express's text saying 2GO will attempt to deliver this package that day."
+      "note": "A ComplaintsBoard complaint about 2GO Group quotes 2GO Express's text saying 2GO will attempt to deliver this package that day; the API behind 2GO's earlier tracking page knows it as a delivered parcel."
     },
     {
       "number": "C1867094M",
@@ -185,7 +185,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -194,7 +194,7 @@
           "2go"
         ]
       },
-      "note": "A ComplaintsBoard comment on 2GO Group gives it as the tracking number of a parcel whose tracking had stopped updating."
+      "note": "A ComplaintsBoard comment on 2GO Group gives it as the tracking number of a parcel whose tracking had stopped updating; 2GO Express's current tracker knows it as a delivered parcel."
     },
     {
       "number": "AA7381080",

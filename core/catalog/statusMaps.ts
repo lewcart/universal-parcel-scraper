@@ -11,6 +11,7 @@
  * (`providers/status.ts`).
  */
 import { statusMap as seventeenFeia } from '../../carriers/17feia/status.js';
+import { statusMap as twoGo } from '../../carriers/2go/status.js';
 import { statusMap as fourSeventyTwo } from '../../carriers/4-72/status.js';
 import { statusMap as fivePost } from '../../carriers/5post/status.js';
 import { statusMap as ninetynineMinutos } from '../../carriers/99minutos/status.js';
@@ -361,7 +362,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
-  '17feia': seventeenFeia, '4-72': fourSeventyTwo, '5post': fivePost, '99minutos': ninetynineMinutos, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'abf-freight': abfFreight, 'acs-courier': acsCourier,
+  '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '5post': fivePost, '99minutos': ninetynineMinutos, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'abf-freight': abfFreight, 'acs-courier': acsCourier,
   ajex, 'algerie-poste': algeriePoste, aliexpress,
   'allegro-one': allegroOne, ampm, 'an-post': anPost, andreani, anjun, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,

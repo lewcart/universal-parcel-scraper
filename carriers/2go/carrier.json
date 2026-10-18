@@ -18,17 +18,51 @@
   "timezone": "Asia/Manila",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "2go",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 799
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "searchUrl": "https://track.2go.com.ph/",
     "canaryUrl": "https://track.2go.com.ph/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "canonical_tracking_number",
+      "customer_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "customer_reference"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

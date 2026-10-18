@@ -5096,7 +5096,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "2go",
+      "recognitionRank": 799,
+      "localClocks": true
     },
     "canaryUrl": "https://track.2go.com.ph/",
     "trackingSearchUrl": "https://track.2go.com.ph/",

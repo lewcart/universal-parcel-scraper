@@ -577,6 +577,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'courier-center', number: '013000000000',
     route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000$/,
     marker: /Δεν βρέθηκε φορτωτική με τον αριθμό|Αριθμός Φορτωτικής/ },
+  // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
+  { carrier: 'taxydema', number: '400000000000',
+    route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,
+    marker: /Εντοπισμός Πακέτου|Δεν βρέθηκε αποστολή με τα κριτήρια επιλογής σας/ },
   // The tracker looks the voucher in its address up as it is served; an unknown one gets a notice without it.
   { carrier: 'easy-mail', number: '19999999990',
     route: /^https:\/\/trackntrace\.easymail\.gr\/19999999990$/,

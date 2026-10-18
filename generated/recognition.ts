@@ -237,6 +237,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "swiss-post-cargo": 550,
   "t-cat": 966,
   "t-group": 877,
+  "taxydema": 864,
   "tcs-pakistan": 968,
   "team-global-express": 932,
   "tforce-freight": 946,

@@ -24469,7 +24469,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "taxydema",
+      "recognitionRank": 864
     },
     "canaryUrl": "https://www.taxydema.gr/track-and-trace.html",
     "trackingUrlTemplate": "https://www.taxydema.gr/entopismos/{trackingNumber}",

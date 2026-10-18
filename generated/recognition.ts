@@ -263,6 +263,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "saudi-post": 963,
   "seino": 943,
   "seko": 854,
+  "sendex": 794,
   "sending": 891,
   "serpost": 893,
   "servientrega": 979,

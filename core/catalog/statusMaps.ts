@@ -290,6 +290,7 @@ import { statusMap as sameday } from '../../carriers/sameday/status.js';
 import { statusMap as saudiPost } from '../../carriers/saudi-post/status.js';
 import { statusMap as seino } from '../../carriers/seino/status.js';
 import { statusMap as seko } from '../../carriers/seko/status.js';
+import { statusMap as sendex } from '../../carriers/sendex/status.js';
 import { statusMap as sending } from '../../carriers/sending/status.js';
 import { statusMap as serpost } from '../../carriers/serpost/status.js';
 import { statusMap as servientrega } from '../../carriers/servientrega/status.js';
@@ -421,7 +422,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier, proships,
   'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions, 'quicksilver-sa': quicksilverSa, raben, redpack, redur, redx, relaytech,
   'rl-carriers': rlCarriers,
-  'rpx-indonesia': rpxIndonesia, sagawa, saia, sailpost, sameday, 'saudi-post': saudiPost, seino, seko, sending, serpost, servientrega, sfc,
+  'rpx-indonesia': rpxIndonesia, sagawa, saia, sailpost, sameday, 'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, sfc,
   shadowfax, shipa, shipblu, shipentegra, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile, 'skynet-worldwide': skynetWorldwide,
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,

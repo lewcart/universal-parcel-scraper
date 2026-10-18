@@ -31,7 +31,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture shows this guía with its movements."
+      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture and Sendex's current tracker show this guía with its movements."
     },
     {
       "number": "399118350012",
@@ -64,7 +64,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture shows this guía with its movements."
+      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture and Sendex's current tracker show this guía with its movements."
     },
     {
       "number": "397458030012",
@@ -99,7 +99,7 @@
           "sagawa"
         ]
       },
-      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture shows this guía with its movements."
+      "note": "An archived lookup on Sendex's former tracker at sendex.mx; the capture and Sendex's current tracker show this guía with its movements."
     },
     {
       "number": "393705780012",
@@ -112,7 +112,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -131,7 +131,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "394292010011",
@@ -144,7 +144,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -166,7 +166,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "395531760019",
@@ -179,7 +179,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -198,7 +198,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "397803580018",
@@ -211,7 +211,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -230,7 +230,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "399642640011",
@@ -243,7 +243,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -263,7 +263,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's former tracker at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "313998380015",
@@ -276,7 +276,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -295,7 +295,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "314009910014",
@@ -308,7 +308,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -327,7 +327,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "314012460015",
@@ -340,7 +340,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -359,7 +359,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     },
     {
       "number": "314012790015",
@@ -372,7 +372,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -391,7 +391,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Sendex's older tracker page at sendex.mx, as an archived address shows; Sendex's current tracker shows its movements."
     }
   ]
 }

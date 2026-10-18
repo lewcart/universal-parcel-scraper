@@ -25109,7 +25109,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sendex",
+      "recognitionRank": 794,
+      "localClocks": true
     },
     "canaryUrl": "https://sendex.coordi.com/rastreo/",
     "trackingSearchUrl": "https://sendex.coordi.com/rastreo/",

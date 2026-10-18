@@ -280,7 +280,13 @@ step exists for future protocol changes.
   "SPL", Saudi Post, on Riyadh time: its own tracker dates an origin post's scans and an
   EMS partner's abroad on their own place's clock ([Saudi Post](../../carriers/saudi-post/README.md)),
   so a location in another country, or a copy at the same place (above), dates them
-  instead. A name added here moves its stored scans (see Limitations).
+  instead. Royal Mail's relays of its partners' scans abroad are on Central European time
+  whatever the country's clock: its receipt and departure at France's office of exchange
+  have the digits of La Poste's own scans, and its "Item Received" and customs scans in
+  Portugal come an hour after CTT's digits, at the same minute. Step 1 reads a Royal Mail
+  scan located outside the UK and the Crown Dependencies on Brussels time, and so one with
+  no place that puts the item "in the destination country" on a parcel bound abroad. A
+  name or relay added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
   written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
   on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go

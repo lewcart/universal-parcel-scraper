@@ -361,6 +361,24 @@ const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
   spl: 'Asia/Riyadh', saudipost: 'Asia/Riyadh',
 };
+/**
+ * Royal Mail relays its partners' scans abroad on Central European time,
+ * whatever the country's own clock. On a parcel to France, its receipt and
+ * departure at the French office of exchange had the digits of La Poste's own
+ * scans, Paris time; on one to Portugal, its "Item Received" and customs scans
+ * came an hour after CTT's own digits, Lisbon time, at the same minute. A scan
+ * located outside the UK and the Crown Dependencies is such a relay, and so is
+ * one with no place in Royal Mail's words for the destination ("Your item is
+ * currently with Customs in the destination country.").
+ */
+const ROYAL_MAIL_RELAY_CLOCK = 'Europe/Brussels';
+const ROYAL_MAIL_HOME = new Set(['GB', 'JE', 'GG', 'IM']);
+const ROYAL_MAIL_ABROAD = /\bin the destination country\b/i;
+function royalMailRelay(location: string, status: string, destination: string | null): boolean {
+  const country = countryCode(lastPlace(location));
+  if (country) return !ROYAL_MAIL_HOME.has(country);
+  return !location && !ROYAL_MAIL_HOME.has(destination ?? '') && ROYAL_MAIL_ABROAD.test(status);
+}
 const UNITED_STATES = /^(?:us|usa|united states(?: of america)?)$/i;
 const POSTAL_CODE = /\s*\b(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$/i;
 // A country's code before a postcode, as FedEx ends a location: "EXAMPLE TOWN, RR, IT 12345".
@@ -626,6 +644,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   // A SwiftX label keeps its own clock, and a listed SwiftX site dates its scans (`siteZone`).
   if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
   if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
+  if (key === 'royalmail' && royalMailRelay(scanLocation(name, state.location), status, destination)) return ROYAL_MAIL_RELAY_CLOCK;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").

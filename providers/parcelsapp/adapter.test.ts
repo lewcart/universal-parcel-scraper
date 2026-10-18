@@ -894,7 +894,7 @@ describe('ParcelsApp result parsing', () => {
       'Europe/London')).toEqual(['2026-09-11T21:38:00.000Z', '2026-09-10T09:36:00.000Z']);
     expect(times(['EMS'], [scan('2026-09-11T23:38:00+00:00', 'United States')], 'Europe/London')).toEqual(['2026-09-11T23:38:00.000Z']);
     // Canada Post's "USA" names the US for other carriers' guesses too.
-    expect(times(['Royal Mail'], [scan('2026-09-11T23:38:00Z', 'Example City, USA')])).toEqual(['2026-09-11T23:38:00.000Z']);
+    expect(times(['Yodel'], [scan('2026-09-11T23:38:00Z', 'Example City, USA')])).toEqual(['2026-09-11T23:38:00.000Z']);
   });
 
   it('copies a placed scan of another carrier, reads known clocks, and keeps the label of a wall-clock scan with no other zone', () => {
@@ -1358,6 +1358,27 @@ describe('ParcelsApp result parsing', () => {
       { date: '2026-10-12T07:13:04Z', status: 'In transit. Left the origin country.', carrier: 0, location: 'PTLISB - (OUTRO) LISBON PROV' },
       { date: '2026-10-11T10:00:00Z', status: 'Accepted.', carrier: 0, location: 'EXAMPLE PLACE' },
     ])).toEqual(['2026-10-14T07:10:00.000Z', '2026-10-12T06:13:04.000Z', '2026-10-11T09:00:00.000Z']);
+  });
+
+  it('reads Royal Mail\'s relays of its partners\' scans abroad on Central European time', () => {
+    // La Poste's own scans have the digits of Royal Mail's in France, and CTT's are an hour less in Portugal.
+    const times = (destinationCode: string, states: Record<string, unknown>[]) => parseParcelsAppResponse({
+      carriers: ['Royal Mail'], originCode: 'GB', destinationCode, states,
+    }, number, identity()).events?.map((scan) => scan.time);
+    const scan = (date: string, status: string, location?: string) => ({ date, status, carrier: 0, ...(location ? { location } : {}) });
+    expect(times('PT', [
+      scan('2026-07-21T11:24:00Z', 'Your item is currently with Customs in the destination country.'),
+      scan('2026-07-21T10:05:00Z', 'Item Received', 'Portugal'),
+      scan('2026-07-17T04:12:09Z', 'Item Leaving the UK', 'EXAMPLE HWDC'),
+      scan('2026-07-16T18:40:00Z', 'Item Received', 'Example MC'),
+    ])).toEqual(['2026-07-21T09:24:00.000Z', '2026-07-21T08:05:00.000Z', '2026-07-17T03:12:09.000Z', '2026-07-16T17:40:00.000Z']);
+    expect(times('FR', [scan('2026-07-21T19:30:00Z', 'Item has left the overseas International Processing Centre', 'EXAMPLE IPC, France')]))
+      .toEqual(['2026-07-21T17:30:00.000Z']);
+    // Bound for the UK, a customs scan with no place is Royal Mail's own, at home, as are the Crown Dependencies'.
+    expect(times('GB', [
+      scan('2026-07-21T11:24:00Z', 'Your item is currently with Customs in the destination country.'),
+      scan('2026-07-20T09:02:00Z', 'Item Received', 'Jersey'),
+    ])).toEqual(['2026-07-21T10:24:00.000Z', '2026-07-20T08:02:00.000Z']);
   });
 
   it('reads the origin post\'s leg in UPU\'s and EMS\'s copies on the origin\'s clock, wherever their place is a code', () => {

@@ -204,6 +204,7 @@ import { adapter as linhan } from '../carriers/linhan/adapter.js';
 import { adapter as lionParcel } from '../carriers/lion-parcel/adapter.js';
 import { adapter as logen } from '../carriers/logen/adapter.js';
 import { adapter as loggi } from '../carriers/loggi/adapter.js';
+import { adapter as logoix } from '../carriers/logoix/adapter.js';
 import { adapter as loomisExpress } from '../carriers/loomis-express/adapter.js';
 import { adapter as lotteGlobal } from '../carriers/lotte-global/adapter.js';
 import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
@@ -560,6 +561,7 @@ export const REGISTRY: RegistryDefinition = {
     "lion-parcel": lionParcel,
     "logen": logen,
     "loggi": loggi,
+    "logoix": logoix,
     "loomis-express": loomisExpress,
     "lotte-global": lotteGlobal,
     "magyar-posta": magyarPosta,
@@ -1077,7 +1079,7 @@ export const REGISTRY: RegistryDefinition = {
     "lion-parcel": "lion-parcel",
     "logen": "logen",
     "loggi": "loggi",
-    "logoix": "universal",
+    "logoix": "logoix",
     "loomis-express": "loomis-express",
     "lotte-global": "lotte-global",
     "lso": "universal",

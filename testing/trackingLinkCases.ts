@@ -1068,6 +1068,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'nox', number: '220000000000000101000000',
     route: /^https:\/\/trackandtrace\.app\.nox\.express\/scannungen\/220000000000000101000000$/,
     marker: /Der von Ihnen angegebene Barcode ist uns nicht bekannt|Behalten Sie mit Track & Trace Ihre Sendungen im Blick/ },
+  // The server renders the page; its heading names the number over the notice for an unknown one.
+  { carrier: 'logoix', number: 'LIX9000000003',
+    route: /^https:\/\/www\.logoix\.com\/cgi-bin\/tnt\.pl\?q=LIX9000000003$/,
+    marker: /Verlauf der Sendung LIX9000000003|unbekannte Sendungsnummer/ },
 ];
 
 /**

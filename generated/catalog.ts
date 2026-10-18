@@ -16879,7 +16879,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logoix",
+      "recognitionRank": 869
     },
     "canaryUrl": "https://www.logoix.com/cgi-bin/tnt.pl",
     "trackingUrlTemplate": "https://www.logoix.com/cgi-bin/tnt.pl?q={trackingNumber}",

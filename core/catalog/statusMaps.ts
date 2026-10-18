@@ -161,6 +161,7 @@ import { statusMap as linhan } from '../../carriers/linhan/status.js';
 import { statusMap as lionParcel } from '../../carriers/lion-parcel/status.js';
 import { statusMap as logen } from '../../carriers/logen/status.js';
 import { statusMap as loggi } from '../../carriers/loggi/status.js';
+import { statusMap as logoix } from '../../carriers/logoix/status.js';
 import { statusMap as loomisExpress } from '../../carriers/loomis-express/status.js';
 import { statusMap as lotteGlobal } from '../../carriers/lotte-global/status.js';
 import { statusMap as magyarPosta } from '../../carriers/magyar-posta/status.js';
@@ -303,7 +304,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, hywl, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
-  'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, 'loomis-express': loomisExpress,
+  'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, nox, oca,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, packlink,

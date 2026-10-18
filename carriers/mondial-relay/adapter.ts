@@ -10,7 +10,7 @@ import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { firstOccurrence, isoTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
-import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, TrawlClient, type TrawlScrapeRequest, type TrawlScrapeResponse } from '../../core/transport/index.js';
+import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, trawlBody, type TrawlClient, type TrawlScrapeRequest, type TrawlScrapeResponse } from '../../core/transport/index.js';
 import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { MondialRelayAppClient } from './app.js';
@@ -350,8 +350,6 @@ export interface MondialRelayTrackerOptions {
   timeoutMs?: number;
   /** How long the app step may take before the website is tried. */
   directTimeoutMs?: number;
-  /** Legacy configuration seam; `trawl` is preferred. */
-  trawlUrl?: string;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
   /** An InPost account's refresh token for the app step; without one the website answers alone. */
@@ -366,8 +364,7 @@ export interface MondialRelayTrackerOptions {
 export class MondialRelayTracker {
   readonly timeoutMs: number;
   readonly directTimeoutMs: number;
-  readonly trawlUrl: string;
-  readonly #trawl: TrawlClient | null | undefined;
+  readonly #trawl: TrawlClient | null;
   readonly #app: MondialRelayAppClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
@@ -379,8 +376,7 @@ export class MondialRelayTracker {
       this.timeoutMs,
       options.directTimeoutMs ?? DEFAULT_DIRECT_TIMEOUT_MS,
     ));
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
-    this.#trawl = options.trawl;
+    this.#trawl = options.trawl ?? null;
     this.#app = options.app !== undefined ? options.app : options.appRefreshToken?.trim()
       // A tracker's wrapper only adds the lookup's signal, which the client passes itself; without
       // a host fetcher under it, the client keeps its HTTP/1.1 transport.
@@ -391,12 +387,6 @@ export class MondialRelayTracker {
     if (!Number.isFinite(this.timeoutMs) || this.timeoutMs <= 0) {
       throw new TypeError('Mondial Relay timeout must be positive');
     }
-  }
-
-  /** The injected browser service, or one built from the configured URL. */
-  #browserService(): TrawlClient | null {
-    if (this.#trawl !== undefined) return this.#trawl;
-    return this.trawlUrl ? new TrawlClient(this.trawlUrl, this.#fetcher) : null;
   }
 
   async fetch(rawShipment: string, rawPostcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
@@ -411,7 +401,7 @@ export class MondialRelayTracker {
     // 403 WAF block (verified from multiple networks, 2026-09-10). The app's
     // backend answers plain HTTP, but only for a signed-in account.
     const app = this.#app;
-    const trawl = this.#browserService();
+    const trawl = this.#trawl;
     if (!app && !trawl) {
       throw new ChallengeError(
         'Mondial Relay',

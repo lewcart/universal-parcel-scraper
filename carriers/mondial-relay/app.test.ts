@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
 import { request } from 'node:https';
 import { describe, expect, it, vi } from 'vitest';
+import { TrawlClient } from '../../core/transport/index.js';
 import { sendsThrough } from '../../core/transport/transportOf.js';
 import { MondialRelayTracker } from './adapter.js';
 import { MONDIAL_RELAY_APP_API, MondialRelayAppClient, parseMondialRelayApp } from './app.js';
@@ -217,11 +218,12 @@ describe('Mondial Relay app service', () => {
 });
 
 describe('Mondial Relay app step', () => {
-  const trawlUrl = 'http://trawl.internal:8191/scrape';
+  const trawlServiceUrl = 'http://trawl.internal:8191/scrape';
 
   it('answers from the app without the browser and links the postcode-free tracking page', async () => {
     const { calls, client } = service();
-    const result = await new MondialRelayTracker({ app: client, trawlUrl, fetcher: (() => Promise.reject(new Error('no browser'))) })
+    const fetcher = () => Promise.reject(new Error('no browser'));
+    const result = await new MondialRelayTracker({ app: client, trawl: new TrawlClient(trawlServiceUrl, fetcher), fetcher })
       .fetch(SHIPMENT, POSTCODE);
     expect(result).toMatchObject({ status: 'out_for_delivery', tracking_source: 'mobile-app-response',
       tracking_url: `https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=${SHIPMENT}` });
@@ -271,7 +273,7 @@ describe('Mondial Relay app step', () => {
       const { client } = service(failure);
       let reached = 0;
       const browser = (() => { reached += 1; return Promise.reject(new Error('browser unavailable')); }) as typeof fetch;
-      await expect(new MondialRelayTracker({ app: client, trawlUrl, fetcher: browser }).fetch(SHIPMENT, POSTCODE)).rejects.toThrow();
+      await expect(new MondialRelayTracker({ app: client, trawl: new TrawlClient(trawlServiceUrl, browser), fetcher: browser }).fetch(SHIPMENT, POSTCODE)).rejects.toThrow();
       expect(reached).toBeGreaterThan(0);
     }
   });

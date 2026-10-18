@@ -11,7 +11,7 @@ import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay } from '../../core/time/index.js';
-import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
+import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { UPS_PROGRESS_STATUS, upsActivityStage, upsBannerStage, upsStatus, upsUncodedScanStage } from './status.js';
 import { decodeEntities } from './text.js';
@@ -460,8 +460,6 @@ function accessPoint(detail: JsonObject): string {
 export interface UPSTrackerOptions {
   timeoutMs?: number;
   directTimeoutMs?: number;
-  /** Legacy configuration seam; `trawl` is preferred. */
-  trawlUrl?: string;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
   fetcher?: typeof fetch;
@@ -471,8 +469,7 @@ export interface UPSTrackerOptions {
 export class UPSTracker {
   readonly timeoutMs: number;
   readonly directTimeoutMs: number;
-  readonly trawlUrl: string;
-  readonly #trawl: TrawlClient | null | undefined;
+  readonly #trawl: TrawlClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
   readonly #serialize = singleFlight();
@@ -484,16 +481,9 @@ export class UPSTracker {
       this.timeoutMs,
       options.directTimeoutMs ?? DEFAULT_DIRECT_TIMEOUT_MS,
     ));
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
-    this.#trawl = options.trawl;
+    this.#trawl = options.trawl ?? null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
-  }
-
-  /** The injected browser service, or one built from the configured URL. */
-  #browserService(): TrawlClient | null {
-    if (this.#trawl !== undefined) return this.#trawl;
-    return this.trawlUrl ? new TrawlClient(this.trawlUrl, this.#fetcher) : null;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -509,7 +499,7 @@ export class UPSTracker {
   }
 
   async #lookup(number: string, context: TrackingContext): Promise<CarrierResult> {
-    const trawl = this.#browserService();
+    const trawl = this.#trawl;
     // The direct page, kept so it can still be read when no browser service
     // exists and the structured call was refused.
     const page: { html: string | null } = { html: null };

@@ -397,7 +397,7 @@ describe('Royal Mail lookup steps', () => {
         } }) },
       ],
     }));
-    const result = await new RoyalMailTracker({ trawlUrl: TRAWL_URL, fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER);
+    const result = await new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER);
     expect(result.events).toHaveLength(1);
     expect(result.events?.[0]).toMatchObject({ stage: 'delivered', stage_source: 'carrier_map' });
     expect(result).not.toHaveProperty('summary_only');
@@ -422,7 +422,7 @@ describe('Royal Mail lookup steps', () => {
         ...(payload === undefined ? [] : [{ url: royalMailEventsApiUrl(DELIVERED_NUMBER), status, headers: {}, body: JSON.stringify(payload) }]),
       ],
     }));
-    await expect(new RoyalMailTracker({ trawlUrl: TRAWL_URL, fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name });
   });
 
@@ -435,7 +435,7 @@ describe('Royal Mail lookup steps', () => {
         }) },
       ],
     }));
-    await expect(new RoyalMailTracker({ trawlUrl: TRAWL_URL, fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, fullHistory: true }).fetch(DELIVERED_NUMBER))
       .resolves.toMatchObject({ events: [], summary_only: true });
   });
 
@@ -481,14 +481,14 @@ describe('Royal Mail lookup steps', () => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({ tier: 3, statusCode: 200, html: '', capturedResponses: [
       { url: royalMailSummaryApiUrl(DELIVERED_NUMBER), status, headers: {}, body: '{}' },
     ] }));
-    await expect(new RoyalMailTracker({ trawlUrl: TRAWL_URL, fetcher }).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'transport' });
   });
 
   it('reports the missing browser service without any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    await expect(new RoyalMailTracker({ trawlUrl: '' }).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({ trawl: null }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({
         name: 'ChallengeError',
         message: 'Royal Mail challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
@@ -514,7 +514,7 @@ describe('Royal Mail lookup steps', () => {
     }));
     const { recorder, records } = stepRecorder();
 
-    const result = await new RoyalMailTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER);
+    const result = await new RoyalMailTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER);
 
     expect(result).toMatchObject({
       status: 'delivered',
@@ -537,7 +537,7 @@ describe('Royal Mail lookup steps', () => {
       capturedResponses: [{url: royalMailSummaryApiUrl(DELIVERED_NUMBER), status: 200,
         body: JSON.stringify(DELIVERED), headers: {}}],
     }));
-    await expect(new RoyalMailTracker({trawlUrl: TRAWL_URL, fetcher}).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher}).fetch(DELIVERED_NUMBER))
       .resolves.toMatchObject({status: 'delivered'});
   });
 
@@ -552,14 +552,14 @@ describe('Royal Mail lookup steps', () => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({
       tier: 3, statusCode: 200, html: '<html>tracking app</html>', capturedResponses: rows,
     }));
-    const result = new RoyalMailTracker({trawlUrl: TRAWL_URL, fetcher}).fetch(DELIVERED_NUMBER);
+    const result = new RoyalMailTracker({trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher}).fetch(DELIVERED_NUMBER);
     if (recovered) await expect(result).resolves.toMatchObject({status: 'delivered'});
     else await expect(result).rejects.toMatchObject({name: 'ChallengeError'});
   });
 
   it.each([[1, 200], [3, 302], [3, 0]])('rejects unsolved browser tier %s / document %s', async (tier, statusCode) => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({tier, statusCode, html: '<html>app</html>'}));
-    await expect(new RoyalMailTracker({trawlUrl: TRAWL_URL, fetcher}).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher}).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({name: 'TransportError'});
   });
 
@@ -575,7 +575,7 @@ describe('Royal Mail lookup steps', () => {
       capturedResponses: [{url: royalMailSummaryApiUrl(DELIVERED_NUMBER), status,
         body: JSON.stringify(payload), headers: {'retry-after': '60'}}],
     }));
-    await expect(new RoyalMailTracker({trawlUrl: TRAWL_URL, fetcher}).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher}).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({name, ...(status === 429 ? {retryAfterMs: 60_000} : {})});
   });
 
@@ -591,7 +591,7 @@ describe('Royal Mail lookup steps', () => {
         capturedResponses: [],
       }), { headers: { 'Content-Type': 'application/json' } }));
 
-    await expect(new RoyalMailTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new RoyalMailTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name: 'ChallengeError' });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
@@ -599,7 +599,7 @@ describe('Royal Mail lookup steps', () => {
   it('rejects a number that is not a Royal Mail number before any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    const lookup = new RoyalMailTracker({ trawlUrl: TRAWL_URL }).fetch('1Z999AA10123456784');
+    const lookup = new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch('1Z999AA10123456784');
     await expect(lookup).rejects.toThrow('Royal Mail tracking numbers must match the UPU S10 format');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
@@ -647,7 +647,7 @@ describe('Royal Mail lookup budget', () => {
     const fetcher = vi.fn<typeof fetch>((_url, init) => new Promise<Response>((_, reject) => {
       init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason as Error), { once: true });
     }));
-    const pending = new RoyalMailTracker({ timeoutMs: 40, trawlUrl: TRAWL_URL, fetcher })
+    const pending = new RoyalMailTracker({ timeoutMs: 40, trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher })
       .fetch(DELIVERED_NUMBER, { signal: controller.signal });
     const settled = vi.fn();
     pending.then(settled, settled);
@@ -658,7 +658,7 @@ describe('Royal Mail lookup budget', () => {
     controller.abort(new Error('caller cancelled'));
     await expect(pending).rejects.toThrow('caller cancelled');
     // A caller's budget is a hard stop instead.
-    await expect(new RoyalMailTracker({ trawlUrl: TRAWL_URL, fetcher }).fetch(DELIVERED_NUMBER, { budgetMs: 40 }))
+    await expect(new RoyalMailTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher }).fetch(DELIVERED_NUMBER, { budgetMs: 40 }))
       .rejects.toMatchObject({ kind: 'transport' });
   });
 });

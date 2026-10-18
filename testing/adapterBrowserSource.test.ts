@@ -3,11 +3,13 @@
  * consumers can space out repeated lookups. An adapter reaches a browser only
  * through its environment: the browser service in `trawl`, the local Chromium
  * at `browserExecutablePath`, or a remote one through `withRemoteBrowser` at an
- * endpoint its `env` names. This scan follows each registered adapter from its
- * factory through the functions, classes and values it names, across modules,
- * and finds where that code reads one of them. A helper shared with another
- * carrier's folder counts; a class's caller that never hands it the browser
- * does not. A carrier served by another folder's adapter takes its answer.
+ * endpoint its `env` names. It never builds its own client for the browser
+ * service from a URL, a browser this scan would not see. The scan follows
+ * each registered adapter from its factory through the functions, classes and
+ * values it names, across modules, and finds where that code reads one of
+ * them. A helper shared with another carrier's folder counts; a class's caller
+ * that never hands it the browser does not. A carrier served by another
+ * folder's adapter takes its answer.
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -22,6 +24,8 @@ const carriersDirectory = path.join(root, 'carriers');
 const ENVIRONMENT = { module: 'core/adapter/index.ts', name: 'AdapterEnvironment', properties: ['trawl', 'browserExecutablePath'] };
 /** The remote browser, whose endpoint an adapter reads from its `env`. */
 const REMOTE = { module: 'core/transport/localBrowser.ts', name: 'withRemoteBrowser' };
+/** The browser service's client, which only the host builds. */
+const CLIENT = { module: 'core/transport/trawl.ts', name: 'TrawlClient' };
 
 interface Carrier { id: string; tracking: { adapter: string | null; browser?: boolean } }
 
@@ -59,7 +63,7 @@ function declarationsOf(symbol: ts.Symbol | undefined): ts.Declaration[] {
 const isBrowserSetting = (name: ts.Node, symbol: () => ts.Symbol | undefined) => ts.isIdentifier(name)
   && ENVIRONMENT.properties.includes(name.text) && Boolean(symbol()?.declarations?.some((declaration) => BROWSER_SETTINGS.has(declaration)));
 
-interface Facts { sites: string[]; named: ts.Node[] }
+interface Facts { sites: string[]; builds: string[]; named: ts.Node[] }
 const factsByDeclaration = new Map<ts.Node, Facts>();
 
 /**
@@ -70,10 +74,10 @@ const factsByDeclaration = new Map<ts.Node, Facts>();
 function factsOf(declaration: ts.Node): Facts {
   const known = factsByDeclaration.get(declaration);
   if (known) return known;
-  const facts: Facts = { sites: [], named: [] };
+  const facts: Facts = { sites: [], builds: [], named: [] };
   factsByDeclaration.set(declaration, facts);
-  const site = (node: ts.Node, what: string) =>
-    facts.sites.push(`${relative(node)}:${node.getSourceFile().getLineAndCharacterOfPosition(node.getStart()).line + 1} ${what}`);
+  const where = (node: ts.Node) => `${relative(node)}:${node.getSourceFile().getLineAndCharacterOfPosition(node.getStart()).line + 1}`;
+  const site = (node: ts.Node, what: string) => facts.sites.push(`${where(node)} ${what}`);
   const visit = (node: ts.Node | undefined): void => {
     if (!node) return;
     if (ts.isHeritageClause(node)) {
@@ -107,6 +111,10 @@ function factsOf(declaration: ts.Node): Facts {
       if (declarations.some((found) => relative(found) === REMOTE.module && ts.isFunctionDeclaration(found) && found.name?.text === REMOTE.name)) {
         site(node, REMOTE.name);
       }
+      // Types are skipped above, so the class is named here as a value: constructed, or a static call.
+      if (declarations.some((found) => relative(found) === CLIENT.module && ts.isClassDeclaration(found) && found.name?.text === CLIENT.name)) {
+        facts.builds.push(`${where(node)} ${CLIENT.name}`);
+      }
       facts.named.push(...declarations);
       return;
     }
@@ -116,24 +124,27 @@ function factsOf(declaration: ts.Node): Facts {
   return facts;
 }
 
-/** Where the code an adapter folder's factory reaches reads one of the browsers. */
-function browserSites(folder: string): string[] {
+/** Where the code an adapter folder's factory reaches reads one of the browsers, and where it names the service's client. */
+function browserReads(folder: string): { sites: string[]; builds: string[] } {
   const source = program.getSourceFile(path.join(carriersDirectory, folder, 'adapter.ts'))!;
   const exported = checker.getExportsOfModule(checker.getSymbolAtLocation(source)!).find((symbol) => symbol.name === 'adapter');
   const pending: ts.Node[] = declarationsOf(exported);
   const seen = new Set<ts.Node>(pending);
   const sites: string[] = [];
+  const builds: string[] = [];
   while (pending.length) {
     const facts = factsOf(pending.pop()!);
     sites.push(...facts.sites);
+    builds.push(...facts.builds);
     for (const next of facts.named) {
       if (!seen.has(next)) { seen.add(next); pending.push(next); }
     }
   }
-  return [...new Set(sites)].sort();
+  return { sites: [...new Set(sites)].sort(), builds: [...new Set(builds)].sort() };
 }
 
-const sitesByFolder = new Map(adapterFolders.map((folder) => [folder, browserSites(folder)]));
+const readsByFolder = new Map(adapterFolders.map((folder) => [folder, browserReads(folder)]));
+const sitesByFolder = new Map([...readsByFolder].map(([folder, reads]) => [folder, reads.sites]));
 /** Each carrier's browser reads, through the adapter that serves it; none for universal and link-only carriers. */
 const sitesOf = (carrier: Carrier) => sitesByFolder.get(carrier.tracking.adapter ?? '') ?? [];
 
@@ -146,6 +157,10 @@ describe('tracking.browser', () => {
   it('is declared by every carrier whose adapter can open a browser', () => {
     expect(carriers.filter((carrier) => sitesOf(carrier).length && carrier.tracking.browser !== true)
       .map((carrier) => `${carrier.id}: ${sitesOf(carrier)[0]}`)).toEqual([]);
+  });
+
+  it('follows adapters that leave the browser service to their environment', () => {
+    expect([...readsByFolder].filter(([, { builds }]) => builds.length).map(([folder, { builds }]) => `${folder}: ${builds[0]}`)).toEqual([]);
   });
 
   it('is declared only by carriers whose adapter can open a browser', () => {

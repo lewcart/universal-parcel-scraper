@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { recognizeFromLookup } from '../../core/adapter/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import {
   FedExTracker,
   fedexTrackingUrl,
@@ -431,7 +432,7 @@ describe('FedEx lookup steps', () => {
       .mockRejectedValue(new Error('must not fetch'));
     const { recorder, records } = stepRecorder();
 
-    await expect(new FedExTracker({ trawlUrl: '', recorder }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: null, recorder }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({
         name: 'ChallengeError',
         status: 403,
@@ -457,7 +458,7 @@ describe('FedEx lookup steps', () => {
     }));
     const { recorder, records } = stepRecorder();
 
-    const result = await new FedExTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER);
+    const result = await new FedExTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER);
 
     expect(result).toMatchObject({
       status: 'delivered',
@@ -488,7 +489,7 @@ describe('FedEx lookup steps', () => {
         capturedResponses: [],
       }), { headers: { 'Content-Type': 'application/json' } }));
 
-    await expect(new FedExTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name: 'ChallengeError' });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
@@ -509,7 +510,7 @@ describe('FedEx lookup steps', () => {
     const { recorder, records } = stepRecorder();
     // The page renders this notice both for unknown numbers and for tracking
     // calls the edge refused, so only the structured reply decides not-found.
-    await expect(new FedExTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name: 'SchemaError', message: 'FedEx returned unreadable tracking JSON' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(records).toEqual(['trawl:schema', 'lookup:trawl:schema']);
@@ -520,7 +521,7 @@ describe('FedEx lookup steps', () => {
       tier: 2, statusCode: 200, html: '<body>We cannot find that tracking number.</body>',
       capturedResponses: [],
     }));
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name: 'TransportError', kind: 'transport' });
   });
 
@@ -533,7 +534,7 @@ describe('FedEx lookup steps', () => {
       ],
     }));
     const { recorder, records } = stepRecorder();
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge', status, reason: 'api_denied' });
     expect(fetcher).toHaveBeenCalledTimes(reads);
     expect(records).toEqual([...Array<string>(reads).fill('trawl:challenge'), 'lookup:trawl:challenge']);
@@ -547,7 +548,7 @@ describe('FedEx lookup steps', () => {
       .mockResolvedValueOnce(reply({ url: TRACK_API, status: 403, body: null }))
       .mockResolvedValueOnce(reply({ url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) }));
     const { recorder, records } = stepRecorder();
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER))
       .resolves.toMatchObject({ status: 'delivered' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(records).toEqual(['trawl:challenge', 'trawl:ok', 'lookup:trawl:ok']);
@@ -555,7 +556,7 @@ describe('FedEx lookup steps', () => {
     fetcher.mockReset().mockResolvedValueOnce(Response.json({
       tier: 3, statusCode: 200, html: '<html><body><h1>Access Denied</h1></body></html>', capturedResponses: [],
     }));
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ name: 'ChallengeError' });
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ name: 'ChallengeError' });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
@@ -567,7 +568,7 @@ describe('FedEx lookup steps', () => {
         { url: TRACK_API, status: 200, body: JSON.stringify(deliveredFixture()) },
       ],
     }));
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .resolves.toMatchObject({ status: 'delivered' });
   });
 
@@ -580,7 +581,7 @@ describe('FedEx lookup steps', () => {
       tier: 2, statusCode: 200, html: '<body>Tracking app</body>',
       capturedResponses: [{ url: TRACK_API, status, headers, body: null }],
     }));
-    await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ ...expected, status });
   });
 
@@ -596,7 +597,7 @@ describe('FedEx lookup steps', () => {
         tier: 2, statusCode: 200, html: '<body>Tracking app</body>',
         capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(body) }],
       }));
-      await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+      await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
         .rejects.toMatchObject(expected);
     }
   });
@@ -604,7 +605,7 @@ describe('FedEx lookup steps', () => {
   it('rejects a number that is not a FedEx number before any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    const lookup = new FedExTracker({ trawlUrl: TRAWL_URL }).fetch('1Z999AA10123456784');
+    const lookup = new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch('1Z999AA10123456784');
     await expect(lookup).rejects.toThrow('FedEx tracking numbers must contain 12, 15 or 20 digits');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
@@ -625,7 +626,7 @@ describe('FedEx lookup steps', () => {
       capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(payload) }],
     }));
 
-    const result = await new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(barcode);
+    const result = await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(barcode);
 
     expect(fedexTrackingUrl(barcode)).toBe(fedexTrackingUrl(number));
     expect(new URL(fedexTrackingUrl(barcode)).searchParams.get('trknbr')).toBe(number);
@@ -640,7 +641,7 @@ describe('FedEx lookup steps', () => {
         capturedResponses: [{ url: TRACK_API, status: 200, body: JSON.stringify(groundEconomyFixture(USPS_SCANS.slice(3), number)) }],
       }));
 
-      const result = await new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(`${number.slice(0, 4)} ${number.slice(4)}`);
+      const result = await new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(`${number.slice(0, 4)} ${number.slice(4)}`);
 
       expect(new URL(fedexTrackingUrl(number)).searchParams.get('trknbr')).toBe(number);
       expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({ url: fedexTrackingUrl(number) });
@@ -648,7 +649,7 @@ describe('FedEx lookup steps', () => {
       fetcher.mockRestore();
     }
     for (const number of ['6129999999990000001', '612999999999000000100']) {
-      await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(number)).rejects.toMatchObject({ kind: 'invalid_input' });
+      await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(number)).rejects.toMatchObject({ kind: 'invalid_input' });
     }
   });
 
@@ -661,7 +662,7 @@ describe('FedEx lookup steps', () => {
       // The 34-digit layout keeps two zeros before the 12-digit number.
       '9622001560001234567141794808390594',
     ]) {
-      await expect(new FedExTracker({ trawlUrl: TRAWL_URL }).fetch(barcode))
+      await expect(new FedExTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(barcode))
         .rejects.toMatchObject({ kind: 'invalid_input' });
     }
     expect(fetcher).not.toHaveBeenCalled();

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { sameInstantIdentityPolicy } from '../../app.js';
 import type { StepRecord, StepRecorder } from '../../core/telemetry/index.js';
 import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import {
   DPDFranceChallengeError,
   DPDFranceTracker,
@@ -350,7 +351,7 @@ describe('DPD France transport tiers', () => {
     ));
     const { recorder, steps } = recordingRecorder();
 
-    await expect(new DPDFranceTracker({ timeoutMs: 2_000, trawlUrl: '', recorder })
+    await expect(new DPDFranceTracker({ timeoutMs: 2_000, trawl: null, recorder })
       .fetch(TEST_TRACKING_NUMBER)).resolves.toMatchObject({
         status: 'exception',
         tracking_url: dpdFranceTrackingUrl(TEST_TRACKING_NUMBER),
@@ -382,7 +383,7 @@ describe('DPD France transport tiers', () => {
 
     await expect(new DPDFranceTracker({
       timeoutMs: 2_000,
-      trawlUrl: 'http://trawl.internal:8191/v1',
+      trawl: new TrawlClient('http://trawl.internal:8191/v1'),
       recorder,
     }).fetch(TEST_TRACKING_NUMBER)).resolves.toMatchObject({ status: 'exception' });
 
@@ -414,7 +415,7 @@ describe('DPD France transport tiers', () => {
     const controller = new AbortController();
     const cancelled = new Error('caller cancelled');
 
-    const lookup = new DPDFranceTracker({ timeoutMs: 60_000, trawlUrl: 'http://trawl.internal:8191/v1' })
+    const lookup = new DPDFranceTracker({ timeoutMs: 60_000, trawl: new TrawlClient('http://trawl.internal:8191/v1') })
       .fetch(TEST_TRACKING_NUMBER, { signal: controller.signal, budgetMs: 30_000 });
     await browserRequest;
     controller.abort(cancelled);
@@ -454,7 +455,7 @@ describe('DPD France transport tiers', () => {
     ));
     const { recorder, steps } = recordingRecorder();
 
-    await expect(new DPDFranceTracker({ timeoutMs: 2_000, trawlUrl: '', recorder })
+    await expect(new DPDFranceTracker({ timeoutMs: 2_000, trawl: null, recorder })
       .fetch(TEST_TRACKING_NUMBER)).rejects.toThrow('configure FLARESOLVERR_URL');
     // The missing tier is a disabled step, not a failed one.
     expect(steps.map((step) => step.step)).toEqual(['direct']);

@@ -3,7 +3,7 @@ import { ChallengeError, IndeterminateError, RateLimitedError, SchemaError, Tran
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
-import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
+import { cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { fetchRoyalMailInBrowser, royalMailDestination } from './browser.js';
 import { normalizeRoyalMailNumber, parseRoyalMailTrackingHtml, parseRoyalMailTrackingResponse,
@@ -28,8 +28,6 @@ export interface RoyalMailTrackerOptions {
   /** An `http://` or `socks5://` proxy for the local Chromium's traffic. */
   browserProxy?: string | null;
   timeoutMs?: number;
-  /** Legacy configuration seam; `trawl` is preferred. */
-  trawlUrl?: string;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
   fetcher?: typeof fetch;
@@ -40,8 +38,7 @@ export interface RoyalMailTrackerOptions {
 
 export class RoyalMailTracker {
   readonly timeoutMs: number;
-  readonly trawlUrl: string;
-  readonly #trawl: TrawlClient | null | undefined;
+  readonly #trawl: TrawlClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
   readonly #fullHistory: boolean;
@@ -54,20 +51,13 @@ export class RoyalMailTracker {
       throw new TypeError('Royal Mail timeout must be positive');
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
-    this.#trawl = options.trawl;
+    this.#trawl = options.trawl ?? null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
     this.#fullHistory = options.fullHistory ?? false;
     this.#executablePath = options.executablePath ?? null;
     this.#browserProxy = options.browserProxy?.trim() || null;
     this.#browserWsEndpoint = options.browserWsEndpoint?.trim() || null;
-  }
-
-  /** The injected browser service, or one built from the configured URL. */
-  #browserService(): TrawlClient | null {
-    if (this.#trawl !== undefined) return this.#trawl;
-    return this.trawlUrl ? new TrawlClient(this.trawlUrl, this.#fetcher) : null;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -79,7 +69,7 @@ export class RoyalMailTracker {
           this.#browserProxy, this.#browserWsEndpoint) }]);
     }
     // The legacy service remains available through explicit tracker instances.
-    const trawl = this.#browserService();
+    const trawl = this.#trawl;
     if (!trawl) {
       throw new ChallengeError(
         'Royal Mail',

@@ -82,7 +82,7 @@ fails as transport and enabled providers follow their normal fallback route. The
 remains available to installations without a dedicated endpoint.
 
 `RoyalMailTracker` also retains the experimental TRAWL path when configured
-with `trawl` or `trawlUrl` and no local `executablePath`. It is excluded from
+with `trawl` and no local `executablePath`. It is excluded from
 automatic routing. Constructor calls remain summary-only by default; pass
 `fullHistory: true` for the separate events flow.
 

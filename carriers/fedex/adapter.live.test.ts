@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { TrawlClient } from '../../core/transport/index.js';
 import { FedExTracker } from './adapter.js';
 
 // A real shipment supplied outside the repository, e.g.
@@ -9,7 +10,7 @@ const LIVE_TRACKING_NUMBER = (process.env.FEDEX_LIVE_TRACKING_NUMBER ?? '').trim
 
 describe('FedEx live browser tracking', () => {
   it('reports the missing browser service instead of burning a direct attempt', async () => {
-    await expect(new FedExTracker({ trawlUrl: '', timeoutMs: 5_000 }).fetch('999999999999'))
+    await expect(new FedExTracker({ trawl: null, timeoutMs: 5_000 }).fetch('999999999999'))
       .rejects.toMatchObject({
         name: 'ChallengeError',
         message: 'FedEx challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
@@ -19,7 +20,7 @@ describe('FedEx live browser tracking', () => {
   it.runIf(Boolean(LIVE_TRACKING_NUMBER))(
     'normalizes a caller-supplied real shipment without retaining private response fields',
     async () => {
-      const result = await new FedExTracker({ trawlUrl: process.env.FLARESOLVERR_URL, timeoutMs: 90_000 }).fetch(LIVE_TRACKING_NUMBER);
+      const result = await new FedExTracker({ trawl: TrawlClient.fromEnvironment(), timeoutMs: 90_000 }).fetch(LIVE_TRACKING_NUMBER);
       expect(result.status).not.toBe('unknown');
       expect(result.last_status_text).toEqual(expect.any(String));
       expect((result.events ?? []).length).toBeGreaterThan(0);

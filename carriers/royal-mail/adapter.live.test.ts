@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { TrawlClient } from '../../core/transport/index.js';
 import { RoyalMailTracker } from './adapter.js';
 
 // A real shipment supplied outside the repository, e.g.
@@ -9,7 +10,7 @@ const LIVE_TRACKING_NUMBER = (process.env.ROYAL_MAIL_LIVE_TRACKING_NUMBER ?? '')
 
 describe('Royal Mail live browser tracking', () => {
   it('reports the missing browser service instead of burning a direct attempt', async () => {
-    await expect(new RoyalMailTracker({ trawlUrl: '', timeoutMs: 5_000 }).fetch('SG999999999GB'))
+    await expect(new RoyalMailTracker({ trawl: null, timeoutMs: 5_000 }).fetch('SG999999999GB'))
       .rejects.toMatchObject({
         name: 'ChallengeError',
         message: 'Royal Mail challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
@@ -21,7 +22,7 @@ describe('Royal Mail live browser tracking', () => {
     async () => {
       const result = await new RoyalMailTracker({ executablePath: process.env.TRACKING_CHROMIUM_PATH,
         browserWsEndpoint: process.env.ROYAL_MAIL_BROWSER_WS_ENDPOINT,
-        trawlUrl: process.env.FLARESOLVERR_URL, timeoutMs: 60_000, fullHistory: true }).fetch(LIVE_TRACKING_NUMBER);
+        trawl: TrawlClient.fromEnvironment(), timeoutMs: 60_000, fullHistory: true }).fetch(LIVE_TRACKING_NUMBER);
       expect(result.status).not.toBe('unknown');
       expect(result.last_status_text).toEqual(expect.any(String));
       expect(result.events?.length).toBeGreaterThan(0);

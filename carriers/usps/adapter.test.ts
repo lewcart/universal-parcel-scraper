@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { parseTrackingInput } from '../../core/detection/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { normalizeUSPSNumber, parseUSPSTrackingHtml, USPSTracker, uspsTrackingUrl } from './adapter.js';
 import { uspsStage, uspsStatus } from './status.js';
 
@@ -47,7 +48,7 @@ describe('USPS international numbers', () => {
   it.each(['LZ123456789CN', 'LZ123456789US', 'LZ12345678CN', 'LZ123456785C'])(
     'rejects invalid international number %s before making a request', async (number) => {
       const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('must not fetch'));
-      const lookup = new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(number);
+      const lookup = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(number);
       await expect(lookup).rejects.toThrow('checksum-valid UPU S10');
       await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
       expect(fetcher).not.toHaveBeenCalled();
@@ -212,7 +213,7 @@ describe('USPS lookup steps', () => {
   it('reports the missing browser service without any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    await expect(new USPSTracker({ trawlUrl: '' }).fetch(DELIVERED_NUMBER))
+    await expect(new USPSTracker({ trawl: null }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({
         name: 'ChallengeError',
         message: 'USPS challenged direct tracking; configure FLARESOLVERR_URL for browser fallback',
@@ -224,7 +225,7 @@ describe('USPS lookup steps', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(DELIVERED_PAGE));
     const { recorder, records } = stepRecorder();
 
-    const result = await new USPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL, recorder }).fetch(DELIVERED_NUMBER);
+    const result = await new USPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(DELIVERED_NUMBER);
 
     expect(result).toMatchObject({
       status: 'delivered',
@@ -246,7 +247,7 @@ describe('USPS lookup steps', () => {
       .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
     const step = vi.fn();
     const lookup = vi.fn();
-    const result = await new USPSTracker({ trawlUrl: TRAWL_URL, recorder: { step, lookup } }).fetch(DELIVERED_NUMBER);
+    const result = await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder: { step, lookup } }).fetch(DELIVERED_NUMBER);
     expect(result.events).toHaveLength(5);
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(step).toHaveBeenNthCalledWith(1, expect.objectContaining({ step: 'trawl', attempt: 1,
@@ -259,7 +260,7 @@ describe('USPS lookup steps', () => {
 
   it('stops after two incomplete pages without claiming the shipment is missing', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => trawlReply(HEADER_ONLY_PAGE));
-    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'challenge', reason: 'incomplete_page' });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
@@ -267,7 +268,7 @@ describe('USPS lookup steps', () => {
   it('reads once more after the tracking page head arrives without its body', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(HEAD_ONLY_PAGE))
       .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
-    expect((await new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
+    expect((await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER)).events).toHaveLength(5);
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(() => parseUSPSTrackingHtml(HEAD_ONLY_PAGE.replace('</head>', '</head><body><p>Access denied</p></body>'), DELIVERED_NUMBER))
       .toThrowError(expect.objectContaining({ kind: 'challenge', reason: undefined }));
@@ -277,13 +278,13 @@ describe('USPS lookup steps', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(INTERSTITIAL_PAGE))
       .mockResolvedValueOnce(trawlReply(TIMELINE_PAGE));
     const step = vi.fn();
-    const result = await new USPSTracker({ trawlUrl: TRAWL_URL, recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
+    const result = await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL), recorder: { step, lookup: vi.fn() } }).fetch(DELIVERED_NUMBER);
     expect(result.events).toHaveLength(5);
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(step).toHaveBeenNthCalledWith(2, expect.objectContaining({ step: 'trawl', outcome: 'ok',
       fallbackError: expect.objectContaining({ reason: 'interstitial_page' }) }));
     fetcher.mockReset().mockImplementation(async () => trawlReply(INTERSTITIAL_PAGE));
-    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER))
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER))
       .rejects.toMatchObject({ kind: 'challenge', reason: 'interstitial_page' });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
@@ -297,7 +298,7 @@ describe('USPS lookup steps', () => {
 
   it('does not repeat a challenge shell, wrong identity or rate limit', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(trawlReply('<html>Browser challenge</html>'));
-    const tracker = new USPSTracker({ trawlUrl: TRAWL_URL });
+    const tracker = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) });
     await expect(tracker.fetch(DELIVERED_NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     fetcher.mockClear().mockResolvedValue(trawlReply(IN_TRANSIT_PAGE));
@@ -315,7 +316,7 @@ describe('USPS lookup steps', () => {
       controller.abort(reason);
       return trawlReply(HEADER_ONLY_PAGE);
     });
-    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(DELIVERED_NUMBER, { signal: controller.signal }))
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER, { signal: controller.signal }))
       .rejects.toBe(reason);
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
@@ -324,14 +325,14 @@ describe('USPS lookup steps', () => {
     const number = 'LZ123456785CN';
     const html = DELIVERED_PAGE.replaceAll(DELIVERED_NUMBER, number);
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(html, number));
-    const result = await new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(number);
+    const result = await new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(number);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body)).url).toBe(uspsTrackingUrl(number));
     expect(result).toMatchObject({ status: 'delivered', tracking_url: uspsTrackingUrl(number) });
     expect(result.events).toHaveLength(4);
 
     // A response for another country's identifier is not a verified handoff.
     fetcher.mockResolvedValueOnce(trawlReply(html.replaceAll(number, 'LZ123456785US'), number));
-    await expect(new USPSTracker({ trawlUrl: TRAWL_URL }).fetch(number))
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(number))
       .rejects.toThrow('USPS did not return the requested parcel');
   });
 
@@ -340,7 +341,7 @@ describe('USPS lookup steps', () => {
     const pic = '9210090000000012345679';
     const html = DELIVERED_PAGE.replaceAll(DELIVERED_NUMBER, pic);
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => trawlReply(html, pic));
-    const tracker = new USPSTracker({ trawlUrl: TRAWL_URL });
+    const tracker = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) });
     const result = await tracker.fetch(`420 00000 ${pic}`);
     expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body)).url).toBe(uspsTrackingUrl(pic));
     expect(result).toMatchObject({ status: 'delivered', canonical_tracking_number: pic, tracking_url: uspsTrackingUrl(pic) });
@@ -352,7 +353,7 @@ describe('USPS lookup steps', () => {
   it('rejects a number that is not a USPS number before any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    const lookup = new USPSTracker({ trawlUrl: TRAWL_URL }).fetch('1Z999AA10123456784');
+    const lookup = new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch('1Z999AA10123456784');
     await expect(lookup).rejects.toThrow('USPS tracking numbers must contain 20 or 22 digits');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();

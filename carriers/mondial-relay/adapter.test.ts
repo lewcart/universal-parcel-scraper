@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NotFoundError } from '../../core/errors/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import {
   MondialRelayTracker,
   mondialRelayTrackingUrl,
@@ -153,7 +154,7 @@ describe('Mondial Relay tracking input', () => {
 
   it('rejects a number Mondial Relay does not issue before any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('must not fetch'));
-    await expect(new MondialRelayTracker({ trawlUrl: 'http://trawl.internal:8191' }).fetch('1718596', OFFICIAL_PAGE_POSTCODE))
+    await expect(new MondialRelayTracker({ trawl: new TrawlClient('http://trawl.internal:8191') }).fetch('1718596', OFFICIAL_PAGE_POSTCODE))
       .rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
   });
@@ -542,7 +543,7 @@ describe('Mondial Relay web session', () => {
     await expect(new MondialRelayTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: 'http://trawl.internal:8191/v1',
+      trawl: new TrawlClient('http://trawl.internal:8191/v1'),
     }).fetch(PUBLIC_CREDENTIAL)).resolves.toMatchObject({
       status: 'out_for_delivery',
       tracking_url: mondialRelayTrackingUrl(PUBLIC_CREDENTIAL),
@@ -606,7 +607,7 @@ describe('Mondial Relay web session', () => {
     await expect(new MondialRelayTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: 'http://trawl.internal:8191/v1',
+      trawl: new TrawlClient('http://trawl.internal:8191/v1'),
     }).fetch(PUBLIC_CREDENTIAL)).resolves.toMatchObject({
       status: 'out_for_delivery',
       tracking_source: 'browser-session-response',
@@ -645,7 +646,7 @@ describe('Mondial Relay web session', () => {
     await expect(new MondialRelayTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: '',
+      trawl: null,
     }).fetch(PUBLIC_CREDENTIAL)).rejects.toThrow('configure FLARESOLVERR_URL');
     expect(fetcher).not.toHaveBeenCalled();
 
@@ -667,7 +668,7 @@ describe('Mondial Relay web session', () => {
     await expect(new MondialRelayTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: 'http://trawl.internal:8191/scrape',
+      trawl: new TrawlClient('http://trawl.internal:8191/scrape'),
     }).fetch(PUBLIC_CREDENTIAL)).rejects.toThrow('different shipment');
   });
 
@@ -691,7 +692,7 @@ describe('Mondial Relay web session', () => {
         tier: 3, statusCode: 200, url: apiUrl(), html: VUE_PAGE,
         body: numericByteObject(JSON.stringify(syntheticSuccessFixture())),
       }));
-    const tracker = new MondialRelayTracker({ trawlUrl: 'http://trawl.internal:8191/scrape' });
+    const tracker = new MondialRelayTracker({ trawl: new TrawlClient('http://trawl.internal:8191/scrape') });
     const inFlight = new AbortController();
     const queued = new AbortController();
     const stopped = new Error('caller stopped');
@@ -760,7 +761,7 @@ describe('documented Mondial Relay 26-digit label barcode', () => {
         body: numericByteObject(JSON.stringify(syntheticSuccessFixture('12345678'))),
       }), { headers: { 'Content-Type': 'application/json' } }));
     const result = await new MondialRelayTracker({
-      trawlUrl: 'http://trawl.internal:8191/scrape',
+      trawl: new TrawlClient('http://trawl.internal:8191/scrape'),
     }).fetch(barcode);
     expect(String(fetcher.mock.calls[1]![0])).toBe('http://trawl.internal:8191/scrape');
     expect(JSON.parse(String(fetcher.mock.calls[1]![1]?.body))).toMatchObject({

@@ -5,6 +5,7 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { IndeterminateError, InvalidInputError, NotFoundError } from '../../core/errors/index.js';
 import { resolveResult } from '../../core/result/resolve.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { UPSTracker, parseUPSTrackingHtml, parseUPSTrackingResponse, upsTrackingUrl } from './adapter.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { UPS_PROGRESS_STATUS, upsActivityStage, upsStatus } from './status.js';
@@ -454,7 +455,7 @@ describe('UPS lookup steps', () => {
     await expect(new UPSTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: '',
+      trawl: null,
       recorder,
     }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({
       name: 'ChallengeError',
@@ -482,7 +483,7 @@ describe('UPS lookup steps', () => {
     }));
     const { recorder, records } = stepRecorder();
 
-    const result = await new UPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL, recorder }).fetch(TRACKING_NUMBER);
+    const result = await new UPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL), recorder }).fetch(TRACKING_NUMBER);
 
     expect(result).toMatchObject({
       status: 'out_for_delivery',
@@ -518,7 +519,7 @@ describe('UPS lookup steps', () => {
     const result = await new UPSTracker({
       timeoutMs: 2_000,
       directTimeoutMs: 1_000,
-      trawlUrl: 'http://trawl.internal:8191/v1',
+      trawl: new TrawlClient('http://trawl.internal:8191/v1'),
       recorder,
     }).fetch(TRACKING_NUMBER);
 
@@ -540,7 +541,7 @@ describe('UPS lookup steps', () => {
       tier: 2, statusCode: 200, url: upsTrackingUrl(BAD_CHECK_DIGIT), html: RENDERED_PAGE, cookies: [],
       capturedResponses: [{ url: STATUS_API, status: 200, headers: {}, body: refused, truncated: false, base64Encoded: false, error: null }],
     }));
-    await expect(new UPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(BAD_CHECK_DIGIT))
+    await expect(new UPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(BAD_CHECK_DIGIT))
       .rejects.toMatchObject({ name: 'InvalidInputError', kind: 'invalid_input' });
 
     const fetcher = vi.fn<typeof fetch>(async (url) => {
@@ -560,7 +561,7 @@ describe('UPS lookup steps', () => {
       tier: 2, statusCode: 200, url: upsTrackingUrl(TRACKING_NUMBER), html: RENDERED_PAGE, cookies: [],
       capturedResponses: [{ url: STATUS_API, status: 200, headers: {}, body: UNKNOWN_NUMBER, truncated: false, base64Encoded: false, error: null }],
     }));
-    await expect(new UPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(TRACKING_NUMBER))
+    await expect(new UPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(TRACKING_NUMBER))
       .rejects.toMatchObject({ name: 'NotFoundError', kind: 'not_found' });
 
     const fetcher = vi.fn<typeof fetch>(async (url) => {
@@ -585,7 +586,7 @@ describe('UPS lookup steps', () => {
       vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
         tier: 2, statusCode: 200, url: upsTrackingUrl(TRACKING_NUMBER), html: RENDERED_PAGE, cookies: [], capturedResponses: [captured],
       }));
-      await expect(new UPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(TRACKING_NUMBER)).rejects.toMatchObject(unavailable);
+      await expect(new UPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(TRACKING_NUMBER)).rejects.toMatchObject(unavailable);
     }
     // An HTTP 428 is the firewall's challenge, not an outage: the rendered page still answers.
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
@@ -593,7 +594,7 @@ describe('UPS lookup steps', () => {
         { url: STATUS_API, status: 428, headers: {}, body: '', truncated: false, base64Encoded: false, error: null },
       ],
     }));
-    await expect(new UPSTracker({ timeoutMs: 2_000, trawlUrl: TRAWL_URL }).fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'rendered-page' });
+    await expect(new UPSTracker({ timeoutMs: 2_000, trawl: new TrawlClient(TRAWL_URL) }).fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'rendered-page' });
 
     const fetcher = vi.fn<typeof fetch>(async (url) => {
       if (String(url) === STATUS_API) return new Response(outage('299', TRACKING_NUMBER), { headers: { 'Content-Type': 'application/json' } });
@@ -609,7 +610,7 @@ describe('UPS lookup steps', () => {
   it('rejects a number that is not a UPS number before any request', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
       .mockRejectedValue(new Error('must not fetch'));
-    const lookup = new UPSTracker({ trawlUrl: '' }).fetch('1Z999');
+    const lookup = new UPSTracker({ trawl: null }).fetch('1Z999');
     await expect(lookup).rejects.toThrow('UPS tracking numbers must start with 1Z');
     await expect(lookup).rejects.toMatchObject({ kind: 'invalid_input' });
     expect(fetcher).not.toHaveBeenCalled();
@@ -694,7 +695,7 @@ describe('UPS captured response sequence', () => {
       tier: 3, statusCode: 200, html: RENDERED_PAGE, cookies: [], capturedResponses, ...extra,
     }));
     const { recorder, records } = stepRecorder();
-    return { fetcher, records, tracker: new UPSTracker({ trawlUrl: TRAWL_URL, fetcher, recorder }) };
+    return { fetcher, records, tracker: new UPSTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, recorder }) };
   }
 
   it.each([
@@ -790,7 +791,7 @@ describe('UPS lookup context', () => {
     const fetcher = vi.fn<typeof fetch>()
       .mockImplementationOnce((_url, init) => held(init))
       .mockImplementation(async () => Response.json({ tier: 3, statusCode: 200, html: RENDERED_PAGE, cookies: [] }));
-    const tracker = new UPSTracker({ trawlUrl: TRAWL_URL, fetcher });
+    const tracker = new UPSTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher });
     const first = new AbortController();
     const second = new AbortController();
     const running = tracker.fetch(TRACKING_NUMBER, { signal: first.signal });
@@ -810,7 +811,7 @@ describe('UPS lookup context', () => {
 
   it('ends a queued lookup when the budget its caller set is spent', async () => {
     const fetcher = vi.fn<typeof fetch>((_url, init) => held(init));
-    const tracker = new UPSTracker({ trawlUrl: TRAWL_URL, fetcher });
+    const tracker = new UPSTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher });
     const first = new AbortController();
     const running = tracker.fetch(TRACKING_NUMBER, { signal: first.signal });
 
@@ -826,7 +827,7 @@ describe('UPS lookup context', () => {
     const fetcher = vi.fn<typeof fetch>((_url, init) => held(init));
     const { recorder, records } = stepRecorder();
 
-    await expect(new UPSTracker({ trawlUrl: TRAWL_URL, fetcher, recorder }).fetch(TRACKING_NUMBER, { budgetMs: 50 }))
+    await expect(new UPSTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, recorder }).fetch(TRACKING_NUMBER, { budgetMs: 50 }))
       .rejects.toMatchObject({ name: 'UpstreamNetworkError', kind: 'transport' });
     expect(records).toEqual(['trawl:transport', 'lookup:trawl:transport']);
   });
@@ -909,7 +910,7 @@ it('never opens a plain HTTP session while a browser service is configured', asy
   const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async url => String(url).includes('/scrape')
     ? Response.json({ tier: 3, statusCode: 200, html: RENDERED_PAGE, cookies: [] })
     : new Response('challenge', { status: 403 }));
-  const tracker = new UPSTracker({ trawlUrl: TRAWL_URL });
+  const tracker = new UPSTracker({ trawl: new TrawlClient(TRAWL_URL) });
   await tracker.fetch(TRACKING_NUMBER);
   await tracker.fetch(TRACKING_NUMBER);
   expect(fetcher.mock.calls.filter(([url]) => String(url).includes('ups.com'))).toHaveLength(0);

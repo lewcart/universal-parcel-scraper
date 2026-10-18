@@ -9,7 +9,7 @@ describe('browser-protected carriers live wrong-number handling', () => {
     const tracker = new UPSTracker({
       timeoutMs: 30_000,
       directTimeoutMs: 20_000,
-      trawlUrl: '',
+      trawl: null,
     });
     try {
       const result = await tracker.fetch('1Z0000000000000000');
@@ -30,7 +30,7 @@ describe('browser-protected carriers live wrong-number handling', () => {
     const tracker = new DPDFranceTracker({
       timeoutMs: 30_000,
       directTimeoutMs: 20_000,
-      trawlUrl: '',
+      trawl: null,
     });
     try {
       await tracker.fetch('000000000000');
@@ -54,7 +54,7 @@ describe('browser-protected carriers live wrong-number handling', () => {
     const tracker = new MondialRelayTracker({
       timeoutMs: 30_000,
       directTimeoutMs: 20_000,
-      trawlUrl: '',
+      trawl: null,
     });
     try {
       await tracker.fetch('00000000', '75001');

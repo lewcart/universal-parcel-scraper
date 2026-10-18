@@ -10,7 +10,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay, isoTime, explicitOffsetTime, zonedTime, type ParsedTime } from '../../core/time/index.js';
-import { TrawlClient, decodeText, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
+import { decodeText, fetchBounded, parseJsonBytes, userAgentOf, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { DPD_DE_SESSION_OPENING, sharedDpdAppService, type DpdParcelShop } from '../dpd-de/service.js';
 import {
@@ -653,8 +653,6 @@ export interface DPDTrackerOptions {
   timeoutMs?: number;
   /** Whole-lookup budget; defaults to both tiers plus the solver's own allowance. */
   budgetMs?: number;
-  /** Legacy configuration seam kept for tests; production passes `trawl`. */
-  flaresolverrUrl?: string;
   fetcher?: typeof fetch;
   trawl?: TrawlClient | null;
   recorder?: StepRecorder;
@@ -687,9 +685,8 @@ export class DPDTracker {
   readonly country: DPDCountry;
   readonly timeoutMs: number;
   readonly budgetMs: number;
-  readonly flaresolverrUrl: string;
   private readonly fetcher?: typeof fetch;
-  private readonly trawl?: TrawlClient | null;
+  private readonly trawl: TrawlClient | null;
   private readonly recorder?: StepRecorder;
   private readonly userAgent: string;
   private readonly app?: DPDAppTier;
@@ -707,19 +704,12 @@ export class DPDTracker {
     this.country = options.country ?? 'CH';
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.budgetMs = options.budgetMs ?? this.timeoutMs * 2 + SOLVER_ALLOWANCE_MS;
-    this.flaresolverrUrl = (options.flaresolverrUrl ?? '').trim();
     this.fetcher = options.fetcher;
-    this.trawl = options.trawl;
+    this.trawl = options.trawl ?? null;
     this.recorder = options.recorder;
     this.userAgent = userAgentOf(options.userAgent);
     this.app = options.app;
     this.shops = options.shops;
-  }
-
-  /** The browser service, resolved late so a malformed URL fails the page step, not construction. */
-  private browserService(): TrawlClient | null {
-    if (this.trawl !== undefined) return this.trawl;
-    return this.flaresolverrUrl ? new TrawlClient(this.flaresolverrUrl, this.fetcher) : null;
   }
 
   async fetch(raw: string, postcode = '', context: TrackingContext = {}): Promise<CarrierResult> {
@@ -1150,7 +1140,7 @@ export class DPDTracker {
     const url = new URL(FETCH_BASE);
     url.searchParams.set('lang', 'en');
     url.searchParams.set('parcelNumber', trackingNumber);
-    const trawl = this.browserService();
+    const trawl = this.trawl;
     let html: string;
     if (trawl) {
       html = await trawl.solve(url.toString(), {

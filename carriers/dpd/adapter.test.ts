@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { StepRecord, StepRecorder } from '../../core/telemetry/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { DPD_DE_APP_API } from '../dpd-de/service.js';
 import {
   DPDChallengeError,
@@ -936,7 +937,7 @@ describe('DPDTracker steps', () => {
         },
       }));
 
-    await expect(new DPDTracker({ timeoutMs: 1_000, flaresolverrUrl: 'http://trawl.internal:8191' })
+    await expect(new DPDTracker({ timeoutMs: 1_000, trawl: new TrawlClient('http://trawl.internal:8191') })
       .fetch(TRACKING_NUMBER)).resolves.toMatchObject({ status: 'in_transit' });
 
     expect(String(fetcher.mock.calls[1]?.[0])).toBe('http://trawl.internal:8191/v1');
@@ -1098,7 +1099,7 @@ describe('DPD transient read retry', () => {
   it('does not spend the retry delay when the request budget is nearly exhausted', async () => {
     const fetcher = mockGuestApi(new Response('', { status: 503 }));
     const { recorder, steps } = recordingRecorder();
-    await expect(new DPDTracker({ timeoutMs: 1_000, flaresolverrUrl: 'http://browser.invalid:8191', recorder })
+    await expect(new DPDTracker({ timeoutMs: 1_000, trawl: new TrawlClient('http://browser.invalid:8191'), recorder })
       .fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'maintenance', status: 503 });
     expect(fetcher).toHaveBeenCalledTimes(4);
     expect(steps.map(step => step.step)).toEqual(['direct']);
@@ -1108,7 +1109,7 @@ describe('DPD transient read retry', () => {
     const fetcher = mockGuestApi(new Response('', { status: 503 }))
       .mockResolvedValueOnce(new Response('', { status: 503 }));
     const { recorder, steps } = recordingRecorder();
-    await expect(new DPDTracker({ timeoutMs: 5_000, flaresolverrUrl: 'http://browser.invalid:8191', recorder })
+    await expect(new DPDTracker({ timeoutMs: 5_000, trawl: new TrawlClient('http://browser.invalid:8191'), recorder })
       .fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'maintenance', status: 503 });
     expect(fetcher).toHaveBeenCalledTimes(5);
     expect(steps.map(step => step.step)).toEqual(['direct']);
@@ -1124,7 +1125,7 @@ describe('DPD transient read retry', () => {
     for (const response of responses.slice(0, step)) fetcher.mockResolvedValueOnce(response);
     fetcher.mockResolvedValueOnce(new Response('', { status: 503 }));
     const { recorder, steps } = recordingRecorder();
-    await expect(new DPDTracker({ timeoutMs: 1_000, flaresolverrUrl: 'http://browser.invalid:8191', recorder })
+    await expect(new DPDTracker({ timeoutMs: 1_000, trawl: new TrawlClient('http://browser.invalid:8191'), recorder })
       .fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'maintenance', status: 503 });
     expect(fetcher).toHaveBeenCalledTimes(step + 1);
     expect(steps.map(record => record.step)).toEqual(['direct']);

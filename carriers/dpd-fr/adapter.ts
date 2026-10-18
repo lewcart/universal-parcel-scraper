@@ -8,7 +8,7 @@ import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { zonedTime } from '../../core/time/index.js';
-import { TrawlClient, clean, decodeText, fetchBounded } from '../../core/transport/index.js';
+import { clean, decodeText, fetchBounded, type TrawlClient } from '../../core/transport/index.js';
 import { isDeliveryStatusCell } from './identity.js';
 import { classifyStatus, comparableText, includesAny } from './status.js';
 
@@ -239,8 +239,6 @@ export interface DPDFranceTrackerOptions {
   directTimeoutMs?: number;
   /** Whole-lookup budget; defaults to both tiers plus the solver's own allowance. */
   budgetMs?: number;
-  /** Legacy configuration seam kept for tests; production passes `trawl`. */
-  trawlUrl?: string;
   fetcher?: typeof fetch;
   trawl?: TrawlClient | null;
   recorder?: StepRecorder;
@@ -250,9 +248,8 @@ export class DPDFranceTracker {
   readonly timeoutMs: number;
   readonly directTimeoutMs: number;
   readonly budgetMs: number;
-  readonly trawlUrl: string;
   private readonly fetcher?: typeof fetch;
-  private readonly configuredTrawl?: TrawlClient | null;
+  private readonly trawl: TrawlClient | null;
   private readonly recorder?: StepRecorder;
 
   constructor(options: DPDFranceTrackerOptions = {}) {
@@ -263,22 +260,15 @@ export class DPDFranceTracker {
     ));
     this.budgetMs = options.budgetMs
       ?? this.directTimeoutMs + this.timeoutMs + SOLVER_ALLOWANCE_MS;
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
     this.fetcher = options.fetcher;
-    this.configuredTrawl = options.trawl;
+    this.trawl = options.trawl ?? null;
     this.recorder = options.recorder;
-  }
-
-  /** The browser service, resolved late so a malformed URL fails the tier, not construction. */
-  private browserService(): TrawlClient | null {
-    if (this.configuredTrawl !== undefined) return this.configuredTrawl;
-    return this.trawlUrl ? new TrawlClient(this.trawlUrl, this.fetcher) : null;
   }
 
   async fetch(rawTrackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeDPDFranceTrackingNumber(rawTrackingNumber);
     const url = dpdFranceTrackingUrl(number);
-    const trawl = this.browserService();
+    const trawl = this.trawl;
     const direct = async (timeoutMs: number, signal: AbortSignal): Promise<string> => {
       try {
         return await this.directGet(url, capped(this.directTimeoutMs, timeoutMs), signal);

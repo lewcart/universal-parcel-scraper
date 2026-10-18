@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import type { CarrierResult } from '../../core/result/index.js';
+import { TrawlClient } from '../../core/transport/index.js';
 import { DHLSessionError, DHLTracker, dhlTrackingUrl, normalizeDHLTrackingNumber, parseDHLTrackingResponse } from './adapter.js';
 
 const NUMBER = 'LF123456785DE';
@@ -185,7 +186,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockResolvedValueOnce(config())
       .mockResolvedValueOnce(Response.json(shipment(), { headers: { 'verfolgen-CSRF-token': 'rotated-csrf' } }))
       .mockResolvedValueOnce(Response.json(shipment()));
-    const tracker = new DHLTracker({ trawlUrl: '' });
+    const tracker = new DHLTracker({ trawl: null });
     expect((await tracker.fetch(NUMBER)).events).toHaveLength(2);
     await tracker.fetch(NUMBER);
     expect(fetcher).toHaveBeenCalledTimes(3);
@@ -207,7 +208,7 @@ describe('DHL sessions and browser fallback', () => {
       ], 'Browser UA'))
       .mockResolvedValueOnce(config())
       .mockResolvedValueOnce(Response.json(shipment()));
-    const result = await new DHLTracker({ trawlUrl: 'http://trawl:8191/v1' }).fetch(NUMBER);
+    const result = await new DHLTracker({ trawl: new TrawlClient('http://trawl:8191/v1') }).fetch(NUMBER);
     expect(result.current_stage).toBe('in_transit');
     expect(String(fetcher.mock.calls[1]![0])).toBe('http://trawl:8191/scrape');
     expect(JSON.parse(String(fetcher.mock.calls[1]![1]?.body))).toMatchObject({ skipHttp: true, maxTier: 3, url: dhlTrackingUrl(NUMBER) });
@@ -223,7 +224,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()))
       .mockResolvedValueOnce(Response.json(shipment()))
       .mockResolvedValueOnce(config('renewed')).mockResolvedValueOnce(Response.json(shipment()));
-    const tracker = new DHLTracker({ trawlUrl: '', now: () => now });
+    const tracker = new DHLTracker({ trawl: null, now: () => now });
     await tracker.fetch(NUMBER);
     now += 90 * 60_000;
     await tracker.fetch(NUMBER);
@@ -241,7 +242,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()))
       .mockResolvedValueOnce(new Response('', { status: 403 }))
       .mockResolvedValueOnce(config('renewed')).mockResolvedValueOnce(Response.json(shipment()));
-    const tracker = new DHLTracker({ trawlUrl: 'http://trawl:8191' });
+    const tracker = new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') });
     await tracker.fetch(NUMBER);
     await tracker.fetch(NUMBER);
     expect(fetcher).toHaveBeenCalledTimes(5);
@@ -250,7 +251,7 @@ describe('DHL sessions and browser fallback', () => {
 
   it.each(['config', 'search', 'body', 'cached'])('recovers from an interrupted %s request with one fresh session', async (phase) => {
     const fetcher = vi.spyOn(globalThis, 'fetch');
-    const tracker = new DHLTracker({ trawlUrl: 'http://trawl:8191' });
+    const tracker = new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') });
     if (phase === 'cached') {
       fetcher.mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
       await tracker.fetch(NUMBER);
@@ -278,7 +279,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockRejectedValueOnce(new TypeError('fetch failed'))
       .mockResolvedValueOnce(solved([]))
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
-    const tracker = new DHLTracker({ trawlUrl: 'http://trawl:8191' });
+    const tracker = new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') });
     expect((await tracker.fetch(NUMBER)).events).toHaveLength(2);
     expect(String(fetcher.mock.calls[2]![0])).toBe('http://trawl:8191/scrape');
     expect(fetcher).toHaveBeenCalledTimes(5);
@@ -286,7 +287,7 @@ describe('DHL sessions and browser fallback', () => {
 
   it('bounds repeated network failures and allows the next sync to recover', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new DOMException('Timed out', 'TimeoutError'));
-    const tracker = new DHLTracker({ trawlUrl: '' });
+    const tracker = new DHLTracker({ trawl: null });
     await expect(tracker.fetch(NUMBER)).rejects.toMatchObject({ name: 'UpstreamNetworkError' });
     expect(fetcher).toHaveBeenCalledTimes(2);
     fetcher.mockReset().mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
@@ -302,7 +303,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockResolvedValueOnce(new Response('', { status: 403 }))
       .mockResolvedValueOnce(solved([]))
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
-    const tracker = new DHLTracker({ trawlUrl: 'http://trawl:8191' });
+    const tracker = new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') });
     const [running, waiting] = [new AbortController(), new AbortController()];
     const cancelled = tracker.fetch(NUMBER, { signal: running.signal });
     const left = tracker.fetch(NUMBER, { signal: waiting.signal });
@@ -322,7 +323,7 @@ describe('DHL sessions and browser fallback', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation((_url, init) => new Promise<Response>((_resolve, reject) => {
       init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason as Error));
     }));
-    const tracker = new DHLTracker({ trawlUrl: 'http://trawl:8191' });
+    const tracker = new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') });
     const running = new AbortController();
     const hung = tracker.fetch(NUMBER, { signal: running.signal });
     await expect(tracker.fetch(NUMBER, { budgetMs: 20 })).rejects.toMatchObject({ kind: 'budget', message: expect.stringContaining('20 ms') });
@@ -334,15 +335,15 @@ describe('DHL sessions and browser fallback', () => {
 
   it.each([429, 500, 503])('does not bypass HTTP %s using the browser', async (status) => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('', { status }));
-    await expect(new DHLTracker({ trawlUrl: 'http://trawl:8191' }).fetch(NUMBER)).rejects.toMatchObject({ status });
+    await expect(new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') }).fetch(NUMBER)).rejects.toMatchObject({ status });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('does not downgrade malformed data, rejected challenges or missing results to a waiting parcel', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('Challenge', { status: 403 }));
-    await expect(new DHLTracker({ trawlUrl: '' }).fetch(NUMBER)).rejects.toBeInstanceOf(DHLSessionError);
+    await expect(new DHLTracker({ trawl: null }).fetch(NUMBER)).rejects.toBeInstanceOf(DHLSessionError);
     fetcher.mockReset().mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json({ error: 'Private upstream details' }));
-    await expect(new DHLTracker({ trawlUrl: 'http://trawl:8191' }).fetch(NUMBER)).rejects.toThrow('invalid tracking response');
+    await expect(new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') }).fetch(NUMBER)).rejects.toThrow('invalid tracking response');
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
@@ -350,18 +351,18 @@ describe('DHL sessions and browser fallback', () => {
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()))
       .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDatenVerfuegbar: true } }] }));
-    const tracker = new DHLTracker({ trawlUrl: '' });
+    const tracker = new DHLTracker({ trawl: null });
     expect(await tracker.recognizes(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-08-10T16:30:00.000Z' });
     expect(await tracker.recognizes(NUMBER)).toEqual({ known: false, lastActivityAt: null });
   });
 
   it('keeps recognition inconclusive without opening the browser', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('Challenge', { status: 403 }));
-    await expect(new DHLTracker({ trawlUrl: 'http://trawl:8191' }).recognizes(NUMBER)).rejects.toBeInstanceOf(DHLSessionError);
+    await expect(new DHLTracker({ trawl: new TrawlClient('http://trawl:8191') }).recognizes(NUMBER)).rejects.toBeInstanceOf(DHLSessionError);
     expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([CONFIG]);
     fetcher.mockReset().mockResolvedValueOnce(config())
       .mockResolvedValueOnce(Response.json({ sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDhlPaketSendung: true } }] }));
-    await expect(new DHLTracker({ trawlUrl: '' }).recognizes(NUMBER)).rejects.toThrow('own tracking website');
+    await expect(new DHLTracker({ trawl: null }).recognizes(NUMBER)).rejects.toThrow('own tracking website');
   });
 
   it('reports one direct step, then the browser step, through the recorder', async () => {
@@ -371,7 +372,7 @@ describe('DHL sessions and browser fallback', () => {
       .mockResolvedValueOnce(config()).mockResolvedValueOnce(Response.json(shipment()));
     const steps: { step: string; outcome: string; fallbackFrom: string | null }[] = [];
     const lookups: { finalStep: string | null; outcome: string }[] = [];
-    await new DHLTracker({ trawlUrl: 'http://trawl:8191', recorder: {
+    await new DHLTracker({ trawl: new TrawlClient('http://trawl:8191'), recorder: {
       step: ({ step, outcome, fallbackFrom }) => { steps.push({ step, outcome, fallbackFrom }); },
       lookup: ({ finalStep, outcome }) => { lookups.push({ finalStep, outcome }); },
     } }).fetch(NUMBER);

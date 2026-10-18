@@ -16,7 +16,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { calendarDay, explicitOffsetTime } from '../../core/time/index.js';
-import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
+import { clean, cleanScalar, TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { FEDEX_CODE_STAGE, fedexStage, fedexStatus } from './status.js';
 
@@ -309,8 +309,6 @@ export function parseFedExTrackingHtml(page: string): 'challenged' | 'inconclusi
 
 export interface FedExTrackerOptions {
   timeoutMs?: number;
-  /** Legacy configuration seam; `trawl` is preferred. */
-  trawlUrl?: string;
   /** The browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
   fetcher?: typeof fetch;
@@ -319,8 +317,7 @@ export interface FedExTrackerOptions {
 
 export class FedExTracker {
   readonly timeoutMs: number;
-  readonly trawlUrl: string;
-  readonly #trawl: TrawlClient | null | undefined;
+  readonly #trawl: TrawlClient | null;
   readonly #fetcher: typeof fetch | undefined;
   readonly #recorder: StepRecorder;
 
@@ -329,22 +326,15 @@ export class FedExTracker {
       throw new TypeError('FedEx timeout must be positive');
     }
     this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
-    this.#trawl = options.trawl;
+    this.#trawl = options.trawl ?? null;
     this.#fetcher = options.fetcher;
     this.#recorder = options.recorder ?? NOOP_RECORDER;
-  }
-
-  /** The injected browser service, or one built from the configured URL. */
-  #browserService(): TrawlClient | null {
-    if (this.#trawl !== undefined) return this.#trawl;
-    return this.trawlUrl ? new TrawlClient(this.trawlUrl, this.#fetcher) : null;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeFedExTrackingNumber(trackingNumber);
     // Plain HTTP probes were rejected; the dedicated route uses the browser.
-    const trawl = this.#browserService();
+    const trawl = this.#trawl;
     if (!trawl) {
       throw new ChallengeError(
         'FedEx',

@@ -30,7 +30,7 @@ import { runSteps, singleFlight, takeTurn } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { countryCode, isoTime } from '../../core/time/index.js';
 import {
-  clean as cleanText, fetchBounded, parseJsonBytes, TrawlClient, UpstreamHttpError, UpstreamNetworkError,
+  clean as cleanText, fetchBounded, parseJsonBytes, type TrawlClient, UpstreamHttpError, UpstreamNetworkError,
 } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
 import { stageForText, statusForStage } from './status.js';
@@ -254,10 +254,8 @@ export interface DHLTrackerOptions {
   /** Budget for a single HTTP request of the direct session. */
   directTimeoutMs?: number;
   budgetMs?: number;
-  /** The host's browser service. Preferred over `trawlUrl`. */
+  /** The host's browser service, or null when none is configured. */
   trawl?: TrawlClient | null;
-  /** Browser service URL, for the host's default constructor and for tests. */
-  trawlUrl?: string;
   fetcher?: typeof fetch;
   recorder?: StepRecorder;
   /** Clock used for the session age; injectable for tests. */
@@ -268,7 +266,6 @@ export class DHLTracker {
   readonly timeoutMs: number;
   readonly directTimeoutMs: number;
   readonly budgetMs: number;
-  readonly trawlUrl: string;
   private readonly trawl: TrawlClient | null;
   private readonly fetcher?: typeof fetch;
   private readonly recorder: StepRecorder;
@@ -284,7 +281,6 @@ export class DHLTracker {
     // followed by the session it seeds, with room for the transport itself.
     this.budgetMs = options.budgetMs ?? this.timeoutMs + 4 * this.directTimeoutMs + 30_000;
     this.trawl = options.trawl ?? null;
-    this.trawlUrl = (options.trawlUrl ?? '').trim();
     this.fetcher = options.fetcher;
     this.recorder = options.recorder ?? NOOP_RECORDER;
     this.now = options.now ?? Date.now;
@@ -330,6 +326,7 @@ export class DHLTracker {
     const deadline = performance.now() + budgetMs;
     // The direct step's own signal: once it has aborted, the lookup is over and no browser follows.
     let ended: AbortSignal | undefined;
+    const trawl = this.trawl;
     try {
       return await runSteps<CarrierResult>({ carrier: 'dhl', budgetMs, signal, recorder: this.recorder }, [
         {
@@ -340,9 +337,9 @@ export class DHLTracker {
           },
         },
         {
-          id: 'trawl', enabled: this.trawl !== null || this.trawlUrl !== '',
+          id: 'trawl', enabled: trawl !== null,
           recovers: (error) => renewable(error) && !over(ended, deadline),
-          run: (step) => this.browser(number, { signal: step.signal, deadline }),
+          run: (step) => this.browser(trawl!, number, { signal: step.signal, deadline }),
         },
       ]);
     } catch (error) {
@@ -369,9 +366,8 @@ export class DHLTracker {
   }
 
   /** A solved browser session, replayed over HTTP with its cookies and user agent. */
-  private async browser(number: string, limits: Limits): Promise<CarrierResult> {
+  private async browser(trawl: TrawlClient, number: string, limits: Limits): Promise<CarrierResult> {
     this.session = null;
-    const trawl = this.trawl ?? new TrawlClient(this.trawlUrl, this.fetcher);
     const timeoutMs = capped(this.timeoutMs, limits);
     const solved = await trawl.scrape(
       { url: dhlTrackingUrl(number), skipHttp: true, maxTier: 3, maxTimeout: timeoutMs },
@@ -387,7 +383,7 @@ export class DHLTracker {
 
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new DHLTracker({
-    fetcher: environment.fetcher, trawl: environment.trawl, trawlUrl: '', recorder: environment.recorder,
+    fetcher: environment.fetcher, trawl: environment.trawl, recorder: environment.recorder,
   });
   return {
     id: 'dhl',

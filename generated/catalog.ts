@@ -1511,7 +1511,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "c-chez-vous"
+      "adapter": "c-chez-vous",
+      "recognitionRank": 345
     },
     "canaryUrl": "https://www.cchezvous.fr/suivi-colis",
     "trackingUrlTemplate": "https://www.cchezvous.fr/suivi-colis/{trackingNumber}",
@@ -1527,7 +1528,7 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^[A-Z]{4}\\d{2}[A-Z0-9]{4}$",
-        "confidence": "high"
+        "confidence": "low"
       }
     ]
   },

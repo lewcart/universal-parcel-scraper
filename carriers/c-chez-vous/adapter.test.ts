@@ -3,7 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import {
+  adapter,
   CChezVousTracker,
   cChezVousTrackingUrl,
   normalizeCChezVousCredential,
@@ -233,5 +235,26 @@ describe('C Chez Vous tracker', () => {
     fetcher.mockResolvedValueOnce(new Response('Not found', { status: 404 }));
     await expect(new CChezVousTracker().fetch('ZZZZZZZZZ0'))
       .rejects.toMatchObject({ status: 404 });
+  });
+});
+
+describe('C Chez Vous recognition', () => {
+  const carrier = (fetcher: typeof fetch) =>
+    adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+
+  it('knows an order whose page names it and not one redirected to the form', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response(trackingPage()))
+      .mockResolvedValueOnce(new Response(null, { status: 302, headers: { Location: '/suivi-colis' } }));
+
+    await expect(carrier(fetcher).recognize!(OFFICIAL_EXAMPLE_NUMBER)).resolves.toMatchObject({ known: true });
+    await expect(carrier(fetcher).recognize!('ZZZZ00ZZZ0')).resolves.toEqual({ known: false });
+  });
+
+  it('does not ask about a reference the order page cannot take', async () => {
+    const fetcher = vi.fn<typeof fetch>();
+
+    await expect(carrier(fetcher).recognize!('ZZZ')).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
   });
 });

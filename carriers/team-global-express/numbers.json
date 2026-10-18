@@ -145,8 +145,11 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "Looked up on Team Global Express's delivery page for JB Hi-Fi orders, as an archived address shows; the page draws the result with script, so the capture was not opened."
     },
@@ -164,8 +167,11 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "Looked up on Team Global Express's delivery page for JB Hi-Fi orders, as an archived address shows; the page draws the result with script, so the capture was not opened."
     },
@@ -202,8 +208,11 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "Looked up on Team Global Express's delivery page for JB Hi-Fi orders, as an archived address shows; the page draws the result with script, so the capture was not opened."
     },

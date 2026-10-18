@@ -31,6 +31,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "brt": 860,
   "bulgarian-posts": 915,
   "bussgods": 867,
+  "c-chez-vous": 345,
   "canada-post": 590,
   "canpar": 780,
   "cargus": 270,

@@ -15,8 +15,11 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "A customer posted this code under TufesaPack's own post about tracking; TufesaPack replied, but the reply is not visible without login."
     },
@@ -34,8 +37,11 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "A customer posted this code under TufesaPack's own post about tracking; TufesaPack replied, but the reply is not visible without login."
     },

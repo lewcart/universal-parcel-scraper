@@ -10,7 +10,7 @@ lookup on its tracker show numbers made of HV and eight letters or digits. Shipp
 set their own numbers of up to 30 letters, digits, underscores or dashes.
 
 No rule claims Hovership numbers. The shape cannot name Hovership while shippers choose their
-own numbers, and some generated numbers also fall inside C chez vous's high-confidence shape of
+own numbers, and some generated numbers also fall inside C chez vous's low-confidence shape of
 four letters, two digits and four letters or digits.
 
 ## Links

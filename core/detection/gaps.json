@@ -1546,7 +1546,7 @@
     "carrier": "hovership",
     "pattern": "^HV[A-Z0-9]{8}$",
     "kind": "collision",
-    "reason": "Some Hovership numbers fall inside C chez vous's high-confidence shape, and shippers may print their own numbers instead, so detection leaves HV numbers unclaimed."
+    "reason": "Some Hovership numbers fall inside C chez vous's low-confidence shape, and shippers may print their own numbers instead, so detection leaves HV numbers unclaimed."
   },
   {
     "carrier": "hr-parcel",

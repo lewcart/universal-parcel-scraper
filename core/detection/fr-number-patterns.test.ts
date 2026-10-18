@@ -51,6 +51,17 @@ describe('French carrier number candidates', () => {
     }
   });
 
+  it('asks C chez vous about its order shape without naming it, since other carriers print it too', () => {
+    // Synthetic references in C chez vous's order layout; HV leads like a Hovership number.
+    for (const number of ['ABCD12EF34', 'HVAB12CD34']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['c-chez-vous'] });
+      expect(recognitionAskedCarriers(number)).toEqual(['c-chez-vous']);
+    }
+    for (const number of ['ABC123EF34', 'ABCD12EF345', 'HVABCD1234']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('c-chez-vous');
+    }
+  });
+
   it('settles a French endpoint confirmation ahead of the shared GLS group answer', () => {
     const matches: RecognitionOutcome[] = recognitionCandidates('A1B2C3D4')
       .filter(({ carrier }) => ['gls-ch', 'gls-fr'].includes(carrier))

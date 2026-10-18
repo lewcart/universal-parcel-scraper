@@ -15,8 +15,11 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "An archived lookup on Hovership's own tracker shows this parcel's label creation and its arrival at Hovership's Hayward sort facility."
     }

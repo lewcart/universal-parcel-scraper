@@ -13,7 +13,7 @@
  */
 
 import { load } from 'cheerio';
-import { lookupBudget, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
+import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { UpstreamHttpError, clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
@@ -207,5 +207,8 @@ export const adapter: AdapterFactory = (environment) => {
     steps: ['direct'],
     // The postcode, when the order needs one, is already part of the stored number.
     track: (input, context) => tracker.fetch(input.number, context),
+    // The order page binds the whole reference, and an unknown order redirects to the form.
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+      () => accepted(() => normalizeCChezVousCredential(number))),
   };
 };

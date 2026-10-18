@@ -19,7 +19,10 @@
     "adapter": "c-chez-vous",
     "steps": [
       "direct"
-    ]
+    ],
+    "recognition": {
+      "rank": 345
+    }
   },
   "capabilities": [
     "eta"
@@ -64,7 +67,7 @@
     {
       "id": "c-chez-vous-1",
       "pattern": "^[A-Z]{4}\\d{2}[A-Z0-9]{4}$",
-      "confidence": "high"
+      "confidence": "low"
     }
   ]
 }

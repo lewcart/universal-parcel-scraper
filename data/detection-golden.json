@@ -59724,9 +59724,12 @@
   },
   {
     "input": "BBQA791960",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -65413,9 +65416,12 @@
   },
   {
     "input": "EGGS100149",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -67121,9 +67127,12 @@
   },
   {
     "input": "FGRC45BKLM",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -69039,9 +69048,12 @@
   },
   {
     "input": "HVUB47RTK3",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -69520,9 +69532,12 @@
   },
   {
     "input": "JBHR336676",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -76787,17 +76802,23 @@
   },
   {
     "input": "QMOC279920",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
   {
     "input": "QOBR 386452",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
@@ -81559,17 +81580,23 @@
   },
   {
     "input": "TGFL003384",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },
   {
     "input": "TGGE107152",
-    "carrier": "c-chez-vous",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
+      "c-chez-vous"
+    ],
+    "asked": [
       "c-chez-vous"
     ]
   },

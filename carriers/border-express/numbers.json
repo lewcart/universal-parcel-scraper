@@ -179,8 +179,11 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "ParcelPanel's Border Express page offers it as a sample to try; it fits the documented prefix and six-digit layout."
     },
@@ -196,8 +199,11 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "c-chez-vous",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "c-chez-vous"
+        ]
       },
       "note": "Border Express's EDI integration specification uses it as the example consignment number: a four-letter sender prefix and a six-digit range."
     },

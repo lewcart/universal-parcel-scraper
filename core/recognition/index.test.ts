@@ -157,11 +157,16 @@ describe('recognition candidates', () => {
     expect(detectCarrierMatch('1234567890').candidates).toContain('tipsa');
     expect(recognitionCandidates('1234567890', { hint: 'tipsa' }).map(({ carrier }) => carrier)).not.toContain('tipsa');
     expect(recognitionCandidates('0123450123451234567890').map(({ carrier }) => carrier)).toContain('tipsa');
+    // bpost documents its numeric barcodes with their 3232 and 3299 prefixes; other digits stay a suggestion.
+    for (const number of ['000000000000000001', '000000000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates, number).toContain('bpost');
+      expect(recognitionCandidates(number, { hint: 'bpost', countryHint: 'BE' }).map(({ carrier }) => carrier), number).not.toContain('bpost');
+    }
   });
 
   it('can ask bpost about an ambiguous numeric barcode without a recipient postcode', () => {
-    expect(recognitionCandidates('000000000000000000000001')).toEqual(expect.arrayContaining([
-      { carrier: 'bpost', needsInput: null, preferred: false },
+    expect(recognitionCandidates('323200000000000000000001')).toEqual(expect.arrayContaining([
+      { carrier: 'bpost', needsInput: null, preferred: true },
     ]));
   });
 

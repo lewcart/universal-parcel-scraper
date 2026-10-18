@@ -2279,6 +2279,7 @@
       "mode": "automatic",
       "adapter": "bpost",
       "recognitionRank": 810,
+      "recognitionPattern": "^(?:3232\\d{14}|(?:3232|3299)\\d{20}|[A-Z]{2}\\d{9}BE|JJBE[A-Z]\\d{18}(?:\\d{4})?)$",
       "localClocks": true
     },
     "canaryUrl": "https://track.bpost.cloud/",

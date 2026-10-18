@@ -18,7 +18,10 @@ Delivery to the sender is a return milestone; an ambiguous return delivery is
 inconclusive. The same cheap lookup lets carrier recognition resolve ambiguous
 numeric barcodes; only the batch service's explicit absence reply is negative.
 The [documented parcel prefixes](https://www.bpost.be/en/faq/what-does-barcode-look-and-where-can-i-find-it)
-prioritize recognition while retaining numeric ambiguity.
+prioritize recognition while retaining numeric ambiguity. bpost documents its
+eighteen- and twenty-four-digit barcodes only with those prefixes, so
+recognition asks bpost about no other run of digits, and those stay a
+suggestion.
 bpost does not name a `U` barcode ending in `BE`: bpost issues those only to
 clear customs and does not track them.
 bpost's licence plate, `JJBE`, a letter and eighteen digits, as on a

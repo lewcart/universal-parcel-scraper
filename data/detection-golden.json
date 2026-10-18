@@ -77279,10 +77279,59 @@
     ]
   },
   {
+    "input": "PKG700534051001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "norsk-global"
+    ],
+    "asked": [
+      "norsk-global"
+    ]
+  },
+  {
+    "input": "PKG700635282001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "norsk-global"
+    ],
+    "asked": [
+      "norsk-global"
+    ]
+  },
+  {
+    "input": "PKG701631939001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "norsk-global"
+    ],
+    "asked": [
+      "norsk-global"
+    ]
+  },
+  {
+    "input": "PKG701912455001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "norsk-global"
+    ],
+    "asked": [
+      "norsk-global"
+    ]
+  },
+  {
     "input": "PKG702786853001",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "norsk-global"
+    ],
+    "asked": [
+      "norsk-global"
+    ]
   },
   {
     "input": "PKQZ050115785",

@@ -1169,6 +1169,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/clientes\.transaher\.es\/webclient\/h?tracking\/-5,0,103000000000000000000000000$/,
     marker: /No se ha encontrado la expedición indicada/i,
     forwarding: { notFound: /No se ha encontrado la expedición indicada/i } },
+  // The server looks the reference in the path up; an unknown one gets the notice in place of the shipment.
+  { carrier: 'norsk-global', number: 'PKG000000000000',
+    route: /^https:\/\/norsk\.trackmyparcel\.info\/gb\/tracking\/PKG000000000000$/,
+    marker: /Nothing found using that tracking number|HAWB/,
+    forwarding: { notFound: /Nothing found using that tracking number/ } },
 ];
 
 /**

@@ -17,18 +17,59 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "norsk-global",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 845
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
     "searchUrl": "https://norsk.trackmyparcel.info/",
     "canaryUrl": "https://norsk.trackmyparcel.info/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "recipient_name",
+      "postcodes",
+      "signatory",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "recipient_name",
+      "postcodes",
+      "signatory",
+      "delivered_at"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "sender_name"
+    ]
   },
   "links": [
     {
@@ -38,5 +79,11 @@
       "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "norsk-global-pkg",
+      "pattern": "^PKG\\d{12}$",
+      "confidence": "low"
+    }
+  ]
 }

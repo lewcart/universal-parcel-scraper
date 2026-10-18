@@ -21,6 +21,94 @@
       "note": "An archived lookup on Norsk's own tracker; the capture was opened but shows only the page shell, so the history is not visible."
     },
     {
+      "number": "PKG700534051001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20170419160636/http://underground-england.trackmyparcel.info:80/tracking/PKG700534051001",
+        "date": "2017-04-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "norsk-global"
+        ]
+      },
+      "note": "An archived lookup on a merchant's site on Norsk's tracker; the capture shows the shipment's history."
+    },
+    {
+      "number": "PKG700635282001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20170623013737/http://merlincycles.trackmyparcel.info:80/tracking/PKG700635282001",
+        "date": "2017-06-23",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "norsk-global"
+        ]
+      },
+      "note": "An archived lookup on a merchant's site on Norsk's tracker; the capture shows the shipment's history."
+    },
+    {
+      "number": "PKG701631939001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20181020090212/http://fashioneyewear.trackmyparcel.info:80/tracking/PKG701631939001",
+        "date": "2018-10-20",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "norsk-global"
+        ]
+      },
+      "note": "An archived lookup on a merchant's site on Norsk's tracker; the capture shows only the page shell."
+    },
+    {
+      "number": "PKG701912455001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20190130233858/http://apothecary87.trackmyparcel.info:80/tracking/PKG701912455001",
+        "date": "2019-01-30",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "norsk-global"
+        ]
+      },
+      "note": "An archived lookup on a merchant's site on Norsk's tracker; the capture shows only the page shell."
+    },
+    {
       "number": "PKG702786853001",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -35,7 +123,10 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "none"
+        "confidence": "low",
+        "candidates": [
+          "norsk-global"
+        ]
       },
       "note": "A customer's review on Norsk Global's Trustpilot page gives it for a jacket sent from the UK to the US, and Norsk's reply describes handing that shipment to a postal carrier."
     },

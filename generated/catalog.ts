@@ -19138,7 +19138,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "norsk-global",
+      "recognitionRank": 845,
+      "localClocks": true
     },
     "canaryUrl": "https://norsk.trackmyparcel.info/",
     "trackingUrlTemplate": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
@@ -19151,7 +19153,12 @@ export const CARRIER_CATALOG = {
         "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^PKG\\d{12}$",
+        "confidence": "low"
+      }
+    ]
   },
   "northline": {
     "displayName": "Northline",
@@ -29215,7 +29222,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nippon-express": [],
   "noest": [],
   "nord-wheel": [],
-  "norsk-global": [],
+  "norsk-global": ["norsk-global-pkg"],
   "northline": [],
   "nova-global": ["nova-global-1"],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],

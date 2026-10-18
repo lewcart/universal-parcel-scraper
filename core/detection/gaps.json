@@ -2257,12 +2257,6 @@
     "reason": "A single archived lookup is the only sample of this reference, too few to fix its layout."
   },
   {
-    "carrier": "norsk-global",
-    "pattern": "^PKG\\d{12}$",
-    "kind": "by_design",
-    "reason": "A single review is the only sample, and PKG may be a sender's prefix rather than Norsk's."
-  },
-  {
     "carrier": "northline",
     "pattern": "^\\d[A-Z]{3}\\d{5,11}$",
     "kind": "by_design",

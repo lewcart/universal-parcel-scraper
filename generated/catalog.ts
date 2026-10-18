@@ -22752,7 +22752,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Nairobi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-kenya",
+      "localClocks": true
     },
     "canaryUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",
     "trackingSearchUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",

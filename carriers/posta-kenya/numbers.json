@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Pasted with its item details, origin City Square in Kenya and destination Sweden, in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+      "note": "Pasted with its item details in a review on TrackingMore's Kenya Post page. Posta Kenya's tracker shows the item posted in Kenya, sent through the office of exchange and delivered in Sweden."
     },
     {
       "number": "EP006537852KE",
@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Quoted as an undelivered package in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+      "note": "Quoted as an undelivered package in a review on TrackingMore's Kenya Post page. Posta Kenya's tracker shows the EMS item posted in Kenya, a failed delivery attempt and its delivery in the United States."
     },
     {
       "number": "RA 203008471KE",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Quoted, with a space, as an item not yet received in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+      "note": "Quoted, with a space, as an item not yet received in a review on TrackingMore's Kenya Post page. Posta Kenya's tracker shows the item posted in Kenya, through customs in Ukraine, and a failed delivery attempt there."
     },
     {
       "number": "Rr008058151ke",
@@ -69,13 +69,32 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Quoted as a missing mail item in a review on TrackingMore's Kenya Post page; its KE suffix names Posta Kenya as the issuing post."
+      "note": "Quoted as a missing mail item in a review on TrackingMore's Kenya Post page. Posta Kenya's tracker shows the item posted in Kenya and received at the office of exchange, with no scan after it."
+    },
+    {
+      "number": "RJ004718684ZA",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-kenya-post.html",
+        "date": "2017-10-19",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "intl-post",
+        "confidence": "high"
+      },
+      "note": "Quoted as a parcel sent from South Africa to Kenya in a review on TrackingMore's Kenya Post page. Posta Kenya's tracker shows the South African post's scans, then its own at the office of exchange in Nairobi and onward to Mombasa."
     }
   ]
 }

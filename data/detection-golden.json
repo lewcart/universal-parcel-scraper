@@ -82522,6 +82522,18 @@
     ]
   },
   {
+    "input": "RJ004718684ZA",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "south-african-post-office",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RK805653363IE",
     "carrier": "an-post",
     "confidence": "high",

@@ -18,17 +18,64 @@
   "timezone": "Africa/Nairobi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "posta-kenya",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country"
+  ],
   "portal": {
     "searchUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",
     "canaryUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "history",
+      "location",
+      "event_details",
+      "origin",
+      "origin_country",
+      "destination_country",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "delivered_at",
+      "signatory",
+      "recipient_id",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "event_details",
+      "destination_country"
+    ],
+    "discarded": [
+      "origin",
+      "origin_country",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "delivered_at",
+      "signatory",
+      "recipient_id",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [],
   "detection": []

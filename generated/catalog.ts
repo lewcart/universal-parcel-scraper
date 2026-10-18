@@ -10244,7 +10244,8 @@ export const CARRIER_CATALOG = {
       "DHLink",
       "Dhlink",
       "驼飞侠",
-      "駝飛俠"
+      "駝飛俠",
+      "XZG"
     ],
     "countries": [
       "CN"

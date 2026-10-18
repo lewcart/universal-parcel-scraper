@@ -75,48 +75,63 @@ const NAME_CHECKED_RULES: ReadonlySet<string> = new Set(['fedex-1']);
  * Evri International's tracker) names the partner whose rule claims it.
  * Several names that all map to the catalog can be one journey's legs; see
  * `journeyOwner`. Beside Cainiao, a bare brand names its network that
- * delivers at home.
+ * delivers at home. A bare brand none of whose networks fits the number names
+ * a group, such as "DPD Group" beside BRT, its network in Italy: beside a
+ * carrier whose rule fits the number, it leaves that carrier's hint.
  */
 export function universalCarrierHints(raw: unknown[], trackingNumber?: string): { reported_carriers: string[]; discovered_carrier?: string } {
   const names = [...new Set(raw.filter((value): value is string => typeof value === 'string'
     && value.length <= 80 && /^[\p{L}\p{N} .&'()-]+$/u.test(value)).map((value) => value.trim()))].filter(Boolean).slice(0, 10);
   const refused = new Set(trackingNumber ? checksumFailures(trackingNumber)
     .filter(({ rule }) => ADAPTER_CHECKED_RULES.has(rule) || NAME_CHECKED_RULES.has(rule)).map(({ carrier }) => carrier as string) : []);
+  const fitting = trackingNumber ? detectCarrierMatch(trackingNumber).candidates as readonly string[] : [];
   const detected = new Set<string>();
+  const inFull = new Set<string>();
   // Cainiao follows a parcel from abroad under its delivery carrier's number,
   // so a brand named beside it delivers at home: Evri UK, not Evri
   // International, which hands parcels to partners abroad.
   const inbound = names.some((name) => followsPartnerNumbers(carrierIdFromName(name) ?? ''));
   const leg = inbound ? (network: string) => !tracksPartnerNumbers(network) : undefined;
   let unmapped = false;
+  let group = false;
   for (const name of names) {
-    const named = carrierIdFromName(name) ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber, leg) : undefined);
+    const own = carrierIdFromName(name);
+    const named = own ?? (trackingNumber ? brandCarrierForNumber(name, trackingNumber, leg) : undefined);
     const carrier = named && trackingNumber ? partnerNumberOwner(named, trackingNumber) ?? named : named;
-    if (!carrier) unmapped = true;
-    else if (!refused.has(carrier)) detected.add(carrier);
+    const networks = carrier || !trackingNumber ? [] : brandCarrierIds(name);
+    if (networks.length && !networks.some((id) => fitting.includes(id))) group = true;
+    else if (!carrier) unmapped = true;
+    else if (!refused.has(carrier)) {
+      detected.add(carrier);
+      if (own) inFull.add(carrier);
+    }
   }
   // A name outside the catalog may be the number's owner, so it leaves no hint.
+  if (group && ![...detected].some((carrier) => fitting.includes(carrier))) unmapped = true;
   const discovered = unmapped ? undefined : detected.size === 1 ? [...detected][0]
-    : detected.size > 1 && trackingNumber ? journeyOwner([...detected], trackingNumber) : undefined;
+    : detected.size > 1 && trackingNumber ? journeyOwner([...detected], trackingNumber, inFull) : undefined;
   return { reported_carriers: names, ...(discovered ? { discovered_carrier: discovered } : {}) };
 }
 
 /**
  * A provider can name an origin and the carrier it hands the parcel to, such
  * as DHLink and SwiftX. The number is the one carrier's whose rules fit it,
- * or that a preferred rule backs among several. When none fits, Cainiao, which
+ * or that a preferred rule backs among several, else the one named in full
+ * beside networks a bare brand left to the number's shape. When none fits, Cainiao, which
  * follows a parcel under its delivery carrier's number, leaves the one carrier
  * named beside it. Otherwise a carrier whose numbers all have a layout of their own
  * (only high-confidence rules, SwiftX's SWX and eighteen digits) is named for
  * its own leg, and the one carrier left is the hint.
  */
-function journeyOwner(carriers: readonly string[], trackingNumber: string): string | undefined {
+function journeyOwner(carriers: readonly string[], trackingNumber: string, inFull: ReadonlySet<string>): string | undefined {
   const { candidates, preferred } = detectCarrierMatch(trackingNumber);
   const fitting = carriers.filter((carrier) => candidates.includes(carrier as CarrierId));
   if (fitting.length === 1) return fitting[0];
   if (fitting.length > 1) {
     const backed = fitting.filter((carrier) => preferred.includes(carrier as CarrierId));
-    return backed.length === 1 ? backed[0] : undefined;
+    if (backed.length === 1) return backed[0];
+    const named = (backed.length ? backed : fitting).filter((carrier) => inFull.has(carrier));
+    return named.length === 1 && named.length < fitting.length ? named[0] : undefined;
   }
   const delivering = carriers.filter((carrier) => !followsPartnerNumbers(carrier));
   if (delivering.length === 1 && delivering.length < carriers.length) return delivering[0];

@@ -87,12 +87,33 @@ describe('carrier names reported by universal providers', () => {
     for (const names of [['Evri Group', 'Cainiao'], ['Cainiao', 'Evri Group']]) {
       expect(universalCarrierHints(names, barcode)).toEqual({ reported_carriers: names, discovered_carrier: 'evri-uk' });
     }
-    // A number of neither network still leaves the brand unresolved.
-    expect(universalCarrierHints(['Evri Group', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBeUndefined();
+    // A number of neither network is Cainiao's own, as beside any group name.
+    expect(universalCarrierHints(['Evri Group', 'Cainiao'], 'LP00000000000001').discovered_carrier).toBe('aliexpress');
     // Without Cainiao another name is no reason to rule a network out.
     expect(universalCarrierHints(['Evri Group', 'Royal Mail'], barcode).discovered_carrier).toBeUndefined();
     // Plain "Evri" is Evri UK's name; providers name Evri International in full.
     expect(universalCarrierHints(['Evri'], barcode).discovered_carrier).toBe('evri-uk');
+  });
+
+  it('reads a bare brand none of whose networks fits the number as a group name', () => {
+    // DHLink tracks its line provider XZG's numbers; no DPD network has their layout.
+    expect(universalCarrierHints(['XZG', 'DHLink', 'DPD Group'], 'XZG000000001WL')).toEqual({
+      reported_carriers: ['XZG', 'DHLink', 'DPD Group'], discovered_carrier: 'dhlink',
+    });
+    expect(universalCarrierHints(['GLS', 'FedEx'], '000000000000').discovered_carrier).toBe('fedex');
+    // Beside a name outside the catalog, or a carrier none of whose rules fits either, no hint.
+    expect(universalCarrierHints(['Some Forwarder', 'DPD Group', 'DHLink'], 'XZG000000001WL').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['DPD Group', 'Royal Mail'], 'QQ000000000QQ').discovered_carrier).toBeUndefined();
+    // A network of the brand that fits keeps it a name of its own.
+    expect(universalCarrierHints(['Evri Group', 'Royal Mail'], 'H00A0A0000000002').discovered_carrier).toBeUndefined();
+  });
+
+  it('prefers a carrier named in full to a network a bare brand leaves to the number', () => {
+    // BRT is DPD's network in Italy; fifteen digits fit BRT's rule and a broad DPD France one.
+    expect(universalCarrierHints(['BRT Bartolini (Parcel ID)', 'DPD Group'], '012000000000001').discovered_carrier).toBe('brt');
+    expect(universalCarrierHints(['DPD Group'], '012000000000001').discovered_carrier).toBe('dpd-fr');
+    // Two carriers named in full still leave the number to their rules.
+    expect(universalCarrierHints(['BRT Bartolini (Parcel ID)', 'DPD France'], '012000000000001').discovered_carrier).toBeUndefined();
   });
 
   it('names the carrier beside Cainiao for a number no rule of either fits', () => {

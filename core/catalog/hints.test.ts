@@ -20,6 +20,8 @@ describe('brand networks', () => {
     expect(carrierIdFromName('Innofulfill')).toBe('shree-maruti');
     expect(carrierIdFromName('Nova Poshta Global')).toBe('nova-global');
     expect(carrierIdFromName('Nova Poshta')).toBe('nova-poshta');
+    // Providers name the line provider whose numbers DHLink tracks.
+    expect(carrierIdFromName('XZG')).toBe('dhlink');
     expect(brandCarrierIds('DPD UK')).toEqual([]);
     expect(brandCarrierIds('Swiss Post')).toEqual([]);
   });

@@ -97,6 +97,11 @@ and [the benchmark](../benchmark/README.md) holds what was measured.
   "Evri Group" is Evri UK, since Evri International hands parcels to partners abroad.
   Plain "Evri" is Evri UK in any case: providers name Evri International in full or by its
   GlobalEco tracker.
+- A bare brand none of whose networks fits the number names a group, such as "DPD Group"
+  beside BRT, DPD's network in Italy. Beside a carrier whose rule fits the number, it leaves
+  that carrier's hint; a name outside the catalog still leaves none. When a carrier named in
+  full and a network the bare brand leaves to the number both fit, and no preferred rule
+  backs either, the carrier named in full is the hint.
 - The names `Ship24`, `ParcelsApp`, `17TRACK`, `Postal Ninja` and `UPU` are public, and
   consumers store them. Don't rename them.
 

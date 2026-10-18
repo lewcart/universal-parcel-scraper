@@ -134,7 +134,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "paack"
+          "paack",
+          "ecoscooting"
         ]
       },
       "note": "Publicly reported shipment number of a SHEIN package, which Paack delivers in Spain; the attribution was not independently verified."
@@ -151,7 +152,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "paack"
+          "paack",
+          "ecoscooting"
         ]
       },
       "note": "A SHEIN customer's complaint quotes it as the tracking number of an order Paack's courier delivered."
@@ -168,7 +170,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "paack"
+          "paack",
+          "ecoscooting"
         ]
       },
       "note": "A complaint to Paack quotes it as one of two SHEIN orders Paack delivered to someone else."
@@ -185,7 +188,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "paack"
+          "paack",
+          "ecoscooting"
         ]
       },
       "note": "A complaint to Paack quotes it as one of two SHEIN orders Paack delivered to someone else."

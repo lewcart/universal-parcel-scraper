@@ -3,6 +3,8 @@ import { recognitionCandidates, recognitionAskedCarriers } from '../catalog/reco
 import { detectCarrierMatch, parseTrackingInput } from './index.js';
 import { isBrtTrackingNumber } from './brt.js';
 import { isPosteItalianeTrackingNumber } from './posteItaliane.js';
+import { SHEIN_PACKAGE_NUMBER, isSheinPackageNumber } from './shein.js';
+import { CARRIER_DEFINITIONS } from '../catalog/definitions.js';
 
 describe('continental shipment candidates', () => {
   it('offers BRT shipment numbers without assigning ownership from twelve digits', () => {
@@ -266,18 +268,26 @@ describe('wave six courier rules', () => {
   });
 });
 
-describe('SHEIN package numbers Paack delivers in Spain', () => {
-  it.each(['C26010100000001', 'E25123100000001', 'C24022900000001'])('suggests Paack for %s', (number) => {
-    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['paack'] });
-    // Paack needs the postcode, so recognition cannot confirm it.
-    expect(recognitionAskedCarriers(number)).toEqual([]);
+describe('SHEIN package numbers Paack and Ecoscooting deliver in Spain', () => {
+  it.each(['C26010100000001', 'E25123100000001', 'C24022900000001'])('suggests Paack and Ecoscooting for %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['paack', 'ecoscooting'] });
+    // Paack needs the postcode, so recognition asks only Ecoscooting.
+    expect(recognitionAskedCarriers(number)).toEqual(['ecoscooting']);
   });
 
   it.each(['C26130100000001', 'C26003100000001', 'C26013200000001', 'D26010100000001', 'C16010100000001', 'C2601010000001', 'C260101000000001'])(
-    'leaves %s, not a dated SHEIN number, without Paack', (number) => {
-      expect(detectCarrierMatch(number).candidates).not.toContain('paack');
+    'leaves %s, not a dated SHEIN number, without Paack or Ecoscooting', (number) => {
+      expect(isSheinPackageNumber(number)).toBe(false);
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('paack');
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('ecoscooting');
     },
   );
+
+  it('keeps both rules on the shared SHEIN check', () => {
+    for (const carrier of ['paack', 'ecoscooting'] as const) {
+      expect(CARRIER_DEFINITIONS[carrier].detectionRules.map((rule) => rule.pattern), carrier).toContain(SHEIN_PACKAGE_NUMBER.source);
+    }
+  });
 });
 
 describe('FedEx Poland domestic numbers', () => {

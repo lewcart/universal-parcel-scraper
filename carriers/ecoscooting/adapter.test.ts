@@ -296,6 +296,31 @@ describe('Ecoscooting direct retrieval', () => {
       expect(() => normalizeEcoscootingNumber(number)).toThrow(InvalidInputError);
     }
   });
+  it('tracks a SHEIN package number by the label Ecoscooting lists for it, without naming the label', async () => {
+    const shein = 'C26010100000001';
+    const listed = () => { const value = fixture(); value.packageParam.outOrderId = shein; return value; };
+    expect(normalizeCarrierResult(parseEcoscooting(listed(), shein))).toMatchObject({ status: 'delivered', delivered_at: '2026-01-04T19:00:00Z' });
+    const ownScan = listed(); ownScan.statuses[1].mailNo = NUMBER;
+    expect(parseEcoscooting(ownScan, shein)).toMatchObject({ status: 'delivered' });
+    // The listing must name the SHEIN number beside an 18-digit label, and scans that label.
+    const otherOrder = listed(); otherOrder.packageParam.outOrderId = 'C26010100000002';
+    const shortLabel = listed(); shortLabel.packageParam.trackingNumber = NUMBER.slice(1);
+    const otherScan = listed(); otherScan.statuses[1].mailNo = OTHER;
+    for (const value of [otherOrder, shortLabel, otherScan]) expect(() => parseEcoscooting(value, shein)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(listed())));
+    const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });
+    const result = await instance.track({ number: shein });
+    // The label starts with the delivery postcode, so the result never carries it.
+    expect(result).toMatchObject({ status: 'delivered' });
+    expect(result).not.toHaveProperty('canonical_tracking_number');
+    expect(JSON.stringify(result)).not.toContain(NUMBER);
+    expect(JSON.parse(new URLSearchParams(String(fetcher.mock.lastCall?.[1]?.body)).get('logistics_interface')!).mailNo).toBe(shein);
+    await expect(instance.recognize!(shein)).resolves.toMatchObject({ known: true });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    // A date SHEIN cannot have issued is refused before any request.
+    for (const number of ['C26130100000001', 'D26010100000001']) await expect(instance.track({ number })).rejects.toThrow(InvalidInputError);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
   it('sends one fresh anonymous form using exact public client configuration and identity', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(fixture())));
     const instance = adapter({ fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} });

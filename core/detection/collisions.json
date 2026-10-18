@@ -4544,5 +4544,13 @@
       "yunda"
     ],
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "SHEIN package number",
+    "carriers": [
+      "ecoscooting",
+      "paack"
+    ],
+    "reason": "SHEIN's package number is printed on parcels Paack and Ecoscooting deliver in Spain, and on parcels other carriers deliver elsewhere, so both low rules take it and recognition or the reader settles the carrier."
   }
 ]

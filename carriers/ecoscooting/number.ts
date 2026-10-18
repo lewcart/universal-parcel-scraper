@@ -1,5 +1,6 @@
 import { normalizeTrackingNumber } from '../../core/detection/normalize.js';
 import { InvalidInputError } from '../../core/errors/index.js';
+import { isSheinPackageNumber } from '../../core/detection/shein.js';
 
 // Cainiao's Spanish and Portuguese reference after its "CN": the destination,
 // its postcode (five digits in Spain, seven in Portugal), 1234 and a counter.
@@ -17,9 +18,14 @@ export function ecoscootingReference(raw: string): string {
   return WITHOUT_CN.test(number) ? `CN${number}` : number;
 }
 
-/** A number as Ecoscooting's gateway matches it: an 18-digit label, or a `CNESP`/`CNPRT` reference. */
+/**
+ * A number as Ecoscooting's gateway matches it: an 18-digit label, a
+ * `CNESP`/`CNPRT` reference, or the SHEIN package number its label was made for.
+ */
 export function ecoscootingRequestNumber(raw: string): string {
   const number = ecoscootingReference(raw);
-  if (!REFERENCE.test(number)) throw new InvalidInputError('Ecoscooting', 'Ecoscooting requires a numeric, CNESP or CNPRT parcel reference');
+  if (!REFERENCE.test(number) && !isSheinPackageNumber(number)) {
+    throw new InvalidInputError('Ecoscooting', 'Ecoscooting requires a numeric, CNESP or CNPRT parcel reference, or a SHEIN package number');
+  }
   return number;
 }

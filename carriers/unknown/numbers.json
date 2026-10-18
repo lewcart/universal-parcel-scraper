@@ -317,7 +317,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "paack"
+          "paack",
+          "ecoscooting"
         ]
       },
       "note": "Customer reports a Shein order at LGG without identifying its logistics provider. The C family does not establish OnTrac, and the number fails OnTrac's check digit.",

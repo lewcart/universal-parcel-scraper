@@ -54,6 +54,12 @@ result names the full reference as `canonical_tracking_number`. Without the pref
 detection asks for the reference's whole layout: the destination, its postcode
 (five digits in Spain, seven in Portugal), `1234` and the counter, as every public
 reference has it.
+SHEIN's package number, `C` or `E`, the order date and eight digits, is the shop's order. The
+gateway lists it beside the 18-digit label Ecoscooting gave the parcel, and the parcel is
+tracked under that label without naming it, since the label starts with the delivery
+postcode. Paack delivers other SHEIN parcels in Spain, so the shape only suggests Ecoscooting,
+and recognition asks it; the query error for a package number it never received settles
+nothing.
 ICP references use a separate client normalization and are not supported.
 Cainiao's other `CN` families, such as `CNUSUP`, belong to other networks.
 

@@ -2819,7 +2819,7 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "ecoscooting",
       "recognitionRank": 655,
-      "recognitionPattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+      "recognitionPattern": "^(?:(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}|[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8})$",
       "localClocks": true
     },
     "canaryUrl": "https://ecoscooting.com/tracking/1",
@@ -2854,6 +2854,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8}$",
+        "confidence": "low"
       }
     ]
   },
@@ -27688,7 +27692,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
   "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d","poste-italiane-registered"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id","brt-customer-parcel-id"],
-  "ecoscooting": ["ecoscooting-postcode-label","ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn"],
+  "ecoscooting": ["ecoscooting-postcode-label","ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn","ecoscooting-shein-package"],
   "tipsa": ["tipsa-1","tipsa-2"],
   "ukrposhta": ["ukrposhta-1","ukrposhta-s10"],
   "usps": ["usps-impb","usps-impb-26","usps-3","usps-1","usps-2","usps-impb-routing","usps-4","usps-s10"],

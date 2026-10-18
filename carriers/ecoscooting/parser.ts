@@ -3,6 +3,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { epochMillisTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { isSheinPackageNumber } from '../../core/detection/shein.js';
 import { ecoscootingRequestNumber } from './number.js';
 import { ecoscootingStatus } from './status.js';
 
@@ -33,7 +34,13 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
   // neither identifies a parcel nor proves that Ecoscooting does not know it.
   if (payload.success !== 'true') throw new IndeterminateError('Ecoscooting', 'Ecoscooting could not complete the tracking query',
     payload.errorMsg === 'query logisticOrder by mailNo error' ? { reason: 'portal_not_found' } : {});
-  if (!isRecord(payload.packageParam) || payload.packageParam.trackingNumber !== number) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
+  if (!isRecord(payload.packageParam)) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
+  // A SHEIN package number is the shop's order: the listing names it beside
+  // Ecoscooting's own 18-digit label, which the parcel then goes by.
+  const listed = payload.packageParam;
+  const label = isSheinPackageNumber(number) && listed.outOrderId === number && typeof listed.trackingNumber === 'string'
+    && /^\d{18}$/.test(listed.trackingNumber) ? listed.trackingNumber : number;
+  if (listed.trackingNumber !== label) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a different parcel');
   if (!Array.isArray(payload.statuses) || payload.statuses.length > 500 || !payload.statuses.every(isRecord)) throw new SchemaError('Ecoscooting');
   // A parcel announced to Ecoscooting but not yet handed over is listed without scans.
   if (!payload.statuses.length) throw new NoHistoryError('Ecoscooting', 'Ecoscooting lists the parcel without scans');
@@ -43,7 +50,7 @@ export function parseEcoscooting(payload: unknown, rawNumber: string): CarrierRe
     const code = clean(row.actionCode, 64);
     const description = clean(row.description, 500) || clean(row.statusName, 500);
     if (!code || !description) throw new SchemaError('Ecoscooting', 'Ecoscooting returned an incomplete scan');
-    if (['trackingNumber', 'mailNo'].some(key => row[key] != null && row[key] !== number)) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a scan for a different parcel');
+    if (['trackingNumber', 'mailNo'].some(key => row[key] != null && row[key] !== number && row[key] !== label)) throw new SchemaError('Ecoscooting', 'Ecoscooting returned a scan for a different parcel');
     if (row.opTimestamp != null && (typeof row.opTimestamp !== 'string' || !/^\d{13}$/.test(row.opTimestamp))) throw new SchemaError('Ecoscooting', 'Ecoscooting returned an invalid millisecond timestamp');
     const time = row.opTimestamp == null ? null : epochMillisTime(row.opTimestamp);
     if (row.opTimestamp != null && !time) throw new SchemaError('Ecoscooting', 'Ecoscooting returned an invalid scan timestamp');

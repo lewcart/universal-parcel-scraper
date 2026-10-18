@@ -335,6 +335,12 @@
     "reason": "Ten digits are shared by many carriers and no known prefix or check digit sets BlueEX apart."
   },
   {
+    "carrier": "bombino",
+    "pattern": "^\\d{7,10}$",
+    "kind": "by_design",
+    "reason": "Bombino air waybills are plain runs of seven to ten digits, a shape many carriers share."
+  },
+  {
     "carrier": "border-express",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -1525,6 +1531,12 @@
     "reason": "The letters are the sender's account prefix, and other Australian carriers on the same consignment software print the same layout."
   },
   {
+    "carrier": "icc-worldwide",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "ICC air waybills are plain digit runs, a shape many carriers share."
+  },
+  {
     "carrier": "idexpress",
     "pattern": "^TKP8\\d{9}$",
     "kind": "by_design",
@@ -1957,6 +1969,12 @@
     "reason": "The freight bill shape has a single documentation example, too little to claim it."
   },
   {
+    "carrier": "maruti-air",
+    "pattern": "^\\d{8,9}$",
+    "kind": "by_design",
+    "reason": "Maruti Air document numbers are plain runs of eight or nine digits, a shape many carriers share."
+  },
+  {
     "carrier": "matkahuolto",
     "pattern": "^00\\d{18}$",
     "kind": "by_design",
@@ -2093,6 +2111,12 @@
     "pattern": "^\\d{14}$",
     "kind": "by_design",
     "reason": "Fourteen bare digits are shared with DPD and many other carriers."
+  },
+  {
+    "carrier": "noest",
+    "pattern": "^[A-Z]{3}[A-Z0-9]{3}\\d{8}$",
+    "kind": "by_design",
+    "reason": "A single public NOEST number shows this layout, too few to back a rule."
   },
   {
     "carrier": "nord-wheel",
@@ -2501,6 +2525,12 @@
     "reason": "Redur's seventeen-digit number is a bare digit run other carriers share."
   },
   {
+    "carrier": "rivigo",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Rivigo consignment numbers are plain ten-digit runs, a shape many carriers share."
+  },
+  {
     "carrier": "rl-carriers",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -2666,6 +2696,12 @@
     "pattern": "^\\d{10}$",
     "kind": "by_design",
     "reason": "Shree Anjani's ten-digit AWB numbers are a bare digit run many carriers share."
+  },
+  {
+    "carrier": "shree-mahavir",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Shree Mahavir consignment numbers are plain twelve-digit runs, a shape many carriers share."
   },
   {
     "carrier": "shree-maruti",
@@ -2865,6 +2901,12 @@
     "reason": "Twelve digits are shared by many carriers, and nothing in a Taxydema number points to it."
   },
   {
+    "carrier": "tccs",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "TCCS air waybills are plain seven-digit runs, a shape many carriers share."
+  },
+  {
     "carrier": "tci-express",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
@@ -2929,6 +2971,12 @@
     "pattern": "^[A-Z]{3}\\d{8}$",
     "kind": "by_design",
     "reason": "One archived lookup; nothing in the layout points to Team Global Express alone."
+  },
+  {
+    "carrier": "tej-couriers",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Tej Couriers consignment numbers are plain eight-digit runs, a shape many carriers share."
   },
   {
     "carrier": "tforce-freight",

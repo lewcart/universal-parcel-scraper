@@ -1,0 +1,33 @@
+{
+  "carrier": "icc-worldwide",
+  "records": [
+    {
+      "number": "26703693098",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.hifivision.com/threads/shopping-abroad-icc-world.10832/",
+        "date": "2010-06-30",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "old-dominion",
+          "dhl-ecommerce-pl",
+          "ppl"
+        ]
+      },
+      "note": "A forum member gives this as the air waybill of an eBay Global Easy Buy order dispatched by ICC World that never arrived."
+    }
+  ]
+}

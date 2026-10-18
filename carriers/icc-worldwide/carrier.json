@@ -1,0 +1,59 @@
+{
+  "id": "icc-worldwide",
+  "displayName": "ICC Worldwide",
+  "aliases": [
+    "ICC World",
+    "ICC",
+    "iccworld"
+  ],
+  "region": {
+    "countries": [
+      "IN",
+      "US",
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#bd0607"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.iccworld.com/track-result.php?track_no={trackingNumber}",
+    "searchUrl": "https://www.iccworld.com/",
+    "canaryUrl": "https://www.iccworld.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.iccworld.com",
+        "iccworld.com"
+      ],
+      "pathPattern": "^/track-result\\.php$",
+      "params": [
+        "track_no"
+      ]
+    },
+    {
+      "domains": [
+        "www.iccworld.com",
+        "iccworld.com"
+      ],
+      "pathPattern": "^/track\\.asp$",
+      "params": [
+        "txtawbno"
+      ]
+    }
+  ],
+  "detection": []
+}

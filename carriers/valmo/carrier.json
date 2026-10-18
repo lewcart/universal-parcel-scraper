@@ -1,0 +1,50 @@
+{
+  "id": "valmo",
+  "displayName": "Valmo",
+  "aliases": [
+    "VALMO",
+    "Valmo Logistics",
+    "Valmo by Meesho"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#0378b6"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.valmo.in/track/{trackingNumber}",
+    "searchUrl": "https://www.valmo.in/track",
+    "canaryUrl": "https://www.valmo.in/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.valmo.in",
+        "valmo.in"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "valmo-1",
+      "pattern": "^VL\\d{13}$",
+      "confidence": "high"
+    }
+  ]
+}

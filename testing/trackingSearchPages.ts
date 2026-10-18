@@ -14,6 +14,7 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   kargoist: 'kargoist.com\'s tracking page asks for a code sent by text message, and its home page, whose form opened a parcel from the number, shows a maintenance notice',
   liccardi: 'www.liccarditrasporti.com answers automated browsers with a bot check; its tracker opens a parcel from the number in its address',
   'nim-express': 'nimexpress.com\'s tracking fields are a script widget and a form that asks for a confirmation code; its own header form opens the tracking page with the number',
+  rivigo: 'Rivigo\'s public tracker is a hash route on zoom.rivigo.com whose other pages redirect to the staff sign-in; a consignment opens at its own address',
   'skynet-worldwide': 'SkyNet\'s tracker shows its number field only with a network parameter in the address, and skynetworldwide.com has no tracking page of its own',
   torrestir: 'Torrestir hides its number field on phone-sized screens, in a collapsed menu; its Track & Trace button opens the tracker with the number',
   yimidida: 'www.yimidida.com answers the search-page check with its cloud firewall\'s 405 block page; a waybill opens at its own address',

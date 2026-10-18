@@ -1,0 +1,70 @@
+{
+  "id": "bombino",
+  "displayName": "Bombino Express",
+  "aliases": [
+    "Bombino",
+    "Bombino Express Worldwide"
+  ],
+  "region": {
+    "countries": [
+      "IN",
+      "US",
+      "GB",
+      "AE"
+    ]
+  },
+  "brand": {
+    "color": "#0f172a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.bombinoexp.com/track?tracking_no={trackingNumber}",
+    "searchUrl": "https://www.bombinoexp.com/track",
+    "canaryUrl": "https://www.bombinoexp.com/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.bombinoexp.com",
+        "bombinoexp.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "tracking_no",
+        "awb"
+      ]
+    },
+    {
+      "domains": [
+        "www.bombinoexp.com",
+        "bombinoexp.com"
+      ],
+      "pathPattern": "^/Tracking\\.aspx$",
+      "params": [
+        "txtAwb"
+      ]
+    },
+    {
+      "domains": [
+        "www.bombinoexp.com",
+        "bombinoexp.com"
+      ],
+      "pathPattern": "^/track\\.aspx$",
+      "params": [
+        "AwbNo"
+      ]
+    }
+  ],
+  "detection": []
+}

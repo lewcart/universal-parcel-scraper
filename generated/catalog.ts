@@ -7010,6 +7010,63 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bombino": {
+    "displayName": "Bombino Express",
+    "color": "#0f172a",
+    "aliases": [
+      "Bombino",
+      "Bombino Express Worldwide"
+    ],
+    "countries": [
+      "IN",
+      "US",
+      "GB",
+      "AE"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bombinoexp.com/track",
+    "trackingUrlTemplate": "https://www.bombinoexp.com/track?tracking_no={trackingNumber}",
+    "trackingSearchUrl": "https://www.bombinoexp.com/track",
+    "linkRules": [
+      {
+        "domains": [
+          "www.bombinoexp.com",
+          "bombinoexp.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracking_no",
+          "awb"
+        ]
+      },
+      {
+        "domains": [
+          "www.bombinoexp.com",
+          "bombinoexp.com"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtAwb"
+        ]
+      },
+      {
+        "domains": [
+          "www.bombinoexp.com",
+          "bombinoexp.com"
+        ],
+        "pathPattern": "^/track\\.aspx$",
+        "params": [
+          "AwbNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "bookurier": {
     "displayName": "Bookurier",
     "color": "#dc2626",
@@ -14150,6 +14207,52 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "icc-worldwide": {
+    "displayName": "ICC Worldwide",
+    "color": "#bd0607",
+    "aliases": [
+      "ICC World",
+      "ICC",
+      "iccworld"
+    ],
+    "countries": [
+      "IN",
+      "US",
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.iccworld.com/",
+    "trackingUrlTemplate": "https://www.iccworld.com/track-result.php?track_no={trackingNumber}",
+    "trackingSearchUrl": "https://www.iccworld.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.iccworld.com",
+          "iccworld.com"
+        ],
+        "pathPattern": "^/track-result\\.php$",
+        "params": [
+          "track_no"
+        ]
+      },
+      {
+        "domains": [
+          "www.iccworld.com",
+          "iccworld.com"
+        ],
+        "pathPattern": "^/track\\.asp$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ics-courier": {
     "displayName": "ICS Courier",
     "color": "#004b8e",
@@ -17113,6 +17216,47 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "maruti-air": {
+    "displayName": "Maruti Air Couriers & Cargo",
+    "color": "#0c1f38",
+    "aliases": [
+      "Maruti Air",
+      "Maruti Air Couriers",
+      "Maruti Air Couriers & Cargo Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://marutiair.com/tracking.html",
+    "linkRules": [
+      {
+        "domains": [
+          "erp.marutiair.com"
+        ],
+        "pathPattern": "^/TrackpageWeb/WebAWBTracking\\.aspx$",
+        "params": [
+          "AWB"
+        ]
+      },
+      {
+        "domains": [
+          "www.marutiair.com",
+          "marutiair.com"
+        ],
+        "pathPattern": "^/Doc_Tracking\\.aspx$",
+        "params": [
+          "No"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "matkahuolto": {
     "displayName": "Matkahuolto",
     "color": "#001e60",
@@ -17859,6 +18003,28 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "noest": {
+    "displayName": "NOEST Express",
+    "color": "#0880e8",
+    "aliases": [
+      "NOEST",
+      "Noest Express",
+      "Nord et Ouest Express"
+    ],
+    "countries": [
+      "DZ"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Algiers",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://app.noest-dz.com/list/t",
+    "trackingSearchUrl": "https://app.noest-dz.com/list/t",
+    "linkRules": [],
     "detectionRules": []
   },
   "nord-wheel": {
@@ -20906,6 +21072,36 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "rivigo": {
+    "displayName": "Rivigo",
+    "color": "#dd712f",
+    "aliases": [
+      "RIVIGO",
+      "Rivigo by Mahindra Logistics",
+      "Rivigo Services"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://zoom.rivigo.com/",
+    "trackingUrlTemplate": "https://zoom.rivigo.com/#/trackconsignment/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "zoom.rivigo.com"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/trackconsignment/([^/?#]+)"
+      }
+    ],
+    "detectionRules": []
+  },
   "rl-carriers": {
     "displayName": "R+L Carriers",
     "color": "#006647",
@@ -21953,6 +22149,51 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/tracking/?$",
         "params": [
           "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "shree-mahavir": {
+    "displayName": "Shree Mahavir Express Services",
+    "color": "#e31e25",
+    "aliases": [
+      "Shree Mahavir Express",
+      "Shree Mahavir Courier",
+      "SMESPL",
+      "Shree Mahavir Express Services Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.shreemahavircourier.com/",
+    "trackingUrlTemplate": "https://www.shreemahavircourier.com/Frm_DocTrack.aspx?docno={trackingNumber}",
+    "trackingSearchUrl": "https://www.shreemahavircourier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.shreemahavircourier.com",
+          "shreemahavircourier.com"
+        ],
+        "pathPattern": "^/Frm_DocTrack\\.aspx$",
+        "params": [
+          "docno"
+        ]
+      },
+      {
+        "domains": [
+          "www.smespl.in",
+          "smespl.in"
+        ],
+        "pathPattern": "^/Frm_DocTrackWeb\\.aspx$",
+        "params": [
+          "docno"
         ]
       }
     ],
@@ -23581,6 +23822,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tccs": {
+    "displayName": "TCCS",
+    "color": "#e01e1e",
+    "aliases": [
+      "Total Couriers Cargo Services",
+      "Total Courier and Cargo Services"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tccs.in/tracking/",
+    "trackingSearchUrl": "https://tccs.in/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.tccs.in",
+          "tccs.in"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "tci-express": {
     "displayName": "TCI Express",
     "color": "#0d5fa6",
@@ -23745,6 +24018,28 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "tej-couriers": {
+    "displayName": "Tej Couriers",
+    "color": "#d2232a",
+    "aliases": [
+      "TEJ Couriers",
+      "Tej Courier",
+      "Ghatge Patil Consultancy Services"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.tejcouriers.com/shipment-tracking.php",
+    "trackingSearchUrl": "https://www.tejcouriers.com/shipment-tracking.php",
+    "linkRules": [],
     "detectionRules": []
   },
   "tforce-freight": {
@@ -24707,6 +25002,42 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "valmo": {
+    "displayName": "Valmo",
+    "color": "#0378b6",
+    "aliases": [
+      "VALMO",
+      "Valmo Logistics",
+      "Valmo by Meesho"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.valmo.in/track",
+    "trackingUrlTemplate": "https://www.valmo.in/track/{trackingNumber}",
+    "trackingSearchUrl": "https://www.valmo.in/track",
+    "linkRules": [
+      {
+        "domains": [
+          "www.valmo.in",
+          "valmo.in"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^VL\\d{13}$",
+        "confidence": "high"
       }
     ]
   },
@@ -25996,6 +26327,7 @@ export const CARRIER_IDS = [
   "bex-express",
   "blue-express",
   "blueex",
+  "bombino",
   "bookurier",
   "border-express",
   "bosta",
@@ -26180,6 +26512,7 @@ export const CARRIER_IDS = [
   "hrvatska-posta",
   "hunter-express",
   "hywl",
+  "icc-worldwide",
   "ics-courier",
   "idexpress",
   "ids-logistik",
@@ -26258,6 +26591,7 @@ export const CARRIER_IDS = [
   "maltapost",
   "mandae",
   "maritime-ontario",
+  "maruti-air",
   "matkahuolto",
   "mauritius-post",
   "mayiyinfu",
@@ -26279,6 +26613,7 @@ export const CARRIER_IDS = [
   "nim-express",
   "nipost",
   "nippon-express",
+  "noest",
   "nord-wheel",
   "northline",
   "nova-poshta",
@@ -26355,6 +26690,7 @@ export const CARRIER_IDS = [
   "redur",
   "redx",
   "relaytech",
+  "rivigo",
   "rl-carriers",
   "roadie",
   "roadrunner",
@@ -26383,6 +26719,7 @@ export const CARRIER_IDS = [
   "shipa",
   "shipblu",
   "shree-anjani",
+  "shree-mahavir",
   "shree-maruti",
   "shree-nandan",
   "sicepat",
@@ -26423,10 +26760,12 @@ export const CARRIER_IDS = [
   "tamdis",
   "tanzania-posts",
   "taxydema",
+  "tccs",
   "tci-express",
   "tcs-pakistan",
   "tealca",
   "team-global-express",
+  "tej-couriers",
   "tforce-freight",
   "tforce-logistics",
   "thhy",
@@ -26452,6 +26791,7 @@ export const CARRIER_IDS = [
   "upaya",
   "urbano",
   "uzbekistan-post",
+  "valmo",
   "vasp-expresso",
   "veloces",
   "venipak",
@@ -26644,6 +26984,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bex-express": [],
   "blue-express": [],
   "blueex": [],
+  "bombino": [],
   "bookurier": ["bookurier-1"],
   "border-express": ["border-express-1"],
   "bosta": [],
@@ -26828,6 +27169,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hrvatska-posta": ["hrvatska-posta-s10"],
   "hunter-express": [],
   "hywl": ["hywl-1","hywl-2"],
+  "icc-worldwide": [],
   "ics-courier": ["ics-courier-1"],
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],
@@ -26906,6 +27248,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "maltapost": ["maltapost-s10"],
   "mandae": [],
   "maritime-ontario": [],
+  "maruti-air": [],
   "matkahuolto": ["matkahuolto-1","matkahuolto-2"],
   "mauritius-post": [],
   "mayiyinfu": ["mayiyinfu-1"],
@@ -26927,6 +27270,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nim-express": [],
   "nipost": ["nipost-s10"],
   "nippon-express": [],
+  "noest": [],
   "nord-wheel": [],
   "northline": [],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
@@ -27003,6 +27347,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "redur": [],
   "redx": ["redx-1"],
   "relaytech": ["relaytech-1"],
+  "rivigo": [],
   "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],
@@ -27031,6 +27376,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shipa": ["shipa-1"],
   "shipblu": [],
   "shree-anjani": [],
+  "shree-mahavir": [],
   "shree-maruti": [],
   "shree-nandan": [],
   "sicepat": [],
@@ -27071,10 +27417,12 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tamdis": [],
   "tanzania-posts": [],
   "taxydema": [],
+  "tccs": [],
   "tci-express": [],
   "tcs-pakistan": [],
   "tealca": [],
   "team-global-express": [],
+  "tej-couriers": [],
   "tforce-freight": [],
   "tforce-logistics": ["tforce-logistics-1"],
   "thhy": ["thhy-1"],
@@ -27100,6 +27448,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
   "uzbekistan-post": ["uzbekistan-post-s10"],
+  "valmo": ["valmo-1"],
   "vasp-expresso": [],
   "veloces": [],
   "venipak": ["venipak-1"],

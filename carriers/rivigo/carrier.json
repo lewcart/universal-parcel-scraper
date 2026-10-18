@@ -1,0 +1,43 @@
+{
+  "id": "rivigo",
+  "displayName": "Rivigo",
+  "aliases": [
+    "RIVIGO",
+    "Rivigo by Mahindra Logistics",
+    "Rivigo Services"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#dd712f"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://zoom.rivigo.com/#/trackconsignment/{trackingNumber}",
+    "canaryUrl": "https://zoom.rivigo.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "zoom.rivigo.com"
+      ],
+      "pathPattern": "^/?$",
+      "fragment": "^/trackconsignment/([^/?#]+)"
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,35 @@
+{
+  "id": "noest",
+  "displayName": "NOEST Express",
+  "aliases": [
+    "NOEST",
+    "Noest Express",
+    "Nord et Ouest Express"
+  ],
+  "region": {
+    "countries": [
+      "DZ"
+    ]
+  },
+  "brand": {
+    "color": "#0880e8"
+  },
+  "selectable": true,
+  "timezone": "Africa/Algiers",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://app.noest-dz.com/list/t",
+    "canaryUrl": "https://app.noest-dz.com/list/t",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

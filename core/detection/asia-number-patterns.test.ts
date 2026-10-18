@@ -192,3 +192,13 @@ describe('wave seven South-East Asian courier rules', () => {
     }
   });
 });
+
+describe('wave seven South Asian courier rules', () => {
+  it('names Valmo for VL and thirteen digits only', () => {
+    expect(detectCarrierMatch('VL0000000000001')).toMatchObject({ carrier: 'valmo', confidence: 'high', candidates: ['valmo'] });
+    expect(detectCarrierMatch('vl 0000 0000 00001')).toMatchObject({ carrier: 'valmo', confidence: 'high' });
+    for (const number of ['VL000000000001', 'VL00000000000001', 'VA0000000000001', 'V00000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('valmo');
+    }
+  });
+});

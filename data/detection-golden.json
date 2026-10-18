@@ -56623,6 +56623,9 @@
     "confidence": "low",
     "candidates": [
       "fermopoint"
+    ],
+    "asked": [
+      "fermopoint"
     ]
   },
   {
@@ -56663,6 +56666,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "fermopoint"
+    ],
+    "asked": [
       "fermopoint"
     ]
   },
@@ -56781,6 +56787,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "fermopoint"
+    ],
+    "asked": [
       "fermopoint"
     ]
   },
@@ -56918,6 +56927,7 @@
       "paquetexpress"
     ],
     "asked": [
+      "fermopoint",
       "paquetexpress"
     ]
   },
@@ -62246,6 +62256,7 @@
       "paquetexpress"
     ],
     "asked": [
+      "fermopoint",
       "paquetexpress"
     ]
   },
@@ -77539,6 +77550,17 @@
     ]
   },
   {
+    "input": "S27F1OD682014",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "fermopoint"
+    ],
+    "asked": [
+      "fermopoint"
+    ]
+  },
+  {
     "input": "S2D59P0E2G",
     "carrier": "unknown",
     "confidence": "low",
@@ -82279,6 +82301,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "fermopoint"
+    ],
+    "asked": [
       "fermopoint"
     ]
   },

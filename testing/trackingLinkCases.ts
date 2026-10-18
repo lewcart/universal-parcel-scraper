@@ -1024,6 +1024,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'danske-fragtmaend', number: 'ZZ000000',
     route: /^https:\/\/trace\.fragt\.dk\/#\/trackTrace\/ZZ000000$/,
     marker: /no record of the consignment note number|kan ikke genkende fragtbrevsnummeret/ },
+  // The booking page heads its answer with the code, over its notice for a code without a booking.
+  { carrier: 'fermopoint', number: 'Z0000ZZ000000',
+    route: /^https:\/\/www\.fermopoint\.it\/prenotazione\/Z0000ZZ000000$/,
+    marker: /non ci risulta essere attivo|Fermoticket n\./ },
 ];
 
 /**

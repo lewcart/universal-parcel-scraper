@@ -12155,7 +12155,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fermopoint",
+      "recognitionRank": 872,
+      "localClocks": true
     },
     "canaryUrl": "https://www.fermopoint.it/traccia-un-ritiro",
     "trackingUrlTemplate": "https://www.fermopoint.it/prenotazione/{trackingNumber}",

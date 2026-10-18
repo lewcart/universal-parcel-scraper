@@ -111,6 +111,28 @@
         ]
       },
       "note": "The example code under the Fermoticket field of Fermopoint's own tracking page."
+    },
+    {
+      "number": "S27F1OD682014",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.fermopoint.it/guida-alle-spedizioni",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "fermopoint"
+        ]
+      },
+      "note": "The code on the example receipt in Fermopoint's shipping guide; its booking page shows this parcel sent from a shop."
     }
   ]
 }

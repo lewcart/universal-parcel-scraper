@@ -12392,7 +12392,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sarajevo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "euroexpress-ba",
+      "recognitionRank": 816,
+      "localClocks": true
     },
     "canaryUrl": "https://www.euroexpress.ba/pracenje-posiljke",
     "trackingUrlTemplate": "https://www.euroexpress.ba/pracenje-posiljke/{trackingNumber}",

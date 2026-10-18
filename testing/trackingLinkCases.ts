@@ -630,6 +630,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'd-express', number: 'ZZ0000000000',
     route: /^https:\/\/www\.dexpress\.rs\/rs\/pracenje-posiljaka\/ZZ0000000000$/,
     marker: /Pošiljka nije pronađena|Praćenje pošiljaka/i },
+  // The page reads the shipment code from its address and looks it up on load; an unknown one gets a notice.
+  { carrier: 'euroexpress-ba', number: '123456789',
+    route: /^https:\/\/www\.euroexpress\.ba\/pracenje-posiljke\/123456789$/,
+    marker: /Uneseni broj po[šs]iljke ne postoji|PRONA[ĐD]ITE PO[ŠS]ILJKU/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

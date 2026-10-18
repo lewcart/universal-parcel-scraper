@@ -5659,7 +5659,7 @@ export const CARRIER_CATALOG = {
   },
   "air-star-xpress": {
     "displayName": "Air Star Xpress",
-    "color": "#007038",
+    "color": "#227337",
     "aliases": [
       "Air Star Xpress Couriers",
       "Air Star Express",
@@ -12898,7 +12898,7 @@ export const CARRIER_CATALOG = {
   },
   "first-fly-express": {
     "displayName": "First Fly Express",
-    "color": "#e83030",
+    "color": "#ed3237",
     "countries": [
       "IN"
     ],
@@ -13117,7 +13117,7 @@ export const CARRIER_CATALOG = {
   },
   "flyking": {
     "displayName": "Flyking Courier Services",
-    "color": "#dd4b4b",
+    "color": "#da251d",
     "aliases": [
       "Flyking",
       "Fly King",
@@ -14297,7 +14297,7 @@ export const CARRIER_CATALOG = {
   },
   "goodluck-courier": {
     "displayName": "Goodluck Courier Service",
-    "color": "#081858",
+    "color": "#091b5f",
     "aliases": [
       "Goodluck Courier Services",
       "Goodluck Courier",
@@ -23189,7 +23189,7 @@ export const CARRIER_CATALOG = {
   },
   "sahara-express": {
     "displayName": "Sahara Express",
-    "color": "#203870",
+    "color": "#203a73",
     "aliases": [
       "Sahara Express Private Limited",
       "Sahara Express Courier Private Limited"
@@ -24015,7 +24015,7 @@ export const CARRIER_CATALOG = {
   },
   "shree-mahabali-express": {
     "displayName": "Shree Mahabali Express",
-    "color": "#d91900",
+    "color": "#ff0020",
     "aliases": [
       "Mahabali Express",
       "Mahabali Express Pvt. Ltd.",
@@ -24258,7 +24258,7 @@ export const CARRIER_CATALOG = {
   },
   "skyex-ae": {
     "displayName": "Sky Express International",
-    "color": "#0080c0",
+    "color": "#0067aa",
     "aliases": [
       "Sky Express International LLC"
     ],
@@ -24733,7 +24733,7 @@ export const CARRIER_CATALOG = {
   },
   "speed-and-safe": {
     "displayName": "Gokulam Speed & Safe",
-    "color": "#203088",
+    "color": "#2e3192",
     "aliases": [
       "Speed & Safe",
       "Speed and Safe",
@@ -26199,7 +26199,7 @@ export const CARRIER_CATALOG = {
   },
   "tfm-express": {
     "displayName": "TFM Express",
-    "color": "#ef4129",
+    "color": "#0001ef",
     "aliases": [
       "TFM Express Shipping L.L.C",
       "TFM EXPRESS LLC"
@@ -26748,7 +26748,7 @@ export const CARRIER_CATALOG = {
   },
   "transcorp": {
     "displayName": "Transcorp",
-    "color": "#142763",
+    "color": "#252d60",
     "aliases": [
       "Transcorp International",
       "Transcorp International Logistics LLC",

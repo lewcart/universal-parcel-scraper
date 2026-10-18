@@ -6,6 +6,10 @@ order. Multi-package orders require separate parcel histories and fall back to
 the providers.
 
 Cainiao-style `LP` references ending in `CN` suggest 4PX without selecting it.
+Emile's barcodes of `EM`, sixteen digits and `CA`, on parcels 4PX hands to Emile in Canada,
+suggest 4PX ahead of [Emile](../emile/README.md): Emile's history names 4PX as the shipper,
+and 4PX's feed holds the whole journey where Emile's holds the Canadian leg, so recognition
+settles on 4PX when both know the number. Emile's twelve-digit barcodes stay Emile's.
 HTTP recognition uses the same identity-bound feed to confirm matching shipment activity.
 
 The portal displays each scan's `tkDateStr` with `tkTimezone`, an offset or,

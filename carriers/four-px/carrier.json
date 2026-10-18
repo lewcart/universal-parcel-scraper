@@ -71,6 +71,12 @@
       "id": "four-px-cainiao-reference",
       "pattern": "^LP\\d{13}CN$",
       "confidence": "low"
+    },
+    {
+      "id": "four-px-emile-reference",
+      "pattern": "^EM\\d{16}CA$",
+      "confidence": "low",
+      "preferred": true
     }
   ]
 }

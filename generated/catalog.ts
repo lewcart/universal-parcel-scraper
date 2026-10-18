@@ -3618,6 +3618,11 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^LP\\d{13}CN$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EM\\d{16}CA$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },
@@ -11182,6 +11187,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^EM\\d{12}CA$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^EM\\d{16}CA$",
         "confidence": "low"
       }
     ]
@@ -27138,7 +27147,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "correios-br": ["correios-br-1"],
   "correos-chile": ["correos-chile-1","correos-chile-2"],
   "yunexpress": ["yunexpress-1"],
-  "four-px": ["four-px-1","four-px-cainiao-reference"],
+  "four-px": ["four-px-1","four-px-cainiao-reference","four-px-emile-reference"],
   "blue-dart": ["blue-dart-1"],
   "delhivery": ["delhivery-1"],
   "nz-post": ["nz-post-1","nz-post-2","nz-post-3"],
@@ -27325,7 +27334,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "egypt-post": ["egypt-post-1","egypt-post-s10"],
   "ekart": ["ekart-ecommerce"],
   "elta": ["elta-s10"],
-  "emile": ["emile-1"],
+  "emile": ["emile-1","emile-2"],
   "emirates-post": [],
   "ems-vietnam": [],
   "energia-tk": [],

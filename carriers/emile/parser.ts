@@ -14,7 +14,7 @@ interface Node { name: string; uri: string; attributes: Record<string, string>; 
 
 export function normalizeEmileNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
-  if (!/^EM\d{12}CA$/.test(number)) throw new InvalidInputError(PROVIDER, 'Emile requires EM, twelve digits and CA');
+  if (!/^EM\d{12}(?:\d{4})?CA$/.test(number)) throw new InvalidInputError(PROVIDER, 'Emile requires EM, twelve or sixteen digits and CA');
   return number;
 }
 

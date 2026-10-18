@@ -47,6 +47,28 @@ describe('recognition candidates', () => {
     for (const network of ['gls-at', 'gls-pl']) expect(detectCarrierMatch('123456789011').candidates).not.toContain(network);
   });
 
+  it('asks 4PX before Emile about Emile\'s sixteen-digit barcodes and settles on 4PX when both know one', () => {
+    // Synthetic: Emile's barcode on a parcel 4PX hands over; 4PX's feed holds the whole journey.
+    const number = 'EM0000000000000001CA';
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['four-px', 'emile'] });
+    expect(recognitionCandidates(number, { countryHint: 'CA' })).toEqual([
+      { carrier: 'four-px', needsInput: null, preferred: true },
+      { carrier: 'emile', needsInput: null, preferred: false, countryMatch: 'home' },
+    ]);
+    for (const country of [undefined, 'CA', 'CN']) expect(recognitionAskedCarriers(number, { countryHint: country })).toEqual(['four-px', 'emile']);
+    expect(settleRecognition([outcome('four-px', 'known', { preferred: true }), outcome('emile', 'known', { countryMatch: 'home' })], now))
+      .toEqual({ carrier: 'four-px', choices: [] });
+    expect(settleRecognition([outcome('four-px', 'unknown', { preferred: true }), outcome('emile', 'known')], now))
+      .toEqual({ carrier: 'emile', choices: [] });
+    // Twelve digits stay Emile's alone, and Canada Post's EMS items keep nine.
+    expect(recognitionAskedCarriers('EM000000000001CA')).toEqual(['emile']);
+    expect(detectCarrierMatch('EM123456785CA')).toMatchObject({ carrier: 'canada-post', confidence: 'high' });
+    for (const near of ['EM000000000000001CA', 'EM00000000000000001CA', 'EM0000000000000001US', 'EE0000000000000001CA']) {
+      expect(detectCarrierMatch(near).candidates, near).not.toContain('four-px');
+      expect(detectCarrierMatch(near).candidates, near).not.toContain('emile');
+    }
+  });
+
   it('keeps direct hints and number evidence ahead of weak ordering hints', () => {
     expect(recognitionCandidates('06080000000002', { countryHint: 'GB', priorities: { 'dhl-ecommerce-uk': 1e6 } })[0]?.carrier).toBe('dpd');
     expect(recognitionCandidates('06080000000002', { hint: 'seur', countryHint: 'GB' })[0]?.carrier).toBe('seur');

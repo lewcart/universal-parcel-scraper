@@ -243,6 +243,22 @@
         "confidence": "high"
       },
       "note": "A lookup on 4PX's tracker archived by the Wayback Machine. 4PX's feed answers the Royal Mail number it handed the parcel over with; Royal Mail delivered it, so detection names Royal Mail."
+    },
+    {
+      "number": "EM0000000000000001CA",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-18",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "four-px",
+          "emile"
+        ]
+      },
+      "note": "Made-up number in the shape of the Emile barcodes on parcels 4PX hands to Emile in Canada. Both 4PX's and Emile's trackers find such a parcel, and Emile's history says its waybill was generated for 4PX."
     }
   ]
 }

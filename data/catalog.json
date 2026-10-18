@@ -3616,6 +3616,11 @@
       {
         "pattern": "^LP\\d{13}CN$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EM\\d{16}CA$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },
@@ -11180,6 +11185,10 @@
     "detectionRules": [
       {
         "pattern": "^EM\\d{12}CA$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^EM\\d{16}CA$",
         "confidence": "low"
       }
     ]

@@ -4448,5 +4448,13 @@
       "colis-prive"
     ],
     "reason": "Colis Privé accepts generic twelve-character numbers; bjs-home-delivery-1 suggests BJS for a B and eleven digits without naming it, since numbers of that shape also come from outside BJS's British network."
+  },
+  {
+    "shape": "EM, sixteen digits and CA",
+    "carriers": [
+      "four-px",
+      "emile"
+    ],
+    "reason": "Emile's barcode on parcels 4PX hands to Emile in Canada. Both trackers know the number: 4PX's holds the whole journey and is preferred, and Emile's holds the Canadian leg. Recognition confirms the carrier."
   }
 ]

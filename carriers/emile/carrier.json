@@ -75,6 +75,11 @@
       "id": "emile-1",
       "pattern": "^EM\\d{12}CA$",
       "confidence": "low"
+    },
+    {
+      "id": "emile-2",
+      "pattern": "^EM\\d{16}CA$",
+      "confidence": "low"
     }
   ]
 }

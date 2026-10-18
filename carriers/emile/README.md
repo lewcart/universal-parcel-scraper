@@ -11,6 +11,10 @@ define this flow. No account, credential or browser is needed. The newer
 [public page](https://www.emileps.com/tracking) uses a separate `/api/track`
 JSON wrapper that requires a fresh Turnstile token; the XML route does not.
 
+Barcodes are `EM`, twelve or sixteen digits, and `CA`. The sixteen-digit form is printed on
+parcels 4PX hands over, so recognition asks [4PX](../four-px/README.md) first and keeps
+Emile for the parcels 4PX does not know.
+
 The reply must identify exactly one matching Canadian parcel. Absence requires
 the service's explicit error naming the requested barcode. Empty histories,
 unrelated errors and blocked pages retain their own failure kinds. HTTP

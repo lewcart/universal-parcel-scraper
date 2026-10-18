@@ -95,7 +95,9 @@ describe('Emile tracking XML', () => {
 
   it('accepts the Emile format and rejects postal EMS items and concatenated identifiers', () => {
     expect(normalizeEmileNumber('em 000000000001 ca')).toBe(NUMBER);
-    for (const input of ['EM000000001CA', 'EM000000000001US', `${NUMBER}${OTHER}`, '<track/>']) {
+    // The longer barcodes Emile prints on parcels 4PX hands over.
+    expect(normalizeEmileNumber('em 0000000000000001 ca')).toBe('EM0000000000000001CA');
+    for (const input of ['EM000000001CA', 'EM000000000001US', 'EM000000000000001CA', 'EM00000000000000001CA', `${NUMBER}${OTHER}`, '<track/>']) {
       expect(() => normalizeEmileNumber(input)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
   });

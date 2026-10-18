@@ -1182,6 +1182,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'teleship', number: 'TSGBUS000000000000000',
     route: /^https:\/\/teleship\.com\/tracking\?number=TSGBUS000000000000000$/,
     marker: /We could not find a parcel with this tracking ID|Teleship Tracking Number/ },
+  // The server looks the AWB number in the query up and shows it over the consignment. The
+  // all-zeros number holds a record of its own on this tracker.
+  { carrier: 'tmm-express', number: '0000000000',
+    route: /^https:\/\/ukr\.tmm-express\.com\/en\/trackparcels\?num=0000000000&mark=is_code$/,
+    marker: /Common information|Detailed information/ },
   // The page reads the number from its address on load and shows it over the answer.
   { carrier: 'xlcourier', number: 'XLC00000000000',
     route: /^https:\/\/www\.xlcourier\.com\/trackOrder\?number=XLC00000000000$/,

@@ -26435,7 +26435,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tmm-express",
+      "recognitionRank": 837,
+      "localClocks": true
     },
     "canaryUrl": "https://ukr.tmm-express.com/en/callback",
     "trackingUrlTemplate": "https://ukr.tmm-express.com/en/trackparcels?num={trackingNumber}&mark=is_code",
@@ -26445,7 +26447,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "tmm-express.com"
         ],
-        "pathPattern": "^/(?:en|ru|uk)/trackparcels/?$",
+        "pathPattern": "^/(?:en|ru|uk|pl)/trackparcels/?$",
         "params": [
           "num"
         ]

@@ -358,6 +358,7 @@ import { adapter as theCourierGuy } from '../carriers/the-courier-guy/adapter.js
 import { adapter as thhy } from '../carriers/thhy/adapter.js';
 import { adapter as tiki } from '../carriers/tiki/adapter.js';
 import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
+import { adapter as tmmExpress } from '../carriers/tmm-express/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
 import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
@@ -754,6 +755,7 @@ export const REGISTRY: RegistryDefinition = {
     "thhy": thhy,
     "tiki": tiki,
     "tipsa": tipsa,
+    "tmm-express": tmmExpress,
     "tnt": tnt,
     "tnt-it": tntIt,
     "toptrans": toptrans,
@@ -1440,7 +1442,7 @@ export const REGISTRY: RegistryDefinition = {
     "tiki": "tiki",
     "tipsa": "tipsa",
     "tirupati-courier": "universal",
-    "tmm-express": "universal",
+    "tmm-express": "tmm-express",
     "tnt": "tnt",
     "tnt-it": "tnt-it",
     "toptrans": "toptrans",

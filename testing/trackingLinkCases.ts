@@ -586,6 +586,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'cbl-logistica', number: '00000000000',
     route: /^https:\/\/clientes\.cbl-logistica\.com\/public\/consultaenvio\.aspx\?id=00000000000$/,
     marker: /No hay datos|Datos generales|Eventos e incidencias/ },
+  // The page looks the guía in its address up as it is served, puts it in its search box and shows an unknown one's notice.
+  { carrier: 'tealca', number: '00000000',
+    route: /^https:\/\/www\.tealca\.com\/rastrear-envio\/\?tracking=00000000$/,
+    marker: /N[úu]mero de shipment no existe|Conoce el estatus de tu env[íi]o/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

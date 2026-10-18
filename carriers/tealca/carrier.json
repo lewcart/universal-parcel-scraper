@@ -17,18 +17,47 @@
   "timezone": "America/Caracas",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tealca",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://www.tealca.com/rastrear-envio/?tracking={trackingNumber}",
     "searchUrl": "https://www.tealca.com/rastrear-envio/",
     "canaryUrl": "https://www.tealca.com/rastrear-envio/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "origin",
+      "event_details",
+      "recipient_name",
+      "recipient_id"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "origin",
+      "event_details",
+      "recipient_name",
+      "recipient_id"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "service_name",
+      "weight",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ]
   },
   "links": [
     {

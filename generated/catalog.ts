@@ -26052,7 +26052,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Caracas",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tealca",
+      "localClocks": true
     },
     "canaryUrl": "https://www.tealca.com/rastrear-envio/",
     "trackingUrlTemplate": "https://www.tealca.com/rastrear-envio/?tracking={trackingNumber}",

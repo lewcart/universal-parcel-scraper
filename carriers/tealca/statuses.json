@@ -1,13 +1,15 @@
 {
   "carrier": "tealca",
   "entries": [
-    {"code": "1", "wording": "En tienda", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Summary status the tracker script shows for status code 1."},
-    {"code": "2", "wording": "En tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Summary status the tracker script shows for status code 2; both archived histories carry it."},
-    {"code": "3", "wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Summary status the tracker script shows for status code 3."},
-    {"wording": "Guía creada con el número", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "First event of the archived histories, at the origin store; the page appends the guía number."},
-    {"wording": "Despacho de tienda origen", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived histories; the page appends the store and the platform it leaves for."},
-    {"wording": "En tránsito nacional", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived histories."},
-    {"wording": "Recepción en Plataforma", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of the archived histories; the page appends the platform name."},
-    {"wording": "Recepción en tienda destino", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Event of an archived history, appended with the store; the summary status stayed at code 2, in transit."}
+    {"code": "1", "wording": "En tienda", "stage": "accepted", "language": "es", "confirmedBy": "portal", "note": "Summary status the tracker script shows for status code 1: the parcel is still at the origin store."},
+    {"code": "2", "wording": "En tránsito", "stage": "in_transit", "language": "es", "confirmedBy": "portal", "note": "Summary status the tracker script shows for status code 2; archived histories keep it at the destination store too."},
+    {"code": "3", "wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "live", "note": "Summary status the tracker script shows for status code 3."},
+    {"wording": "Guía creada", "stage": "accepted", "language": "es", "confirmedBy": "live", "note": "First scan, at the origin store; the reply reads 'Guía creada con el número' and the guía, which the adapter drops."},
+    {"wording": "Despacho de tienda origen", "stage": "in_transit", "language": "es", "confirmedBy": "live", "note": "The reply appends the store and the platform it leaves for."},
+    {"wording": "Recepción en Plataforma", "stage": "in_transit", "language": "es", "confirmedBy": "live", "note": "The reply appends the platform name."},
+    {"wording": "En tránsito nacional", "stage": "in_transit", "language": "es", "confirmedBy": "live"},
+    {"wording": "Despacho de Plataforma", "stage": "in_transit", "language": "es", "confirmedBy": "live", "note": "The reply appends the platform and either 'con destino Plataforma' and the next one, or 'a tienda destino' and the destination store."},
+    {"wording": "Recepción en tienda destino", "stage": "in_transit", "language": "es", "confirmedBy": "live", "note": "The reply appends the store; the summary status stays at code 2. The store either delivers the parcel or hands it over at its counter."},
+    {"wording": "Guía entregada", "stage": "delivered", "language": "es", "confirmedBy": "live", "note": "The reply appends 'a', the name of the person who took the parcel and an ID number, which the adapter drops."}
   ]
 }

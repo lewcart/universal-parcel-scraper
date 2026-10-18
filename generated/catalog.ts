@@ -18288,6 +18288,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "next-level-delivery": {
+    "displayName": "Next Level",
+    "color": "#eba121",
+    "aliases": [
+      "NextLevel"
+    ],
+    "countries": [
+      "BG",
+      "GR",
+      "RO",
+      "PL",
+      "SK",
+      "CZ",
+      "SI",
+      "HU",
+      "HR",
+      "CY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Sofia",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://nextlevel.delivery/",
+    "trackingUrlTemplate": "https://nextlevel.delivery/track?awb={trackingNumber}",
+    "trackingSearchUrl": "https://nextlevel.delivery/",
+    "linkRules": [
+      {
+        "domains": [
+          "nextlevel.delivery"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "nhat-tin": {
     "displayName": "Nhat Tin Logistics",
     "color": "#fdd800",
@@ -24923,6 +24963,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "tmm-express": {
+    "displayName": "TMM Express",
+    "color": "#650360",
+    "aliases": [
+      "ТММ Express"
+    ],
+    "countries": [
+      "UA",
+      "PL",
+      "LU",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Kyiv",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://ukr.tmm-express.com/en/callback",
+    "trackingUrlTemplate": "https://ukr.tmm-express.com/en/trackparcels?num={trackingNumber}&mark=is_code",
+    "trackingSearchUrl": "https://ukr.tmm-express.com/en/callback",
+    "linkRules": [
+      {
+        "domains": [
+          "tmm-express.com"
+        ],
+        "pathPattern": "^/(?:en|ru|uk)/trackparcels/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "tnt-it": {
     "displayName": "TNT Italy",
     "color": "#ff6600",
@@ -27448,6 +27522,7 @@ export const CARRIER_IDS = [
   "ncs-courier",
   "neighbour-express",
   "nepal-post",
+  "next-level-delivery",
   "nhat-tin",
   "nim-express",
   "nipost",
@@ -27617,6 +27692,7 @@ export const CARRIER_IDS = [
   "thhy",
   "tiki",
   "tirupati-courier",
+  "tmm-express",
   "tnt-it",
   "toptrans",
   "torrestir",
@@ -28127,6 +28203,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ncs-courier": [],
   "neighbour-express": [],
   "nepal-post": [],
+  "next-level-delivery": [],
   "nhat-tin": ["nhat-tin-1"],
   "nim-express": [],
   "nipost": ["nipost-s10"],
@@ -28296,6 +28373,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "thhy": ["thhy-1"],
   "tiki": [],
   "tirupati-courier": [],
+  "tmm-express": [],
   "tnt-it": ["tnt-it-1"],
   "toptrans": [],
   "torrestir": ["torrestir-1"],

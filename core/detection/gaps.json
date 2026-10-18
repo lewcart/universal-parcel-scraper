@@ -2107,6 +2107,18 @@
     "reason": "Only one public NCS resi has this NCS-prefixed layout, too little to define a rule."
   },
   {
+    "carrier": "next-level-delivery",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen digits are shared by many carriers and nothing in the number points to Next Level."
+  },
+  {
+    "carrier": "next-level-delivery",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are shared by many carriers and nothing in the number points to Next Level."
+  },
+  {
     "carrier": "nim-express",
     "pattern": "^\\d{13}$",
     "kind": "collision",
@@ -3109,6 +3121,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve digits are printed by many carriers and nothing in the number points to Shree Tirupati Courier."
+  },
+  {
+    "carrier": "tmm-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by DHL Express and several other carriers, and nothing in the number points to TMM Express."
   },
   {
     "carrier": "toptrans",

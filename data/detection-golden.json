@@ -8902,6 +8902,23 @@
     ]
   },
   {
+    "input": "1000000157123",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda",
+      "korea-post"
+    ],
+    "asked": [
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
     "input": "1000017524936",
     "carrier": "unknown",
     "confidence": "low",
@@ -11415,6 +11432,27 @@
     ],
     "asked": [
       "poczta-polska"
+    ]
+  },
+  {
+    "input": "1092206960",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es",
+      "gls-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -23266,6 +23304,26 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "2203728963",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -40464,6 +40522,16 @@
     ]
   },
   {
+    "input": "53552709",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "536260184666",
     "carrier": "unknown",
     "confidence": "low",
@@ -45947,6 +46015,26 @@
     ]
   },
   {
+    "input": "6830432465",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
     "input": "683375045049",
     "carrier": "unknown",
     "confidence": "low",
@@ -46127,6 +46215,66 @@
       "fedex-pl",
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "6898987533",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "6901362887",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "6902840732",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -46321,6 +46469,91 @@
       "mondial-relay",
       "colisweb",
       "heppner"
+    ]
+  },
+  {
+    "input": "6993674857",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "6993963555",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "6994256883",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-express",
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "preferred": [
+      "dhl-express"
+    ],
+    "asked": [
+      "dhl-express",
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "6995838575",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "tipsa",
+      "packeta",
+      "dhl-ecommerce-es"
     ]
   },
   {

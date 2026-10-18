@@ -1,0 +1,32 @@
+{
+  "carrier": "tmm-express",
+  "entries": [
+    {"wording": "Entered to warehouse", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "First scan at the Warsaw hub in archived lookups on TMM Express's tracker."},
+    {"wording": "Allocated to a unit / container or separately in truck", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Loading for the line haul, seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Consignment data transhipped", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Import received at destination depot", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Arrival in Ukraine before customs release, seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Released from customs", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Consignment in Warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "The consignment has been onforwarded for transportation to a destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Linehaul Delayed", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A delay notice on the line haul, seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Delay in delivery due to bad weather", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "A delay notice, seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "The phone does not answer", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "The courier could not reach the recipient by phone; the parcel went out again later. Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Delivery date is changed by client request", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The recipient moved the delivery to another day. Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Change of delivery address", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Consignment delivered in good condition", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in archived lookups on TMM Express's tracker."},
+    {"wording": "Груз поступил на склад", "stage": "accepted", "language": "ru", "confirmedBy": "portal", "note": "First scan at the Warsaw hub in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Отправление физически засканировано", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Отправлено из депо", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Получено в пункте назначения", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Arrival in Ukraine before customs release, seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Отправление выпущено из под таможенного контроля.", "stage": "customs", "language": "ru", "confirmedBy": "portal", "note": "Seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Груз на складе", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "отправление передано на доставку", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "portal", "note": "Seen in archived Russian lookups on TMM Express's tracker."},
+    {"wording": "Вантаж отримано на склад", "stage": "accepted", "language": "uk", "confirmedBy": "portal", "note": "Seen in an archived Ukrainian lookup on TMM Express's tracker."},
+    {"wording": "Вантаж на складі", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "Seen in an archived Ukrainian lookup on TMM Express's tracker."},
+    {"wording": "Відправлення фізично заскановано", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "Seen in an archived Ukrainian lookup on TMM Express's tracker."},
+    {"wording": "Відпралено з депо", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "Spelled this way, without the second в, in an archived Ukrainian lookup on TMM Express's tracker."},
+    {"wording": "Отримано в пункті призначення", "stage": "in_transit", "language": "uk", "confirmedBy": "portal", "note": "Seen in an archived Ukrainian lookup on TMM Express's tracker."},
+    {"wording": "Доставлено отримувачу", "stage": "delivered", "language": "uk", "confirmedBy": "portal", "note": "Seen in an archived Ukrainian lookup on TMM Express's tracker."}
+  ]
+}

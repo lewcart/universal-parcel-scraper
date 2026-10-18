@@ -1,0 +1,53 @@
+{
+  "id": "next-level-delivery",
+  "displayName": "Next Level",
+  "aliases": [
+    "NextLevel"
+  ],
+  "region": {
+    "countries": [
+      "BG",
+      "GR",
+      "RO",
+      "PL",
+      "SK",
+      "CZ",
+      "SI",
+      "HU",
+      "HR",
+      "CY"
+    ]
+  },
+  "brand": {
+    "color": "#eba121"
+  },
+  "selectable": true,
+  "timezone": "Europe/Sofia",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://nextlevel.delivery/track?awb={trackingNumber}",
+    "searchUrl": "https://nextlevel.delivery/",
+    "canaryUrl": "https://nextlevel.delivery/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "nextlevel.delivery"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

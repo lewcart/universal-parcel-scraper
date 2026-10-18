@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "DobroPost asked for the parcel number in its own VK review topic, the customer posted this one, and DobroPost replied that customs had refused its release and returned it to China."
+      "note": "DobroPost asked for the parcel number in its own VK review topic, the customer posted this one, and DobroPost replied that customs had refused its release and returned it to China. DobroPost's tracker returns its history, with customs refusing the release and allowing a return to China."
     },
     {
       "number": "DBRPST3000001549",
@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer asks DobroPost about this parcel in the carrier's own VK review topic."
+      "note": "A customer asks DobroPost about this parcel in the carrier's own VK review topic. DobroPost's tracker returns its delivered history."
     },
     {
       "number": "DBRPST5032002859",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer gives this as their DobroPost track in DobroPost's own VK review topic."
+      "note": "A customer gives this as their DobroPost track in DobroPost's own VK review topic. DobroPost's tracker returns its delivered history."
     },
     {
       "number": "DBRPST5032002860",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer thanks DobroPost for transparent tracking and quotes this number in DobroPost's own VK review topic."
+      "note": "A customer thanks DobroPost for transparent tracking and quotes this number in DobroPost's own VK review topic. DobroPost's tracker returns its delivered history."
     },
     {
       "number": "DBRPST5032003031",
@@ -88,13 +88,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer quotes this number for a received parcel in DobroPost's own VK review topic."
+      "note": "A customer quotes this number for a received parcel in DobroPost's own VK review topic. DobroPost's tracker returns its delivered history."
     },
     {
       "number": "DBRPST6032004207",
@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer quotes this number for a parcel delivered on time in DobroPost's own VK review topic."
+      "note": "A customer quotes this number for a parcel delivered on time in DobroPost's own VK review topic. DobroPost's tracker returns its delivered history."
     },
     {
       "number": "DBRPST6052043122",
@@ -126,13 +126,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "A customer gives this as the track number of a returned parcel in DobroPost's own VK review topic."
+      "note": "A customer gives this as the track number of a returned parcel in DobroPost's own VK review topic. DobroPost's tracker returns its history: Boxberry returned it, then CDEK delivered it."
     },
     {
       "number": "DBRPST6062045367",
@@ -145,13 +145,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "dobropost",
         "confidence": "high"
       },
-      "note": "The same customer gives this as the track number of their second parcel in DobroPost's own VK review topic."
+      "note": "The same customer gives this as the track number of their second parcel in DobroPost's own VK review topic. DobroPost's tracker returns its history, ending with Russian Post's delivery."
     }
   ]
 }

@@ -84,6 +84,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "dhl-express": 990,
   "dhl-freight": 437,
   "dhlink": 995,
+  "dobropost": 824,
   "dpd": 980,
   "dpd-at": 878,
   "dpd-be": 983,

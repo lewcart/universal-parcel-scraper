@@ -10806,7 +10806,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dobropost",
+      "recognitionRank": 824
     },
     "canaryUrl": "https://tracking.dobropost.com/",
     "trackingUrlTemplate": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",

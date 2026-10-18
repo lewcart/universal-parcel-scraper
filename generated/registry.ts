@@ -108,6 +108,7 @@ import { adapter as dhlExpress } from '../carriers/dhl-express/adapter.js';
 import { adapter as dhlFreight } from '../carriers/dhl-freight/adapter.js';
 import { adapter as dhlink } from '../carriers/dhlink/adapter.js';
 import { adapter as direx } from '../carriers/direx/adapter.js';
+import { adapter as dobropost } from '../carriers/dobropost/adapter.js';
 import { adapter as dpd } from '../carriers/dpd/adapter.js';
 import { adapter as dpdAt } from '../carriers/dpd-at/adapter.js';
 import { adapter as dpdBe } from '../carriers/dpd-be/adapter.js';
@@ -530,6 +531,7 @@ export const REGISTRY: RegistryDefinition = {
     "dhl-freight": dhlFreight,
     "dhlink": dhlink,
     "direx": direx,
+    "dobropost": dobropost,
     "dpd": dpd,
     "dpd-at": dpdAt,
     "dpd-be": dpdBe,
@@ -1024,7 +1026,7 @@ export const REGISTRY: RegistryDefinition = {
     "direct-freight-express": "universal",
     "direx": "direx",
     "dnx-cargo": "universal",
-    "dobropost": "universal",
+    "dobropost": "dobropost",
     "dohrn-transfer": "universal",
     "domain-logistics": "universal",
     "domex": "universal",

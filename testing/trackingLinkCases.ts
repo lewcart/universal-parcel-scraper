@@ -639,6 +639,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'euroexpress-ba', number: '123456789',
     route: /^https:\/\/www\.euroexpress\.ba\/pracenje-posiljke\/123456789$/,
     marker: /Uneseni broj po[šs]iljke ne postoji|PRONA[ĐD]ITE PO[ŠS]ILJKU/i },
+  // The page puts the number in its address into its form and looks it up on load; an unknown one gets a passing notice.
+  { carrier: 'dobropost', number: 'DBRPST0000000000',
+    route: /^https:\/\/tracking\.dobropost\.com\/\?trackNumber=DBRPST0000000000$/,
+    marker: /Отследить посылку|не найден\(а\)/ },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

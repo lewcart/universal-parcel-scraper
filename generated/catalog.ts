@@ -10322,8 +10322,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://www.deprisa.com/Tracking/",
-    "trackingUrlTemplate": "https://www.deprisa.com/Tracking/?track={trackingNumber}",
+    "canaryUrl": "https://www.deprisa.com/es/rastrea",
+    "trackingSearchUrl": "https://www.deprisa.com/es/rastrea",
     "linkRules": [
       {
         "domains": [

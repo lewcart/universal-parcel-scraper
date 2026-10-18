@@ -22,8 +22,8 @@
   },
   "capabilities": [],
   "portal": {
-    "url": "https://www.deprisa.com/Tracking/?track={trackingNumber}",
-    "canaryUrl": "https://www.deprisa.com/Tracking/",
+    "searchUrl": "https://www.deprisa.com/es/rastrea",
+    "canaryUrl": "https://www.deprisa.com/es/rastrea",
     "shows": [],
     "scraped": [],
     "discarded": [],

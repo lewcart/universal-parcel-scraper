@@ -13956,7 +13956,7 @@ export const CARRIER_CATALOG = {
   },
   "gaash": {
     "displayName": "GAASH Worldwide",
-    "color": "#153d6b",
+    "color": "#115ca1",
     "aliases": [
       "GAASH",
       "Gaash Worldwide",

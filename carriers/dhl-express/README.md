@@ -76,11 +76,15 @@ counter and uses `date_en` for English facility-local clocks. An encryption
 requirement or CAPTCHA stays a challenge and can recover through the browser.
 The mobile API can report its CAPTCHA code inside HTTP 503; that explicit code
 is verification evidence rather than a maintenance or missing-shipment answer.
-A few tracking requests in quick succession from one address draw that code for
-every waybill and device for a while; the settings read keeps answering.
+A few tracking requests within minutes from one address draw that code for
+every waybill and device for a while; the settings read keeps answering. A
+server's address draws it like a home one and it lifts on its own: it is a rate
+limit, not a block of the address.
 Asked every two minutes, the code stayed on past a quarter of an hour; after
-half an hour without requests it was gone. So after one, the adapter asks the
-mobile API nothing for half an hour and its lookups go to the browser.
+half an hour without requests it was gone. So after one, no adapter instance in
+the process that sends through the same fetcher asks the mobile API for half an
+hour, and lookups go to the browser. A restart forgets it, so a host that
+restarts often asks again each time and can keep the code on.
 
 Checkpoint stages come from [status.ts](status.ts). DHL's fixed sentences match
 whole, and those that end with the facility ("Processed at CITY - COUNTRY")

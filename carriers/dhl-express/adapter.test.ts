@@ -312,6 +312,18 @@ describe('DHL mobile API', () => {
       vi.useRealTimers();
     }
   });
+  it('shares a CAPTCHA and a confirmed setting with every instance on its transport, and no other', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => JSON.parse(String(init?.body)).method === 'tracking'
+      ? new Response(JSON.stringify({ error: 'DRG10012' }), { status: 503 }) : new Response(JSON.stringify(settings)));
+    // A host's tracking and recognition registries each build their own adapter over one fetcher.
+    await expect(new DhlExpressTracker(environment(fetcher)).direct(number)).rejects.toMatchObject({ kind: 'challenge', status: 503 });
+    await expect(adapter(environment(fetcher)).recognize!(number)).rejects.toThrow('recently required verification');
+    expect(services(fetcher)).toEqual(['common-countrySettingsBySettingName', 'shipments-tracking']);
+    const other = mobileFetcher();
+    await expect(new DhlExpressTracker(environment(other)).direct(number)).resolves.toMatchObject({ status: 'delivered' });
+    await expect(adapter(environment(other)).recognize!(number)).resolves.toMatchObject({ known: true });
+    expect(services(other)).toEqual(['common-countrySettingsBySettingName', 'shipments-tracking', 'shipments-tracking']);
+  });
   it('does not remember another verification requirement', async () => {
     const fetcher = mobileFetcher({ statusCode: 401 }); const tracker = new DhlExpressTracker(environment(fetcher));
     await expect(tracker.direct(number)).rejects.toThrow(ChallengeError);

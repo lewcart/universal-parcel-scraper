@@ -2,6 +2,7 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import type { AdapterEnvironment, LookupBudget } from '../../core/adapter/index.js';
 import { ChallengeError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { decodeText, fetchBounded, parseJsonBytes } from '../../core/transport/index.js';
+import { transportOf } from '../../core/transport/transportOf.js';
 import { isRecord } from '../../core/types.js';
 
 const PROVIDER = 'DHL Express';
@@ -21,8 +22,25 @@ const CAPTCHA_CODES = ['DRG10012', 'DRG10013'];
  */
 export const CAPTCHA_MEMORY_MS = 30 * 60_000;
 
-/** The mobile API's CAPTCHA, which the instance remembers. */
+/** The mobile API's CAPTCHA, which the transport's state remembers. */
 class CaptchaError extends ChallengeError {}
+
+/**
+ * What the mobile API answered last through one transport: when `api_awb_encryption` last
+ * read N, null until it is read again, and when tracking last drew the CAPTCHA. DHL turns the
+ * CAPTCHA on for a whole address, so every adapter instance in the process that sends through
+ * the same fetcher shares this, as a host's several registries do. A restart forgets it.
+ */
+interface TransportState { settingsCheckedAt: number | null; captchaAt: number | null }
+const states = new WeakMap<object, TransportState>();
+const GLOBAL_FETCH = {};
+
+function transportState(fetcher: typeof fetch | undefined): TransportState {
+  const key = transportOf(fetcher) ?? GLOBAL_FETCH;
+  let state = states.get(key);
+  if (!state) states.set(key, state = { settingsCheckedAt: null, captchaAt: null });
+  return state;
+}
 
 /** Mobile errors can arrive as JSON strings or envelopes with HTTP 200. */
 function checkReply(payload: unknown, httpStatus: number): void {
@@ -41,18 +59,16 @@ function checkReply(payload: unknown, httpStatus: number): void {
 }
 
 /**
- * The guest mobile API for one adapter instance: its device identity, the last
- * time the application configuration allowed a plaintext waybill and its last
- * CAPTCHA.
+ * The guest mobile API for one adapter instance, with its device identity and
+ * its transport's state.
  */
 export class DhlMobileApi {
   private readonly device = randomUUID();
-  /** When `api_awb_encryption` last read N; null until it is read again. */
-  private settingsCheckedAt: number | null = null;
-  /** When the mobile API last answered with its CAPTCHA. */
-  private captchaAt: number | null = null;
+  private readonly state: TransportState;
 
-  constructor(private readonly environment: AdapterEnvironment) {}
+  constructor(private readonly environment: AdapterEnvironment) {
+    this.state = transportState(environment.fetcher);
+  }
 
   /**
    * One waybill's shipments. The encryption setting is read first unless it was
@@ -61,35 +77,37 @@ export class DhlMobileApi {
    * discards the setting. A request that got no reply, including one its own
    * lookup cancelled or ran out of time for, says nothing about it. A CAPTCHA
    * holds for every waybill and device from the address for a while, so for
-   * `CAPTCHA_MEMORY_MS` after one, lookups fail as a challenge without a request.
+   * `CAPTCHA_MEMORY_MS` after one, lookups through the same transport fail as a
+   * challenge without a request.
    */
   async tracking(number: string, budget: LookupBudget): Promise<unknown> {
-    const captchaAt = this.captchaAt;
+    const state = this.state;
+    const captchaAt = state.captchaAt;
     if (captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
-    const checkedAt = this.settingsCheckedAt;
+    const checkedAt = state.settingsCheckedAt;
     if (checkedAt === null || Date.now() - checkedAt >= SETTINGS_TTL_MS) await this.checkSettings(budget);
     let payload: unknown;
     try {
       payload = await this.request(budget, 'tracking', 'shipments', { airWayBill: number, countryCode: 'GB', languageCd: 'en',
         addShipmentToODD: 'N', moreDetails: 'Y', iv: Buffer.from(randomBytes(8).toString('hex')).toString('base64'), captchaVerificationData: {} });
     } catch (error) {
-      if (!(error instanceof UpstreamNetworkError) && !budget.signal.aborted) this.settingsCheckedAt = null;
-      if (error instanceof CaptchaError) this.captchaAt = Date.now();
+      if (!(error instanceof UpstreamNetworkError) && !budget.signal.aborted) state.settingsCheckedAt = null;
+      if (error instanceof CaptchaError) state.captchaAt = Date.now();
       throw error;
     }
-    if (!Array.isArray(payload)) this.settingsCheckedAt = null;
+    if (!Array.isArray(payload)) state.settingsCheckedAt = null;
     return payload;
   }
 
   private async checkSettings(budget: LookupBudget): Promise<void> {
-    this.settingsCheckedAt = null;
+    this.state.settingsCheckedAt = null;
     const checkedAt = Date.now();
     const settings = await this.request(budget, 'countrySettingsBySettingName', 'common', { countryCode: 'GB', settingNames: ['api_awb_encryption'] });
     if (!Array.isArray(settings) || settings.length > 20 || settings.some((setting) => !isRecord(setting))) throw new SchemaError(PROVIDER, 'DHL mobile tracking returned invalid settings');
     const encryption = settings.filter(isRecord).filter((setting) => setting.name === 'api_awb_encryption');
     if (encryption.length !== 1 || (encryption[0]!.value !== 'N' && encryption[0]!.value !== 'Y')) throw new SchemaError(PROVIDER, 'DHL mobile tracking returned invalid encryption settings');
     if (encryption[0]!.value === 'Y') throw new ChallengeError(PROVIDER, 'DHL mobile tracking requires waybill encryption');
-    this.settingsCheckedAt = checkedAt;
+    this.state.settingsCheckedAt = checkedAt;
   }
 
   private async request(budget: LookupBudget, method: string, service: string, extra: Record<string, unknown>): Promise<unknown> {

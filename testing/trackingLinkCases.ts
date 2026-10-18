@@ -1134,6 +1134,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'seko', number: 'ZZ0000000000',
     route: /^https:\/\/www\.sekologistics\.com\/en\/track\/\?trackingNumbers=ZZ0000000000$/,
     marker: /No results found for tracking number|Enter up to 30 tracking numbers/i },
+  // The page on tdn.es forwards the number to the tracker on plain HTTP a moment after it loads,
+  // so the route takes both. The tracker's heading names the number over its notice for an
+  // unregistered one.
+  { carrier: 'tdn', number: '999916276898',
+    route: /^(?:https:\/\/www\.tdn\.es\/tracking\/?\?envio=999916276898&autoredir=1|http:\/\/tracking\.tdnonline\.com\/consulta_expediciones\/tracking\?REFERENCIA=999916276898&Aceptar=Aceptar)$/,
+    marker: /Envío no registrado|Entregado|En reparto/ },
 ];
 
 /**

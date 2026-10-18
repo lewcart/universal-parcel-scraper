@@ -333,6 +333,7 @@ import { adapter as tGroup } from '../carriers/t-group/adapter.js';
 import { adapter as taxydema } from '../carriers/taxydema/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as tcsPakistan } from '../carriers/tcs-pakistan/adapter.js';
+import { adapter as tdn } from '../carriers/tdn/adapter.js';
 import { adapter as teamGlobalExpress } from '../carriers/team-global-express/adapter.js';
 import { adapter as tforceFreight } from '../carriers/tforce-freight/adapter.js';
 import { adapter as thailandPost } from '../carriers/thailand-post/adapter.js';
@@ -707,6 +708,7 @@ export const REGISTRY: RegistryDefinition = {
     "taxydema": taxydema,
     "tci-express": tciExpress,
     "tcs-pakistan": tcsPakistan,
+    "tdn": tdn,
     "team-global-express": teamGlobalExpress,
     "tforce-freight": tforceFreight,
     "thailand-post": thailandPost,
@@ -1358,7 +1360,7 @@ export const REGISTRY: RegistryDefinition = {
     "tccs": "universal",
     "tci-express": "tci-express",
     "tcs-pakistan": "tcs-pakistan",
-    "tdn": "universal",
+    "tdn": "tdn",
     "tealca": "universal",
     "team-global-express": "team-global-express",
     "tej-couriers": "universal",

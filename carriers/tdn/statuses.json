@@ -6,6 +6,8 @@
     {"code": "REPA", "wording": "EN REPARTO", "stage": "out_for_delivery", "language": "es", "confirmedBy": "portal"},
     {"code": "ENTR", "wording": "ENTREGADA", "stage": "delivered", "language": "es", "confirmedBy": "portal"},
     {"code": "ENCO", "wording": "ENTREGADA POD CONFIRMADO", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "Delivered, with the proof of delivery confirmed later the same day."},
-    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The newer tracker's one-line summary, followed by the branch number and the time."}
+    {"wording": "Recibido", "stage": "accepted", "language": "es", "confirmedBy": "live", "firstSeen": "2026-10-18", "note": "The newer tracker's summary in the rail's first slot, followed by the branch and the time."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "portal", "note": "The newer tracker's one-line summary, followed by the branch number and the time."},
+    {"wording": "Envío no registrado. Consulte dentro de 24 horas y si sigue sin estar registrado consulte con su proveedor.", "language": "es", "confirmedBy": "live", "firstSeen": "2026-10-18", "note": "The tracker's answer for an expedition it has not registered, not a status."}
   ]
 }

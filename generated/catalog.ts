@@ -25181,7 +25181,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tdn",
+      "recognitionRank": 857,
+      "localClocks": true
     },
     "canaryUrl": "https://www.tdn.es/tracking/",
     "trackingUrlTemplate": "https://www.tdn.es/tracking?envio={trackingNumber}&autoredir=1",

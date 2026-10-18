@@ -17,18 +17,45 @@
   "timezone": "Europe/Madrid",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tdn",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 857
+    },
+    "localClocks": true
   },
   "capabilities": [],
   "portal": {
     "url": "https://www.tdn.es/tracking?envio={trackingNumber}&autoredir=1",
     "searchUrl": "https://www.tdn.es/tracking/",
     "canaryUrl": "https://www.tdn.es/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "depot_code"
+    ],
+    "scraped": [
+      "status"
+    ],
+    "discarded": [
+      "progress_rail",
+      "depot_code"
+    ],
+    "unavailable": [
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

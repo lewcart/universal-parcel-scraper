@@ -1109,6 +1109,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'logoix', number: 'LIX9000000003',
     route: /^https:\/\/www\.logoix\.com\/cgi-bin\/tnt\.pl\?q=LIX9000000003$/,
     marker: /Verlauf der Sendung LIX9000000003|unbekannte Sendungsnummer/ },
+  // The server renders the page for the number in its query; an unknown one gets a row without it.
+  { carrier: 'a1-post', number: 'A10000000000',
+    route: /^https:\/\/a1post\.bg\/track\.php\?t=A10000000000$/,
+    marker: /Package not found|Track at partner website/,
+    forwarding: { notFound: /Package not found/ } },
 ];
 
 /**

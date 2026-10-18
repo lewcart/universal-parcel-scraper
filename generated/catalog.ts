@@ -5278,7 +5278,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "a1-post",
+      "localClocks": true
     },
     "canaryUrl": "https://a1post.bg/en/track/",
     "trackingUrlTemplate": "https://a1post.bg/track.php?t={trackingNumber}",

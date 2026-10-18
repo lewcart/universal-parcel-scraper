@@ -4,6 +4,7 @@ import type { RegistryDefinition } from '../core/adapter/index.js';
 import { adapter as carrier17feia } from '../carriers/17feia/adapter.js';
 import { adapter as carrier5post } from '../carriers/5post/adapter.js';
 import { adapter as carrier99minutos } from '../carriers/99minutos/adapter.js';
+import { adapter as a1Post } from '../carriers/a1-post/adapter.js';
 import { adapter as abfFreight } from '../carriers/abf-freight/adapter.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
 import { adapter as algeriePoste } from '../carriers/algerie-poste/adapter.js';
@@ -371,6 +372,7 @@ export const REGISTRY: RegistryDefinition = {
     "17feia": carrier17feia,
     "5post": carrier5post,
     "99minutos": carrier99minutos,
+    "a1-post": a1Post,
     "abf-freight": abfFreight,
     "acs-courier": acsCourier,
     "algerie-poste": algeriePoste,
@@ -743,7 +745,7 @@ export const REGISTRY: RegistryDefinition = {
     "99minutos": "99minutos",
     "a-duie-pyle": "universal",
     "a-tu-hora-express": "universal",
-    "a1-post": "universal",
+    "a1-post": "a1-post",
     "aaa-cooper": "universal",
     "ab-courier": "universal",
     "abf-freight": "abf-freight",

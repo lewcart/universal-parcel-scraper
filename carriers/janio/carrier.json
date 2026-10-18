@@ -20,18 +20,72 @@
   "timezone": "Asia/Singapore",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "janio",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 811
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "offset_timestamps",
+    "delivered_at",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://tracker.janio.asia/{trackingNumber}",
     "searchUrl": "https://tracker.janio.asia/",
     "canaryUrl": "https://tracker.janio.asia/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps",
+      "eta",
+      "origin_country",
+      "destination_country",
+      "recipient_address",
+      "contact_details",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "canonical_tracking_number",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "eta",
+      "origin_country",
+      "recipient_address",
+      "contact_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {

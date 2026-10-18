@@ -122,7 +122,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -131,7 +131,7 @@
           "janio"
         ]
       },
-      "note": "An archived lookup on Janio's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
+      "note": "An archived lookup on Janio's own tracker address. Janio's tracking API knows the number: a parcel from Singapore, delivered in Thailand."
     },
     {
       "number": "EAA23011108883814SG",

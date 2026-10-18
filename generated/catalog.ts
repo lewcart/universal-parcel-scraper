@@ -16694,7 +16694,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "janio",
+      "recognitionRank": 811
     },
     "canaryUrl": "https://tracker.janio.asia/",
     "trackingUrlTemplate": "https://tracker.janio.asia/{trackingNumber}",

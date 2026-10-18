@@ -950,6 +950,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bex-express', number: '000000000',
     route: /^https:\/\/bexexpress\.rs\/pracenje-posiljke\?broj-posiljke=000000000$/,
     marker: /Praćenje pošiljke|je iz prethodne godine/ },
+  // The page looks the number in its address up and shows it over "No data" when unknown.
+  { carrier: 'janio', number: 'JNSG000000000000',
+    route: /^https:\/\/tracker\.janio\.asia\/JNSG000000000000$/,
+    marker: /Enter Parcel Tracking ID/ },
   // The page looks the number in its address up and names an unknown one in a popup.
   { carrier: 'fastdrop', number: '0000000000',
     route: /^https:\/\/booking\.fastdrop\.mt\/package-tracking\/0000000000$/,

@@ -62,7 +62,7 @@ describe('Australia Post parser', () => {
     expect(parse(payload, NUMBER).delivered_at).toBeUndefined();
     const consignment = payload[0].shipment.consignmentId;
     payload[0].trackingIds = [consignment];
-    expect(() => parse(payload, consignment)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    expect(() => parse(payload, consignment)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
     payload[0].shipment.articles = [target];
     expect(parse(payload, consignment).status).toBe('in_transit');
   });

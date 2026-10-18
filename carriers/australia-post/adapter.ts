@@ -105,6 +105,10 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const selected = matches.length === 1 ? matches[0]
     : matches.length === 0 && shipment.consignmentId === number && articles.length === 1
       ? articles[0] : null;
+  // The consignment exists, but no single article answers for it.
+  if (!selected && !matches.length && shipment.consignmentId === number && articles.length > 1) {
+    throw new IndeterminateError(PROVIDER, 'Australia Post lists several articles under this consignment');
+  }
   if (!selected) throw new SchemaError(PROVIDER, 'Australia Post returned a different or ambiguous article');
   if (typeof selected.articleId !== 'string' || !selected.articleId || !Array.isArray(selected.details)
     || selected.details.length !== 1 || !isRecord(selected.details[0])) {

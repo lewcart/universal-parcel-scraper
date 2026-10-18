@@ -35,8 +35,9 @@ const NODE_NAMES: ReadonlyMap<string, Stage> = new Map([
 ]);
 
 /**
- * DHLink's own wordings and the English that EMS relays beside China Post's
- * scans, where the shared rules would read them otherwise or not at all.
+ * DHLink's own wordings, the English that EMS relays beside China Post's
+ * scans and GOFO's relayed scans, where the shared rules would read them
+ * otherwise or not at all.
  */
 const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['arrive at the collection warehouse', 'accepted'],
@@ -56,6 +57,13 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   // The hand-over to the US partner, first announced, then made.
   ['ups/usps/fedex', 'in_transit'],
   ['货物已交ups/usps/fedex,the goods have been delivered to ups/usps/fedex', 'in_transit'],
+  // GOFO's scans in its own words, which DHLink relays on a US line GOFO delivers.
+  ['shipping label created', 'registered'],
+  ['arrived at gofo regional hub', 'in_transit'],
+  ['loaded on vehicle', 'in_transit'],
+  ['departed gofo regional hub', 'in_transit'],
+  ['in transit to next facility', 'in_transit'],
+  ['arrived at gofo delivery station', 'in_transit'],
   // China Post hands the dispatch to the airline after taking the parcel.
   ['handed over to airlines', 'in_transit'],
   ['item presented to customs', 'customs'],

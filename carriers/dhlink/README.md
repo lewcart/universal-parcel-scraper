@@ -38,12 +38,12 @@ page makes.
   clock are one scan; the adapter keeps the row with DHLink's node, else English, else a place,
   else the longest wording.
 - A row with a node is read by its code, else by the node's name. Other rows are read by
-  DHLink's wordings and China Post's Chinese ones, else by the shared rules, which read the
-  partners' relayed English. The hand-over to the US partner ("delivered to UPS/USPS/Fedex"),
+  DHLink's wordings, GOFO's relayed ones and China Post's Chinese ones, else by the shared
+  rules, which read the other partners' relayed English. The hand-over to the US partner ("delivered to UPS/USPS/Fedex"),
   the last-mile partner's pickup and China Post's hand-over to the airline are transit.
   DHLink's delivered count makes the parcel delivered when the last row says less.
-- Clocks have no offset: China's rows are on Beijing time and the partners' on the
-  destination's, so every row keeps its wall clock. A row still after the read at UTC+14, the
+- Clocks have no offset: China's rows are on Beijing time, and so are GOFO's relayed scans,
+  while other partners' rows can be on the destination's, so every row keeps its wall clock. A row still after the read at UTC+14, the
   earliest instant it can stand for, is dropped, and the delivered count is then not trusted.
 - The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
   the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX, `GFUS`

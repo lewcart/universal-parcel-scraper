@@ -267,6 +267,7 @@ import { adapter as palletways } from '../carriers/palletways/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
 import { adapter as passport } from '../carriers/passport/adapter.js';
 import { adapter as pathaoCourier } from '../carriers/pathao-courier/adapter.js';
+import { adapter as pdnExpress } from '../carriers/pdn-express/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as pfcExpress } from '../carriers/pfc-express/adapter.js';
 import { adapter as phlpost } from '../carriers/phlpost/adapter.js';
@@ -659,6 +660,7 @@ export const REGISTRY: RegistryDefinition = {
     "paquetexpress": paquetexpress,
     "passport": passport,
     "pathao-courier": pathaoCourier,
+    "pdn-express": pdnExpress,
     "pecom": pecom,
     "pfc-express": pfcExpress,
     "phlpost": phlpost,
@@ -1263,7 +1265,7 @@ export const REGISTRY: RegistryDefinition = {
     "paxel": "universal",
     "paxi": "universal",
     "pbt": "universal",
-    "pdn-express": "universal",
+    "pdn-express": "pdn-express",
     "pdq-chile": "universal",
     "pecom": "pecom",
     "peddler": "universal",

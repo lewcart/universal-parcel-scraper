@@ -1150,6 +1150,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.smarttrack\.co\/tracking\.php\?tracking_number=OWE000000000000$/,
     marker: /No Tracking available|Tracking Events/,
     forwarding: { notFound: /No Tracking available/ } },
+  // The page fills its field with the number in its path, asks the tracker's lookup and answers an
+  // unknown number with its notice in place of the scans.
+  { carrier: 'pdn-express', number: 'PDN0000000000',
+    route: /^https:\/\/pdn\.express\/en\/track\/PDN0000000000\/?$/,
+    marker: /No parcel found for that number|Parcel details/i },
   // The tracker names an unknown number in its notice above the search form.
   { carrier: 'pro-carrier', number: 'DG00000000000',
     route: /^https:\/\/tracking\.weareprocarrier\.com\/\?tn=DG00000000000$/,

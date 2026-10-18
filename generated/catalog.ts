@@ -20854,7 +20854,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pdn-express",
+      "recognitionRank": 838,
+      "localClocks": true
     },
     "canaryUrl": "https://pdn.express/en/track/",
     "trackingUrlTemplate": "https://pdn.express/en/track/{trackingNumber}",

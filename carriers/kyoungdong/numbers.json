@@ -218,7 +218,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -230,7 +230,7 @@
           "yunda"
         ]
       },
-      "note": "A Naver KnowledgeiN question asks when this Kyungdong Express parcel will arrive."
+      "note": "A Naver KnowledgeiN question asks when this Kyungdong Express parcel will arrive. Kyungdong's tracker answers it with its scans."
     },
     {
       "number": "8026090773281",
@@ -243,7 +243,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -256,7 +256,7 @@
           "yunda"
         ]
       },
-      "note": "A Naver KnowledgeiN question about a Kyungdong Express lookup gives it."
+      "note": "A Naver KnowledgeiN question about a Kyungdong Express lookup gives it. Kyungdong's tracker answers it with its scans."
     },
     {
       "number": "8026091635480",
@@ -269,7 +269,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -281,7 +281,7 @@
           "yunda"
         ]
       },
-      "note": "A Naver KnowledgeiN question about a stalled Kyungdong Express parcel gives it as the waybill number."
+      "note": "A Naver KnowledgeiN question about a stalled Kyungdong Express parcel gives it as the waybill number. Kyungdong's tracker answers it with its scans."
     },
     {
       "number": "8026100380015",
@@ -294,7 +294,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -306,7 +306,7 @@
           "yunda"
         ]
       },
-      "note": "A Naver KnowledgeiN question tagged Kyungdong Express gives it as the waybill being tracked."
+      "note": "A Naver KnowledgeiN question tagged Kyungdong Express gives it as the waybill being tracked. Kyungdong's tracker answers it with its scans."
     }
   ]
 }

@@ -22,18 +22,68 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kyoungdong",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://kdexp.com/service/delivery/etc/delivery.do?barcode={trackingNumber}",
     "searchUrl": "https://kdexp.com/index.do",
     "canaryUrl": "https://kdexp.com/index.do",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "order_contents",
+      "parcel_count",
+      "origin",
+      "destination",
+      "driver_name",
+      "office_contact_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at"
+    ],
+    "discarded": [
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "order_contents",
+      "parcel_count",
+      "origin",
+      "destination",
+      "driver_name",
+      "office_contact_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {

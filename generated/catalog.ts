@@ -17176,7 +17176,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kyoungdong"
     },
     "canaryUrl": "https://kdexp.com/index.do",
     "trackingUrlTemplate": "https://kdexp.com/service/delivery/etc/delivery.do?barcode={trackingNumber}",

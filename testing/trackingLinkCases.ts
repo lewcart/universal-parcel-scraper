@@ -1228,6 +1228,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'next-level-delivery', number: '0000000000000',
     route: /^https:\/\/nextlevel\.delivery\/track\?awb=0000000000000$/,
     marker: /Waybill #: 0000000000000|SHIPMENTS TRACKING/i },
+  // The page shows the waybill from the address and its script looks it up; an unknown one gets an alert.
+  { carrier: 'kyoungdong', number: '0000000000000',
+    route: /^https:\/\/kdexp\.com\/service\/delivery\/etc\/delivery\.do\?barcode=0000000000000$/,
+    marker: /검색정보|기본정보/ },
 ];
 
 /**

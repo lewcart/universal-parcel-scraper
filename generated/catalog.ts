@@ -5312,7 +5312,10 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "a-tu-hora-express",
+      "recognitionRank": 847,
+      "recognitionPattern": "^\\d{24}$",
+      "localClocks": true
     },
     "canaryUrl": "https://mydelivery.atuhoraexpress.com/",
     "trackingSearchUrl": "https://mydelivery.atuhoraexpress.com/",

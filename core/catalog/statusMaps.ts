@@ -150,6 +150,7 @@ import { statusMap as intexPaketdienst } from '../../carriers/intex-paketdienst/
 import { statusMap as israelPost } from '../../carriers/israel-post/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
+import { statusMap as jAndTMiddleEast } from '../../carriers/j-and-t-middle-east/status.js';
 import { statusMap as jhgj } from '../../carriers/jhgj/status.js';
 import { statusMap as jordanPost } from '../../carriers/jordan-post/status.js';
 import { statusMap as jitsu } from '../../carriers/jitsu/status.js';
@@ -319,7 +320,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'go-express': goExpress, globalpost, go4, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, hywl, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
-  jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
+  'j-and-t-middle-east': jAndTMiddleEast, jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, nox, oca,

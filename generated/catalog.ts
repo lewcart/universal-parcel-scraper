@@ -15583,7 +15583,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "j-and-t-middle-east"
     },
     "canaryUrl": "https://www.jtexpress.me/KSA/trackOrder",
     "trackingUrlTemplate": "https://www.jtexpress.me/KSA/trajectoryList?waybillNo={trackingNumber}&type=0",

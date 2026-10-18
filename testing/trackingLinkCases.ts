@@ -930,6 +930,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bosta', number: '99999998',
     route: /^https:\/\/bosta\.co\/en-eg\/tracking-shipments\?shipment-number=99999998$/,
     marker: /Track Your Shipment|Tracking Number Not Found/ },
+  // The page lists the waybills from its address; each opens its scans.
+  { carrier: 'j-and-t-middle-east', number: 'JTE300000000000',
+    route: /^https:\/\/www\.jtexpress\.me\/KSA\/trajectoryList\?waybillNo=JTE300000000000&type=0$/,
+    marker: /Waybill list/ },
   { carrier: 'aymakan', number: 'AY99999999999',
     route: /^https:\/\/aymakan\.com\/tracking\/AY99999999999$/,
     marker: /No shipment found|Track Shipments/ },

@@ -23,18 +23,49 @@
   "timezone": "Asia/Riyadh",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "j-and-t-middle-east",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.jtexpress.me/KSA/trajectoryList?waybillNo={trackingNumber}&type=0",
     "searchUrl": "https://www.jtexpress.me/KSA/trackOrder",
     "canaryUrl": "https://www.jtexpress.me/KSA/trackOrder",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "driver_name",
+      "contact_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "driver_name",
+      "contact_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight"
+    ]
   },
   "links": [
     {

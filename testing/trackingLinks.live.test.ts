@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, it } from 'vitest';
 import { chromium, type Browser } from 'playwright-core';
 import { parcelTrackingLinks } from '../core/catalog/parcel.js';
 import { trackingLinkCases } from './trackingLinkCases.js';
@@ -23,12 +23,12 @@ describe('UI tracking links (rendered public pages)', () => {
   });
   afterAll(async () => { await browser?.close(); });
 
-  it.for(trackingLinkCases.map((testCase) => ({ ...testCase, name: testCase.carrier + (testCase.provider ? '/' + testCase.provider : '') })))('$name opens a tracking page', { timeout: TEST_TIMEOUT_MS }, async (testCase, context) => {
+  it.for(trackingLinkCases.map((testCase) => ({ ...testCase, name: testCase.carrier + (testCase.provider ? '/' + testCase.provider : '') })))('$name opens a tracking page', { timeout: TEST_TIMEOUT_MS, concurrent: true }, async (testCase, context) => {
     const [link] = parcelTrackingLinks({
       carrier: testCase.carrier, trackingNumber: testCase.number,
       trackingProvider: testCase.provider,
     }, 'en');
-    expect(link).toBeDefined();
+    context.expect(link).toBeDefined();
     const page = await browser.newPage({ locale: 'en-US', userAgent });
     let lookupObserved = false;
     let documentStatus: number | undefined;
@@ -66,7 +66,7 @@ describe('UI tracking links (rendered public pages)', () => {
         }
         throw error;
       }
-      expect(response, 'Navigation must return an HTTP response').not.toBeNull();
+      context.expect(response, 'Navigation must return an HTTP response').not.toBeNull();
       let verdict: ReturnType<typeof trackingPageVerdict> = 'unverified';
       let inputBound = false;
       // Allow hydration and client redirects before inspecting the final page.
@@ -111,8 +111,8 @@ describe('UI tracking links (rendered public pages)', () => {
       }
       // Address and title only: page text can hold other people's shipments.
       const landed = `landed on ${page.url()} with HTTP ${documentStatus ?? 'status unknown'}, titled ${JSON.stringify(await page.title())}`;
-      expect(verdict, `Expected a rendered tracker on its known route, not a homepage/error/challenge; ${landed}`).toBe('tracking-page');
-      expect(inputBound, `The deep link must prefill, display or submit the synthetic tracking number; ${landed}`).toBe(true);
+      context.expect(verdict, `Expected a rendered tracker on its known route, not a homepage/error/challenge; ${landed}`).toBe('tracking-page');
+      context.expect(inputBound, `The deep link must prefill, display or submit the synthetic tracking number; ${landed}`).toBe(true);
     } finally {
       await page.close();
     }

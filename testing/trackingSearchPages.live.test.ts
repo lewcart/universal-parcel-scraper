@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, it } from 'vitest';
 import { chromium, devices, type Browser, type Frame, type Page, type Response } from 'playwright-core';
 import { CARRIERS } from '../core/catalog/index.js';
 import type { CarrierId } from '../generated/catalog.js';
@@ -53,7 +53,7 @@ describe('carrier search pages (rendered at phone size)', () => {
 
   // The app links these pages when a shared parcel hides its number, and it is
   // read mostly on phones, where some trackers drop the field they show on a desktop.
-  it.for(searchPages)('$name shows a field for the number', { timeout: RENDER_WINDOW_MS + 45_000 }, async ({ url }, context) => {
+  it.for(searchPages)('$name shows a field for the number', { timeout: RENDER_WINDOW_MS + 45_000, concurrent: true }, async ({ url }, context) => {
     const { viewport, userAgent, deviceScaleFactor, isMobile, hasTouch } = devices['iPhone 15'];
     const phoneContext = await browser.newContext({ viewport, userAgent, deviceScaleFactor, isMobile, hasTouch, locale: 'en-US' });
     const page = await phoneContext.newPage();
@@ -92,7 +92,7 @@ describe('carrier search pages (rendered at phone size)', () => {
           : 'The page rendered nothing to an automated browser: search page remains unverified');
       }
       // Address and title only, like the tracking links.
-      expect(verdict, `Expected a field to type a tracking number in; landed on ${page.url()} titled ${JSON.stringify(title)}`)
+      context.expect(verdict, `Expected a field to type a tracking number in; landed on ${page.url()} titled ${JSON.stringify(title)}`)
         .toBe('search-page');
     } finally {
       await phoneContext.close();

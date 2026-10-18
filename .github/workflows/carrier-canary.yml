@@ -79,8 +79,10 @@ jobs:
         env:
           CANARY_SUMMARY_TITLE: Rendered UI tracking links
         # The retry waits out a rotating DNS answer: some carrier CDNs hand out
-        # an edge the runner cannot reach, for about a minute at a time.
-        run: npm run test:tracking-links -- --retry.count 1 --retry.delay 70000
+        # an edge the runner cannot reach, for about a minute at a time. Four
+        # pages open at once so the run fits its timeout as the catalog grows:
+        # the report reads a timed-out job as a superseded run.
+        run: npm run test:tracking-links -- --retry.count 1 --retry.delay 70000 --maxConcurrency 4
 
   search-pages:
     name: Carrier search pages at phone size
@@ -104,7 +106,8 @@ jobs:
         id: search
         env:
           CANARY_SUMMARY_TITLE: Carrier search pages at phone size
-        run: npm run test:search-pages -- --retry.count 1 --retry.delay 70000
+        # Four pages at once, like the tracking links.
+        run: npm run test:search-pages -- --retry.count 1 --retry.delay 70000 --maxConcurrency 4
 
   report:
     name: Track failures in an issue

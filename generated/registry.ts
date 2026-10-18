@@ -205,6 +205,7 @@ import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js'
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as idsLogistik } from '../carriers/ids-logistik/adapter.js';
 import { adapter as imile } from '../carriers/imile/adapter.js';
+import { adapter as indahLogistik } from '../carriers/indah-logistik/adapter.js';
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
 import { adapter as inpost } from '../carriers/inpost/adapter.js';
 import { adapter as instabox } from '../carriers/instabox/adapter.js';
@@ -644,6 +645,7 @@ export const REGISTRY: RegistryDefinition = {
     "hywl": hywl,
     "ids-logistik": idsLogistik,
     "imile": imile,
+    "indah-logistik": indahLogistik,
     "india-post": indiaPost,
     "inpost": inpost,
     "instabox": instabox,
@@ -1211,7 +1213,7 @@ export const REGISTRY: RegistryDefinition = {
     "ids-logistik": "ids-logistik",
     "ilyang-logis": "universal",
     "imile": "imile",
-    "indah-logistik": "universal",
+    "indah-logistik": "indah-logistik",
     "india-post": "india-post",
     "inpost": "inpost",
     "instabox": "instabox",

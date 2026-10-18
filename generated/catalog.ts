@@ -16085,7 +16085,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "indah-logistik",
+      "recognitionRank": 798,
+      "localClocks": true
     },
     "canaryUrl": "https://indahonline.com/tracking/cek-resi",
     "trackingUrlTemplate": "https://indahonline.com/services/view?NO_RESI={trackingNumber}",

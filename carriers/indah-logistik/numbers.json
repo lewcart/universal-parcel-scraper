@@ -18,7 +18,7 @@
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "Archived lookup on Indah Logistik's own resi page; the capture shows the waybill's details with the service Indah Logistic Cargo by land from Bandung, but no scan history."
+      "note": "Archived lookup on Indah Logistik's own resi page; the capture shows the waybill's details with the service Indah Logistic Cargo by land from Bandung, but no scan history. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "KLD1CS28943670",
@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, naming Indah Logistik in the question; the forum's reply quotes transit scans at Denpasar."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, naming Indah Logistik in the question; the forum's reply quotes transit scans at Denpasar. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "SWQ1CS26536351",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent with Indah Logistik; the forum's reply quotes the delivery scans."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent with Indah Logistik; the forum's reply quotes the delivery scans. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "BDO1CS26886046",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes the delivery scans."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes the delivery scans. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "MES1CS29386976",
@@ -88,13 +88,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent from Medan with Indah Logistik; the forum's reply quotes scans from Medan to Tangerang."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent from Medan with Indah Logistik; the forum's reply quotes scans from Medan to Tangerang. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "TGR1CS30226931",
@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans and points to indahonline.com."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans and points to indahonline.com. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "SUB1CS906530673161",
@@ -126,13 +126,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, naming Indah Logistik in the question; the forum's reply quotes origin scans at Surabaya."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, naming Indah Logistik in the question; the forum's reply quotes origin scans at Surabaya. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "IDM1CS704831166994",
@@ -145,13 +145,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes the delivery scans."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes the delivery scans. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "PSR1CS554531416681",
@@ -164,13 +164,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans at Jakarta and points to indahonline.com."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans at Jakarta and points to indahonline.com. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "LLG1CS525731719400",
@@ -183,13 +183,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans at Jakarta."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes transit scans at Jakarta. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "SDA1CS066631870531",
@@ -202,13 +202,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent via Indah Cargo from Surabaya; the forum's reply quotes transit scans."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum, saying it was sent via Indah Cargo from Surabaya; the forum's reply quotes transit scans. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "RPT1CS039931935598",
@@ -221,13 +221,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "indah-logistik",
         "confidence": "high"
       },
-      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes origin scans at Rantau Prapat."
+      "note": "A customer asks about this resi in the Indah Logistik category of the TanyaPaket parcel forum; the forum's reply quotes origin scans at Rantau Prapat. Indah Logistik's app lookup returns a delivered history for it."
     },
     {
       "number": "JIP1CS6845438",
@@ -247,7 +247,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A Detik Finance guide to Indah Cargo tracking prints it as an example resi; the guide does not say whether it is a real waybill."
+      "note": "A Detik Finance guide to Indah Cargo tracking prints it as an example resi; the guide does not say whether it is a real waybill. Indah Logistik's app lookup does not know it."
     },
     {
       "number": "HKOCS5982520",
@@ -270,7 +270,7 @@
           "colis-prive"
         ]
       },
-      "note": "A Detik Finance guide to Indah Cargo tracking prints it as an example resi; it lacks the digit after the branch code that the other numbers carry."
+      "note": "A Detik Finance guide to Indah Cargo tracking prints it as an example resi; it lacks the digit after the branch code that the other numbers carry. Indah Logistik's app lookup does not know it."
     }
   ]
 }

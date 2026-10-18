@@ -38075,6 +38075,32 @@
     ]
   },
   {
+    "input": "51021420631075",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "dpd-uk",
+      "nova-poshta"
+    ],
+    "asked": [
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de",
+      "seur"
+    ]
+  },
+  {
     "input": "5106030800485",
     "carrier": "unknown",
     "confidence": "low",
@@ -39486,6 +39512,26 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "54170619",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "54170620",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -57725,6 +57771,102 @@
     ]
   },
   {
+    "input": "B0348965-1027",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B0392960-6316",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B0570164-4401",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B0778620-9394",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B0941240-7812",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B1069028-3523",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B1168312-7889",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "B1179929-6776",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "bjs-home-delivery"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
     "input": "B1F1B9A0I3",
     "carrier": "unknown",
     "confidence": "low",
@@ -72410,6 +72552,12 @@
     ]
   },
   {
+    "input": "NOR0012GB00002606001",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "NP123456789JB",
     "carrier": "chronopost",
     "confidence": "high",
@@ -72832,6 +72980,14 @@
     ],
     "asked": [
       "australia-post"
+    ]
+  },
+  {
+    "input": "OWE000101836230",
+    "carrier": "one-world-express",
+    "confidence": "high",
+    "candidates": [
+      "one-world-express"
     ]
   },
   {
@@ -73886,6 +74042,12 @@
     "candidates": [
       "correos-spain"
     ]
+  },
+  {
+    "input": "PKG702786853001",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "PKQZ050115785",
@@ -78954,6 +79116,12 @@
     ]
   },
   {
+    "input": "T01ZAA0016312666",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "T20952721754",
     "carrier": "unknown",
     "confidence": "low",
@@ -78970,6 +79138,14 @@
     "confidence": "low",
     "candidates": [
       "2go"
+    ]
+  },
+  {
+    "input": "T39001898036421",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "transmission"
     ]
   },
   {
@@ -81481,6 +81657,22 @@
       "colis-prive",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "XLC354092310529",
+    "carrier": "xlcourier",
+    "confidence": "high",
+    "candidates": [
+      "xlcourier"
+    ]
+  },
+  {
+    "input": "XLC49968084368",
+    "carrier": "xlcourier",
+    "confidence": "high",
+    "candidates": [
+      "xlcourier"
     ]
   },
   {

@@ -1,0 +1,42 @@
+{
+  "id": "norsk-global",
+  "displayName": "Norsk Global",
+  "aliases": [
+    "Norsk",
+    "Norsk-Global"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#114433"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
+    "searchUrl": "https://norsk.trackmyparcel.info/",
+    "canaryUrl": "https://norsk.trackmyparcel.info/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "norsk.trackmyparcel.info"
+      ],
+      "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

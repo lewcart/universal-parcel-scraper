@@ -1,0 +1,48 @@
+{
+  "id": "transmission",
+  "displayName": "TransMission",
+  "aliases": [
+    "TransMission B.V."
+  ],
+  "region": {
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ]
+  },
+  "brand": {
+    "color": "#1f3581"
+  },
+  "selectable": true,
+  "timezone": "Europe/Amsterdam",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://api.trans-mission.nl/Search-shipment",
+    "canaryUrl": "https://api.trans-mission.nl/Search-shipment",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "api.trans-mission.nl"
+      ],
+      "path": "^/tt/([^/?#]+)/[^/?#]+/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "transmission-1",
+      "pattern": "^[TP]\\d{14}$",
+      "confidence": "low"
+    }
+  ]
+}

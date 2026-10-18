@@ -1,0 +1,14 @@
+{
+  "carrier": "one-world-express",
+  "entries": [
+    {"wording": "Data Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Shown as both description and status when the parcel data arrives. Seen in an archived SmartTrack lookup."},
+    {"wording": "Arrived", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status column for an arrival scan at a sort facility. Seen in an archived SmartTrack lookup."},
+    {"wording": "Shipment Handed Over", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Description; the status column reads In Transit. Seen in an archived SmartTrack lookup."},
+    {"wording": "Arrived at Origin Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Description; the status column reads Carrier Received. Seen in an archived SmartTrack lookup."},
+    {"wording": "Carrier Received", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status column when the origin facility receives the parcel. Seen in an archived SmartTrack lookup."},
+    {"wording": "Shipment Process", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Description; the status column reads In Transit. Seen in an archived SmartTrack lookup."},
+    {"wording": "Departed from Origin Facility", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Description; the status column reads In Transit. Seen in an archived SmartTrack lookup."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status column. Seen in an archived SmartTrack lookup."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Shown as both description and status. Seen in an archived SmartTrack lookup."}
+  ]
+}

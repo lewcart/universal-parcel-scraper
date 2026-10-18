@@ -2131,6 +2131,18 @@
     "reason": "A Nord Wheel waybill starts with the Cyrillic letters НФ, and the library accepts only Latin letters and digits, so detection never sees it."
   },
   {
+    "carrier": "norsk-global",
+    "pattern": "^NOR\\d{4}[A-Z]{2}\\d{11}$",
+    "kind": "by_design",
+    "reason": "A single archived lookup is the only sample of this reference, too few to fix its layout."
+  },
+  {
+    "carrier": "norsk-global",
+    "pattern": "^PKG\\d{12}$",
+    "kind": "by_design",
+    "reason": "A single review is the only sample, and PKG may be a sender's prefix rather than Norsk's."
+  },
+  {
     "carrier": "northline",
     "pattern": "^\\d[A-Z]{3}\\d{5,11}$",
     "kind": "by_design",
@@ -2242,6 +2254,12 @@
     "pattern": "^A\\d{8}$",
     "kind": "by_design",
     "reason": "Once the hyphen is dropped, Pack-Man's vouchers are a letter and eight digits, a shape other carriers' numbers share, so nothing in the number points to Pack-Man."
+  },
+  {
+    "carrier": "packs",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are a bare counter that many carriers print, and nothing in the number points to Packs."
   },
   {
     "carrier": "palletways",

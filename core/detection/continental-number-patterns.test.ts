@@ -406,4 +406,14 @@ describe('wave seven courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('copa-courier');
     }
   });
+
+  it('suggests TransMission for T or P and fourteen digits without naming it', () => {
+    for (const number of ['T00000000000001', 'P00 000000 000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('transmission');
+    }
+    for (const number of ['T0000000000001', 'T000000000000001', 'R00000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('transmission');
+    }
+  });
 });

@@ -6894,6 +6894,56 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "bjs-home-delivery": {
+    "displayName": "BJS Home Delivery",
+    "color": "#feba30",
+    "aliases": [
+      "BJS Distribution",
+      "BJS Two-Man Home Delivery"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.bjshomedelivery.com/",
+    "trackingUrlTemplate": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",
+    "trackingSearchUrl": "https://track.bjshomedelivery.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.bjshomedelivery.com",
+          "www.track.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id",
+          "OrderReference",
+          "order-number"
+        ]
+      },
+      {
+        "domains": [
+          "bjshomedelivery.com",
+          "www.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^B\\d{11}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "blue-express": {
     "displayName": "Blue Express",
     "color": "#0032a0",
@@ -18062,6 +18112,35 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "norsk-global": {
+    "displayName": "Norsk Global",
+    "color": "#114433",
+    "aliases": [
+      "Norsk",
+      "Norsk-Global"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://norsk.trackmyparcel.info/",
+    "trackingUrlTemplate": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://norsk.trackmyparcel.info/",
+    "linkRules": [
+      {
+        "domains": [
+          "norsk.trackmyparcel.info"
+        ],
+        "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "northline": {
     "displayName": "Northline",
     "color": "#000000",
@@ -18473,6 +18552,34 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "one-world-express": {
+    "displayName": "One World Express",
+    "color": "#161c5e",
+    "aliases": [
+      "OWE",
+      "OneWorldExpress",
+      "One World Express Inc. Ltd."
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.oneworldexpress.com/tracking",
+    "trackingUrlTemplate": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.oneworldexpress.com/tracking",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^OWE\\d{12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "opt-nc": {
     "displayName": "OPT-NC",
     "color": "#28347c",
@@ -18820,6 +18927,36 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "packs": {
+    "displayName": "Packs",
+    "color": "#e11f1d",
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.packs.nl/track-trace/",
+    "trackingSearchUrl": "https://www.packs.nl/track-trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.packs.nl",
+          "packs.nl"
+        ],
+        "pathPattern": "^/(?:track-trace|tracktrace)/?$",
+        "params": [
+          "zendingnr"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "pakistan-post": {
     "displayName": "Pakistan Post",
@@ -22457,7 +22594,9 @@ export const CARRIER_CATALOG = {
       "SkyNet",
       "SkyNet Worldwide",
       "SkyNet WWE",
-      "Skynet Express"
+      "Skynet Express",
+      "Deltec International Courier",
+      "Deltec Courier"
     ],
     "countries": [
       "GB"
@@ -24513,6 +24652,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "transmission": {
+    "displayName": "TransMission",
+    "color": "#1f3581",
+    "aliases": [
+      "TransMission B.V."
+    ],
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://api.trans-mission.nl/Search-shipment",
+    "trackingSearchUrl": "https://api.trans-mission.nl/Search-shipment",
+    "linkRules": [
+      {
+        "domains": [
+          "api.trans-mission.nl"
+        ],
+        "path": "^/tt/([^/?#]+)/[^/?#]+/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[TP]\\d{14}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "transport-rdl": {
     "displayName": "Transport RDL",
     "color": "#0a2240",
@@ -25743,6 +25916,32 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "xlcourier": {
+    "displayName": "XLCourier",
+    "color": "#c70000",
+    "aliases": [
+      "XL Courier",
+      "XLC"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.xlcourier.com/trackOrder",
+    "trackingSearchUrl": "https://www.xlcourier.com/trackOrder",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^XLC\\d{10,12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "xpo-ltl": {
     "displayName": "XPO",
     "color": "#cc0000",
@@ -26340,6 +26539,7 @@ export const CARRIER_IDS = [
   "best-transport",
   "better-trucks",
   "bex-express",
+  "bjs-home-delivery",
   "blue-express",
   "blueex",
   "bombino",
@@ -26630,6 +26830,7 @@ export const CARRIER_IDS = [
   "nippon-express",
   "noest",
   "nord-wheel",
+  "norsk-global",
   "northline",
   "nova-poshta",
   "nox",
@@ -26640,6 +26841,7 @@ export const CARRIER_IDS = [
   "olva-courier",
   "omgo",
   "omniva",
+  "one-world-express",
   "opt-nc",
   "orlen-paczka",
   "osm-worldwide",
@@ -26648,6 +26850,7 @@ export const CARRIER_IDS = [
   "pack-man",
   "packli-punkt",
   "packlink",
+  "packs",
   "pakistan-post",
   "palletways",
   "pannon-xp",
@@ -26793,6 +26996,7 @@ export const CARRIER_IDS = [
   "trackon",
   "tracx-logis",
   "trans-o-flex",
+  "transmission",
   "transport-rdl",
   "trendyol-express",
   "tsjy",
@@ -26825,6 +27029,7 @@ export const CARRIER_IDS = [
   "x-express-ba",
   "xde-logistics",
   "xdp",
+  "xlcourier",
   "xpo-ltl",
   "xpressbees",
   "yalidine",
@@ -26997,6 +27202,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "best-transport": [],
   "better-trucks": ["better-trucks-1"],
   "bex-express": [],
+  "bjs-home-delivery": ["bjs-home-delivery-1"],
   "blue-express": [],
   "blueex": [],
   "bombino": [],
@@ -27287,6 +27493,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nippon-express": [],
   "noest": [],
   "nord-wheel": [],
+  "norsk-global": [],
   "northline": [],
   "nova-poshta": ["nova-poshta-export","nova-poshta-domestic"],
   "nox": ["nox-1"],
@@ -27297,6 +27504,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
+  "one-world-express": ["one-world-express-1"],
   "opt-nc": [],
   "orlen-paczka": ["orlen-paczka-1"],
   "osm-worldwide": ["osm-worldwide-1","osm-worldwide-2"],
@@ -27305,6 +27513,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pack-man": [],
   "packli-punkt": [],
   "packlink": ["packlink-1"],
+  "packs": [],
   "pakistan-post": ["pakistan-post-1"],
   "palletways": [],
   "pannon-xp": ["pannon-xp-1"],
@@ -27450,6 +27659,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],
+  "transmission": ["transmission-1"],
   "transport-rdl": [],
   "trendyol-express": [],
   "tsjy": ["tsjy-1"],
@@ -27482,6 +27692,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "x-express-ba": [],
   "xde-logistics": [],
   "xdp": ["xdp-1"],
+  "xlcourier": ["xlcourier-1"],
   "xpo-ltl": ["xpo-ltl-1"],
   "xpressbees": ["xpressbees-awb"],
   "yalidine": ["yalidine-1"],

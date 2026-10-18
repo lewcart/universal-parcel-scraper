@@ -6892,6 +6892,56 @@
     ],
     "detectionRules": []
   },
+  "bjs-home-delivery": {
+    "displayName": "BJS Home Delivery",
+    "color": "#feba30",
+    "aliases": [
+      "BJS Distribution",
+      "BJS Two-Man Home Delivery"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://track.bjshomedelivery.com/",
+    "trackingUrlTemplate": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",
+    "trackingSearchUrl": "https://track.bjshomedelivery.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.bjshomedelivery.com",
+          "www.track.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id",
+          "OrderReference",
+          "order-number"
+        ]
+      },
+      {
+        "domains": [
+          "bjshomedelivery.com",
+          "www.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^B\\d{11}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "blue-express": {
     "displayName": "Blue Express",
     "color": "#0032a0",
@@ -18060,6 +18110,35 @@
     ],
     "detectionRules": []
   },
+  "norsk-global": {
+    "displayName": "Norsk Global",
+    "color": "#114433",
+    "aliases": [
+      "Norsk",
+      "Norsk-Global"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://norsk.trackmyparcel.info/",
+    "trackingUrlTemplate": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://norsk.trackmyparcel.info/",
+    "linkRules": [
+      {
+        "domains": [
+          "norsk.trackmyparcel.info"
+        ],
+        "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "northline": {
     "displayName": "Northline",
     "color": "#000000",
@@ -18471,6 +18550,34 @@
       }
     ]
   },
+  "one-world-express": {
+    "displayName": "One World Express",
+    "color": "#161c5e",
+    "aliases": [
+      "OWE",
+      "OneWorldExpress",
+      "One World Express Inc. Ltd."
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.oneworldexpress.com/tracking",
+    "trackingUrlTemplate": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.oneworldexpress.com/tracking",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^OWE\\d{12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "opt-nc": {
     "displayName": "OPT-NC",
     "color": "#28347c",
@@ -18818,6 +18925,36 @@
         "confidence": "high"
       }
     ]
+  },
+  "packs": {
+    "displayName": "Packs",
+    "color": "#e11f1d",
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.packs.nl/track-trace/",
+    "trackingSearchUrl": "https://www.packs.nl/track-trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.packs.nl",
+          "packs.nl"
+        ],
+        "pathPattern": "^/(?:track-trace|tracktrace)/?$",
+        "params": [
+          "zendingnr"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "pakistan-post": {
     "displayName": "Pakistan Post",
@@ -22455,7 +22592,9 @@
       "SkyNet",
       "SkyNet Worldwide",
       "SkyNet WWE",
-      "Skynet Express"
+      "Skynet Express",
+      "Deltec International Courier",
+      "Deltec Courier"
     ],
     "countries": [
       "GB"
@@ -24511,6 +24650,40 @@
     ],
     "detectionRules": []
   },
+  "transmission": {
+    "displayName": "TransMission",
+    "color": "#1f3581",
+    "aliases": [
+      "TransMission B.V."
+    ],
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://api.trans-mission.nl/Search-shipment",
+    "trackingSearchUrl": "https://api.trans-mission.nl/Search-shipment",
+    "linkRules": [
+      {
+        "domains": [
+          "api.trans-mission.nl"
+        ],
+        "path": "^/tt/([^/?#]+)/[^/?#]+/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[TP]\\d{14}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "transport-rdl": {
     "displayName": "Transport RDL",
     "color": "#0a2240",
@@ -25737,6 +25910,32 @@
     "detectionRules": [
       {
         "pattern": "^0?ZDB[A-Z]{3}\\d{6}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "xlcourier": {
+    "displayName": "XLCourier",
+    "color": "#c70000",
+    "aliases": [
+      "XL Courier",
+      "XLC"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.xlcourier.com/trackOrder",
+    "trackingSearchUrl": "https://www.xlcourier.com/trackOrder",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^XLC\\d{10,12}$",
         "confidence": "high"
       }
     ]

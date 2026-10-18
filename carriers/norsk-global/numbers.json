@@ -1,0 +1,77 @@
+{
+  "carrier": "norsk-global",
+  "records": [
+    {
+      "number": "NOR0012GB00002606001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240923234156/https://norsk.trackmyparcel.info/tracking/NOR0012GB00002606001",
+        "date": "2024-09-23",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived lookup on Norsk's own tracker; the capture was opened but shows only the page shell, so the history is not visible."
+    },
+    {
+      "number": "PKG702786853001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://uk.trustpilot.com/reviews/5ec13dc325e5d20a8898066b",
+        "date": "2020-05-17",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A customer's review on Norsk Global's Trustpilot page gives it for a jacket sent from the UK to the US, and Norsk's reply describes handing that shipment to a postal carrier."
+    },
+    {
+      "number": "51021420631075",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://uk.trustpilot.com/reviews/5f90f0d2798e6f04a41a4307",
+        "date": "2020-10-22",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "quarantine": true,
+      "context": {
+        "assessment": "review"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "relais-colis",
+          "ciblex",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-be",
+          "dpd-de",
+          "dpd-nl",
+          "dpd-uk",
+          "nova-poshta"
+        ]
+      },
+      "note": "A customer's review on Norsk Global's Trustpilot page calls it the tracking number of a parcel from the UK, and Norsk's reply refers to it; fourteen digits may be a delivering partner's number."
+    }
+  ]
+}

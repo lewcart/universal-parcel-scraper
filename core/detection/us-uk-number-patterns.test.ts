@@ -333,3 +333,31 @@ describe('Pitney Bowes cross-border labels', () => {
     }
   });
 });
+
+describe('wave seven British courier rules', () => {
+  it('suggests BJS Home Delivery for B and eleven digits, with or without the dash, without naming it', () => {
+    for (const number of ['B0000001-0001', 'B00000010001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('bjs-home-delivery');
+    }
+    for (const number of ['B0000000001', 'B000000000001', 'C00000010001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('bjs-home-delivery');
+    }
+  });
+
+  it('names One World Express for OWE and twelve digits', () => {
+    expect(detectCarrierMatch('OWE000000000001')).toMatchObject({ carrier: 'one-world-express', confidence: 'high', candidates: ['one-world-express'] });
+    for (const number of ['OWE00000000001', 'OWE0000000000001', 'OW0000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('one-world-express');
+    }
+  });
+
+  it('names XLCourier for XLC and ten to twelve digits', () => {
+    for (const number of ['XLC0000000001', 'XLC00000000001', 'XLC000000000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'xlcourier', confidence: 'high', candidates: ['xlcourier'] });
+    }
+    for (const number of ['XLC000000001', 'XLC0000000000001', 'XL00000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('xlcourier');
+    }
+  });
+});

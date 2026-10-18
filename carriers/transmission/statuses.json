@@ -1,0 +1,22 @@
+{
+  "carrier": "transmission",
+  "entries": [
+    {"wording": "Zending aangemeld", "stage": "registered", "language": "nl", "confirmedBy": "portal", "note": "Shipment announced by the sender; shown before any scan."},
+    {"wording": "Order announced", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "English text of Zending aangemeld."},
+    {"wording": "Zending bij sorteercentrum", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "Shipment at a sorting centre; seen in the status summary of a 2022 lookup."},
+    {"code": "20", "wording": "Verwerkt in sorteercentrum", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "Processed at a sorting centre."},
+    {"code": "20", "wording": "Processed in sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "English text of Verwerkt in sorteercentrum."},
+    {"code": "30", "wording": "Zending is op het juiste depot", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "At the delivering depot."},
+    {"code": "30", "wording": "Aangekomen in uw regio", "stage": "in_transit", "language": "nl", "confirmedBy": "portal", "note": "At the delivering depot; a later wording for search code 30."},
+    {"code": "30", "wording": "Arrived in your region", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "English text of Aangekomen in uw regio."},
+    {"wording": "Bezorgtijd nog onbekend", "language": "nl", "confirmedBy": "portal", "note": "Delivery time not yet known. Shown as the expected delivery and also logged as a history line, so it is not a stage."},
+    {"wording": "Delivery time unknown", "language": "en", "confirmedBy": "portal", "note": "English text of Bezorgtijd nog onbekend."},
+    {"code": "188", "wording": "Chauffeur is onderweg", "stage": "out_for_delivery", "language": "nl", "confirmedBy": "portal", "note": "The driver is on the way."},
+    {"code": "188", "wording": "Driver is on his way", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "English text of Chauffeur is onderweg."},
+    {"code": "39", "wording": "Afgeleverd", "stage": "delivered", "language": "nl", "confirmedBy": "portal", "note": "Delivered; logged under search code 39 and again under 0."},
+    {"code": "0", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "English text of Afgeleverd; the English lookup logged it under search code 0."},
+    {"wording": "Uw zending is geleverd.", "stage": "delivered", "language": "nl", "confirmedBy": "portal", "note": "Summary sentence under the delivered status."},
+    {"wording": "Your shipment has been delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "English summary sentence under the delivered status."},
+    {"wording": "The shipment is delivered.", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "A later English summary sentence under the delivered status."}
+  ]
+}

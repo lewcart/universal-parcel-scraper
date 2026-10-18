@@ -1,0 +1,42 @@
+{
+  "id": "one-world-express",
+  "displayName": "One World Express",
+  "aliases": [
+    "OWE",
+    "OneWorldExpress",
+    "One World Express Inc. Ltd."
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#161c5e"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
+    "searchUrl": "https://www.oneworldexpress.com/tracking",
+    "canaryUrl": "https://www.oneworldexpress.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "one-world-express-1",
+      "pattern": "^OWE\\d{12}$",
+      "confidence": "high"
+    }
+  ]
+}

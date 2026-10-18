@@ -1,0 +1,13 @@
+{
+  "carrier": "bjs-home-delivery",
+  "entries": [
+    {"wording": "Released", "stage": "registered", "language": "en", "confirmedBy": "bundle", "note": "First step of the tracker's progress bar: the retailer has released the order to BJS. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Received", "stage": "accepted", "language": "en", "confirmedBy": "bundle", "note": "Second step of the progress bar: BJS has received the goods. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "bundle", "note": "Third step of the progress bar: a delivery date is booked. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Confirmed", "stage": "in_transit", "language": "en", "confirmedBy": "bundle", "note": "Fourth step of the progress bar: the delivery slot is confirmed. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "En Route", "stage": "out_for_delivery", "language": "en", "confirmedBy": "bundle", "note": "Fifth step of the progress bar: the crew is on the way. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Last step of the progress bar. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Completed", "stage": "delivered", "language": "en", "confirmedBy": "bundle", "note": "Order status value that ends tracking for a finished order. Read from the live tracker's script; no archived lookup shows a history."},
+    {"wording": "Failed", "stage": "failed_attempt", "language": "en", "confirmedBy": "bundle", "note": "Order status value for a failed attempt; the status bar then says the delivery was attempted on a date. Read from the live tracker's script; no archived lookup shows a history."}
+  ]
+}

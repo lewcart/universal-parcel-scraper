@@ -1,0 +1,40 @@
+{
+  "id": "xlcourier",
+  "displayName": "XLCourier",
+  "aliases": [
+    "XL Courier",
+    "XLC"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#c70000"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.xlcourier.com/trackOrder",
+    "canaryUrl": "https://www.xlcourier.com/trackOrder",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "xlcourier-1",
+      "pattern": "^XLC\\d{10,12}$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "packs",
+  "displayName": "Packs",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ]
+  },
+  "brand": {
+    "color": "#e11f1d"
+  },
+  "selectable": true,
+  "timezone": "Europe/Amsterdam",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.packs.nl/track-trace/",
+    "canaryUrl": "https://www.packs.nl/track-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.packs.nl",
+        "packs.nl"
+      ],
+      "pathPattern": "^/(?:track-trace|tracktrace)/?$",
+      "params": [
+        "zendingnr"
+      ]
+    }
+  ],
+  "detection": []
+}

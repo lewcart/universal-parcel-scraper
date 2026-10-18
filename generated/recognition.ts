@@ -24,6 +24,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "bangladesh-post": 909,
   "barid-al-maghrib": 901,
   "belpost": 929,
+  "bjs-home-delivery": 844,
   "blue-express": 971,
   "bosta": 951,
   "box-now": 250,

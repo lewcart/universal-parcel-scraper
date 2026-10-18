@@ -184,6 +184,29 @@
         ]
       },
       "note": "An archived lookup on BJS's own tracker; the capture was not opened, so the history was not seen."
+    },
+    {
+      "number": "B0111626-5604",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260620231315/https://track.bjshomedelivery.com/order?OrderReference=B0111626-5604",
+        "date": "2026-06-20",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive",
+          "bjs-home-delivery"
+        ]
+      },
+      "note": "An archived lookup on BJS's own tracker; the capture was not opened, but BJS's own lookup found the order."
     }
   ]
 }

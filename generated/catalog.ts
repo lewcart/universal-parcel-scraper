@@ -7068,7 +7068,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bjs-home-delivery",
+      "recognitionRank": 844,
+      "localClocks": true
     },
     "canaryUrl": "https://track.bjshomedelivery.com/",
     "trackingUrlTemplate": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",

@@ -17,18 +17,52 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bjs-home-delivery",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 844
+    },
+    "localClocks": true
   },
   "capabilities": [],
   "portal": {
     "url": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",
     "searchUrl": "https://track.bjshomedelivery.com/",
     "canaryUrl": "https://track.bjshomedelivery.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "eta",
+      "eta_window",
+      "coordinates",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "recipient_verification",
+      "delivery_options"
+    ],
+    "scraped": [
+      "status"
+    ],
+    "discarded": [
+      "progress_rail",
+      "history",
+      "eta",
+      "eta_window",
+      "coordinates",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "recipient_verification",
+      "delivery_options"
+    ],
+    "unavailable": [
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

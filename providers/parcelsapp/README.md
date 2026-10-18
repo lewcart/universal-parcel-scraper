@@ -300,8 +300,9 @@ step exists for future protocol changes.
   relays beyond Europe, so those keep the country's clock. A
   name or relay added here moves its stored scans (see Limitations).
 - China Post's dates are its scans' wall clocks under a UTC label. A scan whose place is
-  written in Chinese or ends with a mainland province ("Example City, Guangdong") is read
-  on China time, as 17TRACK's "+08:00" copies of the same scans are. Its other scans go
+  written in Chinese, ends with a mainland province ("Example City, Guangdong") or is only
+  the city of one of its processing centres ("Shenzhen") is read on China time, as
+  17TRACK's "+08:00" copies of the same scans are. Its other scans go
   through the steps like any. Its UPU and EMS scans come under those names, their place a
   code or a postcode ("GZSGJHHJ", Guangzhou's office of exchange). Theirs from posting to
   departure from the office of exchange are read on the origin's clock, the reply's

@@ -1392,6 +1392,7 @@ describe('ParcelsApp result parsing', () => {
     const result = parseParcelsAppResponse({ carriers: ['China Post'], states: [
       { date: '2026-07-03T09:12:12Z', status: 'In transit', carrier: 0, location: 'Example Town ENG GB AB1' },
       { date: '2026-07-01T10:10:00Z', status: '启运【HK】', carrier: 0, location: 'HK' },
+      { date: '2026-06-29T23:01:26Z', status: 'Customs clearance completed', carrier: 0, location: 'Shenzhen' },
       { date: '2026-06-28T21:40:07Z', status: 'Departed from sorting center', carrier: 0, location: 'Example City, Guangdong' },
       { date: '2026-06-28T10:05:16Z', status: 'China Post has received the mail', carrier: 0, location: '示例市 12345678' },
       { date: '2026-06-28T01:00:00Z', status: 'Electronic information received', carrier: 0 },
@@ -1399,6 +1400,7 @@ describe('ParcelsApp result parsing', () => {
     expect(result.events?.map((scan) => scan.time)).toEqual([
       '2026-07-03T09:12:12.000Z', // a place it cannot tell
       '2026-07-01T02:10:00.000Z', // Hong Kong
+      '2026-06-29T15:01:26.000Z', // a mainland city alone
       '2026-06-28T13:40:07.000Z',
       '2026-06-28T02:05:16.000Z',
       '2026-06-28T01:00:00.000Z', // no place

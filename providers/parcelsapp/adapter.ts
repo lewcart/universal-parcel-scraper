@@ -479,15 +479,23 @@ const CHINESE_PROVINCES = new Set([
   'hubei', 'hunan', 'innermongolia', 'jiangsu', 'jiangxi', 'jilin', 'liaoning', 'ningxia', 'qinghai', 'shaanxi', 'shandong',
   'shanghai', 'shanxi', 'sichuan', 'tianjin', 'tibet', 'xinjiang', 'xizang', 'yunnan', 'zhejiang',
 ]);
+// Mainland cities of China Post's provincial and export processing centres, which its scans can name alone.
+const CHINESE_CITIES = new Set([
+  'changchun', 'changsha', 'chengdu', 'dalian', 'dongguan', 'foshan', 'fuzhou', 'guangzhou', 'guiyang', 'haikou', 'hangzhou', 'harbin',
+  'hefei', 'hohhot', 'huizhou', 'jinan', 'jinhua', 'kunming', 'lanzhou', 'lhasa', 'nanchang', 'nanjing', 'nanning', 'ningbo', 'putian',
+  'qingdao', 'quanzhou', 'shantou', 'shenyang', 'shenzhen', 'shijiazhuang', 'suzhou', 'taiyuan', 'urumqi', 'wenzhou', 'wuhan', 'wuxi',
+  'xiamen', 'xian', 'xining', 'yinchuan', 'yiwu', 'zhengzhou', 'zhongshan',
+]);
 
 /**
  * Whether a China Post scan is on Beijing's clock: its place is written in
- * Chinese ("示例市 12345678") or ends with a mainland province ("Example City,
- * Guangdong"). China Post dates those scans in China, as 17TRACK's "+08:00"
- * copies of them show.
+ * Chinese ("示例市 12345678"), ends with a mainland province ("Example City,
+ * Guangdong") or is one of the cities above alone ("Shenzhen"). China Post
+ * dates those scans in China, as 17TRACK's "+08:00" copies of them show.
  */
 function inChina(location: string): boolean {
-  return /\p{Script=Han}/u.test(location) || CHINESE_PROVINCES.has(nameKey(location.split(',').at(-1)));
+  const place = nameKey(location.split(',').at(-1));
+  return /\p{Script=Han}/u.test(location) || CHINESE_PROVINCES.has(place) || (!location.includes(',') && CHINESE_CITIES.has(place));
 }
 
 /**

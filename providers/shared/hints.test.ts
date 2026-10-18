@@ -63,14 +63,17 @@ describe('carrier names reported by universal providers', () => {
     // Both fit a run of digits; Nova Poshta's preferred rule backs it.
     expect(universalCarrierHints(['DPD Germany', 'Nova Poshta'], '59500000000012').discovered_carrier).toBe('nova-poshta');
     expect(universalCarrierHints(['DPD Germany', 'Seur'], '59500000000012').discovered_carrier).toBeUndefined();
-    // No rule fits the origin's number. SwiftX's numbers are all SWX and eighteen digits, so
-    // SwiftX is named for the last leg and DHLink, whose numbers have no layout of their own, is left.
+    // DHLink's rule fits its line provider's EYT number and no SwiftX one.
     expect(universalCarrierHints(['DHLink', 'SwiftX'], 'EYT0000000000HZ')).toEqual({
       reported_carriers: ['DHLink', 'SwiftX'], discovered_carrier: 'dhlink',
     });
+    expect(universalCarrierHints(['DHLink', 'Nova Poshta'], 'EYT0000000000HZ').discovered_carrier).toBe('dhlink');
+    // No rule fits the origin's number. SwiftX's numbers are all SWX and eighteen digits, so
+    // SwiftX is named for the last leg and DHLink, whose numbers have no layout of their own, is left.
+    expect(universalCarrierHints(['DHLink', 'SwiftX'], 'QQT0000000000HZ').discovered_carrier).toBe('dhlink');
     expect(universalCarrierHints(['DHLink', 'SwiftX'], 'SWX000000000000000000').discovered_carrier).toBe('swiftx');
     // Two carriers without a layout of their own, a name outside the catalog, or no number: no hint.
-    expect(universalCarrierHints(['DHLink', 'Nova Poshta'], 'EYT0000000000HZ').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['DHLink', 'Nova Poshta'], 'QQT0000000000HZ').discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['Some Forwarder', 'SwiftX'], 'EYT0000000000HZ').discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['DHLink', 'SwiftX']).discovered_carrier).toBeUndefined();
   });

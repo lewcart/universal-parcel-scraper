@@ -23,6 +23,9 @@ import { eventStage, eventStatus, GROUP_STATUSES } from './status.js';
 //   its optional check character comes back under the full fifteen characters.
 // - `returnCode` 104 is the positive "unknown shipment"; any other non-zero
 //   code is an inconclusive provider failure.
+// - An HTTP 400 whose `response.returnCode` is 412 ("numéro non postal") is
+//   La Poste refusing a number outside its formats, so it is invalid input.
+//   Any other 400 stays an HTTP failure.
 // - Production HTTP 403s carried La Poste's "Site indisponible - Incident en
 //   cours" page and immediately following checks succeeded, so a 403 is
 //   retried up to three times inside the original deadline (see README.md).
@@ -46,11 +49,23 @@ const MAX_RESPONSE_BYTES = 2_000_000;
 const MAX_EVENTS_TO_RETURN = 100;
 /** The provider's "unknown shipment" return code. */
 const UNKNOWN_SHIPMENT_CODE = 104;
+/** The return code of an HTTP 400 for a number La Poste does not issue. */
+const NOT_POSTAL_CODE = 412;
 
 function number(value: unknown): number | null {
   if (typeof value !== 'number' && (typeof value !== 'string' || !value.trim())) return null;
   const parsed = typeof value === 'number' ? value : Number(value.trim());
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+/** The `response.returnCode` of a rejected request, or null. */
+function rejectionCode(bytes: Uint8Array): number | null {
+  try {
+    const body: unknown = JSON.parse(decodeText(bytes));
+    return isRecord(body) && isRecord(body.response) ? number(body.response.returnCode) : null;
+  } catch {
+    return null;
+  }
 }
 
 function records(value: unknown): JsonObject[] {
@@ -338,7 +353,7 @@ export class LaPosteTracker {
     const budgetMs = context.budgetMs ?? this.timeoutMs;
     const deadline = performance.now() + budgetMs;
     const request = async (timeoutMs: number, signal: AbortSignal): Promise<CarrierResult> => {
-      const { bytes } = await fetchBounded(laPosteTrackingApiUrl(normalized), {
+      const { response, bytes } = await fetchBounded(laPosteTrackingApiUrl(normalized), {
         signal,
         headers: {
           Accept: 'application/json, text/plain, */*',
@@ -351,7 +366,12 @@ export class LaPosteTracker {
         timeoutMs: Math.max(1, Math.floor(Math.min(this.timeoutMs, timeoutMs))),
         maxBytes: MAX_RESPONSE_BYTES,
         fetcher: this.fetcher,
+        allowHttpStatuses: [400],
       });
+      if (response.status === 400) {
+        if (rejectionCode(bytes) === NOT_POSTAL_CODE) throw new InvalidInputError('La Poste', 'La Poste does not issue this tracking number');
+        throw new UpstreamHttpError('La Poste tracking', 400);
+      }
       const { result, point } = parseShipment(parseJsonBytes(bytes, 'La Poste'), normalized);
       // The feed names the point holding the parcel without its address, which the locator adds.
       if (point) {

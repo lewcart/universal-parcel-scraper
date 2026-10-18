@@ -385,6 +385,28 @@ describe('La Poste network failure recovery', () => {
   });
 });
 
+describe('La Poste refusal of a number it does not issue', () => {
+  const refusal = (returnCode: number) => Response.json({
+    status: 400, response: { returnCode, returnMessage: 'Le numéro que vous avez saisi n’est pas valide.', idShip: TRACKING_NUMBER },
+  }, { status: 400 });
+
+  it('reads an HTTP 400 with code 412 as invalid input, which recognition counts as unknown', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => refusal(412));
+    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'invalid_input' });
+    expect(fetcher).toHaveBeenCalledOnce();
+    const instance = adapter({ trawl: null, browserExecutablePath: null, fetcher, recorder: recordingRecorder().recorder, env: {} });
+    await expect(instance.recognize!(TRACKING_NUMBER)).resolves.toEqual({ known: false });
+  });
+
+  it('keeps any other HTTP 400 an HTTP failure', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => refusal(400));
+    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({ status: 400, kind: 'transport' });
+    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toBeInstanceOf(UpstreamHttpError);
+    fetcher.mockImplementation(async () => new Response('Bad Request', { status: 400 }));
+    await expect(new LaPosteTracker({ fetcher }).fetch(TRACKING_NUMBER)).rejects.toMatchObject({ status: 400, kind: 'transport' });
+  });
+});
+
 describe('La Poste response normalization', () => {
   it('sorts events, maps the official group, and excludes response PII', () => {
     const result = parseLaPosteTrackingResponse(deliveredFixture(), TRACKING_NUMBER);

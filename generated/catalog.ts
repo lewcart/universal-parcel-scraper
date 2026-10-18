@@ -6136,7 +6136,7 @@ export const CARRIER_CATALOG = {
   },
   "american-west-express": {
     "displayName": "American West",
-    "color": "#0c71c3",
+    "color": "#2d419a",
     "aliases": [
       "AWest",
       "American West Worldwide Express"
@@ -8309,7 +8309,7 @@ export const CARRIER_CATALOG = {
   },
   "ccfs": {
     "displayName": "CrossCountry Freight Solutions",
-    "color": "#cb2026",
+    "color": "#ae2326",
     "aliases": [
       "CCFS",
       "Cross Country Freight Solutions"
@@ -9876,7 +9876,7 @@ export const CARRIER_CATALOG = {
   },
   "custom-companies": {
     "displayName": "The Custom Companies",
-    "color": "#0056a7",
+    "color": "#ffca43",
     "aliases": [
       "Custom Companies",
       "The Custom Companies, Inc."
@@ -15504,7 +15504,7 @@ export const CARRIER_CATALOG = {
   },
   "hercules-freight": {
     "displayName": "Hercules Freight",
-    "color": "#1c2752",
+    "color": "#004da9",
     "aliases": [
       "Hercules Forwarding",
       "Hercules Forwarding, Inc."

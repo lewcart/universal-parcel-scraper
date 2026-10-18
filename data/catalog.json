@@ -6134,7 +6134,7 @@
   },
   "american-west-express": {
     "displayName": "American West",
-    "color": "#0c71c3",
+    "color": "#2d419a",
     "aliases": [
       "AWest",
       "American West Worldwide Express"
@@ -8307,7 +8307,7 @@
   },
   "ccfs": {
     "displayName": "CrossCountry Freight Solutions",
-    "color": "#cb2026",
+    "color": "#ae2326",
     "aliases": [
       "CCFS",
       "Cross Country Freight Solutions"
@@ -9874,7 +9874,7 @@
   },
   "custom-companies": {
     "displayName": "The Custom Companies",
-    "color": "#0056a7",
+    "color": "#ffca43",
     "aliases": [
       "Custom Companies",
       "The Custom Companies, Inc."
@@ -15502,7 +15502,7 @@
   },
   "hercules-freight": {
     "displayName": "Hercules Freight",
-    "color": "#1c2752",
+    "color": "#004da9",
     "aliases": [
       "Hercules Forwarding",
       "Hercules Forwarding, Inc."

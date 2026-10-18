@@ -49,6 +49,8 @@ rendered status, after that wait.
 - Each scan's `actCode` is kept as `provider_code` and mapped to a stage
   ([statuses.json](statuses.json)). One wording can cover two codes: `OR` and `AR` both read
   "Arrived at Facility". An unmapped code gets no stage; the sync classifies its wording.
+  A scan UPS sends with an empty code, like the clearing agency's customs note, is read only
+  by its whole wording as the map records it.
 - The newest scan's code sets the current stage and status. `progressBarType`, then the
   prose, decide only when that code is unmapped. The token reads `Exception` for a mere delay.
 - `pickup_point` names the access point only while the newest scan is `2Q` or `ZP`. Replies
@@ -86,7 +88,7 @@ rendered status, after that wait.
 - The rendered-page parser reads only the active progress-bar milestone. Reading the whole
   bar classified label-created parcels as out for delivery. The banner's one event has no
   code; "Label Created", "On the Way", "Out for Delivery" and "Delivered" get their stage from
-  the map, other banners none. Scan wording is never read without its code.
+  the map, other banners none. Coded scans' wording is never read without its code.
 - Scan times are built from the UTC pair UPS sends, or the local pair plus its explicit
   offset. A local pair without an offset stays `local_time` and other text
   `provider_time_text`; no zone is guessed. Some label scans come with no clock and get none.

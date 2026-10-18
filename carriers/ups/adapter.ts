@@ -13,7 +13,7 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { calendarDay } from '../../core/time/index.js';
 import { clean, cleanScalar, decodeText, fetchBounded, parseJsonBytes, TRAWL_TRANSPORT_ALLOWANCE_MS, TrawlClient } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { UPS_PROGRESS_STATUS, upsActivityStage, upsBannerStage, upsStatus } from './status.js';
+import { UPS_PROGRESS_STATUS, upsActivityStage, upsBannerStage, upsStatus, upsUncodedScanStage } from './status.js';
 import { decodeEntities } from './text.js';
 
 const TRACKING_BASE = 'https://www.ups.com/track';
@@ -376,7 +376,7 @@ export function parseUPSTrackingResponse(
       }
       if (!description) continue;
       const code = cleanScalar(raw.actCode, 8).toUpperCase();
-      const stage = upsActivityStage(code);
+      const stage = code ? upsActivityStage(code) : upsUncodedScanStage(description);
       events.push({
         ...activityClock(raw),
         location: text(raw.location),

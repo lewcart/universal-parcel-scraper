@@ -1,11 +1,12 @@
 /**
  * UPS status vocabulary.
  *
- * Every scan in UPS's `GetStatus` reply carries a two-character `actCode`. The
- * code is the stable key: one wording can stand for two codes ("Arrived at
- * Facility" is both the origin scan `OR` and an arrival `AR`), and the wording
- * arrives HTML-escaped and reworded. The adapter maps the code to a stage and
- * leaves a scan with an unmapped code to the shared wording classifier.
+ * Nearly every scan in UPS's `GetStatus` reply carries a two-character
+ * `actCode`. The code is the stable key: one wording can stand for two codes
+ * ("Arrived at Facility" is both the origin scan `OR` and an arrival `AR`), and
+ * the wording arrives HTML-escaped and reworded. The adapter maps the code to a
+ * stage and leaves a scan with an unmapped code to the shared wording
+ * classifier. A scan sent without a code is read by its exact wording only.
  *
  * The shipment detail also carries `progressBarType`, a coarse token, and
  * English prose. They decide the status only when the newest scan's code is
@@ -103,9 +104,10 @@ export function upsActivityStage(code: string): Stage | undefined {
 }
 
 /**
- * The milestone the rendered page's banner names, the only wording the
- * adapter reads without an activity code. Scan wording without its code is
- * not read: "Arrived at Facility" is both the origin scan and an arrival.
+ * The milestone the rendered page's banner names. Apart from the scans below,
+ * it is the only wording the adapter reads without an activity code. Scan
+ * wording is otherwise not read without its code: "Arrived at Facility" is
+ * both the origin scan and an arrival.
  */
 const BANNER_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   ['label created', 'registered'],
@@ -119,8 +121,22 @@ export function upsBannerStage(text: string): Stage | undefined {
   return BANNER_STAGES.get(normalizeStatusWording(text));
 }
 
-/** What the map says about one scan: by its activity code, or as the banner without one. */
+/**
+ * Scans UPS sends with an empty `actCode`, by their whole wording. The
+ * clearing agency, UPS's customs broker, notes a parcel it holds for release
+ * this way.
+ */
+const UNCODED_SCAN_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
+  ['the package is at the clearing agency awaiting final release.', 'customs'],
+]);
+
+/** The stage of a scan UPS sent without an activity code, or undefined for wording it does not name. */
+export function upsUncodedScanStage(text: string): Stage | undefined {
+  return UNCODED_SCAN_STAGES.get(normalizeStatusWording(text));
+}
+
+/** What the map says about one scan: by its activity code, or by its wording without one. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => (code ? upsActivityStage(code) : upsBannerStage(wording)),
+  stage: (code, wording) => (code ? upsActivityStage(code) : upsBannerStage(wording) ?? upsUncodedScanStage(wording)),
   gaps: [],
 };

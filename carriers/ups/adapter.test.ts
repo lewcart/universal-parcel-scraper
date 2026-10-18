@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deliveryHandoff } from '../../core/catalog/handoff.js';
+import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { IndeterminateError, InvalidInputError, NotFoundError } from '../../core/errors/index.js';
 import { resolveResult } from '../../core/result/resolve.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
@@ -220,6 +221,26 @@ describe('UPS structured response', () => {
     expect(held.events?.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
       ['OQ', 'customs', 'carrier_map'], ['7F', 'customs', 'carrier_map'], ['AR', 'in_transit', 'carrier_map'],
     ]);
+  });
+
+  it('reads the clearing agency\'s scan, which UPS sends without a code, as customs by its whole wording', () => {
+    // Live shape: the customs broker's note has an empty actCode and no location.
+    const broker = scan('', 'The package is at the clearing agency awaiting final release.', '20260807 11:41:00', '');
+    const held = parseUPSTrackingResponse(withScans([broker, scan('AR', 'Arrived at Facility', '20260806 10:00:00')],
+      { progressBarType: 'InTransit' }), TRACKING_NUMBER, TODAY);
+    expect(held).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map' });
+    expect(held.events?.[0]).toEqual({
+      time: '2026-08-07T11:41:00+00:00', location: '', description: 'The package is at the clearing agency awaiting final release.',
+      stage: 'customs', stage_source: 'carrier_map',
+    });
+    // The parcel app asks the map about the scan it stored without a code.
+    expect(statusMapAnswer({ carrier: 'ups', providerCode: null, description: 'the package is at the clearing agency awaiting final release.' }))
+      .toEqual({ kind: 'mapped', stage: 'customs' });
+    // Other wording without a code stays with the shared classifier, and a code is still read by itself.
+    expect(statusMapAnswer({ carrier: 'ups', providerCode: null, description: 'Your package is being held by the clearing agency.' }))
+      .toEqual({ kind: 'unknown' });
+    expect(statusMapAnswer({ carrier: 'ups', providerCode: 'X9', description: 'The package is at the clearing agency awaiting final release.' }))
+      .toEqual({ kind: 'unknown' });
   });
 
   it('names the access point and its address only while the parcel waits there', () => {

@@ -97,6 +97,9 @@ scans keep their identity.
 
 The returned identity must match the whole waybill and the browser response must
 identify the Express division. Reused waybills and empty histories stay inconclusive.
+The mobile API answers a missing waybill with an empty shipment list. A waybill it holds
+records for but shows nothing about, such as one several shipments reuse, comes back as one
+blank checkpoint: that is inconclusive (`portal_not_found`), and the global page is asked next.
 A mobile scan carries its facility's clock and its location, without an offset. The
 location reads `CITY - COUNTRY`, or `CITY - REGION - COUNTRY` in the USA and Canada, where
 the region is a state's or province's name or code. [clock.ts](clock.ts) reads the clock in

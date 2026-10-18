@@ -213,6 +213,26 @@ describe('DHL mobile API', () => {
     expect(() => parseMobile([{ id: number, checkpoints: [] }], number)).toThrow(IndeterminateError);
     expect(() => parseMobile([null], number)).toThrow(SchemaError);
   });
+  const blank = (row: Record<string, unknown> = {}) => [{ id: number, label: 'Waybill', type: 'airwaybill', checkpoints: [{ counter: 1,
+    description: '', time: '', date: '', location: '', totalPieces: 1, pIds: [], date_en: '', ...row }] }];
+  it('keeps a waybill DHL shows nothing for inconclusive, and a malformed checkpoint a schema error', async () => {
+    expect(() => parseMobile(blank(), number)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'portal_not_found' }));
+    expect(() => parseMobile(blank(), '1234567880')).toThrow(SchemaError);
+    for (const row of [{ date: 'Monday, October 05, 2026', date_en: 'Monday, October 05, 2026', time: '12:00' }, { location: 'EXAMPLE CITY - FRANCE' },
+      { description: undefined }, { location: null }]) {
+      expect(() => parseMobile(blank(row), number)).toThrow(SchemaError);
+    }
+    const mixed = mobilePayload(); mixed[0]!.checkpoints.push({ ...blank()[0]!.checkpoints[0]!, counter: 4 });
+    expect(() => parseMobile(mixed, number)).toThrow(SchemaError);
+    // The global page is asked next; its own answer settles the lookup.
+    const trawl = new TrawlClient('https://browser.example');
+    const scrape = vi.spyOn(trawl, 'scrape').mockResolvedValue({ url: '', html: '', cookies: [], userAgent: null, tier: 2, statusCode: 200, raw: {},
+      capturedResponses: [captured({ status: 404, title: 'No result found', detail: 'No shipment with given tracking number found.' }, 404)] });
+    await expect(new DhlExpressTracker(environment(mobileFetcher(blank()), trawl)).fetch(number)).rejects.toThrow(NotFoundError);
+    expect(scrape).toHaveBeenCalledOnce();
+    await expect(new DhlExpressTracker(environment(mobileFetcher(blank()))).fetch(number)).rejects.toMatchObject({ kind: 'indeterminate', reason: 'portal_not_found' });
+    await expect(adapter(environment(mobileFetcher(blank()))).recognize!(number)).rejects.toMatchObject({ reason: 'portal_not_found' });
+  });
   it('accepts an empty list only after the configuration answered and never invokes the browser for not-found', async () => {
     const fetcher = mobileFetcher([]); const carrier = adapter(environment(fetcher));
     expect(await carrier.recognize!(number)).toEqual({ known: false });

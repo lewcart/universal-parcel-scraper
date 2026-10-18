@@ -132,6 +132,17 @@ function unifiedResult(shipment: Record<string, unknown>): CarrierResult {
     ...(typeof destination.countryCode === 'string' && /^[A-Z]{2}$/.test(destination.countryCode) ? { destination_country: destination.countryCode } : {}) };
 }
 
+/**
+ * DHL answers a waybill it holds records for but shows nothing about, such as one several
+ * shipments reuse, with a single checkpoint whose wording, date, time and place are empty.
+ */
+function blankCheckpoint(row: unknown): boolean {
+  return isRecord(row) && ['description', 'date', 'time', 'location'].every((key) => {
+    const value = row[key];
+    return typeof value === 'string' && !value.trim();
+  });
+}
+
 /** A waybill can be reused. Multiple or duplicate shipments need recipient disambiguation. */
 export function parse(payload: unknown, raw: string): CarrierResult {
   const number = normalizeNumber(raw);
@@ -148,6 +159,10 @@ export function parse(payload: unknown, raw: string): CarrierResult {
   if (shipment.duplicate === true || shipment.hasDuplicateShipment === true) throw new IndeterminateError(PROVIDER, 'DHL Express returned a reused waybill');
   if (!Array.isArray(shipment.checkpoints) || shipment.checkpoints.length > 1000) throw new SchemaError(PROVIDER, 'DHL Express returned invalid checkpoints');
   if (!shipment.checkpoints.length) throw new IndeterminateError(PROVIDER, 'DHL Express has no shipment activity');
+  // It neither shows the shipment nor proves it missing.
+  if (shipment.checkpoints.length === 1 && blankCheckpoint(shipment.checkpoints[0])) {
+    throw new IndeterminateError(PROVIDER, 'DHL Express shows nothing for the waybill', { reason: 'portal_not_found' });
+  }
   const events: CarrierEvent[] = shipment.checkpoints.map((row) => {
     if (!isRecord(row) || typeof row.description !== 'string' || !row.description.trim()) throw new SchemaError(PROVIDER, 'DHL Express returned an invalid checkpoint');
     const description = clean(row.description).slice(0, 1000);

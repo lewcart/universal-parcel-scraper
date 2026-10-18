@@ -104,24 +104,18 @@ step exists for future protocol changes.
   Steps 3 and 5 only guess where the scan was. A `location` ending with any other country,
   by ISO code or by name in English, German, French, Italian, Spanish or Dutch ("Example
   City, CA, US", "Example City, Brazil"), rules them out and the scan stays as
-  labeled. Canada Post's "USA", 4PX's "US 12345" and Orange Connex's "United States of
-  America" and "People's Republic of China" name the US and China too; the last also
-  places a scan on China time in step 2. "Hong Kong", which is not the name Intl gives it,
-  places a scan on Hong Kong time (2026-10-11): Dealer Send's and Japan Post's there have
-  the digits Cainiao dates +08:00, and 4PX's those of 4PX's page. A location that names no
-  country ("Example Hub", "Toronto, ON") rules nothing out, and step 4 only reads scans
-  without a location. A country added to `COUNTRY_ZONES`, or a country name newly read
+  labeled, or keeps its wall clock (below). Canada Post's "USA", 4PX's "US 12345" and
+  Orange Connex's "United States of America" and "People's Republic of China" name the US
+  and China too; the last also places a scan on China time in step 2. "Hong Kong", which
+  is not the name Intl gives it, places a scan on Hong Kong time (2026-10-11): Dealer
+  Send's and Japan Post's there have the digits Cainiao dates +08:00, and 4PX's those of
+  4PX's page. A location that names no country ("Example Hub", "Toronto, ON") rules
+  nothing out, and step 4 only reads scans without a location. A country added to `COUNTRY_ZONES`, or a country name newly read
   (by `countryCode` or here), therefore moves the stored scans located in it, as a changed
   catalog `timezone` moves its carrier's, and so their event ids. So does a reported name
   newly mapped to a catalog carrier on a local clock (`NAME_ALIASES` in
   [hints.ts](../../core/catalog/hints.ts)), for the scans under that name. See Limitations
   for what that does to stored rows.
-
-  A US military post office ("Fpo, AE", "APO AP 96001") names no country: AE there is the
-  Armed Forces Europe, not the Emirates, and the base can be anywhere in its region. No
-  guess and no zone of the scans around it fits such a scan, and with no zone it keeps its
-  wall clock in `local_time`, with no instant. It stays a scan, so when it is the latest
-  one `last_update` is null.
 
   A network that no step places, whose scans other carriers copy at the same digits and
   wording on one shared zone, takes that zone, so each scan stays one with its copies.
@@ -134,10 +128,19 @@ step exists for future protocol changes.
   instants (Wall clocks below) is only the last guess. Steps 3 and 4 choose a zone only:
   `carrierIdFromName` still treats these brands as ambiguous, so discovery and routing
   are unchanged.
+
+  Two kinds of scan with no zone keep their wall clock in `local_time` instead, with no
+  instant. One names no carrier, or a network that neither the catalog nor the tables here
+  know ("Example Parcel Co"): nothing says its label is an instant. The other is at a US
+  military post office ("Fpo, AE", "APO AP 96001"), which names no country: AE there is the
+  Armed Forces Europe, not the Emirates, and the base can be anywhere in its region, so no
+  guess and no zone of the scans around it fits. Either stays a scan: as the latest one it
+  sets the stage with `last_update` null, and it moves no freshness watermark.
 - A state with no `date` (an Asendia Spain leg listed after dated US scans), or with an
-  offset-less date that no zone resolves, has no instant. It is skipped and counted in
-  `undated_event_count`, so it never becomes the latest scan, sets the stage or
-  `last_update`, or moves the freshness watermark. A malformed date still fails the reply.
+  offset-less date that no zone resolves, but for the scans above that keep their wall
+  clock, has no instant. It is skipped and counted in `undated_event_count`, so it never
+  becomes the latest scan, sets the stage or `last_update`, or moves the freshness
+  watermark. A malformed date still fails the reply.
 - A state at 1 January 00:00 more than 60 days before every other dated scan has a
   placeholder for a date, and is counted the same way. ParcelsApp relays the steps of
   DPD's progress bar ("Package on the way") and gives this date to those DPD leaves
@@ -193,7 +196,8 @@ step exists for future protocol changes.
      parcel filed under Speedaf, put Cainiao's copies 7 hours late;
   6. none: it keeps ParcelsApp's label, as it did before these steps, and reads as that
      label says, hours off unless the scan was on UTC. This last guess means no wall-clock
-     scan is left without an instant, so none drops out or makes a reply inconclusive.
+     scan is left without an instant, so none drops out or makes a reply inconclusive,
+     but for one at a US military post office, which keeps its wall clock (above).
 
   A zone the scan's location rules out is skipped: a scan in "USA" takes no Canadian or
   Chinese zone. Step 3 holds when the scan happens where its neighbours do, and is hours
@@ -442,7 +446,8 @@ step exists for future protocol changes.
   relabel it: ParcelsApp's dates are UTC and carry no code. The app leaves out a scan moved
   by whole quarter hours, up to 14 hours, with the same wording, as a copy of its stored
   row, so nothing is stored or announced twice. That row keeps its old instant until a
-  re-key, and a scan moved any other way gets a row of its own.
+  re-key, and a scan moved any other way gets a row of its own. A scan that loses its
+  instant, now kept as a wall clock, leaves its stored row as it was.
 - Postcode unlock is unverified. For an invalid postcode, SEUR and bpost repeat
   `require_fields` instead of returning an explicit error, both in the real form and via
   HTTP. Verifying the unlock needs a known valid number and postcode pair.

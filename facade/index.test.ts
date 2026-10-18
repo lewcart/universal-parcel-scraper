@@ -294,8 +294,9 @@ describe('standalone tracker', () => {
     // ParcelsApp relays a postcode gate until its request carries one; UPS's own lookup finds nothing.
     const lookup = vi.fn().mockRejectedValue(new NotFoundError('UPS'));
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => Response.json({
+      carriers: ['Universal Postal Union'],
       states: new URLSearchParams(String(init!.body)).has('extra[zipcode]')
-        ? [{ date: '2026-01-02T12:00:00Z', status: 'Delivered' }]
+        ? [{ date: '2026-01-02T12:00:00Z', status: 'Delivered', carrier: 0 }]
         : [{ date: '2026-01-01T00:00:00', status: 'Enter recipient details', require_fields: [{ name: 'zipcode', type: 'text' }] }],
     }));
     const tracker = createTracker({ registry: registry(lookup), fetcher, providers: ['ParcelsApp'] });
@@ -380,7 +381,9 @@ describe('standalone tracker', () => {
           events: scans.ship24.map(([timestamp, status]) => ({ timestamp, status })),
           ...(scans.couriers ? { couriers: scans.couriers.map(name => ({ translation: { name } })) } : {}) } }),
         { status: 201, headers: { 'Content-Type': 'application/json' } });
-        if (target.includes('parcelsapp') && scans.parcelsApp) return Response.json({ states: scans.parcelsApp.map(([date, status]) => ({ date, status })) });
+        // Scans of the postal union's feed keep ParcelsApp's label; a network nothing knows would keep only its wall clock.
+        if (target.includes('parcelsapp') && scans.parcelsApp) return Response.json({ carriers: ['Universal Postal Union'],
+          states: scans.parcelsApp.map(([date, status]) => ({ date, status, carrier: 0 })) });
         if (target.includes('globaltracktrace') && scans.upu) return Response.json([{ ID: postal,
           Events: scans.upu.map(([EventDT, EventCd]) => ({ EventDT, EventCd, EventNm: UPU_LABELS[EventCd] })) }]);
         return new Response('', { status: 503 });

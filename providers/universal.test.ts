@@ -12,7 +12,8 @@ const track17 = {
     tracking: { providers: [{ events: [{ time_utc: '2026-08-31T18:50:50Z', description: 'Delivered', stage: 'Delivered' }] }] },
   } }],
 };
-const parcels = { states: [{ date: '2026-08-18T03:04:00Z', status: 'Electronic information submitted by shipper' }] };
+// The postal union's feed keeps ParcelsApp's label: a scan of a network nothing knows would keep only its wall clock.
+const parcels = { carriers: ['Universal Postal Union'], states: [{ date: '2026-08-18T03:04:00Z', status: 'Electronic information submitted by shipper', carrier: 0 }] };
 const reply = (data: unknown) => new Response(JSON.stringify(data), { status: 201 });
 /** What the browser seam returns for a provider: one dated scan at the given stage. */
 const seen = (source: string, stage: string) => ({ tracking_provider: source, current_stage: stage,

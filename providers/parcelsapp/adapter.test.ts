@@ -163,11 +163,12 @@ describe('ParcelsApp result parsing', () => {
       { date: '2026-01-05T08:30:00Z', status: 'Prise en charge de votre colis sur notre site logistique de VILLE-EXEMPLE.' },
       { date: '2026-01-04T09:15:00Z', status: "Colis en préparation chez l'expéditeur" },
     ];
-    const parsed = transport === 'json' ? parseParcelsAppResponse({ states }, number, identity())
-      : parseParcelsAppHtml(rendered(row('05 Jan 2026', '08:30', states[0]!.status) + row('04 Jan 2026', '09:15', states[1]!.status)), number);
+    const parsed = transport === 'json' ? parseParcelsAppResponse({ states }, number, identity(), 'Europe/Paris')
+      : parseParcelsAppHtml(rendered(row('05 Jan 2026', '08:30', states[0]!.status) + row('04 Jan 2026', '09:15', states[1]!.status)), number,
+        'Europe/Paris');
     // Every logistics site logs its own "prise en charge": movement, not acceptance.
     expect(parsed).toMatchObject({ status: 'in_transit', current_stage: 'in_transit',
-      last_update: '2026-01-05T08:30:00.000Z', tracking_provider: 'ParcelsApp' });
+      last_update: '2026-01-05T07:30:00.000Z', tracking_provider: 'ParcelsApp' });
     expect(parsed.events?.map(({ stage }) => stage)).toEqual(['in_transit', 'registered']);
     const preparationOnly = parseParcelsAppResponse({ states: [states[1]] }, number, identity());
     expect(preparationOnly).toMatchObject({ status: 'pending', current_stage: 'registered' });
@@ -235,22 +236,32 @@ describe('ParcelsApp result parsing', () => {
       const parsed = parseParcelsAppResponse({ ...undatedLeg, states }, number, identity());
       expect(parsed).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Dispatched by Asendia',
         last_update: '2026-03-10T18:10:00.000Z', undated_event_count: 1 });
-      expect(parsed.events?.map((scan) => scan.time)).toEqual(dated.map((state) => DateTime.fromISO(String(state.date)).toUTC().toISO()));
+      // WNDirect, outside the catalog, has no location and no parcel carrier's zone: its wall clock.
+      expect(parsed.events?.map((scan) => scan.time ?? scan.local_time)).toEqual(dated.map((state) => state.carrier === 0
+        ? DateTime.fromISO(String(state.date), { zone: 'UTC' }).toISO({ includeOffset: false })
+        : DateTime.fromISO(String(state.date)).toUTC().toISO()));
     }
     expect(() => parseParcelsAppResponse({ ...undatedLeg, states: [undated] }, number, identity())).toThrow('No usable tracking events');
   });
 
   it('counts an offset-less date that no zone resolves, and places one that a zone resolves', () => {
     const states = [
-      { date: '2026-03-11T09:00:00', status: 'Out for delivery' },
-      { date: '2026-03-10T18:10:00Z', status: 'Departed from the sorting centre' },
+      { date: '2026-03-11T09:00:00', status: 'Out for delivery', carrier: 0 },
+      { date: '2026-03-10T18:10:00Z', status: 'Departed from the sorting centre', carrier: 0 },
     ];
     // A later wall time with no zone is no instant, so it cannot become the newest scan.
-    expect(parseParcelsAppResponse({ states }, number, identity())).toMatchObject({ current_stage: 'in_transit',
+    expect(parseParcelsAppResponse({ carriers: ['bpost'], states }, number, identity())).toMatchObject({ current_stage: 'in_transit',
       last_update: '2026-03-10T18:10:00.000Z', undated_event_count: 1, events: [{ description: 'Departed from the sorting centre' }] });
-    const placed = parseParcelsAppResponse({ states }, number, identity(), 'Europe/Zurich');
+    const placed = parseParcelsAppResponse({ carriers: ['bpost'], states }, number, identity(), 'Europe/Zurich');
     expect(placed).toMatchObject({ current_stage: 'out_for_delivery', last_update: '2026-03-11T08:00:00.000Z' });
     expect(placed.undated_event_count).toBeUndefined();
+    // A scan that names no carrier keeps both wall clocks as local times, as scans (`unknownNetwork`).
+    const nameless = parseParcelsAppResponse({ states: states.map(({ date, status }) => ({ date, status })) }, number, identity());
+    expect(nameless).toMatchObject({ current_stage: 'out_for_delivery', last_update: null });
+    expect(nameless.events?.map((scan) => [scan.time, scan.local_time])).toEqual([
+      [undefined, '2026-03-11T09:00:00.000'], [undefined, '2026-03-10T18:10:00.000'],
+    ]);
+    expect(nameless.undated_event_count).toBeUndefined();
   });
 
   it('reads the undated state the page prints as "aN Inv NaN" as the JSON reply does', () => {
@@ -358,9 +369,15 @@ describe('ParcelsApp result parsing', () => {
   it('falls back to the parcel carrier\'s zone when a scan names no usable carrier or place', () => {
     const payload = { carriers: ['Example Parcel Co'], states: [{ date: '2026-06-10T14:05:00+00:00', status: 'Return to sender', carrier: 0 }] };
     expect(parseParcelsAppResponse(payload, number, identity(), 'Europe/Zurich').events?.[0]?.time).toBe('2026-06-10T12:05:00.000Z');
-    expect(parseParcelsAppResponse(payload, number, identity()).events?.[0]?.time).toBe('2026-06-10T14:05:00.000Z');
     expect(parseParcelsAppHtml(rendered(row('10 Jun 2026', '14:05', 'Return to sender')), number, 'Europe/Zurich').events?.[0]?.time)
       .toBe('2026-06-10T12:05:00.000Z');
+    // With none, ParcelsApp's UTC label is still a wall clock: no instant.
+    for (const result of [parseParcelsAppResponse(payload, number, identity()),
+      parseParcelsAppHtml(rendered(row('10 Jun 2026', '14:05', 'Return to sender')), number),
+      parseParcelsAppHtml(rendered(carrierRow('10 Jun 2026', '14:05', 'Return to sender', 'Example Parcel Co')), number)]) {
+      expect(result).toMatchObject({ last_update: null, events: [{ local_time: '2026-06-10T14:05:00.000' }] });
+      expect(result.events?.[0]).not.toHaveProperty('time');
+    }
   });
 
   it('keeps a scan located in another country as labeled instead of reading it in the parcel carrier\'s zone', () => {
@@ -373,12 +390,16 @@ describe('ParcelsApp result parsing', () => {
       '2026-03-10T00:00:00.000Z', // WNDirect, with no location, on Zurich time
       '2026-03-09T21:30:00.000Z',
     ]);
-    const scan = (location: string, carriers = ['Example Parcel Co']) => times({
+    const read = (location: string, carriers = ['Example Parcel Co']) => parseParcelsAppResponse({
       carriers, states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', carrier: 0, location }],
-    })?.[0];
-    // A country with several clocks, by name or code.
+    }, number, identity(), 'Europe/Zurich').events?.[0];
+    const scan = (location: string, carriers?: string[]) => read(location, carriers)?.time;
+    // A country with several clocks, by name or code: a catalog carrier keeps
+    // its label, and a network outside the catalog its wall clock.
     for (const location of ['EXAMPLE CITY, CA, United States', 'EXAMPLE CITY, CA, US', 'EXAMPLE CITY, Brazil']) {
-      expect(scan(location)).toBe('2026-07-02T18:30:00.000Z');
+      expect(scan(location, ['bpost'])).toBe('2026-07-02T18:30:00.000Z');
+      expect(read(location)).toMatchObject({ local_time: '2026-07-02T18:30:00.000' });
+      expect(read(location)).not.toHaveProperty('time');
     }
     // The parcel carrier's country, or a place with no country it can tell.
     for (const location of ['Example Hub, Switzerland', 'Example Hub', 'Example City, ON']) {
@@ -387,7 +408,7 @@ describe('ParcelsApp result parsing', () => {
     // The country a carrier name ends with is a guess too: it can be a branch.
     expect(scan('EXAMPLE CITY, United States', ['Cainiao (China)'])).toBe('2026-07-02T18:30:00.000Z');
     expect(times({ states: [{ date: '2026-07-02T18:30:00+00:00', status: 'In transit', location: 'EXAMPLE CITY, Brazil' }] }))
-      .toEqual(['2026-07-02T18:30:00.000Z']);
+      .toEqual([undefined]);
   });
 
   it('keeps a scan at a US military post office on its wall clock', () => {
@@ -517,9 +538,9 @@ describe('ParcelsApp result parsing', () => {
     expect(reply(['Finland Post', 'Universal Postal Union'])).toMatchObject({
       reported_carriers: ['Finland Post', 'Universal Postal Union'], discovered_carrier: 'posti',
     });
-    // A name outside the catalog keeps the labeled instant, or its location's clock.
-    expect(reply(['Example Parcel Co']).events?.map((scan) => scan.time)).toEqual([
-      '2026-07-03T12:20:00.000Z', '2026-07-02T18:30:00.000Z', '2026-01-14T09:15:00.000Z',
+    // A name outside the catalog takes its location's clock, or keeps its wall clock.
+    expect(reply(['Example Parcel Co']).events?.map((scan) => scan.time ?? scan.local_time)).toEqual([
+      '2026-07-03T12:20:00.000Z', '2026-07-02T18:30:00.000', '2026-01-14T09:15:00.000',
     ]);
   });
 
@@ -571,7 +592,7 @@ describe('ParcelsApp result parsing', () => {
     expect(scan('EXAMPLE SERVICE AREA - ONTARIO - CANADA')).toBe('2026-10-05T16:00:00.000Z');
     expect(scan('TENERIFE - SPAIN')).toBe('2026-10-05T11:00:00.000Z');
     // The shape is DHL Express's own: another carrier's label stands.
-    expect(scan('EXAMPLE CITY - FRANCE', ['Example Parcel Co'])).toBe('2026-10-05T12:00:00.000Z');
+    expect(scan('EXAMPLE CITY - FRANCE', ['bpost'])).toBe('2026-10-05T12:00:00.000Z');
   });
 
   it('gives no instant to a DHL Express clock whose facility it cannot place', () => {
@@ -1119,8 +1140,9 @@ describe('ParcelsApp result parsing', () => {
   it('reads a town of the state a country\'s code also names in that state, not the country', () => {
     const times = (location: string) => parseParcelsAppResponse({ carriers: ['Example Courier'], states: [
       { date: '2026-07-10T12:00:00Z', status: 'In transit', carrier: 0, location },
-    ] }, number, identity()).events?.map((scan) => scan.time);
-    expect(times('Denver, CO')).toEqual(['2026-07-10T12:00:00.000Z']);
+    ] }, number, identity()).events?.map((scan) => scan.time ?? scan.local_time);
+    // Its state dates only the scans of carriers on local clocks: this one keeps its wall clock.
+    expect(times('Denver, CO')).toEqual(['2026-07-10T12:00:00.000']);
     expect(times('Example Town, Colombia')).toEqual(['2026-07-10T17:00:00.000Z']);
   });
 
@@ -1598,15 +1620,16 @@ describe('ParcelsApp result parsing', () => {
 
   it('parses rendered history without parsing the surrounding marketing copy', () => {
     const html = rendered(row('18 Aug 2026', '03:04', 'Electronic information submitted by shipper'));
-    expect(parseParcelsAppHtml(html + '<p>Delivered 2026-09-01</p>', number))
-      .toMatchObject({ current_stage: 'registered', last_update: '2026-08-18T03:04:00.000Z' });
+    expect(parseParcelsAppHtml(html + '<p>Delivered 2026-09-01</p>', number, 'Europe/Zurich'))
+      .toMatchObject({ current_stage: 'registered', last_update: '2026-08-18T01:04:00.000Z' });
   });
 
   it('skips notice rows that render a date without a time', () => {
     // Observed live on 2026-09-11 for a not-yet-scanned Colissimo label.
     const notice = row('11 Sep 2026', '', "No information about your package. We've checked all relevant couriers for «Suisse». If the country is not correct, please select the destination country below.");
     const scan = row('10 Sep 2026', '08:30', 'Electronic information submitted by shipper');
-    expect(parseParcelsAppHtml(rendered(notice + scan), number)).toMatchObject({ current_stage: 'registered', last_update: '2026-09-10T08:30:00.000Z' });
+    expect(parseParcelsAppHtml(rendered(notice + scan), number, 'Europe/Zurich'))
+      .toMatchObject({ current_stage: 'registered', last_update: '2026-09-10T06:30:00.000Z' });
     expect(() => parseParcelsAppHtml(rendered(notice), number)).toThrow('No usable tracking events');
     expect(() => parseParcelsAppHtml(rendered(row('today', '08:30', 'Electronic information submitted by shipper')), number)).toThrow('invalid event date');
   });
@@ -1627,7 +1650,8 @@ describe('ParcelsApp browser capture', () => {
   it('falls back to the rendered history when no API body was captured', async () => {
     const html = rendered(row('18 Aug 2026', '03:04', 'Electronic information submitted by shipper'));
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(captured(null, { html, capturedResponses: [] }));
-    await expect(tracker(fetcher).fetch(number)).resolves.toMatchObject({ current_stage: 'registered', last_update: '2026-08-18T03:04:00.000Z' });
+    await expect(tracker(fetcher).fetch(number, undefined, null, 'Europe/Zurich'))
+      .resolves.toMatchObject({ current_stage: 'registered', last_update: '2026-08-18T01:04:00.000Z' });
   });
 
   it("reads ParcelsApp's empty view, which leaves out the number, as no history", async () => {

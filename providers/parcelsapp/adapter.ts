@@ -13,7 +13,9 @@ import { DateTime } from 'luxon';
 import timers from 'node:timers/promises';
 import type { AdapterFactory } from '../../core/adapter/index.js';
 import { carrierDefinition, carrierTimezone } from '../../core/catalog/index.js';
-import { brandCarrierIds, brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone } from '../../core/catalog/hints.js';
+import {
+  brandCarrierIds, brandTimeZones, carrierBrand, carrierIdFromName, carrierNameCountryZone, isCarrierFeedName, isKnownCarrierName,
+} from '../../core/catalog/hints.js';
 import { CarrierError, carrierErrorKind, ChallengeError, IndeterminateError, InputRequiredError, NoHistoryError, SchemaError, UpstreamHttpError, UpstreamNetworkError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -72,7 +74,9 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * ("GLS"), or that the network which labelled the parcel shares with its
  * destination ("DPD Group", `brandNetworkZones`), else the zone routing passes
  * for the parcel. Without one it stays as labeled, as it does when the name's
- * country or the parcel's zone meets a location in another country. TNT's
+ * country or the parcel's zone meets a location in another country, unless
+ * nothing knows its network (`unknownNetwork`) or it is at a US military post
+ * office: it then keeps its wall clock. TNT's
  * international scans stay as labeled too: tnt.com gives them offsets, and
  * ParcelsApp's UTC matches them. So do Asendia USA's, wherever they happened:
  * their dates are the UTC instants of Asendia's A1 feed, and Swiss Post's own
@@ -697,6 +701,19 @@ function siteZone(payload: Record<string, unknown>, state: Record<string, unknow
   return undefined;
 }
 
+/**
+ * Whether a scan names no network that the catalog or the tables above know:
+ * no carrier, or a name new to both ("Example Parcel Co"). Its date is still
+ * ParcelsApp's wall clock under a UTC label, and nothing says on which clock,
+ * so one that no step places has no instant.
+ */
+function unknownNetwork(name: unknown): boolean {
+  if (typeof name !== 'string' || !name.trim()) return true;
+  const key = nameKey(name);
+  return !isKnownCarrierName(name) && !isCarrierFeedName(name) && !Object.hasOwn(HOME_CLOCKS, key) && !Object.hasOwn(HOME_COUNTRIES, key)
+    && ![WALL_CLOCKS, LOCAL_CLOCK_CARRIERS, POSTAL_FEEDS].some((keys) => keys.has(key)) && !KNOWN_CLOCKS.has(key);
+}
+
 function guessedZone(payload: Record<string, unknown>, state: Record<string, unknown>, fallback: string | null, number: string,
   destination: string | null = null, origin: string | null = null): string | null {
   const name = stateCarrierName(payload, state);
@@ -706,7 +723,7 @@ function guessedZone(payload: Record<string, unknown>, state: Record<string, unk
   // The zones below only guess where the scan was. A location in another
   // country, one with several clocks or none listed ("Example City, CA,
   // United States", "Example City, South Africa"), rules a guess out, and the
-  // scan keeps its labeled instant.
+  // scan keeps its labeled instant, or its wall clock (`unknownNetwork`).
   const guess = (candidate: string | null) => fitsPlace(candidate, location);
   if (typeof name !== 'string') return guess(fallback);
   const nameZone = carrierNameCountryZone(name);
@@ -1027,11 +1044,12 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const { zone } = zones[index]!;
     // A DHL Express scan whose facility the rule cannot place is a wall clock
     // with no instant, and so is a UPS or FedEx scan with no location that
-    // nothing places. A scan at a US military post office keeps its wall
-    // clock as its local time. Any other scan with no zone keeps ParcelsApp's label.
+    // nothing places. A scan at a US military post office, or of a network no
+    // table knows (`unknownNetwork`), keeps its wall clock as its local time.
+    // Any other scan with no zone keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
-    const localOnly = !zone && !unplaced && militaryPostOffice(entry.location);
+    const localOnly = !zone && !unplaced && (militaryPostOffice(entry.location) || unknownNetwork(name));
     // A step its carrier dates by its day alone keeps the day (`datedOnly`).
     const day = datedOnly(name, relayedLabel(raw.status), date);
     const parsed = day ? dayEvent(day, entry.wording)
@@ -1175,8 +1193,11 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       continue;
     }
     const day = datedOnly(name, description, state.date);
+    // A network no table knows keeps its wall clock, as in the JSON reply.
+    const wall = !zone && unknownNetwork(name) ? mislabeledWallTime(state.date) : null;
     const parsed = day ? dayEvent(day, scan?.wording ?? description)
-      : event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
+      : wall ? localEvent(wall, scan?.wording ?? description)
+        : event((zone ? mislabeledLocalTime(state.date, zone)?.iso : undefined) ?? state.date, scan?.wording ?? description);
     if (parsed) events.push(parsed);
     if (parsed) carried.push({ event: parsed, carrier: nameKey(name) });
     if (parsed && scan) scans.push({ event: Object.assign(parsed, { stage: scan.stage, stage_source: 'carrier_map' }), scan });

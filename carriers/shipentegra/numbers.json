@@ -31,13 +31,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A Şikayetvar complaint about parcels lost after leaving Turkey with ShipEntegra lists this among its ShipEntegra tracking numbers, apart from the shop's order numbers."
+      "note": "A Şikayetvar complaint about parcels lost after leaving Turkey with ShipEntegra lists this among its ShipEntegra tracking numbers, apart from the shop's order numbers. ShipEntegra's tracker knows it."
     },
     {
       "number": "587038676",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "The same Şikayetvar complaint lists this as its second ShipEntegra tracking number."
+      "note": "The same Şikayetvar complaint lists this as its second ShipEntegra tracking number. ShipEntegra's tracker knows it."
     },
     {
       "number": "589448649",
@@ -69,7 +69,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -78,7 +78,7 @@
           "tnt"
         ]
       },
-      "note": "A Şikayetvar complaint gives this as the label number of a parcel handed to ShipEntegra and recorded at its Istanbul transfer centre."
+      "note": "A Şikayetvar complaint gives this as the label number of a parcel handed to ShipEntegra and recorded at its Istanbul transfer centre. ShipEntegra's tracker knows it."
     },
     {
       "number": "590479936",
@@ -91,13 +91,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A Şikayetvar complaint about US customs charges gives this as the tracking number of a shipment sent with ShipEntegra."
+      "note": "A Şikayetvar complaint about US customs charges gives this as the tracking number of a shipment sent with ShipEntegra. ShipEntegra's tracker knows it."
     }
   ]
 }

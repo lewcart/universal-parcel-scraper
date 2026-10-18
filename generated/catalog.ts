@@ -24200,7 +24200,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipentegra",
+      "recognitionRank": 833,
+      "localClocks": true
     },
     "canaryUrl": "https://track.shipentegra.com/",
     "trackingUrlTemplate": "https://track.shipentegra.com/?trackno={trackingNumber}",

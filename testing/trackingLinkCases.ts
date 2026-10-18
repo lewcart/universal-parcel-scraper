@@ -874,6 +874,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'nova-global', number: 'NP00000000000000NPG',
     route: /^https:\/\/nova\.global\/track\/\?Tracking_ID=NP00000000000000NPG$/,
     marker: /Enter the parcel number|Status history|Щось пішло не так/ },
+  // The page posts the number from its address to the tracker's lookup, which refuses the 1SE prefix and leaves the card empty.
+  { carrier: 'shipentegra', number: '1SE000000000',
+    route: /^https:\/\/track\.shipentegra\.com\/\?trackno=1SE000000000$/,
+    marker: /Where can I find my ShipEntegra tracking number|ShipEntegra takip numaramı nerede bulabilirim|Dónde puedo encontrar mi número de seguimiento de ShipEntegra/ },
   // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
   { carrier: 'drop2shop', number: 'GLB9000000000003',
     route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,

@@ -14,7 +14,7 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = 'T12345678000001';
 const MOVING = 'P45000000000002';
 const ANNOUNCED = 'T12345678000003';
-const UNKNOWN = 'T12345678000009';
+const UNKNOWN = 'T00000000000000';
 const POSTCODE = '1234AB';
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
 const pageUrl = (number: string, postcode = POSTCODE) => `https://api.trans-mission.nl/tt/${number}/${postcode}`;

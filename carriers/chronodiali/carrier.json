@@ -1,0 +1,51 @@
+{
+  "id": "chronodiali",
+  "displayName": "Chronodiali",
+  "aliases": [
+    "Chrono Diali"
+  ],
+  "region": {
+    "countries": [
+      "MA"
+    ]
+  },
+  "brand": {
+    "color": "#0060a2"
+  },
+  "selectable": true,
+  "timezone": "Africa/Casablanca",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",
+    "searchUrl": "https://chronodiali.ma/suivi_colis.html",
+    "canaryUrl": "https://chronodiali.ma/suivi_colis.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "chronodiali.ma",
+        "www.chronodiali.ma"
+      ],
+      "pathPattern": "^/suivi_colis\\.html$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "chronodiali-1",
+      "pattern": "^CHPU\\d{19}$",
+      "confidence": "high"
+    }
+  ]
+}

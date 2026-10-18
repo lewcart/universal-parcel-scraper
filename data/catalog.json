@@ -5226,6 +5226,36 @@
     ],
     "detectionRules": []
   },
+  "a-tu-hora-express": {
+    "displayName": "A Tu Hora Express",
+    "color": "#27348b",
+    "aliases": [
+      "A TU HORA EXPRESS",
+      "A Tu Hora"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mydelivery.atuhoraexpress.com/",
+    "trackingSearchUrl": "https://mydelivery.atuhoraexpress.com/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^0{6}\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^0{6}\\d{10}001\\d{5}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "a1-post": {
     "displayName": "A1 POST",
     "color": "#fba512",
@@ -8136,6 +8166,43 @@
       }
     ]
   },
+  "chronodiali": {
+    "displayName": "Chronodiali",
+    "color": "#0060a2",
+    "aliases": [
+      "Chrono Diali"
+    ],
+    "countries": [
+      "MA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Casablanca",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://chronodiali.ma/suivi_colis.html",
+    "trackingUrlTemplate": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",
+    "trackingSearchUrl": "https://chronodiali.ma/suivi_colis.html",
+    "linkRules": [
+      {
+        "domains": [
+          "chronodiali.ma",
+          "www.chronodiali.ma"
+        ],
+        "pathPattern": "^/suivi_colis\\.html$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CHPU\\d{19}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "chunghwa-post": {
     "displayName": "Chunghwa Post",
     "color": "#e8171f",
@@ -8458,6 +8525,35 @@
         "confidence": "high"
       }
     ]
+  },
+  "closer-logistics": {
+    "displayName": "Closer Logistics",
+    "color": "#7bb4b8",
+    "aliases": [
+      "Closer",
+      "Closerlogistics"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.closerlogistics.com/",
+    "trackingUrlTemplate": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.closerlogistics.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.closerlogistics.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "cne": {
     "displayName": "CNE Express",
@@ -9166,6 +9262,38 @@
       }
     ],
     "detectionRules": []
+  },
+  "cst-italia": {
+    "displayName": "CST Italia",
+    "color": "#e81c3a",
+    "aliases": [
+      "CST Corriere Espresso",
+      "CST Italia Scarl",
+      "BDM Network",
+      "BDM Corriere Espresso"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cstitaliascarl.it/tracking/",
+    "trackingSearchUrl": "https://www.cstitaliascarl.it/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^CST\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^BDM\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      }
+    ]
   },
   "cttyex": {
     "displayName": "CTTYEX",
@@ -25019,6 +25147,40 @@
     ],
     "detectionRules": []
   },
+  "transaher": {
+    "displayName": "Transaher",
+    "color": "#233b81",
+    "aliases": [
+      "Grupo Transaher"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://transaher.es/",
+    "trackingUrlTemplate": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",
+    "trackingSearchUrl": "https://transaher.es/",
+    "linkRules": [
+      {
+        "domains": [
+          "clientes.transaher.es"
+        ],
+        "path": "^/webclient/h?tracking/-5,0,([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^103\\d{24}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "transmission": {
     "displayName": "TransMission",
     "color": "#e32314",
@@ -25508,6 +25670,39 @@
         "confidence": "low"
       }
     ]
+  },
+  "urvaam": {
+    "displayName": "Urvaam",
+    "color": "#ff7b3a",
+    "aliases": [
+      "URVAAM",
+      "Servicios Urbanos Vaam"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.urvaam.es/track",
+    "trackingUrlTemplate": "https://www.urvaam.es/track/result?no={trackingNumber}",
+    "trackingSearchUrl": "https://www.urvaam.es/track",
+    "linkRules": [
+      {
+        "domains": [
+          "www.urvaam.es",
+          "urvaam.es"
+        ],
+        "pathPattern": "^/track/result/?$",
+        "params": [
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "uzbekistan-post": {
     "displayName": "Uzbekistan Post",

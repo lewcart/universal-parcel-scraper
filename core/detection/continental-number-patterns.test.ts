@@ -417,3 +417,39 @@ describe('wave seven courier rules', () => {
     }
   });
 });
+
+describe('wave eight courier rules', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('suggests A Tu Hora Express for its zero-padded sixteen and 24-digit codes without naming it', () => {
+    for (const number of ['0000001234567890', '000000123456789000112345']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('a-tu-hora-express');
+    }
+    for (const number of ['0000011234567890', '000000123456789000212345', '00000012345678900011234']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('a-tu-hora-express');
+    }
+  });
+
+  it('names Transaher for 27 digits starting 103', () => {
+    expect(detectCarrierMatch('103000000000000000000000001')).toMatchObject({ carrier: 'transaher', confidence: 'high', candidates: ['transaher'] });
+    for (const number of ['10300000000000000000000001', '1030000000000000000000000001', '104000000000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('transaher');
+    }
+  });
+
+  it('names Chronodiali for CHPU and nineteen digits', () => {
+    expect(detectCarrierMatch('CHPU0000000000000000001')).toMatchObject({ carrier: 'chronodiali', confidence: 'high', candidates: ['chronodiali'] });
+    for (const number of ['CHPU000000000000000001', 'CHPU00000000000000000001', 'CHPV0000000000000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('chronodiali');
+    }
+  });
+
+  it('names CST Italia for CST or BDM and 18 or 22 digits', () => {
+    for (const number of ['CST123456789012345678', 'CST1234567890123456780101', 'BDM123456789012345678', 'BDM1234567890123456780101']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'cst-italia', confidence: 'high', candidates: ['cst-italia'] });
+    }
+    for (const number of ['CST12345678901234567', 'CST12345678901234567801', 'CSU123456789012345678', 'BDN123456789012345678']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('cst-italia');
+    }
+  });
+});

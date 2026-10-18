@@ -1,0 +1,46 @@
+{
+  "id": "urvaam",
+  "displayName": "Urvaam",
+  "aliases": [
+    "URVAAM",
+    "Servicios Urbanos Vaam"
+  ],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#ff7b3a"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.urvaam.es/track/result?no={trackingNumber}",
+    "searchUrl": "https://www.urvaam.es/track",
+    "canaryUrl": "https://www.urvaam.es/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.urvaam.es",
+        "urvaam.es"
+      ],
+      "pathPattern": "^/track/result/?$",
+      "params": [
+        "no"
+      ]
+    }
+  ],
+  "detection": []
+}

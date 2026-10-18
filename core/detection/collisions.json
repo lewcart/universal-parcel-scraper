@@ -4473,5 +4473,38 @@
       "pro-carrier"
     ],
     "reason": "La Poste accepts any two characters followed by 11 digits, which also covers Pro Carrier's DG numbers. Both rules are low confidence, so recognition or the reader confirms the carrier."
+  },
+  {
+    "shape": "^\\d{16}$",
+    "carriers": [
+      "a-tu-hora-express",
+      "dhl-ecommerce",
+      "evri-uk",
+      "tnt"
+    ],
+    "reason": "A Tu Hora Express pads its shipment codes with six leading zeros to sixteen digits, a length these carriers' low rules also accept, so recognition asks each of them."
+  },
+  {
+    "shape": "^\\d{16}$",
+    "carriers": [
+      "a-tu-hora-express",
+      "canada-post",
+      "correos-express",
+      "dhl-ecommerce",
+      "evri-uk",
+      "tnt"
+    ],
+    "reason": "A Tu Hora Express pads its shipment codes with six leading zeros to sixteen digits, a length these carriers' low rules also accept, so recognition asks each of them."
+  },
+  {
+    "shape": "^\\d{24}$",
+    "carriers": [
+      "a-tu-hora-express",
+      "austrian-post",
+      "bpost",
+      "ciblex",
+      "inpost"
+    ],
+    "reason": "A Tu Hora Express's long form adds 001 and the delivery postcode to its sixteen-digit number, inside the 24-digit space these carriers' low rules share; recognition must establish the carrier."
   }
 ]

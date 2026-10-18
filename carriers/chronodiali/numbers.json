@@ -1,0 +1,24 @@
+{
+  "carrier": "chronodiali",
+  "records": [
+    {
+      "number": "CHPU1086280495856759356",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://chronodiali.ma/suivi_colis.html",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "chronodiali",
+        "confidence": "high"
+      },
+      "note": "Chronodiali's own tracking page shows this number as the example (EX:) in its search field."
+    }
+  ]
+}

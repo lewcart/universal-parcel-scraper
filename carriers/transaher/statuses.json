@@ -1,0 +1,6 @@
+{
+  "carrier": "transaher",
+  "entries": [
+    {"wording": "Salida de Origen", "stage": "in_transit", "language": "es", "confirmedBy": "source", "note": "Quoted from Transaher's tracking in a public Portal da Queixa complaint about a delayed Dyson delivery; the parcel left the origin depot."}
+  ]
+}

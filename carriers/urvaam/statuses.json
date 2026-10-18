@@ -1,0 +1,9 @@
+{
+  "carrier": "urvaam",
+  "entries": [
+    {"wording": "Envio Grabado", "stage": "registered", "language": "es", "confirmedBy": "source", "note": "Quoted from a tracking history pasted into a public OCU complaint against Urvaam."},
+    {"wording": "Recibido Plataforma (Urvaam-Mad)", "stage": "accepted", "language": "es", "confirmedBy": "source", "note": "Quoted from a tracking history pasted into a public OCU complaint against Urvaam. Urvaam's platform received the parcel; the parentheses name the depot."},
+    {"wording": "En Reparto", "stage": "out_for_delivery", "language": "es", "confirmedBy": "source", "note": "Quoted from a tracking history pasted into a public OCU complaint against Urvaam."},
+    {"wording": "Entregado", "stage": "delivered", "language": "es", "confirmedBy": "source", "note": "Quoted from a tracking history pasted into a public OCU complaint against Urvaam."}
+  ]
+}

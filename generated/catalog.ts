@@ -5228,6 +5228,36 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "a-tu-hora-express": {
+    "displayName": "A Tu Hora Express",
+    "color": "#27348b",
+    "aliases": [
+      "A TU HORA EXPRESS",
+      "A Tu Hora"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mydelivery.atuhoraexpress.com/",
+    "trackingSearchUrl": "https://mydelivery.atuhoraexpress.com/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^0{6}\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^0{6}\\d{10}001\\d{5}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "a1-post": {
     "displayName": "A1 POST",
     "color": "#fba512",
@@ -8138,6 +8168,43 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "chronodiali": {
+    "displayName": "Chronodiali",
+    "color": "#0060a2",
+    "aliases": [
+      "Chrono Diali"
+    ],
+    "countries": [
+      "MA"
+    ],
+    "selectable": true,
+    "timezone": "Africa/Casablanca",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://chronodiali.ma/suivi_colis.html",
+    "trackingUrlTemplate": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",
+    "trackingSearchUrl": "https://chronodiali.ma/suivi_colis.html",
+    "linkRules": [
+      {
+        "domains": [
+          "chronodiali.ma",
+          "www.chronodiali.ma"
+        ],
+        "pathPattern": "^/suivi_colis\\.html$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CHPU\\d{19}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "chunghwa-post": {
     "displayName": "Chunghwa Post",
     "color": "#e8171f",
@@ -8460,6 +8527,35 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "closer-logistics": {
+    "displayName": "Closer Logistics",
+    "color": "#7bb4b8",
+    "aliases": [
+      "Closer",
+      "Closerlogistics"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.closerlogistics.com/",
+    "trackingUrlTemplate": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.closerlogistics.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.closerlogistics.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "cne": {
     "displayName": "CNE Express",
@@ -9168,6 +9264,38 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "cst-italia": {
+    "displayName": "CST Italia",
+    "color": "#e81c3a",
+    "aliases": [
+      "CST Corriere Espresso",
+      "CST Italia Scarl",
+      "BDM Network",
+      "BDM Corriere Espresso"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.cstitaliascarl.it/tracking/",
+    "trackingSearchUrl": "https://www.cstitaliascarl.it/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^CST\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^BDM\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      }
+    ]
   },
   "cttyex": {
     "displayName": "CTTYEX",
@@ -25021,6 +25149,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "transaher": {
+    "displayName": "Transaher",
+    "color": "#233b81",
+    "aliases": [
+      "Grupo Transaher"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://transaher.es/",
+    "trackingUrlTemplate": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",
+    "trackingSearchUrl": "https://transaher.es/",
+    "linkRules": [
+      {
+        "domains": [
+          "clientes.transaher.es"
+        ],
+        "path": "^/webclient/h?tracking/-5,0,([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^103\\d{24}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "transmission": {
     "displayName": "TransMission",
     "color": "#e32314",
@@ -25510,6 +25672,39 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "urvaam": {
+    "displayName": "Urvaam",
+    "color": "#ff7b3a",
+    "aliases": [
+      "URVAAM",
+      "Servicios Urbanos Vaam"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.urvaam.es/track",
+    "trackingUrlTemplate": "https://www.urvaam.es/track/result?no={trackingNumber}",
+    "trackingSearchUrl": "https://www.urvaam.es/track",
+    "linkRules": [
+      {
+        "domains": [
+          "www.urvaam.es",
+          "urvaam.es"
+        ],
+        "pathPattern": "^/track/result/?$",
+        "params": [
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "uzbekistan-post": {
     "displayName": "Uzbekistan Post",
@@ -26866,6 +27061,7 @@ export const CARRIER_IDS = [
   "5post",
   "99minutos",
   "a-duie-pyle",
+  "a-tu-hora-express",
   "a1-post",
   "aaa-cooper",
   "ab-courier",
@@ -26938,6 +27134,7 @@ export const CARRIER_IDS = [
   "chazki",
   "chilexpress",
   "chit-chats",
+  "chronodiali",
   "chunghwa-post",
   "chunil",
   "city-express-rs",
@@ -26946,6 +27143,7 @@ export const CARRIER_IDS = [
   "citysprint",
   "cj-logistics",
   "cj-packet",
+  "closer-logistics",
   "cne",
   "codexpress",
   "connect-couriers",
@@ -26966,6 +27164,7 @@ export const CARRIER_IDS = [
   "credifin",
   "cruz-del-sur",
   "cse-russia",
+  "cst-italia",
   "cttyex",
   "cycloon",
   "cyprus-post",
@@ -27374,6 +27573,7 @@ export const CARRIER_IDS = [
   "trackon",
   "tracx-logis",
   "trans-o-flex",
+  "transaher",
   "transmission",
   "transport-rdl",
   "trendyol-express",
@@ -27387,6 +27587,7 @@ export const CARRIER_IDS = [
   "united-delivery-service",
   "upaya",
   "urbano",
+  "urvaam",
   "uzbekistan-post",
   "valmo",
   "vasp-expresso",
@@ -27538,6 +27739,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "5post": [],
   "99minutos": [],
   "a-duie-pyle": [],
+  "a-tu-hora-express": ["a-tu-hora-express-1","a-tu-hora-express-2"],
   "a1-post": [],
   "aaa-cooper": [],
   "ab-courier": [],
@@ -27610,6 +27812,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chazki": [],
   "chilexpress": [],
   "chit-chats": ["chit-chats-1"],
+  "chronodiali": ["chronodiali-1"],
   "chunghwa-post": ["chunghwa-post-1"],
   "chunil": [],
   "city-express-rs": ["city-express-rs-1"],
@@ -27618,6 +27821,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "citysprint": [],
   "cj-logistics": [],
   "cj-packet": ["cj-packet-1"],
+  "closer-logistics": [],
   "cne": ["cne-1"],
   "codexpress": [],
   "connect-couriers": [],
@@ -27638,6 +27842,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "credifin": [],
   "cruz-del-sur": [],
   "cse-russia": [],
+  "cst-italia": ["cst-italia-1","cst-italia-2"],
   "cttyex": ["cttyex-1"],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
@@ -28046,6 +28251,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],
+  "transaher": ["transaher-1"],
   "transmission": ["transmission-1"],
   "transport-rdl": [],
   "trendyol-express": [],
@@ -28059,6 +28265,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "united-delivery-service": ["united-delivery-service-1"],
   "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
+  "urvaam": [],
   "uzbekistan-post": ["uzbekistan-post-s10"],
   "valmo": ["valmo-1"],
   "vasp-expresso": [],

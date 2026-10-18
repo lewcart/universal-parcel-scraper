@@ -54,6 +54,12 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to A. Duie Pyle."
   },
   {
+    "carrier": "a-tu-hora-express",
+    "pattern": "^00\\d{8}$",
+    "kind": "by_design",
+    "reason": "A Tu Hora Express's ten-digit short codes share their length with TIPSA, DHL and other carriers, so no rule claims them; the tracker pads them to the sixteen-digit form."
+  },
+  {
     "carrier": "a1-post",
     "pattern": "^92\\d{20}$",
     "kind": "by_design",
@@ -595,6 +601,12 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "CJ waybills are bare twelve digits without a check digit, a shape shared by many carriers."
+  },
+  {
+    "carrier": "closer-logistics",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Closer Logistics' twelve-digit numbers share their length with many carriers and carry no known check, so no rule claims them."
   },
   {
     "carrier": "connect-couriers",
@@ -3229,6 +3241,12 @@
     "pattern": "^\\d{8}$",
     "kind": "by_design",
     "reason": "Eight digits are shared by several carriers and nothing in the number points to Urbano."
+  },
+  {
+    "carrier": "urvaam",
+    "pattern": "^2[78]\\d{14}$",
+    "kind": "by_design",
+    "reason": "Urvaam's sixteen-digit numbers share their length with the low rules of several carriers and carry no check digit, so no rule claims them."
   },
   {
     "carrier": "vasp-expresso",

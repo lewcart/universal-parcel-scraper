@@ -1,0 +1,7 @@
+{
+  "carrier": "closer-logistics",
+  "entries": [
+    {"wording": "Entrega fallida", "stage": "failed_attempt", "language": "es", "confirmedBy": "source", "note": "Quoted in a review on Closer Logistics' Trustpilot page; also named in a public OCU complaint."},
+    {"wording": "No hemos podido entregar tu envío", "stage": "failed_attempt", "language": "es", "confirmedBy": "source", "note": "Quoted in a review on Closer Logistics' Trustpilot page next to Entrega fallida; it reads as the notice sent after a failed delivery."}
+  ]
+}

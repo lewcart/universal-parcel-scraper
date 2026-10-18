@@ -1,0 +1,48 @@
+{
+  "id": "transaher",
+  "displayName": "Transaher",
+  "aliases": [
+    "Grupo Transaher"
+  ],
+  "region": {
+    "countries": [
+      "ES",
+      "PT"
+    ]
+  },
+  "brand": {
+    "color": "#233b81"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",
+    "searchUrl": "https://transaher.es/",
+    "canaryUrl": "https://transaher.es/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "clientes.transaher.es"
+      ],
+      "path": "^/webclient/h?tracking/-5,0,([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "transaher-1",
+      "pattern": "^103\\d{24}$",
+      "confidence": "high"
+    }
+  ]
+}

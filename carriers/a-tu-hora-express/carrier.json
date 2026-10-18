@@ -1,0 +1,45 @@
+{
+  "id": "a-tu-hora-express",
+  "displayName": "A Tu Hora Express",
+  "aliases": [
+    "A TU HORA EXPRESS",
+    "A Tu Hora"
+  ],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#27348b"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://mydelivery.atuhoraexpress.com/",
+    "canaryUrl": "https://mydelivery.atuhoraexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "a-tu-hora-express-1",
+      "pattern": "^0{6}\\d{10}$",
+      "confidence": "low"
+    },
+    {
+      "id": "a-tu-hora-express-2",
+      "pattern": "^0{6}\\d{10}001\\d{5}$",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "closer-logistics",
+  "displayName": "Closer Logistics",
+  "aliases": [
+    "Closer",
+    "Closerlogistics"
+  ],
+  "region": {
+    "countries": [
+      "ES"
+    ]
+  },
+  "brand": {
+    "color": "#7bb4b8"
+  },
+  "selectable": true,
+  "timezone": "Europe/Madrid",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",
+    "searchUrl": "https://tracking.closerlogistics.com/",
+    "canaryUrl": "https://tracking.closerlogistics.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.closerlogistics.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

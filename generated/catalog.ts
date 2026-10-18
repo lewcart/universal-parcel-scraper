@@ -22268,7 +22268,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pro-carrier",
+      "recognitionRank": 843,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.weareprocarrier.com/",
     "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",

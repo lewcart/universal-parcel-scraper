@@ -15,6 +15,12 @@
     {"wording": "arriving at processing centre", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "On a return from the US it carries USPS's out-for-delivery scan to Pro Carrier's returns address, not a delivery to the customer."},
     {"wording": "arrived at processing centre", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "On a return from the US it carries USPS's delivery to Pro Carrier's returns address."},
     {"wording": "parcel received", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Pro Carrier's own scan at its processing centre."},
+    {"wording": "parcel awaiting clearance by customs", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "Comment: import declaration has been created."},
+    {"wording": "departed from pro carrier hub", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"wording": "arrived in country", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Comment: received destination hub."},
+    {"wording": "in transit (in country)", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Comment: received by distributor, the delivery partner in the destination country."},
+    {"wording": "email notification sent to consignee", "language": "en", "confirmedBy": "live", "note": "An email to the recipient: the parcel keeps the stage of the scan before it."},
+    {"wording": "parcel delivered in mailbox", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Comment: delivered to letterbox."},
     {"wording": "parcel out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
     {"wording": "successfully delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal"}
   ]

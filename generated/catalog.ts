@@ -19224,7 +19224,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "palletways"
     },
     "canaryUrl": "https://track2.palletways.com/",
     "trackingSearchUrl": "https://track2.palletways.com/",

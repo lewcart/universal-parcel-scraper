@@ -23,16 +23,36 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "palletways",
+    "steps": [
+      "direct"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "weight",
+    "eta"
+  ],
   "portal": {
     "searchUrl": "https://track2.palletways.com/",
     "canaryUrl": "https://track2.palletways.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
+    "shows": [
+      "status",
+      "eta",
+      "customer_reference",
+      "parcel_count",
+      "weight",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "eta",
+      "weight"
+    ],
+    "discarded": [
+      "customer_reference",
+      "parcel_count",
+      "history"
+    ],
     "unavailable": []
   },
   "links": [],

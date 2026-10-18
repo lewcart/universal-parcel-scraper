@@ -1,0 +1,24 @@
+{
+  "carrier": "teleship",
+  "records": [
+    {
+      "number": "TSGBUSSR9EMI013412826",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://teleship.com/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Teleship's home page shows it as the tracking ID of a sample journey from London to the US in its tracking illustration; it starts with TS like the FAQ's tracking ID, but it is 21 characters where the FAQ says 15."
+    }
+  ]
+}

@@ -20984,6 +20984,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "pro-carrier": {
+    "displayName": "Pro Carrier",
+    "color": "#2c1f72",
+    "aliases": [
+      "ProCarrier",
+      "PRO Carrier",
+      "Pro-Carrier",
+      "Pro Carrier Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.weareprocarrier.com/",
+    "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.weareprocarrier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.weareprocarrier.com"
+        ],
+        "pathPattern": "^//?$",
+        "params": [
+          "tn"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DG\\d{11}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "professional-couriers": {
     "displayName": "The Professional Couriers",
     "color": "#e92429",
@@ -24491,6 +24530,39 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "teleship": {
+    "displayName": "Teleship",
+    "color": "#ff66d2",
+    "aliases": [
+      "Teleship Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://teleship.com/tracking",
+    "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
+    "trackingSearchUrl": "https://teleship.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "teleship.com",
+          "www.teleship.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "number",
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "tforce-freight": {
     "displayName": "TForce Freight",
     "color": "#0053a1",
@@ -27197,6 +27269,7 @@ export const CARRIER_IDS = [
   "posturinn",
   "ppl",
   "precision-deliveries",
+  "pro-carrier",
   "professional-couriers",
   "prompt-xpress",
   "pronto-lanka",
@@ -27288,6 +27361,7 @@ export const CARRIER_IDS = [
   "tealca",
   "team-global-express",
   "tej-couriers",
+  "teleship",
   "tforce-freight",
   "tforce-logistics",
   "thhy",
@@ -27867,6 +27941,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "posturinn": ["posturinn-s10"],
   "ppl": ["ppl-1"],
   "precision-deliveries": ["precision-deliveries-1"],
+  "pro-carrier": ["pro-carrier-1"],
   "professional-couriers": [],
   "prompt-xpress": ["prompt-xpress-1"],
   "pronto-lanka": [],
@@ -27958,6 +28033,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tealca": [],
   "team-global-express": [],
   "tej-couriers": [],
+  "teleship": [],
   "tforce-freight": [],
   "tforce-logistics": ["tforce-logistics-1"],
   "thhy": ["thhy-1"],

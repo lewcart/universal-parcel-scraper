@@ -361,3 +361,13 @@ describe('wave seven British courier rules', () => {
     }
   });
 });
+
+describe('wave eight British courier rules', () => {
+  // Synthetic numbers in each carrier's layout; none is a real parcel.
+  it('suggests Pro Carrier beside La Poste for DG and eleven digits without naming either', () => {
+    expect(detectCarrierMatch('DG00000000001')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['la-poste', 'pro-carrier'] });
+    for (const number of ['DG0000000001', 'DG000000000001', 'DH00000000001', 'UBG000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('pro-carrier');
+    }
+  });
+});

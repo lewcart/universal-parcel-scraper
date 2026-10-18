@@ -1,0 +1,53 @@
+{
+  "id": "pro-carrier",
+  "displayName": "Pro Carrier",
+  "aliases": [
+    "ProCarrier",
+    "PRO Carrier",
+    "Pro-Carrier",
+    "Pro Carrier Limited"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#2c1f72"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
+    "searchUrl": "https://tracking.weareprocarrier.com/",
+    "canaryUrl": "https://tracking.weareprocarrier.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.weareprocarrier.com"
+      ],
+      "pathPattern": "^//?$",
+      "params": [
+        "tn"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "pro-carrier-1",
+      "pattern": "^DG\\d{11}$",
+      "confidence": "low"
+    }
+  ]
+}

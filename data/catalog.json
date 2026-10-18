@@ -20982,6 +20982,45 @@
       }
     ]
   },
+  "pro-carrier": {
+    "displayName": "Pro Carrier",
+    "color": "#2c1f72",
+    "aliases": [
+      "ProCarrier",
+      "PRO Carrier",
+      "Pro-Carrier",
+      "Pro Carrier Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.weareprocarrier.com/",
+    "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.weareprocarrier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.weareprocarrier.com"
+        ],
+        "pathPattern": "^//?$",
+        "params": [
+          "tn"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DG\\d{11}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "professional-couriers": {
     "displayName": "The Professional Couriers",
     "color": "#e92429",
@@ -24487,6 +24526,39 @@
     "canaryUrl": "https://www.tejcouriers.com/shipment-tracking.php",
     "trackingSearchUrl": "https://www.tejcouriers.com/shipment-tracking.php",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "teleship": {
+    "displayName": "Teleship",
+    "color": "#ff66d2",
+    "aliases": [
+      "Teleship Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://teleship.com/tracking",
+    "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
+    "trackingSearchUrl": "https://teleship.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "teleship.com",
+          "www.teleship.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "number",
+          "trackingNumber"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "tforce-freight": {

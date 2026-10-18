@@ -2477,6 +2477,12 @@
     "reason": "One archived reply of Precision's tracking API shows PRE, six digits and five letters or digits; a single sample is too thin to claim it."
   },
   {
+    "carrier": "pro-carrier",
+    "pattern": "^UBG\\d{9}$",
+    "kind": "open",
+    "reason": "One UBG number seen on Pro Carrier's tracker; Purolator's rule takes three letters and nine digits, and one sample does not establish the family."
+  },
+  {
     "carrier": "professional-couriers",
     "pattern": "^[A-Z]{3}\\d{9}$",
     "kind": "collision",
@@ -3043,6 +3049,12 @@
     "pattern": "^\\d{8}$",
     "kind": "by_design",
     "reason": "Tej Couriers consignment numbers are plain eight-digit runs, a shape many carriers share."
+  },
+  {
+    "carrier": "teleship",
+    "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
+    "kind": "open",
+    "reason": "One documentation example of Teleship's own tracking ID, whose length disagrees with its FAQ; the family is not established."
   },
   {
     "carrier": "tforce-freight",

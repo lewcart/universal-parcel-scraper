@@ -1,0 +1,46 @@
+{
+  "id": "teleship",
+  "displayName": "Teleship",
+  "aliases": [
+    "Teleship Limited"
+  ],
+  "region": {
+    "countries": [
+      "GB"
+    ]
+  },
+  "brand": {
+    "color": "#ff66d2"
+  },
+  "selectable": true,
+  "timezone": "Europe/London",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://teleship.com/tracking?number={trackingNumber}",
+    "searchUrl": "https://teleship.com/tracking",
+    "canaryUrl": "https://teleship.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "teleship.com",
+        "www.teleship.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "number",
+        "trackingNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

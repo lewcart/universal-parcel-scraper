@@ -34881,6 +34881,14 @@
     ]
   },
   {
+    "input": "420114139400140109627837856192",
+    "carrier": "usps",
+    "confidence": "high",
+    "candidates": [
+      "usps"
+    ]
+  },
+  {
     "input": "420117419361289691090029427113",
     "carrier": "unknown",
     "confidence": "low",
@@ -63221,6 +63229,42 @@
     ]
   },
   {
+    "input": "DG10018000758",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "pro-carrier"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
+    "input": "DG10529184204",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "pro-carrier"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
+    "input": "DG30395036614",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "pro-carrier"
+    ],
+    "asked": [
+      "la-poste"
+    ]
+  },
+  {
     "input": "DHL13237372",
     "carrier": "unknown",
     "confidence": "none",
@@ -66097,6 +66141,12 @@
     ]
   },
   {
+    "input": "FDL230302WSP47L8",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "FDYNS00000003ZY5",
     "carrier": "fleetoptics",
     "confidence": "high",
@@ -66302,6 +66352,14 @@
     "confidence": "high",
     "candidates": [
       "ekart"
+    ]
+  },
+  {
+    "input": "FO300968781GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
     ]
   },
   {
@@ -68830,6 +68888,18 @@
   },
   {
     "input": "JJD0002123456789012",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "inpost"
+    ],
+    "asked": [
+      "inpost"
+    ]
+  },
+  {
+    "input": "JJD0002219942529894",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -80745,6 +80815,12 @@
     ]
   },
   {
+    "input": "TSGBUSSR9EMI013412826",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "TSJY990000006CN",
     "carrier": "tsjy",
     "confidence": "high",
@@ -81073,6 +81149,14 @@
     "asked": [
       "latvijas-pasts",
       "chronopost"
+    ]
+  },
+  {
+    "input": "UBG000623916",
+    "carrier": "purolator",
+    "confidence": "high",
+    "candidates": [
+      "purolator"
     ]
   },
   {

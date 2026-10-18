@@ -4465,5 +4465,13 @@
       "yunda"
     ],
     "reason": "SP Express order numbers are fifteen digits, which BRT's parcel IDs and Yunda's fifteen-digit rule also accept; the 483 prefix and sending date only suggest SP Express, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "DG and eleven digits",
+    "carriers": [
+      "la-poste",
+      "pro-carrier"
+    ],
+    "reason": "La Poste accepts any two characters followed by 11 digits, which also covers Pro Carrier's DG numbers. Both rules are low confidence, so recognition or the reader confirms the carrier."
   }
 ]

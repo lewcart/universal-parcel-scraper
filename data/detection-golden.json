@@ -15991,6 +15991,14 @@
     ]
   },
   {
+    "input": "1452392",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "14546206533-3",
     "carrier": "unknown",
     "confidence": "low",
@@ -16398,6 +16406,14 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "1520054",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
     ]
   },
   {
@@ -19114,7 +19130,23 @@
     ]
   },
   {
+    "input": "1793575",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "1796295",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
+    "input": "1797522",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -21809,6 +21841,14 @@
     ]
   },
   {
+    "input": "2005615",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "200643613",
     "carrier": "unknown",
     "confidence": "none",
@@ -22174,6 +22214,14 @@
       "colis-prive",
       "sto",
       "j-and-t"
+    ]
+  },
+  {
+    "input": "2013770",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
     ]
   },
   {
@@ -32958,6 +33006,16 @@
     ]
   },
   {
+    "input": "33586061",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "335927325977",
     "carrier": "unknown",
     "confidence": "low",
@@ -37029,6 +37087,26 @@
     ],
     "asked": [
       "tnt"
+    ]
+  },
+  {
+    "input": "41337661",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "41379310",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -41824,6 +41902,16 @@
     ]
   },
   {
+    "input": "51656411",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "517047995",
     "carrier": "unknown",
     "confidence": "none",
@@ -42964,6 +43052,16 @@
     ]
   },
   {
+    "input": "53603643",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "536260184666",
     "carrier": "unknown",
     "confidence": "low",
@@ -43356,6 +43454,16 @@
     ]
   },
   {
+    "input": "54939441",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "549661810100748",
     "carrier": "unknown",
     "confidence": "low",
@@ -43686,6 +43794,16 @@
     ],
     "asked": [
       "brt"
+    ]
+  },
+  {
+    "input": "55642990",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -44042,7 +44160,27 @@
     ]
   },
   {
+    "input": "58230885",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "58372371",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "58426255",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -44129,6 +44267,16 @@
     ],
     "asked": [
       "tnt"
+    ]
+  },
+  {
+    "input": "58957822",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -44318,6 +44466,16 @@
   },
   {
     "input": "59015626",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "59024927",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -44567,6 +44725,16 @@
   },
   {
     "input": "59877510",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "59882152",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -48962,6 +49130,36 @@
       "tnt",
       "city-express-rs",
       "dhl-ecommerce"
+    ]
+  },
+  {
+    "input": "68853367",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "68854795",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "68856582",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -55647,6 +55845,30 @@
     ]
   },
   {
+    "input": "873562025330",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "873970594430",
     "carrier": "unknown",
     "confidence": "low",
@@ -61716,6 +61938,22 @@
     ]
   },
   {
+    "input": "A7245214",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "loggi"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch"
+    ]
+  },
+  {
     "input": "A7C62QP689986",
     "carrier": "unknown",
     "confidence": "low",
@@ -65086,6 +65324,12 @@
     "asked": [
       "chronopost"
     ]
+  },
+  {
+    "input": "CH1019159",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "CH105792445NL",

@@ -25,6 +25,7 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'aaa-cooper': 'www.aaacooper.com refuses connections from many networks; an archived copy of the home page shows its Action Trac number field',
   'best-express-my': 'www.best-inc.my sends phone-sized screens to a tracking page with no waybill field; the desktop page has it',
   'best-express-vn': 'www.best-inc.vn sends phone-sized screens to a tracking page that renders blank in automated browsers; the desktop page has the waybill field',
+  'custom-companies': 'the Shipment ID box sits in the desktop banner of www.customco.com, which the phone-size check does not show',
   'daylight-transport': 'the Track PRO # field sits in the desktop header of dylt.com, which the phone-size check does not show',
   dellin: 'the tracker answers automated browsers with a Qrator check (HTTP 401); in a regular browser it shows its order-number field',
   deprisa: 'www.deprisa.com answers 403 to networks outside Colombia, the United States, Spain and Argentina; its tracker at /es/rastrea has the number field and checks reCAPTCHA',

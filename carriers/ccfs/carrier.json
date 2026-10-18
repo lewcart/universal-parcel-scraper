@@ -1,0 +1,42 @@
+{
+  "id": "ccfs",
+  "displayName": "CrossCountry Freight Solutions",
+  "aliases": [
+    "CCFS",
+    "Cross Country Freight Solutions"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#cb2026"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://auth.ccfs.com/track/detail/{trackingNumber}",
+    "searchUrl": "https://auth.ccfs.com/track/search",
+    "canaryUrl": "https://auth.ccfs.com/track/search",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "auth.ccfs.com"
+      ],
+      "path": "^/track/detail/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

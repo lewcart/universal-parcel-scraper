@@ -6061,6 +6061,44 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "am-home-delivery": {
+    "displayName": "AM Home Delivery",
+    "color": "#013e81",
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.amtrucking.com/tracking.php",
+    "trackingUrlTemplate": "https://www.amtrucking.com/track-number.php?cnumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.amtrucking.com/tracking.php",
+    "linkRules": [
+      {
+        "domains": [
+          "www.amtrucking.com",
+          "amtrucking.com"
+        ],
+        "pathPattern": "^/track-number\\.php$",
+        "params": [
+          "cnumber"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.carrierlogistics.com"
+        ],
+        "pathPattern": "^/scripts/amh\\.pol/boldetail\\.htm$",
+        "params": [
+          "wpro1"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ameex": {
     "displayName": "Ameex",
     "color": "#132f7d",
@@ -6087,6 +6125,38 @@ export const CARRIER_CATALOG = {
           "ameex.ma"
         ],
         "path": "^/(?:en|fr|ar)/(?:tracking|suivi-colis)/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "american-west-express": {
+    "displayName": "American West",
+    "color": "#0c71c3",
+    "aliases": [
+      "AWest",
+      "American West Worldwide Express"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://awest.freightgate.com/awestTrack.html",
+    "trackingUrlTemplate": "https://awest.freightgate.com/cgi-bin/tarifftrek5.1/itrek.cgi?database=awest&type=submit&interface=pltx&open_interface_search=Search+Now&open_text={trackingNumber}&SearchOn=open_billno",
+    "trackingSearchUrl": "https://awest.freightgate.com/awestTrack.html",
+    "linkRules": [
+      {
+        "domains": [
+          "awest.freightgate.com"
+        ],
+        "pathPattern": "^/cgi-bin/tarifftrek5\\.1/itrek\\.cgi$",
+        "params": [
+          "open_text"
+        ]
       }
     ],
     "detectionRules": []
@@ -8232,6 +8302,35 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ccfs": {
+    "displayName": "CrossCountry Freight Solutions",
+    "color": "#cb2026",
+    "aliases": [
+      "CCFS",
+      "Cross Country Freight Solutions"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://auth.ccfs.com/track/search",
+    "trackingUrlTemplate": "https://auth.ccfs.com/track/detail/{trackingNumber}",
+    "trackingSearchUrl": "https://auth.ccfs.com/track/search",
+    "linkRules": [
+      {
+        "domains": [
+          "auth.ccfs.com"
+        ],
+        "path": "^/track/detail/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "cdek": {
     "displayName": "CDEK",
     "color": "#00b33c",
@@ -9767,6 +9866,47 @@ export const CARRIER_CATALOG = {
         "confidence": "high"
       }
     ]
+  },
+  "custom-companies": {
+    "displayName": "The Custom Companies",
+    "color": "#0056a7",
+    "aliases": [
+      "Custom Companies",
+      "The Custom Companies, Inc."
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.customco.com/",
+    "trackingUrlTemplate": "https://api.customco.com/shipmenttrace.htm?referencenumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.customco.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "api.customco.com"
+        ],
+        "pathPattern": "^/shipmenttrace\\.htm$",
+        "params": [
+          "referencenumber"
+        ]
+      },
+      {
+        "domains": [
+          "api.customco.com"
+        ],
+        "pathPattern": "^/scripts/cgiip\\.exe/boldetail\\.htm$",
+        "params": [
+          "wpro1"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "cycloon": {
     "displayName": "Cycloon",
@@ -15351,6 +15491,43 @@ export const CARRIER_CATALOG = {
           "hepsijet.com"
         ],
         "path": "^/(?:coklu-)?gonderi-takibi/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
+  "hercules-freight": {
+    "displayName": "Hercules Freight",
+    "color": "#1c2752",
+    "aliases": [
+      "Hercules Forwarding",
+      "Hercules Forwarding, Inc."
+    ],
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://herculesfreight.com/Forms/TrackShipment",
+    "trackingSearchUrl": "https://herculesfreight.com/Forms/TrackShipment",
+    "linkRules": [
+      {
+        "domains": [
+          "www.herculesfreight.com",
+          "herculesfreight.com"
+        ],
+        "path": "^/users/viewPRODetails/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "www.herculesfreight.com",
+          "herculesfreight.com"
+        ],
+        "path": "^/forms/viewprodetails/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []
@@ -30133,7 +30310,9 @@ export const CARRIER_IDS = [
   "alem-tat",
   "algerie-poste",
   "allegro-one",
+  "am-home-delivery",
   "ameex",
+  "american-west-express",
   "amerijet",
   "ampm",
   "andreani",
@@ -30187,6 +30366,7 @@ export const CARRIER_IDS = [
   "cargus",
   "castores",
   "cbl-logistica",
+  "ccfs",
   "cdek",
   "cdl",
   "celeritas",
@@ -30228,6 +30408,7 @@ export const CARRIER_IDS = [
   "cse-russia",
   "cst-italia",
   "cttyex",
+  "custom-companies",
   "cycloon",
   "cyprus-post",
   "d-express",
@@ -30370,6 +30551,7 @@ export const CARRIER_IDS = [
   "hct-logistics",
   "helthjem",
   "hepsijet",
+  "hercules-freight",
   "hermes-at",
   "hi-trans",
   "hispapost",
@@ -30891,7 +31073,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "alem-tat": [],
   "algerie-poste": ["algerie-poste-1","algerie-poste-s10","algerie-poste-ey"],
   "allegro-one": ["allegro-one-1","allegro-one-2"],
+  "am-home-delivery": [],
   "ameex": [],
+  "american-west-express": [],
   "amerijet": ["amerijet-1"],
   "ampm": [],
   "andreani": [],
@@ -30945,6 +31129,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cargus": [],
   "castores": [],
   "cbl-logistica": [],
+  "ccfs": [],
   "cdek": [],
   "cdl": ["cdl-1","cdl-2"],
   "celeritas": [],
@@ -30986,6 +31171,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "cse-russia": [],
   "cst-italia": ["cst-italia-1","cst-italia-2"],
   "cttyex": ["cttyex-1"],
+  "custom-companies": [],
   "cycloon": ["cycloon-1"],
   "cyprus-post": ["cyprus-post-s10"],
   "d-express": [],
@@ -31128,6 +31314,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hct-logistics": [],
   "helthjem": ["helthjem-1","helthjem-2"],
   "hepsijet": [],
+  "hercules-freight": [],
   "hermes-at": [],
   "hi-trans": [],
   "hispapost": [],

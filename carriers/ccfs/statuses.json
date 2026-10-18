@@ -1,0 +1,9 @@
+{
+  "carrier": "ccfs",
+  "entries": [
+    {"wording": "Bill of lading scanned", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of CCFS's own tracking API."},
+    {"wording": "Scanned on dock", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of CCFS's own tracking API."},
+    {"wording": "Freight on dock", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of CCFS's own tracking API. Shown as the shipment's current status."},
+    {"wording": "Shipment running late", "stage": "exception", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived reply of CCFS's own tracking API. A delay notice."}
+  ]
+}

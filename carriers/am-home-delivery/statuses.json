@@ -1,0 +1,18 @@
+{
+  "carrier": "am-home-delivery",
+  "entries": [
+    {"wording": "ELECTRONIC BILLING INFORMATION RECEIVED", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
+    {"wording": "SHIPMENT DATA RECEIVED-PENDING PICK UP", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
+    {"wording": "Order Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
+    {"wording": "Received in NY Terminal", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker. Freight received at the carrier's New York area terminal."},
+    {"wording": "IN TRANSIT TO CA", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker. The linehaul toward the California terminal."},
+    {"wording": "INTRANSIT TO DELIVERY TERMINAL", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
+    {"wording": "Delivery Attempted", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
+    {"wording": "DELIVERED; THANK YOU FOR USING AM HOME DELIVERY", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker. The delivering city follows the text."},
+    {"wording": "Received in Consolidation Center", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
+    {"wording": "In-Transit to Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
+    {"wording": "Received in Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
+    {"wording": "Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page. The delivery appointment was set while the freight waits at the delivery terminal."},
+    {"wording": "COMPLETED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page. Also shown as the last mile status."}
+  ]
+}

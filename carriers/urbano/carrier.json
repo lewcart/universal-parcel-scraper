@@ -19,18 +19,75 @@
   "timezone": "America/Lima",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "urbano",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.urbano.com.pe/tracking/{trackingNumber}",
     "searchUrl": "https://www.urbano.com.pe/tracking/",
     "canaryUrl": "https://www.urbano.com.pe/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "origin",
+      "destination",
+      "failed_delivery_reason",
+      "event_details",
+      "courier_name",
+      "recipient_name",
+      "recipient_id",
+      "recipient_address",
+      "sender_name",
+      "parcel_count",
+      "delivery_photos",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "weight",
+      "failed_delivery_reason"
+    ],
+    "discarded": [
+      "progress_rail",
+      "service_name",
+      "origin",
+      "destination",
+      "event_details",
+      "courier_name",
+      "recipient_name",
+      "recipient_id",
+      "recipient_address",
+      "sender_name",
+      "parcel_count",
+      "delivery_photos",
+      "coordinates"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "delivered_at",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {
@@ -38,6 +95,15 @@
         "urbano.com.pe"
       ],
       "path": "^/tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "urbano.com.pe"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "guides"
+      ]
     },
     {
       "domains": [

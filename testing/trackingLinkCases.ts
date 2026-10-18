@@ -598,6 +598,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'veloces', number: 'V0000000003',
     route: /^https:\/\/tracking\.veloces\.app\/tracking-client\/V0000000003$/,
     marker: /No encontramos esa gu[íi]a|No existe un env[íi]o con el n[úu]mero/i },
+  // The page reads the number from its address and posts it to its lookup on load; an unknown one gets an empty card.
+  { carrier: 'urbano', number: 'G00000000',
+    route: /^https:\/\/www\.urbano\.com\.pe\/tracking\/G00000000$/,
+    marker: /Rastrea tu env[íi]o/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

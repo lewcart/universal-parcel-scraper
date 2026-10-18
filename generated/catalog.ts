@@ -27571,7 +27571,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "urbano",
+      "localClocks": true
     },
     "canaryUrl": "https://www.urbano.com.pe/tracking/",
     "trackingUrlTemplate": "https://www.urbano.com.pe/tracking/{trackingNumber}",
@@ -27582,6 +27583,15 @@ export const CARRIER_CATALOG = {
           "urbano.com.pe"
         ],
         "path": "^/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "urbano.com.pe"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "guides"
+        ]
       },
       {
         "domains": [

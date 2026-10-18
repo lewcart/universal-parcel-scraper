@@ -23,6 +23,7 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
 /** Search pages the weekly check cannot open, and why. Each was seen working in a regular browser. */
 export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'aaa-cooper': 'www.aaacooper.com refuses connections from many networks; an archived copy of the home page shows its Action Trac number field',
+  'best-express-my': 'www.best-inc.my sends phone-sized screens to a tracking page with no waybill field; the desktop page has it',
   'best-express-vn': 'www.best-inc.vn sends phone-sized screens to a tracking page that renders blank in automated browsers; the desktop page has the waybill field',
   'daylight-transport': 'the Track PRO # field sits in the desktop header of dylt.com, which the phone-size check does not show',
   dellin: 'the tracker answers automated browsers with a Qrator check (HTTP 401); in a regular browser it shows its order-number field',

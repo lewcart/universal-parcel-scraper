@@ -1,0 +1,57 @@
+{
+  "id": "airpak-express",
+  "displayName": "Airpak Express",
+  "aliases": [
+    "Airpak",
+    "Airpak Express Singapore",
+    "Airpak Express Malaysia"
+  ],
+  "region": {
+    "countries": [
+      "SG",
+      "MY"
+    ]
+  },
+  "brand": {
+    "color": "#cd2727"
+  },
+  "selectable": true,
+  "timezone": "Asia/Singapore",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
+    "searchUrl": "https://airpak-express.com/tracking/",
+    "canaryUrl": "https://airpak-express.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "airpak-express.com",
+        "www.airpak-express.com"
+      ],
+      "pathPattern": "^/(?:index\\.php/)?tracking/?$",
+      "params": [
+        "cn"
+      ]
+    },
+    {
+      "domains": [
+        "tracking.airpak-express.com"
+      ],
+      "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+      "params": [
+        "cn"
+      ]
+    }
+  ],
+  "detection": []
+}

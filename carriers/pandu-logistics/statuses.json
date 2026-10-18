@@ -1,0 +1,19 @@
+{
+  "carrier": "pandu-logistics",
+  "entries": [
+    {"wording": "Transfer Data dari Agent", "stage": "registered", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the agent's branch code follows after a colon."},
+    {"code": "LF", "wording": "Process Handover ke Penyedia Angkutan Darat", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; handed to the land transport provider."},
+    {"code": "AF", "wording": "Tiba di Fasilitas Operasional", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the facility name follows."},
+    {"code": "BG", "wording": "Sedang dipersiapkan untuk pengiriman ke lokasi tujuan di Fasilitas Operasional", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the facility name follows."},
+    {"code": "IM", "wording": "Handover Process to Airline", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; shown untranslated among Indonesian events."},
+    {"code": "HA", "wording": "Handling over di Airport", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page."},
+    {"code": "UL", "wording": "Diberangkatkan ke bandara tujuan", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; flown to the destination airport."},
+    {"wording": "Sampai di Kota Tujuan", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; arrived in the destination city."},
+    {"wording": "Pengantaran Paket", "stage": "out_for_delivery", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; parcel out for delivery."},
+    {"wording": "Sudah Diterima", "stage": "delivered", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the receiver's name follows in its own column."},
+    {"code": "SD", "wording": "Terkirim dan diterima oleh:", "stage": "delivered", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the receiver's name, date and time follow."},
+    {"wording": "Barang sudah diterima oleh", "stage": "delivered", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the receiver's name follows."},
+    {"wording": "DITERIMA", "stage": "delivered", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the shipment status field above the events."},
+    {"wording": "DALAM PROSES", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in archived captures of Pandu Logistics' former tracking page; the shipment status field above the events while the parcel is under way."}
+  ]
+}

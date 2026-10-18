@@ -1,0 +1,17 @@
+{
+  "carrier": "houng-ah-loun",
+  "entries": [
+    {"wording": "ລໍຖ້າ", "stage": "registered", "language": "lo", "confirmedBy": "official-doc", "note": "Label for parcel status 1 in HAL Express's own tracking web app; waiting before pickup."},
+    {"wording": "Pending", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Label for parcel status 1 in HAL Express's own tracking web app; waiting before pickup."},
+    {"wording": "ຮັບພັດສະດຸແລ້ວ", "stage": "accepted", "language": "lo", "confirmedBy": "official-doc", "note": "Label for parcel status 2 in HAL Express's own tracking web app."},
+    {"wording": "Picked up", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Label for parcel status 2 in HAL Express's own tracking web app."},
+    {"wording": "ພັດສະດຸຮອດສາຂາ", "stage": "in_transit", "language": "lo", "confirmedBy": "official-doc", "note": "Label for parcel status 3 in HAL Express's own tracking web app; the parcel reached a branch."},
+    {"wording": "At branch", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for parcel status 3 in HAL Express's own tracking web app; the parcel reached a branch."},
+    {"wording": "ກຳລັງຈັດສົ່ງ", "stage": "in_transit", "language": "lo", "confirmedBy": "official-doc", "note": "Label for parcel status 4 in HAL Express's own tracking web app."},
+    {"wording": "In transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for parcel status 4 in HAL Express's own tracking web app."},
+    {"wording": "ພັດສະດຸຮອດປາຍທາງ", "stage": "in_transit", "language": "lo", "confirmedBy": "official-doc", "note": "Label for parcel status 5 in HAL Express's own tracking web app; the parcel reached the destination branch."},
+    {"wording": "Arrived at destination", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Label for parcel status 5 in HAL Express's own tracking web app; the parcel reached the destination branch."},
+    {"wording": "ຈັດສົ່ງສຳເລັດແລ້ວ", "stage": "delivered", "language": "lo", "confirmedBy": "official-doc", "note": "Label for a delivered parcel in HAL Express's own tracking web app."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Label for a delivered parcel in HAL Express's own tracking web app."}
+  ]
+}

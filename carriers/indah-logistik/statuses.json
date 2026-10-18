@@ -1,0 +1,12 @@
+{
+  "carrier": "indah-logistik",
+  "entries": [
+    {"wording": "Paket sudah berada di gudang asal", "stage": "accepted", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the origin city follows after a dash."},
+    {"wording": "Paket dalam perjalanan dari gudang asal", "stage": "in_transit", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the origin city follows after a dash."},
+    {"wording": "Paket telah sampai di gudang transit", "stage": "in_transit", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the transit city follows after a dash."},
+    {"wording": "Paket telah berangkat dari gudang transit", "stage": "in_transit", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the transit city follows after a dash."},
+    {"wording": "Paket telah sampai di gudang tujuan", "stage": "in_transit", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the destination city follows after a dash; the parcel reached the destination warehouse, not the recipient."},
+    {"wording": "Paket sedang diantar oleh kurir", "stage": "out_for_delivery", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the courier's name follows after a dash."},
+    {"wording": "Paket telah diterima", "stage": "delivered", "language": "id", "confirmedBy": "source", "note": "Quoted by cekresi.com's replies on its TanyaPaket forum for Indah Logistik resi; the receiver's name and relation follow after a dash."}
+  ]
+}

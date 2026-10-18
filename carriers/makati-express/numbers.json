@@ -1,0 +1,163 @@
+{
+  "carrier": "makati-express",
+  "records": [
+    {
+      "number": "DXB8611085",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20170417191514/http://www.makati-express.com:80/support/179001-Need-help-in-tracking-our-shipment---AWB--is--8611085",
+        "date": "2014-03-02",
+        "dateKind": "reply",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "makati-express"
+        ]
+      },
+      "note": "On Makati Express's own support forum, its Dubai support agent tells a customer to enter her AWB with the three-letter branch code, giving this number."
+    },
+    {
+      "number": "DOH05032007",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20161109165719/http://www.makati-express.com:80/support/820947-Please-help-me-how-to-track-my-air-cargo-im-trying-to-check-in-online-still-no-info-coming-my-tracking-number-is-DOH-SD05032007",
+        "date": "2014-07-02",
+        "dateKind": "reply",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "makati-express"
+        ]
+      },
+      "note": "On Makati Express's own support forum, its support agent gives this branch-coded number for a Doha air cargo that it later reports delivered."
+    },
+    {
+      "number": "DXB8090025",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20160502174554/http://www.makati-express.com:80/support/740204-DXB8090025-Hi-any-status-for-this-boxyour-immediate-response-very-much-appriaciatedthank-you",
+        "date": "2016-03-12",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "makati-express"
+        ]
+      },
+      "note": "A customer asks for the status of this box on Makati Express's own support forum."
+    },
+    {
+      "number": "dxb8138015",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20160608075337/http://www.makati-express.com:80/support/400483-Can-you-please-track-box-dxb8138015-Same--update-is-being-given-",
+        "date": "2016-05-20",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "makati-express"
+        ]
+      },
+      "note": "A customer asks Makati Express to track this box, shipped in April 2016, on its own support forum; typed in lower case."
+    },
+    {
+      "number": "FAH66359713",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20160502175215/http://www.makati-express.com:80/support/196553-FAH66359713-pwede-ko-po-ba-malaman-kung-nsaan-n-po-ung-cargo-ko-tnx",
+        "date": "2015-07-26",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "makati-express"
+        ]
+      },
+      "note": "A customer asks in Tagalog where this cargo is on Makati Express's own support forum."
+    },
+    {
+      "number": "FAH2258122",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20160502175236/http://www.makati-express.com:80/support/745349-Ask-ko-lang-kung-kelan-po-idedeliver-un-bagahe-ng-asawa-ko-FAH2258122-Thanks",
+        "date": "2015-08-16",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "australia-post",
+          "makati-express"
+        ]
+      },
+      "note": "A customer asks in Tagalog when this baggage will be delivered, on Makati Express's own support forum."
+    },
+    {
+      "number": "TAI99498407",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20160502175123/http://www.makati-express.com:80/support/105918-Mam-just-want-to-have-an-update-on-my-cargo-Track-number-is-TAI99498407-bound-to-cavite-Thanks-mam",
+        "date": "2015-08-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "makati-express"
+        ]
+      },
+      "note": "A customer gives this as the track number of a cargo from Taif bound to Cavite, on Makati Express's own support forum."
+    }
+  ]
+}

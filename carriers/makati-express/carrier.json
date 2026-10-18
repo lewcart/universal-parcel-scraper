@@ -1,0 +1,46 @@
+{
+  "id": "makati-express",
+  "displayName": "Makati Express Cargo",
+  "aliases": [
+    "Makati Express",
+    "MAKATI EXPRESS"
+  ],
+  "region": {
+    "countries": [
+      "PH",
+      "AE",
+      "BH",
+      "KW",
+      "QA",
+      "SA",
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#de0024"
+  },
+  "selectable": true,
+  "timezone": "Asia/Manila",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://makati-express.com/tracking/",
+    "canaryUrl": "https://makati-express.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "makati-express-1",
+      "pattern": "^(?:DXB|DOH|FAH|TAI)\\d{7,8}$",
+      "confidence": "low"
+    }
+  ]
+}

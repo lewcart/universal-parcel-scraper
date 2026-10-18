@@ -1,0 +1,43 @@
+{
+  "carrier": "royal-express-mm",
+  "records": [
+    {
+      "number": "YGN17538570431MDY",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://royalx.net/tracking",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The placeholder of the waybill field on Royal Express's own tracking page."
+    },
+    {
+      "number": "YGN9125345TKI/AAF362660",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://royalx.net/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The placeholder of the waybill field on Royal Express's home page."
+    }
+  ]
+}

@@ -5679,6 +5679,50 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "airpak-express": {
+    "displayName": "Airpak Express",
+    "color": "#cd2727",
+    "aliases": [
+      "Airpak",
+      "Airpak Express Singapore",
+      "Airpak Express Malaysia"
+    ],
+    "countries": [
+      "SG",
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://airpak-express.com/tracking/",
+    "trackingUrlTemplate": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
+    "trackingSearchUrl": "https://airpak-express.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "airpak-express.com",
+          "www.airpak-express.com"
+        ],
+        "pathPattern": "^/(?:index\\.php/)?tracking/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.airpak-express.com"
+        ],
+        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+        "params": [
+          "cn"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ajex": {
     "displayName": "AJEX",
     "color": "#ec171c",
@@ -6913,6 +6957,46 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "best-express-my": {
+    "displayName": "BEST Express Malaysia",
+    "color": "#d80c18",
+    "aliases": [
+      "BEST Express (Malaysia)",
+      "BEST Inc (MY)",
+      "BEST Inc. Malaysia",
+      "BEST Express MY"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.best-inc.my/track",
+    "trackingUrlTemplate": "https://www.best-inc.my/track?bills={trackingNumber}",
+    "trackingSearchUrl": "https://www.best-inc.my/track",
+    "linkRules": [
+      {
+        "domains": [
+          "best-inc.my",
+          "www.best-inc.my"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "bills"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^6085\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -15115,6 +15199,38 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "houng-ah-loun": {
+    "displayName": "HAL Express",
+    "color": "#ef4444",
+    "aliases": [
+      "Houng Ah Loun Logistics",
+      "Houng AH Loun Logistics",
+      "Houng Ah Loun Express",
+      "ຮຸ່ງອາລຸນ ຂົນສົ່ງດ່ວນ"
+    ],
+    "countries": [
+      "LA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Vientiane",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://halexpress.la/parcel",
+    "trackingUrlTemplate": "https://halexpress.la/parcel/{trackingNumber}",
+    "trackingSearchUrl": "https://halexpress.la/parcel",
+    "linkRules": [
+      {
+        "domains": [
+          "halexpress.la",
+          "www.halexpress.la"
+        ],
+        "path": "^/parcel/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "hovership": {
     "displayName": "Hovership",
     "color": "#6768fe",
@@ -15633,6 +15749,47 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^6(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])2[4-9]\\d{6}$",
         "confidence": "low"
+      }
+    ]
+  },
+  "indah-logistik": {
+    "displayName": "Indah Logistik",
+    "color": "#f28f2a",
+    "aliases": [
+      "Indah Cargo",
+      "Indah Logistik Cargo",
+      "Indah Logistic Cargo",
+      "PT Indah Logistik Cargo",
+      "Indah Logistic"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://indahonline.com/tracking/cek-resi",
+    "trackingUrlTemplate": "https://indahonline.com/services/view?NO_RESI={trackingNumber}",
+    "trackingSearchUrl": "https://indahonline.com/tracking/cek-resi",
+    "linkRules": [
+      {
+        "domains": [
+          "indahonline.com",
+          "www.indahonline.com"
+        ],
+        "pathPattern": "^/(?:en/)?services/view/?$",
+        "params": [
+          "NO_RESI"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}1CS(?:\\d{8}|(?:PL)?\\d{12})$",
+        "confidence": "high"
       }
     ]
   },
@@ -18511,6 +18668,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "makati-express": {
+    "displayName": "Makati Express Cargo",
+    "color": "#de0024",
+    "aliases": [
+      "Makati Express",
+      "MAKATI EXPRESS"
+    ],
+    "countries": [
+      "PH",
+      "AE",
+      "BH",
+      "KW",
+      "QA",
+      "SA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Manila",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://makati-express.com/tracking/",
+    "trackingSearchUrl": "https://makati-express.com/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:DXB|DOH|FAH|TAI)\\d{7,8}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "maltapost": {
     "displayName": "MaltaPost",
     "color": "#d43b2c",
@@ -19288,6 +19477,40 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/Inquiry/InquiryIndexClient$",
         "params": [
           "ItemId"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "netpost-vn": {
+    "displayName": "Netpost",
+    "color": "#0083cb",
+    "aliases": [
+      "Netpost Việt Nam",
+      "NETPOST VIETNAM",
+      "Netpost Vietnam",
+      "Công ty CP Chuyển phát nhanh Netpost Việt Nam"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://netpost.vn/Home/tra_cuu_van_don",
+    "trackingUrlTemplate": "https://netpost.vn/Home/tra_cuu_van_don?hawbNo={trackingNumber}",
+    "trackingSearchUrl": "https://netpost.vn/Home/tra_cuu_van_don",
+    "linkRules": [
+      {
+        "domains": [
+          "netpost.vn"
+        ],
+        "pathPattern": "^/Home/tra_cuu_van_don/?$",
+        "params": [
+          "hawbNo"
         ]
       }
     ],
@@ -20584,6 +20807,29 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "pandu-logistics": {
+    "displayName": "Pandu Logistics",
+    "color": "#d71921",
+    "aliases": [
+      "Pandu Express",
+      "Pandu Logistik",
+      "PT Pandu Siwi Sentosa",
+      "Pandu Siwi Sentosa"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pandulogistics.com/track/",
+    "trackingSearchUrl": "https://pandulogistics.com/track/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "pannon-xp": {
     "displayName": "Pannon XP",
     "color": "#f68121",
@@ -21064,6 +21310,73 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/landing\\.aspx$",
         "params": [
           "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pcp-express": {
+    "displayName": "PCP Express",
+    "color": "#ed1c24",
+    "aliases": [
+      "PCP Express Indonesia",
+      "Priority Cargo & Package",
+      "PT Yapindo Transportama"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.pcpexpress.com/",
+    "trackingUrlTemplate": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",
+    "trackingSearchUrl": "https://www.pcpexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "pcpexpress.com",
+          "www.pcpexpress.com"
+        ],
+        "pathPattern": "^/lacak_detailv2\\.php$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pcs-logistics-vn": {
+    "displayName": "PCS Logistics",
+    "color": "#ed543e",
+    "aliases": [
+      "PCS Courier",
+      "Planet Courier Services",
+      "Chuyển phát nhanh PCS"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pcs-logistics.com/en/track-trace",
+    "trackingUrlTemplate": "https://pcs-logistics.com/en/track-trace?code={trackingNumber}",
+    "trackingSearchUrl": "https://pcs-logistics.com/en/track-trace",
+    "linkRules": [
+      {
+        "domains": [
+          "pcs-logistics.com"
+        ],
+        "pathPattern": "^/(?:vi|en|de|ko|ja|fr|zh-CN|zh-TW)/track-trace/?$",
+        "params": [
+          "code"
         ]
       }
     ],
@@ -23274,6 +23587,23 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "royal-express-mm": {
+    "displayName": "Royal Express Myanmar",
+    "color": "#ed1c24",
+    "countries": [
+      "MM"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Yangon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://royalx.net/tracking",
+    "trackingSearchUrl": "https://royalx.net/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "rpx-indonesia": {
     "displayName": "RPX",
     "color": "#c9a73d",
@@ -23306,6 +23636,29 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "rr-express-sg": {
+    "displayName": "RR Express",
+    "color": "#00008e",
+    "aliases": [
+      "RR Express (S) Pte. Ltd.",
+      "TCK Express",
+      "TCK Express (S) Pte. Ltd."
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rrexpress.com.sg/tracking.aspx",
+    "trackingUrlTemplate": "https://tracking.frontierforce.com/tracking.aspx?cn={trackingNumber}&stid=rr",
+    "trackingSearchUrl": "https://www.rrexpress.com.sg/tracking.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "russian-post": {
@@ -26866,6 +27219,50 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "tp-logistics-th": {
+    "displayName": "TP Logistics",
+    "color": "#00a751",
+    "aliases": [
+      "Thaiparcels",
+      "ThaiParcels",
+      "Thai Parcel",
+      "TP Logistics Thailand"
+    ],
+    "countries": [
+      "TH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bangkok",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tptrack.info/ecom/dtrack.php",
+    "trackingUrlTemplate": "https://tptrack.info/ecom/dtrack.php?id={trackingNumber}&type=a1",
+    "trackingSearchUrl": "https://tptrack.info/ecom/dtrack.php",
+    "linkRules": [
+      {
+        "domains": [
+          "tptrack.info"
+        ],
+        "pathPattern": "^/ecom/dtrack\\.php$",
+        "query": "^id=([A-Za-z0-9]+)&type=a1$"
+      },
+      {
+        "domains": [
+          "tptrack.info"
+        ],
+        "pathPattern": "^/ecom/tdetail\\.php$",
+        "query": "^fn=a1&code=([A-Za-z0-9]+)$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?!CP|ID|JD|TB[ACM]|ASE|ECR|EPG|JJD|JMX|TRK)[A-Z]{3}\\d{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{4}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "trackon": {
     "displayName": "Trackon Couriers",
     "color": "#981e21",
@@ -29085,6 +29482,7 @@ export const CARRIER_IDS = [
   "aex-paraguay",
   "afghan-post",
   "air-star-xpress",
+  "airpak-express",
   "ajex",
   "akash-ganga",
   "aks-express",
@@ -29115,6 +29513,7 @@ export const CARRIER_IDS = [
   "bangladesh-post",
   "barid-al-maghrib",
   "belpost",
+  "best-express-my",
   "best-express-vn",
   "best-overnite-express",
   "best-transport",
@@ -29328,6 +29727,7 @@ export const CARRIER_IDS = [
   "homexpress",
   "horoz",
   "hound-express",
+  "houng-ah-loun",
   "hovership",
   "hp-mostar",
   "hr-parcel",
@@ -29341,6 +29741,7 @@ export const CARRIER_IDS = [
   "ids-logistik",
   "ilyang-logis",
   "imile",
+  "indah-logistik",
   "instabox",
   "integral-pack",
   "intelcom",
@@ -29417,6 +29818,7 @@ export const CARRIER_IDS = [
   "mailplus-au",
   "mainfreight",
   "major-express",
+  "makati-express",
   "maltapost",
   "mandae",
   "maritime-ontario",
@@ -29440,6 +29842,7 @@ export const CARRIER_IDS = [
   "ncs-courier",
   "neighbour-express",
   "nepal-post",
+  "netpost-vn",
   "next-level-delivery",
   "nhat-tin",
   "nim-express",
@@ -29472,6 +29875,7 @@ export const CARRIER_IDS = [
   "packs",
   "pakistan-post",
   "palletways",
+  "pandu-logistics",
   "pannon-xp",
   "paperfly",
   "paquetexpress",
@@ -29483,6 +29887,8 @@ export const CARRIER_IDS = [
   "paxel",
   "paxi",
   "pbt",
+  "pcp-express",
+  "pcs-logistics-vn",
   "pdn-express",
   "pdq-chile",
   "pecom",
@@ -29540,7 +29946,9 @@ export const CARRIER_IDS = [
   "rl-carriers",
   "roadie",
   "roadrunner",
+  "royal-express-mm",
   "rpx-indonesia",
+  "rr-express-sg",
   "russian-post",
   "saee",
   "sagawa",
@@ -29633,6 +30041,7 @@ export const CARRIER_IDS = [
   "toptrans",
   "torrestir",
   "total-express",
+  "tp-logistics-th",
   "trackon",
   "tracx-logis",
   "trans-o-flex",
@@ -29817,6 +30226,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aex-paraguay": [],
   "afghan-post": [],
   "air-star-xpress": [],
+  "airpak-express": [],
   "ajex": ["ajex-1"],
   "akash-ganga": [],
   "aks-express": [],
@@ -29847,6 +30257,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bangladesh-post": ["bangladesh-post-s10"],
   "barid-al-maghrib": ["barid-al-maghrib-s10"],
   "belpost": ["belpost-s10"],
+  "best-express-my": ["best-express-my-1"],
   "best-express-vn": [],
   "best-overnite-express": [],
   "best-transport": [],
@@ -30060,6 +30471,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "homexpress": [],
   "horoz": [],
   "hound-express": [],
+  "houng-ah-loun": [],
   "hovership": [],
   "hp-mostar": [],
   "hr-parcel": [],
@@ -30073,6 +30485,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ids-logistik": [],
   "ilyang-logis": [],
   "imile": ["imile-3","imile-1","imile-2"],
+  "indah-logistik": ["indah-logistik-1"],
   "instabox": [],
   "integral-pack": [],
   "intelcom": ["intelcom-1","intelcom-2","intelcom-3"],
@@ -30149,6 +30562,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "mailplus-au": ["mailplus-au-1"],
   "mainfreight": [],
   "major-express": [],
+  "makati-express": ["makati-express-1"],
   "maltapost": ["maltapost-s10"],
   "mandae": [],
   "maritime-ontario": [],
@@ -30172,6 +30586,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ncs-courier": [],
   "neighbour-express": [],
   "nepal-post": [],
+  "netpost-vn": [],
   "next-level-delivery": [],
   "nhat-tin": ["nhat-tin-1"],
   "nim-express": [],
@@ -30204,6 +30619,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "packs": [],
   "pakistan-post": ["pakistan-post-1"],
   "palletways": [],
+  "pandu-logistics": [],
   "pannon-xp": ["pannon-xp-1"],
   "paperfly": ["paperfly-1","paperfly-2"],
   "paquetexpress": ["paquetexpress-1"],
@@ -30215,6 +30631,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "paxel": ["paxel-1"],
   "paxi": [],
   "pbt": [],
+  "pcp-express": [],
+  "pcs-logistics-vn": [],
   "pdn-express": ["pdn-express-1"],
   "pdq-chile": [],
   "pecom": [],
@@ -30272,7 +30690,9 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "rl-carriers": ["rl-carriers-1","rl-carriers-2"],
   "roadie": ["roadie-1","roadie-2"],
   "roadrunner": [],
+  "royal-express-mm": [],
   "rpx-indonesia": [],
+  "rr-express-sg": [],
   "russian-post": [],
   "saee": ["saee-1"],
   "sagawa": ["sagawa-waybill"],
@@ -30365,6 +30785,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "toptrans": [],
   "torrestir": ["torrestir-1"],
   "total-express": ["total-express-awb"],
+  "tp-logistics-th": ["tp-logistics-th-1"],
   "trackon": [],
   "tracx-logis": ["tracx-logis-1"],
   "trans-o-flex": [],

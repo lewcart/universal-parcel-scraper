@@ -1,0 +1,36 @@
+{
+  "id": "pandu-logistics",
+  "displayName": "Pandu Logistics",
+  "aliases": [
+    "Pandu Express",
+    "Pandu Logistik",
+    "PT Pandu Siwi Sentosa",
+    "Pandu Siwi Sentosa"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#d71921"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://pandulogistics.com/track/",
+    "canaryUrl": "https://pandulogistics.com/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

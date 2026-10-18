@@ -546,4 +546,35 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('quicksilver-sa');
     }
   });
+
+  it('suggests TP Logistics for a branch code, a valid date and a counter', () => {
+    expect(detectCarrierMatch('BKK112412300042')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['tp-logistics-th'] });
+    for (const number of ['BKK112413300042', 'BKK112412320042', 'BKK11241230004', 'BK1112412300042', 'TRK112412300042']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('tp-logistics-th');
+    }
+  });
+
+  it('suggests BEST Express Malaysia for fourteen digits after its calling-code prefix', () => {
+    expect(detectCarrierMatch('60850000000017').candidates).toContain('best-express-my');
+    for (const number of ['60860000000017', '84850000000017', '6085000000001', '608500000000171']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('best-express-my');
+    }
+  });
+
+  it('suggests Makati Express for its branch codes, beside Australia Post at seven digits', () => {
+    expect(detectCarrierMatch('DXB12345678')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['makati-express'] });
+    expect(detectCarrierMatch('DOH1234567').candidates).toEqual(expect.arrayContaining(['makati-express', 'australia-post']));
+    for (const number of ['DXB123456', 'DXB123456789', 'MNL12345678']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('makati-express');
+    }
+  });
+
+  it('names Indah Logistik for a branch code, 1CS and its counters', () => {
+    for (const number of ['JKT1CS000000000001', 'JKT1CSPL000000000001', 'SUB1CS00000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'indah-logistik', confidence: 'high' });
+    }
+    for (const number of ['JKT1CS0000000', 'JKT1CX00000001', 'JKT1CSPL00000001', 'JK1CS00000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('indah-logistik');
+    }
+  });
 });

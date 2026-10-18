@@ -5677,6 +5677,50 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "airpak-express": {
+    "displayName": "Airpak Express",
+    "color": "#cd2727",
+    "aliases": [
+      "Airpak",
+      "Airpak Express Singapore",
+      "Airpak Express Malaysia"
+    ],
+    "countries": [
+      "SG",
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://airpak-express.com/tracking/",
+    "trackingUrlTemplate": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
+    "trackingSearchUrl": "https://airpak-express.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "airpak-express.com",
+          "www.airpak-express.com"
+        ],
+        "pathPattern": "^/(?:index\\.php/)?tracking/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "tracking.airpak-express.com"
+        ],
+        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+        "params": [
+          "cn"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ajex": {
     "displayName": "AJEX",
     "color": "#ec171c",
@@ -6911,6 +6955,46 @@
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "best-express-my": {
+    "displayName": "BEST Express Malaysia",
+    "color": "#d80c18",
+    "aliases": [
+      "BEST Express (Malaysia)",
+      "BEST Inc (MY)",
+      "BEST Inc. Malaysia",
+      "BEST Express MY"
+    ],
+    "countries": [
+      "MY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kuala_Lumpur",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.best-inc.my/track",
+    "trackingUrlTemplate": "https://www.best-inc.my/track?bills={trackingNumber}",
+    "trackingSearchUrl": "https://www.best-inc.my/track",
+    "linkRules": [
+      {
+        "domains": [
+          "best-inc.my",
+          "www.best-inc.my"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "bills"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^6085\\d{10}$",
+        "confidence": "low"
       }
     ]
   },
@@ -15113,6 +15197,38 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "houng-ah-loun": {
+    "displayName": "HAL Express",
+    "color": "#ef4444",
+    "aliases": [
+      "Houng Ah Loun Logistics",
+      "Houng AH Loun Logistics",
+      "Houng Ah Loun Express",
+      "ຮຸ່ງອາລຸນ ຂົນສົ່ງດ່ວນ"
+    ],
+    "countries": [
+      "LA"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Vientiane",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://halexpress.la/parcel",
+    "trackingUrlTemplate": "https://halexpress.la/parcel/{trackingNumber}",
+    "trackingSearchUrl": "https://halexpress.la/parcel",
+    "linkRules": [
+      {
+        "domains": [
+          "halexpress.la",
+          "www.halexpress.la"
+        ],
+        "path": "^/parcel/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "hovership": {
     "displayName": "Hovership",
     "color": "#6768fe",
@@ -15631,6 +15747,47 @@
       {
         "pattern": "^6(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])2[4-9]\\d{6}$",
         "confidence": "low"
+      }
+    ]
+  },
+  "indah-logistik": {
+    "displayName": "Indah Logistik",
+    "color": "#f28f2a",
+    "aliases": [
+      "Indah Cargo",
+      "Indah Logistik Cargo",
+      "Indah Logistic Cargo",
+      "PT Indah Logistik Cargo",
+      "Indah Logistic"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://indahonline.com/tracking/cek-resi",
+    "trackingUrlTemplate": "https://indahonline.com/services/view?NO_RESI={trackingNumber}",
+    "trackingSearchUrl": "https://indahonline.com/tracking/cek-resi",
+    "linkRules": [
+      {
+        "domains": [
+          "indahonline.com",
+          "www.indahonline.com"
+        ],
+        "pathPattern": "^/(?:en/)?services/view/?$",
+        "params": [
+          "NO_RESI"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}1CS(?:\\d{8}|(?:PL)?\\d{12})$",
+        "confidence": "high"
       }
     ]
   },
@@ -18509,6 +18666,38 @@
     ],
     "detectionRules": []
   },
+  "makati-express": {
+    "displayName": "Makati Express Cargo",
+    "color": "#de0024",
+    "aliases": [
+      "Makati Express",
+      "MAKATI EXPRESS"
+    ],
+    "countries": [
+      "PH",
+      "AE",
+      "BH",
+      "KW",
+      "QA",
+      "SA",
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Manila",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://makati-express.com/tracking/",
+    "trackingSearchUrl": "https://makati-express.com/tracking/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:DXB|DOH|FAH|TAI)\\d{7,8}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "maltapost": {
     "displayName": "MaltaPost",
     "color": "#d43b2c",
@@ -19286,6 +19475,40 @@
         "pathPattern": "^/Inquiry/InquiryIndexClient$",
         "params": [
           "ItemId"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "netpost-vn": {
+    "displayName": "Netpost",
+    "color": "#0083cb",
+    "aliases": [
+      "Netpost Việt Nam",
+      "NETPOST VIETNAM",
+      "Netpost Vietnam",
+      "Công ty CP Chuyển phát nhanh Netpost Việt Nam"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://netpost.vn/Home/tra_cuu_van_don",
+    "trackingUrlTemplate": "https://netpost.vn/Home/tra_cuu_van_don?hawbNo={trackingNumber}",
+    "trackingSearchUrl": "https://netpost.vn/Home/tra_cuu_van_don",
+    "linkRules": [
+      {
+        "domains": [
+          "netpost.vn"
+        ],
+        "pathPattern": "^/Home/tra_cuu_van_don/?$",
+        "params": [
+          "hawbNo"
         ]
       }
     ],
@@ -20582,6 +20805,29 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "pandu-logistics": {
+    "displayName": "Pandu Logistics",
+    "color": "#d71921",
+    "aliases": [
+      "Pandu Express",
+      "Pandu Logistik",
+      "PT Pandu Siwi Sentosa",
+      "Pandu Siwi Sentosa"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pandulogistics.com/track/",
+    "trackingSearchUrl": "https://pandulogistics.com/track/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "pannon-xp": {
     "displayName": "Pannon XP",
     "color": "#f68121",
@@ -21062,6 +21308,73 @@
         "pathPattern": "^/landing\\.aspx$",
         "params": [
           "track"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pcp-express": {
+    "displayName": "PCP Express",
+    "color": "#ed1c24",
+    "aliases": [
+      "PCP Express Indonesia",
+      "Priority Cargo & Package",
+      "PT Yapindo Transportama"
+    ],
+    "countries": [
+      "ID"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Jakarta",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.pcpexpress.com/",
+    "trackingUrlTemplate": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",
+    "trackingSearchUrl": "https://www.pcpexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "pcpexpress.com",
+          "www.pcpexpress.com"
+        ],
+        "pathPattern": "^/lacak_detailv2\\.php$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "pcs-logistics-vn": {
+    "displayName": "PCS Logistics",
+    "color": "#ed543e",
+    "aliases": [
+      "PCS Courier",
+      "Planet Courier Services",
+      "Chuyển phát nhanh PCS"
+    ],
+    "countries": [
+      "VN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pcs-logistics.com/en/track-trace",
+    "trackingUrlTemplate": "https://pcs-logistics.com/en/track-trace?code={trackingNumber}",
+    "trackingSearchUrl": "https://pcs-logistics.com/en/track-trace",
+    "linkRules": [
+      {
+        "domains": [
+          "pcs-logistics.com"
+        ],
+        "pathPattern": "^/(?:vi|en|de|ko|ja|fr|zh-CN|zh-TW)/track-trace/?$",
+        "params": [
+          "code"
         ]
       }
     ],
@@ -23272,6 +23585,23 @@
     ],
     "detectionRules": []
   },
+  "royal-express-mm": {
+    "displayName": "Royal Express Myanmar",
+    "color": "#ed1c24",
+    "countries": [
+      "MM"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Yangon",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://royalx.net/tracking",
+    "trackingSearchUrl": "https://royalx.net/tracking",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "rpx-indonesia": {
     "displayName": "RPX",
     "color": "#c9a73d",
@@ -23304,6 +23634,29 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "rr-express-sg": {
+    "displayName": "RR Express",
+    "color": "#00008e",
+    "aliases": [
+      "RR Express (S) Pte. Ltd.",
+      "TCK Express",
+      "TCK Express (S) Pte. Ltd."
+    ],
+    "countries": [
+      "SG"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.rrexpress.com.sg/tracking.aspx",
+    "trackingUrlTemplate": "https://tracking.frontierforce.com/tracking.aspx?cn={trackingNumber}&stid=rr",
+    "trackingSearchUrl": "https://www.rrexpress.com.sg/tracking.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "russian-post": {
@@ -26861,6 +27214,50 @@
       {
         "pattern": "^(?:TX[A-Z]{2}|AMZB)\\d{9}TX$",
         "confidence": "high"
+      }
+    ]
+  },
+  "tp-logistics-th": {
+    "displayName": "TP Logistics",
+    "color": "#00a751",
+    "aliases": [
+      "Thaiparcels",
+      "ThaiParcels",
+      "Thai Parcel",
+      "TP Logistics Thailand"
+    ],
+    "countries": [
+      "TH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Bangkok",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tptrack.info/ecom/dtrack.php",
+    "trackingUrlTemplate": "https://tptrack.info/ecom/dtrack.php?id={trackingNumber}&type=a1",
+    "trackingSearchUrl": "https://tptrack.info/ecom/dtrack.php",
+    "linkRules": [
+      {
+        "domains": [
+          "tptrack.info"
+        ],
+        "pathPattern": "^/ecom/dtrack\\.php$",
+        "query": "^id=([A-Za-z0-9]+)&type=a1$"
+      },
+      {
+        "domains": [
+          "tptrack.info"
+        ],
+        "pathPattern": "^/ecom/tdetail\\.php$",
+        "query": "^fn=a1&code=([A-Za-z0-9]+)$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?!CP|ID|JD|TB[ACM]|ASE|ECR|EPG|JJD|JMX|TRK)[A-Z]{3}\\d{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{4}$",
+        "confidence": "low"
       }
     ]
   },

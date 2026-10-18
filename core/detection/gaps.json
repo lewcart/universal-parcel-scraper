@@ -114,6 +114,18 @@
     "reason": "Nine digits are printed by many carriers and nothing in the number points to Air Star Xpress."
   },
   {
+    "carrier": "airpak-express",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve digits are printed by many carriers and nothing in the number points to Airpak Express."
+  },
+  {
+    "carrier": "airpak-express",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are printed by many carriers and nothing in the number points to Airpak Express."
+  },
+  {
     "carrier": "ajex",
     "pattern": "^A\\d{10}$",
     "kind": "by_design",
@@ -1681,6 +1693,12 @@
     "reason": "HP and sixteen digits appears only as one example in Hound Express's partner API documentation."
   },
   {
+    "carrier": "houng-ah-loun",
+    "pattern": "^[A-Z]{3}\\d{11}$",
+    "kind": "by_design",
+    "reason": "HAL Express bills are a branch code and eleven digits, known from one example only."
+  },
+  {
     "carrier": "hovership",
     "pattern": "^HV[A-Z0-9]{8}$",
     "kind": "collision",
@@ -2281,6 +2299,12 @@
     "reason": "Only one public NCS resi has this NCS-prefixed layout, too little to define a rule."
   },
   {
+    "carrier": "netpost-vn",
+    "pattern": "^\\d{15}$",
+    "kind": "by_design",
+    "reason": "Netpost waybills are bare fifteen-digit runs that many carriers share."
+  },
+  {
     "carrier": "next-level-delivery",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -2490,6 +2514,12 @@
     "reason": "Eleven digits are printed by other carriers too and nothing in the number points to Palletways."
   },
   {
+    "carrier": "pandu-logistics",
+    "pattern": "^30\\d{9}$",
+    "kind": "by_design",
+    "reason": "Pandu Logistics POD numbers are bare eleven-digit runs that many carriers share."
+  },
+  {
     "carrier": "pannon-xp",
     "pattern": "^\\d{6}$",
     "kind": "by_design",
@@ -2548,6 +2578,24 @@
     "pattern": "^LC\\d{8}$",
     "kind": "by_design",
     "reason": "Two letters and eight digits is a shape many carriers and senders use, so nothing in it points to PBT."
+  },
+  {
+    "carrier": "pcp-express",
+    "pattern": "^[A-Z]{7}\\d{7}[A-Z]\\d{5}$",
+    "kind": "by_design",
+    "reason": "Only one current PCP Express AWB is public, too little to claim the layout."
+  },
+  {
+    "carrier": "pcp-express",
+    "pattern": "^[A-Z]{3}\\d{12}(?:\\d{4})?$",
+    "kind": "by_design",
+    "reason": "Older PCP Express AWBs are a branch code followed by a bare digit run, too generic to claim."
+  },
+  {
+    "carrier": "pcs-logistics-vn",
+    "pattern": "^\\d{15}$",
+    "kind": "collision",
+    "reason": "Fifteen-digit PCS waybills share their shape with many carriers' numeric waybills, so the shape cannot name PCS."
   },
   {
     "carrier": "pecom",
@@ -2873,10 +2921,28 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to Roadrunner."
   },
   {
+    "carrier": "royal-express-mm",
+    "pattern": "^[A-Z]{3}\\d{11}[A-Z]{3}$",
+    "kind": "by_design",
+    "reason": "Royal Express shows this layout only as its form placeholder, too little to give it a rule."
+  },
+  {
+    "carrier": "royal-express-mm",
+    "pattern": "^[A-Z]{3}\\d{7}[A-Z]{3}/[A-Z]{3}\\d{6}$",
+    "kind": "by_design",
+    "reason": "Royal Express shows this layout only as its home page placeholder, too little to give it a rule."
+  },
+  {
     "carrier": "rpx-indonesia",
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "Twelve-digit RPX AWBs share their shape with many carriers' numeric waybills, so the shape cannot name RPX."
+  },
+  {
+    "carrier": "rr-express-sg",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are printed by many carriers and nothing in the number points to RR Express."
   },
   {
     "carrier": "russian-post",

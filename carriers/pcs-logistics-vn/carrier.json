@@ -1,0 +1,46 @@
+{
+  "id": "pcs-logistics-vn",
+  "displayName": "PCS Logistics",
+  "aliases": [
+    "PCS Courier",
+    "Planet Courier Services",
+    "Chuyển phát nhanh PCS"
+  ],
+  "region": {
+    "countries": [
+      "VN"
+    ]
+  },
+  "brand": {
+    "color": "#ed543e"
+  },
+  "selectable": true,
+  "timezone": "Asia/Ho_Chi_Minh",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pcs-logistics.com/en/track-trace?code={trackingNumber}",
+    "searchUrl": "https://pcs-logistics.com/en/track-trace",
+    "canaryUrl": "https://pcs-logistics.com/en/track-trace",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pcs-logistics.com"
+      ],
+      "pathPattern": "^/(?:vi|en|de|ko|ja|fr|zh-CN|zh-TW)/track-trace/?$",
+      "params": [
+        "code"
+      ]
+    }
+  ],
+  "detection": []
+}

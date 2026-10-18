@@ -1,0 +1,9 @@
+{
+  "carrier": "pcp-express",
+  "entries": [
+    {"wording": "PAKET BERHASIL DI JEMPUT OLEH", "stage": "accepted", "language": "id", "confirmedBy": "portal", "note": "Seen in an archived capture of PCP Express's tracking page, in its step list; the courier's name follows."},
+    {"wording": "PAKET TELAH SAMPAI DI FASILITAS SORTIR", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in an archived capture of PCP Express's tracking page; the city follows in brackets."},
+    {"wording": "PAKET TELAH KELUAR DARI FASILITAS SORTIR", "stage": "in_transit", "language": "id", "confirmedBy": "portal", "note": "Seen in an archived capture of PCP Express's tracking page; the city follows in brackets."},
+    {"wording": "PAKET DALAM PROSES PENGANTARAN OLEH", "stage": "out_for_delivery", "language": "id", "confirmedBy": "portal", "note": "Seen in an archived capture of PCP Express's tracking page; the courier's name follows."}
+  ]
+}

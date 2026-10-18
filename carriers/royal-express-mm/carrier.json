@@ -1,0 +1,31 @@
+{
+  "id": "royal-express-mm",
+  "displayName": "Royal Express Myanmar",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "MM"
+    ]
+  },
+  "brand": {
+    "color": "#ed1c24"
+  },
+  "selectable": true,
+  "timezone": "Asia/Yangon",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://royalx.net/tracking",
+    "canaryUrl": "https://royalx.net/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

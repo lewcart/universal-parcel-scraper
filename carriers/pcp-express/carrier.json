@@ -1,0 +1,47 @@
+{
+  "id": "pcp-express",
+  "displayName": "PCP Express",
+  "aliases": [
+    "PCP Express Indonesia",
+    "Priority Cargo & Package",
+    "PT Yapindo Transportama"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#ed1c24"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",
+    "searchUrl": "https://www.pcpexpress.com/",
+    "canaryUrl": "https://www.pcpexpress.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pcpexpress.com",
+        "www.pcpexpress.com"
+      ],
+      "pathPattern": "^/lacak_detailv2\\.php$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
+  "detection": []
+}

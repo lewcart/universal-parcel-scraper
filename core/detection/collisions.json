@@ -4635,5 +4635,73 @@
       "quicksilver-sa"
     ],
     "reason": "GLS Italy's low rule takes any two letters and nine digits; QS and nine digits is Quicksilver's tracker numbering, so both stay low suggestions."
+  },
+  {
+    "shape": "DXB, DOH, FAH or TAI followed by seven digits",
+    "carriers": [
+      "australia-post",
+      "makati-express"
+    ],
+    "reason": "Makati Express AWBs with a branch code and seven digits also fit Australia Post's low-confidence rule for three characters and seven digits; neither rule decides, so both stay suggestions."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "j-and-t",
+      "j-and-t-cargo",
+      "japan-post",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "airpak-express numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "fedex",
+      "j-and-t",
+      "j-and-t-cargo",
+      "japan-post",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "airpak-express numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{14}$",
+    "carriers": [
+      "best-express-my",
+      "brt",
+      "ciblex",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "dpd-uk",
+      "hermes-de",
+      "seur"
+    ],
+    "reason": "best-express-my numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

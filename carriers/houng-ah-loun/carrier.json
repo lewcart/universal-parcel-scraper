@@ -1,0 +1,45 @@
+{
+  "id": "houng-ah-loun",
+  "displayName": "HAL Express",
+  "aliases": [
+    "Houng Ah Loun Logistics",
+    "Houng AH Loun Logistics",
+    "Houng Ah Loun Express",
+    "ຮຸ່ງອາລຸນ ຂົນສົ່ງດ່ວນ"
+  ],
+  "region": {
+    "countries": [
+      "LA"
+    ]
+  },
+  "brand": {
+    "color": "#ef4444"
+  },
+  "selectable": true,
+  "timezone": "Asia/Vientiane",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://halexpress.la/parcel/{trackingNumber}",
+    "searchUrl": "https://halexpress.la/parcel",
+    "canaryUrl": "https://halexpress.la/parcel",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "halexpress.la",
+        "www.halexpress.la"
+      ],
+      "path": "^/parcel/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

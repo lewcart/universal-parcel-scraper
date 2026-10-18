@@ -1,0 +1,55 @@
+{
+  "id": "indah-logistik",
+  "displayName": "Indah Logistik",
+  "aliases": [
+    "Indah Cargo",
+    "Indah Logistik Cargo",
+    "Indah Logistic Cargo",
+    "PT Indah Logistik Cargo",
+    "Indah Logistic"
+  ],
+  "region": {
+    "countries": [
+      "ID"
+    ]
+  },
+  "brand": {
+    "color": "#f28f2a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Jakarta",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://indahonline.com/services/view?NO_RESI={trackingNumber}",
+    "searchUrl": "https://indahonline.com/tracking/cek-resi",
+    "canaryUrl": "https://indahonline.com/tracking/cek-resi",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "indahonline.com",
+        "www.indahonline.com"
+      ],
+      "pathPattern": "^/(?:en/)?services/view/?$",
+      "params": [
+        "NO_RESI"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "indah-logistik-1",
+      "pattern": "^[A-Z]{3}1CS(?:\\d{8}|(?:PL)?\\d{12})$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -22,7 +22,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture shows the tracker with this number in its search field, but the history loads by script from Nim Express's service host, so it is not visible."
@@ -49,7 +50,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture holds only the current page shell, so the history is not visible."
@@ -75,7 +77,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture holds the tracker's script, which requests this bill number from Nim Express's service host, but the history itself is not visible."
@@ -127,7 +130,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture was not opened, and the tracker loads history by script, so the history is not visible."
@@ -180,7 +184,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture was not opened, and the tracker loads history by script, so the history is not visible."
@@ -206,7 +211,8 @@
           "correos-chile",
           "delhivery",
           "yunda",
-          "korea-post"
+          "korea-post",
+          "fedex-pl"
         ]
       },
       "note": "Looked up on Nim Express's own tracker at nimexpress.com, as an archived address shows; the capture was not opened, and the tracker loads history by script, so the history is not visible."

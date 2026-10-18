@@ -1189,12 +1189,6 @@
     "reason": "Fastfrate probill numbers are ten bare digits that many carriers share."
   },
   {
-    "carrier": "fedex-pl",
-    "pattern": "^\\d{13}$",
-    "kind": "collision",
-    "reason": "FedEx Poland's domestic shipment numbers are thirteen digits, a length several carriers' rules take; every one seen starts with 6 and passes the GS1 check, as many other carriers' numbers do, so nothing in the number names the network."
-  },
-  {
     "carrier": "first-delivery-tn",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

@@ -4506,5 +4506,43 @@
       "inpost"
     ],
     "reason": "A Tu Hora Express's long form adds 001 and the delivery postcode to its sixteen-digit number, inside the 24-digit space these carriers' low rules share; recognition must establish the carrier."
+  },
+  {
+    "shape": "^\\d{13}$",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "^\\d{13}$",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "imile",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "^\\d{13}$",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "fedex-pl",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
   }
 ]

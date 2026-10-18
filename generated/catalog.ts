@@ -12421,7 +12421,13 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^6\\d{12}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      }
+    ]
   },
   "fermopoint": {
     "displayName": "Fermopoint",
@@ -27920,7 +27926,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fargo-uz": [],
   "fastdrop": [],
   "fastfrate": [],
-  "fedex-pl": [],
+  "fedex-pl": ["fedex-pl-1"],
   "fermopoint": ["fermopoint-1"],
   "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],
   "first-delivery-tn": [],

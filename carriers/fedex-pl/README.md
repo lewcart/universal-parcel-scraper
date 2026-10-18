@@ -47,11 +47,14 @@ through that service.
 ## Numbers
 
 Domestic shipments carry thirteen-digit numbers, the only form the domestic tracking app
-accepts. Archived lookups on the current and former domestic trackers show them with scans at
-Polish branches. They start with 6 and end in a GS1 check digit, which does not set them apart
-from other carriers' thirteen-digit numbers, so no rule claims them and detection does not
-offer FedEx Poland. No FedEx rule takes thirteen digits. The adapter can recognize a number it
-knows, but since no rule offers FedEx Poland, recognition is not asked about one.
+accepts and the length FedEx's
+[Polish help page](https://www.fedex.com/pl-pl/customer-support/faq/fedex-account/identify-service-type.html)
+gives its domestic service. Archived lookups on the current and former domestic trackers show
+them with scans at Polish branches. They start with 6 and end in a GS1 check digit, and
+`fedex-pl-1` suggests FedEx Poland for that layout. Other carriers' thirteen-digit numbers can
+share it, so the rule stays low and recognition asks FedEx Poland's tracker, which knows only
+its own shipments. The passing check digit puts FedEx Poland first unless the reader's country
+is another candidate's home. FedEx's worldwide tracking does not take thirteen digits.
 
 ## Links
 

@@ -105,5 +105,12 @@
       ]
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "fedex-pl-1",
+      "pattern": "^6\\d{12}$",
+      "confidence": "low",
+      "checksum": "gs1"
+    }
+  ]
 }

@@ -12419,7 +12419,13 @@
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^6\\d{12}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      }
+    ]
   },
   "fermopoint": {
     "displayName": "Fermopoint",

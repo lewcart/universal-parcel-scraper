@@ -280,6 +280,20 @@ describe('SHEIN package numbers Paack delivers in Spain', () => {
   );
 });
 
+describe('FedEx Poland domestic numbers', () => {
+  // Synthetic numbers in FedEx Poland's layout; none is a real parcel.
+  it('suggests FedEx Poland for thirteen digits starting with 6 and a GS1 check digit, and asks it first in Poland', () => {
+    for (const number of ['6230000000005', '6010000000003']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('fedex-pl');
+      expect(recognitionAskedCarriers(number, { countryHint: 'PL' })[0], number).toBe('fedex-pl');
+    }
+    for (const number of ['6230000000006', '7230000000004', '623000000005', '62300000000005']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('fedex-pl');
+    }
+  });
+});
+
 describe('wave seven courier rules', () => {
   // Synthetic numbers in each carrier's layout; none is a real parcel.
   it('suggests DPD Austria first for its depot codes and asks it first in recognition', () => {

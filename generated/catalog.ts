@@ -12894,7 +12894,7 @@ export const CARRIER_CATALOG = {
   },
   "fleetex": {
     "displayName": "FleetExpress",
-    "color": "#2563eb",
+    "color": "#572aee",
     "aliases": [
       "FleetEx",
       "Fleet Express",
@@ -18525,7 +18525,7 @@ export const CARRIER_CATALOG = {
   },
   "micro-express": {
     "displayName": "Micro Express",
-    "color": "#dc143c",
+    "color": "#e73100",
     "aliases": [
       "Mirco Express"
     ],
@@ -21790,7 +21790,7 @@ export const CARRIER_CATALOG = {
   },
   "postplus": {
     "displayName": "PostPlus",
-    "color": "#fe5f55",
+    "color": "#002b53",
     "aliases": [
       "Post+",
       "Post+ B.V.",

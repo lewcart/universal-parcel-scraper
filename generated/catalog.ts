@@ -6131,7 +6131,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ampm",
+      "localClocks": true
     },
     "canaryUrl": "https://grupoampm.com/rastreador/",
     "trackingUrlTemplate": "https://grupoampm.com/rastreador/?tracking-id={trackingNumber}",

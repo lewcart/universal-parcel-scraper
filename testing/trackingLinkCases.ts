@@ -629,6 +629,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pts-worldwide-express', number: '1000000000',
     route: /^https:\/\/tracking\.pts\.net\/1000000000$/,
     marker: /Parcel Not Founded!|G[öo]nderi Bulunamad[ıi]!|Track & Trace Parcel/ },
+  // The page looks the guía in its address up as it is served and names it over the shipment or an unknown one's notice.
+  { carrier: 'ampm', number: 'IDTS00000000000000',
+    route: /^https:\/\/grupoampm\.com\/rastreador\/\?tracking-id=IDTS00000000000000$/,
+    marker: /N[úu]mero de gu[íi]a inv[áa]lido o sin informaci[óo]n|MOVIMIENTOS/i },
   // The page looks up the number in its address; an unknown one gets a notice under an empty form.
   { carrier: 'evdemo-lojistik', number: '000000000000',
     route: /^https:\/\/www\.evdemolojistik\.com\/takip\?kargo_kodu=000000000000$/,

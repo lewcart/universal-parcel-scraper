@@ -274,6 +274,7 @@ import { adapter as sfc } from '../carriers/sfc/adapter.js';
 import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as skroutzLastMile } from '../carriers/skroutz-last-mile/adapter.js';
+import { adapter as skynetWorldwide } from '../carriers/skynet-worldwide/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
 import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
@@ -615,6 +616,7 @@ export const REGISTRY: RegistryDefinition = {
     "shadowfax": shadowfax,
     "singapore-post": singaporePost,
     "skroutz-last-mile": skroutzLastMile,
+    "skynet-worldwide": skynetWorldwide,
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
     "smsa-express": smsaExpress,
@@ -1216,7 +1218,7 @@ export const REGISTRY: RegistryDefinition = {
     "skroutz-last-mile": "skroutz-last-mile",
     "skyking": "universal",
     "skynet-sa": "universal",
-    "skynet-worldwide": "universal",
+    "skynet-worldwide": "skynet-worldwide",
     "slgtrax": "universal",
     "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "slovenska-posta",

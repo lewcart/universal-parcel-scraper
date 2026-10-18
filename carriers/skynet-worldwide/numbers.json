@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -47,7 +47,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -81,9 +81,8 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "scope_review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -103,7 +102,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Ship24's SkyNet tracking-number page lists it among its examples, but the same list mixes in marketplace labels of Skynet Malaysia, a separate company."
+      "note": "Ship24's SkyNet tracking-number page lists it among its examples, in a list that mixes in marketplace labels of Skynet Malaysia, a separate company. SkyNet's own tracker knows it."
     },
     {
       "number": "080054714596",

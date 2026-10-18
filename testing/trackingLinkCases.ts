@@ -1012,6 +1012,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'posturinn', number: 'ZZ000000014IS',
     route: /^https:\/\/(?:www\.)?posturinn\.is\/einstaklingar\/mottaka\/fylgstu-med-sendingunni-thinni\/\?q=ZZ000000014IS$/,
     marker: /Fylgstu með sendingunni þinni|Óþekkt númer/ },
+  // The network's tracker writes the number into its heading, over its notice for an unknown one.
+  { carrier: 'skynet-worldwide', number: 'ZZ0000000000',
+    route: /^https:\/\/tracking\.skynetexpress\.com\/go\/plm-tracking\?stid=skynet&cn=ZZ0000000000$/,
+    marker: /No tracking found for this number|Frontier Force Technology/ },
 ];
 
 /**

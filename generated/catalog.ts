@@ -22452,7 +22452,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skynet-worldwide",
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.skynetexpress.com/go/plm-tracking",
     "trackingUrlTemplate": "https://tracking.skynetexpress.com/go/plm-tracking?stid=skynet&cn={trackingNumber}",

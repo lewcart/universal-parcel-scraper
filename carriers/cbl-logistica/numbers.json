@@ -29,6 +29,35 @@
         ]
       },
       "note": "A customer's review on CBL's Trustpilot page gives this shipment number for a parcel that CBL's A Coruña branch failed to deliver and then reported lost."
+    },
+    {
+      "number": "999935360776",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/smart-dato/cbl-logistica-sdk/blob/main/tests/Fixtures/responses/status-by-reference.json",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "sf-express",
+          "sto",
+          "zto",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse"
+        ]
+      },
+      "note": "An open-source client for CBL's customer web service recorded this status reply from CBL's test account; it gives this as the carrier number of a newly registered shipment."
     }
   ]
 }

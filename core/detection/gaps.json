@@ -472,9 +472,9 @@
   },
   {
     "carrier": "cbl-logistica",
-    "pattern": "^\\d{11}$",
+    "pattern": "^\\d{11,12}$",
     "kind": "by_design",
-    "reason": "The one CBL number seen is eleven bare digits, a length other carriers share, so no rule claims it."
+    "reason": "CBL numbers are eleven or twelve bare digits, lengths other carriers share, so no rule claims them."
   },
   {
     "carrier": "cdek",

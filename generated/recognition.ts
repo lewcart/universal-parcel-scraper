@@ -35,6 +35,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "canada-post": 590,
   "canpar": 780,
   "cargus": 270,
+  "cbl-logistica": 851,
   "cdek": 440,
   "cdl": 95,
   "celeritas": 996,

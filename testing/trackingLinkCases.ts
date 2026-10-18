@@ -577,6 +577,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'courier-center', number: '013000000000',
     route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000$/,
     marker: /Δεν βρέθηκε φορτωτική με τον αριθμό|Αριθμός Φορτωτικής/ },
+  // The locator page reads the number from its address and looks it up on load; an unknown one gets an error dialog.
+  { carrier: 'cbl-logistica', number: '00000000000',
+    route: /^https:\/\/clientes\.cbl-logistica\.com\/public\/consultaenvio\.aspx\?id=00000000000$/,
+    marker: /No hay datos|Datos generales|Eventos e incidencias/ },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

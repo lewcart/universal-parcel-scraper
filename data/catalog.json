@@ -7906,10 +7906,24 @@
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cbl-logistica",
+      "recognitionRank": 851,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.cbl-logistica.com/track-and-go",
-    "linkRules": [],
+    "canaryUrl": "https://clientes.cbl-logistica.com/public/consultaenvio.aspx",
+    "trackingUrlTemplate": "https://clientes.cbl-logistica.com/public/consultaenvio.aspx?id={trackingNumber}",
+    "trackingSearchUrl": "https://clientes.cbl-logistica.com/public/consultaenvio.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "clientes.cbl-logistica.com"
+        ],
+        "pathPattern": "^/public/consultaenvio\\.aspx$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "cdek": {

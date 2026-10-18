@@ -14820,7 +14820,7 @@ export const CARRIER_CATALOG = {
   },
   "gsi-express": {
     "displayName": "GSI Express",
-    "color": "#254f89",
+    "color": "#386cac",
     "aliases": [
       "GSI EXPRESS",
       "GSI EXPRESS LOGISTICS INC."
@@ -27349,7 +27349,7 @@ export const CARRIER_CATALOG = {
   },
   "today-kr": {
     "displayName": "To-Day",
-    "color": "#355cff",
+    "color": "#000000",
     "aliases": [
       "투데이",
       "투데이택배",
@@ -28937,7 +28937,7 @@ export const CARRIER_CATALOG = {
   },
   "winion-logis": {
     "displayName": "WINION LOGIS",
-    "color": "#005baf",
+    "color": "#006ecd",
     "aliases": [
       "위니온로지스",
       "위니온택배",

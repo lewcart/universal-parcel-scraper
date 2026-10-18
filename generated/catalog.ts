@@ -16384,7 +16384,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "liccardi"
     },
     "canaryUrl": "https://www.liccarditrasporti.com/",
     "trackingUrlTemplate": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",

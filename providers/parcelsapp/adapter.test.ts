@@ -1187,6 +1187,44 @@ describe('ParcelsApp result parsing', () => {
     ] }, xzg, identity(xzg)).events?.[0]?.time).toBe('2026-06-16T16:40:00.000Z');
   });
 
+  it('reads SwiftX\'s EWR hub on Eastern time, so DHLink\'s copies of its scans stay one with them', () => {
+    // Live shape: DHLink relays SwiftX's hub scans on China's clock, and
+    // SwiftX's copies carry the hub's wall clock; its label is on GMT-07:00.
+    const eyt = 'EYT0000000000HZ';
+    const scans = (timezone: string | null = null) => parseParcelsAppResponse({ carriers: ['DHLink', 'SwiftX'], originCode: 'CN', destinationCode: 'US',
+      states: [
+        { date: '2026-07-08T21:17:44Z', status: 'Departed Origin Hub', carrier: 0, location: 'EWR HUB, United States' },
+        { date: '2026-07-08T11:05:12Z', status: 'Arrived at Origin Hub', carrier: 0, location: 'EWR HUB, United States' },
+        { date: '2026-07-08T09:17:44Z', status: 'Departed Origin Hub', carrier: 1, location: 'US, EXAMPLE TOWN, EWR HUB' },
+        { date: '2026-07-07T23:05:12Z', status: 'Arrived at Origin Hub', carrier: 1, location: 'US, EXAMPLE TOWN, EWR HUB' },
+        { date: '2026-06-26T10:12:09Z', status: 'Package received and scanned at warehouse', carrier: 0 },
+        { date: '2026-06-24T18:20:31Z', status: 'Shipping Label Created', carrier: 1, location: 'US, SYSTEM, SYSTEM' },
+      ] }, eyt, identity(eyt), timezone).events?.map(({ time, description }) => [time, description]);
+    const expected = [
+      ['2026-07-08T13:17:44.000Z', 'Departed Origin Hub'], ['2026-07-08T03:05:12.000Z', 'Arrived at Origin Hub'],
+      ['2026-06-26T02:12:09.000Z', 'Package received and scanned at warehouse'], ['2026-06-25T01:20:31.000Z', 'Shipping Label Created'],
+    ];
+    expect(scans()).toEqual(expected);
+    expect(scans('America/Los_Angeles')).toEqual(expected);
+  });
+
+  it('reads SwiftX\'s listed sites in their zone, its labels on GMT-07:00 in every season and its other scans on Pacific time', () => {
+    const swx = 'SWX000000000000000001';
+    const times = (states: Record<string, unknown>[]) =>
+      parseParcelsAppResponse({ carriers: ['SwiftX'], states }, swx, identity(swx)).events?.map(({ time }) => time);
+    expect(times([
+      { date: '2026-01-17T06:15:30Z', status: 'Arrived at Destination Hub', carrier: 0, location: 'US, EXAMPLE CITY, ABC HUB' },
+      { date: '2026-01-14T22:40:05Z', status: 'Departed Origin Hub', carrier: 0, location: 'US, EXAMPLE TOWN, EWR HUB' },
+      { date: '2026-01-12T03:42:21Z', status: 'Shipping Label Created', carrier: 0, location: 'US, SYSTEM, SYSTEM' },
+    ])).toEqual(['2026-01-17T14:15:30.000Z', '2026-01-15T03:40:05.000Z', '2026-01-12T10:42:21.000Z']);
+    // A label at the hub keeps the label's clock.
+    expect(times([{ date: '2026-01-12T03:42:21Z', status: 'Shipping Label Created', carrier: 0, location: 'US, EXAMPLE TOWN, EWR HUB' }]))
+      .toEqual(['2026-01-12T10:42:21.000Z']);
+    // The rendered page prints no site, but names the label.
+    expect(parseParcelsAppHtml(identity(swx).replace('</table>', `</table><ul class="events">${
+      carrierRow('12 Jan 2026', '03:42', 'Shipping Label Created', 'SwiftX')}</ul>`), swx).events?.[0]?.time).toBe('2026-01-12T10:42:00.000Z');
+  });
+
   it('reads the networks ParcelsApp names its own way on their home clock', () => {
     const times = (carriers: string[], states: Record<string, unknown>[], trackingNumber = number) =>
       parseParcelsAppResponse({ carriers, states }, trackingNumber, identity(trackingNumber)).events?.map((scan) => scan.time);

@@ -292,6 +292,25 @@ function speedafZone(payload: Record<string, unknown>, date: unknown, destinatio
   if (!wall || !departed || wall <= departed) return 'Asia/Shanghai';
   return countryTimeZone(destination) ?? undefined;
 }
+/**
+ * SwiftX's dates are its sites' wall clocks: its own tracker gives each scan
+ * its site's offset, which follows daylight saving time (carriers/swiftx).
+ * ParcelsApp keeps the digits under a UTC label and writes the site after the
+ * country and town, with no state ("US, EXAMPLE TOWN, EWR HUB"). SwiftX names
+ * its sites by airport code, and a site listed here gives its zone: its EWR
+ * hub's digits, read on Eastern time, have to the second the instants of
+ * DHLink's copies of the same scans, which DHLink dates on China's clock.
+ * Other sites keep SwiftX's catalog zone, Pacific. Its labels ("Shipping Label
+ * Created", at "US, SYSTEM, SYSTEM") carry GMT-07:00 in every season in its
+ * own tracker, and keep that clock wherever they are.
+ */
+const SWIFTX_SITES: ReadonlyMap<string, string> = new Map([['EWR HUB', 'America/New_York']]);
+const SWIFTX_LABEL = /^shipping label created$/i;
+const SWIFTX_LABEL_CLOCK = 'UTC-7';
+function swiftxSiteZone(location: string): string | null {
+  const site = location.split(',').at(-1)?.trim().replace(/\s+/g, ' ').toUpperCase();
+  return (site && SWIFTX_SITES.get(site)) || null;
+}
 // A UPU office of exchange in Portugal leading a CTT location: "PTLISB - (OUTRO) LISBON PROV".
 const CTT_HOME_OFFICE = /^PT[A-Z0-9]{4}\s+-\s/;
 /**
@@ -604,6 +623,9 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
   // Cainiao's copies of Speedaf's scans keep Speedaf's digits, its arrival at the linehaul office too.
   if (carrier === 'speedaf' || (key === 'cainiao' && speedafDeparture(payload))) return speedafZone(payload, state.date, destination);
+  // A SwiftX label keeps its own clock, and a listed SwiftX site dates its scans (`siteZone`).
+  if (carrier === 'swiftx' && SWIFTX_LABEL.test(status.trim())) return SWIFTX_LABEL_CLOCK;
+  if (carrier === 'swiftx' && swiftxSiteZone(scanLocation(name, state.location))) return undefined;
   if (Object.hasOwn(HOME_CLOCKS, key)) return HOME_CLOCKS[key]!;
   // A home clock stays a guess that a location abroad rules out, even when
   // the catalog gives the network that zone (GEODIS Poland for "Pekaes").
@@ -624,6 +646,7 @@ function siteZone(payload: Record<string, unknown>, state: Record<string, unknow
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   const location = scanLocation(name, state.location);
   if (carrier === 'ctt') return cttZone(payload, location, state.date, number, destination);
+  if (carrier === 'swiftx') return swiftxSiteZone(location) ?? undefined;
   // A facility's clock, whatever the label: no other step applies to it.
   if (relaysFacilityClock(name)) return facilityZone(location);
   if (carrier === 'china-post' && inChina(location)) return 'Asia/Shanghai';

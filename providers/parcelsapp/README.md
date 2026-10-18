@@ -153,6 +153,14 @@ step exists for future protocol changes.
   scan the reply is inconclusive ("cannot place the latest DHL Express scan"), so an older
   scan does not stand in for the parcel's state and routing asks the next source. The
   rendered page prints no location, so it places none of them.
+- SwiftX's dates are its sites' wall clocks: its own tracker gives each scan its site's
+  offset ([SwiftX](../../carriers/swiftx/README.md)). ParcelsApp writes the site after the
+  country and town, with no state ("US, EXAMPLE TOWN, EWR HUB"), and a site the adapter
+  lists gives its zone: read on Eastern time, the EWR hub's digits have to the second the
+  instants of DHLink's copies of the same scans, which DHLink dates on China's clock. Other
+  sites keep SwiftX's catalog zone, Pacific, in step 1. Its labels ("Shipping Label
+  Created") take GMT-07:00, which its own tracker gives them in every season. The rendered
+  page prints no location, so it places no site.
 - Wall clocks: the dates of USPS, Canada Post, GOFO's US scans, SpeedPAK, EMS, Cainiao,
   EcoScooting, 4PX and MailAmericas are each scan's local clock under a label that is
   never its instant (checked 2026-10-10 scan for scan: USPS's page and the "at 8:25 am" in

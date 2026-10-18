@@ -13608,7 +13608,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "go4",
+      "recognitionRank": 863
     },
     "canaryUrl": "https://zona.go4.eu/status/",
     "trackingUrlTemplate": "https://zona.go4.eu/status/?parcelId={trackingNumber}",

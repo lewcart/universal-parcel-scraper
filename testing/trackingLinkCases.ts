@@ -1089,6 +1089,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/tracking\.messenger\.cz\/ZZZZ0000$/,
     marker: /Zásilku se nám nepodařilo vyhledat/,
     forwarding: { notFound: /Zásilku se nám nepodařilo vyhledat/ } },
+  // The page looks the number up from its query, keeps it in its search box and says when it does not know it.
+  { carrier: 'go4', number: '20000000000',
+    route: /^https:\/\/zona\.go4\.eu\/status\/\?parcelId=20000000000$/,
+    marker: /Zásielka sa nenašla/ },
   // The page looks the barcode up from its path, keeps it in its search box and says when it does not know it.
   { carrier: 'nox', number: '220000000000000101000000',
     route: /^https:\/\/trackandtrace\.app\.nox\.express\/scannungen\/220000000000000101000000$/,

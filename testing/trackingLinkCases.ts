@@ -1114,6 +1114,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/a1post\.bg\/track\.php\?t=A10000000000$/,
     marker: /Package not found|Track at partner website/,
     forwarding: { notFound: /Package not found/ } },
+  // The page looks the number up from its path, shows it under the shipping details and has no
+  // not-found answer: an unknown one gets its notice that it cannot retrieve tracking.
+  { carrier: 'pitney-bowes', number: 'UPAAA000000000000000',
+    route: /^https:\/\/trackpb\.shipment\.co\/track\/UPAAA000000000000000$/,
+    marker: /We are unable to retrieve tracking information at this time|Shipping Info/ },
 ];
 
 /**

@@ -20454,7 +20454,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pitney-bowes",
+      "localClocks": true
     },
     "canaryUrl": "https://trackpb.shipment.co/track",
     "trackingUrlTemplate": "https://trackpb.shipment.co/track/{trackingNumber}",

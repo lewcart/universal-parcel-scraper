@@ -20,18 +20,49 @@
   "timezone": "Europe/London",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pitney-bowes",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "service_name",
+    "weight"
+  ],
   "portal": {
     "url": "https://trackpb.shipment.co/track/{trackingNumber}",
     "searchUrl": "https://trackpb.shipment.co/track",
     "canaryUrl": "https://trackpb.shipment.co/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "delivery_partner"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "weight"
+    ],
+    "discarded": [
+      "delivery_partner"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "offset_timestamps",
+      "delivered_at",
+      "delivery_tracking_number",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

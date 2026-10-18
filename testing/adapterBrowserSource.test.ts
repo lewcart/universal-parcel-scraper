@@ -27,7 +27,14 @@ const REMOTE = { module: 'core/transport/localBrowser.ts', name: 'withRemoteBrow
 /** The browser service's client, which only the host builds. */
 const CLIENT = { module: 'core/transport/trawl.ts', name: 'TrawlClient' };
 
-interface Carrier { id: string; tracking: { adapter: string | null; browser?: boolean } }
+/**
+ * The runner steps that can open a browser: the browser service's (`trawl`), a
+ * local or remote Chromium's (`browser`), and DPD's consignee page (`page`),
+ * which the browser service renders when one is configured.
+ */
+const BROWSER_STEPS = ['trawl', 'browser', 'page'];
+
+interface Carrier { id: string; tracking: { adapter: string | null; steps: string[]; browser?: boolean } }
 
 const carriers: Carrier[] = readdirSync(carriersDirectory, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
@@ -166,5 +173,12 @@ describe('tracking.browser', () => {
   it('is declared only by carriers whose adapter can open a browser', () => {
     expect(carriers.filter((carrier) => carrier.tracking.browser === true && !sitesOf(carrier).length)
       .map((carrier) => `${carrier.id} (adapter ${carrier.tracking.adapter})`)).toEqual([]);
+  });
+
+  it('is declared exactly by the carriers that list a browser step', () => {
+    const listed = (carrier: Carrier) => carrier.tracking.steps.some((step) => BROWSER_STEPS.includes(step));
+    expect(carriers.filter((carrier) => listed(carrier) !== (carrier.tracking.browser === true))
+      .map((carrier) => `${carrier.id}: ${carrier.tracking.steps.join(', ') || 'no steps'}`)).toEqual([]);
+    expect(BROWSER_STEPS.filter((step) => !carriers.some((carrier) => carrier.tracking.steps.includes(step)))).toEqual([]);
   });
 });

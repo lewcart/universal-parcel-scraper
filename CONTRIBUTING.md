@@ -77,7 +77,8 @@ Every adapter follows these rules:
   `tracking.recognition.pattern` names the ones it can.
 - Its carriers set `tracking.browser` when a lookup can open a browser through the environment's
   `trawl` or `browserExecutablePath`, or a remote one. `testing/adapterBrowserSource.test.ts`
-  reads that from the adapter's code.
+  reads that from the adapter's code, and checks that exactly those carriers list a browser
+  step: `trawl` for the browser service, `browser` for a Chromium, or DPD's `page`.
 
 [CORPUS.md](CORPUS.md) describes the sample numbers and status records, and
 [ARCHITECTURE.md](ARCHITECTURE.md) the rest of what an adapter lives by.

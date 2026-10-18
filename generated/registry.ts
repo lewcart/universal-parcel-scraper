@@ -178,6 +178,7 @@ import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
 import { adapter as hrParcel } from '../carriers/hr-parcel/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
+import { adapter as idsLogistik } from '../carriers/ids-logistik/adapter.js';
 import { adapter as imile } from '../carriers/imile/adapter.js';
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
 import { adapter as inpost } from '../carriers/inpost/adapter.js';
@@ -553,6 +554,7 @@ export const REGISTRY: RegistryDefinition = {
     "hr-parcel": hrParcel,
     "hrvatska-posta": hrvatskaPosta,
     "hywl": hywl,
+    "ids-logistik": idsLogistik,
     "imile": imile,
     "india-post": indiaPost,
     "inpost": inpost,
@@ -1056,7 +1058,7 @@ export const REGISTRY: RegistryDefinition = {
     "icc-worldwide": "universal",
     "ics-courier": "universal",
     "idexpress": "universal",
-    "ids-logistik": "universal",
+    "ids-logistik": "ids-logistik",
     "ilyang-logis": "universal",
     "imile": "imile",
     "india-post": "india-post",

@@ -15015,7 +15015,20 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ids-logistik",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "IDS shows a shipment only with the recipient's postcode.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "canaryUrl": "https://www.ids-logistik.de/de/sendungsverfolgung",
     "trackingSearchUrl": "https://www.ids-logistik.de/de/sendungsverfolgung",

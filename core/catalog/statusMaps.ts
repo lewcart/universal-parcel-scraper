@@ -143,6 +143,7 @@ import { statusMap as hispapost } from '../../carriers/hispapost/status.js';
 import { statusMap as hrParcel } from '../../carriers/hr-parcel/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
+import { statusMap as idsLogistik } from '../../carriers/ids-logistik/status.js';
 import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
 import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/status.js';
@@ -320,7 +321,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, globalpost, go4, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
-  'hrvatska-posta': hrvatskaPosta, hywl, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
+  'hrvatska-posta': hrvatskaPosta, hywl, 'ids-logistik': idsLogistik, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,

@@ -9279,7 +9279,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "danske-fragtmaend",
+      "recognitionRank": 873
     },
     "canaryUrl": "https://trace.fragt.dk/",
     "trackingUrlTemplate": "https://trace.fragt.dk/{trackingNumber}",

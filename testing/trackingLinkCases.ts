@@ -1020,6 +1020,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skynet-worldwide', number: 'ZZ0000000000',
     route: /^https:\/\/tracking\.skynetexpress\.com\/go\/plm-tracking\?stid=skynet&cn=ZZ0000000000$/,
     marker: /No tracking found for this number|Frontier Force Technology/ },
+  // The path redirects to the page's own route, which looks the number up and says when it does not recognize it.
+  { carrier: 'danske-fragtmaend', number: 'ZZ000000',
+    route: /^https:\/\/trace\.fragt\.dk\/#\/trackTrace\/ZZ000000$/,
+    marker: /no record of the consignment note number|kan ikke genkende fragtbrevsnummeret/ },
 ];
 
 /**

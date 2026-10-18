@@ -64,6 +64,7 @@ import { statusMap as cseRussia } from '../../carriers/cse-russia/status.js';
 import { statusMap as cttyex } from '../../carriers/cttyex/status.js';
 import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
 import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
+import { statusMap as danskeFragtmaend } from '../../carriers/danske-fragtmaend/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
@@ -278,7 +279,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, coordinadora,
   'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'dai-post': daiPost,
-  dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,
+  'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,
   'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-za': dpdZa, dsv, dx, dynalogic, 'early-bird': earlyBird,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, estes,

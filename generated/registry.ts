@@ -75,6 +75,7 @@ import { adapter as cttyex } from '../carriers/cttyex/adapter.js';
 import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
 import { adapter as dachser } from '../carriers/dachser/adapter.js';
 import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
+import { adapter as danskeFragtmaend } from '../carriers/danske-fragtmaend/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
 import { adapter as dayRoss } from '../carriers/day-ross/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
@@ -418,6 +419,7 @@ export const REGISTRY: RegistryDefinition = {
     "cyprus-post": cyprusPost,
     "dachser": dachser,
     "dai-post": daiPost,
+    "danske-fragtmaend": danskeFragtmaend,
     "dao": dao,
     "day-ross": dayRoss,
     "delhivery": delhivery,
@@ -824,7 +826,7 @@ export const REGISTRY: RegistryDefinition = {
     "dachser": "dachser",
     "daewoo-fastex": "universal",
     "dai-post": "dai-post",
-    "danske-fragtmaend": "universal",
+    "danske-fragtmaend": "danske-fragtmaend",
     "dao": "dao",
     "day-ross": "day-ross",
     "daylight-transport": "universal",

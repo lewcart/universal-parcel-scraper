@@ -18,18 +18,64 @@
   "timezone": "Europe/Copenhagen",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "danske-fragtmaend",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 873
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "delivered_at",
+    "eta",
+    "weight",
+    "canonical_tracking_number"
+  ],
   "portal": {
     "url": "https://trace.fragt.dk/{trackingNumber}",
     "searchUrl": "https://trace.fragt.dk/",
     "canaryUrl": "https://trace.fragt.dk/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "weight",
+      "order_contents",
+      "parcel_count",
+      "payment_details",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "delivered_at",
+      "eta",
+      "weight",
+      "canonical_tracking_number"
+    ],
+    "discarded": [
+      "order_contents",
+      "parcel_count",
+      "payment_details",
+      "coordinates",
+      "customer_reference"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "pickup_point",
+      "service_name",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

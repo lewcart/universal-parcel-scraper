@@ -76,6 +76,7 @@ import { statusMap as couriersPlease } from '../../carriers/couriersplease/statu
 import { statusMap as cseRussia } from '../../carriers/cse-russia/status.js';
 import { statusMap as cttyex } from '../../carriers/cttyex/status.js';
 import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
+import { statusMap as dExpress } from '../../carriers/d-express/status.js';
 import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
 import { statusMap as danskeFragtmaend } from '../../carriers/danske-fragtmaend/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
@@ -349,7 +350,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'correo-argentino': correoArgentino, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
-  'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'dai-post': daiPost,
+  'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost,
   'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress, 'dhl-freight': dhlFreight, dhlink, direx, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe,
   'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe, 'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-za': dpdZa, drop2shop, dsv, dx, dynalogic, 'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,

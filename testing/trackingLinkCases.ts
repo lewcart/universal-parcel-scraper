@@ -626,6 +626,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pts-worldwide-express', number: '1000000000',
     route: /^https:\/\/tracking\.pts\.net\/1000000000$/,
     marker: /Parcel Not Founded!|G[öo]nderi Bulunamad[ıi]!|Track & Trace Parcel/ },
+  // The page reads the code from its address and posts it to its lookup; an unknown one gets a notice.
+  { carrier: 'd-express', number: 'ZZ0000000000',
+    route: /^https:\/\/www\.dexpress\.rs\/rs\/pracenje-posiljaka\/ZZ0000000000$/,
+    marker: /Pošiljka nije pronađena|Praćenje pošiljaka/i },
   // The page reads the waybill from its address and looks it up on load; an unknown one gets a notice without it.
   { carrier: 'taxydema', number: '400000000000',
     route: /^https:\/\/www\.taxydema\.gr\/entopismos\/400000000000$/,

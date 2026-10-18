@@ -86,6 +86,7 @@ import { adapter as ctt } from '../carriers/ctt/adapter.js';
 import { adapter as cttExpress } from '../carriers/ctt-express/adapter.js';
 import { adapter as cttyex } from '../carriers/cttyex/adapter.js';
 import { adapter as cyprusPost } from '../carriers/cyprus-post/adapter.js';
+import { adapter as dExpress } from '../carriers/d-express/adapter.js';
 import { adapter as dachser } from '../carriers/dachser/adapter.js';
 import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as danskeFragtmaend } from '../carriers/danske-fragtmaend/adapter.js';
@@ -501,6 +502,7 @@ export const REGISTRY: RegistryDefinition = {
     "ctt-express": cttExpress,
     "cttyex": cttyex,
     "cyprus-post": cyprusPost,
+    "d-express": dExpress,
     "dachser": dachser,
     "dai-post": daiPost,
     "danske-fragtmaend": danskeFragtmaend,
@@ -979,7 +981,7 @@ export const REGISTRY: RegistryDefinition = {
     "cttyex": "cttyex",
     "cycloon": "universal",
     "cyprus-post": "cyprus-post",
-    "d-express": "universal",
+    "d-express": "d-express",
     "dachser": "dachser",
     "daewoo-fastex": "universal",
     "dai-post": "dai-post",

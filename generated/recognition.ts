@@ -65,6 +65,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ctt-express": 790,
   "cttyex": 953,
   "cyprus-post": 60,
+  "d-express": 819,
   "dai-post": 62,
   "danske-fragtmaend": 873,
   "dao": 515,

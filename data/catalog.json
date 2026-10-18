@@ -9769,7 +9769,8 @@
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "d-express",
+      "recognitionRank": 819
     },
     "canaryUrl": "https://www.dexpress.rs/rs/pracenje-posiljaka",
     "trackingUrlTemplate": "https://www.dexpress.rs/rs/pracenje-posiljaka/{trackingNumber}",
@@ -9779,7 +9780,7 @@
         "domains": [
           "dexpress.rs"
         ],
-        "path": "^/rs/pracenje-posiljaka/([^/?#]+)/?$"
+        "path": "^/(?:rs/pracenje-posiljaka|en/track-and-trace)/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

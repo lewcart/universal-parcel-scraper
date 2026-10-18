@@ -9771,7 +9771,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "d-express",
+      "recognitionRank": 819
     },
     "canaryUrl": "https://www.dexpress.rs/rs/pracenje-posiljaka",
     "trackingUrlTemplate": "https://www.dexpress.rs/rs/pracenje-posiljaka/{trackingNumber}",
@@ -9781,7 +9782,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "dexpress.rs"
         ],
-        "path": "^/rs/pracenje-posiljaka/([^/?#]+)/?$"
+        "path": "^/(?:rs/pracenje-posiljaka|en/track-and-trace)/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

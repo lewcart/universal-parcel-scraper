@@ -90,6 +90,23 @@ describe('USPS rendered page', () => {
     expect(JSON.stringify(result)).not.toContain('PRIVATE RECIPIENT');
   });
 
+  it('reads USPS taking over a parcel its shipping partner already moved as transit', () => {
+    const scan = (detail: string, date: string) => `<div class="tb-step collapsed"><div><p class="tb-status-detail">${detail}</p>`
+      + `<p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">${date}</p></div></div>`;
+    const steps = TIMELINE_PAGE.slice(TIMELINE_PAGE.indexOf('<div class="tb-step current-step">'), TIMELINE_PAGE.indexOf('<div class="tb-step"><p'));
+    const page = TIMELINE_PAGE.replace('<div class="banner-header">Delivered</div>', '<div class="banner-header">In Transit</div>')
+      .replace(steps, `<div class="tb-step current-step"><p class="tb-status">Accepted</p><p class="tb-status-detail">USPS in possession of item</p>`
+        + '<p class="tb-location">EXAMPLE CITY, CA 00000</p><p class="tb-date">March 13, 2025 9:58 AM</p></div>'
+        + scan('Departed Shipping Partner Facility', 'March 12, 2025 12:24 PM') + scan('Picked Up by Shipping Partner', 'March 11, 2025 2:18 PM'));
+    const result = parseUSPSTrackingHtml(page, DELIVERED_NUMBER);
+    expect(result.current_stage).toBe('in_transit');
+    expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'in_transit', 'accepted']);
+    // Without the partner's transit, USPS's own possession scan stays the acceptance.
+    const alone = parseUSPSTrackingHtml(page.replace(scan('Departed Shipping Partner Facility', 'March 12, 2025 12:24 PM'), ''), DELIVERED_NUMBER);
+    expect(alone.current_stage).toBe('accepted');
+    expect(alone.events?.map(event => event.stage)).toEqual(['accepted', 'accepted']);
+  });
+
   it('keeps an unresolved newest scan as local time and rejects another parcel’s timeline', () => {
     const result = parseUSPSTrackingHtml(TIMELINE_PAGE.replaceAll('EXAMPLE CITY, NY 00000', ''), DELIVERED_NUMBER);
     expect(result).toMatchObject({ last_update: null, last_update_local: '2025-03-14T12:17:00' });

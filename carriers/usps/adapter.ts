@@ -151,6 +151,22 @@ function parseTimelineRow(description: string, dateText: string, location: strin
   };
 }
 
+/**
+ * A shipping partner's parcel reaches USPS with an acceptance scan after the
+ * partner has already moved it. That handoff is transit, not a second acceptance.
+ * Events are newest first.
+ */
+function handoffsInTransit(events: CarrierEvent[]): CarrierEvent[] {
+  const result = [...events];
+  let moved = false;
+  for (let index = result.length - 1; index >= 0; index--) {
+    const event = result[index]!;
+    if (event.stage === 'accepted' && moved) result[index] = { ...event, stage: 'in_transit' };
+    else if (event.stage === 'in_transit' || event.stage === 'customs') moved = true;
+  }
+  return result;
+}
+
 /** The server-rendered tracking page. */
 export function parseUSPSTrackingHtml(page: string, trackingNumber: string): CarrierResult {
   const number = normalizeUSPSNumber(trackingNumber);
@@ -203,11 +219,12 @@ export function parseUSPSTrackingHtml(page: string, trackingNumber: string): Car
   rows.sort((left, right) => right.timestamp - left.timestamp || left.index - right.index);
   // The current timeline is newest-first. Keep its order even when some scans
   // have no resolvable timezone; sorting those behind dated scans loses meaning.
-  const events = timeline.length ? timeline.slice(0, MAX_EVENTS_TO_RETURN)
-    : rows.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event);
+  const events = handoffsInTransit(timeline.length ? timeline.slice(0, MAX_EVENTS_TO_RETURN)
+    : rows.slice(0, MAX_EVENTS_TO_RETURN).map(({ event }) => event));
   const statusText = statusArea || banner || events[0]?.description || 'Tracking information received';
-  const stage = uspsStage(`${statusText} ${banner}`)
+  const reported = uspsStage(`${statusText} ${banner}`)
     ?? events.map((event) => event.stage).find((value): value is NonNullable<typeof value> => value !== undefined);
+  const stage = reported === 'accepted' && events.some((event) => event.stage === 'in_transit') ? 'in_transit' : reported;
   const status = uspsStatus(`${statusText} ${banner}`, events.length > 0);
   const delivered = stage === 'delivered';
   return {

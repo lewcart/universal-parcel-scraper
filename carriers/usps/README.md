@@ -65,6 +65,9 @@ Parsing, in order:
 - Delivered lines are rewritten to "Delivered" because USPS names the signatory.
 - "Available for Pickup" and "Arrived at Post Office" are stage `ready_for_pickup` but result
   status `out_for_delivery`.
+- A parcel a shipping partner collects and moves reaches USPS with an acceptance scan such as
+  "USPS in possession of item". After the partner's transit scans that handoff is
+  `in_transit`, as is the parcel's stage; only an acceptance before any transit stays one.
 - There is no direct step: it would only burn the budget on a 403.
 - The package path is loaded directly because the legacy query route can return only
   the global header. A recognizable header-only reply, or the tracking page's head

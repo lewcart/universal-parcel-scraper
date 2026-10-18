@@ -19,18 +19,63 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sapx-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 795
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "service_name"
+  ],
   "portal": {
     "url": "https://www.sapx.id/id/cek-awb/{trackingNumber}",
     "searchUrl": "https://www.sapx.id/id/cek-awb",
     "canaryUrl": "https://www.sapx.id/id/cek-awb",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "service_name",
+      "failed_delivery_reason",
+      "origin",
+      "destination",
+      "signatory",
+      "driver_name",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "service_name",
+      "failed_delivery_reason"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "signatory",
+      "driver_name",
+      "remarks"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery",
+      "sender_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

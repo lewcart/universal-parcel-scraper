@@ -260,6 +260,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "rpx-indonesia": 947,
   "saia": 12,
   "sameday": 370,
+  "sapx-express": 795,
   "saudi-post": 963,
   "seino": 943,
   "seko": 854,

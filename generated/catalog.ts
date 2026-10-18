@@ -24817,7 +24817,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sapx-express",
+      "recognitionRank": 795,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sapx.id/id/cek-awb",
     "trackingUrlTemplate": "https://www.sapx.id/id/cek-awb/{trackingNumber}",

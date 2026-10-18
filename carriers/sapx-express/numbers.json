@@ -174,7 +174,7 @@
     },
     {
       "number": "265370347094",
-      "role": "shipment",
+      "role": "order_reference",
       "evidence": "public_shipment_report",
       "source": {
         "url": "https://mediakonsumen.com/2026/04/02/surat-pembaca/kartu-kredit-nex-bri-tidak-pernah-diantar-sap-express-malah-ubah-status-jadi-alamat-pindah-dan-diretur-ke-bank",
@@ -184,7 +184,8 @@
       },
       "quarantine": true,
       "context": {
-        "assessment": "review"
+        "reportedRole": "resi",
+        "assessment": "auxiliary"
       },
       "expect": {
         "carrier": "unknown",
@@ -203,7 +204,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "A Media Konsumen letter gives it as the SAP Express resi of a bank card delivery; twelve digits also fit a bank's own reference, so the attribution rests on the letter."
+      "note": "A Media Konsumen letter gives it as the SAP Express resi of a bank card delivery. SAPX's reference lookup finds the delivery's resi under it and the resi tracker does not take it, so it is the sender's reference."
     }
   ]
 }

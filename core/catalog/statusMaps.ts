@@ -125,6 +125,7 @@ import { statusMap as evropat } from '../../carriers/evropat/status.js';
 import { statusMap as exelot } from '../../carriers/exelot/status.js';
 import { statusMap as expressOne } from '../../carriers/express-one/status.js';
 import { statusMap as fanCourier } from '../../carriers/fan-courier/status.js';
+import { statusMap as fastdrop } from '../../carriers/fastdrop/status.js';
 import { statusMap as fedexPl } from '../../carriers/fedex-pl/status.js';
 import { statusMap as fermopoint } from '../../carriers/fermopoint/status.js';
 import { statusMap as fgDelivery } from '../../carriers/fg-delivery/status.js';
@@ -361,7 +362,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   drop2shop, dsv, dx, dynalogic, 'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, equick, estes, eurodis, 'euroexpress-ba': euroexpressBa, 'evdemo-lojistik': evdemoLojistik, evropat, exelot,
-  'express-one': expressOne, 'fan-courier': fanCourier, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery, 'flash-express': flashExpress,
+  'express-one': expressOne, 'fan-courier': fanCourier, fastdrop, 'fedex-pl': fedexPl, fermopoint, 'fg-delivery': fgDelivery,
+  'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
   'four-px': fourPx, foxpost, fukuyama, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,

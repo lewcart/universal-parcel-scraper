@@ -17,18 +17,57 @@
   "timezone": "Europe/Malta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fastdrop",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 826
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "eta",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
     "searchUrl": "https://tracking.fastdrop.mt/",
     "canaryUrl": "https://tracking.fastdrop.mt/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "offset_timestamps",
+      "failed_delivery_reason",
+      "tracking_alias",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "failed_delivery_reason"
+    ],
+    "discarded": [
+      "tracking_alias",
+      "coordinates"
+    ],
+    "unavailable": [
+      "location",
+      "service_name",
+      "weight",
+      "dimensions",
+      "pickup_point",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

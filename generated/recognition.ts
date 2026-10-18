@@ -116,6 +116,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "exelot": 865,
   "express-one": 190,
   "fan-courier": 330,
+  "fastdrop": 826,
   "fedex-pl": 882,
   "fermopoint": 872,
   "fg-delivery": 879,

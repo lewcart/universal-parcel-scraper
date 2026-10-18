@@ -151,6 +151,7 @@ import { adapter as evropat } from '../carriers/evropat/adapter.js';
 import { adapter as exelot } from '../carriers/exelot/adapter.js';
 import { adapter as expressOne } from '../carriers/express-one/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
+import { adapter as fastdrop } from '../carriers/fastdrop/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
 import { adapter as fedexPl } from '../carriers/fedex-pl/adapter.js';
 import { adapter as fermopoint } from '../carriers/fermopoint/adapter.js';
@@ -572,6 +573,7 @@ export const REGISTRY: RegistryDefinition = {
     "exelot": exelot,
     "express-one": expressOne,
     "fan-courier": fanCourier,
+    "fastdrop": fastdrop,
     "fedex": fedex,
     "fedex-pl": fedexPl,
     "fermopoint": fermopoint,
@@ -1084,7 +1086,7 @@ export const REGISTRY: RegistryDefinition = {
     "fan-courier": "fan-courier",
     "fargo-courier": "universal",
     "fargo-uz": "universal",
-    "fastdrop": "universal",
+    "fastdrop": "fastdrop",
     "fastfrate": "universal",
     "fedex": "fedex",
     "fedex-pl": "fedex-pl",

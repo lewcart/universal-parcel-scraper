@@ -13050,7 +13050,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fastdrop",
+      "recognitionRank": 826
     },
     "canaryUrl": "https://tracking.fastdrop.mt/",
     "trackingUrlTemplate": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",

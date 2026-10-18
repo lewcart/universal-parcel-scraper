@@ -939,6 +939,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bex-express', number: '000000000',
     route: /^https:\/\/bexexpress\.rs\/pracenje-posiljke\?broj-posiljke=000000000$/,
     marker: /Praćenje pošiljke|je iz prethodne godine/ },
+  // The page looks the number in its address up and names an unknown one in a popup.
+  { carrier: 'fastdrop', number: '0000000000',
+    route: /^https:\/\/booking\.fastdrop\.mt\/package-tracking\/0000000000$/,
+    marker: /Tracking ID not found|the pins do not point to the exact addresses of origin and destination/ },
   // The site turns the address to lower case; the page then looks the number up and names an unknown one in a popup.
   { carrier: 'drop2shop', number: 'GLB9000000000003',
     route: /^https:\/\/www\.drop2shop\.ie\/tracking\?trackingnumber=glb9000000000003$/i,

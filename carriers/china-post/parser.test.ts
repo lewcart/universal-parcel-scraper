@@ -18,12 +18,13 @@ const edit = (name: string, change: (mail: Mail) => void) => {
 };
 
 describe('China Post number scope', () => {
-  it('accepts S10 numbers issued in China and ZS or ZC numbers only', () => {
+  it('accepts S10 numbers issued in China and ZS, ZC or ZA numbers only', () => {
     expect(normalizeChinaPostNumber(' lz 123 456 785 cn ')).toBe(NUMBER);
     expect(normalizeChinaPostNumber('zs 0000 0000 001')).toBe('ZS00000000001');
     expect(normalizeChinaPostNumber('zc 0000 0000 001')).toBe('ZC00000000001');
+    expect(normalizeChinaPostNumber('za 0000 0000 001')).toBe('ZA00000000001');
     for (const number of ['LZ123456780CN', 'LZ123456785FR', '1100000000000', '9800000000000', 'LZ12345678CN',
-      'ZS0000000001', 'ZS000000000001', 'ZC0000000001', 'ZC000000000001', 'ZT00000000001', 'ZA00000000001']) {
+      'ZS0000000001', 'ZS000000000001', 'ZC0000000001', 'ZC000000000001', 'ZA0000000001', 'ZA000000000001', 'ZT00000000001', 'ZB00000000001']) {
       expect(() => normalizeChinaPostNumber(number)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
   });

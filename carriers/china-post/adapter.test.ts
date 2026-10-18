@@ -107,6 +107,10 @@ describe('China Post adapter', () => {
     const zc = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
     await expect(instance(zc).recognize!('ZC00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
     expect(JSON.parse(String(zc.mock.calls[0]![1]?.body))).toEqual({ mailNo: 'ZC00000000001' });
+    expect(recognitionAskedCarriers('ZA00000000001')[0]).toBe('china-post');
+    const za = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
+    await expect(instance(za).recognize!('ZA00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
+    expect(JSON.parse(String(za.mock.calls[0]![1]?.body))).toEqual({ mailNo: 'ZA00000000001' });
     const phone = transport(() => json('{"code":"000000","info":2,"msg":"SUCCESS"}'));
     await expect(instance(phone).recognize!('ZS00000000001')).resolves.toEqual({ known: true, lastActivityAt: null });
     expect(phone).toHaveBeenCalledTimes(1);

@@ -85317,6 +85317,22 @@
     ]
   },
   {
+    "input": "ZA10000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "china-post",
+      "la-poste"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "china-post",
+      "la-poste"
+    ]
+  },
+  {
     "input": "ZA120116146543",
     "carrier": "unknown",
     "confidence": "low",

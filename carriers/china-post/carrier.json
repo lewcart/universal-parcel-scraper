@@ -86,6 +86,12 @@
       "pattern": "^ZC\\d{11}$",
       "confidence": "low",
       "preferred": true
+    },
+    {
+      "id": "china-post-za",
+      "pattern": "^ZA\\d{11}$",
+      "confidence": "low",
+      "preferred": true
     }
   ]
 }

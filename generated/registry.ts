@@ -243,6 +243,7 @@ import { adapter as ontrac } from '../carriers/ontrac/adapter.js';
 import { adapter as orlenPaczka } from '../carriers/orlen-paczka/adapter.js';
 import { adapter as osmWorldwide } from '../carriers/osm-worldwide/adapter.js';
 import { adapter as paack } from '../carriers/paack/adapter.js';
+import { adapter as packMan } from '../carriers/pack-man/adapter.js';
 import { adapter as packeta } from '../carriers/packeta/adapter.js';
 import { adapter as packlink } from '../carriers/packlink/adapter.js';
 import { adapter as pakistanPost } from '../carriers/pakistan-post/adapter.js';
@@ -608,6 +609,7 @@ export const REGISTRY: RegistryDefinition = {
     "orlen-paczka": orlenPaczka,
     "osm-worldwide": osmWorldwide,
     "paack": paack,
+    "pack-man": packMan,
     "packeta": packeta,
     "packlink": packlink,
     "pakistan-post": pakistanPost,
@@ -1165,7 +1167,7 @@ export const REGISTRY: RegistryDefinition = {
     "overseas-express": "universal",
     "ozon-logistics": "universal",
     "paack": "paack",
-    "pack-man": "universal",
+    "pack-man": "pack-man",
     "packeta": "packeta",
     "packli-punkt": "universal",
     "packlink": "packlink",

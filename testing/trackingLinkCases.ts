@@ -586,6 +586,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/trackntrace\.easymail\.gr\/19999999990$/,
     marker: /Δεν βρέθηκε η Αποστολή|Αναλυτικά Στοιχεία Αποστολής/,
     forwarding: { notFound: /Δεν βρέθηκε η Αποστολή/ } },
+  // The search page looks the voucher up as it is served and keeps it in its form beside the notice for an unknown one.
+  { carrier: 'pack-man', number: 'Z-99999999',
+    route: /^https:\/\/pack-man\.gr\/anazitisi-apostolis\.html\?code=Z-99999999$/,
+    marker: /Δεν βρέθηκε αποστολή με αυτόν τον κωδικό|Σύνδεσμος για τον πελάτη/ },
   // The page looks the AWB up as it is served; an unknown one gets a notice without the number.
   { carrier: 'cargus', number: '9999999999',
     route: /^https:\/\/www\.cargus\.ro\/personal\/urmareste-coletul\/\?tracking_number=/,

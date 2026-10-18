@@ -10,6 +10,7 @@
 import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
 import { inpostUkTrackingUrl } from '../../carriers/inpost/number.js';
+import { normalizePackManNumber } from '../../carriers/pack-man/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
 import type { CarrierId } from '../../generated/catalog.js';
@@ -41,6 +42,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   if (carrierId === 'postlogistics') return postlogisticsIdentifier(raw);
   // CDL's page finds an order number only with the hyphen before its last digit.
   if (carrierId === 'cdl' && /^\d{10}$/.test(normalized)) return cdlRequestNumber(normalized);
+  // Pack-Man's page finds a voucher only with the hyphen after its letter.
+  if (carrierId === 'pack-man' && /^[A-Z]\d{8}$/.test(normalized)) return normalizePackManNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
   // Ecoscooting's page finds a Cainiao reference only with its CN.
   if (carrierId === 'ecoscooting' && ecoscootingReference(normalized) !== normalized) return ecoscootingReference(normalized);

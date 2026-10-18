@@ -19260,7 +19260,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pack-man",
+      "recognitionRank": 862,
+      "recognitionPattern": "^[A-Z]\\d{8}$"
     },
     "canaryUrl": "https://pack-man.gr/anazitisi-apostolis.html",
     "trackingUrlTemplate": "https://pack-man.gr/anazitisi-apostolis.html?code={trackingNumber}",
@@ -19274,6 +19276,12 @@ export const CARRIER_CATALOG = {
         "params": [
           "code"
         ]
+      },
+      {
+        "domains": [
+          "pack-man.gr"
+        ],
+        "path": "^/t/([^/?#]+)/?$"
       },
       {
         "domains": [

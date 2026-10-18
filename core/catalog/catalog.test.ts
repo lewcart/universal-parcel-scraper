@@ -55,6 +55,11 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('cdl', '1000000010')).toBe('100000001-0');
     expect(trackingNumberForLink('cdl', '100000001-0')).toBe('100000001-0');
     expect(trackingNumberForLink('cdl', 'CDL00000000001')).toBe('CDL00000000001');
+    // Pack-Man's page finds a voucher only with the hyphen after its letter.
+    expect(trackingNumberForLink('pack-man', 'A00000017')).toBe('A-00000017');
+    expect(trackingNumberForLink('pack-man', 'a-00000017')).toBe('A-00000017');
+    expect(trackingNumberForLink('pack-man', 'SAMPLE')).toBe('SAMPLE');
+    expect(CARRIERS['pack-man'].trackingUrl?.('A00000017')).toBe('https://pack-man.gr/anazitisi-apostolis.html?code=A-00000017');
     expect(trackingNumberForLink('ecoscooting', 'prt 0000000 1234 000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', 'CNPRT00000001234000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', '000000000000000001')).toBe('000000000000000001');

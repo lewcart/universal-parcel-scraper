@@ -192,6 +192,7 @@ import { statusMap as omgo } from '../../carriers/omgo/status.js';
 import { statusMap as omniva } from '../../carriers/omniva/status.js';
 import { statusMap as orlenPaczka } from '../../carriers/orlen-paczka/status.js';
 import { statusMap as osmWorldwide } from '../../carriers/osm-worldwide/status.js';
+import { statusMap as packMan } from '../../carriers/pack-man/status.js';
 import { statusMap as packlink } from '../../carriers/packlink/status.js';
 import { statusMap as pakistanPost } from '../../carriers/pakistan-post/status.js';
 import { statusMap as palletways } from '../../carriers/palletways/status.js';
@@ -315,7 +316,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, nox, oca,
-  'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, packlink,
+  'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink,
   'pakistan-post': pakistanPost, palletways, paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom, phlpost, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, posturinn, ppl,

@@ -215,6 +215,7 @@ import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
 import { adapter as kyoungdong } from '../carriers/kyoungdong/adapter.js';
 import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
+import { adapter as laPosteSenegal } from '../carriers/la-poste-senegal/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
 import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js';
 import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
@@ -626,6 +627,7 @@ export const REGISTRY: RegistryDefinition = {
     "kuehne-nagel": kuehneNagel,
     "kyoungdong": kyoungdong,
     "la-poste": laPoste,
+    "la-poste-senegal": laPosteSenegal,
     "landmark-global": landmarkGlobal,
     "latvijas-pasts": latvijasPasts,
     "lbc-express": lbcExpress,
@@ -1204,7 +1206,7 @@ export const REGISTRY: RegistryDefinition = {
     "la-poste": "la-poste",
     "la-poste-burkina-faso": "universal",
     "la-poste-ci": "universal",
-    "la-poste-senegal": "universal",
+    "la-poste-senegal": "la-poste-senegal",
     "la-poste-tunisienne": "universal",
     "laar-courier": "universal",
     "labaih": "universal",

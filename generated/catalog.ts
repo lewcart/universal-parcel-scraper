@@ -17523,10 +17523,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Dakar",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "la-poste-senegal",
+      "localClocks": true
     },
-    "canaryUrl": "https://www.laposte.sn/suivi-colis/",
-    "trackingSearchUrl": "https://www.laposte.sn/suivi-colis/",
+    "canaryUrl": "https://www.laposte.sn/",
+    "trackingSearchUrl": "https://www.laposte.sn/",
     "linkRules": [],
     "detectionRules": []
   },

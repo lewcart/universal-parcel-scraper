@@ -20,17 +20,45 @@
   "timezone": "Africa/Dakar",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "la-poste-senegal",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "destination_country"
+  ],
   "portal": {
-    "searchUrl": "https://www.laposte.sn/suivi-colis/",
-    "canaryUrl": "https://www.laposte.sn/suivi-colis/",
-    "shows": [],
-    "scraped": [],
+    "searchUrl": "https://www.laposte.sn/",
+    "canaryUrl": "https://www.laposte.sn/",
+    "shows": [
+      "history",
+      "location"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "destination_country",
+      "event_details"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps",
+      "delivered_at",
+      "delivery_tracking_number"
+    ]
   },
   "links": [],
   "detection": []

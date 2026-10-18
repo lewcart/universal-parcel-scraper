@@ -174,6 +174,7 @@ import { statusMap as kex } from '../../carriers/kex/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as kyoungdong } from '../../carriers/kyoungdong/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
+import { statusMap as laPosteSenegal } from '../../carriers/la-poste-senegal/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as liccardi } from '../../carriers/liccardi/status.js';
@@ -358,7 +359,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, hywl, 'ids-logistik': idsLogistik, imile, instabox, interrapidisimo, 'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, 'jersey-post': jerseyPost, jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress,
-  kazpost, kex, 'kuehne-nagel': kuehneNagel, kyoungdong, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
+  kazpost, kex, 'kuehne-nagel': kuehneNagel, kyoungdong, 'la-poste': laPoste, 'la-poste-senegal': laPosteSenegal, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,

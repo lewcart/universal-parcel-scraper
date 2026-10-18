@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "Example in the placeholder of La Poste du Sénégal's own tracking field, on the tracking page and the home page; it is a valid S10 number ending in SN."
+      "note": "Example in the placeholder of La Poste du Sénégal's own tracking field, on the tracking page and the home page; it is a valid S10 number ending in SN. La Poste du Sénégal's own tracker returns its history."
     },
     {
       "number": "JT8000025177494",

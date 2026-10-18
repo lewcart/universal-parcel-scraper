@@ -19615,12 +19615,26 @@
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "one-world-express",
+      "recognitionRank": 846,
+      "localClocks": true
     },
     "canaryUrl": "https://www.oneworldexpress.com/tracking",
     "trackingUrlTemplate": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
     "trackingSearchUrl": "https://www.oneworldexpress.com/tracking",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.smarttrack.co",
+          "smarttrack.co"
+        ],
+        "pathPattern": "^/tracking\\.php$",
+        "params": [
+          "tracking_number"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^OWE\\d{12}$",

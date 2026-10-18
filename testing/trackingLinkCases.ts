@@ -1145,6 +1145,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pitney-bowes', number: 'UPAAA000000000000000',
     route: /^https:\/\/trackpb\.shipment\.co\/track\/UPAAA000000000000000$/,
     marker: /We are unable to retrieve tracking information at this time|Shipping Info/ },
+  // SmartTrack shows only its notice for a number it has no parcel for, without the number.
+  { carrier: 'one-world-express', number: 'OWE000000000000',
+    route: /^https:\/\/www\.smarttrack\.co\/tracking\.php\?tracking_number=OWE000000000000$/,
+    marker: /No Tracking available|Tracking Events/,
+    forwarding: { notFound: /No Tracking available/ } },
   { carrier: 'pfc-express', number: 'R1000002912230003',
     route: /^https:\/\/www\.pfctrack\.com\/\?nums=R1000002912230003(?:,|%2C)?$/,
     marker: /Not Found|Powered by PFCEXPRESS/ },

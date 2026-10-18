@@ -14768,7 +14768,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gogo-xpress",
+      "recognitionRank": 796
     },
     "canaryUrl": "https://app.gogoxpress.com/track/",
     "trackingUrlTemplate": "https://app.gogoxpress.com/track/{trackingNumber}",

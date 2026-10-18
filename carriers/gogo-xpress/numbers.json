@@ -69,13 +69,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "5093-9989-ZTAV",
@@ -88,13 +88,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "6139-8545-NLHF",
@@ -107,13 +107,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "7346-8200-RMHQ",
@@ -126,13 +126,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "9887-9301-EGXK",
@@ -145,13 +145,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "1395-W2BK-8F7H",
@@ -164,13 +164,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "547D-3XR2-SLC9",
@@ -183,13 +183,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "026A-T52Y-52SX",
@@ -202,13 +202,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     },
     {
       "number": "8R45-L0H6-MS28",
@@ -221,13 +221,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "gogo-xpress",
         "confidence": "high"
       },
-      "note": "An archived lookup on GoGo Xpress's own tracker; the capture was not opened, as the tracker draws its results by script, so no history was visible."
+      "note": "An archived lookup on GoGo Xpress's own tracker; its tracking API knows the number."
     }
   ]
 }

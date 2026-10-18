@@ -1365,6 +1365,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'quicksilver-sa', number: 'QS000000000',
     route: /^https:\/\/erp\.quick-silver\.express\/v2\/tracking\/QS000000000$/,
     marker: /Tracking number not found|Place an order|Ready For Dispatch|Out For Delivery/ },
+  // The tracker looks up the number in its address as it stands and answers an unknown one with its own notice.
+  { carrier: 'gogo-xpress', number: 'ZXQA-0000-0009',
+    route: /^https:\/\/app\.gogoxpress\.com\/track\/ZXQA-0000-0009$/,
+    marker: /Track your package|Check your Tracking Number and try again/i },
 ];
 
 /**

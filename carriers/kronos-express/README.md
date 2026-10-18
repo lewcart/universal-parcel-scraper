@@ -12,7 +12,9 @@ tell which part of it is fixed, so no rule claims it.
 
 ## Links
 
-No page of Kronos Express builds an address for one parcel, and no archived lookup shows one.
+The tracker on `tracking.kronosexpress.com` reads the number from `tracking_number`, so
+`tracking_system_en.aspx?tracking_number={number}` opens one parcel in English and
+`tracking_system.aspx` in Greek. The shop plugin links the Greek page.
 
 ## Testing
 

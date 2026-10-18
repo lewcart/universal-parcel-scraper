@@ -23,6 +23,7 @@
   },
   "capabilities": [],
   "portal": {
+    "url": "https://tracking.kronosexpress.com/tracking_system_en.aspx?tracking_number={trackingNumber}",
     "searchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
     "canaryUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
     "shows": [],
@@ -30,6 +31,16 @@
     "discarded": [],
     "unavailable": []
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "tracking.kronosexpress.com"
+      ],
+      "pathPattern": "^/tracking_system(?:_en)?\\.aspx$",
+      "params": [
+        "tracking_number"
+      ]
+    }
+  ],
   "detection": []
 }

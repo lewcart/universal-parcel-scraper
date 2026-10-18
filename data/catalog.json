@@ -16632,8 +16632,19 @@
       "adapter": "universal"
     },
     "canaryUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "trackingUrlTemplate": "https://tracking.kronosexpress.com/tracking_system_en.aspx?tracking_number={trackingNumber}",
     "trackingSearchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.kronosexpress.com"
+        ],
+        "pathPattern": "^/tracking_system(?:_en)?\\.aspx$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "ktd": {

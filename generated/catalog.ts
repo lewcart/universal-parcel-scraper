@@ -18737,7 +18737,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "m-one",
+      "recognitionRank": 825,
+      "localClocks": true
     },
     "canaryUrl": "https://m-one.rs/en",
     "trackingUrlTemplate": "https://m-one.rs/en?{trackingNumber}",
@@ -18752,7 +18754,13 @@ export const CARRIER_CATALOG = {
         "query": "^([A-Za-z0-9]+)$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RS$",
+        "confidence": "low",
+        "checksum": "s10"
+      }
+    ]
   },
   "madhur-courier": {
     "displayName": "Madhur Courier Services",
@@ -31197,7 +31205,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lotte-global": [],
   "lso": ["lso-1"],
   "m-and-p": [],
-  "m-one": [],
+  "m-one": ["m-one-s10"],
   "madhur-courier": [],
   "magyar-posta": ["magyar-posta-s10","magyar-posta-domestic"],
   "mailamericas": ["mailamericas-ml","mailamericas-mmxqp","mailamericas-s10"],

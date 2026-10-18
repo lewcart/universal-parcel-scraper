@@ -202,6 +202,7 @@ import { statusMap as loggi } from '../../carriers/loggi/status.js';
 import { statusMap as logoix } from '../../carriers/logoix/status.js';
 import { statusMap as loomisExpress } from '../../carriers/loomis-express/status.js';
 import { statusMap as lotteGlobal } from '../../carriers/lotte-global/status.js';
+import { statusMap as mOne } from '../../carriers/m-one/status.js';
 import { statusMap as magyarPosta } from '../../carriers/magyar-posta/status.js';
 import { statusMap as mailamericas } from '../../carriers/mailamericas/status.js';
 import { statusMap as mainfreight } from '../../carriers/mainfreight/status.js';
@@ -386,7 +387,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, kyoungdong, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-senegal': laPosteSenegal, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
-  'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
+  'lotte-global': lotteGlobal, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,
   'norsk-global': norskGlobal, 'nova-global': novaGlobal, nox, oca, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,

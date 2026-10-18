@@ -181,6 +181,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "logen": 48,
   "logoix": 869,
   "loomis-express": 285,
+  "m-one": 825,
   "mailamericas": 985,
   "mainfreight": 923,
   "maltapost": 50,

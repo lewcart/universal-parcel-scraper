@@ -245,6 +245,7 @@ import { adapter as loggi } from '../carriers/loggi/adapter.js';
 import { adapter as logoix } from '../carriers/logoix/adapter.js';
 import { adapter as loomisExpress } from '../carriers/loomis-express/adapter.js';
 import { adapter as lotteGlobal } from '../carriers/lotte-global/adapter.js';
+import { adapter as mOne } from '../carriers/m-one/adapter.js';
 import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
 import { adapter as mailamericas } from '../carriers/mailamericas/adapter.js';
 import { adapter as mainfreight } from '../carriers/mainfreight/adapter.js';
@@ -677,6 +678,7 @@ export const REGISTRY: RegistryDefinition = {
     "logoix": logoix,
     "loomis-express": loomisExpress,
     "lotte-global": lotteGlobal,
+    "m-one": mOne,
     "magyar-posta": magyarPosta,
     "mailamericas": mailamericas,
     "mainfreight": mainfreight,
@@ -1277,7 +1279,7 @@ export const REGISTRY: RegistryDefinition = {
     "lotte-global": "lotte-global",
     "lso": "universal",
     "m-and-p": "universal",
-    "m-one": "universal",
+    "m-one": "m-one",
     "madhur-courier": "universal",
     "magyar-posta": "magyar-posta",
     "mailamericas": "mailamericas",

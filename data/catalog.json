@@ -18735,7 +18735,9 @@
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "m-one",
+      "recognitionRank": 825,
+      "localClocks": true
     },
     "canaryUrl": "https://m-one.rs/en",
     "trackingUrlTemplate": "https://m-one.rs/en?{trackingNumber}",
@@ -18750,7 +18752,13 @@
         "query": "^([A-Za-z0-9]+)$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RS$",
+        "confidence": "low",
+        "checksum": "s10"
+      }
+    ]
   },
   "madhur-courier": {
     "displayName": "Madhur Courier Services",

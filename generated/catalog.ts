@@ -14981,7 +14981,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "intex-paketdienst"
     },
     "canaryUrl": "https://www.intex-paketdienst.de/sendungsstatus/index.php",
     "trackingUrlTemplate": "https://www.intex-paketdienst.de/sendungsstatus/index.php?sdnr={trackingNumber}&mid=1",

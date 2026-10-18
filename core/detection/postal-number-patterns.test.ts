@@ -214,6 +214,20 @@ describe('Australia Post barcodes', () => {
     expect(detectCarrierMatch('331231234567').candidates).not.toContain('australia-post');
   });
 
+  it.each(['ABCZ12345678', '1ABZ12345678', 'A1BZ12345678'])('suggests Australia Post first for the StarTrack consignment number %s', (number) => {
+    expect(detectCarrierMatch(number)).toEqual({
+      carrier: 'unknown', confidence: 'low', candidates: ['australia-post', 'colis-prive'], preferred: ['australia-post'],
+    });
+    expect(recognitionAskedCarriers(number)[0]).toBe('australia-post');
+  });
+
+  it.each(['ABCD12345678', 'ABZ12345678', 'ABCZ123456789', 'ABCZ1234567A'])(
+    'leaves %s, which is not a StarTrack consignment number, to the carriers that share its shape',
+    (number) => {
+      expect(detectCarrierMatch(number).candidates ?? []).not.toContain('australia-post');
+    },
+  );
+
   it.each(['2AB1234567', 'A2B1234567', 'ABC1234567', '12A1234567', 'A121234567'])(
     'suggests Australia Post alone for the ten-character consignment number %s',
     (number) => {

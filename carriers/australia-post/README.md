@@ -49,6 +49,8 @@ every outgoing request unless the consumer sets `tracePropagationTargets: []`. T
     digits. With the prefix, Australia Post comes before Colis Privé's rule for any twelve
     characters. Without it, a location ID of two letters and a digit is left out, since other
     carriers' ten-character numbers start that way.
+  - A StarTrack consignment number: three characters with a letter, then `Z` and eight digits.
+    Australia Post comes before Colis Privé's rule for any twelve characters.
   - A 22-digit barcode of a prepaid satchel, envelope or label: `00` to `03`, then digits ending
     in a GS1 check digit. Other carriers' rules take any 22 digits; the passing check digit moves
     Australia Post ahead of them in recognition. TIPSA stays first for a barcode in its layout, and

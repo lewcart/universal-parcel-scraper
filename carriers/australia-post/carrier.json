@@ -103,6 +103,12 @@
       "confidence": "low"
     },
     {
+      "id": "australia-post-startrack",
+      "pattern": "^(?=[A-Z0-9]{0,2}[A-Z])[A-Z0-9]{3}Z\\d{8}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
       "id": "australia-post-prepaid",
       "pattern": "^0[0-3]\\d{20}$",
       "confidence": "low",

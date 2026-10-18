@@ -20449,6 +20449,22 @@
     ]
   },
   {
+    "input": "1ABZ00000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "australia-post",
+      "colis-prive"
+    ],
+    "preferred": [
+      "australia-post"
+    ],
+    "asked": [
+      "australia-post",
+      "colis-prive"
+    ]
+  },
+  {
     "input": "1C1000A000001",
     "carrier": "unknown",
     "confidence": "low",

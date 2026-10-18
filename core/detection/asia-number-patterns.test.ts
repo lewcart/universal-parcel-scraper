@@ -143,6 +143,14 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
     }
   });
+
+  it('asks DHLink about EYT tracking numbers on its SwiftX line without naming it from the shape', () => {
+    expect(detectCarrierMatch('EYT0000000001HZ')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['dhlink'] });
+    expect(recognitionAskedCarriers('EYT0000000001HZ')).toEqual(['dhlink']);
+    for (const number of ['EYT000000001HZ', 'EYT00000000001HZ', 'EYT0000000001HX', 'EYZ0000000001HZ', 'XZG000000001HZ']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('dhlink');
+    }
+  });
 });
 
 describe('wave seven South-East Asian courier rules', () => {

@@ -17,8 +17,9 @@ page makes.
 - The lookup finds a parcel by its tracking number. A DHLink number (FC and thirteen digits)
   finds it only when it is also the tracking number, as on DHLink's own line; the last leg's
   number finds nothing. A line provider's number can be the tracking number: `XZG`, nine
-  digits and `WL` is one, and `YLUS` and ten digits, on a US line GOFO delivers, is another.
-  Their rules are low confidence, so DHLink is asked before it is named.
+  digits and `WL` is one; `YLUS` and ten digits, on a US line GOFO delivers, and `EYT`, ten
+  digits and `HZ`, on one SwiftX delivers, are others. Their rules are low confidence, so
+  DHLink is asked before it is named.
 - The parcel counts only when the number asked is its tracking number or its DHLink number:
   the search can find a parcel by its other numbers.
 - An empty parcel with state 1 is the unknown-number answer. For a DHLink number or a last

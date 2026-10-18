@@ -97,6 +97,11 @@
       "id": "dhlink-ylus",
       "pattern": "^YLUS\\d{10}$",
       "confidence": "low"
+    },
+    {
+      "id": "dhlink-eyt",
+      "pattern": "^EYT\\d{10}HZ$",
+      "confidence": "low"
     }
   ]
 }

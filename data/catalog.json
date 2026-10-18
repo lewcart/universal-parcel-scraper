@@ -10082,6 +10082,10 @@
       {
         "pattern": "^YLUS\\d{10}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EYT\\d{10}HZ$",
+        "confidence": "low"
       }
     ]
   },

@@ -48,8 +48,8 @@ than the estimate's end also drops it.
 
 `austrian-post-3` suggests Austrian Post for 24 digits at low confidence, beside
 the other carriers whose rules take that length, so recognition can ask its
-tracker. No public EURODIS barcode has been found, so the corpus holds a
-synthetic one. No rule suggests Austrian Post for fourteen digits, which
+tracker. No public EURODIS barcode of an Austrian Post parcel has been found,
+so the corpus holds a synthetic one. No rule suggests Austrian Post for fourteen digits, which
 Hermes Germany's and DPD's numbers share, so a Hermes number reaches it when
 Hermes Austria's lookup hands the parcel over or the caller names Austrian
 Post. Account-only delivery

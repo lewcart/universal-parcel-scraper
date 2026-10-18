@@ -1495,6 +1495,12 @@
     "reason": "BG numbers are Temu's parcel numbers, which several carriers deliver, so the shape cannot name Hispapost."
   },
   {
+    "carrier": "hispapost",
+    "pattern": "^NT\\d{21}$",
+    "kind": "by_design",
+    "reason": "NT numbers are the barcodes of council notifications Hispapost delivers. One public sample does not show that Hispapost issues the shape rather than the notifying administration, so no rule claims it."
+  },
+  {
     "carrier": "horoz",
     "pattern": "^\\d{14}$",
     "kind": "by_design",

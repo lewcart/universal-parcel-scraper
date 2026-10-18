@@ -13936,7 +13936,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hispapost"
     },
     "canaryUrl": "https://intranet.hispapost.es/tracking",
     "trackingSearchUrl": "https://intranet.hispapost.es/tracking",

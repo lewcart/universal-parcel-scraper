@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Review on Hispapost's Trustpilot page: the customer praises the courier who brought the parcel and gives this number."
+      "note": "Review on Hispapost's Trustpilot page: the customer praises the courier who brought the parcel and gives this number; Hispapost's tracker knows it."
     },
     {
       "number": "CNES00602228835",
@@ -88,13 +88,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "OCU complaint against Hispapost about a Joom order cleared by CACESA: Hispapost's quality department replies that it passed the delivery of parcel BAE30320H322323011 to its Murcia operator."
+      "note": "OCU complaint against Hispapost about a Joom order cleared by CACESA: Hispapost's quality department replies that it passed the delivery of parcel BAE30320H322323011 to its Murcia operator; Hispapost's tracker knows it."
     },
     {
       "number": "BAE29011H322321841",
@@ -107,13 +107,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "OCU complaint against Hispapost about a Joom order: Hispapost's quality department replies about the status of the customer's parcel with this number."
+      "note": "OCU complaint against Hispapost about a Joom order: Hispapost's quality department replies about the status of the customer's parcel with this number; Hispapost's tracker knows it."
     },
     {
       "number": "BG-2411035BZLEWABEC-01",
@@ -126,13 +126,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "OCU complaint against Hispapost: a Temu purchase sent through Hispapost for delivery, with this as its tracking number."
+      "note": "OCU complaint against Hispapost: a Temu purchase sent through Hispapost for delivery, with this as its tracking number; Hispapost's tracker knows it."
     },
     {
       "number": "NT809482096219000000163",
@@ -144,15 +144,15 @@
         "dateKind": "publication",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed",
+        "service": "council notification"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "OCU complaint against Hispapost about a council notification: the customer was given this as the number of Hispapost's delivery attempt; whether it is a tracking number is not established."
+      "note": "OCU complaint against Hispapost about a council notification: the customer was given this as the number of Hispapost's delivery attempt, and Hispapost's tracker knows it."
     }
   ]
 }

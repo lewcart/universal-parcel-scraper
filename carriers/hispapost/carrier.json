@@ -16,17 +16,36 @@
   "timezone": "Europe/Madrid",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "hispapost",
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "delivered_at"
+  ],
   "portal": {
     "searchUrl": "https://intranet.hispapost.es/tracking",
     "canaryUrl": "https://intranet.hispapost.es/tracking",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status"
+    ],
+    "scraped": [
+      "status",
+      "delivered_at",
+      "offset_timestamps"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "history",
+      "location",
+      "eta",
+      "delivery_partner",
+      "weight",
+      "sender_name",
+      "recipient_name"
+    ]
   },
   "links": [],
   "detection": []

@@ -1064,6 +1064,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/track\.tgroupspa\.com\/ttnet\/traccia_spedizione\/3010TGR00000000000000$/,
     marker: /NUMERO SPEDIZIONE NON TROVATO/,
     forwarding: { notFound: /NUMERO SPEDIZIONE NON TROVATO/ } },
+  // The server renders the page and repeats any code it is asked, with an empty card for an unknown one.
+  { carrier: 'torrestir', number: 'M0010000A00000000000',
+    route: /^https:\/\/tracking\.torrestir\.com\/\?id=M0010000A00000000000$/,
+    marker: /Tracking Code:/ },
   // The server renders the page and repeats an unknown number in its not-found notice.
   { carrier: 'intex-paketdienst', number: '0000000-0',
     route: /^https:\/\/www\.intex-paketdienst\.de\/sendungsstatus\/index\.php\?sdnr=0000000-0&mid=1$/,

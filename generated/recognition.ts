@@ -245,6 +245,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "tipsa": 680,
   "tnt": 880,
   "tnt-it": 645,
+  "torrestir": 866,
   "total-express": 975,
   "tsjy": 992,
   "tws-express": 884,

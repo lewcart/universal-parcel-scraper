@@ -24761,7 +24761,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "torrestir",
+      "recognitionRank": 866,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.torrestir.com/",
     "trackingUrlTemplate": "https://tracking.torrestir.com/?id={trackingNumber}",

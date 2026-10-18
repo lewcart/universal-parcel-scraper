@@ -67090,15 +67090,19 @@
   },
   {
     "input": "EQKPT8586061210YQ",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "equick",
+    "confidence": "high",
+    "candidates": [
+      "equick"
+    ]
   },
   {
     "input": "EQKPT8613050786YQ",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "equick",
+    "confidence": "high",
+    "candidates": [
+      "equick"
+    ]
   },
   {
     "input": "ER107045826VN",

@@ -23,16 +23,51 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "equick",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 853
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "canaryUrl": "https://api.equick.cn/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "destination_country"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_tracking_number"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "weight",
+      "service_name",
+      "delivery_partner",
+      "provider_code",
+      "origin_country",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -43,5 +78,11 @@
       "fragment": "^/support/supportWay\\?(?:[^#]*&)?nums=([^&,]+)"
     }
   ],
-  "detection": []
+  "detection": [
+    {
+      "id": "equick-eqk",
+      "pattern": "^EQK[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
 }

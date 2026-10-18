@@ -11783,7 +11783,9 @@
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "equick",
+      "recognitionRank": 853,
+      "localClocks": true
     },
     "canaryUrl": "https://api.equick.cn/",
     "linkRules": [
@@ -11795,7 +11797,12 @@
         "fragment": "^/support/supportWay\\?(?:[^#]*&)?nums=([^&,]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^EQK[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   },
   "estes": {
     "displayName": "Estes",

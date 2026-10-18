@@ -53,15 +53,14 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
+        "carrier": "equick",
+        "confidence": "high"
       },
-      "note": "ParcelPanel's Equick China page offers it as the sample number to try; nothing from Equick shows the EQK layout."
+      "note": "ParcelPanel's Equick China page offers it as the sample number to try. Equick's own tracker knows it."
     },
     {
       "number": "EQKPT8586061210YQ",
@@ -73,15 +72,14 @@
         "dateKind": "capture",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "candidate"
       },
       "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
+        "carrier": "equick",
+        "confidence": "high"
       },
-      "note": "TrackingMore's Equick China page gives it as a format example; nothing from Equick shows the EQK layout."
+      "note": "TrackingMore's Equick China page gives it as a format example, in the layout of the numbers Equick's own tracker knows."
     }
   ]
 }

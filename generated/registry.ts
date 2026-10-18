@@ -126,6 +126,7 @@ import { adapter as energiaTk } from '../carriers/energia-tk/adapter.js';
 import { adapter as enviaColombia } from '../carriers/envia-colombia/adapter.js';
 import { adapter as envialia } from '../carriers/envialia/adapter.js';
 import { adapter as epostGlobal } from '../carriers/epost-global/adapter.js';
+import { adapter as equick } from '../carriers/equick/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
 import { adapter as estes } from '../carriers/estes/adapter.js';
 import { adapter as eurodis } from '../carriers/eurodis/adapter.js';
@@ -497,6 +498,7 @@ export const REGISTRY: RegistryDefinition = {
     "envia-colombia": enviaColombia,
     "envialia": envialia,
     "epost-global": epostGlobal,
+    "equick": equick,
     "estafeta": estafeta,
     "estes": estes,
     "eurodis": eurodis,
@@ -950,7 +952,7 @@ export const REGISTRY: RegistryDefinition = {
     "envia-colombia": "envia-colombia",
     "envialia": "envialia",
     "epost-global": "epost-global",
-    "equick": "universal",
+    "equick": "equick",
     "estafeta": "estafeta",
     "estes": "estes",
     "estes-forwarding": "universal",

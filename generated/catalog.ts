@@ -11785,7 +11785,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "equick",
+      "recognitionRank": 853,
+      "localClocks": true
     },
     "canaryUrl": "https://api.equick.cn/",
     "linkRules": [
@@ -11797,7 +11799,12 @@ export const CARRIER_CATALOG = {
         "fragment": "^/support/supportWay\\?(?:[^#]*&)?nums=([^&,]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^EQK[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   },
   "estes": {
     "displayName": "Estes",
@@ -28482,7 +28489,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "envia-colombia": [],
   "envialia": [],
   "epost-global": ["epost-global-1"],
-  "equick": [],
+  "equick": ["equick-eqk"],
   "estes": [],
   "estes-forwarding": [],
   "ethiopian-post": [],

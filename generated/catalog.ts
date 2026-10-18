@@ -5157,7 +5157,7 @@ export const CARRIER_CATALOG = {
   },
   "4sides": {
     "displayName": "4Sides",
-    "color": "#bd4d47",
+    "color": "#d4534d",
     "aliases": [
       "4 SIDES",
       "FOUR SIDES",
@@ -10474,7 +10474,7 @@ export const CARRIER_CATALOG = {
   },
   "dobropost": {
     "displayName": "DobroPost",
-    "color": "#ffc33a",
+    "color": "#ffbe2e",
     "aliases": [
       "ДоброПост",
       "Добропост",
@@ -26929,7 +26929,7 @@ export const CARRIER_CATALOG = {
   },
   "vestovoy": {
     "displayName": "Vestovoy",
-    "color": "#00a3d3",
+    "color": "#0e7aa5",
     "aliases": [
       "Вестовой",
       "Vestovoi"

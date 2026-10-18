@@ -138,6 +138,7 @@ import { adapter as eurodis } from '../carriers/eurodis/adapter.js';
 import { adapter as evri } from '../carriers/evri/adapter.js';
 import { adapter as evriUk } from '../carriers/evri-uk/adapter.js';
 import { adapter as evropat } from '../carriers/evropat/adapter.js';
+import { adapter as exelot } from '../carriers/exelot/adapter.js';
 import { adapter as expressOne } from '../carriers/express-one/adapter.js';
 import { adapter as fanCourier } from '../carriers/fan-courier/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
@@ -524,6 +525,7 @@ export const REGISTRY: RegistryDefinition = {
     "evri": evri,
     "evri-uk": evriUk,
     "evropat": evropat,
+    "exelot": exelot,
     "express-one": expressOne,
     "fan-courier": fanCourier,
     "fedex": fedex,
@@ -997,7 +999,7 @@ export const REGISTRY: RegistryDefinition = {
     "evri-uk": "evri-uk",
     "evropat": "evropat",
     "ewe": "universal",
-    "exelot": "universal",
+    "exelot": "exelot",
     "exline-kz": "universal",
     "express-one": "express-one",
     "fan-courier": "fan-courier",

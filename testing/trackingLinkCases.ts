@@ -1178,6 +1178,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'evropat', number: '00000000000000',
     route: /^https:\/\/evropat\.bg\/track\/\?barcode=00000000000000$/,
     marker: /Няма намерена пратка с този номер|Проследяване на пратка/ },
+  // The page prefills its search box from the address and asks Exelot's lookup; an unknown number gets the notice.
+  { carrier: 'exelot', number: 'XLT000000000',
+    route: /^https:\/\/go\.exelot\.com\/tracking\?barcodes=XLT000000000$/,
+    marker: /We couldn.t find this shipment|Track your shipment|לא הצלחנו למצוא את המשלוח/ },
 ];
 
 /**

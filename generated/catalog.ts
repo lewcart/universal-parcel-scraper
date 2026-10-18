@@ -12371,7 +12371,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "exelot",
+      "recognitionRank": 865
     },
     "canaryUrl": "https://www.exelot.com/",
     "trackingUrlTemplate": "https://go.exelot.com/tracking?barcodes={trackingNumber}",

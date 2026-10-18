@@ -70,7 +70,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -86,7 +86,30 @@
           "ppl"
         ]
       },
-      "note": "Looked up on OCASA's tracker, as an archived address shows; the capture holds only the tracker's CAPTCHA step, so no history is visible."
+      "note": "Looked up on OCASA's tracker, as an archived address shows; the capture holds only the tracker's CAPTCHA step, and the tracker itself shows this Mercado Libre shipment's history from pickup to delivery."
+    },
+    {
+      "number": "000000001035038511",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251014162939/https://tracking.ocasa.com/Tracking/index?airbillnumber=000000001035038511",
+        "date": "2025-10-14",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "bpost",
+          "ecoscooting"
+        ]
+      },
+      "note": "Looked up on OCASA's tracker, as an archived address shows; the capture holds only the tracker's CAPTCHA step, and the tracker itself shows this Mercado Libre shipment's history from confirmation to delivery."
     },
     {
       "number": "EC2CW12957178",
@@ -228,13 +251,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Looked up on OCASA's tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on OCASA's tracker, as an archived address shows; the capture was not opened, and the tracker itself shows this shipment's history from pickup to delivery."
     },
     {
       "number": "TCF0000026028",

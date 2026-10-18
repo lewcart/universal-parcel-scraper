@@ -17,18 +17,54 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ocasa",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 797
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://tracking.ocasa.com/Tracking/index?client=&airbillnumber={trackingNumber}&i=18&url=ocasa",
     "searchUrl": "https://tracking.ocasa.com/TrackingOnline/index",
     "canaryUrl": "https://tracking.ocasa.com/TrackingOnline/index",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "signatory",
+      "coordinates"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "location",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "signatory",
+      "coordinates"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery",
+      "delivered_at",
+      "offset_timestamps",
+      "provider_code"
+    ]
   },
   "links": [
     {

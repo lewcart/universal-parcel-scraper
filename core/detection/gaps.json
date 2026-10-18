@@ -2492,6 +2492,12 @@
   },
   {
     "carrier": "ocasa",
+    "pattern": "^\\d{18}$",
+    "kind": "collision",
+    "reason": "OCASA's eighteen-digit numbers are a run of zeros and a shorter number, a shape other carriers' numeric numbers share, so the shape cannot name OCASA."
+  },
+  {
+    "carrier": "ocasa",
     "pattern": "^(?:ECO|TCF)\\d{10}$",
     "kind": "by_design",
     "reason": "OCASA's ECO and TCF numbers are three letters and ten digits; TCF belongs to one merchant's shipments and ECO is unexplained, so too few public numbers back a rule."

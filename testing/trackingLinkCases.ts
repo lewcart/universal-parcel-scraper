@@ -1401,6 +1401,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'm-one': 'm-one.rs sends its certificate without the intermediate one, which headless Chromium and Node do not fetch, so the page cannot be opened',
   'magyar-posta': 'www.posta.hu fills the number into its tracker frame, which the rendered-page check does not read, and the tracker asks for a reCAPTCHA checkbox before each lookup',
   oca: 'the parcel page asks for a reCAPTCHA checkbox before it shows the history, so number forwarding cannot be verified',
+  ocasa: 'the tracking link opens a reCAPTCHA checkbox, with the number in a hidden field, before it shows the shipment, so number forwarding cannot be verified',
   passport: 'track.passportglobal.com answers automated Chrome with a Human Verification page that watches the visitor\'s activity before it shows the tracker, so number forwarding cannot be verified',
   'poste-italiane': 'the results page exposes no readable text to headless Chrome',
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',

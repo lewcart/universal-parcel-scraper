@@ -228,6 +228,7 @@ import { statusMap as norskGlobal } from '../../carriers/norsk-global/status.js'
 import { statusMap as novaGlobal } from '../../carriers/nova-global/status.js';
 import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as oca } from '../../carriers/oca/status.js';
+import { statusMap as ocasa } from '../../carriers/ocasa/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as olvaCourier } from '../../carriers/olva-courier/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
@@ -397,7 +398,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,
-  'norsk-global': norskGlobal, 'nova-global': novaGlobal, nox, oca, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
+  'norsk-global': norskGlobal, 'nova-global': novaGlobal, nox, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, paquetexpress, passport, 'pathao-courier': pathaoCourier, 'pdn-express': pdnExpress, pecom,
   'pfc-express': pfcExpress, phlpost,

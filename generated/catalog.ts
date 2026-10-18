@@ -20573,7 +20573,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ocasa",
+      "recognitionRank": 797,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.ocasa.com/TrackingOnline/index",
     "trackingUrlTemplate": "https://tracking.ocasa.com/Tracking/index?client=&airbillnumber={trackingNumber}&i=18&url=ocasa",

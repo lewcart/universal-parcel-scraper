@@ -1347,17 +1347,17 @@ describe('ParcelsApp result parsing', () => {
       carriers: ['Portugal Post - Portugal CTT'], originCode, destinationCode, states,
     }, number, identity()).events?.map((scan) => scan.time);
     expect(times('GB', 'PT', [
-      { date: '2026-10-12T08:37:38Z', status: 'In transit. Arrived at the destination country.', carrier: 0, location: 'PTLISE - (CTC) LISBON CUSTOMS' },
-      { date: '2026-10-12T07:13:04Z', status: 'In transit. Arrived at the destination country.', carrier: 0, location: 'PTLISB - (OUTRO) LISBON PROV' },
-      { date: '2026-10-07T06:32:00Z', status: 'In transit. Forwarded to the destination country.', carrier: 0, location: 'GBLALA - (OUTRO) EXAMPLE HWDC' },
-      { date: '2026-10-06T17:53:00Z', status: 'Accepted. The shipment has been accepted.', carrier: 0, location: 'EXAMPLE MC' },
-    ])).toEqual(['2026-10-12T07:37:38.000Z', '2026-10-12T06:13:04.000Z', '2026-10-07T05:32:00.000Z', '2026-10-06T16:53:00.000Z']);
+      { date: '2026-09-14T10:21:17Z', status: 'In transit. Arrived at the destination country.', carrier: 0, location: 'PTLISE - (CTC) LISBON CUSTOMS' },
+      { date: '2026-09-14T08:48:52Z', status: 'In transit. Arrived at the destination country.', carrier: 0, location: 'PTLISB - (OUTRO) LISBON PROV' },
+      { date: '2026-09-09T05:05:00Z', status: 'In transit. Forwarded to the destination country.', carrier: 0, location: 'GBLALA - (OUTRO) EXAMPLE HWDC' },
+      { date: '2026-09-08T19:26:00Z', status: 'Accepted. The shipment has been accepted.', carrier: 0, location: 'EXAMPLE MC' },
+    ])).toEqual(['2026-09-14T09:21:17.000Z', '2026-09-14T07:48:52.000Z', '2026-09-09T04:05:00.000Z', '2026-09-08T18:26:00.000Z']);
     // Bound abroad, a scan after the last at a Portuguese office is the destination post's.
     expect(times('PT', 'FR', [
-      { date: '2026-10-14T09:10:00Z', status: 'Delivered.', carrier: 0, location: 'EXAMPLE TOWN' },
-      { date: '2026-10-12T07:13:04Z', status: 'In transit. Left the origin country.', carrier: 0, location: 'PTLISB - (OUTRO) LISBON PROV' },
-      { date: '2026-10-11T10:00:00Z', status: 'Accepted.', carrier: 0, location: 'EXAMPLE PLACE' },
-    ])).toEqual(['2026-10-14T07:10:00.000Z', '2026-10-12T06:13:04.000Z', '2026-10-11T09:00:00.000Z']);
+      { date: '2026-09-16T11:40:00Z', status: 'Delivered.', carrier: 0, location: 'EXAMPLE TOWN' },
+      { date: '2026-09-14T08:48:52Z', status: 'In transit. Left the origin country.', carrier: 0, location: 'PTLISB - (OUTRO) LISBON PROV' },
+      { date: '2026-09-13T12:30:00Z', status: 'Accepted.', carrier: 0, location: 'EXAMPLE PLACE' },
+    ])).toEqual(['2026-09-16T09:40:00.000Z', '2026-09-14T07:48:52.000Z', '2026-09-13T11:30:00.000Z']);
   });
 
   it('reads Royal Mail\'s relays of its partners\' scans abroad on Central European time', () => {

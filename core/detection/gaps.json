@@ -1747,6 +1747,12 @@
     "reason": "Jeebly's six-digit JB and JBP numbers appear only as documentation examples, and short two- or three-letter composites are shared by many carriers."
   },
   {
+    "carrier": "jet-logistic",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Twelve-digit Jet Logistic cargo codes share their shape with many carriers' numeric waybills, so the shape cannot name Jet Logistic."
+  },
+  {
     "carrier": "jitsu",
     "pattern": "^[0-9A-Z]{16}$",
     "kind": "by_design",
@@ -2119,6 +2125,12 @@
     "reason": "Twelve digits are shared by several carriers and nothing in the number points to DHL eCommerce Türkiye."
   },
   {
+    "carrier": "mongol-infinity-post",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "Mongol Infinity Post's seven-digit registration numbers are a bare digit run many carriers share."
+  },
+  {
     "carrier": "naqel",
     "pattern": "^\\d{8}$",
     "kind": "by_design",
@@ -2434,6 +2446,12 @@
     "pattern": "^\\d{15}$",
     "kind": "by_design",
     "reason": "The fifteen-digit form is the twelve-digit number with its 001 piece suffix, and bare fifteen-digit numbers are printed by many carriers."
+  },
+  {
+    "carrier": "peqasus-az",
+    "pattern": "^GBS\\d{10}$",
+    "kind": "by_design",
+    "reason": "The only sample is Peqasus's own field example, which cannot show that the GBS prefix belongs to Peqasus alone, so no rule claims it."
   },
   {
     "carrier": "pfc-express",
@@ -3008,6 +3026,12 @@
     "pattern": "^SE\\d{10}$",
     "kind": "collision",
     "reason": "SE and ten digits is Amazon Logistics' Swedish marketplace shape, whose high-confidence rule decides; Stallion's SE references usually carry a letter."
+  },
+  {
+    "carrier": "starex-az",
+    "pattern": "^STR\\d{9}$",
+    "kind": "collision",
+    "reason": "Starex's STR and nine digits falls inside Purolator's three-letter PIN shape, and a single archived lookup is too little to carve the prefix out."
   },
   {
     "carrier": "starken",

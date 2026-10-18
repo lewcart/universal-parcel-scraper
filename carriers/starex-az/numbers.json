@@ -1,0 +1,24 @@
+{
+  "carrier": "starex-az",
+  "records": [
+    {
+      "number": "STR059449783",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240715173955/https://starex.az/baglama/?parcelNumber=STR059449783",
+        "date": "2024-07-15",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "purolator",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Starex's own parcel page; the capture was opened and shows only the page shell, since the history loads by script."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "mongol-infinity-post",
+  "displayName": "Mongol Infinity Post",
+  "aliases": [
+    "Монгол Инфинити Шуудан",
+    "Инфинити Шуудан",
+    "Infinity Post",
+    "Mongol Infinity Post LLC"
+  ],
+  "region": {
+    "countries": [
+      "MN"
+    ]
+  },
+  "brand": {
+    "color": "#404b9b"
+  },
+  "selectable": true,
+  "timezone": "Asia/Ulaanbaatar",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "canaryUrl": "https://mypost.mn/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

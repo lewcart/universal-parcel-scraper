@@ -1,0 +1,52 @@
+{
+  "id": "starex-az",
+  "displayName": "Starex",
+  "aliases": [
+    "Starex MMC",
+    "Starex Global"
+  ],
+  "region": {
+    "countries": [
+      "AZ",
+      "UZ"
+    ]
+  },
+  "brand": {
+    "color": "#005aff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Baku",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://starexglobal.com/az/tracking/{trackingNumber}",
+    "searchUrl": "https://starexglobal.com/az/",
+    "canaryUrl": "https://starexglobal.com/az/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "starexglobal.com"
+      ],
+      "path": "^/(?:az|en|ru)/tracking/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "starex.az"
+      ],
+      "pathPattern": "^/baglama/?$",
+      "params": [
+        "parcelNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

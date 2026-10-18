@@ -15951,6 +15951,31 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "jet-logistic": {
+    "displayName": "Jet Logistic",
+    "color": "#00a8e8",
+    "aliases": [
+      "Джет Логистик",
+      "JetLogistic",
+      "ТОО «Jet Logistic»"
+    ],
+    "countries": [
+      "KZ",
+      "RU",
+      "KG",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Almaty",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://jetlogistic.kz/",
+    "trackingSearchUrl": "https://jetlogistic.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jhgj": {
     "displayName": "Jiuhao International",
     "color": "#283593",
@@ -18430,6 +18455,28 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "mongol-infinity-post": {
+    "displayName": "Mongol Infinity Post",
+    "color": "#404b9b",
+    "aliases": [
+      "Монгол Инфинити Шуудан",
+      "Инфинити Шуудан",
+      "Infinity Post",
+      "Mongol Infinity Post LLC"
+    ],
+    "countries": [
+      "MN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ulaanbaatar",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mypost.mn/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "mtscn": {
     "displayName": "Meiteshun Logistics",
     "color": "#f89f3b",
@@ -20505,6 +20552,38 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/self_link/id_link(?:_c)?\\.asp$",
         "params": [
           "txtMainID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "peqasus-az": {
+    "displayName": "Peqasus",
+    "color": "#3665b5",
+    "aliases": [
+      "PEQASUS",
+      "Peqasus MMC"
+    ],
+    "countries": [
+      "AZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Baku",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://peqasus.az/search",
+    "trackingUrlTemplate": "https://peqasus.az/search?lang=en&parcel_tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://peqasus.az/search",
+    "linkRules": [
+      {
+        "domains": [
+          "peqasus.az"
+        ],
+        "pathPattern": "^/search/?$",
+        "params": [
+          "parcel_tracking_number"
         ]
       }
     ],
@@ -24682,6 +24761,45 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "starex-az": {
+    "displayName": "Starex",
+    "color": "#005aff",
+    "aliases": [
+      "Starex MMC",
+      "Starex Global"
+    ],
+    "countries": [
+      "AZ",
+      "UZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Baku",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://starexglobal.com/az/",
+    "trackingUrlTemplate": "https://starexglobal.com/az/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://starexglobal.com/az/",
+    "linkRules": [
+      {
+        "domains": [
+          "starexglobal.com"
+        ],
+        "path": "^/(?:az|en|ru)/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "starex.az"
+        ],
+        "pathPattern": "^/baglama/?$",
+        "params": [
+          "parcelNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "starken": {
     "displayName": "Starken",
     "color": "#009f3e",
@@ -28114,6 +28232,7 @@ export const CARRIER_IDS = [
   "janio",
   "jeebly",
   "jersey-post",
+  "jet-logistic",
   "jhgj",
   "jitsu",
   "jne",
@@ -28181,6 +28300,7 @@ export const CARRIER_IDS = [
   "micro-express",
   "midland-transport",
   "mng-kargo",
+  "mongol-infinity-post",
   "mtscn",
   "mylerz",
   "naqel",
@@ -28234,6 +28354,7 @@ export const CARRIER_IDS = [
   "pecom",
   "peddler",
   "pelican-express",
+  "peqasus-az",
   "pfc-express",
   "phlpost",
   "pickupp",
@@ -28339,6 +28460,7 @@ export const CARRIER_IDS = [
   "sri-lanka-post",
   "st-courier",
   "stallion-express",
+  "starex-az",
   "starken",
   "starlinks",
   "steadfast",
@@ -28811,6 +28933,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "janio": ["janio-1"],
   "jeebly": ["jeebly-1"],
   "jersey-post": [],
+  "jet-logistic": [],
   "jhgj": ["jhgj-1"],
   "jitsu": [],
   "jne": ["jne-1"],
@@ -28878,6 +29001,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "micro-express": ["micro-express-1"],
   "midland-transport": [],
   "mng-kargo": [],
+  "mongol-infinity-post": [],
   "mtscn": ["mtscn-1"],
   "mylerz": ["mylerz-1"],
   "naqel": [],
@@ -28931,6 +29055,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pecom": [],
   "peddler": ["peddler-1","peddler-2"],
   "pelican-express": [],
+  "peqasus-az": [],
   "pfc-express": ["pfc-express-1"],
   "phlpost": ["phlpost-s10"],
   "pickupp": ["pickupp-1"],
@@ -29036,6 +29161,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sri-lanka-post": [],
   "st-courier": [],
   "stallion-express": ["stallion-express-1","stallion-express-2"],
+  "starex-az": [],
   "starken": [],
   "starlinks": ["starlinks-1"],
   "steadfast": ["steadfast-1"],

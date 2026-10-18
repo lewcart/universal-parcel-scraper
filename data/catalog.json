@@ -15949,6 +15949,31 @@
     ],
     "detectionRules": []
   },
+  "jet-logistic": {
+    "displayName": "Jet Logistic",
+    "color": "#00a8e8",
+    "aliases": [
+      "Джет Логистик",
+      "JetLogistic",
+      "ТОО «Jet Logistic»"
+    ],
+    "countries": [
+      "KZ",
+      "RU",
+      "KG",
+      "BY"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Almaty",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://jetlogistic.kz/",
+    "trackingSearchUrl": "https://jetlogistic.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "jhgj": {
     "displayName": "Jiuhao International",
     "color": "#283593",
@@ -18428,6 +18453,28 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "mongol-infinity-post": {
+    "displayName": "Mongol Infinity Post",
+    "color": "#404b9b",
+    "aliases": [
+      "Монгол Инфинити Шуудан",
+      "Инфинити Шуудан",
+      "Infinity Post",
+      "Mongol Infinity Post LLC"
+    ],
+    "countries": [
+      "MN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Ulaanbaatar",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://mypost.mn/",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "mtscn": {
     "displayName": "Meiteshun Logistics",
     "color": "#f89f3b",
@@ -20503,6 +20550,38 @@
         "pathPattern": "^/self_link/id_link(?:_c)?\\.asp$",
         "params": [
           "txtMainID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "peqasus-az": {
+    "displayName": "Peqasus",
+    "color": "#3665b5",
+    "aliases": [
+      "PEQASUS",
+      "Peqasus MMC"
+    ],
+    "countries": [
+      "AZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Baku",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://peqasus.az/search",
+    "trackingUrlTemplate": "https://peqasus.az/search?lang=en&parcel_tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://peqasus.az/search",
+    "linkRules": [
+      {
+        "domains": [
+          "peqasus.az"
+        ],
+        "pathPattern": "^/search/?$",
+        "params": [
+          "parcel_tracking_number"
         ]
       }
     ],
@@ -24679,6 +24758,45 @@
         "preferred": true
       }
     ]
+  },
+  "starex-az": {
+    "displayName": "Starex",
+    "color": "#005aff",
+    "aliases": [
+      "Starex MMC",
+      "Starex Global"
+    ],
+    "countries": [
+      "AZ",
+      "UZ"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Baku",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://starexglobal.com/az/",
+    "trackingUrlTemplate": "https://starexglobal.com/az/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://starexglobal.com/az/",
+    "linkRules": [
+      {
+        "domains": [
+          "starexglobal.com"
+        ],
+        "path": "^/(?:az|en|ru)/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "starex.az"
+        ],
+        "pathPattern": "^/baglama/?$",
+        "params": [
+          "parcelNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "starken": {
     "displayName": "Starken",

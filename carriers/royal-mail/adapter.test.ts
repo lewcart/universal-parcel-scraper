@@ -236,6 +236,42 @@ describe('Royal Mail structured response', () => {
     expect(result).toMatchObject({ last_status_text: 'In Transit', last_update: '2026-10-10T21:51:00+02:00', destination_country: 'FR' });
   });
 
+  it('reads a European partner\'s scans, placed or in the destination country, on Central European time', () => {
+    const result = parseRoyalMailTrackingResponse({ mailPieces: {
+      mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: '**With Customs**', lastEventCode: 'EVJDC',
+        lastEventDateTime: '2026-10-20T11:40:00+01:00', destinationCountryCode: 'PT' },
+      events: [
+        { eventCode: 'EVJDC', eventName: '**Your item is currently with Customs in the destination country**', eventDateTime: '2026-10-20T11:40:00+01:00' },
+        { eventCode: 'EVJOE', eventName: '**Item Received**', eventDateTime: '2026-10-20T10:05:00+01:00', locationName: 'Portugal' },
+        { eventCode: 'EVJOE', eventName: '**Item Received**', eventDateTime: '2026-10-19T21:15:00+01:00', locationName: 'Example IPC, Ireland' },
+        { eventCode: 'EVHOE', eventName: '**Item Leaving the UK**', eventDateTime: '2026-10-15T03:31:09+01:00', locationName: 'Example HWDC' },
+        { eventCode: 'EVDAC', eventName: '**Item Received**', eventDateTime: '2026-10-14T19:28:24+01:00', locationName: 'Example MC' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    // Lisbon and Dublin keep the UK's offset; their scans still come on the Continent's clock, an hour ahead.
+    expect(result.events?.map(event => event.time)).toEqual([
+      '2026-10-20T11:40:00+02:00', '2026-10-20T10:05:00+02:00', '2026-10-19T21:15:00+02:00',
+      '2026-10-15T03:31:09+01:00', '2026-10-14T19:28:24+01:00',
+    ]);
+    expect(result.last_update).toBe('2026-10-20T11:40:00+02:00');
+    // Without the details reply's destination, the scans abroad name the country.
+    const unnamed = parseRoyalMailTrackingResponse({ mailPieces: { mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit' },
+      events: [
+        { eventCode: 'EVJDC', eventName: 'Your item is currently with Customs in the destination country', eventDateTime: '2026-10-20T11:40:00+01:00' },
+        { eventCode: 'EVJOE', eventName: 'Item Received', eventDateTime: '2026-10-20T10:05:00+01:00', locationName: 'Portugal' },
+      ],
+    } }, IN_TRANSIT_NUMBER);
+    expect(unnamed.events?.map(event => event.time)).toEqual(['2026-10-20T11:40:00+02:00', '2026-10-20T10:05:00+02:00']);
+    // Without a European destination, an unplaced scan keeps Royal Mail's label.
+    const elsewhere = parseRoyalMailTrackingResponse({ mailPieces: { mailPieceId: IN_TRANSIT_NUMBER,
+      summary: { statusCategory: 'In transit', statusDescription: 'In transit', destinationCountryCode: 'AU' },
+      events: [{ eventCode: 'EVJDC', eventName: 'Your item is currently with Customs in the destination country', eventDateTime: '2026-10-20T11:40:00+01:00' }],
+    } }, IN_TRANSIT_NUMBER);
+    expect(elsewhere.events?.[0]!.time).toBe('2026-10-20T11:40:00+01:00');
+  });
+
   it('keeps a scan abroad on a clock of several zones out of last_update', () => {
     const result = parseRoyalMailTrackingResponse({ mailPieces: {
       mailPieceId: IN_TRANSIT_NUMBER,

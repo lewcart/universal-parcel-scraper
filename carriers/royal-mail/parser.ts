@@ -50,17 +50,30 @@ function eventTime(value: unknown): string | null {
   return explicitOffsetTime(raw)?.iso ?? null;
 }
 
+const HOME = new Set(['GB', 'JE', 'GG', 'IM']);
+// A European partner's scans reach Royal Mail on Central European time, whatever the country's own clock.
+const RELAY_CLOCK = 'Europe/Brussels';
+const IN_DESTINATION = /\bin the destination country\b/i;
+const europeanAbroad = (country: string | null) => Boolean(country && !HOME.has(country)
+  && countryTimeZone(country)?.startsWith('Europe/'));
+/** The country a scan's place is, or ends with. */
+const placeCountry = (location: string) => countryCode(/(?:^|,)\s*([^,]+)$/.exec(location)?.[1]);
+
 /**
- * A scan abroad names its country after the place, and Royal Mail labels that
- * office's wall clock with the UK's offset. The clock is read in the country's
- * zone, or kept as a wall clock when the country has several; null at home.
+ * A scan abroad names its country as, or after, the place, and Royal Mail labels
+ * that office's wall clock with the UK's offset. A European partner's clock, and
+ * an unplaced scan in a European destination country, is read on Central European
+ * time; another country's in its zone, or kept as a wall clock when it has several.
+ * Null at home.
  */
-function abroadClock(raw: string, location: string): { time: string } | { local_time: string } | null {
-  const country = countryCode(/,\s*([^,]+)$/.exec(location)?.[1]);
-  if (!country || country === 'GB' || !eventTime(raw)) return null;
+function abroadClock(raw: string, location: string, description: string, destination: string | null): { time: string } | { local_time: string } | null {
+  if (!eventTime(raw)) return null;
+  const country = placeCountry(location);
+  const relayed = country ? europeanAbroad(country) : !location && europeanAbroad(destination) && IN_DESTINATION.test(description);
+  if (!relayed && (!country || HOME.has(country))) return null;
   const wall = DateTime.fromISO(raw, { setZone: true }).toISO({ includeOffset: false, suppressMilliseconds: true });
   if (!wall) return null;
-  const zone = countryTimeZone(country);
+  const zone = relayed ? RELAY_CLOCK : countryTimeZone(country!);
   const placed = zone ? isoTime(wall, zone) : null;
   return placed ? { time: placed.iso } : { local_time: wall };
 }
@@ -107,6 +120,12 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     throw new SchemaError('Royal Mail', 'Royal Mail returned invalid tracking events');
   }
   const scans = Array.isArray(mailpiece.events) ? mailpiece.events : [];
+  // Only the full-history reply names the destination, and not always.
+  const destination = cleanScalar(summary.destinationCountryCode, 8);
+  const destinationCountry = /^[A-Z]{2}$/.test(destination) ? destination : null;
+  // Without it, an unplaced scan in the destination country is in the country the scans abroad name.
+  const abroadCountry = destinationCountry ?? scans.slice(0, MAX_EVENTS_TO_INSPECT)
+    .map(raw => isRecord(raw) ? placeCountry(placeName(raw.locationName)) : null).find(country => country && !HOME.has(country)) ?? null;
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
   const abroad = new Map<string, { time: string } | { local_time: string }>();
@@ -121,7 +140,7 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     const stage = mapped ?? royalMailStage(description) ?? undefined;
     const timeText = cleanScalar(raw.eventDateTime, 64);
     const location = placeName(raw.locationName);
-    const clock = abroadClock(timeText, location);
+    const clock = abroadClock(timeText, location, description, abroadCountry);
     if (clock && !abroad.has(timeText)) abroad.set(timeText, clock);
     const time = clock ? ('time' in clock ? clock.time : null) : eventTime(raw.eventDateTime);
     const event: CarrierEvent = {
@@ -161,8 +180,6 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
   const lastTime = lastClock ? ('time' in lastClock ? lastClock.time : null) : eventTime(lastText);
   const deliveredAt = !delivered ? null : trimmed.find(event => event.stage === 'delivered' && event.time)?.time
     ?? (royalMailEventStage(cleanScalar(summary.lastEventCode, 64)) === 'delivered' ? lastTime : null);
-  // Only the full-history reply names the destination.
-  const destination = cleanScalar(summary.destinationCountryCode, 8);
   return {
     status: stage ? statusForStage(stage) : 'unknown',
     ...(stage ? { current_stage: stage } : {}),
@@ -171,7 +188,7 @@ export function parseRoyalMailTrackingResponse(payload: unknown, trackingNumber:
     expected_delivery: delivered || !isRecord(mailpiece.estimatedDelivery)
       ? null : expectedDelivery(mailpiece.estimatedDelivery.date),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
-    ...(/^[A-Z]{2}$/.test(destination) ? { destination_country: destination } : {}),
+    ...(destinationCountry ? { destination_country: destinationCountry } : {}),
     events: trimmed,
     ...(trimmed.length ? {} : { summary_only: true }),
   };

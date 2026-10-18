@@ -44,10 +44,13 @@ fails every parcel alike, so it should fail fast.
   destination country becomes `destination_country`.
 - Scan places lose the postcode Royal Mail appends to a Post Office branch,
   and a place given only as a postcode is dropped.
-- A scan abroad names its country after the place, and Royal Mail labels that
-  office's wall clock with the UK's offset. The clock is read in that country's
-  zone, or kept in `local_time` when the country has several; the summary's
-  copy of the newest scan follows it. Offset-free or invalid clocks remain in
+- A scan abroad names its country as, or after, the place, and Royal Mail labels
+  its wall clock with the UK's offset. A European partner's scans come on Central
+  European time even where the country keeps the UK's clock, as the destination
+  post's own scans show, and so does an unplaced scan "in the destination country"
+  bound for Europe. Another country's clock is read in its zone, or kept in
+  `local_time` when the country has several; the summary's copy of the newest scan
+  follows it. Offset-free or invalid clocks remain in
   `provider_time_text`; sorting requires every event clock to resolve.
 - Markdown emphasis is removed from summary and scan wording. Delivered wording
   is reduced to `Delivered`. Recipient, signature, photo, address, GPS and

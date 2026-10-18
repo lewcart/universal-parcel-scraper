@@ -10388,7 +10388,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "direx",
+      "localClocks": true
     },
     "canaryUrl": "https://direx.bg/track/",
     "trackingUrlTemplate": "https://direx.bg/track/?code={trackingNumber}",

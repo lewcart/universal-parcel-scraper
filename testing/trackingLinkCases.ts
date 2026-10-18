@@ -835,6 +835,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dhlink', number: 'FC9912310000001',
     route: /^https:\/\/www\.dhlink\.com\/trackQuery\?intlExpressNo=FC9912310000001&lang=en$/,
     marker: /Tracking Search|There is no track for this waybill number/ },
+  // The page reads the number from its address and asks the tracker's lookup; an unknown one gets a notice naming it.
+  { carrier: 'direx', number: '9999999999',
+    route: /^https:\/\/direx\.bg\/track\/\?code=9999999999$/,
+    marker: /Хм, не можахме да намерим нищо за проследяващ номер|Текущ статус/ },
   // The page puts the number in its search box and posts it to the tracking service on load.
   { carrier: 'speedaf', number: 'MA000000000000',
     route: /^https:\/\/www\.speedaf\.com\/cn-en\/send-parcel\?tradeNo=MA000000000000$/,

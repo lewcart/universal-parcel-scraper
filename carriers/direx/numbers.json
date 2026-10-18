@@ -2,6 +2,91 @@
   "carrier": "direx",
   "records": [
     {
+      "number": "9063457359",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://direx.bg/track/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "packeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Direx's tracking page lists it in an HTML comment. Direx's tracker answers it as a parcel for Germany that UPS sent back."
+    },
+    {
+      "number": "1750894953",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://direx.bg/track/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "packeta",
+          "dhl-ecommerce-es",
+          "gls-es"
+        ]
+      },
+      "note": "Direx's tracking page lists it in an HTML comment. Direx's tracker answers it as a parcel for the United States that USPS delivered."
+    },
+    {
+      "number": "4178288994",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://direx.bg/track/",
+        "date": "2026-10-18",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "packeta",
+          "dhl-ecommerce-es"
+        ]
+      },
+      "note": "Direx's tracking page lists it in an HTML comment. Direx's tracker answers it as a parcel for the United States that USPS delivered."
+    },
+    {
       "number": "3194037526",
       "role": "shipment",
       "evidence": "official_documentation_example",

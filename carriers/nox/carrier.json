@@ -20,18 +20,42 @@
   "timezone": "Europe/Berlin",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "nox",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 874
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://trackandtrace.app.nox.express/scannungen/{trackingNumber}",
     "searchUrl": "https://trackandtrace.app.nox.express/scannungen",
     "canaryUrl": "https://trackandtrace.app.nox.express/scannungen",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "delivered_at"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

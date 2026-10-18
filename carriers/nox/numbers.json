@@ -25,19 +25,19 @@
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20240406090619/https://tcs.app.nox.express/ords/stcs/STCS_TRACK_AND_TRACE.Info?pBarcode=SWR022371152404051314707",
-        "date": "2024-04-06",
+        "url": "https://web.archive.org/web/20240418182112/https://tcs.app.nox.express/ords/stcs/STCS_TRACK_AND_TRACE.Info?pBarcode=SWR022371152404051314707",
+        "date": "2024-04-18",
         "dateKind": "capture",
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup on nox's own former tracker with this barcode, captured the day after the print date it holds; the tracker did not know it yet, so no history was visible."
+      "note": "An archived lookup on nox's own former tracker shows this barcode going from Berlin to its delivery in Hannover in April 2024."
     },
     {
       "number": "220001234567160405123456",

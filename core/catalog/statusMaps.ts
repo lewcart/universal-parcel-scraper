@@ -178,6 +178,7 @@ import { statusMap as naqel } from '../../carriers/naqel/status.js';
 import { statusMap as nationex } from '../../carriers/nationex/status.js';
 import { statusMap as nipost } from '../../carriers/nipost/status.js';
 import { statusMap as nipponExpress } from '../../carriers/nippon-express/status.js';
+import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as oca } from '../../carriers/oca/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as olvaCourier } from '../../carriers/olva-courier/status.js';
@@ -304,7 +305,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, 'la-poste': laPoste, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest,
-  'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, oca,
+  'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, nipost, 'nippon-express': nipponExpress, nox, oca,
   'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, packlink,
   'pakistan-post': pakistanPost, paquetexpress, passport, 'pathao-courier': pathaoCourier, pecom, phlpost, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,

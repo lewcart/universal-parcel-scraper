@@ -172,6 +172,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "nipost": 908,
   "nippon-express": 941,
   "nova-poshta": 685,
+  "nox": 874,
   "nz-post": 760,
   "oca": 974,
   "olva-courier": 911,

@@ -18431,7 +18431,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nox",
+      "recognitionRank": 874
     },
     "canaryUrl": "https://trackandtrace.app.nox.express/scannungen",
     "trackingUrlTemplate": "https://trackandtrace.app.nox.express/scannungen/{trackingNumber}",

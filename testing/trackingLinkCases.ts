@@ -1064,6 +1064,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'intex-paketdienst', number: '0000000-0',
     route: /^https:\/\/www\.intex-paketdienst\.de\/sendungsstatus\/index\.php\?sdnr=0000000-0&mid=1$/,
     marker: /konnte nicht ermittelt werden/ },
+  // The page looks the barcode up from its path, keeps it in its search box and says when it does not know it.
+  { carrier: 'nox', number: '220000000000000101000000',
+    route: /^https:\/\/trackandtrace\.app\.nox\.express\/scannungen\/220000000000000101000000$/,
+    marker: /Der von Ihnen angegebene Barcode ist uns nicht bekannt|Behalten Sie mit Track & Trace Ihre Sendungen im Blick/ },
 ];
 
 /**

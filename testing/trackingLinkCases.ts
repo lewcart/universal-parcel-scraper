@@ -1126,6 +1126,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pfc-express', number: 'R1000002912230003',
     route: /^https:\/\/www\.pfctrack\.com\/\?nums=R1000002912230003(?:,|%2C)?$/,
     marker: /Not Found|Powered by PFCEXPRESS/ },
+  // The server looks the numbers in the query up and names an unknown one in its notice.
+  { carrier: 'seko', number: 'ZZ0000000000',
+    route: /^https:\/\/www\.sekologistics\.com\/en\/track\/\?trackingNumbers=ZZ0000000000$/,
+    marker: /No results found for tracking number|Enter up to 30 tracking numbers/i },
 ];
 
 /**

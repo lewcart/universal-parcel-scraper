@@ -22763,7 +22763,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "seko",
+      "recognitionRank": 854,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sekologistics.com/en/track/",
     "trackingUrlTemplate": "https://www.sekologistics.com/en/track/?trackingNumbers={trackingNumber}",

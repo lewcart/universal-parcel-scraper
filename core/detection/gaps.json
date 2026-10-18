@@ -2765,6 +2765,12 @@
     "reason": "One archived SEKO lookup of this shape; the family is not established."
   },
   {
+    "carrier": "seko",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to SEKO."
+  },
+  {
     "carrier": "sendex",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

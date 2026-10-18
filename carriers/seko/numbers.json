@@ -109,6 +109,25 @@
       "note": "An archived lookup on SEKO's own tracking page; the capture was not opened."
     },
     {
+      "number": "074630712",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250210162427/https://www.sekologistics.com/en/track/?trackingNumbers=074630712",
+        "date": "2025-02-10",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived lookup on SEKO's own tracking page; the capture was not opened."
+    },
+    {
       "number": "CE003358579MU",
       "role": "shipment",
       "evidence": "official_documentation_example",

@@ -5,7 +5,8 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
  * DHLink's standard nodes, by the `nodeCode` a row carries. The warehouse
  * lines (WH), the ePacket line (EUBJ) and the postal line (J) name their nodes
  * alike; FA001 to DE001 are the steps of the tracking page's progress rail.
- * "Dispatched" is the warehouse's or the collection point's receipt.
+ * "Dispatched" is the warehouse's or the collection point's receipt; TQ001 is
+ * the last-mile partner taking the parcel over.
  */
 const NODE_CODES: ReadonlyMap<string, Stage> = new Map([
   ['WH001', 'accepted'],
@@ -15,6 +16,7 @@ const NODE_CODES: ReadonlyMap<string, Stage> = new Map([
   ['FA001', 'in_transit'],
   ['EUBJ010', 'in_transit'],
   ['AD001', 'in_transit'],
+  ['TQ001', 'in_transit'],
   ['J013', 'out_for_delivery'],
   ['DE002', 'out_for_delivery'],
   ['J014', 'delivered'],

@@ -10,6 +10,7 @@
     {"code": "J014", "wording": "Shipment has delivered at …", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Node Delivered."},
     {"code": "FA001", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Original Leaving, a step of the progress rail the reply sends beside the rows."},
     {"code": "AD001", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Destination Arrived, a step of the progress rail."},
+    {"code": "TQ001", "wording": "Package picked up by last-mile carrier", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The last-mile partner took the parcel over from DHLink."},
     {"code": "DE002", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "Pending delivery, a step of the progress rail."},
     {"code": "DE001", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "Delivered, the last step of the progress rail."},
     {"wording": "Arrive at the collection warehouse", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "DHLink's collection warehouse in China received the parcel."},

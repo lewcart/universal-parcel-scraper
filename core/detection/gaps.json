@@ -1028,6 +1028,12 @@
     "reason": "ODO is the shop OneDayOnly's waybill prefix, which also reaches Pargo, so it names the shop rather than DPD South Africa."
   },
   {
+    "carrier": "dpex",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "DPEX air waybills are twelve digits with a modulo-7 check digit, the same layout and check as Yamato, Sagawa and Japan Post domestic numbers, so the shape cannot name DPEX."
+  },
+  {
     "carrier": "dragon-star-curier",
     "pattern": "^\\d{7}$",
     "kind": "by_design",
@@ -1325,6 +1331,18 @@
     "pattern": "^\\d{7}$",
     "kind": "by_design",
     "reason": "A Flip Post waybill of three digits and four loses its dash and becomes seven digits, too plain to claim."
+  },
+  {
+    "carrier": "fliway",
+    "pattern": "^[A-Z]{2}\\d{7}$",
+    "kind": "by_design",
+    "reason": "Two letters and seven digits is a short layout many carriers print, so Fliway consignment numbers of this shape stay unclaimed."
+  },
+  {
+    "carrier": "fliway",
+    "pattern": "^[A-Z]{3}\\d{5}$",
+    "kind": "by_design",
+    "reason": "Three letters and five digits is a short layout other carriers print, and one sample cannot show a Fliway-only prefix."
   },
   {
     "carrier": "flyking",
@@ -2291,6 +2309,24 @@
     "pattern": "^\\d{7}$",
     "kind": "by_design",
     "reason": "Mongol Infinity Post's seven-digit registration numbers are a bare digit run many carriers share."
+  },
+  {
+    "carrier": "morning-global",
+    "pattern": "^HK\\d{9}PH\\d{2}$",
+    "kind": "by_design",
+    "reason": "One Morning Global waybill from the older tracker page has this layout, too little to tell how the carrier numbers parcels, so detection leaves it unclaimed."
+  },
+  {
+    "carrier": "morning-global",
+    "pattern": "^[A-Z]{2}\\d{9}MG$",
+    "kind": "by_design",
+    "reason": "This is the UPU S10 form with Madagascar's code; the one Morning Global waybill seen fails the check digit, too little to take the layout from postal detection."
+  },
+  {
+    "carrier": "mrl-global",
+    "pattern": "^C[A-Z]{3}\\d{6}$",
+    "kind": "collision",
+    "reason": "MRL Global consignment numbers fall inside C-chez-vous' high-confidence ten-character rule, and two samples cannot show a range narrow enough to claim."
   },
   {
     "carrier": "naqel",

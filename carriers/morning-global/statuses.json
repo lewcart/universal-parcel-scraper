@@ -1,0 +1,17 @@
+{
+  "carrier": "morning-global",
+  "entries": [
+    {"code": "110", "wording": "Order Created", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"code": "120", "wording": "Collection", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API. The former tracker page shows the same wording."},
+    {"code": "210", "wording": "Arrive Hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API. The former tracker page shows the same wording."},
+    {"wording": "Depart Hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen on the former tracker page, which shows no status codes."},
+    {"code": "310", "wording": "Ready for Departure", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"code": "320", "wording": "Flight Departure to Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"code": "410", "wording": "Arrive Destination", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API. The former tracker page shows the same wording."},
+    {"code": "510", "wording": "Customs Clearance Begins", "stage": "customs", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"code": "520", "wording": "Customs Cleared", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"code": "610", "wording": "Handed Over for Delivery", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API. The parcel is handed to the delivery partner in the destination country."},
+    {"code": "650", "wording": "Out for Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal", "note": "Seen in the archived reply of Morning Global's tracking API."},
+    {"wording": "No shipment record was found for this tracking number.", "language": "en", "confirmedBy": "official-doc", "note": "The tracker's not-found message, from the configuration in the tracker page; not an event."}
+  ]
+}

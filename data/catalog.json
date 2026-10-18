@@ -11339,6 +11339,62 @@
     ],
     "detectionRules": []
   },
+  "dpex": {
+    "displayName": "DPEX Worldwide",
+    "color": "#d6151f",
+    "aliases": [
+      "DPEX"
+    ],
+    "countries": [
+      "SG",
+      "HK",
+      "CN",
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dpex.com/track-and-trace/",
+    "trackingUrlTemplate": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
+    "trackingSearchUrl": "https://dpex.com/track-and-trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/track-and-trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/Tools-And-Applications/Track-And-Trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpexonline.com",
+          "www.dpexonline.com",
+          "erp.dpex.com.cn"
+        ],
+        "pathPattern": "^/trace-and-track/index/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dragon-star-curier": {
     "displayName": "Dragon Star Curier",
     "color": "#000b8c",
@@ -13470,6 +13526,44 @@
         "pathPattern": "^/instruments/online/?$",
         "params": [
           "number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "fliway": {
+    "displayName": "Fliway",
+    "color": "#002b5c",
+    "aliases": [
+      "Fliway Group",
+      "Fliway Holdings"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.fliway.com/",
+    "trackingUrlTemplate": "https://online.fliway.com/Public/Track/{trackingNumber}",
+    "trackingSearchUrl": "https://www.fliway.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "path": "^/Public/Track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "pathPattern": "^/Public/(?:Track|TrackItem)/?$",
+        "params": [
+          "id"
         ]
       }
     ],
@@ -19481,6 +19575,81 @@
     },
     "canaryUrl": "https://mypost.mn/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "morning-global": {
+    "displayName": "Morning Global",
+    "color": "#050059",
+    "aliases": [
+      "Morning Global International",
+      "MG International Express",
+      "MG International Postal"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.morninglobal.com/trace-track/",
+    "trackingUrlTemplate": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.morninglobal.com/trace-track/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/trace-track/?$",
+        "params": [
+          "tracking_number",
+          "ydh"
+        ]
+      },
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/yundan/status\\.php$",
+        "params": [
+          "ydh"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "mrl-global": {
+    "displayName": "MRL Global",
+    "color": "#012148",
+    "aliases": [
+      "MRL Logistics",
+      "Sampson Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.mrlglobal.com/tracking/",
+    "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
+    "trackingSearchUrl": "https://www.mrlglobal.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.mrlglobal.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "connoteno"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "mtscn": {

@@ -4733,5 +4733,28 @@
       "zto"
     ],
     "reason": "winion-logis numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "fedex",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "dpex numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

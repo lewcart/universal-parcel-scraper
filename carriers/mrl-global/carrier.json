@@ -1,0 +1,45 @@
+{
+  "id": "mrl-global",
+  "displayName": "MRL Global",
+  "aliases": [
+    "MRL Logistics",
+    "Sampson Express"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#012148"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
+    "searchUrl": "https://www.mrlglobal.com/tracking/",
+    "canaryUrl": "https://www.mrlglobal.com/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.mrlglobal.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "connoteno"
+      ]
+    }
+  ],
+  "detection": []
+}

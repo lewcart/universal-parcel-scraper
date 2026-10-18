@@ -1,0 +1,56 @@
+{
+  "id": "morning-global",
+  "displayName": "Morning Global",
+  "aliases": [
+    "Morning Global International",
+    "MG International Express",
+    "MG International Postal"
+  ],
+  "region": {
+    "countries": [
+      "HK"
+    ]
+  },
+  "brand": {
+    "color": "#050059"
+  },
+  "selectable": true,
+  "timezone": "Asia/Hong_Kong",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",
+    "searchUrl": "https://www.morninglobal.com/trace-track/",
+    "canaryUrl": "https://www.morninglobal.com/trace-track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.morninglobal.com"
+      ],
+      "pathPattern": "^/trace-track/?$",
+      "params": [
+        "tracking_number",
+        "ydh"
+      ]
+    },
+    {
+      "domains": [
+        "www.morninglobal.com"
+      ],
+      "pathPattern": "^/yundan/status\\.php$",
+      "params": [
+        "ydh"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -11341,6 +11341,62 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "dpex": {
+    "displayName": "DPEX Worldwide",
+    "color": "#d6151f",
+    "aliases": [
+      "DPEX"
+    ],
+    "countries": [
+      "SG",
+      "HK",
+      "CN",
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dpex.com/track-and-trace/",
+    "trackingUrlTemplate": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
+    "trackingSearchUrl": "https://dpex.com/track-and-trace/",
+    "linkRules": [
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/track-and-trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/Tools-And-Applications/Track-And-Trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpexonline.com",
+          "www.dpexonline.com",
+          "erp.dpex.com.cn"
+        ],
+        "pathPattern": "^/trace-and-track/index/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dragon-star-curier": {
     "displayName": "Dragon Star Curier",
     "color": "#000b8c",
@@ -13472,6 +13528,44 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/instruments/online/?$",
         "params": [
           "number"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "fliway": {
+    "displayName": "Fliway",
+    "color": "#002b5c",
+    "aliases": [
+      "Fliway Group",
+      "Fliway Holdings"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.fliway.com/",
+    "trackingUrlTemplate": "https://online.fliway.com/Public/Track/{trackingNumber}",
+    "trackingSearchUrl": "https://www.fliway.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "path": "^/Public/Track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "pathPattern": "^/Public/(?:Track|TrackItem)/?$",
+        "params": [
+          "id"
         ]
       }
     ],
@@ -19483,6 +19577,81 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://mypost.mn/",
     "linkRules": [],
+    "detectionRules": []
+  },
+  "morning-global": {
+    "displayName": "Morning Global",
+    "color": "#050059",
+    "aliases": [
+      "Morning Global International",
+      "MG International Express",
+      "MG International Postal"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.morninglobal.com/trace-track/",
+    "trackingUrlTemplate": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",
+    "trackingSearchUrl": "https://www.morninglobal.com/trace-track/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/trace-track/?$",
+        "params": [
+          "tracking_number",
+          "ydh"
+        ]
+      },
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/yundan/status\\.php$",
+        "params": [
+          "ydh"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "mrl-global": {
+    "displayName": "MRL Global",
+    "color": "#012148",
+    "aliases": [
+      "MRL Logistics",
+      "Sampson Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.mrlglobal.com/tracking/",
+    "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
+    "trackingSearchUrl": "https://www.mrlglobal.com/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.mrlglobal.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "connoteno"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "mtscn": {
@@ -29962,6 +30131,7 @@ export const CARRIER_IDS = [
   "dpd-pt",
   "dpd-uk",
   "dpd-za",
+  "dpex",
   "dragon-star-curier",
   "drop2shop",
   "dropp",
@@ -30016,6 +30186,7 @@ export const CARRIER_IDS = [
   "fleetex",
   "fleetoptics",
   "flippost",
+  "fliway",
   "flyking",
   "followmont",
   "forward-air",
@@ -30177,6 +30348,8 @@ export const CARRIER_IDS = [
   "midland-transport",
   "mng-kargo",
   "mongol-infinity-post",
+  "morning-global",
+  "mrl-global",
   "mtscn",
   "mylerz",
   "naqel",
@@ -30713,6 +30886,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-pt": ["dpd-pt-1","dpd-pt-2"],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
+  "dpex": [],
   "dragon-star-curier": [],
   "drop2shop": ["drop2shop-1"],
   "dropp": [],
@@ -30767,6 +30941,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
   "flippost": [],
+  "fliway": [],
   "flyking": [],
   "followmont": [],
   "forward-air": [],
@@ -30928,6 +31103,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "midland-transport": [],
   "mng-kargo": [],
   "mongol-infinity-post": [],
+  "morning-global": [],
+  "mrl-global": [],
   "mtscn": ["mtscn-1"],
   "mylerz": ["mylerz-1"],
   "naqel": [],

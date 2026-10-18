@@ -1,0 +1,69 @@
+{
+  "id": "dpex",
+  "displayName": "DPEX Worldwide",
+  "aliases": [
+    "DPEX"
+  ],
+  "region": {
+    "countries": [
+      "SG",
+      "HK",
+      "CN",
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#d6151f"
+  },
+  "selectable": true,
+  "timezone": "Asia/Singapore",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
+    "searchUrl": "https://dpex.com/track-and-trace/",
+    "canaryUrl": "https://dpex.com/track-and-trace/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "dpex.com",
+        "www.dpex.com"
+      ],
+      "pathPattern": "^/track-and-trace/?$",
+      "params": [
+        "cn"
+      ]
+    },
+    {
+      "domains": [
+        "dpex.com",
+        "www.dpex.com"
+      ],
+      "pathPattern": "^/Tools-And-Applications/Track-And-Trace/?$",
+      "params": [
+        "cn"
+      ]
+    },
+    {
+      "domains": [
+        "dpexonline.com",
+        "www.dpexonline.com",
+        "erp.dpex.com.cn"
+      ],
+      "pathPattern": "^/trace-and-track/index/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -275,6 +275,18 @@
     "reason": "Asyad Express shipment numbers seen so far are plain digits, shared with many carriers; the tracker states no fixed length or prefix."
   },
   {
+    "carrier": "atlantic-courier",
+    "pattern": "^\\d{6}$",
+    "kind": "by_design",
+    "reason": "Six digits are a bare counter many carriers print, and nothing in the number points to Atlantic."
+  },
+  {
+    "carrier": "atlantic-courier",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "Seven digits are a bare counter many carriers print, and nothing in the number points to Atlantic."
+  },
+  {
     "carrier": "australia-post",
     "pattern": "^9979\\d{14}$",
     "kind": "open",
@@ -750,6 +762,12 @@
     "pattern": "^WMG\\d{11}$",
     "kind": "by_design",
     "reason": "WMG and eleven digits is a shipper's own numbering, which DAI Post tracks for the parcels it delivers; nothing in it points to DAI Post."
+  },
+  {
+    "carrier": "daily-xpress",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers, and nothing in the number points to Daily Xpress."
   },
   {
     "carrier": "danske-fragtmaend",
@@ -1447,6 +1465,12 @@
     "reason": "The twelve-digit form adds the GLS check digit to the same group layout, which other GLS networks and carriers share."
   },
   {
+    "carrier": "gms-worldwide",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are a bare counter that TNT and other carriers also print, and nothing in the number points to GMS."
+  },
+  {
     "carrier": "go-express",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -1685,6 +1709,12 @@
     "pattern": "^\\d{11}$",
     "kind": "by_design",
     "reason": "ICC air waybills are plain digit runs, a shape many carriers share."
+  },
+  {
+    "carrier": "icl-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are printed by DHL and many other carriers, and nothing in ICL's waybills points to ICL."
   },
   {
     "carrier": "idexpress",
@@ -2383,6 +2413,18 @@
     "reason": "OCASA's PST numbers fall inside Bulgarian Posts' high-confidence PS shape, and nothing else in the number names OCASA."
   },
   {
+    "carrier": "ocs-ana",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven-digit OCS waybills mostly carry the same airline modulo-7 check digit as Blue Dart's and other carriers' eleven-digit numbers, so nothing in them points to OCS."
+  },
+  {
+    "carrier": "ocs-ana",
+    "pattern": "^\\d{12}$",
+    "kind": "by_design",
+    "reason": "Twelve-digit OCS waybills share their shape and check digit with Yamato and Sagawa numbers, and OCS's own lookup forwards some twelve-digit numbers to those carriers."
+  },
+  {
     "carrier": "old-dominion",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -2709,6 +2751,30 @@
     "pattern": "^\\d{11}$",
     "kind": "collision",
     "reason": "Eleven-digit Pullman Cargo ODT numbers share their shape with many carriers' numeric waybills, so the shape cannot name Pullman Cargo."
+  },
+  {
+    "carrier": "pushpak-courier",
+    "pattern": "^\\d{5}$",
+    "kind": "by_design",
+    "reason": "Five digits are a short counter, and nothing in the number points to Pushpak."
+  },
+  {
+    "carrier": "pushpak-courier",
+    "pattern": "^\\d{6}$",
+    "kind": "by_design",
+    "reason": "Six digits are a bare counter many carriers print, and nothing in the number points to Pushpak."
+  },
+  {
+    "carrier": "pushpak-courier",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers, and nothing in the number points to Pushpak."
+  },
+  {
+    "carrier": "pushpak-courier",
+    "pattern": "^[A-Z]{3}\\d{7}$",
+    "kind": "by_design",
+    "reason": "Three letters and seven digits are shared by Australia Post and other carriers, and Pushpak's prefixes are not published."
   },
   {
     "carrier": "quantium-solutions",
@@ -3481,6 +3547,12 @@
     "pattern": "^(?:BBC\\d{8}|DY\\d{13}|C\\d{13})$",
     "kind": "by_design",
     "reason": "Shipper references name the shipper rather than UDS."
+  },
+  {
+    "carrier": "united-worldwide-couriers",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "Seven digits are a bare counter that SEUR and other carriers also print, and nothing in the number points to United."
   },
   {
     "carrier": "uniuni",

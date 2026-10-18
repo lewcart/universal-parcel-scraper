@@ -1,0 +1,7 @@
+{
+  "carrier": "gms-worldwide",
+  "entries": [
+    {"wording": "OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "source", "note": "Quoted from the tracking history in a ConsumerComplaints.in complaint."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Quoted from the tracker in a ConsumerComplaints.in complaint."}
+  ]
+}

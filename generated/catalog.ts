@@ -6581,6 +6581,45 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "atlantic-courier": {
+    "displayName": "Atlantic International Express",
+    "color": "#0066b3",
+    "aliases": [
+      "Atlantic International Express Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://atlanticcourier.net/track/",
+    "trackingUrlTemplate": "https://atlanticcourier.net/track/{trackingNumber}/",
+    "trackingSearchUrl": "https://atlanticcourier.net/track/",
+    "linkRules": [
+      {
+        "domains": [
+          "atlanticcourier.net",
+          "www.atlanticcourier.net"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "atlanticcourier.net",
+          "www.atlanticcourier.net"
+        ],
+        "pathPattern": "^/track\\.php$",
+        "params": [
+          "awbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "averitt": {
     "displayName": "Averitt Express",
     "color": "#c21f38",
@@ -9736,6 +9775,39 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "daily-xpress": {
+    "displayName": "Daily Xpress",
+    "color": "#953995",
+    "aliases": [
+      "Daily Xpress Courier & Cargo",
+      "Daily Xpress Courier Cargo"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dailyxpress.in/",
+    "trackingUrlTemplate": "https://www.dailyxpress.in/searchAwb.php?awb={trackingNumber}",
+    "trackingSearchUrl": "https://www.dailyxpress.in/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.dailyxpress.in",
+          "dailyxpress.in"
+        ],
+        "pathPattern": "^/searchAwb\\.php$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "danske-fragtmaend": {
     "displayName": "Danske Fragtmænd",
     "color": "#009ada",
@@ -10523,6 +10595,26 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "dnx-cargo": {
+    "displayName": "DNX Cargo",
+    "color": "#102663",
+    "aliases": [
+      "DNX Cargo India Pvt Ltd"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://dnxerp.in/NewPages/Tracking/Website_Tracking_New.aspx",
+    "trackingSearchUrl": "https://dnxerp.in/NewPages/Tracking/Website_Tracking_New.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "dobropost": {
@@ -14016,6 +14108,40 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "gms-worldwide": {
+    "displayName": "GMS Worldwide Express",
+    "color": "#006634",
+    "aliases": [
+      "GMS Worldwide Express Pvt Ltd",
+      "GMS Courier",
+      "GMS Worldwide"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gmsworldwide.com/",
+    "trackingUrlTemplate": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",
+    "trackingSearchUrl": "https://www.gmsworldwide.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.gmsworldwide.com",
+          "gmsworldwide.com"
+        ],
+        "pathPattern": "^/shipment-tracking/?$",
+        "params": [
+          "tracking_no"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "go-express": {
     "displayName": "GO! Express",
     "color": "#b9242b",
@@ -15247,6 +15373,39 @@ export const CARRIER_CATALOG = {
           "iccworld.com"
         ],
         "pathPattern": "^/track\\.asp$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "icl-express": {
+    "displayName": "ICL Express",
+    "color": "#2e3192",
+    "aliases": [
+      "ICL Integrated Couriers & Logistics",
+      "Integrated Couriers & Logistics",
+      "ICL International"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://iclexpress.in/tracking/",
+    "trackingSearchUrl": "https://iclexpress.in/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.iclinternational.in",
+          "iclinternational.in"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
         "params": [
           "txtawbno"
         ]
@@ -19731,6 +19890,49 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "ocs-ana": {
+    "displayName": "OCS ANA Group",
+    "color": "#004c9a",
+    "aliases": [
+      "OCS",
+      "Overseas Courier Service",
+      "OCS Worldwide",
+      "OCS Japan"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html",
+    "trackingUrlTemplate": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.php?cwbno={trackingNumber}",
+    "trackingSearchUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html",
+    "linkRules": [
+      {
+        "domains": [
+          "www2.ocsworldwide.net"
+        ],
+        "pathPattern": "^/ExpTracking/cwbCheck\\.php$",
+        "params": [
+          "cwbno"
+        ]
+      },
+      {
+        "domains": [
+          "webcsw.ocs.co.jp"
+        ],
+        "pathPattern": "^/csw/ECSWG0201R00003P\\.do$",
+        "params": [
+          "cwbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "olva-courier": {
     "displayName": "Olva Courier",
     "color": "#fcb414",
@@ -22519,6 +22721,27 @@ export const CARRIER_CATALOG = {
         "path": "^/seguimiento/([0-9]+)/?$"
       }
     ],
+    "detectionRules": []
+  },
+  "pushpak-courier": {
+    "displayName": "Pushpak Courier",
+    "color": "#f62c2c",
+    "aliases": [
+      "PUSHPAK COURIER",
+      "Pushpak Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pushpakcourier.net/query.php",
+    "trackingSearchUrl": "https://pushpakcourier.net/query.php",
+    "linkRules": [],
     "detectionRules": []
   },
   "quantium-solutions": {
@@ -27239,6 +27462,37 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "united-worldwide-couriers": {
+    "displayName": "United Worldwide Couriers",
+    "color": "#0099ff",
+    "aliases": [
+      "United Worldwide Couriers Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.unitedcouriers.biz/Track.aspx",
+    "trackingSearchUrl": "https://www.unitedcouriers.biz/Track.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.unitedcouriers.biz",
+          "unitedcouriers.biz"
+        ],
+        "pathPattern": "^/TrackDetails\\.asp$",
+        "params": [
+          "afno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "upaya": {
     "displayName": "Upaya",
     "color": "#003d87",
@@ -28816,6 +29070,7 @@ export const CARRIER_IDS = [
   "aras-kargo",
   "arrow-xl",
   "asyad-express",
+  "atlantic-courier",
   "averitt",
   "aymakan",
   "azerpost",
@@ -28898,6 +29153,7 @@ export const CARRIER_IDS = [
   "d-express",
   "daewoo-fastex",
   "dai-post",
+  "daily-xpress",
   "danske-fragtmaend",
   "dao",
   "day-ross",
@@ -28918,6 +29174,7 @@ export const CARRIER_IDS = [
   "direct-couriers",
   "direct-freight-express",
   "direx",
+  "dnx-cargo",
   "dobropost",
   "dohrn-transfer",
   "domain-logistics",
@@ -29005,6 +29262,7 @@ export const CARRIER_IDS = [
   "gls-es",
   "gls-it",
   "gls-pl",
+  "gms-worldwide",
   "go-express",
   "go4",
   "gobolt",
@@ -29040,6 +29298,7 @@ export const CARRIER_IDS = [
   "hunter-express",
   "hywl",
   "icc-worldwide",
+  "icl-express",
   "ics-courier",
   "idexpress",
   "ids-logistik",
@@ -29160,6 +29419,7 @@ export const CARRIER_IDS = [
   "oak-harbor",
   "oca",
   "ocasa",
+  "ocs-ana",
   "olva-courier",
   "omgo",
   "omniva",
@@ -29229,6 +29489,7 @@ export const CARRIER_IDS = [
   "pts-worldwide-express",
   "ptt",
   "pullman-cargo",
+  "pushpak-courier",
   "quantium-solutions",
   "quicksilver-sa",
   "quiqup",
@@ -29351,6 +29612,7 @@ export const CARRIER_IDS = [
   "ubi-smart-parcel",
   "ues-uy",
   "united-delivery-service",
+  "united-worldwide-couriers",
   "upaya",
   "urbano",
   "urvaam",
@@ -29540,6 +29802,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aras-kargo": [],
   "arrow-xl": [],
   "asyad-express": [],
+  "atlantic-courier": [],
   "averitt": [],
   "aymakan": ["aymakan-1"],
   "azerpost": [],
@@ -29622,6 +29885,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "d-express": [],
   "daewoo-fastex": [],
   "dai-post": ["dai-post-1","dai-post-2"],
+  "daily-xpress": [],
   "danske-fragtmaend": ["danske-fragtmaend-1"],
   "dao": ["dao-1"],
   "day-ross": ["day-ross-1"],
@@ -29642,6 +29906,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direct-couriers": [],
   "direct-freight-express": [],
   "direx": [],
+  "dnx-cargo": [],
   "dobropost": ["dobropost-1"],
   "dohrn-transfer": [],
   "domain-logistics": [],
@@ -29729,6 +29994,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gls-es": ["gls-es-1"],
   "gls-it": ["gls-it-1","gls-it-digit-depot"],
   "gls-pl": ["gls-pl-1"],
+  "gms-worldwide": [],
   "go-express": [],
   "go4": [],
   "gobolt": [],
@@ -29764,6 +30030,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hunter-express": [],
   "hywl": ["hywl-1","hywl-2"],
   "icc-worldwide": [],
+  "icl-express": [],
   "ics-courier": ["ics-courier-1"],
   "idexpress": ["idexpress-1"],
   "ids-logistik": [],
@@ -29884,6 +30151,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "oak-harbor": [],
   "oca": [],
   "ocasa": ["ocasa-1"],
+  "ocs-ana": [],
   "olva-courier": ["olva-courier-3"],
   "omgo": ["omgo-1"],
   "omniva": ["omniva-1","omniva-2","omniva-s10"],
@@ -29953,6 +30221,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pts-worldwide-express": [],
   "ptt": ["ptt-1","ptt-s10"],
   "pullman-cargo": [],
+  "pushpak-courier": [],
   "quantium-solutions": [],
   "quicksilver-sa": ["quicksilver-sa-1"],
   "quiqup": [],
@@ -30075,6 +30344,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ubi-smart-parcel": ["ubi-smart-parcel-1"],
   "ues-uy": ["ues-uy-1"],
   "united-delivery-service": ["united-delivery-service-1"],
+  "united-worldwide-couriers": [],
   "upaya": ["upaya-1"],
   "urbano": ["urbano-1"],
   "urvaam": [],

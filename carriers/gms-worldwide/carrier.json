@@ -1,0 +1,47 @@
+{
+  "id": "gms-worldwide",
+  "displayName": "GMS Worldwide Express",
+  "aliases": [
+    "GMS Worldwide Express Pvt Ltd",
+    "GMS Courier",
+    "GMS Worldwide"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#006634"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",
+    "searchUrl": "https://www.gmsworldwide.com/",
+    "canaryUrl": "https://www.gmsworldwide.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.gmsworldwide.com",
+        "gmsworldwide.com"
+      ],
+      "pathPattern": "^/shipment-tracking/?$",
+      "params": [
+        "tracking_no"
+      ]
+    }
+  ],
+  "detection": []
+}

@@ -1,0 +1,52 @@
+{
+  "id": "atlantic-courier",
+  "displayName": "Atlantic International Express",
+  "aliases": [
+    "Atlantic International Express Courier"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#0066b3"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://atlanticcourier.net/track/{trackingNumber}/",
+    "searchUrl": "https://atlanticcourier.net/track/",
+    "canaryUrl": "https://atlanticcourier.net/track/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "atlanticcourier.net",
+        "www.atlanticcourier.net"
+      ],
+      "path": "^/track/([^/?#]+)/?$"
+    },
+    {
+      "domains": [
+        "atlanticcourier.net",
+        "www.atlanticcourier.net"
+      ],
+      "pathPattern": "^/track\\.php$",
+      "params": [
+        "awbno"
+      ]
+    }
+  ],
+  "detection": []
+}

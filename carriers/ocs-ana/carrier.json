@@ -1,0 +1,56 @@
+{
+  "id": "ocs-ana",
+  "displayName": "OCS ANA Group",
+  "aliases": [
+    "OCS",
+    "Overseas Courier Service",
+    "OCS Worldwide",
+    "OCS Japan"
+  ],
+  "region": {
+    "countries": [
+      "JP"
+    ]
+  },
+  "brand": {
+    "color": "#004c9a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Tokyo",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.php?cwbno={trackingNumber}",
+    "searchUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html",
+    "canaryUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www2.ocsworldwide.net"
+      ],
+      "pathPattern": "^/ExpTracking/cwbCheck\\.php$",
+      "params": [
+        "cwbno"
+      ]
+    },
+    {
+      "domains": [
+        "webcsw.ocs.co.jp"
+      ],
+      "pathPattern": "^/csw/ECSWG0201R00003P\\.do$",
+      "params": [
+        "cwbno"
+      ]
+    }
+  ],
+  "detection": []
+}

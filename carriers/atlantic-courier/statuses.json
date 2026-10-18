@@ -1,0 +1,7 @@
+{
+  "carrier": "atlantic-courier",
+  "entries": [
+    {"wording": "SHIPMENT RECEIVED", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"wording": "SHIPMENT SENT TO SOUTH AFRICA", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination country varies; the shipment has left Atlantic for the partner abroad."}
+  ]
+}

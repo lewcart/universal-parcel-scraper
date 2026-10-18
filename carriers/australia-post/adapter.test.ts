@@ -306,30 +306,33 @@ describe('Australia Post direct retrieval', () => {
 });
 
 describe('Australia Post recognition', () => {
-  it('asks the gateway alone and reads only its not-found entry as unknown', async () => {
+  it('asks the browser alone, under its own budget, and reads only a matched not-found entry as unknown', async () => {
     const browser = vi.fn<typeof fetch>().mockImplementation(async () => Response.json(service()));
-    const fetcher = vi.fn<typeof fetch>();
-    const instance = adapter({ trawl: new TrawlClient('https://browser.example.test', browser), fetcher, recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
-    fetcher.mockResolvedValueOnce(Response.json(fixture()));
-    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: true, lastActivityAt: '2026-06-08T04:10:00.000Z' });
+    const gateway = refused();
+    const instance = adapter({ trawl: new TrawlClient('https://browser.example.test', browser), fetcher: gateway, recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
+    expect(instance.recognize).toBeUndefined();
+    await expect(instance.recognizeWithBrowser!(NUMBER, { budgetMs: 20_000 })).resolves.toMatchObject({
+      known: true, lastActivityAt: '2026-06-08T04:10:00.000Z', result: { status: 'delivered' } });
+    expect(gateway).not.toHaveBeenCalled();
+    const request = JSON.parse(String(browser.mock.calls[0]![1]!.body));
+    expect(request.maxTimeout).toBeGreaterThan(17_000);
+    expect(request.maxTimeout).toBeLessThanOrEqual(18_000);
     // A recognition budget past the lookup's minute still asks.
-    fetcher.mockResolvedValueOnce(Response.json(fixture()));
-    await expect(instance.recognize!(NUMBER, { budgetMs: 120_000 })).resolves.toEqual({ known: true, lastActivityAt: '2026-06-08T04:10:00.000Z' });
+    await expect(instance.recognizeWithBrowser!(NUMBER, { budgetMs: 120_000 })).resolves.toMatchObject({ known: true });
     const unknown = empty(); unknown[0].trackingIds = [NUMBER];
-    fetcher.mockResolvedValueOnce(Response.json(unknown));
-    await expect(instance.recognize!(NUMBER)).resolves.toEqual({ known: false });
-    // A refusal, an unprocessable reference and a known article without scans are not answers.
-    fetcher.mockResolvedValueOnce(new Response('{}', { status: 403 }));
-    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
-    fetcher.mockResolvedValueOnce(Response.json([{ status: 500, trackingIds: [NUMBER], error: { errorCode: -1, message: 'Unexpected exception' } }]));
-    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
-    const bare = fixture(); bare[0].shipment.articles[0].details[0].events = [];
-    fetcher.mockResolvedValueOnce(Response.json(bare));
-    await expect(instance.recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });
+    browser.mockResolvedValueOnce(Response.json(service([capture(unknown)])));
+    await expect(instance.recognizeWithBrowser!(NUMBER)).resolves.toEqual({ known: false, lastActivityAt: null });
+    // A refusal is not an answer.
+    browser.mockResolvedValueOnce(Response.json(service([capture({}, 403)])));
+    await expect(instance.recognizeWithBrowser!(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    browser.mockClear();
+    await expect(instance.recognizeWithBrowser!('ABC123')).resolves.toEqual({ known: false, lastActivityAt: null });
     expect(browser).not.toHaveBeenCalled();
-    fetcher.mockClear();
-    await expect(instance.recognize!('ABC123')).resolves.toEqual({ known: false });
-    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('cannot recognize without the browser service', async () => {
+    const instance = adapter({ trawl: null, fetcher: refused(), recorder: NOOP_RECORDER, env: {}, browserExecutablePath: null });
+    await expect(instance.recognizeWithBrowser!(NUMBER)).rejects.toMatchObject({ kind: 'challenge', message: expect.stringContaining('browser tracking service') });
   });
 });
 

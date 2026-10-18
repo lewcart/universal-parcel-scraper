@@ -3,8 +3,8 @@
 Australia Post articles and consignments (10–34 alphanumeric characters), tracked through the
 anonymous shipments API behind the official [tracking app](https://auspost.com.au/mypost/track/).
 Plain HTTP answers when the request looks like the official Android app's; the TRAWL browser
-service takes over when it is refused. Recognition asks the same API over plain HTTP only, so a
-refusal there leaves the number unchecked instead of starting the browser.
+service takes over when it is refused. Production's plain HTTP is refused, so recognition asks the
+browser alone, in the browser phase.
 
 ## How it works
 
@@ -21,8 +21,9 @@ refusal there leaves the number unchecked instead of starting the browser.
    - Each lookup gets a fresh browser context that is closed afterwards.
 
 Budget: 45 s by default (max 60 s). `trawl` keeps a 15 s transport allowance and fails when less
-remains. Either reply is capped at 1 MB. On the capture, 401/403 is a challenge and 429 is rate
-limited; a missing capture or changed schema is an error for normal provider fallback.
+remains; recognition's shorter browser budget keeps 2 s to close the context. Either reply is
+capped at 1 MB. On the capture, 401/403 is a challenge and 429 is rate limited; a missing capture
+or changed schema is an error for normal provider fallback.
 
 ## Mobile app
 

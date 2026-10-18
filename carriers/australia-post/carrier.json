@@ -22,7 +22,7 @@
       "direct",
       "trawl"
     ],
-    "recognition": {
+    "browserRecognition": {
       "rank": 500
     },
     "browser": true

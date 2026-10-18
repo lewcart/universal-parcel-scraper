@@ -89,10 +89,11 @@ describe('Australian S10 items', () => {
     expect(recognitionAskedCarriers(number)).toEqual([]);
   });
 
-  it('leaves registered and letter-post items to international mail, asking Australia Post first', () => {
+  it('leaves registered and letter-post items to international mail, asking Australia Post first in the browser phase', () => {
     for (const number of ['RR123456785AU', 'UH123456785AU']) {
       expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
-      expect(recognitionAskedCarriers(number)[0], number).toBe('australia-post');
+      expect(recognitionAskedCarriers(number), number).not.toContain('australia-post');
+      expect(recognitionAskedCarriers(number, { phase: 'browser' })[0], number).toBe('australia-post');
     }
   });
 

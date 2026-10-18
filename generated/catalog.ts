@@ -4259,7 +4259,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "australia-post",
-      "recognitionRank": 500,
+      "browserRecognitionRank": 500,
       "browser": true
     },
     "canaryUrl": "https://auspost.com.au/mypost/track/",

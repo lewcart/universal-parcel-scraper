@@ -1,0 +1,50 @@
+{
+  "id": "bringer-parcel",
+  "displayName": "Bringer Parcel Xpress",
+  "aliases": [
+    "BPX",
+    "Bringer Parcel Service",
+    "Bringer Parcel Services"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#150773"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.bringerparcel.com/tracking/{trackingNumber}",
+    "searchUrl": "https://www.bringerparcel.com/tracking",
+    "canaryUrl": "https://www.bringerparcel.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.bringerparcel.com",
+        "bringerparcel.com"
+      ],
+      "path": "^/tracking/([^/?#]+)/?$"
+    }
+  ],
+  "detection": [
+    {
+      "id": "bringer-parcel-1",
+      "pattern": "^BPS[A-Z0-9]{12,13}$",
+      "confidence": "low"
+    }
+  ]
+}

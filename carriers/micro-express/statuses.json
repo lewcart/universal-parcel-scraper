@@ -1,0 +1,7 @@
+{
+  "carrier": "micro-express",
+  "entries": [
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Headline of Micro Express's Track Item page when the newest event has the code DOWN."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Headline of Micro Express's Track Item page for any other newest event."}
+  ]
+}

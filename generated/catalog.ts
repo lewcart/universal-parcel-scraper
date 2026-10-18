@@ -7429,6 +7429,42 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "bringer-parcel": {
+    "displayName": "Bringer Parcel Xpress",
+    "color": "#150773",
+    "aliases": [
+      "BPX",
+      "Bringer Parcel Service",
+      "Bringer Parcel Services"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.bringerparcel.com/tracking",
+    "trackingUrlTemplate": "https://www.bringerparcel.com/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.bringerparcel.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.bringerparcel.com",
+          "bringerparcel.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BPS[A-Z0-9]{12,13}$",
+        "confidence": "low"
+      }
+    ]
+  },
   "bts-uz": {
     "displayName": "BTS Express",
     "color": "#ee6800",
@@ -10418,6 +10454,37 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "domain-logistics": {
+    "displayName": "Domain Logistics",
+    "color": "#6abf4b",
+    "aliases": [
+      "Domain Express"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://domainlogistics.ca/tracking/",
+    "trackingUrlTemplate": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://domainlogistics.ca/tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "domainlogistics.ca"
+        ],
+        "pathPattern": "^/tracking(?:/fr)?/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "domex": {
     "displayName": "Domex",
     "color": "#ffcd05",
@@ -12717,6 +12784,36 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "fleetex": {
+    "displayName": "FleetExpress",
+    "color": "#2563eb",
+    "aliases": [
+      "FleetEx",
+      "Fleet Express",
+      "FleetExpress Canada"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.fleetexpress.ca/tracking",
+    "trackingUrlTemplate": "https://tracking.fleetexpress.ca/tracking/en/{trackingNumber}",
+    "trackingSearchUrl": "https://tracking.fleetexpress.ca/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.fleetexpress.ca"
+        ],
+        "path": "^/tracking/(?:[a-z]{2,3})/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": []
   },
   "fleetoptics": {
     "displayName": "FleetOptics",
@@ -18206,6 +18303,30 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "micro-express": {
+    "displayName": "Micro Express",
+    "color": "#dc143c",
+    "aliases": [
+      "Mirco Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Melbourne",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://microexpress.com.au/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^ME\\d{13}[A-Z]{3}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "midland-transport": {
     "displayName": "Midland Transport",
     "color": "#009057",
@@ -21388,6 +21509,39 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/?$",
         "params": [
           "bniTrackingID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "postplus": {
+    "displayName": "PostPlus",
+    "color": "#fe5f55",
+    "aliases": [
+      "Post+",
+      "Post+ B.V.",
+      "Post Plus"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://post.plus/",
+    "trackingUrlTemplate": "https://post.plus/?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://post.plus/",
+    "linkRules": [
+      {
+        "domains": [
+          "post.plus"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "tracking"
         ]
       }
     ],
@@ -27690,6 +27844,7 @@ export const CARRIER_IDS = [
   "bosta",
   "botswana-post",
   "box-now",
+  "bringer-parcel",
   "bts-uz",
   "budbee",
   "buffalo-ex",
@@ -27769,6 +27924,7 @@ export const CARRIER_IDS = [
   "direct-freight-express",
   "direx",
   "dohrn-transfer",
+  "domain-logistics",
   "domex",
   "dpd-at",
   "dpd-be",
@@ -27826,6 +27982,7 @@ export const CARRIER_IDS = [
   "first-delivery-tn",
   "flash-express",
   "flash-express-ph",
+  "fleetex",
   "fleetoptics",
   "followmont",
   "forward-air",
@@ -27970,6 +28127,7 @@ export const CARRIER_IDS = [
   "messenger-cz",
   "method",
   "metropolitan-warehouse",
+  "micro-express",
   "midland-transport",
   "mng-kargo",
   "mtscn",
@@ -28050,6 +28208,7 @@ export const CARRIER_IDS = [
   "postaplus",
   "postex",
   "postmedia-parcel-services",
+  "postplus",
   "posturinn",
   "ppl",
   "precision-deliveries",
@@ -28382,6 +28541,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "bosta": [],
   "botswana-post": [],
   "box-now": [],
+  "bringer-parcel": ["bringer-parcel-1"],
   "bts-uz": [],
   "budbee": [],
   "buffalo-ex": ["buffalo-ex-1"],
@@ -28461,6 +28621,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "direct-freight-express": [],
   "direx": [],
   "dohrn-transfer": [],
+  "domain-logistics": [],
   "domex": [],
   "dpd-at": ["dpd-at-1"],
   "dpd-be": ["dpd-be-1"],
@@ -28518,6 +28679,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "first-delivery-tn": [],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
+  "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
   "followmont": [],
   "forward-air": [],
@@ -28662,6 +28824,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "messenger-cz": [],
   "method": [],
   "metropolitan-warehouse": ["metropolitan-warehouse-1"],
+  "micro-express": ["micro-express-1"],
   "midland-transport": [],
   "mng-kargo": [],
   "mtscn": ["mtscn-1"],
@@ -28742,6 +28905,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "postaplus": [],
   "postex": [],
   "postmedia-parcel-services": [],
+  "postplus": [],
   "posturinn": ["posturinn-s10"],
   "ppl": ["ppl-1"],
   "precision-deliveries": ["precision-deliveries-1"],

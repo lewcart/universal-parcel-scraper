@@ -1,0 +1,44 @@
+{
+  "id": "domain-logistics",
+  "displayName": "Domain Logistics",
+  "aliases": [
+    "Domain Express"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#6abf4b"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",
+    "searchUrl": "https://domainlogistics.ca/tracking/",
+    "canaryUrl": "https://domainlogistics.ca/tracking/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "domainlogistics.ca"
+      ],
+      "pathPattern": "^/tracking(?:/fr)?/?$",
+      "params": [
+        "tracking"
+      ]
+    }
+  ],
+  "detection": []
+}

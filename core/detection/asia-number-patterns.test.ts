@@ -210,3 +210,14 @@ describe('wave seven South Asian courier rules', () => {
     }
   });
 });
+
+describe('wave eight Australian courier rules', () => {
+  // Synthetic numbers in Micro Express's layout; none is a real parcel.
+  it('names Micro Express for ME, thirteen digits and three letters', () => {
+    expect(detectCarrierMatch('ME0000000000001AAA')).toMatchObject({ carrier: 'micro-express', confidence: 'high' });
+    for (const number of ['ME000000000001AAA', 'ME00000000000001AAA', 'ME0000000000001AA', 'MX0000000000001AAA']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('micro-express');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('micro-express');
+    }
+  });
+});

@@ -920,6 +920,12 @@
     "reason": "Dohrn's eight-digit PROs share their shape with many carriers' numeric references, so no rule claims them."
   },
   {
+    "carrier": "domain-logistics",
+    "pattern": "^01[678]\\d{9}$",
+    "kind": "by_design",
+    "reason": "Domain Logistics numbers are bare twelve-digit runs that many carriers share, so no rule claims them."
+  },
+  {
     "carrier": "domex",
     "pattern": "^\\d{8,9}$",
     "kind": "by_design",
@@ -1217,6 +1223,18 @@
     "pattern": "^\\d{12}$",
     "kind": "by_design",
     "reason": "Twelve bare digits are shared by many carriers and nothing in the number points to First Delivery."
+  },
+  {
+    "carrier": "fleetex",
+    "pattern": "^SR\\d{12}$",
+    "kind": "by_design",
+    "reason": "SR is the order prefix of the Superroute platform FleetExpress runs on, not of FleetExpress alone, and only documentation examples are known."
+  },
+  {
+    "carrier": "fleetex",
+    "pattern": "^DS\\d{12}$",
+    "kind": "by_design",
+    "reason": "A package number layout known only from one documentation example."
   },
   {
     "carrier": "fleetoptics",

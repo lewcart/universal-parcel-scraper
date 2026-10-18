@@ -381,3 +381,15 @@ describe('GTA AirSkip references', () => {
     }
   });
 });
+
+describe('Bringer Parcel Xpress references', () => {
+  // Synthetic references in BPX's documented layout, which no real parcel has confirmed yet.
+  it('offers Bringer Parcel Xpress for BPS and twelve or thirteen characters without naming it', () => {
+    for (const number of ['BPS0000AAAA0000', 'BPS0000AAAA00000']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['bringer-parcel'] });
+    }
+    for (const number of ['BPS0000AAAA000', 'BPS0000AAAA000000', 'BPX0000AAAA0000']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('bringer-parcel');
+    }
+  });
+});

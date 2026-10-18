@@ -1,0 +1,11 @@
+{
+  "carrier": "fleetex",
+  "entries": [
+    {"wording": "New", "stage": "registered", "language": "en", "confirmedBy": "official-doc", "note": "Order status in the order status list of FleetExpress's client API documentation."},
+    {"wording": "Received", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "Order status in FleetExpress's client API documentation, whose client API has a call to receive a package by its tracking number."},
+    {"wording": "Already Pickuped", "stage": "in_transit", "language": "en", "confirmedBy": "official-doc", "note": "Order status in FleetExpress's client API documentation, spelled this way; it follows route planning in the list, so the driver has collected the parcel."},
+    {"wording": "Successful", "stage": "delivered", "language": "en", "confirmedBy": "official-doc", "note": "Order status in FleetExpress's client API documentation; its driver API lists it as the delivery result S."},
+    {"wording": "Need Reschedule", "stage": "failed_attempt", "language": "en", "confirmedBy": "official-doc", "note": "Order status in FleetExpress's client API documentation: the delivery did not happen and needs a new date."},
+    {"wording": "Hold", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Order status in FleetExpress's client API documentation."}
+  ]
+}

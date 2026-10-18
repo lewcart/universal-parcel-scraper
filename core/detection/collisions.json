@@ -4543,5 +4543,62 @@
       "shipentegra"
     ],
     "reason": "Colis Privé accepts any twelve-character alphanumeric, so it overlaps ShipEntegra's 1SE numbers; the ShipEntegra rule is the only high-confidence one."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "poste-italiane",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "domain-logistics numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "dpd-fr",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "domain-logistics numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dpd-fr",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "purolator",
+      "saia",
+      "sf-express",
+      "sto",
+      "zto"
+    ],
+    "reason": "domain-logistics numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

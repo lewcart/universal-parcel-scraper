@@ -1,0 +1,7 @@
+{
+  "carrier": "domain-logistics",
+  "entries": [
+    {"wording": "Your order has been shipped!", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Status in an archived reply of Domain Logistics' tracking service, shown with an estimated delivery window."},
+    {"wording": "Shipment status is not available at this time, please check back later for updated status.", "language": "en", "confirmedBy": "official-doc", "note": "Message the tracking page's script shows when the tracking service returns an empty reply for a number; not an event."}
+  ]
+}

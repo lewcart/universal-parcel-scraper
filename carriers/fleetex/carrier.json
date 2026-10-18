@@ -1,0 +1,43 @@
+{
+  "id": "fleetex",
+  "displayName": "FleetExpress",
+  "aliases": [
+    "FleetEx",
+    "Fleet Express",
+    "FleetExpress Canada"
+  ],
+  "region": {
+    "countries": [
+      "CA"
+    ]
+  },
+  "brand": {
+    "color": "#2563eb"
+  },
+  "selectable": true,
+  "timezone": "America/Toronto",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.fleetexpress.ca/tracking/en/{trackingNumber}",
+    "searchUrl": "https://tracking.fleetexpress.ca/tracking",
+    "canaryUrl": "https://tracking.fleetexpress.ca/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.fleetexpress.ca"
+      ],
+      "path": "^/tracking/(?:[a-z]{2,3})/([^/?#]+)/?$"
+    }
+  ],
+  "detection": []
+}

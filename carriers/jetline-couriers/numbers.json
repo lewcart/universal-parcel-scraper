@@ -1,0 +1,41 @@
+{
+  "carrier": "jetline-couriers",
+  "records": [
+    {
+      "number": "100234857",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.jetlinecouriers.in/",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Jetline's home page shows it as the example in its AWB tracking field."
+    },
+    {
+      "number": "900556998",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://voxya.com/consumer-complaints/loss-of-items-medicines-/210721",
+        "date": "2023-09-19",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A Voxya complaint against Jetline Couriers Private Limited gives it as the AWB number of medicines booked from Ara, Bihar to Punjab."
+    }
+  ]
+}

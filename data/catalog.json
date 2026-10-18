@@ -5655,6 +5655,28 @@
     ],
     "detectionRules": []
   },
+  "air-star-xpress": {
+    "displayName": "Air Star Xpress",
+    "color": "#007038",
+    "aliases": [
+      "Air Star Xpress Couriers",
+      "Air Star Express",
+      "Air Star Express Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://authorcodesoftware.in/airstarxpresscourier/newmastertracking.aspx",
+    "trackingSearchUrl": "https://authorcodesoftware.in/airstarxpresscourier/newmastertracking.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ajex": {
     "displayName": "AJEX",
     "color": "#ec171c",
@@ -12871,6 +12893,23 @@
     "linkRules": [],
     "detectionRules": []
   },
+  "first-fly-express": {
+    "displayName": "First Fly Express",
+    "color": "#e83030",
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://firstflyexpress.com/track.asp",
+    "trackingSearchUrl": "https://firstflyexpress.com/track.asp",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "flash-express": {
     "displayName": "Flash Express",
     "color": "#ffea33",
@@ -13071,6 +13110,27 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "flyking": {
+    "displayName": "Flyking Courier Services",
+    "color": "#dd4b4b",
+    "aliases": [
+      "Flyking",
+      "Fly King",
+      "Flyking Courier Services Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.flyking.in/TrackYourParcel.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "followmont": {
@@ -14231,6 +14291,72 @@
         "rawPattern": "^[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$"
       }
     ]
+  },
+  "goodluck-courier": {
+    "displayName": "Goodluck Courier Service",
+    "color": "#081858",
+    "aliases": [
+      "Goodluck Courier Services",
+      "Goodluck Courier",
+      "Good Luck Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goodluckcourier.com/",
+    "trackingUrlTemplate": "https://www.goodluckcourier.com/index.php?consignment={trackingNumber}",
+    "trackingSearchUrl": "https://www.goodluckcourier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "goodluckcourier.com",
+          "www.goodluckcourier.com"
+        ],
+        "pathPattern": "^/index\\.php$",
+        "params": [
+          "consignment"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "grand-slam-express": {
+    "displayName": "Grand Slam Express",
+    "color": "#f1592a",
+    "aliases": [
+      "Grandslam Express"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.grandslamexpress.in/Web/Track",
+    "trackingUrlTemplate": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.grandslamexpress.in/Web/Track",
+    "linkRules": [
+      {
+        "domains": [
+          "grandslamexpress.in",
+          "www.grandslamexpress.in"
+        ],
+        "pathPattern": "^/Web/Track/?$",
+        "params": [
+          "AwbNo"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "groupe-guilbault": {
     "displayName": "Groupe Guilbault",
@@ -16143,6 +16269,28 @@
     },
     "canaryUrl": "https://jetlogistic.kz/",
     "trackingSearchUrl": "https://jetlogistic.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "jetline-couriers": {
+    "displayName": "Jetline Couriers",
+    "color": "#e00000",
+    "aliases": [
+      "Jetline Couriers Pvt. Ltd.",
+      "Jetline Couriers Private Limited",
+      "Jetline Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jetlinecouriers.in/",
+    "trackingSearchUrl": "https://www.jetlinecouriers.in/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -20488,6 +20636,48 @@
       }
     ]
   },
+  "pavan-courier": {
+    "displayName": "Pavan Courier Service",
+    "color": "#eb1c22",
+    "aliases": [
+      "Pavan Courier",
+      "Pavan Courier Service Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pavancourierservice.com/Home/Tracking",
+    "trackingUrlTemplate": "https://pavancourierservice.com/Home/Tracking?TrackingNo={trackingNumber}",
+    "trackingSearchUrl": "https://pavancourierservice.com/Home/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "pavancourierservice.com"
+        ],
+        "pathPattern": "^/Home/Tracking$",
+        "params": [
+          "TrackingNo"
+        ]
+      },
+      {
+        "domains": [
+          "pavancourier.com",
+          "www.pavancourier.com"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "paxel": {
     "displayName": "Paxel",
     "color": "#5f51a1",
@@ -22992,6 +23182,49 @@
     ],
     "detectionRules": []
   },
+  "sahara-express": {
+    "displayName": "Sahara Express",
+    "color": "#203870",
+    "aliases": [
+      "Sahara Express Private Limited",
+      "Sahara Express Courier Private Limited"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://saharaexpress.com/",
+    "trackingUrlTemplate": "https://saharaexpress.com/showDetails1.php?taTrackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://saharaexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/showDetails1\\.php$",
+        "params": [
+          "taTrackNumber"
+        ]
+      },
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/confirm_rpt\\.php$",
+        "params": [
+          "txtship_no"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "saia": {
     "displayName": "Saia",
     "color": "#d52027",
@@ -23775,6 +24008,40 @@
     ],
     "detectionRules": []
   },
+  "shree-mahabali-express": {
+    "displayName": "Shree Mahabali Express",
+    "color": "#d91900",
+    "aliases": [
+      "Mahabali Express",
+      "Mahabali Express Pvt. Ltd.",
+      "Shree Mahabali Express Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shreemahabaliexpress.com/",
+    "trackingUrlTemplate": "https://shreemahabaliexpress.com/Frm_DocTrack.aspx?No={trackingNumber}",
+    "trackingSearchUrl": "https://shreemahabaliexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "shreemahabaliexpress.com",
+          "www.shreemahabaliexpress.com"
+        ],
+        "pathPattern": "^/Frm_DocTrack\\.aspx$",
+        "params": [
+          "No"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "shree-mahavir": {
     "displayName": "Shree Mahavir Express Services",
     "color": "#e31e25",
@@ -24458,6 +24725,28 @@
         "confidence": "low"
       }
     ]
+  },
+  "speed-and-safe": {
+    "displayName": "Gokulam Speed & Safe",
+    "color": "#203088",
+    "aliases": [
+      "Speed & Safe",
+      "Speed and Safe",
+      "Speed And Safe Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",
+    "trackingSearchUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "speedaf": {
     "displayName": "Speedaf",

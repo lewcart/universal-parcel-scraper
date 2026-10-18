@@ -1,0 +1,35 @@
+{
+  "id": "jetline-couriers",
+  "displayName": "Jetline Couriers",
+  "aliases": [
+    "Jetline Couriers Pvt. Ltd.",
+    "Jetline Couriers Private Limited",
+    "Jetline Courier"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#e00000"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.jetlinecouriers.in/",
+    "canaryUrl": "https://www.jetlinecouriers.in/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

@@ -1,0 +1,45 @@
+{
+  "id": "grand-slam-express",
+  "displayName": "Grand Slam Express",
+  "aliases": [
+    "Grandslam Express"
+  ],
+  "region": {
+    "countries": [
+      "IN"
+    ]
+  },
+  "brand": {
+    "color": "#f1592a"
+  },
+  "selectable": true,
+  "timezone": "Asia/Kolkata",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",
+    "searchUrl": "https://www.grandslamexpress.in/Web/Track",
+    "canaryUrl": "https://www.grandslamexpress.in/Web/Track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "grandslamexpress.in",
+        "www.grandslamexpress.in"
+      ],
+      "pathPattern": "^/Web/Track/?$",
+      "params": [
+        "AwbNo"
+      ]
+    }
+  ],
+  "detection": []
+}

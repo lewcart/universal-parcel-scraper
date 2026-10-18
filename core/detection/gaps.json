@@ -102,6 +102,18 @@
     "reason": "AEX guías of the A series fall inside Allegro One's high-confidence A0 shape, and nothing else in the number names AEX."
   },
   {
+    "carrier": "air-star-xpress",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers and nothing in the number points to Air Star Xpress."
+  },
+  {
+    "carrier": "air-star-xpress",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to Air Star Xpress."
+  },
+  {
     "carrier": "ajex",
     "pattern": "^A\\d{10}$",
     "kind": "by_design",
@@ -1231,6 +1243,12 @@
     "reason": "Twelve bare digits are shared by many carriers and nothing in the number points to First Delivery."
   },
   {
+    "carrier": "first-fly-express",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to First Fly Express."
+  },
+  {
     "carrier": "fleetex",
     "pattern": "^SR\\d{12}$",
     "kind": "by_design",
@@ -1265,6 +1283,18 @@
     "pattern": "^\\d{7}$",
     "kind": "by_design",
     "reason": "A Flip Post waybill of three digits and four loses its dash and becomes seven digits, too plain to claim."
+  },
+  {
+    "carrier": "flyking",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to Flyking."
+  },
+  {
+    "carrier": "flyking",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers and nothing in the number points to Flyking."
   },
   {
     "carrier": "followmont",
@@ -1439,6 +1469,24 @@
     "pattern": "^YT\\d{16}$",
     "kind": "by_design",
     "reason": "YunExpress numbers that GOFO delivers in the US under the same number. GOFO's tracker answers for them, but they are YunExpress's own, so detection reads them as YunExpress; the GOFO adapter takes them when the user picks GOFO or opens a GOFO link."
+  },
+  {
+    "carrier": "goodluck-courier",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to Goodluck Courier Service."
+  },
+  {
+    "carrier": "goodluck-courier",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers and nothing in the number points to Goodluck Courier Service."
+  },
+  {
+    "carrier": "grand-slam-express",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to Grand Slam Express."
   },
   {
     "carrier": "groupe-guilbault",
@@ -1775,6 +1823,12 @@
     "pattern": "^\\d{12}$",
     "kind": "collision",
     "reason": "Twelve-digit Jet Logistic cargo codes share their shape with many carriers' numeric waybills, so the shape cannot name Jet Logistic."
+  },
+  {
+    "carrier": "jetline-couriers",
+    "pattern": "^\\d{9}$",
+    "kind": "by_design",
+    "reason": "Nine digits are printed by many carriers and nothing in the number points to Jetline Couriers."
   },
   {
     "carrier": "jitsu",
@@ -2430,6 +2484,12 @@
     "reason": "Eleven-digit waybills from Pargo's earlier tracker share their shape with many carriers' numeric waybills."
   },
   {
+    "carrier": "pavan-courier",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers and nothing in the number points to Pavan Courier Service."
+  },
+  {
     "carrier": "paxi",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
@@ -2771,6 +2831,12 @@
     "reason": "SGX air waybills from Los Angeles start with IDA and twelve digits; one waybill shows the layout, so no rule claims it."
   },
   {
+    "carrier": "sahara-express",
+    "pattern": "^S\\d{8}$",
+    "kind": "by_design",
+    "reason": "An S and eight digits is one archived lookup's layout and also matches Mainfreight corpus numbers, so it is too thin to claim."
+  },
+  {
     "carrier": "saia",
     "pattern": "^\\d{11}$",
     "kind": "by_design",
@@ -2914,6 +2980,12 @@
     "reason": "Shree Anjani's ten-digit AWB numbers are a bare digit run many carriers share."
   },
   {
+    "carrier": "shree-mahabali-express",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are printed by many carriers and nothing in the number points to Shree Mahabali Express."
+  },
+  {
     "carrier": "shree-mahavir",
     "pattern": "^\\d{12}$",
     "kind": "by_design",
@@ -3020,6 +3092,12 @@
     "pattern": "^(?:CZ|NL|PL)\\d{12}$",
     "kind": "by_design",
     "reason": "SP Express's Cainiao-page numbers, a destination country code and twelve digits, are too few to tie the layout to SP Express alone, so no rule claims them."
+  },
+  {
+    "carrier": "speed-and-safe",
+    "pattern": "^\\d{8}$",
+    "kind": "by_design",
+    "reason": "Eight digits are printed by many carriers and nothing in the number points to Gokulam Speed & Safe."
   },
   {
     "carrier": "speedex",

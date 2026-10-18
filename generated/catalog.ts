@@ -5657,6 +5657,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "air-star-xpress": {
+    "displayName": "Air Star Xpress",
+    "color": "#007038",
+    "aliases": [
+      "Air Star Xpress Couriers",
+      "Air Star Express",
+      "Air Star Express Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://authorcodesoftware.in/airstarxpresscourier/newmastertracking.aspx",
+    "trackingSearchUrl": "https://authorcodesoftware.in/airstarxpresscourier/newmastertracking.aspx",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "ajex": {
     "displayName": "AJEX",
     "color": "#ec171c",
@@ -12873,6 +12895,23 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "first-fly-express": {
+    "displayName": "First Fly Express",
+    "color": "#e83030",
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://firstflyexpress.com/track.asp",
+    "trackingSearchUrl": "https://firstflyexpress.com/track.asp",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "flash-express": {
     "displayName": "Flash Express",
     "color": "#ffea33",
@@ -13073,6 +13112,27 @@ export const CARRIER_CATALOG = {
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "flyking": {
+    "displayName": "Flyking Courier Services",
+    "color": "#dd4b4b",
+    "aliases": [
+      "Flyking",
+      "Fly King",
+      "Flyking Courier Services Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.flyking.in/TrackYourParcel.aspx",
+    "linkRules": [],
     "detectionRules": []
   },
   "followmont": {
@@ -14233,6 +14293,72 @@ export const CARRIER_CATALOG = {
         "rawPattern": "^[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$"
       }
     ]
+  },
+  "goodluck-courier": {
+    "displayName": "Goodluck Courier Service",
+    "color": "#081858",
+    "aliases": [
+      "Goodluck Courier Services",
+      "Goodluck Courier",
+      "Good Luck Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.goodluckcourier.com/",
+    "trackingUrlTemplate": "https://www.goodluckcourier.com/index.php?consignment={trackingNumber}",
+    "trackingSearchUrl": "https://www.goodluckcourier.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "goodluckcourier.com",
+          "www.goodluckcourier.com"
+        ],
+        "pathPattern": "^/index\\.php$",
+        "params": [
+          "consignment"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "grand-slam-express": {
+    "displayName": "Grand Slam Express",
+    "color": "#f1592a",
+    "aliases": [
+      "Grandslam Express"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.grandslamexpress.in/Web/Track",
+    "trackingUrlTemplate": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.grandslamexpress.in/Web/Track",
+    "linkRules": [
+      {
+        "domains": [
+          "grandslamexpress.in",
+          "www.grandslamexpress.in"
+        ],
+        "pathPattern": "^/Web/Track/?$",
+        "params": [
+          "AwbNo"
+        ]
+      }
+    ],
+    "detectionRules": []
   },
   "groupe-guilbault": {
     "displayName": "Groupe Guilbault",
@@ -16145,6 +16271,28 @@ export const CARRIER_CATALOG = {
     },
     "canaryUrl": "https://jetlogistic.kz/",
     "trackingSearchUrl": "https://jetlogistic.kz/",
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "jetline-couriers": {
+    "displayName": "Jetline Couriers",
+    "color": "#e00000",
+    "aliases": [
+      "Jetline Couriers Pvt. Ltd.",
+      "Jetline Couriers Private Limited",
+      "Jetline Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jetlinecouriers.in/",
+    "trackingSearchUrl": "https://www.jetlinecouriers.in/",
     "linkRules": [],
     "detectionRules": []
   },
@@ -20490,6 +20638,48 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "pavan-courier": {
+    "displayName": "Pavan Courier Service",
+    "color": "#eb1c22",
+    "aliases": [
+      "Pavan Courier",
+      "Pavan Courier Service Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pavancourierservice.com/Home/Tracking",
+    "trackingUrlTemplate": "https://pavancourierservice.com/Home/Tracking?TrackingNo={trackingNumber}",
+    "trackingSearchUrl": "https://pavancourierservice.com/Home/Tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "pavancourierservice.com"
+        ],
+        "pathPattern": "^/Home/Tracking$",
+        "params": [
+          "TrackingNo"
+        ]
+      },
+      {
+        "domains": [
+          "pavancourier.com",
+          "www.pavancourier.com"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "paxel": {
     "displayName": "Paxel",
     "color": "#5f51a1",
@@ -22994,6 +23184,49 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "sahara-express": {
+    "displayName": "Sahara Express",
+    "color": "#203870",
+    "aliases": [
+      "Sahara Express Private Limited",
+      "Sahara Express Courier Private Limited"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://saharaexpress.com/",
+    "trackingUrlTemplate": "https://saharaexpress.com/showDetails1.php?taTrackNumber={trackingNumber}",
+    "trackingSearchUrl": "https://saharaexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/showDetails1\\.php$",
+        "params": [
+          "taTrackNumber"
+        ]
+      },
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/confirm_rpt\\.php$",
+        "params": [
+          "txtship_no"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "saia": {
     "displayName": "Saia",
     "color": "#d52027",
@@ -23777,6 +24010,40 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "shree-mahabali-express": {
+    "displayName": "Shree Mahabali Express",
+    "color": "#d91900",
+    "aliases": [
+      "Mahabali Express",
+      "Mahabali Express Pvt. Ltd.",
+      "Shree Mahabali Express Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://shreemahabaliexpress.com/",
+    "trackingUrlTemplate": "https://shreemahabaliexpress.com/Frm_DocTrack.aspx?No={trackingNumber}",
+    "trackingSearchUrl": "https://shreemahabaliexpress.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "shreemahabaliexpress.com",
+          "www.shreemahabaliexpress.com"
+        ],
+        "pathPattern": "^/Frm_DocTrack\\.aspx$",
+        "params": [
+          "No"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "shree-mahavir": {
     "displayName": "Shree Mahavir Express Services",
     "color": "#e31e25",
@@ -24460,6 +24727,28 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       }
     ]
+  },
+  "speed-and-safe": {
+    "displayName": "Gokulam Speed & Safe",
+    "color": "#203088",
+    "aliases": [
+      "Speed & Safe",
+      "Speed and Safe",
+      "Speed And Safe Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",
+    "trackingSearchUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",
+    "linkRules": [],
+    "detectionRules": []
   },
   "speedaf": {
     "displayName": "Speedaf",
@@ -28443,6 +28732,7 @@ export const CARRIER_IDS = [
   "aeropost",
   "aex-paraguay",
   "afghan-post",
+  "air-star-xpress",
   "ajex",
   "akash-ganga",
   "aks-express",
@@ -28626,11 +28916,13 @@ export const CARRIER_IDS = [
   "fermopoint",
   "fg-delivery",
   "first-delivery-tn",
+  "first-fly-express",
   "flash-express",
   "flash-express-ph",
   "fleetex",
   "fleetoptics",
   "flippost",
+  "flyking",
   "followmont",
   "forward-air",
   "forza-delivery",
@@ -28659,6 +28951,8 @@ export const CARRIER_IDS = [
   "gofo-it",
   "gofo-nl",
   "gogo-xpress",
+  "goodluck-courier",
+  "grand-slam-express",
   "groupe-guilbault",
   "gs-postbox",
   "gta-airskip",
@@ -28711,6 +29005,7 @@ export const CARRIER_IDS = [
   "jeebly",
   "jersey-post",
   "jet-logistic",
+  "jetline-couriers",
   "jhgj",
   "jitsu",
   "jne",
@@ -28826,6 +29121,7 @@ export const CARRIER_IDS = [
   "pargo",
   "passport",
   "pathao-courier",
+  "pavan-courier",
   "paxel",
   "paxi",
   "pbt",
@@ -28890,6 +29186,7 @@ export const CARRIER_IDS = [
   "saee",
   "sagawa",
   "sagawa-global",
+  "sahara-express",
   "saia",
   "sailpost",
   "sameday",
@@ -28911,6 +29208,7 @@ export const CARRIER_IDS = [
   "shipblu",
   "shipentegra",
   "shree-anjani",
+  "shree-mahabali-express",
   "shree-mahavir",
   "shree-maruti",
   "shree-nandan",
@@ -28927,6 +29225,7 @@ export const CARRIER_IDS = [
   "south-african-post-office",
   "southeastern-freight-lines",
   "sp-express",
+  "speed-and-safe",
   "speedaf",
   "speedex",
   "speedpak",
@@ -29157,6 +29456,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
   "afghan-post": [],
+  "air-star-xpress": [],
   "ajex": ["ajex-1"],
   "akash-ganga": [],
   "aks-express": [],
@@ -29340,11 +29640,13 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fermopoint": ["fermopoint-1"],
   "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],
   "first-delivery-tn": [],
+  "first-fly-express": [],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
   "fleetex": [],
   "fleetoptics": ["fleetoptics-1"],
   "flippost": [],
+  "flyking": [],
   "followmont": [],
   "forward-air": [],
   "forza-delivery": ["forza-delivery-1"],
@@ -29373,6 +29675,8 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gofo-it": ["gofo-it-1"],
   "gofo-nl": ["gofo-nl-1"],
   "gogo-xpress": ["gogo-xpress-1"],
+  "goodluck-courier": [],
+  "grand-slam-express": [],
   "groupe-guilbault": [],
   "gs-postbox": [],
   "gta-airskip": ["gta-airskip-1"],
@@ -29425,6 +29729,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jeebly": ["jeebly-1"],
   "jersey-post": [],
   "jet-logistic": [],
+  "jetline-couriers": [],
   "jhgj": ["jhgj-1"],
   "jitsu": [],
   "jne": ["jne-1"],
@@ -29540,6 +29845,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "pargo": ["pargo-1"],
   "passport": ["passport-1"],
   "pathao-courier": ["pathao-courier-1"],
+  "pavan-courier": [],
   "paxel": ["paxel-1"],
   "paxi": [],
   "pbt": [],
@@ -29604,6 +29910,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "saee": ["saee-1"],
   "sagawa": ["sagawa-waybill"],
   "sagawa-global": [],
+  "sahara-express": [],
   "saia": ["saia-1"],
   "sailpost": [],
   "sameday": ["sameday-1"],
@@ -29625,6 +29932,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shipblu": [],
   "shipentegra": ["shipentegra-1"],
   "shree-anjani": [],
+  "shree-mahabali-express": [],
   "shree-mahavir": [],
   "shree-maruti": [],
   "shree-nandan": [],
@@ -29641,6 +29949,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "south-african-post-office": ["south-african-post-office-s10"],
   "southeastern-freight-lines": [],
   "sp-express": ["sp-express-1"],
+  "speed-and-safe": [],
   "speedaf": ["speedaf-12","speedaf-r"],
   "speedex": [],
   "speedpak": ["speedpak-1"],

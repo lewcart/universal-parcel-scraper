@@ -24659,7 +24659,7 @@ export const CARRIER_CATALOG = {
   },
   "transmission": {
     "displayName": "TransMission",
-    "color": "#1f3581",
+    "color": "#e32314",
     "aliases": [
       "TransMission B.V."
     ],
@@ -25923,7 +25923,7 @@ export const CARRIER_CATALOG = {
   },
   "xlcourier": {
     "displayName": "XLCourier",
-    "color": "#c70000",
+    "color": "#044ad6",
     "aliases": [
       "XL Courier",
       "XLC"

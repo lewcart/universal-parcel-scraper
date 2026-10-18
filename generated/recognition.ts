@@ -243,6 +243,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "smsa-express": 448,
   "south-african-post-office": 933,
   "southeastern-freight-lines": 919,
+  "sp-express": 839,
   "speedaf": 989,
   "speedex": 938,
   "speedy": 280,

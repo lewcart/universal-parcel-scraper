@@ -19,18 +19,68 @@
   "timezone": "Europe/Warsaw",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sp-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 839
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight",
+    "dimensions",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://en.sp.express/tt/{trackingNumber}",
     "searchUrl": "https://sp.express/tt",
     "canaryUrl": "https://sp.express/tt",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "location",
+      "weight",
+      "dimensions",
+      "origin_country",
+      "destination_country",
+      "postcodes",
+      "departure_date",
+      "delivery_partner",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "dimensions",
+      "destination_country"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin_country",
+      "postcodes",
+      "departure_date",
+      "delivery_partner",
+      "signatory"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "delivery_tracking_number",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {
@@ -44,6 +94,7 @@
     {
       "domains": [
         "sp.express",
+        "en.sp.express",
         "swiatprzesylek.pl"
       ],
       "path": "^/tt-cainiao/([^/?#]+)/?$"

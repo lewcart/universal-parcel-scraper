@@ -24705,7 +24705,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sp-express",
+      "recognitionRank": 839,
+      "localClocks": true
     },
     "canaryUrl": "https://sp.express/tt",
     "trackingUrlTemplate": "https://en.sp.express/tt/{trackingNumber}",
@@ -24722,6 +24724,7 @@ export const CARRIER_CATALOG = {
       {
         "domains": [
           "sp.express",
+          "en.sp.express",
           "swiatprzesylek.pl"
         ],
         "path": "^/tt-cainiao/([^/?#]+)/?$"

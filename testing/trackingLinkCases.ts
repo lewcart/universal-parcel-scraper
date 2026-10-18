@@ -154,6 +154,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'uniuni', number: 'UUSC000000000001',
     route: /^https:\/\/www\.uniuni\.com\/tracking\//,
     marker: /Track your UniUni Package/i },
+  // The tracker sends an unknown number back to its search page, which says so in a passing notice.
+  { carrier: 'sp-express', number: '000000000000000',
+    route: /^https:\/\/en\.sp\.express\/tt$/,
+    marker: /Track&trace|ID shipment/,
+    forwarding: { notFound: /Shipping not find the specified ID/ } },
   { carrier: 'speedx', number: 'SPXLAX000000000000000001',
     route: /^https:\/\/tracking\.speedx\.io\/SPXLAX000000000000000001$/,
     marker: /No tracking information for/i },

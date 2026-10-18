@@ -157,6 +157,63 @@
         ]
       },
       "note": "Bombino's own tracker gave this as the example air waybill in its hint for tracking several numbers at once."
+    },
+    {
+      "number": "925897117",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/68e396ec909e5c75470b8a3d",
+        "date": "2025-10-06",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A shipper's review on Bombino's Trustpilot page gives this as the reference of one of two parcels booked to Amazon in the United States; Bombino's current tracker knows it as an export from India returned to the shipper."
+    },
+    {
+      "number": "925897112",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/68e396ec909e5c75470b8a3d",
+        "date": "2025-10-06",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "The other parcel of the same Trustpilot review; Bombino's current tracker knows it as an export from India returned to the shipper."
+    },
+    {
+      "number": "304079767",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trackingmore.com/review-bombino-express.html",
+        "date": "2021-04-24",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A customer's review of Bombino on TrackingMore gives this air waybill for a parcel from New York to Delhi; Bombino's current tracker no longer knows it."
     }
   ]
 }

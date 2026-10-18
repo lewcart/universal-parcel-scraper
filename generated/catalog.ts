@@ -7267,7 +7267,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bombino",
+      "recognitionRank": 836,
+      "localClocks": true
     },
     "canaryUrl": "https://www.bombinoexp.com/track",
     "trackingUrlTemplate": "https://www.bombinoexp.com/track?tracking_no={trackingNumber}",

@@ -34,6 +34,7 @@ import { adapter as belpost } from '../carriers/belpost/adapter.js';
 import { adapter as bjsHomeDelivery } from '../carriers/bjs-home-delivery/adapter.js';
 import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
+import { adapter as bombino } from '../carriers/bombino/adapter.js';
 import { adapter as bookurier } from '../carriers/bookurier/adapter.js';
 import { adapter as bosta } from '../carriers/bosta/adapter.js';
 import { adapter as boxNow } from '../carriers/box-now/adapter.js';
@@ -431,6 +432,7 @@ export const REGISTRY: RegistryDefinition = {
     "bjs-home-delivery": bjsHomeDelivery,
     "blue-dart": blueDart,
     "blue-express": blueExpress,
+    "bombino": bombino,
     "bookurier": bookurier,
     "bosta": bosta,
     "box-now": boxNow,
@@ -860,7 +862,7 @@ export const REGISTRY: RegistryDefinition = {
     "blue-dart": "blue-dart",
     "blue-express": "blue-express",
     "blueex": "universal",
-    "bombino": "universal",
+    "bombino": "bombino",
     "bookurier": "bookurier",
     "border-express": "universal",
     "bosta": "bosta",

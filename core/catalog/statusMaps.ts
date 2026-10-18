@@ -38,6 +38,7 @@ import { statusMap as baridAlMaghrib } from '../../carriers/barid-al-maghrib/sta
 import { statusMap as belpost } from '../../carriers/belpost/status.js';
 import { statusMap as bjsHomeDelivery } from '../../carriers/bjs-home-delivery/status.js';
 import { statusMap as blueExpress } from '../../carriers/blue-express/status.js';
+import { statusMap as bombino } from '../../carriers/bombino/status.js';
 import { statusMap as bookurier } from '../../carriers/bookurier/status.js';
 import { statusMap as bosta } from '../../carriers/bosta/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
@@ -326,7 +327,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'algerie-poste': algeriePoste, aliexpress,
   'allegro-one': allegroOne, 'an-post': anPost, andreani, anjun, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
-  'barid-al-maghrib': baridAlMaghrib, belpost, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bookurier, bosta, 'box-now': boxNow,
+  'barid-al-maghrib': baridAlMaghrib, belpost, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino, bookurier, bosta, 'box-now': boxNow,
   'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods, byhd, cacesa, cargus, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, coordinadora,

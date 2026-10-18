@@ -949,6 +949,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'lion-parcel', number: '55LP0000000000001',
     route: /^https:\/\/lionparcel\.com\/track\/stt\?q=55LP0000000000001$/,
     marker: /Hasil pencarian tidak ditemukan|Nomor resi atau STT|Riwayat Pengiriman/i },
+  // The page looks up each air waybill in its address and answers an unknown one with its notice
+  // in place of the scans.
+  { carrier: 'bombino', number: '0000000000',
+    route: /^https:\/\/www\.bombinoexp\.com\/track\?tracking_no=0000000000$/,
+    marker: /No tracking data found for this AWB|Tracking History/ },
   // The page fills its field in from the address and looks the number up.
   { carrier: 'bosta', number: '99999998',
     route: /^https:\/\/bosta\.co\/en-eg\/tracking-shipments\?shipment-number=99999998$/,

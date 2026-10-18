@@ -26,6 +26,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "belpost": 929,
   "bjs-home-delivery": 844,
   "blue-express": 971,
+  "bombino": 836,
   "bosta": 951,
   "box-now": 250,
   "bpost": 810,

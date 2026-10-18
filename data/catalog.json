@@ -13014,7 +13014,9 @@
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "exline-kz",
+      "recognitionRank": 803,
+      "localClocks": true
     },
     "canaryUrl": "https://exline.kz/ru/tracking",
     "trackingUrlTemplate": "https://exline.kz/ru/tracking?id={trackingNumber}",

@@ -90,6 +90,18 @@
     "reason": "Nine digits are shared by several carriers and nothing in the number points to ABF Freight."
   },
   {
+    "carrier": "aci-express-kr",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "ACI bill numbers are bare twelve-digit numbers, a shape many carriers' rules already suggest."
+  },
+  {
+    "carrier": "aci-express-kr",
+    "pattern": "^6\\d{12}$",
+    "kind": "collision",
+    "reason": "ACI hands e-commerce parcels to Korea Post for delivery in Korea, whose rule suggests these thirteen-digit registered numbers."
+  },
+  {
     "carrier": "acs-courier",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -1537,6 +1549,18 @@
     "reason": "GS Postbox half-price numbers are bare twelve digits without a known check digit, a shape SMSA Express, Korean and Japanese carriers share."
   },
   {
+    "carrier": "gsi-express",
+    "pattern": "^\\d{7}$",
+    "kind": "by_design",
+    "reason": "GSI Express receipt numbers are bare seven-digit counters, which cannot name a carrier."
+  },
+  {
+    "carrier": "gsi-express",
+    "pattern": "^6\\d{12}$",
+    "kind": "collision",
+    "reason": "GSI Express hands parcels to Korea Post for delivery in Korea, whose rule suggests these thirteen-digit registered numbers."
+  },
+  {
     "carrier": "guatex",
     "pattern": "^[A-Z]\\d{3,4}[A-Z]{1,2}\\d{5}$",
     "kind": "by_design",
@@ -2051,6 +2075,12 @@
     "pattern": "^(?:PS\\d{6}[A-Z]\\d{10}|LDLBUS\\d{9})$",
     "kind": "by_design",
     "reason": "Merchant and shipper references that Landmark's tracking page resolves to a parcel. They are not specific to Landmark, so detection leaves them out; the adapter takes them when the user picks Landmark or opens a Landmark link."
+  },
+  {
+    "carrier": "last-one-mile-coop",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Co-op waybills are twelve digits with the same remainder-of-seven check digit as Yamato, Sagawa and Japan Post waybills, whose rules suggest them."
   },
   {
     "carrier": "lbc-express",
@@ -3495,6 +3525,12 @@
     "reason": "Ten digits are shared by DHL Express and several other carriers, and nothing in the number points to TMM Express."
   },
   {
+    "carrier": "today-kr",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "To-Day waybills are bare twelve-digit numbers, a shape many carriers' rules already suggest."
+  },
+  {
     "carrier": "toptrans",
     "pattern": "^\\d{10}$",
     "kind": "by_design",
@@ -3738,6 +3774,12 @@
     "carrier": "whistl",
     "kind": "by_design",
     "reason": "Whistl publishes no number shape; its references vary by client and service, so the user picks Whistl."
+  },
+  {
+    "carrier": "winion-logis",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "WINION LOGIS waybills are bare twelve-digit numbers, a shape many carriers' rules already suggest."
   },
   {
     "carrier": "winit",

@@ -1,0 +1,52 @@
+{
+  "id": "exmate",
+  "displayName": "Exmate",
+  "aliases": [
+    "이엑스메이트",
+    "EXMATE"
+  ],
+  "region": {
+    "countries": [
+      "KR",
+      "JP"
+    ]
+  },
+  "brand": {
+    "color": "#3855c7"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://pod.exmate.net/pod/?exmno={trackingNumber}",
+    "searchUrl": "https://pod.exmate.net/",
+    "canaryUrl": "https://pod.exmate.net/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "pod.exmate.net"
+      ],
+      "pathPattern": "^/pod(?:/jpjp|/langchange)?/?$",
+      "params": [
+        "exmno"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "exmate-1",
+      "pattern": "^EXK\\d{8}J$",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "carrier": "exmate",
+  "entries": [
+    {"wording": "등록", "stage": "registered", "language": "ko", "confirmedBy": "portal", "note": "Shown with the English wording Registered."},
+    {"wording": "Registered", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"wording": "입고완료", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "Exmate's warehouse in Korea received the parcel."},
+    {"wording": "DPC In-housing", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "English wording shown with 입고완료."},
+    {"wording": "출고완료", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "The parcel left the warehouse for the airport."},
+    {"wording": "Shipped Out", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "English wording shown with 출고완료."},
+    {"wording": "출발", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "The flight left Korea."},
+    {"wording": "Departed", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "English wording shown with 출발."},
+    {"wording": "현지도착", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "The parcel arrived in the destination country."},
+    {"wording": "Arrived at Destination Country", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "통관완료", "stage": "customs", "language": "ko", "confirmedBy": "portal", "note": "Customs in the destination country cleared the parcel."},
+    {"wording": "Customs Cleared", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"wording": "배송중", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "The local carrier has the parcel; the row names that carrier's office."},
+    {"wording": "통관심사중", "stage": "customs", "language": "ko", "confirmedBy": "portal", "note": "A step of the progress rail above the history."},
+    {"wording": "배달중", "stage": "out_for_delivery", "language": "ko", "confirmedBy": "portal", "note": "A step of the progress rail above the history."},
+    {"wording": "배달완료", "stage": "delivered", "language": "ko", "confirmedBy": "portal", "note": "The last step of the progress rail above the history."}
+  ]
+}

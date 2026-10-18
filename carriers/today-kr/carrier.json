@@ -1,0 +1,44 @@
+{
+  "id": "today-kr",
+  "displayName": "To-Day",
+  "aliases": [
+    "투데이",
+    "투데이택배",
+    "브이투브이",
+    "VtoV"
+  ],
+  "region": {
+    "countries": [
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#355cff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://my.amazing.today/track/{trackingNumber}",
+    "searchUrl": "https://my.amazing.today/track",
+    "canaryUrl": "https://my.amazing.today/track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "my.amazing.today"
+      ],
+      "path": "^/track/(\\d{12})/?$"
+    }
+  ],
+  "detection": []
+}

@@ -5491,6 +5491,85 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "aci-express-kr": {
+    "displayName": "ACI Express",
+    "color": "#db2e6e",
+    "aliases": [
+      "ACI WORLDWIDE",
+      "에이씨아이월드와이드",
+      "ACIEXPRESS"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.aciexpress.net/delivery/",
+    "trackingUrlTemplate": "https://acieshop.com/aci_pod/pod.php?BL={trackingNumber}",
+    "trackingSearchUrl": "https://www.aciexpress.net/delivery/",
+    "linkRules": [
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/aci_pod/pod\\.php$",
+        "params": [
+          "BL"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com",
+          "old.acieshop.com"
+        ],
+        "pathPattern": "^/pod\\.html$",
+        "params": [
+          "OrderNo"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/trackingbl\\.html$",
+        "params": [
+          "bl"
+        ]
+      },
+      {
+        "domains": [
+          "pod.acieshop.com"
+        ],
+        "pathPattern": "^/tracking\\.php$",
+        "params": [
+          "bl"
+        ]
+      },
+      {
+        "domains": [
+          "wms.acieshop.com"
+        ],
+        "path": "^/comn/deliveryTrack/(\\d+)/?$"
+      },
+      {
+        "domains": [
+          "133.acieshop.com"
+        ],
+        "pathPattern": "^/webpod\\.php$",
+        "params": [
+          "HawbNo"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "acs-courier": {
     "displayName": "ACS Courier",
     "color": "#e42229",
@@ -12162,6 +12241,55 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "eparcel-kr": {
+    "displayName": "eParcel Korea",
+    "color": "#286aff",
+    "aliases": [
+      "용성종합물류"
+    ],
+    "countries": [
+      "KR",
+      "PH",
+      "TH"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.eparcel.kr/Track/Search",
+    "trackingUrlTemplate": "https://www.eparcel.kr/Track/Result?mode=0&ids={trackingNumber}&lang=en-US",
+    "trackingSearchUrl": "https://www.eparcel.kr/Track/Search",
+    "linkRules": [
+      {
+        "domains": [
+          "www.eparcel.kr",
+          "eparcel.kr"
+        ],
+        "pathPattern": "^/Track/Result/?$",
+        "params": [
+          "ids"
+        ]
+      },
+      {
+        "domains": [
+          "www.eparcel.kr",
+          "eparcel.kr"
+        ],
+        "pathPattern": "^/Track/MainTracking/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^E[A-Z]{2}\\d{9}KR$",
+        "confidence": "high"
+      }
+    ]
+  },
   "epost-global": {
     "displayName": "ePost Global",
     "color": "#27967a",
@@ -12688,6 +12816,44 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": []
+  },
+  "exmate": {
+    "displayName": "Exmate",
+    "color": "#3855c7",
+    "aliases": [
+      "이엑스메이트",
+      "EXMATE"
+    ],
+    "countries": [
+      "KR",
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://pod.exmate.net/",
+    "trackingUrlTemplate": "https://pod.exmate.net/pod/?exmno={trackingNumber}",
+    "trackingSearchUrl": "https://pod.exmate.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "pod.exmate.net"
+        ],
+        "pathPattern": "^/pod(?:/jpjp|/langchange)?/?$",
+        "params": [
+          "exmno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^EXK\\d{8}J$",
+        "confidence": "high"
+      }
+    ]
   },
   "express-one": {
     "displayName": "Express One",
@@ -14645,6 +14811,41 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/reservation-inquiry/delivery/index\\.do$",
         "params": [
           "invoice_no"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "gsi-express": {
+    "displayName": "GSI Express",
+    "color": "#254f89",
+    "aliases": [
+      "GSI EXPRESS",
+      "GSI EXPRESS LOGISTICS INC."
+    ],
+    "countries": [
+      "US",
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.gsiexpress.com/tracking_query.php",
+    "trackingUrlTemplate": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",
+    "trackingSearchUrl": "https://www.gsiexpress.com/tracking_query.php",
+    "linkRules": [
+      {
+        "domains": [
+          "www.gsiexpress.com",
+          "gsiexpress.com"
+        ],
+        "pathPattern": "^/(?:track_pop|custracking2)\\.php$",
+        "params": [
+          "textfield",
+          "query_num"
         ]
       }
     ],
@@ -17679,6 +17880,36 @@ export const CARRIER_CATALOG = {
         "params": [
           "tracking-number"
         ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "last-one-mile-coop": {
+    "displayName": "Last One Mile Co-op",
+    "color": "#eb690b",
+    "aliases": [
+      "ラストワンマイル協同組合",
+      "LAST ONE MILE CO-OP"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://lastonemile.org/",
+    "trackingUrlTemplate": "https://y-track.jp/ytrack/inqservlet?cd=81118&id=02116&number01={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "y-track.jp",
+          "sv2.y-track.jp"
+        ],
+        "pathPattern": "^/ytrack/inqservlet/?$",
+        "query": "(?:^|&)cd=81118&id=02116&number01=(\\d{12})(?:&|$)"
       }
     ],
     "detectionRules": []
@@ -27114,6 +27345,37 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "today-kr": {
+    "displayName": "To-Day",
+    "color": "#355cff",
+    "aliases": [
+      "투데이",
+      "투데이택배",
+      "브이투브이",
+      "VtoV"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://my.amazing.today/track",
+    "trackingUrlTemplate": "https://my.amazing.today/track/{trackingNumber}",
+    "trackingSearchUrl": "https://my.amazing.today/track",
+    "linkRules": [
+      {
+        "domains": [
+          "my.amazing.today"
+        ],
+        "path": "^/track/(\\d{12})/?$"
+      }
+    ],
+    "detectionRules": []
+  },
   "toptrans": {
     "displayName": "TOPTRANS",
     "color": "#005daa",
@@ -28671,6 +28933,50 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "winion-logis": {
+    "displayName": "WINION LOGIS",
+    "color": "#005baf",
+    "aliases": [
+      "위니온로지스",
+      "위니온택배",
+      "Winion Logistics"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://winionlogistics.com/home.html",
+    "trackingUrlTemplate": "https://winionlogistics.com/home.html?num={trackingNumber}",
+    "trackingSearchUrl": "https://winionlogistics.com/home.html",
+    "linkRules": [
+      {
+        "domains": [
+          "winionlogistics.com",
+          "www.winionlogistics.com"
+        ],
+        "pathPattern": "^/(?:home\\.html)?$",
+        "params": [
+          "num"
+        ]
+      },
+      {
+        "domains": [
+          "winionlogis.com",
+          "www.winionlogis.com"
+        ],
+        "pathPattern": "^/Trace\\.do$",
+        "params": [
+          "T"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "winit": {
     "displayName": "WINIT",
     "color": "#a07647",
@@ -29493,6 +29799,7 @@ export const CARRIER_IDS = [
   "aaa-cooper",
   "ab-courier",
   "abf-freight",
+  "aci-express-kr",
   "acs-courier",
   "aeropost",
   "aex-paraguay",
@@ -29662,6 +29969,7 @@ export const CARRIER_IDS = [
   "energo",
   "envia-colombia",
   "envialia",
+  "eparcel-kr",
   "epost-global",
   "equick",
   "estes",
@@ -29676,6 +29984,7 @@ export const CARRIER_IDS = [
   "ewe",
   "exelot",
   "exline-kz",
+  "exmate",
   "express-one",
   "fan-courier",
   "fargo-courier",
@@ -29726,6 +30035,7 @@ export const CARRIER_IDS = [
   "grand-slam-express",
   "groupe-guilbault",
   "gs-postbox",
+  "gsi-express",
   "gta-airskip",
   "gtl-goto",
   "guatex",
@@ -29809,6 +30119,7 @@ export const CARRIER_IDS = [
   "laar-courier",
   "labaih",
   "lao-post",
+  "last-one-mile-coop",
   "latvijas-pasts",
   "lbc-express",
   "leopards-courier",
@@ -30054,6 +30365,7 @@ export const CARRIER_IDS = [
   "tirupati-courier",
   "tmm-express",
   "tnt-it",
+  "today-kr",
   "toptrans",
   "torrestir",
   "total-express",
@@ -30095,6 +30407,7 @@ export const CARRIER_IDS = [
   "wanbexpress",
   "ward-trucking",
   "whistl",
+  "winion-logis",
   "winit",
   "x-express-ba",
   "x-trac",
@@ -30237,6 +30550,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "aaa-cooper": [],
   "ab-courier": [],
   "abf-freight": [],
+  "aci-express-kr": [],
   "acs-courier": [],
   "aeropost": ["aeropost-1"],
   "aex-paraguay": [],
@@ -30406,6 +30720,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "energo": ["energo-1"],
   "envia-colombia": [],
   "envialia": [],
+  "eparcel-kr": ["eparcel-kr-1"],
   "epost-global": ["epost-global-1"],
   "equick": ["equick-eqk"],
   "estes": [],
@@ -30420,6 +30735,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "ewe": [],
   "exelot": ["exelot-1"],
   "exline-kz": [],
+  "exmate": ["exmate-1"],
   "express-one": [],
   "fan-courier": [],
   "fargo-courier": ["fargo-courier-1"],
@@ -30470,6 +30786,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "grand-slam-express": [],
   "groupe-guilbault": [],
   "gs-postbox": [],
+  "gsi-express": [],
   "gta-airskip": ["gta-airskip-1"],
   "gtl-goto": ["gtl-goto-1"],
   "guatex": [],
@@ -30553,6 +30870,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "laar-courier": [],
   "labaih": [],
   "lao-post": [],
+  "last-one-mile-coop": [],
   "latvijas-pasts": ["latvijas-pasts-s10"],
   "lbc-express": ["lbc-domestic"],
   "leopards-courier": [],
@@ -30798,6 +31116,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tirupati-courier": [],
   "tmm-express": [],
   "tnt-it": ["tnt-it-1"],
+  "today-kr": [],
   "toptrans": [],
   "torrestir": ["torrestir-1"],
   "total-express": ["total-express-awb"],
@@ -30839,6 +31158,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "wanbexpress": ["wanbexpress-1"],
   "ward-trucking": [],
   "whistl": [],
+  "winion-logis": [],
   "winit": ["winit-1","winit-2","winit-3"],
   "x-express-ba": [],
   "x-trac": ["x-trac-1"],

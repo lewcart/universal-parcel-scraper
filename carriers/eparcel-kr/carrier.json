@@ -1,0 +1,63 @@
+{
+  "id": "eparcel-kr",
+  "displayName": "eParcel Korea",
+  "aliases": [
+    "용성종합물류"
+  ],
+  "region": {
+    "countries": [
+      "KR",
+      "PH",
+      "TH"
+    ]
+  },
+  "brand": {
+    "color": "#286aff"
+  },
+  "selectable": true,
+  "timezone": "Asia/Seoul",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.eparcel.kr/Track/Result?mode=0&ids={trackingNumber}&lang=en-US",
+    "searchUrl": "https://www.eparcel.kr/Track/Search",
+    "canaryUrl": "https://www.eparcel.kr/Track/Search",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.eparcel.kr",
+        "eparcel.kr"
+      ],
+      "pathPattern": "^/Track/Result/?$",
+      "params": [
+        "ids"
+      ]
+    },
+    {
+      "domains": [
+        "www.eparcel.kr",
+        "eparcel.kr"
+      ],
+      "pathPattern": "^/Track/MainTracking/?$",
+      "params": [
+        "num"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "eparcel-kr-1",
+      "pattern": "^E[A-Z]{2}\\d{9}KR$",
+      "confidence": "high"
+    }
+  ]
+}

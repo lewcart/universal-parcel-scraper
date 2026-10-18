@@ -1,0 +1,14 @@
+{
+  "carrier": "aci-express-kr",
+  "entries": [
+    {"wording": "발송물이 픽업되어, 공항출고 대기중입니다.", "stage": "accepted", "language": "ko", "confirmedBy": "portal", "note": "Shown with its English wording in the same row."},
+    {"wording": "Shipment picked up,waiting for departure", "stage": "accepted", "language": "en", "confirmedBy": "portal"},
+    {"wording": "화물이 인천공항으로 출발하였습니다.", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "The flight to Incheon left."},
+    {"wording": "Incheon International Airport has the goods to the departure.", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "English wording shown with 화물이 인천공항으로 출발하였습니다.: the flight to Incheon left."},
+    {"wording": "화물이 인천공항에 도착하였습니다.", "stage": "in_transit", "language": "ko", "confirmedBy": "portal"},
+    {"wording": "Shipped the goods arrived at Incheon International Airport.", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"wording": "인천공항 세관에서 통관완료되었습니다.", "stage": "customs", "language": "ko", "confirmedBy": "portal"},
+    {"wording": "Customs clearance is completed in the Republic of Korea", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"wording": "Ready for warehousing", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen on ACI's delivery tracker for an export bill number; the comment column names ACI Worldwide."}
+  ]
+}

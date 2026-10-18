@@ -1,0 +1,7 @@
+{
+  "carrier": "gsi-express",
+  "entries": [
+    {"wording": "출고시간", "stage": "in_transit", "language": "ko", "confirmedBy": "portal", "note": "Field label on the tracker: the time the parcel left GSI Express's US warehouse, in Korean and US Eastern time."},
+    {"wording": "통관완료일", "stage": "customs", "language": "ko", "confirmedBy": "portal", "note": "Field label on the tracker: the date Korean customs cleared the parcel."}
+  ]
+}

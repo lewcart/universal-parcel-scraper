@@ -4703,5 +4703,35 @@
       "seur"
     ],
     "reason": "best-express-my numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "EXK, eight digits and J",
+    "carriers": [
+      "colis-prive",
+      "exmate"
+    ],
+    "reason": "Colis Privé accepts any twelve letters and digits; the Exmate EXK prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "^\\d{12}$",
+    "carriers": [
+      "brt",
+      "colis-prive",
+      "dhl",
+      "dpd-fr",
+      "j-and-t",
+      "japan-post",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "mondial-relay",
+      "mrw",
+      "poste-italiane",
+      "sagawa",
+      "sf-express",
+      "sto",
+      "yamato",
+      "zto"
+    ],
+    "reason": "winion-logis numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

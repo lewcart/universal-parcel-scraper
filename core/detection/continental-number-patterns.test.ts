@@ -577,4 +577,20 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('indah-logistik');
     }
   });
+
+  it('names eParcel Korea for E, a destination country, nine digits and KR', () => {
+    for (const number of ['EPH000000001KR', 'ETH000000001KR']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'eparcel-kr', confidence: 'high' });
+    }
+    for (const number of ['EPH00000001KR', 'XPH000000001KR', 'EP000000001KR', 'EPH000000001JP']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('eparcel-kr');
+    }
+  });
+
+  it('names Exmate for EXK, eight digits and J over Colis Privé', () => {
+    expect(detectCarrierMatch('EXK00000001J')).toMatchObject({ carrier: 'exmate', confidence: 'high' });
+    for (const number of ['EXK0000001J', 'EXJ00000001J', 'EXK00000001K']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('exmate');
+    }
+  });
 });

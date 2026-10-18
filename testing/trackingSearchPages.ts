@@ -12,6 +12,7 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
   'forza-delivery': 'Forza\'s tracker is a script-rendered app at rastreo.forzadelivery.com; the search-page check finds no number field on it, and a guía opens at its own address',
   'iran-post': 'post.ir and tracking.post.ir refuse many networks outside Iran; its tracker opens a parcel from the number in its address',
   kargoist: 'kargoist.com\'s tracking page asks for a code sent by text message, and its home page, whose form opened a parcel from the number, shows a maintenance notice',
+  'last-one-mile-coop': 'the co-op\'s only tracking form is on y-track.jp and opens only with the co-op\'s form codes in its address; a waybill opens at that address',
   liccardi: 'www.liccarditrasporti.com answers automated browsers with a bot check; its tracker opens a parcel from the number in its address',
   'nim-express': 'nimexpress.com\'s tracking fields are a script widget and a form that asks for a confirmation code; its own header form opens the tracking page with the number',
   rivigo: 'Rivigo\'s public tracker is a hash route on zoom.rivigo.com whose other pages redirect to the staff sign-in; a consignment opens at its own address',

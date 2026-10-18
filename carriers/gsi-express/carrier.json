@@ -1,0 +1,48 @@
+{
+  "id": "gsi-express",
+  "displayName": "GSI Express",
+  "aliases": [
+    "GSI EXPRESS",
+    "GSI EXPRESS LOGISTICS INC."
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "KR"
+    ]
+  },
+  "brand": {
+    "color": "#254f89"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",
+    "searchUrl": "https://www.gsiexpress.com/tracking_query.php",
+    "canaryUrl": "https://www.gsiexpress.com/tracking_query.php",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.gsiexpress.com",
+        "gsiexpress.com"
+      ],
+      "pathPattern": "^/(?:track_pop|custracking2)\\.php$",
+      "params": [
+        "textfield",
+        "query_num"
+      ]
+    }
+  ],
+  "detection": []
+}

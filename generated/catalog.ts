@@ -24518,9 +24518,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipa"
     },
-    "canaryUrl": "https://shipa.com/track/",
+    "canaryUrl": "https://tracking.shipadelivery.com/",
     "trackingUrlTemplate": "https://shipa.com/track/?trackingno={trackingNumber}",
     "trackingSearchUrl": "https://shipa.com/track/",
     "linkRules": [

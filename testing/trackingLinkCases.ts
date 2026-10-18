@@ -610,6 +610,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'valmo', number: 'VL0000000000000',
     route: /^https:\/\/www\.valmo\.in\/track\/VL0000000000000$/,
     marker: /Invalid AWB\/Tracking ID|Order Details/ },
+  // The page asks Shipa's router which service holds the number, lists it with that service's link and opens Shipa Delivery's page in a new window.
+  { carrier: 'shipa', number: 'SD000000003',
+    route: /^https:\/\/shipa\.com\/track\/\?trackingno=SD000000003$/,
+    marker: /Results for Your Shipment Search|TRACK IT ON SHIPA DELIVERY/i },
   // The site adds the slash; the page then posts the number in its address to its lookup and names an unknown one.
   { carrier: 'proships', number: '0000000000000',
     route: /^https:\/\/proships\.com\/tracking\/\?tracking=0000000000000$/,

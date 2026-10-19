@@ -156,6 +156,7 @@ describe('Chronopost direct tracking', () => {
     ['D', 'Livraison effectuée', 'delivered'],
     ['P', "Echec de livraison suite à l'absence du destinataire.", 'failed_attempt'],
     ['SK', "Colis en attente d'informations complémentaires de votre part", 'exception'],
+    ['S', 'Colis bloqué : colis endommagé ou emballage insuffisant', 'exception'],
     ['R', 'Colis en retour expéditeur', 'exception'],
   ])('maps the observed %s scan when its wording agrees', (code, label, stage) => {
     expect(chronopostStage(code, label)).toEqual({ stage, source: 'carrier_map' });

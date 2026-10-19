@@ -260,6 +260,15 @@
       "language": "fr"
     },
     {
+      "code": "S",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Chronopost trackSkybillV2; code mapping requires matching wording. A damaged parcel or one packed too poorly to travel is held until Chronopost deals with it.",
+      "wording": "Colis bloqué : colis endommagé ou emballage insuffisant",
+      "language": "fr"
+    },
+    {
       "code": "R",
       "stage": "exception",
       "confirmedBy": "live",

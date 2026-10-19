@@ -395,6 +395,12 @@
     "reason": "Eight digits are shared by many carriers and nothing in the number points to Best Transport."
   },
   {
+    "carrier": "better-trucks",
+    "pattern": "^BTS_[0-9A-Z]{10,11}$",
+    "kind": "open",
+    "reason": "One complaint gives a BTS_ number with ten characters after the underscore and Shippo's guide one with eleven, neither still tracked; the family is not established."
+  },
+  {
     "carrier": "bex-express",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

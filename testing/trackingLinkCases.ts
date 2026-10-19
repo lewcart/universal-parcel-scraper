@@ -1193,6 +1193,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bulgarian-posts', number: 'ZZ000000014BG',
     route: /^https:\/\/www\.bgpost\.bg\/(?:en\/)?postal-services\/track-package\?itemid=ZZ000000014BG$/,
     marker: /ПРОСЛЕДЯВАНЕ НА ПРАТКА|ITEM TRACKING/i },
+  // The page looks the number up and answers an unknown one with its not-found notice.
+  { carrier: 'better-trucks', number: 'BTPA0000000ZZ01',
+    route: /^https:\/\/tracking\.bettertrucks\.com\/tracking\?trackingNumber=BTPA0000000ZZ01$/,
+    marker: /Shipment can.t be found|Enter your tracking number/i },
   // The page fills its field in from the address and looks the number up; the form's heading
   // shows while the answer is slow.
   { carrier: 'belpost', number: 'ZZ000000014BY',

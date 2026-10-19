@@ -7357,7 +7357,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "better-trucks",
+      "recognitionRank": 738
     },
     "canaryUrl": "https://tracking.bettertrucks.com/",
     "trackingUrlTemplate": "https://tracking.bettertrucks.com/tracking?trackingNumber={trackingNumber}",

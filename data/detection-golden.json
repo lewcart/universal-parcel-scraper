@@ -64490,10 +64490,19 @@
     "confidence": "low",
     "candidates": [
       "better-trucks"
+    ],
+    "asked": [
+      "better-trucks"
     ]
   },
   {
     "input": "BTS_0018P2LD557",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "BTS_0261SMTF8S",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []

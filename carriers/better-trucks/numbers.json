@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -22,6 +22,25 @@
         ]
       },
       "note": "A PissedConsumer review of Better Trucks gives it for a parcel the tracker called delivered but that never arrived."
+    },
+    {
+      "number": "BTS_0261SMTF8S",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://better-trucks.pissedconsumer.com/5/RT-P.html",
+        "date": "2025-04-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A PissedConsumer review of Better Trucks gives it as the tracking number of a TikTok Shop order Better Trucks marked delivered; the tracker no longer knows it."
     },
     {
       "number": "BTS_0018P2LD557",

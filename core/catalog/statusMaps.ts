@@ -197,6 +197,7 @@ import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
 import { statusMap as hermesAt } from '../../carriers/hermes-at/status.js';
 import { statusMap as hispapost } from '../../carriers/hispapost/status.js';
+import { statusMap as houngAhLoun } from '../../carriers/houng-ah-loun/status.js';
 import { statusMap as hrParcel } from '../../carriers/hr-parcel/status.js';
 import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status.js';
 import { statusMap as hunterExpress } from '../../carriers/hunter-express/status.js';
@@ -479,7 +480,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   fleetoptics, followmont, 'forward-air': forwardAir, 'four-px': fourPx, foxpost, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, globalpost, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
-  helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
+  helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'houng-ah-loun': houngAhLoun, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, 'hunter-express': hunterExpress, hywl, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, imile, 'indah-logistik': indahLogistik,
   instabox, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,

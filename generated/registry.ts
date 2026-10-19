@@ -232,6 +232,7 @@ import { adapter as hermesAt } from '../carriers/hermes-at/adapter.js';
 import { adapter as hermesDe } from '../carriers/hermes-de/adapter.js';
 import { adapter as hispapost } from '../carriers/hispapost/adapter.js';
 import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
+import { adapter as houngAhLoun } from '../carriers/houng-ah-loun/adapter.js';
 import { adapter as hrParcel } from '../carriers/hr-parcel/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
 import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js';
@@ -757,6 +758,7 @@ export const REGISTRY: RegistryDefinition = {
     "hermes-de": hermesDe,
     "hispapost": hispapost,
     "hongkong-post": hongkongPost,
+    "houng-ah-loun": houngAhLoun,
     "hr-parcel": hrParcel,
     "hrvatska-posta": hrvatskaPosta,
     "hunter-express": hunterExpress,
@@ -1380,7 +1382,7 @@ export const REGISTRY: RegistryDefinition = {
     "hongkong-post": "hongkong-post",
     "horoz": "universal",
     "hound-express": "universal",
-    "houng-ah-loun": "universal",
+    "houng-ah-loun": "houng-ah-loun",
     "hovership": "universal",
     "hp-mostar": "universal",
     "hr-parcel": "hr-parcel",

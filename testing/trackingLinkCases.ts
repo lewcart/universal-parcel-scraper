@@ -772,6 +772,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fg-delivery', number: 'FGD0000000000000000000101',
     route: /^https:\/\/fgdelivery\.it\/tracciabilita\/\?barcode=FGD0000000000000000000101$/,
     marker: /Inserisci il codice di spedizione|TRACCIA IL TUO PACCO/i },
+  // The page looks the number in its address up on load; an unknown one gets a not-found notice.
+  { carrier: 'houng-ah-loun', number: 'VTE00000000000',
+    route: /^https:\/\/halexpress\.la\/parcel\/VTE00000000000$/,
+    marker: /ວັນທີສົ່ງບິນ|ບໍ່ພົບເລກພັດສະດຸນີ້ໃນລະບົບ/ },
   // The page fills its barcode field in from the address and looks the number up on load.
   { carrier: 'hr-parcel', number: '10000000000001',
     route: /^https:\/\/www\.hrparcel\.com\/traccia-spedizioni\/\?barcode=10000000000001$/,

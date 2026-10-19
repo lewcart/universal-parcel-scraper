@@ -16002,7 +16002,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Vientiane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "houng-ah-loun",
+      "recognitionRank": 637,
+      "localClocks": true
     },
     "canaryUrl": "https://halexpress.la/parcel",
     "trackingUrlTemplate": "https://halexpress.la/parcel/{trackingNumber}",

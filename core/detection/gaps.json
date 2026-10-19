@@ -1828,7 +1828,7 @@
     "carrier": "houng-ah-loun",
     "pattern": "^[A-Z]{3}\\d{11}$",
     "kind": "by_design",
-    "reason": "HAL Express bills are a branch code and eleven digits, known from one example only."
+    "reason": "HAL Express bills are a province code and eleven digits; public examples are few and other Lao carriers print similar branch-coded bills."
   },
   {
     "carrier": "hovership",

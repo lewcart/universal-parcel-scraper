@@ -326,6 +326,10 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // A vehicle load and a gateway scan prove handling, but do not name the delivery round.
   if (/^(?:load vehicle|scan ok gateway)$/.test(text)
     || /^(?:the )?item in process in office of exchange\b/.test(text)) return 'in_transit';
+  // Speedy's scans as providers relay them: its courier's collection, then an
+  // office's receipt and a handover to a partner abroad, as its own map reads them.
+  if (/^courier pick up$/.test(text)) return 'accepted';
+  if (/^(?:received in office|export to foreign provider)$/.test(text)) return 'in_transit';
   if (/^(?:posting\/collection|posted|origin scan)$|received at (?:our |the )?(?:[a-z]+ )?origin (?:office|facility|hub)|dropped off (?:after|before) (?:the )?latest drop ?off time/.test(text)) return 'accepted';
   // Turned away rather than taken in: "Package not accepted by sorting center".
   if (/(?:\b(?:not|never)|n't)(?: (?:be|been|being))? accepted\b/.test(text)) return 'exception';

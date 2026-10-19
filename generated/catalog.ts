@@ -13518,7 +13518,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fastfrate",
+      "localClocks": true
     },
     "canaryUrl": "https://tracker.fastfrate.com/quick-track",
     "trackingUrlTemplate": "https://apps.fastfrate.com/fastnet/FastNet.aspx?ProbillNo={trackingNumber}",

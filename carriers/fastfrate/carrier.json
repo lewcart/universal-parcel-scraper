@@ -17,18 +17,60 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fastfrate",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta"
+  ],
   "portal": {
     "url": "https://apps.fastfrate.com/fastnet/FastNet.aspx?ProbillNo={trackingNumber}",
     "searchUrl": "https://tracker.fastfrate.com/quick-track",
     "canaryUrl": "https://tracker.fastfrate.com/quick-track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "customer_reference",
+      "origin",
+      "destination",
+      "weight",
+      "parcel_count",
+      "recipient_contact",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta"
+    ],
+    "discarded": [
+      "customer_reference",
+      "origin",
+      "destination",
+      "weight",
+      "parcel_count",
+      "recipient_contact",
+      "remarks"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "delivered_at",
+      "service_name",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "delivery_partner",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

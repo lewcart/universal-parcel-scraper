@@ -1684,6 +1684,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'midland-transport', number: '0000000000000000',
     route: /^https:\/\/ship\.midlandtransport\.com\/Tracking\/TrackClientTrackings\?TrackingNumber=0000000000000000&Lang=0$/,
     marker: /The shipment number does not exist|Travel History/ },
+  // The FastNet page looks the probill in its address up on the server and answers an unknown one
+  // with its notice, without the number.
+  { carrier: 'fastfrate', number: '0000000000',
+    route: /^https:\/\/apps\.fastfrate\.com\/fastnet\/FastNet\.aspx\?ProbillNo=0000000000$/,
+    marker: /Fastfrate Quick Probill Tracking/,
+    forwarding: { notFound: /Probill (?:Number )?not found/ } },
 ];
 
 /**

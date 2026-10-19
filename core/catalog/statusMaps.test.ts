@@ -106,6 +106,11 @@ describe('status map answers', () => {
     // Every router scan carries its code, which alone gives the stage.
     expect(answer('j-and-t', null, 'Delivered')).toEqual(unknown);
     expect(answer('j-and-t', '999', 'Delivered')).toEqual(unknown);
+    // HuaHan's scan 17TRACK relays without its code, and JS Express's partners' steps after the import release.
+    expect(answer('huahan', null, 'Data processed')).toEqual(mapped('in_transit'));
+    expect(answer('huahan', 'ZZ', 'Data processed')).toEqual(unknown);
+    expect(answer('js-express', null, 'Prepared for last mile handover')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'The cargo tally in the supervised warehouse is in progress.')).toEqual(mapped('in_transit'));
   });
 
   it("answers La Poste by the group and code it reads, for every carrier its adapter serves", () => {
@@ -443,6 +448,9 @@ describe("universal providers' answers", () => {
       ['Parcel received by Relay', 'accepted'], ['Received Your Parcel', 'accepted'], ['Collection Complete', 'delivered'],
       ['Export Scan', 'in_transit'],
       ['Received in warehouse', 'accepted'], ['Item deposited to local postal operator', 'in_transit'],
+      ['Item handed over to subcontractor', 'in_transit'], ['Item announced', 'registered'], ['Item sent', 'in_transit'],
+      ['Item received in destination country', 'in_transit'],
+      ['Item posted / received from customer Customer centre: Example', 'accepted'],
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],
       ['Pickup completed, No exceptions', 'accepted'], ['Furniture Received by Metro-<Warehouse>-Hub', 'in_transit'],
       ['Furniture Received by Metro-Example-Hub', 'in_transit'],

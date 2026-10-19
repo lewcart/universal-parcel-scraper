@@ -196,6 +196,14 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^the shipment was left at a drop-off location[.!]?$/i.test(value)) return 'delivered';
   // Landmark Global's hand-over to the destination's postal operator for the last mile, as Landmark's own map reads it.
   if (/^item deposited to local postal operator[.!]?$/i.test(value)) return 'in_transit';
+  // Austrian Post's hand-over to its partner on the way abroad, "Übergabe an Kooperationspartner" in its own map.
+  if (/^item handed over to subcontractor[.!]?$/i.test(value)) return 'in_transit';
+  // Hrvatska pošta's scans as its own map reads them: the sender's announcement, then the item
+  // sent on and received by the post abroad.
+  if (/^item announced[.!]?$/i.test(value)) return 'registered';
+  if (/^item sent[.!]?$|^item received in destination country[.!]?$/i.test(value)) return 'in_transit';
+  // Latvijas Pasts' acceptance at a post office, which ParcelsApp follows with the office's name.
+  if (/^item posted \/ received from customer\b/i.test(value)) return 'accepted';
   // A consolidator's steps as aggregators relay them: the customer's data on its manifest, its origin
   // hub taking the parcel in, the parcel sent on, and a flight held up, for which results carry no delay flag.
   if (/^customer information manifested[.!]?$/i.test(value)) return 'registered';

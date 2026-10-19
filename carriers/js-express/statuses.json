@@ -19,6 +19,8 @@
     {"wording": "NOA-Notification of arrival from GHA", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination airport's ground handling agent reports the shipment arrived."},
     {"wording": "The goods have been picked up abroad", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination agent took the shipment from the airport; JS Express accepted the parcel long before."},
     {"wording": "Released From Import Customs", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"wording": "Prepared for last mile handover", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by ParcelsApp after the import release at the destination airport, before the destination courier has the parcel."},
+    {"wording": "The cargo tally in the supervised warehouse is in progress.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by ParcelsApp after the import release: the bonded warehouse counting the shipment's pieces, no new customs step."},
     {"wording": "Delivery to local courier", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Handed to the destination courier."},
     {"wording": "Package Received with Origin Scan warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination courier's first scan; the adapter moves the place the courier appends into the location."},
     {"wording": "Package is received at a Straightship station", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A Canadian courier's depot scan, with its place moved into the location."},

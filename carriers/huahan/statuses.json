@@ -8,6 +8,7 @@
     {"code": "AF", "wording": "Has entered the warehouse", "stage": "accepted", "language": "en", "confirmedBy": "official-doc", "note": "The same code in the documentation's later tracking example: HuaHan's warehouse in Shenzhen received the parcel."},
     {"wording": "快件到达作业中心", "stage": "accepted", "language": "zh", "confirmedBy": "official-doc", "note": "The latest-event summary form of the arrival at HuaHan's operations centre, in the documentation's later tracking example."},
     {"code": "DF", "wording": "快件操作完成 Shipment departed from facility", "stage": "in_transit", "language": "zh", "confirmedBy": "official-doc", "note": "In the tracking example of HuaHan's API documentation: the parcel left HuaHan's operations centre in Shenzhen."},
-    {"wording": "快件操作完成", "stage": "in_transit", "language": "zh", "confirmedBy": "official-doc", "note": "In the tracking example of HuaHan's API documentation: the latest-event summary form of the departure from the operations centre."}
+    {"wording": "快件操作完成", "stage": "in_transit", "language": "zh", "confirmedBy": "official-doc", "note": "In the tracking example of HuaHan's API documentation: the latest-event summary form of the departure from the operations centre."},
+    {"wording": "Data processed", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by 17TRACK without a code, between the parcel's departures from the origin facility."}
   ]
 }

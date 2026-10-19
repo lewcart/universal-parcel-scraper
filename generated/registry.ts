@@ -252,6 +252,7 @@ import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js'
 import { adapter as huahan } from '../carriers/huahan/adapter.js';
 import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js';
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
+import { adapter as iccWorldwide } from '../carriers/icc-worldwide/adapter.js';
 import { adapter as icsCourier } from '../carriers/ics-courier/adapter.js';
 import { adapter as idsLogistik } from '../carriers/ids-logistik/adapter.js';
 import { adapter as ilyangLogis } from '../carriers/ilyang-logis/adapter.js';
@@ -806,6 +807,7 @@ export const REGISTRY: RegistryDefinition = {
     "huahan": huahan,
     "hunter-express": hunterExpress,
     "hywl": hywl,
+    "icc-worldwide": iccWorldwide,
     "ics-courier": icsCourier,
     "ids-logistik": idsLogistik,
     "ilyang-logis": ilyangLogis,
@@ -1446,7 +1448,7 @@ export const REGISTRY: RegistryDefinition = {
     "huahan": "huahan",
     "hunter-express": "hunter-express",
     "hywl": "hywl",
-    "icc-worldwide": "universal",
+    "icc-worldwide": "icc-worldwide",
     "icl-express": "universal",
     "ics-courier": "ics-courier",
     "idexpress": "universal",

@@ -197,6 +197,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "hr-parcel": 887,
   "hrvatska-posta": 160,
   "hywl": 993,
+  "icc-worldwide": 628,
   "ilyang-logis": 703,
   "imile": 997,
   "indah-logistik": 798,

@@ -1649,6 +1649,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pitt-ohio', number: '9999999999',
     route: /^https:\/\/pittohio\.com\/myPittOhio\/Shipping\/LTL\/TraceRequest\?pro=9999999999$/,
     marker: /Search returned no results|LTL Shipment Status Details/ },
+  // The tracking page renders the air waybill in its address on the server; its notice for an unknown one names no number.
+  { carrier: 'icc-worldwide', number: '99999999999',
+    route: /^https:\/\/www\.iccworld\.com\/track-result\.php\?track_no=99999999999$/,
+    marker: /Record not found|Detailed Report/i, forwarding: { notFound: /Record not found/i } },
   // The portal opens a tab for the number in its address and loads its answer, an alert for an unknown PRO.
   { carrier: 'roadrunner', number: '999999999',
     route: /^https:\/\/tools\.rrts\.com\/LTLTrack\/\?searchValues=999999999$/,

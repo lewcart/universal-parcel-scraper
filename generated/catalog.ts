@@ -16332,7 +16332,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "icc-worldwide",
+      "recognitionRank": 628,
+      "localClocks": true
     },
     "canaryUrl": "https://www.iccworld.com/",
     "trackingUrlTemplate": "https://www.iccworld.com/track-result.php?track_no={trackingNumber}",

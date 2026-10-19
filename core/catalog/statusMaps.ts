@@ -217,6 +217,7 @@ import { statusMap as hrvatskaPosta } from '../../carriers/hrvatska-posta/status
 import { statusMap as hunterExpress } from '../../carriers/hunter-express/status.js';
 import { statusMap as huahan } from '../../carriers/huahan/status.js';
 import { statusMap as hywl } from '../../carriers/hywl/status.js';
+import { statusMap as iccWorldwide } from '../../carriers/icc-worldwide/status.js';
 import { statusMap as icsCourier } from '../../carriers/ics-courier/status.js';
 import { statusMap as idsLogistik } from '../../carriers/ids-logistik/status.js';
 import { statusMap as ilyangLogis } from '../../carriers/ilyang-logis/status.js';
@@ -511,8 +512,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   globalpost, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, gzyl, hanjin, 'happy-post': happyPost, haypost,
   'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'houng-ah-loun': houngAhLoun, hovership,
-  'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl, 'ics-courier': icsCourier,
-  'ids-logistik': idsLogistik,
+  'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
+  'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik,
   'ilyang-logis': ilyangLogis, imile, 'indah-logistik': indahLogistik,
   instabox, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,

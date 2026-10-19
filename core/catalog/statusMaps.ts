@@ -180,6 +180,7 @@ import { statusMap as gofoIt } from '../../carriers/gofo-it/status.js';
 import { statusMap as gofoNl } from '../../carriers/gofo-nl/status.js';
 import { statusMap as gogoXpress } from '../../carriers/gogo-xpress/status.js';
 import { statusMap as gsiExpress } from '../../carriers/gsi-express/status.js';
+import { statusMap as gtaAirskip } from '../../carriers/gta-airskip/status.js';
 import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
 import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
 import { statusMap as happyPost } from '../../carriers/happy-post/status.js';
@@ -457,7 +458,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'flash-express-ph': flashExpressPh,
   fleetoptics, 'forward-air': forwardAir, 'four-px': fourPx, foxpost, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
-  'go-express': goExpress, globalpost, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress, 'gsi-express': gsiExpress, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
+  'go-express': goExpress, globalpost, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,
   'hrvatska-posta': hrvatskaPosta, 'hunter-express': hunterExpress, hywl, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, imile, 'indah-logistik': indahLogistik,
   instabox, 'internet-express': internetExpress, interrapidisimo,

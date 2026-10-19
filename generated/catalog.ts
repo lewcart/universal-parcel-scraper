@@ -15384,7 +15384,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gta-airskip",
+      "recognitionRank": 762,
+      "localClocks": true
     },
     "canaryUrl": "https://gtaairskip.com/tracking/",
     "trackingUrlTemplate": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",

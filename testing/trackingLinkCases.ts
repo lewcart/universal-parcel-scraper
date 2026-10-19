@@ -1577,6 +1577,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'parcelpoint', number: '1234567890123',
     route: /^https:\/\/parcelpoint\.com\.au\/track-your-parcel\/\?trackingnumber=1234567890123$/,
     marker: /No tracking events available yet|Tracking number 1234567890123 was not found/ },
+  // The page looks up the number in its address and answers an unknown one with "Shipment Not Found".
+  { carrier: 'gta-airskip', number: 'GRG0000000000000000',
+    route: /^https:\/\/gtaairskip\.com\/tracking\/\?trackingid=GRG0000000000000000$/,
+    marker: /Shipment Not Found|Track a Package/i },
 ];
 
 /**

@@ -22039,7 +22039,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pandu-logistics",
+      "recognitionRank": 683,
+      "localClocks": true
     },
     "canaryUrl": "https://pandulogistics.com/track/",
     "trackingSearchUrl": "https://pandulogistics.com/track/",

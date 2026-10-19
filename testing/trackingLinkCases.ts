@@ -1582,6 +1582,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'straightship', number: 'STRTD000000000',
     route: /^https:\/\/www\.straightship\.com\/track-your-shipment\/tracking-id\/STRTD000000000\/$/,
     marker: /Canada B2C Shipment Tracking|No results found/ },
+  // The page looks the number in its address up, keeps it in the field and answers an unknown one with a notice.
+  { carrier: 'bringer-parcel', number: 'BPS000000000000',
+    route: /^https:\/\/www\.bringerparcel\.com\/tracking\/BPS000000000000$/,
+    marker: /BPX Tracking|We couldn't find any shipment with that tracking number/ },
   // The page looks the number in its address up and shows an unknown one as a parcel without events.
   { carrier: 'parcelpoint', number: '1234567890123',
     route: /^https:\/\/parcelpoint\.com\.au\/track-your-parcel\/\?trackingnumber=1234567890123$/,

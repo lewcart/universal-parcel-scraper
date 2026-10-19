@@ -52,6 +52,7 @@ import { adapter as bosta } from '../carriers/bosta/adapter.js';
 import { adapter as boxNow } from '../carriers/box-now/adapter.js';
 import { adapter as bpost } from '../carriers/bpost/adapter.js';
 import { adapter as bringPosten } from '../carriers/bring-posten/adapter.js';
+import { adapter as bringerParcel } from '../carriers/bringer-parcel/adapter.js';
 import { adapter as brt } from '../carriers/brt/adapter.js';
 import { adapter as bulgarianPosts } from '../carriers/bulgarian-posts/adapter.js';
 import { adapter as burdDelivery } from '../carriers/burd-delivery/adapter.js';
@@ -572,6 +573,7 @@ export const REGISTRY: RegistryDefinition = {
     "box-now": boxNow,
     "bpost": bpost,
     "bring-posten": bringPosten,
+    "bringer-parcel": bringerParcel,
     "brt": brt,
     "bulgarian-posts": bulgarianPosts,
     "burd-delivery": burdDelivery,
@@ -1122,7 +1124,7 @@ export const REGISTRY: RegistryDefinition = {
     "box-now": "box-now",
     "bpost": "bpost",
     "bring-posten": "bring-posten",
-    "bringer-parcel": "universal",
+    "bringer-parcel": "bringer-parcel",
     "brt": "brt",
     "bts-uz": "universal",
     "budbee": "universal",

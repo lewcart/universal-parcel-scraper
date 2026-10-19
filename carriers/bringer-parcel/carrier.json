@@ -18,18 +18,56 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "bringer-parcel",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 639
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.bringerparcel.com/tracking/{trackingNumber}",
     "searchUrl": "https://www.bringerparcel.com/tracking",
     "canaryUrl": "https://www.bringerparcel.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "related_tracking_numbers"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "related_tracking_numbers"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "destination_country",
+      "delivery_partner",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

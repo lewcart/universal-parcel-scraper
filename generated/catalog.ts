@@ -7891,7 +7891,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bringer-parcel",
+      "recognitionRank": 639
     },
     "canaryUrl": "https://www.bringerparcel.com/tracking",
     "trackingUrlTemplate": "https://www.bringerparcel.com/tracking/{trackingNumber}",

@@ -34,7 +34,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -43,7 +43,7 @@
           "bringer-parcel"
         ]
       },
-      "note": "The BPX client API documentation, linked from bringerparcel.com, shows it as the tracking number of a parcel label in its response example."
+      "note": "The BPX client API documentation, linked from bringerparcel.com, shows it as the tracking number of a parcel label in its response example. BPX's tracker knows it as a parcel with only its label scans."
     }
   ]
 }

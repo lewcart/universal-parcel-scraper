@@ -87,7 +87,9 @@ export function parseParcelsAppResponse(payload: unknown, trackingNumber: string
  * Netherlands and Spain, have ParcelsApp's UTC digits to the second. So do
  * Austrian Post's: its own instants have ParcelsApp's UTC digits to the second
  * (checked 2026-10-16), while the EURODIS copies of the same scans carry the
- * wall clock.
+ * wall clock. So do Straightship's: its page writes every clock in UTC, and
+ * its own rows have ParcelsApp's UTC digits to the second; read on its
+ * Vancouver clock they came out seven hours late (checked 2026-10-19).
  */
 function stateCarrierName(payload: Record<string, unknown>, state: Record<string, unknown>): unknown {
   const carriers = Array.isArray(payload.carriers) ? payload.carriers : [];
@@ -658,7 +660,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   const carrier = typeof name === 'string' ? carrierIdFromName(name) : undefined;
   if (carrier === 'tnt' && /^\d{9}$/.test(number)) return null;
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
-  if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || ownOffset(name, state.date)) return null;
+  if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || carrier === 'straightship' || ownOffset(name, state.date)) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
   // Cainiao's copies of Speedaf's scans keep Speedaf's digits, its arrival at the linehaul office too.
   if (carrier === 'speedaf' || (key === 'cainiao' && speedafDeparture(payload))) return speedafZone(payload, state.date, destination);

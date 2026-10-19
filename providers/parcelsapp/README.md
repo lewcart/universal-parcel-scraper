@@ -353,6 +353,9 @@ step exists for future protocol changes.
   ParcelsApp's UTC digits to the second.
 - So do Austrian Post's scans: its own instants have ParcelsApp's UTC digits to the second.
   EURODIS's copies of the same scans carry the wall clock and go through the steps.
+- So do Straightship's scans: its page writes every clock in UTC, and its own rows have
+  ParcelsApp's UTC digits to the second. Read on its Vancouver clock, they came out seven
+  hours late.
 - North American scans: the dates of UPS, FedEx, UniUni, EasyShip and DHL eCommerce are
   the scan's local clock, as UPS's own instants, FedEx's own page, UniUni's own feed,
   Ship24's offsets and DHL eCommerce's Webtrack, which names each scan's clock, show on US

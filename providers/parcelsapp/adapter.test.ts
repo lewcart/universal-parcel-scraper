@@ -683,6 +683,17 @@ describe('ParcelsApp result parsing', () => {
     expect(result.events?.map((scan) => scan.time)).toEqual(['2026-07-02T23:24:38.000Z', '2026-07-02T09:57:03.000Z']);
   });
 
+  it('keeps the UTC instants ParcelsApp gives Straightship scans', () => {
+    // Straightship's page writes its clocks in UTC, and its rows have
+    // ParcelsApp's digits; read on its Vancouver clock they came out seven
+    // hours late, after the moment ParcelsApp returned them.
+    const result = parseParcelsAppResponse({ carriers: ['Straightship'], states: [
+      { date: '2026-10-19T02:51:27Z', status: 'Package is received at a Straightship station (Example City, ON)', carrier: 0, location: 'Example City, ON' },
+      { date: '2026-10-09T03:26:10Z', status: 'Package information is created in the system', carrier: 0 },
+    ] }, number, identity(), 'America/Toronto');
+    expect(result.events?.map((scan) => scan.time)).toEqual(['2026-10-19T02:51:27.000Z', '2026-10-09T03:26:10.000Z']);
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.

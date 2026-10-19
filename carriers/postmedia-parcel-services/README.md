@@ -40,7 +40,8 @@ recipient's postal code through the API its tracking page asks.
 
 Archived lookups on the tracker show BNI followed by nine digits, but each of them also carries
 the recipient's postal code, so none is kept; `numbers.json` holds an invented placeholder.
-Purolator's rule for three letters and nine digits claims the layout.
+Purolator's rule for three letters and nine digits leaves the BNI prefix out, and no rule claims
+the layout.
 
 ## Links
 

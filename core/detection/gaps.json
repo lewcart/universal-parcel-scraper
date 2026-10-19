@@ -2936,7 +2936,7 @@
     "carrier": "postmedia-parcel-services",
     "pattern": "^BNI\\d{9}$",
     "kind": "open",
-    "reason": "No public number shows the BNI layout, since every archived lookup also carries the recipient's postal code, and Purolator's three-letter rule claims it."
+    "reason": "No public number shows the BNI layout, since every archived lookup also carries the recipient's postal code."
   },
   {
     "carrier": "postnord",

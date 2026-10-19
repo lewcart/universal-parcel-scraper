@@ -3125,7 +3125,7 @@ export const CARRIER_CATALOG = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ]

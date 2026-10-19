@@ -9,7 +9,7 @@ import {
 } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, countryTimeZone, firstOccurrence, regionHasTown, usStateTimeZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { globalpostStage } from './status.js';
 
@@ -29,6 +29,20 @@ const NO_PLACE = /^(?:not available|n\/a|-*)$/i;
 // A firewall's, CDN's or bot check's page in place of the tracker's, which can come back with HTTP 200.
 const BLOCKED = /_cf_chl_opt|cf-turnstile|<title>\s*(?:Just a moment|Attention Required|Access Denied)|g-recaptcha|h-captcha/i;
 const HOSTS = new Set(['www.goglobalpost.com', 'goglobalpost.com']);
+const FACILITY_SCAN = /^(?:Arrived at|Departed) GlobalPost Facility$/;
+// A GlobalPost facility as ePost Global's processing centers name it, by town and
+// state ("Itasca IL"); the facilities Asendia runs come as "Town, ST".
+const CENTER = /^[A-Za-z][A-Za-z .'-]{0,60} ([A-Z]{2})$/;
+// A town as USPS writes it, "TOWN,ST".
+const USPS_TOWN = /^([A-Z][A-Z .'-]*),([A-Z]{2})$/;
+// USPS names a facility by its town, its state and its kind, "TOWN ST DISTRIBUTION
+// CENTER" or "ISC TOWN ST (USPS)", which the page cuts short.
+const USPS_KINDS = ['DISTRIBUTION CENTER', 'INTERNATIONAL DISTRIBUTION CENTER', 'NETWORK DISTRIBUTION CENTER',
+  'REGIONAL DISTRIBUTION CENTER', 'PROCESSING AND DISTRIBUTION CENTER', 'LOGISTICS AND DISTRIBUTION CENTER', '(USPS)'];
+// States whose places keep different clocks, so a state does not settle a clock's zone.
+const SPLIT_STATES = new Set(['AK', 'AZ', 'FL', 'ID', 'IN', 'KS', 'KY', 'MI', 'ND', 'NE', 'NV', 'OR', 'SD', 'TN', 'TX']);
+// The delivery abroad and a return, which end the parcel's way out of the United States.
+const DELIVERY_STAGES: ReadonlySet<string> = new Set(['out_for_delivery', 'ready_for_pickup', 'failed_attempt', 'exception', 'delivered', 'returned']);
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 
@@ -187,6 +201,78 @@ function returnsHome(events: CarrierEvent[], from: string, to: string): CarrierE
     : event);
 }
 
+/** The index of the oldest scan that passes the test, or -1. */
+function oldest(events: CarrierEvent[], test: (event: CarrierEvent) => boolean): number {
+  for (let index = events.length - 1; index >= 0; index -= 1) if (test(events[index]!)) return index;
+  return -1;
+}
+
+/** The clock of an ePost Global processing center: its state's. */
+function centerZone(place: string): string | null {
+  const state = CENTER.exec(place)?.[1];
+  return state && !SPLIT_STATES.has(state) ? usStateTimeZone(state) : null;
+}
+
+/** The town and state of a place USPS writes as a town. */
+function uspsTown(place: string): { town: string; state: string } | undefined {
+  const match = USPS_TOWN.exec(place);
+  return match ? { town: match[1]!, state: match[2]! } : undefined;
+}
+
+/** The town and state of a USPS facility's name, cut short or not. */
+function uspsFacility(place: string): { town: string; state: string } | undefined {
+  const name = place.replace(/^ISC /, '');
+  for (const match of name.matchAll(/ ([A-Z]{2}) /g)) {
+    const town = name.slice(0, match.index);
+    const kind = name.slice(match.index + 4);
+    if (/^[A-Z][A-Z .'-]*$/.test(town) && USPS_KINDS.some((full) => full.startsWith(kind))) return { town, state: match[1]! };
+  }
+  return undefined;
+}
+
+/**
+ * The clock of a USPS scan's place: its state's, when the state keeps one
+ * clock. A code that also names a single-clock country (IL is Israel's too)
+ * needs a town of the state.
+ */
+function uspsZone(place: { town: string; state: string } | undefined): string | null {
+  if (!place || SPLIT_STATES.has(place.state) || (countryTimeZone(place.state) && !regionHasTown(place.state, place.town))) return null;
+  return usStateTimeZone(place.state);
+}
+
+/** A wall clock's instant in the zone; a clock the zone skips, or midnight sharp, where the page puts a day without its time, has none. */
+function instant(local: string, zone: string): string | null {
+  if (local.endsWith('T00:00:00')) return null;
+  const placed = firstOccurrence(DateTime.fromISO(local, { zone }));
+  return placed.isValid && placed.toFormat("yyyy-MM-dd'T'HH:mm:ss") === local ? placed.toISO({ suppressMilliseconds: true }) : null;
+}
+
+/**
+ * A parcel sent from the United States, read on the clocks its scans' places
+ * keep on its way out. A GlobalPost facility's scans at ePost Global's
+ * processing centers are on the center's clock, as ePost Global's tracker
+ * shows the same scans. USPS's scans are on their facility's clock: a scan at
+ * a facility USPS names, anywhere on the way out, and one at a town written as
+ * USPS writes it, before GlobalPost has the parcel, since posts abroad write
+ * their towns the same way. The registration, Asendia's facilities, the
+ * delivery abroad, a return and every other scan keep their wall clocks.
+ */
+function dated(events: CarrierEvent[], fromUnitedStates: boolean): CarrierEvent[] {
+  if (!fromUnitedStates) return events;
+  // The way out ends at the oldest scan of the delivery abroad, of the destination country or of a return.
+  const out = oldest(events, (event) => DELIVERY_STAGES.has(event.stage ?? '') || /country|return/i.test(event.description!));
+  const facility = oldest(events, (event) => FACILITY_SCAN.test(event.description!));
+  // Without a facility's scan, the parcel has reached GlobalPost by the time customs or a post abroad scans it.
+  const received = facility >= 0 ? facility : Math.max(out, oldest(events, (event) => event.stage === 'customs'));
+  return events.map(({ local_time, ...event }, index): CarrierEvent => {
+    const place = index > out && event.stage !== 'registered' ? event.location ?? '' : '';
+    const zone = !place ? null : FACILITY_SCAN.test(event.description!) ? centerZone(place)
+      : uspsZone(uspsFacility(place) ?? (index > received ? uspsTown(place) : undefined));
+    const time = zone ? instant(String(local_time), zone) : null;
+    return time ? { time, ...event } : { local_time, ...event };
+  });
+}
+
 /** The partner's number, without the recipient's ZIP code a USPS routing barcode opens with. */
 function partnerNumber(raw: string, number: string): string | undefined {
   const compact = normalizeTrackingNumber(raw).toUpperCase();
@@ -218,7 +304,8 @@ function finalMile(container: Cheerio<Element>, number: string): Pick<CarrierRes
  * service, then the scans. The page repeats the number it is asked, and also
  * opens a parcel by its partner's number, so only GlobalPost's own numbers are
  * asked. The recipient's and shipper's towns, read only to tell a return, the
- * shipper's ZIP code and the progress rail are not kept.
+ * shipper's country, read only for an SDC number's origin, the shipper's ZIP
+ * code and the progress rail are not kept.
  */
 export function parseGlobalpost(html: string, raw: string): CarrierResult {
   const number = normalizeGlobalpostNumber(raw);
@@ -236,7 +323,10 @@ export function parseGlobalpost(html: string, raw: string): CarrierResult {
   }
 
   const to = routeField($, container, 'To:');
-  const events = returnsHome(scans($, container), routeField($, container, 'From:'), to);
+  const from = routeField($, container, 'From:');
+  // GlobalPost's numbers end with the origin's code; the older ones are read by the route's.
+  const origin = number.startsWith('SDC') ? placeOfRoute(from)?.country : number.slice(-2);
+  const events = dated(returnsHome(scans($, container), from, to), origin === 'US');
   if (!events.length) throw new NoHistoryError(PROVIDER);
   const newest = events[0]!;
   // A registration listed after the parcel moved is no step back.
@@ -248,8 +338,8 @@ export function parseGlobalpost(html: string, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(service ? { service_name: service } : {}),
     ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),

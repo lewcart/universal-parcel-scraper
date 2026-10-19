@@ -25,6 +25,21 @@ const changed = (name: string, from: string | RegExp, to: string) => {
   if (next === html) throw new Error(`The ${name} fixture has no ${String(from)}`);
   return next;
 };
+// The fixture with each place replaced wherever it appears.
+const placed = (name: string, places: Record<string, string>) => Object.entries(places).reduce((html, [from, to]) => {
+  if (!html.includes(from)) throw new Error(`The ${name} fixture has no ${from}`);
+  return html.replaceAll(from, to);
+}, fixture(name));
+// The page as it read on a day, without the later days' scans.
+const asOf = (html: string, day: string) => {
+  const first = html.indexOf('<div class="trackingEvents-day-wrapper">');
+  const start = html.lastIndexOf('<div class="trackingEvents-day-wrapper">', html.indexOf(`</strong>, ${day}</div>`));
+  if (first < 0 || start < first) throw new Error(`The page has no ${day}`);
+  return html.slice(0, first) + html.slice(start);
+};
+// The in-transit parcel with its USPS scans at towns of Illinois.
+const illinois = () => placed('in-transit', { 'SAMPLE IL': 'CHICAGO IL', 'SAMPLE STREAM,IL': 'CAROL STREAM,IL', 'SAMPLETOWN,IL': 'CHICAGO,IL' });
+const clocks = (result: ReturnType<typeof parseGlobalpost>) => result.events!.map((event) => [event.time ?? event.local_time, event.description, event.location ?? null]);
 const reply = (body: string, init: ResponseInit = {}) => new Response(body, { ...init, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...init.headers } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const lookup = (body: string, init?: ResponseInit, number = DELIVERED) =>
@@ -50,27 +65,29 @@ describe('GlobalPost HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a delivered parcel newest first as wall clocks and hands it to Royal Mail', () => {
+  it('reads a delivered parcel newest first and hands it to Royal Mail', () => {
     const result = parseGlobalpost(fixture('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
       last_status_text: 'Delivered', last_update: null, last_update_local: '2026-03-06T11:36:00', expected_delivery: null,
       service_name: 'GlobalPost Standard', destination_country: 'GB', delivery_carrier: 'royal-mail', delivery_tracking_number: 'ZZ123456785GB' });
-    expect(result.events!.map((event) => [event.local_time, event.description, event.location ?? null, event.stage])).toEqual([
+    // The delivery abroad keeps its wall clock, so no delivery time comes from an earlier scan's.
+    expect(result).not.toHaveProperty('delivered_at');
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.description, event.location ?? null, event.stage])).toEqual([
       // The delivering post's scans come without a place.
       ['2026-03-06T11:36:00', 'Delivered', null, 'delivered'],
       ['2026-03-06T08:57:00', 'Out for Delivery', null, 'out_for_delivery'],
       ['2026-03-05T17:11:00', 'In Transit', null, 'in_transit'],
       // "Not Available" is no place.
       ['2026-03-04T20:59:00', 'Arrived in Destination Country', null, 'in_transit'],
-      // Twelve past midnight.
-      ['2026-02-27T00:05:00', 'Departed GlobalPost Facility', 'Sampleton CA', 'in_transit'],
+      // Twelve past midnight, at a processing center on California's clock.
+      ['2026-02-27T00:05:00-08:00', 'Departed GlobalPost Facility', 'Sampleton CA', 'in_transit'],
       // The repeated scan is kept once.
-      ['2026-02-26T12:04:00', 'Arrived at GlobalPost Facility', 'Sampleton CA', 'accepted'],
+      ['2026-02-26T12:04:00-08:00', 'Arrived at GlobalPost Facility', 'Sampleton CA', 'accepted'],
       // The shipper's ZIP code is no place.
       ['2026-02-24T18:57:00', 'Data Received', null, 'registered'],
       ['2026-02-24T17:14:00', 'Label Created', null, 'registered'],
     ]);
-    expect(result.events!.every((event) => event.stage_source === 'carrier_map' && event.time === undefined)).toBe(true);
+    expect(result.events!.every((event) => event.stage_source === 'carrier_map' && Boolean(event.time) !== Boolean(event.local_time))).toBe(true);
     expect(deliveryHandoff('globalpost', DELIVERED, normalizeCarrierResult(result)))
       .toEqual({ carrier: 'royal-mail', number: 'ZZ123456785GB', basis: 'partner' });
   });
@@ -80,18 +97,19 @@ describe('GlobalPost HTTP adapter', () => {
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In Transit',
       last_update_local: '2026-06-04T23:02:00', service_name: 'GlobalPost Plus', destination_country: 'CA',
       delivery_carrier: 'canada-post', delivery_tracking_number: 'LZ123456785US' });
-    expect(result.events!.map((event) => [event.local_time, event.description, event.location ?? null, event.stage])).toEqual([
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.description, event.location ?? null, event.stage])).toEqual([
       ['2026-06-04T23:02:00', 'In Transit', 'SAMPLEVILLE', 'in_transit'],
       ['2026-06-04T20:02:00', 'Arrived at Partner Facility', null, 'in_transit'],
       ['2026-06-04T16:56:00', 'In Customs', 'CA', 'customs'],
-      ['2026-06-03T08:02:00', 'Departed GlobalPost Facility', 'Sampleburg IL', 'in_transit'],
+      ['2026-06-03T08:02:00-05:00', 'Departed GlobalPost Facility', 'Sampleburg IL', 'in_transit'],
       // Customs let the parcel go on.
       ['2026-06-03T06:51:00', 'Cleared Customs', null, 'in_transit'],
+      // USPS's scans at towns that could be in Illinois or in Israel keep their wall clocks.
       ['2026-06-03T05:24:00', 'Departed Partner Facility', 'SAMPLE IL INTERNATI', 'in_transit'],
       ['2026-06-03T05:00:00', 'Arrived at Partner Facility', 'SAMPLE IL INTERNATI', 'in_transit'],
       ['2026-06-02T06:49:00', 'Arrived at Partner Facility', 'ISC SAMPLE IL (USPS', 'in_transit'],
       ['2026-06-02T06:49:00', 'In Customs', null, 'customs'],
-      // A facility's place loses the cut-off ZIP code after it.
+      // A facility's place loses the cut-off ZIP code after it; written as Asendia's are, it keeps its wall clock.
       ['2026-06-01T10:56:00', 'Arrived at GlobalPost Facility', 'Sampleburg, IL', 'accepted'],
       ['2026-05-31T21:22:00', 'In-Transit', null, 'in_transit'],
       ['2026-05-30T10:39:00', 'In Transit', 'SAMPLE STREAM,IL', 'in_transit'],
@@ -102,6 +120,95 @@ describe('GlobalPost HTTP adapter', () => {
     ]);
     expect(deliveryHandoff('globalpost', IN_TRANSIT, normalizeCarrierResult(result)))
       .toEqual({ carrier: 'canada-post', number: 'LZ123456785US', basis: 'partner' });
+  });
+
+  it('dates USPS\'s scans on the way out, and a processing center\'s, on their state\'s clock', () => {
+    const result = parseGlobalpost(illinois(), IN_TRANSIT);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-06-04T23:02:00' });
+    expect(clocks(result)).toEqual([
+      // Canada Post's scans name no province.
+      ['2026-06-04T23:02:00', 'In Transit', 'SAMPLEVILLE'],
+      ['2026-06-04T20:02:00', 'Arrived at Partner Facility', null],
+      ['2026-06-04T16:56:00', 'In Customs', 'CA'],
+      ['2026-06-03T08:02:00-05:00', 'Departed GlobalPost Facility', 'Sampleburg IL'],
+      ['2026-06-03T06:51:00', 'Cleared Customs', null],
+      // USPS's exchange office, named by its facility, before and after GlobalPost's last scan.
+      ['2026-06-03T05:24:00-05:00', 'Departed Partner Facility', 'CHICAGO IL INTERNATI'],
+      ['2026-06-03T05:00:00-05:00', 'Arrived at Partner Facility', 'CHICAGO IL INTERNATI'],
+      ['2026-06-02T06:49:00-05:00', 'Arrived at Partner Facility', 'ISC CHICAGO IL (USPS'],
+      ['2026-06-02T06:49:00', 'In Customs', null],
+      ['2026-06-01T10:56:00', 'Arrived at GlobalPost Facility', 'Sampleburg, IL'],
+      // GlobalPost's own row in transit names no place.
+      ['2026-05-31T21:22:00', 'In-Transit', null],
+      // USPS's scans on the way to GlobalPost, by town and by facility.
+      ['2026-05-30T10:39:00-05:00', 'In Transit', 'CAROL STREAM,IL'],
+      ['2026-05-29T08:33:00-05:00', 'Departed Partner Facility', 'CHICAGO IL DISTRIBUT'],
+      ['2026-05-21T19:36:00-05:00', 'Arrived at Partner Facility', 'CHICAGO,IL'],
+      ['2026-05-20T16:27:00', 'Data Received', null],
+      ['2026-05-20T14:35:00', 'Label Created', null],
+    ]);
+    // A town written as USPS writes it, once GlobalPost has the parcel, could be abroad.
+    const abroad = parseGlobalpost(illinois().replace('SAMPLEVILLE', 'SAMPLEVILLE,CA'), IN_TRANSIT);
+    expect(abroad.events![0]).toMatchObject({ local_time: '2026-06-04T23:02:00', location: 'SAMPLEVILLE,CA' });
+    expect(abroad.events![0]).not.toHaveProperty('time');
+    // Without GlobalPost's scans, the parcel is GlobalPost's once customs scans it.
+    const unscanned = parseGlobalpost(illinois().replace('SAMPLEVILLE', 'SAMPLEVILLE,CA').replace(/(?:Arrived at|Departed) GlobalPost Facility/g, 'Synthetic Note'), IN_TRANSIT);
+    expect(unscanned.events!.filter((event) => event.time).map((event) => event.location)).toEqual([
+      'CHICAGO IL INTERNATI', 'CHICAGO IL INTERNATI', 'ISC CHICAGO IL (USPS', 'CAROL STREAM,IL', 'CHICAGO IL DISTRIBUT', 'CHICAGO,IL']);
+  });
+
+  it('follows the newest scan\'s instant with the last update, and keeps the wall clock of one without', () => {
+    const read = (html: string, number: string) => {
+      const { current_stage, last_status_text, last_update, last_update_local } = parseGlobalpost(html, number);
+      return { current_stage, last_status_text, last_update, last_update_local };
+    };
+    // USPS on the way to GlobalPost, its exchange office before the facility's departure, and the facility.
+    expect(read(asOf(illinois(), 'May 30, 2026'), IN_TRANSIT)).toEqual({ current_stage: 'in_transit', last_status_text: 'In Transit',
+      last_update: '2026-05-30T10:39:00-05:00', last_update_local: undefined });
+    expect(read(asOf(illinois(), 'Jun 2, 2026'), IN_TRANSIT)).toEqual({ current_stage: 'in_transit', last_status_text: 'Arrived at Partner Facility',
+      last_update: '2026-06-02T06:49:00-05:00', last_update_local: undefined });
+    expect(read(asOf(fixture('returned'), 'Jun 1, 2026'), RETURNED)).toEqual({ current_stage: 'accepted', last_status_text: 'Arrived at GlobalPost Facility',
+      last_update: '2026-06-01T10:56:00-05:00', last_update_local: undefined });
+    expect(read(asOf(fixture('delivered'), 'Feb 27, 2026'), DELIVERED)).toEqual({ current_stage: 'in_transit', last_status_text: 'Departed GlobalPost Facility',
+      last_update: '2026-02-27T00:05:00-08:00', last_update_local: undefined });
+    // GlobalPost's own row in transit, without a place, and a facility Asendia runs.
+    expect(read(asOf(illinois(), 'May 31, 2026'), IN_TRANSIT)).toMatchObject({ last_update: null, last_update_local: '2026-05-31T21:22:00' });
+    expect(read(asOf(illinois(), 'Jun 1, 2026'), IN_TRANSIT)).toMatchObject({ current_stage: 'accepted', last_update: null, last_update_local: '2026-06-01T10:56:00' });
+  });
+
+  it('keeps the wall clocks of scans whose place does not settle a zone', () => {
+    const times = (html: string, number: string) => parseGlobalpost(html, number).events!.filter((event) => event.time).length;
+    expect(times(fixture('delivered'), DELIVERED)).toBe(2);
+    // A state with two clocks, for a processing center and for USPS.
+    expect(times(fixture('delivered').replaceAll('Sampleton CA', 'Sampleton TX'), DELIVERED)).toBe(0);
+    expect(times(asOf(illinois(), 'May 30, 2026').replace('CAROL STREAM,IL', 'SAMPLE CITY,TX').replace('CHICAGO IL DISTRIBUT', 'SAMPLE TX DISTRIBUT')
+      .replace('CHICAGO,IL', 'SAMPLETON,KY'), IN_TRANSIT)).toBe(0);
+    // A facility without its state, a place cut before the facility's kind, and a USPS-shaped registration.
+    expect(times(fixture('delivered').replaceAll('Sampleton CA', 'Sampleton'), DELIVERED)).toBe(0);
+    expect(times(asOf(illinois(), 'May 29, 2026').replace('CHICAGO IL DISTRIBUT', 'SAMPLE VILLAGE PA').replace('CHICAGO,IL', 'CHICAGO'), IN_TRANSIT)).toBe(0);
+    expect(times(fixture('delivered').replaceAll('Sampleton CA', 'Sampleton').replace(/(Label Created\t+<\/div>)/, '$1<div class="city">SAMPLETON,OH</div>'), DELIVERED))
+      .toBe(0);
+    // Midnight sharp is where the page puts a day without its time.
+    expect(parseGlobalpost(changed('delivered', '12:05 am', '12:00 am'), DELIVERED).events![4]).toMatchObject({ local_time: '2026-02-27T00:00:00' });
+    // A clock the zone skips when summer time starts.
+    const skipped = parseGlobalpost(fixture('delivered').replace(/<strong>Friday<\/strong>, Feb 27, 2026([\s\S]*?)12:05 am/,
+      (_page, between: string) => `<strong>Sunday</strong>, Mar 8, 2026${between}2:05 am`), DELIVERED);
+    expect(skipped.events![4]).toMatchObject({ local_time: '2026-03-08T02:05:00', description: 'Departed GlobalPost Facility' });
+  });
+
+  it('dates only a parcel sent from the United States, and not on its way back', () => {
+    const times = (html: string, number: string) => parseGlobalpost(html, number).events!.filter((event) => event.time).map((event) => event.location);
+    // From the United Kingdom, by its number or, on an older number, by its route.
+    const british = DELIVERED.replace(/US$/, 'GB');
+    expect(times(fixture('delivered').replaceAll(DELIVERED, british), british)).toEqual([]);
+    const older = 'SDC000000000000017';
+    expect(times(fixture('delivered').replaceAll(DELIVERED, older), older)).toEqual(['Sampleton CA', 'Sampleton CA']);
+    expect(times(fixture('delivered').replaceAll(DELIVERED, older).replace('Senderville, OR, US', 'Senderville, ENG, GB'), older)).toEqual([]);
+    // USPS's exchange office on the way back keeps its wall clock, after the attempt abroad.
+    const back = parseGlobalpost(placed('returned', { 'SAMPLE IL INTERNATI': 'CHICAGO IL INTERNATI' }), RETURNED);
+    expect(back.events!.filter((event) => event.time).map((event) => [event.time, event.description]))
+      .toEqual([['2026-06-03T08:02:00-05:00', 'Departed GlobalPost Facility'], ['2026-06-01T10:56:00-05:00', 'Arrived at GlobalPost Facility']]);
+    expect(back).toMatchObject({ current_stage: 'returned', last_update: null, last_update_local: '2026-08-06T13:43:00' });
   });
 
   it('keeps no recipient or shipper town, ZIP code or progress rail', () => {

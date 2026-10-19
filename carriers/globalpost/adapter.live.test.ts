@@ -7,10 +7,13 @@ const direct = () => adapter({ recorder: NOOP_RECORDER, env: {}, trawl: null, br
 const WALL = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/;
 
 describe('GlobalPost live retrieval', () => {
-  it.skipIf(!process.env.GLOBALPOST_TRACKING_NUMBER)('retrieves the history of the requested parcel as wall clocks', async () => {
+  it.skipIf(!process.env.GLOBALPOST_TRACKING_NUMBER)('retrieves the history of the requested parcel', async () => {
     const result = await direct().track({ number: process.env.GLOBALPOST_TRACKING_NUMBER! });
     expect(result.events!.length).toBeGreaterThan(0);
-    expect(result.events!.every((event) => event.description && WALL.test(String(event.local_time)) && !event.time)).toBe(true);
+    // An instant where the scan's place settles its zone, else the wall clock; the newest scan's instant is the last update.
+    expect(result.events!.every((event) => event.description
+      && (event.time ? !event.local_time && Date.parse(event.time) <= Date.now() : WALL.test(String(event.local_time))))).toBe(true);
+    expect(result.last_update).toBe(result.events![0]!.time ?? null);
     expect(result.last_status_text).toBeTruthy();
     if (result.delivery_carrier) expect(result.delivery_tracking_number).toBeTruthy();
   }, 30_000);

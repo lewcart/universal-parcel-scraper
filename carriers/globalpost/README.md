@@ -27,9 +27,19 @@ Tracked through the page its tracker renders for one number.
 
 ## Notes
 
-- Scan clocks are wall clocks without a zone, on the clock of the facility that scanned:
-  the delivering post's scans match its own times for the same parcel. A parcel crosses zones,
-  so the clocks stay `local_time`, and the page's order stands.
+- Scan clocks are wall clocks without a zone, on the clock of the place that scanned, and the
+  page's order stands. On a parcel sent from the United States, the scans on its way out whose
+  place settles that clock get its state's zone. GlobalPost's facility scans at ePost Global's
+  processing centers, written "Town ST", are ePost Global's own to the minute, on the center's
+  clock; the facilities Asendia runs, written "Town, ST", keep their wall clocks. USPS's scans
+  match Canada Post's and Japan Post's times for USPS's exchange offices. A scan at a facility
+  USPS names counts anywhere on the way out, and one at a town written "TOWN,ST" only before
+  GlobalPost has the parcel, since posts abroad write their towns the same way.
+- A state with two clocks gives no zone, nor does a code that also names a single-clock
+  country, such as IL, unless the town is the state's. Midnight sharp is a day without its
+  time. The registration, scans without a state, the delivery abroad and a return keep
+  `local_time`: Canada Post's scans name no province, and partners' scans relayed through
+  Asendia come on the partner's clock or in UTC. The newest scan's instant is the last update.
 - GlobalPost relays its partners' scans in its own wording, without codes; the wordings are
   mapped and any other goes to the shared wording rules. Arrival at a GlobalPost facility is its
   acceptance, though USPS scans on the way there can come first. Cleared customs puts the
@@ -44,7 +54,8 @@ Tracked through the page its tracker renders for one number.
   return scans for the same parcel confirm. A delivery scan at the sender's town, when sender
   and recipient are in different countries and towns, is `returned`.
 - The service and the destination country are kept. The recipient's and shipper's towns, read
-  to tell a return, the shipper's ZIP code and the progress rail are not.
+  to tell a return, the shipper's country, read for an `SDC` number's origin, the shipper's ZIP
+  code and the progress rail are not.
 
 ## Numbers
 
@@ -62,7 +73,7 @@ use `t` on `goglobalpost.com/track/`. The library reads the number from either a
 
 ## Limitations
 
-- No delivery estimate, delivery time, weight, offsets or proof of delivery.
+- No delivery estimate, delivery time, weight or proof of delivery.
 - A return delivered at a place other than the sender's town, or without a place, stays
   delivered; the page has no return wording.
 - Expired parcels get the unknown-number answer.

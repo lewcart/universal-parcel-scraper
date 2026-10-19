@@ -13375,7 +13375,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Nairobi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fargo-courier",
+      "localClocks": true
     },
     "canaryUrl": "https://www.fargocourier.co.ke/",
     "trackingUrlTemplate": "https://www.fargocourier.co.ke/waybill-viewer/?wayBill={trackingNumber}",
@@ -13409,6 +13410,15 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/?$",
         "params": [
           "waybill_number"
+        ]
+      },
+      {
+        "domains": [
+          "portal.fargocourier.co.ke"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "wayBillNumber"
         ]
       }
     ],

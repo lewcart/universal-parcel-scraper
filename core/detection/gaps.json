@@ -1321,12 +1321,6 @@
     "reason": "Thirteen digits are shared by several posts and couriers and nothing in the number points to FAN Courier."
   },
   {
-    "carrier": "fargo-courier",
-    "pattern": "^\\d{7}$",
-    "kind": "by_design",
-    "reason": "Fargo's older seven-digit waybills are a bare digit run many carriers share."
-  },
-  {
     "carrier": "fargo-uz",
     "pattern": "^(?:\\d{9}|\\d{14}|TEZ\\d{6})$",
     "kind": "by_design",

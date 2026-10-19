@@ -18,18 +18,70 @@
   "timezone": "Africa/Nairobi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "fargo-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.fargocourier.co.ke/waybill-viewer/?wayBill={trackingNumber}",
     "searchUrl": "https://www.fargocourier.co.ke/",
     "canaryUrl": "https://www.fargocourier.co.ke/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "origin",
+      "destination",
+      "service_name",
+      "parcel_count",
+      "weight",
+      "customer_reference",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "recipient_contact",
+      "recipient_id",
+      "delivered_at",
+      "proof_of_delivery",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "service_name",
+      "parcel_count",
+      "weight",
+      "customer_reference",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "recipient_contact",
+      "recipient_id",
+      "delivered_at",
+      "proof_of_delivery",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {
@@ -60,6 +112,15 @@
       "pathPattern": "^/?$",
       "params": [
         "waybill_number"
+      ]
+    },
+    {
+      "domains": [
+        "portal.fargocourier.co.ke"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "wayBillNumber"
       ]
     }
   ],

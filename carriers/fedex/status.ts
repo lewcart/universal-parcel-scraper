@@ -86,6 +86,8 @@ const IN_TRANSIT_TERMS = [
   'arrived',
   'at local fedex facility',
   'at destination sort facility',
+  // Customs let the parcel go: "International shipment release - Import" (or "- Export").
+  'international shipment release',
 ];
 
 /**

@@ -97,6 +97,8 @@ describe('FedEx status vocabulary', () => {
     expect(fedexStage('Customer not available or business closed')).toBe('failed_attempt');
     expect(fedexStage('Returning to shipper')).toBe('returned');
     expect(fedexStage('Clearance in progress')).toBe('customs');
+    expect(fedexStage('International shipment release - Import')).toBe('in_transit');
+    expect(fedexStage('International shipment release - Export')).toBe('in_transit');
     expect(fedexStatus('DL', 'On FedEx vehicle for delivery')).toBe('delivered');
     expect(fedexStatus('OD', 'Delivered')).toBe('out_for_delivery');
     // Unrecognized wording only means "moving" once the shipment has scans.

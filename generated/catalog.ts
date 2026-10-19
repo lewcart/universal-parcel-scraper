@@ -29094,7 +29094,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tst-cf-express",
+      "localClocks": true
     },
     "canaryUrl": "https://m.tst-cfexpress.com/tracing",
     "trackingUrlTemplate": "https://www.tst-cfexpress.com/tracing/by-url?lang=e&PRO={trackingNumber}",

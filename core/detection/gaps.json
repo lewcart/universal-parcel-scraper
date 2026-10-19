@@ -1023,9 +1023,9 @@
   },
   {
     "carrier": "dohrn-transfer",
-    "pattern": "^\\d{8}$",
+    "pattern": "^[1-9]\\d{7,9}$",
     "kind": "by_design",
-    "reason": "Dohrn's eight-digit PROs share their shape with many carriers' numeric references, so no rule claims them."
+    "reason": "Dohrn's PROs of eight to ten digits share their shape with many carriers' numeric references, so no rule claims them."
   },
   {
     "carrier": "domain-logistics",

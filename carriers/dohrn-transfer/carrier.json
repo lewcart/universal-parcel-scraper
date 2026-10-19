@@ -17,18 +17,64 @@
   "timezone": "America/Chicago",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dohrn-transfer",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 731
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "weight"
+  ],
   "portal": {
     "url": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm?wpro={trackingNumber}",
     "searchUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm",
     "canaryUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "weight",
+      "parcel_count",
+      "service_name",
+      "customer_reference",
+      "origin",
+      "destination",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight"
+    ],
+    "discarded": [
+      "delivered_at",
+      "parcel_count",
+      "service_name",
+      "customer_reference",
+      "origin",
+      "destination",
+      "signatory"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

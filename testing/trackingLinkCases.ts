@@ -1673,6 +1673,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'daylight-transport': 'Daylight reuses its eight-digit probills, so a synthetic one can open other people\'s shipments; only a known probill verifies the link',
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
   couriersplease: 'www.couriersplease.com.au answers the burst of script requests its tracker page makes in automated Chrome with HTTP 429, so the page never reads the number from its address and number forwarding cannot be verified daily',
+  'dohrn-transfer': 'Dohrn\'s PROs run densely, so a synthetic one can open another shipper\'s shipment or rate quote; only a known PRO verifies the link',
   'dpd-at': 'Radware Bot Manager answers the lookup the myDPD page makes from automated Chrome with a CAPTCHA on validate.perfdrive.com, so number forwarding cannot be verified',
   'dpd-ie': 'www.dpd.ie passes the number only to its tracker frame from tracking.dpd.ie, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   'dpd-ro': 'tracking.dpd.ro redirects to services.dpd.ro/tracking/, which answers automated Chrome with a Cloudflare managed challenge and asks for a Turnstile token with each lookup, so number forwarding cannot be verified',

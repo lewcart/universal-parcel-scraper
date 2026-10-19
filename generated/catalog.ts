@@ -11145,7 +11145,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dohrn-transfer",
+      "recognitionRank": 731,
+      "localClocks": true
     },
     "canaryUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm",
     "trackingUrlTemplate": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm?wpro={trackingNumber}",

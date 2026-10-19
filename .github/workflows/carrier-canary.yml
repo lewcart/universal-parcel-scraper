@@ -3,8 +3,8 @@ name: Carrier canaries
 on:
   schedule:
     # One run a day. Monday's also probes the carriers' front doors.
-    - cron: '17 5 * * 1'
-    - cron: '17 5 * * 0,2-6'
+    - cron: '41 2 * * 1'
+    - cron: '41 2 * * 0,2-6'
   workflow_dispatch:
 
 permissions:
@@ -19,7 +19,7 @@ jobs:
     name: Public carrier reachability
     # No lookup depends on a front door, so a weekly look is enough. The daily
     # jobs below exercise what tracking uses.
-    if: ${{ github.event_name != 'schedule' || github.event.schedule == '17 5 * * 1' }}
+    if: ${{ github.event_name != 'schedule' || github.event.schedule == '41 2 * * 1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -88,7 +88,7 @@ jobs:
     name: Carrier search pages at phone size
     # The pages a shared parcel links to when it hides its number. They change
     # rarely, so a weekly look is enough.
-    if: ${{ github.event_name != 'schedule' || github.event.schedule == '17 5 * * 1' }}
+    if: ${{ github.event_name != 'schedule' || github.event.schedule == '41 2 * * 1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
     outputs:

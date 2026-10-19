@@ -28,17 +28,25 @@ Tracked through the lookup its tracking page makes.
   label; rows relayed from the partner share one label, so their stage comes from the partner's
   wording. The broker's "delivered to warehouse" is customs, and the row written before the
   warehouse has the parcel is a registration.
-- A row's `timeZone` is trusted only beside a country whose clock has that offset at that time:
-  the warehouse's rows and the partner's relayed scans. 17FEIA's milestones carry the
-  destination's standard offset over a wall clock orders to other destinations share, and name
-  no country, so they keep their wall clocks.
+- A row is read on the clock its place keeps: its country's when the country has one, and in
+  the United States its state's when the state has one. The warehouse's rows and the partner's
+  relayed scans name such a place. A `timeZone` the place's clock does not have at that time
+  keeps the wall clock, and so does a US row at midnight sharp: FedEx writes its pickup as a day,
+  under another offset than its state's.
+- 17FEIA's own milestones name no place, and the reply gives no other clock for its rows. Their
+  `timeZone` is one offset per line whatever the season, and orders to destinations with other
+  clocks share their wall clocks to the second, so neither says which clock they keep and they
+  keep their wall clocks.
+- The newest scan's instant, when it has one, is the last update, and a delivered scan's is the
+  delivery time.
 - The estimated departure is written before the flight and is no scan: the adapter drops it.
   Rows dated after the read are dropped too.
 - The partner is handed over from an explicit table of 17FEIA's names: `DPD-DE` to `dpd-de`,
   `DE-DHL` to `dhl` and `FEDEX-GROUND` to `fedex`, and only when the partner's detection accepts
   the number. A DPD number is passed as the fourteen digits DPD's tracking takes, without a
   label's check character. Other names give no hand-off.
-- The rows' postcodes and states, the order id and the weight are never read.
+- A US row's state is read only for its clock. The rows' postcodes, the order id and the weight
+  are never read.
 
 ## Limitations
 

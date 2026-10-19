@@ -10,8 +10,10 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const WAREHOUSE = 'FEISH9900000001YQ';
 const RELAYED = 'FEISZ9900000002YQ';
+const FEDEX = 'FEISZ9900000003YQ';
 const UNKNOWN = 'FEISH9999999999ZZ';
 const LATER = Date.parse('2026-04-01T00:00:00Z');
+const READ = Date.parse('2026-05-01T00:00:00Z');
 
 type Row = Record<string, unknown>;
 type Envelope = { flag: boolean; msg: unknown; code: unknown; obj: Row & { currentOrderTrackInfos: Row[] } };
@@ -94,6 +96,83 @@ describe('17FEIA HTTP adapter', () => {
     ]);
     expect(result.events![0]!.time).toBeUndefined();
     expect(result.last_update_local).toBe('2026-03-19T21:37:00');
+  });
+
+  it('dates FedEx’s relayed scans on their state’s clock, and the delivery with them', () => {
+    const result = parseSeventeenFeia(fixture('fedex-relayed'), FEDEX, READ);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
+      last_status_text: 'Delivered, Left at front door. Signature Service not requested.',
+      last_update: '2026-04-17T10:12:36-04:00', delivered_at: '2026-04-17T10:12:36-04:00',
+      delivery_carrier: 'fedex', delivery_tracking_number: '999900000005', destination_country: 'US' });
+    expect(result.last_update_local).toBeUndefined();
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.stage])).toEqual([
+      ['2026-04-17T10:12:36-04:00', 'delivered'],
+      ['2026-04-17T04:36:00-04:00', 'out_for_delivery'],
+      ['2026-04-17T04:24:00-04:00', 'in_transit'],
+      // Tennessee keeps two clocks.
+      ['2026-04-16T22:43:37', 'in_transit'],
+      ['2026-04-16T13:39:00', 'in_transit'],
+      ['2026-04-15T09:28:48-05:00', 'in_transit'],
+      ['2026-04-14T18:35:00-05:00', 'in_transit'],
+      // FedEx's pickup is a day, under another offset than Illinois'.
+      ['2026-04-14T00:00:00', 'in_transit'],
+      // 17FEIA's milestones carry US Central's standard offset in summer and name no place.
+      ['2026-04-13T15:44:00', 'in_transit'],
+      ['2026-04-12T21:39:00', 'customs'],
+      ['2026-04-12T06:00:00', 'in_transit'],
+      ['2026-04-10T09:51:00', 'in_transit'],
+      ['2026-04-08T09:26:27', 'customs'],
+      ['2026-04-07T18:00:00', 'in_transit'],
+      ['2026-04-03T17:29:42+08:00', 'accepted'],
+      ['2026-04-03T10:56:54+08:00', 'registered'],
+    ]);
+    // A US row's state settles its clock; its postcode and the ids are never read.
+    expect(JSON.stringify(result)).not.toMatch(/99999|0{20}/);
+  });
+
+  it.each(['TN', 'IN', 'FL', 'KY', 'ND', 'SD', 'NE', 'KS', 'TX', 'OR', 'ID'])('keeps the wall clock of a scan in %s, whose places keep two clocks', (state) => {
+    const result = parseSeventeenFeia(changed('fedex-relayed', (order) => { order.currentOrderTrackInfos[0]!.state = state; }), FEDEX, READ);
+    expect(result).toMatchObject({ current_stage: 'delivered', last_update: null, last_update_local: '2026-04-17T10:12:36' });
+    expect(result.delivered_at).toBeUndefined();
+    expect(result.events![0]!.time).toBeUndefined();
+  });
+
+  it('keeps a US scan whose offset its state lacks then, one at midnight, one without a state and a milestone on China’s offset', () => {
+    const result = parseSeventeenFeia(changed('fedex-relayed', (order) => {
+      const rows = order.currentOrderTrackInfos;
+      // Massachusetts keeps -04:00 in April.
+      rows[0]!.timeZone = '-05:00';
+      rows[1]!.state = '';
+      rows[2]!.state = 'Massachusetts';
+      rows[5]!.timeZone = 'CDT';
+      // Midnight even under Massachusetts' own offset.
+      rows[7]!.state = 'MA';
+      // A milestone names no place, whatever its offset.
+      rows[8]!.timeZone = '+08:00';
+    }), FEDEX, READ);
+    expect(result.events!.slice(0, 9).map((event) => event.time ?? null))
+      .toEqual([null, null, null, null, null, null, '2026-04-14T18:35:00-05:00', null, null]);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-04-17T10:12:36' });
+    expect(result.delivered_at).toBeUndefined();
+  });
+
+  it('reads a scan without an offset on its place’s clock, and the repeated hour by the row’s own', () => {
+    const clock = (createTime: string, timeZone: string, country = 'US', state = 'MA') => parseSeventeenFeia(changed('fedex-relayed',
+      (order) => Object.assign(order.currentOrderTrackInfos[0]!, { createTime, timeZone, country, state })), FEDEX, Date.parse('2027-01-01T00:00:00Z'))
+      .events![0]!.time ?? null;
+    expect(clock('2026-04-17 10:12:36', '')).toBe('2026-04-17T10:12:36-04:00');
+    expect(clock('2026-04-17 10:12:36', '', 'DE', '')).toBe('2026-04-17T10:12:36+02:00');
+    // A state's code beside another country is not read.
+    expect(clock('2026-04-17 10:12:36', '+02:00', 'DE', 'MA')).toBe('2026-04-17T10:12:36+02:00');
+    expect(clock('2026-04-17 10:12:36', '-04:00', '', 'MA')).toBeNull();
+    // The clocks go back: the row's offset says which of the two hours it means.
+    expect(clock('2026-11-01 01:30:00', '-04:00')).toBe('2026-11-01T01:30:00-04:00');
+    expect(clock('2026-11-01 01:30:00', '-05:00')).toBe('2026-11-01T01:30:00-05:00');
+    expect(clock('2026-11-01 01:30:00', '')).toBe('2026-11-01T01:30:00-04:00');
+    // The clocks go forward: that hour never struck there.
+    expect(clock('2026-03-08 02:30:00', '-04:00')).toBeNull();
+    expect(clock('2026-03-08 02:30:00', '-05:00')).toBeNull();
+    expect(clock('2026-03-08 02:30:00', '')).toBeNull();
   });
 
   it('holds back rows written ahead of their time', () => {

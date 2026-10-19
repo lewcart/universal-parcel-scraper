@@ -4,7 +4,7 @@ import { dpdParcelNumber } from '../../core/detection/dpd.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
+import { countryTimeZone, firstOccurrence, usStateTimeZone, type ParsedTime } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { ESTIMATE_LABEL, seventeenFeiaStage } from './status.js';
@@ -15,9 +15,11 @@ export const SEVENTEENFEIA_MAX_BYTES = 512 * 1024;
 // FEI, the branch (SH Shanghai, SZ Shenzhen), ten digits and two letters.
 const NUMBER = /^FEI[A-Z]{2}\d{10}[A-Z]{2}$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
-const OFFSET = /^([+-])(\d{2}):(\d{2})$/;
-// 17FEIA's backend keeps the order data on Beijing time; offset-less rows are read in it only to hold back future ones.
+const OFFSET = /^[+-]\d{2}:\d{2}$/;
+// 17FEIA's backend keeps the order data on Beijing time; a row kept as a wall clock is read in it only to hold back future ones.
 const HOME_ZONE = 'Asia/Shanghai';
+// States whose places keep different clocks, so a state does not settle a clock's zone.
+const SPLIT_STATES = new Set(['AK', 'AZ', 'FL', 'ID', 'IN', 'KS', 'KY', 'MI', 'ND', 'NE', 'NV', 'OR', 'SD', 'TN', 'TX']);
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 
@@ -49,26 +51,41 @@ function text(row: Record<string, unknown>, key: string, maxLength = 500): strin
 }
 
 /**
- * A row's clock. Its `timeZone` counts only beside a country whose clock has
- * that offset at that time: 17FEIA's own milestones carry the destination's
- * standard offset over a wall clock several destinations share, and name no
- * country. Every other row keeps its wall clock.
+ * The zone a row's place settles: a single-zone country's or, in the United
+ * States, a single-zone state's. 17FEIA's own milestones name no place.
  */
-function clockOf(stamp: string, label: string, country: string): { time: string; at: number } | { local_time: string; at: number } {
+function placeZone(country: string, state: string): string | null {
+  if (country !== 'US') return countryTimeZone(country);
+  return /^[A-Z]{2}$/.test(state) && !SPLIT_STATES.has(state) ? usStateTimeZone(state) : null;
+}
+
+/**
+ * A wall clock's instant in the zone its row's place settles. A `timeZone`
+ * that zone does not have at that time leaves it a wall clock: 17FEIA's
+ * milestones carry the destination's standard offset over a wall clock orders
+ * to other destinations share, and name no place. A US row at midnight sharp
+ * is a day, as FedEx's pickup comes under another offset than its state's.
+ */
+function placedTime(local: string, label: string, country: string, state: string): ParsedTime | null {
+  const zone = country === 'US' && local.endsWith('T00:00:00') ? null : placeZone(country, state);
+  if (!zone || (label && !OFFSET.test(label))) return null;
+  // The row's own offset tells the repeated hour apart; without one the clock reads as its first occurrence.
+  const placed = label ? DateTime.fromISO(`${local}${label}`, { setZone: true }) : firstOccurrence(DateTime.fromISO(local, { zone }));
+  // A clock the zone skips, or an offset it does not have then, is no reading of the place's clock.
+  if (!placed.isValid || placed.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local
+    || DateTime.fromMillis(placed.toMillis(), { zone }).offset !== placed.offset) return null;
+  return { iso: placed.toISO({ suppressMilliseconds: true }), timestamp: placed.toMillis() };
+}
+
+/** A row's clock: its instant where its place settles one, else its wall clock. */
+function clockOf(stamp: string, label: string, country: string, state: string): { time: string; at: number } | { local_time: string; at: number } {
   const wall = WALL_CLOCK.exec(stamp);
   const local = wall ? `${wall[1]}T${wall[2]}` : '';
   const home = local ? firstOccurrence(DateTime.fromISO(local, { zone: HOME_ZONE })) : null;
   // Luxon rolls 24:00:00 over to the next day; only a clock that reads back unchanged is kept.
   if (!home?.isValid || home.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local) throw new SchemaError(PROVIDER, '17FEIA returned an invalid scan time');
-  const offset = OFFSET.exec(label);
-  const zone = offset ? countryTimeZone(country) : null;
-  if (offset && zone) {
-    const minutes = (offset[1] === '-' ? -1 : 1) * (Number(offset[2]) * 60 + Number(offset[3]));
-    const placed = firstOccurrence(DateTime.fromISO(local, { zone }));
-    const time = placed.isValid && placed.offset === minutes ? placed.toISO({ suppressMilliseconds: true }) : null;
-    if (time) return { time, at: placed.toMillis() };
-  }
-  return { local_time: local, at: home.toMillis() };
+  const time = placedTime(local, label, country, state);
+  return time ? { time: time.iso, at: time.timestamp } : { local_time: local, at: home.toMillis() };
 }
 
 function projectRow(row: unknown, readAt: number): { key: string; event: CarrierEvent } | null {
@@ -78,7 +95,8 @@ function projectRow(row: unknown, readAt: number): { key: string; event: Carrier
   if (!description || label === ESTIMATE_LABEL) return null;
   const stamp = text(row, 'createTime', 64);
   const country = text(row, 'country', 8).toUpperCase();
-  const { at, ...clock } = clockOf(stamp, text(row, 'timeZone', 16), country);
+  // A US row's state is read only for its clock.
+  const { at, ...clock } = clockOf(stamp, text(row, 'timeZone', 16), country, country === 'US' ? text(row, 'state', 8).toUpperCase() : '');
   // A row dated after the read is not a scan yet.
   if (at > readAt) return null;
   const place = text(row, 'location', 200) || text(row, 'city', 200);
@@ -110,8 +128,9 @@ function handoff(order: Record<string, unknown>): { delivery_carrier: string; de
  * The reply of `GET /public/v1/ordeSearch/listTrackInfos/{number}`. The
  * search also finds an order by its partner's or another forwarder's number,
  * so the order counts only when its own number is the one asked. Rows come
- * newest first and keep that order: their clocks are not all instants. The
- * rows' postcodes, states and ids, the order id and its weight are not read.
+ * newest first and keep that order: their clocks are not all instants. A US
+ * row's state settles only its clock; the rows' postcodes and ids, the order
+ * id and its weight are not read.
  */
 export function parseSeventeenFeia(payload: unknown, raw: string, readAt = Date.now()): CarrierResult {
   const number = normalizeSeventeenFeiaNumber(raw);

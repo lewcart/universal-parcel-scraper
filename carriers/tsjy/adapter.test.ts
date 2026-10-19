@@ -94,6 +94,15 @@ describe('TSJY HTTP adapter', () => {
     ]);
   });
 
+  it('keeps a relayed scan’s wall clock even where its place names a state', () => {
+    // The line's rows give no country, state or offset to check the place against.
+    const result = parseTsjy(changed('relayed-journey', (order) => { order.trackList[0]!.loc = 'Sampleton, MA, US'; }), JOURNEY, LATER);
+    expect(result.events![0]).toMatchObject({ local_time: '2026-03-19T17:26:00', location: 'Sampleton, MA, US', stage: 'delivered' });
+    expect(result.events![0]!.time).toBeUndefined();
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-03-19T17:26:00' });
+    expect(result.delivered_at).toBeUndefined();
+  });
+
   it('holds back rows dated after the read', () => {
     const result = parseTsjy(fixture('relayed-journey'), JOURNEY, Date.parse('2026-03-16T20:00:00+08:00'));
     expect(result).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Flight Arrived at Clearance Port.', last_update_local: '2026-03-16T15:30:00' });

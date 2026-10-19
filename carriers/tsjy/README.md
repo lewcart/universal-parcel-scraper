@@ -27,8 +27,9 @@ abroad on a line such as 17FEIA's. Tracked through the lookup the order search o
 
 - TSJY's server stamps its own steps in epoch milliseconds: those are instants, given on Beijing
   time. The line's rows come in whole seconds because TSJY reads 17FEIA's wall clocks as Beijing
-  time. That matches 17FEIA's offset only at its Chinese warehouse, so those rows keep the wall
-  clock.
+  time, which is right only at 17FEIA's Chinese warehouse. TSJY keeps the row's place but not the
+  country, state and offset that let 17FEIA's own answer date a partner's scan, so the line's rows
+  keep their wall clocks; the hand-off to `17feia` dates the partner's scans.
 - The map names TSJY's steps and 17FEIA's milestones as they read in TSJY's journey: 17FEIA's
   order data comes while TSJY still holds the parcel, and its receipt after TSJY's dispatch is
   transit. A later carrier's announcement or receipt is transit too; other relayed wording goes

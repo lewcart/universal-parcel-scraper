@@ -1523,6 +1523,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/customer\.tfmex\.com\/Skybill\/TrackSkybill(?:\?awb=000000000000)?$/,
     marker: /BY AWB NUMBER|Shipment Not Found|Where Your Shipment Has Been/,
     forwarding: { notFound: /Shipment Not Found/ } },
+  // The page looks up the number in its address and names an unknown one in its notice.
+  { carrier: 'estes-forwarding', number: '0000000',
+    route: /^https:\/\/efwtrack\.com\/track\/0000000$/,
+    marker: /was not found\. Please verify the number or contact our Control Tower|EFW Tracking/ },
 ];
 
 /**

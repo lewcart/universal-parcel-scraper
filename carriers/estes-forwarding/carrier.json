@@ -18,18 +18,76 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "estes-forwarding",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 754
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "offset_timestamps",
+    "eta",
+    "delivered_at",
+    "service_name",
+    "weight"
+  ],
   "portal": {
     "url": "https://efwtrack.com/track/{trackingNumber}",
     "searchUrl": "https://efwtrack.com/",
     "canaryUrl": "https://efwtrack.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "history",
+      "offset_timestamps",
+      "eta",
+      "eta_window",
+      "delivered_at",
+      "service_name",
+      "weight",
+      "parcel_count",
+      "dimensions",
+      "order_contents",
+      "location",
+      "signatory",
+      "customer_reference",
+      "delivery_partner",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "offset_timestamps",
+      "eta",
+      "delivered_at",
+      "service_name",
+      "weight"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta_window",
+      "parcel_count",
+      "dimensions",
+      "order_contents",
+      "location",
+      "signatory",
+      "customer_reference",
+      "delivery_partner",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "destination_country",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

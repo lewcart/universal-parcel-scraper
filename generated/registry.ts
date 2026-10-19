@@ -160,6 +160,7 @@ import { adapter as epostGlobal } from '../carriers/epost-global/adapter.js';
 import { adapter as equick } from '../carriers/equick/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
 import { adapter as estes } from '../carriers/estes/adapter.js';
+import { adapter as estesForwarding } from '../carriers/estes-forwarding/adapter.js';
 import { adapter as eurodis } from '../carriers/eurodis/adapter.js';
 import { adapter as euroexpressBa } from '../carriers/euroexpress-ba/adapter.js';
 import { adapter as evdemoLojistik } from '../carriers/evdemo-lojistik/adapter.js';
@@ -653,6 +654,7 @@ export const REGISTRY: RegistryDefinition = {
     "equick": equick,
     "estafeta": estafeta,
     "estes": estes,
+    "estes-forwarding": estesForwarding,
     "eurodis": eurodis,
     "euroexpress-ba": euroexpressBa,
     "evdemo-lojistik": evdemoLojistik,
@@ -1220,7 +1222,7 @@ export const REGISTRY: RegistryDefinition = {
     "equick": "equick",
     "estafeta": "estafeta",
     "estes": "estes",
-    "estes-forwarding": "universal",
+    "estes-forwarding": "estes-forwarding",
     "ethiopian-post": "universal",
     "eurodis": "eurodis",
     "euroexpress-ba": "euroexpress-ba",

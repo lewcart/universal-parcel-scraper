@@ -12817,7 +12817,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "estes-forwarding",
+      "recognitionRank": 754
     },
     "canaryUrl": "https://efwtrack.com/",
     "trackingUrlTemplate": "https://efwtrack.com/track/{trackingNumber}",

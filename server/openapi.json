@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Universal Parcel Scraper",
-    "version": "0.455.0"
+    "version": "0.456.0"
   },
   "paths": {
     "/health": {

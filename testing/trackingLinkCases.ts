@@ -1633,6 +1633,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ocs-ana', number: '100000000015',
     route: /^https:\/\/webcsw\.ocs\.co\.jp\/csw\/ECSWG0201R00003P\.do\?cwbno=100000000015$/,
     marker: /Air Waybill(?: No\.|番号)/ },
+  // The page looks up the waybill in its address, keeps it in the field and answers an unknown one with a notice.
+  // Nine digits are far past the waybills Collivery has issued.
+  { carrier: 'mds-collivery', number: '900000003',
+    route: /^https:\/\/collivery\.net\/tracking\?waybill=900000003$/,
+    marker: /Track Your\s+Parcel|couldn.t find a parcel with that number/i },
 ];
 
 /**

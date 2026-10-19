@@ -22,26 +22,6 @@
       "note": "Collivery's API v3 documentation uses it as the waybill in its waybill reply examples and an update error message."
     },
     {
-      "number": "2920727",
-      "role": "shipment",
-      "evidence": "official_documentation_example",
-      "source": {
-        "url": "https://collivery.net/integration/api/v3/",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "seur"
-        ]
-      },
-      "note": "Collivery's API v3 documentation uses it as the waybill in its change-service request example."
-    },
-    {
       "number": "2904397",
       "role": "shipment",
       "evidence": "official_documentation_example",
@@ -90,7 +70,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -99,7 +79,7 @@
           "seur"
         ]
       },
-      "note": "Collivery's API v3 documentation uses it as the waybill in its proof-of-delivery document example."
+      "note": "Collivery's API v3 documentation uses it as the waybill in its proof-of-delivery document example; the tracking page knows it as a cancelled booking."
     },
     {
       "number": "3012330",

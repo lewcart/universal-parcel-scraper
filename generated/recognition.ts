@@ -223,6 +223,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "mainfreight": 923,
   "maltapost": 50,
   "matkahuolto": 715,
+  "mds-collivery": 705,
   "meest": 340,
   "metropolitan-warehouse": 8,
   "micro-express": 697,

@@ -19930,7 +19930,8 @@
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mds-collivery",
+      "recognitionRank": 705
     },
     "canaryUrl": "https://collivery.net/tracking",
     "trackingUrlTemplate": "https://collivery.net/tracking?waybill={trackingNumber}",

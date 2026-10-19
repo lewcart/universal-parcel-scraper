@@ -31,6 +31,16 @@
     {"code": "35", "wording": "Delayed", "stage": "exception", "language": "en", "confirmedBy": "official-doc", "note": "Status name in the statuses list of Collivery's API v3 documentation."},
     {"code": "6", "wording": "Invoiced", "language": "en", "confirmedBy": "official-doc", "note": "Status name in the statuses list of Collivery's API v3 documentation. Billing, not a parcel movement."},
     {"code": "22", "wording": "Collivery Modified", "language": "en", "confirmedBy": "official-doc", "note": "Status name in the statuses list of Collivery's API v3 documentation. The booking was changed."},
-    {"code": "33", "wording": "Accounting transferred", "language": "en", "confirmedBy": "official-doc", "note": "Status name in the statuses list of Collivery's API v3 documentation. Billing, not a parcel movement."}
+    {"code": "33", "wording": "Accounting transferred", "language": "en", "confirmedBy": "official-doc", "note": "Status name in the statuses list of Collivery's API v3 documentation. Billing, not a parcel movement."},
+    {"wording": "Collivery loaded on system", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Waiting Client Acceptance: the booking, before collection."},
+    {"wording": "Received in Pretoria branch", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Received By Branch, with the branch."},
+    {"wording": "Received in Johannesburg branch", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Received By Branch, with the branch."},
+    {"wording": "Received in branch", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Received By Branch, without the branch."},
+    {"wording": "En route to destination", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for In Transit."},
+    {"wording": "Driver assigned to deliver your parcel", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Delivery Driver Allocated; the driver has not left with the parcel yet."},
+    {"wording": "The delivery attempt of your parcel failed because Contact not available", "stage": "failed_attempt", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Delivery Failed, with its reason."},
+    {"wording": "Collivery cancelled", "stage": "exception", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Collivery Cancelled."},
+    {"wording": "Parcel details updated", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Collivery Modified: the booking was changed, the parcel does not move."},
+    {"wording": "Collivery invoiced", "language": "en", "confirmedBy": "live", "note": "The tracking page's line for Invoiced. Billing, not a parcel movement."}
   ]
 }

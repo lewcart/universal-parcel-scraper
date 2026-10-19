@@ -5292,7 +5292,9 @@
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "a-duie-pyle",
+      "recognitionRank": 736,
+      "localClocks": true
     },
     "canaryUrl": "https://aduiepyle.com/resources/shipment-status/",
     "trackingUrlTemplate": "https://aduiepyle.com/resources/shipment-status/?tracking={trackingNumber}",

@@ -894,6 +894,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'abf-freight', number: '999999999',
     route: /^https:\/\/view\.arcb\.com\/nlo\/tools\/tracking\/999999999$/,
     marker: /Sorry, we didn.t find that shipment|did not return any valid results/ },
+  // The page looks up the PRO in its address and names an unknown one over its notice.
+  { carrier: 'a-duie-pyle', number: '999999990',
+    route: /^https:\/\/aduiepyle\.com\/resources\/shipment-status\/\?tracking=999999990$/,
+    marker: /We are unable to find this shipment\.|Track with Pyle Pro Number/ },
   // The direct link renders the shipment on the server; its notice for an unknown PRO names no number.
   { carrier: 'averitt', number: '9999999999',
     route: /^https:\/\/tools\.averitt\.com\/servlet\/rsoLTLtrack\?Type=PN&Number=9999999999$/,

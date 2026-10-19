@@ -14,6 +14,9 @@
  * before the generic words they contain: "rejectedByPudo" is a retried
  * delivery, not a rejection, and "collectedByCustomer" is the recipient
  * collecting the parcel, not a transit collection.
+ * The page's history also lists steps it keeps off the timeline. A failed
+ * delivery attempt can come there as `SA014` with no label, so that code is
+ * matched whole.
  * The provider's own wording is never returned; each mapped entry supplies the
  * English description we display.
  *
@@ -53,6 +56,11 @@ const OUT_FOR_DELIVERY: ClassifiedPaackStatus = {
 const DELIVERED: ClassifiedPaackStatus = { status: 'delivered', stage: 'delivered', description: 'Delivered' };
 const DELIVERY_ISSUE: ClassifiedPaackStatus = { status: 'exception', stage: 'failed_attempt', description: 'Delivery issue' };
 
+/** History codes that come without a label, matched whole. */
+const CODES = new Map<string, ClassifiedPaackStatus>([
+  ['sa014', { status: 'exception', stage: 'failed_attempt', description: 'Delivery attempt failed' }],
+]);
+
 /** Paack's English timeline labels, keyed like `statusKey`, with the identifier each one renders. */
 const RELAYED = new Map<string, ClassifiedPaackStatus>([
   ['orderdetailsreceived', REGISTERED], // manifested
@@ -69,6 +77,8 @@ export function paackScan(label: string): { stage: Stage; wording: string } | un
 
 export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
   const key = `${statusKey(value.label)} ${statusKey(value.id)}`;
+  const code = CODES.get(key.trim());
+  if (code) return { ...code };
   if (includesAny(key, [
     'returnedsender',
     'returnedtosender',
@@ -114,12 +124,16 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
   if (includesAny(key, ['droppedinpudo'])) {
     return { status: 'out_for_delivery', stage: 'ready_for_pickup', description: 'Ready for pickup' };
   }
-  if (includesAny(key, ['outfordelivery', 'indelivery', 'driverassigned', 'inprogress'])) return { ...OUT_FOR_DELIVERY };
+  // The new attempt after a failed one: the stage stays on the failure until the courier sets out again.
+  if (includesAny(key, ['additionaldeliveryattemptscheduled'])) {
+    return { status: 'exception', stage: 'failed_attempt', description: 'New delivery attempt scheduled' };
+  }
+  if (includesAny(key, ['driverassigned'])) return { ...OUT_FOR_DELIVERY, description: 'Courier assigned' };
+  if (includesAny(key, ['outfordelivery', 'indelivery'])) return { ...OUT_FOR_DELIVERY };
   if (includesAny(key, [
     'manifested',
     'created',
     'notreceivedfromretailer',
-    'additionaldeliveryattemptscheduled',
     'orderreactivated',
     'appointmentbroughtforward',
     'appointmentrescheduled',
@@ -134,6 +148,7 @@ export function classifyPaackEvent(value: JsonObject): ClassifiedPaackStatus {
     'warehouse',
     'sorted',
     'pudoassigned',
+    'inprogress',
   ])) {
     return { status: 'in_transit', stage: 'in_transit', description: 'In transit' };
   }

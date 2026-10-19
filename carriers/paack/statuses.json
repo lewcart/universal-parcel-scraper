@@ -106,6 +106,14 @@
       "note": "Exercised by the delivered-order fixture's earlier attempt row. Reclassified to exception 2026-09-12."
     },
     {
+      "code": "sa014",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "History step (timeline: false) with no label, at a failed delivery attempt; the page has no text for it. Matched as the whole code."
+    },
+    {
       "code": "absent",
       "language": "en",
       "stage": "failed_attempt",
@@ -285,17 +293,17 @@
       "code": "driverassigned",
       "language": "en",
       "stage": "out_for_delivery",
-      "confirmedBy": "fixture",
+      "confirmedBy": "live",
       "firstSeen": "2026-09-12",
-      "note": "Exercised by the delivered-order fixture's inProgress row."
+      "note": "History step (timeline: false), \"A courier was assigned to pick up your order\"; listed again for each new attempt. Read as \"Courier assigned\"."
     },
     {
       "code": "inprogress",
       "language": "en",
-      "stage": "out_for_delivery",
-      "confirmedBy": "fixture",
+      "stage": "in_transit",
+      "confirmedBy": "bundle",
       "firstSeen": "2026-09-12",
-      "note": "Exercised by the delivered-order fixture's inProgress row."
+      "note": "Page label inProgress, \"The order is being processed by Paack.\": not yet out for delivery."
     },
     {
       "code": "manifested",
@@ -324,10 +332,10 @@
     {
       "code": "additionaldeliveryattemptscheduled",
       "language": "en",
-      "stage": "registered",
-      "confirmedBy": "prior-art",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
       "firstSeen": "2026-09-12",
-      "note": "Identifier substring inherited from the pre-package adapter; source not recorded."
+      "note": "History step (timeline: false) after a failed attempt, \"We scheduled a new delivery attempt.\" Kept on failed_attempt until the courier sets out again, so the stage does not fall back to registered."
     },
     {
       "code": "orderreactivated",

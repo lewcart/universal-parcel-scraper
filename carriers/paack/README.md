@@ -71,10 +71,19 @@ Spain and other carriers deliver them elsewhere, so that shape only suggests Paa
   `pudo_address` on the following lines, or the name alone. The address is one string Paack
   formats itself; like the page, it is kept as it comes and only broken where it holds a line
   break. A delivered parcel has none, collected there or not.
+- The history is `eventList`, the four-step timeline, and `triggeredEventList`, the page's list
+  of steps that happened. That list repeats the timeline's steps under the same `uniq_id` and
+  adds those kept off the timeline (`timeline: false`): a failed attempt, the new attempt, the
+  courier assigned to each run. Steps still to come, without a timestamp, are skipped; the rest
+  are sorted newest first and capped at 100.
+- A failed attempt can come as `SA014` with no label, matched as the whole code.
+  `additionalDeliveryAttemptScheduled` follows it and stays a failed attempt, so the stage does
+  not fall back to registered while the new attempt waits. `driverAssigned` reads "Courier
+  assigned", once per run. `inProgress`, "being processed by Paack", is in transit.
 - `activeEvent` decides the overall status when it maps: the banner can be ahead of the
-  timeline. The timeline keeps its own per-event stages.
-- The timeline also lists the steps still to come, without a timestamp. Those and entries
-  flagged `timeline: false` are skipped; the rest are sorted newest first and capped at 100.
+  timeline. It stays on "Out for delivery" after a failed attempt, so a newer failed attempt,
+  courier run, drop-off, delivery or return in the history replaces it. Scheduling notes and
+  corrections do not. The history keeps its own per-event stages.
 - Event descriptions are our own English wording. Unknown identifiers read "Shipment update".
 - Aggregators relay the page's English labels instead of identifiers. `paackScan` maps those
   exact labels for them and stores the same wording as the direct lookup.
@@ -85,8 +94,8 @@ Spain and other carriers deliver them elsewhere, so that shape only suggests Paa
   `YYYY-MM-DD HH:MM–HH:MM`. Its ends are instants, and the page shows them on the delivery
   country's clock (the Canary Islands' for Spanish postcodes 35 and 38), so the result does
   too and takes that clock as its `timezone`. A window across midnight, or without an
-  offset, keeps only its last day. It is dropped once delivered or in exception, and when it
-  ended before the newest scan.
+  offset, keeps only its last day. It is dropped once delivered, returned or in exception, and
+  when it ended before the newest scan. A failed attempt keeps it: it is the new attempt's.
 - Through Evri International the result is that tracker's: Evri's scans up to the hand-over,
   then Paack's, in Evri's English wording and stages, with locations and the parcel's weight.
   Its clocks have no offset, so they are kept as `local_time` and the catalog marks Paack's

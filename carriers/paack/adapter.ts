@@ -42,6 +42,8 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_RESPONSE_BYTES = 2_000_000;
 const MAX_EVENTS = 100;
 const MAX_REDIRECTS = 1;
+/** Steps of a delivery run that a stale banner must not hide. */
+const ATTEMPT_STAGES = new Set(['failed_attempt', 'out_for_delivery', 'ready_for_pickup', 'delivered', 'returned']);
 const DEFAULT_ZONE = 'Europe/Paris';
 const PAACK_HOST = /(?:^|\.)paack\.(?:app|co)$/;
 const NOT_FOUND_PATTERN = /order not found|incorrect order number|commande introuvable|pedido no encontrado/i;
@@ -223,6 +225,29 @@ function pickupPoint(order: JsonObject): string {
   return [name, ...address].join('\n');
 }
 
+/**
+ * The steps that happened: the timeline's, then the history's. The history
+ * (`triggeredEventList`) repeats the timeline's steps under the same `uniq_id`
+ * and adds those the page keeps off the timeline (`timeline: false`), such as
+ * a failed attempt, the new attempt and the courier assigned to it.
+ */
+function happenedSteps(route: JsonObject): JsonObject[] {
+  const steps = new Map<string, JsonObject>();
+  for (const list of [route.eventList, route.triggeredEventList]) {
+    if (!Array.isArray(list)) continue;
+    for (const step of list.slice(0, 500)) {
+      if (!isRecord(step)) continue;
+      const time = normalizedTimestamp(step.timestamp ?? step.time);
+      if (!time) continue;
+      const key = typeof step.uniq_id === 'string' && step.uniq_id
+        ? step.uniq_id
+        : `${String(step.id)}|${time.timestamp}`;
+      if (!steps.has(key) || (!steps.get(key)!.label && step.label)) steps.set(key, step);
+    }
+  }
+  return [...steps.values()];
+}
+
 /** Letters and digits only, so "SW1A 1AA" and "4445-027" compare by content. */
 function postcodeKey(value: string): string {
   return value.toLocaleUpperCase('en-US').replace(/[^A-Z0-9]/g, '');
@@ -246,18 +271,15 @@ export function parsePaackTrackingResponse(
     throw new SchemaError('Paack', 'Paack returned a different shipment');
   }
 
-  const rawEvents = Array.isArray(route.eventList) ? route.eventList : [];
   const parsedEvents: Array<{
     event: CarrierEvent;
     status: CarrierStatus;
     timestamp: number;
     sourceIndex: number;
   }> = [];
-  rawEvents.slice(0, 500).forEach((rawEvent, sourceIndex) => {
-    if (!isRecord(rawEvent) || rawEvent.timeline === false) return;
+  happenedSteps(route).forEach((rawEvent, sourceIndex) => {
     const classified = classifyPaackEvent(rawEvent);
-    const time = normalizedTimestamp(rawEvent.timestamp ?? rawEvent.time);
-    if (!time) return;
+    const time = normalizedTimestamp(rawEvent.timestamp ?? rawEvent.time)!;
     parsedEvents.push({
       event: {
         time: time.iso,
@@ -275,22 +297,30 @@ export function parsePaackTrackingResponse(
   const events = parsedEvents.slice(0, MAX_EVENTS).map(({ event }) => event);
   const activeEvent = isRecord(route.activeEvent) ? route.activeEvent : null;
   const active = activeEvent ? classifyPaackEvent(activeEvent) : null;
-  const latest = parsedEvents.find((event) => event.status !== 'unknown');
-  const current = active && active.status !== 'unknown'
-    ? active
-    : latest && {
-      status: latest.status,
-      stage: latest.event.stage ?? 'in_transit',
-      description: latest.event.description ?? 'Shipment update',
-    };
-  if (!current) throw new SchemaError('Paack', 'Paack returned incomplete tracking details');
   const activeTime = activeEvent
     ? normalizedTimestamp(activeEvent.timestamp ?? activeEvent.time)
     : null;
+  const banner = active && active.status !== 'unknown' ? active : null;
+  // The banner stays on "Out for delivery" after a failed attempt; a newer step
+  // of a delivery run replaces it. Scheduling notes and corrections do not.
+  const newer = banner && activeTime
+    ? parsedEvents.find((event) => event.status !== 'unknown' && event.timestamp > activeTime.timestamp
+      && ATTEMPT_STAGES.has(event.event.stage ?? ''))
+    : undefined;
+  const latest = newer ?? (banner ? undefined : parsedEvents.find((event) => event.status !== 'unknown'));
+  const current = latest
+    ? {
+      status: latest.status,
+      stage: latest.event.stage ?? 'in_transit',
+      description: latest.event.description ?? 'Shipment update',
+    }
+    : banner;
+  if (!current) throw new SchemaError('Paack', 'Paack returned incomplete tracking details');
 
   const zone = deliveryZone(address?.country, postcode);
   const newest = Math.max(activeTime?.timestamp ?? -Infinity, parsedEvents[0]?.timestamp ?? -Infinity);
-  const expected = isRecord(order.expected_delivery_ts) && !['delivered', 'exception'].includes(current.status)
+  // A failed attempt keeps the window: it is the new attempt's.
+  const expected = isRecord(order.expected_delivery_ts) && !['delivered', 'returned', 'exception'].includes(current.stage)
     ? expectedDelivery(order.expected_delivery_ts, zone, newest)
     : null;
   const pickup = current.stage === 'ready_for_pickup' ? pickupPoint(order) : '';
@@ -298,7 +328,7 @@ export function parsePaackTrackingResponse(
     status: current.status,
     current_stage: current.stage,
     last_status_text: current.description,
-    last_update: activeTime?.iso ?? events[0]?.time ?? null,
+    last_update: newer?.event.time ?? activeTime?.iso ?? events[0]?.time ?? null,
     expected_delivery: expected,
     ...(pickup ? { pickup_point: pickup } : {}),
     timezone: zone,

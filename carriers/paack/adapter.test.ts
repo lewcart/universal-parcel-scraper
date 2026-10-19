@@ -165,6 +165,18 @@ describe('Paack status vocabulary', () => {
     expect(classifyPaackEvent({ id, label })).toEqual({ status, stage, description });
   });
 
+  it('maps the history steps of a failed attempt and the new one', () => {
+    // A failed attempt comes without a label.
+    expect(classifyPaackEvent({ id: 'SA014' }))
+      .toEqual({ status: 'exception', stage: 'failed_attempt', description: 'Delivery attempt failed' });
+    expect(classifyPaackEvent({ id: 'SA014', label: 'absent' })).toMatchObject({ description: 'Delivery issue' });
+    expect(classifyPaackEvent({ id: 'SA015', label: 'additionalDeliveryAttemptScheduled' }))
+      .toEqual({ status: 'exception', stage: 'failed_attempt', description: 'New delivery attempt scheduled' });
+    expect(classifyPaackEvent({ id: 'SA016', label: 'driverAssigned' }))
+      .toEqual({ status: 'out_for_delivery', stage: 'out_for_delivery', description: 'Courier assigned' });
+    expect(classifyPaackEvent({ id: 'SA017', label: 'inProgress' })).toMatchObject({ stage: 'in_transit' });
+  });
+
   it.each([
     ['pudoAssigned', 'in_transit', 'in_transit'],
     ['droppedInPudo', 'out_for_delivery', 'ready_for_pickup'],
@@ -215,7 +227,7 @@ describe('Paack response normalization', () => {
       },
       {
         time: '2024-07-28T10:05:00.000Z',
-        description: 'Out for delivery',
+        description: 'Courier assigned',
         stage: 'out_for_delivery',
       },
       {
@@ -475,6 +487,87 @@ describe('Paack label barcode lookup', () => {
       kind: 'schema',
       message: 'Paack returned a different shipment',
     }));
+  });
+});
+
+describe('Paack history beside the timeline', () => {
+  // A failed attempt and a new run, in the structure of a live reply: the banner
+  // and the timeline stay on the first "Out for delivery", while the history
+  // (`triggeredEventList`) lists the steps kept off the timeline. Synthetic times.
+  const step = (id: string, label: string | null, timestamp: string, timeline: boolean) => ({
+    id, ...(label ? { label } : {}), timeline, event_type: 'direct',
+    uniq_id: `${timestamp.replace('T', ' ').replace('.000Z', ' +0000 UTC')}${id}0`, timestamp,
+  });
+  const manifested = step('SM001', 'manifested', '2024-07-27T10:50:30.000Z', true);
+  const scanned = step('SM002', 'scannedAtOrigin', '2024-07-27T16:38:19.000Z', true);
+  const inDelivery = step('SP002', 'inDelivery', '2024-07-28T06:12:00.000Z', true);
+  const failed = step('SA014', null, '2024-07-28T15:40:00.000Z', false);
+  const rescheduled = step('SA015', 'additionalDeliveryAttemptScheduled', '2024-07-28T15:40:02.000Z', false);
+  const assigned = step('SA016', 'driverAssigned', '2024-07-30T05:58:00.000Z', false);
+  const reassigned = step('SA016', 'driverAssigned', '2024-07-30T06:03:00.000Z', false);
+
+  function failedAttemptRoute(history: object[], orderOverrides: Record<string, unknown> = {}): Record<string, unknown> {
+    const route = labelRoute({
+      expected_delivery_ts: { start: '2024-07-30T07:00:00.000Z', end: '2024-07-30T20:00:00.000Z' },
+      ...orderOverrides,
+    });
+    return {
+      ...route,
+      activeEvent: { ...inDelivery, icon: 'Truck-Side', variables: { Text: [{ poe: 'retailerName', path: 'retailer_name' }] } },
+      eventList: [manifested, scanned, inDelivery, { id: 'SP003', label: 'delivered', timeline: true, uniq_id: 'SP003' }],
+      triggeredEventList: history,
+    };
+  }
+
+  it('shows the failed attempt and the new run the banner leaves out', () => {
+    const result = parsePaackTrackingResponse(
+      failedAttemptRoute([reassigned, assigned, rescheduled, failed, inDelivery, scanned, manifested]),
+      LABEL_POSTCODE,
+    );
+    expect(result).toMatchObject({
+      status: 'out_for_delivery',
+      current_stage: 'out_for_delivery',
+      last_status_text: 'Courier assigned',
+      last_update: '2024-07-30T06:03:00.000Z',
+      expected_delivery: '2024-07-30 09:00–22:00',
+    });
+    // Steps on both lists are listed once.
+    expect(result.events).toEqual([
+      { time: '2024-07-30T06:03:00.000Z', description: 'Courier assigned', stage: 'out_for_delivery' },
+      { time: '2024-07-30T05:58:00.000Z', description: 'Courier assigned', stage: 'out_for_delivery' },
+      { time: '2024-07-28T15:40:02.000Z', description: 'New delivery attempt scheduled', stage: 'failed_attempt' },
+      { time: '2024-07-28T15:40:00.000Z', description: 'Delivery attempt failed', stage: 'failed_attempt' },
+      { time: '2024-07-28T06:12:00.000Z', description: 'Out for delivery', stage: 'out_for_delivery' },
+      { time: '2024-07-27T16:38:19.000Z', description: 'Shipment accepted', stage: 'accepted' },
+      { time: '2024-07-27T10:50:30.000Z', description: 'Shipment registered', stage: 'registered' },
+    ]);
+  });
+
+  it('reads the failed attempt as current until the courier sets out again', () => {
+    expect(parsePaackTrackingResponse(
+      failedAttemptRoute([rescheduled, failed, inDelivery, scanned, manifested]),
+      LABEL_POSTCODE,
+    )).toMatchObject({
+      status: 'exception',
+      current_stage: 'failed_attempt',
+      last_status_text: 'New delivery attempt scheduled',
+      last_update: '2024-07-28T15:40:02.000Z',
+      expected_delivery: '2024-07-30 09:00–22:00',
+    });
+  });
+
+  it('keeps the banner over a newer scheduling note', () => {
+    const note = step('SA020', 'appointmentRescheduledOther', '2024-07-28T09:00:00.000Z', false);
+    const result = parsePaackTrackingResponse(
+      { ...labelRoute(), triggeredEventList: [note, ...labelRoute().triggeredEventList as object[]] },
+      LABEL_POSTCODE,
+    );
+    expect(result).toMatchObject({
+      status: 'in_transit',
+      current_stage: 'accepted',
+      last_update: '2024-07-27T16:38:19.000Z',
+    });
+    expect(result.events?.map((event) => event.stage)).toEqual(['registered', 'accepted', 'registered']);
   });
 });
 

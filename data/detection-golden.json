@@ -9822,14 +9822,6 @@
     ]
   },
   {
-    "input": "1000540",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "seur"
-    ]
-  },
-  {
     "input": "10008230099342",
     "carrier": "unknown",
     "confidence": "low",

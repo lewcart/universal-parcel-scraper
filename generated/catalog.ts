@@ -20278,9 +20278,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Ulaanbaatar",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mongol-infinity-post",
+      "recognitionRank": 681
     },
     "canaryUrl": "https://mypost.mn/",
+    "trackingSearchUrl": "https://mypost.mn/",
     "linkRules": [],
     "detectionRules": []
   },

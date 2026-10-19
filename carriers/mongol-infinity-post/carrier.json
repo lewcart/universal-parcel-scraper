@@ -19,16 +19,51 @@
   "timezone": "Asia/Ulaanbaatar",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "mongol-infinity-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 681
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "delivered_at",
+    "offset_timestamps",
+    "canonical_tracking_number"
+  ],
   "portal": {
+    "searchUrl": "https://mypost.mn/",
     "canaryUrl": "https://mypost.mn/",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "failed_delivery_reason",
+      "canonical_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "failed_delivery_reason",
+      "canonical_tracking_number"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "eta",
+      "weight",
+      "proof_of_delivery",
+      "delivery_partner"
+    ]
   },
   "links": [],
   "detection": []

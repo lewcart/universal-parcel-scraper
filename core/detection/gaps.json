@@ -2419,12 +2419,6 @@
     "reason": "Twelve digits are shared by several carriers and nothing in the number points to DHL eCommerce Türkiye."
   },
   {
-    "carrier": "mongol-infinity-post",
-    "pattern": "^\\d{7}$",
-    "kind": "by_design",
-    "reason": "Mongol Infinity Post's seven-digit registration numbers are a bare digit run many carriers share."
-  },
-  {
     "carrier": "morning-global",
     "pattern": "^HK\\d{9}PH\\d{2}$",
     "kind": "by_design",

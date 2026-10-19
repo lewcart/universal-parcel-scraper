@@ -71,7 +71,9 @@ const BROWSER_ONLY: Readonly<Record<string, readonly (keyof Browsers)[]>> = {
 
 const corpus = new Map(loadNumberCorpusFiles().map((file) => [file.carrier, file.records]));
 /** Synthetic numbers in the format of a carrier whose corpus has no public number yet. */
-const UNSAMPLED: Readonly<Record<string, readonly string[]>> = {};
+const UNSAMPLED: Readonly<Record<string, readonly string[]>> = {
+  'mongol-infinity-post': ['1000000'],
+};
 
 function credential(validator: string, number: string): string {
   switch (validator) {

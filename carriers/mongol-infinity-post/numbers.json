@@ -1,27 +1,5 @@
 {
   "carrier": "mongol-infinity-post",
-  "records": [
-    {
-      "number": "1000540",
-      "role": "shipment",
-      "evidence": "official_documentation_example",
-      "source": {
-        "url": "https://mypost.mn/",
-        "date": "2026-10-18",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "seur"
-        ]
-      },
-      "note": "The first example Mongol Infinity Post's home page gives under its parcel search, which asks for the parcel's registration number."
-    }
-  ]
+  "gap": "Mongol Infinity Post's public examples are kept outside the repository as live-test inputs.",
+  "records": []
 }

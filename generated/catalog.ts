@@ -6409,7 +6409,7 @@ export const CARRIER_CATALOG = {
   },
   "anserx": {
     "displayName": "AnserX",
-    "color": "#167ed4",
+    "color": "#2478be",
     "aliases": [
       "斑头雁",
       "斑头雁国际物流",
@@ -8810,7 +8810,7 @@ export const CARRIER_CATALOG = {
   },
   "chukou1": {
     "displayName": "Chukou1",
-    "color": "#3a77c9",
+    "color": "#0b4da2",
     "aliases": [
       "出口易",
       "CK1",
@@ -17649,7 +17649,7 @@ export const CARRIER_CATALOG = {
   },
   "jumppoint": {
     "displayName": "Jumppoint",
-    "color": "#104ada",
+    "color": "#0f4ae1",
     "countries": [
       "HK"
     ],

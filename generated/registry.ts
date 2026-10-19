@@ -4,6 +4,7 @@ import type { RegistryDefinition } from '../core/adapter/index.js';
 import { adapter as carrier17feia } from '../carriers/17feia/adapter.js';
 import { adapter as carrier2go } from '../carriers/2go/adapter.js';
 import { adapter as carrier472 } from '../carriers/4-72/adapter.js';
+import { adapter as carrier4sides } from '../carriers/4sides/adapter.js';
 import { adapter as carrier5post } from '../carriers/5post/adapter.js';
 import { adapter as carrier99minutos } from '../carriers/99minutos/adapter.js';
 import { adapter as aTuHoraExpress } from '../carriers/a-tu-hora-express/adapter.js';
@@ -466,6 +467,7 @@ export const REGISTRY: RegistryDefinition = {
     "17feia": carrier17feia,
     "2go": carrier2go,
     "4-72": carrier472,
+    "4sides": carrier4sides,
     "5post": carrier5post,
     "99minutos": carrier99minutos,
     "a-tu-hora-express": aTuHoraExpress,
@@ -929,7 +931,7 @@ export const REGISTRY: RegistryDefinition = {
     "247express": "universal",
     "2go": "2go",
     "4-72": "4-72",
-    "4sides": "universal",
+    "4sides": "4sides",
     "5post": "5post",
     "99minutos": "99minutos",
     "a-duie-pyle": "universal",

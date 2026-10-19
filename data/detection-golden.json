@@ -71962,7 +71962,29 @@
     ]
   },
   {
+    "input": "FS025390386RU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "FS026362381RU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "FS027259187RU",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

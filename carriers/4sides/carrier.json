@@ -18,18 +18,63 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "4sides",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 783
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://4sides.ru/tracking?number={trackingNumber}",
     "searchUrl": "https://4sides.ru/tracking",
     "canaryUrl": "https://4sides.ru/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "destination_country",
+      "item_category",
+      "origin",
+      "destination",
+      "contract_number",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "destination_country"
+    ],
+    "discarded": [
+      "item_category",
+      "origin",
+      "destination",
+      "contract_number",
+      "signatory"
+    ],
+    "unavailable": [
+      "scan_times",
+      "offset_timestamps",
+      "delivered_at",
+      "eta",
+      "provider_code",
+      "service_name",
+      "sender_name",
+      "proof_of_delivery",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

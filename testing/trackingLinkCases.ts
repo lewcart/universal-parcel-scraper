@@ -1058,6 +1058,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: '5post', number: '99990000000000',
     route: /^https:\/\/fivepost\.ru\/tracking\/\?id=99990000000000$/,
     marker: /Заказ с номером \S+ не существует|Где мой заказ\?/ },
+  // The page puts the waybill in its address in its field, looks it up on load and names an unknown one in its answer.
+  { carrier: '4sides', number: 'FS000000000RU',
+    route: /^https:\/\/4sides\.ru\/tracking\?number=FS000000000RU$/,
+    marker: /Не найдено FS000000000RU|Номер накладной|Хронология движения/ },
   // The page fills its search box in from the address without looking the number up.
   { carrier: 'kex', number: 'SYNT000000017',
     route: /^https:\/\/th\.kex-express\.com\/en\/track\/\?track=SYNT000000017$/,

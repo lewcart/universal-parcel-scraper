@@ -5183,7 +5183,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "4sides",
+      "recognitionRank": 783,
+      "localClocks": true
     },
     "canaryUrl": "https://4sides.ru/tracking",
     "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",

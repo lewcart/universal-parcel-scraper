@@ -6,7 +6,10 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { firstOccurrence } from '../../core/time/index.js';
 import { clean, fetchBounded, parseJsonBytes, userAgentOf } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { COLLECTED_AT_PARCELSHOP, hermesGermanyMilestone, IGNORED_BOOKING_STATUS, IN_PARCELBOX, type Milestone } from './status.js';
+import {
+  COLLECTED_AT_PARCELSHOP, DELIVERED_ABROAD, hermesGermanyMilestone, IGNORED_BOOKING_STATUS, IN_PARCELBOX, type Milestone,
+  NOT_COLLECTED_ABROAD, RETURN_HANDOVER,
+} from './status.js';
 
 // Public recipient protocol inspected 2026-09-08:
 // https://gcp-prd.my-deliveries.de/tnt/bundle/tnt-bundle-v2.js
@@ -113,6 +116,14 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     });
   }
   events.sort((a, b) => b.timestamp - a.timestamp);
+  let uncollected = false;
+  for (const entry of [...events].reverse()) {
+    if (entry.event.provider_code === NOT_COLLECTED_ABROAD) uncollected = true;
+    else if (uncollected && entry.event.provider_code === DELIVERED_ABROAD) {
+      entry.metadata = RETURN_HANDOVER;
+      entry.event.stage = RETURN_HANDOVER.stage;
+    }
+  }
   const latest = events[0];
   if (!latest) throw new HermesGermanyTrackingError();
   const parcel = parcels[0] as Record<string, unknown>;
@@ -136,7 +147,9 @@ export function parseHermesGermanyResponse(payload: unknown, trackingNumber: str
     latest.event.stage = 'ready_for_pickup';
   }
   const deliveredByCode = latest.metadata?.status === 'delivered' || takenOut;
-  const deliveredByFlag = attributes.delivered === true;
+  // The flag stands in for a delivery code not mapped yet; a mapped row that says
+  // otherwise, as a return handed back to the sender, keeps its own stage.
+  const deliveredByFlag = attributes.delivered === true && readsDelivered;
   const delivered = !inBox && (deliveredByCode || deliveredByFlag);
   if (!latest.metadata && !delivered) {
     return {

@@ -71,6 +71,9 @@ export const STATUSES: Record<string, Milestone> = {
   DELIVERY_FAILED_ADDRESS_PROBLEM: milestone('failed_attempt', 'exception', 'Delivery address not found'),
   DELIVERY_FAILED_NOT_MET_1X: milestone('failed_attempt', 'exception', 'Recipient not met; another attempt follows'),
   INTERNATIONAL_DELIVERY_FAILED_ADDRESS: milestone('failed_attempt', 'exception', 'Delivery address not found'),
+  INTERNATIONAL_PUDO_READY_FOR_COLLECTION: milestone('ready_for_pickup', 'out_for_delivery', 'Ready for collection at a parcel shop'),
+  INTERNATIONAL_PUDO_NOT_COLLECTED: milestone('exception', 'exception', 'Not collected from the parcel shop'),
+  INTERNATIONAL_UNDELIVERABLE: milestone('exception', 'exception', 'Shipment not deliverable'),
   NOT_DELIVERABLE: milestone('exception', 'exception', 'Shipment not deliverable'),
   UNKNOWN_WHEREABOUTS: milestone('exception', 'exception', 'Shipment whereabouts unknown'),
   RETURN_TO_SENDER: milestone('returned', 'exception', 'Returning to sender'),
@@ -82,6 +85,14 @@ export const STATUSES: Record<string, Milestone> = {
 // Delivery preference bookings (a safe place, a ParcelShop) record the
 // recipient's wish, not a movement, and must never move the parcel backwards.
 export const IGNORED_BOOKING_STATUS = new Set(['EDL_BOOKED_DROPOFF', 'EDL_BOOKED_PARCELSHOP']);
+
+/**
+ * A parcel abroad its recipient did not collect from the parcel shop goes back: a later
+ * `INTERNATIONAL_DELIVERED` is its hand-over on the way to the sender, not a delivery.
+ */
+export const NOT_COLLECTED_ABROAD = 'INTERNATIONAL_PUDO_NOT_COLLECTED';
+export const DELIVERED_ABROAD = 'INTERNATIONAL_DELIVERED';
+export const RETURN_HANDOVER = milestone('returned', 'exception', 'Returning to sender');
 
 /** The code for a parcel put into a Hermes Box, which waits there for its recipient. */
 export const IN_PARCELBOX = 'DELIVERED_PARCELBOX';

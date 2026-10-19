@@ -346,6 +346,33 @@
       "note": "Delivery abroad failed because the address was not found"
     },
     {
+      "code": "INTERNATIONAL_PUDO_READY_FOR_COLLECTION",
+      "wording": "The shipment is ready for pick up in a parcel shop/store.",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Waiting at a parcel shop abroad"
+    },
+    {
+      "code": "INTERNATIONAL_PUDO_NOT_COLLECTED",
+      "wording": "The shipment was not picked up in the parcel shop/store.",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Not collected from the parcel shop abroad. The parcel then goes back: a later INTERNATIONAL_DELIVERED is its hand-over on the way to the sender, and the history ends with the return delivered to the sender."
+    },
+    {
+      "code": "INTERNATIONAL_UNDELIVERABLE",
+      "wording": "The shipment could not be delivered.",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Not deliverable abroad, as NOT_DELIVERABLE at home. Seen after a parcel was not collected from its shop and again on its way back."
+    },
+    {
       "code": "INTERNATIONAL_DELIVERED",
       "wording": "Die Sendung wurde erfolgreich zugestellt.",
       "language": "de",

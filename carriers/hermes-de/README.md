@@ -36,7 +36,13 @@ back to `Europe/Berlin`) and stored as UTC.
   which changes its stored identity, so [identity.ts](identity.ts) keeps it at
   the same instant by its code.
 - `parcelAttributes.delivered` is a second delivery signal, so a delivery
-  reported under a code we don't know yet is still recognised.
+  reported under a code we don't know yet is still recognised. It counts only
+  when the newest row is unmapped or reads as delivered: Hermes also sets it on
+  a return delivered to the sender, which stays returned.
+- A parcel abroad its recipient did not collect from the parcel shop
+  (`INTERNATIONAL_PUDO_NOT_COLLECTED`) goes back to the sender. A later
+  `INTERNATIONAL_DELIVERED` is its hand-over on that way, so it reads as
+  returned rather than delivered.
 - `EDL_BOOKED_DROPOFF` and `EDL_BOOKED_PARCELSHOP` are dropped: they are the
   recipient's delivery preference (a safe place, a ParcelShop), not a movement,
   and as the newest row they would move the parcel backwards.

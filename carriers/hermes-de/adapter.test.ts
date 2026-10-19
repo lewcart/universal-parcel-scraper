@@ -108,6 +108,33 @@ describe('Hermes Germany', () => {
     expect(result.events?.[0]).toMatchObject({ stage: 'delivered', provider_code: 'DELIVERED_INHOUSE' });
   });
 
+  it('reads a parcel abroad its recipient did not collect as going back, whatever the delivered flag says', () => {
+    const rows = [
+      { parcelStatus: 'INTERNATIONAL_SORTED', timestamp: '2026-09-02T09:00:00Z' },
+      { parcelStatus: 'INTERNATIONAL_PUDO_READY_FOR_COLLECTION', timestamp: '2026-09-02T13:00:00Z' },
+      { parcelStatus: 'INTERNATIONAL_PUDO_NOT_COLLECTED', timestamp: '2026-09-10T15:00:00Z' },
+      { parcelStatus: 'INTERNATIONAL_UNDELIVERABLE', timestamp: '2026-09-10T15:00:01Z' },
+      { parcelStatus: 'INTERNATIONAL_SORTED', timestamp: '2026-09-12T21:00:00Z' },
+      { parcelStatus: 'INTERNATIONAL_DELIVERED', timestamp: '2026-09-13T22:00:00Z', historyText: 'The shipment was successfully delivered.' },
+    ];
+    const reply = (progress: Array<Record<string, unknown>>) =>
+      [{ barcode: NUMBER, parcelAttributes: { delivered: true }, parcelProgress: progress }];
+    const handedBack = parseHermesGermanyResponse(reply(rows), NUMBER);
+    expect(handedBack).toMatchObject({ status: 'exception', current_stage: 'returned' });
+    expect(handedBack).not.toHaveProperty('delivered_at');
+    expect(handedBack.events?.[0]).toMatchObject({ stage: 'returned', provider_code: 'INTERNATIONAL_DELIVERED' });
+    const home = parseHermesGermanyResponse(reply([
+      ...rows,
+      { parcelStatus: 'SORTED', timestamp: '2026-09-15T08:00:00Z' },
+      { parcelStatus: 'RETURN_DELIVERED_TO_SENDER', timestamp: '2026-09-18T09:00:00Z' },
+    ]), NUMBER);
+    expect(home).toMatchObject({ status: 'exception', current_stage: 'returned' });
+    expect(home).not.toHaveProperty('delivered_at');
+    // A delivery abroad before any parcel-shop miss stays a delivery.
+    const delivered = parseHermesGermanyResponse(reply([rows[0]!, rows[1]!, rows[5]!]), NUMBER);
+    expect(delivered).toMatchObject({ status: 'delivered', current_stage: 'delivered' });
+  });
+
   it('does not give an unknown historical update the delivered shipment stage', () => {
     const payload = delivered();
     (payload[0]!.parcelProgress as unknown[]).push({ parcelStatus: 'FUTURE_STATUS', timestamp: '2026-09-02T09:00:00Z' });
@@ -124,6 +151,9 @@ describe('Hermes Germany', () => {
     ['INTERNATIONAL_SORTED', 'in_transit', 'in_transit'],
     ['INTERNATIONAL_DELIVERY_TOUR_STARTED', 'out_for_delivery', 'out_for_delivery'],
     ['INTERNATIONAL_DELIVERY_FAILED_ADDRESS', 'failed_attempt', 'exception'],
+    ['INTERNATIONAL_PUDO_READY_FOR_COLLECTION', 'ready_for_pickup', 'out_for_delivery'],
+    ['INTERNATIONAL_PUDO_NOT_COLLECTED', 'exception', 'exception'],
+    ['INTERNATIONAL_UNDELIVERABLE', 'exception', 'exception'],
     ['DELIVERY_FAILED_ADDRESS_PROBLEM', 'failed_attempt', 'exception'],
     ['DELIVERY_FAILED_NOT_MET_1X', 'failed_attempt', 'exception'],
   ])('reads %s as %s', (code, stage, status) => {

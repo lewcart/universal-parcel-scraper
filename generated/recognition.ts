@@ -202,6 +202,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "latvijas-pasts": 100,
   "leopards-courier": 965,
   "lietuvos-pastas": 895,
+  "line-clear": 741,
   "lion-parcel": 952,
   "logen": 48,
   "logistiq": 768,

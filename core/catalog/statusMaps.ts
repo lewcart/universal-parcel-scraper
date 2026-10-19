@@ -225,6 +225,7 @@ import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as liccardi } from '../../carriers/liccardi/status.js';
 import { statusMap as lietuvosPastas } from '../../carriers/lietuvos-pastas/status.js';
+import { statusMap as lineClear } from '../../carriers/line-clear/status.js';
 import { statusMap as linhan } from '../../carriers/linhan/status.js';
 import { statusMap as lionParcel } from '../../carriers/lion-parcel/status.js';
 import { statusMap as logen } from '../../carriers/logen/status.js';
@@ -456,7 +457,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, jhgj, jitsu, jne, 'jordan-post': jordanPost,
   jrt, 'js-express': jsExpress, kazpost, kex, 'kex-express-hk': kexExpressHk, 'kuehne-nagel': kuehneNagel, kyoungdong, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-senegal': laPosteSenegal, labaih, 'latvijas-pasts': latvijasPasts,
-  'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
+  'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,
   noest, 'norsk-global': norskGlobal, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,

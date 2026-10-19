@@ -40,6 +40,25 @@
       "note": "The placeholder of Line Clear's own former tracking form gives it, next to a consecutive number, as an example waybill number."
     },
     {
+      "number": "V179130211638001",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/line-clear/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "ParcelPanel's Line Clear tracking page gives it as its sample number; Line Clear's own tracker showed its history from the waybill's creation to its delivery."
+    },
+    {
       "number": "ZND170932404767",
       "role": "shipment",
       "evidence": "merchant_published_example",

@@ -2227,6 +2227,12 @@
     "reason": "A single letter followed by digits, shown only as a form example on Line Clear's former tracker, does not point to Line Clear alone."
   },
   {
+    "carrier": "line-clear",
+    "pattern": "^V\\d{15}$",
+    "kind": "by_design",
+    "reason": "A V and fifteen digits comes from an aggregator's sample that Line Clear's tracker knows; no Line Clear source ties the layout to Line Clear alone."
+  },
+  {
     "carrier": "logen",
     "pattern": "^\\d{11}$",
     "kind": "by_design",

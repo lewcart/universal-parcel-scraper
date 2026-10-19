@@ -18864,11 +18864,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "line-clear",
+      "recognitionRank": 741
     },
     "canaryUrl": "https://www.lineclearexpress.com/tracker",
+    "trackingUrlTemplate": "https://www.lineclearexpress.com/tracker?id={trackingNumber}",
     "trackingSearchUrl": "https://www.lineclearexpress.com/tracker",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.lineclearexpress.com",
+          "lineclearexpress.com"
+        ],
+        "pathPattern": "^/tracker/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "linhan": {

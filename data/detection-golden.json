@@ -89448,6 +89448,12 @@
     ]
   },
   {
+    "input": "V179130211638001",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "V25276E0339042",
     "carrier": "venipak",
     "confidence": "high",

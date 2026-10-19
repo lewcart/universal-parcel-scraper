@@ -18,18 +18,65 @@
   "timezone": "Asia/Kuala_Lumpur",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "line-clear",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 741
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
+    "url": "https://www.lineclearexpress.com/tracker?id={trackingNumber}",
     "searchUrl": "https://www.lineclearexpress.com/tracker",
     "canaryUrl": "https://www.lineclearexpress.com/tracker",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "delivery_partner"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "www.lineclearexpress.com",
+        "lineclearexpress.com"
+      ],
+      "pathPattern": "^/tracker/?$",
+      "params": [
+        "id"
+      ]
+    }
+  ],
   "detection": []
 }

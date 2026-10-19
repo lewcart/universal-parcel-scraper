@@ -1590,6 +1590,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pitt-ohio', number: '9999999999',
     route: /^https:\/\/pittohio\.com\/myPittOhio\/Shipping\/LTL\/TraceRequest\?pro=9999999999$/,
     marker: /Search returned no results|LTL Shipment Status Details/ },
+  // The page fills its search field in from the address and looks the number up on load; it shows no notice for an unknown one.
+  { carrier: 'followmont', number: '0000000',
+    route: /^https:\/\/www\.followmont\.com\.au\/\?(?=.*\bconsignmentNumber=0000000\b)(?=.*\btrack-trace-start-unsecured-user\b)/,
+    marker: /Search for your freight using the search box below/ },
 ];
 
 /**

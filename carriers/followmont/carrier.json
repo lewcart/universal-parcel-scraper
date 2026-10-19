@@ -17,18 +17,52 @@
   "timezone": "Australia/Brisbane",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "followmont",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta"
+  ],
   "portal": {
     "url": "https://www.followmont.com.au/?page=fmt_template&fmt_template=track-trace&track-trace=track-trace-start-unsecured-user&consignmentNumber={trackingNumber}",
     "searchUrl": "https://www.followmont.com.au/",
     "canaryUrl": "https://www.followmont.com.au/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "location",
+      "eta",
+      "origin",
+      "destination",
+      "departure_date",
+      "parcel_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "departure_date",
+      "parcel_count"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

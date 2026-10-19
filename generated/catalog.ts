@@ -13982,7 +13982,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Brisbane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "followmont",
+      "localClocks": true
     },
     "canaryUrl": "https://www.followmont.com.au/",
     "trackingUrlTemplate": "https://www.followmont.com.au/?page=fmt_template&fmt_template=track-trace&track-trace=track-trace-start-unsecured-user&consignmentNumber={trackingNumber}",

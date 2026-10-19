@@ -16331,7 +16331,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ics-courier",
+      "localClocks": true
     },
     "canaryUrl": "https://www.icscourier.ca/online-services/parcel-tracking.aspx",
     "trackingUrlTemplate": "https://www.icscourier.ca/online-services/parcel-tracking.aspx?trackNums={trackingNumber}",

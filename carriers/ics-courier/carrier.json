@@ -16,18 +16,60 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ics-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://www.icscourier.ca/online-services/parcel-tracking.aspx?trackNums={trackingNumber}",
     "searchUrl": "https://www.icscourier.ca/online-services/parcel-tracking.aspx",
     "canaryUrl": "https://www.icscourier.ca/online-services/parcel-tracking.aspx",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point",
+      "office_opening_hours",
+      "coordinates",
+      "recipient_name",
+      "recipient_address",
+      "sender_details",
+      "signatory",
+      "signature_images"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "pickup_point"
+    ],
+    "discarded": [
+      "office_opening_hours",
+      "coordinates",
+      "recipient_name",
+      "recipient_address",
+      "sender_details",
+      "signatory",
+      "signature_images"
+    ],
+    "unavailable": [
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

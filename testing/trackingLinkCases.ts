@@ -1548,6 +1548,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'line-clear', number: 'V000000000000000',
     route: /^https:\/\/www\.lineclearexpress\.com\/tracker\?id=V000000000000000$/,
     marker: /TRACK & TRACE|Item Not Found!/ },
+  // The page looks the number in its address up on the server and lists it with its status.
+  { carrier: 'ics-courier', number: 'ND000000000000A0A0A0',
+    route: /^https:\/\/www\.icscourier\.ca\/online-services\/parcel-tracking\.aspx\?trackNums=ND000000000000A0A0A0$/,
+    marker: /Enter up to 25 tracking numbers|Tracking Number\s+Last Updated/ },
 ];
 
 /**

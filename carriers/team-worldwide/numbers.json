@@ -2,12 +2,51 @@
   "carrier": "team-worldwide",
   "records": [
     {
-      "number": "DFW300016",
+      "number": "ZZZ200001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Invented placeholder for a station code and six digits; Team Trac names the signer of each public sample of this layout."
+    },
+    {
+      "number": "ZZZ200001A",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "Invented placeholder for a station code, six digits and a closing letter, a layout Team Trac answers for."
+    },
+    {
+      "number": "26ZZZC200001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "Invented placeholder for a two-digit year, a station code, a letter and six digits; Team Trac names the signer of each public sample of this layout."
+    },
+    {
+      "number": "ATLM00090373R",
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20240623044621/https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl=dfw300016",
-        "date": "2024-06-23",
+        "url": "https://web.archive.org/web/20240109135442/https://util.teamww.com/tracking/customer/promethean/?shpk=PROMETHEAN&hbl=ATLM00090373R",
+        "date": "2024-01-09",
         "dateKind": "capture",
         "access": "full_page"
       },
@@ -18,15 +57,15 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill from shipment creation through recovery and out for delivery to delivered; the lookup was typed in lower case and the page prints it in capitals."
+      "note": "An opened archived lookup on a shipper's tracking page run by Team Worldwide shows this bill, a station code before the shipper's reference, from the shipper's notification to its delivery on Team's dock; Team Trac lists it as a Team bill."
     },
     {
-      "number": "16EWRC014214",
+      "number": "ATLM00090459R",
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20161216014720/http://www.teamww.com:80/wp-content/tracking/teamTrac.php?hbl=16EWRC014214",
-        "date": "2016-12-16",
+        "url": "https://web.archive.org/web/20240402091359/https://util.teamww.com/tracking/customer/promethean/?shpk=PROMETHEAN&hbl=ATLM00090459R",
+        "date": "2024-04-02",
         "dateKind": "capture",
         "access": "full_page"
       },
@@ -35,20 +74,17 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "colis-prive"
-        ]
+        "confidence": "none"
       },
-      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill from pickup request to recovery and a delivery appointment being scheduled."
+      "note": "An opened archived lookup on the same shipper's tracking page shows this bill from the shipper's notification to its handover to another carrier at the destination airport."
     },
     {
-      "number": "22EWRC013390",
+      "number": "ATLM00091248R",
       "role": "shipment",
       "evidence": "public_shipment_report",
       "source": {
-        "url": "https://web.archive.org/web/20220405211749/https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl=22EWRC013390",
-        "date": "2022-04-05",
+        "url": "https://web.archive.org/web/20240815135126/https://util.teamww.com/tracking/customer/promethean/?shpk=PROMETHEAN&hbl=ATLM00091248R",
+        "date": "2024-08-15",
         "dateKind": "capture",
         "access": "full_page"
       },
@@ -57,12 +93,28 @@
       },
       "expect": {
         "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "colis-prive"
-        ]
+        "confidence": "none"
       },
-      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill in transit after its pickup request."
+      "note": "An opened archived lookup on the same shipper's tracking page shows this bill with a pickup appointment, then picked up and delivered on Team's dock."
+    },
+    {
+      "number": "ATLM00099627R",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240729134213/https://util.teamww.com/tracking/customer/promethean/?shpk=PROMETHEAN&hbl=ATLM00099627R",
+        "date": "2024-07-29",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An opened archived lookup on the same shipper's tracking page shows this bill in transit after its pickup, with a requested delivery day."
     }
   ]
 }

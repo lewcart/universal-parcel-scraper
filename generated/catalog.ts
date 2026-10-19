@@ -28169,7 +28169,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-worldwide",
+      "recognitionRank": 627,
+      "localClocks": true
     },
     "canaryUrl": "https://www.teamww.com/tracking/team-trac/",
     "trackingUrlTemplate": "https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl={trackingNumber}",

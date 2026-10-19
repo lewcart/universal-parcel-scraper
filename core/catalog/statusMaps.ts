@@ -418,6 +418,7 @@ import { statusMap as tdn } from '../../carriers/tdn/status.js';
 import { statusMap as tealca } from '../../carriers/tealca/status.js';
 import { statusMap as teamExpressAe } from '../../carriers/team-express-ae/status.js';
 import { statusMap as teamGlobalExpress } from '../../carriers/team-global-express/status.js';
+import { statusMap as teamWorldwide } from '../../carriers/team-worldwide/status.js';
 import { statusMap as teleship } from '../../carriers/teleship/status.js';
 import { statusMap as tfmExpress } from '../../carriers/tfm-express/status.js';
 import { statusMap as tforceFreight } from '../../carriers/tforce-freight/status.js';
@@ -544,7 +545,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, speedaf, speedex, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
-  'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
+  'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,

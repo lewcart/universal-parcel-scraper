@@ -923,6 +923,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/4301600\.extforms\.netsuite\.com\/app\/site\/hosting\/scriptlet\.nl\?(?:[^#]*&)?number=99999999(?:&|$)/,
     marker: /Please Enter a Valid BOL Number|Tracking Details/,
     forwarding: { notFound: /Please Enter a Valid BOL Number/ } },
+  // Team Trac's answer page looks up the bill in its address and names one it has no status for.
+  { carrier: 'team-worldwide', number: 'ZZZ000000',
+    route: /^https:\/\/www\.teamww\.com\/wp-content\/tracking\/teamTrac\.php\?hbl=ZZZ000000$/,
+    marker: /Status is not available for Team Bill #|Status Details/ },
   // The tracer looks the number up from its address and shows its notice for an unknown PRO.
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,

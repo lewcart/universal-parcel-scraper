@@ -3658,15 +3658,21 @@
   },
   {
     "carrier": "team-worldwide",
-    "pattern": "^[A-Z]{3}\\d{6}$",
+    "pattern": "^[A-Z]{3}\\d{6}[A-Z]?$",
     "kind": "by_design",
-    "reason": "A station code and six digits is a short generic shape and only one Team bill shows it."
+    "reason": "A station code and six digits, sometimes with a closing letter, is a short generic shape, and station codes are airport codes other carriers print too."
   },
   {
     "carrier": "team-worldwide",
     "pattern": "^\\d{2}[A-Z]{4}\\d{6}$",
     "kind": "by_design",
     "reason": "Team bills of a year, a station code, a letter and six digits are twelve characters that Colis Privé's generic rule also accepts, and too few are known to give them a rule."
+  },
+  {
+    "carrier": "team-worldwide",
+    "pattern": "^[A-Z]{4}\\d{8}[A-Z]?$",
+    "kind": "by_design",
+    "reason": "A station code before a shipper's own reference: the reference's shape belongs to the shipper, and nothing in it names Team."
   },
   {
     "carrier": "tej-couriers",

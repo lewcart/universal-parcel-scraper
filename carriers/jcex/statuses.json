@@ -1,0 +1,20 @@
+{
+  "carrier": "jcex",
+  "entries": [
+    {"code": "InfoReceived", "wording": "Shipment order info received", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "The order data, written before JCEX's warehouse has the parcel; the row names no place."},
+    {"code": "InTransit_Other", "wording": "Arrive at the delivery point", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "JCEX's warehouse in China receives the parcel; the shared rules would read a delivery point as the parcel waiting for the recipient."},
+    {"code": "InTransit_Other", "wording": "Item outbound in sorting center", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"code": "InTransit_Other", "wording": "Departed from origin facility to airport", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"code": "InTransit_Other", "wording": "InTransit_Arrival", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The Hong Kong hub's arrival, worded as the platform's sub-status."},
+    {"code": "InTransit_CustomsProcessing", "wording": "under clearance", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "Import customs in the destination."},
+    {"code": "InTransit_CustomsReleased", "wording": "CUSTOMS CLEARANCE COMPLETE", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"code": "InTransit_Other", "wording": "CONSIGNMENT RECEIVED BY OVERSEAS FORWARDER", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The delivering partner takes the parcel in the destination."},
+    {"code": "InTransit_Other", "wording": "SHIPMENT RECEIVED BY TRANSPORTATION FACILITY", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"code": "InTransit_Other", "wording": "In Transit to Next Facility", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Relayed from USPS."},
+    {"code": "InTransit_Other", "wording": "ARRIVAL AT POST OFFICE", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Relayed from USPS: the delivering post office has the parcel."},
+    {"code": "OutForDelivery_Other", "wording": "out for delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live"},
+    {"code": "Delivered_Other", "wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "live"},
+    {"wording": "InTransit_Departure", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The Hong Kong hub's departure, worded as the platform's sub-status and filed without a code."},
+    {"wording": "Departed USPS Regional Facility", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Relayed from USPS without a code."}
+  ]
+}

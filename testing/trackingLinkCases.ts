@@ -500,6 +500,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     marker: /Sorry, tracking ID not found!/,
     forwarding: { notFound: /Sorry, tracking ID not found!/ } },
   // The page reads the number from its address into its search tags and looks it up on load.
+  // The tracker looks the number up and lists it with its status.
+  { carrier: 'jcex', number: 'JCZ9999999999DH',
+    route: /^https:\/\/track\.jcex\.com\/\?nums=JCZ9999999999DH$/,
+    marker: /查询不到|暂无轨迹详情|全部展开/ },
   { carrier: 'jumppoint', number: 'JP000000000000',
     route: /^https:\/\/tracking\.jumppoint\.io\/\?q=JP000000000000$/,
     marker: /Shipment Not Found|查無此單|查无此单|Jumppoint標準快遞 及 即日快遞|Jumppoint Standard Express and Same-day Express/ },

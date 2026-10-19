@@ -17447,6 +17447,47 @@
       }
     ]
   },
+  "jcex": {
+    "displayName": "JCEX",
+    "color": "#0080cc",
+    "aliases": [
+      "JCEX",
+      "Jiacheng International",
+      "Hangzhou Jiacheng International Logistics",
+      "佳成国际",
+      "佳成国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "jcex",
+      "localClocks": true
+    },
+    "canaryUrl": "https://track.jcex.com/",
+    "trackingUrlTemplate": "https://track.jcex.com/?nums={trackingNumber}",
+    "trackingSearchUrl": "https://track.jcex.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.jcex.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JCZ\\d{10}DH$",
+        "confidence": "high"
+      }
+    ]
+  },
   "jeebly": {
     "displayName": "Jeebly",
     "color": "#db124b",

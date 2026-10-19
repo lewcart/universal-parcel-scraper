@@ -17449,6 +17449,47 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "jcex": {
+    "displayName": "JCEX",
+    "color": "#0080cc",
+    "aliases": [
+      "JCEX",
+      "Jiacheng International",
+      "Hangzhou Jiacheng International Logistics",
+      "佳成国际",
+      "佳成国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "jcex",
+      "localClocks": true
+    },
+    "canaryUrl": "https://track.jcex.com/",
+    "trackingUrlTemplate": "https://track.jcex.com/?nums={trackingNumber}",
+    "trackingSearchUrl": "https://track.jcex.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "track.jcex.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JCZ\\d{10}DH$",
+        "confidence": "high"
+      }
+    ]
+  },
   "jeebly": {
     "displayName": "Jeebly",
     "color": "#db124b",
@@ -31530,6 +31571,7 @@ export const CARRIER_IDS = [
   "jadlog",
   "jamaica-post",
   "janio",
+  "jcex",
   "jeebly",
   "jersey-post",
   "jet-logistic",
@@ -32308,6 +32350,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jadlog": [],
   "jamaica-post": [],
   "janio": ["janio-1"],
+  "jcex": ["jcex-1"],
   "jeebly": ["jeebly-1"],
   "jersey-post": ["jersey-post-s10"],
   "jet-logistic": [],

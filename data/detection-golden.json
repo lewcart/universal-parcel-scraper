@@ -74547,6 +74547,14 @@
     "candidates": []
   },
   {
+    "input": "JCZ0318108989DH",
+    "carrier": "jcex",
+    "confidence": "high",
+    "candidates": [
+      "jcex"
+    ]
+  },
+  {
     "input": "JD0002123456789012",
     "carrier": "unknown",
     "confidence": "low",

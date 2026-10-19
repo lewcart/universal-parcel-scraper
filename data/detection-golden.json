@@ -78463,6 +78463,19 @@
     ]
   },
   {
+    "input": "MC14202161",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "prompt-xpress"
+    ]
+  },
+  {
     "input": "ME 17628555026497EB",
     "carrier": "micro-express",
     "confidence": "high",
@@ -84185,7 +84198,8 @@
       "tnt-it"
     ],
     "asked": [
-      "tnt-it"
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -84225,6 +84239,19 @@
     "confidence": "high",
     "candidates": [
       "singapore-post"
+    ]
+  },
+  {
+    "input": "RP23248557",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -86381,6 +86408,17 @@
     "confidence": "high",
     "candidates": [
       "spee-dee"
+    ]
+  },
+  {
+    "input": "SP10826762",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {
@@ -91835,7 +91873,8 @@
       "tnt-it"
     ],
     "asked": [
-      "tnt-it"
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -91937,6 +91976,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "sp10424752",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "spxid047927535711",

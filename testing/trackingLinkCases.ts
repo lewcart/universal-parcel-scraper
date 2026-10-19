@@ -1679,6 +1679,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'maruti-air', number: '99999999',
     route: /^https:\/\/erp\.marutiair\.com\/TrackpageWeb\/WebAWBTracking\.aspx\?AWB=99999999$/,
     marker: /DETAIL NOT FOUND|Awb Tracking/i },
+  // The visibility portal looks up the number in its address on the server and answers an unknown one with a notice naming it.
+  { carrier: 'prompt-xpress', number: 'RP00000000',
+    route: /^https:\/\/web\.promptxpress\.lk\/PublicTracking\/TrackingStatus\?trackingNo=RP00000000$/,
+    marker: /No tracking data was found for|Tracking & Visibility Portal/ },
   // The portal opens a tab for the number in its address and loads its answer, an alert for an unknown PRO.
   { carrier: 'roadrunner', number: '999999999',
     route: /^https:\/\/tools\.rrts\.com\/LTLTrack\/\?searchValues=999999999$/,

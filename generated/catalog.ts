@@ -24162,11 +24162,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Colombo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "prompt-xpress",
+      "recognitionRank": 583,
+      "localClocks": true
     },
     "canaryUrl": "https://promptxpress.lk/TrackItem.aspx",
+    "trackingUrlTemplate": "https://web.promptxpress.lk/PublicTracking/TrackingStatus?trackingNo={trackingNumber}",
     "trackingSearchUrl": "https://promptxpress.lk/TrackItem.aspx",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "web.promptxpress.lk"
+        ],
+        "pathPattern": "^/PublicTracking/TrackingStatus/?$",
+        "params": [
+          "trackingNo"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^(?:(?:MC|NC|RP)\\d{8}|SP\\d{9})$",

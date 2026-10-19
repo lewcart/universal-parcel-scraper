@@ -2975,6 +2975,12 @@
     "reason": "A three-letter code and eight digits is printed by several carriers, and TPC station codes vary."
   },
   {
+    "carrier": "prompt-xpress",
+    "pattern": "^SP\\d{8}$",
+    "kind": "open",
+    "reason": "Complaints give Prompt Xpress numbers as SP and eight digits, while its former tracking page gave SP and nine; the tracker no longer holds those parcels, so the layout is not established."
+  },
+  {
     "carrier": "pronto-lanka",
     "pattern": "^\\d{8}$",
     "kind": "by_design",

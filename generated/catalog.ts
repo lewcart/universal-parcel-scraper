@@ -16056,7 +16056,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hovership",
+      "recognitionRank": 687,
+      "localClocks": true
     },
     "canaryUrl": "https://www.hovership.com/track/",
     "trackingUrlTemplate": "https://www.hovership.com/track/{trackingNumber}/",

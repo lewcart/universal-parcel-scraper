@@ -188,6 +188,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "hermes-at": 876,
   "hermes-de": 840,
   "houng-ah-loun": 637,
+  "hovership": 687,
   "hr-parcel": 887,
   "hrvatska-posta": 160,
   "hywl": 993,

@@ -1690,6 +1690,13 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/apps\.fastfrate\.com\/fastnet\/FastNet\.aspx\?ProbillNo=0000000000$/,
     marker: /Fastfrate Quick Probill Tracking/,
     forwarding: { notFound: /Probill (?:Number )?not found/ } },
+  // The server looks up the number in its address and answers an unknown one with HTTP 404 and
+  // its not-found notice, which does not repeat the number.
+  { carrier: 'hovership', number: 'ZZ00000000ZZ',
+    route: /^https:\/\/www\.hovership\.com\/track\/ZZ00000000ZZ\/$/,
+    marker: /Tracking number not found|Tracking history/,
+    shipmentNotFound: { status: 404, marker: /We couldn.t find a shipment for that tracking number/ },
+    forwarding: { notFound: /Tracking number not found/i } },
 ];
 
 /**

@@ -84,6 +84,7 @@ describe('status map answers', () => {
     expect(answer('ups', 'OF', 'Out For Delivery Today')).toEqual(mapped('out_for_delivery'));
     expect(answer('ups', 'PC', 'RFID Confirmed Pickup')).toEqual(mapped('accepted'));
     expect(answer('gofo', '414', 'In Transit to Next Facility')).toEqual(mapped('in_transit'));
+    expect(answer('gofo', '810', 'In Transit to Next Facility')).toEqual(mapped('in_transit'));
     expect(answer('gofo', '205', 'Delivered, In Mailbox')).toEqual(mapped('delivered'));
     expect(answer('gofo', '205', 'Synthetic scan')).toEqual(unknown);
     expect(answer('aliexpress', 'GTMS_ORDER_INFO_UPDATE', 'Delivery details updated')).toEqual(gap);

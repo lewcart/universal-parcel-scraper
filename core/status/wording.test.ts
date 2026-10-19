@@ -739,6 +739,8 @@ describe('classifyWording', () => {
       ['Prepared for last mile handover', 'in_transit'],
       ['Parcel was dropped off at the parcel shop', 'accepted'], ['create, Shipment order created', 'registered'],
       ['Create. Shipment order created', 'registered'], ['Handover to airline', 'in_transit'],
+      ['Parcel was handed over to Pickup parcel shop', 'ready_for_pickup'], ['Takeover by Pickup parcel shop', 'ready_for_pickup'],
+      ['Takeover by pickup parcel shop_shop', 'ready_for_pickup'], ['Parcel handed over to DPD at the Pickup parcel shop', 'accepted'],
       ['Has been put into storage', 'accepted'], ['Has left the warehouse', 'in_transit'],
       ['Package left the warehouse', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });

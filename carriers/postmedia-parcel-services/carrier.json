@@ -19,17 +19,65 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "postmedia-parcel-services",
+    "requirements": [
+      {
+        "field": "postcode",
+        "validator": "internationalPostcode",
+        "label": "Delivery postal code",
+        "type": "text",
+        "help": "Postmedia Parcel Services shows a parcel only with the recipient's postal code.",
+        "pattern": "^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$",
+        "maxLength": 7,
+        "inputMode": "text",
+        "autoComplete": "postal-code"
+      }
+    ],
+    "steps": [
+      "direct",
+      "retry"
+    ]
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "eta"
+  ],
   "portal": {
     "searchUrl": "https://postmediaparcelservices.com/",
     "canaryUrl": "https://postmediaparcelservices.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "order_date",
+      "pickup_point"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "order_date",
+      "pickup_point"
+    ],
+    "unavailable": [
+      "provider_code",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "signatory",
+      "proof_of_delivery",
+      "delivery_partner"
+    ]
   },
   "links": [
     {
@@ -37,7 +85,7 @@
         "postmediaparcelservices.com",
         "www.postmediaparcelservices.com"
       ],
-      "pathPattern": "^/?$",
+      "pathPattern": "^/(?:fr/?)?(?:track-your-shipment/?)?$",
       "params": [
         "bniTrackingID"
       ]

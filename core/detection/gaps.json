@@ -2933,6 +2933,12 @@
     "reason": "Fourteen digits are shared by many carriers and no known prefix or check digit sets PostEx apart."
   },
   {
+    "carrier": "postmedia-parcel-services",
+    "pattern": "^BNI\\d{9}$",
+    "kind": "open",
+    "reason": "No public number shows the BNI layout, since every archived lookup also carries the recipient's postal code, and Purolator's three-letter rule claims it."
+  },
+  {
     "carrier": "postnord",
     "pattern": "^\\d{14}$",
     "kind": "by_design",

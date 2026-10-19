@@ -23851,7 +23851,20 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "postmedia-parcel-services",
+      "requirements": [
+        {
+          "field": "postcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postal code",
+          "type": "text",
+          "help": "Postmedia Parcel Services shows a parcel only with the recipient's postal code.",
+          "pattern": "^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "canaryUrl": "https://postmediaparcelservices.com/",
     "trackingSearchUrl": "https://postmediaparcelservices.com/",
@@ -23861,7 +23874,7 @@ export const CARRIER_CATALOG = {
           "postmediaparcelservices.com",
           "www.postmediaparcelservices.com"
         ],
-        "pathPattern": "^/?$",
+        "pathPattern": "^/(?:fr/?)?(?:track-your-shipment/?)?$",
         "params": [
           "bniTrackingID"
         ]

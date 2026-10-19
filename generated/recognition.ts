@@ -39,6 +39,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "bangladesh-post": 909,
   "barid-al-maghrib": 901,
   "belpost": 929,
+  "best-overnite-express": 551,
   "better-trucks": 738,
   "bex-express": 827,
   "bjs-home-delivery": 844,

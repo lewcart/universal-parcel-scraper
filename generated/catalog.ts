@@ -7313,7 +7313,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "best-overnite-express",
+      "recognitionRank": 551,
+      "localClocks": true
     },
     "canaryUrl": "https://www.bestovernite.com/shipment-tracking/",
     "trackingSearchUrl": "https://www.bestovernite.com/shipment-tracking/",

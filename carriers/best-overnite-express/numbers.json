@@ -2,18 +2,11 @@
   "carrier": "best-overnite-express",
   "records": [
     {
-      "number": "59486062",
+      "number": "20000002",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20060426210812/http://www.bestovernite.com:80/cgi-bin/wbprotrk?wbfb=59486062&wbscac=&button=Trace",
-        "date": "2006-04-26",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -23,7 +16,7 @@
           "heppner"
         ]
       },
-      "note": "An opened capture of Best Overnite Express's own PRO trace shows this flooring shipment's line haul from Los Angeles to Phoenix and its delivery."
+      "note": "Invented placeholder for an eight-digit PRO number; the tracker names the consignee and signer of the archived public sample."
     }
   ]
 }

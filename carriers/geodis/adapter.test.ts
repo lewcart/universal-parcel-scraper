@@ -267,6 +267,23 @@ describe('GEODIS response normalization', () => {
     }), OFFICIAL_SYNTHETIC_NUMBER)).toMatchObject({ status: 'exception', current_stage: 'returned' });
   });
 
+  it('marks a reply without scans as a summary', () => {
+    // A delivered shipment's anonymous reply: the timeline step and the terminal state, no scans.
+    expect(parseGeodisTrackingResponse(successPayload({
+      etatLivre: true,
+      timeline: { listTimesteps: [{ actif: true, libelle: 'Expédition livrée' }] },
+      listJoursSuivis: null,
+    }), OFFICIAL_SYNTHETIC_NUMBER)).toMatchObject({
+      status: 'delivered',
+      last_status_text: 'Expédition livrée',
+      last_update: null,
+      summary_only: true,
+      events: [],
+    });
+    expect(parseGeodisTrackingResponse(successPayload(), OFFICIAL_SYNTHETIC_NUMBER))
+      .not.toHaveProperty('summary_only');
+  });
+
   it('does not treat delivery-driver or future-delivery wording as delivered', () => {
     const eventPayload = (label: string) => successPayload({
       timeline: { listTimesteps: [] },

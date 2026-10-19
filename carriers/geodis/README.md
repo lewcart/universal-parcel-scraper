@@ -15,7 +15,8 @@ scope.
      is `IndeterminateError`: a technical rejection does not prove the shipment is absent.
    - `contenu.noSuivi` must equal the requested number.
    - Events come from `listJoursSuivis[].suivis[]`, de-duplicated on time, location and
-     description, newest first, capped at 100.
+     description, newest first, capped at 100. A delivered shipment's reply can come without
+     them, with only the timeline step; the result is then `summary_only`.
 
 ## Notes
 

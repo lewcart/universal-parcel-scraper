@@ -291,6 +291,8 @@ export function parseGeodisTrackingResponse(
     ...(service ? { service_name: service } : {}),
     ...(weight !== null ? { weight_kg: weight } : {}),
     timezone: TIMEZONE,
+    // A delivered shipment's anonymous reply can carry the timeline step alone, without scans.
+    ...(events.length ? {} : { summary_only: true }),
     events,
   };
 }

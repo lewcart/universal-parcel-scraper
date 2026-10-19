@@ -107,6 +107,7 @@ import { adapter as correoArgentino } from '../carriers/correo-argentino/adapter
 import { adapter as correoUruguayo } from '../carriers/correo-uruguayo/adapter.js';
 import { adapter as correosChile } from '../carriers/correos-chile/adapter.js';
 import { adapter as correosDeMexico } from '../carriers/correos-de-mexico/adapter.js';
+import { adapter as correosElSalvador } from '../carriers/correos-el-salvador/adapter.js';
 import { adapter as correosExpress } from '../carriers/correos-express/adapter.js';
 import { adapter as correosSpain } from '../carriers/correos-spain/adapter.js';
 import { adapter as courierCenter } from '../carriers/courier-center/adapter.js';
@@ -681,6 +682,7 @@ export const REGISTRY: RegistryDefinition = {
     "correo-uruguayo": correoUruguayo,
     "correos-chile": correosChile,
     "correos-de-mexico": correosDeMexico,
+    "correos-el-salvador": correosElSalvador,
     "correos-express": correosExpress,
     "correos-spain": correosSpain,
     "courier-center": courierCenter,
@@ -1287,7 +1289,7 @@ export const REGISTRY: RegistryDefinition = {
     "correos-chile": "correos-chile",
     "correos-cuba": "universal",
     "correos-de-mexico": "correos-de-mexico",
-    "correos-el-salvador": "universal",
+    "correos-el-salvador": "correos-el-salvador",
     "correos-express": "correos-express",
     "correos-nicaragua": "universal",
     "correos-spain": "correos-spain",

@@ -9679,7 +9679,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/El_Salvador",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-el-salvador",
+      "recognitionRank": 577,
+      "localClocks": true
     },
     "canaryUrl": "https://www.correos.gob.sv/servicios/rastrear-paquete/",
     "trackingSearchUrl": "https://www.correos.gob.sv/servicios/rastrear-paquete/",

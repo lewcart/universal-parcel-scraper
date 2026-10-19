@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "singapore-post",
         "confidence": "high"
       },
-      "note": "Archived lookup on the former Correos de El Salvador tracker for an inbound item from Singapore; opened capture shows the app shell, history not visible."
+      "note": "Archived lookup on the former Correos de El Salvador tracker for an inbound letter from Singapore; the capture shows only the app shell. Correos de El Salvador's tracker shows the letter received at the office of exchange and delivered in San Salvador."
     }
   ]
 }

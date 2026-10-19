@@ -70,10 +70,12 @@ export function parseAustrianPostResponse(payload: unknown, rawNumber: string): 
   if (parcel === null) throw new NotFoundError(PROVIDER);
   if (!isRecord(parcel)) throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
   const own = clean(parcel.sendungsnummer, 64);
-  // A 22-digit parcel sent abroad answers under the 24-digit EURODIS barcode it
-  // travels on from the hand-over; any other number is another item.
-  const eurodis = own !== number && /^\d{22}$/.test(number) && /^\d{24}$/.test(own);
-  if (own !== number && !eurodis) throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
+  // Once a partner abroad takes the parcel over, the reply names it by the partner's
+  // number (sendungsnummer, activeIdentityCode: a EURODIS barcode, or an S10 number for
+  // Germany) and keeps Austrian Post's own as originalIdentityCode.
+  if (![own, parcel.activeIdentityCode, parcel.originalIdentityCode].some((code) => clean(code, 64) === number)) {
+    throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
+  }
   if (!Array.isArray(parcel.sendungsEvents) || parcel.sendungsEvents.length > 500) throw new SchemaError(PROVIDER, 'Austrian Post returned invalid tracking history');
   const parsed: Array<{ event: CarrierEvent; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
@@ -125,7 +127,7 @@ export function parseAustrianPostResponse(payload: unknown, rawNumber: string): 
     ...(weight === null ? {} : { weight_kg: weight }),
     ...(measured ? { dimensions_text: `${sides.join(' × ')} cm` } : {}),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
-    ...(eurodis ? { canonical_tracking_number: own } : {}),
+    ...(own && own !== number ? { canonical_tracking_number: own } : {}),
     events,
   };
 }
@@ -138,7 +140,7 @@ export class AustrianPostTracker {
     const budgetMs = context.budgetMs ?? this.options.timeoutMs ?? 15_000;
     if (!Number.isFinite(budgetMs) || budgetMs <= 0) throw new TypeError('Austrian Post timeout must be positive');
     context.signal?.throwIfAborted();
-    const query = `query { einzelsendung(sendungsnummer: "${number}") { sendungsnummer status weight dimensions { length width height } estimatedDelivery { startDate endDate startTime endTime } sendungsEvents { timestamp status reasontypecode trackingDesc eventPlaceName } } }`;
+    const query = `query { einzelsendung(sendungsnummer: "${number}") { sendungsnummer activeIdentityCode originalIdentityCode status weight dimensions { length width height } estimatedDelivery { startDate endDate startTime endTime } sendungsEvents { timestamp status reasontypecode trackingDesc eventPlaceName } } }`;
     try {
       const { bytes } = await fetchBounded(ENDPOINT, {
         method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'User-Agent': userAgentOf(this.options.userAgent) }, body: JSON.stringify({ query }),

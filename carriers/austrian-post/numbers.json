@@ -234,6 +234,54 @@
         ]
       },
       "note": "Made-up number in the shape of the EURODIS barcode of a parcel Austrian Post's tracker followed abroad."
+    },
+    {
+      "number": "1021107502202813903809",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260804115412/https://www.post.at/s/sendungsdetails?snr=1021107502202813903809",
+        "date": "2026-08-04",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "austrian-post",
+          "usps",
+          "estafeta"
+        ]
+      },
+      "note": "An Austrian Post parcel sent to Italy, from an archived capture of its own tracking page. Its tracker names the parcel by the EURODIS partner's barcode and keeps this number as the original one."
+    },
+    {
+      "number": "1046752500242253902768",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260922140554/https://www.post.at/s/sendungsdetails?snr=1046752500242253902768",
+        "date": "2026-09-22",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "austrian-post",
+          "usps",
+          "estafeta"
+        ]
+      },
+      "note": "An Austrian Post parcel sent to Germany, from an archived capture of its own tracking page. Its tracker names the parcel by the partner's S10 number and keeps this number as the original one."
     }
   ]
 }

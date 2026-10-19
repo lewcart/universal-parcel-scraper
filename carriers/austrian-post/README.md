@@ -10,9 +10,10 @@ Post's.
 ## How it works
 
 `direct` queries the public endpoint once and requires the returned item number
-to match. A 22-digit parcel sent abroad is the exception: from its hand-over to
-the partner, the reply names the 24-digit EURODIS barcode it travels on, which
-the adapter reports as the canonical tracking number. The optional Post account
+to match. Once a partner abroad takes a parcel over, the reply names it by the
+partner's number, a EURODIS barcode or an S10 number, and keeps Austrian Post's
+own as the original one, so either binds the reply; the adapter then reports the
+partner's number as the canonical tracking number. The optional Post account
 flow is unnecessary for public history.
 
 ## Notes

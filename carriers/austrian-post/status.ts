@@ -50,7 +50,8 @@ export function austrianPostEventStatus(code: string, reason: string, text: stri
   if (['EAW', 'HO', 'UPB', '2034'].includes(reason)) return SUMMARY.EB;
   if (/\b(?:rücksendung|zurückgesandt|return to sender)\b/i.test(text)) return SUMMARY.RE;
   if (code === 'AZT' || /\b(?:in zustellung|out for delivery)\b/i.test(text)) return SUMMARY.IZ;
-  if (code === 'BEI' || code === 'PUG' || transitScan(code, text)) return SUMMARY.IV;
+  // IMP is the arrival in the destination country, which the page files under distribution.
+  if (code === 'BEI' || code === 'PUG' || code === 'IMP' || transitScan(code, text)) return SUMMARY.IV;
   // Unmapped scan codes retain their wording for the host's classifier.
   return SUMMARY[code];
 }

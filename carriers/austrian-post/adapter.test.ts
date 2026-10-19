@@ -14,6 +14,10 @@ const returned = () => JSON.parse(readFileSync(new URL('./fixtures/returned.json
 // A Hermes Austria parcel under Hermes's number, left in a Post Empfangsbox and taken out of it.
 const HERMES = '10000000000005';
 const receivingBox = () => JSON.parse(readFileSync(new URL('./fixtures/receiving-box.json', import.meta.url), 'utf8'));
+// A parcel sent to Italy through EURODIS, which the reply names by the partner's barcode once the partner takes it over.
+const ABROAD = '1000000000000000000003';
+const EURODIS = '010000000000000000000001';
+const eurodis = () => JSON.parse(readFileSync(new URL('./fixtures/eurodis.json', import.meta.url), 'utf8'));
 
 describe('Austrian Post public tracking', () => {
   it('binds history to the item and classifies scans independently of the summary', () => {
@@ -97,11 +101,17 @@ describe('Austrian Post public tracking', () => {
 
   it('reads a parcel sent abroad under the EURODIS barcode the reply names for its 22-digit number', () => {
     const payload = fixture();
-    payload.data.einzelsendung.sendungsnummer = '010000000000000000000001';
+    Object.assign(payload.data.einzelsendung, {
+      sendungsnummer: '010000000000000000000001', activeIdentityCode: '010000000000000000000001', originalIdentityCode: NUMBER,
+    });
     expect(parseAustrianPostResponse(payload, NUMBER)).toMatchObject({
       status: 'delivered', canonical_tracking_number: '010000000000000000000001',
     });
     expect(parseAustrianPostResponse(fixture(), NUMBER)).not.toHaveProperty('canonical_tracking_number');
+    // A barcode alone, without the reply naming the number asked, is another item.
+    const unbound = fixture();
+    unbound.data.einzelsendung.sendungsnummer = '010000000000000000000001';
+    expect(() => parseAustrianPostResponse(unbound, NUMBER)).toThrow('different shipment');
   });
 
   it('rejects a different returned item', () => {
@@ -118,6 +128,21 @@ describe('Austrian Post public tracking', () => {
     const box = receivingBox();
     box.data.einzelsendung.sendungsnummer = `00000000${HERMES}`;
     expect(() => parseAustrianPostResponse(box, HERMES)).toThrow('different shipment');
+  });
+
+  it('follows a parcel the reply names by its partner’s barcode abroad, under the number Austrian Post gave it', () => {
+    const result = parseAustrianPostResponse(eurodis(), ABROAD);
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: '2026-03-12T10:15:00Z' });
+    expect(result.events?.map((event) => [event.provider_code, event.stage, event.location])).toEqual([
+      ['IZ', 'delivered', undefined], ['AZT', 'out_for_delivery', undefined], ['IMP', 'in_transit', 'PLZ Eurodis, Italien'],
+      ['PUG', 'in_transit', 'Synthetic logistics centre'], ['BEI', 'in_transit', 'Synthetic logistics centre'], ['AV', 'registered', undefined],
+    ]);
+    // The partner's barcode answers for the same parcel.
+    expect(parseAustrianPostResponse(eurodis(), EURODIS)).toMatchObject({ status: 'delivered' });
+    // Another parcel's original number binds nothing.
+    const other = eurodis();
+    other.data.einzelsendung.originalIdentityCode = '1000000000000000000002';
+    expect(() => parseAustrianPostResponse(other, ABROAD)).toThrow('different shipment');
   });
 
   it('separates positive not-found from missing data, query errors and a shipment without scans', () => {
@@ -270,6 +295,7 @@ describe('Austrian Post public tracking', () => {
     expect(init).toMatchObject({ method: 'POST', cache: 'no-store', redirect: 'error' });
     const query = String(JSON.parse(String(init?.body)).query);
     expect(query).toContain(`sendungsnummer: "${NUMBER}"`);
+    expect(query).toContain('sendungsnummer activeIdentityCode originalIdentityCode status');
     expect(query).toContain('estimatedDelivery { startDate endDate startTime endTime }');
     // The public page shows the sender only after sign-in; nothing about the recipient either.
     expect(query).not.toContain('shipper');

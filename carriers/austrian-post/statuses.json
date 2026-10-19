@@ -37,6 +37,24 @@
       "firstSeen": "2026-09-28"
     },
     {
+      "code": "PUG",
+      "wording": "Übergabe an Kooperationspartner",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Austrian Post hands a parcel sent abroad to the EURODIS partner that delivers it."
+    },
+    {
+      "code": "IMP",
+      "wording": "Sendung im Zielland angekommen",
+      "language": "de",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "The partner abroad reports the parcel's arrival in the destination country; the page files it under distribution."
+    },
+    {
       "wording": "Sendung wurde zugestellt",
       "language": "de",
       "stage": "delivered",

@@ -32,8 +32,10 @@ delivers it. Tracked through EURODIS's own tracker for the whole network.
   lists at the same minute and place, such as "delivered completely" beside the collo's
   "delivered", is kept once, as the collo's.
 - A scan has a wall clock to the minute and no offset, and most name their place and country.
-  The clock is read in the zone of the country the scan names; a scan without a country keeps
-  its wall clock in `local_time`.
+  The clock is read in the zone of the country the scan names. The delivery depot and the
+  round can name no place: once the newest scan that names a country is in the destination
+  country, the later scans are read in that country's zone. Any other scan without a country
+  keeps its wall clock in `local_time`.
 - Stages come from the wording, since the tracker has no codes. A "special delivery agreement"
   moves nothing.
 - Once a shipment reaches the destination country, the page names the member the recipient

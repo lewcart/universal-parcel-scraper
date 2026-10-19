@@ -40,7 +40,7 @@ export function eurodisLookup(raw: string): EurodisLookup {
 }
 
 type Selection = ReturnType<CheerioAPI>;
-interface Scan { wall: string; event: CarrierEvent }
+interface Scan { wall: string; country: string | null; event: CarrierEvent }
 interface Collo { number: string; partner: string; status: string; scans: Scan[] }
 
 /**
@@ -86,10 +86,15 @@ function clockOf(stamp: RegExpExecArray, country: string | null): { at: { time: 
   const calendar = DateTime.fromObject(fields, { zone: 'UTC' });
   if (!calendar.isValid || calendar.hour !== fields.hour || calendar.day !== fields.day) throw new SchemaError(PROVIDER, 'EURODIS returned an invalid scan time');
   const wall = calendar.toFormat("yyyy-MM-dd'T'HH:mm:ss");
-  const zone = country ? countryTimeZone(country) : null;
-  const zoned = zone ? firstOccurrence(DateTime.fromObject(fields, { zone })) : null;
-  const time = zoned?.isValid && zoned.hour === fields.hour ? zoned.toISO({ suppressMilliseconds: true }) : null;
+  const time = inCountry(wall, country);
   return { at: time ? { time } : { local_time: wall }, wall };
+}
+
+/** A wall clock's instant in a single-zone country, or null; a clock the spring change skips has none. */
+function inCountry(wall: string, country: string | null): string | null {
+  const zone = country ? countryTimeZone(country) : null;
+  const zoned = zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
+  return zoned?.isValid && zoned.toFormat("yyyy-MM-dd'T'HH:mm:ss") === wall ? zoned.toISO({ suppressMilliseconds: true }) : null;
 }
 
 /** One entry of a timeline: its wording, then its date, minute, place and country. */
@@ -111,7 +116,7 @@ function scanOf(item: Selection): Scan | null {
   const location = place && country ? `${place}, ${country}` : place || country || '';
   const { at, wall } = clockOf(stamp, country);
   const staged = eurodisStage(description);
-  return { wall, event: {
+  return { wall, country, event: {
     ...at,
     description,
     ...(location ? { location } : {}),
@@ -226,12 +231,21 @@ export function parseEurodis(html: string, raw: string): CarrierResult {
     });
   // Newest first by the scans' wall clocks, as the page orders them; one
   // minute keeps the page's order.
-  const events = scans.map((scan, index) => ({ scan, index }))
+  const ordered = scans.map((scan, index) => ({ scan, index }))
     .sort((left, right) => (left.scan.wall < right.scan.wall ? 1 : left.scan.wall > right.scan.wall ? -1 : left.index - right.index))
-    .map(({ scan }) => scan.event);
-
+    .map(({ scan }) => scan);
   const destination = overview.get('destination country') ?? '';
   const country = countryCode(destination);
+  // Once the newest scan that names a country is in the destination country,
+  // the later scans without a place, the delivery depot and the round, are there too.
+  const arrived = ordered.findIndex((scan) => scan.country);
+  const events = ordered.map((scan, index) => {
+    const { local_time: wall, ...event } = scan.event;
+    const time = index < arrived && !scan.country && typeof wall === 'string' && ordered[arrived]!.country === country
+      ? inCountry(wall, country) : null;
+    return time ? { time, ...event } : scan.event;
+  });
+
   const single = colli.length === 1 ? colli[0]! : null;
   const partner = kind === 'collo' ? own[0]!.partner || (single ? reference(overview, 'shipment number delivery partner', false) : '')
     : reference(overview, 'shipment number delivery partner', false) || single?.partner || '';

@@ -44,6 +44,23 @@ describe('EURODIS direct tracking', () => {
     expect(JSON.stringify(result)).not.toMatch(/Webshop|Példa\b|J\. |\+36|\+43|example\.com|ORDER/);
   });
 
+  it('reads the scans without a place after the parcel reached the destination country in that country\'s clock', () => {
+    const arrived = parseEurodis(timeline(scan('Out for delivery', '2026-10-19, 08:11'), scan('delivery depot', '2026-10-19, 06:52'),
+      scan('Inbound Gateway', '2026-10-16, 19:55 / Példafalu / HU'), scan('in transit', '2026-10-15, 15:12 / Exemplu / RO'),
+      scan('depot', '2026-10-15, 09:00'), scan('Outbound Gateway', '2026-10-14, 08:54 / Primer / BG')), BARCODE);
+    expect(arrived).toMatchObject({ current_stage: 'out_for_delivery', last_update: '2026-10-19T08:11:00+02:00', destination_country: 'HU' });
+    expect(arrived.events?.slice(0, 6).map(event => [event.time ?? event.local_time, event.description])).toEqual([
+      ['2026-10-19T08:11:00+02:00', 'Out for delivery'], ['2026-10-19T06:52:00+02:00', 'delivery depot'],
+      ['2026-10-16T19:55:00+02:00', 'Inbound Gateway'], ['2026-10-15T15:12:00+03:00', 'in transit'],
+      // A scan without a place on the way keeps its wall clock.
+      ['2026-10-15T09:00:00', 'depot'], ['2026-10-14T08:54:00+03:00', 'Outbound Gateway'],
+    ]);
+    // Before a scan in the destination country, a scan without a place could be anywhere on the way.
+    const onTheWay = parseEurodis(timeline(scan('delivery depot', '2026-10-19, 06:52'), scan('in transit', '2026-10-15, 15:12 / Exemplu / RO')), BARCODE);
+    expect(onTheWay.events?.[0]).toMatchObject({ local_time: '2026-10-19T06:52:00', description: 'delivery depot' });
+    expect(onTheWay.events?.[0]).not.toHaveProperty('time');
+  });
+
   it('hands the parcel to the delivering member under that member\'s own number', () => {
     for (const number of [BARCODE, SHIPMENT]) {
       const result = parseEurodis(delivered, number);

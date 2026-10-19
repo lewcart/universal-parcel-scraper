@@ -95,6 +95,7 @@ import { adapter as chunghwaPost } from '../carriers/chunghwa-post/adapter.js';
 import { adapter as chunil } from '../carriers/chunil/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
 import { adapter as cityExpressRs } from '../carriers/city-express-rs/adapter.js';
+import { adapter as citylinkExpress } from '../carriers/citylink-express/adapter.js';
 import { adapter as citymail } from '../carriers/citymail/adapter.js';
 import { adapter as cjLogistics } from '../carriers/cj-logistics/adapter.js';
 import { adapter as cjPacket } from '../carriers/cj-packet/adapter.js';
@@ -696,6 +697,7 @@ export const REGISTRY: RegistryDefinition = {
     "chunil": chunil,
     "ciblex": ciblex,
     "city-express-rs": cityExpressRs,
+    "citylink-express": citylinkExpress,
     "citymail": citymail,
     "cj-logistics": cjLogistics,
     "cj-packet": cjPacket,
@@ -1320,7 +1322,7 @@ export const REGISTRY: RegistryDefinition = {
     "chunil": "chunil",
     "ciblex": "ciblex",
     "city-express-rs": "city-express-rs",
-    "citylink-express": "universal",
+    "citylink-express": "citylink-express",
     "citymail": "citymail",
     "citysprint": "universal",
     "cj-logistics": "cj-logistics",

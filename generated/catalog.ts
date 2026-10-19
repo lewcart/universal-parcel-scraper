@@ -9021,7 +9021,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "citylink-express",
+      "recognitionRank": 533,
+      "localClocks": true
     },
     "canaryUrl": "https://www.citylinkexpress.com/track-your-shipment/",
     "trackingUrlTemplate": "https://www.citylinkexpress.com/tracking-result/?track0={trackingNumber}",

@@ -75,6 +75,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "chunil": 621,
   "ciblex": 640,
   "city-express-rs": 817,
+  "citylink-express": 533,
   "citymail": 868,
   "cj-logistics": 977,
   "cj-packet": 956,

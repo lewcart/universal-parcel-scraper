@@ -1237,6 +1237,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skynet-worldwide', number: 'ZZ0000000000',
     route: /^https:\/\/tracking\.skynetexpress\.com\/go\/plm-tracking\?stid=skynet&cn=ZZ0000000000$/,
     marker: /No tracking found for this number|Frontier Force Technology/ },
+  // SkyTrack looks the number up as the page opens and renders over Blazor's connection; an unknown
+  // one gets the number and NOT FOUND under the search box.
+  { carrier: 'skynet-sa', number: 'ZZ0000000000',
+    route: /^https:\/\/web\.skynet\.co\.za:5002\/T\?R=ZZ0000000000$/,
+    marker: /TRACKING INFORMATION|ZZ0000000000 NOT FOUND/ },
   // The path redirects to the page's own route, which looks the number up and says when it does not recognize it.
   { carrier: 'danske-fragtmaend', number: 'ZZ000000',
     route: /^https:\/\/trace\.fragt\.dk\/#\/trackTrace\/ZZ000000$/,

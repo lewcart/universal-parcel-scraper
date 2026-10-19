@@ -50938,6 +50938,36 @@
     ]
   },
   {
+    "input": "710228254341",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sagawa"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "71049265579798",
     "carrier": "unknown",
     "confidence": "low",
@@ -82344,6 +82374,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "R080065106202",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste"
+    ],
+    "asked": [
+      "la-poste"
+    ]
   },
   {
     "input": "R1130292204230067",

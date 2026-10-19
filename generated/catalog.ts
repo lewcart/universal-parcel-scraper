@@ -25945,7 +25945,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skynet-sa",
+      "localClocks": true
     },
     "canaryUrl": "https://web.skynet.co.za:5002/T",
     "trackingUrlTemplate": "https://web.skynet.co.za:5002/T?R={trackingNumber}",

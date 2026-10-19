@@ -17,18 +17,45 @@
   "timezone": "Africa/Johannesburg",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "skynet-sa",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://web.skynet.co.za:5002/T?R={trackingNumber}",
     "searchUrl": "https://web.skynet.co.za:5002/T",
     "canaryUrl": "https://web.skynet.co.za:5002/T",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "customer_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "customer_reference"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

@@ -45,6 +45,62 @@
         ]
       },
       "note": "An archived address on SkyNet South Africa's old waybill tracker asked for it after the tracker had gone; the capture answered 404, so nothing shows it was a waybill."
+    },
+    {
+      "number": "R080065106202",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/681ef5a169c0aa8c8b9e1842",
+        "date": "2025-05-10",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste"
+        ]
+      },
+      "note": "A South African reviewer on SkyNet Worldwide Express's Trustpilot page gives it as the waybill number. SkyTrack lists it as a waybill, from its creation to its delivery."
+    },
+    {
+      "number": "710228254341",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/6936d6ca77f933c77deb1f3c",
+        "date": "2025-12-08",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "sf-express",
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse",
+          "sagawa"
+        ]
+      },
+      "note": "A South African reviewer on SkyNet Worldwide Express's Trustpilot page shows it on an imported parcel's label. SkyTrack lists it as a waybill, from its arrival by air through customs to delivery."
     }
   ]
 }

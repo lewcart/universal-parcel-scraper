@@ -250,6 +250,7 @@ import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/sta
 import { statusMap as intexPaketdienst } from '../../carriers/intex-paketdienst/status.js';
 import { statusMap as israelPost } from '../../carriers/israel-post/status.js';
 import { statusMap as jAndT } from '../../carriers/j-and-t/status.js';
+import { statusMap as jAndTAu } from '../../carriers/j-and-t-au/status.js';
 import { statusMap as jntCargo } from '../../carriers/j-and-t-cargo/status.js';
 import { statusMap as jAndTMiddleEast } from '../../carriers/j-and-t-middle-east/status.js';
 import { statusMap as janio } from '../../carriers/janio/status.js';
@@ -565,7 +566,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
   'indah-logistik': indahLogistik, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
-  'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
+  'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-au': jAndTAu, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jcex, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
   'kit-tk': kitTk, 'kuehne-nagel': kuehneNagel, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,

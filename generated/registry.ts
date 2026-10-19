@@ -288,6 +288,7 @@ import { adapter as interrapidisimo } from '../carriers/interrapidisimo/adapter.
 import { adapter as intexPaketdienst } from '../carriers/intex-paketdienst/adapter.js';
 import { adapter as israelPost } from '../carriers/israel-post/adapter.js';
 import { adapter as jAndT } from '../carriers/j-and-t/adapter.js';
+import { adapter as jAndTAu } from '../carriers/j-and-t-au/adapter.js';
 import { adapter as jAndTCargo } from '../carriers/j-and-t-cargo/adapter.js';
 import { adapter as jAndTMiddleEast } from '../carriers/j-and-t-middle-east/adapter.js';
 import { adapter as janio } from '../carriers/janio/adapter.js';
@@ -891,6 +892,7 @@ export const REGISTRY: RegistryDefinition = {
     "intex-paketdienst": intexPaketdienst,
     "israel-post": israelPost,
     "j-and-t": jAndT,
+    "j-and-t-au": jAndTAu,
     "j-and-t-cargo": jAndTCargo,
     "j-and-t-middle-east": jAndTMiddleEast,
     "janio": janio,
@@ -1566,7 +1568,7 @@ export const REGISTRY: RegistryDefinition = {
     "iran-post": "universal",
     "israel-post": "israel-post",
     "j-and-t": "j-and-t",
-    "j-and-t-au": "universal",
+    "j-and-t-au": "j-and-t-au",
     "j-and-t-br": "universal",
     "j-and-t-cargo": "j-and-t-cargo",
     "j-and-t-cn": "universal",

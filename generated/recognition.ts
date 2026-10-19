@@ -220,6 +220,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "interrapidisimo": 969,
   "israel-post": 81,
   "j-and-t": 530,
+  "j-and-t-au": 698,
   "j-and-t-cargo": 910,
   "janio": 811,
   "jeebly": 805,

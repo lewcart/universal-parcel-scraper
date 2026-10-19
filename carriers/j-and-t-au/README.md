@@ -1,9 +1,45 @@
 # J&T Express Australia
 
-J&T Express Australia parcels use enabled universal providers. There is no dedicated adapter.
-
 J&T Express Australia runs its own network, site and tracker, apart from the Southeast Asian J&T
-operations in `j-and-t`.
+operations in `j-and-t`. Tracked through the lookup its tracking page makes.
+
+## How it works
+
+1. `direct`: one `POST https://official.jtaunz.com/official/logisticsTracking/getDetailByWaybillNo?countryCode=AU`
+   with the body `{"waybillNos":["{number}"],"langType":"EN"}` and the page's `langType`,
+   `appId`, `timestamp`, `nonce`, `countryCode`, `key`, `sign` and `timezone` headers. It needs
+   no cookie, account, phone digits, CAPTCHA or browser. The JSON reply has one answer per
+   waybill it knows, which names the waybill in `keyword` and lists its scans in `details`.
+2. `retry`: the same lookup once more after a request that does not reach the site or times out.
+
+- `sign` is the MD5, in capitals, of the app id, the timestamp, the nonce, the body with its
+  keys sorted and the key, as the page's script computes it. The app id and key are in that
+  script, the same for every visitor. A refused signature (code 999001031) and refused
+  parameters (999001010, 999001030) are schema failures, not unknown waybills.
+- An unknown waybill is HTTP 200 with code 1 and an empty `data`, which the page reports as
+  having no tracking records: not found. A found waybill without scans has no history. A 404
+  or a redirect is a moved route, and a page in place of JSON is a challenge.
+- The answer's `keyword`, and any waybill a scan names, must be the waybill asked.
+- Recognition makes the same request.
+
+## Notes
+
+- A scan is a `scanTime` and a sentence (`customerTracking`), with no status code or place. The
+  map in `status.ts` stages the sentences seen live, in English and in the Chinese the tracker
+  answers other languages with; other sentences fall to the shared wording rules.
+- The page marks text in `【】` and turns phone numbers into links. Sentences lose anything in
+  brackets, the customer service number, who signed for the parcel, a person named after their
+  role and every phone number.
+- `scanTime` has no offset, but the reply writes it in the zone the request names in
+  `timezone`, which the page sets to its visitor's, as `GMT+1100`. The adapter names
+  `GMT+0000`, so each scan time is an instant in UTC wherever in Australia or New Zealand the
+  scan was made.
+
+## Limitations
+
+- No place, ETA or weight.
+- A sentence neither the map nor the wording rules know has no stage.
+- A history longer than 100 scans keeps the newest 100.
 
 ## Numbers
 
@@ -16,16 +52,7 @@ confidence. No public number has been found, so the corpus holds a synthetic one
 The [tracker](https://www.jtexpress.au/tracking) looks a parcel up when the number is in its `q`
 parameter.
 
-## Retrieval
-
-The tracker posts the numbers to
-`official.jtaunz.com/official/logisticsTracking/getDetailByWaybillNo?countryCode=AU`. The
-request is signed with an MD5 of the app id, timestamp, nonce, body and key the site ships to
-every visitor; no phone digits, CAPTCHA or account are needed. Each scan has a local time
-without an offset and a customer wording, with no status code or place. An unknown number
-comes back as an empty list.
-
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/j-and-t-au`, with `J_AND_T_AU_TRACKING_NUMBER` and
+optionally `J_AND_T_AU_UNKNOWN_NUMBER` set outside the repository.

@@ -1179,6 +1179,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'j-and-t-middle-east', number: 'JTE300000000000',
     route: /^https:\/\/www\.jtexpress\.me\/KSA\/trajectoryList\?waybillNo=JTE300000000000&type=0$/,
     marker: /Waybill list/ },
+  // The page looks up the waybills in `q` and says it has no tracking records for an unknown one.
+  { carrier: 'j-and-t-au', number: 'JTAU000000000000',
+    route: /^https:\/\/www\.jtexpress\.au\/tracking\?q=JTAU000000000000$/,
+    marker: /No tracking records yet|Keine Abfrageergebnisse|暂无查询记录|Waybill list/ },
   { carrier: 'aymakan', number: 'AY99999999999',
     route: /^https:\/\/aymakan\.com\/tracking\/AY99999999999$/,
     marker: /No shipment found|Track Shipments/ },

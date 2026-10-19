@@ -19,18 +19,42 @@
   "timezone": "Australia/Sydney",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "j-and-t-au",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 698
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://www.jtexpress.au/tracking?q={trackingNumber}",
     "searchUrl": "https://www.jtexpress.au/tracking",
     "canaryUrl": "https://www.jtexpress.au/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "location",
+      "provider_code",
+      "eta",
+      "weight"
+    ]
   },
   "links": [
     {

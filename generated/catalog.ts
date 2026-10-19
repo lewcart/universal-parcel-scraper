@@ -17146,7 +17146,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "j-and-t-au",
+      "recognitionRank": 698
     },
     "canaryUrl": "https://www.jtexpress.au/tracking",
     "trackingUrlTemplate": "https://www.jtexpress.au/tracking?q={trackingNumber}",

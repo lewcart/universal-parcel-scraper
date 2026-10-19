@@ -11,6 +11,7 @@ import {
   recheckUnanswered,
   requestCanaryStatus,
   runCanaries,
+  unreachableFrontDoors,
   type CanaryResult,
   type CanaryTarget,
 } from './carrier-canary.js';
@@ -189,11 +190,12 @@ describe('carrier front-door canaries', () => {
     expect(attempts[1]).toMatchObject({ attempt: 2, status: 302 });
     expect(attempts[1].error).toBeUndefined();
     expect(lines).toContainEqual(expect.stringMatching(/^PASS swiss-post(,[a-z-]+)* service\.post\.ch HTTP 302$/));
-    const targets = automaticCanaryTargets();
+    const targets = automaticCanaryTargets().filter((item) => !(item.carrierId in unreachableFrontDoors));
     const urls = new Set(targets.map((item) => item.url)).size;
     expect(urls).toBeLessThan(targets.length);
     expect(fetch).toHaveBeenCalledTimes(urls + 1);
-    expect(lines.at(-1)).toBe(`${urls}/${urls} canary URLs reachable for ${targets.length} automatic carriers`);
+    const unreachable = Object.keys(unreachableFrontDoors).length;
+    expect(lines.at(-1)).toBe(`${urls}/${urls} canary URLs reachable for ${targets.length} automatic carriers; ${unreachable} not probed from this network`);
     expect(lines.join('\n')).not.toContain('private-token');
   });
 
@@ -211,6 +213,37 @@ describe('carrier front-door canaries', () => {
     expect(await carrierCanaryMain(['--attempts', '1'])).toBe(1);
     expect(fs.readFileSync(summary, 'utf8')).toMatch(/\| ❌ failed \| swiss-post[a-z,-]* \(service\.post\.ch\) \| HTTP 404 \|/);
     expect(fs.readFileSync(output, 'utf8')).toMatch(/^failures<<(EOF_[\w-]+)\n- `swiss-post[a-z,-]* \(service\.post\.ch\)`: HTTP 404\n\1\n$/);
+  });
+
+  it('keeps unreachable front doors only for automatic carriers', () => {
+    const automatic = new Set(automaticCanaryTargets().map((item) => item.carrierId));
+    for (const carrier of Object.keys(unreachableFrontDoors)) expect(automatic, carrier).toContain(carrier);
+  });
+
+  it('lists front doors this network cannot reach in the job summary without probing them', async () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'canary-'));
+    const summary = path.join(directory, 'summary.md');
+    const output = path.join(directory, 'output');
+    vi.stubEnv('GITHUB_STEP_SUMMARY', summary);
+    vi.stubEnv('GITHUB_OUTPUT', output);
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const fetch = vi.fn(async () => new Response(null, { status: 200 }));
+    vi.stubGlobal('fetch', fetch);
+
+    expect(await carrierCanaryMain(['--attempts', '1'])).toBe(0);
+    const unreachable = automaticCanaryTargets().filter((item) => item.carrierId in unreachableFrontDoors);
+    expect(unreachable).toHaveLength(Object.keys(unreachableFrontDoors).length);
+    const probed = new Set(fetch.mock.calls.map((call: unknown[]) => String(call[0])));
+    const lines = log.mock.calls.map(([line]) => String(line));
+    const report = fs.readFileSync(summary, 'utf8');
+    for (const { carrierId, url } of unreachable) {
+      const hostname = new URL(url).hostname;
+      expect(probed.has(url), carrierId).toBe(false);
+      expect(lines).toContain(`SKIP ${carrierId} ${hostname} Not probed: ${unreachableFrontDoors[carrierId as keyof typeof unreachableFrontDoors]!}`);
+      expect(report).toContain(`| ⚠️ unverified | ${carrierId} (${hostname}) | Not probed: `);
+    }
+    // Only failures reach the issue.
+    expect(fs.existsSync(output)).toBe(false);
   });
 
   it('probes an unanswered front door again after a pause, keeping the original order', async () => {

@@ -3,11 +3,8 @@ import { chromium, devices, type Browser, type Frame, type Page, type Response }
 import { CARRIERS } from '../core/catalog/index.js';
 import type { CarrierId } from '../generated/catalog.js';
 import { searchPageVerdict } from './trackingLinkProbe.js';
-import { uncheckedSearchPages } from './trackingSearchPages.js';
+import { countNumberFields, FIELD_SELECTOR, uncheckedSearchPages } from './trackingSearchPages.js';
 
-// Fields in any frame and open shadow root. Their type is read from the element,
-// which treats an empty or misspelled type (17TRACK, STO) as text.
-const FIELD = 'input, textarea';
 const RENDER_WINDOW_MS = 15_000;
 
 // Several carriers share one page; each page is opened once.
@@ -20,18 +17,7 @@ const searchPages = [...Object.values(CARRIERS).reduce((pages, carrier) => {
 
 /** Visible, enabled fields that are neither a sign-in field nor the site's own search. */
 function frameFields(frame: Frame): Promise<number> {
-  const counted = frame.locator(FIELD).evaluateAll((elements) => elements.filter((element) => {
-    const field = element as HTMLInputElement;
-    // Japan Post's phone page types its number field as a URL.
-    if (field.tagName === 'INPUT' && !/^(?:text|search|tel|number|url)$/.test(field.type)) return false;
-    const box = field.getBoundingClientRect();
-    if (box.width === 0 || box.height === 0 || getComputedStyle(field).visibility === 'hidden' || field.disabled) return false;
-    const label = [field.name, field.id, field.placeholder, field.getAttribute('aria-label'), field.autocomplete].join(' ');
-    if (/e-?mail|user ?name|login|password|passwort|mot de passe/i.test(label)) return false;
-    const siteSearch = /^(?:q|query|s|search|keywords?)$/i.test(field.name)
-      || /^\s*(?:search|rechercher|suchen|buscar|cerca|szukaj)\b/i.test(field.placeholder || field.getAttribute('aria-label') || '');
-    return !siteSearch || /track|suivi|sendung|colis|parcel|package|shipment|waybill|consignment|number|numéro|nummer|número|numero/i.test(label);
-  }).length);
+  const counted = frame.locator(FIELD_SELECTOR).evaluateAll(countNumberFields);
   // A frame whose host never answers would hold the check forever.
   return Promise.race([counted, new Promise<number>((resolve) => setTimeout(() => resolve(0), 5000))]).catch(() => 0);
 }

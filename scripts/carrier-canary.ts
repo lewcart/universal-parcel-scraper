@@ -5,6 +5,27 @@ import catalog from '../data/catalog.json' with { type: 'json' };
 const contract = { 'x-carriers': catalog };
 import { writeCanaryReport } from './canary-report.mjs';
 import { DEFAULT_USER_AGENT } from '../core/transport/userAgent.js';
+import type { CarrierId } from '../generated/catalog.js';
+
+/**
+ * Automatic carriers whose front door does not answer the runner's network,
+ * and why. Each was seen answering other networks. The probe lists them in its
+ * summary instead of probing them.
+ */
+export const unreachableFrontDoors: Partial<Record<CarrierId, string>> = {
+  'aaa-cooper': 'www.aaacooper.com drops connections from outside the Americas and from the runner\'s network; other networks in the United States get its home page',
+  'asyad-express': 'www.asyadexpress.om answers only Omani networks',
+  azerpost: 'www.azerpost.az does not answer connections from the United States; European networks get its tracking page',
+  flyking: 'www.flyking.in resets every HTTPS connection and serves its tracker over plain HTTP to Indian networks only',
+  'iran-post': 'tracking.post.ir answers only Iranian networks',
+  'kerry-tj': 'www.kerrytj.com answers only Taiwanese networks',
+  'la-poste-tunisienne': 'www.poste.tn answers only Tunisian networks',
+  slgtrax: 'sonic.pk drops connections from the runner\'s network and some others; European and other American networks get its tracking page',
+};
+
+function unreachableReason(carrierId: string): string | undefined {
+  return (unreachableFrontDoors as Record<string, string | undefined>)[carrierId];
+}
 
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_ATTEMPTS = 2;
@@ -281,9 +302,12 @@ export async function carrierCanaryMain(argv = process.argv.slice(2)): Promise<n
   })}`);
   // Many carriers share a front door (every universal one uses the same
   // provider page), so each URL is probed once and reported for all of them.
+  // A front door this network cannot reach is listed, not probed.
   const targets = automaticCanaryTargets();
+  const unreachable = targets.filter((target) => unreachableReason(target.carrierId));
+  const probed = targets.filter((target) => !unreachableReason(target.carrierId));
   const carriersByUrl = new Map<string, string[]>();
-  for (const target of targets) carriersByUrl.set(target.url, [...carriersByUrl.get(target.url) ?? [], target.carrierId]);
+  for (const target of probed) carriersByUrl.set(target.url, [...carriersByUrl.get(target.url) ?? [], target.carrierId]);
   const options = {
     timeoutMs,
     attempts,
@@ -292,21 +316,28 @@ export async function carrierCanaryMain(argv = process.argv.slice(2)): Promise<n
     },
   };
   const results = await recheckUnanswered(
-    await runCanaries(targets.filter((target) => carriersByUrl.get(target.url)![0] === target.carrierId), options),
+    await runCanaries(probed.filter((target) => carriersByUrl.get(target.url)![0] === target.carrierId), options),
     { ...options, pauseMs },
   );
-  const failures: { result: 'failed'; check: string; reason: string }[] = [];
+  const rows: { result: 'failed' | 'unverified'; check: string; reason: string }[] = [];
   for (const result of results) {
     const carriers = carriersByUrl.get(result.target.url)!.join(',');
     const hostname = new URL(result.target.url).hostname;
     const outcome = result.status !== null ? `HTTP ${result.status}` : result.error ?? 'unreachable';
     console.log(`${canaryHealthy(result) ? 'PASS' : 'FAIL'} ${carriers} ${hostname} ${outcome}`);
-    if (!canaryHealthy(result)) failures.push({ result: 'failed', check: `${carriers} (${hostname})`, reason: outcome });
+    if (!canaryHealthy(result)) rows.push({ result: 'failed', check: `${carriers} (${hostname})`, reason: outcome });
   }
-  const healthy = results.length - failures.length;
-  const totals = `${healthy}/${results.length} canary URLs reachable for ${targets.length} automatic carriers`;
+  const healthy = results.length - rows.length;
+  for (const target of unreachable) {
+    const hostname = new URL(target.url).hostname;
+    const reason = `Not probed: ${unreachableReason(target.carrierId)!}`;
+    console.log(`SKIP ${target.carrierId} ${hostname} ${reason}`);
+    rows.push({ result: 'unverified', check: `${target.carrierId} (${hostname})`, reason });
+  }
+  const totals = `${healthy}/${results.length} canary URLs reachable for ${probed.length} automatic carriers; `
+    + `${unreachable.length} not probed from this network`;
   console.log(totals);
-  writeCanaryReport({ title: 'Public carrier reachability', totals, rows: failures });
+  writeCanaryReport({ title: 'Public carrier reachability', totals, rows });
   return healthy === results.length ? 0 : 1;
 }
 

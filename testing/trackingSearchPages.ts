@@ -1,6 +1,33 @@
 import type { CarrierId } from '../generated/catalog.js';
 
 /**
+ * The fields a search page may show, in any frame and open shadow root. Tag
+ * widgets such as Tagify (SkyEx) hide their text area under an editable text box.
+ */
+export const FIELD_SELECTOR = 'input, textarea, [contenteditable][role="textbox"]:not([contenteditable="false"])';
+
+/**
+ * Counts the visible, enabled fields that are neither a sign-in field nor the
+ * site's own search. It runs in the page, so it uses nothing from outside its
+ * body. An input's type is read from the element, which treats an empty or
+ * misspelled type (17TRACK, STO) as text.
+ */
+export function countNumberFields(elements: Element[]): number {
+  return elements.filter((element) => {
+    const field = element as HTMLInputElement;
+    // Japan Post's phone page types its number field as a URL.
+    if (field.tagName === 'INPUT' && !/^(?:text|search|tel|number|url)$/.test(field.type)) return false;
+    const box = field.getBoundingClientRect();
+    if (box.width === 0 || box.height === 0 || getComputedStyle(field).visibility === 'hidden' || field.disabled) return false;
+    const label = [field.name, field.id, field.placeholder, field.getAttribute('aria-label'), field.autocomplete].join(' ');
+    if (/e-?mail|user ?name|login|password|passwort|mot de passe/i.test(label)) return false;
+    const siteSearch = /^(?:q|query|s|search|keywords?)$/i.test(field.name)
+      || /^\s*(?:search|rechercher|suchen|buscar|cerca|szukaj)\b/i.test(field.placeholder || field.getAttribute('aria-label') || '');
+    return !siteSearch || /track|suivi|sendung|colis|parcel|package|shipment|waybill|consignment|number|numéro|nummer|número|numero/i.test(label);
+  }).length;
+}
+
+/**
  * Carriers that link a parcel but have no public page to type its number in.
  * A parcel whose number is hidden shows no link to them.
  */
@@ -23,8 +50,11 @@ export const carriersWithoutSearchPage: Partial<Record<CarrierId, string>> = {
 /** Search pages the weekly check cannot open, and why. Each was seen working in a regular browser. */
 export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'aaa-cooper': 'www.aaacooper.com refuses connections from many networks; an archived copy of the home page shows its Action Trac number field',
+  'asyad-express': 'www.asyadexpress.om answers only Omani networks; an archived copy of the page shows its tracking number field',
+  azerpost: 'www.azerpost.az does not answer connections from the United States; to European networks it shows its item-number field',
   'best-express-my': 'www.best-inc.my sends phone-sized screens to a tracking page with no waybill field; the desktop page has it',
   'best-express-vn': 'www.best-inc.vn sends phone-sized screens to a tracking page that renders blank in automated browsers; the desktop page has the waybill field',
+  'chunghwa-post': 'the tracker draws its form only when its menu template loads before its site map, a race a fresh browser often loses; its Track & Trace menu then opens the form',
   'custom-companies': 'the Shipment ID box sits in the desktop banner of www.customco.com, which the phone-size check does not show',
   'daylight-transport': 'the Track PRO # field sits in the desktop header of dylt.com, which the phone-size check does not show',
   dellin: 'the tracker answers automated browsers with a Qrator check (HTTP 401); in a regular browser it shows its order-number field',
@@ -47,9 +77,11 @@ export const uncheckedSearchPages: Partial<Record<CarrierId, string>> = {
   'pony-express': 'www.ponyexpress.ru answers 403 to many networks outside Russia; an archived copy shows its waybill field',
   postaplus: 'postaplus.com draws its tracking form late in a script app, after the automated check gives up',
   saee: 'saee.sa answers 503 to automated checks from many networks; archived copies of its tracking page show the waybill field',
+  slgtrax: 'sonic.pk drops connections from the weekly check\'s network and some others; to European and other American networks it shows its tracking number field',
   'spee-dee': 'the tracking form is a frame from packages.speedeedelivery.com, which drops connections from many networks',
   'surat-kargo': 'www.suratkargo.com.tr answers a Cloudflare block to many networks outside Turkey; an archived copy shows its number field',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the form often stays empty past the render window',
   'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page; to the networks it lets through it shows its number field',
+  'trans-o-flex': 'www.trans-o-flex.com answers the burst of script requests its tracking app makes with HTTP 429, so the form often stays empty past the render window',
   'ward-trucking': 'wardtlctools.com refuses connections from many networks; an archived copy shows its PRO number fields',
 };

@@ -29348,8 +29348,8 @@ export const CARRIER_CATALOG = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "canaryUrl": "https://www.unitedcouriers.biz/Track.aspx",
-    "trackingSearchUrl": "https://www.unitedcouriers.biz/Track.aspx",
+    "canaryUrl": "https://www.unitedcouriers.biz/tracking",
+    "trackingSearchUrl": "https://www.unitedcouriers.biz/tracking",
     "linkRules": [
       {
         "domains": [

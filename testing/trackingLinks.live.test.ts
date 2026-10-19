@@ -74,8 +74,9 @@ describe('UI tracking links (rendered public pages)', () => {
       const attempts = Math.ceil((testCase.renderTimeoutMs ?? 10_000) / 1000);
       for (let attempt = 0; attempt < attempts; attempt++) {
         await page.waitForTimeout(1000);
-        // A body still being replaced is read again on the next pass.
-        const bodyText = await page.locator('body').innerText({ timeout: 3000 }).catch(() => '');
+        // A body still being replaced is read again on the next pass. The first
+        // body is the document's: some pages nest a second one in their markup.
+        const bodyText = await page.locator('body').first().innerText({ timeout: 3000 }).catch(() => '');
         // Some trackers label their form with a placeholder and a graphical
         // heading. Include visible placeholders without counting hidden forms.
         const placeholders = await page.locator('input[placeholder], textarea[placeholder]').evaluateAll(elements =>

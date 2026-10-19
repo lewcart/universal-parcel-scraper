@@ -25477,7 +25477,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sat-ukraine",
+      "recognitionRank": 564,
+      "localClocks": true
     },
     "canaryUrl": "https://www.sat.ua/tracking/",
     "trackingUrlTemplate": "https://www.sat.ua/tracking/?number={trackingNumber}",

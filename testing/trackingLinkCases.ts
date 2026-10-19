@@ -826,6 +826,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'meest', number: 'ZZ0000000ZZ00000G',
     route: /^https:\/\/t\.meest-group\.com\/n\/ZZ0000000ZZ00000G$/,
     marker: /Відстежити посилку|не знайдено відправлення з таким номером/ },
+  // The page looks the waybill up on load and writes it back in groups of three.
+  { carrier: 'sat-ukraine', number: '000000000',
+    route: /^https:\/\/www\.sat\.ua\/tracking\/\?number=000\+?000\+?000$/,
+    marker: /Накладна на вантаж по ідентифікатору не знайдена/, renderTimeoutMs: 20_000 },
   // The server renders the page; an unknown reference comes back under a heading, with the form empty.
   { carrier: 'whistl', number: 'WHI0000GB00000000001',
     route: /^https:\/\/web\.parcelhub\.net\/Tracking\/reference\/WHI0000GB00000000001$/,

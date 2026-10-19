@@ -461,6 +461,7 @@ import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sailpost } from '../carriers/sailpost/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
 import { adapter as sapxExpress } from '../carriers/sapx-express/adapter.js';
+import { adapter as satUkraine } from '../carriers/sat-ukraine/adapter.js';
 import { adapter as saudiPost } from '../carriers/saudi-post/adapter.js';
 import { adapter as seino } from '../carriers/seino/adapter.js';
 import { adapter as seko } from '../carriers/seko/adapter.js';
@@ -1054,6 +1055,7 @@ export const REGISTRY: RegistryDefinition = {
     "sailpost": sailpost,
     "sameday": sameday,
     "sapx-express": sapxExpress,
+    "sat-ukraine": satUkraine,
     "saudi-post": saudiPost,
     "seino": seino,
     "seko": seko,
@@ -1788,7 +1790,7 @@ export const REGISTRY: RegistryDefinition = {
     "sailpost": "sailpost",
     "sameday": "sameday",
     "sapx-express": "sapx-express",
-    "sat-ukraine": "universal",
+    "sat-ukraine": "sat-ukraine",
     "saudi-post": "saudi-post",
     "sbs-sokuhai": "universal",
     "scg-express": "universal",

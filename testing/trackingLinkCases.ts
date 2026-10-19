@@ -1832,6 +1832,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gtl-goto', number: 'GTL0000000001',
     route: /^https:\/\/gtl\.id\/tracking\?tracking_number=GTL0000000001$/,
     marker: /Input Your Tracking Number|Package not found|shipment not found/i },
+  // The page looks up the number in its address and answers an unknown one with "Invalid Consignment No.".
+  { carrier: 'gms-worldwide', number: '000000009',
+    route: /^https:\/\/www\.gmsworldwide\.com\/shipment-tracking\/\?tracking_no=000000009&tracking_type=cnno$/,
+    marker: /Invalid (?:Consignment|Tracking) No\.|Shipment Number/ },
 ];
 
 /**

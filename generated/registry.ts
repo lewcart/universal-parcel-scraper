@@ -233,6 +233,7 @@ import { adapter as glsDe } from '../carriers/gls-de/adapter.js';
 import { adapter as glsEs } from '../carriers/gls-es/adapter.js';
 import { adapter as glsFr } from '../carriers/gls-fr/adapter.js';
 import { adapter as glsIt } from '../carriers/gls-it/adapter.js';
+import { adapter as gmsWorldwide } from '../carriers/gms-worldwide/adapter.js';
 import { adapter as goExpress } from '../carriers/go-express/adapter.js';
 import { adapter as go4 } from '../carriers/go4/adapter.js';
 import { adapter as gobolt } from '../carriers/gobolt/adapter.js';
@@ -828,6 +829,7 @@ export const REGISTRY: RegistryDefinition = {
     "gls-es": glsEs,
     "gls-fr": glsFr,
     "gls-it": glsIt,
+    "gms-worldwide": gmsWorldwide,
     "go-express": goExpress,
     "go4": go4,
     "gobolt": gobolt,
@@ -1484,7 +1486,7 @@ export const REGISTRY: RegistryDefinition = {
     "gls-fr": "gls-fr",
     "gls-it": "gls-it",
     "gls-pl": "gls-de",
-    "gms-worldwide": "universal",
+    "gms-worldwide": "gms-worldwide",
     "go-express": "go-express",
     "go4": "go4",
     "gobolt": "gobolt",

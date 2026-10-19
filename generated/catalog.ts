@@ -14987,7 +14987,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gms-worldwide",
+      "recognitionRank": 565
     },
     "canaryUrl": "https://www.gmsworldwide.com/",
     "trackingUrlTemplate": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",

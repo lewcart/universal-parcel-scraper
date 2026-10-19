@@ -18,18 +18,63 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gms-worldwide",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 565
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",
     "searchUrl": "https://www.gmsworldwide.com/",
     "canaryUrl": "https://www.gmsworldwide.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "customer_reference",
+      "service_name",
+      "parcel_count",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "customer_reference",
+      "service_name",
+      "parcel_count",
+      "awb_date",
+      "proof_of_delivery",
+      "recipient_name",
+      "recipient_contact",
+      "recipient_address",
+      "postcodes"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "provider_code",
+      "offset_timestamps",
+      "sender_name",
+      "pickup_point",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

@@ -27,11 +27,11 @@ cross-border e-commerce parcels from China. Tracked through the lookup its track
 
 ## Notes
 
-- The tracker shows the scans up to the flight out of China and no later leg. Its scans are
-  CTTYEX's own steps there, from the order data to the departure from the origin airport, and
-  print a wall clock to the second without a zone. China keeps one zone, so a scan the map lists
-  is an instant on Beijing time. A wording the map does not list could come from another leg and
-  keeps its wall clock.
+- The tracker shows CTTYEX's own steps in China, from the order data to the departure from the
+  origin airport, and can go on with a few forwarder steps at the destination: the arrival there,
+  the customs clearance and the hand-over to a local company. Scans print a wall clock to the
+  second without a zone. China keeps one zone, so a scan the map lists is an instant on Beijing
+  time. A wording the map does not list comes from another leg and keeps its wall clock.
 - The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording; others go
   through the shared wording rules. The newest staged scan decides the parcel's stage, and the
   summary's status only when no scan has one: a status such as "运输途中" (in transit) says less

@@ -15591,9 +15591,9 @@ export const CARRIER_CATALOG = {
       "recognitionRank": 888,
       "localClocks": true
     },
-    "canaryUrl": "https://happy-post.com/fr/suivi/",
-    "trackingUrlTemplate": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
-    "trackingSearchUrl": "https://happy-post.com/fr/suivi/",
+    "canaryUrl": "https://happy-post.com/en/track/",
+    "trackingUrlTemplate": "https://happy-post.com/en/track/?id={trackingNumber}",
+    "trackingSearchUrl": "https://happy-post.com/en/track/",
     "linkRules": [
       {
         "domains": [

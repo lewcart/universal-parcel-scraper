@@ -274,9 +274,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chronopost', number: 'XY000000005FR',
     route: /^https:\/\/www\.chronopost\.fr\/tracking-no-cms\/suivi-page\?/,
     marker: /Suivez votre colis|Informations concernant votre envoi/i },
-  { carrier: 'happy-post', number: '12340003',
-    route: /^https:\/\/happy-post\.com\/fr\/suivi\/\?id=12340003$/,
-    marker: /Suivi de colis en temps réel|Ce numéro ne correspond à aucun colis/i },
+  // Visitors abroad can be sent to the UK site, which moves the English page to its own tracker.
+  { carrier: 'happy-post', number: '99999990',
+    route: /^https:\/\/(?:happy-post\.com\/en|uk\.happy-post\.com)\/track\/\?id=99999990$/,
+    marker: /Real-time parcel tracking|This number does not match any parcel/ },
   { carrier: 'dpd', number: '09999999999999',
     route: /^https:\/\/www\.dpdgroup\.com\/ch\/mydpd\/my-parcels\/incoming\?/,
     marker: /parcel number|Paketnummer|numéro de colis|my parcels/i,
@@ -541,10 +542,6 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'energia-tk', number: '9999-0000001',
     route: /^https:\/\/nrg-tk\.pro\/client\/tracking\/#9999-0000001$/,
     marker: /Отслеживание \/ оплата груза|Информация об экспедиторской расписке/ },
-  // The page fills its field in and looks the number up on load.
-  { carrier: 'couriersplease', number: 'CPBZZZZ0000014',
-    route: /^https:\/\/www\.couriersplease\.com\.au\/tools-track\?no=CPBZZZZ0000014$/,
-    marker: /Track A Parcel Delivery|Enter up to 10 tracking numbers|Must be a valid tracking number/i },
   // The page reads the numbers from its address and looks them up on load.
   { carrier: 'cj-packet', number: 'CJPZZZ0000000001YQ',
     route: /^https:\/\/www\.cjpacket\.com\/\?trackingNumber=CJPZZZ0000000001YQ$/,
@@ -594,8 +591,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/taxydromiki\.com\/track\/9999999999\/?$/,
     marker: /Ο αριθμός αποστολής που ζητήσατε δε βρέθηκε|Πορεία Αποστολής/ },
   // The page looks the waybill up as it is served and names an unknown one in its notice.
+  // Its site search script then adds a fragment to the address.
   { carrier: 'courier-center', number: '013000000000',
-    route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000$/,
+    route: /^https:\/\/www\.courier\.gr\/track\/result\/\?tracknr=013000000000(?:#gsc\.tab=0)?$/,
     marker: /Δεν βρέθηκε φορτωτική με τον αριθμό|Αριθμός Φορτωτικής/ },
   // The locator page reads the number from its address and looks it up on load; an unknown one gets an error dialog.
   { carrier: 'cbl-logistica', number: '00000000000',
@@ -1051,9 +1049,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/postex\.pk\/tracking\?cn=00000000000000$/,
     marker: /Tracking a Call Courier shipment\?/ },
   // The server renders the lookup and names the number above an empty timeline for an unknown code.
+  // The heading is styled in capitals.
   { carrier: 'algerie-poste', number: 'ZZ000000014DZ',
     route: /^https:\/\/ems\.dz\/track\/index\.php\?icd=ZZ000000014DZ$/,
-    marker: /Détails d'envoi Nº/ },
+    marker: /Détails d'envoi Nº/i },
   // The page fills its field in from the address, looks the code up and names the codes it did not find.
   { carrier: 'pecom', number: '100000000033',
     route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,
@@ -1071,9 +1070,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/4sides\.ru\/tracking\?number=FS000000000RU$/,
     marker: /Не найдено FS000000000RU|Номер накладной|Хронология движения/ },
   // The page fills its search box in from the address without looking the number up.
+  // Its heading stays in Thai when the page's settings load late.
   { carrier: 'kex', number: 'SYNT000000017',
     route: /^https:\/\/th\.kex-express\.com\/en\/track\/\?track=SYNT000000017$/,
-    marker: /Track & Trace/ },
+    marker: /Track & Trace|ติดตามเลขพัสดุเคอีเอ็กซ์ เอ็กซ์เพรส/ },
   // The server looks the number in the address up and shows it over its answer.
   { carrier: 'kex-express-hk', number: 'Z000000000',
     route: /^https:\/\/www\.kex\.kln\.com\/en\/track\?track=Z000000000$/,
@@ -1159,10 +1159,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'bulgarian-posts', number: 'ZZ000000014BG',
     route: /^https:\/\/www\.bgpost\.bg\/(?:en\/)?postal-services\/track-package\?itemid=ZZ000000014BG$/,
     marker: /ПРОСЛЕДЯВАНЕ НА ПРАТКА|ITEM TRACKING/i },
-  // The page looks the number up, shows it and says it has no data on it yet.
+  // The page fills its field in from the address and looks the number up; the form's heading
+  // shows while the answer is slow.
   { carrier: 'belpost', number: 'ZZ000000014BY',
     route: /^https:\/\/(?:www\.)?belpost\.by\/Otsleditotpravleniye\?number=ZZ000000014BY$/,
-    marker: /Где мое отправление|У нас пока нет данных об этом трек-номере|Where is my postal item|any data on this tracking number/i },
+    marker: /Введите номер отправления|Где мое отправление|У нас пока нет данных об этом трек-номере|Where is my postal item|any data on this tracking number/i },
   // The page looks the code up and heads its answer with it, here the notice for service letters the post does not use.
   { carrier: 'correo-uruguayo', number: 'ZZ000000014UY',
     route: /^https:\/\/ahiva\.correo\.com\.uy\/servicioConsultaTntIps-web\/SeguimientoJSNuevo\?codigoPieza=ZZ000000014UY$/,
@@ -1540,6 +1541,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   cne: 'the tracking portal redirects inspected Chrome sessions to about:blank through its anti-debug script, preventing a stable rendered-page check',
   dellin: 'www.dellin.ru puts Qrator\'s script check before every page, and the order page answers an unknown number with the site\'s generic page-not-found screen, so only a real order verifies the link',
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
+  couriersplease: 'www.couriersplease.com.au answers the burst of script requests its tracker page makes in automated Chrome with HTTP 429, so the page never reads the number from its address and number forwarding cannot be verified daily',
   'dpd-at': 'Radware Bot Manager answers the lookup the myDPD page makes from automated Chrome with a CAPTCHA on validate.perfdrive.com, so number forwarding cannot be verified',
   'dpd-ie': 'www.dpd.ie passes the number only to its tracker frame from tracking.dpd.ie, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
   'dpd-ro': 'tracking.dpd.ro redirects to services.dpd.ro/tracking/, which answers automated Chrome with a Cloudflare managed challenge and asks for a Turnstile token with each lookup, so number forwarding cannot be verified',

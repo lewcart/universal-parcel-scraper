@@ -34,9 +34,9 @@
     "delivery_tracking_number"
   ],
   "portal": {
-    "url": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
-    "searchUrl": "https://happy-post.com/fr/suivi/",
-    "canaryUrl": "https://happy-post.com/fr/suivi/",
+    "url": "https://happy-post.com/en/track/?id={trackingNumber}",
+    "searchUrl": "https://happy-post.com/en/track/",
+    "canaryUrl": "https://happy-post.com/en/track/",
     "shows": [
       "status",
       "history",

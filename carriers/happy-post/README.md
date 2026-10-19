@@ -59,7 +59,9 @@ carrier for it.
 ## Links
 
 The French and English tracking pages on happy-post.com and the tracking page on
-uk.happy-post.com open one parcel when its number is in the `id` parameter.
+uk.happy-post.com open one parcel when its number is in the `id` parameter. happy-post.com
+sends some visitors abroad to the same path on uk.happy-post.com, which has no French page
+and moves `/en/track/` to its tracker, so the link opens the English page.
 
 ## Testing
 

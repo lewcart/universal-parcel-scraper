@@ -29949,6 +29949,10 @@ export const CARRIER_CATALOG = {
         "pattern": "^1[78]\\d{14}$",
         "confidence": "low",
         "checksum": "luhn"
+      },
+      {
+        "pattern": "^VGS\\d{14}$",
+        "confidence": "high"
       }
     ]
   },
@@ -32530,7 +32534,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "via-cargo": [],
   "viettel-post": ["viettel-post-1"],
   "vimenpaq": [],
-  "vinted-go": ["vinted-go-1"],
+  "vinted-go": ["vinted-go-1","vinted-go-vgs"],
   "vitran-express": [],
   "vnpost": [],
   "vozovoz": [],

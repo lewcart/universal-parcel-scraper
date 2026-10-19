@@ -89514,6 +89514,14 @@
     ]
   },
   {
+    "input": "VGS90000000000001",
+    "carrier": "vinted-go",
+    "confidence": "high",
+    "candidates": [
+      "vinted-go"
+    ]
+  },
+  {
     "input": "VH101334",
     "carrier": "unknown",
     "confidence": "low",

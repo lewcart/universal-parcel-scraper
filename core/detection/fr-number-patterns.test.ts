@@ -62,6 +62,15 @@ describe('French carrier number candidates', () => {
     }
   });
 
+  it('names Vinted Go for VGS and fourteen digits only', () => {
+    expect(detectCarrierMatch('VGS30000000000001')).toMatchObject({ carrier: 'vinted-go', confidence: 'high' });
+    for (const number of ['VGS3000000000001', 'VGS300000000000001', 'VGT30000000000001', 'VG300000000000001', 'VGSX0000000000001']) {
+      const match = detectCarrierMatch(number);
+      expect(match.carrier, number).not.toBe('vinted-go');
+      expect(match.candidates ?? [], number).not.toContain('vinted-go');
+    }
+  });
+
   it('settles a French endpoint confirmation ahead of the shared GLS group answer', () => {
     const matches: RecognitionOutcome[] = recognitionCandidates('A1B2C3D4')
       .filter(({ carrier }) => ['gls-ch', 'gls-fr'].includes(carrier))

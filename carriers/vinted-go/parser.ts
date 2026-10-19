@@ -17,6 +17,9 @@ export const VINTED_GO_MAX_BYTES = 512 * 1024;
 // and a Luhn check digit. The service answers a number whose check fails as if
 // it did not exist, whatever its age.
 const NUMBER = /^1\d{15}$/;
+// `VGS` and fourteen digits, the other number the service answers. They hold
+// no timestamp and no Luhn check digit.
+const VGS_NUMBER = /^VGS\d{14}$/;
 // A sorting centre's town and country, the only place a scan's wording names
 // as the parcel's own. "In transit to" names where it is going.
 const SORTING_CENTER = /^(?:Return: )?At sorting center in ([^,]{2,80}), ([A-Z]{2})$/;
@@ -32,8 +35,8 @@ const MAX_EVENTS = 100;
 /** A Vinted Go parcel number; anything else is a number Vinted Go does not issue. */
 export function normalizeVintedGoNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!NUMBER.test(number) || !hasLuhnCheckDigit(number)) {
-    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check');
+  if (!VGS_NUMBER.test(number) && !(NUMBER.test(number) && hasLuhnCheckDigit(number))) {
+    throw new InvalidInputError(PROVIDER, 'Vinted Go numbers are sixteen digits starting 1 whose last digit passes the Luhn check, or VGS and fourteen digits');
   }
   return number;
 }

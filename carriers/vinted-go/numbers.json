@@ -150,6 +150,18 @@
         ]
       },
       "note": "Looked up on Vinted Go's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "VGS90000000000001",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-19",
+      "expect": {
+        "carrier": "vinted-go",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a VGS number Vinted Go's own tracking service answers."
     }
   ]
 }

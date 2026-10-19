@@ -35,6 +35,12 @@ describe('Vinted Go HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
+  it('asks the tracking service for a VGS number as printed', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply('delivered'));
+    await expect(carrier(fetcher).track({ number: 'vgs 9000 0000 0000 01' })).resolves.toMatchObject({ status: 'delivered' });
+    expect(String(fetcher.mock.calls[0]![0])).toBe('https://carrier.vintedgo.com/public/v3/tracking_events/VGS90000000000001');
+  });
+
   it('reads a collected parcel newest first, with its locker but without its address, deadline or questions', () => {
     const result = parseVintedGo(fixture('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
@@ -163,7 +169,8 @@ describe('Vinted Go HTTP adapter', () => {
 
   it('rejects numbers Vinted Go does not issue and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['1790000000000011', '179000000000001', '17900000000000104', '2790000000000018', 'VG90000000000010']) {
+    for (const number of ['1790000000000011', '179000000000001', '17900000000000104', '2790000000000018', 'VG90000000000010',
+      'VGS9000000000001', 'VGS900000000000001', 'VGT90000000000001']) {
       await expect(carrier(fetcher).track({ number })).rejects.toMatchObject({ kind: 'invalid_input' });
     }
     await expect(carrier(fetcher).track({ number: DELIVERED }, { signal: AbortSignal.abort(new Error('cancelled')) })).rejects.toThrow('cancelled');

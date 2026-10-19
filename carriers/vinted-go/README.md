@@ -52,6 +52,10 @@ takes sixteen digits starting `1` that pass the check. `vinted-go-1` suggests Vi
 confidence for those starting `17` or `18`, because DHL eCommerce, Evri and TNT accept any
 sixteen digits.
 
+Vinted Go also issues `VGS` and fourteen digits, with no timestamp or check digit, and the
+service answers them like the others. The adapter takes them, and `vinted-go-vgs` claims them at
+high confidence: the prefix is Vinted Go's own.
+
 ## Links
 
 Vinted Go's tracker at `vintedgo.com/{language}/tracking` moves to

@@ -23676,7 +23676,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "postex",
+      "recognitionRank": 745
     },
     "canaryUrl": "https://postex.pk/tracking",
     "trackingUrlTemplate": "https://postex.pk/tracking?cn={trackingNumber}",

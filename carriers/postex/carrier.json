@@ -18,18 +18,53 @@
   "timezone": "Asia/Karachi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "postex",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 745
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://postex.pk/tracking?cn={trackingNumber}",
     "searchUrl": "https://postex.pk/tracking",
     "canaryUrl": "https://postex.pk/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "recipient_name",
+      "sender_name",
+      "booking_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "recipient_name",
+      "sender_name",
+      "booking_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

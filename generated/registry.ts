@@ -340,6 +340,7 @@ import { adapter as postaShqiptare } from '../carriers/posta-shqiptare/adapter.j
 import { adapter as postaSlovenije } from '../carriers/posta-slovenije/adapter.js';
 import { adapter as postaSrbije } from '../carriers/posta-srbije/adapter.js';
 import { adapter as posteItaliane } from '../carriers/poste-italiane/adapter.js';
+import { adapter as postex } from '../carriers/postex/adapter.js';
 import { adapter as posti } from '../carriers/posti/adapter.js';
 import { adapter as postlogistics } from '../carriers/postlogistics/adapter.js';
 import { adapter as postnord } from '../carriers/postnord/adapter.js';
@@ -829,6 +830,7 @@ export const REGISTRY: RegistryDefinition = {
     "posta-slovenije": postaSlovenije,
     "posta-srbije": postaSrbije,
     "poste-italiane": posteItaliane,
+    "postex": postex,
     "posti": posti,
     "postlogistics": postlogistics,
     "postnord": postnord,
@@ -1530,7 +1532,7 @@ export const REGISTRY: RegistryDefinition = {
     "posta-srbije": "posta-srbije",
     "postaplus": "universal",
     "poste-italiane": "poste-italiane",
-    "postex": "universal",
+    "postex": "postex",
     "posti": "posti",
     "postlogistics": "postlogistics",
     "postmedia-parcel-services": "universal",

@@ -1046,6 +1046,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pakistan-post', number: 'ZZ000000014PK',
     route: /^https:\/\/ep\.gov\.pk\/emtts\/EPTrack_Live\.aspx\?ArticleIDz=ZZ000000014PK$/,
     marker: /Article Track Detail/ },
+  // The page posts the number in `cn` to its own lookup as it opens, and keeps it in the field.
+  { carrier: 'postex', number: '00000000000000',
+    route: /^https:\/\/postex\.pk\/tracking\?cn=00000000000000$/,
+    marker: /Tracking a Call Courier shipment\?/ },
   // The server renders the lookup and names the number above an empty timeline for an unknown code.
   { carrier: 'algerie-poste', number: 'ZZ000000014DZ',
     route: /^https:\/\/ems\.dz\/track\/index\.php\?icd=ZZ000000014DZ$/,

@@ -284,6 +284,7 @@ import { statusMap as postaRomana } from '../../carriers/posta-romana/status.js'
 import { statusMap as postaShqiptare } from '../../carriers/posta-shqiptare/status.js';
 import { statusMap as postaSlovenije } from '../../carriers/posta-slovenije/status.js';
 import { statusMap as postaSrbije } from '../../carriers/posta-srbije/status.js';
+import { statusMap as postex } from '../../carriers/postex/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as posturinn } from '../../carriers/posturinn/status.js';
 import { statusMap as ppl } from '../../carriers/ppl/status.js';
@@ -457,7 +458,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pitney-bowes': pitneyBowes, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
-  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier, proships,
+  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier, proships,
   'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions, 'quicksilver-sa': quicksilverSa, quiqup, raben,
   'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech, 'rl-carriers': rlCarriers,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress, 'saudi-post': saudiPost, seino, seko, sendex, sending,

@@ -14208,9 +14208,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "franch-express"
     },
-    "canaryUrl": "https://franchexpress.com/courier-tracking/",
+    "canaryUrl": "https://www.erpfranchexpress.com/api-tracking.php",
     "trackingSearchUrl": "https://franchexpress.com/courier-tracking/",
     "linkRules": [
       {

@@ -213,6 +213,7 @@ import { adapter as forwardAir } from '../carriers/forward-air/adapter.js';
 import { adapter as forzaDelivery } from '../carriers/forza-delivery/adapter.js';
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
 import { adapter as foxpost } from '../carriers/foxpost/adapter.js';
+import { adapter as franchExpress } from '../carriers/franch-express/adapter.js';
 import { adapter as fukuyama } from '../carriers/fukuyama/adapter.js';
 import { adapter as gaash } from '../carriers/gaash/adapter.js';
 import { adapter as gati } from '../carriers/gati/adapter.js';
@@ -792,6 +793,7 @@ export const REGISTRY: RegistryDefinition = {
     "forza-delivery": forzaDelivery,
     "four-px": fourPx,
     "foxpost": foxpost,
+    "franch-express": franchExpress,
     "fukuyama": fukuyama,
     "gaash": gaash,
     "gati": gati,
@@ -1430,7 +1432,7 @@ export const REGISTRY: RegistryDefinition = {
     "forza-delivery": "forza-delivery",
     "four-px": "four-px",
     "foxpost": "foxpost",
-    "franch-express": "universal",
+    "franch-express": "franch-express",
     "fukuyama": "fukuyama",
     "gaash": "gaash",
     "gati": "gati",

@@ -25152,31 +25152,6 @@
     ]
   },
   {
-    "input": "22372527262",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "postlogistics",
-      "gls-ch",
-      "gls-fr",
-      "gls-de",
-      "blue-dart",
-      "japan-post",
-      "aramex",
-      "dhl-ecommerce-pl",
-      "gls-at",
-      "gls-pl",
-      "ppl"
-    ],
-    "asked": [
-      "gls-fr",
-      "gls-de",
-      "gls-ch",
-      "postlogistics",
-      "dhl-ecommerce-pl"
-    ]
-  },
-  {
     "input": "2242836273",
     "carrier": "unknown",
     "confidence": "low",

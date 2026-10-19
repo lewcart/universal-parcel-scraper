@@ -66,38 +66,6 @@
       "note": "A complaint against Franch Express Courier, marked resolved, names it as the consignment number in its title, kept in the page address; the page body masks it."
     },
     {
-      "number": "22372527262",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.consumercomplaints.in/franch-express-courier-b103819/page/2",
-        "date": "2024-02-09",
-        "dateKind": "publication",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "postlogistics",
-          "gls-ch",
-          "gls-fr",
-          "gls-de",
-          "blue-dart",
-          "japan-post",
-          "aramex",
-          "dhl-ecommerce-pl",
-          "gls-at",
-          "gls-pl",
-          "ppl"
-        ]
-      },
-      "note": "A complaint on Franch Express Courier's consumercomplaints.in page gives it as the AWB number of an undelivered courier."
-    },
-    {
       "number": "22319432365",
       "role": "shipment",
       "evidence": "public_shipment_report",

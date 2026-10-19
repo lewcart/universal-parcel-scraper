@@ -11190,7 +11190,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "domain-logistics",
+      "localClocks": true
     },
     "canaryUrl": "https://domainlogistics.ca/tracking/",
     "trackingUrlTemplate": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",

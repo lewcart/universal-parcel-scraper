@@ -1617,6 +1617,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/logistics\.qwintry\.com\/track\?tracking=QR00000000$/,
     marker: /This tracking does not exist|Tracking log/,
     shipmentNotFound: { status: 404, marker: /This tracking does not exist/ }, forwarding: { notFound: /This tracking does not exist/ } },
+  // The page fills the number in its address into its form and looks it up; an unknown one is "Invalid Tracking Code".
+  { carrier: 'domain-logistics', number: '000000000000',
+    route: /^https:\/\/domainlogistics\.ca\/tracking\/\?tracking=000000000000$/,
+    marker: /Invalid Tracking Code|Please enter your tracking number as received upon confirmation of shipment/ },
 ];
 
 /**

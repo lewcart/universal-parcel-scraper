@@ -16,18 +16,50 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "domain-logistics",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "eta",
+    "service_name"
+  ],
   "portal": {
     "url": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",
     "searchUrl": "https://domainlogistics.ca/tracking/",
     "canaryUrl": "https://domainlogistics.ca/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "eta",
+      "eta_window",
+      "service_name",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "eta",
+      "service_name"
+    ],
+    "discarded": [
+      "eta_window",
+      "remarks"
+    ],
+    "unavailable": [
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "weight",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery",
+      "signatory"
+    ]
   },
   "links": [
     {

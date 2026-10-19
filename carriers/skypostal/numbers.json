@@ -21,7 +21,7 @@
           "skypostal"
         ]
       },
-      "note": "An opened archived lookup on SkyPostal's own tracker shows this shipment's data, documentation, receipt and processing events at Miami."
+      "note": "An opened archived lookup on SkyPostal's own tracker shows this shipment's data, documentation, receipt and processing events at Miami. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SP00007078983BR",
@@ -34,7 +34,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -43,7 +43,7 @@
           "skypostal"
         ]
       },
-      "note": "The same archived lookup on SkyPostal's own tracker lists this number on the shipment's later label-rejected and on-hold events; it was not looked up itself."
+      "note": "The same archived lookup on SkyPostal's own tracker lists this number on the shipment's later label-rejected and on-hold events. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0042185311",
@@ -56,13 +56,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the opened capture shows the page with no history loaded."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the opened capture shows the page with no history loaded. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0044744434",
@@ -75,13 +75,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0045954354",
@@ -94,13 +94,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0046269390",
@@ -113,13 +113,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0048462415",
@@ -132,13 +132,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0053610683",
@@ -151,13 +151,13 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
     },
     {
       "number": "SKAMZUS0107115560",
@@ -170,13 +170,51 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "skypostal",
         "confidence": "high"
       },
-      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened."
+      "note": "An archived lookup on SkyPostal's own tracker carries this number; the capture was not opened. SkyPostal's tracker knows it as a shipment number, with a history."
+    },
+    {
+      "number": "SKAMZUS0089615001",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclameaqui.com.br/mile-express-agenciamento-de-carga-aerea/atraso-e-irregularidade-incomuns_nstlAGLbKbvRhsGa/",
+        "date": "2026-07-09",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "skypostal",
+        "confidence": "high"
+      },
+      "note": "A customer who says the parcel came through SkyPostal posted this number in a complaint about the partner that delivered it in Brazil. SkyPostal's tracker knows it as a shipment number, with a history."
+    },
+    {
+      "number": "SKAMZUS0113754733",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.reclameaqui.com.br/skypostal/meu-pacote-da-amazon-foi-devolvido-por-endereco-incorreto-e-nao-recebi_3-EXTziwo39qSIm1/",
+        "date": "2026-10-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "skypostal",
+        "confidence": "high"
+      },
+      "note": "A customer posted this number in a complaint to SkyPostal about an Amazon parcel sent back for an incorrect address. SkyPostal's tracker knows it as a shipment number, with a history."
     }
   ]
 }

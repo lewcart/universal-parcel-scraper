@@ -23,18 +23,53 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "skypostal",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 729
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",
     "searchUrl": "https://tracking.skypostal.com/",
     "canaryUrl": "https://tracking.skypostal.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivery_tracking_number",
+      "related_tracking_numbers",
+      "comments",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code"
+    ],
+    "discarded": [
+      "delivery_tracking_number",
+      "related_tracking_numbers",
+      "comments",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

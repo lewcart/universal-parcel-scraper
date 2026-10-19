@@ -289,6 +289,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "shree-maruti": 822,
   "skroutz-last-mile": 913,
   "skyking": 792,
+  "skypostal": 729,
   "slovak-parcel-service": 180,
   "slovenska-posta": 170,
   "smsa-express": 448,

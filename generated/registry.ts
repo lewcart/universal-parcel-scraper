@@ -386,6 +386,7 @@ import { adapter as skroutzLastMile } from '../carriers/skroutz-last-mile/adapte
 import { adapter as skyking } from '../carriers/skyking/adapter.js';
 import { adapter as skynetSa } from '../carriers/skynet-sa/adapter.js';
 import { adapter as skynetWorldwide } from '../carriers/skynet-worldwide/adapter.js';
+import { adapter as skypostal } from '../carriers/skypostal/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
 import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
@@ -870,6 +871,7 @@ export const REGISTRY: RegistryDefinition = {
     "skyking": skyking,
     "skynet-sa": skynetSa,
     "skynet-worldwide": skynetWorldwide,
+    "skypostal": skypostal,
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
     "smsa-express": smsaExpress,
@@ -1600,7 +1602,7 @@ export const REGISTRY: RegistryDefinition = {
     "skyking": "skyking",
     "skynet-sa": "skynet-sa",
     "skynet-worldwide": "skynet-worldwide",
-    "skypostal": "universal",
+    "skypostal": "skypostal",
     "slgtrax": "universal",
     "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "slovenska-posta",

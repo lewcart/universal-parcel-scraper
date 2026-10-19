@@ -86179,7 +86179,23 @@
     ]
   },
   {
+    "input": "SKAMZUS0089615001",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
     "input": "SKAMZUS0107115560",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0113754733",
     "carrier": "skypostal",
     "confidence": "high",
     "candidates": [
@@ -86380,6 +86396,9 @@
     "confidence": "low",
     "candidates": [
       "skypostal"
+    ],
+    "asked": [
+      "skypostal"
     ]
   },
   {
@@ -86387,6 +86406,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "skypostal"
+    ],
+    "asked": [
       "skypostal"
     ]
   },

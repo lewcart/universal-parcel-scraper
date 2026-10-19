@@ -26231,7 +26231,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skypostal",
+      "recognitionRank": 729,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.skypostal.com/",
     "trackingUrlTemplate": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",

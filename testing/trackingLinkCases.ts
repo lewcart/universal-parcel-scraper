@@ -1497,6 +1497,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'dpex', number: '999999999994',
     route: /^https:\/\/dpex\.com\/track-and-trace\/\?cn=999999999994$/,
     marker: /assist you in tracking your shipment/ },
+  // The page fills its search field in from the address and looks the number up.
+  { carrier: 'skypostal', number: 'SKAMZUS0000000000',
+    route: /^https:\/\/tracking\.skypostal\.com\/\?trck_number=SKAMZUS0000000000&lng_code=ENG$/,
+    marker: /Choose to track one package or multiple packages|No records to display/ },
 ];
 
 /**

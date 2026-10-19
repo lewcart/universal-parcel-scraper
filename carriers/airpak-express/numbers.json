@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -35,7 +35,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible. Airpak Express's tracking knew it."
     },
     {
       "number": "200181550310",
@@ -48,7 +48,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -71,7 +71,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     },
     {
       "number": "200193178544",
@@ -84,7 +84,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -107,7 +107,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     },
     {
       "number": "200205454864",
@@ -120,7 +120,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -142,7 +142,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     },
     {
       "number": "200172532092",
@@ -155,7 +155,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -177,7 +177,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     },
     {
       "number": "400084919920",
@@ -190,7 +190,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -211,7 +211,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible. Airpak Express's tracking knew it."
     },
     {
       "number": "800091434332",
@@ -224,7 +224,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -245,7 +245,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible. Airpak Express's tracking knew it."
     },
     {
       "number": "100900819972",
@@ -258,7 +258,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -280,7 +280,7 @@
           "sagawa"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     },
     {
       "number": "81015950234",
@@ -293,7 +293,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -312,7 +312,7 @@
           "ppl"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the opened capture shows the tracking page, whose results load in a frame, so the history was not visible. Airpak Express's tracking knew it."
     },
     {
       "number": "81029416926",
@@ -325,7 +325,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -344,7 +344,7 @@
           "ppl"
         ]
       },
-      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened."
+      "note": "Looked up on Airpak Express's own tracker, as an archived address shows; the capture was not opened. Airpak Express's tracking knew it."
     }
   ]
 }

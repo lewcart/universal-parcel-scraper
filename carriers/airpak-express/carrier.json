@@ -19,18 +19,56 @@
   "timezone": "Asia/Singapore",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "airpak-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 776
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
     "searchUrl": "https://airpak-express.com/tracking/",
     "canaryUrl": "https://airpak-express.com/tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "destination_country",
+      "service_type",
+      "signatory",
+      "customer_reference"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "destination_country"
+    ],
+    "discarded": [
+      "service_type",
+      "signatory",
+      "customer_reference"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {
@@ -47,7 +85,7 @@
       "domains": [
         "tracking.airpak-express.com"
       ],
-      "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+      "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking(?:_search)?)$",
       "params": [
         "cn"
       ]

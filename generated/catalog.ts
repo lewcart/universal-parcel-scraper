@@ -5784,7 +5784,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "airpak-express",
+      "recognitionRank": 776,
+      "localClocks": true
     },
     "canaryUrl": "https://airpak-express.com/tracking/",
     "trackingUrlTemplate": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
@@ -5804,7 +5806,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "tracking.airpak-express.com"
         ],
-        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking(?:_search)?)$",
         "params": [
           "cn"
         ]

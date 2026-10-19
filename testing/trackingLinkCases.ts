@@ -1454,6 +1454,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tracx-logis', number: 'QSP000000001',
     route: /^https:\/\/www\.tracxlogis\.com\/tracking\?trackingNo=QSP000000001$/,
     marker: /Tracking Parcel|Package Info/ },
+  // The search page sends the number in its address to the tracker's summary lookup and lists it with the notice for an unknown one.
+  { carrier: 'airpak-express', number: '999999999990',
+    route: /^https:\/\/tracking\.airpak-express\.com\/go\/plm-tracking_search\?stid=airpak&cn=999999999990$/,
+    marker: /No tracking available|Track & Trace/ },
 ];
 
 /**

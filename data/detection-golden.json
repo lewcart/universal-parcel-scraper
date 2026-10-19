@@ -57118,30 +57118,6 @@
     ]
   },
   {
-    "input": "893180958012",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colis-prive",
-      "mrw",
-      "brt",
-      "sf-express",
-      "sto",
-      "zto",
-      "j-and-t",
-      "lbc-express",
-      "metropolitan-warehouse"
-    ],
-    "asked": [
-      "brt",
-      "colis-prive",
-      "sto",
-      "j-and-t",
-      "zto"
-    ]
-  },
-  {
     "input": "89421928792",
     "carrier": "unknown",
     "confidence": "low",

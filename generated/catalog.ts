@@ -22595,7 +22595,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pcs-logistics-vn",
+      "recognitionRank": 686,
+      "localClocks": true
     },
     "canaryUrl": "https://pcs-logistics.com/en/track-trace",
     "trackingUrlTemplate": "https://pcs-logistics.com/en/track-trace?code={trackingNumber}",

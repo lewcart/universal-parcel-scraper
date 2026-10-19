@@ -1769,6 +1769,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'morning-global', number: 'BR000000000MG',
     route: /^https:\/\/www\.morninglobal\.com\/trace-track\/\?tracking_number=BR000000000MG$/,
     marker: /No shipment record was found for this tracking number|Shipment Journey/ },
+  // The page prefills its box with the number and its script looks it up on load.
+  { carrier: 'pcs-logistics-vn', number: '000000000000000',
+    route: /^https:\/\/pcs-logistics\.com\/en\/track-trace\?code=000000000000000$/,
+    marker: /Up to 25 tracking number, one per line|What is a PCS tracking number\?/ },
 ];
 
 /**

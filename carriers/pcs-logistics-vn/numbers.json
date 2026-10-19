@@ -70,38 +70,6 @@
         ]
       },
       "note": "Example in the PCS Courier tracker's note under its search box on looking up several numbers; the opened capture shows it."
-    },
-    {
-      "number": "893180958012",
-      "role": "shipment",
-      "evidence": "official_documentation_example",
-      "source": {
-        "url": "https://web.archive.org/web/20220518071609/https://pcscourier.vn/track",
-        "date": "2022-05-18",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "quarantine": true,
-      "context": {
-        "assessment": "review"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colis-prive",
-          "mrw",
-          "brt",
-          "sf-express",
-          "sto",
-          "zto",
-          "j-and-t",
-          "lbc-express",
-          "metropolitan-warehouse"
-        ]
-      },
-      "note": "Second example in the same note under the PCS Courier tracker's search box; the page does not say whether this twelve-digit number is a PCS waybill or a partner carrier's number its lookup also accepts."
     }
   ]
 }

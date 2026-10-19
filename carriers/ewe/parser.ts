@@ -1,19 +1,15 @@
-import { DateTime, FixedOffsetZone } from 'luxon';
+import { DateTime } from 'luxon';
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { clean, cleanScalar } from '../../core/transport/index.js';
+import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { eweStage } from './status.js';
+import { newestFirst, parseTrace, scanRows, scanWording, summarize, textField } from './trace.js';
 
 export const PROVIDER = 'EWE';
-// A long history is a few kilobytes.
-export const EWE_MAX_BYTES = 256 * 1024;
 // Letters and digits with at least one digit. The trace tracker reads a lower-case number as unknown.
 const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,30}$/;
-const MAX_ROWS = 500;
-const MAX_EVENTS = 100;
 
 /** A number for EWE's trackers, in upper case; anything else is not one it issues. */
 export function normalizeEweNumber(raw: string): string {
@@ -22,55 +18,10 @@ export function normalizeEweNumber(raw: string): string {
   return number;
 }
 
-/** An optional text field; anything but a string is a changed reply. */
-function text(row: Record<string, unknown>, key: string, maxLength = 500): string {
-  const value = row[key];
-  if (value === null || value === undefined) return '';
-  if (typeof value !== 'string') throw new SchemaError(PROVIDER, `EWE returned an invalid ${key}`);
-  return clean(value, maxLength);
-}
-
-// The driver's name after "driver", as in "Our driver Sample will deliver your parcel to you".
-const DRIVER = /\b(drivers?)\s+(?!will\b|is\b|has\b)[^.,;!?]*?(?=\s+(?:will|is|has)\b|[.,;!?]|$)/gi;
-// A run of nine or more digits, with spaces, brackets, dots or hyphens
-// between them, as phone numbers are written; a date stays.
-const PHONE = /(?<![A-Z\d])(?!\d{4}-\d{2}-\d{2}(?!\d))\+?\d(?:[\s().-]{0,2}\d){8,}(?![A-Z\d])/gi;
+const text = (row: Record<string, unknown>, key: string, maxLength?: number) => textField(PROVIDER, row, key, maxLength);
 
 /** A scan's wording without the driver's name or a phone number. */
-export function eweWording(raw: string): string {
-  return clean(raw.replace(DRIVER, '$1').replace(PHONE, '')).replace(/\s+([,;:.])/g, '$1');
-}
-
-/** Newest first; scans on one clock keep their order. */
-function newestFirst(events: readonly CarrierEvent[], clock: (event: CarrierEvent) => number): CarrierEvent[] {
-  return events.map((event, index) => ({ event, index, key: clock(event) }))
-    .sort((a, b) => (a.key === b.key ? a.index - b.index : b.key - a.key))
-    .map(({ event }) => event);
-}
-
-function summary(events: readonly CarrierEvent[]): CarrierResult {
-  if (!events.length) throw new NoHistoryError(PROVIDER);
-  const newest = events[0]!;
-  const current = events.find((event) => event.stage);
-  const stage = current?.stage as Stage | undefined;
-  return {
-    status: stage ? languageStageStatus(stage) : 'unknown',
-    ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
-    last_status_text: newest.description!,
-    last_update: typeof newest.time === 'string' ? newest.time : null,
-    ...(typeof newest.local_time === 'string' ? { last_update_local: newest.local_time } : {}),
-    expected_delivery: null,
-    events: events.slice(0, MAX_EVENTS),
-    ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
-  };
-}
-
-function rowsOf(value: unknown): unknown[] {
-  if (value === null || value === undefined) return [];
-  if (!Array.isArray(value)) throw new SchemaError(PROVIDER, 'EWE returned invalid scans');
-  if (value.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'EWE returned an oversized history');
-  return value;
-}
+export const eweWording = scanWording;
 
 // The main lookup's clock: the scanning site's wall clock, to the minute.
 const DATE_STRING = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})(?::(\d{2}))?$/;
@@ -132,7 +83,7 @@ export function parseEweLookup(payload: unknown, raw: string): CarrierResult {
   if (!isRecord(payload) || !Array.isArray(payload.Payload)) throw new SchemaError(PROVIDER, 'EWE returned an invalid envelope');
   if (text(payload, 'Error') || !payload.Payload.length) throw new IndeterminateError(PROVIDER, 'EWE did not complete the lookup');
   const entry = consignmentFor(payload.Payload, number);
-  const rows = rowsOf(entry.Details);
+  const rows = scanRows(entry.Details, PROVIDER);
   if (!rows.length) {
     if (UNKNOWN.test(text(entry, 'Status'))) throw new NotFoundError(PROVIDER);
     throw new NoHistoryError(PROVIDER);
@@ -146,80 +97,10 @@ export function parseEweLookup(payload: unknown, raw: string): CarrierResult {
     events.push(scan.event);
   }
   // The reply lists eMetro's scans newest first and the delivery system's oldest first.
-  return summary(newestFirst(events, (event) => DateTime.fromISO(event.local_time as string, { zone: 'UTC' }).toMillis()));
+  return summarize(newestFirst(events, (event) => DateTime.fromISO(event.local_time as string, { zone: 'UTC' }).toMillis()), PROVIDER);
 }
 
-const WALL_TIME = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-const ZONE = /^(?:UTC|GMT)\s*([+-])(\d{1,2})(?::?(\d{2}))?$/i;
-
-function zoneMinutes(value: string): number | null {
-  const match = ZONE.exec(value);
-  if (!match) return null;
-  const minutes = (Number(match[2]) * 60 + Number(match[3] ?? 0)) * (match[1] === '-' ? -1 : 1);
-  return minutes % 15 === 0 && minutes >= -12 * 60 && minutes <= 14 * 60 ? minutes : null;
-}
-
-/**
- * A scan's instant in the trace reply. `utcOperatorTime` is the scan in UTC,
- * `timeZone` the site's offset and `operatorTime` its wall clock, which must
- * agree with the other two. Without an offset the instant stays in UTC.
- */
-function traceTime(row: Record<string, unknown>): string {
-  const utc = text(row, 'utcOperatorTime', 32);
-  const parsed = DateTime.fromISO(utc.replace(' ', 'T'), { zone: 'UTC' });
-  if (!WALL_TIME.test(utc) || !parsed.isValid || parsed.toFormat('yyyy-MM-dd HH:mm:ss') !== utc) {
-    throw new SchemaError(PROVIDER, 'EWE returned an invalid scan time');
-  }
-  const zone = text(row, 'timeZone', 16);
-  const minutes = zone ? zoneMinutes(zone) : 0;
-  if (minutes === null) throw new SchemaError(PROVIDER, 'EWE returned an invalid scan time zone');
-  const local = parsed.setZone(FixedOffsetZone.instance(minutes));
-  const wall = text(row, 'operatorTime', 32);
-  if (wall && wall !== local.toFormat('yyyy-MM-dd HH:mm:ss')) throw new SchemaError(PROVIDER, 'EWE returned clocks that disagree');
-  return local.toISO({ suppressMilliseconds: true })!;
-}
-
-function traceEvent(row: unknown, number: string): { key: string; event: CarrierEvent } {
-  if (!isRecord(row)) throw new SchemaError(PROVIDER, 'EWE returned an invalid scan');
-  if (typeof row.orderNo !== 'string') throw new SchemaError(PROVIDER, 'EWE returned a scan without its number');
-  if (clean(row.orderNo, 64).toUpperCase() !== number) throw new IndeterminateError(PROVIDER, 'EWE answered for another shipment');
-  const code = cleanScalar(row.action, 40);
-  const description = eweWording(text(row, 'routingDescription'));
-  if (!description) throw new SchemaError(PROVIDER, 'EWE returned a scan without wording');
-  const time = traceTime(row);
-  // The suburb and state; the postcode, the coordinates and the photos stay out.
-  const city = text(row, 'eventCity', 80);
-  const state = text(row, 'eventState', 16);
-  const location = city ? [city, state].filter(Boolean).join(', ') : text(row, 'occurLocation', 120);
-  const staged = eweStage(code, description);
-  const event: CarrierEvent = {
-    time,
-    ...(location ? { location } : {}),
-    description,
-    ...(code ? { provider_code: code } : {}),
-    ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
-  };
-  return { key: JSON.stringify([time, code, description, location]), event };
-}
-
-/**
- * The reply of EWE's trace tracker, which knows the parcels of EWE's delivery
- * system only. It answers a number it does not know with code 404, "Order
- * does not exist", inside an HTTP 200 reply.
- */
+/** The reply of EWE's trace tracker, which knows the parcels of EWE's delivery system only. */
 export function parseEweTrace(payload: unknown, raw: string): CarrierResult {
-  const number = normalizeEweNumber(raw);
-  if (!isRecord(payload) || typeof payload.code !== 'number') throw new SchemaError(PROVIDER, 'EWE returned an invalid envelope');
-  if (payload.code === 404) throw new NotFoundError(PROVIDER);
-  if (payload.code !== 200) throw new IndeterminateError(PROVIDER, 'EWE did not complete the lookup');
-  if (!isRecord(payload.data)) throw new SchemaError(PROVIDER, 'EWE returned an invalid envelope');
-  const seen = new Set<string>();
-  const events: CarrierEvent[] = [];
-  for (const row of rowsOf(payload.data.orderRoutes)) {
-    const scan = traceEvent(row, number);
-    if (seen.has(scan.key)) continue;
-    seen.add(scan.key);
-    events.push(scan.event);
-  }
-  return summary(newestFirst(events, (event) => DateTime.fromISO(event.time as string, { setZone: true }).toMillis()));
+  return parseTrace(payload, normalizeEweNumber(raw), { provider: PROVIDER, stage: eweStage });
 }

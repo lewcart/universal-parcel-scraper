@@ -215,6 +215,7 @@ import { statusMap as helthjem } from '../../carriers/helthjem/status.js';
 import { statusMap as hepsijet } from '../../carriers/hepsijet/status.js';
 import { statusMap as hermesAt } from '../../carriers/hermes-at/status.js';
 import { statusMap as hispapost } from '../../carriers/hispapost/status.js';
+import { statusMap as homexpress } from '../../carriers/homexpress/status.js';
 import { statusMap as houngAhLoun } from '../../carriers/houng-ah-loun/status.js';
 import { statusMap as hovership } from '../../carriers/hovership/status.js';
 import { statusMap as hrParcel } from '../../carriers/hr-parcel/status.js';
@@ -531,7 +532,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   globalpost, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
   'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, gzyl, hanjin, 'happy-post': happyPost, haypost,
-  'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'houng-ah-loun': houngAhLoun, hovership,
+  'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, homexpress, 'houng-ah-loun': houngAhLoun, hovership,
   'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik,
   'ilyang-logis': ilyangLogis, imile, 'indah-logistik': indahLogistik,

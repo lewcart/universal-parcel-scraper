@@ -31,6 +31,8 @@ delivery arm. Tracked through the lookups its two trackers make.
 
 ## Notes
 
+- The trace lookup's client and parser, in [trace.ts](trace.ts), also serve
+  [HOMEXPRESS](../homexpress/README.md): one server answers both trackers from one database.
 - Trace scans keep their instant with the site's offset. The reply's wall clock must agree with
   it, or the tracking page's answer is used instead. The tracking page's scans are wall clocks
   to the minute with no zone, and EWE's sites are in more than one time zone, so they stay

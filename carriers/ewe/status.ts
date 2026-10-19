@@ -3,8 +3,8 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 
 /**
  * The `action` codes of EWE's delivery system, which its trace tracker
- * returns with each scan. Only codes seen in replies are mapped; another code
- * falls to the wordings below, then to the shared wording rules.
+ * returns with each scan, on EWE's host and HOMEXPRESS's alike. Only codes
+ * seen in replies are mapped.
  */
 const CODES: ReadonlyMap<string, Stage> = new Map([
   ['create_order', 'registered'], // The order is in; a depot is to collect the parcel.
@@ -13,6 +13,11 @@ const CODES: ReadonlyMap<string, Stage> = new Map([
   ['sign_in', 'delivered'],
   ['sign_image', 'delivered'], // The delivery's proof photo, a moment after `sign_in`.
 ]);
+
+/** The stage the delivery system's map gives an `action` code, in any case. */
+export function traceCodeStage(code: string | null): Stage | undefined {
+  return code ? CODES.get(code.toLowerCase()) : undefined;
+}
 
 /**
  * The wordings of the main tracking page's lookup, which carry no code: those
@@ -37,10 +42,13 @@ const WORDINGS: readonly (readonly [RegExp, Stage])[] = [
 // eMetro closes the consignment after its delivery: it moves nothing.
 const CLOSED = normalizeStatusWording('Fully Complete');
 
-/** The stage EWE's map gives a code, else a wording in `normalizeStatusWording` form. */
+/**
+ * The stage EWE's map gives an `action` code of its delivery system, else a
+ * wording in `normalizeStatusWording` form. Another code falls to the
+ * wordings, then to the shared wording rules.
+ */
 export function eweMappedStage(code: string | null, wording: string): Stage | undefined {
-  const mapped = code ? CODES.get(code.toLowerCase()) : undefined;
-  return mapped ?? WORDINGS.find(([pattern]) => pattern.test(wording))?.[1];
+  return traceCodeStage(code) ?? WORDINGS.find(([pattern]) => pattern.test(wording))?.[1];
 }
 
 /** A scan's stage: the map, else the shared wording rules, else nothing. */

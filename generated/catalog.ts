@@ -15987,7 +15987,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "homexpress"
     },
     "canaryUrl": "https://www.homexpress.com.au/",
     "trackingSearchUrl": "https://www.homexpress.com.au/",

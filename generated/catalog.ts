@@ -25938,7 +25938,7 @@ export const CARRIER_CATALOG = {
   },
   "skypostal": {
     "displayName": "SkyPostal",
-    "color": "#fcc94f",
+    "color": "#088aea",
     "aliases": [
       "Sky Postal"
     ],
@@ -27727,7 +27727,7 @@ export const CARRIER_CATALOG = {
   },
   "team-worldwide": {
     "displayName": "Team Worldwide",
-    "color": "#9c1d1d",
+    "color": "#cf152d",
     "aliases": [
       "TeamWW"
     ],

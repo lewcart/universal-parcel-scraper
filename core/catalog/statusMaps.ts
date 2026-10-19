@@ -31,6 +31,7 @@ import { statusMap as algeriePoste } from '../../carriers/algerie-poste/status.j
 import { statusMap as aliexpress } from '../../carriers/aliexpress/status.js';
 import { statusMap as allegroOne } from '../../carriers/allegro-one/status.js';
 import { statusMap as amHomeDelivery } from '../../carriers/am-home-delivery/status.js';
+import { statusMap as americanWestExpress } from '../../carriers/american-west-express/status.js';
 import { statusMap as amerijet } from '../../carriers/amerijet/status.js';
 import { statusMap as ampm } from '../../carriers/ampm/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
@@ -511,7 +512,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos,
   'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'ab-courier': abCourier, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
   'acs-courier': acsCourier, 'aex-paraguay': aexParaguay, 'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex,
-  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, amerijet, ampm, 'an-post': anPost,
+  'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost,
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,
   'apple-express': appleExpress, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,

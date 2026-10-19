@@ -6206,7 +6206,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "american-west-express",
+      "localClocks": true
     },
     "canaryUrl": "https://awest.freightgate.com/awestTrack.html",
     "trackingUrlTemplate": "https://awest.freightgate.com/cgi-bin/tarifftrek5.1/itrek.cgi?database=awest&type=submit&interface=pltx&open_interface_search=Search+Now&open_text={trackingNumber}&SearchOn=open_billno",

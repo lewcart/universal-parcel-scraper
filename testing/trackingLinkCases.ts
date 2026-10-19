@@ -1799,6 +1799,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'domex', number: '00000000',
     route: /^https:\/\/domex\.lk\/Order-Details\.php\?wbno=00000000$/,
     marker: /Record Not Found!|WAYBILL INFORMATION/ },
+  // I-Trek searches the number as a pro number; its notice for an unknown one leaves the field empty.
+  { carrier: 'american-west-express', number: 'ZZ0000000',
+    route: /^https:\/\/awest\.freightgate\.com\/cgi-bin\/tarifftrek5\.1\/itrek\.cgi\?database=awest&type=submit&/,
+    marker: /Tracking Lookup will only find shipments picked up within the past 90 days/,
+    forwarding: { notFound: /no records found matching your criteria/ } },
 ];
 
 /**

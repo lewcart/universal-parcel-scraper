@@ -281,6 +281,9 @@ describe("universal providers' answers", () => {
     expect(answer('unknown', null, 'Estado interno 99')).toEqual(unknown);
     expect(answer('unknown', null, 'Will be delivered tomorrow')).toEqual(unknown);
     expect(answer('unknown', null, '   ')).toEqual(unknown);
+    // Chronopost's notice to the recipient, relayed as it is, is no scan.
+    expect(answer('unknown', null, 'Destinataire informé par SMS ou mail')).toEqual(gap);
+    expect(answer('unknown', 'SM', 'Destinataire informé par SMS ou mail')).toEqual(unknown);
   });
 
   it("answer by the providers' own reading, not the generic classifier's keyword rules", () => {
@@ -453,8 +456,8 @@ describe("universal providers' answers", () => {
     }
   });
 
-  it('leave nothing out on purpose', () => {
-    expect(universal.gaps).toEqual([]);
+  it("leave out only Chronopost's notice to the recipient on purpose", () => {
+    expect(universal.gaps.map((gap) => gap.wording)).toEqual(['destinataire informé par sms ou mail']);
   });
 });
 

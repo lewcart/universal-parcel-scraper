@@ -57,6 +57,8 @@ for (const [code, label, stage] of OBSERVED) observed.set(code, (observed.get(co
 
 const NOTIFICATION = 'Destinataire informé par SMS ou mail';
 const INSTRUCTION = 'Instruction de livraison reçue';
+/** Chronopost's notice to the recipient, which providers relay as it is. */
+export const CHRONOPOST_NOTIFICATION = NOTIFICATION;
 
 /** A notice to the recipient, or the recipient's own delivery instruction: neither is a scan. */
 export function isChronopostNotification(label: string): boolean {

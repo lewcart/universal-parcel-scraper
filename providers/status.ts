@@ -7,9 +7,11 @@
  * applies (`classifyEvent`: their own vocabulary around the shared language
  * rules). A stage a provider declares and a UPU event code it maps are
  * `carrier_map`, so their scans never reach the app's review. Wording no rule
- * reads has no stage, and nothing is left out on purpose.
+ * reads has no stage. Only Chronopost's notice to the recipient, which is no
+ * scan, is left out on purpose.
  */
-import type { CarrierStatusMap } from '../core/status/statusMap.js';
+import { CHRONOPOST_NOTIFICATION } from '../carriers/chronopost/status.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../core/status/statusMap.js';
 import { subStatusStage } from './seventeentrack/status.js';
 import { classifyEvent } from './shared/result.js';
 
@@ -18,5 +20,8 @@ export const statusMap: CarrierStatusMap = {
     const read = classifyEvent(wording);
     return (code ? subStatusStage(code, read.stage) : undefined) ?? (read.stage_source === 'none' ? undefined : read.stage);
   },
-  gaps: [],
+  gaps: [{
+    wording: normalizeStatusWording(CHRONOPOST_NOTIFICATION),
+    note: "Chronopost's notice to the recipient, relayed as it is: not a scan, so it keeps the stage the parcel already had.",
+  }],
 };

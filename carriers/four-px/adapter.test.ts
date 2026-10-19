@@ -8,6 +8,21 @@ import { InvalidInputError } from '../../core/errors/index.js';
 
 const NUMBER = '4PX0000000000001CN';
 const fixture = (name = 'delivered') => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
+// A partner's pickup-shop record as 4PX relays it in place of a scan's wording.
+const SHOP_RECORD = 'Shop;xx00001;example shop;xx;;exampletown;;example street 1;;;;0000_store_type;pudo_id;pudo_name;country_code;province;city;district;street;property_number;address_line_2;address_line_3;postcode';
+/** The delivered fixture whose newest scans went to a pickup shop after a missed delivery, as DPD relays them. */
+function atShop() {
+  const payload = fixture();
+  const tracks = payload.data[0].tracks;
+  payload.data[0].tracks = [
+    { ...tracks[0], tkCode: 'FPX_D_SASPS', tkDesc: 'Takeover by pickup parcel shop_shop' },
+    { ...tracks[0], tkCode: 'FPX_D_SASPS', tkDesc: 'Parcel was handed over to pickup parcel shop_shop', tkDateStr: '2026-03-28 14:27:03' },
+    { ...tracks[0], tkCode: '', tkDesc: SHOP_RECORD, tkDateStr: '2026-03-28 13:25:03' },
+    { ...tracks[0], tkCode: 'FPX_D_DDRH', tkDesc: 'Unfortunately, consignee not present. notification was left._nabn', tkDateStr: '2026-03-28 13:25:03' },
+    ...tracks.slice(1),
+  ];
+  return payload;
+}
 
 describe('4PX result projection', () => {
   it('confirms an LP reference only through matching shipment scans', async () => {
@@ -148,11 +163,26 @@ describe('4PX result projection', () => {
     ['FPX_O_IR', 'Waybill generated for EM000000000001CA', 'pending', 'registered', 'carrier_map'],
     ['FPX_O_IR', 'The shipment item has arrived at the country of destination.', 'in_transit', 'in_transit', 'wording:language'],
     ['FPX_O_IRI', 'Picked up by shipping partner, usps awaiting item', 'in_transit', 'accepted', 'wording:language'],
+    ['FPX_O_IR', 'Order data transmitted', 'pending', 'registered', 'carrier_map'],
+    ['FPX_I_CP', 'Customs clearance in progress.', 'in_transit', 'customs', 'carrier_map'],
+    ['FPX_D_SASPS', 'Parcel was handed over to pickup parcel shop_shop', 'out_for_delivery', 'ready_for_pickup', 'carrier_map'],
   ])('reads %s "%s" as %s', (code, description, status, stage, source) => {
     const payload = fixture(); Object.assign(payload.data[0].tracks[0], { tkCode: code, tkDesc: description });
     const result = parse(payload, NUMBER);
     expect(result).toMatchObject({ status, current_stage: stage, current_stage_source: source });
     expect(result.events?.[0]).toMatchObject({ stage, stage_source: source });
+  });
+
+  it('drops a partner\'s qualifier from its wording and reads its pickup-shop record as the pickup point', () => {
+    const result = parse(atShop(), NUMBER);
+    expect(result).toMatchObject({ current_stage: 'ready_for_pickup', last_status_text: 'Takeover by pickup parcel shop',
+      pickup_point: 'example shop, exampletown' });
+    expect(result.events?.slice(0, 3).map((event) => [event.description, event.stage])).toEqual([
+      ['Takeover by pickup parcel shop', 'ready_for_pickup'],
+      ['Parcel was handed over to pickup parcel shop', 'ready_for_pickup'],
+      ['Unfortunately, consignee not present. notification was left.', 'failed_attempt'],
+    ]);
+    expect(result.events?.some((event) => event.description?.includes(';'))).toBe(false);
   });
 
   it('leaves a relayed step unstaged when its wording says nothing', () => {
@@ -179,7 +209,7 @@ describe('4PX result projection', () => {
     const result = parse(fixture(), NUMBER);
     const checks: Record<string, boolean> = { history: Boolean(result.events?.length), location: Boolean(result.events?.some((event) => event.location)), delivered_at: Boolean(result.delivered_at),
       provider_code: Boolean(result.events?.every((event) => event.provider_code)), delivery_partner: Boolean(result.delivery_carrier),
-      delivery_tracking_number: Boolean(result.delivery_tracking_number) };
+      delivery_tracking_number: Boolean(result.delivery_tracking_number), pickup_point: Boolean(parse(atShop(), NUMBER).pickup_point) };
     const metadata = JSON.parse(readFileSync(new URL('./carrier.json', import.meta.url), 'utf8'));
     for (const capability of metadata.capabilities) expect(checks[capability], capability).toBe(true);
   });

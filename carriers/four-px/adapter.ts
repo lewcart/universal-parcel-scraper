@@ -48,6 +48,24 @@ function partnerOf(card: unknown): string | undefined {
   return name ? carrierIdFromPartner(name, clean(card.website, 200)) : undefined;
 }
 
+// A partner's qualifier left on its wording, as DPD's `NABN` or `SHOP`
+// ("…Notification was left._nabn").
+const QUALIFIER = /(?<=[a-z.])_[a-z]{2,8}$/i;
+
+/**
+ * A partner's pickup-shop record relayed as a scan's wording: the shop's
+ * fields, then `_` and their names (`store_type;pudo_id;pudo_name;…`). It is
+ * no scan; the shop's name and town are the pickup point.
+ */
+function shopRecord(description: string): { point?: string } | undefined {
+  const [values, names] = description.split(/_(?=store_type;)/);
+  if (!names || !/\bpudo_name\b/i.test(names)) return undefined;
+  const fields = values!.split(';');
+  const field = (name: string) => clean(fields[names.toLowerCase().split(';').indexOf(name)], 120);
+  const point = [field('pudo_name'), field('city')].filter(Boolean).join(', ');
+  return point ? { point } : {};
+}
+
 export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   const number = normalizeFourPxNumber(trackingNumber);
   if (!isRecord(payload) || payload.result !== 1 || !Array.isArray(payload.data)) throw new SchemaError('4PX');
@@ -60,10 +78,17 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   if (item.tracks.length > 500) throw new SchemaError('4PX', '4PX returned excessive tracking history');
   const events: CarrierEvent[] = [];
   const seen = new Set<string>();
+  let pickupPoint: string | undefined;
   for (const raw of item.tracks) {
     if (!isRecord(raw)) throw new SchemaError('4PX');
-    const description = clean(raw.tkDesc, 500);
-    if (!description) throw new SchemaError('4PX', '4PX returned an empty scan');
+    const wording = clean(raw.tkDesc, 1000);
+    if (!wording) throw new SchemaError('4PX', '4PX returned an empty scan');
+    const shop = shopRecord(wording);
+    if (shop) {
+      pickupPoint ??= shop.point;
+      continue;
+    }
+    const description = clean(wording.replace(QUALIFIER, ''), 500);
     const time = eventTime(raw);
     const location = clean(raw.tkLocation, 200);
     const code = clean(raw.tkCode, 64);
@@ -74,7 +99,8 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     events.push({ ...time, description, location, ...(code ? { provider_code: code } : {}),
       ...(classified ? { stage: classified.stage, stage_source: classified.source } : {}) });
   }
-  const latest = events[0]!;
+  const latest = events[0];
+  if (!latest) throw new IndeterminateError('4PX', '4PX returned no parcel scans');
   const classified = fourPxStatus(latest.provider_code ?? '', latest.description);
   // Result normalization keeps only the package number of a USPS routing barcode.
   const deliveryNumber = clean(item.serverCode, 64).toUpperCase();
@@ -88,6 +114,7 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
     ...(classified?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     ...(/^[A-Z]{2}$/.test(country) ? { destination_country: country } : {}),
     ...(partner ? { delivery_carrier: partner } : {}),
+    ...(pickupPoint ? { pickup_point: pickupPoint } : {}),
     ...(deliveryNumber !== number && /^[A-Z0-9]{4,40}$/.test(deliveryNumber) ? { delivery_tracking_number: deliveryNumber } : {}),
     events: events.slice(0, 100),
   };

@@ -4,7 +4,10 @@ import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status
 const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_S_OK', { status: 'delivered', stage: 'delivered' }],
   ['FPX_D_SD', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
+  // A partner's driver left the parcel at a pickup shop, or the shop took it over.
+  ['FPX_D_SASPS', { status: 'out_for_delivery', stage: 'ready_for_pickup' }],
   ['FPX_D_FD', { status: 'exception', stage: 'failed_attempt' }],
+  ['FPX_D_DDRH', { status: 'exception', stage: 'failed_attempt' }], // The recipient was not in; a notice was left.
   ['FPX_L_RPIF', { status: 'pending', stage: 'registered' }],
   ['FPX_L_SC', { status: 'in_transit', stage: 'accepted' }],
   ['FPX_C_SPLS', { status: 'in_transit', stage: 'accepted' }],
@@ -16,6 +19,7 @@ const CODES = new Map<string, ClassifiedStatus>([
   ['FPX_M_DFOA', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_ATA', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_M_CRSD', { status: 'in_transit', stage: 'customs' }],
+  ['FPX_I_CP', { status: 'in_transit', stage: 'customs' }],
   ['FPX_I_RCUK', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_D_AOPC', { status: 'in_transit', stage: 'in_transit' }],
   ['FPX_D_STPP', { status: 'in_transit', stage: 'in_transit' }],
@@ -28,7 +32,7 @@ const CODES = new Map<string, ClassifiedStatus>([
 const WORDED = new Set(['FPX_O_IR', 'FPX_O_IRI']);
 // By `normalizeStatusWording` wording. A partner's label can name its own
 // waybill: "Waybill generated for …", as Emile words it.
-const WORDING: ReadonlyMap<string, Stage> = new Map([['waybill generated', 'registered']]);
+const WORDING: ReadonlyMap<string, Stage> = new Map([['waybill generated', 'registered'], ['order data transmitted', 'registered']]);
 const LABEL_FOR = /^waybill generated for [a-z0-9]+$/;
 // Scans a partner relays without a code, by `normalizeStatusWording` wording.
 const UNCODED: ReadonlyMap<string, Stage> = new Map([

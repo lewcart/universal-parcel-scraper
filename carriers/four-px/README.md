@@ -21,7 +21,11 @@ invented instant.
 Event codes map to stages. `FPX_O_IR` and `FPX_O_IRI` relay whatever step a
 partner reported, from a label to an arrival abroad, so their wording decides.
 A partner's transit scans relayed without a code are staged by their whole
-wording. Other unknown codes stay unstaged.
+wording. Other unknown codes stay unstaged. A partner's qualifier left after an
+underscore at the end of a wording, as DPD's (`…_nabn`), is dropped. A
+partner's pickup-shop record relayed in place of a wording (the shop's fields,
+then `_store_type;pudo_id;pudo_name;…`) is no scan: its shop name and town are
+the pickup point.
 
 The server reference can identify a delivery partner's tracking number. Shared
 result normalization keeps only a USPS routing barcode's package number, never

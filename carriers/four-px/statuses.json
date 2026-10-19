@@ -249,6 +249,50 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-16",
       "note": "Relayed without a code."
+    },
+    {
+      "code": "FPX_I_CP",
+      "wording": "Customs clearance in progress.",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19"
+    },
+    {
+      "code": "FPX_O_IR",
+      "wording": "Order data transmitted",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "A partner's order-data step, relayed."
+    },
+    {
+      "code": "FPX_D_DDRH",
+      "wording": "Unfortunately, consignee not present. notification was left._nabn",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Relayed from DPD with its qualifier after an underscore, which the adapter drops."
+    },
+    {
+      "code": "FPX_D_SASPS",
+      "wording": "Parcel was handed over to pickup parcel shop_shop",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "The driver left the parcel at a pickup shop after a missed delivery; relayed from DPD."
+    },
+    {
+      "code": "FPX_D_SASPS",
+      "wording": "Takeover by pickup parcel shop_shop",
+      "language": "en",
+      "stage": "ready_for_pickup",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "The pickup shop took the parcel over; relayed from DPD."
     }
   ]
 }

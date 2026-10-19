@@ -19015,6 +19015,44 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "lingdong": {
+    "displayName": "Lingdong International",
+    "color": "#0171bb",
+    "aliases": [
+      "LDGJ",
+      "Lingdong",
+      "Shenzhen Lingdong International Freight Forwarding",
+      "领东国际",
+      "深圳市领东国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "lingdong"
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [
+      {
+        "domains": [
+          "tms.lingdong56.com"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SZLD\\d{10}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "linhan": {
     "displayName": "LinHan International",
     "color": "#eb5c20",
@@ -31521,6 +31559,7 @@ export const CARRIER_IDS = [
   "lietuvos-pastas",
   "lightning-express",
   "line-clear",
+  "lingdong",
   "linhan",
   "lion-parcel",
   "logen",
@@ -32298,6 +32337,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "lietuvos-pastas": ["lietuvos-pastas-1","lietuvos-pastas-s10"],
   "lightning-express": [],
   "line-clear": [],
+  "lingdong": ["lingdong-1"],
   "linhan": ["linhan-1"],
   "lion-parcel": ["lion-parcel-1"],
   "logen": [],

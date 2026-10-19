@@ -321,6 +321,7 @@ import { adapter as liccardi } from '../carriers/liccardi/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
 import { adapter as lightningExpress } from '../carriers/lightning-express/adapter.js';
 import { adapter as lineClear } from '../carriers/line-clear/adapter.js';
+import { adapter as lingdong } from '../carriers/lingdong/adapter.js';
 import { adapter as linhan } from '../carriers/linhan/adapter.js';
 import { adapter as lionParcel } from '../carriers/lion-parcel/adapter.js';
 import { adapter as logen } from '../carriers/logen/adapter.js';
@@ -910,6 +911,7 @@ export const REGISTRY: RegistryDefinition = {
     "lietuvos-pastas": lietuvosPastas,
     "lightning-express": lightningExpress,
     "line-clear": lineClear,
+    "lingdong": lingdong,
     "linhan": linhan,
     "lion-parcel": lionParcel,
     "logen": logen,
@@ -1595,6 +1597,7 @@ export const REGISTRY: RegistryDefinition = {
     "lietuvos-pastas": "lietuvos-pastas",
     "lightning-express": "lightning-express",
     "line-clear": "line-clear",
+    "lingdong": "lingdong",
     "linhan": "linhan",
     "lion-parcel": "lion-parcel",
     "logen": "logen",

@@ -87458,6 +87458,14 @@
     ]
   },
   {
+    "input": "SZLD9900000001",
+    "carrier": "lingdong",
+    "confidence": "high",
+    "candidates": [
+      "lingdong"
+    ]
+  },
+  {
     "input": "Shoc0000340153",
     "carrier": "ekart",
     "confidence": "high",

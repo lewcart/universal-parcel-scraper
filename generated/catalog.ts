@@ -25839,7 +25839,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skyking",
+      "recognitionRank": 792
     },
     "canaryUrl": "https://skyking.co/track",
     "trackingUrlTemplate": "https://skyking.co/track?cno={trackingNumber}",

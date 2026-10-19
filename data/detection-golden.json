@@ -38440,6 +38440,12 @@
     ]
   },
   {
+    "input": "445662077",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "44608128627",
     "carrier": "unknown",
     "confidence": "low",
@@ -50050,6 +50056,12 @@
       "sto",
       "j-and-t"
     ]
+  },
+  {
+    "input": "700038149",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "700040965699",

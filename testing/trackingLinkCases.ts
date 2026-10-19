@@ -1420,6 +1420,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'united-delivery-service', number: '00UDS00000000000',
     route: /^https:\/\/www\.uniteddeliveryservice\.com\/track\/barcode\/00UDS00000000000$/,
     marker: /Barcode Not Found|Delivery Status/ },
+  // The page looks up the number in its address and answers an unknown one with its own notice.
+  { carrier: 'skyking', number: '999999999',
+    route: /^https:\/\/skyking\.co\/track\?cno=999999999$/,
+    marker: /No Tracking Information Available/ },
 ];
 
 /**

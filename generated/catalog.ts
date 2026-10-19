@@ -5442,7 +5442,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ab-courier",
+      "recognitionRank": 573,
+      "localClocks": true
     },
     "canaryUrl": "https://abcourier.com/",
     "trackingUrlTemplate": "https://abcourier.com/CCWebClient/General/TrackingInfo/{trackingNumber}",

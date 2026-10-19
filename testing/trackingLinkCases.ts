@@ -1780,6 +1780,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'israel-post': 'The public tracking page blocks requests before the tracking form; the adapter uses the native guest API.',
   zto: 'the domestic tracking page asks for Dingxiang verification before returning a shipment; the link opens the search form',
   '17feia': 'www.17feia.com sends a session without its cookie to cc.html, whose reload opens the home page without the number, so number forwarding cannot be verified',
+  'ab-courier': 'A&B\'s order numbers run in sequence, so a synthetic one can open another customer\'s order, and the page answers an unknown order without its number; only a known order verifies the link',
   'ait-worldwide': 'FasTrak also finds shipments by their shippers\' references, so a synthetic number can open other people\'s shipments; only a known bill verifies the link',
   'allegro-one': 'allegro.pl answers automated Chrome with a DataDome block page instead of the tracker, so number forwarding cannot be verified',
   'an-post': 'Radware Bot Manager sends automated sessions on www.anpost.com to validate.perfdrive.com and a CAPTCHA, so number forwarding cannot be verified',

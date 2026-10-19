@@ -2,18 +2,11 @@
   "carrier": "ab-courier",
   "records": [
     {
-      "number": "9104518",
+      "number": "7000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20230131122153/https://www.abcourier.com/tracking-info?tracking-number=9104518",
-        "date": "2023-01-31",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -21,29 +14,7 @@
           "seur"
         ]
       },
-      "note": "An opened capture of A&B Courier's own tracking page shows this order as dispatched, a one-box Vaughan to Toronto courier job with its scheduled pickup and delivery estimate."
-    },
-    {
-      "number": "9111953",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20230206145150/https://www.abcourier.com/tracking-info?tracking-number=9111953",
-        "date": "2023-02-06",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "seur"
-        ]
-      },
-      "note": "An opened capture of A&B Courier's own tracking page shows this order as dispatched, a one-box Vaughan to Toronto courier job with its scheduled pickup and delivery estimate."
+      "note": "Invented placeholder for a seven-digit order number; A&B's tracker names the signer of each public sample."
     }
   ]
 }

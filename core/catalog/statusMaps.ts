@@ -19,6 +19,7 @@ import { statusMap as ninetynineMinutos } from '../../carriers/99minutos/status.
 import { statusMap as a1Post } from '../../carriers/a1-post/status.js';
 import { statusMap as aDuiePyle } from '../../carriers/a-duie-pyle/status.js';
 import { statusMap as aTuHoraExpress } from '../../carriers/a-tu-hora-express/status.js';
+import { statusMap as abCourier } from '../../carriers/ab-courier/status.js';
 import { statusMap as abfFreight } from '../../carriers/abf-freight/status.js';
 import { statusMap as aciExpressKr } from '../../carriers/aci-express-kr/status.js';
 import { statusMap as acsCourier } from '../../carriers/acs-courier/status.js';
@@ -492,7 +493,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 /** By adapter: a carrier served by another's adapter, as Delivengo by La Poste's, reads that map. */
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos,
-  'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
+  'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'ab-courier': abCourier, 'abf-freight': abfFreight, 'aci-express-kr': aciExpressKr,
   'acs-courier': acsCourier, 'aex-paraguay': aexParaguay, 'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex,
   'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, amerijet, ampm, 'an-post': anPost,
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,

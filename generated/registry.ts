@@ -10,6 +10,7 @@ import { adapter as carrier99minutos } from '../carriers/99minutos/adapter.js';
 import { adapter as aDuiePyle } from '../carriers/a-duie-pyle/adapter.js';
 import { adapter as aTuHoraExpress } from '../carriers/a-tu-hora-express/adapter.js';
 import { adapter as a1Post } from '../carriers/a1-post/adapter.js';
+import { adapter as abCourier } from '../carriers/ab-courier/adapter.js';
 import { adapter as abfFreight } from '../carriers/abf-freight/adapter.js';
 import { adapter as aciExpressKr } from '../carriers/aci-express-kr/adapter.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
@@ -576,6 +577,7 @@ export const REGISTRY: RegistryDefinition = {
     "a-duie-pyle": aDuiePyle,
     "a-tu-hora-express": aTuHoraExpress,
     "a1-post": a1Post,
+    "ab-courier": abCourier,
     "abf-freight": abfFreight,
     "aci-express-kr": aciExpressKr,
     "acs-courier": acsCourier,
@@ -1144,7 +1146,7 @@ export const REGISTRY: RegistryDefinition = {
     "a-tu-hora-express": "a-tu-hora-express",
     "a1-post": "a1-post",
     "aaa-cooper": "universal",
-    "ab-courier": "universal",
+    "ab-courier": "ab-courier",
     "abf-freight": "abf-freight",
     "aci-express-kr": "aci-express-kr",
     "acs-courier": "acs-courier",

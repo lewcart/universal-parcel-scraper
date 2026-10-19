@@ -13,6 +13,13 @@ carriers print letters followed by a counter, so no rule claims the layout.
 The home page's track form opens `online.hi-trans.com.au/Connotes/ShowConsignmentSummary.aspx`
 with the number in `Number`.
 
+## Why there is no adapter
+
+Cloudflare answers the consignment summary page, and every other page of the carrier's
+sites, with an HTTP 403 challenge page before any result. The Freight API tracks a consignment
+only with the username and token Hi-Trans issues to a customer, and Hi-Trans publishes no
+tracking app, so Hi-Trans Express stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

@@ -56,6 +56,7 @@ import { adapter as burdDelivery } from '../carriers/burd-delivery/adapter.js';
 import { adapter as bussgods } from '../carriers/bussgods/adapter.js';
 import { adapter as byhd } from '../carriers/byhd/adapter.js';
 import { adapter as cChezVous } from '../carriers/c-chez-vous/adapter.js';
+import { adapter as c3x } from '../carriers/c3x/adapter.js';
 import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
@@ -546,6 +547,7 @@ export const REGISTRY: RegistryDefinition = {
     "bussgods": bussgods,
     "byhd": byhd,
     "c-chez-vous": cChezVous,
+    "c3x": c3x,
     "cacesa": cacesa,
     "canada-post": canadaPost,
     "canpar": canpar,
@@ -1072,7 +1074,7 @@ export const REGISTRY: RegistryDefinition = {
     "bussgods": "bussgods",
     "byhd": "byhd",
     "c-chez-vous": "c-chez-vous",
-    "c3x": "universal",
+    "c3x": "c3x",
     "cacesa": "cacesa",
     "campost": "universal",
     "canada-post": "canada-post",

@@ -8189,7 +8189,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "c3x",
+      "recognitionRank": 757,
+      "localClocks": true
     },
     "canaryUrl": "https://c3xpress.com/",
     "trackingSearchUrl": "https://c3xpress.com/",

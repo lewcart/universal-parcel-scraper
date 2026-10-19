@@ -56,6 +56,7 @@ import { statusMap as bulgarianPosts } from '../../carriers/bulgarian-posts/stat
 import { statusMap as burdDelivery } from '../../carriers/burd-delivery/status.js';
 import { statusMap as bussgods } from '../../carriers/bussgods/status.js';
 import { statusMap as byhd } from '../../carriers/byhd/status.js';
+import { statusMap as c3x } from '../../carriers/c3x/status.js';
 import { statusMap as cacesa } from '../../carriers/cacesa/status.js';
 import { statusMap as cargus } from '../../carriers/cargus/status.js';
 import { statusMap as castores } from '../../carriers/castores/status.js';
@@ -421,7 +422,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
-  byhd, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
+  byhd, c3x, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, 'chunghwa-post': chunghwaPost, 'city-express-rs': cityExpressRs, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,

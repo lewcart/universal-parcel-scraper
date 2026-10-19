@@ -43,6 +43,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "burd-delivery": 861,
   "bussgods": 867,
   "c-chez-vous": 345,
+  "c3x": 757,
   "canada-post": 590,
   "canpar": 780,
   "cargus": 270,

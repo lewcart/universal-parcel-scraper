@@ -112,6 +112,7 @@ import { adapter as daiPost } from '../carriers/dai-post/adapter.js';
 import { adapter as danskeFragtmaend } from '../carriers/danske-fragtmaend/adapter.js';
 import { adapter as dao } from '../carriers/dao/adapter.js';
 import { adapter as dayRoss } from '../carriers/day-ross/adapter.js';
+import { adapter as daylightTransport } from '../carriers/daylight-transport/adapter.js';
 import { adapter as daytonFreight } from '../carriers/dayton-freight/adapter.js';
 import { adapter as delhivery } from '../carriers/delhivery/adapter.js';
 import { adapter as dellin } from '../carriers/dellin/adapter.js';
@@ -634,6 +635,7 @@ export const REGISTRY: RegistryDefinition = {
     "danske-fragtmaend": danskeFragtmaend,
     "dao": dao,
     "day-ross": dayRoss,
+    "daylight-transport": daylightTransport,
     "dayton-freight": daytonFreight,
     "delhivery": delhivery,
     "dellin": dellin,
@@ -1209,7 +1211,7 @@ export const REGISTRY: RegistryDefinition = {
     "danske-fragtmaend": "danske-fragtmaend",
     "dao": "dao",
     "day-ross": "day-ross",
-    "daylight-transport": "universal",
+    "daylight-transport": "daylight-transport",
     "dayton-freight": "dayton-freight",
     "delhivery": "delhivery",
     "delivengo": "la-poste",

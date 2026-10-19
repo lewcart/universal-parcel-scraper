@@ -1656,6 +1656,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   cne: 'the tracking portal redirects inspected Chrome sessions to about:blank through its anti-debug script, preventing a stable rendered-page check',
   'dayton-freight': 'the detail page answers a PRO it does not know with a generic HTTP 500 error page without the number, and its PROs run in sequence, so a synthetic one can open another shipment; only a known PRO verifies the link',
   dellin: 'www.dellin.ru puts Qrator\'s script check before every page, and the order page answers an unknown number with the site\'s generic page-not-found screen, so only a real order verifies the link',
+  'daylight-transport': 'Daylight reuses its eight-digit probills, so a synthetic one can open other people\'s shipments; only a known probill verifies the link',
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
   couriersplease: 'www.couriersplease.com.au answers the burst of script requests its tracker page makes in automated Chrome with HTTP 429, so the page never reads the number from its address and number forwarding cannot be verified daily',
   'dpd-at': 'Radware Bot Manager answers the lookup the myDPD page makes from automated Chrome with a CAPTCHA on validate.perfdrive.com, so number forwarding cannot be verified',

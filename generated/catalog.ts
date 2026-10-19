@@ -10413,7 +10413,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "daylight-transport",
+      "recognitionRank": 732,
+      "localClocks": true
     },
     "canaryUrl": "https://www.dylt.com/",
     "trackingUrlTemplate": "https://mydaylight.dylt.com/external/shipment?probill={trackingNumber}",

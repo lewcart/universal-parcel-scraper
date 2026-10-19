@@ -87,6 +87,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "danske-fragtmaend": 873,
   "dao": 515,
   "day-ross": 38,
+  "daylight-transport": 732,
   "dayton-freight": 735,
   "delhivery": 600,
   "delnext": 889,

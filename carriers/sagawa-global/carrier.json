@@ -23,18 +23,61 @@
   "timezone": "Asia/Tokyo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "sagawa-global",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 749
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",
     "searchUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
     "canaryUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "customer_reference",
+      "proof_of_delivery",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

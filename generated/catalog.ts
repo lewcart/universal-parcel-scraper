@@ -24965,7 +24965,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sagawa-global",
+      "recognitionRank": 749,
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp",
     "trackingUrlTemplate": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",

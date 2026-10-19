@@ -1501,6 +1501,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skypostal', number: 'SKAMZUS0000000000',
     route: /^https:\/\/tracking\.skypostal\.com\/\?trck_number=SKAMZUS0000000000&lng_code=ENG$/,
     marker: /Choose to track one package or multiple packages|No records to display/ },
+  // The tracker looks up the air waybill in its address and puts it in its search field.
+  { carrier: 'sagawa-global', number: '100000000004',
+    route: /^https:\/\/tracking\.sagawa-sgx\.com\/sgx\/trackeng\.asp\?ENC=JPN&CAT=AWB&AWB=100000000004$/,
+    marker: /Sagawa Global Tracking|No Record\./ },
 ];
 
 /**

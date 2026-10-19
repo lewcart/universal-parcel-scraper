@@ -362,6 +362,7 @@ import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
+import { adapter as sagawaGlobal } from '../carriers/sagawa-global/adapter.js';
 import { adapter as saia } from '../carriers/saia/adapter.js';
 import { adapter as sailpost } from '../carriers/sailpost/adapter.js';
 import { adapter as sameday } from '../carriers/sameday/adapter.js';
@@ -848,6 +849,7 @@ export const REGISTRY: RegistryDefinition = {
     "royal-mail": royalMail,
     "rpx-indonesia": rpxIndonesia,
     "sagawa": sagawa,
+    "sagawa-global": sagawaGlobal,
     "saia": saia,
     "sailpost": sailpost,
     "sameday": sameday,
@@ -1567,7 +1569,7 @@ export const REGISTRY: RegistryDefinition = {
     "russian-post": "universal",
     "saee": "universal",
     "sagawa": "sagawa",
-    "sagawa-global": "universal",
+    "sagawa-global": "sagawa-global",
     "sahara-express": "universal",
     "saia": "saia",
     "sailpost": "sailpost",

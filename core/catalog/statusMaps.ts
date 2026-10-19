@@ -258,6 +258,7 @@ import { statusMap as nipost } from '../../carriers/nipost/status.js';
 import { statusMap as nipponExpress } from '../../carriers/nippon-express/status.js';
 import { statusMap as noest } from '../../carriers/noest/status.js';
 import { statusMap as norskGlobal } from '../../carriers/norsk-global/status.js';
+import { statusMap as northline } from '../../carriers/northline/status.js';
 import { statusMap as novaGlobal } from '../../carriers/nova-global/status.js';
 import { statusMap as nox } from '../../carriers/nox/status.js';
 import { statusMap as nzCouriers } from '../../carriers/nz-couriers/status.js';
@@ -465,7 +466,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,
-  noest, 'norsk-global': norskGlobal, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
+  noest, 'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, passport, 'pathao-courier': pathaoCourier, 'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,
   'pfc-express': pfcExpress, phlpost,

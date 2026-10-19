@@ -1564,6 +1564,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pcp-express', number: 'ZZZZZZB1000101Z00000',
     route: /^https:\/\/pcpexpress\.com\/lacak_detailv2\.php\?awb=ZZZZZZB1000101Z00000$/,
     marker: /Riwayat Pengiriman|Rincian Pengiriman/, forwarding: { notFound: /\bBLANK\b/ } },
+  // The tracker looks up the number in its address on load and answers an unknown one with "Not Found", without the number.
+  { carrier: 'northline', number: '1ABC00000000',
+    route: /^https:\/\/track\.northline\.com\.au\/status\/1ABC00000000$/,
+    marker: /Track another\s+consignment/i,
+    forwarding: { notFound: /Not Found\s+Track another\s+consignment/i } },
 ];
 
 /**

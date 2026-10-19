@@ -20862,7 +20862,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "northline",
+      "localClocks": true
     },
     "canaryUrl": "https://track.northline.com.au/",
     "trackingUrlTemplate": "https://track.northline.com.au/status/{trackingNumber}",

@@ -1753,6 +1753,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   dtdc: 'the MyDTDC Flutter page exposes no visible body text until accessibility is enabled, and the portal link opens its home page',
   'fargo-courier': 'www.fargocourier.co.ke passes the number only to its tracker frame from portal.fargocourier.co.ke, which loads it as a document the rendered-page check does not read and answers an unknown waybill with a generic HTTP 500 error page, so number forwarding cannot be verified',
   'forward-air': 'Forward Air reuses its eight-digit waybill numbers, so a synthetic one can open other people\'s shipments; only a known waybill verifies the link',
+  'forza-delivery': 'the tracker asks for a reCAPTCHA checkbox before it reads the guía in the address',
   gdex: 'gdexpress.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   hanjin: 'the result page answers an unknown number with an alert and sends the browser back to the empty search form, so only a real parcel verifies the link',
   'indah-logistik': 'the resi page answers an unknown number with a generic internal server error page without the number, so only a real resi verifies the link',

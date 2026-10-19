@@ -14111,7 +14111,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Guatemala",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "forza-delivery",
+      "recognitionRank": 633,
+      "localClocks": true
     },
     "canaryUrl": "https://rastreo.forzadelivery.com/",
     "trackingUrlTemplate": "https://rastreo.forzadelivery.com/{trackingNumber}",

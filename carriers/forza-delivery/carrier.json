@@ -20,17 +20,63 @@
   "timezone": "America/Guatemala",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "forza-delivery",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 633
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://rastreo.forzadelivery.com/{trackingNumber}",
     "canaryUrl": "https://rastreo.forzadelivery.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "eta",
+      "destination",
+      "parcel_count",
+      "item_category",
+      "recipient_name",
+      "signatory",
+      "sender_name",
+      "proof_of_delivery",
+      "coordinates",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code"
+    ],
+    "discarded": [
+      "progress_rail",
+      "eta",
+      "destination",
+      "parcel_count",
+      "item_category",
+      "recipient_name",
+      "signatory",
+      "sender_name",
+      "proof_of_delivery",
+      "coordinates",
+      "payment_details"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "service_name",
+      "offset_timestamps",
+      "delivered_at"
+    ]
   },
   "links": [
     {

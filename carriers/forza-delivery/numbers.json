@@ -2,40 +2,11 @@
   "carrier": "forza-delivery",
   "records": [
     {
-      "number": "FD 3471822",
+      "number": "FD000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/forzadeliveryexpress/posts/ahora-nuestro-servicio-next-day-delivery-tiene-2-opciones-para-enviar-tus-paquet/690987839324294/",
-        "date": "2022-12-27",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "forza-delivery"
-        ]
-      },
-      "note": "A customer complaining to Forza quotes this guía in a comment on Forza Delivery Express's own Facebook post, seen in a search-engine excerpt; the date is the post's."
-    },
-    {
-      "number": "FD 362827",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/forzadeliveryexpress/posts/saludos-desde-coatepeque-realiza-tus-env%C3%ADos-de-paqueter%C3%ADa-y-mensajer%C3%ADa-a-nivel-n/327584525664629/",
-        "date": "2021-06-30",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -47,21 +18,14 @@
           "loggi"
         ]
       },
-      "note": "A customer gives this as the número de envío of a broken order in a comment on Forza Delivery Express's own Facebook post, seen in a search-engine excerpt; the date is the post's."
+      "note": "Synthetic guía with six digits, the shortest the tracking page's own check takes. GLS's and Loggi's rules take the same eight characters."
     },
     {
-      "number": "FD 3677451",
+      "number": "FD0000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/forzadeliveryexpress/photos/690962995993445/",
-        "date": "2022-12-27",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -69,65 +33,14 @@
           "forza-delivery"
         ]
       },
-      "note": "A customer quotes this guía in a comment on Forza Delivery Express's own Facebook post, seen in a search-engine excerpt; the date is the post's."
+      "note": "Synthetic guía in the shape the tracking page's own check takes: FD and six to nine digits."
     },
     {
-      "number": "FD 2537364",
+      "number": "FD00000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/forzadeliveryexpress/photos/qu%C3%A9-tu-emprendimiento-siga-creciendo-jueves-y-viernes-2x1-en-tus-env%C3%ADos-a-nivel-/568163971606682/",
-        "date": "2022-07-08",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "forza-delivery"
-        ]
-      },
-      "note": "A customer quotes this guía in a comment on Forza Delivery Express's own Facebook post, seen in a search-engine excerpt; the date is the post's."
-    },
-    {
-      "number": "FD- 1255303",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/forzadeliveryexpress/photos/este-mes-vamos-con-todo-con-tus-encomiendas-a-nivel-nacional-recuerda-que-puedes/571748531248226/",
-        "date": "2022-07-13",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "forza-delivery"
-        ]
-      },
-      "note": "A customer quotes this guía in a comment on Forza Delivery Express's own Facebook post, seen in a search-engine excerpt; the date is the post's."
-    },
-    {
-      "number": "FD 10125098",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/photo.php?fbid=1003370128460353&id=100063621246396&set=a.616181730512530",
-        "date": "2024-07-08",
-        "dateKind": "publication",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -136,29 +49,7 @@
           "tnt-it"
         ]
       },
-      "note": "A customer answers Forza's request for a guía number with this one in a comment on Forza Delivery Express's own Facebook photo post, seen in a search-engine excerpt; the date is the post's."
-    },
-    {
-      "number": "FD3829541",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.scribd.com/document/686334675/Rastreo-de-Paquetes-Forza-Delivery",
-        "date": "2022-12-22",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "forza-delivery"
-        ]
-      },
-      "note": "A public document titled Rastreo de Paquetes Forza Delivery reproduces Forza's tracker with this guía; the date is the order date it shows."
+      "note": "Synthetic guía with eight digits, in the layout TNT Italy's low rule also takes."
     }
   ]
 }

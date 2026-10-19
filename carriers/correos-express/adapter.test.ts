@@ -56,19 +56,24 @@ const EXPLAINED = {
 };
 
 describe('Correos Express direct tracking', () => {
-  it('projects matching actual scans, local clocks, locality and date-only estimates without private details', () => {
+  it('projects matching actual scans, their depots\' clocks, locality and date-only estimates without private details', () => {
     const result = normalizeCarrierResult(parseCorreosExpress(html, NUMBER));
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'NUEVO REPARTO',
-      last_update: null, last_update_local: '2026-01-05T18:27:00', expected_delivery: '2026-01-06' });
+      last_update: '2026-01-05T18:27:00+01:00', expected_delivery: '2026-01-06' });
+    expect(result.last_update_local).toBeUndefined();
     expect(result.events).toHaveLength(7);
-    expect(result.events?.[0]).toMatchObject({ local_time: '2026-01-05T18:27:00', location: 'BARCELONA2', provider_status: 'NUEVO REPARTO', stage: 'in_transit' });
+    expect(result.events?.[0]).toMatchObject({ time: '2026-01-05T18:27:00+01:00', location: 'BARCELONA2', provider_status: 'NUEVO REPARTO', stage: 'in_transit' });
     // Notes that are not the carrier's fixed sentences are dropped whole.
     expect(result.events?.map(event => event.description)).toEqual(['NUEVO REPARTO', 'EN ALMACÉN', 'EN REPARTO', 'EN DESTINO',
       'EN RUTA A LOCALIDAD DE DESTINO', 'ADMITIDO', 'INFORMADO']);
     // The host and aggregators relaying these wall clocks read them in Spanish time.
     expect(resultTimezone('correos-express', result)).toBe('Europe/Madrid');
     expect(result.events?.map(event => event.stage)).toEqual(['in_transit', 'exception', 'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
-    expect(result.events?.every(event => !event.time && !event.provider_code)).toBe(true);
+    // Depots of mainland Spain and the head office keep Madrid's clock.
+    expect(result.events?.map(event => event.time)).toEqual(['2026-01-05T18:27:00+01:00', '2026-01-02T10:01:00+01:00',
+      '2026-01-02T09:00:00+01:00', '2026-01-01T12:00:00+01:00', '2026-01-01T06:03:00+01:00', '2025-12-31T13:15:00+01:00',
+      '2025-12-30T13:15:00+01:00']);
+    expect(result.events?.every(event => !event.local_time && !event.provider_code)).toBe(true);
     expect(result.delivered_at).toBeUndefined();
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     expect(classifyCorreosExpressStatus('constructor')).toBeUndefined();
@@ -193,8 +198,8 @@ describe('Correos Express direct tracking', () => {
     expect(result.current_stage).toBeUndefined();
     expect(result.events).toHaveLength(8);
     expect(result.events?.slice(0, 2)).toEqual([
-      expect.objectContaining({ description: 'Tracking update', local_time: '2026-01-05T18:27:00' }),
-      expect.objectContaining({ description: 'Tracking update', local_time: '2026-01-05T18:20:00' }),
+      expect.objectContaining({ description: 'Tracking update', time: '2026-01-05T18:27:00+01:00' }),
+      expect.objectContaining({ description: 'Tracking update', time: '2026-01-05T18:20:00+01:00' }),
     ]);
     expect(result.events?.[0]!.provider_status).toBeUndefined();
     expect(result.events?.[1]!.provider_status).toBeUndefined();
@@ -205,12 +210,12 @@ describe('Correos Express direct tracking', () => {
   it('keeps only the fixed wording of a label-free failed round and reads pickup-point scans', () => {
     const result = normalizeCarrierResult(parseCorreosExpress(failedRound, NUMBER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered',
-      last_update_local: '2026-01-16T17:40:00', expected_delivery: null });
+      last_update: '2026-01-16T17:40:00+01:00', delivered_at: '2026-01-16T17:40:00+01:00', expected_delivery: null });
     expect(result.events?.map(event => event.stage)).toEqual(['delivered', 'ready_for_pickup', 'in_transit', 'failed_attempt',
       'out_for_delivery', 'in_transit', 'in_transit', 'accepted', 'registered']);
     expect(result.events?.[2]!.description).toBe('ENTREGADO EN PUNTO DE CONVENIENCIA. Su envío se encuentra en el punto de conveniencia seleccionado y en breve recibirá las instrucciones para recogerlo.');
     expect(result.events?.[3]).toEqual({ description: FAILED_ROUND, provider_status: FAILED_ROUND, stage: 'failed_attempt',
-      local_time: '2026-01-15T09:45:00', location: 'VALENCIA' });
+      time: '2026-01-15T09:45:00+01:00', location: 'VALENCIA' });
     expect(result.events?.[8]!.description).toBe('INFORMADO. Ya hemos recibido la información de su envío, en breve dispondremos de su mercancía.');
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     for (const note of ['. Su envío no ha podido ser entregado por PRIVATE_SYNTHETIC_REASON.',
@@ -247,13 +252,23 @@ describe('Correos Express direct tracking', () => {
     }
   });
 
-  it('preserves latest terminal semantics without assigning a delivery instant from local clocks', () => {
-    for (const [label, status, stage] of [['ENTREGADO', 'delivered', 'delivered'], ['DEVUELTO', 'exception', 'returned']] as const) {
-      const result = parseCorreosExpress(edit($ => $('tbody tr').first().find('td').last().text(label + '. PRIVATE_SYNTHETIC_SIGNATURE')), NUMBER);
-      expect(result).toMatchObject({ status, current_stage: stage, expected_delivery: null });
+  it('preserves latest terminal semantics and dates a delivery only on a depot\'s clock', () => {
+    const terminal = (label: string, place = 'BARCELONA2') => parseCorreosExpress(edit($ => {
+      $('tbody tr').first().find('td').eq(1).text(place);
+      $('tbody tr').first().find('td').last().text(label + '. PRIVATE_SYNTHETIC_SIGNATURE');
+    }), NUMBER);
+    expect(terminal('ENTREGADO')).toMatchObject({ status: 'delivered', current_stage: 'delivered', expected_delivery: null,
+      last_update: '2026-01-05T18:27:00+01:00', delivered_at: '2026-01-05T18:27:00+01:00' });
+    const returned = terminal('DEVUELTO');
+    expect(returned).toMatchObject({ status: 'exception', current_stage: 'returned', last_update: '2026-01-05T18:27:00+01:00' });
+    expect(returned.delivered_at).toBeUndefined();
+    // A delivery at a place that does not settle its clock keeps its wall clock and gives no instant.
+    for (const place of ['TENERIFE', 'MONTIJO', '']) {
+      const result = terminal('ENTREGADO', place);
+      expect(result, place).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-05T18:27:00' });
       expect(result.delivered_at).toBeUndefined();
-      expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     }
+    for (const result of [terminal('ENTREGADO'), returned]) expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
   });
 
   it('keeps provider positions while deduplicating and bounds retained history', () => {
@@ -281,34 +296,147 @@ describe('Correos Express direct tracking', () => {
   });
 });
 
+describe('Correos Express scan clocks', () => {
+  /** The history with its newest row moved to a place and a wall clock. */
+  const newest = (place: string, clock = '05/01/2026 18:27', source = html) => parseCorreosExpress(edit($ => {
+    $('tbody tr').first().find('td').eq(0).text(clock);
+    $('tbody tr').first().find('td').eq(1).text(place);
+  }, source), NUMBER);
+  /** The failed round with its admission and the scan in its minute moved to two places. */
+  const admitted = (admission: string, beside: string) => parseCorreosExpress(edit($ => {
+    $('tbody tr').eq(7).find('td').eq(1).text(admission);
+    $('tbody tr').eq(6).find('td').eq(1).text(beside);
+  }, failedRound), NUMBER).events!.slice(6, 8);
+
+  it('dates a depot scan on the civil time of the place it is named for', () => {
+    for (const [place, clock, time] of [
+      ['VALENCIA SUR', '05/01/2026 18:27', '2026-01-05T18:27:00+01:00'],
+      ['MADRID CENTRO', '05/01/2026 18:27', '2026-01-05T18:27:00+01:00'],
+      ['MADRID GETAFE', '05/07/2026 18:27', '2026-07-05T18:27:00+02:00'],
+      ['DOS HERMANAS - SEVILLA', '05/01/2026 18:27', '2026-01-05T18:27:00+01:00'],
+      ['Málaga', '05/07/2026 18:27', '2026-07-05T18:27:00+02:00'],
+      ['PALMA DE MALLORCA', '05/01/2026 18:27', '2026-01-05T18:27:00+01:00'],
+      ['MELILLA', '05/01/2026 18:27', '2026-01-05T18:27:00+01:00'],
+      ['PORTO', '05/01/2026 18:27', '2026-01-05T18:27:00+00:00'],
+      ['LISBOA2', '05/07/2026 18:27', '2026-07-05T18:27:00+01:00'],
+    ] as const) {
+      const result = newest(place, clock);
+      expect(result.events?.[0], place).toMatchObject({ time, location: place });
+      expect(result.events?.[0]!.local_time).toBeUndefined();
+      expect(result.last_update, place).toBe(time);
+      expect(result.last_update_local).toBeUndefined();
+    }
+  });
+
+  it('keeps the wall clock of a scan whose place does not settle its zone, and then reports no instant', () => {
+    // The Canary Islands and the Azores keep other clocks; Montijo and Vila Real are towns of Spain and of Portugal.
+    for (const place of ['TENERIFE', 'LAS PALMAS', 'LA PALMA', 'ARRECIFE - LAS PALMAS', 'TELDE - MADRID', 'SANTA CRUZ DE TENERIFE', 'PONTA DELGADA',
+      'MONTIJO', 'VILA REAL', 'LOCALIDAD SINTETICA', 'SANT BOI DE LLOBREGAT', '']) {
+      const result = newest(place);
+      expect(result.events?.[0], place).toMatchObject({ local_time: '2026-01-05T18:27:00' });
+      expect(result.events?.[0]!.time).toBeUndefined();
+      expect(result).toMatchObject({ last_update: null, last_update_local: '2026-01-05T18:27:00' });
+      // The depots before it keep their own clock.
+      expect(result.events?.[1], place).toMatchObject({ time: '2026-01-02T10:01:00+01:00', location: 'BARCELONA2' });
+    }
+  });
+
+  it('skips a wall clock its zone skips and reads a repeated one as its first occurrence', () => {
+    expect(newest('MADRID', '29/03/2026 02:30').events?.[0]).toMatchObject({ local_time: '2026-03-29T02:30:00' });
+    expect(newest('PORTO', '29/03/2026 01:30').events?.[0]).toMatchObject({ local_time: '2026-03-29T01:30:00' });
+    expect(newest('MADRID', '29/03/2026 03:30').events?.[0]).toMatchObject({ time: '2026-03-29T03:30:00+02:00' });
+    expect(newest('MADRID', '25/10/2026 02:30').events?.[0]).toMatchObject({ time: '2026-10-25T02:30:00+02:00' });
+    expect(newest('PORTO', '25/10/2026 01:30').events?.[0]).toMatchObject({ time: '2026-10-25T01:30:00+01:00' });
+  });
+
+  it('dates the scans of an admission minute only when all their places keep one clock', () => {
+    const at = (time: string) => [{ time, location: expect.any(String) }, { time, location: expect.any(String) }];
+    expect(admitted('MADRID', 'MADRID')).toMatchObject(at('2026-01-14T15:10:00+01:00'));
+    expect(admitted('DOS HERMANAS - SEVILLA', 'BARCELONA2')).toMatchObject(at('2026-01-14T15:10:00+01:00'));
+    expect(admitted('PORTO', 'LISBOA')).toMatchObject(at('2026-01-14T15:10:00+00:00'));
+    // The sender's town need not name the admitting depot, nor the hub beside it share its clock.
+    for (const [admission, beside] of [['SANT BOI DE LLOBREGAT', 'MADRID'], ['OVIEDO', 'PORTO'], ['LAS PALMAS', 'MADRID'], ['', 'MADRID']]) {
+      const pair = admitted(admission!, beside!);
+      expect(pair.map(event => event.local_time), admission).toEqual(['2026-01-14T15:10:00', '2026-01-14T15:10:00']);
+      expect(pair.every(event => !event.time)).toBe(true);
+    }
+    // A scan in another minute keeps its own place's clock.
+    const later = parseCorreosExpress(edit($ => $('tbody tr').eq(7).find('td').eq(1).text('SANT BOI DE LLOBREGAT'), failedRound), NUMBER);
+    expect(later.events?.[5]).toMatchObject({ time: '2026-01-15T07:02:00+01:00', location: 'VALENCIA' });
+  });
+
+  it('dates the head office scans only when every depot of the parcel keeps Madrid\'s clock', () => {
+    expect(newest('BARCELONA2').events?.[6]).toMatchObject({ time: '2025-12-30T13:15:00+01:00', location: 'CENTRAL' });
+    // An admission names the sender's town and does not decide it.
+    const sender = parseCorreosExpress(edit($ => $('tbody tr').eq(5).find('td').eq(1).text('LOCALIDAD SINTETICA')), NUMBER);
+    expect(sender.events?.[6]).toMatchObject({ time: '2025-12-30T13:15:00+01:00' });
+    for (const place of ['PORTO', 'TENERIFE', 'LOCALIDAD SINTETICA']) {
+      const result = newest(place);
+      expect(result.events?.[6], place).toMatchObject({ local_time: '2025-12-30T13:15:00', location: 'CENTRAL' });
+      expect(result.events?.[6]!.time).toBeUndefined();
+    }
+  });
+
+  it('dates a delivery from its depot\'s clock and leaves it undated otherwise', () => {
+    expect(newest('PORTO', '16/01/2026 17:40', failedRound)).toMatchObject({ status: 'delivered',
+      last_update: '2026-01-16T17:40:00+00:00', delivered_at: '2026-01-16T17:40:00+00:00' });
+    const canary = newest('TENERIFE', '16/01/2026 17:40', failedRound);
+    expect(canary).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-16T17:40:00' });
+    expect(canary.delivered_at).toBeUndefined();
+    expect(canary.events?.[1]).toMatchObject({ time: '2026-01-15T12:21:00+01:00' });
+  });
+});
+
 describe('Correos Express history from the Correos localizador', () => {
-  it('gives the form scans their seconds, situation codes and fixed explanations, never an instant', () => {
+  it('gives the form scans situation codes, fixed explanations and, while they keep their wall clock, seconds', () => {
     const result = normalizeCarrierResult(parseCorreosExpress(explained, NUMBER, feed));
-    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: null,
-      last_status_text: 'NUEVO REPARTO. Concertación entrega flexible.', last_update_local: '2026-01-05T18:27:05', expected_delivery: '2026-01-06' });
-    expect(result.events?.map(({ local_time, provider_code, location }) => [local_time, provider_code, location])).toEqual([
-      ['2026-01-05T18:27:05', 'X110430V', 'BARCELONA2'],
-      // A coded scan in a minute the form does not show, which has no locality.
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-01-05T18:27:00+01:00',
+      last_status_text: 'NUEVO REPARTO. Concertación entrega flexible.', expected_delivery: '2026-01-06' });
+    expect(result.events?.map(({ time, local_time, provider_code, location }) => [time ?? local_time, provider_code, location])).toEqual([
+      ['2026-01-05T18:27:00+01:00', 'X110430V', 'BARCELONA2'],
+      // A coded scan in a minute the form does not show, which has no locality and so keeps its wall clock.
       ['2026-01-03T08:30:12', 'X060000V', undefined],
-      ['2026-01-02T10:01:33', 'X100010R', 'BARCELONA2'],
-      ['2026-01-02T09:00:18', 'X080000V', 'BARCELONA2'],
-      ['2026-01-01T12:00:51', 'X060000V', 'MADRID'],
-      ['2026-01-01T06:03:27', 'X020000V', 'MADRID'],
+      ['2026-01-02T10:01:00+01:00', 'X100010R', 'BARCELONA2'],
+      ['2026-01-02T09:00:00+01:00', 'X080000V', 'BARCELONA2'],
+      ['2026-01-01T12:00:00+01:00', 'X060000V', 'MADRID'],
+      ['2026-01-01T06:03:00+01:00', 'X020000V', 'MADRID'],
       // The localizador has no admission; the uncoded scan in its minute is not paired with it.
-      ['2025-12-31T13:15:00', undefined, 'OVIEDO'],
-      ['2025-12-30T13:15:42', 'X010000V', 'CENTRAL'],
+      ['2025-12-31T13:15:00+01:00', undefined, 'OVIEDO'],
+      ['2025-12-30T13:15:00+01:00', 'X010000V', 'CENTRAL'],
     ]);
+    expect(result.events?.filter(event => event.local_time).map(event => event.location)).toEqual([undefined]);
+    // Scans that keep their wall clock take the localizador's seconds.
+    const undated = parseCorreosExpress(edit($ => $('tbody tr').find('td:nth-child(2)').text('LOCALIDAD SINTETICA'), explained), NUMBER, feed);
+    expect(undated).toMatchObject({ last_update: null, last_update_local: '2026-01-05T18:27:05' });
+    expect(undated.events?.map(event => event.local_time)).toEqual(['2026-01-05T18:27:05', '2026-01-03T08:30:12', '2026-01-02T10:01:33',
+      '2026-01-02T09:00:18', '2026-01-01T12:00:51', '2026-01-01T06:03:27', '2025-12-31T13:15:00', '2025-12-30T13:15:42']);
+    expect(undated.events?.every(event => !event.time)).toBe(true);
     expect(result.events?.map(event => event.description)).toEqual(['NUEVO REPARTO. Concertación entrega flexible.',
       `EN DESTINO. ${EXPLAINED.EN_DESTINO}`, `EN ALMACÉN. ${EXPLAINED.ADDRESS}`, `EN REPARTO. ${EXPLAINED.EN_REPARTO}`,
       `EN DESTINO. ${EXPLAINED.EN_DESTINO}`, `EN RUTA A LOCALIDAD DE DESTINO. ${EXPLAINED.EN_RUTA}`, 'ADMITIDO', `INFORMADO. ${EXPLAINED.INFORMADO}`]);
-    expect(result.events?.every(event => !event.time)).toBe(true);
     expect(resultTimezone('correos-express', result)).toBe('Europe/Madrid');
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
   });
 
+  it('dates a form row to the minute it shows, whether or not the localizador answers', () => {
+    const dated = (result: ReturnType<typeof parseCorreosExpress>) => result.events?.filter(event => event.time)
+      .map(({ time, location, stage }) => [time, location, stage]);
+    for (const source of [explained, html, failedRound]) {
+      const alone = parseCorreosExpress(source, NUMBER);
+      const enriched = parseCorreosExpress(source, NUMBER, feed);
+      expect(dated(alone)!.length).toBeGreaterThan(0);
+      expect(dated(enriched)).toEqual(dated(alone));
+      expect(enriched.last_update).toBe(alone.last_update);
+      expect(enriched.delivered_at).toBe(alone.delivered_at);
+    }
+    expect(dated(parseCorreosExpress(explained, NUMBER, feed))!.every(([time]) => /T\d{2}:\d{2}:00[+-]/.test(String(time)))).toBe(true);
+  });
+
   it('pairs an uncoded scan only with the one row left in its minute, and a coded one only with its situation', () => {
     const uncoded = (time: string) => ({ local_time: time, explanation: '' });
-    const scans = (list: CorreosExpressFeed['scans']) => parseCorreosExpress(html, NUMBER, { shipment: NUMBER, scans: list }).events!;
+    // Rows that keep their wall clock show which localizador scan, if any, gave them its seconds.
+    const undated = edit($ => $('tbody tr').find('td:nth-child(2)').text('LOCALIDAD SINTETICA'));
+    const scans = (list: CorreosExpressFeed['scans']) => parseCorreosExpress(undated, NUMBER, { shipment: NUMBER, scans: list }).events!;
     expect(scans([uncoded('2026-01-01T12:00:40')])[3]).toMatchObject({ local_time: '2026-01-01T12:00:40', description: 'EN DESTINO' });
     expect(scans([uncoded('2026-01-01T12:00:40')])[3]!.provider_code).toBeUndefined();
     // Two uncoded scans for one row, or a coded scan of another situation, leave the row to the minute.
@@ -319,7 +447,7 @@ describe('Correos Express history from the Correos localizador', () => {
     // A failed round in the localizador is the form's label-free note.
     const failed = parseCorreosExpress(failedRound, NUMBER, { shipment: NUMBER, scans: [
       { local_time: '2026-01-15T09:45:31', code: 'X090060R', explanation: 'Su envío no ha podido ser entregado por no localizar al destinatario en el momento de la entrega.' }] });
-    expect(failed.events?.[3]).toMatchObject({ local_time: '2026-01-15T09:45:31', provider_code: 'X090060R', stage: 'failed_attempt',
+    expect(failed.events?.[3]).toMatchObject({ time: '2026-01-15T09:45:00+01:00', provider_code: 'X090060R', stage: 'failed_attempt',
       description: 'Su envío no ha podido ser entregado por no localizar al destinatario en el momento de la entrega.' });
     // A localizador history of another shipment is not used.
     expect(parseCorreosExpress(html, NUMBER, { ...feed, shipment: OTHER }).events?.every(event => !event.provider_code)).toBe(true);
@@ -396,7 +524,7 @@ describe('Correos Express retrieval', () => {
     }) as unknown as typeof fetch;
     const instance = adapter(environment(fetcher));
     const result = await instance.track({ number: NUMBER, postcode: 'PRIVATE_SYNTHETIC_POSTCODE' });
-    expect(result).toMatchObject({ status: 'in_transit', last_update_local: '2026-01-05T18:27:05' });
+    expect(result).toMatchObject({ status: 'in_transit', last_update: '2026-01-05T18:27:00+01:00' });
     expect(result.events).toHaveLength(8);
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
@@ -406,7 +534,7 @@ describe('Correos Express retrieval', () => {
       () => json(feedPayload((envelope) => { envelope.codEnvio = OTHER; })), () => json(noTrace()),
       () => Promise.reject(new TypeError('network'))]) {
       const result = await new CorreosExpressTracker({ fetcher: routed(() => response(), localizador) }).fetch(NUMBER);
-      expect(result).toMatchObject({ status: 'in_transit', last_update_local: '2026-01-05T18:27:00' });
+      expect(result).toMatchObject({ status: 'in_transit', last_update: '2026-01-05T18:27:00+01:00' });
       expect(result.events?.every(event => !event.provider_code)).toBe(true);
     }
   });
@@ -442,12 +570,13 @@ describe('Correos Express retrieval', () => {
     }
   });
 
-  it('recognizes matching history and a confirmed negative but never ranks local clocks or converts failure to absence', async () => {
+  it('recognizes matching history and a confirmed negative, ranks only dated scans and never converts failure to absence', async () => {
     const fetcher = routed(() => response());
     const instance = adapter(environment(fetcher));
     expect(await instance.recognize!('invalid')).toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-05T17:27:00.000Z' });
+    // The localizador's history alone has no localities, so no instant ranks it.
     expect(await adapter(environment(routed(() => response(negative())))).recognize!(NUMBER)).toEqual({ known: false });
     expect(await adapter(environment(routed(() => response(negative()), () => json(feedPayload())))).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
     await expect(adapter(environment(routed(() => response(negative(NUMBER, '-1'))))).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'indeterminate' });

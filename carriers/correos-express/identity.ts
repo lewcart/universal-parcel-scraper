@@ -8,8 +8,8 @@ const NEUTRAL = 'TRACKING UPDATE';
 // A scan stored under the neutral wording before its label was recognized
 // takes its label and stage in place, and one stored without the fixed
 // explanation of its label takes it; the town still names the same scan.
-// Correos Express scans carry only a local time, and apps store only scans
-// with an instant, so this matters only once a scan has one.
+// Apps store only scans with an instant, which a Correos Express scan has when
+// its locality settles its clock.
 function matches(incoming: SameInstantScan, stored: SameInstantScan): boolean {
   const location = normalized(incoming.location);
   if (location !== normalized(stored.location)) return false;

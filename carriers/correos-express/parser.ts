@@ -4,7 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { hasGs1CheckDigit } from '../../core/detection/numericChecksums.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, firstOccurrence, regionHasTown } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import {
@@ -17,6 +17,30 @@ const NO_HISTORY = 'Lo sentimos, no se ha encontrado ningún envío con el núme
 const FAILED_NOTE = /^\.?\s*Su env[ií]o no ha podido ser entregado\b/iu;
 const MAX_SCANS = 500;
 const MAX_EVENTS = 100;
+const MADRID = 'Europe/Madrid';
+const LISBON = 'Europe/Lisbon';
+// The locality of the head office's scans: the pre-advice, and some pickup-point scans.
+const HEAD_OFFICE = 'CENTRAL';
+/**
+ * Places of mainland Spain, the Balearic Islands, Ceuta and Melilla the form
+ * names depots after: each province and its capital, in Castilian and in the
+ * regional language, and the other towns its depots are named for.
+ */
+const SPAIN: ReadonlySet<string> = new Set([
+  'A CORUNA', 'LA CORUNA', 'CORUNA', 'ALAVA', 'ARABA', 'VITORIA', 'GASTEIZ', 'ALBACETE', 'ALICANTE', 'ALACANT', 'ALMERIA',
+  'ASTURIAS', 'OVIEDO', 'AVILA', 'BADAJOZ', 'BALEARES', 'PALMA', 'PALMA DE MALLORCA', 'MALLORCA', 'MENORCA', 'IBIZA', 'EIVISSA',
+  'BARCELONA', 'BIZKAIA', 'VIZCAYA', 'BILBAO', 'BURGOS', 'CACERES', 'CADIZ', 'CANTABRIA', 'SANTANDER', 'CASTELLON', 'CASTELLO',
+  'CIUDAD REAL', 'CORDOBA', 'CUENCA', 'GIPUZKOA', 'GUIPUZCOA', 'SAN SEBASTIAN', 'DONOSTIA', 'GIRONA', 'GERONA', 'GRANADA',
+  'GUADALAJARA', 'HUELVA', 'HUESCA', 'JAEN', 'LA RIOJA', 'LOGRONO', 'LEON', 'LLEIDA', 'LERIDA', 'LUGO', 'MADRID', 'MALAGA',
+  'MURCIA', 'NAVARRA', 'PAMPLONA', 'OURENSE', 'ORENSE', 'PALENCIA', 'PONTEVEDRA', 'SALAMANCA', 'SEGOVIA', 'SEVILLA', 'SORIA',
+  'TARRAGONA', 'TERUEL', 'TOLEDO', 'VALENCIA', 'VALLADOLID', 'ZAMORA', 'ZARAGOZA', 'CEUTA', 'MELILLA',
+  'BENAVENTE', 'ESTACION DE ESPELUY', 'JEREZ DE LA FRONTERA', 'SANTIAGO DE COMPOSTELA', 'VIGO',
+]);
+/** The district capitals of mainland Portugal, less Vila Real, whose name a Spanish town also writes. */
+const PORTUGAL: ReadonlySet<string> = new Set([
+  'AVEIRO', 'BEJA', 'BRAGA', 'BRAGANCA', 'CASTELO BRANCO', 'COIMBRA', 'EVORA', 'FARO', 'GUARDA', 'LEIRIA', 'LISBOA',
+  'PORTALEGRE', 'PORTO', 'SANTAREM', 'SETUBAL', 'VIANA DO CASTELO', 'VISEU',
+]);
 
 /**
  * The sentences that explain a situation, the same for every shipment, as the
@@ -229,13 +253,73 @@ function feedScan(scan: CorreosExpressFeedScan): Scan {
       ...(scan.code ? { provider_code: scan.code } : {}) } };
 }
 
+/** A locality written for comparison: capitals without accents, words separated by single spaces. */
+const placeKey = (text: string) => text.normalize('NFD').replace(/\p{Mn}/gu, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+
+/**
+ * The zone of a place the form names. A depot is written as its town, with a
+ * number ("BARCELONA2"), and in Spain as a one-word town and one more word
+ * ("VALENCIA SUR", "MADRID GETAFE"); a sender's town followed by its province
+ * ("DOS HERMANAS - SEVILLA") is read by the province. A place naming a town or
+ * island of the Canary Islands or the Azores, whose clocks differ from their
+ * mainland's, and any other place have none.
+ */
+function placeZone(location: string): string | null {
+  const parts = location.split(/\s+-\s+/).map(placeKey);
+  if (parts.some((part) => regionHasTown('ES-CN', part) || regionHasTown('PT-20', part))) return null;
+  const place = parts.at(-1)!;
+  const town = place.replace(/ ?\d+$/, '');
+  if (PORTUGAL.has(town)) return LISBON;
+  return SPAIN.has(town) || (/^[A-Z]+ [A-Z0-9]+$/.test(place) && SPAIN.has(place.split(' ')[0]!)) ? MADRID : null;
+}
+
+/** A wall clock's instant in the zone; none for a clock the zone skips when its clocks go forward. */
+function instant(wall: string, zone: string): string | null {
+  const placed = firstOccurrence(DateTime.fromISO(wall, { zone }));
+  return placed.isValid && placed.toFormat("yyyy-MM-dd'T'HH:mm:ss") === wall ? placed.toISO({ suppressMilliseconds: true }) : null;
+}
+
+const admission = (scan: Scan) => correosExpressSituationKey(scan.label).startsWith('ADMITIDO');
+
+/**
+ * The scans whose locality settles their clock, dated. A depot keeps the civil
+ * time of the place it is named for: mainland Spain's, the Balearic Islands',
+ * Ceuta's and Melilla's on Madrid's clock, mainland Portugal's on Lisbon's. The
+ * head office keeps Madrid's clock, which settles its scans when every depot
+ * the parcel passed keeps it too. An admission is recorded by the depot that
+ * admits the parcel, which neither its row, naming the sender's town, nor the
+ * scan beside it, which can name the hub the parcel is sent to, need name; the
+ * scans of its minute are dated only when all their places keep one clock.
+ * Every other scan keeps its wall clock. An instant is to the minute the form
+ * shows: the localizador's seconds come and go with its availability, and a
+ * scan must keep one instant from one check to the next.
+ */
+function dated(scans: Scan[]): Scan[] {
+  const central = (scan: Scan) => placeKey(scan.event.location ?? '') === HEAD_OFFICE;
+  const headOffice = scans.every((scan) => !scan.event.location || admission(scan) || central(scan)
+    || placeZone(scan.event.location) === MADRID) ? MADRID : null;
+  const zoneOf = (scan: Scan) => (!scan.event.location ? null : central(scan) ? headOffice : placeZone(scan.event.location));
+  const admitted = new Set(scans.filter(admission).map(minute));
+  return scans.map((scan) => {
+    const { local_time: wall, ...event } = scan.event;
+    if (typeof wall !== 'string') return scan;
+    const zones = new Set(admitted.has(minute(scan)) ? scans.filter((other) => minute(other) === minute(scan)).map(zoneOf) : [zoneOf(scan)]);
+    const zone = zones.size === 1 ? [...zones][0] : null;
+    const time = zone ? instant(`${minute(scan)}:00`, zone) : null;
+    return time ? { ...scan, event: { time, ...event } } : scan;
+  });
+}
+
 const latestStatus = (event: CarrierEvent) => classifyCorreosExpressStatus(typeof event.provider_status === 'string' ? event.provider_status : '');
 
+/** The result for scans newest first: the newest scan's instant is the last update, and the delivery's when it delivered. */
 function project(events: CarrierEvent[], extra: CarrierResult = {}): CarrierResult {
   const latest = events[0]!;
   const mapped = latestStatus(latest);
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
-    last_status_text: latest.description, last_update: null, last_update_local: latest.local_time ?? null,
+    last_status_text: latest.description, last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: latest.local_time ?? null }),
+    ...(mapped?.status === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     expected_delivery: null, ...extra, events: events.slice(0, MAX_EVENTS) };
 }
 
@@ -303,13 +387,15 @@ export function parseCorreosExpress(html: string, raw: string, feed?: CorreosExp
   }
   // The localizador names a label's shipment; the form may name it too, and then both must agree.
   const bound = feed && (feed.shipment === number || (shipment ? feed.shipment === shipment : isLabelShipment(number, feed.shipment)));
-  const events = (bound ? enrich(scans, feed) : scans).map(described);
+  const events = dated(bound ? enrich(scans, feed) : scans).map(described);
   const latest = events[0]!;
   const mapped = latestStatus(latest);
   const estimate = /Entrega prevista:\s*[\p{L}]+,?\s+(\d{1,2})\s+([\p{L}]{3})\s+(\d{4})/iu.exec(heading.text());
   const month = estimate && MONTHS[estimate[2]!.toLowerCase()];
   const day = estimate && month ? calendarDay(Number(estimate[3]), month, Number(estimate[1])) : null;
-  const latestDay = typeof latest.local_time === 'string' ? latest.local_time.slice(0, 10) : null;
+  // An instant is written in its scan's zone, so it opens with the scan's own day.
+  const wall = latest.local_time ?? latest.time;
+  const latestDay = typeof wall === 'string' ? wall.slice(0, 10) : null;
   const active = mapped && ['pending', 'in_transit', 'out_for_delivery'].includes(mapped.status);
   return project(events, { expected_delivery: active && day && latestDay && day >= latestDay ? day : null,
     ...(shipment ? { canonical_tracking_number: shipment } : {}) });

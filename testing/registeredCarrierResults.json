@@ -1558,57 +1558,56 @@
       "status": "in_transit",
       "current_stage": "in_transit",
       "last_status_text": "NUEVO REPARTO",
-      "last_update": null,
-      "last_update_local": "2026-01-05T18:27:00",
+      "last_update": "2026-01-05T18:27:00+01:00",
       "expected_delivery": "2026-01-06",
       "events": [
         {
           "description": "NUEVO REPARTO",
           "provider_status": "NUEVO REPARTO",
           "stage": "in_transit",
-          "local_time": "2026-01-05T18:27:00",
+          "time": "2026-01-05T18:27:00+01:00",
           "location": "BARCELONA2"
         },
         {
           "description": "EN ALMACÉN",
           "provider_status": "EN ALMACÉN",
           "stage": "exception",
-          "local_time": "2026-01-02T10:01:00",
+          "time": "2026-01-02T10:01:00+01:00",
           "location": "BARCELONA2"
         },
         {
           "description": "EN REPARTO",
           "provider_status": "EN REPARTO",
           "stage": "out_for_delivery",
-          "local_time": "2026-01-02T09:00:00",
+          "time": "2026-01-02T09:00:00+01:00",
           "location": "BARCELONA2"
         },
         {
           "description": "EN DESTINO",
           "provider_status": "EN DESTINO",
           "stage": "in_transit",
-          "local_time": "2026-01-01T12:00:00",
+          "time": "2026-01-01T12:00:00+01:00",
           "location": "MADRID"
         },
         {
           "description": "EN RUTA A LOCALIDAD DE DESTINO",
           "provider_status": "EN RUTA A LOCALIDAD DE DESTINO",
           "stage": "in_transit",
-          "local_time": "2026-01-01T06:03:00",
+          "time": "2026-01-01T06:03:00+01:00",
           "location": "MADRID"
         },
         {
           "description": "ADMITIDO",
           "provider_status": "ADMITIDO",
           "stage": "accepted",
-          "local_time": "2025-12-31T13:15:00",
+          "time": "2025-12-31T13:15:00+01:00",
           "location": "OVIEDO"
         },
         {
           "description": "INFORMADO",
           "provider_status": "INFORMADO",
           "stage": "registered",
-          "local_time": "2025-12-30T13:15:00",
+          "time": "2025-12-30T13:15:00+01:00",
           "location": "CENTRAL"
         }
       ]

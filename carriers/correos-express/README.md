@@ -16,7 +16,8 @@ which correos.es's own tracker reads. It gives each scan its clock to the
 second and a situation code such as `X060000V`, but no locality. The form stays
 the primary source: the localizador adds seconds, codes and missing
 explanations to its rows. When the form fails, or answers for a shipment it has
-forgotten, the localizador's history answers alone, without localities.
+forgotten, the localizador's history answers alone, without localities or
+instants.
 
 ## Notes
 
@@ -42,11 +43,27 @@ uncoded scan with the one row left in its minute. The localizador has no
 admission scan, so admission rows keep their minute. A coded scan in a minute
 the form does not show is added.
 
-Scans retain the carrier's newest-first order. Neither source states a zone or
-offset, so valid digits remain local time and unresolved labels remain provider
-text. The catalog zone is `Europe/Madrid`, and seconds that agree across both
-sources are only weak evidence of it: Canary Islands and Portuguese scans may
-be on their own clocks, so no instant is derived.
+Scans retain the carrier's newest-first order, and unresolved labels remain
+provider text. Neither source states a zone or offset, but a depot's clock
+reads the civil time of the place it is named for: only on that clock does
+every scan an archived page shows fall before the page was captured, and every
+later scan after it. A scan whose locality names a depot of mainland Spain,
+the Balearic Islands, Ceuta or Melilla is dated on Madrid's clock, and one of
+mainland Portugal on Lisbon's. The form writes a depot as its town with a
+number or one more word (`BARCELONA2`, `VALENCIA SUR`), and a sender's town
+with its province (`DOS HERMANAS - SEVILLA`). The head office (`CENTRAL`),
+which records the pre-advice, keeps Madrid's clock, so its scans are dated when
+every depot of the parcel keeps it too. An admission row names the sender's
+town rather than the admitting depot, and the scan of its minute can name the
+hub the parcel leaves for, so that minute is dated only when all its places
+keep one clock.
+Scans of the Canary Islands, whose clock no archived page settles, keep their
+wall clock, as do places both countries name, other towns and the localizador's
+scans without a locality. An instant is to the minute the form shows: the
+localizador's seconds come and go with its availability, and a scan must keep
+one instant from one check to the next. Scans that keep their wall clock take
+the localizador's seconds. The newest scan's instant is the last update, and
+the delivery's when it is the newest scan.
 Calendar estimates retain date-only precision while the delivery is active;
 estimates older than the latest scan are omitted. A rescheduled round does not establish dispatch.
 

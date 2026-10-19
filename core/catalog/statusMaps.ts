@@ -80,6 +80,7 @@ import { statusMap as chinaPost } from '../../carriers/china-post/status.js';
 import { statusMap as chitChats } from '../../carriers/chit-chats/status.js';
 import { statusMap as chronodiali } from '../../carriers/chronodiali/status.js';
 import { statusMap as chronopost } from '../../carriers/chronopost/status.js';
+import { statusMap as chukou1 } from '../../carriers/chukou1/status.js';
 import { statusMap as chunghwaPost } from '../../carriers/chunghwa-post/status.js';
 import { statusMap as chunil } from '../../carriers/chunil/status.js';
 import { statusMap as cityExpressRs } from '../../carriers/city-express-rs/status.js';
@@ -479,7 +480,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, 'bringer-parcel': bringerParcel, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, c3x, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
-  'chit-chats': chitChats, chronodiali, chronopost, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, citymail,
+  'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,

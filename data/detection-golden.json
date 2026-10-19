@@ -67662,6 +67662,9 @@
     "confidence": "low",
     "candidates": [
       "chukou1"
+    ],
+    "asked": [
+      "chukou1"
     ]
   },
   {
@@ -67850,6 +67853,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "chukou1"
+    ],
+    "asked": [
       "chukou1"
     ]
   },
@@ -68123,6 +68129,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "chukou1"
+    ],
+    "asked": [
       "chukou1"
     ]
   },
@@ -79855,6 +79864,9 @@
     "confidence": "low",
     "candidates": [
       "chukou1"
+    ],
+    "asked": [
+      "chukou1"
     ]
   },
   {
@@ -87179,6 +87191,12 @@
     "candidates": [
       "indah-logistik"
     ]
+  },
+  {
+    "input": "SUF2403231LW1003974",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "SV0002203111",

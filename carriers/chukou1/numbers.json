@@ -46,6 +46,25 @@
       "note": "Chukou1's own OpenAPI documentation gives it as the example TrackingNumber in its full-tracking check reply."
     },
     {
+      "number": "SUF2403231LW1003974",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://alltracking.com/en/carrier/chukou1",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "A tracking number example on AllTracking's Chukou1 page. Chukou1's EC-FirstClass tracker knows it as a parcel it handed to USPS in the United States. Its customer code starts with a digit, which rule chukou1-1 does not take."
+    },
+    {
       "number": "CRE170519Z5B000029",
       "role": "shipment",
       "evidence": "public_shipment_report",

@@ -675,6 +675,12 @@
     "reason": "USPS delivers these Chit Chats parcels, and the 420 routing barcode is its own, so detection names USPS."
   },
   {
+    "carrier": "chukou1",
+    "pattern": "^[A-Z]{3}\\d{6}\\d[A-Z0-9]{2,3}\\d{6,7}$",
+    "kind": "open",
+    "reason": "A Chukou1 processing number whose customer code starts with a digit; rule chukou1-1 takes letter-led codes only, and one example does not establish the family."
+  },
+  {
     "carrier": "chunghwa-post",
     "pattern": "^\\d{14}$",
     "kind": "by_design",

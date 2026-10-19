@@ -19,20 +19,69 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "chukou1",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 688
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
-    "url": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
-    "searchUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
-    "canaryUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "url": "https://ec.chukou1.com/track?track_number={trackingNumber}",
+    "searchUrl": "https://ec.chukou1.com/",
+    "canaryUrl": "https://ec.chukou1.com/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "postcodes",
+      "destination_country",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "postcodes",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ]
   },
   "links": [
+    {
+      "domains": [
+        "ec.chukou1.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "track_number"
+      ],
+      "ownNumbersOnly": true
+    },
     {
       "domains": [
         "www.chukou1.com",
@@ -41,7 +90,8 @@
       "pathPattern": "^/LogistictsTrack\\.aspx$",
       "params": [
         "trackNo"
-      ]
+      ],
+      "ownNumbersOnly": true
     }
   ],
   "detection": [

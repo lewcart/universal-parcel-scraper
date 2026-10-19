@@ -8841,12 +8841,24 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chukou1",
+      "recognitionRank": 688,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
-    "trackingUrlTemplate": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
-    "trackingSearchUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "canaryUrl": "https://ec.chukou1.com/",
+    "trackingUrlTemplate": "https://ec.chukou1.com/track?track_number={trackingNumber}",
+    "trackingSearchUrl": "https://ec.chukou1.com/",
     "linkRules": [
+      {
+        "domains": [
+          "ec.chukou1.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "track_number"
+        ],
+        "ownNumbersOnly": true
+      },
       {
         "domains": [
           "www.chukou1.com",
@@ -8855,7 +8867,8 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/LogistictsTrack\\.aspx$",
         "params": [
           "trackNo"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [

@@ -1553,6 +1553,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'anserx', number: 'BTYCN0000000000YQ',
     route: /^https:\/\/oms\.anserx\.com\/tracking\?nos=BTYCN0000000000YQ$/,
     marker: /查看英文轨迹|轨迹说明/ },
+  // The page looks up the number in its address on load; an unknown one gets a notice.
+  { carrier: 'chukou1', number: 'SUF991231ZZZZ0000000',
+    route: /^https:\/\/ec\.chukou1\.com\/track\?track_number=SUF991231ZZZZ0000000$/,
+    marker: /This number can.t be found at this moment|Global Shipment Tracking Platform/ },
   // The page looks up the number in its address and sends an unknown one back to its search page with a notice.
   { carrier: 'gobolt', number: '000000000000',
     route: /^https:\/\/track\.gobolt\.com\/tracking(?:\/000000000000)?$/,

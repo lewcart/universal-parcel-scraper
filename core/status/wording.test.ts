@@ -691,11 +691,17 @@ describe('classifyWording', () => {
       ['Your shipment is ready to leave the foreign territory. It will be handed over to the carrier for delivery', 'in_transit'],
       // A new delivery date someone asked for, and a parcel the carrier has not received yet.
       ['Delivery exception, A request was made to change this delivery date.', 'in_transit'],
+      // Updated delivery details and a local carrier's bare shipment scan, relayed mid-route.
+      ['Delivery details updated', 'in_transit'],
+      ['Delivery information has been updated.', 'in_transit'],
+      ['Package shipment', 'in_transit'],
       ["We're expecting your parcel to arrive with us soon and we'll update your tracking once we've received it", 'registered'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A French sort still reads as one; "retrieval" is no sort, nor a notice a pickup.
     expect(wordingStage('Colis trié', 'pending')).toBe('in_transit');
     expect(classifyWording('Retrieval of shipment data', 'pending')).toEqual({ stage: 'pending', source: 'none' });
+    expect(classifyWording('Package shipment information', 'pending')).not.toEqual({ stage: 'in_transit', source: 'wording:language' });
+    expect(classifyWording('Please update your delivery details', 'pending')).toEqual({ stage: 'pending', source: 'none' });
     expect(wordingStage('Your parcel will be available at the retrieval point', 'pending')).toBe('in_transit');
     expect(wordingStage('Your parcel is not available at the retrieval point', 'pending')).not.toBe('ready_for_pickup');
     // The round itself still reads as one, a terminal or depot does not.

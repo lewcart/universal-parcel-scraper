@@ -234,6 +234,11 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (RECIPIENT_HOLD.test(text)) return COUNTER.test(text) ? 'ready_for_pickup' : 'in_transit';
   // So is a new delivery date someone asked for, even under FedEx's "Delivery exception".
   if (/\ba request was made to change (?:this|the|your) delivery date\b/.test(text)) return 'in_transit';
+  // A change to the delivery details, relayed as just that (Cainiao's notice once the
+  // local carrier has the parcel), moves no parcel back before transit.
+  if (/^(?:the )?delivery (?:details|information) (?:(?:has|have) been |were |was )?updated$/.test(text)) return 'in_transit';
+  // A local carrier's scan relayed as only "Package shipment", after its facility arrival.
+  if (/^(?:package|parcel) shipment$/.test(text)) return 'in_transit';
   // Carrier-reported problems that are neither a missed attempt nor a return.
   if (/\b(?:damaged|broken in transit)\b|endommag|avarie|deterior|beschadigt|danneggiat|danad[oa]|danificad|uszkodzon/.test(text)) return 'exception';
   if (/\blost (?:in transit|package|parcel|shipment)?\b|colis perdu|envoi perdu|egare|verloren|verlust der sendung|smarrit|(?:paquete|envio) perdid|extraviad|zagubion|zaginion/.test(text)) return 'exception';

@@ -20680,11 +20680,20 @@
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "noest",
+      "recognitionRank": 767
     },
     "canaryUrl": "https://app.noest-dz.com/list/t",
+    "trackingUrlTemplate": "https://app.noest-dz.com/list/t/{trackingNumber}",
     "trackingSearchUrl": "https://app.noest-dz.com/list/t",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "app.noest-dz.com"
+        ],
+        "path": "^/(?:list/t|tracking)/([^/?#]+)/?$"
+      }
+    ],
     "detectionRules": []
   },
   "nord-wheel": {

@@ -289,6 +289,7 @@ import { adapter as nextLevelDelivery } from '../carriers/next-level-delivery/ad
 import { adapter as ninjaVan } from '../carriers/ninja-van/adapter.js';
 import { adapter as nipost } from '../carriers/nipost/adapter.js';
 import { adapter as nipponExpress } from '../carriers/nippon-express/adapter.js';
+import { adapter as noest } from '../carriers/noest/adapter.js';
 import { adapter as norskGlobal } from '../carriers/norsk-global/adapter.js';
 import { adapter as novaGlobal } from '../carriers/nova-global/adapter.js';
 import { adapter as novaPoshta } from '../carriers/nova-poshta/adapter.js';
@@ -767,6 +768,7 @@ export const REGISTRY: RegistryDefinition = {
     "ninja-van": ninjaVan,
     "nipost": nipost,
     "nippon-express": nipponExpress,
+    "noest": noest,
     "norsk-global": norskGlobal,
     "nova-global": novaGlobal,
     "nova-poshta": novaPoshta,
@@ -1426,7 +1428,7 @@ export const REGISTRY: RegistryDefinition = {
     "ninja-van": "ninja-van",
     "nipost": "nipost",
     "nippon-express": "nippon-express",
-    "noest": "universal",
+    "noest": "noest",
     "nord-wheel": "universal",
     "norsk-global": "norsk-global",
     "northline": "universal",

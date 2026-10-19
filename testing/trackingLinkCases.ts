@@ -1514,6 +1514,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   logistiq: 'the gecko.logistiq.io tracker is a Flutter page drawn on a canvas, which exposes no visible body text until accessibility is enabled, so number forwarding cannot be verified',
   'm-one': 'm-one.rs sends its certificate without the intermediate one, which headless Chromium and Node do not fetch, so the page cannot be opened',
   'magyar-posta': 'www.posta.hu fills the number into its tracker frame, which the rendered-page check does not read, and the tracker asks for a reCAPTCHA checkbox before each lookup',
+  noest: 'the page answers a number it does not hold with its empty search form, without the number or a notice, so only a real parcel verifies the link',
   oca: 'the parcel page asks for a reCAPTCHA checkbox before it shows the history, so number forwarding cannot be verified',
   ocasa: 'the tracking link opens a reCAPTCHA checkbox, with the number in a hidden field, before it shows the shipment, so number forwarding cannot be verified',
   passport: 'track.passportglobal.com answers automated Chrome with a Human Verification page that watches the visitor\'s activity before it shows the tracker, so number forwarding cannot be verified',

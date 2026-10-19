@@ -11,6 +11,7 @@ import { cdlRequestNumber } from '../../carriers/cdl/number.js';
 import { ecoscootingReference } from '../../carriers/ecoscooting/number.js';
 import { normalizeGogoXpressNumber } from '../../carriers/gogo-xpress/number.js';
 import { inpostUkTrackingUrl } from '../../carriers/inpost/number.js';
+import { NOEST_LAYOUT, noestRequestNumber } from '../../carriers/noest/number.js';
 import { normalizePackManNumber } from '../../carriers/pack-man/number.js';
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
 import { ZR_EXPRESS_LAYOUT, zrExpressRequestNumber } from '../../carriers/zr-express/number.js';
@@ -50,6 +51,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   if (carrierId === 'gogo-xpress' && /^(?=\d*[A-Z])[A-Z0-9]{12}$/.test(normalized)) return normalizeGogoXpressNumber(normalized);
   // ZR Express's page finds a number only with a dash between its three blocks.
   if (carrierId === 'zr-express' && ZR_EXPRESS_LAYOUT.test(normalized)) return zrExpressRequestNumber(normalized);
+  // NOEST's page finds a number only in capitals with a hyphen between its three blocks.
+  if (carrierId === 'noest' && NOEST_LAYOUT.test(normalized)) return noestRequestNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
   // Ecoscooting's page finds a Cainiao reference only with its CN.
   if (carrierId === 'ecoscooting' && ecoscootingReference(normalized) !== normalized) return ecoscootingReference(normalized);

@@ -67,6 +67,10 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('zr-express', '00-000000-zr')).toBe('00-000000-ZR');
     expect(trackingNumberForLink('zr-express', 'SAMPLE')).toBe('SAMPLE');
     expect(CARRIERS['zr-express'].trackingUrl?.('00000000ZR')).toBe('https://www.zrexpress.net/suivi?tn=00-000000-ZR');
+    expect(trackingNumberForLink('noest', 'abc12300000000')).toBe('ABC-123-00000000');
+    expect(trackingNumberForLink('noest', 'ABC-123-00000000')).toBe('ABC-123-00000000');
+    expect(trackingNumberForLink('noest', 'SAMPLE')).toBe('SAMPLE');
+    expect(CARRIERS.noest.trackingUrl?.('ABC12300000000')).toBe('https://app.noest-dz.com/list/t/ABC-123-00000000');
     expect(CARRIERS['pack-man'].trackingUrl?.('A00000017')).toBe('https://pack-man.gr/anazitisi-apostolis.html?code=A-00000017');
     expect(trackingNumberForLink('ecoscooting', 'prt 0000000 1234 000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', 'CNPRT00000001234000000001')).toBe('CNPRT00000001234000000001');

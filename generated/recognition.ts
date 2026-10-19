@@ -214,6 +214,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ninja-van": 720,
   "nipost": 908,
   "nippon-express": 941,
+  "noest": 767,
   "norsk-global": 845,
   "nova-global": 834,
   "nova-poshta": 685,

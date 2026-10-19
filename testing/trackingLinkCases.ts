@@ -1594,6 +1594,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'followmont', number: '0000000',
     route: /^https:\/\/www\.followmont\.com\.au\/\?(?=.*\bconsignmentNumber=0000000\b)(?=.*\btrack-trace-start-unsecured-user\b)/,
     marker: /Search for your freight using the search box below/ },
+  // The page looks the number in its address up and shows the lookup's answer for an unknown one.
+  { carrier: 'mailplus-au', number: 'MPX000000000',
+    route: /^https:\/\/track\.mailplus\.com\.au\/MPX000000000$/,
+    marker: /Add your tracking ID|There are no results for this tracking/ },
 ];
 
 /**

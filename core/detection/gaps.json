@@ -2293,6 +2293,12 @@
     "reason": "MailAmericas also tracks parcels under numbers in the UPU S10 layout with the Marshall Islands and Mauritius codes, some of which fail the check digit. Only a Marshall Islands number that passes it suggests MailAmericas; the layout belongs to postal detection, and Mauritius Post's items to Mauritius Post."
   },
   {
+    "carrier": "mailplus-au",
+    "pattern": "^MPXL\\d{6}$",
+    "kind": "open",
+    "reason": "MailPlus's tracker documents MPXL numbers beside its MPX ones, but only one example is public, and C Chez Vous's low rule takes the same ten characters."
+  },
+  {
     "carrier": "mainfreight",
     "pattern": "^\\d{11}$",
     "kind": "by_design",

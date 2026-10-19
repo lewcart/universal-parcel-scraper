@@ -19498,12 +19498,19 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mailplus-au",
+      "recognitionRank": 699
     },
     "canaryUrl": "https://track.mailplus.com.au/",
-    "trackingUrlTemplate": "https://track.mailplus.com.au/old/{trackingNumber}",
+    "trackingUrlTemplate": "https://track.mailplus.com.au/{trackingNumber}",
     "trackingSearchUrl": "https://track.mailplus.com.au/",
     "linkRules": [
+      {
+        "domains": [
+          "track.mailplus.com.au"
+        ],
+        "path": "^/(?=[A-Za-z]*\\d)([A-Za-z0-9]+)/?$"
+      },
       {
         "domains": [
           "track.mailplus.com.au"

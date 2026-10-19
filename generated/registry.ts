@@ -287,6 +287,7 @@ import { adapter as mAndP } from '../carriers/m-and-p/adapter.js';
 import { adapter as mOne } from '../carriers/m-one/adapter.js';
 import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
 import { adapter as mailamericas } from '../carriers/mailamericas/adapter.js';
+import { adapter as mailplusAu } from '../carriers/mailplus-au/adapter.js';
 import { adapter as mainfreight } from '../carriers/mainfreight/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
@@ -797,6 +798,7 @@ export const REGISTRY: RegistryDefinition = {
     "m-one": mOne,
     "magyar-posta": magyarPosta,
     "mailamericas": mailamericas,
+    "mailplus-au": mailplusAu,
     "mainfreight": mainfreight,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
@@ -1451,7 +1453,7 @@ export const REGISTRY: RegistryDefinition = {
     "madhur-courier": "universal",
     "magyar-posta": "magyar-posta",
     "mailamericas": "mailamericas",
-    "mailplus-au": "universal",
+    "mailplus-au": "mailplus-au",
     "mainfreight": "mainfreight",
     "major-express": "universal",
     "makati-express": "universal",

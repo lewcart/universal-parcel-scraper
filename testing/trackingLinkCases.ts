@@ -231,6 +231,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'jersey-post', number: 'LX000000005JE',
     route: /^https:\/\/www\.jerseypost\.com\/tools\/track-trace\/\?tq=LX000000005JE$/,
     marker: /No tracking information available/ },
+  // The server renders the lookup; its answer to an unknown number keeps the number in the search field.
+  { carrier: 'chunil', number: '99999999999',
+    route: /^https:\/\/www\.chunil\.co\.kr\/HTrace\/HTrace\.jsp\?transNo=99999999999$/,
+    marker: /운송장 조회/ },
   { carrier: 'korea-post', number: 'EE000000005KR',
     route: /^https:\/\/trace\.epost\.go\.kr\/xtts\//,
     marker: /Track.*Trace|Tracking|Item Number|Delivery Status/i },

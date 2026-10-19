@@ -8917,7 +8917,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chunil",
+      "recognitionRank": 621,
+      "localClocks": true
     },
     "canaryUrl": "https://www.chunil.co.kr/HTrace/HTrace.jsp",
     "trackingUrlTemplate": "https://www.chunil.co.kr/HTrace/HTrace.jsp?transNo={trackingNumber}",

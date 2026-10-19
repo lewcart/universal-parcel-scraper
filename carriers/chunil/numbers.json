@@ -2,18 +2,11 @@
   "carrier": "chunil",
   "records": [
     {
-      "number": "11633265509",
+      "number": "10000000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20240229082427/http://www.chunil.co.kr/HTrace/HTrace.jsp?transNo=11633265509",
-        "date": "2024-02-29",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -28,7 +21,7 @@
           "ppl"
         ]
       },
-      "note": "The opened capture of Chunil Express's tracker shows the parcel with seven scans from acceptance in Daejeon to delivery."
+      "note": "Invented placeholder for an eleven-digit waybill; the public sample's tracker names its sender and recipient, masked."
     }
   ]
 }

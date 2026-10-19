@@ -81,6 +81,7 @@ import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
 import { adapter as chronodiali } from '../carriers/chronodiali/adapter.js';
 import { adapter as chronopost } from '../carriers/chronopost/adapter.js';
 import { adapter as chunghwaPost } from '../carriers/chunghwa-post/adapter.js';
+import { adapter as chunil } from '../carriers/chunil/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
 import { adapter as cityExpressRs } from '../carriers/city-express-rs/adapter.js';
 import { adapter as citymail } from '../carriers/citymail/adapter.js';
@@ -614,6 +615,7 @@ export const REGISTRY: RegistryDefinition = {
     "chronodiali": chronodiali,
     "chronopost": chronopost,
     "chunghwa-post": chunghwaPost,
+    "chunil": chunil,
     "ciblex": ciblex,
     "city-express-rs": cityExpressRs,
     "citymail": citymail,
@@ -1181,7 +1183,7 @@ export const REGISTRY: RegistryDefinition = {
     "chronopost": "chronopost",
     "chukou1": "universal",
     "chunghwa-post": "chunghwa-post",
-    "chunil": "universal",
+    "chunil": "chunil",
     "ciblex": "ciblex",
     "city-express-rs": "city-express-rs",
     "citylink-express": "universal",

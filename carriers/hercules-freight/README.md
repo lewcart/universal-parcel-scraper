@@ -19,6 +19,15 @@ The Track Shipment form posts the number, so no address is used as a template. O
 details pages at `herculesfreight.com/users/viewPRODetails/{number}` and
 `herculesfreight.com/forms/viewprodetails/{number}` carry the number in the path.
 
+## Why there is no adapter
+
+The Track Shipment form posts the search type and the number to its own page, with no token,
+captcha or sign-in. The site's firewall refuses form posts from whole countries, though: from
+Switzerland and Germany, Sucuri answers every POST on the site, the tracking form's included,
+with HTTP 403 and its "Access from your Country was disabled" page, while the pages themselves
+load. Opening the page with the form's fields in the address runs no lookup, and Hercules
+publishes no tracking app, so Hercules Freight stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

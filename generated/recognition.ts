@@ -320,6 +320,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "uzbekistan-post": 906,
   "vasp-expresso": 885,
   "venipak": 240,
+  "via-cargo": 936,
   "vinted-go": 410,
   "wanbexpress": 33,
   "whistl": 320,

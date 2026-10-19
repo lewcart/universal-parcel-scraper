@@ -1070,6 +1070,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'lion-parcel', number: '55LP0000000000001',
     route: /^https:\/\/lionparcel\.com\/track\/stt\?q=55LP0000000000001$/,
     marker: /Hasil pencarian tidak ditemukan|Nomor resi atau STT|Riwayat Pengiriman/i },
+  // The page fills its field in from the address and looks the number up a few seconds later.
+  { carrier: 'via-cargo', number: '999000000000',
+    route: /^https:\/\/formularios\.viacargo\.com\.ar\/seguimiento-envio\/999000000000$/,
+    marker: /Seguimiento de env[íi]o|No existen datos para el n[úu]mero de env[íi]o ingresado/i },
   // The page looks up each air waybill in its address and answers an unknown one with its notice
   // in place of the scans.
   { carrier: 'bombino', number: '0000000000',

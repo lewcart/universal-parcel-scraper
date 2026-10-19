@@ -17,18 +17,63 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "via-cargo",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 936
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps",
+    "weight",
+    "service_name"
+  ],
   "portal": {
     "url": "https://formularios.viacargo.com.ar/seguimiento-envio/{trackingNumber}",
     "searchUrl": "https://formularios.viacargo.com.ar/seguimiento-envio",
     "canaryUrl": "https://formularios.viacargo.com.ar/seguimiento-envio",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "weight",
+      "parcel_count",
+      "origin",
+      "recipient_address",
+      "recipient_id",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "weight",
+      "service_name"
+    ],
+    "discarded": [
+      "parcel_count",
+      "origin",
+      "recipient_address",
+      "recipient_id",
+      "remarks"
+    ],
+    "unavailable": [
+      "eta",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

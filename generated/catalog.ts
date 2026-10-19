@@ -29388,7 +29388,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "via-cargo",
+      "recognitionRank": 936
     },
     "canaryUrl": "https://formularios.viacargo.com.ar/seguimiento-envio",
     "trackingUrlTemplate": "https://formularios.viacargo.com.ar/seguimiento-envio/{trackingNumber}",

@@ -43,7 +43,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -61,7 +61,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
+      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell. The tracker shows the shipment from intake at a branch to its delivery."
     },
     {
       "number": "999019238309",
@@ -74,7 +74,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -92,7 +92,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
+      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell. The tracker shows the shipment from intake at a branch to its delivery."
     },
     {
       "number": "999000053615",
@@ -105,7 +105,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -123,7 +123,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
+      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell. The tracker shows the shipment from intake at a branch to its delivery."
     },
     {
       "number": "999002023358",
@@ -136,7 +136,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -154,7 +154,7 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell, so the history was not visible."
+      "note": "Sent as the shipment number to Via Cargo's own tracker, as the archived address shows; the opened capture holds only the app shell. The tracker shows the shipment from intake at a branch to its delivery."
     }
   ]
 }

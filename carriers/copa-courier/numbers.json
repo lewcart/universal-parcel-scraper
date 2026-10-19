@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -25,7 +25,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it as the Copa Courier HAWB of a parcel from Costa Rica that Copa Courier's tracker showed in Cuban customs."
+      "note": "A customer's comment on Correos de Cuba's site gives it as the Copa Courier HAWB of a parcel from Costa Rica that Copa Courier's tracker showed in Cuban customs, as it still does."
     },
     {
       "number": "H0424119",
@@ -38,7 +38,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -51,7 +51,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile."
+      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0424120",
@@ -64,7 +64,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -77,7 +77,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile."
+      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0422387",
@@ -90,7 +90,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -103,7 +103,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile."
+      "note": "A customer's comment on Correos de Cuba's site lists it among three Copa Courier codes for parcels from Chile. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0492770",
@@ -116,7 +116,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -129,7 +129,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent by Copa Courier, and the reply says it was billed to the destination province."
+      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent by Copa Courier, and the reply says it was billed to the destination province. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0496923",
@@ -142,7 +142,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -155,7 +155,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it as the code of a parcel sent by Copa Courier."
+      "note": "A customer's comment on Correos de Cuba's site gives it as the code of a parcel sent by Copa Courier. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0498548",
@@ -168,7 +168,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -181,7 +181,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site lists it among three guides that reached Havana by Copa Courier."
+      "note": "A customer's comment on Correos de Cuba's site lists it among three guides that reached Havana by Copa Courier. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0498545",
@@ -194,7 +194,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -207,7 +207,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site lists it among three guides that reached Havana by Copa Courier."
+      "note": "A customer's comment on Correos de Cuba's site lists it among three guides that reached Havana by Copa Courier. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0496988",
@@ -220,7 +220,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -233,7 +233,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent from Chile by Copa Airlines on the Santiago, Panama and Havana route."
+      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent from Chile by Copa Airlines on the Santiago, Panama and Havana route. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0501388",
@@ -246,7 +246,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -259,7 +259,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent from Costa Rica through Copa Courier."
+      "note": "A customer's comment on Correos de Cuba's site gives it for a parcel sent from Costa Rica through Copa Courier. Copa Courier's tracker knows the HAWB."
     },
     {
       "number": "H0535257",
@@ -272,7 +272,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -285,7 +285,7 @@
           "loggi"
         ]
       },
-      "note": "A customer's comment on Correos de Cuba's site gives it as the code of one of four parcels sent by Copa Courier."
+      "note": "A customer's comment on Correos de Cuba's site gives it as the code of one of four parcels sent by Copa Courier. Copa Courier's tracker knows the HAWB."
     }
   ]
 }

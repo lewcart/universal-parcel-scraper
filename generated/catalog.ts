@@ -9395,7 +9395,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Panama",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "copa-courier",
+      "recognitionRank": 773,
+      "localClocks": true
     },
     "canaryUrl": "https://www.copacourier.com/",
     "trackingSearchUrl": "https://www.copacourier.com/",

@@ -83,6 +83,7 @@ import { adapter as colisPrive } from '../carriers/colis-prive/adapter.js';
 import { adapter as colisweb } from '../carriers/colisweb/adapter.js';
 import { adapter as connectCouriers } from '../carriers/connect-couriers/adapter.js';
 import { adapter as coordinadora } from '../carriers/coordinadora/adapter.js';
+import { adapter as copaCourier } from '../carriers/copa-courier/adapter.js';
 import { adapter as correiosBr } from '../carriers/correios-br/adapter.js';
 import { adapter as correoArgentino } from '../carriers/correo-argentino/adapter.js';
 import { adapter as correoUruguayo } from '../carriers/correo-uruguayo/adapter.js';
@@ -553,6 +554,7 @@ export const REGISTRY: RegistryDefinition = {
     "colisweb": colisweb,
     "connect-couriers": connectCouriers,
     "coordinadora": coordinadora,
+    "copa-courier": copaCourier,
     "correios-br": correiosBr,
     "correo-argentino": correoArgentino,
     "correo-uruguayo": correoUruguayo,
@@ -1070,7 +1072,7 @@ export const REGISTRY: RegistryDefinition = {
     "colisweb": "colisweb",
     "connect-couriers": "connect-couriers",
     "coordinadora": "coordinadora",
-    "copa-courier": "universal",
+    "copa-courier": "copa-courier",
     "corre": "universal",
     "correios-br": "correios-br",
     "correo-argentino": "correo-argentino",

@@ -579,6 +579,8 @@ describe('classifyWording', () => {
       ['shipment created', 'registered'],
       ['Przesyłka utworzona', 'registered'],
       ['Gönderi oluşturuldu', 'registered'],
+      ['notificado - el envío ha sido registrado.', 'registered'],
+      ['El paquete fue registrado', 'registered'],
       // Correos: left for admission, pre-registered, admitted.
       ['depositado para admisión. envío depositado por remitente en taquilla citypaq para admisión por correos', 'registered'],
       ['Entregado en CityPaq para admisión', 'registered'],

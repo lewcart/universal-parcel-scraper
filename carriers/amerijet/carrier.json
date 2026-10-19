@@ -16,17 +16,53 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "amerijet",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 636
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location"
+  ],
   "portal": {
-    "searchUrl": "https://www.amerijet.com/air-waybill-tracking/",
-    "canaryUrl": "https://www.amerijet.com/air-waybill-tracking/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "searchUrl": "https://amerijet.com/air-waybill-tracking/",
+    "canaryUrl": "https://amerijet.com/air-waybill-tracking/",
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "flight_number",
+      "piece_count"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "piece_count"
+    ],
+    "discarded": [
+      "flight_number"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ]
   },
   "links": [],
   "detection": [

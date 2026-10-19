@@ -18,6 +18,7 @@ import { adapter as algeriePoste } from '../carriers/algerie-poste/adapter.js';
 import { adapter as aliexpress } from '../carriers/aliexpress/adapter.js';
 import { adapter as allegroOne } from '../carriers/allegro-one/adapter.js';
 import { adapter as amazonShipping } from '../carriers/amazon-shipping/adapter.js';
+import { adapter as amerijet } from '../carriers/amerijet/adapter.js';
 import { adapter as ampm } from '../carriers/ampm/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
 import { adapter as andreani } from '../carriers/andreani/adapter.js';
@@ -544,6 +545,7 @@ export const REGISTRY: RegistryDefinition = {
     "aliexpress": aliexpress,
     "allegro-one": allegroOne,
     "amazon-shipping": amazonShipping,
+    "amerijet": amerijet,
     "ampm": ampm,
     "an-post": anPost,
     "andreani": andreani,
@@ -1086,7 +1088,7 @@ export const REGISTRY: RegistryDefinition = {
     "amazon-shipping": "amazon-shipping",
     "ameex": "universal",
     "american-west-express": "universal",
-    "amerijet": "universal",
+    "amerijet": "amerijet",
     "ampm": "ampm",
     "an-post": "an-post",
     "andreani": "andreani",

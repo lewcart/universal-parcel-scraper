@@ -6217,10 +6217,12 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "amerijet",
+      "recognitionRank": 636,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.amerijet.com/air-waybill-tracking/",
-    "trackingSearchUrl": "https://www.amerijet.com/air-waybill-tracking/",
+    "canaryUrl": "https://amerijet.com/air-waybill-tracking/",
+    "trackingSearchUrl": "https://amerijet.com/air-waybill-tracking/",
     "linkRules": [],
     "detectionRules": [
       {

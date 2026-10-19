@@ -733,6 +733,10 @@ describe('classifyWording', () => {
       ['The second leg is taking off, expected to land on the 9th', 'in_transit'],
       ['The flight landed, and the board was dismantled and cleared', 'in_transit'],
       ['Courier Pick-up', 'accepted'], ['Received in Office', 'in_transit'], ['Export to foreign provider', 'in_transit'],
+      ['Pending shipping by the seller', 'registered'], ['Connecting flights flight takeoff', 'in_transit'],
+      ['Initial landing', 'in_transit'], ['Item flight landing', 'in_transit'],
+      ['The cargo tally in the supervised warehouse is in progress.', 'in_transit'],
+      ['Prepared for last mile handover', 'in_transit'],
     ] as const) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage, source: 'wording:language' });
     // A notice sent to the recipient is no pre-advice, and an item received elsewhere keeps its reading.
     expect(wordingStage('Shipping information sent to the recipient', 'pending')).not.toBe('registered');

@@ -17,6 +17,7 @@ import { PAPERFLY_LAYOUT, paperflyRequestNumber } from '../../carriers/paperfly/
 import { normalizeCourierGuyNumber } from '../../carriers/the-courier-guy/number.js';
 import { ZR_EXPRESS_LAYOUT, zrExpressRequestNumber } from '../../carriers/zr-express/number.js';
 import { postlogisticsIdentifier } from '../../carriers/postlogistics/number.js';
+import { normalizeUpayaNumber, UPAYA_LAYOUT } from '../../carriers/upaya/number.js';
 import type { CarrierId } from '../../generated/catalog.js';
 import { regionalGofoRequestNumber } from '../detection/gofo.js';
 import { isValidMondialRelayBarcode } from '../detection/mondialRelay.js';
@@ -57,6 +58,8 @@ export function trackingNumberForLink(carrierId: CarrierId, raw: string): string
   // Paperfly's page finds a number only with the hyphens between its parts.
   if (carrierId === 'paperfly' && PAPERFLY_LAYOUT.test(normalized)) return paperflyRequestNumber(normalized);
   if (carrierId === 'gofo-fr') return regionalGofoRequestNumber(normalized);
+  // Upaya's page finds a code only in capitals with the hyphen before its last seven digits.
+  if (carrierId === 'upaya' && UPAYA_LAYOUT.test(normalized)) return normalizeUpayaNumber(normalized);
   // Ecoscooting's page finds a Cainiao reference only with its CN.
   if (carrierId === 'ecoscooting' && ecoscootingReference(normalized) !== normalized) return ecoscootingReference(normalized);
   return raw;

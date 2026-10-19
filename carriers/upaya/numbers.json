@@ -12,7 +12,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -23,6 +23,28 @@
         ]
       },
       "note": "A merchant's open-source Upaya integration gives this as the tracking code Upaya's order API returned, written after testing against the live API."
+    },
+    {
+      "number": "KTMKTM12345-1234567",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://upaya.com.np/track/",
+        "date": "2026-10-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "upaya"
+        ]
+      },
+      "note": "The example Upaya's tracking form gives in its field. Its digits are a placeholder that the tracker does not know."
     },
     {
       "number": "WRL2408001AZSN",

@@ -412,6 +412,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ukrposhta": 490,
   "united-delivery-service": 793,
   "uniuni": 770,
+  "upaya": 562,
   "urvaam": 848,
   "uzbekistan-post": 906,
   "vasp-expresso": 885,

@@ -1820,6 +1820,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/awest\.freightgate\.com\/cgi-bin\/tarifftrek5\.1\/itrek\.cgi\?database=awest&type=submit&/,
     marker: /Tracking Lookup will only find shipments picked up within the past 90 days/,
     forwarding: { notFound: /no records found matching your criteria/ } },
+  // The server looks up the code in the address and keeps it in the field over an unknown one's notice.
+  { carrier: 'upaya', number: 'QQQQQQ00000-0000000',
+    route: /^https:\/\/upaya\.com\.np\/track\/\?tracking=QQQQQQ00000-0000000$/,
+    marker: /No order found for this tracking code|Track your order/ },
 ];
 
 /**

@@ -77,6 +77,10 @@ describe('the derived CARRIERS record', () => {
     expect(trackingNumberForLink('paperfly', 'SAMPLE')).toBe('SAMPLE');
     expect(CARRIERS.paperfly.trackingUrl?.('01012500000A1A1')).toBe('https://go.paperfly.com.bd/track/order/010125-00000-A1-A1');
     expect(CARRIERS['pack-man'].trackingUrl?.('A00000017')).toBe('https://pack-man.gr/anazitisi-apostolis.html?code=A-00000017');
+    expect(trackingNumberForLink('upaya', 'qqqqqq000000000000')).toBe('QQQQQQ00000-0000000');
+    expect(trackingNumberForLink('upaya', 'QQQQQQ0000-0000000')).toBe('QQQQQQ0000-0000000');
+    expect(trackingNumberForLink('upaya', 'SAMPLE')).toBe('SAMPLE');
+    expect(CARRIERS.upaya.trackingUrl?.('QQQQQQ000000000000')).toBe('https://upaya.com.np/track/?tracking=QQQQQQ00000-0000000');
     expect(trackingNumberForLink('ecoscooting', 'prt 0000000 1234 000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', 'CNPRT00000001234000000001')).toBe('CNPRT00000001234000000001');
     expect(trackingNumberForLink('ecoscooting', '000000000000000001')).toBe('000000000000000001');

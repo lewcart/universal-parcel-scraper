@@ -482,6 +482,7 @@ import { statusMap as tufesa } from '../../carriers/tufesa/status.js';
 import { statusMap as twsExpress } from '../../carriers/tws-express/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
 import { statusMap as unitedDeliveryService } from '../../carriers/united-delivery-service/status.js';
+import { statusMap as upaya } from '../../carriers/upaya/status.js';
 import { statusMap as ups } from '../../carriers/ups/status.js';
 import { statusMap as urbano } from '../../carriers/urbano/status.js';
 import { statusMap as urvaam } from '../../carriers/urvaam/status.js';
@@ -595,7 +596,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'thailand-post': thailandPost, thhy, tiki, 'tirupati-courier': tirupatiCourier, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,
-  'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,
+  'united-delivery-service': unitedDeliveryService, upaya, ups, urbano, urvaam,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   vimenpaq, 'vinted-go': vintedGo, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yunexpress, zto,

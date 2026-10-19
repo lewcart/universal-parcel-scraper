@@ -29562,7 +29562,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kathmandu",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "upaya",
+      "recognitionRank": 562
     },
     "canaryUrl": "https://upaya.com.np/track/",
     "trackingUrlTemplate": "https://upaya.com.np/track/?tracking={trackingNumber}",

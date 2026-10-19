@@ -17,18 +17,63 @@
   "timezone": "Asia/Kathmandu",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "upaya",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 562
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "service_name",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://upaya.com.np/track/?tracking={trackingNumber}",
     "searchUrl": "https://upaya.com.np/track/",
     "canaryUrl": "https://upaya.com.np/track/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "service_name",
+      "order_date",
+      "customer_reference",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "destination",
+      "payment_details",
+      "office_contact_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "service_name"
+    ],
+    "discarded": [
+      "order_date",
+      "customer_reference",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "destination",
+      "payment_details",
+      "office_contact_details"
+    ],
+    "unavailable": [
+      "provider_code"
+    ]
   },
   "links": [
     {

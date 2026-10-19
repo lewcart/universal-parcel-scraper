@@ -91,6 +91,7 @@ import { statusMap as correosExpress } from '../../carriers/correos-express/stat
 import { statusMap as correosSpain } from '../../carriers/correos-spain/status.js';
 import { statusMap as courierCenter } from '../../carriers/courier-center/status.js';
 import { statusMap as couriersPlease } from '../../carriers/couriersplease/status.js';
+import { statusMap as cruzDelSur } from '../../carriers/cruz-del-sur/status.js';
 import { statusMap as cseRussia } from '../../carriers/cse-russia/status.js';
 import { statusMap as cttyex } from '../../carriers/cttyex/status.js';
 import { statusMap as cyprusPost } from '../../carriers/cyprus-post/status.js';
@@ -450,7 +451,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
-  'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress,
+  'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress,
   'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,

@@ -9870,11 +9870,24 @@
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cruz-del-sur",
+      "recognitionRank": 722,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php",
+    "trackingUrlTemplate": "https://www.cruzdelsur.com/herramientas_seguimiento_resultado.php?nic={trackingNumber}",
     "trackingSearchUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "cruzdelsur.com"
+        ],
+        "pathPattern": "^/herramientas_seguimiento_resultado\\.php$",
+        "params": [
+          "nic"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "cse-russia": {

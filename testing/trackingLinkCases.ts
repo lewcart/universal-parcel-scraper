@@ -957,6 +957,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailamericas', number: 'MLAR000000000EX',
     route: /^https:\/\/mailamericas\.com\/(?:(?:en|pt)\/)?tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
+  // The result page looks the NIC in its address up on the server; an unknown one gets a notice without the number.
+  { carrier: 'cruz-del-sur', number: '900000000',
+    route: /^https:\/\/www\.cruzdelsur\.com\/herramientas_seguimiento_resultado\.php\?nic=900000000$/,
+    marker: /No existe NIC\.|Línea de seguimiento/,
+    forwarding: { notFound: /No existe NIC\./ } },
   // The page puts the number in its field and posts it to the tracker; an unknown one gets its generic error in Ukrainian.
   { carrier: 'nova-global', number: 'NP00000000000000NPG',
     route: /^https:\/\/nova\.global\/track\/\?Tracking_ID=NP00000000000000NPG$/,

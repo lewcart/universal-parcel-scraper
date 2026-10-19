@@ -17,18 +17,66 @@
   "timezone": "America/Argentina/Buenos_Aires",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "cruz-del-sur",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 722
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
+    "url": "https://www.cruzdelsur.com/herramientas_seguimiento_resultado.php?nic={trackingNumber}",
     "searchUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php",
     "canaryUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "departure_date",
+      "sender_name",
+      "recipient_name",
+      "origin",
+      "destination"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "departure_date",
+      "sender_name",
+      "recipient_name",
+      "origin",
+      "destination"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "proof_of_delivery",
+      "delivered_at",
+      "offset_timestamps",
+      "provider_code"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "cruzdelsur.com"
+      ],
+      "pathPattern": "^/herramientas_seguimiento_resultado\\.php$",
+      "params": [
+        "nic"
+      ]
+    }
+  ],
   "detection": []
 }

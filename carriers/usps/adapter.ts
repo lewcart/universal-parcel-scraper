@@ -22,7 +22,9 @@ import { uspsStage, uspsStatus } from './status.js';
  */
 const TRACKING_BASE = 'https://tools.usps.com/tracking/';
 const MAX_BYTES = 10_000_000;
-const DEFAULT_TIMEOUT_MS = 90_000;
+// The browser's time for both reads; with the transport allowance a lookup ends within a
+// minute. Answers the page gives come well inside it.
+const DEFAULT_TIMEOUT_MS = 45_000;
 const MAX_EVENTS_TO_RETURN = 100;
 /** Pages a second browser read within the same budget can complete. */
 const RECOVERABLE_PAGES = new Set(['incomplete_page', 'interstitial_page']);

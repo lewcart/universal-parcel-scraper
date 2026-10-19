@@ -221,6 +221,12 @@ describe('USPS lookup steps', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
+  it('leaves the browser 45 seconds by default, so a lookup ends within a minute', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'));
+    await expect(new USPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(DELIVERED_NUMBER)).rejects.toThrow();
+    expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({ maxTimeout: 45_000 });
+  });
+
   it('reads the page the browser rendered', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(trawlReply(DELIVERED_PAGE));
     const { recorder, records } = stepRecorder();

@@ -470,6 +470,12 @@ describe('UPS lookup steps', () => {
     expect(records).toEqual(['direct:challenge', 'lookup:direct:challenge']);
   });
 
+  it('leaves the browser 45 seconds by default, so a lookup ends within a minute', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'));
+    await expect(new UPSTracker({ trawl: new TrawlClient(TRAWL_URL) }).fetch(TRACKING_NUMBER)).rejects.toThrow();
+    expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({ maxTimeout: 45_000 });
+  });
+
   it('reads the status reply the browser captured instead of replaying its cookies', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({
       tier: 2,

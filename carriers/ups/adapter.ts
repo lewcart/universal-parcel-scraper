@@ -21,7 +21,9 @@ const STATUS_API = 'https://webapis.ups.com/track/api/Track/GetStatus?loc=en_US'
 const TRAWL_PROVIDER = 'TRAWL while fetching UPS';
 const MAX_BYTES = 10_000_000;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0';
-const DEFAULT_TIMEOUT_MS = 90_000;
+// The browser's time; with the transport allowance a lookup ends within a minute. Answers
+// the page gives come well inside it, and a longer wait only holds up the caller's sync.
+const DEFAULT_TIMEOUT_MS = 45_000;
 const DEFAULT_DIRECT_TIMEOUT_MS = 20_000;
 // How long the browser may wait for the page's own status call after the page settles.
 const SETTLE_TIMEOUT_MS = 15_000;

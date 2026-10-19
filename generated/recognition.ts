@@ -287,6 +287,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "redx": 917,
   "relais-colis": 690,
   "rl-carriers": 5,
+  "royal-express-mm": 723,
   "rpx-indonesia": 947,
   "sagawa-global": 749,
   "saia": 12,

@@ -24780,7 +24780,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Yangon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "royal-express-mm",
+      "recognitionRank": 723,
+      "localClocks": true
     },
     "canaryUrl": "https://royalx.net/tracking",
     "trackingSearchUrl": "https://royalx.net/tracking",

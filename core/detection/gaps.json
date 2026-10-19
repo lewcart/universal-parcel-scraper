@@ -3116,7 +3116,7 @@
     "carrier": "royal-express-mm",
     "pattern": "^[A-Z]{3}\\d{11}[A-Z]{3}$",
     "kind": "by_design",
-    "reason": "Royal Express shows this layout only as its form placeholder, too little to give it a rule."
+    "reason": "Royal Express shows this older layout only as its form placeholder and in a guide's screenshot, neither of which its tracker still knows; too little to give it a rule."
   },
   {
     "carrier": "royal-express-mm",

@@ -380,6 +380,7 @@ import { adapter as redx } from '../carriers/redx/adapter.js';
 import { adapter as relaisColis } from '../carriers/relais-colis/adapter.js';
 import { adapter as relaytech } from '../carriers/relaytech/adapter.js';
 import { adapter as rlCarriers } from '../carriers/rl-carriers/adapter.js';
+import { adapter as royalExpressMm } from '../carriers/royal-express-mm/adapter.js';
 import { adapter as royalMail } from '../carriers/royal-mail/adapter.js';
 import { adapter as rpxIndonesia } from '../carriers/rpx-indonesia/adapter.js';
 import { adapter as sagawa } from '../carriers/sagawa/adapter.js';
@@ -892,6 +893,7 @@ export const REGISTRY: RegistryDefinition = {
     "relais-colis": relaisColis,
     "relaytech": relaytech,
     "rl-carriers": rlCarriers,
+    "royal-express-mm": royalExpressMm,
     "royal-mail": royalMail,
     "rpx-indonesia": rpxIndonesia,
     "sagawa": sagawa,
@@ -1611,7 +1613,7 @@ export const REGISTRY: RegistryDefinition = {
     "rl-carriers": "rl-carriers",
     "roadie": "universal",
     "roadrunner": "universal",
-    "royal-express-mm": "universal",
+    "royal-express-mm": "royal-express-mm",
     "royal-mail": "royal-mail",
     "rpx-hk": "universal",
     "rpx-indonesia": "rpx-indonesia",

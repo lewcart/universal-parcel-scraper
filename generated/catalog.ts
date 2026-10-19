@@ -15239,7 +15239,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gsi-express",
+      "localClocks": true
     },
     "canaryUrl": "https://www.gsiexpress.com/tracking_query.php",
     "trackingUrlTemplate": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",

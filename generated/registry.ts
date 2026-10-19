@@ -195,6 +195,7 @@ import { adapter as gofoFr } from '../carriers/gofo-fr/adapter.js';
 import { adapter as gofoIt } from '../carriers/gofo-it/adapter.js';
 import { adapter as gofoNl } from '../carriers/gofo-nl/adapter.js';
 import { adapter as gogoXpress } from '../carriers/gogo-xpress/adapter.js';
+import { adapter as gsiExpress } from '../carriers/gsi-express/adapter.js';
 import { adapter as gzyl } from '../carriers/gzyl/adapter.js';
 import { adapter as hanjin } from '../carriers/hanjin/adapter.js';
 import { adapter as happyPost } from '../carriers/happy-post/adapter.js';
@@ -662,6 +663,7 @@ export const REGISTRY: RegistryDefinition = {
     "gofo-it": gofoIt,
     "gofo-nl": gofoNl,
     "gogo-xpress": gogoXpress,
+    "gsi-express": gsiExpress,
     "gzyl": gzyl,
     "hanjin": hanjin,
     "happy-post": happyPost,
@@ -1239,7 +1241,7 @@ export const REGISTRY: RegistryDefinition = {
     "grand-slam-express": "universal",
     "groupe-guilbault": "universal",
     "gs-postbox": "universal",
-    "gsi-express": "universal",
+    "gsi-express": "gsi-express",
     "gta-airskip": "universal",
     "gtl-goto": "universal",
     "guatex": "universal",

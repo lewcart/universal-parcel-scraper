@@ -56,7 +56,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -65,7 +65,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "3241306",
@@ -78,7 +78,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -87,7 +87,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "3468869",
@@ -100,7 +100,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -109,7 +109,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "3650251",
@@ -122,7 +122,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -131,7 +131,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "4262236",
@@ -144,7 +144,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -153,7 +153,7 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "4274023",
@@ -166,7 +166,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -175,7 +175,27 @@
           "seur"
         ]
       },
-      "note": "An archived lookup of a receipt number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a receipt number on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
+    },
+    {
+      "number": "6258970",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.gsiexpress.com/track_pop.php?textfield=6258970&sd=2022-07-29",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "A search engine indexes this lookup on GSI Express's own tracker, which returns the parcel with its departure, customs clearance and Korea Post number."
     },
     {
       "number": "6099726383792",
@@ -240,7 +260,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -253,7 +273,7 @@
           "korea-post"
         ]
       },
-      "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker, which returns it as the waybill of a GSI parcel."
     },
     {
       "number": "6063009754271",
@@ -266,7 +286,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -279,7 +299,7 @@
           "korea-post"
         ]
       },
-      "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker. The capture was not opened."
+      "note": "An archived lookup of a Korea Post registered number on GSI Express's own tracker, which returns it as the waybill of a GSI parcel."
     }
   ]
 }

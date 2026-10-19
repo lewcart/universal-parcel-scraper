@@ -18,18 +18,52 @@
   "timezone": "America/New_York",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gsi-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",
     "searchUrl": "https://www.gsiexpress.com/tracking_query.php",
     "canaryUrl": "https://www.gsiexpress.com/tracking_query.php",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "delivery_tracking_number",
+      "related_awb_numbers",
+      "order_reference",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "related_awb_numbers",
+      "order_reference",
+      "recipient_name",
+      "recipient_address"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "delivered_at",
+      "offset_timestamps",
+      "service_name",
+      "sender_name"
+    ]
   },
   "links": [
     {

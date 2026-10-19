@@ -1306,6 +1306,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/pod\.exmate\.net\/pod\/\?exmno=EXK00000000J$/,
     marker: /No Data!!|Tracking Visibility/,
     forwarding: { notFound: /No Data!!/ } },
+  // The server renders the page for the receipt number in its query; an unknown one gets only its notice.
+  { carrier: 'gsi-express', number: '0000000',
+    route: /^https:\/\/www\.gsiexpress\.com\/track_pop\.php\?textfield=0000000&track_type=invoice_no$/,
+    marker: /해당 데이타가 존재하지 않습니다|GSI 접수번호/,
+    forwarding: { notFound: /해당 데이타가 존재하지 않습니다/ } },
   // The page looks the number up from its path, shows it under the shipping details and has no
   // not-found answer: an unknown one gets its notice that it cannot retrieve tracking.
   { carrier: 'pitney-bowes', number: 'UPAAA000000000000000',

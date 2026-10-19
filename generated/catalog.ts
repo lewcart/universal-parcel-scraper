@@ -29982,7 +29982,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xde-logistics"
     },
     "canaryUrl": "https://www.xde.com.ph/",
     "trackingUrlTemplate": "https://www.xde.com.ph/?tn={trackingNumber}",

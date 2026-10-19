@@ -447,6 +447,7 @@ import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
 import { adapter as winit } from '../carriers/winit/adapter.js';
+import { adapter as xdeLogistics } from '../carriers/xde-logistics/adapter.js';
 import { adapter as xdp } from '../carriers/xdp/adapter.js';
 import { adapter as xlcourier } from '../carriers/xlcourier/adapter.js';
 import { adapter as xpoLtl } from '../carriers/xpo-ltl/adapter.js';
@@ -911,6 +912,7 @@ export const REGISTRY: RegistryDefinition = {
     "wanbexpress": wanbexpress,
     "whistl": whistl,
     "winit": winit,
+    "xde-logistics": xdeLogistics,
     "xdp": xdp,
     "xlcourier": xlcourier,
     "xpo-ltl": xpoLtl,
@@ -1674,7 +1676,7 @@ export const REGISTRY: RegistryDefinition = {
     "winit": "winit",
     "x-express-ba": "universal",
     "x-trac": "universal",
-    "xde-logistics": "universal",
+    "xde-logistics": "xde-logistics",
     "xdp": "xdp",
     "xlcourier": "xlcourier",
     "xpo-ltl": "xpo-ltl",

@@ -14,6 +14,15 @@ lading with the origin postal code, which is not a tracking number.
 Ward's tracker reads a PRO number from `?pro=` on
 `wardtlctools.com/wardtrucking/traceshipment/create`.
 
+## Why there is no adapter
+
+That address answers a plain GET with a server-rendered page, with no token, captcha or
+sign-in: the shipment's status, dates and movements, or Ward's own "Pro is not in Ward system"
+notice. Its host, `wardtlctools.com`, only answers connections from the mainland United States
+and Canada, though. From Europe, Mexico, Brazil, Puerto Rico and Japan the connection times out
+before any reply, for the whole site. Ward publishes no tracking app, so Ward stays on
+universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

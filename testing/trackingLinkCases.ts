@@ -1090,6 +1090,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'blueex', number: '4000000003',
     route: /^https:\/\/www\.blue-ex\.com\/tracking\?trackno=4000000003$/,
     marker: /Shipment Tracking|BlueEX Shipping Label/ },
+  // The server renders the ID in the address into the page and answers an unknown one with a
+  // notice in place of the parcel.
+  { carrier: 'ecourier', number: 'ECR0000000000000',
+    route: /^https:\/\/ecourier\.com\.bd\/tracking\/\?tracking_no=ECR0000000000000$/,
+    marker: /Shipment Tracking|No Result Found/,
+    forwarding: { notFound: /No Result Found/ } },
   // The page looks up each air waybill in its address and answers an unknown one with its notice
   // in place of the scans.
   { carrier: 'bombino', number: '0000000000',

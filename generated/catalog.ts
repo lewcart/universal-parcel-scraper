@@ -12205,7 +12205,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ecourier",
+      "recognitionRank": 743
     },
     "canaryUrl": "https://ecourier.com.bd/tracking/",
     "trackingUrlTemplate": "https://ecourier.com.bd/tracking?tracking_no={trackingNumber}",

@@ -147,6 +147,7 @@ import { adapter as earlyBird } from '../carriers/early-bird/adapter.js';
 import { adapter as easyMail } from '../carriers/easy-mail/adapter.js';
 import { adapter as econt } from '../carriers/econt/adapter.js';
 import { adapter as ecoscooting } from '../carriers/ecoscooting/adapter.js';
+import { adapter as ecourier } from '../carriers/ecourier/adapter.js';
 import { adapter as egyptPost } from '../carriers/egypt-post/adapter.js';
 import { adapter as ekart } from '../carriers/ekart/adapter.js';
 import { adapter as elta } from '../carriers/elta/adapter.js';
@@ -641,6 +642,7 @@ export const REGISTRY: RegistryDefinition = {
     "easy-mail": easyMail,
     "econt": econt,
     "ecoscooting": ecoscooting,
+    "ecourier": ecourier,
     "egypt-post": egyptPost,
     "ekart": ekart,
     "elta": elta,
@@ -1205,7 +1207,7 @@ export const REGISTRY: RegistryDefinition = {
     "eco-express-ae": "universal",
     "econt": "econt",
     "ecoscooting": "ecoscooting",
-    "ecourier": "universal",
+    "ecourier": "ecourier",
     "egypt-post": "egypt-post",
     "ekart": "ekart",
     "elta": "elta",

@@ -15521,7 +15521,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gtl-goto",
+      "recognitionRank": 708,
+      "localClocks": true
     },
     "canaryUrl": "https://gtl.id/tracking",
     "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
@@ -15541,6 +15543,10 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^TKGTL[0-9A-Z]{11}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^GTL\\d{10}$",
         "confidence": "high"
       }
     ]
@@ -32249,7 +32255,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "gs-postbox": [],
   "gsi-express": [],
   "gta-airskip": ["gta-airskip-1"],
-  "gtl-goto": ["gtl-goto-1"],
+  "gtl-goto": ["gtl-goto-1","gtl-goto-2"],
   "guatex": [],
   "gzyl": ["gzyl-1"],
   "hanjin": [],

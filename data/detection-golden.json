@@ -72824,6 +72824,30 @@
     ]
   },
   {
+    "input": "GTL7089226121",
+    "carrier": "gtl-goto",
+    "confidence": "high",
+    "candidates": [
+      "gtl-goto"
+    ]
+  },
+  {
+    "input": "GTL7090912147",
+    "carrier": "gtl-goto",
+    "confidence": "high",
+    "candidates": [
+      "gtl-goto"
+    ]
+  },
+  {
+    "input": "GTL7090971618",
+    "carrier": "gtl-goto",
+    "confidence": "high",
+    "candidates": [
+      "gtl-goto"
+    ]
+  },
+  {
     "input": "GV00USA0U000000001",
     "carrier": "unknown",
     "confidence": "low",
@@ -88018,6 +88042,14 @@
   },
   {
     "input": "TKGTL-000003YN5VT",
+    "carrier": "gtl-goto",
+    "confidence": "high",
+    "candidates": [
+      "gtl-goto"
+    ]
+  },
+  {
+    "input": "TKGTL-0000040225E",
     "carrier": "gtl-goto",
     "confidence": "high",
     "candidates": [

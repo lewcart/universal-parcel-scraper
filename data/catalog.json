@@ -15519,7 +15519,9 @@
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gtl-goto",
+      "recognitionRank": 708,
+      "localClocks": true
     },
     "canaryUrl": "https://gtl.id/tracking",
     "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
@@ -15539,6 +15541,10 @@
     "detectionRules": [
       {
         "pattern": "^TKGTL[0-9A-Z]{11}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^GTL\\d{10}$",
         "confidence": "high"
       }
     ]

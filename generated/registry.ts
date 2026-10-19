@@ -245,6 +245,7 @@ import { adapter as grandSlamExpress } from '../carriers/grand-slam-express/adap
 import { adapter as gsPostbox } from '../carriers/gs-postbox/adapter.js';
 import { adapter as gsiExpress } from '../carriers/gsi-express/adapter.js';
 import { adapter as gtaAirskip } from '../carriers/gta-airskip/adapter.js';
+import { adapter as gtlGoto } from '../carriers/gtl-goto/adapter.js';
 import { adapter as gzyl } from '../carriers/gzyl/adapter.js';
 import { adapter as hanjin } from '../carriers/hanjin/adapter.js';
 import { adapter as happyPost } from '../carriers/happy-post/adapter.js';
@@ -839,6 +840,7 @@ export const REGISTRY: RegistryDefinition = {
     "gs-postbox": gsPostbox,
     "gsi-express": gsiExpress,
     "gta-airskip": gtaAirskip,
+    "gtl-goto": gtlGoto,
     "gzyl": gzyl,
     "hanjin": hanjin,
     "happy-post": happyPost,
@@ -1497,7 +1499,7 @@ export const REGISTRY: RegistryDefinition = {
     "gs-postbox": "gs-postbox",
     "gsi-express": "gsi-express",
     "gta-airskip": "gta-airskip",
-    "gtl-goto": "universal",
+    "gtl-goto": "gtl-goto",
     "guatex": "universal",
     "gzyl": "gzyl",
     "hanjin": "hanjin",

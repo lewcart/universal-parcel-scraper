@@ -1828,6 +1828,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'upaya', number: 'QQQQQQ00000-0000000',
     route: /^https:\/\/upaya\.com\.np\/track\/\?tracking=QQQQQQ00000-0000000$/,
     marker: /No order found for this tracking code|Track your order/ },
+  // The page fills its search field in from the address and answers an unknown number under it.
+  { carrier: 'gtl-goto', number: 'GTL0000000001',
+    route: /^https:\/\/gtl\.id\/tracking\?tracking_number=GTL0000000001$/,
+    marker: /Input Your Tracking Number|Package not found|shipment not found/i },
 ];
 
 /**

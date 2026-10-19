@@ -214,6 +214,7 @@ import { statusMap as grandSlamExpress } from '../../carriers/grand-slam-express
 import { statusMap as gsPostbox } from '../../carriers/gs-postbox/status.js';
 import { statusMap as gsiExpress } from '../../carriers/gsi-express/status.js';
 import { statusMap as gtaAirskip } from '../../carriers/gta-airskip/status.js';
+import { statusMap as gtlGoto } from '../../carriers/gtl-goto/status.js';
 import { statusMap as gzyl } from '../../carriers/gzyl/status.js';
 import { statusMap as hanjin } from '../../carriers/hanjin/status.js';
 import { statusMap as happyPost } from '../../carriers/happy-post/status.js';
@@ -551,12 +552,11 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   fleetex, fleetoptics, followmont, 'forward-air': forwardAir, 'forza-delivery': forzaDelivery, 'four-px': fourPx, foxpost, 'franch-express': franchExpress, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   globalpost, 'go-express': goExpress, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress,
-  'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, gzyl, hanjin, 'happy-post': happyPost, haypost,
-  'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, homexpress, 'houng-ah-loun': houngAhLoun, hovership,
-  'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
-  'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik,
-  'ilyang-logis': ilyangLogis, imile, 'indah-logistik': indahLogistik,
-  instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
+  'grand-slam-express': grandSlamExpress, 'gs-postbox': gsPostbox, 'gsi-express': gsiExpress, 'gta-airskip': gtaAirskip, 'gtl-goto': gtlGoto, gzyl,
+  hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics, helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, homexpress,
+  'houng-ah-loun': houngAhLoun, hovership, 'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
+  'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik, 'ilyang-logis': ilyangLogis, imile,
+  'indah-logistik': indahLogistik, instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
   jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,

@@ -15335,7 +15335,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "grand-slam-express",
+      "localClocks": true
     },
     "canaryUrl": "https://www.grandslamexpress.in/Web/Track",
     "trackingUrlTemplate": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",

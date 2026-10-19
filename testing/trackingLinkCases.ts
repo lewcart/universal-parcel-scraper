@@ -1688,6 +1688,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'icc-worldwide', number: '99999999999',
     route: /^https:\/\/www\.iccworld\.com\/track-result\.php\?track_no=99999999999$/,
     marker: /Record not found|Detailed Report/i, forwarding: { notFound: /Record not found/i } },
+  // The tracker's script reads the AWB number from its address, fills it in, looks it up and shows
+  // its message for an unknown one under the form.
+  { carrier: 'grand-slam-express', number: '000000000',
+    route: /^https:\/\/www\.grandslamexpress\.in\/Web\/Track\?AwbNo=000000000$/,
+    marker: /Please enter valid AWB number|Tracking History/ },
   // The tracker looks up the document number in its address on the server and answers an unknown
   // one with its notice, the number left in its field.
   { carrier: 'maruti-air', number: '99999999',

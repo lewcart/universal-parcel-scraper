@@ -155,6 +155,7 @@ import { statusMap as fermopoint } from '../../carriers/fermopoint/status.js';
 import { statusMap as fgDelivery } from '../../carriers/fg-delivery/status.js';
 import { statusMap as flashExpress } from '../../carriers/flash-express/status.js';
 import { statusMap as flashExpressPh } from '../../carriers/flash-express-ph/status.js';
+import { statusMap as fleetoptics } from '../../carriers/fleetoptics/status.js';
 import { statusMap as forwardAir } from '../../carriers/forward-air/status.js';
 import { statusMap as fourPx } from '../../carriers/four-px/status.js';
 import { statusMap as foxpost } from '../../carriers/foxpost/status.js';
@@ -449,7 +450,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   fermopoint, 'fg-delivery': fgDelivery,
   'flash-express': flashExpress,
   'flash-express-ph': flashExpressPh,
-  'forward-air': forwardAir, 'four-px': fourPx, foxpost, fukuyama, gaash, gati, gdex,
+  fleetoptics, 'forward-air': forwardAir, 'four-px': fourPx, foxpost, fukuyama, gaash, gati, gdex,
   'gebrueder-weiss': gebruederWeiss, geis, 'geniki-taxydromiki': geniki, 'geodis-pl': geodisPl, 'gls-es': glsEs, 'gls-it': glsIt,
   'go-express': goExpress, globalpost, go4, gobolt, gofo, 'gofo-fr': gofoFr, 'gofo-it': gofoIt, 'gofo-nl': gofoNl, 'gogo-xpress': gogoXpress, 'gsi-express': gsiExpress, gzyl, hanjin, 'happy-post': happyPost, haypost, 'hct-logistics': hctLogistics,
   helthjem, hepsijet, 'hermes-at': hermesAt, hispapost, 'hr-parcel': hrParcel,

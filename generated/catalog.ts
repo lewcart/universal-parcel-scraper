@@ -13826,7 +13826,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fleetoptics",
+      "recognitionRank": 763,
+      "localClocks": true
     },
     "canaryUrl": "https://track.fleetopticsinc.com/",
     "trackingUrlTemplate": "https://track.fleetopticsinc.com/?tracking_number={trackingNumber}",

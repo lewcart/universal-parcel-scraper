@@ -1552,6 +1552,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ics-courier', number: 'ND000000000000A0A0A0',
     route: /^https:\/\/www\.icscourier\.ca\/online-services\/parcel-tracking\.aspx\?trackNums=ND000000000000A0A0A0$/,
     marker: /Enter up to 25 tracking numbers|Tracking Number\s+Last Updated/ },
+  // The page fills its search field in from the address and answers an unknown number with a notice.
+  { carrier: 'fleetoptics', number: 'FOAESH0000000',
+    route: /^https:\/\/track\.fleetopticsinc\.com\/\?tracking_number=FOAESH0000000$/,
+    marker: /Tracking number not found|Tracking History|Enter Your Tracking Number/ },
 ];
 
 /**

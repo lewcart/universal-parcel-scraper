@@ -16984,7 +16984,7 @@ export const CARRIER_CATALOG = {
   },
   "j-and-t-au": {
     "displayName": "J&T Express Australia",
-    "color": "#e60012",
+    "color": "#e60000",
     "aliases": [
       "J&T Express (AU)",
       "J&T Express AU",

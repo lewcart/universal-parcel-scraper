@@ -365,6 +365,7 @@ import { statusMap as transaher } from '../../carriers/transaher/status.js';
 import { statusMap as transcorp } from '../../carriers/transcorp/status.js';
 import { statusMap as transmission } from '../../carriers/transmission/status.js';
 import { statusMap as tsjy } from '../../carriers/tsjy/status.js';
+import { statusMap as tufesa } from '../../carriers/tufesa/status.js';
 import { statusMap as twsExpress } from '../../carriers/tws-express/status.js';
 import { statusMap as ubiSmartParcel } from '../../carriers/ubi-smart-parcel/status.js';
 import { statusMap as unitedDeliveryService } from '../../carriers/united-delivery-service/status.js';
@@ -457,7 +458,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, teleship, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress,
-  trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel,
+  trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, tufesa, 'tws-express': twsExpress,
+  'ubi-smart-parcel': ubiSmartParcel,
   'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
   'vinted-go': vintedGo, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,

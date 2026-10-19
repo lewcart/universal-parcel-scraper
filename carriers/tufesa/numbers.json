@@ -55,9 +55,8 @@
         "dateKind": "publication",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -68,7 +67,7 @@
           "heppner"
         ]
       },
-      "note": "A customer posted this bare number under TufesaPack's tracking post without saying what it is."
+      "note": "A customer posted this bare number under TufesaPack's tracking post without saying what it is. TufesaPack's tracker knows it as a shipment number, with a history."
     }
   ]
 }

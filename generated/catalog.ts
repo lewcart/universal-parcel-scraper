@@ -28924,7 +28924,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Hermosillo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tufesa",
+      "recognitionRank": 726,
+      "localClocks": true
     },
     "canaryUrl": "https://tufesapack.com/paqueteria/rastreo/captura",
     "trackingSearchUrl": "https://tufesapack.com/paqueteria/rastreo/captura",

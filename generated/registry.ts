@@ -437,6 +437,7 @@ import { adapter as transaher } from '../carriers/transaher/adapter.js';
 import { adapter as transcorp } from '../carriers/transcorp/adapter.js';
 import { adapter as transmission } from '../carriers/transmission/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
+import { adapter as tufesa } from '../carriers/tufesa/adapter.js';
 import { adapter as twsExpress } from '../carriers/tws-express/adapter.js';
 import { adapter as ubiSmartParcel } from '../carriers/ubi-smart-parcel/adapter.js';
 import { adapter as ukrposhta } from '../carriers/ukrposhta/adapter.js';
@@ -913,6 +914,7 @@ export const REGISTRY: RegistryDefinition = {
     "transcorp": transcorp,
     "transmission": transmission,
     "tsjy": tsjy,
+    "tufesa": tufesa,
     "tws-express": twsExpress,
     "ubi-smart-parcel": ubiSmartParcel,
     "ukrposhta": ukrposhta,
@@ -1664,7 +1666,7 @@ export const REGISTRY: RegistryDefinition = {
     "trendyol-express": "universal",
     "tsjy": "tsjy",
     "tst-cf-express": "universal",
-    "tufesa": "universal",
+    "tufesa": "tufesa",
     "tusass": "universal",
     "tws-express": "tws-express",
     "ubi-smart-parcel": "ubi-smart-parcel",

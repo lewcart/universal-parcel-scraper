@@ -319,6 +319,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "transaher": 852,
   "transcorp": 787,
   "tsjy": 992,
+  "tufesa": 726,
   "tws-express": 884,
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,

@@ -2,25 +2,20 @@
   "carrier": "ccfs",
   "records": [
     {
-      "number": "873562025330",
+      "number": "100000000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20230614013128/https://webapi.ccfs.com/api/web/V2/Consignments/Basics?TrackingNum=216520897&TrackingNum=216520897&Descending=false",
-        "date": "2023-06-14",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
+          "dpd-fr",
           "mondial-relay",
           "colis-prive",
           "mrw",
+          "poste-italiane",
           "brt",
           "sf-express",
           "sto",
@@ -30,21 +25,14 @@
           "metropolitan-warehouse"
         ]
       },
-      "note": "An archived reply of CCFS's own tracking API lists this as the pro number of a Chicago to Boulder shipment with its dock scans."
+      "note": "Invented placeholder for a twelve-digit pro number; the public sample's tracker names its signer."
     },
     {
-      "number": "A7245214",
+      "number": "A0000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20230614013128/https://webapi.ccfs.com/api/web/V2/Consignments/Basics?TrackingNum=216520897&TrackingNum=216520897&Descending=false",
-        "date": "2023-06-14",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "low",
@@ -55,7 +43,7 @@
           "loggi"
         ]
       },
-      "note": "The same archived reply of CCFS's own tracking API lists this as the shipment's freight bill number."
+      "note": "Invented placeholder for a freight bill number, one letter and seven digits."
     }
   ]
 }

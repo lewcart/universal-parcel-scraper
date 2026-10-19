@@ -906,6 +906,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'averitt', number: '9999999999',
     route: /^https:\/\/tools\.averitt\.com\/servlet\/rsoLTLtrack\?Type=PN&Number=9999999999$/,
     marker: /Nothing found to display|Tracking Details/, forwarding: { notFound: /Nothing found to display/ } },
+  // The shipment page looks the number up and sends an unknown one to its search form, prefilled.
+  { carrier: 'ccfs', number: '999999999999',
+    route: /^https:\/\/auth\.ccfs\.com\/track\/(?:search|detail)\/999999999999$/,
+    marker: /Individual Tracking Number|Location History/ },
   // The tracer looks the number up from its address and shows its notice for an unknown PRO.
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,

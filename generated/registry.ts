@@ -67,6 +67,7 @@ import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as cargus } from '../carriers/cargus/adapter.js';
 import { adapter as castores } from '../carriers/castores/adapter.js';
 import { adapter as cblLogistica } from '../carriers/cbl-logistica/adapter.js';
+import { adapter as ccfs } from '../carriers/ccfs/adapter.js';
 import { adapter as cdek } from '../carriers/cdek/adapter.js';
 import { adapter as cdl } from '../carriers/cdl/adapter.js';
 import { adapter as celeritas } from '../carriers/celeritas/adapter.js';
@@ -595,6 +596,7 @@ export const REGISTRY: RegistryDefinition = {
     "cargus": cargus,
     "castores": castores,
     "cbl-logistica": cblLogistica,
+    "ccfs": ccfs,
     "cdek": cdek,
     "cdl": cdl,
     "celeritas": celeritas,
@@ -1156,7 +1158,7 @@ export const REGISTRY: RegistryDefinition = {
     "cargus": "cargus",
     "castores": "castores",
     "cbl-logistica": "cbl-logistica",
-    "ccfs": "universal",
+    "ccfs": "ccfs",
     "cdek": "cdek",
     "cdl": "cdl",
     "celeritas": "celeritas",

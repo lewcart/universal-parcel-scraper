@@ -8410,7 +8410,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ccfs",
+      "recognitionRank": 739,
+      "localClocks": true
     },
     "canaryUrl": "https://auth.ccfs.com/track/search",
     "trackingUrlTemplate": "https://auth.ccfs.com/track/detail/{trackingNumber}",
@@ -8420,7 +8422,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "auth.ccfs.com"
         ],
-        "path": "^/track/detail/([^/?#]+)/?$"
+        "path": "^/track/detail/([A-Za-z0-9]+)(?:-\\d+)?/?$"
       }
     ],
     "detectionRules": []

@@ -215,7 +215,7 @@
         "carrier": "mailamericas",
         "confidence": "high"
       },
-      "note": "A complaint in Mexico gives it as the waybill. The tracker returns a delivered history."
+      "note": "A complaint in Mexico gives it as the waybill. The tracker returns a delivered AliExpress parcel filed under its `LP` reference, without this number."
     },
     {
       "number": "MMXQP141379634R",

@@ -237,6 +237,9 @@ describe('MailAmericas HTTP adapter', () => {
   it('counts a shipment only when it names the number asked', () => {
     expect(() => parseMailamericas(fixture('in-transit'), DELIVERED))
       .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'MailAmericas answered for another shipment' }));
+    // A record filed under AliExpress's reference names nothing else.
+    expect(() => parseMailamericas(changed('mexico', (data) => { data.trackingNumber = 'LP00000000000003'; }), MEXICO))
+      .toThrow(expect.objectContaining({ kind: 'indeterminate', message: 'MailAmericas answered for another shipment' }));
     expect(parseMailamericas(changed('in-transit', (data) => { data.trackingNumber = IN_TRANSIT.toLowerCase(); }), IN_TRANSIT).events)
       .toHaveLength(11);
   });

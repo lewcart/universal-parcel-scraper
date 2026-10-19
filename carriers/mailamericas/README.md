@@ -62,6 +62,9 @@ Tracked through the lookup its tracking page makes.
 
 - No weight, and no instant for the scans that keep `local_time`.
 - The tracker also answers some senders' own references, which no rule claims.
+- The tracker files some AliExpress parcels for Mexico under AliExpress's `LP` reference and
+  answers their `MMXQP` number with that record. Nothing in the reply names the number asked,
+  so it counts as another shipment and the lookup is inconclusive.
 
 ## Numbers
 

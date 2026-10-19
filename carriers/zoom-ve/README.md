@@ -14,6 +14,13 @@ rule claims them.
 `tipo-consulta=1`, then asks for a Turnstile check before it shows the history. The former
 tracker on `grupozoom.com` read it from `?txtcodguias=` on `/mia/consultar.php`.
 
+## Why there is no adapter
+
+The tracker's server verifies the Turnstile token before it renders a history, so a request
+without one gets no history. Zoom's integration API tracks a guía only for the merchant
+account that created it, and the Zoom apps that once tracked parcels are no longer
+published, so Zoom stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

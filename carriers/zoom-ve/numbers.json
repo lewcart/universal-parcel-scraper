@@ -274,7 +274,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -290,7 +290,7 @@
           "gls-es"
         ]
       },
-      "note": "Sent as the guía to Zoom's own tracker on zoom.red, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to Zoom's own tracker on zoom.red, as an archived address shows. Zoom's tracker knew it."
     },
     {
       "number": "1684503539",
@@ -303,7 +303,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -319,7 +319,7 @@
           "gls-es"
         ]
       },
-      "note": "Sent as the guía to Zoom's own tracker on zoom.red, as an archived address shows; the capture was not opened."
+      "note": "Sent as the guía to Zoom's own tracker on zoom.red, as an archived address shows. Zoom's tracker knew it."
     }
   ]
 }

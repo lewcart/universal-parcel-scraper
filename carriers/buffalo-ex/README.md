@@ -16,8 +16,16 @@ tracker shows next to the number is not a tracking number.
 ## Links
 
 `buffaloex.com/tracks.html?order={number}` is the address the site's home page form submits to;
-the tracker asks for a captcha before it shows the result. Archived lookups used the former
-`track.html` page and the `express/record` page with the same `order` parameter.
+the tracker opens with an empty form. Archived lookups used the former `track.html` page and the
+`express/record` page with the same `order` parameter.
+
+## Limitations
+
+BUFFALO's tracker asks for the last four digits of the parcel's phone number, an image code and a
+Cloudflare Turnstile check before it shows a history, and its app tracks only a signed-in
+customer's orders, so BUFFALO stays on universal providers. Domestic South African orders start
+`BUFEX-` and belong to BUFFALO's South African site, which answers requests from Europe, the
+Americas and Asia with its firewall's block page.
 
 ## Testing
 

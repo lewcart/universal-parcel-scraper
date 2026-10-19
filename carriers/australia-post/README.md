@@ -69,8 +69,9 @@ every outgoing request unless the consumer sets `tracePropagationTargets: []`. T
   `shipment.articles[].articleId`, and its single detail object must repeat the article and
   consignment IDs.
 - A consignment number is accepted only when it has one article. A consignment of several articles
-  is inconclusive, since one delivered sibling doesn't mean the consignment is delivered. An exact
-  article number selects its own history; sibling and shipment-wide states never classify it.
+  is inconclusive (`several_parcels`), since one delivered sibling doesn't mean the consignment is
+  delivered. An exact article number selects its own history; sibling and shipment-wide states never
+  classify it.
 - Not-found is only the HTTP 200 entry with `status: 400`, `errorCode: 21`, `Invalid Tracking ID`,
   `Failed`. An entry with `status: 500` is the gateway failing on a reference it cannot process: it
   is inconclusive, and the browser is not asked the same question. So is a known article without

@@ -1538,6 +1538,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'shree-anjani', number: '9000000001',
     route: /^https:\/\/shreeanjani\.co\.in\/tracking\/\?awb=9000000001$/,
     marker: /Enter your 10-digit docket number to track/ },
+  // CloudFront serves the tracker's app with HTTP 404 for every order, known or not. The app looks up the
+  // number in its address and shows it as the order ID over empty parcel details when it has no order.
+  { carrier: 'paperfly', number: '010125-0000-A1-A1',
+    route: /^https:\/\/go\.paperfly\.com\.bd\/track\/order\/010125-0000-A1-A1$/,
+    marker: /Share Tracking Details|Parcel Details/,
+    shipmentNotFound: { status: 404, marker: /Share Tracking Details/ } },
 ];
 
 /**

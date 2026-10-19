@@ -40,6 +40,18 @@
       "note": "The same archived reply of Paperfly's tracking API gives this as the parcel's Paperfly order number, with its history."
     },
     {
+      "number": "Z-010125-0000-A1-A1",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-19",
+      "expect": {
+        "carrier": "paperfly",
+        "confidence": "high"
+      },
+      "note": "Made-up order number in the shape of an order a merchant's system books through Paperfly's API: Z, the booking date, a serial and two letter-digit pairs."
+    },
+    {
       "number": "100820-4491-A2-C5",
       "role": "shipment",
       "evidence": "public_shipment_report",

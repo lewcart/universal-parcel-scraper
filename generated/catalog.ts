@@ -21949,7 +21949,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "paperfly",
+      "recognitionRank": 742
     },
     "canaryUrl": "https://paperfly.com.bd/",
     "trackingUrlTemplate": "https://go.paperfly.com.bd/track/order/{trackingNumber}",
@@ -21969,6 +21970,10 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4,6}[A-Z]\\d[A-Z]\\d$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^Z(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4,6}[A-Z]\\d[A-Z]\\d$",
         "confidence": "high"
       }
     ]
@@ -32134,7 +32139,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "palletways": [],
   "pandu-logistics": [],
   "pannon-xp": ["pannon-xp-1"],
-  "paperfly": ["paperfly-1","paperfly-2"],
+  "paperfly": ["paperfly-1","paperfly-2","paperfly-3"],
   "paquetexpress": ["paquetexpress-1"],
   "parcelpoint": [],
   "pargo": ["pargo-1"],

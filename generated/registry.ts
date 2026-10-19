@@ -323,6 +323,7 @@ import { adapter as packlink } from '../carriers/packlink/adapter.js';
 import { adapter as packs } from '../carriers/packs/adapter.js';
 import { adapter as pakistanPost } from '../carriers/pakistan-post/adapter.js';
 import { adapter as palletways } from '../carriers/palletways/adapter.js';
+import { adapter as paperfly } from '../carriers/paperfly/adapter.js';
 import { adapter as paquetexpress } from '../carriers/paquetexpress/adapter.js';
 import { adapter as passport } from '../carriers/passport/adapter.js';
 import { adapter as pathaoCourier } from '../carriers/pathao-courier/adapter.js';
@@ -819,6 +820,7 @@ export const REGISTRY: RegistryDefinition = {
     "packs": packs,
     "pakistan-post": pakistanPost,
     "palletways": palletways,
+    "paperfly": paperfly,
     "paquetexpress": paquetexpress,
     "passport": passport,
     "pathao-courier": pathaoCourier,
@@ -1498,7 +1500,7 @@ export const REGISTRY: RegistryDefinition = {
     "palletways": "palletways",
     "pandu-logistics": "universal",
     "pannon-xp": "universal",
-    "paperfly": "universal",
+    "paperfly": "paperfly",
     "paquetexpress": "paquetexpress",
     "parcelforce": "royal-mail",
     "parcelpoint": "universal",

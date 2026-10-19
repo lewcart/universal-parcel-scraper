@@ -1,0 +1,22 @@
+{
+  "carrier": "skypostal",
+  "entries": [
+    {"code": "DRC", "wording": "DATA RECEIVED", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Shipment data received before the parcel arrives."},
+    {"code": "HCV", "wording": "HS_CODE VALIDATION", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Customs tariff codes checked before the parcel arrives."},
+    {"code": "TIC", "wording": "TAX ID COLLECTED", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The recipient's tax ID for import was collected."},
+    {"code": "DCO", "wording": "DOCUMENTATION COMPLETE", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"code": "REC", "wording": "RECEIVED", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Received at SkyPostal's Miami hub."},
+    {"code": "PRO", "wording": "PROCESSED", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "CUT", "wording": "PROCESSING PAYMENT", "language": "en", "confirmedBy": "portal", "note": "A billing step at the Miami hub, not a parcel movement."},
+    {"code": "PAY", "wording": "BILLED", "language": "en", "confirmedBy": "portal", "note": "A billing step at the Miami hub, not a parcel movement."},
+    {"code": "MNF", "wording": "SHIPPED", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Manifested for export from Miami."},
+    {"code": "ATC", "wording": "ARRIVED IN COUNTRY", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "CEN", "wording": "CUSTOMS ENTRY", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"code": "TTC", "wording": "TENDERED TO LOCAL CARRIER", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Handed to the destination country's carrier."},
+    {"code": "INT", "wording": "IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "OFD", "wording": "OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"code": "DEL", "wording": "DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"code": "PLR", "wording": "PROVIDER LABEL REJECTED", "stage": "exception", "language": "en", "confirmedBy": "portal"},
+    {"code": "INH", "wording": "ON HOLD", "stage": "exception", "language": "en", "confirmedBy": "portal"}
+  ]
+}

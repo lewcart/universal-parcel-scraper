@@ -1,0 +1,68 @@
+{
+  "carrier": "team-worldwide",
+  "records": [
+    {
+      "number": "DFW300016",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240623044621/https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl=dfw300016",
+        "date": "2024-06-23",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill from shipment creation through recovery and out for delivery to delivered; the lookup was typed in lower case and the page prints it in capitals."
+    },
+    {
+      "number": "16EWRC014214",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20161216014720/http://www.teamww.com:80/wp-content/tracking/teamTrac.php?hbl=16EWRC014214",
+        "date": "2016-12-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill from pickup request to recovery and a delivery appointment being scheduled."
+    },
+    {
+      "number": "22EWRC013390",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220405211749/https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl=22EWRC013390",
+        "date": "2022-04-05",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "colis-prive"
+        ]
+      },
+      "note": "An opened archived lookup on Team Worldwide's own Team Trac results page shows this Team bill in transit after its pickup request."
+    }
+  ]
+}

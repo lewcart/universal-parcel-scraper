@@ -1,0 +1,28 @@
+{
+  "carrier": "qwintry",
+  "entries": [
+    {"code": "info_received", "wording": "Electronic info received", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"code": "arrival_scan", "wording": "Shipment arrived to consolidation hub", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Arrival at Qwintry's US consolidation hub."},
+    {"code": "departure_scan", "wording": "Departure scan: consolidation hub", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "departure_scan", "wording": "Departure scan: Newark, Delaware, US", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "arrival_scan", "wording": "Arrival scan: JFK airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "departure_scan", "wording": "Departure scan: JFK airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "arrival_scan", "wording": "Arrival scan: SVO airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "departure_scan", "wording": "Departure scan: SVO airport", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "notification_sent", "wording": "Delivery notification sent to recipient", "language": "en", "confirmedBy": "portal", "note": "A message to the recipient, not a parcel movement."},
+    {"code": "delivery", "wording": "Shipment passed to delivery", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The parcel is handed to the destination delivery service; a pickup-point or delivery event follows."},
+    {"code": "pickup_point", "wording": "Shipment is now in pickup point, go get it!", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "portal"},
+    {"code": "delivered", "wording": "Shipment delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal"},
+    {"code": "customs", "wording": "Arrived at customs", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"code": "customs", "wording": "Customs clearance completed", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"code": "customs", "wording": "The shipment has left customs", "stage": "customs", "language": "en", "confirmedBy": "portal"},
+    {"code": "customs", "wording": "Прибыло на таможню.", "stage": "customs", "language": "ru", "confirmedBy": "portal", "note": "Arrived at customs."},
+    {"code": "customs", "wording": "Выпущено таможней", "stage": "customs", "language": "ru", "confirmedBy": "portal", "note": "Released by customs."},
+    {"code": "customs", "wording": "Покинуло таможню.", "stage": "customs", "language": "ru", "confirmedBy": "portal", "note": "Left customs."},
+    {"code": "info", "wording": "Передан локальному перевозчику", "stage": "in_transit", "language": "ru", "confirmedBy": "portal", "note": "Handed to the local carrier, whose number the page then prints."},
+    {"code": "delivery", "wording": "Выдан на доставку", "stage": "out_for_delivery", "language": "ru", "confirmedBy": "portal", "note": "Out for delivery with the local carrier's courier."},
+    {"code": "pickup_point", "wording": "Поступило в пункт выдачи", "stage": "ready_for_pickup", "language": "ru", "confirmedBy": "portal", "note": "Arrived at the pickup point."},
+    {"code": "delivered", "wording": "Вручен", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Delivered."},
+    {"code": "delivered", "wording": "Выдано", "stage": "delivered", "language": "ru", "confirmedBy": "portal", "note": "Handed over at the pickup point."}
+  ]
+}

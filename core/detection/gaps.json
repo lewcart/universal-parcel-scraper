@@ -138,6 +138,12 @@
     "reason": "Eleven digits are printed by many carriers and nothing in the number points to Airpak Express."
   },
   {
+    "carrier": "ait-worldwide",
+    "pattern": "^\\d{7,9}$",
+    "kind": "by_design",
+    "reason": "AIT bill numbers are bare seven- to nine-digit runs that many carriers share, so nothing in them names AIT."
+  },
+  {
     "carrier": "ajex",
     "pattern": "^A\\d{10}$",
     "kind": "by_design",
@@ -3577,6 +3583,18 @@
     "pattern": "^[A-Z]{3}\\d{8}$",
     "kind": "by_design",
     "reason": "One archived lookup; nothing in the layout points to Team Global Express alone."
+  },
+  {
+    "carrier": "team-worldwide",
+    "pattern": "^[A-Z]{3}\\d{6}$",
+    "kind": "by_design",
+    "reason": "A station code and six digits is a short generic shape and only one Team bill shows it."
+  },
+  {
+    "carrier": "team-worldwide",
+    "pattern": "^\\d{2}[A-Z]{4}\\d{6}$",
+    "kind": "by_design",
+    "reason": "Team bills of a year, a station code, a letter and six digits are twelve characters that Colis Privé's generic rule also accepts, and too few are known to give them a rule."
   },
   {
     "carrier": "tej-couriers",

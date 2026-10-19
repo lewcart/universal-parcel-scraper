@@ -1,0 +1,45 @@
+{
+  "id": "ait-worldwide",
+  "displayName": "AIT Worldwide Logistics",
+  "aliases": [
+    "AIT",
+    "AIT Worldwide"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#0055a5"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",
+    "searchUrl": "https://fastrak.aitworldwide.com/",
+    "canaryUrl": "https://fastrak.aitworldwide.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "fastrak.aitworldwide.com"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "trackingnumber"
+      ]
+    }
+  ],
+  "detection": []
+}

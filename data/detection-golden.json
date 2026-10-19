@@ -13146,6 +13146,16 @@
     ]
   },
   {
+    "input": "11301624",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "11374571",
     "carrier": "unknown",
     "confidence": "low",
@@ -16287,6 +16297,12 @@
     ]
   },
   {
+    "input": "150063800",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "1500663051773",
     "carrier": "unknown",
     "confidence": "low",
@@ -18456,6 +18472,17 @@
     "confidence": "high",
     "candidates": [
       "zeleris"
+    ]
+  },
+  {
+    "input": "16EWRC014214",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
     ]
   },
   {
@@ -24342,6 +24369,26 @@
     ]
   },
   {
+    "input": "21471814",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "21491416",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "215003428140",
     "carrier": "unknown",
     "confidence": "low",
@@ -24363,6 +24410,16 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "21500455",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -25570,6 +25627,17 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "22EWRC013390",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
     ]
   },
   {
@@ -56315,6 +56383,14 @@
     "candidates": []
   },
   {
+    "input": "8869124",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "887218740068",
     "carrier": "unknown",
     "confidence": "low",
@@ -68139,6 +68215,12 @@
       "fermopoint",
       "paquetexpress"
     ]
+  },
+  {
+    "input": "DFW300016",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "DG10018000758",
@@ -81580,6 +81662,94 @@
     ]
   },
   {
+    "input": "QR10122997",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR10142264",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR10325520",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR10524792",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR15056976",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR15795153",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR16663085",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR21214707",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR21977950",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR22616702",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR23709694",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
     "input": "QS002442826",
     "carrier": "unknown",
     "confidence": "low",
@@ -85192,6 +85362,62 @@
     "candidates": []
   },
   {
+    "input": "SKAMZUS0042185311",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0044744434",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0045954354",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0046269390",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0048462415",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0053610683",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SKAMZUS0107115560",
+    "carrier": "skypostal",
+    "confidence": "high",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
     "input": "SL0000305042",
     "carrier": "unknown",
     "confidence": "low",
@@ -85377,6 +85603,22 @@
     "confidence": "high",
     "candidates": [
       "spee-dee"
+    ]
+  },
+  {
+    "input": "SP00006998749BR",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "skypostal"
+    ]
+  },
+  {
+    "input": "SP00007078983BR",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "skypostal"
     ]
   },
   {

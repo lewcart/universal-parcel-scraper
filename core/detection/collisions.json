@@ -4771,5 +4771,30 @@
       "tipsa"
     ],
     "reason": "orian numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
+  },
+  {
+    "shape": "QR and eight digits",
+    "carriers": [
+      "qwintry",
+      "tnt-it"
+    ],
+    "reason": "TNT Italy's low rule accepts any two letters and eight digits; the QR prefix of Qwintry's own numbers is the only high-confidence rule."
+  },
+  {
+    "shape": "SKAMZUS and ten digits ending in a French postcode range",
+    "carriers": [
+      "colis-prive",
+      "skypostal"
+    ],
+    "reason": "Colis Privé accepts generic seventeen-character composites; the SkyPostal SKAMZUS prefix is the only high-confidence rule."
+  },
+  {
+    "shape": "^[A-Z]{2}\\d{8}$",
+    "carriers": [
+      "dhl-ecommerce-es",
+      "qwintry",
+      "tnt-it"
+    ],
+    "reason": "qwintry numbers of this shape fall in each of these carriers' rules; recognition asks them in turn."
   }
 ]

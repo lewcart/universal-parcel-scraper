@@ -1,0 +1,55 @@
+{
+  "id": "team-worldwide",
+  "displayName": "Team Worldwide",
+  "aliases": [
+    "TeamWW"
+  ],
+  "region": {
+    "countries": [
+      "US"
+    ]
+  },
+  "brand": {
+    "color": "#9c1d1d"
+  },
+  "selectable": true,
+  "timezone": "America/Chicago",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl={trackingNumber}",
+    "searchUrl": "https://www.teamww.com/tracking/team-trac/",
+    "canaryUrl": "https://www.teamww.com/tracking/team-trac/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.teamww.com",
+        "teamww.com"
+      ],
+      "pathPattern": "^/wp-content/tracking/teamTrac\\.php$",
+      "params": [
+        "hbl"
+      ]
+    },
+    {
+      "domains": [
+        "www.teamww.com",
+        "teamww.com"
+      ],
+      "pathPattern": "^/tracking/team_trac_results\\.php$",
+      "params": [
+        "hbl"
+      ]
+    }
+  ],
+  "detection": []
+}

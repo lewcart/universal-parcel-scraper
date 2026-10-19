@@ -607,4 +607,21 @@ describe('wave eight courier rules', () => {
     expect(detectCarrierMatch('GWD000000001').candidates ?? []).not.toContain('purolator');
     expect(detectCarrierMatch('GWE000000001')).toMatchObject({ carrier: 'purolator', confidence: 'high' });
   });
+
+  it('names Qwintry for QR and eight digits', () => {
+    expect(detectCarrierMatch('QR00000001')).toMatchObject({ carrier: 'qwintry', confidence: 'high' });
+    for (const number of ['QR0000001', 'QR000000001', 'QS00000001', 'Q000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('qwintry');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('qwintry');
+    }
+  });
+
+  it('names SkyPostal for SKAMZUS and ten digits, and suggests it for SP, eleven digits and BR', () => {
+    expect(detectCarrierMatch('SKAMZUS0000000001')).toMatchObject({ carrier: 'skypostal', confidence: 'high' });
+    expect(detectCarrierMatch('SP00000000001BR')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['skypostal'] });
+    for (const number of ['SKAMZUS000000001', 'SKAMZUK0000000001', 'SP0000000001BR', 'SP00000000001US', 'SX00000000001BR']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('skypostal');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('skypostal');
+    }
+  });
 });

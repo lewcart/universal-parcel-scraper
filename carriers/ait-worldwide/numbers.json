@@ -1,0 +1,142 @@
+{
+  "carrier": "ait-worldwide",
+  "records": [
+    {
+      "number": "21471814",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220330055258/https://fastrak.aitworldwide.com/?TrackingNumber=21471814",
+        "date": "2022-03-30",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered to a Honolulu address."
+    },
+    {
+      "number": "21491416",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20221206175827/https://fastrak.aitworldwide.com/?TrackingNumber=21491416",
+        "date": "2022-12-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered with its delivery time."
+    },
+    {
+      "number": "21500455",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220331032913/https://fastrak.aitworldwide.com/?TrackingNumber=21500455",
+        "date": "2022-03-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered with its delivery time."
+    },
+    {
+      "number": "150063800",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20240406182633/https://fastrak.aitworldwide.com/?TrackingNumber=150063800",
+        "date": "2024-04-06",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment in transit, waiting for the recipient to schedule delivery."
+    },
+    {
+      "number": "11301624",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20090613025151/http://www.aitworldwide.com:80/EA/eaFasTrak/eaFasTrakHome.aspx?TrackingNums=11301624",
+        "date": "2009-06-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "An opened archived lookup on AIT's former eaFasTrak tracker shows this bill's history from acceptance by AIT to the destination terminal."
+    },
+    {
+      "number": "8869124",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20060426201840/http://www.aitworldwide.com:80/EA/eaFasTrak/eaFasTrakHome.aspx?TrackingNums=8869124",
+        "date": "2006-04-26",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "An opened archived lookup on AIT's former eaFasTrak tracker shows this air bill with its station and proof of delivery."
+    }
+  ]
+}

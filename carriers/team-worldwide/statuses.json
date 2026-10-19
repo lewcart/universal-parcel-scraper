@@ -1,0 +1,12 @@
+{
+  "carrier": "team-worldwide",
+  "entries": [
+    {"code": "NEW", "wording": "SHIPMENT CREATED", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"code": "REQ", "wording": "PICKUP REQUESTED", "stage": "registered", "language": "en", "confirmedBy": "portal"},
+    {"code": "ITR", "wording": "IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "portal"},
+    {"code": "RCU", "wording": "FREIGHT RECOVERED", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Recovered from the airline or linehaul at the destination terminal."},
+    {"code": "ASD", "wording": "ATTEMPTING TO SCHEDULE DELIVERY APPOINTMENT", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "The destination terminal is calling the consignee to book the delivery."},
+    {"code": "OFD", "wording": "OUT FOR DELIVERY", "stage": "out_for_delivery", "language": "en", "confirmedBy": "portal"},
+    {"wording": "DELIVERED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "The shipment status above the history; the delivery event itself is a POD line with the signer's name."}
+  ]
+}

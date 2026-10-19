@@ -1,0 +1,52 @@
+{
+  "id": "qwintry",
+  "displayName": "Qwintry",
+  "aliases": [
+    "Qwintry Logistics",
+    "Qwintry Air"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "RU"
+    ]
+  },
+  "brand": {
+    "color": "#ef7d00"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://logistics.qwintry.com/track?tracking={trackingNumber}",
+    "searchUrl": "https://logistics.qwintry.com/",
+    "canaryUrl": "https://logistics.qwintry.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "logistics.qwintry.com"
+      ],
+      "pathPattern": "^/track/?$",
+      "params": [
+        "tracking"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "qwintry-1",
+      "pattern": "^QR\\d{8}$",
+      "confidence": "high"
+    }
+  ]
+}

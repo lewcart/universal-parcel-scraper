@@ -1,0 +1,13 @@
+{
+  "carrier": "ait-worldwide",
+  "entries": [
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Shipment progress on the current FasTrak page."},
+    {"wording": "Delivered", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Shipment progress on the current FasTrak page."},
+    {"wording": "SHIPMENT ACCEPTED BY AIT", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker."},
+    {"wording": "PICKUP COMPLETE", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker."},
+    {"wording": "CONFIRMED ON BOARD/ IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker: loaded on the flight."},
+    {"wording": "SHIPMENT IS IN TRANSIT", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker."},
+    {"wording": "ARRIVED @ DESTINATION TERMINAL", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker."},
+    {"wording": "CALLING SHIPPER/CONSIGNEE", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Former eaFasTrak tracker: the destination station calls to arrange delivery."}
+  ]
+}

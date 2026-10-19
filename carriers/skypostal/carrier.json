@@ -1,0 +1,62 @@
+{
+  "id": "skypostal",
+  "displayName": "SkyPostal",
+  "aliases": [
+    "Sky Postal"
+  ],
+  "region": {
+    "countries": [
+      "US",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE"
+    ]
+  },
+  "brand": {
+    "color": "#fcc94f"
+  },
+  "selectable": true,
+  "timezone": "America/New_York",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",
+    "searchUrl": "https://tracking.skypostal.com/",
+    "canaryUrl": "https://tracking.skypostal.com/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.skypostal.com"
+      ],
+      "pathPattern": "^/(?:single-tracking\\.aspx)?$",
+      "params": [
+        "trck_number"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "skypostal-1",
+      "pattern": "^SKAMZUS\\d{10}$",
+      "confidence": "high"
+    },
+    {
+      "id": "skypostal-2",
+      "pattern": "^SP\\d{11}BR$",
+      "confidence": "low"
+    }
+  ]
+}

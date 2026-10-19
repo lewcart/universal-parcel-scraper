@@ -5810,6 +5810,38 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ait-worldwide": {
+    "displayName": "AIT Worldwide Logistics",
+    "color": "#0055a5",
+    "aliases": [
+      "AIT",
+      "AIT Worldwide"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://fastrak.aitworldwide.com/",
+    "trackingUrlTemplate": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",
+    "trackingSearchUrl": "https://fastrak.aitworldwide.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "fastrak.aitworldwide.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackingnumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "ajex": {
     "displayName": "AJEX",
     "color": "#ec171c",
@@ -23986,6 +24018,44 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "qwintry": {
+    "displayName": "Qwintry",
+    "color": "#ef7d00",
+    "aliases": [
+      "Qwintry Logistics",
+      "Qwintry Air"
+    ],
+    "countries": [
+      "US",
+      "RU"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://logistics.qwintry.com/",
+    "trackingUrlTemplate": "https://logistics.qwintry.com/track?tracking={trackingNumber}",
+    "trackingSearchUrl": "https://logistics.qwintry.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "logistics.qwintry.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QR\\d{8}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "raben": {
     "displayName": "Raben",
     "color": "#df0020",
@@ -25865,6 +25935,53 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "skypostal": {
+    "displayName": "SkyPostal",
+    "color": "#fcc94f",
+    "aliases": [
+      "Sky Postal"
+    ],
+    "countries": [
+      "US",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE"
+    ],
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.skypostal.com/",
+    "trackingUrlTemplate": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",
+    "trackingSearchUrl": "https://tracking.skypostal.com/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.skypostal.com"
+        ],
+        "pathPattern": "^/(?:single-tracking\\.aspx)?$",
+        "params": [
+          "trck_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SKAMZUS\\d{10}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SP\\d{11}BR$",
+        "confidence": "low"
+      }
+    ]
+  },
   "slgtrax": {
     "displayName": "SLGTrax",
     "color": "#2d7a52",
@@ -27602,6 +27719,48 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/myparcel/?$",
         "params": [
           "shipmentID"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
+  "team-worldwide": {
+    "displayName": "Team Worldwide",
+    "color": "#9c1d1d",
+    "aliases": [
+      "TeamWW"
+    ],
+    "countries": [
+      "US"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.teamww.com/tracking/team-trac/",
+    "trackingUrlTemplate": "https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl={trackingNumber}",
+    "trackingSearchUrl": "https://www.teamww.com/tracking/team-trac/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.teamww.com",
+          "teamww.com"
+        ],
+        "pathPattern": "^/wp-content/tracking/teamTrac\\.php$",
+        "params": [
+          "hbl"
+        ]
+      },
+      {
+        "domains": [
+          "www.teamww.com",
+          "teamww.com"
+        ],
+        "pathPattern": "^/tracking/team_trac_results\\.php$",
+        "params": [
+          "hbl"
         ]
       }
     ],
@@ -30442,6 +30601,7 @@ export const CARRIER_IDS = [
   "afghan-post",
   "air-star-xpress",
   "airpak-express",
+  "ait-worldwide",
   "ajex",
   "akash-ganga",
   "aks-express",
@@ -30912,6 +31072,7 @@ export const CARRIER_IDS = [
   "quantium-solutions",
   "quicksilver-sa",
   "quiqup",
+  "qwintry",
   "raben",
   "ram-hand-to-hand",
   "redpack",
@@ -30962,6 +31123,7 @@ export const CARRIER_IDS = [
   "skyking",
   "skynet-sa",
   "skynet-worldwide",
+  "skypostal",
   "slgtrax",
   "slovak-parcel-service",
   "slovenska-posta",
@@ -31005,6 +31167,7 @@ export const CARRIER_IDS = [
   "tealca",
   "team-express-ae",
   "team-global-express",
+  "team-worldwide",
   "tej-couriers",
   "teleship",
   "tfm-express",
@@ -31208,6 +31371,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "afghan-post": [],
   "air-star-xpress": [],
   "airpak-express": [],
+  "ait-worldwide": [],
   "ajex": ["ajex-1"],
   "akash-ganga": [],
   "aks-express": [],
@@ -31678,6 +31842,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "quantium-solutions": [],
   "quicksilver-sa": ["quicksilver-sa-1"],
   "quiqup": [],
+  "qwintry": ["qwintry-1"],
   "raben": [],
   "ram-hand-to-hand": ["ram-hand-to-hand-1"],
   "redpack": [],
@@ -31728,6 +31893,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "skyking": [],
   "skynet-sa": [],
   "skynet-worldwide": [],
+  "skypostal": ["skypostal-1","skypostal-2"],
   "slgtrax": [],
   "slovak-parcel-service": ["slovak-parcel-service-1"],
   "slovenska-posta": ["slovenska-posta-own","slovenska-posta-s10"],
@@ -31771,6 +31937,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "tealca": [],
   "team-express-ae": [],
   "team-global-express": [],
+  "team-worldwide": [],
   "tej-couriers": [],
   "teleship": ["teleship-ts"],
   "tfm-express": [],

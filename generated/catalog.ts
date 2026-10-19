@@ -16027,7 +16027,7 @@ export const CARRIER_CATALOG = {
   },
   "huahan": {
     "displayName": "HuaHan Logistics",
-    "color": "#438eb9",
+    "color": "#0069e8",
     "aliases": [
       "HuaHan Express",
       "华翰速递",

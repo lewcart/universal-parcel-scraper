@@ -6,6 +6,7 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { countryCode } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { mailamericasInstants } from './clock.js';
 import { mailamericasStage } from './status.js';
 
 export const PROVIDER = 'MailAmericas';
@@ -58,9 +59,8 @@ export function mailamericasWording(group: string, detail: string, code = ''): s
 }
 
 /**
- * A scan's clock. `date` and `time` are the scanning site's wall clock, to the
- * minute: the reply names no zone, and the site's zone changes along one
- * history, so the clock stays local.
+ * A scan's wall clock: `date` and `time`, to the minute, without a zone. The
+ * leg places it (see clock.ts).
  */
 function scanClock(row: Record<string, unknown>): string {
   const date = text(row, 'date', 16);
@@ -75,7 +75,7 @@ function scanClock(row: Record<string, unknown>): string {
   return local;
 }
 
-function projectRow(row: Record<string, unknown>): { key: string; event: CarrierEvent } {
+function projectRow(row: Record<string, unknown>): { key: string; wall: string; code: string; event: CarrierEvent } {
   const code = cleanScalar(row.code, 16).toUpperCase();
   const description = mailamericasWording(text(row, 'status'), text(row, 'description'), code);
   if (!description) throw new SchemaError(PROVIDER, 'MailAmericas returned a scan without wording');
@@ -83,13 +83,12 @@ function projectRow(row: Record<string, unknown>): { key: string; event: Carrier
   const location = text(row, 'location', 120);
   const staged = mailamericasStage(code, description);
   const event: CarrierEvent = {
-    local_time: local,
     ...(location ? { location } : {}),
     description,
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
-  return { key: JSON.stringify([local, code, description, location]), event };
+  return { key: JSON.stringify([local, code, description, location]), wall: local, code, event };
 }
 
 /**
@@ -121,9 +120,10 @@ function label(data: Record<string, unknown>, key: string): string {
 /**
  * The reply of the tracking page's `/api/tracking` for one number. It answers
  * HTTP 200 with `{"data":null}` for a number it does not know, which the page
- * reports as not found. A shipment must name the number asked.
+ * reports as not found. A shipment must name the number asked. A scan dated
+ * after `readAt` keeps its wall clock.
  */
-export function parseMailamericas(payload: unknown, raw: string): CarrierResult {
+export function parseMailamericas(payload: unknown, raw: string, readAt = new Date()): CarrierResult {
   const number = normalizeMailamericasNumber(raw);
   if (!isRecord(payload) || !Object.hasOwn(payload, 'data')) throw new SchemaError(PROVIDER, 'MailAmericas returned an invalid envelope');
   const data = payload.data;
@@ -138,34 +138,40 @@ export function parseMailamericas(payload: unknown, raw: string): CarrierResult 
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'MailAmericas returned an oversized history');
 
   const seen = new Set<string>();
-  const events: CarrierEvent[] = [];
+  const scans: ReturnType<typeof projectRow>[] = [];
   for (const row of rows) {
     if (!isRecord(row)) throw new SchemaError(PROVIDER, 'MailAmericas returned an invalid scan');
     const scan = projectRow(row);
     if (seen.has(scan.key)) continue;
     seen.add(scan.key);
-    events.push(scan.event);
+    scans.push(scan);
   }
-  if (!events.length) throw new NoHistoryError(PROVIDER);
+  if (!scans.length) throw new NoHistoryError(PROVIDER);
   // Newest first, as the page lists them by wall clock; an oldest-first reply is turned round.
-  const newestFirst = (events[0]!.local_time as string) < (events.at(-1)!.local_time as string) ? events.reverse() : events;
+  if (scans[0]!.wall < scans.at(-1)!.wall) scans.reverse();
 
+  const destination = label(data, 'destination');
+  const country = destination ? countryCode(destination) : null;
+  const instants = mailamericasInstants(scans, { origin: countryCode(label(data, 'origin')), destination: country,
+    region: label(data, 'state') }, readAt.getTime());
+  const newestFirst = scans.map(({ wall, event }, index): CarrierEvent =>
+    ({ ...(instants[index] ? { time: instants[index].iso } : { local_time: wall }), ...event }));
   const newest = newestFirst[0]!;
   const scanned = newestFirst.find((event) => event.stage);
   const summary = summaryStage(data);
   const stage = (summary ?? scanned?.stage) as Stage | undefined;
   const source = summary && summary !== scanned?.stage ? 'carrier_map' : scanned?.stage_source;
-  const destination = label(data, 'destination');
-  const country = destination ? countryCode(destination) : null;
   const service = label(data, 'service');
   const expected = stage === 'delivered' || stage === 'returned' ? null : estimate(data);
+  const deliveredAt = stage === 'delivered' ? newestFirst.find((event) => event.stage === 'delivered')?.time : undefined;
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source ?? 'carrier_map' } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time,
+    last_update: newest.time ?? null,
+    ...(newest.time ? {} : { last_update_local: newest.local_time }),
     expected_delivery: expected,
+    ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
     ...(service ? { service_name: service } : {}),
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
     events: newestFirst.slice(0, MAX_EVENTS),

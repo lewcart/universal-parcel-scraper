@@ -27,10 +27,24 @@ Tracked through the lookup its tracking page makes.
 
 ## Notes
 
-- Each scan's `date` and `time` are the scanning site's wall clock to the minute, with no zone.
-  The older tracker gave each scan its own offset, and one history went from China's to the
-  Americas', so the clocks stay `local_time`. ParcelsApp shows the same wall clocks marked as
-  UTC.
+- Each scan's `date` and `time` are a wall clock to the minute, with no zone. ParcelsApp shows
+  them marked as UTC. The older tracker printed the same wall clocks with an offset that
+  followed the leg, so the adapter dates two legs: the origin warehouse (`WH`) on the origin
+  country's clock, and customs, the intermediate warehouse, the delivery offices and the
+  delivery (`AD`, `WI`, `RC`, `LM`, `PF`) on Argentina's, Colombia's, Peru's, Mexico City's or
+  Santiago's. The reply's origin country and the recipient's state are read only for this.
+- The older tracker gave Mexico City's clock to scans in Cancún and Ciudad Juárez too, so a
+  Mexican scan is dated only when the recipient's state keeps Mexico City's clock at that time.
+  A Chilean scan is dated only when the region keeps Santiago's; Valparaíso's includes Easter
+  Island.
+- Other scans keep `local_time`. Label creation, tax ID checks, notices, the flight, transit
+  hubs, the arrival and a duty recorded as paid had other offsets or none, and no older history
+  placed return scans. No older history placed scans in Ecuador, Uruguay, Costa Rica or Brazil
+  either, and El Salvador's had an offset that is not El Salvador's. A warehouse in the
+  destination country, an hour that summer time skips or repeats, and a reading after the
+  lookup or out of order with a newer dated scan stay local too.
+- `last_update` and `delivered_at` are the newest scan's instant when it has one; otherwise
+  `last_update_local` has its wall clock.
 - A scan's description is its leg, as the page heads it, then its own line, such as
   `Destination customs: Released`. The `code` (`AD-3`) stages it; the code's letters name the
   leg. Tax ID checks, notices and a duty recorded as paid move nothing and have no stage.
@@ -46,7 +60,7 @@ Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- No weight, and no delivery time as an instant.
+- No weight, and no instant for the scans that keep `local_time`.
 - The tracker also answers some senders' own references, which no rule claims.
 
 ## Numbers

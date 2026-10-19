@@ -39,6 +39,7 @@
     "provider_code",
     "location",
     "eta",
+    "delivered_at",
     "service_name",
     "destination_country"
   ],
@@ -52,6 +53,7 @@
       "provider_code",
       "location",
       "eta",
+      "delivered_at",
       "service_name",
       "origin_country",
       "destination_country",
@@ -69,6 +71,7 @@
       "provider_code",
       "location",
       "eta",
+      "delivered_at",
       "service_name",
       "destination_country"
     ],
@@ -84,7 +87,6 @@
     ],
     "unavailable": [
       "weight",
-      "delivered_at",
       "offset_timestamps",
       "delivery_tracking_number"
     ]

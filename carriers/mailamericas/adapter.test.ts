@@ -5,6 +5,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { universalCarrierHints } from '../../providers/shared/hints.js';
+import type { CarrierResult } from '../../core/result/index.js';
 import { adapter, MAILAMERICAS_API, MailamericasTracker } from './adapter.js';
 import { mailamericasWording, normalizeMailamericasNumber, parseMailamericas } from './parser.js';
 import { mailamericasStage, statusMap } from './status.js';
@@ -13,6 +14,9 @@ import statuses from './statuses.json' with { type: 'json' };
 const DELIVERED = 'MLAR000000002EX';
 const IN_TRANSIT = 'MLCO000000001R';
 const UNKNOWN = 'MLPE000000000R';
+const MEXICO = 'MMXQP000000003R';
+// After every fixture's scans.
+const READ_AT = new Date('2026-09-01T00:00:00Z');
 
 type Row = Record<string, unknown>;
 type Shipment = Row & { events: Row[] };
@@ -26,6 +30,8 @@ const changed = (name: string, change: (data: Shipment, reply: Reply) => void) =
 };
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': 'application/json', ...init.headers } });
+// Each scan's instant, or its wall clock where it has none, with its code.
+const clocks = (result: CarrierResult) => result.events!.map((event) => [event.time ?? event.local_time, event.provider_code]);
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 // The page AWS's load balancer serves when it turns a client away.
 const BALANCER = '<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n</body>\r\n</html>\r\n';
@@ -46,36 +52,43 @@ describe('MailAmericas HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps each scan’s wall clock and stages it by its code', () => {
-    const result = parseMailamericas(fixture('in-transit'), IN_TRANSIT);
+  it('dates the scans whose leg names their clock and stages each by its code', () => {
+    const result = parseMailamericas(fixture('in-transit'), IN_TRANSIT, READ_AT);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map',
-      last_status_text: 'Destination customs: Received by Destination Customs', last_update: null,
-      last_update_local: '2026-05-21T09:15:00', expected_delivery: '2026-06-02', service_name: 'Priority', destination_country: 'CO' });
-    expect(result.events!.map((event) => [event.local_time, event.provider_code, event.stage ?? null, event.location ?? null])).toEqual([
-      ['2026-05-21T09:15:00', 'AD-1', 'customs', null],
+      last_status_text: 'Destination customs: Received by Destination Customs', last_update: '2026-05-21T09:15:00-05:00',
+      expected_delivery: '2026-06-02', service_name: 'Priority', destination_country: 'CO' });
+    expect(result).not.toHaveProperty('last_update_local');
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code, event.stage ?? null, event.location ?? null])).toEqual([
+      // Customs in Colombia keeps Bogotá's clock.
+      ['2026-05-21T09:15:00-05:00', 'AD-1', 'customs', null],
+      // The arrival, the flight and the hub keep their wall clocks.
       ['2026-05-20T23:05:00', 'AR-1', 'in_transit', null],
       ['2026-05-19T03:20:00', 'TD-4', 'in_transit', 'SMP'],
       ['2026-05-18T17:45:00', 'TD-1', 'in_transit', 'Sample City'],
       ['2026-05-18T08:30:00', 'HB-4', 'in_transit', null],
-      // The repeated warehouse scan is kept once.
-      ['2026-05-17T21:10:00', 'WH-3', 'in_transit', 'Sample City'],
-      // A duty recorded as paid at the origin warehouse moves nothing.
+      // The origin warehouse keeps China's clock. Its repeated scan is kept once.
+      ['2026-05-17T21:10:00+08:00', 'WH-3', 'in_transit', 'Sample City'],
+      // A duty recorded as paid moves nothing and keeps its wall clock.
       ['2026-05-17T06:02:00', 'AD-4', null, null],
-      ['2026-05-16T19:44:00', 'WH-2', 'in_transit', 'Sample City'],
-      ['2026-05-16T11:30:00', 'WH-1', 'accepted', 'Sample City'],
+      ['2026-05-16T19:44:00+08:00', 'WH-2', 'in_transit', 'Sample City'],
+      ['2026-05-16T11:30:00+08:00', 'WH-1', 'accepted', 'Sample City'],
       ['2026-05-15T14:12:00', 'SM-4', null, null],
       ['2026-05-15T14:12:00', 'OC-1', 'registered', null],
     ]);
-    expect(result.events!.every((event) => event.time === undefined)).toBe(true);
+    expect(result.events!.every((event) => (event.time === undefined) !== (event.local_time === undefined))).toBe(true);
     expect(result.events!.at(-1)).toMatchObject({ description: 'Order created: Label generated', stage_source: 'carrier_map' });
   });
 
   it('keeps the delivery without the buyer, the tax ID, the proof of delivery or the repeated scan', () => {
-    const result = parseMailamericas(fixture('delivered'), DELIVERED);
+    const result = parseMailamericas(fixture('delivered'), DELIVERED, READ_AT);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Finished: Delivered', last_update: null, last_update_local: '2026-03-24T16:47:00', expected_delivery: null,
-      service_name: 'Registered', destination_country: 'AR' });
+      last_status_text: 'Finished: Delivered', last_update: '2026-03-24T16:47:00-03:00', delivered_at: '2026-03-24T16:47:00-03:00',
+      expected_delivery: null, service_name: 'Registered', destination_country: 'AR' });
+    expect(result).not.toHaveProperty('last_update_local');
     expect(result.events).toHaveLength(28);
+    expect(result.events!.filter((event) => !event.time).map((event) => event.provider_code))
+      .toEqual(['AV-1', 'SM-4', 'AR-1', 'TD-4', 'TD-1', 'HB-3', 'HB-2', 'HB-1', 'SM-1', 'SM-2', 'OC-1']);
+    expect(result.events!.at(-4)).toMatchObject({ provider_code: 'WH-1', time: '2026-03-04T11:26:00+08:00' });
     expect(result.events!.slice(0, 4).map((event) => [event.provider_code, event.stage, event.description])).toEqual([
       ['PF-1', 'delivered', 'Finished: Delivered'],
       ['LM-2', 'out_for_delivery', 'Delivery office: In distribution with postman'],
@@ -117,9 +130,82 @@ describe('MailAmericas HTTP adapter', () => {
   });
 
   it('reads a history listed oldest first newest first, as the page shows it', () => {
-    const result = parseMailamericas(changed('in-transit', (data) => { data.events.reverse(); }), IN_TRANSIT);
-    expect(result).toMatchObject({ last_update_local: '2026-05-21T09:15:00', current_stage: 'customs' });
+    const result = parseMailamericas(changed('in-transit', (data) => { data.events.reverse(); }), IN_TRANSIT, READ_AT);
+    expect(result).toMatchObject({ last_update: '2026-05-21T09:15:00-05:00', current_stage: 'customs' });
     expect(result.events!.at(-1)).toMatchObject({ provider_code: 'OC-1' });
+  });
+
+  it('dates a Mexican scan only where the recipient’s state keeps Mexico City’s clock', () => {
+    // Quintana Roo keeps Cancún's clock, an hour ahead of Mexico City's: only the warehouse in China is dated.
+    const cancun = parseMailamericas(fixture('mexico'), MEXICO, READ_AT);
+    expect(cancun).toMatchObject({ current_stage: 'out_for_delivery', last_update: null, last_update_local: '2026-08-04T09:12:00',
+      destination_country: 'MX' });
+    expect(cancun.events!.filter((event) => event.time).map((event) => event.time))
+      .toEqual(['2026-07-27T20:15:00+08:00', '2026-07-27T19:58:00+08:00', '2026-07-27T11:42:00+08:00']);
+    const central = parseMailamericas(changed('mexico', (data) => { data.state = 'Querétaro'; }), MEXICO, READ_AT);
+    expect(central).toMatchObject({ last_update: '2026-08-04T09:12:00-06:00' });
+    expect(clocks(central).slice(0, 8)).toEqual([
+      ['2026-08-04T09:12:00-06:00', 'LM-2'], ['2026-08-03T18:40:00-06:00', 'LM-1'], ['2026-08-02T07:05:00-06:00', 'RC-3'],
+      ['2026-08-01T23:10:00-06:00', 'RC-2'], ['2026-08-01T14:20:00-06:00', 'AD-7'], ['2026-08-01T14:10:00-06:00', 'AD-3'],
+      ['2026-07-31T10:00:00-06:00', 'AD-1'], ['2026-07-30T21:35:00', 'AR-1'],
+    ]);
+    expect(central.events!.filter((event) => !event.time).map((event) => event.provider_code)).toEqual(['AR-1', 'AD-4', 'TD-4', 'TD-1', 'OC-1']);
+    // Nuevo León's border towns keep the United States' summer time, and Mexico City's clock the rest of the year.
+    const northeast = (data: Shipment) => { data.state = 'Nuevo León'; };
+    expect(parseMailamericas(changed('mexico', northeast), MEXICO, READ_AT))
+      .toMatchObject({ last_update: null, last_update_local: '2026-08-04T09:12:00' });
+    const winter = changed('mexico', (data) => {
+      northeast(data);
+      for (const scan of data.events) scan.date = String(scan.date).replace(/^2026-07/, '2026-12').replace(/^2026-08/, '2027-01');
+    });
+    expect(parseMailamericas(winter, MEXICO, new Date('2027-02-01T00:00:00Z'))).toMatchObject({ last_update: '2027-01-04T09:12:00-06:00' });
+    for (const state of [null, 'Sample Province']) {
+      expect(parseMailamericas(changed('mexico', (data) => { data.state = state; }), MEXICO, READ_AT), String(state))
+        .toMatchObject({ last_update: null, last_update_local: '2026-08-04T09:12:00' });
+    }
+  });
+
+  it('dates a Chilean scan with Santiago’s summer time except where the region keeps another clock', () => {
+    const chile = (state: string) => changed('in-transit', (data) => { data.destination = 'Chile'; data.state = state; });
+    expect(parseMailamericas(chile('Región Metropolitana de Santiago'), IN_TRANSIT, READ_AT))
+      .toMatchObject({ last_update: '2026-05-21T09:15:00-04:00' });
+    // Valparaíso's region includes Easter Island, two hours behind.
+    expect(parseMailamericas(chile('Valparaíso'), IN_TRANSIT, READ_AT))
+      .toMatchObject({ last_update: null, last_update_local: '2026-05-21T09:15:00' });
+  });
+
+  it('keeps the wall clock of an hour that summer time skips or repeats', () => {
+    const result = parseMailamericas(changed('in-transit', (data) => {
+      Object.assign(data, { origin: 'Spain', destination: 'Chile', state: 'Metropolitana' });
+      const scan = data.events[0]!;
+      data.events = [['AD-3', '2026-04-04', '23:30'], ['AD-1', '2026-04-04', '22:30'], ['WH-2', '2026-03-29', '02:30'], ['WH-1', '2026-03-28', '10:00']]
+        .map(([code, date, time]) => ({ ...scan, code, date, time }));
+    }), IN_TRANSIT, READ_AT);
+    expect(clocks(result)).toEqual([['2026-04-04T23:30:00', 'AD-3'], ['2026-04-04T22:30:00-03:00', 'AD-1'],
+      ['2026-03-29T02:30:00', 'WH-2'], ['2026-03-28T10:00:00+01:00', 'WH-1']]);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-04-04T23:30:00' });
+  });
+
+  it('keeps the wall clocks of destinations the older tracker did not place, of a domestic warehouse and of a scan after the lookup', () => {
+    for (const destination of ['Ecuador', 'El Salvador', 'Uruguay', 'Costa Rica', 'Brazil']) {
+      expect(parseMailamericas(changed('in-transit', (data) => { data.destination = destination; }), IN_TRANSIT, READ_AT), destination)
+        .toMatchObject({ last_update: null, last_update_local: '2026-05-21T09:15:00' });
+    }
+    const domestic = parseMailamericas(changed('in-transit', (data) => { data.origin = 'Colombia'; }), IN_TRANSIT, READ_AT);
+    expect(domestic.events!.filter((event) => event.time).map((event) => event.provider_code)).toEqual(['AD-1']);
+    const early = parseMailamericas(fixture('in-transit'), IN_TRANSIT, new Date('2026-05-21T13:00:00Z'));
+    expect(early).toMatchObject({ last_update: null, last_update_local: '2026-05-21T09:15:00' });
+    expect(early.events!.filter((event) => event.time).map((event) => event.provider_code)).toEqual(['WH-3', 'WH-2', 'WH-1']);
+  });
+
+  it('keeps the wall clock of a warehouse scan whose reading would follow a newer dated scan', () => {
+    // Bogotá is two hours behind Buenos Aires.
+    const result = parseMailamericas(changed('delivered', (data) => {
+      data.origin = 'Colombia';
+      const [warehouse, oldest] = ['WH-3', 'WH-1'].map((code) => data.events.find((scan) => scan.code === code)!);
+      data.events = [data.events[0]!, { ...warehouse, date: '2026-03-24', time: '15:00' }, oldest!];
+    }), DELIVERED, READ_AT);
+    expect(clocks(result)).toEqual([['2026-03-24T16:47:00-03:00', 'PF-1'], ['2026-03-24T15:00:00', 'WH-3'], ['2026-03-04T11:26:00-05:00', 'WH-1']]);
   });
 
   it('takes people and phone numbers out of the wording', () => {
@@ -204,8 +290,8 @@ describe('MailAmericas HTTP adapter', () => {
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number MailAmericas does not issue', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(fixture('delivered')))
       .mockResolvedValueOnce(reply(fixture('not-found')));
-    // Local clocks cannot date the parcel's last activity.
-    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // The delivery, on Argentina's clock, dates the parcel's last activity.
+    await expect(carrier(fetcher).recognize!(DELIVERED)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-24T19:47:00.000Z' });
     await expect(carrier(fetcher).recognize!(UNKNOWN)).resolves.toEqual({ known: false });
     await expect(carrier(fetcher).recognize!('ML-00')).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);

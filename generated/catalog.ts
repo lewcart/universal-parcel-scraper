@@ -28607,7 +28607,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "today-kr",
+      "recognitionRank": 712
     },
     "canaryUrl": "https://my.amazing.today/track",
     "trackingUrlTemplate": "https://my.amazing.today/track/{trackingNumber}",

@@ -512,6 +512,7 @@ import { adapter as tipsa } from '../carriers/tipsa/adapter.js';
 import { adapter as tmmExpress } from '../carriers/tmm-express/adapter.js';
 import { adapter as tnt } from '../carriers/tnt/adapter.js';
 import { adapter as tntIt } from '../carriers/tnt-it/adapter.js';
+import { adapter as todayKr } from '../carriers/today-kr/adapter.js';
 import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
 import { adapter as torrestir } from '../carriers/torrestir/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
@@ -1076,6 +1077,7 @@ export const REGISTRY: RegistryDefinition = {
     "tmm-express": tmmExpress,
     "tnt": tnt,
     "tnt-it": tntIt,
+    "today-kr": todayKr,
     "toptrans": toptrans,
     "torrestir": torrestir,
     "total-express": totalExpress,
@@ -1826,7 +1828,7 @@ export const REGISTRY: RegistryDefinition = {
     "tmm-express": "tmm-express",
     "tnt": "tnt",
     "tnt-it": "tnt-it",
-    "today-kr": "universal",
+    "today-kr": "today-kr",
     "toptrans": "toptrans",
     "torrestir": "torrestir",
     "total-express": "total-express",

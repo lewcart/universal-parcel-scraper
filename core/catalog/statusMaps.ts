@@ -440,6 +440,7 @@ import { statusMap as tiki } from '../../carriers/tiki/status.js';
 import { statusMap as tmmExpress } from '../../carriers/tmm-express/status.js';
 import { statusMap as tnt } from '../../carriers/tnt/status.js';
 import { statusMap as tntIt } from '../../carriers/tnt-it/status.js';
+import { statusMap as todayKr } from '../../carriers/today-kr/status.js';
 import { statusMap as toptrans } from '../../carriers/toptrans/status.js';
 import { statusMap as torrestir } from '../../carriers/torrestir/status.js';
 import { statusMap as totalExpress } from '../../carriers/total-express/status.js';
@@ -561,7 +562,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'st-courier': stCourier, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, straightship, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, 'team-worldwide': teamWorldwide, teleship, 'tfm-express': tfmExpress, 'tforce-freight': tforceFreight,
-  'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress,
+  'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, 'today-kr': todayKr, toptrans, torrestir, 'total-express': totalExpress,
   trackon, 'tracx-logis': tracxLogis, transaher, transcorp, transmission, tsjy, 'tst-cf-express': tstCfExpress, tufesa, 'tws-express': twsExpress,
   'ubi-smart-parcel': ubiSmartParcel,
   'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,

@@ -1820,6 +1820,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'tci-express': 'the page answers an unknown docket with an empty result and neither the number nor a notice, so only a real parcel verifies the link',
   'team-express-ae': 'the page answers a number it does not hold with its empty tracking form, without the number or a notice, so only a real shipment verifies the link',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the page often stays empty past the render window',
+  'today-kr': 'a synthetic waybill may belong to a real parcel, whose page names its sender and recipient, so only a known waybill verifies the link',
   'total-express': 'totalconecta.totalexpress.com.br answers many networks with an Akamai Access Denied page, so number forwarding cannot be verified daily; the page puts the number from its address in its search field',
   trackon: 'the page answers an unknown number with its empty search form, without the number or a notice, and shows only consignments of the last 75 days, so only a recent real consignment verifies the link',
   'tst-cf-express': 'the results page shows any PRO it holds to anyone, and a synthetic PRO can belong to another shipment, so only a known PRO verifies the link',

@@ -20,18 +20,61 @@
   "timezone": "Pacific/Auckland",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pbt",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 623
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight"
+  ],
   "portal": {
     "url": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",
     "searchUrl": "https://www.pbt.nz/",
     "canaryUrl": "https://www.pbt.nz/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "origin",
+      "destination",
+      "parcel_count",
+      "volume",
+      "customer_reference",
+      "booking_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "parcel_count",
+      "volume",
+      "customer_reference",
+      "booking_details"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "delivered_at",
+      "service_name",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

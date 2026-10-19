@@ -22440,7 +22440,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pbt",
+      "recognitionRank": 623,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pbt.nz/",
     "trackingUrlTemplate": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",

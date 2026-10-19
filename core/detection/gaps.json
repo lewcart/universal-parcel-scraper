@@ -2755,9 +2755,9 @@
   },
   {
     "carrier": "pbt",
-    "pattern": "^[A-Z]{3}\\d{7,10}$",
+    "pattern": "^[A-Z]{3}\\d{7,11}$",
     "kind": "by_design",
-    "reason": "PBT consignment and item numbers are three letters and seven to ten digits, a shape other carriers print too."
+    "reason": "PBT consignment and item numbers are three letters and seven to eleven digits, a shape other carriers print too."
   },
   {
     "carrier": "pbt",

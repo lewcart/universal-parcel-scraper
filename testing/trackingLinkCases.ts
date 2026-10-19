@@ -1243,6 +1243,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mainfreight', number: 'S00000000',
     route: /^https:\/\/www\.mainfreight\.com\/tracking\?trackingnumber=S00000000$/,
     marker: /Tracking Results for|No results found for the provided tracking number/i },
+  // The server renders the lookup; it sends an unknown number back to the home page's form, prefilled.
+  { carrier: 'pbt', number: 'ZZQ0000000',
+    route: /^https:\/\/www\.pbt\.nz\/(?:tracking-result\/)?\?consignmentNumber=ZZQ0000000(?:&hasError=true)?(?:#tracking-search)?$/,
+    marker: /Tracking Results|Latest status|The ticket\/consignment note number you.ve provided is not valid/i },
   // A single-page app that puts the guía in its search field, looks it up on load and names it when it finds nothing.
   { carrier: 'envia-colombia', number: '999000000001',
     route: /^https:\/\/envia\.co\/tracking\?guia=999000000001$/,

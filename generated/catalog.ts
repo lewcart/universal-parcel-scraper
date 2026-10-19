@@ -14008,7 +14008,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "forward-air",
+      "recognitionRank": 755,
+      "localClocks": true
     },
     "canaryUrl": "https://www.forwardair.com/tracking",
     "trackingUrlTemplate": "https://www.forwardair.com/tracking?numbers={trackingNumber}",

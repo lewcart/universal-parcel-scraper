@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -23,7 +23,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "82094963",
@@ -36,7 +36,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -47,7 +47,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "82095012",
@@ -60,7 +60,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -71,7 +71,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "82095073",
@@ -84,7 +84,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -95,7 +95,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "82095513",
@@ -108,7 +108,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -119,7 +119,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "82967504",
@@ -132,7 +132,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -143,7 +143,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment."
     },
     {
       "number": "83572123",
@@ -156,7 +156,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -167,7 +167,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was not opened. Forward Air's tracker finds the shipment, and a later one under the same waybill."
     },
     {
       "number": "86840978",
@@ -180,7 +180,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -191,7 +191,7 @@
           "heppner"
         ]
       },
-      "note": "An archived lookup on Forward Air's own tracking page; the capture was opened but the page loads the shipment by script, so it shows no history."
+      "note": "An archived lookup on Forward Air's own tracking page; the capture was opened but the page loads the shipment by script, so it shows no history. Forward Air's tracker finds the shipment."
     }
   ]
 }

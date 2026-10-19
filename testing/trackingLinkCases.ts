@@ -1552,6 +1552,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'dpd-ro': 'tracking.dpd.ro redirects to services.dpd.ro/tracking/, which answers automated Chrome with a Cloudflare managed challenge and asks for a Turnstile token with each lookup, so number forwarding cannot be verified',
   dropp: 'the tracker page answers an unknown number with a generic "try again later" error that does not show the number, so only a real parcel verifies the link',
   dtdc: 'the MyDTDC Flutter page exposes no visible body text until accessibility is enabled, and the portal link opens its home page',
+  'forward-air': 'Forward Air reuses its eight-digit waybill numbers, so a synthetic one can open other people\'s shipments; only a known waybill verifies the link',
   gdex: 'gdexpress.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   hanjin: 'the result page answers an unknown number with an alert and sends the browser back to the empty search form, so only a real parcel verifies the link',
   'indah-logistik': 'the resi page answers an unknown number with a generic internal server error page without the number, so only a real resi verifies the link',

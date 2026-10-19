@@ -21,6 +21,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "amerijet": 636,
   "andreani": 976,
   "anjun": 954,
+  "anousith": 649,
   "anserx": 759,
   "anteraja": 835,
   "apc-overnight": 220,

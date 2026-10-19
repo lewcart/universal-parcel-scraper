@@ -6390,7 +6390,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Vientiane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anousith",
+      "recognitionRank": 649
     },
     "canaryUrl": "https://app.anousith.express/landing/search_tracking/search_item",
     "trackingUrlTemplate": "https://app.anousith.express/landing/search_tracking/search_item?_bill_detail={trackingNumber}&n_home=2",

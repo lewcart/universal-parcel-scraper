@@ -19,18 +19,68 @@
   "timezone": "Asia/Vientiane",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "anousith",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 649
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at",
+    "weight",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://app.anousith.express/landing/search_tracking/search_item?_bill_detail={trackingNumber}&n_home=2",
     "searchUrl": "https://app.anousith.express/landing/search_tracking/search_item",
     "canaryUrl": "https://app.anousith.express/landing/search_tracking/search_item",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "origin",
+      "destination",
+      "weight",
+      "dimensions",
+      "sender_name",
+      "recipient_name",
+      "recipient_contact",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "weight",
+      "provider_code",
+      "pickup_point"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "dimensions",
+      "sender_name",
+      "recipient_name",
+      "recipient_contact",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "service_name",
+      "proof_of_delivery",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

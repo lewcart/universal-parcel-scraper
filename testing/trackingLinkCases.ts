@@ -784,6 +784,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'houng-ah-loun', number: 'VTE00000000000',
     route: /^https:\/\/halexpress\.la\/parcel\/VTE00000000000$/,
     marker: /ວັນທີສົ່ງບິນ|ບໍ່ພົບເລກພັດສະດຸນີ້ໃນລະບົບ/ },
+  // The search page looks the number in its address up on load and heads its results.
+  { carrier: 'anousith', number: '0000000000001',
+    route: /^https:\/\/app\.anousith\.express\/landing\/search_tracking\/search_item\?_bill_detail=0000000000001&n_home=2$/,
+    marker: /ກວດສອບສະຖານະບິນ|ຜົນການຄົ້ນຫາ/ },
   // The page fills its barcode field in from the address and looks the number up on load.
   { carrier: 'hr-parcel', number: '10000000000001',
     route: /^https:\/\/www\.hrparcel\.com\/traccia-spedizioni\/\?barcode=10000000000001$/,

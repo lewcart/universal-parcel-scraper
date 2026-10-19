@@ -26,6 +26,7 @@ import { adapter as ampm } from '../carriers/ampm/adapter.js';
 import { adapter as anPost } from '../carriers/an-post/adapter.js';
 import { adapter as andreani } from '../carriers/andreani/adapter.js';
 import { adapter as anjun } from '../carriers/anjun/adapter.js';
+import { adapter as anousith } from '../carriers/anousith/adapter.js';
 import { adapter as anserx } from '../carriers/anserx/adapter.js';
 import { adapter as anteraja } from '../carriers/anteraja/adapter.js';
 import { adapter as apcOvernight } from '../carriers/apc-overnight/adapter.js';
@@ -584,6 +585,7 @@ export const REGISTRY: RegistryDefinition = {
     "an-post": anPost,
     "andreani": andreani,
     "anjun": anjun,
+    "anousith": anousith,
     "anserx": anserx,
     "anteraja": anteraja,
     "apc-overnight": apcOvernight,
@@ -1155,7 +1157,7 @@ export const REGISTRY: RegistryDefinition = {
     "an-post": "an-post",
     "andreani": "andreani",
     "anjun": "anjun",
-    "anousith": "universal",
+    "anousith": "anousith",
     "anserx": "anserx",
     "anteraja": "anteraja",
     "ap-cargo": "universal",

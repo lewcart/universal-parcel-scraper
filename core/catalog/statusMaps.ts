@@ -34,6 +34,7 @@ import { statusMap as ampm } from '../../carriers/ampm/status.js';
 import { statusMap as anPost } from '../../carriers/an-post/status.js';
 import { statusMap as andreani } from '../../carriers/andreani/status.js';
 import { statusMap as anjun } from '../../carriers/anjun/status.js';
+import { statusMap as anousith } from '../../carriers/anousith/status.js';
 import { statusMap as anserx } from '../../carriers/anserx/status.js';
 import { statusMap as anteraja } from '../../carriers/anteraja/status.js';
 import { statusMap as apcOvernight } from '../../carriers/apc-overnight/status.js';
@@ -485,7 +486,7 @@ import { CARRIER_DEFINITIONS } from './definitions.js';
 export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   '17feia': seventeenFeia, '2go': twoGo, '4-72': fourSeventyTwo, '4sides': fourSides, '5post': fivePost, '99minutos': ninetynineMinutos, 'a-duie-pyle': aDuiePyle, 'a-tu-hora-express': aTuHoraExpress, 'a1-post': a1Post, 'abf-freight': abfFreight, 'acs-courier': acsCourier, 'aex-paraguay': aexParaguay,
   'airpak-express': airpakExpress, 'ait-worldwide': aitWorldwide, ajex, 'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne,
-  'am-home-delivery': amHomeDelivery, amerijet, ampm, 'an-post': anPost, andreani, anjun, anserx, anteraja, 'apc-overnight': apcOvernight,
+  'am-home-delivery': amHomeDelivery, amerijet, ampm, 'an-post': anPost, andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight,
   'apc-postal-logistics': apcPostalLogistics, 'apple-express': appleExpress, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,

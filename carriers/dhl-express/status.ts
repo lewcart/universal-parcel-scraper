@@ -13,6 +13,8 @@ const EXACT: ReadonlyMap<string, Stage> = new Map([
   ['shipment accepted', 'accepted'],
   // A clearance step without its outcome: the parcel is still in customs.
   ['clearance event', 'customs'],
+  // The recipient's duties or fees are paid; the clearance they held up completes next.
+  ['payment is received and recorded for shipment related fees', 'customs'],
   ['shipment is in transit to destination', 'in_transit'],
   ['shipment is out with courier for delivery', 'out_for_delivery'],
   ['shipment is on hold', 'exception'],
@@ -37,10 +39,13 @@ const PREFIXES: ReadonlyArray<readonly [string, Stage]> = [
 /**
  * DHL's event codes on the unified feed, each seen with the wording above: SA
  * the shipment's acceptance, IC its processing for clearance, CD a clearance
- * step without its outcome, MS a missort. They stage a scan whose wording the
- * map does not know, as in another language.
+ * step without its outcome, PY the payment of fees during clearance, MS a
+ * missort. They stage a scan whose wording the map does not know, as in
+ * another language.
  */
-const CODES: ReadonlyMap<string, Stage> = new Map([['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs'], ['MS', 'exception']]);
+const CODES: ReadonlyMap<string, Stage> = new Map([
+  ['SA', 'accepted'], ['IC', 'customs'], ['CD', 'customs'], ['PY', 'customs'], ['MS', 'exception'],
+]);
 
 /** The checkpoint's stage from DHL's own wording, if the wording is one of DHL's checkpoints. */
 export function dhlExpressCheckpointStage(description: string): Stage | undefined {

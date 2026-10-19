@@ -115,6 +115,15 @@
       "note": "A clearance step without its outcome; the parcel is still in customs. The unified feed codes it CD, which stages it in any wording."
     },
     {
+      "code": "PY",
+      "wording": "Payment is received and recorded for shipment related fees",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "The recipient's duties or fees are paid between clearance updates; the parcel stays in customs until the clearance completes. The unified feed codes it PY, which stages it in any wording."
+    },
+    {
       "code": "SA",
       "wording": "Shipment accepted",
       "language": "en",

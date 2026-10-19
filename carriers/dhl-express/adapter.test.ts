@@ -72,6 +72,12 @@ describe('DHL Express projection', () => {
     expect(dhlExpressStage('Synthetic clearance wording', 'CD')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Synthetic clearance wording', 'IC')).toEqual({ stage: 'customs', source: 'carrier_map' });
     expect(dhlExpressStage('Synthetic acceptance wording', 'SA')).toEqual({ stage: 'accepted', source: 'carrier_map' });
+    // Fees paid during clearance leave the parcel in customs, coded or not.
+    for (const code of ['PY', null]) {
+      expect(dhlExpressStage('Payment is received and recorded for shipment related fees', code))
+        .toEqual({ stage: 'customs', source: 'carrier_map' });
+    }
+    expect(dhlExpressStage('Synthetic payment wording', 'PY')).toEqual({ stage: 'customs', source: 'carrier_map' });
     // A missort delays the parcel, coded or not.
     for (const code of ['MS', null]) {
       expect(dhlExpressStage('Shipment arrived at incorrect facility. It will be sent to the correct destination', code))

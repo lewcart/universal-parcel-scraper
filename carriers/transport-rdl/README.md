@@ -15,6 +15,15 @@ a layout.
 `transportrdl.com/suivre-un-colis` with `tracking-number` opens one parcel; the site's tracking
 forms send the number that way.
 
+## Why there is no adapter
+
+The tracking page looks the number up on the server and writes the answer into the page; no
+script or service behind it shows the shape of a result. It answers a number it does not know
+with a notice that repeats the number, and its form checks nothing about the number's layout.
+No public source shows a Transport RDL number, so the page's answer for a known parcel has
+never been seen and an adapter would have nothing to read. Transport RDL stays on universal
+providers until a real number shows that answer.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

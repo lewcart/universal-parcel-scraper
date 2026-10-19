@@ -289,6 +289,7 @@ import { statusMap as pecom } from '../../carriers/pecom/status.js';
 import { statusMap as pfcExpress } from '../../carriers/pfc-express/status.js';
 import { statusMap as phlpost } from '../../carriers/phlpost/status.js';
 import { statusMap as pitneyBowes } from '../../carriers/pitney-bowes/status.js';
+import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaFaroe } from '../../carriers/posta-faroe/status.js';
@@ -475,7 +476,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, parcelpoint, passport, 'pathao-courier': pathaoCourier,
   'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,
   'pfc-express': pfcExpress, phlpost,
-  'pitney-bowes': pitneyBowes, 'pos-indonesia': posIndonesia,
+  'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier, proships,

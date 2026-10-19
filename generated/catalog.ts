@@ -23058,9 +23058,11 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pitt-ohio",
+      "recognitionRank": 737,
+      "localClocks": true
     },
-    "canaryUrl": "https://pittohio.com/myPittOhio/",
+    "canaryUrl": "https://pittohio.com/myPittOhio/Shipping/LTL/TraceRequest",
     "trackingUrlTemplate": "https://pittohio.com/myPittOhio/Shipping/LTL/TraceRequest?pro={trackingNumber}",
     "trackingSearchUrl": "https://pittohio.com/myPittOhio/",
     "linkRules": [

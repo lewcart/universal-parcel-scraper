@@ -1585,6 +1585,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gta-airskip', number: 'GRG0000000000000000',
     route: /^https:\/\/gtaairskip\.com\/tracking\/\?trackingid=GRG0000000000000000$/,
     marker: /Shipment Not Found|Track a Package/i },
+  // The tracing page looks the PRO number in its address up and answers an unknown one on its
+  // search form, with a notice and the number in the first field.
+  { carrier: 'pitt-ohio', number: '9999999999',
+    route: /^https:\/\/pittohio\.com\/myPittOhio\/Shipping\/LTL\/TraceRequest\?pro=9999999999$/,
+    marker: /Search returned no results|LTL Shipment Status Details/ },
 ];
 
 /**

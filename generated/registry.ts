@@ -341,6 +341,7 @@ import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as pfcExpress } from '../carriers/pfc-express/adapter.js';
 import { adapter as phlpost } from '../carriers/phlpost/adapter.js';
 import { adapter as pitneyBowes } from '../carriers/pitney-bowes/adapter.js';
+import { adapter as pittOhio } from '../carriers/pitt-ohio/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posIndonesia } from '../carriers/pos-indonesia/adapter.js';
@@ -849,6 +850,7 @@ export const REGISTRY: RegistryDefinition = {
     "pfc-express": pfcExpress,
     "phlpost": phlpost,
     "pitney-bowes": pitneyBowes,
+    "pitt-ohio": pittOhio,
     "planzer": planzer,
     "poczta-polska": pocztaPolska,
     "pos-indonesia": posIndonesia,
@@ -1548,7 +1550,7 @@ export const REGISTRY: RegistryDefinition = {
     "pigeon-express": "universal",
     "pilot-freight": "universal",
     "pitney-bowes": "pitney-bowes",
-    "pitt-ohio": "universal",
+    "pitt-ohio": "pitt-ohio",
     "planzer": "planzer",
     "pmm": "universal",
     "poczta-polska": "poczta-polska",

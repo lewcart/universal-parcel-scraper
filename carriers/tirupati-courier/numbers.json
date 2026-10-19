@@ -2,35 +2,6 @@
   "carrier": "tirupati-courier",
   "records": [
     {
-      "number": "1191001292",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20131123120127/http://www.shreetirupaticourier.net:80/frmtracking.aspx?docno=1191001292",
-        "date": "2013-11-23",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "dhl",
-          "mondial-relay",
-          "relais-colis",
-          "tipsa",
-          "estafeta",
-          "packeta",
-          "dhl-ecommerce-es",
-          "gls-es"
-        ]
-      },
-      "note": "An archived lookup on Shree Tirupati Courier's own tracker shows this docket booked at an Ahmedabad branch and in transit."
-    },
-    {
       "number": "3201059972",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -185,37 +156,6 @@
         ]
       },
       "note": "An archived lookup on Shree Tirupati Courier's own tracker carries this number; the opened capture holds it only as the page's document number, without the history."
-    },
-    {
-      "number": "340100005756",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20240803152902/http://www.shreetirupaticourier.net/frm_doctrackweb.aspx?docno=340100005756&Tmp=1722698942286",
-        "date": "2024-08-03",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colis-prive",
-          "mrw",
-          "brt",
-          "sf-express",
-          "sto",
-          "zto",
-          "j-and-t",
-          "lbc-express",
-          "metropolitan-warehouse"
-        ]
-      },
-      "note": "An archived lookup on Shree Tirupati Courier's own tracker shows this document booked at Chinsurah and moving through the Kolkata offices to a Ballygunge center."
     },
     {
       "number": "5531003631",

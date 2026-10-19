@@ -13932,26 +13932,6 @@
     ]
   },
   {
-    "input": "1191001292",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "dhl",
-      "mondial-relay",
-      "relais-colis",
-      "tipsa",
-      "estafeta",
-      "packeta",
-      "dhl-ecommerce-es",
-      "gls-es"
-    ],
-    "asked": [
-      "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
-    ]
-  },
-  {
     "input": "11956522247206",
     "carrier": "unknown",
     "confidence": "low",
@@ -33240,30 +33220,6 @@
     "confidence": "high",
     "candidates": [
       "australia-post"
-    ]
-  },
-  {
-    "input": "340100005756",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colis-prive",
-      "mrw",
-      "brt",
-      "sf-express",
-      "sto",
-      "zto",
-      "j-and-t",
-      "lbc-express",
-      "metropolitan-warehouse"
-    ],
-    "asked": [
-      "brt",
-      "colis-prive",
-      "sto",
-      "j-and-t",
-      "zto"
     ]
   },
   {

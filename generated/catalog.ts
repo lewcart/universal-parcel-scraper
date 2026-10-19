@@ -28596,7 +28596,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tirupati-courier",
+      "recognitionRank": 711,
+      "localClocks": true
     },
     "canaryUrl": "https://www.shreetirupaticourier.net/",
     "trackingSearchUrl": "https://www.shreetirupaticourier.net/",

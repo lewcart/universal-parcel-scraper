@@ -311,6 +311,7 @@ import { adapter as magyarPosta } from '../carriers/magyar-posta/adapter.js';
 import { adapter as mailamericas } from '../carriers/mailamericas/adapter.js';
 import { adapter as mailplusAu } from '../carriers/mailplus-au/adapter.js';
 import { adapter as mainfreight } from '../carriers/mainfreight/adapter.js';
+import { adapter as makatiExpress } from '../carriers/makati-express/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as maritimeOntario } from '../carriers/maritime-ontario/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
@@ -859,6 +860,7 @@ export const REGISTRY: RegistryDefinition = {
     "mailamericas": mailamericas,
     "mailplus-au": mailplusAu,
     "mainfreight": mainfreight,
+    "makati-express": makatiExpress,
     "maltapost": maltapost,
     "maritime-ontario": maritimeOntario,
     "matkahuolto": matkahuolto,
@@ -1530,7 +1532,7 @@ export const REGISTRY: RegistryDefinition = {
     "mailplus-au": "mailplus-au",
     "mainfreight": "mainfreight",
     "major-express": "universal",
-    "makati-express": "universal",
+    "makati-express": "makati-express",
     "maltapost": "maltapost",
     "mandae": "universal",
     "maritime-ontario": "maritime-ontario",

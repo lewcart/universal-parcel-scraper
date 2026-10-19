@@ -268,6 +268,7 @@ import { statusMap as magyarPosta } from '../../carriers/magyar-posta/status.js'
 import { statusMap as mailamericas } from '../../carriers/mailamericas/status.js';
 import { statusMap as mailplusAu } from '../../carriers/mailplus-au/status.js';
 import { statusMap as mainfreight } from '../../carriers/mainfreight/status.js';
+import { statusMap as makatiExpress } from '../../carriers/makati-express/status.js';
 import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as maritimeOntario } from '../../carriers/maritime-ontario/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
@@ -514,11 +515,12 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'la-poste-senegal': laPosteSenegal, labaih, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
-  maltapost, 'maritime-ontario': maritimeOntario, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu, 'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz,
-  'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress, 'midland-transport': midlandTransport, 'mng-kargo': mngKargo,
-  'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest,
-  'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa,
-  'ocs-ana': ocsAna, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
+  'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
+  'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
+  'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex,
+  'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal, northline,
+  'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna, 'old-dominion': oldDominion,
+  'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, parcelpoint, passport, 'pathao-courier': pathaoCourier, pbt,
   'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,

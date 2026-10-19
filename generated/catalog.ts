@@ -19699,9 +19699,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "makati-express",
+      "recognitionRank": 632,
+      "localClocks": true
     },
     "canaryUrl": "https://makati-express.com/tracking/",
+    "trackingUrlTemplate": "https://makati-express.com/tracking/?awbnumber={trackingNumber}",
     "trackingSearchUrl": "https://makati-express.com/tracking/",
     "linkRules": [],
     "detectionRules": [

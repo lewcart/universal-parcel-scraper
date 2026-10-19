@@ -235,6 +235,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "mailamericas": 985,
   "mailplus-au": 699,
   "mainfreight": 923,
+  "makati-express": 632,
   "maltapost": 50,
   "matkahuolto": 715,
   "mds-collivery": 705,

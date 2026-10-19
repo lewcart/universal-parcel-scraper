@@ -37,7 +37,7 @@ export interface HualeiTenant {
   readonly stage: (code: string | null, wording: string) => Stage | undefined;
   /** The wording and place of a row whose text carries both, before the shared cleaning. */
   readonly split?: (content: string, location: string) => { readonly content: string; readonly location: string };
-  /** Rows keep their wall clocks: the tracker copies another carrier's rows on that carrier's clock. */
+  /** Rows keep their wall clocks: some rows the tracker copies from another carrier come on that carrier's clock. */
   readonly wallClocks?: true;
   /**
    * Carriers the tenant hands records to without naming a channel: one takes a

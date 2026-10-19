@@ -38,7 +38,8 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
 - Rows carry wall clocks without an offset, abroad too, on the trackers' Beijing clock: rows
   at the destination were shown up to seven hours before their clock read as UTC, earlier than
   the destination's own clock allows. Every row is read on Beijing time, as on the other tenants
-  except Mayi Yinfu, which copies the delivering carrier's rows on its clock.
+  except Mayi Yinfu, where a row copied from the delivering carrier without a place can come on
+  that carrier's clock.
 - A record that names its channel and the channel's transfer number hands the parcel over when
   the channel label is in the platform's table, the delivery carrier's own detection offers the
   number and it serves the destination. The table holds Swiss Post's labels, the destination of

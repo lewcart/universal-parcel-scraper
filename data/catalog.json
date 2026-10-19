@@ -7683,10 +7683,10 @@
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "border-express"
     },
     "canaryUrl": "https://bexonline.borderexpress.com.au/bxo/track",
-    "trackingUrlTemplate": "https://www.borderexpress.com.au/tracking/?cn={trackingNumber}",
+    "trackingUrlTemplate": "https://bexonline.borderexpress.com.au/bxo/track?consignmentNumber={trackingNumber}",
     "trackingSearchUrl": "https://bexonline.borderexpress.com.au/bxo/track",
     "linkRules": [
       {

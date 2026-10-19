@@ -45,6 +45,7 @@ import { statusMap as bjsHomeDelivery } from '../../carriers/bjs-home-delivery/s
 import { statusMap as blueExpress } from '../../carriers/blue-express/status.js';
 import { statusMap as bombino } from '../../carriers/bombino/status.js';
 import { statusMap as bookurier } from '../../carriers/bookurier/status.js';
+import { statusMap as borderExpress } from '../../carriers/border-express/status.js';
 import { statusMap as bosta } from '../../carriers/bosta/status.js';
 import { statusMap as boxNow } from '../../carriers/box-now/status.js';
 import { statusMap as bulgarianPosts } from '../../carriers/bulgarian-posts/status.js';
@@ -389,8 +390,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   ajex, 'algerie-poste': algeriePoste, aliexpress,
   'allegro-one': allegroOne, ampm, 'an-post': anPost, andreani, anjun, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
-  'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino, bookurier, bosta, 'box-now': boxNow,
-  'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods, byhd, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
+  'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino,
+  bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
+  byhd, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronopost, 'chunghwa-post': chunghwaPost, 'city-express-rs': cityExpressRs, citymail, 'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,

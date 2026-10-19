@@ -41,6 +41,7 @@ import { adapter as blueDart } from '../carriers/blue-dart/adapter.js';
 import { adapter as blueExpress } from '../carriers/blue-express/adapter.js';
 import { adapter as bombino } from '../carriers/bombino/adapter.js';
 import { adapter as bookurier } from '../carriers/bookurier/adapter.js';
+import { adapter as borderExpress } from '../carriers/border-express/adapter.js';
 import { adapter as bosta } from '../carriers/bosta/adapter.js';
 import { adapter as boxNow } from '../carriers/box-now/adapter.js';
 import { adapter as bpost } from '../carriers/bpost/adapter.js';
@@ -501,6 +502,7 @@ export const REGISTRY: RegistryDefinition = {
     "blue-express": blueExpress,
     "bombino": bombino,
     "bookurier": bookurier,
+    "border-express": borderExpress,
     "bosta": bosta,
     "box-now": boxNow,
     "bpost": bpost,
@@ -995,7 +997,7 @@ export const REGISTRY: RegistryDefinition = {
     "blueex": "universal",
     "bombino": "bombino",
     "bookurier": "bookurier",
-    "border-express": "universal",
+    "border-express": "border-express",
     "bosta": "bosta",
     "botswana-post": "universal",
     "box-now": "box-now",

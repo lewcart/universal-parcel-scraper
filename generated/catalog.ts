@@ -27660,7 +27660,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-express-ae",
+      "localClocks": true
     },
     "canaryUrl": "https://teamexpressme.com/tracking",
     "trackingUrlTemplate": "https://teamexpressme.com/tracking?trackno={trackingNumber}",

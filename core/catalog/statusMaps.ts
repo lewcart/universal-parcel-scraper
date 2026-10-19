@@ -333,6 +333,7 @@ import { statusMap as tciExpress } from '../../carriers/tci-express/status.js';
 import { statusMap as tcsPakistan } from '../../carriers/tcs-pakistan/status.js';
 import { statusMap as tdn } from '../../carriers/tdn/status.js';
 import { statusMap as tealca } from '../../carriers/tealca/status.js';
+import { statusMap as teamExpressAe } from '../../carriers/team-express-ae/status.js';
 import { statusMap as teamGlobalExpress } from '../../carriers/team-global-express/status.js';
 import { statusMap as teleship } from '../../carriers/teleship/status.js';
 import { statusMap as tforceFreight } from '../../carriers/tforce-freight/status.js';
@@ -434,9 +435,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, speedaf, speedex, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
   'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'stallion-express': stallionExpress, starken, sto, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
-  'team-global-express': teamGlobalExpress, teleship, 'tforce-freight': tforceFreight, 'thailand-post': thailandPost, thhy, tiki,
-  'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress, trackon, transaher, transcorp, transmission,
-  tsjy, 'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel, 'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,
+  'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, teleship, 'tforce-freight': tforceFreight,
+  'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress,
+  trackon, transaher, transcorp, transmission, tsjy, 'tws-express': twsExpress, 'ubi-smart-parcel': ubiSmartParcel,
+  'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'viettel-post': viettelPost, 'vinted-go': vintedGo, wanbexpress, whistl, winit, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   'yilong-logistics': yilongLogistics, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zr-express': zrExpress,

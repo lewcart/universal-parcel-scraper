@@ -403,6 +403,7 @@ import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as tcsPakistan } from '../carriers/tcs-pakistan/adapter.js';
 import { adapter as tdn } from '../carriers/tdn/adapter.js';
 import { adapter as tealca } from '../carriers/tealca/adapter.js';
+import { adapter as teamExpressAe } from '../carriers/team-express-ae/adapter.js';
 import { adapter as teamGlobalExpress } from '../carriers/team-global-express/adapter.js';
 import { adapter as teleship } from '../carriers/teleship/adapter.js';
 import { adapter as tforceFreight } from '../carriers/tforce-freight/adapter.js';
@@ -861,6 +862,7 @@ export const REGISTRY: RegistryDefinition = {
     "tcs-pakistan": tcsPakistan,
     "tdn": tdn,
     "tealca": tealca,
+    "team-express-ae": teamExpressAe,
     "team-global-express": teamGlobalExpress,
     "teleship": teleship,
     "tforce-freight": tforceFreight,
@@ -1591,7 +1593,7 @@ export const REGISTRY: RegistryDefinition = {
     "tcs-pakistan": "tcs-pakistan",
     "tdn": "tdn",
     "tealca": "tealca",
-    "team-express-ae": "universal",
+    "team-express-ae": "team-express-ae",
     "team-global-express": "team-global-express",
     "team-worldwide": "universal",
     "tej-couriers": "universal",

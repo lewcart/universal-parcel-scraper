@@ -3555,6 +3555,12 @@
     "reason": "The SMART prefix may come from the tracking software Team Express shares with other Dubai couriers, and the public numbers are one series from one period, so no rule claims it."
   },
   {
+    "carrier": "team-express-ae",
+    "pattern": "^RAKPOS\\d{8}$",
+    "kind": "by_design",
+    "reason": "The RAKPOS prefix names one client's deliveries, Team Express's airwaybill prefixes vary by client, and one public number shows it, so no rule claims it."
+  },
+  {
     "carrier": "team-global-express",
     "pattern": "^\\d{12,13}$",
     "kind": "by_design",

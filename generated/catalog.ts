@@ -10454,7 +10454,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dayton-freight",
+      "recognitionRank": 735,
+      "localClocks": true
     },
     "canaryUrl": "https://tools.daytonfreight.com/tracking/bynumber",
     "trackingUrlTemplate": "https://tools.daytonfreight.com/tracking/detail/{trackingNumber}",

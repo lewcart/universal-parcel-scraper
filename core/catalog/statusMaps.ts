@@ -99,6 +99,7 @@ import { statusMap as dExpress } from '../../carriers/d-express/status.js';
 import { statusMap as daiPost } from '../../carriers/dai-post/status.js';
 import { statusMap as danskeFragtmaend } from '../../carriers/danske-fragtmaend/status.js';
 import { statusMap as dayRoss } from '../../carriers/day-ross/status.js';
+import { statusMap as daytonFreight } from '../../carriers/dayton-freight/status.js';
 import { statusMap as dao } from '../../carriers/dao/status.js';
 import { statusMap as dellin } from '../../carriers/dellin/status.js';
 import { statusMap as delnext } from '../../carriers/delnext/status.js';
@@ -453,8 +454,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
   'copa-courier': copaCourier,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-express': correosExpress, 'correos-spain': correosSpain,
-  'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress,
-  'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress,
+  'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, cttyex,
+  'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,
+  'dayton-freight': daytonFreight, dellin, delnext, deppon, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
   'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-za': dpdZa, dpex, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
   'early-bird': earlyBird, 'easy-mail': easyMail,

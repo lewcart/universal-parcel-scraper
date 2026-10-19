@@ -15,10 +15,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection names Hrvatska pošta."
     },
     {
       "number": "RG229353469HR",
@@ -34,10 +34,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection names Hrvatska pošta."
     },
     {
       "number": "rg357685487hr",
@@ -53,10 +53,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker in lower case; the archived capture holds its history. Detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker in lower case; the archived capture holds its history. Detection names Hrvatska pošta."
     },
     {
       "number": "LD084931122HR",
@@ -72,10 +72,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection names Hrvatska pošta."
     },
     {
       "number": "LW225825809HR",
@@ -91,10 +91,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker; the archived capture holds its history. Detection names Hrvatska pošta."
     },
     {
       "number": "EM146631045HR",
@@ -110,10 +110,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     },
     {
       "number": "LD241044973HR",
@@ -129,10 +129,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     },
     {
       "number": "RG523729391HR",
@@ -148,10 +148,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     },
     {
       "number": "LA008713489HR",
@@ -167,10 +167,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     },
     {
       "number": "VV175837515HR",
@@ -205,10 +205,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     },
     {
       "number": "LW260370397HR",
@@ -224,10 +224,10 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "hrvatska-posta",
         "confidence": "high"
       },
-      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection selects the generic postal carrier."
+      "note": "Looked up on Hrvatska pošta's own tracker, as an archived address shows. The tracker returns its history; detection names Hrvatska pošta."
     }
   ]
 }

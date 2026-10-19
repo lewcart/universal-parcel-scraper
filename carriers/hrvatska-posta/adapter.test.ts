@@ -221,9 +221,11 @@ describe('Hrvatska pošta tracking adapter', () => {
     expect(fetcher.mock.calls.every(([url]) => String(url).startsWith(`${HRVATSKA_POSTA_ENDPOINT}?`))).toBe(true);
   });
 
-  it('is asked about Croatian S10 codes, which detection leaves with the postal fallback', () => {
-    expect(detectCarrierMatch(LOCKER)).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
-    expect(recognitionAskedCarriers(LOCKER)[0]).toBe('hrvatska-posta');
+  it('is named for the items it issues and asked about the other Croatian S10 codes', () => {
+    expect(detectCarrierMatch(LOCKER)).toMatchObject({ carrier: 'hrvatska-posta', confidence: 'high' });
+    // A letter-post code stays with the postal fallback.
+    expect(detectCarrierMatch('UA900000019HR')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
+    expect(recognitionAskedCarriers('UA900000019HR')[0]).toBe('hrvatska-posta');
     expect(recognitionAskedCarriers('RR900000020HR')).not.toContain('hrvatska-posta');
     expect(recognitionAskedCarriers('RR000000014DE')).not.toContain('hrvatska-posta');
   });

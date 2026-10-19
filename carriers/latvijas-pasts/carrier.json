@@ -73,6 +73,12 @@
   ],
   "detection": [
     {
+      "id": "latvijas-pasts-own",
+      "pattern": "^[CELR][A-Z]\\d{9}LV$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
       "id": "latvijas-pasts-s10",
       "pattern": "^[A-Z]{2}\\d{9}LV$",
       "confidence": "low",

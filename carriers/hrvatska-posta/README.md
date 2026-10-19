@@ -32,10 +32,12 @@ MH10 codes starting `J` and `BAT` codes. The adapter takes the same shapes, with
 digit for S10 codes and SSCCs; anything else is invalid without a request. The tracker itself does
 not check S10 check digits and answers a mistyped code as having no data.
 
-A code ending `HR` is Hrvatska pošta's, but the issuer of an S10 code does not establish who
-delivers it, so detection keeps such codes with the generic postal carrier and the
-low-confidence `hrvatska-posta-s10` rule makes preflight ask Hrvatska pošta about them. The other
-shapes fit several carriers, so no rule claims them.
+Detection names Hrvatska pošta for the parcels, EMS, registered and tracked-letter items it
+issues: `C`, `E`, `L` or `R` first, `HR` last and a passing check digit. Its tracker follows them
+abroad, to delivery or back. Its other `HR` codes stay with the generic postal carrier, as the
+issuer of an S10 code does not establish who delivers it, and the low-confidence
+`hrvatska-posta-s10` rule makes preflight ask Hrvatska pošta about them. The other shapes fit
+several carriers, so no rule claims them.
 
 ## Notes
 

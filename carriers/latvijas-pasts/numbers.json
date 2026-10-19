@@ -15,7 +15,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "A review on Latvijas Pasts' Trustpilot page gives it as the parcel's tracking number."
@@ -34,7 +34,7 @@
         "assessment": "confirmed"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Latvijas Pasts' own tracking reply, archived by the Wayback Machine, lists its history: a parcel sent abroad from Latvia in April 2026."
@@ -53,7 +53,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
@@ -72,7 +72,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
@@ -91,7 +91,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
@@ -110,7 +110,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
@@ -129,7 +129,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up on Latvijas Pasts's own tracker, as an archived address shows; the capture was not opened."
@@ -148,7 +148,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "Looked up in lower case on Latvijas Pasts' own tracker, as an archived address shows; the capture was not opened."
@@ -167,7 +167,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -186,7 +186,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -205,7 +205,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -224,7 +224,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -243,7 +243,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -262,7 +262,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."
@@ -281,7 +281,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "latvijas-pasts",
         "confidence": "high"
       },
       "note": "ParcelPanel's Latvia Post page offered it as a sample to try on 11 Oct 2026; it is not described as a live shipment."

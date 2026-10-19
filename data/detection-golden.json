@@ -65242,38 +65242,26 @@
   },
   {
     "input": "CC606660538LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "CC606787410LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "CC606791768LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -68089,14 +68077,10 @@
   },
   {
     "input": "CX712034439LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -70517,14 +70501,10 @@
   },
   {
     "input": "EM146631045HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76536,14 +76516,10 @@
   },
   {
     "input": "LA008713489HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76729,14 +76705,10 @@
   },
   {
     "input": "LD084931122HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76749,14 +76721,10 @@
   },
   {
     "input": "LD241044973HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76811,14 +76779,10 @@
   },
   {
     "input": "LE565787894HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -77885,14 +77849,10 @@
   },
   {
     "input": "LW225825809HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -77905,14 +77865,10 @@
   },
   {
     "input": "LW260370397HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -78116,110 +78072,74 @@
   },
   {
     "input": "LY070390210LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY073326286LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075313991LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075573930LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075711110LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075712163LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075718360LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075722673LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075724232LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -83545,26 +83465,18 @@
   },
   {
     "input": "RG229353469HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
     "input": "RG523729391HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -83658,14 +83570,10 @@
   },
   {
     "input": "RH030544536HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -85179,14 +85087,10 @@
   },
   {
     "input": "RS901829385LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -92002,14 +91906,10 @@
   },
   {
     "input": "rg357685487hr",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -92026,14 +91926,10 @@
   },
   {
     "input": "rs072786167lv",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {

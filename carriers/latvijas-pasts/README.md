@@ -27,9 +27,11 @@ The adapter takes S10 codes with a valid check digit, from any country; anything
 without a request. Latvijas Pasts' own items end `LV`, and items from abroad answer under their
 foreign S10 code.
 
-A code ending `LV` is Latvijas Pasts', but the issuer of an S10 code does not establish who
-delivers it, so detection keeps such codes with the generic postal carrier. A low-confidence rule
-makes preflight ask Latvijas Pasts about them.
+Detection names Latvijas Pasts for the parcels, EMS, registered and tracked-letter items it
+issues: `C`, `E`, `L` or `R` first, `LV` last and a passing check digit. Its tracker relays the
+destination post's events of an item sent abroad through to delivery. Its other `LV` codes stay
+with the generic postal carrier, as the issuer of an S10 code does not establish who delivers it,
+and a low-confidence rule makes preflight ask Latvijas Pasts about them.
 
 ## Notes
 

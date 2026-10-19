@@ -118,6 +118,42 @@ describe('Slovak S10 items', () => {
   });
 });
 
+describe('Croatian S10 items', () => {
+  it.each(['CP123456785HR', 'EE123456785HR', 'LW123456785HR', 'RR123456785HR'])('names Hrvatska pošta, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'hrvatska-posta', confidence: 'high', candidates: ['hrvatska-posta'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves its other items to international mail and asks it about them', () => {
+    for (const number of ['UH123456785HR', 'VV123456785HR']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+      expect(recognitionAskedCarriers(number)[0], number).toBe('hrvatska-posta');
+    }
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('CP123456780HR').candidates).not.toContain('hrvatska-posta');
+    expect(detectCarrierMatch('CP123456785HU').candidates).not.toContain('hrvatska-posta');
+  });
+});
+
+describe('Latvian S10 items', () => {
+  it.each(['CC123456785LV', 'EE123456785LV', 'LY123456785LV', 'RR123456785LV'])('names Latvijas Pasts, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'latvijas-pasts', confidence: 'high', candidates: ['latvijas-pasts'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves its other items to international mail and asks it about them', () => {
+    expect(detectCarrierMatch('UH123456785LV')).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+    expect(recognitionAskedCarriers('UH123456785LV')[0]).toBe('latvijas-pasts');
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('RR123456780LV').candidates).not.toContain('latvijas-pasts');
+    expect(detectCarrierMatch('RR123456785LT').candidates).not.toContain('latvijas-pasts');
+  });
+});
+
 describe('normalization', () => {
   it('uppercases and strips the separators carriers print', () => {
     expect(normalizeTrackingNumber(' ra 123 456-789 ch ')).toBe('RA123456789CH');

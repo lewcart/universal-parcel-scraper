@@ -29633,7 +29633,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vrl-logistics",
+      "recognitionRank": 935,
+      "localClocks": true
     },
     "canaryUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",
     "trackingSearchUrl": "https://www.vrlgroup.in/Tracking/TrackShipment",

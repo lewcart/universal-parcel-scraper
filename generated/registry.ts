@@ -445,6 +445,7 @@ import { adapter as venipak } from '../carriers/venipak/adapter.js';
 import { adapter as viaCargo } from '../carriers/via-cargo/adapter.js';
 import { adapter as viettelPost } from '../carriers/viettel-post/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
+import { adapter as vrlLogistics } from '../carriers/vrl-logistics/adapter.js';
 import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
 import { adapter as whistl } from '../carriers/whistl/adapter.js';
 import { adapter as winit } from '../carriers/winit/adapter.js';
@@ -911,6 +912,7 @@ export const REGISTRY: RegistryDefinition = {
     "via-cargo": viaCargo,
     "viettel-post": viettelPost,
     "vinted-go": vintedGo,
+    "vrl-logistics": vrlLogistics,
     "wanbexpress": wanbexpress,
     "whistl": whistl,
     "winit": winit,
@@ -1669,7 +1671,7 @@ export const REGISTRY: RegistryDefinition = {
     "vitran-express": "universal",
     "vnpost": "universal",
     "vozovoz": "universal",
-    "vrl-logistics": "universal",
+    "vrl-logistics": "vrl-logistics",
     "wahana": "universal",
     "wanbexpress": "wanbexpress",
     "ward-trucking": "universal",

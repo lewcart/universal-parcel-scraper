@@ -145,7 +145,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -161,7 +161,7 @@
           "gls-es"
         ]
       },
-      "note": "An archived lookup on VRL's consignment tracking page; the opened capture loads the result separately and shows no details, so it does not confirm the LR."
+      "note": "An archived lookup on VRL's consignment tracking page; the opened capture loads the result separately and shows no details. VRL's current tracker knows the LR, with its booking, transit rows and delivery."
     }
   ]
 }

@@ -183,8 +183,11 @@ describe('standalone tracker', () => {
     }) });
     const answer = { carrier: 'dpd', choices: [], asked: ['dpd', 'seur', 'brt', 'ciblex'], unanswered: ['seur', 'ciblex'] };
     await expect(tracker.recognize(ambiguous, { budgetMs: 30 })).resolves.toEqual(answer);
-    // The budget still cancels what was in flight.
-    expect(waiting.mock.calls[0]![1]!.signal!.aborted).toBe(true);
+    // The budget still cancels what was in flight. The wait ends on the round's own timer,
+    // which can fire just before the budget's, so wait for the abort instead of reading it.
+    const inFlight = waiting.mock.calls[0]![1]!.signal!;
+    if (!inFlight.aborted) await new Promise(resolve => inFlight.addEventListener('abort', resolve, { once: true }));
+    expect((inFlight.reason as Error).name).toBe('TimeoutError');
     // A caller's signal that stays quiet changes nothing.
     await expect(tracker.recognize(ambiguous, { budgetMs: 30, signal: new AbortController().signal })).resolves.toEqual(answer);
   });

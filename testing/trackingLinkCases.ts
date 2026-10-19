@@ -1109,6 +1109,12 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'algerie-poste', number: 'ZZ000000014DZ',
     route: /^https:\/\/ems\.dz\/track\/index\.php\?icd=ZZ000000014DZ$/,
     marker: /Détails d'envoi Nº/i },
+  // The server looks the code up and, finding nothing, shows only the time the search took; a code
+  // that is not thirteen characters long gets a refusal instead.
+  { carrier: 'corre', number: 'ZZ900000040MZ',
+    route: /^https:\/\/www\.corremz\.com\/cgi-bin\/tracktrace\.cgi\?OBJ=ZZ900000040MZ$/,
+    marker: /A obter a imagem da Guia no repositorio de arquivo/,
+    forwarding: { notFound: /A pesquisa demorou \d+ milisegundos/ } },
   // The page fills its field in from the address, looks the code up and names the codes it did not find.
   { carrier: 'pecom', number: '100000000033',
     route: /^https:\/\/pecom\.ru\/services-are\/order-status\/\?code=100000000033$/,

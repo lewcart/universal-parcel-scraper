@@ -9481,7 +9481,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Maputo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "corre",
+      "recognitionRank": 587,
+      "localClocks": true
     },
     "canaryUrl": "https://www.corremz.com/trace/",
     "trackingUrlTemplate": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",

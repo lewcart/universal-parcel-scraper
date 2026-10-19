@@ -83,6 +83,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "connect-couriers": 831,
   "coordinadora": 973,
   "copa-courier": 773,
+  "corre": 587,
   "correo-argentino": 978,
   "correo-uruguayo": 922,
   "correos-de-mexico": 30,

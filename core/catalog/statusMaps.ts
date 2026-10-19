@@ -98,6 +98,7 @@ import { statusMap as closerLogistics } from '../../carriers/closer-logistics/st
 import { statusMap as connectCouriers } from '../../carriers/connect-couriers/status.js';
 import { statusMap as coordinadora } from '../../carriers/coordinadora/status.js';
 import { statusMap as copaCourier } from '../../carriers/copa-courier/status.js';
+import { statusMap as corre } from '../../carriers/corre/status.js';
 import { statusMap as correoArgentino } from '../../carriers/correo-argentino/status.js';
 import { statusMap as correoUruguayo } from '../../carriers/correo-uruguayo/status.js';
 import { statusMap as correosDeMexico } from '../../carriers/correos-de-mexico/status.js';
@@ -524,7 +525,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,
   'chit-chats': chitChats, chronodiali, chronopost, chukou1, 'chunghwa-post': chunghwaPost, chunil, 'city-express-rs': cityExpressRs, citymail,
   'cj-logistics': cjLogistics, 'cj-packet': cjPacket, 'closer-logistics': closerLogistics, 'connect-couriers': connectCouriers, coordinadora,
-  'copa-courier': copaCourier,
+  'copa-courier': copaCourier, corre,
   'correo-argentino': correoArgentino, 'correo-uruguayo': correoUruguayo, 'correos-de-mexico': correosDeMexico, 'correos-el-salvador': correosElSalvador, 'correos-express': correosExpress, 'correos-spain': correosSpain,
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cruz-del-sur': cruzDelSur, 'cse-russia': cseRussia, cttyex,
   'cyprus-post': cyprusPost, 'd-express': dExpress, 'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss,

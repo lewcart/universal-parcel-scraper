@@ -69860,17 +69860,6 @@
     ]
   },
   {
-    "input": "EE500080033MZ",
-    "carrier": "intl-post",
-    "confidence": "high",
-    "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
-    ]
-  },
-  {
     "input": "EE503826142CA",
     "carrier": "canada-post",
     "confidence": "high",

@@ -20,18 +20,49 @@
   "timezone": "Africa/Maputo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "corre",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 587
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",
     "searchUrl": "https://www.corremz.com/trace/",
     "canaryUrl": "https://www.corremz.com/trace/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "facility_identifiers",
+      "staff_details"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "facility_identifiers",
+      "staff_details"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "weight",
+      "destination_country",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

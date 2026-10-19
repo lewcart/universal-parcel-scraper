@@ -17,25 +17,6 @@
         "confidence": "high"
       },
       "note": "Quoted with its spaces in a comment on CORRE's Facebook page by a customer who had posted the item at CORRE's Maputo airport shop for Johannesburg and could not track it."
-    },
-    {
-      "number": "EE500080033MZ",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://www.facebook.com/CORRECorreioExpressoMocambique/photos/605432032861475/",
-        "date": "2016-03-08",
-        "dateKind": "comment",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "intl-post",
-        "confidence": "high"
-      },
-      "note": "Quoted in a comment on CORRE's Facebook page by a customer asking CORRE where an envelope sent to South Africa was; its MZ suffix names Mozambique as the issuing country."
     }
   ]
 }

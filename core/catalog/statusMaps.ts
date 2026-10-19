@@ -232,6 +232,7 @@ import { statusMap as kex } from '../../carriers/kex/status.js';
 import { statusMap as kexExpressHk } from '../../carriers/kex-express-hk/status.js';
 import { statusMap as kuehneNagel } from '../../carriers/kuehne-nagel/status.js';
 import { statusMap as kyoungdong } from '../../carriers/kyoungdong/status.js';
+import { statusMap as kyrgyzPost } from '../../carriers/kyrgyz-post/status.js';
 import { statusMap as lPost } from '../../carriers/l-post/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as laPosteSenegal } from '../../carriers/la-poste-senegal/status.js';
@@ -489,7 +490,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   instabox, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, jhgj, jitsu, jne, 'jordan-post': jordanPost,
-  jrt, 'js-express': jsExpress, kazpost, kex, 'kex-express-hk': kexExpressHk, 'kuehne-nagel': kuehneNagel, kyoungdong, 'l-post': lPost, 'la-poste': laPoste,
+  jrt, 'js-express': jsExpress, kazpost, kex, 'kex-express-hk': kexExpressHk, 'kuehne-nagel': kuehneNagel, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
   'la-poste-senegal': laPosteSenegal, labaih, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,

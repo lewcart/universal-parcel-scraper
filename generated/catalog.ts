@@ -18296,7 +18296,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Bishkek",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kyrgyz-post",
+      "recognitionRank": 702,
+      "localClocks": true
     },
     "canaryUrl": "https://post.kg/language/ru/treking-posylok/",
     "trackingSearchUrl": "https://post.kg/language/ru/treking-posylok/",

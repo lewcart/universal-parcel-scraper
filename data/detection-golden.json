@@ -77829,6 +77829,17 @@
     ]
   },
   {
+    "input": "LS032330034RU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "LS232735825CH",
     "carrier": "swiss-post",
     "confidence": "high",
@@ -84108,6 +84119,17 @@
     ]
   },
   {
+    "input": "RI500204308KG",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "RI542209425MX",
     "carrier": "intl-post",
     "confidence": "high",
@@ -84473,6 +84495,17 @@
   },
   {
     "input": "RO140000015BW",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RO176297048RU",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [

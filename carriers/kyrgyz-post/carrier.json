@@ -20,17 +20,49 @@
   "timezone": "Asia/Bishkek",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kyrgyz-post",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 702
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://post.kg/language/ru/treking-posylok/",
     "canaryUrl": "https://post.kg/language/ru/treking-posylok/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "postcodes"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "postcodes"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "offset_timestamps",
+      "recipient_name",
+      "sender_name",
+      "proof_of_delivery",
+      "delivered_at"
+    ]
   },
   "links": [
     {

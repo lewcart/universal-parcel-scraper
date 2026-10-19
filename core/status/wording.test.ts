@@ -66,6 +66,8 @@ describe('classifyWording', () => {
       'Business closed. Please provide hours',
       // The card a missed round leaves, as YunExpress relays Australia Post's scan.
       '1 item has been transferred to 0000 (example) card left', 'Card left - item held at post office', 'Carded',
+      // Indian couriers' hyphenated or spaced "undelivered" is no delivery.
+      'Un-Delivered', 'Un Delivered', 'Undelivered',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'failed_attempt', source: 'wording:language' });
     // A scheduled attempt, a sender pickup attempt or a hypothetical absence is not a missed round.
     for (const wording of [

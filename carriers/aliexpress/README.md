@@ -32,7 +32,8 @@ a consumer can keep a parcel filed under it and show Cainiao's answer as the ear
 ## How it works
 
 1. `direct`: one keyless GET to `https://global.cainiao.com/global/detail.json?mailNos={number}&lang=en-US`,
-   the JSON behind the consumer page. No session, cookie or token. 10 s budget, no fallback tier.
+   the JSON behind the consumer page, with that page as its Referer: the feed refuses a request
+   another site refers. No session, cookie or token. 10 s budget, no fallback tier.
    A `DOFR…HD` or `CNFR…HD` number that feed does not know is asked again, in the same budget, at
    `https://track.cainiao.com/coe/trace/queryDetail?mailNos={number}&lang=en-US&language=en-US`,
    Cainiao Express's own tracker behind `track.cainiao.com/orderTrack`. It answers the same module

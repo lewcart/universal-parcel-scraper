@@ -39,6 +39,7 @@ import {
 const PROVIDER = 'Cainiao';
 const UPSTREAM = 'Cainiao tracking';
 const DETAIL_URL = 'https://global.cainiao.com/global/detail.json';
+const DETAIL_PAGE = 'https://global.cainiao.com/newDetail.htm';
 const EXPRESS_URL = 'https://track.cainiao.com/coe/trace/queryDetail';
 /** Cainiao Express's French home-delivery numbers, which partners' parcels carry too. */
 const HOME_DELIVERY = /^(?:DO|CN)FR\d{13}HD$/;
@@ -286,8 +287,9 @@ export class CainiaoTracker {
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const budget = lookupBudget(context, this.timeoutMs);
     try {
+      // The feed refuses a request another site refers ("uri is null or empty").
       return await this.read(`${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
-        'https://www.aliexpress.com/', trackingNumber, budget);
+        DETAIL_PAGE, trackingNumber, budget);
     } catch (error) {
       if (!(error instanceof NotFoundError) || !HOME_DELIVERY.test(comparableIdentifier(trackingNumber))) throw error;
     }

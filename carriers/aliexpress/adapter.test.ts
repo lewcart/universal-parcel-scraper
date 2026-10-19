@@ -145,6 +145,7 @@ describe('Cainiao Express home-delivery numbers', () => {
       'https://global.cainiao.com/global/detail.json',
       'https://track.cainiao.com/coe/trace/queryDetail',
     ]);
+    expect(new Headers(fetcher.mock.calls[0]![1]?.headers).get('Referer')).toBe('https://global.cainiao.com/newDetail.htm');
     const [url, init] = fetcher.mock.calls[1]!;
     expect(new URL(String(url)).searchParams.get('mailNos')).toBe(HOME_DELIVERY);
     expect(init?.signal).toBeInstanceOf(AbortSignal);

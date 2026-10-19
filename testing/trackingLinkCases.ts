@@ -499,6 +499,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/recipient\.gojitsu\.com\/(?:noredirect\/ZZ00ZZ00ZZ00ZZ01|404)$/,
     marker: /Sorry, tracking ID not found!/,
     forwarding: { notFound: /Sorry, tracking ID not found!/ } },
+  // The page reads the number from its address into its search tags and looks it up on load.
+  { carrier: 'jumppoint', number: 'JP000000000000',
+    route: /^https:\/\/tracking\.jumppoint\.io\/\?q=JP000000000000$/,
+    marker: /Shipment Not Found|查無此單|查无此单|Jumppoint標準快遞 及 即日快遞|Jumppoint Standard Express and Same-day Express/ },
   // A hash-routed tracker: it lists an unknown number with its own notice.
   { carrier: 'ubi-smart-parcel', number: 'AU9999999999999',
     route: /^https:\/\/shipper\.ubismartparcel\.com\/#\/ubi\?trackingNos=AU9999999999999$/,

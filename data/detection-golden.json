@@ -75415,6 +75415,46 @@
     "candidates": []
   },
   {
+    "input": "JP135264631722",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037069928",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037076156",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037076955",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037077743",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
     "input": "JP319037378197",
     "carrier": "jumppoint",
     "confidence": "high",

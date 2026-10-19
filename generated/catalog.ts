@@ -17826,7 +17826,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jumppoint",
+      "recognitionRank": 586
     },
     "canaryUrl": "https://tracking.jumppoint.io/",
     "trackingUrlTemplate": "https://tracking.jumppoint.io/?q={trackingNumber}",

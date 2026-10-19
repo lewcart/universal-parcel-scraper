@@ -292,6 +292,7 @@ import { adapter as jne } from '../carriers/jne/adapter.js';
 import { adapter as jordanPost } from '../carriers/jordan-post/adapter.js';
 import { adapter as jrt } from '../carriers/jrt/adapter.js';
 import { adapter as jsExpress } from '../carriers/js-express/adapter.js';
+import { adapter as jumppoint } from '../carriers/jumppoint/adapter.js';
 import { adapter as kazpost } from '../carriers/kazpost/adapter.js';
 import { adapter as kex } from '../carriers/kex/adapter.js';
 import { adapter as kexExpressHk } from '../carriers/kex-express-hk/adapter.js';
@@ -874,6 +875,7 @@ export const REGISTRY: RegistryDefinition = {
     "jordan-post": jordanPost,
     "jrt": jrt,
     "js-express": jsExpress,
+    "jumppoint": jumppoint,
     "kazpost": kazpost,
     "kex": kex,
     "kex-express-hk": kexExpressHk,
@@ -1546,7 +1548,7 @@ export const REGISTRY: RegistryDefinition = {
     "jrs-express": "universal",
     "jrt": "jrt",
     "js-express": "js-express",
-    "jumppoint": "universal",
+    "jumppoint": "jumppoint",
     "kargoist": "universal",
     "kazpost": "kazpost",
     "kerry-tj": "universal",

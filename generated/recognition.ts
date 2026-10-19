@@ -223,6 +223,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "jordan-post": 881,
   "jrt": 984,
   "js-express": 916,
+  "jumppoint": 586,
   "kazpost": 931,
   "kex": 959,
   "kex-express-hk": 771,

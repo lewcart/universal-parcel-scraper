@@ -252,6 +252,7 @@ import { statusMap as jitsu } from '../../carriers/jitsu/status.js';
 import { statusMap as jne } from '../../carriers/jne/status.js';
 import { statusMap as jrt } from '../../carriers/jrt/status.js';
 import { statusMap as jsExpress } from '../../carriers/js-express/status.js';
+import { statusMap as jumppoint } from '../../carriers/jumppoint/status.js';
 import { statusMap as kazpost } from '../../carriers/kazpost/status.js';
 import { statusMap as kex } from '../../carriers/kex/status.js';
 import { statusMap as kexExpressHk } from '../../carriers/kex-express-hk/status.js';
@@ -546,10 +547,12 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'ilyang-logis': ilyangLogis, imile, 'indah-logistik': indahLogistik,
   instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
-  'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers, jhgj, jitsu, jne, 'jordan-post': jordanPost,
-  jrt, 'js-express': jsExpress, kazpost, kex, 'kex-express-hk': kexExpressHk, 'kuehne-nagel': kuehneNagel, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
-  'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih, 'last-one-mile-coop': lastOneMileCoop,
-  'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
+  'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers,
+  jhgj, jitsu, jne, 'jordan-post': jordanPost, jrt, 'js-express': jsExpress, jumppoint, kazpost, kex, 'kex-express-hk': kexExpressHk,
+  'kuehne-nagel': kuehneNagel, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,
+  'la-poste-burkina-faso': laPosteBurkinaFaso, 'la-poste-senegal': laPosteSenegal, 'laar-courier': laarCourier, labaih,
+  'last-one-mile-coop': lastOneMileCoop, 'latvijas-pasts': latvijasPasts, 'leopards-courier': leopardsCourier, liccardi,
+  'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'madhur-courier': madhurCourier, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,

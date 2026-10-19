@@ -56,7 +56,8 @@ describe('UI tracking links (rendered public pages)', () => {
       } catch (error) {
         // A headless transport failure is inconclusive. Only permit a skip after
         // an independent HTTP GET rules out a missing page or broken redirect.
-        const http = await fetch(link!.url, { signal: AbortSignal.timeout(10_000) });
+        // When that GET fails too, the browser's error is the one to report.
+        const http = await fetch(link!.url, { signal: AbortSignal.timeout(10_000) }).catch(() => { throw error; });
         const html = await http.text();
         const verdict = trackingPageVerdict({ status: http.status, url: http.url,
           title: '', text: html.replace(/<[^>]*>/g, ' ') }, testCase.route, testCase.marker, testCase.shipmentNotFound);
@@ -96,12 +97,14 @@ describe('UI tracking links (rendered public pages)', () => {
             (elements, number) => elements.some((element) => (element as HTMLInputElement).value === number),
             testCase.number,
           );
-        verdict = trackingPageVerdict({
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- goto() can answer null; the expectation above rules it out
-          status: documentStatus ?? response!.status(), url: page.url(), title: await page.title(),
-          text,
-        }, testCase.route, testCase.marker, testCase.shipmentNotFound);
-        if (verdict === 'broken' || (attempt >= 2 && verdict === 'tracking-page' && inputBound)) break;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- goto() can answer null; the expectation above rules it out
+        const status = documentStatus ?? response!.status();
+        verdict = trackingPageVerdict({ status, url: page.url(), title: await page.title(), text },
+          testCase.route, testCase.marker, testCase.shipmentNotFound);
+        // A tracker that serves its route with its not-found status can show the
+        // notice only after its lookup answers, so keep reading until it does.
+        const noticePending = testCase.shipmentNotFound?.status === status && testCase.route.test(page.url());
+        if ((verdict === 'broken' && !noticePending) || (attempt >= 2 && verdict === 'tracking-page' && inputBound)) break;
       }
       // Skipped is deliberately not a pass: bot protection cannot prove the
       // deep link works. Strict mode turns those gaps into failures in CI.

@@ -59,7 +59,9 @@ are in [`numbers.json`](numbers.json).
 
 The tracking box opens `aj-ex.com/shipment-status/{number}`, also under `/ar/`; older pages
 used `aj-ex.com/tracking?tracking_number={number}`. The library reads the number from either
-address.
+address. The status page looks the number up with a visitor token the site requests as it
+loads; when the page is ready first, it puts the number in the home page's tracking box
+instead, one click from the result.
 
 ## Testing
 

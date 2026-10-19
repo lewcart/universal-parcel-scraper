@@ -274,9 +274,9 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chronopost', number: 'XY000000005FR',
     route: /^https:\/\/www\.chronopost\.fr\/tracking-no-cms\/suivi-page\?/,
     marker: /Suivez votre colis|Informations concernant votre envoi/i },
-  // Visitors abroad can be sent to the UK site, which moves the English page to its own tracker.
+  // The UK site's tracker opens in every country; happy-post.com sends visitors abroad to UK addresses that lose the parcel.
   { carrier: 'happy-post', number: '99999990',
-    route: /^https:\/\/(?:happy-post\.com\/en|uk\.happy-post\.com)\/track\/\?id=99999990$/,
+    route: /^https:\/\/uk\.happy-post\.com\/track\/\?id=99999990$/,
     marker: /Real-time parcel tracking|This number does not match any parcel/ },
   { carrier: 'dpd', number: '09999999999999',
     route: /^https:\/\/www\.dpdgroup\.com\/ch\/mydpd\/my-parcels\/incoming\?/,
@@ -958,10 +958,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/mailamericas\.com\/(?:(?:en|pt)\/)?tracking\?number_id=MLAR000000000EX$/,
     marker: /No se encontró información para este número de tracking|No information found for this tracking number|Não foram encontradas informações para este número de rastreamento|Historial de Seguimiento|Rastrear tu Envío|Track Your Shipment|Rastrear seu Envio/i },
   // The result page looks the NIC in its address up on the server; an unknown one gets a notice without the number.
+  // The page's styles show the notice in capitals.
   { carrier: 'cruz-del-sur', number: '900000000',
     route: /^https:\/\/www\.cruzdelsur\.com\/herramientas_seguimiento_resultado\.php\?nic=900000000$/,
-    marker: /No existe NIC\.|Línea de seguimiento/,
-    forwarding: { notFound: /No existe NIC\./ } },
+    marker: /No existe NIC\.|Línea de seguimiento/i,
+    forwarding: { notFound: /No existe NIC\./i } },
   // The page puts the number in its field and posts it to the tracker; an unknown one gets its generic error in Ukrainian.
   { carrier: 'nova-global', number: 'NP00000000000000NPG',
     route: /^https:\/\/nova\.global\/track\/\?Tracking_ID=NP00000000000000NPG$/,
@@ -1033,10 +1034,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'starken', number: '100000009',
     route: /^https:\/\/www\.starken\.cl\/seguimiento\?codigo=100000009$/,
     marker: /Realiza seguimiento en línea|número de orden de flete/, renderTimeoutMs: 25_000 },
-  // The tracker clears an unknown guide from its search field and says it found none.
+  // The tracker spends several seconds on an ALTCHA proof of work before it looks the guide up, then clears an unknown
+  // guide from its search field and says it found none.
   { carrier: 'interrapidisimo', number: '999999999999',
     route: /^https:\/\/siguetuenvio\.interrapidisimo\.com\/999999999999$/,
-    marker: /Consulta el estado de tu envío/,
+    marker: /Consulta el estado de tu envío/, renderTimeoutMs: 30_000,
     forwarding: { notFound: /No se encontraron guías con la información ingresada/ } },
   // The server renders the lookup; its answer to an unknown number shows the number.
   { carrier: 't-cat', number: '900000000099',
@@ -1121,10 +1123,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'aymakan', number: 'AY99999999999',
     route: /^https:\/\/aymakan\.com\/tracking\/AY99999999999$/,
     marker: /No shipment found|Track Shipments/ },
-  // The page looks the number up from its address and sends an unknown one to its wrong-number page.
+  // The page looks the number up from its address and sends an unknown one to its wrong-number page. Until the
+  // site's visitor token arrives, it sends the number to the home page's tracking box instead.
   { carrier: 'ajex', number: 'AJA000000000000',
-    route: /^https:\/\/aj-ex\.com\/(?:shipment-status\/AJA000000000000|wrong-tracking-number)$/,
-    marker: /Wrong Tracking Number|Shipment Status/,
+    route: /^https:\/\/aj-ex\.com\/(?:shipment-status\/AJA000000000000|wrong-tracking-number|\?awb=AJA000000000000)$/,
+    marker: /Wrong Tracking Number|Shipment Status|Type your tracking number/,
     forwarding: { notFound: /Wrong Tracking Number/ } },
   // The page looks the number up from its address and sends an unknown one to its not-found page.
   { carrier: 'labaih', number: '00000000000000',
@@ -1501,9 +1504,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/tracking\.airpak-express\.com\/go\/plm-tracking_search\?stid=airpak&cn=999999999990$/,
     marker: /No tracking available|Track & Trace/ },
   // The page puts the number in its address into its field, looks it up and answers an unknown one with its own notice.
+  // The page's styles show its notices in capitals.
   { carrier: 'chronodiali', number: 'CHPU0000000000000000000',
     route: /^https:\/\/chronodiali\.ma\/suivi_colis\.html\?id=CHPU0000000000000000000$/,
-    marker: /Veuillez v[ée]rifier votre tracking id|Faites le suivi de votre colis/ },
+    marker: /Veuillez v[ée]rifier votre tracking id|Informations colis/i },
   // The page puts the number in its address into its field and looks it up.
   { carrier: 'gaash', number: 'GWD000000000',
     route: /^https:\/\/gaashwd\.com\/track-parcel\/\?TrackingNumber=GWD000000000$/,
@@ -1578,10 +1582,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/track\.northline\.com\.au\/status\/1ABC00000000$/,
     marker: /Track another\s+consignment/i,
     forwarding: { notFound: /Not Found\s+Track another\s+consignment/i } },
-  // The page repeats the number in its title and answers an unknown one with a notice.
+  // The server renders the lookup; its notice for an unknown number leaves the number to the page's title.
   { carrier: 'straightship', number: 'STRTD000000000',
     route: /^https:\/\/www\.straightship\.com\/track-your-shipment\/tracking-id\/STRTD000000000\/$/,
-    marker: /Canada B2C Shipment Tracking|No results found/ },
+    marker: /Canada B2C Shipment Tracking|No results found/,
+    forwarding: { notFound: /No results found!/ } },
   // The page looks the number in its address up, keeps it in the field and answers an unknown one with a notice.
   { carrier: 'bringer-parcel', number: 'BPS000000000000',
     route: /^https:\/\/www\.bringerparcel\.com\/tracking\/BPS000000000000$/,

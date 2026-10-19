@@ -19,6 +19,18 @@ letters or digits. No other carrier's numbers or rules use that layout.
 tracker's form with the number and submits it. The English page, `/en/track-shipments`, is the
 same page.
 
+## Why there is no adapter
+
+Cloudflare puts an interactive check, a Turnstile checkbox, in front of every page on
+`paxel.co` for visitors outside Indonesia, so a server elsewhere gets HTTP 403 before it
+reaches the tracker. Behind the check the tracker is a server-rendered form: the page posts
+the numbers, with their dot and hyphens, and its session's form token to
+`/{id|en}/track-shipments`, and renders the histories in the reply.
+
+The Paxel Android app (`com.paxel`) shows the history of the signed-in account's own
+shipments only, and shares the web tracker's link for any other. The library solves no
+CAPTCHA, so Paxel stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

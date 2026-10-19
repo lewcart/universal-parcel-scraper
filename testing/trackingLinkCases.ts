@@ -1693,6 +1693,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'grand-slam-express', number: '000000000',
     route: /^https:\/\/www\.grandslamexpress\.in\/Web\/Track\?AwbNo=000000000$/,
     marker: /Please enter valid AWB number|Tracking History/ },
+  // Atlantic's site builds an address for one air waybill, but its tracking page reads no number
+  // from the address and opens its empty form.
+  { carrier: 'atlantic-courier', number: '0000000000',
+    route: /^https:\/\/atlanticcourier\.net\/track\/0000000000\/?$/,
+    marker: /Track your shipment|Enter Your Tracking Number/i, forwarding: 'none' },
   // The tracker looks up the document number in its address on the server and answers an unknown
   // one with its notice, the number left in its field.
   { carrier: 'maruti-air', number: '99999999',

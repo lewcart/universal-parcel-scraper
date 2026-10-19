@@ -16,18 +16,57 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "atlantic-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://atlanticcourier.net/track/{trackingNumber}/",
     "searchUrl": "https://atlanticcourier.net/track/",
     "canaryUrl": "https://atlanticcourier.net/track/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "destination_country",
+      "recipient_name",
+      "signatory",
+      "delivery_tracking_number",
+      "progress_rail"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "destination_country"
+    ],
+    "discarded": [
+      "recipient_name",
+      "signatory",
+      "delivery_tracking_number",
+      "progress_rail"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "provider_code",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "origin",
+      "proof_of_delivery",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

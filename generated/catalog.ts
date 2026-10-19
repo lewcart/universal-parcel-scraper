@@ -6903,7 +6903,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "atlantic-courier",
+      "localClocks": true
     },
     "canaryUrl": "https://atlanticcourier.net/track/",
     "trackingUrlTemplate": "https://atlanticcourier.net/track/{trackingNumber}/",

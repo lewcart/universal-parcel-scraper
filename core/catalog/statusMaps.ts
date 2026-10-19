@@ -47,6 +47,7 @@ import { statusMap as aramexAu } from '../../carriers/aramex-au/status.js';
 import { statusMap as aramexNz } from '../../carriers/aramex-nz/status.js';
 import { statusMap as arasKargo } from '../../carriers/aras-kargo/status.js';
 import { statusMap as arrowXl } from '../../carriers/arrow-xl/status.js';
+import { statusMap as atlanticCourier } from '../../carriers/atlantic-courier/status.js';
 import { statusMap as austrianPost } from '../../carriers/austrian-post/status.js';
 import { statusMap as averitt } from '../../carriers/averitt/status.js';
 import { statusMap as aymakan } from '../../carriers/aymakan/status.js';
@@ -519,7 +520,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'algerie-poste': algeriePoste, aliexpress, 'allegro-one': allegroOne, 'am-home-delivery': amHomeDelivery, 'american-west-express': americanWestExpress, amerijet, ampm, 'an-post': anPost,
   andreani, anjun, anousith, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics,
   'apple-express': appleExpress, 'aramex-au': aramexAu,
-  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
+  'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'atlantic-courier': atlanticCourier, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
   'barid-al-maghrib': baridAlMaghrib, belpost, 'best-overnite-express': bestOverniteExpress, 'better-trucks': betterTrucks, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, 'bringer-parcel': bringerParcel, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, c3x, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, ccfs, cdek, cdl, celeritas,

@@ -1493,6 +1493,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gobolt', number: '000000000000',
     route: /^https:\/\/track\.gobolt\.com\/tracking(?:\/000000000000)?$/,
     marker: /Track your shipment in real time|couldn.t find that tracking number|Suivez votre envoi en temps r[ée]el/ },
+  // The track-and-trace page fills the number into its form and frames the GETOnline search page with it.
+  { carrier: 'dpex', number: '999999999994',
+    route: /^https:\/\/dpex\.com\/track-and-trace\/\?cn=999999999994$/,
+    marker: /assist you in tracking your shipment/ },
 ];
 
 /**

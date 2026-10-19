@@ -11674,7 +11674,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpex",
+      "recognitionRank": 772,
+      "localClocks": true
     },
     "canaryUrl": "https://dpex.com/track-and-trace/",
     "trackingUrlTemplate": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
@@ -11699,6 +11701,13 @@ export const CARRIER_CATALOG = {
         "params": [
           "cn"
         ]
+      },
+      {
+        "domains": [
+          "tracking.frontierforce.com"
+        ],
+        "pathPattern": "^/(?:tracking(?:_search)?\\.aspx|go/plm-tracking(?:_search)?)/?$",
+        "query": "^(?=(?:[^&]*&)*stid=dpexwwe(?:&|$))(?:[^&]*&)*?cn=([^&]+)"
       },
       {
         "domains": [

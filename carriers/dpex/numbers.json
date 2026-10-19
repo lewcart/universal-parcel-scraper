@@ -12,7 +12,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -37,7 +37,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; the opened capture shows only the page shell, which loads results in an iframe, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; the opened capture shows only the page shell, which loads results in an iframe, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "247900212044",
@@ -50,7 +50,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -74,7 +74,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "247900111723",
@@ -87,7 +87,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -108,7 +108,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "555007693612",
@@ -121,7 +121,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -145,7 +145,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "555007642836",
@@ -158,7 +158,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -179,7 +179,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "218912010144",
@@ -192,7 +192,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -214,7 +214,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "220801619091",
@@ -227,7 +227,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -248,7 +248,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there."
+      "note": "Archived lookup on DPEX Worldwide's own track-and-trace page; capture not opened, as the page is a shell that loads results in an iframe, so no history is visible there. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "200938392583",
@@ -261,7 +261,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -283,7 +283,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "226005134622",
@@ -296,7 +296,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -317,7 +317,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "555116742110",
@@ -330,7 +330,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -352,7 +352,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "555726783791",
@@ -365,7 +365,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -387,7 +387,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "218907993861",
@@ -400,7 +400,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -424,7 +424,7 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX Worldwide's tracking page (station id dpexwwe) on the FrontierForce platform, which dpex.com embeds; the opened capture holds only the script-driven template, so the history was not visible. DPEX Worldwide's tracking knew it."
     },
     {
       "number": "226005806526",
@@ -437,7 +437,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -459,7 +459,41 @@
           "sagawa"
         ]
       },
-      "note": "Archived lookup on DPEX China's own trace-and-track page; the opened capture shows only the script-driven template, so the history was not visible."
+      "note": "Archived lookup on DPEX China's own trace-and-track page; the opened capture shows only the script-driven template, so the history was not visible. DPEX China's tracker knew it."
+    },
+    {
+      "number": "226006280426",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/tudragon154203/scrapling-fastapi/blob/main/tests/integration/crawl/carriers/test_global_carriers.py",
+        "date": "2025-10-13",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colis-prive",
+          "mrw",
+          "brt",
+          "japan-post",
+          "sf-express",
+          "sto",
+          "zto",
+          "yamato",
+          "j-and-t",
+          "lbc-express",
+          "metropolitan-warehouse",
+          "sagawa"
+        ]
+      },
+      "note": "An open-source project's integration test opens it on DPEX's trace-and-track page. DPEX Worldwide's tracking knew it."
     }
   ]
 }

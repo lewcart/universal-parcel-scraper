@@ -19,18 +19,53 @@
   "timezone": "Asia/Singapore",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dpex",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true,
+    "recognition": {
+      "rank": 772
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "location",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
     "searchUrl": "https://dpex.com/track-and-trace/",
     "canaryUrl": "https://dpex.com/track-and-trace/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "destination_country",
+      "service_type",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "location",
+      "destination_country"
+    ],
+    "discarded": [
+      "service_type",
+      "signatory"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "delivered_at",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {
@@ -52,6 +87,13 @@
       "params": [
         "cn"
       ]
+    },
+    {
+      "domains": [
+        "tracking.frontierforce.com"
+      ],
+      "pathPattern": "^/(?:tracking(?:_search)?\\.aspx|go/plm-tracking(?:_search)?)/?$",
+      "query": "^(?=(?:[^&]*&)*stid=dpexwwe(?:&|$))(?:[^&]*&)*?cn=([^&]+)"
     },
     {
       "domains": [

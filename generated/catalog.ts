@@ -6407,6 +6407,46 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "anserx": {
+    "displayName": "AnserX",
+    "color": "#167ed4",
+    "aliases": [
+      "斑头雁",
+      "斑头雁国际物流",
+      "深圳斑头雁国际物流科技有限公司",
+      "Anserx",
+      "AnserX International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://oms.anserx.com/tracking",
+    "trackingUrlTemplate": "https://oms.anserx.com/tracking?nos={trackingNumber}",
+    "trackingSearchUrl": "https://oms.anserx.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "oms.anserx.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BTYCN\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "anteraja": {
     "displayName": "Anteraja",
     "color": "#ed0677",
@@ -8764,6 +8804,46 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^CHPU\\d{19}$",
         "confidence": "high"
+      }
+    ]
+  },
+  "chukou1": {
+    "displayName": "Chukou1",
+    "color": "#3a77c9",
+    "aliases": [
+      "出口易",
+      "CK1",
+      "Chukou1 Logistics",
+      "ChuKou1"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "trackingUrlTemplate": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.chukou1.com",
+          "chukou1.com"
+        ],
+        "pathPattern": "^/LogistictsTrack\\.aspx$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])[A-Z][A-Z0-9]{2,3}\\d{6,7}$",
+        "confidence": "low"
       }
     ]
   },
@@ -17559,6 +17639,39 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^JSE[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "jumppoint": {
+    "displayName": "Jumppoint",
+    "color": "#104ada",
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.jumppoint.io/",
+    "trackingUrlTemplate": "https://tracking.jumppoint.io/?q={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.jumppoint.io/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.jumppoint.io"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JP\\d{12}$",
         "confidence": "high"
       }
     ]
@@ -30267,6 +30380,28 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "ycs-logistics": {
+    "displayName": "YCS Logistics",
+    "color": "#cf3339",
+    "aliases": [
+      "YCS音速物流",
+      "音速物流",
+      "YCS音速國際物流"
+    ],
+    "countries": [
+      "TW"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Taipei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://system.ycs-express.com/search_track",
+    "trackingSearchUrl": "https://system.ycs-express.com/search_track",
+    "linkRules": [],
+    "detectionRules": []
+  },
   "yilong-logistics": {
     "displayName": "Yilong Logistics",
     "color": "#ec0307",
@@ -30708,6 +30843,7 @@ export const CARRIER_IDS = [
   "andreani",
   "anjun",
   "anousith",
+  "anserx",
   "anteraja",
   "ap-cargo",
   "apc-overnight",
@@ -30767,6 +30903,7 @@ export const CARRIER_IDS = [
   "chilexpress",
   "chit-chats",
   "chronodiali",
+  "chukou1",
   "chunghwa-post",
   "chunil",
   "city-express-rs",
@@ -30996,6 +31133,7 @@ export const CARRIER_IDS = [
   "jrs-express",
   "jrt",
   "js-express",
+  "jumppoint",
   "kargoist",
   "kazpost",
   "kerry-tj",
@@ -31326,6 +31464,7 @@ export const CARRIER_IDS = [
   "xpressbees",
   "yalidine",
   "yc-delivery",
+  "ycs-logistics",
   "yilong-logistics",
   "yimidida",
   "yurtici-kargo",
@@ -31480,6 +31619,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "andreani": [],
   "anjun": ["anjun-aj"],
   "anousith": [],
+  "anserx": ["anserx-1"],
   "anteraja": ["anteraja-1"],
   "ap-cargo": [],
   "apc-overnight": ["apc-overnight-1"],
@@ -31539,6 +31679,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "chilexpress": [],
   "chit-chats": ["chit-chats-1"],
   "chronodiali": ["chronodiali-1"],
+  "chukou1": ["chukou1-1"],
   "chunghwa-post": ["chunghwa-post-1"],
   "chunil": [],
   "city-express-rs": ["city-express-rs-1"],
@@ -31768,6 +31909,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "jrs-express": [],
   "jrt": ["jrt-1","jrt-2"],
   "js-express": ["js-express-1"],
+  "jumppoint": ["jumppoint-1"],
   "kargoist": ["kargoist-1"],
   "kazpost": ["kazpost-s10"],
   "kerry-tj": [],
@@ -32098,6 +32240,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "xpressbees": ["xpressbees-awb"],
   "yalidine": ["yalidine-1"],
   "yc-delivery": [],
+  "ycs-logistics": [],
   "yilong-logistics": ["yilong-logistics-1"],
   "yimidida": [],
   "yurtici-kargo": [],

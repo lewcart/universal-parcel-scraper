@@ -1,0 +1,35 @@
+{
+  "id": "ycs-logistics",
+  "displayName": "YCS Logistics",
+  "aliases": [
+    "YCS音速物流",
+    "音速物流",
+    "YCS音速國際物流"
+  ],
+  "region": {
+    "countries": [
+      "TW"
+    ]
+  },
+  "brand": {
+    "color": "#cf3339"
+  },
+  "selectable": true,
+  "timezone": "Asia/Taipei",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://system.ycs-express.com/search_track",
+    "canaryUrl": "https://system.ycs-express.com/search_track",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": []
+}

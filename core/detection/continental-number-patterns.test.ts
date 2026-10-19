@@ -632,4 +632,31 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).carrier, number).not.toBe('huahan');
     }
   });
+
+  it('names Jumppoint for JP and twelve digits', () => {
+    expect(detectCarrierMatch('JP000000000001')).toMatchObject({ carrier: 'jumppoint', confidence: 'high' });
+    for (const number of ['JP00000000001', 'JP0000000000001', 'JX000000000001', 'JPA00000000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('jumppoint');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('jumppoint');
+    }
+  });
+
+  it('names AnserX for BTY, CN, ten digits and YQ', () => {
+    expect(detectCarrierMatch('BTYCN0000000001YQ')).toMatchObject({ carrier: 'anserx', confidence: 'high' });
+    for (const number of ['BTYCN000000001YQ', 'BTYUS0000000001YQ', 'BTXCN0000000001YQ', 'BTYCN0000000001YX']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('anserx');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('anserx');
+    }
+  });
+
+  it('suggests Chukou1 for its dated processing numbers', () => {
+    for (const number of ['CZN260101AB1000001', 'CRE170615ZAB0000001']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(detectCarrierMatch(number).candidates, number).toContain('chukou1');
+    }
+    for (const number of ['CZN261301AB1000001', 'CZN260132AB1000001', 'CZN2601011AB000001', 'CZN260101AB100001', 'CZ260101AB1000001']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('chukou1');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('chukou1');
+    }
+  });
 });

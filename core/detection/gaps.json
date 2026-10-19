@@ -4016,6 +4016,12 @@
     "reason": "YC Delivery numbers are twelve digits with a modulo-7 check digit, the shape Yamato, Sagawa and other Japanese carriers print."
   },
   {
+    "carrier": "ycs-logistics",
+    "pattern": "^\\d{13}$",
+    "kind": "by_design",
+    "reason": "Thirteen-digit YCS barcodes share their shape with many carriers' numeric numbers, so the shape cannot name YCS."
+  },
+  {
     "carrier": "yimidida",
     "pattern": "^\\d{12}$",
     "kind": "collision",

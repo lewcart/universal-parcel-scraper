@@ -1,0 +1,48 @@
+{
+  "id": "jumppoint",
+  "displayName": "Jumppoint",
+  "aliases": [],
+  "region": {
+    "countries": [
+      "HK"
+    ]
+  },
+  "brand": {
+    "color": "#104ada"
+  },
+  "selectable": true,
+  "timezone": "Asia/Hong_Kong",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.jumppoint.io/?q={trackingNumber}",
+    "searchUrl": "https://tracking.jumppoint.io/",
+    "canaryUrl": "https://tracking.jumppoint.io/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.jumppoint.io"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "jumppoint-1",
+      "pattern": "^JP\\d{12}$",
+      "confidence": "high"
+    }
+  ]
+}

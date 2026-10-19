@@ -1,0 +1,24 @@
+{
+  "carrier": "jumppoint",
+  "records": [
+    {
+      "number": "JP319037378197",
+      "role": "shipment",
+      "evidence": "merchant_published_example",
+      "source": {
+        "url": "https://support.shoplineapp.com/hc/zh-tw/articles/16477806789273",
+        "date": "2026-03-13",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "jumppoint",
+        "confidence": "high"
+      },
+      "note": "SHOPLINE's Jumppoint help article shows it as the 運單號 on its sample waybill printout, and Jumppoint's own tracker knows it as a created waybill without scans."
+    }
+  ]
+}

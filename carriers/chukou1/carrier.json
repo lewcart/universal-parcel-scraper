@@ -1,0 +1,54 @@
+{
+  "id": "chukou1",
+  "displayName": "Chukou1",
+  "aliases": [
+    "出口易",
+    "CK1",
+    "Chukou1 Logistics",
+    "ChuKou1"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#3a77c9"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
+    "searchUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "canaryUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.chukou1.com",
+        "chukou1.com"
+      ],
+      "pathPattern": "^/LogistictsTrack\\.aspx$",
+      "params": [
+        "trackNo"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "chukou1-1",
+      "pattern": "^[A-Z]{3}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])[A-Z][A-Z0-9]{2,3}\\d{6,7}$",
+      "confidence": "low"
+    }
+  ]
+}

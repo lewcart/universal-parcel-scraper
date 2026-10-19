@@ -1,0 +1,23 @@
+{
+  "carrier": "ycs-logistics",
+  "entries": [
+    {"wording": "檔案上傳成功", "stage": "registered", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as not yet handed over (尚未收到包裹，等待寄件人交寄)."},
+    {"wording": "已取件", "stage": "accepted", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as received by the carrier."},
+    {"wording": "貨件已抵達營業所，貨件整理中。", "stage": "accepted", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as received by the carrier."},
+    {"wording": "已集貨", "stage": "accepted", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as received by the carrier."},
+    {"wording": "轉運中", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "進站貨件整理中", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "分貨中", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "貨件已抵達營業所，分貨中。", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "貨件已由營業所發出，前往配送站途中。", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "貨件已由彰化轉運發出，前往配送站途中。", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations; Changhua is a transfer hub."},
+    {"wording": "貨件已由八里轉運發出，前往配送站途中。", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations; Bali is a transfer hub."},
+    {"wording": "貨到站所", "stage": "in_transit", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as in transit between stations."},
+    {"wording": "人員配送中", "stage": "out_for_delivery", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as out for delivery."},
+    {"wording": "配送中", "stage": "out_for_delivery", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as out for delivery."},
+    {"wording": "貨件由營業所人員配送中。", "stage": "out_for_delivery", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as out for delivery."},
+    {"wording": "已配達", "stage": "delivered", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as delivered."},
+    {"wording": "配完", "stage": "delivered", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as delivered."},
+    {"wording": "貨件已由營業所送達。", "stage": "delivered", "language": "zh-Hant", "confirmedBy": "source", "note": "On Track.TW's YCS page among the wordings seen on YCS histories, grouped as delivered."}
+  ]
+}

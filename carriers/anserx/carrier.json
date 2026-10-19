@@ -1,0 +1,54 @@
+{
+  "id": "anserx",
+  "displayName": "AnserX",
+  "aliases": [
+    "斑头雁",
+    "斑头雁国际物流",
+    "深圳斑头雁国际物流科技有限公司",
+    "Anserx",
+    "AnserX International Logistics"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#167ed4"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://oms.anserx.com/tracking?nos={trackingNumber}",
+    "searchUrl": "https://oms.anserx.com/tracking",
+    "canaryUrl": "https://oms.anserx.com/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "oms.anserx.com"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "nos"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "anserx-1",
+      "pattern": "^BTYCN\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

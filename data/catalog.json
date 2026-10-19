@@ -6405,6 +6405,46 @@
     ],
     "detectionRules": []
   },
+  "anserx": {
+    "displayName": "AnserX",
+    "color": "#167ed4",
+    "aliases": [
+      "斑头雁",
+      "斑头雁国际物流",
+      "深圳斑头雁国际物流科技有限公司",
+      "Anserx",
+      "AnserX International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://oms.anserx.com/tracking",
+    "trackingUrlTemplate": "https://oms.anserx.com/tracking?nos={trackingNumber}",
+    "trackingSearchUrl": "https://oms.anserx.com/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "oms.anserx.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BTYCN\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
   "anteraja": {
     "displayName": "Anteraja",
     "color": "#ed0677",
@@ -8762,6 +8802,46 @@
       {
         "pattern": "^CHPU\\d{19}$",
         "confidence": "high"
+      }
+    ]
+  },
+  "chukou1": {
+    "displayName": "Chukou1",
+    "color": "#3a77c9",
+    "aliases": [
+      "出口易",
+      "CK1",
+      "Chukou1 Logistics",
+      "ChuKou1"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "trackingUrlTemplate": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
+    "trackingSearchUrl": "https://www.chukou1.com/LogistictsTrack.aspx",
+    "linkRules": [
+      {
+        "domains": [
+          "www.chukou1.com",
+          "chukou1.com"
+        ],
+        "pathPattern": "^/LogistictsTrack\\.aspx$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])[A-Z][A-Z0-9]{2,3}\\d{6,7}$",
+        "confidence": "low"
       }
     ]
   },
@@ -17557,6 +17637,39 @@
     "detectionRules": [
       {
         "pattern": "^JSE[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "jumppoint": {
+    "displayName": "Jumppoint",
+    "color": "#104ada",
+    "countries": [
+      "HK"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://tracking.jumppoint.io/",
+    "trackingUrlTemplate": "https://tracking.jumppoint.io/?q={trackingNumber}",
+    "trackingSearchUrl": "https://tracking.jumppoint.io/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.jumppoint.io"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JP\\d{12}$",
         "confidence": "high"
       }
     ]
@@ -30263,6 +30376,28 @@
         ]
       }
     ],
+    "detectionRules": []
+  },
+  "ycs-logistics": {
+    "displayName": "YCS Logistics",
+    "color": "#cf3339",
+    "aliases": [
+      "YCS音速物流",
+      "音速物流",
+      "YCS音速國際物流"
+    ],
+    "countries": [
+      "TW"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Taipei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://system.ycs-express.com/search_track",
+    "trackingSearchUrl": "https://system.ycs-express.com/search_track",
+    "linkRules": [],
     "detectionRules": []
   },
   "yilong-logistics": {

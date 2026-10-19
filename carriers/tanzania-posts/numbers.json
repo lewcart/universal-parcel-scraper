@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "An archived lookup on the Posta Tracking System of Tanzania Posts Corporation asked for this EMS item; the capture shows only the search page, so the history was not visible."
+      "note": "An archived lookup on the Posta Tracking System of Tanzania Posts Corporation asked for this EMS item; the capture shows only the search page. The tracker shows the item posted at a Tanzanian office and delivered at another."
     },
     {
       "number": "EE163881159TZ",

@@ -19,17 +19,72 @@
   "timezone": "Africa/Dar_es_Salaam",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tanzania-posts",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "weight",
+    "destination_country"
+  ],
   "portal": {
     "searchUrl": "https://tracking.posta.co.tz/index.php/Tracking/tracker",
     "canaryUrl": "https://tracking.posta.co.tz/index.php/Tracking/tracker",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "destination_country",
+      "weight",
+      "item_category",
+      "progress_rail",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "delivered_at",
+      "signatory",
+      "recipient_id",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "weight",
+      "destination_country"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "item_category",
+      "progress_rail",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "contact_details",
+      "delivered_at",
+      "signatory",
+      "recipient_id",
+      "payment_details"
+    ],
+    "unavailable": [
+      "eta",
+      "service_name",
+      "provider_code",
+      "offset_timestamps",
+      "delivery_tracking_number",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

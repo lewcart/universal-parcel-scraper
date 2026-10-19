@@ -400,6 +400,7 @@ import { adapter as swissPost } from '../carriers/swiss-post/adapter.js';
 import { adapter as swissPostCargo } from '../carriers/swiss-post-cargo/adapter.js';
 import { adapter as tCat } from '../carriers/t-cat/adapter.js';
 import { adapter as tGroup } from '../carriers/t-group/adapter.js';
+import { adapter as tanzaniaPosts } from '../carriers/tanzania-posts/adapter.js';
 import { adapter as taxydema } from '../carriers/taxydema/adapter.js';
 import { adapter as tciExpress } from '../carriers/tci-express/adapter.js';
 import { adapter as tcsPakistan } from '../carriers/tcs-pakistan/adapter.js';
@@ -861,6 +862,7 @@ export const REGISTRY: RegistryDefinition = {
     "swiss-post-cargo": swissPostCargo,
     "t-cat": tCat,
     "t-group": tGroup,
+    "tanzania-posts": tanzaniaPosts,
     "taxydema": taxydema,
     "tci-express": tciExpress,
     "tcs-pakistan": tcsPakistan,
@@ -1592,7 +1594,7 @@ export const REGISTRY: RegistryDefinition = {
     "t-cat": "t-cat",
     "t-group": "t-group",
     "tamdis": "universal",
-    "tanzania-posts": "universal",
+    "tanzania-posts": "tanzania-posts",
     "taxydema": "taxydema",
     "tccs": "universal",
     "tci-express": "tci-express",

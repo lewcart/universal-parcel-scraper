@@ -27472,7 +27472,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Dar_es_Salaam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tanzania-posts",
+      "localClocks": true
     },
     "canaryUrl": "https://tracking.posta.co.tz/index.php/Tracking/tracker",
     "trackingSearchUrl": "https://tracking.posta.co.tz/index.php/Tracking/tracker",

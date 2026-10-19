@@ -18,18 +18,64 @@
   "timezone": "America/Los_Angeles",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "oak-harbor",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "eta"
+  ],
   "portal": {
     "url": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",
     "searchUrl": "https://www.oakh.com/page/tracing",
     "canaryUrl": "https://www.oakh.com/page/tracing",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "customer_reference",
+      "sender_name",
+      "recipient_name",
+      "origin",
+      "destination",
+      "postcodes",
+      "signatory",
+      "office_contact_details",
+      "office_addresses",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "eta"
+    ],
+    "discarded": [
+      "customer_reference",
+      "sender_name",
+      "recipient_name",
+      "origin",
+      "destination",
+      "postcodes",
+      "signatory",
+      "office_contact_details",
+      "office_addresses",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "provider_code",
+      "recipient_address"
+    ]
   },
   "links": [
     {

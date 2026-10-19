@@ -21086,7 +21086,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "oak-harbor",
+      "localClocks": true
     },
     "canaryUrl": "https://www.oakh.com/page/tracing",
     "trackingUrlTemplate": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",

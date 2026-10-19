@@ -2,6 +2,30 @@
   "carrier": "oak-harbor",
   "records": [
     {
+      "number": "30569826",
+      "role": "shipment",
+      "evidence": "official_documentation_example",
+      "source": {
+        "url": "https://www.oakh.com/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "A comment in Oak Harbor's home page gives this PRO in an example quick trace address; it starts with 3. The tracker no longer shows it."
+    },
+    {
       "number": "25286675",
       "role": "shipment",
       "evidence": "public_shipment_report",

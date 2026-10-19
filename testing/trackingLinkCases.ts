@@ -1607,6 +1607,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'precision-deliveries', number: 'ASL0000000000',
     route: /^https:\/\/track\.precisiondeliveries\.com\/ASL0000000000$/,
     marker: /No shipment found for "ASL0000000000"|No Shipment Found/ },
+  // The quick trace page renders the PRO in its address on the server, keeps it in hidden fields
+  // and answers an unknown one with its support notice.
+  { carrier: 'oak-harbor', number: '99999999',
+    route: /^https:\/\/www\.oakh\.com\/quicktrace&PRO=99999999$/,
+    marker: /There was an issue tracking your shipment|Pro Not Found|Pro Information/ },
 ];
 
 /**

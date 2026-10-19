@@ -19,6 +19,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "anserx": 759,
   "anteraja": 835,
   "apc-overnight": 220,
+  "apple-express": 761,
   "aramex-au": 445,
   "aramex-nz": 444,
   "aras-kargo": 420,

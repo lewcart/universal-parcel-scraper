@@ -6601,7 +6601,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "apple-express",
+      "recognitionRank": 761,
+      "localClocks": true
     },
     "canaryUrl": "https://track.appleexpress.com/",
     "trackingUrlTemplate": "https://track.appleexpress.com/orderNumber/{trackingNumber}",

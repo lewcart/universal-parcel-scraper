@@ -1556,6 +1556,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fleetoptics', number: 'FOAESH0000000',
     route: /^https:\/\/track\.fleetopticsinc\.com\/\?tracking_number=FOAESH0000000$/,
     marker: /Tracking number not found|Tracking History|Enter Your Tracking Number/ },
+  // The page looks up the order number in its address and names it in its not-found error.
+  { carrier: 'apple-express', number: '00000000',
+    route: /^https:\/\/track\.appleexpress\.com\/orderNumber\/00000000$/,
+    marker: /Could not find order: 00000000|There was an error with your request/ },
 ];
 
 /**

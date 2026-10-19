@@ -322,6 +322,7 @@ import { adapter as nzPost } from '../carriers/nz-post/adapter.js';
 import { adapter as oakHarbor } from '../carriers/oak-harbor/adapter.js';
 import { adapter as oca } from '../carriers/oca/adapter.js';
 import { adapter as ocasa } from '../carriers/ocasa/adapter.js';
+import { adapter as ocsAna } from '../carriers/ocs-ana/adapter.js';
 import { adapter as oldDominion } from '../carriers/old-dominion/adapter.js';
 import { adapter as olvaCourier } from '../carriers/olva-courier/adapter.js';
 import { adapter as omgo } from '../carriers/omgo/adapter.js';
@@ -841,6 +842,7 @@ export const REGISTRY: RegistryDefinition = {
     "oak-harbor": oakHarbor,
     "oca": oca,
     "ocasa": ocasa,
+    "ocs-ana": ocsAna,
     "old-dominion": oldDominion,
     "olva-courier": olvaCourier,
     "omgo": omgo,
@@ -1521,7 +1523,7 @@ export const REGISTRY: RegistryDefinition = {
     "oak-harbor": "oak-harbor",
     "oca": "oca",
     "ocasa": "ocasa",
-    "ocs-ana": "universal",
+    "ocs-ana": "ocs-ana",
     "old-dominion": "old-dominion",
     "olva-courier": "olva-courier",
     "omgo": "omgo",

@@ -21224,7 +21224,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ocs-ana",
+      "recognitionRank": 706,
+      "localClocks": true
     },
     "canaryUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html",
     "trackingUrlTemplate": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.php?cwbno={trackingNumber}",

@@ -273,6 +273,7 @@ import { statusMap as nzCouriers } from '../../carriers/nz-couriers/status.js';
 import { statusMap as oakHarbor } from '../../carriers/oak-harbor/status.js';
 import { statusMap as oca } from '../../carriers/oca/status.js';
 import { statusMap as ocasa } from '../../carriers/ocasa/status.js';
+import { statusMap as ocsAna } from '../../carriers/ocs-ana/status.js';
 import { statusMap as oldDominion } from '../../carriers/old-dominion/status.js';
 import { statusMap as olvaCourier } from '../../carriers/olva-courier/status.js';
 import { statusMap as omgo } from '../../carriers/omgo/status.js';
@@ -484,7 +485,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse,
   'micro-express': microExpress, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost,
   'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers,
-  'oak-harbor': oakHarbor, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
+  'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, parcelpoint, passport, 'pathao-courier': pathaoCourier,
   'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,

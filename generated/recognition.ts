@@ -241,6 +241,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "nz-post": 760,
   "oca": 974,
   "ocasa": 797,
+  "ocs-ana": 706,
   "olva-courier": 911,
   "omgo": 450,
   "omniva": 300,

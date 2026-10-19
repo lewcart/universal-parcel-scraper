@@ -14168,7 +14168,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gaash",
+      "recognitionRank": 769
     },
     "canaryUrl": "https://gaashwd.com/track-parcel/",
     "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",

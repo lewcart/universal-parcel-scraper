@@ -19,18 +19,60 @@
   "timezone": "Asia/Jerusalem",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gaash",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 769
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "offset_timestamps",
+    "pickup_point",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
     "searchUrl": "https://gaashwd.com/track-parcel/",
     "canaryUrl": "https://gaashwd.com/track-parcel/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "pickup_point",
+      "customs_status",
+      "delivery_partner",
+      "contact_details",
+      "payment_details",
+      "payment_link",
+      "documents"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "offset_timestamps",
+      "pickup_point",
+      "delivered_at"
+    ],
+    "discarded": [
+      "customs_status",
+      "delivery_partner",
+      "contact_details",
+      "payment_details",
+      "payment_link",
+      "documents"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

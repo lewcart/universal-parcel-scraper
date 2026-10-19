@@ -58,7 +58,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -67,7 +67,7 @@
           "colis-prive"
         ]
       },
-      "note": "An archived lookup on GAASH's own tracker carries this number; the capture was opened but holds only the page shell, as the history loads by script."
+      "note": "An archived lookup on GAASH's own tracker carries this number; the capture holds only the page shell, and the tracker's data routes give its history."
     }
   ]
 }

@@ -179,6 +179,7 @@ import { adapter as flashExpressPh } from '../carriers/flash-express-ph/adapter.
 import { adapter as fourPx } from '../carriers/four-px/adapter.js';
 import { adapter as foxpost } from '../carriers/foxpost/adapter.js';
 import { adapter as fukuyama } from '../carriers/fukuyama/adapter.js';
+import { adapter as gaash } from '../carriers/gaash/adapter.js';
 import { adapter as gati } from '../carriers/gati/adapter.js';
 import { adapter as gdex } from '../carriers/gdex/adapter.js';
 import { adapter as gebruederWeiss } from '../carriers/gebrueder-weiss/adapter.js';
@@ -653,6 +654,7 @@ export const REGISTRY: RegistryDefinition = {
     "four-px": fourPx,
     "foxpost": foxpost,
     "fukuyama": fukuyama,
+    "gaash": gaash,
     "gati": gati,
     "gdex": gdex,
     "gebrueder-weiss": gebruederWeiss,
@@ -1222,7 +1224,7 @@ export const REGISTRY: RegistryDefinition = {
     "foxpost": "foxpost",
     "franch-express": "universal",
     "fukuyama": "fukuyama",
-    "gaash": "universal",
+    "gaash": "gaash",
     "gati": "gati",
     "gdex": "gdex",
     "gebrueder-weiss": "gebrueder-weiss",

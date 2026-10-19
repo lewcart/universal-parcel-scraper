@@ -1467,6 +1467,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chronodiali', number: 'CHPU0000000000000000000',
     route: /^https:\/\/chronodiali\.ma\/suivi_colis\.html\?id=CHPU0000000000000000000$/,
     marker: /Veuillez v[ée]rifier votre tracking id|Faites le suivi de votre colis/ },
+  // The page puts the number in its address into its field and looks it up.
+  { carrier: 'gaash', number: 'GWD000000000',
+    route: /^https:\/\/gaashwd\.com\/track-parcel\/\?TrackingNumber=GWD000000000$/,
+    marker: /We could not find your parcel|Track Your Parcel/ },
 ];
 
 /**

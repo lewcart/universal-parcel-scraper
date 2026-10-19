@@ -41,8 +41,9 @@ codes it does not know go to the shared wording rules. "Item returned from Custo
 release, not a return. The pickup point is the office that printed the invitation to collect the
 item, while it waits there or once it was collected there.
 
-Clocks carry no offset and are kept as local times. A foreign post's events keep that post's wall
-clock. Scans at the same second follow the tracker's progress groups, from created to delivered,
+Clocks carry no offset. A Latvian office's scan is on Riga's clock, and a foreign post's event on
+its country's when the country keeps one zone; other events, and a clock that summer time makes
+ambiguous, stay local times. Scans at the same second follow the tracker's progress groups, from created to delivered,
 then the reply's order. A repeated foreign event counts once.
 
 An office without an English name comes back as "Pasts", the company's name, and gets no

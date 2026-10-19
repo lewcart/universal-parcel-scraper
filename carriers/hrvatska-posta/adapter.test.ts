@@ -19,7 +19,7 @@ const reply = (body: string, status = 200) => new Response(body, { status, heade
 const environment = (fetcher: typeof fetch) => ({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
 const carrier = (fetcher: typeof fetch) => adapter(environment(fetcher));
 const rows = (result: ReturnType<typeof parseHrvatskaPosta>) =>
-  result.events!.map(event => [event.local_time, event.description, event.location, event.stage]);
+  result.events!.map(event => [event.time ?? event.local_time, event.description, event.location, event.stage]);
 // A desktop row of the page, found by its wording, for edited copies.
 const rowOf = (wording: string) => new RegExp(String.raw`\s*<div class="d-none d-md-flex row[^"]*">(?:(?!<div class="d-none d-md-flex row)[\s\S])*?>${wording}</span>(?:\s*<span[^>]*>[^<]*</span>)?\s*</div>\s*</div>`);
 const without = (html: string, wording: string) => html.replace(rowOf(wording), '');
@@ -39,20 +39,22 @@ describe('Hrvatska pošta tracking adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a parcel collected from a locker newest first, as wall clocks, without the offices’ postcodes', () => {
+  it('reads a parcel collected from a locker newest first, on Zagreb’s clock where an office scanned it, without the offices’ postcodes', () => {
     const result = parseHrvatskaPosta(page('locker'), LOCKER);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Item delivered', last_update: null, last_update_local: '2026-03-05T10:15:45', expected_delivery: null,
+      last_status_text: 'Item delivered', last_update: '2026-03-05T10:15:45+01:00', expected_delivery: null,
       pickup_point: 'Paketomat Primjer Trgovina', weight_kg: 1.25 });
     // Each scan once, although the page repeats it in a mobile row.
     expect(rows(result)).toEqual([
-      ['2026-03-05T10:15:45', 'Item delivered', 'Paketomat Primjer Trgovina', 'delivered'],
-      ['2026-03-04T13:21:50', 'The shipment has been handed over to the parcelstation', 'Paketomat Primjer Trgovina', 'ready_for_pickup'],
+      ['2026-03-05T10:15:45+01:00', 'Item delivered', 'Paketomat Primjer Trgovina', 'delivered'],
+      ['2026-03-04T13:21:50+01:00', 'The shipment has been handed over to the parcelstation', 'Paketomat Primjer Trgovina', 'ready_for_pickup'],
       ['2026-03-03T17:01:52', 'Delivery was redirected to the parcelstation', undefined, 'in_transit'],
-      ['2026-03-03T16:28:12', 'Item received', 'PRIMJERGRAD', 'accepted'],
+      ['2026-03-03T16:28:12+01:00', 'Item received', 'PRIMJERGRAD', 'accepted'],
       ['2026-03-03T04:39:49', 'Item announced', undefined, 'registered'],
     ]);
-    expect(result.events!.every(event => event.time === undefined)).toBe(true);
+    // A scan without an office keeps its wall clock.
+    expect(result.events!.filter(event => !event.location).every(event => event.time === undefined && event.local_time)).toBe(true);
+    expect(result.last_update_local).toBeUndefined();
     for (const name of ['locker', 'returned', 'abroad']) {
       const number = { locker: LOCKER, returned: RETURNED, abroad: ABROAD }[name]!;
       expect(JSON.stringify(parseHrvatskaPosta(page(name), number)), name).not.toMatch(/\b99\d{3}\b|69999/);
@@ -62,7 +64,7 @@ describe('Hrvatska pošta tracking adapter', () => {
   it('names the locker a parcel waits in, and no point for a parcel brought to the door', () => {
     const waiting = parseHrvatskaPosta(without(page('locker'), 'Item delivered'), LOCKER);
     expect(waiting).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup', pickup_point: 'Paketomat Primjer Trgovina',
-      last_update_local: '2026-03-04T13:21:50' });
+      last_update: '2026-03-04T13:21:50+01:00' });
     const door = parseHrvatskaPosta(page('locker').replace(/>The shipment has been handed over to the parcelstation</g, '>Item is out for delivery<'), LOCKER);
     expect(door).toMatchObject({ current_stage: 'delivered' });
     expect(door.pickup_point).toBeUndefined();
@@ -74,16 +76,16 @@ describe('Hrvatska pošta tracking adapter', () => {
     expect(result.pickup_point).toBeUndefined();
     // The repeated office scan appears once.
     expect(rows(result)).toEqual([
-      ['2026-03-18T06:49:48', 'Item delivered to sender', 'PRIMJERGRAD', 'returned'],
-      ['2026-03-18T06:49:13', 'Item can be picked up at the Post Office', 'PRIMJERGRAD', 'ready_for_pickup'],
-      ['2026-03-17T07:31:20', 'Item returned to sender', 'PRIMJERGRAD-ISTOK', 'returned'],
-      ['2026-03-17T07:31:19', 'Item not delivered', 'PRIMJERGRAD-ISTOK', 'failed_attempt'],
-      ['2026-03-10T07:34:28', 'Item can be picked up at the Post Office', 'PRIMJERGRAD-ISTOK', 'ready_for_pickup'],
-      ['2026-03-09T09:40:22', 'Delivery attempt', 'PRIMJERGRAD', 'failed_attempt'],
-      ['2026-03-09T07:53:52', 'Item is out for delivery', 'PRIMJERGRAD', 'out_for_delivery'],
-      ['2026-03-06T13:12:49', 'Item received', 'PRIMJERGRAD', 'accepted'],
+      ['2026-03-18T06:49:48+01:00', 'Item delivered to sender', 'PRIMJERGRAD', 'returned'],
+      ['2026-03-18T06:49:13+01:00', 'Item can be picked up at the Post Office', 'PRIMJERGRAD', 'ready_for_pickup'],
+      ['2026-03-17T07:31:20+01:00', 'Item returned to sender', 'PRIMJERGRAD-ISTOK', 'returned'],
+      ['2026-03-17T07:31:19+01:00', 'Item not delivered', 'PRIMJERGRAD-ISTOK', 'failed_attempt'],
+      ['2026-03-10T07:34:28+01:00', 'Item can be picked up at the Post Office', 'PRIMJERGRAD-ISTOK', 'ready_for_pickup'],
+      ['2026-03-09T09:40:22+01:00', 'Delivery attempt', 'PRIMJERGRAD', 'failed_attempt'],
+      ['2026-03-09T07:53:52+01:00', 'Item is out for delivery', 'PRIMJERGRAD', 'out_for_delivery'],
+      ['2026-03-06T13:12:49+01:00', 'Item received', 'PRIMJERGRAD', 'accepted'],
       ['2026-03-06T12:20:28', 'Item announced', undefined, 'registered'],
-      ['2026-03-06T12:16:03', 'Item announced', 'PRIMJERGRAD', 'registered'],
+      ['2026-03-06T12:16:03+01:00', 'Item announced', 'PRIMJERGRAD', 'registered'],
     ]);
     // A delivery once the item is on its way back reaches its sender.
     const plain = parseHrvatskaPosta(page('returned').replace('>Item delivered to sender<', '>Item delivered<'), RETURNED);
@@ -94,17 +96,24 @@ describe('Hrvatska pošta tracking adapter', () => {
     expect(waiting).toMatchObject({ current_stage: 'failed_attempt', last_status_text: 'Item not delivered' });
   });
 
-  it('keeps a foreign facility as the page names it and reads its acceptance as transit', () => {
+  it('keeps a foreign facility as the page names it, on its own clock, and reads its acceptance as transit', () => {
     const result = parseHrvatskaPosta(page('abroad'), ABROAD);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update_local: '2026-03-09T12:13:00', weight_kg: 0.012 });
     expect(rows(result)).toEqual([
       ['2026-03-09T12:13:00', 'Item delivered', undefined, 'delivered'],
       ['2026-03-05T00:39:00', 'Item received in destination country', 'ZZXMPA EXAMPLEVILLE AP', 'in_transit'],
       ['2026-03-05T00:34:00', 'Item received', 'ZZXMPA EXAMPLEVILLE AP', 'in_transit'],
-      ['2026-03-03T02:12:21', 'Item sent', 'PRIMJERGRAD', 'in_transit'],
-      ['2026-03-02T22:43:45', 'Item received at exchange office', 'PRIMJERGRAD', 'in_transit'],
-      ['2026-03-01T13:25:35', 'Item received', 'ČUDNOVO SELO', 'accepted'],
+      ['2026-03-03T02:12:21+01:00', 'Item sent', 'PRIMJERGRAD', 'in_transit'],
+      ['2026-03-02T22:43:45+01:00', 'Item received at exchange office', 'PRIMJERGRAD', 'in_transit'],
+      ['2026-03-01T13:25:35+01:00', 'Item received', 'ČUDNOVO SELO', 'accepted'],
     ]);
+  });
+
+  it('keeps a home scan the autumn change of clocks makes ambiguous as a local time', () => {
+    const result = parseHrvatskaPosta(page('locker').replaceAll('05.03.2026', '25.10.2026').replaceAll('10:15:45', '02:30:00'), LOCKER);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-10-25T02:30:00' });
+    expect(result.events![0]).toMatchObject({ local_time: '2026-10-25T02:30:00', description: 'Item delivered' });
+    expect(result.events![0]!.time).toBeUndefined();
   });
 
   it('stages new wording through the shared rules and keeps the rest visible without a stage', () => {
@@ -114,7 +123,7 @@ describe('Hrvatska pošta tracking adapter', () => {
     const unknown = parseHrvatskaPosta(page('locker').replace('>Item delivered<', '>Item weighed<'), LOCKER);
     expect(unknown).toMatchObject({ status: 'unknown', last_status_text: 'Item weighed' });
     expect(unknown.current_stage).toBeUndefined();
-    expect(unknown.events![0]).toEqual({ local_time: '2026-03-05T10:15:45', description: 'Item weighed', location: 'Paketomat Primjer Trgovina' });
+    expect(unknown.events![0]).toEqual({ time: '2026-03-05T10:15:45+01:00', description: 'Item weighed', location: 'Paketomat Primjer Trgovina' });
     // An item without a measured weight shows 0 g.
     expect(parseHrvatskaPosta(page('locker').replace('>1250 g<', '>0 g<'), LOCKER).weight_kg).toBeUndefined();
   });
@@ -168,8 +177,7 @@ describe('Hrvatska pošta tracking adapter', () => {
 
   it('recognizes a known parcel and the no-data notice, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(page('locker'))).mockResolvedValueOnce(reply(page('not-found')));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(LOCKER)).resolves.toEqual({ known: true, lastActivityAt: null });
+    await expect(carrier(fetcher).recognize!(LOCKER)).resolves.toEqual({ known: true, lastActivityAt: '2026-03-05T09:15:45.000Z' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

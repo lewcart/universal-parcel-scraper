@@ -11,7 +11,7 @@ describe('Hrvatska pošta live retrieval', () => {
     const answer = await createTracker({ providers: [] }).track({ number, carrier: 'hrvatska-posta' });
     expect(answer).toMatchObject({ carrier: 'hrvatska-posta', source: 'hrvatska-posta', attempts: [{ source: 'hrvatska-posta', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    expect(answer.result.events.every(event => event.local_time && event.description && !/^\d{5}\s/.test(event.location ?? ''))).toBe(true);
+    expect(answer.result.events.every(event => (event.time || event.local_time) && event.description && !/^\d{5}\s/.test(event.location ?? ''))).toBe(true);
     await expect(direct().recognize!(number)).resolves.toMatchObject({ known: true });
   });
 

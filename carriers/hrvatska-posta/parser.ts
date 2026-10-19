@@ -7,6 +7,7 @@ import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, S
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { hrvatskaPostaStage } from './status.js';
 
@@ -15,6 +16,7 @@ export const PROVIDER = 'Hrvatska pošta';
 export const HRVATSKA_POSTA_MAX_BYTES = 1_000_000;
 
 const MAX_ROWS = 500;
+const HOME_ZONE = 'Europe/Zagreb';
 // The page's label for the number it answers for, in English, the language the adapter asks for.
 const NUMBER_LABEL = 'Item number';
 // The English page's notice for a number without data. It reads like a format
@@ -50,6 +52,20 @@ function wallClock(stamp: string): string | null {
   // UTC only checks the calendar fields. No offset is assigned.
   const parsed = DateTime.fromFormat(`${match[1]} ${match[2]}`, 'dd.MM.yyyy HH:mm:ss', { zone: 'UTC' });
   return parsed.isValid ? parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") : null;
+}
+
+/**
+ * When the scan happened. A Croatian office's or locker's scan is on Zagreb's
+ * clock. A foreign post's scan is on that post's clock, which its facility's
+ * name does not settle, so it stays a local time, as does a scan without a
+ * place and a wall clock that is ambiguous at a change of summer time.
+ */
+function clockOf(wall: string, home: boolean): { time: string } | { local_time: string } {
+  if (home && DateTime.fromISO(wall, { zone: HOME_ZONE }).getPossibleOffsets().length === 1) {
+    const placed = isoTime(wall, HOME_ZONE);
+    if (placed?.iso.startsWith(wall)) return { time: placed.iso };
+  }
+  return { local_time: wall };
 }
 
 /** The office, locker or foreign facility, without the number of a Croatian one. */
@@ -103,7 +119,7 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
   // The desktop rows; the page repeats each scan in a mobile row, which is not read.
   const rows = groups.find('div.event__status__item-content > div.row');
   if (!rows.length || rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'Hrvatska pošta returned an invalid item history');
-  const scans: { event: CarrierEvent; index: number }[] = [];
+  const scans: { event: CarrierEvent; wall: string; index: number }[] = [];
   const seen = new Set<string>();
   rows.each((index, node) => {
     const columns = $(node).children('div');
@@ -112,18 +128,18 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
     const spans = columns.eq(1).children('span');
     const description = clean(spans.eq(0).text(), 300);
     if (!time || !description || spans.length > 2) throw new SchemaError(PROVIDER, 'Hrvatska pošta returned a scan without a clock or wording');
-    const location = spans.length === 2 ? place(spans.eq(1).text()) : '';
-    const event: CarrierEvent = { local_time: time, description, ...(location ? { location } : {}) };
+    const office = spans.length === 2 ? clean(spans.eq(1).text(), 200) : '';
+    const location = place(office);
+    const event: CarrierEvent = { ...clockOf(time, OFFICE_NUMBER.test(office)), description, ...(location ? { location } : {}) };
     // A parcel can repeat a scan with the same clock, place and wording.
     const identity = JSON.stringify(event);
     if (seen.has(identity)) return;
     seen.add(identity);
-    scans.push({ event, index });
+    scans.push({ event, wall: time, index });
   });
   // The page groups scans by milestone, so their clocks can interleave across
   // groups. Newest first; equal clocks keep the page's order.
-  scans.sort((left, right) => right.event.local_time! > left.event.local_time! ? 1
-    : right.event.local_time! < left.event.local_time! ? -1 : left.index - right.index);
+  scans.sort((left, right) => right.wall > left.wall ? 1 : right.wall < left.wall ? -1 : left.index - right.index);
   const events = scans.map(({ event }) => event);
 
   // Oldest first: an acceptance after the item moved on is a facility abroad
@@ -159,8 +175,8 @@ export function parseHrvatskaPosta(html: string, rawNumber: string): CarrierResu
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: latest.stage_source } : {}),
     last_status_text: latest.description!,
-    last_update: null,
-    last_update_local: latest.local_time!,
+    last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: latest.local_time! }),
     expected_delivery: null,
     ...(point ? { pickup_point: point } : {}),
     ...(weight ? { weight_kg: weight } : {}),

@@ -25,7 +25,7 @@ const edited = (name: string, change: (payload: Reply) => void): Reply => {
   return payload;
 };
 const rows = (result: ReturnType<typeof parseLatvijasPasts>) =>
-  result.events!.map(event => [event.local_time, event.provider_code, event.stage ?? null, event.location ?? null]);
+  result.events!.map(event => [event.time ?? event.local_time, event.provider_code, event.stage ?? null, event.location ?? null]);
 
 describe('Latvijas Pasts tracking adapter', () => {
   it('asks the tracking service for the whole number once, in English JSON, and records the step', async () => {
@@ -43,24 +43,25 @@ describe('Latvijas Pasts tracking adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads an item from abroad collected from a customer centre as wall clocks, once per scan', () => {
+  it("reads an item from abroad collected from a customer centre, each scan on its country's clock and once", () => {
     const result = parseLatvijasPasts(JSON.parse(text('collected')), COLLECTED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Item delivered', last_update: null, last_update_local: '2026-03-12T12:12:56', expected_delivery: null,
+      last_status_text: 'Item delivered', last_update: '2026-03-12T12:12:56+02:00', expected_delivery: null,
       pickup_point: 'Customer centre: Example' });
     expect(rows(result)).toEqual([
-      ['2026-03-12T12:12:56', '37', 'delivered', 'Customer centre: Example'],
-      ['2026-03-11T09:30:22', '1134', 'ready_for_pickup', 'Customer centre: Example'],
-      ['2026-03-11T09:22:09', '1120', 'in_transit', 'Customer centre: Example'],
-      ['2026-03-10T23:24:49', '1113', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
-      ['2026-03-09T09:04:46', '30', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
-      // The foreign post's events name its country; the repeated posting counts once.
-      ['2026-03-07T08:15:00', '12', 'in_transit', 'GERMANY'],
-      ['2026-03-07T03:23:00', '3', 'in_transit', 'GERMANY'],
-      ['2026-03-07T03:23:00', '8', 'in_transit', 'GERMANY'],
-      ['2026-03-06T09:06:00', '1', 'accepted', 'GERMANY'],
+      ['2026-03-12T12:12:56+02:00', '37', 'delivered', 'Customer centre: Example'],
+      ['2026-03-11T09:30:22+02:00', '1134', 'ready_for_pickup', 'Customer centre: Example'],
+      ['2026-03-11T09:22:09+02:00', '1120', 'in_transit', 'Customer centre: Example'],
+      ['2026-03-10T23:24:49+02:00', '1113', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-03-09T09:04:46+02:00', '30', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      // The foreign post's events name its country and keep its clock; the repeated posting counts once.
+      ['2026-03-07T08:15:00+01:00', '12', 'in_transit', 'GERMANY'],
+      ['2026-03-07T03:23:00+01:00', '3', 'in_transit', 'GERMANY'],
+      ['2026-03-07T03:23:00+01:00', '8', 'in_transit', 'GERMANY'],
+      ['2026-03-06T09:06:00+01:00', '1', 'accepted', 'GERMANY'],
     ]);
-    expect(result.events!.every(event => event.time === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result.events!.every(event => event.local_time === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result).not.toHaveProperty('last_update_local');
     expect(JSON.stringify(result)).not.toMatch(/next_office|"901"/);
     // Waiting at the office is current before the collection.
     const waiting = edited('collected', payload => { payload.data!.shift(); });
@@ -68,25 +69,34 @@ describe('Latvijas Pasts tracking adapter', () => {
       last_status_text: 'Notification - pick-up invitation printed', pickup_point: 'Customer centre: Example' });
   });
 
+  it('keeps a Latvian scan the autumn change of clocks makes ambiguous as a local time', () => {
+    const result = parseLatvijasPasts(edited('collected', payload => {
+      payload.data![0]!.event_timestamp = '2026-10-25 03:30:00.000';
+    }), COLLECTED);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-10-25T03:30:00' });
+    expect(result.events![0]).toMatchObject({ local_time: '2026-10-25T03:30:00', provider_code: '37' });
+    expect(result.events![0]!.time).toBeUndefined();
+  });
+
   it('reads an item sent abroad, keeps customs release apart from a return and names no pickup point for a door delivery', () => {
     const result = parseLatvijasPasts(JSON.parse(text('abroad')), ABROAD);
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update_local: '2026-02-20T16:05:00' });
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_update: '2026-02-20T16:05:00+01:00' });
     expect(result.pickup_point).toBeUndefined();
     expect(rows(result)).toEqual([
-      ['2026-02-20T16:05:00', '37', 'delivered', 'FRANCE'],
-      ['2026-02-20T09:17:00', '39', 'out_for_delivery', 'FRANCE'],
-      ['2026-02-19T18:37:00', '30', 'in_transit', 'FRANCE'],
-      ['2026-02-17T02:10:15', '8', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
-      ['2026-02-17T00:54:00', '69', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
-      ['2026-02-17T00:53:00', '7', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
-      ['2026-02-17T00:52:00', '4', 'customs', 'SAMPLE EXCHANGE (PARCELS)'],
-      ['2026-02-17T00:51:00', '3', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-02-20T16:05:00+01:00', '37', 'delivered', 'FRANCE'],
+      ['2026-02-20T09:17:00+01:00', '39', 'out_for_delivery', 'FRANCE'],
+      ['2026-02-19T18:37:00+01:00', '30', 'in_transit', 'FRANCE'],
+      ['2026-02-17T02:10:15+02:00', '8', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-02-17T00:54:00+02:00', '69', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-02-17T00:53:00+02:00', '7', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-02-17T00:52:00+02:00', '4', 'customs', 'SAMPLE EXCHANGE (PARCELS)'],
+      ['2026-02-17T00:51:00+02:00', '3', 'in_transit', 'SAMPLE EXCHANGE (PARCELS)'],
       // The company's own name places nothing.
-      ['2026-02-16T14:40:51', '35', 'in_transit', null],
+      ['2026-02-16T14:40:51+02:00', '35', 'in_transit', null],
       // At the same second, the later progress group first.
-      ['2026-02-16T14:38:36', '32', 'in_transit', null],
-      ['2026-02-16T14:38:36', '1', 'accepted', null],
-      ['2026-02-16T10:56:06', '1114', 'registered', null],
+      ['2026-02-16T14:38:36+02:00', '32', 'in_transit', null],
+      ['2026-02-16T14:38:36+02:00', '1', 'accepted', null],
+      ['2026-02-16T10:56:06+02:00', '1114', 'registered', null],
     ]);
     // Out of order in the reply, newest first in the result.
     const shuffled = edited('abroad', payload => { payload.data!.reverse(); });
@@ -104,7 +114,7 @@ describe('Latvijas Pasts tracking adapter', () => {
     const result = parseLatvijasPasts(unknown, ABROAD);
     expect(result).toMatchObject({ status: 'unknown', last_status_text: 'Item weighed at counter' });
     expect(result.current_stage).toBeUndefined();
-    expect(result.events![0]).toEqual({ local_time: '2026-02-21T08:00:00', description: 'Item weighed at counter', provider_code: '9998',
+    expect(result.events![0]).toEqual({ time: '2026-02-21T08:00:00+02:00', description: 'Item weighed at counter', provider_code: '9998',
       location: 'Post office: Example 9' });
     // A foreign post's event names a country, never a pickup point.
     const abroad = edited('abroad', payload => {
@@ -143,8 +153,8 @@ describe('Latvijas Pasts tracking adapter', () => {
 
   it('recognizes a known item and the no-information notice, from plain HTTP', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(reply(text('abroad'))).mockResolvedValueOnce(reply(text('not-found')));
-    // Wall clocks cannot rank reuse of a number.
-    await expect(carrier(fetcher).recognize!(ABROAD)).resolves.toEqual({ known: true, lastActivityAt: null });
+    // The newest scan's clock ranks reuse of a number.
+    await expect(carrier(fetcher).recognize!(ABROAD)).resolves.toEqual({ known: true, lastActivityAt: '2026-02-20T15:05:00.000Z' });
     await expect(carrier(fetcher).recognize!(ABSENT)).resolves.toEqual({ known: false });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

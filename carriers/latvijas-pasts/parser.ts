@@ -4,6 +4,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } fro
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { lastMovement } from '../../core/result/pickup.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { countryTimeZone, isoTime } from '../../core/time/index.js';
 import { clean, cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { latvijasPastsStage } from './status.js';
@@ -14,6 +15,7 @@ export const LATVIJAS_PASTS_MAX_BYTES = 256_000;
 
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
+const HOME_ZONE = 'Europe/Riga';
 const CODE = /^\d{1,6}$/;
 const CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})(?:\.\d{1,6})?$/;
 // The notices the English tracker gives instead of a history.
@@ -40,6 +42,20 @@ function wallClock(value: unknown): string | null {
   return parsed.isValid ? parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss") : null;
 }
 
+/**
+ * When the scan happened. A Latvian office's scan is on Riga's clock and a
+ * foreign post's on its country's, when that country keeps a single clock;
+ * otherwise, and when the wall clock is ambiguous at a change of summer time,
+ * it stays a local time.
+ */
+function clockOf(wall: string, zone: string | null): { time: string } | { local_time: string } {
+  if (zone && DateTime.fromISO(wall, { zone }).getPossibleOffsets().length === 1) {
+    const placed = isoTime(wall, zone);
+    if (placed?.iso.startsWith(wall)) return { time: placed.iso };
+  }
+  return { local_time: wall };
+}
+
 /** The office the scan names, else the country a foreign post's event comes from. */
 function placeOf(row: Record<string, unknown>): { name: string; office: boolean } {
   const office = clean(row.office, 200).replace(POSTCODE, '').trim();
@@ -47,7 +63,7 @@ function placeOf(row: Record<string, unknown>): { name: string; office: boolean 
   return { name: clean(row.country, 100), office: false };
 }
 
-interface Scan { readonly event: CarrierEvent; readonly office: boolean; readonly group: number; readonly index: number }
+interface Scan { readonly event: CarrierEvent; readonly wall: string; readonly office: boolean; readonly group: number; readonly index: number }
 
 /**
  * The tracker's reply for one item: its scans newest first, each with an event
@@ -77,20 +93,21 @@ export function parseLatvijasPasts(payload: unknown, rawNumber: string): Carrier
     const time = wallClock(row.event_timestamp);
     if (!CODE.test(code) || !time) throw new SchemaError(PROVIDER, 'Latvijas Pasts returned a scan without a code or clock');
     const place = placeOf(row);
-    const event: CarrierEvent = { local_time: time, description: clean(row.event, 300) || code, provider_code: code,
+    const zone = place.office ? HOME_ZONE : countryTimeZone(place.name);
+    const event: CarrierEvent = { ...clockOf(time, zone), description: clean(row.event, 300) || code, provider_code: code,
       ...(place.name ? { location: place.name } : {}) };
     // A foreign post's event can come twice.
     const identity = JSON.stringify(event);
     if (seen.has(identity)) return;
     seen.add(identity);
     const group = Number(row.event_group_sequence_number);
-    scans.push({ event, office: place.office, group: Number.isInteger(group) ? group : 0, index });
+    scans.push({ event, wall: time, office: place.office, group: Number.isInteger(group) ? group : 0, index });
   });
   if (!scans.length) throw new IndeterminateError(PROVIDER, 'Latvijas Pasts returned no scans');
   // Newest first. Scans at the same second follow the tracker's progress
   // groups, from created to delivered, then the reply's order.
-  scans.sort((left, right) => (right.event.local_time! > left.event.local_time! ? 1
-    : right.event.local_time! < left.event.local_time! ? -1 : right.group - left.group || left.index - right.index));
+  scans.sort((left, right) => (right.wall > left.wall ? 1
+    : right.wall < left.wall ? -1 : right.group - left.group || left.index - right.index));
   const events = scans.map(({ event }) => event);
   for (const event of events) {
     const classified = latvijasPastsStage(event.provider_code!, event.description!);
@@ -110,8 +127,8 @@ export function parseLatvijasPasts(payload: unknown, rawNumber: string): Carrier
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: latest.stage_source } : {}),
     last_status_text: latest.description!,
-    last_update: null,
-    last_update_local: latest.local_time!,
+    last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: latest.local_time! }),
     expected_delivery: null,
     ...(point ? { pickup_point: point } : {}),
     events: events.slice(0, MAX_EVENTS),

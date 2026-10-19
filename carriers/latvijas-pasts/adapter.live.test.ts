@@ -11,7 +11,7 @@ describe('Latvijas Pasts live retrieval', () => {
     const answer = await createTracker({ providers: [] }).track({ number, carrier: 'latvijas-pasts' });
     expect(answer).toMatchObject({ carrier: 'latvijas-pasts', source: 'latvijas-pasts', attempts: [{ source: 'latvijas-pasts', kind: 'ok' }] });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    expect(answer.result.events.every(event => event.local_time && event.description && event.provider_code)).toBe(true);
+    expect(answer.result.events.every(event => (event.time || event.local_time) && event.description && event.provider_code)).toBe(true);
     await expect(direct().recognize!(number)).resolves.toMatchObject({ known: true });
   });
 

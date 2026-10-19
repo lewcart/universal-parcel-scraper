@@ -12,6 +12,8 @@ const RULES: readonly (readonly [RegExp, Stage])[] = [
   // The shipper's details, before Straightship has the parcel.
   [/^package information is created in the system$/, 'registered'],
   [/^ready ?for ?shipping$/, 'registered'],
+  // Relayed by universal providers between the label and the first scan in Canada.
+  [/^customs released$/, 'in_transit'],
   // The first scan once the parcel reaches Straightship in Canada; a station row at the same time follows.
   [/^package received with origin scan warehouse$/, 'accepted'],
   [/^package is received at a straightship station$/, 'in_transit'],

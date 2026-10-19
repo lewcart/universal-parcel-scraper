@@ -1430,6 +1430,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'quicksilver-sa', number: 'QS000000000',
     route: /^https:\/\/erp\.quick-silver\.express\/v2\/tracking\/QS000000000$/,
     marker: /Tracking number not found|Place an order|Ready For Dispatch|Out For Delivery/ },
+  // The tracker looks up the order number in its address on load and answers an unknown one with a notice without the number.
+  { carrier: 'quiqup', number: '0000000',
+    route: /^https:\/\/track-parcel\.quiqup\.com\/0000000$/,
+    marker: /We can't seem to find this shipment in our system|Order status: #/,
+    forwarding: { notFound: /We can't seem to find this shipment in our system/ } },
   // The tracker looks up the number in its address as it stands and answers an unknown one with its own notice.
   { carrier: 'gogo-xpress', number: 'ZXQA-0000-0009',
     route: /^https:\/\/app\.gogoxpress\.com\/track\/ZXQA-0000-0009$/,

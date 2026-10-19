@@ -24218,11 +24218,19 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quiqup"
     },
     "canaryUrl": "https://track-parcel.quiqup.com/",
+    "trackingUrlTemplate": "https://track-parcel.quiqup.com/{trackingNumber}",
     "trackingSearchUrl": "https://track-parcel.quiqup.com/",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "track-parcel.quiqup.com"
+        ],
+        "path": "^/([1-9]\\d{6,7})/?$"
+      }
+    ],
     "detectionRules": []
   },
   "qwintry": {

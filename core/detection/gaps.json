@@ -3012,9 +3012,9 @@
   },
   {
     "carrier": "quiqup",
-    "pattern": "^\\d{7}$",
+    "pattern": "^\\d{7,8}$",
     "kind": "by_design",
-    "reason": "Quiqup's seven-digit order references are a bare digit run many carriers share."
+    "reason": "Quiqup's seven- and eight-digit order numbers are bare digit runs many carriers share."
   },
   {
     "carrier": "raben",

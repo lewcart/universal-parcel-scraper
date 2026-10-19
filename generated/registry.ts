@@ -348,6 +348,7 @@ import { adapter as ptt } from '../carriers/ptt/adapter.js';
 import { adapter as purolator } from '../carriers/purolator/adapter.js';
 import { adapter as quantiumSolutions } from '../carriers/quantium-solutions/adapter.js';
 import { adapter as quicksilverSa } from '../carriers/quicksilver-sa/adapter.js';
+import { adapter as quiqup } from '../carriers/quiqup/adapter.js';
 import { adapter as raben } from '../carriers/raben/adapter.js';
 import { adapter as ramHandToHand } from '../carriers/ram-hand-to-hand/adapter.js';
 import { adapter as redpack } from '../carriers/redpack/adapter.js';
@@ -829,6 +830,7 @@ export const REGISTRY: RegistryDefinition = {
     "purolator": purolator,
     "quantium-solutions": quantiumSolutions,
     "quicksilver-sa": quicksilverSa,
+    "quiqup": quiqup,
     "raben": raben,
     "ram-hand-to-hand": ramHandToHand,
     "redpack": redpack,
@@ -1535,7 +1537,7 @@ export const REGISTRY: RegistryDefinition = {
     "quantium-solutions": "quantium-solutions",
     "quickpac": "planzer",
     "quicksilver-sa": "quicksilver-sa",
-    "quiqup": "universal",
+    "quiqup": "quiqup",
     "qwintry": "universal",
     "raben": "raben",
     "ram-hand-to-hand": "ram-hand-to-hand",

@@ -203,6 +203,7 @@ import { adapter as fermopoint } from '../carriers/fermopoint/adapter.js';
 import { adapter as fgDelivery } from '../carriers/fg-delivery/adapter.js';
 import { adapter as flashExpress } from '../carriers/flash-express/adapter.js';
 import { adapter as flashExpressPh } from '../carriers/flash-express-ph/adapter.js';
+import { adapter as fleetex } from '../carriers/fleetex/adapter.js';
 import { adapter as fleetoptics } from '../carriers/fleetoptics/adapter.js';
 import { adapter as followmont } from '../carriers/followmont/adapter.js';
 import { adapter as forwardAir } from '../carriers/forward-air/adapter.js';
@@ -764,6 +765,7 @@ export const REGISTRY: RegistryDefinition = {
     "fg-delivery": fgDelivery,
     "flash-express": flashExpress,
     "flash-express-ph": flashExpressPh,
+    "fleetex": fleetex,
     "fleetoptics": fleetoptics,
     "followmont": followmont,
     "forward-air": forwardAir,
@@ -1384,7 +1386,7 @@ export const REGISTRY: RegistryDefinition = {
     "first-fly-express": "universal",
     "flash-express": "flash-express",
     "flash-express-ph": "flash-express-ph",
-    "fleetex": "universal",
+    "fleetex": "fleetex",
     "fleetoptics": "fleetoptics",
     "flippost": "universal",
     "fliway": "universal",

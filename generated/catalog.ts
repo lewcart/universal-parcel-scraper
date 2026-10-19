@@ -13873,7 +13873,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fleetex",
+      "recognitionRank": 571
     },
     "canaryUrl": "https://tracking.fleetexpress.ca/tracking",
     "trackingUrlTemplate": "https://tracking.fleetexpress.ca/tracking/en/{trackingNumber}",
@@ -13883,7 +13884,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "tracking.fleetexpress.ca"
         ],
-        "path": "^/tracking/(?:[a-z]{2,3})/([^/?#]+)/?$"
+        "path": "^/(?:tracking|oteptrack)/(?:[a-z]{2,3})/([^/?#]+)/?$"
       }
     ],
     "detectionRules": []

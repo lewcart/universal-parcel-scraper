@@ -1218,6 +1218,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'better-trucks', number: 'BTPA0000000ZZ01',
     route: /^https:\/\/tracking\.bettertrucks\.com\/tracking\?trackingNumber=BTPA0000000ZZ01$/,
     marker: /Shipment can.t be found|Enter your tracking number/i },
+  // The page looks the number in its address up on the server and names it in its not-found notice.
+  { carrier: 'fleetex', number: 'SR000000000000',
+    route: /^https:\/\/tracking\.fleetexpress\.ca\/tracking\/en\/SR000000000000$/,
+    marker: /Package Not Found|Track your package/ },
   // The page fills its field in from the address and looks the number up; the form's heading
   // shows while the answer is slow.
   { carrier: 'belpost', number: 'ZZ000000014BY',

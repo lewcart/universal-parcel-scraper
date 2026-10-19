@@ -300,6 +300,7 @@ import { adapter as mailplusAu } from '../carriers/mailplus-au/adapter.js';
 import { adapter as mainfreight } from '../carriers/mainfreight/adapter.js';
 import { adapter as maltapost } from '../carriers/maltapost/adapter.js';
 import { adapter as matkahuolto } from '../carriers/matkahuolto/adapter.js';
+import { adapter as mauritiusPost } from '../carriers/mauritius-post/adapter.js';
 import { adapter as mayiyinfu } from '../carriers/mayiyinfu/adapter.js';
 import { adapter as mdsCollivery } from '../carriers/mds-collivery/adapter.js';
 import { adapter as meest } from '../carriers/meest/adapter.js';
@@ -829,6 +830,7 @@ export const REGISTRY: RegistryDefinition = {
     "mainfreight": mainfreight,
     "maltapost": maltapost,
     "matkahuolto": matkahuolto,
+    "mauritius-post": mauritiusPost,
     "mayiyinfu": mayiyinfu,
     "mds-collivery": mdsCollivery,
     "meest": meest,
@@ -1498,7 +1500,7 @@ export const REGISTRY: RegistryDefinition = {
     "maritime-ontario": "universal",
     "maruti-air": "universal",
     "matkahuolto": "matkahuolto",
-    "mauritius-post": "universal",
+    "mauritius-post": "mauritius-post",
     "mayiyinfu": "mayiyinfu",
     "mds-collivery": "mds-collivery",
     "meest": "meest",

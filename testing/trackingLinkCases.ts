@@ -1651,6 +1651,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mds-collivery', number: '900000003',
     route: /^https:\/\/collivery\.net\/tracking\?waybill=900000003$/,
     marker: /Track Your\s+Parcel|couldn.t find a parcel with that number/i },
+  // The page looks up the number in its address on the server, keeps it in the field and answers an unknown one with a notice.
+  { carrier: 'mauritius-post', number: 'RR000000005MU',
+    route: /^https:\/\/www\.mauritiuspost\.mu\/track-trace\/\?tracking_code=RR000000005MU$/,
+    marker: /No tracking information available for this item|Days in Transit/ },
 ];
 
 /**

@@ -19866,7 +19866,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Indian/Mauritius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mauritius-post",
+      "localClocks": true
     },
     "canaryUrl": "https://www.mauritiuspost.mu/track-trace/",
     "trackingUrlTemplate": "https://www.mauritiuspost.mu/track-trace/?tracking_code={trackingNumber}",

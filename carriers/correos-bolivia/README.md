@@ -17,6 +17,12 @@ offers no carrier for them.
 The tracker form sends the number in the `codigo` parameter of its result page together with
 a captcha answer, so no address opens one parcel without the captcha.
 
+## Why there is no adapter
+
+The tracker's page asks its own lookup for each number with the answer to a captcha, and the
+lookup refuses a number sent without one: it answers HTTP 422 and a new captcha. So Correos de
+Bolivia stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

@@ -350,6 +350,15 @@ describe('J&T Express Middle East waybills', () => {
     }
     expect(detectCarrierMatch('JMX300000000001')).toMatchObject({ carrier: 'j-and-t-mx', confidence: 'high' });
   });
+
+  it('names J&T Express Australia for JTAU and twelve digits only', () => {
+    expect(detectCarrierMatch('JTAU300000000001')).toMatchObject({ carrier: 'j-and-t-au', confidence: 'high' });
+    for (const number of ['JTAU30000000001', 'JTAU3000000000001', 'JTNZ300000000001', 'JTA300000000001', 'JTAUX00000000001']) {
+      const match = detectCarrierMatch(number);
+      expect(match.carrier, number).not.toBe('j-and-t-au');
+      expect(match.candidates ?? [], number).not.toContain('j-and-t-au');
+    }
+  });
 });
 
 describe('wave seven courier rules', () => {

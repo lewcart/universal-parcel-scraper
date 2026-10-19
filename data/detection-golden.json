@@ -75727,6 +75727,14 @@
     ]
   },
   {
+    "input": "JTAU900000000001",
+    "carrier": "j-and-t-au",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-au"
+    ]
+  },
+  {
     "input": "JTE000013652109",
     "carrier": "j-and-t-middle-east",
     "confidence": "high",

@@ -1,0 +1,54 @@
+{
+  "id": "j-and-t-au",
+  "displayName": "J&T Express Australia",
+  "aliases": [
+    "J&T Express (AU)",
+    "J&T Express AU",
+    "J&T Australia",
+    "JT Express Australia"
+  ],
+  "region": {
+    "countries": [
+      "AU"
+    ]
+  },
+  "brand": {
+    "color": "#e60012"
+  },
+  "selectable": true,
+  "timezone": "Australia/Sydney",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://www.jtexpress.au/tracking?q={trackingNumber}",
+    "searchUrl": "https://www.jtexpress.au/tracking",
+    "canaryUrl": "https://www.jtexpress.au/tracking",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "www.jtexpress.au",
+        "jtexpress.au"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "q"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "id": "j-and-t-au-1",
+      "pattern": "^JTAU\\d{12}$",
+      "confidence": "high"
+    }
+  ]
+}

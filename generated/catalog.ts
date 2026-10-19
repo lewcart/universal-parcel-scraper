@@ -16982,6 +16982,46 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "j-and-t-au": {
+    "displayName": "J&T Express Australia",
+    "color": "#e60012",
+    "aliases": [
+      "J&T Express (AU)",
+      "J&T Express AU",
+      "J&T Australia",
+      "JT Express Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.jtexpress.au/tracking",
+    "trackingUrlTemplate": "https://www.jtexpress.au/tracking?q={trackingNumber}",
+    "trackingSearchUrl": "https://www.jtexpress.au/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.au",
+          "jtexpress.au"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTAU\\d{12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "j-and-t-br": {
     "displayName": "J&T Express Brazil",
     "color": "#e60000",
@@ -31148,6 +31188,7 @@ export const CARRIER_IDS = [
   "intex-paketdienst",
   "iran-post",
   "israel-post",
+  "j-and-t-au",
   "j-and-t-br",
   "j-and-t-cargo",
   "j-and-t-cn",
@@ -31924,6 +31965,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "intex-paketdienst": [],
   "iran-post": [],
   "israel-post": ["israel-post-1","israel-post-s10"],
+  "j-and-t-au": ["j-and-t-au-1"],
   "j-and-t-br": [],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "j-and-t-cn": ["j-and-t-cn-1"],

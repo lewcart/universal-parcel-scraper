@@ -1326,6 +1326,7 @@ export const REGISTRY: RegistryDefinition = {
     "iran-post": "universal",
     "israel-post": "israel-post",
     "j-and-t": "j-and-t",
+    "j-and-t-au": "universal",
     "j-and-t-br": "universal",
     "j-and-t-cargo": "j-and-t-cargo",
     "j-and-t-cn": "universal",

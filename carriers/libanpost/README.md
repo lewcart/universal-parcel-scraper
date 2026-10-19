@@ -12,7 +12,15 @@ not claim them.
 
 The tracker prefills one number from
 `libanpost.com/english/tools-support/track-and-trace?sn={number}`, also under `/arabic/`; the
-library reads the number from both. Showing the history needs a CAPTCHA.
+library reads the number from both.
+
+## Why there is no adapter
+
+The page only prefills the number; the history comes from the page's own form postback, which
+carries a Google reCAPTCHA checkbox answer. The server checks that answer: without a solved one
+it returns the form with "Invalid Captcha", on the English and the Arabic page alike, and the
+site's quick-track box only opens the same page. LibanPost publishes no mobile app, so LibanPost
+stays on universal providers.
 
 ## Testing
 

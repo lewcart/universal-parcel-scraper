@@ -3454,6 +3454,12 @@
     "reason": "Starex's STR and nine digits falls inside Purolator's three-letter PIN shape, and a single archived lookup is too little to carve the prefix out."
   },
   {
+    "carrier": "starex-az",
+    "pattern": "^STRAZ\\d{12}$",
+    "kind": "open",
+    "reason": "STRAZ and twelve digits is the number Starex's tracker shows today. No rule claims it yet; Colis Privé's catch-all takes the shape, so a rule needs that overlap declared."
+  },
+  {
     "carrier": "starken",
     "pattern": "^\\d{9}$",
     "kind": "by_design",

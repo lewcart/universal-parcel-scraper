@@ -27208,7 +27208,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Baku",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "starex-az",
+      "recognitionRank": 785,
+      "localClocks": true
     },
     "canaryUrl": "https://starexglobal.com/az/",
     "trackingUrlTemplate": "https://starexglobal.com/az/tracking/{trackingNumber}",

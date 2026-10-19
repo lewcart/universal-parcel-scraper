@@ -332,6 +332,7 @@ import { statusMap as spxTh } from '../../carriers/spx-th/status.js';
 import { statusMap as spxTw } from '../../carriers/spx-tw/status.js';
 import { statusMap as spxVn } from '../../carriers/spx-vn/status.js';
 import { statusMap as stallionExpress } from '../../carriers/stallion-express/status.js';
+import { statusMap as starexAz } from '../../carriers/starex-az/status.js';
 import { statusMap as starken } from '../../carriers/starken/status.js';
 import { statusMap as sto } from '../../carriers/sto/status.js';
 import { statusMap as sundarbanCourier } from '../../carriers/sundarban-courier/status.js';
@@ -452,7 +453,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'slovak-parcel-service': slovakParcelService,
   'slovenska-posta': slovenskaPosta, 'smsa-express': smsaExpress, 'south-african-post-office': southAfricanPost,
   'southeastern-freight-lines': southeasternFreightLines, 'sp-express': spExpress, speedaf, speedex, speedx, speedy, 'spx-br': spxBr, 'spx-id': spxId, 'spx-my': spxMy,
-  'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'stallion-express': stallionExpress, starken, sto, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
+  'spx-th': spxTh, 'spx-tw': spxTw, 'spx-vn': spxVn, 'stallion-express': stallionExpress, 'starex-az': starexAz, starken, sto, 'sundarban-courier': sundarbanCourier, swiftx, 'swiss-post': swissPost,
   't-cat': tCat, 't-group': tGroup, 'tanzania-posts': tanzaniaPosts, taxydema, 'tci-express': tciExpress, 'tcs-pakistan': tcsPakistan, tdn, tealca,
   'team-express-ae': teamExpressAe, 'team-global-express': teamGlobalExpress, teleship, 'tforce-freight': tforceFreight,
   'thailand-post': thailandPost, thhy, tiki, 'tmm-express': tmmExpress, tnt, 'tnt-it': tntIt, toptrans, torrestir, 'total-express': totalExpress,

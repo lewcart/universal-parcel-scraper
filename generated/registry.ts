@@ -400,6 +400,7 @@ import { adapter as spxTh } from '../carriers/spx-th/adapter.js';
 import { adapter as spxTw } from '../carriers/spx-tw/adapter.js';
 import { adapter as spxVn } from '../carriers/spx-vn/adapter.js';
 import { adapter as stallionExpress } from '../carriers/stallion-express/adapter.js';
+import { adapter as starexAz } from '../carriers/starex-az/adapter.js';
 import { adapter as starken } from '../carriers/starken/adapter.js';
 import { adapter as sto } from '../carriers/sto/adapter.js';
 import { adapter as sundarbanCourier } from '../carriers/sundarban-courier/adapter.js';
@@ -875,6 +876,7 @@ export const REGISTRY: RegistryDefinition = {
     "spx-tw": spxTw,
     "spx-vn": spxVn,
     "stallion-express": stallionExpress,
+    "starex-az": starexAz,
     "starken": starken,
     "sto": sto,
     "sundarban-courier": sundarbanCourier,
@@ -1608,7 +1610,7 @@ export const REGISTRY: RegistryDefinition = {
     "sri-lanka-post": "universal",
     "st-courier": "universal",
     "stallion-express": "stallion-express",
-    "starex-az": "universal",
+    "starex-az": "starex-az",
     "starken": "starken",
     "starlinks": "universal",
     "steadfast": "universal",

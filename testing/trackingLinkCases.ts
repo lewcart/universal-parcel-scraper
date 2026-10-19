@@ -1471,6 +1471,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gaash', number: 'GWD000000000',
     route: /^https:\/\/gaashwd\.com\/track-parcel\/\?TrackingNumber=GWD000000000$/,
     marker: /We could not find your parcel|Track Your Parcel/ },
+  // The page fills its search field in from the address and looks the number up; a browser in another
+  // language is sent to that language's page with the same number.
+  { carrier: 'starex-az', number: 'STRAZ000000000000',
+    route: /^https:\/\/starexglobal\.com\/(?:az|en|ru)\/tracking\/STRAZ000000000000$/,
+    marker: /Bağlamalarınızı buradan izləyə bilərsiniz|You can follow your parcels from here|Здесь вы можете следить за своими посылками/ },
 ];
 
 /**

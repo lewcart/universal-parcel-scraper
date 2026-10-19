@@ -294,6 +294,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "speedy": 280,
   "spx-br": 982,
   "stallion-express": 105,
+  "starex-az": 785,
   "sto": 540,
   "swiss-post-cargo": 550,
   "t-cat": 966,

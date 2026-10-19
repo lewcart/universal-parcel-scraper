@@ -21,18 +21,64 @@
   "timezone": "America/Toronto",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "precision-deliveries",
+    "steps": [
+      "direct",
+      "refresh",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 696
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "eta",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://track.precisiondeliveries.com/{trackingNumber}",
     "searchUrl": "https://track.precisiondeliveries.com/",
     "canaryUrl": "https://track.precisiondeliveries.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "eta",
+      "origin",
+      "destination",
+      "parcel_count",
+      "coordinates",
+      "recipient_address",
+      "signatory",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "eta",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "parcel_count",
+      "coordinates",
+      "recipient_address",
+      "signatory",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "location",
+      "weight",
+      "service_name",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

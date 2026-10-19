@@ -23923,7 +23923,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "precision-deliveries",
+      "recognitionRank": 696,
+      "localClocks": true
     },
     "canaryUrl": "https://track.precisiondeliveries.com/",
     "trackingUrlTemplate": "https://track.precisiondeliveries.com/{trackingNumber}",

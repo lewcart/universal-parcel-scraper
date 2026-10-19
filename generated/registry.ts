@@ -365,6 +365,7 @@ import { adapter as postlogistics } from '../carriers/postlogistics/adapter.js';
 import { adapter as postnord } from '../carriers/postnord/adapter.js';
 import { adapter as posturinn } from '../carriers/posturinn/adapter.js';
 import { adapter as ppl } from '../carriers/ppl/adapter.js';
+import { adapter as precisionDeliveries } from '../carriers/precision-deliveries/adapter.js';
 import { adapter as proCarrier } from '../carriers/pro-carrier/adapter.js';
 import { adapter as proships } from '../carriers/proships/adapter.js';
 import { adapter as ptsWorldwideExpress } from '../carriers/pts-worldwide-express/adapter.js';
@@ -879,6 +880,7 @@ export const REGISTRY: RegistryDefinition = {
     "postnord": postnord,
     "posturinn": posturinn,
     "ppl": ppl,
+    "precision-deliveries": precisionDeliveries,
     "pro-carrier": proCarrier,
     "proships": proships,
     "pts-worldwide-express": ptsWorldwideExpress,
@@ -1588,7 +1590,7 @@ export const REGISTRY: RegistryDefinition = {
     "postplus": "universal",
     "posturinn": "posturinn",
     "ppl": "ppl",
-    "precision-deliveries": "universal",
+    "precision-deliveries": "precision-deliveries",
     "pro-carrier": "pro-carrier",
     "professional-couriers": "universal",
     "prompt-xpress": "universal",

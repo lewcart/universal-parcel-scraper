@@ -276,6 +276,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "postnord": 510,
   "posturinn": 875,
   "ppl": 608,
+  "precision-deliveries": 696,
   "pro-carrier": 843,
   "pts-worldwide-express": 818,
   "ptt": 400,

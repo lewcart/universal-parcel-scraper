@@ -307,6 +307,7 @@ import { statusMap as postex } from '../../carriers/postex/status.js';
 import { statusMap as postlogistics } from '../../carriers/postlogistics/status.js';
 import { statusMap as posturinn } from '../../carriers/posturinn/status.js';
 import { statusMap as ppl } from '../../carriers/ppl/status.js';
+import { statusMap as precisionDeliveries } from '../../carriers/precision-deliveries/status.js';
 import { statusMap as proCarrier } from '../../carriers/pro-carrier/status.js';
 import { statusMap as proships } from '../../carriers/proships/status.js';
 import { statusMap as ptsWorldwideExpress } from '../../carriers/pts-worldwide-express/status.js';
@@ -486,7 +487,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
-  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'pro-carrier': proCarrier, proships,
+  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'precision-deliveries': precisionDeliveries, 'pro-carrier': proCarrier, proships,
   'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions, 'quicksilver-sa': quicksilverSa, quiqup, raben,
   'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech, 'rl-carriers': rlCarriers, 'royal-express-mm': royalExpressMm,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,

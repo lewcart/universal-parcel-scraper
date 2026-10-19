@@ -1603,6 +1603,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mailplus-au', number: 'MPX000000000',
     route: /^https:\/\/track\.mailplus\.com\.au\/MPX000000000$/,
     marker: /Add your tracking ID|There are no results for this tracking/ },
+  // The page looks the number in its address up and answers an unknown one with "No shipment found for" and the number.
+  { carrier: 'precision-deliveries', number: 'ASL0000000000',
+    route: /^https:\/\/track\.precisiondeliveries\.com\/ASL0000000000$/,
+    marker: /No shipment found for "ASL0000000000"|No Shipment Found/ },
 ];
 
 /**

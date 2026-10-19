@@ -425,6 +425,7 @@ import { statusMap as veloces } from '../../carriers/veloces/status.js';
 import { statusMap as venipak } from '../../carriers/venipak/status.js';
 import { statusMap as viaCargo } from '../../carriers/via-cargo/status.js';
 import { statusMap as viettelPost } from '../../carriers/viettel-post/status.js';
+import { statusMap as vimenpaq } from '../../carriers/vimenpaq/status.js';
 import { statusMap as vintedGo } from '../../carriers/vinted-go/status.js';
 import { statusMap as vrlLogistics } from '../../carriers/vrl-logistics/status.js';
 import { statusMap as wanbexpress } from '../../carriers/wanbexpress/status.js';
@@ -517,7 +518,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'ubi-smart-parcel': ubiSmartParcel,
   'united-delivery-service': unitedDeliveryService, ups, urbano, urvaam,
   'uzbekistan-post': uzbekistanPost, valmo, 'vasp-expresso': vaspExpresso, veloces, venipak, 'via-cargo': viaCargo, 'viettel-post': viettelPost,
-  'vinted-go': vintedGo, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
+  vimenpaq, 'vinted-go': vintedGo, 'vrl-logistics': vrlLogistics, wanbexpress, whistl, winit, 'xde-logistics': xdeLogistics, xdp, xlcourier, 'xpo-ltl': xpoLtl,
   'ycs-logistics': ycsLogistics, 'yilong-logistics': yilongLogistics, yunexpress, zto,
   'yurtici-kargo': yurticiKargo, zajil, zeleris, 'zr-express': zrExpress,
 };

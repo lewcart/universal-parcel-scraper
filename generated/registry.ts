@@ -500,6 +500,7 @@ import { adapter as veloces } from '../carriers/veloces/adapter.js';
 import { adapter as venipak } from '../carriers/venipak/adapter.js';
 import { adapter as viaCargo } from '../carriers/via-cargo/adapter.js';
 import { adapter as viettelPost } from '../carriers/viettel-post/adapter.js';
+import { adapter as vimenpaq } from '../carriers/vimenpaq/adapter.js';
 import { adapter as vintedGo } from '../carriers/vinted-go/adapter.js';
 import { adapter as vrlLogistics } from '../carriers/vrl-logistics/adapter.js';
 import { adapter as wanbexpress } from '../carriers/wanbexpress/adapter.js';
@@ -1024,6 +1025,7 @@ export const REGISTRY: RegistryDefinition = {
     "venipak": venipak,
     "via-cargo": viaCargo,
     "viettel-post": viettelPost,
+    "vimenpaq": vimenpaq,
     "vinted-go": vintedGo,
     "vrl-logistics": vrlLogistics,
     "wanbexpress": wanbexpress,
@@ -1784,7 +1786,7 @@ export const REGISTRY: RegistryDefinition = {
     "vestovoy": "universal",
     "via-cargo": "via-cargo",
     "viettel-post": "viettel-post",
-    "vimenpaq": "universal",
+    "vimenpaq": "vimenpaq",
     "vinted-go": "vinted-go",
     "vitran-express": "universal",
     "vnpost": "universal",

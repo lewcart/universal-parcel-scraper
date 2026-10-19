@@ -16,17 +16,47 @@
   "timezone": "America/Santo_Domingo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "vimenpaq",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 713
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "searchUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
     "canaryUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "weight",
+      "parcel_count",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "weight",
+      "parcel_count",
+      "remarks"
+    ],
+    "unavailable": [
+      "eta",
+      "location",
+      "service_name",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [],
   "detection": []

@@ -29782,7 +29782,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santo_Domingo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vimenpaq",
+      "recognitionRank": 713,
+      "localClocks": true
     },
     "canaryUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",
     "trackingSearchUrl": "https://ssl3.controlbox.net:8443/vimenpaq/cbone/app/rastreo/",

@@ -3930,7 +3930,13 @@
     "carrier": "vimenpaq",
     "pattern": "^[A-Z]{4}\\d{9}$",
     "kind": "by_design",
-    "reason": "The only public Vimenpaq number comes from a customer's question, too little to claim its layout."
+    "reason": "One customer quoted a number of this shape for Vimenpaq; the guides in Vimenpaq's own app have three letters and ten digits, so the shape claims nothing."
+  },
+  {
+    "carrier": "vimenpaq",
+    "pattern": "^[A-Z]{3}\\d{10}$",
+    "kind": "by_design",
+    "reason": "Vimenpaq guides are a branch's three-letter code and ten digits, a shape other couriers' numbers share, so it cannot name Vimenpaq; recognition would have to ask the tracker."
   },
   {
     "carrier": "vitran-express",

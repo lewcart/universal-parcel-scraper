@@ -64251,6 +64251,12 @@
     "candidates": []
   },
   {
+    "input": "BAV0063108323",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "BB010472693AZ",
     "carrier": "intl-post",
     "confidence": "high",
@@ -74626,6 +74632,12 @@
     "candidates": []
   },
   {
+    "input": "IND0063108324",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "IND9640000624161",
     "carrier": "unknown",
     "confidence": "none",
@@ -74777,6 +74789,12 @@
   },
   {
     "input": "JAE20000000457212SG",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "JAR0063108319",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -79216,6 +79234,12 @@
     "asked": [
       "chronopost"
     ]
+  },
+  {
+    "input": "MOC0063108321",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "MP0068255613",
@@ -85973,6 +85997,36 @@
     "candidates": []
   },
   {
+    "input": "SDQ7396694182",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SDQ7396694919",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SDQ7396716830",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SDQ7396717437",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SDS0063108318",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "SE0000000001",
     "carrier": "amazon-logistics",
     "confidence": "high",
@@ -86345,6 +86399,12 @@
     "candidates": [
       "royal-mail"
     ]
+  },
+  {
+    "input": "SGO0063108322",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "SH0064860286837",
@@ -87432,6 +87492,12 @@
       "aramex-au",
       "aramex-nz"
     ]
+  },
+  {
+    "input": "SVM0063108325",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "SWAP2P003014186",
@@ -90675,6 +90741,12 @@
     "asked": [
       "chit-chats"
     ]
+  },
+  {
+    "input": "YAM0063108320",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "YCC871846",

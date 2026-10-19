@@ -2,23 +2,16 @@
   "carrier": "laar-courier",
   "records": [
     {
-      "number": "GYE1389369062",
+      "number": "GYE0000000000",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20240619030512/https://fenix.laarcourier.com/Tracking/Guiacompleta.aspx?Guia=GYE1389369062",
-        "date": "2024-06-19",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "Opened capture of Laar's own tracker shows this guía with its history from collection to delivery."
+      "note": "Invented placeholder in the layout of the guía Laar's tracker showed; the tracker names who received the one public guía."
     }
   ]
 }

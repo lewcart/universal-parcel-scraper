@@ -18553,7 +18553,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Guayaquil",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "laar-courier",
+      "recognitionRank": 648,
+      "localClocks": true
     },
     "canaryUrl": "https://fenix.laarcourier.com/Tracking/",
     "trackingUrlTemplate": "https://fenix.laarcourier.com/Tracking/?guia={trackingNumber}",

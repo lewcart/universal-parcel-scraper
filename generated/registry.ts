@@ -296,6 +296,7 @@ import { adapter as lPost } from '../carriers/l-post/adapter.js';
 import { adapter as laPoste } from '../carriers/la-poste/adapter.js';
 import { adapter as laPosteBurkinaFaso } from '../carriers/la-poste-burkina-faso/adapter.js';
 import { adapter as laPosteSenegal } from '../carriers/la-poste-senegal/adapter.js';
+import { adapter as laarCourier } from '../carriers/laar-courier/adapter.js';
 import { adapter as labaih } from '../carriers/labaih/adapter.js';
 import { adapter as landmarkGlobal } from '../carriers/landmark-global/adapter.js';
 import { adapter as latvijasPasts } from '../carriers/latvijas-pasts/adapter.js';
@@ -856,6 +857,7 @@ export const REGISTRY: RegistryDefinition = {
     "la-poste": laPoste,
     "la-poste-burkina-faso": laPosteBurkinaFaso,
     "la-poste-senegal": laPosteSenegal,
+    "laar-courier": laarCourier,
     "labaih": labaih,
     "landmark-global": landmarkGlobal,
     "latvijas-pasts": latvijasPasts,
@@ -1524,7 +1526,7 @@ export const REGISTRY: RegistryDefinition = {
     "la-poste-ci": "universal",
     "la-poste-senegal": "la-poste-senegal",
     "la-poste-tunisienne": "universal",
-    "laar-courier": "universal",
+    "laar-courier": "laar-courier",
     "labaih": "labaih",
     "landmark-global": "landmark-global",
     "lao-post": "universal",

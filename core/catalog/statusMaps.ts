@@ -110,6 +110,7 @@ import { statusMap as dpdIe } from '../../carriers/dpd-ie/status.js';
 import { statusMap as dpdNl } from '../../carriers/dpd-nl/status.js';
 import { statusMap as dpdPl } from '../../carriers/dpd-pl/status.js';
 import { statusMap as dpdPt } from '../../carriers/dpd-pt/status.js';
+import { statusMap as dpdRo } from '../../carriers/dpd-ro/status.js';
 import { statusMap as dpdZa } from '../../carriers/dpd-za/status.js';
 import { statusMap as dragonStarCurier } from '../../carriers/dragon-star-curier/status.js';
 import { statusMap as drop2shop } from '../../carriers/drop2shop/status.js';
@@ -409,7 +410,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'courier-center': courierCenter, couriersplease: couriersPlease, 'cse-russia': cseRussia, cttyex, 'cyprus-post': cyprusPost, 'd-express': dExpress,
   'dai-post': daiPost, 'danske-fragtmaend': danskeFragtmaend, dao, 'day-ross': dayRoss, dellin, delnext, deppon, 'dhl-express': dhlExpress,
   'dhl-freight': dhlFreight, dhlink, direx, dobropost, dpd, 'dpd-at': dpdAt, 'dpd-be': dpdBe, 'dpd-de': dpdDe, 'dpd-fr': dpdFr, 'dpd-ie': dpdIe,
-  'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-za': dpdZa, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
+  'dpd-nl': dpdNl, 'dpd-pl': dpdPl, 'dpd-pt': dpdPt, 'dpd-ro': dpdRo, 'dpd-za': dpdZa, 'dragon-star-curier': dragonStarCurier, drop2shop, dropp, dsv, dx, dynalogic,
   'early-bird': earlyBird, 'easy-mail': easyMail,
   econt, 'egypt-post': egyptPost, elta, emile, 'ems-vietnam': emsVietnam, 'energia-tk': energiaTk, 'envia-colombia': enviaColombia, envialia,
   'epost-global': epostGlobal, equick, estes, eurodis, 'euroexpress-ba': euroexpressBa, 'evdemo-lojistik': evdemoLojistik, evropat, ewe, exelot,

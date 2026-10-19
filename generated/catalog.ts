@@ -11523,7 +11523,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-ro",
+      "recognitionRank": 934
     },
     "canaryUrl": "https://www.dpd.com/ro/ro/",
     "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",

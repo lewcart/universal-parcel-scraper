@@ -371,6 +371,35 @@
       "note": "An open-source DPD tracking library's test tracks it on DPD Romania's tracker and expects a hand-over to DPD Germany."
     },
     {
+      "number": "81353773180",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://verificareawb.ro/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "Verificare AWB's guide gives it as an example of an eleven-digit DPD waybill; DPD Romania's own tracker returns a cancelled shipment for it."
+    },
+    {
       "number": "62581495666",
       "role": "shipment",
       "evidence": "public_shipment_report",

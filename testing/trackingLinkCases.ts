@@ -1483,6 +1483,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'colis-prive': 'an unknown number-and-postcode credential redirects to the homepage, so only a real parcel verifies the link',
   'dpd-at': 'Radware Bot Manager answers the lookup the myDPD page makes from automated Chrome with a CAPTCHA on validate.perfdrive.com, so number forwarding cannot be verified',
   'dpd-ie': 'www.dpd.ie passes the number only to its tracker frame from tracking.dpd.ie, which loads it as a document the rendered-page check does not read, so number forwarding cannot be verified',
+  'dpd-ro': 'tracking.dpd.ro redirects to services.dpd.ro/tracking/, which answers automated Chrome with a Cloudflare managed challenge and asks for a Turnstile token with each lookup, so number forwarding cannot be verified',
   dropp: 'the tracker page answers an unknown number with a generic "try again later" error that does not show the number, so only a real parcel verifies the link',
   dtdc: 'the MyDTDC Flutter page exposes no visible body text until accessibility is enabled, and the portal link opens its home page',
   gdex: 'gdexpress.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',

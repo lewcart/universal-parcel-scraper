@@ -19,18 +19,56 @@
   "timezone": "Europe/Bucharest",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "dpd-ro",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 934
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "eta",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
     "searchUrl": "https://www.dpd.com/ro/ro/",
     "canaryUrl": "https://www.dpd.com/ro/ro/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "delivered_at",
+      "recipient_name",
+      "proof_of_delivery",
+      "return_number",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "eta",
+      "delivered_at"
+    ],
+    "discarded": [
+      "recipient_name",
+      "proof_of_delivery",
+      "return_number",
+      "delivery_tracking_number"
+    ],
+    "unavailable": [
+      "weight",
+      "dimensions",
+      "service_name",
+      "sender_name"
+    ]
   },
   "links": [
     {

@@ -128,6 +128,7 @@ import { adapter as dpdIe } from '../carriers/dpd-ie/adapter.js';
 import { adapter as dpdNl } from '../carriers/dpd-nl/adapter.js';
 import { adapter as dpdPl } from '../carriers/dpd-pl/adapter.js';
 import { adapter as dpdPt } from '../carriers/dpd-pt/adapter.js';
+import { adapter as dpdRo } from '../carriers/dpd-ro/adapter.js';
 import { adapter as dpdUk } from '../carriers/dpd-uk/adapter.js';
 import { adapter as dpdZa } from '../carriers/dpd-za/adapter.js';
 import { adapter as dragonStarCurier } from '../carriers/dragon-star-curier/adapter.js';
@@ -599,6 +600,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-nl": dpdNl,
     "dpd-pl": dpdPl,
     "dpd-pt": dpdPt,
+    "dpd-ro": dpdRo,
     "dpd-uk": dpdUk,
     "dpd-za": dpdZa,
     "dragon-star-curier": dragonStarCurier,
@@ -1142,7 +1144,7 @@ export const REGISTRY: RegistryDefinition = {
     "dpd-nl": "dpd-nl",
     "dpd-pl": "dpd-pl",
     "dpd-pt": "dpd-pt",
-    "dpd-ro": "universal",
+    "dpd-ro": "dpd-ro",
     "dpd-uk": "dpd-uk",
     "dpd-za": "dpd-za",
     "dpex": "universal",

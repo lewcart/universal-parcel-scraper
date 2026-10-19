@@ -20744,7 +20744,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nim-express",
+      "recognitionRank": 631
     },
     "canaryUrl": "https://www.nimexpress.com/web/p/tracking",
     "trackingUrlTemplate": "https://www.nimexpress.com/web/p/tracking?h_i={trackingNumber}",

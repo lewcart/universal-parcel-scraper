@@ -250,6 +250,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "nacex": 850,
   "naqel": 413,
   "nationex": 125,
+  "nim-express": 631,
   "ninja-van": 720,
   "nipost": 908,
   "nippon-express": 941,

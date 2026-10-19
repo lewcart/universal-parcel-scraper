@@ -1731,6 +1731,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pullman-cargo', number: '00000000000',
     route: /^https:\/\/pullmancargo\.cl\/seguimiento\/00000000000$/,
     marker: /ODT no encontrada|Historial de Movimientos/ },
+  // The server renders the lookup; its answer to an unknown number heads the card with the number.
+  { carrier: 'nim-express', number: '0000000000000',
+    route: /^https:\/\/www\.nimexpress\.com\/web\/p\/tracking\?h_i=0000000000000$/,
+    marker: /Tracking no\. ไม่ถูกต้อง/ },
 ];
 
 /**

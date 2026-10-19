@@ -289,6 +289,7 @@ import { statusMap as mylerz } from '../../carriers/mylerz/status.js';
 import { statusMap as naqel } from '../../carriers/naqel/status.js';
 import { statusMap as nationex } from '../../carriers/nationex/status.js';
 import { statusMap as nextLevelDelivery } from '../../carriers/next-level-delivery/status.js';
+import { statusMap as nimExpress } from '../../carriers/nim-express/status.js';
 import { statusMap as nipost } from '../../carriers/nipost/status.js';
 import { statusMap as nipponExpress } from '../../carriers/nippon-express/status.js';
 import { statusMap as noest } from '../../carriers/noest/status.js';
@@ -523,9 +524,9 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
   'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex,
-  'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal, northline,
-  'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna, 'old-dominion': oldDominion,
-  'olva-courier': olvaCourier, omgo, omniva,
+  'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,
+  northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa, 'ocs-ana': ocsAna,
+  'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, parcelpoint, passport, 'pathao-courier': pathaoCourier, pbt,
   'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,

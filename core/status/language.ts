@@ -125,6 +125,14 @@ const CUSTOMS_RELEASED = new RegExp([
 ].join('|'));
 /** A parcel customs holds, detains or retains, in each language. */
 const CUSTOMS_HOLD = new RegExp(String.raw`\bcustoms (?:hold|detention)\b|\b(?:held|on hold|detained|retained) (?:by|in|at) (?:the )?${CUSTOMS_SIDE}customs?\b|retenu en douane|vom zoll zuruckgehalten|fermo in dogana|retenido en aduana|retido na alfandega|zatrzyman[ay] przez (?:urzad celny|cel)`);
+/** Import charges named on a scan: duties, import taxes or customs fees. */
+const IMPORT_CHARGES = String.raw`(?:(?:import |customs )?dut(?:y|ies)(?: and (?:import )?tax(?:es)?)?|import tax(?:es)?|customs (?:charges|fees))`;
+/** A parcel kept until the recipient pays its import charges: "held until duties and taxes are paid". */
+const DUTIES_DUE = new RegExp([
+  String.raw`\b(?:held|kept|on hold)\b(?: \w+){0,3}? (?:until|till|pending|for) (?:the )?(?:payment of )?(?:the )?${IMPORT_CHARGES}\b`,
+  String.raw`\b(?:awaiting|waiting for|pending) (?:the )?(?:payment of )?(?:the )?${IMPORT_CHARGES}\b`,
+  String.raw`\b${IMPORT_CHARGES} (?:are |is )?(?:due|owed|outstanding|unpaid|payable|to be paid|must be paid|payment (?:is )?(?:required|due|pending|outstanding))\b`,
+].join('|'));
 /** A customs problem or hold that has ended: the parcel moves on. */
 const CUSTOMS_PROBLEM_ENDED = new RegExp([
   String.raw`\b(?:released|freed|cleared) (?:from|of) (?:the )?customs (?:hold|detention|inspection|examination)\b`,
@@ -234,7 +242,8 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   if (CUSTOMS_PROBLEM_ENDED.test(text)) return 'in_transit';
   // A customs problem is an exception; a customs hold is customs at work.
   if (/customs (?:issue|problem)|probleme de douane|zollproblem|problema doganale|problema de aduana|problema (?:alfandegario|na alfandega)|problem celny/.test(text)) return 'exception';
-  if (CUSTOMS_HOLD.test(text)) return 'customs';
+  // So are import charges the recipient still owes: customs keeps the parcel until they are paid.
+  if (CUSTOMS_HOLD.test(text) || DUTIES_DUE.test(text)) return 'customs';
   if (/(?:shipment|parcel|package) (?:is )?(?:held|blocked|on hold)|held pending|awaiting (?:your )?instructions|action required|(?:colis|envoi|pli) (?:bloque|retenu)|en attente d'instructions|action requise|sendung (?:blockiert|zuruckgehalten|angehalten)|wartet auf anweisungen|handlung erforderlich|spedizione (?:bloccata|trattenuta)|in attesa di istruzioni|envio (?:bloqueado|retenido)|en espera de instrucciones|accion requerida|encomenda (?:bloqueada|retida)|aguarda instrucoes|acao necessaria|przesylka (?:zatrzymana|wstrzymana)|oczekuje na instrukcje/.test(text)) return 'exception';
   if (/\bincident\b|\banomal(?:y|ie|ia)\b|delivery exception|shipment exception|irregularit|unregelmassigkeit|storung|vorfall|inconveniente|incidencia|nieprawidlowosc/.test(text)) return 'exception';
   // Carriers' own codes file a cancellation as an exception (17TRACK's

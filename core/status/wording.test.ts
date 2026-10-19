@@ -292,6 +292,18 @@ describe('classifyWording', () => {
     expect(wordingStage('Held by customs, delivery attempt failed')).toBe('failed_attempt');
   });
 
+  it('reads import charges the recipient still owes as customs', () => {
+    for (const wording of [
+      // UPS's OQ activity, as universal providers relay it, and cut short.
+      'Your package is being held until duties and taxes are paid. Awaiting customer action.',
+      'Your package is being held until duties and taxes are paid. Awaiting customer ac',
+      'Awaiting payment of duties and taxes', 'Import duties are due', 'Shipment on hold pending customs charges',
+      'Duty payment required',
+    ]) expect(classifyWording(wording, 'pending'), wording).toEqual({ stage: 'customs', source: 'wording:language' });
+    expect(wordingStage('Held at the counter, duties paid')).not.toBe('customs');
+    expect(wordingStage('Duties and taxes paid, out for delivery')).toBe('out_for_delivery');
+  });
+
   it('reads a completed release or clearance as transit in each language', () => {
     for (const wording of [
       'Released From Import Customs', 'Shipment released from customs', 'Cleared by the broker and released at customs',

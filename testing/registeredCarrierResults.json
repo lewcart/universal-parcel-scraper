@@ -2108,8 +2108,8 @@
       "status": "delivered",
       "current_stage": "delivered",
       "last_status_text": "Delivered",
-      "last_update": null,
-      "last_update_local": "2026-01-16T21:07:00",
+      "last_update": "2026-01-16T21:07:00+01:00",
+      "delivered_at": "2026-01-16T21:07:00+01:00",
       "weight_kg": 0.2,
       "events": [
         {
@@ -2117,14 +2117,14 @@
           "provider_status": "COLLECTED AT BRT LOCKER",
           "stage": "delivered",
           "location": "TEST DEPOT (990)",
-          "local_time": "2026-01-16T21:07:00"
+          "time": "2026-01-16T21:07:00+01:00"
         },
         {
           "description": "ARRIVED AT BRT LOCKER",
           "provider_status": "ARRIVED AT BRT LOCKER",
           "stage": "ready_for_pickup",
           "location": "TEST DEPOT (990)",
-          "local_time": "2026-01-14T15:49:00"
+          "time": "2026-01-14T15:49:00+01:00"
         },
         {
           "description": "FOR DELIVERY",
@@ -2138,7 +2138,7 @@
           "provider_status": "ARRIVED AT DEPOT",
           "stage": "in_transit",
           "location": "TEST DEPOT (990)",
-          "local_time": "2026-01-14T08:32:00"
+          "time": "2026-01-14T08:32:00+01:00"
         },
         {
           "description": "DEPARTED",

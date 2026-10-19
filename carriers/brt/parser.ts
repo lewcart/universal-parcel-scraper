@@ -1,8 +1,9 @@
 import { load, type CheerioAPI } from 'cheerio';
+import { DateTime } from 'luxon';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import { isBrtCustomerParcelId, isBrtTrackingNumber } from '../../core/detection/brt.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, countryCode, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { classifyBrtStatus } from './status.js';
 
@@ -103,12 +104,52 @@ export function brtParcelListNames(html: string, number: string): boolean {
   return rows.some((row) => $(row).children('td').toArray().some((cell) => clean($(cell).text(), 40) === number));
 }
 
-function scanClock(date: string, clock: string): { local_time?: string; provider_time_text?: string } {
+// BRT's depots in Italy keep Italian civil time: DPD's tracking of the same
+// parcels gives their scans the same clocks with Italy's offset.
+const HOME_ZONE = 'Europe/Rome';
+// Countries on Italy's clock.
+const HOME_COUNTRIES = new Set(['IT', 'SM', 'VA']);
+// A depot as the scan table names it, with BRT's three-digit code: "SAMPLETOWN (999)".
+const DEPOT = /^(.+) \(\d{3}\)$/;
+
+/**
+ * Whether a scan's place is one of BRT's depots in Italy. The DPD network's
+ * depots abroad, through which BRT sends and receives parcels, come in the
+ * same form, named DPD and their region ("DPD FR NORD") or after their
+ * country ("BELGIO/LUSSEMBURGO").
+ */
+function homeDepot(place: string): boolean {
+  const name = DEPOT.exec(place)?.[1];
+  if (!name || /^DPD\b/i.test(name)) return false;
+  const words = name.split(/[^\p{L}]+/u).filter(Boolean);
+  // Every run of words, so that "REGNO UNITO" counts. Two letters would read as a country code.
+  for (let start = 0; start < words.length; start += 1) {
+    for (let end = start + 1; end <= words.length; end += 1) {
+      const run = words.slice(start, end).join(' ');
+      const country = run.length > 2 ? countryCode(run) : null;
+      if (country && !HOME_COUNTRIES.has(country)) return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * A scan's date and clock. A clock at one of BRT's depots in Italy is an
+ * instant on Italy's time, unless the change to or from summer time makes it
+ * ambiguous; other clocks stay local times. A date without a clock stays
+ * provider text.
+ */
+function scanClock(date: string, clock: string, home: boolean): { time?: string; local_time?: string; provider_time_text?: string } {
   const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(date);
   const day = match && calendarDay(Number(match[3]), Number(match[2]), Number(match[1]));
   const time = /^(\d{2})\.(\d{2})$/.exec(clock);
   if (day && time && Number(time[1]) < 24 && Number(time[2]) < 60) {
-    return { local_time: `${day}T${time[1]}:${time[2]}:00` };
+    const wall = `${day}T${time[1]}:${time[2]}:00`;
+    if (home && DateTime.fromISO(wall, { zone: HOME_ZONE }).getPossibleOffsets().length === 1) {
+      const placed = isoTime(wall, HOME_ZONE);
+      if (placed?.iso.startsWith(wall)) return { time: placed.iso };
+    }
+    return { local_time: wall };
   }
   const raw = clean(`${date} ${clock}`, 64);
   return raw ? { provider_time_text: raw } : {};
@@ -139,22 +180,27 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
   if (rows.length > 501) throw new SchemaError('BRT', 'BRT returned too many tracking scans');
   const header = rows.first().children('td, th').map((_, node) => clean($(node).text(), 40)).get();
   if (header.join('|') !== 'Data|Ora|Filiale|Evento') throw new SchemaError('BRT', 'BRT tracking columns changed');
-  const events: CarrierEvent[] = [];
-  for (const row of rows.slice(1).toArray()) {
+  const scans = rows.slice(1).toArray().map((row) => {
     const cells = $(row).children('td');
     if (cells.length !== 4) throw new SchemaError('BRT', 'BRT returned an incomplete scan');
-    const date = clean(cells.eq(0).text(), 40);
-    const clock = clean(cells.eq(1).text(), 24);
-    const location = clean(cells.eq(2).text(), 120);
     const label = clean(cells.eq(3).text(), 160);
     if (!label || !/^[\p{L}][\p{L}\p{N}\s().,'/-]{1,159}$/u.test(label)) throw new SchemaError('BRT', 'BRT returned an invalid scan label');
+    return { date: clean(cells.eq(0).text(), 40), clock: clean(cells.eq(1).text(), 24), location: clean(cells.eq(2).text(), 120), label };
+  });
+  if (!scans.length) throw new NoHistoryError('BRT', 'BRT lists the shipment without scans');
+  // BRT names the depot that delivers a shipment in Italy. A shipment it hands
+  // to a partner abroad names none, and of its depots only the first, where
+  // the shipment started, is surely in Italy.
+  const arrival = metadata.find('tr').filter((_, node) => rowLabel($, node) === 'Filiale di arrivo').children('td');
+  const deliveredHome = arrival.length === 2 && clean(arrival.last().text(), 80) !== '';
+  const origin = scans.at(-1)!.location;
+  const events = scans.map(({ date, clock, location, label }): CarrierEvent => {
     const mapped = classifyBrtStatus(label);
-    events.push({ description: mapped?.status === 'delivered' ? 'Delivered' : label, provider_status: label,
-      ...(mapped ? { stage: mapped.stage } : {}), ...(location ? { location } : {}), ...scanClock(date, clock) });
-  }
-  if (!events.length) throw new NoHistoryError('BRT', 'BRT lists the shipment without scans');
-  // BRT includes cross-border depots without identifying each scan's zone.
-  // Source order also carries undated scans, so local clocks are never sorted.
+    const home = homeDepot(location) && (deliveredHome || location === origin);
+    return { description: mapped?.status === 'delivered' ? 'Delivered' : label, provider_status: label,
+      ...(mapped ? { stage: mapped.stage } : {}), ...(location ? { location } : {}), ...scanClock(date, clock, home) };
+  });
+  // Source order also carries undated scans and clocks of several zones, so scans are never sorted.
   const latest = events[0]!;
   let mapped = classifyBrtStatus(String(latest.provider_status));
   // A shipment sent back reads DELIVERED once it reaches its sender again.
@@ -167,8 +213,9 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
   const weightMatch = /\bPeso \(kg\):\s*(\d+(?:[,.]\d{1,4})?)(?=\s+Volume\b|$)/.exec(weightText);
   const weight = weightLabels.length === 1 && weightMatch ? Number(weightMatch[1]!.replace(',', '.')) : NaN;
   return { status: mapped?.status ?? 'unknown', ...(mapped ? { current_stage: mapped.stage } : {}),
-    last_status_text: latest.description, last_update: null,
+    last_status_text: latest.description, last_update: latest.time ?? null,
     ...(latest.local_time ? { last_update_local: latest.local_time } : {}),
+    ...(mapped?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
     ...(Number.isFinite(weight) && weight > 0 && weight <= 100_000 ? { weight_kg: weight } : {}),
     events: events.slice(0, 100) };
 }

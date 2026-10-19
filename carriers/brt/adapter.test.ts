@@ -17,24 +17,31 @@ const parcelPage = readFileSync(new URL('./fixtures/parcel-id.html', import.meta
 const parcelList = readFileSync(new URL('./fixtures/parcel-list.html', import.meta.url), 'utf8');
 const notFoundPage = readFileSync(new URL('./fixtures/not-found.html', import.meta.url), 'utf8');
 const negative = (number = NUMBER) => `<div id="box_tool_content"><div id="toolbar_sx"><h3>Rintraccia</h3></div><h3 class="separatore">Errori riscontrati</h3><div id="box_contenuti">TIS0868 Parcel Label number ${number} not found</div></div>`;
-const edit = (fn: (document: ReturnType<typeof load>) => void) => { const $ = load(html); fn($); return $.html(); };
+const changed = (page: string, fn: (document: ReturnType<typeof load>) => void) => { const $ = load(page); fn($); return $.html(); };
+const edit = (fn: (document: ReturnType<typeof load>) => void) => changed(html, fn);
 const response = (body = html) => new Response(body, { headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
 const environment = (fetcher: typeof fetch) => ({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: { step() {}, lookup() {} } });
+// Each scan's instant, else its wall clock marked local, else its provider text.
+const clocks = (events: ReturnType<typeof parseBrt>['events']) =>
+  events!.map(event => event.time ?? (typeof event.local_time === 'string' ? `local ${event.local_time}` : event.provider_time_text));
 
 describe('BRT direct tracking', () => {
-  it('projects actual locker scans, cross-border local clocks and explicit kilogram weight', () => {
+  it('projects actual locker scans, Italian depot instants, cross-border local clocks and explicit kilogram weight', () => {
     const result = normalizeCarrierResult(parseBrt(html, NUMBER));
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered',
-      last_update: null, last_update_local: '2026-01-16T21:07:00', weight_kg: 0.2 });
+      last_update: '2026-01-16T21:07:00+01:00', delivered_at: '2026-01-16T21:07:00+01:00', weight_kg: 0.2 });
+    expect(result.last_update_local).toBeUndefined();
     expect(result.events).toHaveLength(7);
-    expect(result.events?.[0]).toMatchObject({ stage: 'delivered', description: 'Delivered', local_time: '2026-01-16T21:07:00', location: 'TEST DEPOT (990)' });
+    expect(result.events?.[0]).toMatchObject({ stage: 'delivered', description: 'Delivered', time: '2026-01-16T21:07:00+01:00', location: 'TEST DEPOT (990)' });
     expect(result.events?.[1]!.stage).toBe('ready_for_pickup');
     expect(result.events?.[2]).toMatchObject({ stage: 'out_for_delivery', provider_time_text: '14.01.2026' });
     expect(result.events?.[2]!.local_time).toBeUndefined();
     expect(result.events?.[5]!.stage).toBe('accepted');
     expect(result.events?.[6]!.stage).toBe('registered');
-    expect(result.events?.every(event => !event.time && !event.provider_code)).toBe(true);
-    expect(result.delivered_at).toBeUndefined();
+    // The Italian depot's scans are on Rome's clock; the depot abroad, named after its country, keeps wall clocks.
+    expect(clocks(result.events)).toEqual(['2026-01-16T21:07:00+01:00', '2026-01-14T15:49:00+01:00', '14.01.2026', '2026-01-14T08:32:00+01:00',
+      'local 2026-01-13T21:00:00', 'local 2026-01-13T18:00:00', 'local 2026-01-10T14:57:00']);
+    expect(result.events?.every(event => !event.provider_code)).toBe(true);
     expect(JSON.stringify(result)).not.toContain('PRIVATE_SYNTHETIC');
     for (const entry of statuses.entries) expect(classifyBrtStatus(entry.wording)?.stage).toBe(entry.stage);
     for (const word of ['constructor', 'toString', 'DELIVERY PLANNED', 'RETURN REQUESTED']) expect(classifyBrtStatus(word)).toBeUndefined();
@@ -67,7 +74,7 @@ describe('BRT direct tracking', () => {
       expect(init?.signal).toBeInstanceOf(AbortSignal);
       return response(shipmentHtml);
     });
-    expect(await adapter(environment(fetcher)).recognize!(SHIPMENT)).toEqual({ known: true, lastActivityAt: null });
+    expect(await adapter(environment(fetcher)).recognize!(SHIPMENT)).toEqual({ known: true, lastActivityAt: '2026-01-16T20:07:00.000Z' });
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(() => parseBrt(shipmentHtml.replace(SHIPMENT, '990000000002'), SHIPMENT)).toThrowError(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseBrt(shipmentHtml.replace('N. spedizione', 'BRTcode'), SHIPMENT)).toThrowError(expect.objectContaining({ kind: 'schema' }));
@@ -148,7 +155,65 @@ describe('BRT direct tracking', () => {
       $('.table_stato_dati tr').eq(1).children('td').last().text('DELIVERED');
       $('.table_stato_dati tr').eq(2).children('td').last().text('RETURNED TO SENDER');
     });
-    expect(parseBrt(body, NUMBER)).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Delivered' });
+    const result = parseBrt(body, NUMBER);
+    expect(result).toMatchObject({ status: 'exception', current_stage: 'returned', last_status_text: 'Delivered', last_update: '2026-01-16T21:07:00+01:00' });
+    expect(result.delivered_at).toBeUndefined();
+  });
+
+  it('dates a shipment delivered in Italy on Rome\'s clock at each of BRT\'s depots, and its last update by the newest scan', () => {
+    // Collected and delivered in Italy, in summer time.
+    const result = parseBrt(parcelPage, SHIPMENT);
+    expect(result).toMatchObject({ status: 'delivered', last_update: '2026-09-04T12:38:00+02:00', delivered_at: '2026-09-04T12:38:00+02:00' });
+    expect(result.last_update_local).toBeUndefined();
+    expect(clocks(result.events)).toEqual(['2026-09-04T12:38:00+02:00', '2026-09-03T12:59:00+02:00', '2026-09-02T15:21:00+02:00', '02.09.2026',
+      '2026-09-02T08:32:00+02:00', '2026-09-01T21:00:00+02:00', '2026-09-01T18:00:00+02:00', '2026-08-27T14:31:00+02:00']);
+    // On its way, the newest scan's instant is the last update, without a delivery.
+    const moving = parseBrt(changed(parcelPage, $ => $('.table_stato_dati').first().find('tr').slice(1, 5).remove()), SHIPMENT);
+    expect(moving).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-02T08:32:00+02:00' });
+    expect(moving.last_update_local).toBeUndefined(); expect(moving.delivered_at).toBeUndefined();
+  });
+
+  it('keeps wall clocks at the DPD network\'s depots abroad and at places that are not BRT depots', () => {
+    const at = (place: string) => parseBrt(edit($ => $('.table_stato_dati tr').eq(1).children('td').eq(2).text(place)), NUMBER);
+    for (const place of ['DPD-XX IMPORT TEST (991)', 'DPD XX NORD (992)', 'DPD SAMPLE NORDICS (993)', 'BELGIO/LUSSEMBURGO (994)',
+      'FRANCIA SAMPLEVILLE (995)', 'SAMPLE REGNO UNITO (996)', 'GERMANY TEST (997)', '', 'TEST DEPOT', 'TEST DEPOT (99)', 'TEST DEPOT (9900)']) {
+      const result = at(place);
+      expect(result, place).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-16T21:07:00' });
+      expect(result.delivered_at, place).toBeUndefined();
+      expect(result.events![0]!.time, place).toBeUndefined();
+    }
+    // A province's two letters are no country, and San Marino keeps Italy's clock.
+    for (const place of ['NA-SAMPLETOWN (991)', 'SAMPLE S.G. TOWN (992)', 'SAN MARINO TEST (993)']) {
+      expect(at(place), place).toMatchObject({ last_update: '2026-01-16T21:07:00+01:00', delivered_at: '2026-01-16T21:07:00+01:00' });
+    }
+  });
+
+  it('dates only the depot of origin of a shipment handed to a partner abroad', () => {
+    // Without an arrival depot BRT delivers abroad, whatever its partner's depot is called.
+    const result = parseBrt(edit($ => {
+      $('.table_dati_spedizione tr').last().remove();
+      $('.table_stato_dati tr').slice(1, 5).each((_, row) => { $(row).children('td').eq(2).text('SAMPLE PARTNER (990)'); });
+      $('.table_stato_dati tr').slice(5).each((_, row) => { $(row).children('td').eq(2).text('TEST ORIGIN (991)'); });
+    }), NUMBER);
+    expect(result).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-01-16T21:07:00' });
+    expect(result.delivered_at).toBeUndefined();
+    expect(clocks(result.events)).toEqual(['local 2026-01-16T21:07:00', 'local 2026-01-14T15:49:00', '14.01.2026', 'local 2026-01-14T08:32:00',
+      '2026-01-13T21:00:00+01:00', '2026-01-13T18:00:00+01:00', '2026-01-10T14:57:00+01:00']);
+  });
+
+  it('keeps a clock the change to or from summer time repeats or skips as a local time', () => {
+    const at = (date: string, clock: string) => parseBrt(edit($ => {
+      const first = $('.table_stato_dati tr').eq(1).children('td');
+      first.eq(0).text(date); first.eq(1).text(clock);
+    }), NUMBER);
+    for (const [date, clock, local] of [['25.10.2026', '02.30', '2026-10-25T02:30:00'], ['29.03.2026', '02.30', '2026-03-29T02:30:00']] as const) {
+      const result = at(date, clock);
+      expect(result).toMatchObject({ status: 'delivered', last_update: null, last_update_local: local });
+      expect(result.delivered_at).toBeUndefined();
+    }
+    expect(at('25.10.2026', '01.59').last_update).toBe('2026-10-25T01:59:00+02:00');
+    expect(at('25.10.2026', '03.00').last_update).toBe('2026-10-25T03:00:00+01:00');
+    expect(at('29.03.2026', '03.00').last_update).toBe('2026-03-29T03:00:00+02:00');
   });
 
   it('reports only the scoped matching TIS0868 parcel-label negative', () => {
@@ -241,11 +306,14 @@ describe('BRT direct tracking', () => {
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it('recognizes matching history without ranking unresolved local clocks and propagates outages', async () => {
+  it('recognizes matching history, ranked by its instants but not by local clocks, and propagates outages', async () => {
     const positive = vi.fn<typeof fetch>().mockResolvedValue(response());
     const instance = adapter(environment(positive));
     expect(await instance.recognize!('unsupported')).toEqual({ known: false }); expect(positive).not.toHaveBeenCalled();
-    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
+    expect(await instance.recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: '2026-01-16T20:07:00.000Z' });
+    // Without an arrival depot in Italy, only the depot of origin is on Rome's clock.
+    const abroad = vi.fn<typeof fetch>().mockResolvedValue(response(edit($ => $('.table_dati_spedizione tr').last().remove())));
+    expect(await adapter(environment(abroad)).recognize!(NUMBER)).toEqual({ known: true, lastActivityAt: null });
     const absent = vi.fn<typeof fetch>().mockResolvedValue(response(negative()));
     expect(await adapter(environment(absent)).recognize!(NUMBER)).toEqual({ known: false });
     const outage = vi.fn<typeof fetch>().mockResolvedValue(response('<html>Unavailable</html>'));

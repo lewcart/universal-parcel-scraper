@@ -29,9 +29,17 @@ a single shipment.
 
 ## Notes
 
-Depot scans can span multiple countries without identifying their time zones.
-Clock digits remain local times, while dates without a clock remain provider
-text. Neither creates a delivery instant. Source order determines current
+BRT's depots in Italy keep Italian civil time, which San Marino and the
+Vatican share, so their scans become instants. A scan counts as one of them
+when its place has BRT's depot form and names neither DPD nor a foreign
+country, and either the page names the depot delivering the shipment in Italy
+or the scan is at the depot where the shipment started. The DPD network's
+depots abroad come in the same form, and a shipment BRT hands to a partner
+abroad names no delivering depot, so its other places are not known to be in
+Italy. Their clocks stay local times, as do places without a depot code and a
+clock that the change to or from summer time repeats or skips. Dates without a
+clock remain provider text. The newest scan, when dated, gives the last update
+and, for a delivery, the delivery instant. Source order determines current
 status even when the newest clock is unresolved.
 
 Arrival at a locker or BRT-fermopoint means ready for pickup; collection from

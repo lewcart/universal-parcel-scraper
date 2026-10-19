@@ -29,9 +29,14 @@ The tracker answers plain HTTP only. No account, key, cookie, CAPTCHA or browser
 - Rows coded `CO_C_CR` come from a scripted track: they can report the departure, the arrival
   and the clearance before the forwarder's own rows have the parcel at the airport. They are what
   the tracker shows and are kept.
-- Scan times are wall clocks without an offset and stay `local_time`; the copied rows keep the
-  delivering carrier's clock, so one history mixes zones. A row dated after the lookup on
-  Beijing time is held back.
+- Scan times are wall clocks without an offset. The tracker writes the scans it copies from DHL
+  on its own Beijing clock: DHL's own offset times for them are the same instants. Once DHL takes
+  the record, a copied row whose place is a country code is read on Beijing time, wherever DHL
+  scanned it, and so is a row at a place in China, where the place's clock and the tracker's
+  agree. DHL's rows without a place have also come on DHL's German clock, and the forwarder's own
+  rows abroad could be on either clock, so they keep their wall clocks in `local_time`. The newest
+  row's instant, when it has one, is the last update, and the delivery's when it is the newest
+  row. A row dated after the lookup on Beijing time is held back.
 - The record's product name is the service name.
 - Records name no channel, but carry the delivering carrier's number as the channel's transfer
   number. Into Europe that is a Deutsche Post DHL parcel number, and DHL's tracker follows the

@@ -12,9 +12,12 @@ describe('Mayi Yinfu live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'mayiyinfu', source: 'mayiyinfu' });
     expect(answer.attempts[0]).toMatchObject({ source: 'mayiyinfu', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    // Wall clocks only, and none still ahead on the tracker's own clock.
+    // None still ahead on the tracker's own clock. DHL's rows with a country and the rows in China
+    // are on Beijing time, and the newest row's instant, when it has one, is the last update.
     const now = DateTime.now().setZone('Asia/Shanghai').toFormat("yyyy-MM-dd'T'HH:mm:ss");
-    expect(answer.result.events.every((event) => event.description && !event.time && event.local_time! <= now)).toBe(true);
+    expect(answer.result.events.every((event) => event.description
+      && (event.time ? Date.parse(event.time) <= Date.now() : event.local_time! <= now))).toBe(true);
+    expect(answer.result.last_update).toBe(answer.result.events[0]!.time ?? null);
     // A hand-over to the airport is never a delivery.
     const airport = answer.result.events.filter((event) => event.description!.startsWith('货物已交机场'));
     expect(airport.every((event) => event.stage === 'in_transit')).toBe(true);

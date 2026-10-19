@@ -33,18 +33,31 @@ describe('Mayi Yinfu tracking adapter', () => {
     expect(adapter(environment(fetcher))).toMatchObject({ id: 'mayiyinfu', recordsSteps: true, steps: ['direct', 'retry'] });
   });
 
-  it('reads a parcel in transit, with the rows DHL relays after the hand-off, as wall clocks', () => {
+  it('reads a parcel in transit, with the rows DHL relays after the hand-off on Beijing time', () => {
     const result = parseMayiyinfuTrack(fixture('track'), NUMBER, READ_AT)!;
     expect(result).toMatchObject({
-      status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map', last_update: null,
-      last_update_local: '2026-03-20T10:30:00', service_name: '合成专线-全球小包', destination_country: 'ES',
+      status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map', last_update: '2026-03-20T10:30:00+08:00',
+      service_name: '合成专线-全球小包', destination_country: 'ES',
     });
+    expect(result.last_update_local).toBeUndefined();
+    expect(result.delivered_at).toBeUndefined();
     expect(result.last_status_text).toMatch(/^The shipment has arrived in the destination country\/destination area\. \(Homepage/);
     expect(result.events).toHaveLength(22);
-    expect(result.events!.every((event) => event.local_time && !event.time && event.stage)).toBe(true);
+    expect(result.events!.every((event) => Boolean(event.local_time) !== Boolean(event.time) && event.stage)).toBe(true);
     expect(result.events!.slice(1, 3)).toEqual([
-      { local_time: '2026-03-18T14:12:00', description: 'The international shipment has been processed in the export parcel center', location: 'DE', stage: 'in_transit', stage_source: 'carrier_map' },
-      { local_time: '2026-03-17T11:47:00', description: 'The international shipment has been processed in the parcel center of origin', location: 'DE', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-18T14:12:00+08:00', description: 'The international shipment has been processed in the export parcel center', location: 'DE', stage: 'in_transit', stage_source: 'carrier_map' },
+      { time: '2026-03-17T11:47:00+08:00', description: 'The international shipment has been processed in the parcel center of origin', location: 'DE', stage: 'in_transit', stage_source: 'carrier_map' },
+    ]);
+    // DHL's rows with a country, and the rows in China, are on Beijing time. The forwarder's rows
+    // abroad, its scripted and warehouse rows and the rows without a place keep their wall clocks.
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.location ?? null])).toEqual([
+      ['2026-03-20T10:30:00+08:00', 'ES'], ['2026-03-18T14:12:00+08:00', 'DE'], ['2026-03-17T11:47:00+08:00', 'DE'],
+      ['2026-03-17T01:05:41', 'AMS'], ['2026-03-16T18:40:12', 'AMS'], ['2026-03-14T08:25:37', 'AMS'],
+      ['2026-03-13T22:58:03+08:00', 'CN'], ['2026-03-13T10:21:54+08:00', 'CN'], ['2026-03-12T17:33:18+08:00', 'CN'], ['2026-03-11T14:09:46+08:00', 'CN'],
+      ['2026-03-10T09:15:27', 'DH'], ['2026-03-09T19:42:27', 'DH'], ['2026-03-09T06:31:27', 'SZ'],
+      ['2026-03-08T22:17:09+08:00', 'CN'], ['2026-03-08T18:04:51+08:00', 'CN'], ['2026-03-08T11:36:22', 'SZ'], ['2026-03-07T15:28:13', 'SZ'],
+      ['2026-03-05T16:44:08', 'SAMPLECITY'], ['2026-03-04T22:51:19', 'SAMPLECITY'],
+      ['2026-03-04T19:10:00', null], ['2026-03-04T17:26:45', null], ['2026-03-04T13:20:00', null],
     ]);
     expect(result.events!.find((event) => event.provider_code === 'ARRIVAL')).toEqual({
       local_time: '2026-03-04T22:51:19', description: '已入库,到达收货点', location: 'SAMPLECITY', provider_code: 'ARRIVAL', stage: 'accepted', stage_source: 'carrier_map',
@@ -68,10 +81,64 @@ describe('Mayi Yinfu tracking adapter', () => {
     expect(parseMayiyinfuTrack(fixture('track'), REFERENCE, READ_AT)!.canonical_tracking_number).toBe(NUMBER);
   });
 
-  it('reads the delivery DHL relays', async () => {
+  it('reads the delivery DHL relays, dated on Beijing time', async () => {
     const result = await track(vi.fn<typeof fetch>().mockResolvedValue(json(fixture('track-delivered'))));
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'The shipment has been delivered', last_update_local: '2026-03-23T12:15:00' });
-    expect(result.events![0]).toMatchObject({ location: 'ES', stage: 'delivered', stage_source: expect.stringMatching(/^wording:/) });
+    // Spain keeps two clocks, but DHL's rows come on the tracker's, mainland or Canaries alike.
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', last_status_text: 'The shipment has been delivered',
+      last_update: '2026-03-23T12:15:00+08:00', delivered_at: '2026-03-23T12:15:00+08:00' });
+    expect(result.last_update_local).toBeUndefined();
+    expect(result.events![0]).toEqual({ time: '2026-03-23T12:15:00+08:00', description: 'The shipment has been delivered', location: 'ES',
+      stage: 'delivered', stage_source: expect.stringMatching(/^wording:/) });
+  });
+
+  it('keeps the wall clocks whose zone the record does not settle', () => {
+    const base = fixture('track-delivered') as [{ data: [Record<string, unknown>] }];
+    const record = (rows: readonly [string, string, string, string?][], transfer = 'CJ000000005DE') => {
+      const copy = JSON.parse(JSON.stringify(base).replaceAll('CJ000000005DE', transfer)) as typeof base;
+      copy[0].data[0].trackDetails = rows.map(([date, location, content, kind = '']) => ({
+        track_date: date, track_createdate: date, track_location: location, track_content: content, track_kind: kind,
+      }));
+      return parseMayiyinfuTrack(copy, NUMBER, READ_AT)!;
+    };
+    const clocks = (result: ReturnType<typeof record>) => result.events!.map((event) => event.time ?? event.local_time);
+    const abroad: [string, string, string][] = [
+      ['2026-03-23 12:15:00', 'ES', 'The shipment has been delivered'],
+      ['2026-03-23 08:05:00', 'US', 'The shipment has been loaded onto the delivery vehicle'],
+      ['2026-03-22 18:00:00', 'RU', 'The international shipment has been processed in the export parcel center'],
+      ['2026-03-22 12:00:00', 'AU', 'The international shipment has been processed in the export parcel center'],
+      ['2026-03-21 18:00:00', 'BR', 'The international shipment has been processed in the export parcel center'],
+      ['2026-03-21 12:00:00', 'MX', 'The international shipment has been processed in the export parcel center'],
+      ['2026-03-20 12:00:00', 'China', '货物已交机场，等待安排航班中The goods have been delivered to the airport and are awaiting the arrangement of flights.'],
+    ];
+    // Without DHL taking the record, nothing proves which clock a copied row keeps, in a country
+    // with several zones or one; a place in China is still on Beijing time.
+    const unclaimed = record(abroad, 'LX000000005CN');
+    expect(unclaimed).not.toHaveProperty('delivery_carrier');
+    expect(unclaimed).toMatchObject({ status: 'delivered', last_update: null, last_update_local: '2026-03-23T12:15:00' });
+    expect(unclaimed).not.toHaveProperty('delivered_at');
+    expect(clocks(unclaimed)).toEqual(['2026-03-23T12:15:00', '2026-03-23T08:05:00', '2026-03-22T18:00:00', '2026-03-22T12:00:00',
+      '2026-03-21T18:00:00', '2026-03-21T12:00:00', '2026-03-20T12:00:00+08:00']);
+    // Once DHL takes it, DHL's rows with a country are on Beijing time. Its rows without a place
+    // have come on its German clock as well, a town is no country code, and the forwarder's rows
+    // abroad could be on either clock.
+    const claimed = record([
+      ['2026-03-23 12:15:00', '', 'The shipment has been delivered'],
+      ['2026-03-23 08:05:00', 'Madrid', 'The shipment has been loaded onto the delivery vehicle'],
+      ['2026-03-22 18:00:00', 'AMS', '已转运transferred'],
+      ['2026-03-22 12:00:00', 'DH', '已到达目的国', 'CO_C_CR'],
+      ['2026-03-21 12:00:00', 'MX', 'The international shipment has been processed in the export parcel center'],
+    ]);
+    expect(claimed).toMatchObject({ delivery_carrier: 'dhl', status: 'delivered', last_update: null, last_update_local: '2026-03-23T12:15:00' });
+    expect(claimed).not.toHaveProperty('delivered_at');
+    expect(clocks(claimed)).toEqual(['2026-03-23T12:15:00', '2026-03-23T08:05:00', '2026-03-22T18:00:00', '2026-03-22T12:00:00',
+      '2026-03-21T12:00:00+08:00']);
+    // A delivery that is not the newest row gives no delivery time.
+    const after = record([
+      ['2026-03-24 09:00:00', 'ES', 'The shipment has been processed in the parcel center'],
+      ['2026-03-23 12:15:00', 'ES', 'The shipment has been delivered'],
+    ]);
+    expect(after).toMatchObject({ last_update: '2026-03-24T09:00:00+08:00' });
+    expect(after).not.toHaveProperty('delivered_at');
   });
 
   it('reads only the page that echoes the number as not found', async () => {

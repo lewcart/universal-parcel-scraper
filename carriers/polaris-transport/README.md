@@ -20,6 +20,15 @@ The former quick trace page showed each PRO in a frame from the bill viewer on
 `customer.polaristransport.com`, which takes it as `search_value`. The library reads the number
 from each.
 
+## Why there is no adapter
+
+The trace page's script reads a shipment from
+`api.polaristransport.com:1984/restgateway/services/TraceAPI/Trace`, with the PRO in `Probill`
+and a key the page gives every visitor, and reports a PRO as invalid when the reply names no
+probill number. That service, the website and the bill viewer do not answer connections from
+Europe: the connection times out before any reply. Polaris publishes no tracking app, so
+Polaris Transportation Group stays on universal providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

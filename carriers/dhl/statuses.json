@@ -5,6 +5,7 @@
     { "wording": "Die Sendung wurde vom Absender elektronisch angekündigt.", "language": "de", "stage": "registered", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "German pre-advice; matched on \"elektronisch\"." },
     { "wording": "Pick-up has been scheduled for the next working day and the information has been sent to the delivery person", "language": "en", "stage": "registered", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "A booked collection, before \"Pick-up was successful.\"." },
     { "wording": "Pick-up was successful.", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "" },
+    { "wording": "The shipment has been posted by the sender at the retail outlet", "language": "en", "stage": "accepted", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "Deutsche Post's posting at a retail outlet, \"in der Filiale eingeliefert\" in German." },
     { "wording": "The shipment was handed over to DHL.", "language": "en", "stage": "accepted", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "" },
     { "wording": "Die Sendung wurde im Briefzentrum bearbeitet.", "language": "de", "stage": "in_transit", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "Mail-centre processing scan." },
     { "wording": "The shipment has been processed in the parcel center", "language": "en", "stage": "in_transit", "confirmedBy": "fixture", "firstSeen": "2026-09-12", "note": "" },

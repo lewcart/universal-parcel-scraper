@@ -5,6 +5,8 @@
     {"wording": "Item has been collected", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "JS Express's warehouse took the parcel."},
     {"wording": "Item inbound in sorting center.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Item outbound in sorting center.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
+    {"wording": "Domestic allocation has begun", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "At JS Express's Chinese warehouse, after the outbound sorting scan and before the departure from origin."},
+    {"wording": "Under domestic allocation", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The step after the allocation began, still before the departure from origin."},
     {"wording": "Item departed from origin.", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Arrive at international airport to abroad", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Released From Export Customs", "stage": "in_transit", "language": "en", "confirmedBy": "live"},

@@ -30,7 +30,7 @@ export function stageForText(text: string, fallback = 'in_transit'): string {
   // A booked collection precedes "Pick-up was successful.", so it cannot be progress beyond it.
   if (/^pick-up has been scheduled\b/.test(value)) return 'registered';
   if (/will be transported to the destination country/.test(value)) return 'in_transit';
-  if (/pick-up was successful|accepted|handed (?:over|to)|eingeliefert|übergeben/.test(value)) return 'accepted';
+  if (/pick-up was successful|accepted|handed (?:over|to)|has been posted by the sender|eingeliefert|übergeben/.test(value)) return 'accepted';
   if (/processed|sorted|sorting|sortierung|bearbeitet|briefzentrum|paketzentrum|transit|transport|arrived|departed/.test(value)) return 'in_transit';
   return fallback;
 }

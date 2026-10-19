@@ -102,6 +102,7 @@ describe('DHL public tracking normalization', () => {
     ['The customs clearance process for import into the destination country/region has started. Please find more information here.', 'customs', 'in_transit'],
     ['The shipment will be transported to the destination country/destination area and, from there, handed over to the delivery organization.', 'in_transit', 'in_transit'],
     ['The shipment was handed over to DHL.', 'accepted', 'in_transit'],
+    ['The shipment has been posted by the sender at the retail outlet', 'accepted', 'in_transit'],
     ['The shipment is being prepared for delivery in the delivery depot', 'in_transit', 'in_transit'],
     ['The shipment is returning to sender', 'returned', 'exception'],
     ['The shipment has been delivered', 'delivered', 'delivered'],

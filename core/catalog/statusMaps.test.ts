@@ -111,6 +111,8 @@ describe('status map answers', () => {
     expect(answer('huahan', 'ZZ', 'Data processed')).toEqual(unknown);
     expect(answer('js-express', null, 'Prepared for last mile handover')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'The cargo tally in the supervised warehouse is in progress.')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'Domestic allocation has begun')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'Under domestic allocation')).toEqual(mapped('in_transit'));
   });
 
   it("answers La Poste by the group and code it reads, for every carrier its adapter serves", () => {
@@ -451,6 +453,10 @@ describe("universal providers' answers", () => {
       ['Item handed over to subcontractor', 'in_transit'], ['Item announced', 'registered'], ['Item sent', 'in_transit'],
       ['Item received in destination country', 'in_transit'],
       ['Item posted / received from customer Customer centre: Example', 'accepted'],
+      ['International item mailed in originating country', 'accepted'],
+      ['The shipment has been posted by the sender at the retail outlet', 'accepted'], ['Label correction applied', 'in_transit'],
+      ['Domestic allocation has begun', 'in_transit'], ['Under domestic allocation', 'in_transit'],
+      ['Delivery to local courier', 'in_transit'],
       ['Order registered', 'registered'], ['Pickup scheduled for 01/02/2026', 'registered'],
       ['Pickup completed, No exceptions', 'accepted'], ['Furniture Received by Metro-<Warehouse>-Hub', 'in_transit'],
       ['Furniture Received by Metro-Example-Hub', 'in_transit'],

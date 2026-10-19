@@ -204,6 +204,16 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^item sent[.!]?$|^item received in destination country[.!]?$/i.test(value)) return 'in_transit';
   // Latvijas Pasts' acceptance at a post office, which ParcelsApp follows with the office's name.
   if (/^item posted \/ received from customer\b/i.test(value)) return 'accepted';
+  // A postal item accepted abroad as the receiving post's map reads the UPU event (Canada Post's 4000), and
+  // Deutsche Post's posting at a retail outlet, "in der Filiale eingeliefert" in German.
+  if (/^international item mailed in originating country[.!]?$/i.test(value)) return 'accepted';
+  if (/^the shipment has been posted by the sender at the retail outlet[.!]?$/i.test(value)) return 'accepted';
+  // Canada Post's new label at a processing plant (0198), between two processing scans.
+  if (/^label correction applied[.!]?$/i.test(value)) return 'in_transit';
+  // JS Express's steps at its Chinese warehouse between sorting and departure, and its hand-over to the
+  // destination's last-mile carrier, as its own map reads them.
+  if (/^domestic allocation has begun[.!]?$|^under domestic allocation[.!]?$/i.test(value)) return 'in_transit';
+  if (/^delivery to local courier[.!]?$/i.test(value)) return 'in_transit';
   // A consolidator's steps as aggregators relay them: the customer's data on its manifest, its origin
   // hub taking the parcel in, the parcel sent on, and a flight held up, for which results carry no delay flag.
   if (/^customer information manifested[.!]?$/i.test(value)) return 'registered';

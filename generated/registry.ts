@@ -306,6 +306,7 @@ import { adapter as lbcExpress } from '../carriers/lbc-express/adapter.js';
 import { adapter as leopardsCourier } from '../carriers/leopards-courier/adapter.js';
 import { adapter as liccardi } from '../carriers/liccardi/adapter.js';
 import { adapter as lietuvosPastas } from '../carriers/lietuvos-pastas/adapter.js';
+import { adapter as lightningExpress } from '../carriers/lightning-express/adapter.js';
 import { adapter as lineClear } from '../carriers/line-clear/adapter.js';
 import { adapter as linhan } from '../carriers/linhan/adapter.js';
 import { adapter as lionParcel } from '../carriers/lion-parcel/adapter.js';
@@ -876,6 +877,7 @@ export const REGISTRY: RegistryDefinition = {
     "leopards-courier": leopardsCourier,
     "liccardi": liccardi,
     "lietuvos-pastas": lietuvosPastas,
+    "lightning-express": lightningExpress,
     "line-clear": lineClear,
     "linhan": linhan,
     "lion-parcel": lionParcel,
@@ -1555,7 +1557,7 @@ export const REGISTRY: RegistryDefinition = {
     "libanpost": "universal",
     "liccardi": "liccardi",
     "lietuvos-pastas": "lietuvos-pastas",
-    "lightning-express": "universal",
+    "lightning-express": "lightning-express",
     "line-clear": "line-clear",
     "linhan": "linhan",
     "lion-parcel": "lion-parcel",

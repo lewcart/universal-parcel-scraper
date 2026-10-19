@@ -2233,6 +2233,12 @@
     "reason": "Liccardi's thirteen-digit numbers start 66, a prefix too short to claim among the five carriers that already match thirteen digits."
   },
   {
+    "carrier": "lightning-express",
+    "pattern": "^[A-Z]{3}\\d{14,15}$",
+    "kind": "by_design",
+    "reason": "Only the tracking field's example and the demo orders on Lightning Express's business page show its region code, short code, date and sequence, so no rule claims the layout."
+  },
+  {
     "carrier": "line-clear",
     "pattern": "^W\\d{13}$",
     "kind": "by_design",

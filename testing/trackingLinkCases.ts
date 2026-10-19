@@ -1226,6 +1226,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'fleetex', number: 'SR000000000000',
     route: /^https:\/\/tracking\.fleetexpress\.ca\/tracking\/en\/SR000000000000$/,
     marker: /Package Not Found|Track your package/ },
+  // The page spaces the number in its field and its address before it asks its service,
+  // then answers an unknown number with its not-found notice.
+  { carrier: 'lightning-express', number: 'YYZ00000000000000',
+    route: /^https:\/\/www\.lightningexpressca\.com\/track\.html\?id=YYZ00(?:%20| |\+)?00000000(?:%20| |\+)?0000$/,
+    marker: /Track your shipment|No order found/i, forwarding: { notFound: /No order found\. Please check and try again\./ } },
   // The page fills its field in from the address and looks the number up; the form's heading
   // shows while the answer is slow.
   { carrier: 'belpost', number: 'ZZ000000014BY',

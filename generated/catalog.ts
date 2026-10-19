@@ -18936,7 +18936,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lightning-express",
+      "localClocks": true
     },
     "canaryUrl": "https://www.lightningexpressca.com/",
     "trackingUrlTemplate": "https://www.lightningexpressca.com/track.html?id={trackingNumber}",

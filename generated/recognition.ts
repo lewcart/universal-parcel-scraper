@@ -209,6 +209,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "imile": 997,
   "indah-logistik": 798,
   "inpost": 820,
+  "integral-pack": 644,
   "interrapidisimo": 969,
   "israel-post": 81,
   "j-and-t": 530,

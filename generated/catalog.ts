@@ -16744,7 +16744,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "integral-pack",
+      "recognitionRank": 644,
+      "localClocks": true
     },
     "canaryUrl": "https://www.integralpack.com.ar/seguimiento",
     "trackingUrlTemplate": "https://www.integralpack.com.ar/seguimiento?codigo={trackingNumber}",

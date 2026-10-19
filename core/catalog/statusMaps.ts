@@ -233,6 +233,7 @@ import { statusMap as ilyangLogis } from '../../carriers/ilyang-logis/status.js'
 import { statusMap as imile } from '../../carriers/imile/status.js';
 import { statusMap as indahLogistik } from '../../carriers/indah-logistik/status.js';
 import { statusMap as instabox } from '../../carriers/instabox/status.js';
+import { statusMap as integralPack } from '../../carriers/integral-pack/status.js';
 import { statusMap as internetExpress } from '../../carriers/internet-express/status.js';
 import { statusMap as interrapidisimo } from '../../carriers/interrapidisimo/status.js';
 import { statusMap as intexPaketdienst } from '../../carriers/intex-paketdienst/status.js';
@@ -543,7 +544,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'hr-parcel': hrParcel, 'hrvatska-posta': hrvatskaPosta, huahan, 'hunter-express': hunterExpress, hywl,
   'icc-worldwide': iccWorldwide, 'ics-courier': icsCourier, 'ids-logistik': idsLogistik,
   'ilyang-logis': ilyangLogis, imile, 'indah-logistik': indahLogistik,
-  instabox, 'internet-express': internetExpress, interrapidisimo,
+  instabox, 'integral-pack': integralPack, 'internet-express': internetExpress, interrapidisimo,
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, 'jetline-couriers': jetlineCouriers, jhgj, jitsu, jne, 'jordan-post': jordanPost,
   jrt, 'js-express': jsExpress, kazpost, kex, 'kex-express-hk': kexExpressHk, 'kuehne-nagel': kuehneNagel, kunyoung, kyoungdong, 'kyrgyz-post': kyrgyzPost, 'l-post': lPost, 'la-poste': laPoste,

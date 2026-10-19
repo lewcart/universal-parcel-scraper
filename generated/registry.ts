@@ -270,6 +270,7 @@ import { adapter as indahLogistik } from '../carriers/indah-logistik/adapter.js'
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
 import { adapter as inpost } from '../carriers/inpost/adapter.js';
 import { adapter as instabox } from '../carriers/instabox/adapter.js';
+import { adapter as integralPack } from '../carriers/integral-pack/adapter.js';
 import { adapter as intelcom } from '../carriers/intelcom/adapter.js';
 import { adapter as internetExpress } from '../carriers/internet-express/adapter.js';
 import { adapter as interrapidisimo } from '../carriers/interrapidisimo/adapter.js';
@@ -851,6 +852,7 @@ export const REGISTRY: RegistryDefinition = {
     "india-post": indiaPost,
     "inpost": inpost,
     "instabox": instabox,
+    "integral-pack": integralPack,
     "intelcom": intelcom,
     "internet-express": internetExpress,
     "interrapidisimo": interrapidisimo,
@@ -1511,7 +1513,7 @@ export const REGISTRY: RegistryDefinition = {
     "india-post": "india-post",
     "inpost": "inpost",
     "instabox": "instabox",
-    "integral-pack": "universal",
+    "integral-pack": "integral-pack",
     "intelcom": "intelcom",
     "inter-courier": "universal",
     "intereuropa": "universal",

@@ -42,9 +42,15 @@ page makes.
   rules, which read the other partners' relayed English. The hand-over to the US partner ("delivered to UPS/USPS/Fedex"),
   the last-mile partner's pickup and China Post's hand-over to the airline are transit.
   DHLink's delivered count makes the parcel delivered when the last row says less.
-- Clocks have no offset: China's rows are on Beijing time, and so are GOFO's relayed scans,
-  while other partners' rows can be on the destination's, so every row keeps its wall clock. A row still after the read at UTC+14, the
-  earliest instant it can stand for, is dropped, and the delivered count is then not trusted.
+- Clocks have no offset. DHLink records each row on Beijing time (`createDate`), seconds after
+  the clock of a row scanned in China. A scan with a place in China is read on Beijing time, and
+  one a USPS office names with its state and ZIP code on that state's, unless the state spans
+  several zones. A scan recorded before its clock could have struck at the destination, even in
+  the destination's easternmost zone, keeps DHLink's own Beijing time, as GOFO's relayed scans
+  do. Any other scan could be on either clock and keeps its wall clock in `local_time`; the
+  newest scan's instant, when it has one, is the last update.
+- A row still after the read at UTC+14, the earliest instant it can stand for, is dropped, and
+  the delivered count is then not trusted.
 - The reply gives the last leg's number (`lastTurnNo`) but no partner, so the partner comes from
   the number's whole layout in an explicit table: `SWX` and eighteen digits is SwiftX, `GFUS`
   and fourteen digits is GOFO. Other numbers give no hand-off.

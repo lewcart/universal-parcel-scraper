@@ -3,7 +3,7 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
-import { firstOccurrence } from '../../core/time/index.js';
+import { countryTimeZone, firstOccurrence, isoTime, usStateTimeZone } from '../../core/time/index.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { dhlinkStage } from './status.js';
@@ -16,6 +16,18 @@ const NUMBER = /^(?=[A-Z]*\d)[A-Z0-9]{8,40}$/;
 const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 // The earliest instant a wall clock can stand for: a row still after the read at UTC+14 is written ahead of its time.
 const EARLIEST = FixedOffsetZone.instance(14 * 60);
+// DHLink records each row on Beijing time (`createDate`): rows scanned in China
+// are recorded within seconds of their clocks.
+const RECORD_ZONE = 'Asia/Shanghai';
+// A destination spanning several zones, by its easternmost: a row recorded before
+// even that reading of its clock cannot keep the destination's time.
+const EASTERNMOST: Readonly<Record<string, string>> = { US: 'America/New_York' };
+// Some scanners run early.
+const CLOCK_SKEW_MS = 3_600_000;
+// A US post office: its state, then the ZIP code ("NY 10001", "NY;10001", "NY, US 10001").
+const US_OFFICE = /\b([A-Z]{2})(?:[ ,;]+US)?[ ,;]+\d{5}(?:-\d{4})?\b/;
+// States whose places keep different clocks, so a state does not settle a clock's zone.
+const SPLIT_STATES = new Set(['AK', 'AZ', 'FL', 'ID', 'IN', 'KS', 'KY', 'MI', 'ND', 'NE', 'NV', 'OR', 'SD', 'TN', 'TX']);
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
 // DHLink's own number, FC and thirteen digits.
@@ -91,6 +103,36 @@ interface Scan {
   event: CarrierEvent;
   /** Ranks the rows that share a clock: DHLink's node, English, a place, a stage, then the longer wording. */
   rank: readonly number[];
+  /** A place in China. */
+  china: boolean;
+  /** The zone of the US state a post office's row names, unless the state spans several. */
+  state: string | null;
+  /** When DHLink recorded the row, or the read when it does not say. */
+  recorded: number;
+}
+
+/** The instant DHLink recorded a row, on its Beijing clock; null when the reply does not say. */
+function recordedAt(row: Record<string, unknown>): number | null {
+  const wall = WALL_CLOCK.exec(text(row, 'createDate', 64));
+  return wall ? isoTime(`${wall[1]}T${wall[2]}`, RECORD_ZONE)?.timestamp ?? null : null;
+}
+
+/**
+ * The zone a scan's clock keeps, where DHLink's record shows it. Places in
+ * China keep Beijing time, and a US post office's row its state's when the
+ * row was recorded after that reading. A row recorded before its clock could
+ * have struck at the destination keeps DHLink's own Beijing time, as GOFO's
+ * relayed scans do. Null when either clock could be the row's.
+ */
+function scanZone(scan: Scan, destination: string): string | null {
+  const fits = (zone: string) => {
+    const time = isoTime(scan.stamp, zone);
+    return time !== null && time.timestamp <= scan.recorded + CLOCK_SKEW_MS;
+  };
+  if (scan.china) return fits(RECORD_ZONE) ? RECORD_ZONE : null;
+  if (scan.state && fits(scan.state)) return scan.state;
+  const away = scan.state ?? EASTERNMOST[destination] ?? countryTimeZone(destination);
+  return away && away !== RECORD_ZONE && !fits(away) && fits(RECORD_ZONE) ? RECORD_ZONE : null;
 }
 
 function projectRow(row: unknown, readAt: number): Scan | 'ahead' | null {
@@ -103,21 +145,26 @@ function projectRow(row: unknown, readAt: number): Scan | 'ahead' | null {
   if (!earliest?.isValid || earliest.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local) throw new SchemaError(PROVIDER, 'DHLink returned an invalid scan time');
   // A row dated after the read is not a scan yet.
   if (earliest.toMillis() > readAt) return 'ahead';
-  const description = wordingOf(text(row, 'info'));
+  const info = text(row, 'info');
+  const description = wordingOf(info);
   if (!description) return null;
   const code = text(row, 'nodeCode', 32);
   const name = text(row, 'nodeName', 64);
-  const location = placeOf(text(row, 'place', 200));
+  const place = text(row, 'place', 200);
+  const location = placeOf(place);
   const staged = dhlinkStage(code, name, description);
+  // The clock is set once the scan's rows are pooled.
   const event: CarrierEvent = {
-    local_time: local,
     description,
     ...(location ? { location } : {}),
     ...(code ? { provider_code: code } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
   };
   const rank = [name ? 1 : 0, CJK.test(description) ? 0 : 1, location ? 1 : 0, staged ? 1 : 0, description.length];
-  return { stamp: local, event, rank };
+  // USPS names the office in the place, or else at the end of its wording.
+  const office = (US_OFFICE.exec(place.toUpperCase()) ?? US_OFFICE.exec(info))?.[1];
+  const state = office && !SPLIT_STATES.has(office) ? usStateTimeZone(office) : null;
+  return { stamp: local, event, rank, china: CJK.test(place), state, recorded: Math.min(recordedAt(row) ?? readAt, readAt) };
 }
 
 function outranks(left: readonly number[], right: readonly number[]): boolean {
@@ -171,11 +218,19 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     if (scan === 'ahead') ahead = true;
     if (!scan || scan === 'ahead') continue;
     const held = scans.get(scan.stamp);
-    if (!held || outranks(scan.rank, held.rank)) scans.set(scan.stamp, scan);
+    // The rows of one scan pool what they show of its clock: a place, and the earliest record.
+    const kept = !held || outranks(scan.rank, held.rank) ? scan : held;
+    scans.set(scan.stamp, held ? { ...kept, china: held.china || scan.china, state: held.state ?? scan.state,
+      recorded: Math.min(held.recorded, scan.recorded) } : kept);
   }
+  const destination = text(entry, 'destCountryCode', 8).toUpperCase();
   // Newest first, as the tracking page lists them; the clocks sort as written.
   const events = [...scans.values()].sort((left, right) => (left.stamp < right.stamp ? 1 : left.stamp > right.stamp ? -1 : 0))
-    .map((scan) => scan.event);
+    .map((scan): CarrierEvent => {
+      const zone = scanZone(scan, destination);
+      const time = zone ? isoTime(scan.stamp, zone)?.iso : undefined;
+      return { ...(time ? { time } : { local_time: scan.stamp }), ...scan.event };
+    });
   if (!events.length) throw new IndeterminateError(PROVIDER, 'DHLink has no scans for the parcel yet');
 
   const newest = events[0]!;
@@ -188,14 +243,14 @@ export function parseDhlink(payload: unknown, raw: string, readAt = Date.now()):
     stage = 'delivered';
     source = 'carrier_map';
   }
-  const destination = text(entry, 'destCountryCode', 8).toUpperCase();
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: source! } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time!,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
+    ...(stage === 'delivered' && newest.stage === 'delivered' && newest.time ? { delivered_at: newest.time } : {}),
     ...handoff(entry, [number, tracking, own]),
     ...(COUNTRY.test(destination) ? { destination_country: destination } : {}),
     events: events.slice(0, MAX_EVENTS),

@@ -29,7 +29,7 @@ const changed = (name: string, change: (parcel: Parcel, envelope: Envelope) => v
 const reply = (body: unknown, init: ResponseInit = {}) => new Response(typeof body === 'string' ? body : JSON.stringify(body),
   { ...init, headers: { 'Content-Type': typeof body === 'string' ? 'text/html' : 'application/json', ...init.headers } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
-const timeline = (events: readonly Row[] | undefined) => events!.map((event) => [event.local_time, event.provider_code ?? null, event.stage ?? null, event.location ?? null]);
+const timeline = (events: readonly Row[] | undefined) => events!.map((event) => [event.time ?? event.local_time, event.provider_code ?? null, event.stage ?? null, event.location ?? null]);
 // The firewall's page, with its message written by a script and its ids invented.
 const BLOCK_PAGE = '<!doctype html><html><head><meta charset=utf-8><title>403 Forbidden</title></head><body><div class=et id=et></div>'
   + '<span class=emu>https://www.dhlink.com/stage-api/trbiz/track/queryTrack</span><p>00000000_ZZ-000-000000_00000-00000</p>'
@@ -55,11 +55,12 @@ describe('DHLink HTTP adapter', () => {
     const result = parseDhlink(fixture('swiftx-at-warehouse'), WAREHOUSE, LATER);
     expect(result).toEqual({
       status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'Package departed from the warehouse', last_update: null, last_update_local: '2026-03-02T15:51:13',
+      // Recorded minutes after their clocks, which would still be ahead on the US's: DHLink's Beijing time.
+      last_status_text: 'Package departed from the warehouse', last_update: '2026-03-02T15:51:13+08:00',
       expected_delivery: null, delivery_carrier: 'swiftx', delivery_tracking_number: 'SWX990000000000000001', destination_country: 'US',
       events: [
-        { local_time: '2026-03-02T15:51:13', description: 'Package departed from the warehouse', provider_code: 'WH011', stage: 'in_transit', stage_source: 'carrier_map' },
-        { local_time: '2026-03-02T13:51:49', description: 'Package received & scanned at warehouse', provider_code: 'WH001', stage: 'accepted', stage_source: 'carrier_map' },
+        { time: '2026-03-02T15:51:13+08:00', description: 'Package departed from the warehouse', provider_code: 'WH011', stage: 'in_transit', stage_source: 'carrier_map' },
+        { time: '2026-03-02T13:51:49+08:00', description: 'Package received & scanned at warehouse', provider_code: 'WH001', stage: 'accepted', stage_source: 'carrier_map' },
       ],
     });
     // The DHLink number, the order id and the feeds' and rows' ids are never read.
@@ -76,18 +77,20 @@ describe('DHLink HTTP adapter', () => {
       last_status_text: 'Shipment has delivered at 2026-02-20 15:10:00', last_update: null, last_update_local: '2026-02-20T15:10:00' });
     expect(result.destination_country).toBeUndefined();
     expect(result.delivery_carrier).toBeUndefined();
+    // Scans with a place in China, on either row, are on Beijing time. The destination's are not
+    // placed: the reply names no destination here.
     expect(timeline(result.events)).toEqual([
       ['2026-02-20T15:10:00', 'J014', 'delivered', null],
       ['2026-02-20T07:15:00', 'J013', 'out_for_delivery', null],
       ['2026-02-19T08:00:00', null, 'in_transit', null],
       ['2026-02-12T21:03:00', 'EUBJ010', 'in_transit', null],
-      ['2026-02-10T12:15:28', null, 'in_transit', 'Sampleport'],
-      ['2026-02-09T02:47:17', null, 'in_transit', 'Sampleport'],
-      ['2026-02-09T01:06:58', null, 'customs', 'Sampleport'],
-      ['2026-02-08T13:00:03', null, 'accepted', 'Sampletown'],
-      ['2026-02-07T14:43:38', null, 'in_transit', '示例省'],
-      ['2026-02-07T14:37:38', null, 'accepted', '示例市'],
-      ['2026-02-06T23:11:47', 'EUBJ007', 'accepted', '示例市'],
+      ['2026-02-10T12:15:28+08:00', null, 'in_transit', 'Sampleport'],
+      ['2026-02-09T02:47:17+08:00', null, 'in_transit', 'Sampleport'],
+      ['2026-02-09T01:06:58+08:00', null, 'customs', 'Sampleport'],
+      ['2026-02-08T13:00:03+08:00', null, 'accepted', 'Sampletown'],
+      ['2026-02-07T14:43:38+08:00', null, 'in_transit', '示例省'],
+      ['2026-02-07T14:37:38+08:00', null, 'accepted', '示例市'],
+      ['2026-02-06T23:11:47+08:00', 'EUBJ007', 'accepted', '示例市'],
     ]);
     expect(result.events!.map((event) => event.description)).toEqual(expect.arrayContaining(['Handed over to Airlines', 'Item Presented to Customs', '已出库']));
     expect(result.events!.some((event) => /已妥投|安排投递|飞机到达进港|送交出口海关/.test(String(event.description)))).toBe(false);
@@ -95,20 +98,25 @@ describe('DHLink HTTP adapter', () => {
 
   it('keeps one row of a scan relayed twice in two formats, without the ZIP codes', () => {
     const result = parseDhlink(fixture('usps-relayed'), LINE, LATER);
-    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', destination_country: 'US', last_update_local: '2026-01-24T16:07:00' });
-    expect(result.events!.map((event) => [event.local_time, event.description, event.stage, event.location ?? null])).toEqual([
-      ['2026-01-24T16:07:00', 'Delivered', 'delivered', 'SAMPLEVILLE, NY'],
-      ['2026-01-24T16:02:00', 'SAMPLEVILLE, NY, No Access to Delivery Location', 'failed_attempt', 'SAMPLEVILLE, NY'],
-      ['2026-01-24T06:18:00', 'SAMPLEVILLE, NY, US, Out for Delivery, Expected Delivery by 7:40pm', 'out_for_delivery', 'SAMPLEVILLE, NY, US'],
-      ['2026-01-20T11:42:00', 'EXAMPLETON, NJ, Arrived Shipping Partner Facility, USPS Awaiting Item', 'in_transit', 'EXAMPLETON, NJ'],
+    expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', destination_country: 'US',
+      last_update: '2026-01-24T16:07:00-05:00', delivered_at: '2026-01-24T16:07:00-05:00' });
+    expect(result.last_update_local).toBeUndefined();
+    // USPS's offices keep their state's time. DHLink's rows recorded before a US clock could have
+    // struck keep its Beijing time; the others could be on either and stay wall clocks.
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.description, event.stage, event.location ?? null])).toEqual([
+      ['2026-01-24T16:07:00-05:00', 'Delivered', 'delivered', 'SAMPLEVILLE, NY'],
+      ['2026-01-24T16:02:00-05:00', 'SAMPLEVILLE, NY, No Access to Delivery Location', 'failed_attempt', 'SAMPLEVILLE, NY'],
+      ['2026-01-24T06:18:00-05:00', 'SAMPLEVILLE, NY, US, Out for Delivery, Expected Delivery by 7:40pm', 'out_for_delivery', 'SAMPLEVILLE, NY, US'],
+      // The office's place comes from the scan's other row.
+      ['2026-01-20T11:42:00-05:00', 'EXAMPLETON, NJ, Arrived Shipping Partner Facility, USPS Awaiting Item', 'in_transit', 'EXAMPLETON, NJ'],
       ['2026-01-19T00:01:04', '货物已交UPS/USPS/Fedex,The goods have been delivered to UPS/USPS/Fedex', 'in_transit', null],
-      ['2026-01-16T20:20:00', 'Flight arrival', 'in_transit', null],
+      ['2026-01-16T20:20:00+08:00', 'Flight arrival', 'in_transit', null],
       ['2026-01-16T00:48:29', 'Customs clearance completed', 'in_transit', null],
-      ['2026-01-13T18:40:00', 'Flight departure', 'in_transit', null],
+      ['2026-01-13T18:40:00+08:00', 'Flight departure', 'in_transit', null],
       // A place of placeholders and a country code alone names no place.
-      ['2026-01-09T01:30:42', 'The package has sent from the warehouse', 'in_transit', null],
-      ['2026-01-06T20:47:56', 'The collection warehouse has completed sorting', 'accepted', null],
-      ['2026-01-03T17:58:49', 'Arrive at the collection warehouse', 'accepted', null],
+      ['2026-01-09T01:30:42+08:00', 'The package has sent from the warehouse', 'in_transit', null],
+      ['2026-01-06T20:47:56+08:00', 'The collection warehouse has completed sorting', 'accepted', null],
+      ['2026-01-03T17:58:49+08:00', 'Arrive at the collection warehouse', 'accepted', null],
     ]);
     expect(JSON.stringify(result)).not.toMatch(/9990[12]/);
   });
@@ -132,6 +140,39 @@ describe('DHLink HTTP adapter', () => {
       Object.assign(parcel.trackinfoList[0]!, { info: '【GB】已妥投，签收人：示例', place: 'SAMPLEBURY ZZ9 9ZZ' });
     }), POSTAL, LATER);
     expect(chinese.events![0]).toMatchObject({ description: '【GB】已妥投', stage: 'delivered', location: 'SAMPLEBURY' });
+  });
+
+  it('places a scan’s clock by when DHLink recorded it, and leaves it a wall clock when either zone fits', () => {
+    // GOFO's relayed scans, recorded within hours: a US clock would still be ahead of the record.
+    const row = (trackTime: string, createDate: string | null, place: string, info: string) => ({ trackTime, createDate, place, info, nodeCode: null, nodeName: null });
+    const relayed = (rows: Row[], destination = 'US') => parseDhlink(changed('swiftx-at-warehouse', (parcel) => {
+      parcel.destCountryCode = destination;
+      parcel.trackinfoList = rows;
+    }), WAREHOUSE, LATER);
+    const gofo = relayed([
+      row('2026-03-10 09:12:00', '2026-03-10 09:40:05', 'LA_SBA Warehouse, US', 'Out for delivery'),
+      row('2026-03-09 21:30:00', '2026-03-10 14:00:00', 'LAX HUB, US', 'Arrived at destination hub'),
+    ]);
+    expect(gofo).toMatchObject({ last_update: '2026-03-10T09:12:00+08:00', status: 'out_for_delivery' });
+    expect(gofo.last_update_local).toBeUndefined();
+    // Recorded 16½ hours after its clock: Beijing or New York could both be its time.
+    expect(gofo.events![1]).toMatchObject({ local_time: '2026-03-09T21:30:00', location: 'LAX HUB, US' });
+    // A post office's state, recorded before its clock could strike there: not the state's time.
+    expect(relayed([row('2026-03-10 09:12:00', '2026-03-10 09:40:05', 'SAMPLEVILLE, CA 99901', 'Arrived at Post Office')]).last_update)
+      .toBe('2026-03-10T09:12:00+08:00');
+    // USPS's office named only in the wording.
+    expect(relayed([row('2026-03-10 06:10:00', '2026-03-11 02:00:00', 'SAMPLETOWN', 'Out for Delivery SAMPLETOWN GA 99901')]).last_update)
+      .toBe('2026-03-10T06:10:00-04:00');
+    // A state split between zones does not tell the clock.
+    expect(relayed([row('2026-03-10 06:10:00', '2026-03-11 02:00:00', 'SAMPLETOWN', 'Out for Delivery SAMPLETOWN TN 99901')]).last_update).toBeNull();
+    // A single-zone destination's clock, and a row recorded too soon for it.
+    expect(relayed([row('2026-03-10 18:00:00', '2026-03-11 03:30:00', 'none', 'Delivered')], 'GB')).toMatchObject({ last_update: null, last_update_local: '2026-03-10T18:00:00' });
+    expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 18:20:00', 'none', 'Delivered')], 'GB').last_update).toBe('2026-03-10T18:00:00+08:00');
+    // Without the record, only a place settles a clock, and only up to the read.
+    expect(relayed([row('2026-03-10 18:00:00', null, 'none', 'Delivered')], 'GB').last_update).toBeNull();
+    expect(relayed([row('2026-03-10 18:00:00', null, '示例市', '已出库')]).last_update).toBe('2026-03-10T18:00:00+08:00');
+    // A place in China whose clock is after its record is no Beijing clock.
+    expect(relayed([row('2026-03-10 18:00:00', '2026-03-10 15:00:00', '示例市', '已出库')]).last_update).toBeNull();
   });
 
   it('holds back rows written ahead of the read, whatever their zone', () => {

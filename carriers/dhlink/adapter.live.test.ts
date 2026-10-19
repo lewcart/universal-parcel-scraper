@@ -14,7 +14,7 @@ describe('DHLink live retrieval', () => {
     expect(answer.attempts[0]).toMatchObject({ source: 'dhlink', kind: 'ok' });
     expect(answer.result.current_stage).toBeDefined();
     expect(answer.result.events.length).toBeGreaterThan(0);
-    expect(answer.result.events.every((event) => event.local_time && event.description)).toBe(true);
+    expect(answer.result.events.every((event) => (event.time || event.local_time) && event.description)).toBe(true);
     await expect(direct().recognize!(number)).resolves.toMatchObject({ known: true });
   });
 

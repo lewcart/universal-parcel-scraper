@@ -15,7 +15,8 @@ placesForEvents(['Härkingen', 'Zürich'], { carriers: ['swiss-post'] });
 
 - The text is split into fields and phrases, and facility words ("hub", "Paketzentrum",
   "sort centre") are dropped. What is left is matched against town names, and translations
-  for larger towns ("Genf", "Cologne").
+  for larger towns ("Genf", "Cologne"). A translation of three Latin letters is left out: it
+  is a code or a stray transliteration more often than a name ("Lon" for Lognes).
 - A country after the last dash is taken off, as DHL Express prints it ("BENIN CITY -
   NIGERIA", "AMSTERDAM - NETHERLANDS, THE"). Georgia stays: it is also a US state.
 - Chinese, Japanese and Korean names match in their own script. "广东省深圳市" is read as

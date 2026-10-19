@@ -218,6 +218,14 @@ describe('locatePlace', () => {
     expect(place('Warehouse 2024', ['CH'])).toBeNull();
     expect(locatePlace(undefined)).toBeNull();
   });
+
+  it('reads no town from a three-letter alternate name, a code more often than a name', () => {
+    // GeoNames gives Lognes "Lon" and Jizhou "Chi": a British office of exchange is no French town.
+    for (const location of ['LON E ET BEA', 'CHI', 'BIN']) expect(place(location), location).toBeNull();
+    expect(placesForEvents(['LONDON BPI, United Kingdom', 'LON E ET BEA'])[1]).toBeNull();
+    // A town's own three-letter name still places it.
+    expect(place('ATH')).toMatchObject({ country: 'BE', name: 'Ath' });
+  });
 });
 
 describe('placesForEvents', () => {

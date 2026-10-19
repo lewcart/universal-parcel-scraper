@@ -118,7 +118,10 @@ for (const [, name, ascii, alternates, lat, lon, featureClass, feature, country,
   if (Number(population) >= (MULTILINGUAL.has(country) ? BILINGUAL_FROM : ALTERNATES_FROM)) {
     for (const other of alternates.split(',')) {
       if (!latin(other) && !(CJK_COUNTRIES.has(country) && cjk(other))) continue;
-      for (const key of nameKeys(other)) if (!primary.has(key)) alternate.add(key);
+      // Three Latin letters are a code or a stray transliteration more often
+      // than a name ("lon" for Lognes, "chi" for Jizhou), and carriers print
+      // them for other towns.
+      for (const key of nameKeys(other)) if (!primary.has(key) && (key.length > 3 || cjk(key))) alternate.add(key);
     }
   }
   remember({

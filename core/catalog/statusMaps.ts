@@ -317,6 +317,7 @@ import { statusMap as ptt } from '../../carriers/ptt/status.js';
 import { statusMap as quantiumSolutions } from '../../carriers/quantium-solutions/status.js';
 import { statusMap as quicksilverSa } from '../../carriers/quicksilver-sa/status.js';
 import { statusMap as quiqup } from '../../carriers/quiqup/status.js';
+import { statusMap as qwintry } from '../../carriers/qwintry/status.js';
 import { statusMap as raben } from '../../carriers/raben/status.js';
 import { statusMap as ramHandToHand } from '../../carriers/ram-hand-to-hand/status.js';
 import { statusMap as redpack } from '../../carriers/redpack/status.js';
@@ -490,9 +491,10 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
-  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'precision-deliveries': precisionDeliveries, 'pro-carrier': proCarrier, proships,
-  'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions, 'quicksilver-sa': quicksilverSa, quiqup, raben,
-  'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech, 'rl-carriers': rlCarriers, 'royal-express-mm': royalExpressMm,
+  'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
+  'pro-carrier': proCarrier, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions,
+  'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
+  'rl-carriers': rlCarriers, 'royal-express-mm': royalExpressMm,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,
   'saudi-post': saudiPost, seino, seko, sendex, sending, serpost, servientrega, sfc, shadowfax, shipa, shipblu, shipentegra,
   'shree-anjani': shreeAnjani, 'shree-maruti': shreeMaruti, 'skroutz-last-mile': skroutzLastMile,

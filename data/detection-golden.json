@@ -82631,6 +82631,30 @@
     ]
   },
   {
+    "input": "QR11399058",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR12152769",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR12421080",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
     "input": "QR15056976",
     "carrier": "qwintry",
     "confidence": "high",
@@ -82640,6 +82664,14 @@
   },
   {
     "input": "QR15795153",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR16332568",
     "carrier": "qwintry",
     "confidence": "high",
     "candidates": [
@@ -82663,7 +82695,23 @@
     ]
   },
   {
+    "input": "QR21603151",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
     "input": "QR21977950",
+    "carrier": "qwintry",
+    "confidence": "high",
+    "candidates": [
+      "qwintry"
+    ]
+  },
+  {
+    "input": "QR22200153",
     "carrier": "qwintry",
     "confidence": "high",
     "candidates": [

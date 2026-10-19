@@ -164,13 +164,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "qwintry",
         "confidence": "high"
       },
-      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air."
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
     },
     {
       "number": "QR16663085",
@@ -183,13 +183,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "qwintry",
         "confidence": "high"
       },
-      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air."
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
     },
     {
       "number": "QR22616702",
@@ -202,13 +202,127 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "qwintry",
         "confidence": "high"
       },
-      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air."
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR12152769",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR21603151",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR16332568",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR11399058",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "A customer review on Qwintry Logistics' own home page links this number to Qwintry's tracker and tags it Qwintry Air; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR22200153",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/api-docs",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "Qwintry's API documentation uses this number in its tracking example; the tracker shows its history to delivery."
+    },
+    {
+      "number": "QR12421080",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://logistics.qwintry.com/api-docs",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "qwintry",
+        "confidence": "high"
+      },
+      "note": "Qwintry's API documentation uses this number in its multiple-tracking example and sample reply; the tracker shows its history to delivery."
     }
   ]
 }

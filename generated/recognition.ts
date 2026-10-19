@@ -283,6 +283,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "ptt": 400,
   "purolator": 560,
   "quantium-solutions": 809,
+  "qwintry": 707,
   "raben": 924,
   "ram-hand-to-hand": 728,
   "redpack": 15,

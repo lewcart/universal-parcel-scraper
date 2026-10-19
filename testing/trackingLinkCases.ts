@@ -1612,6 +1612,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'oak-harbor', number: '99999999',
     route: /^https:\/\/www\.oakh\.com\/quicktrace&PRO=99999999$/,
     marker: /There was an issue tracking your shipment|Pro Not Found|Pro Information/ },
+  // The page looks up the number in its address and answers an unknown one with its own 404 page.
+  { carrier: 'qwintry', number: 'QR00000000',
+    route: /^https:\/\/logistics\.qwintry\.com\/track\?tracking=QR00000000$/,
+    marker: /This tracking does not exist|Tracking log/,
+    shipmentNotFound: { status: 404, marker: /This tracking does not exist/ }, forwarding: { notFound: /This tracking does not exist/ } },
 ];
 
 /**

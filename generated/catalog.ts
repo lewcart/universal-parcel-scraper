@@ -24367,7 +24367,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "qwintry",
+      "recognitionRank": 707,
+      "localClocks": true
     },
     "canaryUrl": "https://logistics.qwintry.com/",
     "trackingUrlTemplate": "https://logistics.qwintry.com/track?tracking={trackingNumber}",

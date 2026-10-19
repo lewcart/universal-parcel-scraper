@@ -1078,6 +1078,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'via-cargo', number: '999000000000',
     route: /^https:\/\/formularios\.viacargo\.com\.ar\/seguimiento-envio\/999000000000$/,
     marker: /Seguimiento de env[íi]o|No existen datos para el n[úu]mero de env[íi]o ingresado/i },
+  // The page posts the number in its address to the lookup, which names it above an empty history for an unknown one.
+  { carrier: 'blueex', number: '4000000003',
+    route: /^https:\/\/www\.blue-ex\.com\/tracking\?trackno=4000000003$/,
+    marker: /Shipment Tracking|BlueEX Shipping Label/ },
   // The page looks up each air waybill in its address and answers an unknown one with its notice
   // in place of the scans.
   { carrier: 'bombino', number: '0000000000',

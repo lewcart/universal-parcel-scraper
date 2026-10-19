@@ -152,7 +152,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -167,7 +167,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "Sent to BlueEX's own tracker on blue-ex.com, as an archived address shows; the capture was not opened."
+      "note": "Sent to BlueEX's own tracker on blue-ex.com, as an archived address shows; the capture was not opened. BlueEX's tracker knows it, with a history."
     },
     {
       "number": "5011178763",
@@ -208,7 +208,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -223,7 +223,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "The opened archived lookup on BlueEX's own tracking page shows the number with its progress steps; the history it loads separately was not archived."
+      "note": "The opened archived lookup on BlueEX's own tracking page shows the number with its progress steps; the history it loads separately was not archived. BlueEX's tracker knows it, with a history."
     }
   ]
 }

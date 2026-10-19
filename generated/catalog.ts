@@ -7574,7 +7574,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "blueex",
+      "recognitionRank": 747
     },
     "canaryUrl": "https://www.blue-ex.com/",
     "trackingUrlTemplate": "https://www.blue-ex.com/tracking?trackno={trackingNumber}",

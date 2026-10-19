@@ -33,6 +33,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "bex-express": 827,
   "bjs-home-delivery": 844,
   "blue-express": 971,
+  "blueex": 747,
   "bombino": 836,
   "bosta": 951,
   "box-now": 250,

@@ -46,6 +46,7 @@ import { statusMap as belpost } from '../../carriers/belpost/status.js';
 import { statusMap as bexExpress } from '../../carriers/bex-express/status.js';
 import { statusMap as bjsHomeDelivery } from '../../carriers/bjs-home-delivery/status.js';
 import { statusMap as blueExpress } from '../../carriers/blue-express/status.js';
+import { statusMap as blueex } from '../../carriers/blueex/status.js';
 import { statusMap as bombino } from '../../carriers/bombino/status.js';
 import { statusMap as bookurier } from '../../carriers/bookurier/status.js';
 import { statusMap as borderExpress } from '../../carriers/border-express/status.js';
@@ -416,7 +417,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'airpak-express': airpakExpress, ajex, 'algerie-poste': algeriePoste, aliexpress,
   'allegro-one': allegroOne, ampm, 'an-post': anPost, andreani, anjun, anserx, anteraja, 'apc-overnight': apcOvernight, 'apc-postal-logistics': apcPostalLogistics, 'aramex-au': aramexAu,
   'aramex-nz': aramexNz, 'aras-kargo': arasKargo, 'arrow-xl': arrowXl, 'austrian-post': austrianPost, averitt, aymakan, 'bangladesh-post': bangladeshPost,
-  'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, bombino,
+  'barid-al-maghrib': baridAlMaghrib, belpost, 'bex-express': bexExpress, 'bjs-home-delivery': bjsHomeDelivery, 'blue-express': blueExpress, blueex, bombino,
   bookurier, 'border-express': borderExpress, bosta, 'box-now': boxNow, 'bulgarian-posts': bulgarianPosts, 'burd-delivery': burdDelivery, bussgods,
   byhd, cacesa, cargus, castores, 'cbl-logistica': cblLogistica, cdek, cdl, celeritas,
   'central-transport': centralTransport, 'ceska-posta': ceskaPosta, 'ceva-logistics': cevaLogistics, chazki, chilexpress, 'china-post': chinaPost,

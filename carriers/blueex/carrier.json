@@ -18,17 +18,52 @@
   "timezone": "Asia/Karachi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "blueex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 747
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.blue-ex.com/tracking?trackno={trackingNumber}",
     "canaryUrl": "https://www.blue-ex.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "progress_rail",
+      "recipient_name",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "recipient_name"
+    ],
+    "unavailable": [
+      "eta",
+      "service_name",
+      "weight",
+      "origin",
+      "destination",
+      "sender_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

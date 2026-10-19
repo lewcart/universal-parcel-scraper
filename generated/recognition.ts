@@ -53,6 +53,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "chilexpress": 958,
   "china-post": 905,
   "chit-chats": 115,
+  "chronodiali": 781,
   "chronopost": 890,
   "ciblex": 640,
   "city-express-rs": 817,

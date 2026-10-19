@@ -639,6 +639,12 @@
     "reason": "Twelve digits are shared by several carriers and nothing in the number points to Chilexpress."
   },
   {
+    "carrier": "chronodiali",
+    "pattern": "^CD\\d{10}$",
+    "kind": "open",
+    "reason": "One merchant example of CD and ten digits, which Chronodiali's tracker knows; two letters and ten digits is a shared shape and the family is not established."
+  },
+  {
     "carrier": "chit-chats",
     "pattern": "^[0-9A-Z]{10}$",
     "kind": "by_design",

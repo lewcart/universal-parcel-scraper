@@ -70,6 +70,7 @@ import { adapter as chazki } from '../carriers/chazki/adapter.js';
 import { adapter as chilexpress } from '../carriers/chilexpress/adapter.js';
 import { adapter as chinaPost } from '../carriers/china-post/adapter.js';
 import { adapter as chitChats } from '../carriers/chit-chats/adapter.js';
+import { adapter as chronodiali } from '../carriers/chronodiali/adapter.js';
 import { adapter as chronopost } from '../carriers/chronopost/adapter.js';
 import { adapter as chunghwaPost } from '../carriers/chunghwa-post/adapter.js';
 import { adapter as ciblex } from '../carriers/ciblex/adapter.js';
@@ -542,6 +543,7 @@ export const REGISTRY: RegistryDefinition = {
     "chilexpress": chilexpress,
     "china-post": chinaPost,
     "chit-chats": chitChats,
+    "chronodiali": chronodiali,
     "chronopost": chronopost,
     "chunghwa-post": chunghwaPost,
     "ciblex": ciblex,
@@ -1055,7 +1057,7 @@ export const REGISTRY: RegistryDefinition = {
     "chilexpress": "chilexpress",
     "china-post": "china-post",
     "chit-chats": "chit-chats",
-    "chronodiali": "universal",
+    "chronodiali": "chronodiali",
     "chronopost": "chronopost",
     "chukou1": "universal",
     "chunghwa-post": "chunghwa-post",

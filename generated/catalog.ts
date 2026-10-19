@@ -8783,7 +8783,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Casablanca",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chronodiali",
+      "recognitionRank": 781
     },
     "canaryUrl": "https://chronodiali.ma/suivi_colis.html",
     "trackingUrlTemplate": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",

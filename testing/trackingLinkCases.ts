@@ -1458,6 +1458,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'airpak-express', number: '999999999990',
     route: /^https:\/\/tracking\.airpak-express\.com\/go\/plm-tracking_search\?stid=airpak&cn=999999999990$/,
     marker: /No tracking available|Track & Trace/ },
+  // The page puts the number in its address into its field, looks it up and answers an unknown one with its own notice.
+  { carrier: 'chronodiali', number: 'CHPU0000000000000000000',
+    route: /^https:\/\/chronodiali\.ma\/suivi_colis\.html\?id=CHPU0000000000000000000$/,
+    marker: /Veuillez v[ée]rifier votre tracking id|Faites le suivi de votre colis/ },
 ];
 
 /**

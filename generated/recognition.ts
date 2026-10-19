@@ -188,6 +188,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "js-express": 916,
   "kazpost": 931,
   "kex": 959,
+  "kex-express-hk": 771,
   "kuehne-nagel": 435,
   "l-post": 808,
   "la-poste": 1000,

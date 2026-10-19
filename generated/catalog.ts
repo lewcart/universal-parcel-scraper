@@ -17860,7 +17860,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kex-express-hk",
+      "recognitionRank": 771,
+      "localClocks": true
     },
     "canaryUrl": "https://www.kex.kln.com/en/track",
     "trackingUrlTemplate": "https://www.kex.kln.com/en/track?track={trackingNumber}",

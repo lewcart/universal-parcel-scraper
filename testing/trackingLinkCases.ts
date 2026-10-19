@@ -1066,6 +1066,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'kex', number: 'SYNT000000017',
     route: /^https:\/\/th\.kex-express\.com\/en\/track\/\?track=SYNT000000017$/,
     marker: /Track & Trace/ },
+  // The server looks the number in the address up and shows it over its answer.
+  { carrier: 'kex-express-hk', number: 'Z000000000',
+    route: /^https:\/\/www\.kex\.kln\.com\/en\/track\?track=Z000000000$/,
+    marker: /have not yet received information of this tracking no|Track & Trace/ },
   // The page reads the numbers from its address and looks them up on load.
   { carrier: 'lion-parcel', number: '55LP0000000000001',
     route: /^https:\/\/lionparcel\.com\/track\/stt\?q=55LP0000000000001$/,

@@ -1,9 +1,10 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
-// HuaHan's public getCargoTrack documentation defines these milestone codes.
+// The origin milestone codes are documented by getCargoTrack. PB is the web
+// tracker's partner scan for arrival at the delivery point, ready for collection.
 const CODES: ReadonlyMap<string, Stage> = new Map([
-  ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'],
+  ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'], ['PB', 'ready_for_pickup'],
 ]);
 
 export function huahanStage(code: string, wording: string): ClassifiedWording | null {

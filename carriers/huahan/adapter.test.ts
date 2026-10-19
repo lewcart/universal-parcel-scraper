@@ -79,6 +79,16 @@ describe('HuaHan guest tracking', () => {
     expect(() => parseHuahan(duplicate, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
+  it('keeps pickup-point arrival distinct from delivery to the recipient', () => {
+    const pickup = fixture();
+    pickup.data[0]!.Status = 'Available for collection';
+    pickup.data[0]!.Detail[0]!.Status = 'PB';
+    pickup.data[0]!.Detail[0]!.Comment = 'The parcel has arrived at the delivery point.';
+    const result = parseHuahan(pickup, NUMBER);
+    expect(result.current_stage).toBe('ready_for_pickup');
+    expect(result.events![0]).toMatchObject({ stage: 'ready_for_pickup', stage_source: 'carrier_map' });
+  });
+
   it('preserves blocked, missing-route and rate-limit failures without session diagnostics', async () => {
     for (const [status, body, kind] of [[200, '<html>Verification</html>', 'challenge'], [401, '{}', 'challenge'],
       [404, 'missing', 'transport'], [429, 'PRIVATE', 'rate_limited']] as const) {

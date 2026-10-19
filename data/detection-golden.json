@@ -87224,6 +87224,14 @@
     ]
   },
   {
+    "input": "STRCA3666462053476",
+    "carrier": "straightship",
+    "confidence": "high",
+    "candidates": [
+      "straightship"
+    ]
+  },
+  {
     "input": "STRCA6096486792700",
     "carrier": "straightship",
     "confidence": "high",

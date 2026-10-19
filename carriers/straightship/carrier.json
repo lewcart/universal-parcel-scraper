@@ -16,18 +16,57 @@
   "timezone": "America/Vancouver",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "straightship",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 764
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",
     "searchUrl": "https://www.straightship.com/",
     "canaryUrl": "https://www.straightship.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "customer_reference",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "provider_code",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

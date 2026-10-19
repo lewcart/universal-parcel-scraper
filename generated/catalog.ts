@@ -27484,7 +27484,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Vancouver",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "straightship",
+      "recognitionRank": 764,
+      "localClocks": true
     },
     "canaryUrl": "https://www.straightship.com/",
     "trackingUrlTemplate": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",

@@ -154,6 +154,25 @@
       "note": "An opened capture of Straightship's own tracker shows this parcel received at Straightship stations in Delta, BC and Edmonton, AB, then due for delivery in Cold Lake, AB."
     },
     {
+      "number": "STRCA3666462053476",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/straightship/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "straightship",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Straightship page offers it as a sample to try; Straightship's own tracker shows it delivered after two attempts."
+    },
+    {
       "number": "STSHYW01001236541",
       "role": "shipment",
       "evidence": "public_shipment_report",

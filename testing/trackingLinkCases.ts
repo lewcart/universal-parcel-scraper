@@ -1569,6 +1569,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/track\.northline\.com\.au\/status\/1ABC00000000$/,
     marker: /Track another\s+consignment/i,
     forwarding: { notFound: /Not Found\s+Track another\s+consignment/i } },
+  // The page repeats the number in its title and answers an unknown one with a notice.
+  { carrier: 'straightship', number: 'STRTD000000000',
+    route: /^https:\/\/www\.straightship\.com\/track-your-shipment\/tracking-id\/STRTD000000000\/$/,
+    marker: /Canada B2C Shipment Tracking|No results found/ },
 ];
 
 /**

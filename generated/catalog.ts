@@ -18418,7 +18418,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Ouagadougou",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "la-poste-burkina-faso",
+      "recognitionRank": 635,
+      "localClocks": true
     },
     "canaryUrl": "https://laposte.bf/suivi-de-colis/",
     "linkRules": [

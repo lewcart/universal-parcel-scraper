@@ -29,13 +29,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "La Poste Burkina Faso's tracking help page gives it as an example of the 13-character number of an item posted in Burkina Faso."
+      "note": "La Poste Burkina Faso's tracking help page gives it as an example of the 13-character number of an item posted in Burkina Faso. La Poste Burkina Faso's own tracker returns its history, up to a delivery in France."
     },
     {
       "number": "RR001284737BF",
@@ -46,13 +46,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "intl-post",
         "confidence": "high"
       },
-      "note": "La Poste Burkina Faso's tracking help page gives it as an example of the 13-character number of an item posted in Burkina Faso."
+      "note": "La Poste Burkina Faso's tracking help page gives it as an example of the 13-character number of an item posted in Burkina Faso. La Poste Burkina Faso's own tracker returns its history, up to a delivery in the United States."
     }
   ]
 }

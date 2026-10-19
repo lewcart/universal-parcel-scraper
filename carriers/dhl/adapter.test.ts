@@ -158,6 +158,15 @@ describe('DHL public tracking normalization', () => {
     expect(result.current_stage).toBe('in_transit');
   });
 
+  it('reads a booked collection as announced, so the pick-up that follows is progress', () => {
+    const result = parseDHLTrackingResponse(shipment({ sendungsverlauf: { status: 'Pick-up was successful.', fortschritt: 1, events: [
+      { datum: '2026-08-09T20:00:00+02:00', status: 'Pick-up has been scheduled for the next working day and the information has been sent to the delivery person' },
+      { datum: '2026-08-10T09:58:52+02:00', status: 'Pick-up was successful.' },
+    ] } }), NUMBER);
+    expect(result.events?.map((event) => event.stage)).toEqual(['accepted', 'registered']);
+    expect(result.current_stage).toBe('accepted');
+  });
+
   it('accepts only an explicit no-data result for the requested number', () => {
     const payload = { sendungen: [{ id: NUMBER, sendungNichtGefunden: { keineDatenVerfuegbar: true } }] };
     expect(parseDHLTrackingResponse(payload, NUMBER)).toMatchObject({ status: 'unknown', events: [] });

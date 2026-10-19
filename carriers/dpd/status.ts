@@ -98,14 +98,21 @@ export function apiStage(description: unknown): Stage | null {
  * the point, DODEI (twin AVAILABLE_FOR_COLLECTION) and the notice DOMSDLO when
  * it waits there, DODEY (twin DELIVERED) when the recipient collects it.
  * PKY is the driver collecting the parcel from its sender, before ENA's data
- * exchange ends and the parcel reaches the origin depot.
+ * exchange ends and the parcel reaches the origin depot. A German parcel the
+ * sender left at a pickup point opens with CNP, DPD receiving its label data,
+ * then DOPKY for the hand-in at the point, DODEH when the driver collects it
+ * there, and ORS, worded like HUS, as the origin depot sends it on.
  * ORI ("Origin depot - In") stays unmapped like its twin PARCEL_HANDED: the
  * result stage then comes from the same wording as the scan's, and an import
  * that cleared customs does not step back to accepted. Other codes stay
  * unmapped.
  */
 const SCAN_STAGES: Readonly<Record<string, Stage>> = {
+  CNP: 'registered', // "We received your labelling information", before the parcel moves
   PKY: 'accepted', // "We have collected your parcel", the pickup from the sender
+  DOPKY: 'accepted', // "Your parcel has been dropped off in the retrieval point", the sender's hand-in
+  DODEH: 'in_transit', // "Your parcel has been collected by the driver from the retrieval point"
+  ORS: 'in_transit', // "Your parcel is ready to be transported to our next premises"
   CCO: 'in_transit', // "Customs - Out"
   SPX: 'in_transit', // "Your parcel is on our premises, it will soon be on its way"
   HUI: 'in_transit', // "Your parcel arrived at our hub"

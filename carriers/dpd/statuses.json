@@ -329,6 +329,42 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-02",
       "note": "A data exchange inside DPD's systems, not a scan; seen twice before the parcel reached the origin depot."
+    },
+    {
+      "code": "CNP",
+      "wording": "We received your labelling information",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Scan code: DPD receives the label data, the first scan of a German parcel left at a pickup point, before ENA."
+    },
+    {
+      "code": "DOPKY",
+      "wording": "Your parcel has been dropped off in the retrieval point",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Scan code: the sender hands the parcel in at a pickup point, after ENA and before DODEH."
+    },
+    {
+      "code": "DODEH",
+      "wording": "Your parcel has been collected by the driver from the retrieval point",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Scan code: the driver takes the sender's hand-in from the pickup point on to the origin depot."
+    },
+    {
+      "code": "ORS",
+      "wording": "Your parcel is ready to be transported to our next premises",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-19",
+      "note": "Scan code worded like HUS, seen at the origin depot after DODEH."
     }
   ]
 }

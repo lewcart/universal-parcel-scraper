@@ -638,6 +638,8 @@ describe('DPD status vocabulary', () => {
     expect(['DEX', 'DLR', 'DLW', 'DEHD', 'DEHDY', 'DODEI', 'DOMSDLO', 'DODEY'].map(scanStage)).toEqual([
       'failed_attempt', 'failed_attempt', 'failed_attempt', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'ready_for_pickup', 'delivered',
     ]);
+    // A sender's hand-in at a pickup point, after the label data.
+    expect(['CNP', 'DOPKY', 'DODEH', 'ORS'].map(scanStage)).toEqual(['registered', 'accepted', 'in_transit', 'in_transit']);
     // ORI and SPL are left to their wording, like their PARCEL_HANDED and
     // IN_TRANSIT twins; notices and estimates are no scan, nor the proofs of delivery.
     for (const code of ['ORI', 'SPL', 'SPE', 'MSDLO', 'MIDLI', 'MIA', 'MII', 'ENA', 'DEYY', 'DODEYY', 'XYZ', '', 'CONSTRUCTOR', '__proto__']) {

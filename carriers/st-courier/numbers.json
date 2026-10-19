@@ -108,7 +108,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -141,7 +141,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -193,6 +193,68 @@
         ]
       },
       "note": "A Voxya complaint against ST Courier gives it as the AWB number of a parcel not delivered within Chennai."
+    },
+    {
+      "number": "58098995905",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://consumercourt.net/threads/missing-parcel-not-claimed.164/",
+        "date": "2024-12-18",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "A consumer forum post gives it as the ST Courier tracking number of a parcel the website showed delivered but that never arrived."
+    },
+    {
+      "number": "64308306285",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.consumercomplaints.in/st-courier-delay-in-delivery-awb-no-64308306285-guindy-hub-hold-status-c3540757",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "blue-dart",
+          "japan-post",
+          "aramex",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "A complaint against ST Courier names it as the AWB number of a parcel held at its Guindy hub in Chennai; the number is in the complaint's address."
     }
   ]
 }

@@ -17,17 +17,57 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "st-courier",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 753
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at"
+  ],
   "portal": {
     "searchUrl": "https://www.stcourier.com/",
     "canaryUrl": "https://www.stcourier.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "origin",
+      "destination",
+      "service_name",
+      "parcel_count",
+      "awb_date",
+      "recipient_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "service_name",
+      "parcel_count",
+      "awb_date",
+      "recipient_name"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "offset_timestamps",
+      "provider_code",
+      "sender_name",
+      "recipient_address"
+    ]
   },
   "links": [
     {

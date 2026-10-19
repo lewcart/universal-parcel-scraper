@@ -27230,7 +27230,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "st-courier",
+      "recognitionRank": 753
     },
     "canaryUrl": "https://www.stcourier.com/",
     "trackingSearchUrl": "https://www.stcourier.com/",

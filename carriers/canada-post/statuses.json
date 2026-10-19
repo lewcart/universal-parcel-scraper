@@ -162,6 +162,14 @@
       "confirmedBy": "live"
     },
     {
+      "code": "0198",
+      "wording": "Label correction applied",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "note": "A new label put on the item at a processing plant, between two processing scans."
+    },
+    {
       "code": "1302",
       "wording": "Item accepted at the Post Office",
       "language": "en",

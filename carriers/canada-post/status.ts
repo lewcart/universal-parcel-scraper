@@ -22,6 +22,8 @@ const SCAN_STAGE: Readonly<Record<string, Stage>> = {
   '3000': 'registered', '2300': 'accepted', '0104': 'in_transit', '0105': 'in_transit', '0107': 'in_transit',
   // Arrivals and departures between facilities, after acceptance.
   '0405': 'in_transit', '0410': 'in_transit',
+  // A new label put on the item at a processing plant, between two processing scans.
+  '0198': 'in_transit',
   // A delivery notice card: the attempt ended with the item sent to a post office.
   '1479': 'failed_attempt', '1488': 'failed_attempt',
   // A hold the recipient asked for: the item waits for its new delivery.

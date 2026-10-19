@@ -100,22 +100,49 @@ export function parse(payload: unknown, trackingNumber: string): CarrierResult {
   }
   const articles = shipment.articles.filter(isRecord);
   const matches = articles.filter((article) => article.articleId === number);
-  // A consignment can contain several independent deliveries. Only an exact
-  // article or a verified single-article consignment can produce one result.
-  const selected = matches.length === 1 ? matches[0]
-    : matches.length === 0 && shipment.consignmentId === number && articles.length === 1
-      ? articles[0] : null;
-  // The consignment exists, but no single article answers for it.
-  if (!selected && !matches.length && shipment.consignmentId === number && articles.length > 1) {
-    throw new IndeterminateError(PROVIDER, 'Australia Post lists several articles under this consignment', { reason: 'several_parcels' });
+  // A consignment can contain several independent deliveries. An exact article answers for
+  // itself, and a consignment through its articles.
+  if (matches.length === 1) return articleResult(matches[0]!, shipment.consignmentId);
+  if (!matches.length && shipment.consignmentId === number) {
+    return articles.length === 1 ? articleResult(articles[0]!, number) : consignmentResult(articles, number);
   }
-  if (!selected) throw new SchemaError(PROVIDER, 'Australia Post returned a different or ambiguous article');
+  throw new SchemaError(PROVIDER, 'Australia Post returned a different or ambiguous article');
+}
+
+/**
+ * A consignment of several articles answers as one parcel only while they are in one state:
+ * every article delivered, or every newest scan coded, worded and placed alike, though each
+ * article is scanned at its own moment. The consignment reached that state with its last
+ * article, whose history answers. Articles in different states leave it inconclusive, since
+ * one delivered sibling doesn't mean the others are.
+ */
+function consignmentResult(articles: readonly Record<string, unknown>[], consignmentId: string): CarrierResult {
+  const results: CarrierResult[] = [];
+  for (const article of articles) {
+    try {
+      results.push(articleResult(article, consignmentId));
+    } catch (error) {
+      // An article without history is in a state of its own.
+      if (!(error instanceof IndeterminateError)) throw error;
+    }
+  }
+  const state = ({ status, current_stage, last_status_text, events }: CarrierResult) => status === 'delivered' ? status
+    : JSON.stringify([status, current_stage, last_status_text, ...['provider_code', 'description', 'location', 'stage'].map((key) => events?.[0]?.[key])]);
+  if (results.length < articles.length || new Set(results.map(state)).size > 1) {
+    throw new IndeterminateError(PROVIDER, 'Australia Post lists articles in different states under this consignment', { reason: 'several_parcels' });
+  }
+  const reached = (result: CarrierResult) => Date.parse(result.last_update ?? '') || 0;
+  return results.reduce((last, result) => reached(result) > reached(last) ? result : last);
+}
+
+/** One article's history and state; its single detail object must repeat the article and consignment. */
+function articleResult(selected: Record<string, unknown>, consignmentId: string): CarrierResult {
   if (typeof selected.articleId !== 'string' || !selected.articleId || !Array.isArray(selected.details)
     || selected.details.length !== 1 || !isRecord(selected.details[0])) {
     throw new SchemaError(PROVIDER, 'Australia Post returned invalid article details');
   }
   const details = selected.details[0];
-  if (details.articleId !== selected.articleId || details.consignmentId !== shipment.consignmentId) {
+  if (details.articleId !== selected.articleId || details.consignmentId !== consignmentId) {
     throw new SchemaError(PROVIDER, 'Australia Post returned mismatched article details');
   }
   // A known article without scans, shown as "Updating Status": its history is gone or never began.

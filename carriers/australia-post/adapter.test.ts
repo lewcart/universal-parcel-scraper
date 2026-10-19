@@ -67,6 +67,36 @@ describe('Australia Post parser', () => {
     expect(parse(payload, consignment).status).toBe('in_transit');
   });
 
+  it('tracks a consignment whose articles are in one state through the article that reached it last', () => {
+    const payload = fixture();
+    const consignment = payload[0].shipment.consignmentId;
+    payload[0].trackingIds = [consignment];
+    const first = payload[0].shipment.articles[0];
+    const later = structuredClone(first);
+    later.articleId = OTHER; later.details[0].articleId = OTHER;
+    // Scanned five minutes after its sibling, with the same wording at the same place.
+    const at = (article: typeof first, time: string) => {
+      const event = article.details[0].events[0];
+      event.localeDateTime = time; event.dateTime = Date.parse(time);
+    };
+    at(later, '2026-06-08T14:15:00+10:00');
+    payload[0].shipment.articles.push(later);
+    expect(parse(payload, consignment)).toMatchObject({ status: 'delivered', last_update: '2026-06-08T14:15:00+10:00', delivered_at: '2026-06-08T14:15:00+10:00' });
+    // Every article delivered, whichever way, delivers the consignment.
+    later.details[0].events[0].eventCode = 'DD-ER13';
+    expect(parse(payload, consignment)).toMatchObject({ status: 'delivered', delivered_at: '2026-06-08T14:15:00+10:00' });
+    for (const article of [first, later]) {
+      article.trackStatusOfArticle = 'In transit'; article.details[0].events = article.details[0].events.slice(2);
+    }
+    at(first, '2026-06-08T09:00:00+10:00'); at(later, '2026-06-08T08:55:00+10:00');
+    expect(parse(payload, consignment)).toMatchObject({ status: 'in_transit', last_update: '2026-06-08T09:00:00+10:00' });
+    later.details[0].events[0].location = 'Another sorting facility';
+    expect(() => parse(payload, consignment)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'several_parcels' }));
+    // An article without history yet is in a state of its own.
+    later.details[0].events = [];
+    expect(() => parse(payload, consignment)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'several_parcels' }));
+  });
+
   it('requires matched lookup, article and detail identities, including negative replies', () => {
     expect(() => parse(empty(), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     expect(() => parse(empty(), NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));

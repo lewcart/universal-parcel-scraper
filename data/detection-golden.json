@@ -9429,6 +9429,12 @@
     ]
   },
   {
+    "input": "100000001",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "1000000157123",
     "carrier": "unknown",
     "confidence": "low",
@@ -16353,12 +16359,6 @@
       "postlogistics",
       "dhl-ecommerce-pl"
     ]
-  },
-  {
-    "input": "150063800",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
   },
   {
     "input": "1500663051773",
@@ -24325,26 +24325,6 @@
     ]
   },
   {
-    "input": "21471814",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
-    ]
-  },
-  {
-    "input": "21491416",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
-    ]
-  },
-  {
     "input": "215003428140",
     "carrier": "unknown",
     "confidence": "low",
@@ -24366,16 +24346,6 @@
       "sto",
       "j-and-t",
       "zto"
-    ]
-  },
-  {
-    "input": "21500455",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
     ]
   },
   {

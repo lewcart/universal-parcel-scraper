@@ -5830,7 +5830,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ait-worldwide",
+      "recognitionRank": 625,
+      "localClocks": true
     },
     "canaryUrl": "https://fastrak.aitworldwide.com/",
     "trackingUrlTemplate": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",

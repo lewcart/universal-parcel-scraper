@@ -11,6 +11,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "abf-freight": 10,
   "acs-courier": 310,
   "airpak-express": 776,
+  "ait-worldwide": 625,
   "ajex": 812,
   "algerie-poste": 897,
   "aliexpress": 580,

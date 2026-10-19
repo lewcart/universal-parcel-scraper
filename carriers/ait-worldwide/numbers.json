@@ -2,95 +2,16 @@
   "carrier": "ait-worldwide",
   "records": [
     {
-      "number": "21471814",
+      "number": "100000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20220330055258/https://fastrak.aitworldwide.com/?TrackingNumber=21471814",
-        "date": "2022-03-30",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colisweb",
-          "heppner"
-        ]
-      },
-      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered to a Honolulu address."
-    },
-    {
-      "number": "21491416",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20221206175827/https://fastrak.aitworldwide.com/?TrackingNumber=21491416",
-        "date": "2022-12-06",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colisweb",
-          "heppner"
-        ]
-      },
-      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered with its delivery time."
-    },
-    {
-      "number": "21500455",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20220331032913/https://fastrak.aitworldwide.com/?TrackingNumber=21500455",
-        "date": "2022-03-31",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colisweb",
-          "heppner"
-        ]
-      },
-      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment delivered with its delivery time."
-    },
-    {
-      "number": "150063800",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20240406182633/https://fastrak.aitworldwide.com/?TrackingNumber=150063800",
-        "date": "2024-04-06",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "invented",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An opened archived lookup on AIT's FasTrak tracker shows this shipment in transit, waiting for the recipient to schedule delivery."
+      "note": "Invented placeholder for a nine-digit bill of the current FasTrak tracker; the public samples' tracker names their signers."
     },
     {
       "number": "11301624",

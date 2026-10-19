@@ -19467,10 +19467,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "madhur-courier",
+      "localClocks": true
     },
-    "canaryUrl": "https://madhurcouriers.in/CNoteTracking.aspx",
-    "trackingSearchUrl": "https://madhurcouriers.in/CNoteTracking.aspx",
+    "canaryUrl": "https://madhurcouriers.in/CNoteTracking",
+    "trackingSearchUrl": "https://madhurcouriers.in/CNoteTracking",
     "linkRules": [
       {
         "domains": [

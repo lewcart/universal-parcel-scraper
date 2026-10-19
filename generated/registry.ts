@@ -426,6 +426,7 @@ import { adapter as planzer } from '../carriers/planzer/adapter.js';
 import { adapter as pocztaPolska } from '../carriers/poczta-polska/adapter.js';
 import { adapter as posIndonesia } from '../carriers/pos-indonesia/adapter.js';
 import { adapter as posMalaysia } from '../carriers/pos-malaysia/adapter.js';
+import { adapter as postHaste } from '../carriers/post-haste/adapter.js';
 import { adapter as postLuxembourg } from '../carriers/post-luxembourg/adapter.js';
 import { adapter as postaFaroe } from '../carriers/posta-faroe/adapter.js';
 import { adapter as postaKenya } from '../carriers/posta-kenya/adapter.js';
@@ -1034,6 +1035,7 @@ export const REGISTRY: RegistryDefinition = {
     "poczta-polska": pocztaPolska,
     "pos-indonesia": posIndonesia,
     "pos-malaysia": posMalaysia,
+    "post-haste": postHaste,
     "post-luxembourg": postLuxembourg,
     "posta-faroe": postaFaroe,
     "posta-kenya": postaKenya,
@@ -1762,7 +1764,7 @@ export const REGISTRY: RegistryDefinition = {
     "pony-express": "universal",
     "pos-indonesia": "pos-indonesia",
     "pos-malaysia": "pos-malaysia",
-    "post-haste": "universal",
+    "post-haste": "post-haste",
     "post-luxembourg": "post-luxembourg",
     "posta-faroe": "posta-faroe",
     "posta-kenya": "posta-kenya",

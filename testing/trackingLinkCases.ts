@@ -144,6 +144,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/nzcouriers\.co\.nz\/(?:track\/\?query=00000000000000000000|tools\/track-a-parcel\/\?redirect=true)$/,
     marker: /Track your item using its label number|Please use our Advanced Tracking below/i,
     forwarding: { notFound: /Please use our Advanced Tracking below/i } },
+  // An unknown number leaves the tracking page for the site search, which prefills it.
+  { carrier: 'post-haste', number: '00000000000000000000',
+    route: /^https:\/\/posthaste\.co\.nz\/(?:track\/\?query=00000000000000000000|\?s=00000000000000000000&track=true)$/,
+    marker: /Parcel Tracking History|Use Advanced Tracking for detailed tracking options/i },
   { carrier: 'poczta-polska', number: '00000000000000000001',
     route: /^https:\/\/emonitoring\.poczta-polska\.pl\//,
     marker: /Tracking|Enter.*number|Search/i },

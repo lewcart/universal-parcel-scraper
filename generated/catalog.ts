@@ -23721,7 +23721,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "post-haste"
     },
     "canaryUrl": "https://posthaste.co.nz/tools/track/",
     "trackingUrlTemplate": "https://posthaste.co.nz/track?query={trackingNumber}",

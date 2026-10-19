@@ -374,6 +374,7 @@ import { statusMap as pilotFreight } from '../../carriers/pilot-freight/status.j
 import { statusMap as pitneyBowes } from '../../carriers/pitney-bowes/status.js';
 import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
+import { statusMap as postHaste } from '../../carriers/post-haste/status.js';
 import { statusMap as postLuxembourg } from '../../carriers/post-luxembourg/status.js';
 import { statusMap as postaFaroe } from '../../carriers/posta-faroe/status.js';
 import { statusMap as postaKenya } from '../../carriers/posta-kenya/status.js';
@@ -599,7 +600,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'pathao-courier': pathaoCourier, pbt, 'pcp-express': pcpExpress, 'pcs-logistics-vn': pcsLogisticsVn, 'pdn-express': pdnExpress,
   'pdq-chile': pdqChile, pecom, 'pfc-express': pfcExpress, phlpost, 'pilot-freight': pilotFreight,
   'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
-  'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
+  'post-haste': postHaste, 'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, 'postmedia-parcel-services': postmediaParcelServices,
   posturinn, ppl, 'precision-deliveries': precisionDeliveries,

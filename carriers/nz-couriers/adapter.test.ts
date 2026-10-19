@@ -58,7 +58,24 @@ describe('New Zealand Couriers HTTP adapter', () => {
       `?query=${DELIVERED}`,
       '?searchType=TK&ticketProductCode=E00&query=1234567',
       '?searchType=TK&ticketProductCode=ZZZ&query=123456',
+      // A ticket the lookup does not hold may be a customer printed label's consignment number.
+      '?query=ZZZ123456',
     ]);
+  });
+
+  it('asks a number a ticket and a consignment number both fit as the ticket, then whole, in one step', async () => {
+    const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(empty())
+      .mockResolvedValueOnce(reply(changed('delivered', (body) => { body.shortConsignmentId = '0000000 ZZZ123456'; })));
+    await expect(new NzCouriersTracker({ fetcher, recorder }).fetch('ZZZ 123456')).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher.mock.calls.map(([url]) => String(url).slice(NZ_COURIERS_API.length)))
+      .toEqual(['?searchType=TK&ticketProductCode=ZZZ&query=123456', '?query=ZZZ123456']);
+    expect(recorder.step).toHaveBeenCalledTimes(1);
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ step: 'direct', outcome: 'ok' }));
+    // A ticket too short for the lookup once its zeros go is asked whole alone.
+    const whole = vi.fn<typeof fetch>().mockImplementation(async () => empty());
+    await expect(carrier(whole).track({ number: 'ZZ 0012345' })).rejects.toMatchObject({ kind: 'not_found' });
+    expect(whole.mock.calls.map(([url]) => String(url).slice(NZ_COURIERS_API.length))).toEqual(['?query=ZZ0012345']);
   });
 
   it('asks for a customer printed label’s consignment number whole, and reads the consignment the sender’s account heads', async () => {
@@ -217,7 +234,7 @@ describe('New Zealand Couriers HTTP adapter', () => {
 
   it('rejects numbers the tracker does not read and pre-aborted lookups without a request', async () => {
     const fetcher = vi.fn<typeof fetch>();
-    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ 0012345', 'ZZ12345', 'ZZZZ123', 'ZZZZZZZ012345', 'ZZ1234567890123',
+    for (const number of ['00000000', '000000000', 'ZZ 0000000', 'ZZ12345', 'ZZZZ123', 'ZZZZ000000', 'ZZZZZZZ012345', 'ZZ1234567890123',
       'ZZ123456785ZZ', '1234567', '1234567890', '0000000 01234567', '00000000000000000011', '10000000000000000017', 'SAMPLETRACKING',
       `ZZ${'0'.repeat(70)}`]) {
       await expect(carrier(fetcher).track({ number }), number).rejects.toMatchObject({ kind: 'invalid_input' });

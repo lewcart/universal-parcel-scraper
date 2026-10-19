@@ -16,7 +16,10 @@ Zealand. Tracked through the lookup its tracking page makes.
 - An unknown number is an empty HTTP 204, which the page reports as not found. A 404 or a
   redirect is a moved route.
 - The lookup refuses a query of fewer than six characters with HTTP 400, so a ticket number of
-  five digits once its zeros are dropped is invalid input.
+  five digits once its zeros are dropped is not asked as a ticket.
+- A customer printed label's consignment number, a sender's letters then digits, can fit a
+  ticket's layout. Such a number is asked as a ticket first, then whole when the ticket gets a
+  204, in one step.
 - The reply's `shortConsignmentId` must be the number asked: the ticket's product code and
   number, or the label alone. A label can also find a customer printed label whose
   consignment number it is, which is another consignment. A customer printed label's
@@ -45,10 +48,9 @@ Zealand. Tracked through the lookup its tracking page makes.
 
 ## Limitations
 
-- A customer printed label is read only by a consignment number of letters then digits that
-  does not fit a ticket's layout; one of digits alone reads as a label. The page's search for
-  an account and consignment number did not find labels whose consignments the lookup still
-  holds.
+- A customer printed label is read only by a consignment number of letters then digits; one
+  of digits alone reads as a label. The page's search for an account and consignment number
+  did not find labels whose consignments the lookup still holds.
 - Contract bags, manifest references and other barcodes are not read.
 - A consignment the tracker no longer holds reads as not found.
 - No weight or service.

@@ -5517,10 +5517,12 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aci-express-kr",
+      "recognitionRank": 684,
+      "localClocks": true
     },
     "canaryUrl": "https://www.aciexpress.net/delivery/",
-    "trackingUrlTemplate": "https://acieshop.com/aci_pod/pod.php?BL={trackingNumber}",
+    "trackingUrlTemplate": "https://www.acieshop.com/pod.php?OrderNo={trackingNumber}",
     "trackingSearchUrl": "https://www.aciexpress.net/delivery/",
     "linkRules": [
       {
@@ -5531,6 +5533,16 @@ export const CARRIER_CATALOG = {
         "pathPattern": "^/aci_pod/pod\\.php$",
         "params": [
           "BL"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/pod\\.php$",
+        "params": [
+          "OrderNo"
         ]
       },
       {

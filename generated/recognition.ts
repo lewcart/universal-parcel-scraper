@@ -9,6 +9,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "a-duie-pyle": 736,
   "a-tu-hora-express": 847,
   "abf-freight": 10,
+  "aci-express-kr": 684,
   "acs-courier": 310,
   "aex-paraguay": 937,
   "airpak-express": 776,

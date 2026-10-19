@@ -1748,6 +1748,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'aex-paraguay', number: 'A000000000',
     route: /^https:\/\/www\.aex\.com\.py\/web\/tracking\.php\?guia=A000000000$/,
     marker: /No se encuentra el número de seguimiento que ingresaste|Historial de eventos/ },
+  // The server renders the lookup; its answer to an unknown number leaves the number and recipient blank.
+  { carrier: 'aci-express-kr', number: '000000000000',
+    route: /^https:\/\/www\.acieshop\.com\/pod\.php\?OrderNo=000000000000$/,
+    marker: /Track Shipments Detailed Results/,
+    forwarding: { notFound: /Tracking Number\s*받는 사람\s*\*/ } },
 ];
 
 /**

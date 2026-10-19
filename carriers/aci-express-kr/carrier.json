@@ -18,18 +18,59 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "aci-express-kr",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 684
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
-    "url": "https://acieshop.com/aci_pod/pod.php?BL={trackingNumber}",
+    "url": "https://www.acieshop.com/pod.php?OrderNo={trackingNumber}",
     "searchUrl": "https://www.aciexpress.net/delivery/",
     "canaryUrl": "https://www.aciexpress.net/delivery/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "recipient_name",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "driver_name",
+      "signatory"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "recipient_name",
+      "driver_name",
+      "signatory"
+    ],
+    "unavailable": [
+      "eta",
+      "delivered_at",
+      "offset_timestamps",
+      "weight",
+      "service_name",
+      "origin_country",
+      "destination_country",
+      "sender_name",
+      "provider_code"
+    ]
   },
   "links": [
     {
@@ -40,6 +81,16 @@
       "pathPattern": "^/aci_pod/pod\\.php$",
       "params": [
         "BL"
+      ]
+    },
+    {
+      "domains": [
+        "acieshop.com",
+        "www.acieshop.com"
+      ],
+      "pathPattern": "^/pod\\.php$",
+      "params": [
+        "OrderNo"
       ]
     },
     {

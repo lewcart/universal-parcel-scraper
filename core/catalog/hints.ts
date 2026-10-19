@@ -46,9 +46,9 @@ const CATALOG_NAMES = new Set([
 // Poste's tracker, EMS Champion Post Algérie's, was seen answering for EMS
 // from abroad, not for registered mail. Posta Kenya dates only scans it places
 // in Kenya by name. Correo Uruguayo's clocks name no zone, and those relayed
-// from abroad keep the sender's. Posta dates only scans at a Faroese place. The
-// host also checks adapter availability and required inputs before making a
-// request.
+// from abroad keep the sender's. Posta dates only scans at a Faroese place.
+// Correos de El Salvador's clocks name no zone either. The host also checks
+// adapter availability and required inputs before making a request.
 const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['AM', 'haypost'], ['AR', 'correo-argentino'], ['AU', 'australia-post'], ['BD', 'bangladesh-post'],
   ['BG', 'bulgarian-posts'], ['BY', 'belpost'], ['CA', 'canada-post'], ['CH', 'swiss-post'], ['DE', 'dhl'],
@@ -56,8 +56,8 @@ const NATIONAL_POSTS: ReadonlyMap<string, CarrierId> = new Map([
   ['FR', 'la-poste'], ['GB', 'royal-mail'], ['IS', 'posturinn'], ['JO', 'jordan-post'], ['JP', 'japan-post'],
   ['KE', 'posta-kenya'], ['MA', 'barid-al-maghrib'], ['MK', 'posta-north-macedonia'], ['NL', 'spring-gds'],
   ['PH', 'phlpost'], ['PL', 'poczta-polska'], ['PT', 'ctt'], ['RO', 'posta-romana'], ['SA', 'saudi-post'],
-  ['SE', 'postnord'], ['UA', 'ukrposhta'], ['US', 'usps'], ['UY', 'correo-uruguayo'], ['UZ', 'uzbekistan-post'],
-  ['ZA', 'south-african-post-office'],
+  ['SE', 'postnord'], ['SV', 'correos-el-salvador'], ['UA', 'ukrposhta'], ['US', 'usps'],
+  ['UY', 'correo-uruguayo'], ['UZ', 'uzbekistan-post'], ['ZA', 'south-african-post-office'],
 ]);
 const englishCountries = new Intl.DisplayNames(['en'], { type: 'region' });
 // Deprecated codes carry their successor's name, so fold them into it ("FX" is France).

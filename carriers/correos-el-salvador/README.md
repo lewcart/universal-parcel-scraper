@@ -48,8 +48,9 @@ and the S10 items other posts send to El Salvador, through the lookup its tracki
 
 Its items carry UPU S10 numbers ending in SV. Inbound items keep the S10 number of the post
 that sent them. Generic postal detection handles both, so no carrier rule claims the layout.
-Mail from abroad reaches Correos de El Salvador when a caller or a provider names it. The
-samples and their sources are in [`numbers.json`](numbers.json).
+Mail from abroad reaches Correos de El Salvador when a caller names it, a provider names it, or
+a result gives El Salvador as the destination of an S10 item. The samples and their sources are
+in [`numbers.json`](numbers.json).
 
 ## Links
 

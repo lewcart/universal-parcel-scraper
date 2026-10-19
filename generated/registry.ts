@@ -483,6 +483,7 @@ import { adapter as skyking } from '../carriers/skyking/adapter.js';
 import { adapter as skynetSa } from '../carriers/skynet-sa/adapter.js';
 import { adapter as skynetWorldwide } from '../carriers/skynet-worldwide/adapter.js';
 import { adapter as skypostal } from '../carriers/skypostal/adapter.js';
+import { adapter as slgtrax } from '../carriers/slgtrax/adapter.js';
 import { adapter as slovakParcelService } from '../carriers/slovak-parcel-service/adapter.js';
 import { adapter as slovenskaPosta } from '../carriers/slovenska-posta/adapter.js';
 import { adapter as smsaExpress } from '../carriers/smsa-express/adapter.js';
@@ -1073,6 +1074,7 @@ export const REGISTRY: RegistryDefinition = {
     "skynet-sa": skynetSa,
     "skynet-worldwide": skynetWorldwide,
     "skypostal": skypostal,
+    "slgtrax": slgtrax,
     "slovak-parcel-service": slovakParcelService,
     "slovenska-posta": slovenskaPosta,
     "smsa-express": smsaExpress,
@@ -1814,7 +1816,7 @@ export const REGISTRY: RegistryDefinition = {
     "skynet-sa": "skynet-sa",
     "skynet-worldwide": "skynet-worldwide",
     "skypostal": "skypostal",
-    "slgtrax": "universal",
+    "slgtrax": "slgtrax",
     "slovak-parcel-service": "slovak-parcel-service",
     "slovenska-posta": "slovenska-posta",
     "smsa-express": "smsa-express",

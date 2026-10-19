@@ -26560,9 +26560,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slgtrax",
+      "recognitionRank": 561
     },
     "canaryUrl": "https://sonic.pk/tracking",
+    "trackingUrlTemplate": "https://sonic.pk/tracking?tracking_number={trackingNumber}",
     "trackingSearchUrl": "https://sonic.pk/tracking",
     "linkRules": [
       {

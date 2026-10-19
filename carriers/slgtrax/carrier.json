@@ -21,17 +21,67 @@
   "timezone": "Asia/Karachi",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "slgtrax",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 561
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
+    "url": "https://sonic.pk/tracking?tracking_number={trackingNumber}",
     "searchUrl": "https://sonic.pk/tracking",
     "canaryUrl": "https://sonic.pk/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "provider_code",
+      "failed_delivery_reason",
+      "delivered_at",
+      "origin",
+      "destination",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "recipient_contact",
+      "order_contents",
+      "weight",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "failed_delivery_reason",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "recipient_contact",
+      "order_contents",
+      "weight",
+      "payment_details"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "service_name",
+      "proof_of_delivery",
+      "signatory"
+    ]
   },
   "links": [
     {

@@ -1038,6 +1038,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'tcs-pakistan', number: '10000000001',
     route: /^https:\/\/www\.tcsexpress\.com\/track\/10000000001$/,
     marker: /Enter any combination of TCS tracking Reference number/ },
+  // The server looks the number in the address up and fills its form in with it.
+  { carrier: 'm-and-p', number: '999999999999999',
+    route: /^https:\/\/www\.mulphilog\.com\/tracking\/999999999999999$/,
+    marker: /No tracking record found with the provided consignment number|Consignment Number/ },
   // The server renders the lookup and echoes the number, with an empty history for an unknown code.
   { carrier: 'pakistan-post', number: 'ZZ000000014PK',
     route: /^https:\/\/ep\.gov\.pk\/emtts\/EPTrack_Live\.aspx\?ArticleIDz=ZZ000000014PK$/,

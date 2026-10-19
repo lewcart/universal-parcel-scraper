@@ -44062,6 +44062,18 @@
     "candidates": []
   },
   {
+    "input": "556656610052013",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "brt",
+      "yunda"
+    ],
+    "asked": [
+      "brt"
+    ]
+  },
+  {
     "input": "558 265 735",
     "carrier": "unknown",
     "confidence": "low",

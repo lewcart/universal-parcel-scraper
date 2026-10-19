@@ -19257,7 +19257,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "m-and-p",
+      "recognitionRank": 746
     },
     "canaryUrl": "https://www.mulphilog.com/",
     "trackingUrlTemplate": "https://www.mulphilog.com/tracking/{trackingNumber}",

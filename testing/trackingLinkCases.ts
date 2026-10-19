@@ -1193,6 +1193,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/corp\.fukutsu\.co\.jp\/corp\/recieve\/tracking_no_hunt\/12345678901$/,
     marker: /お荷物配達状況詳細|該当データはありません/,
     forwarding: { notFound: /該当データはありません/ } },
+  // The co-op's form on Yamato System Development's tracker looks the number up and lists it, with its state.
+  { carrier: 'last-one-mile-coop', number: '700000000000',
+    route: /^https:\/\/y-track\.jp\/ytrack\/inqservlet\?cd=81118&id=02116&number01=700000000000$/,
+    marker: /送り状番号未登録|貨物状況/ },
   // The page puts the number in its form and looks it up on load.
   { carrier: 'cttyex', number: 'CTTY9900000001CN',
     route: /^https:\/\/www\.cttyvip888\.com\/index\/tracknumber\/track\?nos=CTTY9900000001CN$/,

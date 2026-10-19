@@ -18678,7 +18678,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "last-one-mile-coop",
+      "recognitionRank": 585
     },
     "canaryUrl": "https://lastonemile.org/",
     "trackingUrlTemplate": "https://y-track.jp/ytrack/inqservlet?cd=81118&id=02116&number01={trackingNumber}",

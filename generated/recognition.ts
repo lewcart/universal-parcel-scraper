@@ -233,6 +233,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "la-poste-burkina-faso": 635,
   "laar-courier": 648,
   "labaih": 788,
+  "last-one-mile-coop": 585,
   "latvijas-pasts": 100,
   "leopards-courier": 965,
   "lietuvos-pastas": 895,

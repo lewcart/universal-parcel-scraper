@@ -126,6 +126,8 @@ describe('17FEIA HTTP adapter', () => {
       ['2026-04-03T17:29:42+08:00', 'accepted'],
       ['2026-04-03T10:56:54+08:00', 'registered'],
     ]);
+    // A relayed place that ends with its country keeps it once.
+    expect(result.events![0]!.location).toBe('Sampleton, MA, US');
     // A US row's state settles its clock; its postcode and the ids are never read.
     expect(JSON.stringify(result)).not.toMatch(/99999|0{20}/);
   });

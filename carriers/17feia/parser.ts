@@ -100,7 +100,9 @@ function projectRow(row: unknown, readAt: number): { key: string; event: Carrier
   // A row dated after the read is not a scan yet.
   if (at > readAt) return null;
   const place = text(row, 'location', 200) || text(row, 'city', 200);
-  const location = [place, /^[A-Z]{2}$/.test(country) ? country : ''].filter(Boolean).join(', ');
+  // A relayed place often ends with its country already, as `Town, MA, US` or `FR`.
+  const named = /^[A-Z]{2}$/.test(country) && place.split(/,\s*/).at(-1)?.toUpperCase() !== country;
+  const location = [place, named ? country : ''].filter(Boolean).join(', ');
   const staged = seventeenFeiaStage(label, description);
   const event: CarrierEvent = {
     ...clock,

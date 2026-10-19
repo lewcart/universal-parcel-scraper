@@ -19857,9 +19857,13 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maruti-air",
+      "recognitionRank": 575,
+      "localClocks": true
     },
     "canaryUrl": "https://marutiair.com/tracking.html",
+    "trackingUrlTemplate": "https://erp.marutiair.com/TrackpageWeb/WebAWBTracking.aspx?AWB={trackingNumber}",
+    "trackingSearchUrl": "https://www.marutiair.com/tracking.html",
     "linkRules": [
       {
         "domains": [

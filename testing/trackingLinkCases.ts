@@ -1674,6 +1674,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'icc-worldwide', number: '99999999999',
     route: /^https:\/\/www\.iccworld\.com\/track-result\.php\?track_no=99999999999$/,
     marker: /Record not found|Detailed Report/i, forwarding: { notFound: /Record not found/i } },
+  // The tracker looks up the document number in its address on the server and answers an unknown
+  // one with its notice, the number left in its field.
+  { carrier: 'maruti-air', number: '99999999',
+    route: /^https:\/\/erp\.marutiair\.com\/TrackpageWeb\/WebAWBTracking\.aspx\?AWB=99999999$/,
+    marker: /DETAIL NOT FOUND|Awb Tracking/i },
   // The portal opens a tab for the number in its address and loads its answer, an alert for an unknown PRO.
   { carrier: 'roadrunner', number: '999999999',
     route: /^https:\/\/tools\.rrts\.com\/LTLTrack\/\?searchValues=999999999$/,

@@ -2360,9 +2360,9 @@
   },
   {
     "carrier": "maruti-air",
-    "pattern": "^\\d{8,9}$",
+    "pattern": "^\\d{8,10}$",
     "kind": "by_design",
-    "reason": "Maruti Air document numbers are plain runs of eight or nine digits, a shape many carriers share."
+    "reason": "Maruti Air document numbers are plain runs of eight to ten digits, a shape many carriers share."
   },
   {
     "carrier": "matkahuolto",

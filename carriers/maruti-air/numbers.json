@@ -160,6 +160,33 @@
         "confidence": "none"
       },
       "note": "A complaint about an undelivered courier gives this number; it was later marked resolved."
+    },
+    {
+      "number": "1400080342",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.scribd.com/document/820110099/Tracking-Maruti-Air-Couriers-Cargo-Pvt-Ltd",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dhl",
+          "mondial-relay",
+          "relais-colis",
+          "tipsa",
+          "estafeta",
+          "packeta",
+          "dhl-ecommerce-es",
+          "gls-es"
+        ]
+      },
+      "note": "A Maruti Air tracking page uploaded to Scribd gives this waybill number for documents picked up in Nagaur and delivered in Pune with a staff signature and stamp."
     }
   ]
 }

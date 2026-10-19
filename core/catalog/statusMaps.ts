@@ -282,6 +282,7 @@ import { statusMap as mainfreight } from '../../carriers/mainfreight/status.js';
 import { statusMap as makatiExpress } from '../../carriers/makati-express/status.js';
 import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
 import { statusMap as maritimeOntario } from '../../carriers/maritime-ontario/status.js';
+import { statusMap as marutiAir } from '../../carriers/maruti-air/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as mauritiusPost } from '../../carriers/mauritius-post/status.js';
 import { statusMap as mayiyinfu } from '../../carriers/mayiyinfu/status.js';
@@ -542,7 +543,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'lightning-express': lightningExpress,
   'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
-  'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
+  'makati-express': makatiExpress, maltapost, 'maritime-ontario': maritimeOntario, 'maruti-air': marutiAir, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu,
   'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz, 'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress,
   'midland-transport': midlandTransport, 'mng-kargo': mngKargo, 'mongol-infinity-post': mongolInfinityPost, 'morning-global': morningGlobal, 'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex,
   'next-level-delivery': nextLevelDelivery, 'nim-express': nimExpress, nipost, 'nippon-express': nipponExpress, noest, 'norsk-global': norskGlobal,

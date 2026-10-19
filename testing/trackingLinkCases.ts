@@ -1511,6 +1511,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'j-and-t-cargo': 'headless Chrome receives the page frame without the tracking form, which a regular browser shows with the waybill filled in',
   'evri-uk': 'the protected key request rejects the default automated browser and leaves the domestic result panel empty, so number forwarding cannot be verified',
   liccardi: 'my.liccarditrasporti.com answers automated Chrome with SafeLine\'s browser check (HTTP 468), which asks for a confirmation click before the tracking page, so number forwarding cannot be verified',
+  logistiq: 'the gecko.logistiq.io tracker is a Flutter page drawn on a canvas, which exposes no visible body text until accessibility is enabled, so number forwarding cannot be verified',
   'm-one': 'm-one.rs sends its certificate without the intermediate one, which headless Chromium and Node do not fetch, so the page cannot be opened',
   'magyar-posta': 'www.posta.hu fills the number into its tracker frame, which the rendered-page check does not read, and the tracker asks for a reCAPTCHA checkbox before each lookup',
   oca: 'the parcel page asks for a reCAPTCHA checkbox before it shows the history, so number forwarding cannot be verified',

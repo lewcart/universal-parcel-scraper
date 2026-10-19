@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "A buyer's question in the product's seller Q&A on Trendyol UAE complains about the delivery driver and pastes the Logistiq tracker link with this airwaybill, calling it the shipment number."
+      "note": "A buyer's question in the product's seller Q&A on Trendyol UAE complains about the delivery driver and pastes the Logistiq tracker link with this airwaybill, calling it the shipment number. Logistiq's tracker knows it as a delivered shipment."
     },
     {
       "number": "MACMSASAF000003044",
@@ -35,7 +35,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "The sample payload in Logistiq's webhook documentation gives this waybill for a return pickup."
+      "note": "The sample payload in Logistiq's webhook documentation gives this waybill for a return pickup. Logistiq's tracker answers that it is not a valid waybill."
     }
   ]
 }

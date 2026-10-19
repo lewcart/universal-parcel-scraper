@@ -18986,7 +18986,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logistiq",
+      "recognitionRank": 768
     },
     "canaryUrl": "https://logistiq.io/track/",
     "trackingUrlTemplate": "https://gecko.logistiq.io/#/order/tracking?awb={trackingNumber}",

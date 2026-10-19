@@ -62223,6 +62223,14 @@
     "candidates": []
   },
   {
+    "input": "A000000001",
+    "carrier": "allegro-one",
+    "confidence": "high",
+    "candidates": [
+      "allegro-one"
+    ]
+  },
+  {
     "input": "A0000001",
     "carrier": "unknown",
     "confidence": "low",
@@ -62280,14 +62288,6 @@
   },
   {
     "input": "A000MFPFX6",
-    "carrier": "allegro-one",
-    "confidence": "high",
-    "candidates": [
-      "allegro-one"
-    ]
-  },
-  {
-    "input": "A001332708",
     "carrier": "allegro-one",
     "confidence": "high",
     "candidates": [

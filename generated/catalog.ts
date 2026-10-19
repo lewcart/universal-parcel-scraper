@@ -5692,7 +5692,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Asuncion",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aex-paraguay",
+      "recognitionRank": 937,
+      "localClocks": true
     },
     "canaryUrl": "https://www.aex.com.py/web/tracking.php",
     "trackingUrlTemplate": "https://www.aex.com.py/web/tracking.php?guia={trackingNumber}",

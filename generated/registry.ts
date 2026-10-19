@@ -12,6 +12,7 @@ import { adapter as aTuHoraExpress } from '../carriers/a-tu-hora-express/adapter
 import { adapter as a1Post } from '../carriers/a1-post/adapter.js';
 import { adapter as abfFreight } from '../carriers/abf-freight/adapter.js';
 import { adapter as acsCourier } from '../carriers/acs-courier/adapter.js';
+import { adapter as aexParaguay } from '../carriers/aex-paraguay/adapter.js';
 import { adapter as airpakExpress } from '../carriers/airpak-express/adapter.js';
 import { adapter as aitWorldwide } from '../carriers/ait-worldwide/adapter.js';
 import { adapter as ajex } from '../carriers/ajex/adapter.js';
@@ -568,6 +569,7 @@ export const REGISTRY: RegistryDefinition = {
     "a1-post": a1Post,
     "abf-freight": abfFreight,
     "acs-courier": acsCourier,
+    "aex-paraguay": aexParaguay,
     "airpak-express": airpakExpress,
     "ait-worldwide": aitWorldwide,
     "ajex": ajex,
@@ -1129,7 +1131,7 @@ export const REGISTRY: RegistryDefinition = {
     "aci-express-kr": "universal",
     "acs-courier": "acs-courier",
     "aeropost": "universal",
-    "aex-paraguay": "universal",
+    "aex-paraguay": "aex-paraguay",
     "afghan-post": "universal",
     "air-star-xpress": "universal",
     "airpak-express": "airpak-express",

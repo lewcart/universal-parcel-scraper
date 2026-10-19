@@ -2,23 +2,16 @@
   "carrier": "aex-paraguay",
   "records": [
     {
-      "number": "A001332708",
+      "number": "A000000001",
       "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20231205131602/https://www.aex.com.py/web/tracking/A001332708",
-        "date": "2023-12-05",
-        "dateKind": "capture",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "confirmed"
-      },
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-19",
       "expect": {
         "carrier": "allegro-one",
         "confidence": "high"
       },
-      "note": "An archived lookup on AEX's own tracker; the opened capture shows this guía with its creation, reception at AEX's offices and pickup."
+      "note": "Synthetic guía in the A series AEX's tracker shows: A and nine digits, inside Allegro One's A0 shape."
     }
   ]
 }

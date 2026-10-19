@@ -19,18 +19,52 @@
   "timezone": "America/Asuncion",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "aex-paraguay",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 937
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history"
+  ],
   "portal": {
     "url": "https://www.aex.com.py/web/tracking.php?guia={trackingNumber}",
     "searchUrl": "https://www.aex.com.py/web/tracking.php",
     "canaryUrl": "https://www.aex.com.py/web/tracking.php",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "progress_rail",
+      "signatory",
+      "recipient_id"
+    ],
+    "scraped": [
+      "status",
+      "history"
+    ],
+    "discarded": [
+      "progress_rail",
+      "signatory",
+      "recipient_id"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "location",
+      "service_name",
+      "provider_code",
+      "delivered_at",
+      "offset_timestamps",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

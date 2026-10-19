@@ -1739,6 +1739,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'nim-express', number: '0000000000000',
     route: /^https:\/\/www\.nimexpress\.com\/web\/p\/tracking\?h_i=0000000000000$/,
     marker: /Tracking no\. ไม่ถูกต้อง/ },
+  // The server renders the lookup for the guía in the address, repeats it in the history's
+  // heading and answers an unknown one with a notice.
+  { carrier: 'aex-paraguay', number: 'A000000000',
+    route: /^https:\/\/www\.aex\.com\.py\/web\/tracking\.php\?guia=A000000000$/,
+    marker: /No se encuentra el número de seguimiento que ingresaste|Historial de eventos/ },
 ];
 
 /**

@@ -1079,6 +1079,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/aj-ex\.com\/(?:shipment-status\/AJA000000000000|wrong-tracking-number)$/,
     marker: /Wrong Tracking Number|Shipment Status/,
     forwarding: { notFound: /Wrong Tracking Number/ } },
+  // The page looks the number up from its address and sends an unknown one to its not-found page.
+  { carrier: 'labaih', number: '00000000000000',
+    route: /^https:\/\/track\.mylabaih\.com\/(?:track\/\?cn=00000000000000|errors\/404)$/,
+    marker: /Shipment\(s\) Not Found|تتبع الشحنة/,
+    forwarding: { notFound: /Shipment\(s\) Not Found/ } },
   // The page looks the number up and, for an unknown one, shows its error without it.
   { carrier: 'hepsijet', number: 'ZZ0000000000',
     route: /^https:\/\/www\.hepsijet\.com\/gonderi-takibi\/ZZ0000000000$/,

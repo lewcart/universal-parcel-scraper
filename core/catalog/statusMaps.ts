@@ -202,6 +202,7 @@ import { statusMap as kyoungdong } from '../../carriers/kyoungdong/status.js';
 import { statusMap as lPost } from '../../carriers/l-post/status.js';
 import { statusMap as laPoste } from '../../carriers/la-poste/status.js';
 import { statusMap as laPosteSenegal } from '../../carriers/la-poste-senegal/status.js';
+import { statusMap as labaih } from '../../carriers/labaih/status.js';
 import { statusMap as latvijasPasts } from '../../carriers/latvijas-pasts/status.js';
 import { statusMap as leopardsCourier } from '../../carriers/leopards-courier/status.js';
 import { statusMap as liccardi } from '../../carriers/liccardi/status.js';
@@ -406,7 +407,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'intex-paketdienst': intexPaketdienst, 'israel-post': israelPost, 'j-and-t': jAndT, 'j-and-t-cargo': jntCargo,
   'j-and-t-middle-east': jAndTMiddleEast, janio, jeebly, 'jersey-post': jerseyPost, 'jet-logistic': jetLogistic, jhgj, jitsu, jne, 'jordan-post': jordanPost,
   jrt, 'js-express': jsExpress, kazpost, kex, 'kuehne-nagel': kuehneNagel, kyoungdong, 'l-post': lPost, 'la-poste': laPoste,
-  'la-poste-senegal': laPosteSenegal, 'latvijas-pasts': latvijasPasts,
+  'la-poste-senegal': laPosteSenegal, labaih, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, linhan, 'lion-parcel': lionParcel, logen, loggi, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, mainfreight, maltapost, matkahuolto, mayiyinfu, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,

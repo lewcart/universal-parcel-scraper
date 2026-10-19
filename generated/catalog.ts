@@ -18176,7 +18176,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "labaih",
+      "recognitionRank": 788,
+      "localClocks": true
     },
     "canaryUrl": "https://mylabaih.com/",
     "trackingUrlTemplate": "https://track.mylabaih.com/track/?cn={trackingNumber}",
@@ -18186,7 +18188,7 @@ export const CARRIER_CATALOG = {
         "domains": [
           "track.mylabaih.com"
         ],
-        "pathPattern": "^/track/?$",
+        "pathPattern": "^/track(?:/en)?/?$",
         "params": [
           "cn"
         ]

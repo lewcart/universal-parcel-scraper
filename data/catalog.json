@@ -13312,6 +13312,39 @@
     ],
     "detectionRules": []
   },
+  "fedex-freight": {
+    "displayName": "FedEx Freight",
+    "color": "#de002e",
+    "aliases": [
+      "FedEx Freight LTL"
+    ],
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.fedexfreight.com/en-us/tracking",
+    "trackingUrlTemplate": "https://www.fedexfreight.com/fedextrack/?trknbr={trackingNumber}",
+    "trackingSearchUrl": "https://www.fedexfreight.com/en-us/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.fedexfreight.com"
+        ],
+        "pathPattern": "^/fedextrack/?$",
+        "params": [
+          "trknbr"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "fedex-pl": {
     "displayName": "FedEx Poland",
     "color": "#4d148c",

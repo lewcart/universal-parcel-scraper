@@ -1156,6 +1156,7 @@ export const REGISTRY: RegistryDefinition = {
     "fastdrop": "fastdrop",
     "fastfrate": "universal",
     "fedex": "fedex",
+    "fedex-freight": "universal",
     "fedex-pl": "fedex-pl",
     "fermopoint": "fermopoint",
     "fg-delivery": "fg-delivery",

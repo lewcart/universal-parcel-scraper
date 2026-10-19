@@ -1321,6 +1321,12 @@
     "reason": "Fastfrate probill numbers are ten bare digits that many carriers share."
   },
   {
+    "carrier": "fedex-freight",
+    "pattern": "^\\d{10}$",
+    "kind": "by_design",
+    "reason": "Ten digits are shared by many carriers and nothing in a FedEx Freight PRO points to FedEx Freight."
+  },
+  {
     "carrier": "first-delivery-tn",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

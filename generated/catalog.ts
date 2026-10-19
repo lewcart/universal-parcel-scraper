@@ -13314,6 +13314,39 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": []
   },
+  "fedex-freight": {
+    "displayName": "FedEx Freight",
+    "color": "#de002e",
+    "aliases": [
+      "FedEx Freight LTL"
+    ],
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ],
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.fedexfreight.com/en-us/tracking",
+    "trackingUrlTemplate": "https://www.fedexfreight.com/fedextrack/?trknbr={trackingNumber}",
+    "trackingSearchUrl": "https://www.fedexfreight.com/en-us/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.fedexfreight.com"
+        ],
+        "pathPattern": "^/fedextrack/?$",
+        "params": [
+          "trknbr"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "fedex-pl": {
     "displayName": "FedEx Poland",
     "color": "#4d148c",
@@ -30593,6 +30626,7 @@ export const CARRIER_IDS = [
   "fargo-uz",
   "fastdrop",
   "fastfrate",
+  "fedex-freight",
   "fedex-pl",
   "fermopoint",
   "fg-delivery",
@@ -31358,6 +31392,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fargo-uz": [],
   "fastdrop": [],
   "fastfrate": [],
+  "fedex-freight": [],
   "fedex-pl": ["fedex-pl-1"],
   "fermopoint": ["fermopoint-1"],
   "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],

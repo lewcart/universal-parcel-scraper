@@ -7,7 +7,7 @@ import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, LINHAN_API, LINHAN_PAGE, LinhanTracker } from './adapter.js';
 import { linhanScan, normalizeLinhanNumber, parseLinhan } from './parser.js';
-import { linhanMappedStage, linhanStage, linhanStatusKey, statusMap } from './status.js';
+import { linhanChinaStep, linhanMappedStage, linhanStage, linhanStatusKey, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'LHGJ99000001CD';
@@ -45,12 +45,14 @@ describe('LinHan International HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a parcel delivered abroad in the tracker’s order, with wall clocks and the towns as locations', () => {
+  it('reads a parcel delivered abroad in the tracker’s order, with the towns as locations and the steps in China on Beijing time', () => {
     const result = parseLinhan(fixture('delivered'), DELIVERED);
+    // The delivery abroad keeps its wall clock, so it gives no instant.
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
       last_status_text: 'Delivered', last_update: null, last_update_local: '2026-05-14T13:42:10', expected_delivery: null,
       destination_country: 'DE' });
-    expect(result.events!.map((event) => [event.local_time, event.location, event.description, event.stage])).toEqual([
+    expect(result).not.toHaveProperty('delivered_at');
+    expect(result.events!.map((event) => [event.time ?? event.local_time, event.location, event.description, event.stage])).toEqual([
       // The postcode is dropped.
       ['2026-05-14T13:42:10', 'Sample Town', 'Delivered', 'delivered'],
       ['2026-05-14T07:58:31', 'Sample Town', 'package is on the way', 'in_transit'],
@@ -61,26 +63,52 @@ describe('LinHan International HTTP adapter', () => {
       ['2026-05-13T09:31:55', undefined, 'Internationaliy Package received at processing center', 'in_transit'],
       ['2026-05-12T18:20:00', undefined, 'transfer to local acting company International self-operation team', 'in_transit'],
       ['2026-05-12T11:05:00', undefined, 'local carrier Agent Import customs clearance', 'customs'],
-      // Clocks of different countries: the tracker's order stands.
+      // The rows abroad keep wall clocks of unknown zone: the tracker's order stands.
       ['2026-05-11T06:45:00', undefined, 'Item arrives at destination airport', 'in_transit'],
-      ['2026-05-10T23:30:00', undefined, 'Departure from the airport of origin domestic', 'in_transit'],
-      ['2026-05-10T15:10:00', undefined, 'Arrival at domestic internationality airport', 'in_transit'],
+      // LinHan's own steps in China, on Beijing time.
+      ['2026-05-10T23:30:00+08:00', undefined, 'Departure from the airport of origin domestic', 'in_transit'],
+      ['2026-05-10T15:10:00+08:00', undefined, 'Arrival at domestic internationality airport', 'in_transit'],
       // The row listed twice is kept once.
-      ['2026-05-09T20:15:42', undefined, 'Goods leave the operation center', 'in_transit'],
-      ['2026-05-09T10:02:18', undefined, 'Arrive at the cross border receiving point', 'accepted'],
-      ['2026-05-08T16:30:05', undefined, 'Order information received', 'registered'],
+      ['2026-05-09T20:15:42+08:00', undefined, 'Goods leave the operation center', 'in_transit'],
+      ['2026-05-09T10:02:18+08:00', undefined, 'Arrive at the cross border receiving point', 'accepted'],
+      ['2026-05-08T16:30:05+08:00', undefined, 'Order information received', 'registered'],
     ]);
-    expect(result.events!.every((event) => event.time === undefined && event.stage_source === 'carrier_map')).toBe(true);
+    expect(result.events!.every((event) => Boolean(event.time) !== Boolean(event.local_time) && event.stage_source === 'carrier_map')).toBe(true);
     expect(JSON.stringify(result)).not.toMatch(/00000|中国|德国|天/);
   });
 
-  it('reads a parcel on its way out of China', async () => {
+  it('reads a parcel on its way out of China, its newest step there the last update', async () => {
     const result = await carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(fixture('in-transit')))).track({ number: IN_TRANSIT });
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'Departure from the airport of origin domestic', last_update_local: '2026-06-03T01:10:20', destination_country: 'FR' });
-    expect(result.events).toHaveLength(5);
-    expect(result.events!.at(-1)).toEqual({ local_time: '2026-05-30T11:30:00', description: 'Order information received',
+      last_status_text: 'Departure from the airport of origin domestic', last_update: '2026-06-03T01:10:20+08:00', destination_country: 'FR' });
+    expect(result).not.toHaveProperty('last_update_local');
+    expect(result.events!.map((event) => event.time)).toEqual(['2026-06-03T01:10:20+08:00', '2026-06-01T22:40:05+08:00',
+      '2026-05-31T08:15:30+08:00', '2026-05-30T21:05:45+08:00', '2026-05-30T11:30:00+08:00']);
+    expect(result.events!.at(-1)).toEqual({ time: '2026-05-30T11:30:00+08:00', description: 'Order information received',
       stage: 'registered', stage_source: 'carrier_map' });
+  });
+
+  it('keeps the wall clock of a row abroad, of a step that names a town and of wording it does not know', () => {
+    const rows = (details: [string, string][]) => parseLinhan(changed('in-transit', (item) => {
+      item.details = details.map(([createTime, content]) => ({ create_time: createTime, content }));
+    }), IN_TRANSIT);
+    // At the destination airport, the newest row has no zone: no instant, and the wall clock stays.
+    const landed = rows([
+      ['2026-06-04 06:20:00', 'Item arrives at destination airport'],
+      ['2026-06-03 01:10:20', 'Departure from the airport of origin domestic'],
+    ]);
+    expect(landed).toMatchObject({ last_update: null, last_update_local: '2026-06-04T06:20:00' });
+    expect(landed.events!.map((event) => [event.time ?? null, event.local_time ?? null]))
+      .toEqual([[null, '2026-06-04T06:20:00'], ['2026-06-03T01:10:20+08:00', null]]);
+    for (const content of ['Sample Town, Goods leave the operation center', 'Synthetic note', 'Sample Town, 00000, Delivered',
+      'Arrive Sample City, at the sorting and distribution center', 'local carrier Agent Import customs clearance']) {
+      const result = rows([['2026-06-04 06:20:00', content]]);
+      expect(result, content).toMatchObject({ last_update: null, last_update_local: '2026-06-04T06:20:00' });
+      expect(result.events![0]!.time, content).toBeUndefined();
+      expect(result, content).not.toHaveProperty('delivered_at');
+    }
+    // The step's wording as the tracker spaces and cases it is still the step.
+    expect(rows([['2026-06-04 06:20:00', ' goods  leave the Operation Center ']]).last_update).toBe('2026-06-04T06:20:00+08:00');
   });
 
   it('moves a leading town into the location, drops postcodes and leaves other text whole', () => {
@@ -181,7 +209,7 @@ describe('LinHan International HTTP adapter', () => {
       }));
     }), IN_TRANSIT);
     expect(result.events).toHaveLength(100);
-    expect(result).toMatchObject({ history_truncated: true, last_update_local: '2026-06-01T01:59:00' });
+    expect(result).toMatchObject({ history_truncated: true, last_update: '2026-06-01T01:59:00+08:00' });
   });
 
   it('keeps an unknown number, a moved route, a browser check and a broken reply apart', async () => {
@@ -279,6 +307,9 @@ describe('LinHan International status vocabulary', () => {
         .toEqual({ kind: 'mapped', stage: entry.stage });
       expect(linhanStage(entry.wording), entry.wording).toEqual({ stage: entry.stage, source: 'carrier_map' });
     }
+    // LinHan's own steps in China, from the order data to the flight out, are recorded wordings.
+    expect(statuses.entries.filter((entry) => linhanChinaStep(entry.wording)).map((entry) => entry.stage))
+      .toEqual(['registered', 'accepted', 'in_transit', 'in_transit', 'in_transit']);
     // The next center's town is keyed out of its wording.
     expect(linhanStatusKey('Leave the processing center and transport to Sample City processing center'))
       .toBe('leave the processing center and transport to … processing center');

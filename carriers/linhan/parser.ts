@@ -3,14 +3,16 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { classifyWording, languageStageStatus, type Stage } from '../../core/status/index.js';
-import { countryCode } from '../../core/time/index.js';
+import { countryCode, isoTime } from '../../core/time/index.js';
 import { clean, textFromHtml } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { LINHAN_NOT_FOUND, linhanMappedStage, linhanStage } from './status.js';
+import { LINHAN_NOT_FOUND, linhanChinaStep, linhanMappedStage, linhanStage } from './status.js';
 
 export const PROVIDER = 'LinHan International';
 // One parcel's reply is a few kilobytes.
 export const LINHAN_MAX_BYTES = 256 * 1024;
+/** LinHan's own steps are in China; the tracker prints their wall clocks without a zone. */
+export const LINHAN_ZONE = 'Asia/Shanghai';
 
 // LHGJ, eight digits and CD.
 const NUMBER = /^LHGJ\d{8}CD$/;
@@ -73,7 +75,7 @@ export function linhanScan(content: string): { description: string; location: st
   return { description: scrub(text), location: '' };
 }
 
-/** A row's clock: the scanning site's wall clock to the second, with no zone. */
+/** A row's clock: a wall clock to the second, with no zone. */
 function wallClock(value: unknown): string {
   const match = typeof value === 'string' ? CLOCK.exec(value.trim()) : null;
   const local = match ? `${match[1]}T${match[2]}` : '';
@@ -145,8 +147,11 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
     if (seen.has(key)) continue;
     seen.add(key);
     const staged = linhanStage(description);
+    // China keeps one zone, so LinHan's own steps there are instants on Beijing time.
+    // Rows abroad could be on the destination's clock or the tracker's, and keep their wall clocks.
+    const time = !location && linhanChinaStep(description) ? isoTime(local, LINHAN_ZONE)?.iso : undefined;
     events.push({
-      local_time: local,
+      ...(time ? { time } : { local_time: local }),
       ...(location ? { location } : {}),
       description,
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -154,7 +159,7 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
   }
   if (!events.length) throw new NoHistoryError(PROVIDER);
 
-  // The tracker's order stands: a history mixes China's clocks with the destination's.
+  // The tracker's order stands: the rows abroad keep wall clocks of unknown zone.
   const newest = events[0]!;
   // The newest staged scan decides; the summary's status only when no scan has a stage.
   const scanned = events.find((event) => event.stage);
@@ -165,8 +170,8 @@ export function parseLinhan(payload: unknown, raw: string): CarrierResult {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: scanned?.stage_source ?? 'carrier_map' } : {}),
     last_status_text: newest.description!,
-    last_update: null,
-    last_update_local: newest.local_time!,
+    last_update: newest.time ?? null,
+    ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
     events: events.slice(0, MAX_EVENTS),

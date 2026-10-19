@@ -27,8 +27,12 @@ destination. Tracked through the lookup its tracking page makes.
 - The tracker is the same system as [CTTYEX's](../cttyex/README.md), on LinHan's own domain.
   LinHan's history goes on past the flight out of China, through the destination agent's
   customs clearance to the delivery.
-- Scan clocks are wall clocks to the second without a zone. One history mixes China's clocks
-  with the destination's, so every scan stays `local_time` and the tracker's order stands.
+- Scan clocks are wall clocks to the second without a zone. LinHan's own steps in China, from
+  the order data to the flight out, are read on Beijing time: China keeps one zone. The rows
+  abroad keep their wall clocks in `local_time`. One has come with a clock still ahead of the
+  destination's when it was read, so they are not all on the destination's clock, and nothing
+  tells which they keep. The tracker's order stands, and the newest scan's instant, when it has
+  one, is the last update.
 - Rows at the destination open with the town, and the delivery with the postcode too: "Town,
   00000, Delivered". One names the town after its verb: "Arrive Town, at the sorting and
   distribution center". The town becomes the location so the wording stays the same from town

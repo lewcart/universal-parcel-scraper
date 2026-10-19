@@ -12,8 +12,10 @@ describe('LinHan International live retrieval', () => {
     expect(answer).toMatchObject({ carrier: 'linhan', source: 'linhan' });
     expect(answer.attempts[0]).toMatchObject({ source: 'linhan', kind: 'ok' });
     expect(answer.result.events.length).toBeGreaterThan(0);
-    // Every scan keeps its site's wall clock, without an offset.
-    expect(answer.result.events.every((event) => event.description && !event.time && WALL_CLOCK.test(String(event.local_time)))).toBe(true);
+    // LinHan's own steps in China are on Beijing time; the rows abroad keep their wall clocks.
+    expect(answer.result.events.every((event) => event.description
+      && (event.time ? event.time.endsWith('+08:00') : WALL_CLOCK.test(String(event.local_time))))).toBe(true);
+    expect(answer.result.last_update ?? null).toBe(answer.result.events[0]!.time ?? null);
   }, 45_000);
 
   it.skipIf(!process.env.LINHAN_UNKNOWN_NUMBER)('reads an unknown number as not found', async () => {

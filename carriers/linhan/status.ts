@@ -21,6 +21,20 @@ export function linhanStatusKey(wording: string): string {
 const WORDINGS: ReadonlyMap<string, Stage> = new Map(ENTRIES.filter((entry) => entry.stage)
   .map((entry) => [linhanStatusKey(entry.wording), entry.stage as Stage]));
 
+/** LinHan's own steps in China, from the order data to the flight out, as the map keys them. */
+const CHINA_STEPS: ReadonlySet<string> = new Set([
+  'Order information received',
+  'Arrive at the cross border receiving point',
+  'Goods leave the operation center',
+  'Arrival at domestic internationality airport',
+  'Departure from the airport of origin domestic',
+].map(linhanStatusKey));
+
+/** Whether a scan's wording is one of LinHan's own steps in China. */
+export function linhanChinaStep(wording: string): boolean {
+  return CHINA_STEPS.has(linhanStatusKey(wording));
+}
+
 /** The tracker's status for a number it does not know: never a scan. */
 const GAPS = ENTRIES.filter((entry) => entry.unmapped)
   .map((entry) => ({ wording: normalizeStatusWording(entry.wording), note: entry.note ?? '' }));

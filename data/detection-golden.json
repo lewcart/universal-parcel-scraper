@@ -82238,6 +82238,78 @@
     ]
   },
   {
+    "input": "QSP184265966",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP198482732",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP202668109",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP205361135",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP210201535",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP212901660",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP216440445",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP220318030",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
+    "input": "QSP222954533",
+    "carrier": "tracx-logis",
+    "confidence": "high",
+    "candidates": [
+      "tracx-logis"
+    ]
+  },
+  {
     "input": "QUL-DL-9194640",
     "carrier": "unknown",
     "confidence": "low",

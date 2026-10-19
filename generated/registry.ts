@@ -423,6 +423,7 @@ import { adapter as toptrans } from '../carriers/toptrans/adapter.js';
 import { adapter as torrestir } from '../carriers/torrestir/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as trackon } from '../carriers/trackon/adapter.js';
+import { adapter as tracxLogis } from '../carriers/tracx-logis/adapter.js';
 import { adapter as transaher } from '../carriers/transaher/adapter.js';
 import { adapter as transcorp } from '../carriers/transcorp/adapter.js';
 import { adapter as transmission } from '../carriers/transmission/adapter.js';
@@ -888,6 +889,7 @@ export const REGISTRY: RegistryDefinition = {
     "torrestir": torrestir,
     "total-express": totalExpress,
     "trackon": trackon,
+    "tracx-logis": tracxLogis,
     "transaher": transaher,
     "transcorp": transcorp,
     "transmission": transmission,
@@ -1630,7 +1632,7 @@ export const REGISTRY: RegistryDefinition = {
     "total-express": "total-express",
     "tp-logistics-th": "universal",
     "trackon": "trackon",
-    "tracx-logis": "universal",
+    "tracx-logis": "tracx-logis",
     "trans-o-flex": "universal",
     "transaher": "transaher",
     "transcorp": "transcorp",

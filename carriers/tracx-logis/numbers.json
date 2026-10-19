@@ -97,6 +97,177 @@
       "note": "An archived lookup on Qxpress's own tracker address; the capture was not opened, and the page loads the history by script, so the history was not visible."
     },
     {
+      "number": "QSP222954533",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/qxpress/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Qxpress page offered it to try. TracX Logis's tracker answers it as a parcel within Singapore, delivered by a local courier."
+    },
+    {
+      "number": "QSP220318030",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.parcelpanel.com/couriers/qxpress/",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "A search engine's copy of ParcelPanel's Qxpress page offered it to try; the page now offers another. TracX Logis's tracker answers it as a parcel from Korea that Sagawa delivered in Japan, naming Sagawa's number."
+    },
+    {
+      "number": "QSP216440445",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260416141813/https://www.parcelpanel.com/couriers/qxpress/",
+        "date": "2026-04-16",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Qxpress page offered it to try. TracX Logis's tracker answers it as a parcel within Singapore, delivered."
+    },
+    {
+      "number": "QSP212901660",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260120181926/https://www.parcelpanel.com/couriers/qxpress/",
+        "date": "2026-01-20",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Qxpress page offered it to try. TracX Logis's tracker answers it as a parcel from Korea that Ecohai delivered in Japan, with Ecohai's linehaul scans."
+    },
+    {
+      "number": "QSP210201535",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20251013085950/https://www.parcelpanel.com/couriers/qxpress/",
+        "date": "2025-10-13",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "ParcelPanel's Qxpress page offered it to try. TracX Logis's tracker answers it as a parcel within Singapore, delivered."
+    },
+    {
+      "number": "QSP202668109",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ordertracker.com/carriers/qxpress",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "OrderTracker's Qxpress page gives it as an example. TracX Logis's tracker answers it as a parcel within Singapore, delivered the day after a failed delivery."
+    },
+    {
+      "number": "QSP205361135",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP205361135",
+        "date": "2026-10-19",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "A lookup on Qxpress's own tracker address in a search engine's index. TracX Logis's tracker answers it as a parcel from Korea that Japan Post delivered, naming Japan Post's number."
+    },
+    {
+      "number": "QSP198482732",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250426094317/https://www.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP198482732Qxpress%E3%81%AB%E3%81%AA%E3%82%8A%E3%81%BE%E3%81%97%E3%81%9F%E3%82%89%E3%80%81%E6%AD%A3%E3%81%97%E3%81%84%E9%80%81%E3%82%8A%E5%85%88%E3%81%94%E4%BD%8F%E6%89%80%E3%81%AE%E3%81%94%E6%95%99%E7%A4%BA%E3%82%92%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99%EF%BC%BE%EF%BC%BE",
+        "date": "2025-04-26",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Qxpress's own tracker address, with a seller's note asking for the right address after the number. TracX Logis's tracker answers it as a parcel from Korea for Sagawa that failed delivery, went to long-term storage for a wrong address and was returned."
+    },
+    {
+      "number": "QSP184265966",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20250506001341/https://smartship.qxpress.net/Customer/PopupTraceParcels?TrackingNo=QSP184265966",
+        "date": "2025-05-06",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "tracx-logis",
+        "confidence": "high"
+      },
+      "note": "An archived lookup on Qxpress's seller tracker address. TracX Logis's tracker answers it as a parcel from Korea for JD Sagawa, with only its order record from the older system."
+    },
+    {
       "number": "JP3564644",
       "role": "shipment",
       "evidence": "public_shipment_report",

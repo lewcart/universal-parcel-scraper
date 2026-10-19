@@ -1440,6 +1440,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skyking', number: '999999999',
     route: /^https:\/\/skyking\.co\/track\?cno=999999999$/,
     marker: /No Tracking Information Available/ },
+  // The page looks up the number in its address and shows it under its package details, found or not.
+  { carrier: 'tracx-logis', number: 'QSP000000001',
+    route: /^https:\/\/www\.tracxlogis\.com\/tracking\?trackingNo=QSP000000001$/,
+    marker: /Tracking Parcel|Package Info/ },
 ];
 
 /**

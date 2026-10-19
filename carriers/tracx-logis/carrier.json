@@ -23,18 +23,72 @@
   "timezone": "Asia/Singapore",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tracx-logis",
+    "steps": [
+      "direct",
+      "action",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 777
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.tracxlogis.com/tracking?trackingNo={trackingNumber}",
     "searchUrl": "https://www.tracxlogis.com/tracking",
     "canaryUrl": "https://www.tracxlogis.com/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "progress_rail",
+      "origin_country",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "customer_reference",
+      "recipient_name",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "destination_country",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin_country",
+      "customer_reference",
+      "recipient_name",
+      "remarks"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

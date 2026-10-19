@@ -28431,7 +28431,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tracx-logis",
+      "recognitionRank": 777
     },
     "canaryUrl": "https://www.tracxlogis.com/tracking",
     "trackingUrlTemplate": "https://www.tracxlogis.com/tracking?trackingNo={trackingNumber}",

@@ -6114,7 +6114,9 @@
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "am-home-delivery",
+      "recognitionRank": 626,
+      "localClocks": true
     },
     "canaryUrl": "https://www.amtrucking.com/tracking.php",
     "trackingUrlTemplate": "https://www.amtrucking.com/track-number.php?cnumber={trackingNumber}",

@@ -192,6 +192,12 @@
     "reason": "AM Home Delivery's current track numbers are bare eight-digit runs that other carriers' numbers and rules share."
   },
   {
+    "carrier": "am-home-delivery",
+    "pattern": "^AM\\d{9}$",
+    "kind": "by_design",
+    "reason": "One archived lookup on AM Home Delivery's tracking page shows AM and nine digits; a single sample is too thin to claim the prefix."
+  },
+  {
     "carrier": "amazon-logistics",
     "pattern": "^ZZ\\d{10}$",
     "kind": "by_design",

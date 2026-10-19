@@ -37267,6 +37267,16 @@
     "candidates": []
   },
   {
+    "input": "41841427",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "41903752118928",
     "carrier": "unknown",
     "confidence": "low",
@@ -62984,6 +62994,17 @@
   },
   {
     "input": "AM010404344",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-it"
+    ],
+    "asked": [
+      "gls-it"
+    ]
+  },
+  {
+    "input": "AM100605693",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [

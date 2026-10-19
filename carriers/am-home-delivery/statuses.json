@@ -9,10 +9,16 @@
     {"wording": "INTRANSIT TO DELIVERY TERMINAL", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
     {"wording": "Delivery Attempted", "stage": "failed_attempt", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker."},
     {"wording": "DELIVERED; THANK YOU FOR USING AM HOME DELIVERY", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in an archived lookup on the older Carrier Logistics tracker. The delivering city follows the text."},
-    {"wording": "Received in Consolidation Center", "stage": "accepted", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
-    {"wording": "In-Transit to Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
-    {"wording": "Received in Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page."},
-    {"wording": "Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page. The delivery appointment was set while the freight waits at the delivery terminal."},
-    {"wording": "COMPLETED", "stage": "delivered", "language": "en", "confirmedBy": "portal", "note": "Seen in the history of archived lookups on the current tracking page. Also shown as the last mile status."}
+    {"wording": "Received in Consolidation Center", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "A history row on the current tracking page: the first terminal after the pickup."},
+    {"wording": "In-Transit to Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A history row on the current tracking page; its place reads In Transit."},
+    {"wording": "Received in Delivery Terminal", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A history row on the current tracking page, and the shipment's current status from then on, after the delivery too. The progress rail's step reads Received In Delivery Terminal."},
+    {"wording": "Scheduled", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A history row on the current tracking page when the delivery appointment is set, while the freight waits at the delivery terminal. Also a last mile status, which can come before the row, and a step of the progress rail."},
+    {"wording": "COMPLETED", "stage": "delivered", "language": "en", "confirmedBy": "live", "note": "The delivery row on the current tracking page, at the delivery town. Also the last mile status; the progress rail's step reads Completed."},
+    {"wording": "Pickup Notification Received", "stage": "registered", "language": "en", "confirmedBy": "live", "note": "A history row on the current tracking page, without a place, and the first step of its progress rail."},
+    {"wording": "Order Received Pending Pickup", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "Seen as the current status of an archived lookup on the current tracking page, before any history row."},
+    {"wording": "Electronic Order Received", "stage": "registered", "language": "en", "confirmedBy": "portal", "note": "The first step of the progress rail in an archived lookup on the current tracking page, before the pickup."},
+    {"wording": "Picked Up", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "A step of the current tracking page's progress rail."},
+    {"wording": "In Transit", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "A step of the current tracking page's progress rail."},
+    {"wording": "Out For Delivery", "stage": "out_for_delivery", "language": "en", "confirmedBy": "live", "note": "A step of the current tracking page's progress rail."}
   ]
 }

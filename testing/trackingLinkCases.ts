@@ -918,6 +918,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ccfs', number: '999999999999',
     route: /^https:\/\/auth\.ccfs\.com\/track\/(?:search|detail)\/999999999999$/,
     marker: /Individual Tracking Number|Location History/ },
+  // The lookup redirects to the carrier's NetSuite page, whose notice for an unknown number names no number.
+  { carrier: 'am-home-delivery', number: '99999999',
+    route: /^https:\/\/4301600\.extforms\.netsuite\.com\/app\/site\/hosting\/scriptlet\.nl\?(?:[^#]*&)?number=99999999(?:&|$)/,
+    marker: /Please Enter a Valid BOL Number|Tracking Details/,
+    forwarding: { notFound: /Please Enter a Valid BOL Number/ } },
   // The tracer looks the number up from its address and shows its notice for an unknown PRO.
   { carrier: 'rl-carriers', number: 'ZZ9999999',
     route: /^https:\/\/www\.rlcarriers\.com\/freight\/shipping\/shipment-tracing\?pro=ZZ9999999&docType=PRO&source=web$/,

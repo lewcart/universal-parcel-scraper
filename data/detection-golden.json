@@ -82892,6 +82892,9 @@
     "confidence": "low",
     "candidates": [
       "ram-hand-to-hand"
+    ],
+    "asked": [
+      "ram-hand-to-hand"
     ]
   },
   {
@@ -82900,6 +82903,9 @@
     "confidence": "low",
     "candidates": [
       "ram-hand-to-hand"
+    ],
+    "asked": [
+      "ram-hand-to-hand"
     ]
   },
   {
@@ -82907,6 +82913,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "ram-hand-to-hand"
+    ],
+    "asked": [
       "ram-hand-to-hand"
     ]
   },

@@ -257,6 +257,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "purolator": 560,
   "quantium-solutions": 809,
   "raben": 924,
+  "ram-hand-to-hand": 728,
   "redpack": 15,
   "redur": 886,
   "redx": 917,

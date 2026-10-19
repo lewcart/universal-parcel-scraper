@@ -1242,6 +1242,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'skynet-sa', number: 'ZZ0000000000',
     route: /^https:\/\/web\.skynet\.co\.za:5002\/T\?R=ZZ0000000000$/,
     marker: /TRACKING INFORMATION|ZZ0000000000 NOT FOUND/ },
+  // The tracker reads the number from the path, prefills its form and looks it up once loaded; an unknown
+  // one gets NO TRACKING FOUND under the waybill.
+  { carrier: 'ram-hand-to-hand', number: 'RAM00000000',
+    route: /^https:\/\/www\.ram\.co\.za\/track\/RAM00000000$/,
+    marker: /Enter unique RAM waybill number|NO TRACKING FOUND/ },
   // The path redirects to the page's own route, which looks the number up and says when it does not recognize it.
   { carrier: 'danske-fragtmaend', number: 'ZZ000000',
     route: /^https:\/\/trace\.fragt\.dk\/#\/trackTrace\/ZZ000000$/,

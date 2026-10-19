@@ -18,18 +18,53 @@
   "timezone": "Africa/Johannesburg",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ram-hand-to-hand",
+    "steps": [
+      "direct"
+    ],
+    "recognition": {
+      "rank": 728
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "url": "https://www.ram.co.za/track/{trackingNumber}",
     "searchUrl": "https://www.ram.co.za/track",
     "canaryUrl": "https://www.ram.co.za/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "customer_reference",
+      "recipient_name",
+      "recipient_address",
+      "remarks"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "customer_reference",
+      "recipient_name",
+      "recipient_address",
+      "remarks"
+    ],
+    "unavailable": [
+      "provider_code",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "proof_of_delivery",
+      "delivery_tracking_number",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

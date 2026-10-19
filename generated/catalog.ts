@@ -24311,7 +24311,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ram-hand-to-hand",
+      "recognitionRank": 728,
+      "localClocks": true
     },
     "canaryUrl": "https://www.ram.co.za/track",
     "trackingUrlTemplate": "https://www.ram.co.za/track/{trackingNumber}",

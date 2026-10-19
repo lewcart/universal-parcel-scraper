@@ -20089,13 +20089,14 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Melbourne",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "micro-express",
+      "recognitionRank": 697
     },
     "canaryUrl": "https://microexpress.com.au/",
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^ME\\d{13}[A-Z]{3}$",
+        "pattern": "^ME\\d{13}[A-Z0-9]{3}$",
         "confidence": "high"
       }
     ]

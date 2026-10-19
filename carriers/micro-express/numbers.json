@@ -38,6 +38,25 @@
         "confidence": "high"
       },
       "note": "A customer review on Trustpilot's Micro Express profile quotes this as the reference of a delivery the customer complained about to the courier."
+    },
+    {
+      "number": "ME 17628555026497EB",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.trustpilot.com/reviews/691d23be32d31e7ec9e90c41",
+        "date": "2025-11-19",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "micro-express",
+        "confidence": "high"
+      },
+      "note": "A customer review on Trustpilot's Micro Express profile ends with this number, written with a space after ME. The first of its three last characters is a digit."
     }
   ]
 }

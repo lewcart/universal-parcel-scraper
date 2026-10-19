@@ -1533,6 +1533,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'estes-forwarding', number: '0000000',
     route: /^https:\/\/efwtrack\.com\/track\/0000000$/,
     marker: /was not found\. Please verify the number or contact our Control Tower|EFW Tracking/ },
+  // The page fills its field in from the address and looks the number up; an unknown one
+  // gets an empty card under the number.
+  { carrier: 'shree-anjani', number: '9000000001',
+    route: /^https:\/\/shreeanjani\.co\.in\/tracking\/\?awb=9000000001$/,
+    marker: /Enter your 10-digit docket number to track/ },
 ];
 
 /**

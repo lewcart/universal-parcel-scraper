@@ -388,6 +388,7 @@ import { adapter as shadowfax } from '../carriers/shadowfax/adapter.js';
 import { adapter as shipa } from '../carriers/shipa/adapter.js';
 import { adapter as shipblu } from '../carriers/shipblu/adapter.js';
 import { adapter as shipentegra } from '../carriers/shipentegra/adapter.js';
+import { adapter as shreeAnjani } from '../carriers/shree-anjani/adapter.js';
 import { adapter as shreeMaruti } from '../carriers/shree-maruti/adapter.js';
 import { adapter as singaporePost } from '../carriers/singapore-post/adapter.js';
 import { adapter as skroutzLastMile } from '../carriers/skroutz-last-mile/adapter.js';
@@ -883,6 +884,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipa": shipa,
     "shipblu": shipblu,
     "shipentegra": shipentegra,
+    "shree-anjani": shreeAnjani,
     "shree-maruti": shreeMaruti,
     "singapore-post": singaporePost,
     "skroutz-last-mile": skroutzLastMile,
@@ -1610,7 +1612,7 @@ export const REGISTRY: RegistryDefinition = {
     "shipblu": "shipblu",
     "shipentegra": "shipentegra",
     "shipup": "universal",
-    "shree-anjani": "universal",
+    "shree-anjani": "shree-anjani",
     "shree-mahabali-express": "universal",
     "shree-mahavir": "universal",
     "shree-maruti": "shree-maruti",

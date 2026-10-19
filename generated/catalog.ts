@@ -25808,7 +25808,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shree-anjani",
+      "recognitionRank": 752,
+      "localClocks": true
     },
     "canaryUrl": "https://shreeanjani.co.in/tracking",
     "trackingUrlTemplate": "https://shreeanjani.co.in/tracking?awb={trackingNumber}",

@@ -17559,7 +17559,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jetline-couriers",
+      "localClocks": true
     },
     "canaryUrl": "https://www.jetlinecouriers.in/",
     "trackingSearchUrl": "https://www.jetlinecouriers.in/",

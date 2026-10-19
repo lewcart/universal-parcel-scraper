@@ -2018,9 +2018,9 @@
   },
   {
     "carrier": "jetline-couriers",
-    "pattern": "^\\d{9}$",
+    "pattern": "^\\d{7,9}$",
     "kind": "by_design",
-    "reason": "Nine digits are printed by many carriers and nothing in the number points to Jetline Couriers."
+    "reason": "Jetline Couriers AWB numbers are plain runs of seven to nine digits, a shape many carriers print, and nothing in the number points to Jetline Couriers."
   },
   {
     "carrier": "jitsu",

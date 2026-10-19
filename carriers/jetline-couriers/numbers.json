@@ -36,6 +36,52 @@
         "confidence": "none"
       },
       "note": "A Voxya complaint against Jetline Couriers Private Limited gives it as the AWB number of medicines booked from Ara, Bihar to Punjab."
+    },
+    {
+      "number": "9882658",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.tracking-status.com/jetline-courier-delivery-status-online-tracking/",
+        "date": "2022-04-23",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "seur"
+        ]
+      },
+      "note": "A comment on a Jetline Courier tracking guide gives it as the airway bill number of a courier the website did not show."
+    },
+    {
+      "number": "10769898",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.tracking-status.com/jetline-courier-delivery-status-online-tracking/",
+        "date": "2022-12-19",
+        "dateKind": "comment",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "mondial-relay",
+          "colisweb",
+          "heppner"
+        ]
+      },
+      "note": "A comment on a Jetline Courier tracking guide gives it as the tracking number of a parcel and asks whether it has reached its destination."
     }
   ]
 }

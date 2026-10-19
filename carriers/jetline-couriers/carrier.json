@@ -18,17 +18,58 @@
   "timezone": "Asia/Kolkata",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "jetline-couriers",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location"
+  ],
   "portal": {
     "searchUrl": "https://www.jetlinecouriers.in/",
     "canaryUrl": "https://www.jetlinecouriers.in/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "origin",
+      "destination",
+      "awb_date",
+      "progress_rail",
+      "office_addresses",
+      "office_contact_details",
+      "proof_of_delivery"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "awb_date",
+      "progress_rail",
+      "office_addresses",
+      "office_contact_details",
+      "proof_of_delivery"
+    ],
+    "unavailable": [
+      "scan_times",
+      "offset_timestamps",
+      "delivered_at",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "provider_code",
+      "delivery_partner"
+    ]
   },
   "links": [],
   "detection": []

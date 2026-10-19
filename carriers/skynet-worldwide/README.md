@@ -16,6 +16,8 @@ mix the two. Tracked through the network's tracking page.
 - An unknown number gets the page's "No tracking found" notice. A 404 or a redirect is a moved
   route, an empty page is inconclusive and a firewall page is a challenge.
 - Every scan must name the number asked.
+- The request and the parser serve the other couriers on GETOnline too, each under its own
+  `stid`, from [`getonline.ts`](getonline.ts).
 - There is no recognition: no detection rule offers SkyNet, so preflight never asks it.
 
 ## Notes

@@ -1017,6 +1017,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'smsa-express', number: '100000000000',
     route: /^https:\/\/www\.smsaexpress\.com\/sa\/trackingdetails\?tracknumbers=100000000000$/,
     marker: /Track And Trace Details|This tracking number is not found/ },
+  // The server renders the tracker's popup; an unknown number gets a notice under the number it shows.
+  { carrier: 'gs-postbox', number: '000000000000',
+    route: /^https:\/\/www\.cvsnet\.co\.kr\/invoice\/tracking\.do\?invoice_no=000000000000$/,
+    marker: /해당 운송장의 배송정보를 조회할 수 없습니다/ },
   // The page keeps the number from its address in its form and posts it to its own lookup on load.
   { carrier: 'cj-logistics', number: '000000000000',
     route: /^https:\/\/www\.cjlogistics\.com\/ko\/tool\/parcel\/newTracking\?gnbInvcNo=000000000000$/,

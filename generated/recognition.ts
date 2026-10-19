@@ -173,6 +173,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "gofo-it": 460,
   "gofo-nl": 455,
   "gogo-xpress": 796,
+  "gs-postbox": 634,
   "gta-airskip": 762,
   "gzyl": 988,
   "hanjin": 545,

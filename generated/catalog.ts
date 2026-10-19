@@ -15343,7 +15343,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gs-postbox",
+      "recognitionRank": 634,
+      "localClocks": true
     },
     "canaryUrl": "https://www.cvsnet.co.kr/reservation-inquiry/delivery/index.do",
     "trackingUrlTemplate": "https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no={trackingNumber}",

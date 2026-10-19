@@ -23,18 +23,62 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "gs-postbox",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 634
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "pickup_point",
+    "service_name",
+    "delivery_partner"
+  ],
   "portal": {
     "url": "https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no={trackingNumber}",
     "searchUrl": "https://www.cvsnet.co.kr/reservation-inquiry/delivery/index.do",
     "canaryUrl": "https://www.cvsnet.co.kr/reservation-inquiry/delivery/index.do",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "pickup_point",
+      "service_name",
+      "delivery_partner",
+      "sender_name",
+      "recipient_name",
+      "order_contents"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "pickup_point",
+      "service_name",
+      "delivery_partner"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "order_contents"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "offset_timestamps",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

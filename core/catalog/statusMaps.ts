@@ -278,6 +278,7 @@ import { statusMap as metropolitanWarehouse } from '../../carriers/metropolitan-
 import { statusMap as microExpress } from '../../carriers/micro-express/status.js';
 import { statusMap as midlandTransport } from '../../carriers/midland-transport/status.js';
 import { statusMap as mngKargo } from '../../carriers/mng-kargo/status.js';
+import { statusMap as mrlGlobal } from '../../carriers/mrl-global/status.js';
 import { statusMap as mtscn } from '../../carriers/mtscn/status.js';
 import { statusMap as mylerz } from '../../carriers/mylerz/status.js';
 import { statusMap as naqel } from '../../carriers/naqel/status.js';
@@ -513,7 +514,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
   maltapost, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu, 'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress, 'midland-transport': midlandTransport, 'mng-kargo': mngKargo,
-  mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest,
+  'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest,
   'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa,
   'ocs-ana': ocsAna, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,

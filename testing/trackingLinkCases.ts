@@ -1701,6 +1701,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     marker: /Tracking number not found|Tracking history/,
     shipmentNotFound: { status: 404, marker: /We couldn.t find a shipment for that tracking number/ },
     forwarding: { notFound: /Tracking number not found/i } },
+  // The server renders the lookup; its answer to an unknown number clears the search field.
+  { carrier: 'mrl-global', number: 'CAAA000000',
+    route: /^https:\/\/www\.mrlglobal\.com\/tracking\/\?connoteno=CAAA000000$/,
+    marker: /Invalid Connote number|Tracking history/i,
+    forwarding: { notFound: /Error : Invalid Connote number/ } },
 ];
 
 /**

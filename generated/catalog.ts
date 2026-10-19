@@ -20328,7 +20328,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mrl-global",
+      "localClocks": true
     },
     "canaryUrl": "https://www.mrlglobal.com/tracking/",
     "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",

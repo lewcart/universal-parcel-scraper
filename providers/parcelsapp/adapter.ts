@@ -169,8 +169,10 @@ const CAINIAO_LAST_MILE = [
  * Cainiao's own feed (checked 2026-10-11 on parcels to the UK, Belgium,
  * Spain, Italy, Japan, Brazil and the US) dates its origin leg on China time,
  * from the warehouse to the departing linehaul, and the return warehouse
- * too. It dates import customs on the destination's clock, and the last mile
- * as well, except the UK's, on GMT in July. Its transit hub, on GMT+2 for a
+ * too. The seller's step before the warehouse is on China time as well:
+ * read as labeled, it comes after ParcelsApp first returns it. It dates
+ * import customs on the destination's clock, and the last mile as well,
+ * except the UK's, on GMT in July. Its transit hub, on GMT+2 for a
  * UK parcel, and "Arrived at linehaul office", on either side's clock, are
  * not listed: a parcel to Colombia reached that office four minutes before
  * MailAmericas' "Delivered by Airline" there. A
@@ -209,7 +211,8 @@ const KNOWN_CLOCKS: ReadonlyMap<string, readonly {
   ['gofoexpress', [{ wording: /^shipping label created$/i, zone: 'America/Los_Angeles' }]],
   ['cainiao', [
     { wording: wordings([
-      'order received successfully', 'package finished', 'leave the warehouse', 'departed from warehouse', 'accepted by carrier',
+      'pending shipping by the seller', 'order received successfully', 'package finished', 'leave the warehouse',
+      'departed from warehouse', 'accepted by carrier',
       '(?:inbound|outbound) in sorting center', 'package (?:received by|left) sorting center of transit', 'last-mile delivery forecast',
       'arrived at departure transport hub', 'export customs clearance started', 'export clearance success',
       '(?:leaving|left) from departure country/region', 'cross-solution reroute', '质检真假鉴定',

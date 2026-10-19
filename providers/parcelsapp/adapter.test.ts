@@ -1146,6 +1146,14 @@ describe('ParcelsApp result parsing', () => {
     ])).toEqual(['2026-10-03T20:01:13.000Z', '2026-10-02T01:26:36.000Z', '2026-09-30T00:00:00.000Z']);
   });
 
+  it('reads the seller\'s step Cainiao relays on China time, which as labeled comes after it is first returned', () => {
+    const reply = parseParcelsAppResponse({ carriers: ['Cainiao'], destinationCode: 'FR', states: [
+      { date: '2026-07-01T18:00:00Z', status: 'Pending shipping by the seller', carrier: 0 },
+    ] }, number, identity());
+    expect(reply.events?.map((scan) => scan.time)).toEqual(['2026-07-01T10:00:00.000Z']);
+    expect(reply.last_update).toBe('2026-07-01T10:00:00.000Z');
+  });
+
   it('reads MailAmericas\' origin leg and Tax ID checks on the origin\'s clock, its scans in the destination on that one\'s', () => {
     // On a parcel to Colombia (2026-10-16), the Tax ID checks precede
     // ParcelsApp's first answer only on China's clock, and the scans there

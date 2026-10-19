@@ -219,10 +219,12 @@ step exists for future protocol changes.
   -07:00; 2026-10-10). Cainiao's own feed (2026-10-11, parcels to the UK, Belgium, Spain,
   Italy, Japan, Brazil and the US) dates its origin leg on China time, from "Order
   received successfully" to "Left from departure country/region", and its return
-  warehouse too; it dates import customs ("Import clearance start" to "Leaving customs")
-  and the last mile ("Received by local delivery company", "Out for delivery",
-  "Delivered", and bpost's and CTT's wording) on the destination's clock, except the UK's
-  last mile, on GMT in July. Its transit hub, on GMT+2 for a UK parcel, and "Arrived at
+  warehouse too. The seller's step before them ("Pending shipping by the seller") is on
+  China time as well: read as labeled, it comes after ParcelsApp first returns it. It
+  dates import customs ("Import clearance start" to "Leaving customs") and the last mile
+  ("Received by local delivery company", "Out for delivery", "Delivered", and bpost's and
+  CTT's wording) on the destination's clock, except the UK's last mile, on GMT in July.
+  Its transit hub, on GMT+2 for a UK parcel, and "Arrived at
   linehaul office", on either side's clock, are not listed: a parcel to Colombia reached
   that office four minutes before MailAmericas' "Delivered by Airline" there. A parcel
   bound for Portugal clears customs in Spain, on

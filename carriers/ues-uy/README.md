@@ -15,8 +15,20 @@ uses it.
 ## Links
 
 The tracker page reads the number from its `criterioId` parameter, fills the field and runs
-the lookup. The lookup needs a reCAPTCHA answer, so a visitor may have to solve it before the
-history appears. The page's `cr` parameter only fills the field.
+the lookup. That first lookup carries no reCAPTCHA answer and is refused, so the visitor solves
+the checkbox and searches again before the history appears. The page's `cr` parameter only
+fills the field.
+
+## Why there is no adapter
+
+The tracker sends the number and the reCAPTCHA v2 checkbox answer to `ws_paquetes.php` as
+`criterioId` and `captcha`. The service checks the answer before it looks the number up:
+without one, or with an empty or wrong one, it replies "No se pudo verificar el Captcha" for any
+number. The home page's tracking form posts to `ws_paquetes_index.php` with the same check.
+
+The UES Go app linked from the site (`com.soydelivery.xpres`) orders same-day courier jobs and
+lists only the signed-in customer's own orders, and the customer portals need an account. The
+library solves no captcha, so UES stays on universal providers.
 
 ## Testing
 

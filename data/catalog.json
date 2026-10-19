@@ -20161,7 +20161,8 @@
     "timezone": "America/Moncton",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "midland-transport",
+      "localClocks": true
     },
     "canaryUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings",
     "trackingUrlTemplate": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings?TrackingNumber={trackingNumber}&Lang=0",

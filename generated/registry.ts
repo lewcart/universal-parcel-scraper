@@ -314,6 +314,7 @@ import { adapter as meest } from '../carriers/meest/adapter.js';
 import { adapter as messengerCz } from '../carriers/messenger-cz/adapter.js';
 import { adapter as metropolitanWarehouse } from '../carriers/metropolitan-warehouse/adapter.js';
 import { adapter as microExpress } from '../carriers/micro-express/adapter.js';
+import { adapter as midlandTransport } from '../carriers/midland-transport/adapter.js';
 import { adapter as mngKargo } from '../carriers/mng-kargo/adapter.js';
 import { adapter as mondialRelay } from '../carriers/mondial-relay/adapter.js';
 import { adapter as mrw } from '../carriers/mrw/adapter.js';
@@ -851,6 +852,7 @@ export const REGISTRY: RegistryDefinition = {
     "messenger-cz": messengerCz,
     "metropolitan-warehouse": metropolitanWarehouse,
     "micro-express": microExpress,
+    "midland-transport": midlandTransport,
     "mng-kargo": mngKargo,
     "mondial-relay": mondialRelay,
     "mrw": mrw,
@@ -1522,7 +1524,7 @@ export const REGISTRY: RegistryDefinition = {
     "method": "universal",
     "metropolitan-warehouse": "metropolitan-warehouse",
     "micro-express": "micro-express",
-    "midland-transport": "universal",
+    "midland-transport": "midland-transport",
     "mng-kargo": "mng-kargo",
     "mondial-relay": "mondial-relay",
     "mongol-infinity-post": "universal",

@@ -1676,6 +1676,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'ilyang-logis', number: '0000000000',
     route: /^https:\/\/www\.ilyanglogis\.co\.kr\/page\/TrackingResult\.do\?trackingType=0&blNum=0000000000$/,
     marker: /해당 정보가 없습니다/ },
+  // The page looks the number in its address up, repeats it in its search field and answers an unknown one with a notice.
+  { carrier: 'midland-transport', number: '0000000000000000',
+    route: /^https:\/\/ship\.midlandtransport\.com\/Tracking\/TrackClientTrackings\?TrackingNumber=0000000000000000&Lang=0$/,
+    marker: /The shipment number does not exist|Travel History/ },
 ];
 
 /**

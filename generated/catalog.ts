@@ -14987,7 +14987,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gobolt",
+      "recognitionRank": 765
     },
     "canaryUrl": "https://track.gobolt.com/tracking",
     "trackingUrlTemplate": "https://track.gobolt.com/tracking/{trackingNumber}",

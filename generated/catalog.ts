@@ -6424,7 +6424,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anserx",
+      "recognitionRank": 759,
+      "localClocks": true
     },
     "canaryUrl": "https://oms.anserx.com/tracking",
     "trackingUrlTemplate": "https://oms.anserx.com/tracking?nos={trackingNumber}",

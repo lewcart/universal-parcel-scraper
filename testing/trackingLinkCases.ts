@@ -1476,6 +1476,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'starex-az', number: 'STRAZ000000000000',
     route: /^https:\/\/starexglobal\.com\/(?:az|en|ru)\/tracking\/STRAZ000000000000$/,
     marker: /Bağlamalarınızı buradan izləyə bilərsiniz|You can follow your parcels from here|Здесь вы можете следить за своими посылками/ },
+  // The page fills its search box in from the address and looks the number up.
+  { carrier: 'anserx', number: 'BTYCN0000000000YQ',
+    route: /^https:\/\/oms\.anserx\.com\/tracking\?nos=BTYCN0000000000YQ$/,
+    marker: /查看英文轨迹|轨迹说明/ },
 ];
 
 /**

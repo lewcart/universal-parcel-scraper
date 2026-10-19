@@ -278,6 +278,7 @@ import { statusMap as pakistanPost } from '../../carriers/pakistan-post/status.j
 import { statusMap as palletways } from '../../carriers/palletways/status.js';
 import { statusMap as paperfly } from '../../carriers/paperfly/status.js';
 import { statusMap as paquetexpress } from '../../carriers/paquetexpress/status.js';
+import { statusMap as parcelpoint } from '../../carriers/parcelpoint/status.js';
 import { statusMap as passport } from '../../carriers/passport/status.js';
 import { statusMap as pathaoCourier } from '../../carriers/pathao-courier/status.js';
 import { statusMap as pcpExpress } from '../../carriers/pcp-express/status.js';
@@ -469,7 +470,8 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'metropolitan-warehouse': metropolitanWarehouse, 'mng-kargo': mngKargo, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress,
   noest, 'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, oca, ocasa, 'old-dominion': oldDominion, 'olva-courier': olvaCourier, omgo, omniva,
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
-  'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, passport, 'pathao-courier': pathaoCourier, 'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,
+  'pakistan-post': pakistanPost, palletways, paperfly, paquetexpress, parcelpoint, passport, 'pathao-courier': pathaoCourier,
+  'pcp-express': pcpExpress, 'pdn-express': pdnExpress, pecom,
   'pfc-express': pfcExpress, phlpost,
   'pitney-bowes': pitneyBowes, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,

@@ -22048,7 +22048,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "parcelpoint"
     },
     "canaryUrl": "https://parcelpoint.com.au/track-your-parcel/",
     "trackingUrlTemplate": "https://parcelpoint.com.au/track-your-parcel/?trackingnumber={trackingNumber}",

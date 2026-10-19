@@ -22429,7 +22429,9 @@
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pcp-express",
+      "recognitionRank": 709,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pcpexpress.com/",
     "trackingUrlTemplate": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",

@@ -1560,6 +1560,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'apple-express', number: '00000000',
     route: /^https:\/\/track\.appleexpress\.com\/orderNumber\/00000000$/,
     marker: /Could not find order: 00000000|There was an error with your request/ },
+  // The page looks up the AWB in its address and answers an unknown one with BLANK in place of its status.
+  { carrier: 'pcp-express', number: 'ZZZZZZB1000101Z00000',
+    route: /^https:\/\/pcpexpress\.com\/lacak_detailv2\.php\?awb=ZZZZZZB1000101Z00000$/,
+    marker: /Riwayat Pengiriman|Rincian Pengiriman/, forwarding: { notFound: /\bBLANK\b/ } },
 ];
 
 /**

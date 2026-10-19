@@ -75462,6 +75462,18 @@
     "candidates": []
   },
   {
+    "input": "JKTSDJC1181207000037",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "JKTSDJC1190105000024",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "JL056759260IN",
     "carrier": "india-post",
     "confidence": "high",

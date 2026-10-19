@@ -18,18 +18,63 @@
   "timezone": "Asia/Jakarta",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pcp-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 709
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "service_name"
+  ],
   "portal": {
     "url": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",
     "searchUrl": "https://www.pcpexpress.com/",
     "canaryUrl": "https://www.pcpexpress.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "service_name",
+      "progress_rail",
+      "origin",
+      "destination",
+      "recipient_name",
+      "signatory",
+      "driver_name",
+      "delivered_at"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "service_name",
+      "failed_delivery_reason"
+    ],
+    "discarded": [
+      "origin",
+      "destination",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "driver_name",
+      "delivered_at"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "offset_timestamps",
+      "proof_of_delivery",
+      "delivery_partner"
+    ]
   },
   "links": [
     {

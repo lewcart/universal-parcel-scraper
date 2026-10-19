@@ -2772,6 +2772,12 @@
     "reason": "Older PCP Express AWBs are a branch code followed by a bare digit run, too generic to claim."
   },
   {
+    "carrier": "pcp-express",
+    "pattern": "^[A-Z]{7}\\d{13}$",
+    "kind": "by_design",
+    "reason": "Two PCP Express AWBs from one public complaint, branch codes, a service letter and thirteen digits, are too little to claim the layout."
+  },
+  {
     "carrier": "pcs-logistics-vn",
     "pattern": "^\\d{15}$",
     "kind": "collision",

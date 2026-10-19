@@ -19,7 +19,8 @@ function headingDay(text: string): string | null {
   return match && month ? calendarDay(Number(match[3]), month, Number(match[1])) : null;
 }
 
-const NO_HISTORY = 'No existe ningún albarán introducido en el sistema cumpliendo los criterios especificados. Consulte con su agencia NACEX más cercana.';
+const AGENCY_CODE = /\s*\(\d{4}(?:-\d{1,3})?\)$/;
+const NO_HISTORY ='No existe ningún albarán introducido en el sistema cumpliendo los criterios especificados. Consulte con su agencia NACEX más cercana.';
 
 export function normalizeNacexNumber(raw: string): string {
   const number = raw.replace(/\s/g, '');
@@ -78,7 +79,11 @@ export function parseNacex(html: string, raw: string): CarrierResult {
       throw new SchemaError('NACEX', 'NACEX returned a different or ambiguous shipment detail');
     }
   }
-  const summaryLabel = clean(statusCells.eq(1).text(), 120);
+  // The current status is a label like a scan's, with the same pickup point
+  // link or parenthetical agency or pickup point code after it.
+  const summaryCell = statusCells.eq(1);
+  const summaryLabels = summaryCell.children('b, font.fuente_titulo_green');
+  const summaryLabel = clean(summaryLabels.length === 1 ? summaryLabels.text() : summaryCell.text(), 120).replace(AGENCY_CODE, '');
   if (!summaryLabel || !/^[\p{L}][\p{L}\s().-]{1,119}$/u.test(summaryLabel)) throw new SchemaError('NACEX', 'NACEX returned an invalid current status');
   const rows = history.find('tr');
   if (!rows.length) throw new IndeterminateError('NACEX', 'NACEX returned empty shipment history');
@@ -101,7 +106,7 @@ export function parseNacex(html: string, raw: string): CarrierResult {
     // Comments, signatures and contact instructions follow this label as
     // separate text nodes. A parenthetical agency or pickup point is routing
     // detail, not code.
-    const label = clean(labels.text(), 160).replace(/\s*\(\d{4}(?:-\d{1,3})?\)$/, '');
+    const label = clean(labels.text(), 160).replace(AGENCY_CODE, '');
     if (labels.length !== 1 || !/^[\p{L}][\p{L}\s.-]{1,119}$/u.test(label)) {
       throw new SchemaError('NACEX', 'NACEX returned an invalid scan label');
     }

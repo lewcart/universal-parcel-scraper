@@ -119,6 +119,15 @@ describe('NACEX direct tracking', () => {
       ['Solucionado sin OK', 'exception', undefined], ['Solución de entrega en punto', 'in_transit', undefined],
       ['Solución de entrega concertada', 'in_transit', undefined], ['Contacta con agencia', 'exception', undefined],
       ['En reparto', 'out_for_delivery', 'TEST LOCALITY']]);
+    expect(parseNacex(history('Cambio de dirección (9901)', ['<b>Cambio de dirección (9901)</b>', '<b>En reparto</b><br>9901 - TEST LOCALITY']), NUMBER))
+      .toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Cambio de dirección' });
+    const pickup = edit($ => {
+      $('#tabla_estado tr').eq(1).children('td').last()
+        .html('<font class="fuente_titulo_green">Disponible en punto NACEX (9901-123)</font><a href="#">990001</a>');
+      $('#table_historico').html('<tr><td class="sg_hist_fecha" colspan="2">15 January 2026</td></tr>'
+        + '<tr><td class="sg_hist_desc"><font class="fuente_titulo_green">Disponible en punto NACEX</font><a href="#">990001</a><br>9901 - TEST LOCALITY</td></tr>');
+    });
+    expect(parseNacex(pickup, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup', last_status_text: 'Disponible en punto NACEX' });
   });
 
   it('rejects a delivered header contradicted by the newest mapped scan, allowing newer administrative rows', () => {

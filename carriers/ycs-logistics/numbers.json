@@ -26,7 +26,7 @@
           "korea-post"
         ]
       },
-      "note": "A customer comment on Track.TW's YCS page asks whether 音速物流 delivered the parcel with this barcode."
+      "note": "A customer comment on Track.TW's YCS page asks whether 音速物流 delivered the parcel with this barcode. YCS's tracker does not know it."
     },
     {
       "number": "70001448601",
@@ -38,9 +38,8 @@
         "dateKind": "comment",
         "access": "full_page"
       },
-      "quarantine": true,
       "context": {
-        "assessment": "review"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -56,7 +55,7 @@
           "ppl"
         ]
       },
-      "note": "A customer comment on Track.TW's YCS page asks why this tracking number has not been delivered; the comment itself does not name the carrier."
+      "note": "A customer comment on Track.TW's YCS page asks why this tracking number has not been delivered; the comment itself does not name the carrier. YCS's tracker knows it as a delivered parcel."
     }
   ]
 }

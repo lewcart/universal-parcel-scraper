@@ -30480,7 +30480,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ycs-logistics",
+      "recognitionRank": 718
     },
     "canaryUrl": "https://system.ycs-express.com/search_track",
     "trackingSearchUrl": "https://system.ycs-express.com/search_track",

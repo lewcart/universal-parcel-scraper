@@ -4035,6 +4035,12 @@
   },
   {
     "carrier": "ycs-logistics",
+    "pattern": "^\\d{11}$",
+    "kind": "by_design",
+    "reason": "Eleven-digit YCS bill numbers share their shape with many carriers' numeric numbers, so the shape cannot name YCS."
+  },
+  {
+    "carrier": "ycs-logistics",
     "pattern": "^\\d{13}$",
     "kind": "by_design",
     "reason": "Thirteen-digit YCS barcodes share their shape with many carriers' numeric numbers, so the shape cannot name YCS."

@@ -344,6 +344,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "winit": 855,
   "xlcourier": 841,
   "xpo-ltl": 25,
+  "ycs-logistics": 718,
   "yurtici-kargo": 430,
   "zeleris": 230,
   "zr-express": 801,

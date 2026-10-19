@@ -3386,7 +3386,7 @@ export const CARRIER_CATALOG = {
       },
       {
         "pattern": "^80\\d{9}$",
-        "confidence": "high",
+        "confidence": "low",
         "checksum": "luhn"
       },
       {
@@ -11421,6 +11421,49 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "dpd-ro": {
+    "displayName": "DPD Romania",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Romania",
+      "DPD România",
+      "DPD (RO)",
+      "DPD RO"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.com/ro/ro/",
+    "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/ro/ro/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dpd.ro"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "services.dpd.ro"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dpd-uk": {
     "displayName": "DPD UK",
     "color": "#dc0032",
@@ -15979,6 +16022,33 @@ export const CARRIER_CATALOG = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "huahan": {
+    "displayName": "HuaHan Logistics",
+    "color": "#438eb9",
+    "aliases": [
+      "HuaHan Express",
+      "华翰速递",
+      "华翰物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "trackingSearchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^HHW[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
       }
     ]
   },
@@ -30750,6 +30820,7 @@ export const CARRIER_IDS = [
   "dpd-nl",
   "dpd-pl",
   "dpd-pt",
+  "dpd-ro",
   "dpd-uk",
   "dpd-za",
   "dpex",
@@ -30868,6 +30939,7 @@ export const CARRIER_IDS = [
   "hp-mostar",
   "hr-parcel",
   "hrvatska-posta",
+  "huahan",
   "hunter-express",
   "hywl",
   "icc-worldwide",
@@ -31520,6 +31592,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "dpd-nl": ["dpd-nl-1"],
   "dpd-pl": ["dpd-pl-1","dpd-pl-2","dpd-pl-3"],
   "dpd-pt": ["dpd-pt-1","dpd-pt-2"],
+  "dpd-ro": [],
   "dpd-uk": ["dpd-uk-3","dpd-uk-4","dpd-uk-1","dpd-uk-2"],
   "dpd-za": [],
   "dpex": [],
@@ -31638,6 +31711,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "hp-mostar": [],
   "hr-parcel": [],
   "hrvatska-posta": ["hrvatska-posta-s10"],
+  "huahan": ["huahan-1"],
   "hunter-express": [],
   "hywl": ["hywl-1","hywl-2"],
   "icc-worldwide": [],

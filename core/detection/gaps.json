@@ -1052,6 +1052,12 @@
     "reason": "DPD Portugal also delivers parcels numbered at other DPD networks' depots; other DPD entries suggest those and DPD Poland's preferred rule takes those starting with 13."
   },
   {
+    "carrier": "dpd-ro",
+    "pattern": "^8\\d{10}$",
+    "kind": "by_design",
+    "reason": "Eleven digits are shared with Speedy and many other carriers, and nothing in the number points to DPD Romania."
+  },
+  {
     "carrier": "dpd-za",
     "pattern": "^[A-Z]{2,3}\\d{5,11}$",
     "kind": "by_design",

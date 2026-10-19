@@ -18718,6 +18718,32 @@
     ]
   },
   {
+    "input": "17261100213814",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd",
+      "dpd-fr",
+      "ciblex",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "dpd-uk",
+      "xpressbees"
+    ],
+    "asked": [
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de",
+      "seur"
+    ]
+  },
+  {
     "input": "173003523304",
     "carrier": "unknown",
     "confidence": "low",
@@ -47276,6 +47302,28 @@
     ]
   },
   {
+    "input": "62581495666",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "626020539",
     "carrier": "unknown",
     "confidence": "low",
@@ -54042,11 +54090,48 @@
     ]
   },
   {
-    "input": "80003280379",
-    "carrier": "old-dominion",
-    "confidence": "high",
+    "input": "80000000001",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "old-dominion"
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80003280379",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "old-dominion",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -54330,6 +54415,51 @@
     ]
   },
   {
+    "input": "80253716931",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80254303342",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "old-dominion",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "8026030561747",
     "carrier": "unknown",
     "confidence": "low",
@@ -54408,6 +54538,28 @@
   },
   {
     "input": "80322419432",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80410293575",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -54521,11 +54673,102 @@
     ]
   },
   {
+    "input": "80545644255",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "blue-dart",
+      "japan-post",
+      "aramex",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "805590979741C700931121",
     "carrier": "estafeta",
     "confidence": "high",
     "candidates": [
       "estafeta"
+    ]
+  },
+  {
+    "input": "80562656649",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80598127469",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80635135665",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -54543,6 +54786,28 @@
     "asked": [
       "relais-colis",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "80720052822",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -54565,6 +54830,28 @@
     ]
   },
   {
+    "input": "80810151828",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "809044305",
     "carrier": "unknown",
     "confidence": "low",
@@ -54581,11 +54868,48 @@
     ]
   },
   {
-    "input": "80993847369",
-    "carrier": "old-dominion",
-    "confidence": "high",
+    "input": "80956929024",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "old-dominion"
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "80993847369",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "old-dominion",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -55666,6 +55990,28 @@
     "confidence": "high",
     "candidates": [
       "postnord"
+    ]
+  },
+  {
+    "input": "85086754131",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl",
+      "gls-at",
+      "gls-pl",
+      "ppl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -73356,6 +73702,62 @@
     "confidence": "high",
     "candidates": [
       "purolator"
+    ]
+  },
+  {
+    "input": "HHWAB0000000001YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWCO0296000051YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWDE9344000011YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWDE9344000012YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWQV2359000002YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWWD6248490101YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
+    ]
+  },
+  {
+    "input": "HHWXY0000000002YQ",
+    "carrier": "huahan",
+    "confidence": "high",
+    "candidates": [
+      "huahan"
     ]
   },
   {

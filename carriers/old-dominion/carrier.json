@@ -84,7 +84,7 @@
     {
       "id": "old-dominion-2",
       "pattern": "^80\\d{9}$",
-      "confidence": "high",
+      "confidence": "low",
       "checksum": "luhn"
     },
     {

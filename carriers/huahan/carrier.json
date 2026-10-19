@@ -1,0 +1,41 @@
+{
+  "id": "huahan",
+  "displayName": "HuaHan Logistics",
+  "aliases": [
+    "HuaHan Express",
+    "华翰速递",
+    "华翰物流"
+  ],
+  "region": {
+    "countries": [
+      "CN"
+    ]
+  },
+  "brand": {
+    "color": "#438eb9"
+  },
+  "selectable": true,
+  "timezone": "Asia/Shanghai",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "searchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "canaryUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [],
+  "detection": [
+    {
+      "id": "huahan-1",
+      "pattern": "^HHW[A-Z]{2}\\d{10}YQ$",
+      "confidence": "high"
+    }
+  ]
+}

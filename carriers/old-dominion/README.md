@@ -77,6 +77,9 @@ few seconds when the page answers, so other browser lookups queue behind it. The
 API (`v2.0`) requires an ODFL.com login. The former `OD4mobile` app is discontinued, and no
 current app (no `com.odfl.*` package) offers another public route.
 
+Eleven-digit PROs starting with `80` are only suggested, not claimed: DPD Romania's waybills
+start the same way and pass the same check digit about one time in ten.
+
 ## Testing
 
 Set `TRACKING_CHROMIUM_PATH` and `OLD_DOMINION_TRACKING_NUMBER` outside the repository, then run

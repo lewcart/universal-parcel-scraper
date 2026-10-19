@@ -64,8 +64,19 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/old_dominion.json"
       },
       "expect": {
-        "carrier": "old-dominion",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "old-dominion",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },
@@ -77,8 +88,19 @@
         "url": "https://github.com/jkeen/tracking_number_data/blob/main/couriers/old_dominion.json"
       },
       "expect": {
-        "carrier": "old-dominion",
-        "confidence": "high"
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "old-dominion",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
       },
       "note": "Open-source project example, not a real shipment."
     },

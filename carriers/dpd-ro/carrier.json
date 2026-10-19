@@ -1,0 +1,56 @@
+{
+  "id": "dpd-ro",
+  "displayName": "DPD Romania",
+  "aliases": [
+    "DPD Romania",
+    "DPD România",
+    "DPD (RO)",
+    "DPD RO"
+  ],
+  "region": {
+    "countries": [
+      "RO"
+    ]
+  },
+  "brand": {
+    "color": "#dc0032"
+  },
+  "selectable": true,
+  "timezone": "Europe/Bucharest",
+  "tracking": {
+    "mode": "automatic",
+    "adapter": "universal",
+    "steps": []
+  },
+  "capabilities": [],
+  "portal": {
+    "url": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
+    "searchUrl": "https://www.dpd.com/ro/ro/",
+    "canaryUrl": "https://www.dpd.com/ro/ro/",
+    "shows": [],
+    "scraped": [],
+    "discarded": [],
+    "unavailable": []
+  },
+  "links": [
+    {
+      "domains": [
+        "tracking.dpd.ro"
+      ],
+      "pathPattern": "^/?$",
+      "params": [
+        "shipmentNumber"
+      ]
+    },
+    {
+      "domains": [
+        "services.dpd.ro"
+      ],
+      "pathPattern": "^/tracking/?$",
+      "params": [
+        "shipmentNumber"
+      ]
+    }
+  ],
+  "detection": []
+}

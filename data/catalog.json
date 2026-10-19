@@ -3384,7 +3384,7 @@
       },
       {
         "pattern": "^80\\d{9}$",
-        "confidence": "high",
+        "confidence": "low",
         "checksum": "luhn"
       },
       {
@@ -11419,6 +11419,49 @@
       }
     ]
   },
+  "dpd-ro": {
+    "displayName": "DPD Romania",
+    "color": "#dc0032",
+    "aliases": [
+      "DPD Romania",
+      "DPD România",
+      "DPD (RO)",
+      "DPD RO"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.dpd.com/ro/ro/",
+    "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
+    "trackingSearchUrl": "https://www.dpd.com/ro/ro/",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dpd.ro"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "services.dpd.ro"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": []
+  },
   "dpd-uk": {
     "displayName": "DPD UK",
     "color": "#dc0032",
@@ -15977,6 +16020,33 @@
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      }
+    ]
+  },
+  "huahan": {
+    "displayName": "HuaHan Logistics",
+    "color": "#438eb9",
+    "aliases": [
+      "HuaHan Express",
+      "华翰速递",
+      "华翰物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "canaryUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "trackingSearchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^HHW[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
       }
     ]
   },

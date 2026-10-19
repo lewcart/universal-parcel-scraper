@@ -232,9 +232,12 @@ it('suggests Old Dominion for eleven-digit PROs only when the Luhn check passes'
 
 it('selects Old Dominion by its PRO prefixes only when the Luhn check passes', () => {
   // Synthetic PROs on each prefix the high rules claim, and twins with another check digit.
-  for (const number of ['07200000011', '77700000001', '77800000000', '78000000022', '80000000002']) {
+  for (const number of ['07200000011', '77700000001', '77800000000', '78000000022']) {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'old-dominion', confidence: 'high' });
   }
+  // DPD Romania's waybills share 80 and nine digits, so that prefix is only suggested.
+  expect(detectCarrierMatch('80000000002')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+  expect(detectCarrierMatch('80000000002').candidates).toContain('old-dominion');
   for (const number of ['07200000012', '77700000002', '77800000001', '78000000023', '80000000003']) {
     expect(detectCarrierMatch(number).candidates).not.toContain('old-dominion');
   }

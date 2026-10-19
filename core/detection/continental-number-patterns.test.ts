@@ -624,4 +624,12 @@ describe('wave eight courier rules', () => {
       expect(detectCarrierMatch(number).carrier, number).not.toBe('skypostal');
     }
   });
+
+  it('names HuaHan for HHW, two letters, ten digits and YQ', () => {
+    expect(detectCarrierMatch('HHWAB0000000001YQ')).toMatchObject({ carrier: 'huahan', confidence: 'high' });
+    for (const number of ['HHWAB000000001YQ', 'HHWA0000000001YQ', 'HHXAB0000000001YQ', 'HHWAB0000000001YX']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('huahan');
+      expect(detectCarrierMatch(number).carrier, number).not.toBe('huahan');
+    }
+  });
 });

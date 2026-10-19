@@ -18,6 +18,15 @@ Malaysia for this prefix at low confidence: other carriers also print fourteen d
 `best-inc.my/track?bills={number}` opens the tracker with the number filled in; the site's
 tracking form builds that address, and archived lookups use it.
 
+## Why there is no adapter
+
+The tracker runs on the same build as BEST Express Vietnam's and posts the waybills to
+`www.best-inc.my/express-cc/express/expresslistinfo`. Without a solved captcha the gateway
+answers `risk_001`, "request has risk", for every lookup, from a browser's headers or the
+BEST apps' alike, and the page then shows BEST's own captcha, a picture to slide into place.
+The variant with a phone step answers "Forbidden". So BEST Express Malaysia stays on universal
+providers.
+
 ## Testing
 
 Provider live-test inputs and commands are in the

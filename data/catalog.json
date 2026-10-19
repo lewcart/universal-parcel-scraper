@@ -8262,7 +8262,8 @@
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "castores",
+      "localClocks": true
     },
     "canaryUrl": "https://www.castores.com.mx/rastrear.html",
     "trackingUrlTemplate": "https://www.castores.com.mx/rastrear.html?guide_numbers={trackingNumber}",

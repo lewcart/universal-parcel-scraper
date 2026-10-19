@@ -55,6 +55,7 @@ import { adapter as cacesa } from '../carriers/cacesa/adapter.js';
 import { adapter as canadaPost } from '../carriers/canada-post/adapter.js';
 import { adapter as canpar } from '../carriers/canpar/adapter.js';
 import { adapter as cargus } from '../carriers/cargus/adapter.js';
+import { adapter as castores } from '../carriers/castores/adapter.js';
 import { adapter as cblLogistica } from '../carriers/cbl-logistica/adapter.js';
 import { adapter as cdek } from '../carriers/cdek/adapter.js';
 import { adapter as cdl } from '../carriers/cdl/adapter.js';
@@ -512,6 +513,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": canadaPost,
     "canpar": canpar,
     "cargus": cargus,
+    "castores": castores,
     "cbl-logistica": cblLogistica,
     "cdek": cdek,
     "cdl": cdl,
@@ -1011,7 +1013,7 @@ export const REGISTRY: RegistryDefinition = {
     "canada-post": "canada-post",
     "canpar": "canpar",
     "cargus": "cargus",
-    "castores": "universal",
+    "castores": "castores",
     "cbl-logistica": "cbl-logistica",
     "ccfs": "universal",
     "cdek": "cdek",

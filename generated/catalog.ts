@@ -24263,7 +24263,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pullman-cargo",
+      "recognitionRank": 638
     },
     "canaryUrl": "https://pullmancargo.cl/seguimiento",
     "trackingUrlTemplate": "https://pullmancargo.cl/seguimiento/{trackingNumber}",

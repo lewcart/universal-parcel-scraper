@@ -16,18 +16,58 @@
   "timezone": "America/Santiago",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "pullman-cargo",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 638
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://pullmancargo.cl/seguimiento/{trackingNumber}",
     "searchUrl": "https://pullmancargo.cl/seguimiento",
     "canaryUrl": "https://pullmancargo.cl/seguimiento",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at",
+      "progress_rail",
+      "origin",
+      "destination",
+      "delivery_method"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "offset_timestamps",
+      "delivered_at"
+    ],
+    "discarded": [
+      "progress_rail",
+      "origin",
+      "destination",
+      "delivery_method"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "provider_code",
+      "sender_name",
+      "recipient_name",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

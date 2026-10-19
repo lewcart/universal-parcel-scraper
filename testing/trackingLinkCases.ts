@@ -1727,6 +1727,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'makati-express', number: 'DXB0000000',
     route: /^https:\/\/makati-express\.com\/tracking\/\?awbnumber=DXB0000000$/,
     marker: /Data not found \/ its not updated in the server|Shipment Progress of AWB No\./ },
+  // The server renders the lookup for the ODT in the address and names an unknown one in its notice.
+  { carrier: 'pullman-cargo', number: '00000000000',
+    route: /^https:\/\/pullmancargo\.cl\/seguimiento\/00000000000$/,
+    marker: /ODT no encontrada|Historial de Movimientos/ },
 ];
 
 /**

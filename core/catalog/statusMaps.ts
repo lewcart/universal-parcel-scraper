@@ -344,6 +344,7 @@ import { statusMap as proCarrier } from '../../carriers/pro-carrier/status.js';
 import { statusMap as proships } from '../../carriers/proships/status.js';
 import { statusMap as ptsWorldwideExpress } from '../../carriers/pts-worldwide-express/status.js';
 import { statusMap as ptt } from '../../carriers/ptt/status.js';
+import { statusMap as pullmanCargo } from '../../carriers/pullman-cargo/status.js';
 import { statusMap as quantiumSolutions } from '../../carriers/quantium-solutions/status.js';
 import { statusMap as quicksilverSa } from '../../carriers/quicksilver-sa/status.js';
 import { statusMap as quiqup } from '../../carriers/quiqup/status.js';
@@ -533,7 +534,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,
   'posta-slovenije': postaSlovenije, 'posta-srbije': postaSrbije, postex, postlogistics, posturinn, ppl, 'precision-deliveries': precisionDeliveries,
-  'pro-carrier': proCarrier, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'quantium-solutions': quantiumSolutions,
+  'pro-carrier': proCarrier, proships, 'pts-worldwide-express': ptsWorldwideExpress, ptt, 'pullman-cargo': pullmanCargo, 'quantium-solutions': quantiumSolutions,
   'quicksilver-sa': quicksilverSa, quiqup, qwintry, raben, 'ram-hand-to-hand': ramHandToHand, redpack, redur, redx, relaytech,
   'rl-carriers': rlCarriers, roadrunner, 'royal-express-mm': royalExpressMm,
   'rpx-indonesia': rpxIndonesia, sagawa, 'sagawa-global': sagawaGlobal, saia, sailpost, sameday, 'sapx-express': sapxExpress,

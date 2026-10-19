@@ -303,6 +303,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "pro-carrier": 843,
   "pts-worldwide-express": 818,
   "ptt": 400,
+  "pullman-cargo": 638,
   "purolator": 560,
   "quantium-solutions": 809,
   "qwintry": 707,

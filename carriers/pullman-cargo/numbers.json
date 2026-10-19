@@ -129,7 +129,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -145,7 +145,7 @@
           "ppl"
         ]
       },
-      "note": "A reclamos.cl complaint filed under Pullman Cargo whose title gives this shipment number; seen as a search-index title, since the page refuses plain requests."
+      "note": "A reclamos.cl complaint filed under Pullman Cargo whose title gives this shipment number; seen as a search-index title, since the page refuses plain requests. Pullman Cargo's tracker knows it."
     }
   ]
 }

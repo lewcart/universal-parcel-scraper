@@ -18,9 +18,11 @@ Africa. Tracked through its tracking page's own connection.
      unknown.
    - `DELETE` on the same address, so the server drops the circuit at once.
 
-- [`blazor.ts`](blazor.ts) holds the protocol: the MessagePack hub messages, the render batch
-  layout and the document the batches build, which the parser reads as HTML. It follows the
-  Transaher adapter's reading, with the frames ASP.NET Core 8 adds.
+- The shared Blazor Server client holds the connection, in
+  [`blazorCircuit.ts`](../../core/transport/blazorCircuit.ts), and the protocol, in
+  [`blazor.ts`](../../core/transport/blazor.ts): the MessagePack hub messages, the render batch
+  layout with the frames ASP.NET Core 8 adds and the document the batches build, which the
+  parser reads as HTML. The adapter has it hand the circuit's start the shell's component state.
 - The page looks the number up as it opens. Its scripts set up the search box and other
   widgets; the adapter answers each call as done and refuses a move to another page.
 - An unknown number renders `{number} NOT FOUND` under the search box, which counts once the

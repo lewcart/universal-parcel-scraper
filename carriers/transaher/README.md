@@ -18,8 +18,12 @@ connection.
      number is unknown.
    - `DELETE` on the same address, so the server drops the circuit at once.
 
-- [`blazor.ts`](blazor.ts) holds the protocol: the MessagePack hub messages, the render batch
-  layout of ASP.NET Core 5 and the document the batches build, which the parser reads as HTML.
+- The shared Blazor Server client holds the connection, in
+  [`blazorCircuit.ts`](../../core/transport/blazorCircuit.ts), and the protocol, in
+  [`blazor.ts`](../../core/transport/blazor.ts): the MessagePack hub messages, the render batch
+  layout and the document the batches build, which the parser reads as HTML. The adapter gives
+  it the page, the answers to the page's script calls, the moves it follows and when the page
+  has answered.
 - The tracking box opens `htracking`, which asks the browser whether it runs on a phone and
   moves a desktop to `tracking`. The adapter opens `tracking`, answers the device check as a
   desktop and follows a move only to the requested number's own page.

@@ -1,18 +1,24 @@
 /**
- * Transaher's tracker is an ASP.NET Core 5 Blazor Server app: its HTML is an
- * empty shell, and the server renders the page over a SignalR connection, as
- * binary batches of changes to a tree of elements. This module holds the
- * parts of that protocol the adapter speaks, without any request: SignalR's
- * length-prefixed messages, the MessagePack subset of its `blazorpack` hub
- * protocol, the render batch layout, and a document the batches apply to,
- * written out as HTML for the parser. The layouts follow ASP.NET Core 5's
- * `RenderBatchWriter` and the edits its browser renderer applies.
+ * A Blazor Server app's HTML is an empty shell: the server renders the page
+ * over a SignalR connection, as binary batches of changes to a tree of
+ * elements. This module holds the parts of that protocol an adapter speaks,
+ * without any request: SignalR's length-prefixed messages, the MessagePack
+ * subset of its `blazorpack` hub protocol, the render batch layout, and a
+ * document the batches apply to, written out as HTML for a parser. The
+ * layouts follow ASP.NET Core's `RenderBatchWriter` and the edits its browser
+ * renderer applies, from ASP.NET Core 5 to 8.
  */
-import { SchemaError } from '../../core/errors/index.js';
-import { isRecord } from '../../core/types.js';
-import { PROVIDER } from './parser.js';
+import { isRecord } from '../types.js';
 
-const malformed = (what: string) => new SchemaError(PROVIDER, `Transaher returned a malformed ${what}`);
+/** A part of the protocol that does not fit its layout. The circuit reports it as its carrier's schema failure. */
+export class MalformedBlazorError extends Error {
+  constructor(readonly part: 'message' | 'render batch') {
+    super(`Blazor Server sent a malformed ${part}`);
+    this.name = 'MalformedBlazorError';
+  }
+}
+
+const malformed = (part: MalformedBlazorError['part']) => new MalformedBlazorError(part);
 
 /** A MessagePack value as the hub sends it. Maps are objects; binaries stay bytes. */
 export type Packed = null | boolean | number | bigint | string | Uint8Array | Packed[] | { [key: string]: Packed };
@@ -174,6 +180,11 @@ export function serverComponents(html: string): ServerComponent[] {
   return components;
 }
 
+/** The component state the shell hands the circuit's start, as the browser passes it on; none is empty. */
+export function componentState(html: string): string {
+  return /<!--Blazor-Server-Component-State:([\w+/=-]{1,65536})-->/.exec(html)?.[1] ?? '';
+}
+
 /** One entry of a batch's reference frames, each a fixed 20 bytes. */
 export type Frame =
   | { type: 'element'; length: number; name: string }
@@ -182,7 +193,8 @@ export type Frame =
   | { type: 'component'; length: number; id: number }
   | { type: 'region'; length: number }
   | { type: 'markup'; markup: string }
-  // Element and component reference captures take a frame and no node.
+  // Element and component reference captures, and ASP.NET Core 8's render
+  // mode and named event frames, take a frame and no node.
   | { type: 'capture' };
 
 /** One change to a component's nodes; `reference` is a frame index, or the target of a move. */
@@ -251,7 +263,7 @@ export function readRenderBatch(bytes: Uint8Array): RenderBatch {
       case 3: frames.push({ type: 'attribute', name: named(first), value: string(second) }); break;
       case 4: frames.push({ type: 'component', length: subtree(first), id: second }); break;
       case 5: frames.push({ type: 'region', length: subtree(first) }); break;
-      case 6: case 7: frames.push({ type: 'capture' }); break;
+      case 6: case 7: case 9: case 10: frames.push({ type: 'capture' }); break;
       case 8: frames.push({ type: 'markup', markup: string(first) ?? '' }); break;
       default: throw malformed('render batch');
     }

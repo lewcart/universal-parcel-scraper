@@ -59,6 +59,25 @@
       "note": "An archived lookup on Roadrunner's own tracking portal shows the shipment and its history."
     },
     {
+      "number": "449631977",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220331070758/http://tools.rrts.com/LTLTrack/?searchValues%5B0%5D=449631977",
+        "date": "2022-03-31",
+        "dateKind": "capture",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "none"
+      },
+      "note": "An archived lookup on Roadrunner's own tracking portal shows the shipment and its history."
+    },
+    {
       "number": "581658135",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -76,44 +95,6 @@
         "confidence": "none"
       },
       "note": "An archived lookup on Roadrunner's own tracking portal shows the shipment and its history."
-    },
-    {
-      "number": "531718187",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20230323133402/http://tools.rrts.com/LTLTrack/?searchValues=531718187",
-        "date": "2023-03-23",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "An archived lookup on Roadrunner's own tracking portal; the capture was not opened."
-    },
-    {
-      "number": "581658168",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20231208052334/http://tools.rrts.com/LTLTrack/?searchValues=581658168",
-        "date": "2023-12-08",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "An archived lookup on Roadrunner's own tracking portal; the capture was not opened."
     },
     {
       "number": "313062085",

@@ -24765,10 +24765,12 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "roadrunner",
+      "recognitionRank": 733,
+      "localClocks": true
     },
-    "canaryUrl": "https://freight.rrts.com/Tools/Tracking/Pages/default.aspx",
-    "trackingUrlTemplate": "https://freight.rrts.com/Tools/Tracking/Pages/MultipleResults.aspx?PROS={trackingNumber}",
+    "canaryUrl": "https://tools.rrts.com/LTLTrack/",
+    "trackingUrlTemplate": "https://tools.rrts.com/LTLTrack/?searchValues={trackingNumber}",
     "trackingSearchUrl": "https://freight.rrts.com/Tools/Tracking/Pages/default.aspx",
     "linkRules": [
       {

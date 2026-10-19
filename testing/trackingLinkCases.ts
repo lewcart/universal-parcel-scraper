@@ -1599,6 +1599,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pitt-ohio', number: '9999999999',
     route: /^https:\/\/pittohio\.com\/myPittOhio\/Shipping\/LTL\/TraceRequest\?pro=9999999999$/,
     marker: /Search returned no results|LTL Shipment Status Details/ },
+  // The portal opens a tab for the number in its address and loads its answer, an alert for an unknown PRO.
+  { carrier: 'roadrunner', number: '999999999',
+    route: /^https:\/\/tools\.rrts\.com\/LTLTrack\/\?searchValues=999999999$/,
+    marker: /Invalid PRO number|Travel History/ },
   // The page fills its search field in from the address and looks the number up on load; it shows no notice for an unknown one.
   { carrier: 'followmont', number: '0000000',
     route: /^https:\/\/www\.followmont\.com\.au\/\?(?=.*\bconsignmentNumber=0000000\b)(?=.*\btrack-trace-start-unsecured-user\b)/,

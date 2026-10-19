@@ -20,18 +20,52 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kunyoung",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 622
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at"
+  ],
   "portal": {
     "url": "https://mj.kunyoung.com/?invoiceNumber={trackingNumber}",
     "searchUrl": "https://mj.kunyoung.com/",
     "canaryUrl": "https://mj.kunyoung.com/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "driver_name",
+      "contact_details",
+      "delivery_photo"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at"
+    ],
+    "discarded": [
+      "driver_name",
+      "contact_details",
+      "delivery_photo"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {
@@ -48,7 +82,7 @@
         "www.kunyoung.com",
         "kunyoung.com"
       ],
-      "pathPattern": "^/goods/goods_0[12]\\.php$",
+      "pathPattern": "^/goods/goods_0[12](?:__)?\\.php$",
       "params": [
         "mulno"
       ]

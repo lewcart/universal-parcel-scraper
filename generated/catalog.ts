@@ -18199,7 +18199,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kunyoung",
+      "recognitionRank": 622
     },
     "canaryUrl": "https://mj.kunyoung.com/",
     "trackingUrlTemplate": "https://mj.kunyoung.com/?invoiceNumber={trackingNumber}",
@@ -18219,7 +18220,7 @@ export const CARRIER_CATALOG = {
           "www.kunyoung.com",
           "kunyoung.com"
         ],
-        "pathPattern": "^/goods/goods_0[12]\\.php$",
+        "pathPattern": "^/goods/goods_0[12](?:__)?\\.php$",
         "params": [
           "mulno"
         ]

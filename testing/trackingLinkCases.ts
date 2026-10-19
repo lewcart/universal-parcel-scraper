@@ -235,6 +235,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'chunil', number: '99999999999',
     route: /^https:\/\/www\.chunil\.co\.kr\/HTrace\/HTrace\.jsp\?transNo=99999999999$/,
     marker: /운송장 조회/ },
+  // The page puts the number from its address in its search field and looks it up on load; an unknown one gets a notice.
+  { carrier: 'kunyoung', number: '0000000000',
+    route: /^https:\/\/mj\.kunyoung\.com\/\?invoiceNumber=0000000000$/,
+    marker: /택배조회|운송장이 등록되지 않았거나/ },
   { carrier: 'korea-post', number: 'EE000000005KR',
     route: /^https:\/\/trace\.epost\.go\.kr\/xtts\//,
     marker: /Track.*Trace|Tracking|Item Number|Delivery Status/i },

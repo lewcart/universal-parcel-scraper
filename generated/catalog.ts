@@ -28476,7 +28476,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "transcorp",
+      "recognitionRank": 787,
+      "localClocks": true
     },
     "canaryUrl": "https://app.elite-co.com/shipments/track",
     "trackingUrlTemplate": "https://app.elite-co.com/shipments/track?references={trackingNumber}",

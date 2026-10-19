@@ -418,6 +418,7 @@ import { adapter as torrestir } from '../carriers/torrestir/adapter.js';
 import { adapter as totalExpress } from '../carriers/total-express/adapter.js';
 import { adapter as trackon } from '../carriers/trackon/adapter.js';
 import { adapter as transaher } from '../carriers/transaher/adapter.js';
+import { adapter as transcorp } from '../carriers/transcorp/adapter.js';
 import { adapter as transmission } from '../carriers/transmission/adapter.js';
 import { adapter as tsjy } from '../carriers/tsjy/adapter.js';
 import { adapter as twsExpress } from '../carriers/tws-express/adapter.js';
@@ -874,6 +875,7 @@ export const REGISTRY: RegistryDefinition = {
     "total-express": totalExpress,
     "trackon": trackon,
     "transaher": transaher,
+    "transcorp": transcorp,
     "transmission": transmission,
     "tsjy": tsjy,
     "tws-express": twsExpress,
@@ -1613,7 +1615,7 @@ export const REGISTRY: RegistryDefinition = {
     "tracx-logis": "universal",
     "trans-o-flex": "universal",
     "transaher": "transaher",
-    "transcorp": "universal",
+    "transcorp": "transcorp",
     "transmission": "transmission",
     "transport-rdl": "universal",
     "trendyol-express": "universal",

@@ -307,6 +307,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "total-express": 975,
   "trackon": 821,
   "transaher": 852,
+  "transcorp": 787,
   "tsjy": 992,
   "tws-express": 884,
   "ubi-smart-parcel": 45,

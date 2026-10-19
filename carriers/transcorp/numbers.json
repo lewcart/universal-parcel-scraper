@@ -27,7 +27,7 @@
           "gls-es"
         ]
       },
-      "note": "A search engine indexed this lookup on Elite's own tracker; it was not opened, so the history was not visible."
+      "note": "A search engine indexed this lookup on Elite's own tracker. The tracker answers that no shipment has this reference, which can mean an expired record."
     },
     {
       "number": "1700133700",
@@ -38,7 +38,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -54,7 +54,7 @@
           "gls-es"
         ]
       },
-      "note": "A search engine indexed this sign-in redirect back to a lookup on Elite's own tracker, with the number as both airwaybill and reference; it was not opened, so the history was not visible."
+      "note": "A search engine indexed this sign-in redirect back to a lookup on Elite's own tracker, with the number as both airwaybill and reference. Elite's tracker knows it: a delivered parcel."
     },
     {
       "number": "5551171875",
@@ -67,7 +67,7 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -82,7 +82,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "A review on Elite's Trustpilot page complains about a delayed delivery and gives this tracking number."
+      "note": "A review on Elite's Trustpilot page complains about a delayed delivery and gives this tracking number. Elite's tracker knows it: a parcel delivered after several attempts."
     }
   ]
 }

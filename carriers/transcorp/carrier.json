@@ -25,18 +25,72 @@
   "timezone": "Asia/Dubai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "transcorp",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 787
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at",
+    "weight",
+    "service_name",
+    "destination_country"
+  ],
   "portal": {
     "url": "https://app.elite-co.com/shipments/track?references={trackingNumber}",
     "searchUrl": "https://app.elite-co.com/shipments/track",
     "canaryUrl": "https://app.elite-co.com/shipments/track",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "coordinates",
+      "origin",
+      "destination",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "customer_reference",
+      "service_name"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at",
+      "weight",
+      "service_name",
+      "destination_country"
+    ],
+    "discarded": [
+      "coordinates",
+      "origin",
+      "destination",
+      "sender_name",
+      "sender_address",
+      "recipient_name",
+      "recipient_address",
+      "customer_reference"
+    ],
+    "unavailable": [
+      "eta",
+      "pickup_point",
+      "proof_of_delivery",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
   "links": [
     {

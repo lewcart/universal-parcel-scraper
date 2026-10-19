@@ -258,11 +258,12 @@ describe('NACEX direct tracking', () => {
     for (const phase of [0, 1, 2]) {
       const fetcher = vi.fn<typeof fetch>(async (): Promise<Response> => {
         const index = fetcher.mock.calls.length - 1;
-        // Simulate a transport that finishes after ignoring its cancellation.
-        if (index === phase) await new Promise(resolve => setTimeout(resolve, 35));
+        // Simulate a transport that finishes after ignoring its cancellation. The budget
+        // leaves the requests before it time to answer under a loaded test run.
+        if (index === phase) await new Promise(resolve => setTimeout(resolve, 150));
         return index === 0 ? freshSession() : index === 1 ? redirect() : response();
       });
-      await expect(new NacexTracker({ fetcher }).fetch(NUMBER, { budgetMs: 20.5 })).rejects.toMatchObject({ kind: 'budget' });
+      await expect(new NacexTracker({ fetcher }).fetch(NUMBER, { budgetMs: 120.5 })).rejects.toMatchObject({ kind: 'budget' });
       expect(fetcher).toHaveBeenCalledTimes(phase + 1);
     }
   });

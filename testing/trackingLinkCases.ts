@@ -1663,6 +1663,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'mauritius-post', number: 'RR000000005MU',
     route: /^https:\/\/www\.mauritiuspost\.mu\/track-trace\/\?tracking_code=RR000000005MU$/,
     marker: /No tracking information available for this item|Days in Transit/ },
+  // The page looks the number up on load and answers an unknown one with a dialog,
+  // which sends the browser back only once it is closed.
+  { carrier: 'ilyang-logis', number: '0000000000',
+    route: /^https:\/\/www\.ilyanglogis\.co\.kr\/page\/TrackingResult\.do\?trackingType=0&blNum=0000000000$/,
+    marker: /해당 정보가 없습니다/ },
 ];
 
 /**

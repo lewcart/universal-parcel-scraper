@@ -245,6 +245,7 @@ import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js'
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as icsCourier } from '../carriers/ics-courier/adapter.js';
 import { adapter as idsLogistik } from '../carriers/ids-logistik/adapter.js';
+import { adapter as ilyangLogis } from '../carriers/ilyang-logis/adapter.js';
 import { adapter as imile } from '../carriers/imile/adapter.js';
 import { adapter as indahLogistik } from '../carriers/indah-logistik/adapter.js';
 import { adapter as indiaPost } from '../carriers/india-post/adapter.js';
@@ -779,6 +780,7 @@ export const REGISTRY: RegistryDefinition = {
     "hywl": hywl,
     "ics-courier": icsCourier,
     "ids-logistik": idsLogistik,
+    "ilyang-logis": ilyangLogis,
     "imile": imile,
     "indah-logistik": indahLogistik,
     "india-post": indiaPost,
@@ -1411,7 +1413,7 @@ export const REGISTRY: RegistryDefinition = {
     "ics-courier": "ics-courier",
     "idexpress": "universal",
     "ids-logistik": "ids-logistik",
-    "ilyang-logis": "universal",
+    "ilyang-logis": "ilyang-logis",
     "imile": "imile",
     "indah-logistik": "indah-logistik",
     "india-post": "india-post",

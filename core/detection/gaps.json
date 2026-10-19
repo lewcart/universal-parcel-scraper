@@ -1882,7 +1882,7 @@
     "carrier": "ilyang-logis",
     "pattern": "^\\d{9}$",
     "kind": "by_design",
-    "reason": "Ilyang Logis numbers are bare nine-digit runs without a known check digit, a shape other carriers share."
+    "reason": "Ilyang Logis waybills are bare digit runs with a mod-7 check digit, which other carriers' numbers of the same length also pass, so nothing in the number points to Ilyang Logis."
   },
   {
     "carrier": "imile",

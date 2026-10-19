@@ -16506,7 +16506,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ilyang-logis",
+      "recognitionRank": 703
     },
     "canaryUrl": "https://www.ilyanglogis.co.kr/page/Tracking.do",
     "trackingUrlTemplate": "https://www.ilyanglogis.co.kr/page/TrackingResult.do?trackingType=0&blNum={trackingNumber}",

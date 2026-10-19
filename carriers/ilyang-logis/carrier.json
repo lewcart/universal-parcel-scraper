@@ -20,18 +20,67 @@
   "timezone": "Asia/Seoul",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "ilyang-logis",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 703
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "delivered_at",
+    "delivery_partner",
+    "delivery_tracking_number"
+  ],
   "portal": {
     "url": "https://www.ilyanglogis.co.kr/page/TrackingResult.do?trackingType=0&blNum={trackingNumber}",
     "searchUrl": "https://www.ilyanglogis.co.kr/page/Tracking.do",
     "canaryUrl": "https://www.ilyanglogis.co.kr/page/Tracking.do",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "remarks",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "customer_reference",
+      "order_contents",
+      "office_contact_details",
+      "staff_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "delivered_at",
+      "delivery_partner",
+      "delivery_tracking_number",
+      "remarks"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "customer_reference",
+      "order_contents",
+      "office_contact_details",
+      "staff_details"
+    ],
+    "unavailable": [
+      "eta",
+      "weight",
+      "service_name",
+      "pickup_point"
+    ]
   },
   "links": [
     {

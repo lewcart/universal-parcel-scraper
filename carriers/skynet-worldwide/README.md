@@ -53,8 +53,9 @@ SkyNet alone, so no rule claims them, and the gap is declared in
 ## Links
 
 The tracker reads a number from `cn` on `tracking.skynetexpress.com/go/plm-tracking`, and from
-the same path on `tracking.frontierforce.com`. The network's site at `skynetworldwide.com` sits
-behind a bot challenge.
+the same path on `tracking.frontierforce.com` when the link's `stid` is `skynet`: that host
+serves the other GETOnline couriers under their own `stid`. The network's site at
+`skynetworldwide.com` sits behind a bot challenge.
 
 ## Testing
 

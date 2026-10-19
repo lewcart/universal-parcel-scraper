@@ -26002,13 +26002,19 @@ export const CARRIER_CATALOG = {
     "linkRules": [
       {
         "domains": [
-          "tracking.skynetexpress.com",
-          "tracking.frontierforce.com"
+          "tracking.skynetexpress.com"
         ],
         "pathPattern": "^/go/plm-tracking/?$",
         "params": [
           "cn"
         ]
+      },
+      {
+        "domains": [
+          "tracking.frontierforce.com"
+        ],
+        "pathPattern": "^/go/plm-tracking/?$",
+        "query": "^(?=(?:[^&]*&)*stid=skynet(?:&|$))(?:[^&]*&)*?cn=([^&]+)"
       }
     ],
     "detectionRules": []

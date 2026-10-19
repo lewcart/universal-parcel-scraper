@@ -212,6 +212,18 @@ describe('the detection engine', () => {
       .toMatchObject({ trackingNumber: 'RA123456785CH', carrier: 'swiss-post', source: 'link' });
   });
 
+  it('reads a GETOnline link on the shared host as SkyNet only for its own stid', () => {
+    for (const link of ['https://tracking.frontierforce.com/go/plm-tracking?stid=skynet&cn=ZZ0000000000',
+      'https://tracking.frontierforce.com/go/plm-tracking?cn=ZZ0000000000&stid=skynet']) {
+      expect(parseTrackingInput(link), link).toMatchObject({ trackingNumber: 'ZZ0000000000', carrier: 'skynet-worldwide', source: 'link' });
+    }
+    for (const link of ['https://tracking.frontierforce.com/go/plm-tracking?stid=rr&cn=1000000001',
+      'https://tracking.frontierforce.com/go/plm-tracking?stid=skynetx&cn=1000000001',
+      'https://tracking.frontierforce.com/go/plm-tracking?cn=1000000001']) {
+      expect(parseTrackingInput(link)?.carrier, link).not.toBe('skynet-worldwide');
+    }
+  });
+
   it.each(['PH000000000001', 'SPXPH000000000001'])(
     'reads the SPX Philippines portal bare query: %s', (number) => {
       expect(parseTrackingInput(`https://spx.ph/track?${number}`)).toMatchObject({

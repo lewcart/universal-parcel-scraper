@@ -28130,11 +28130,23 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tfm-express",
+      "recognitionRank": 756
     },
     "canaryUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "trackingUrlTemplate": "https://customer.tfmex.com/Skybill/TrackSkybill?awb={trackingNumber}",
     "trackingSearchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "customer.tfmex.com"
+        ],
+        "pathPattern": "^/Skybill/TrackSkybill/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
     "detectionRules": []
   },
   "tforce-freight": {

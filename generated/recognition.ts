@@ -316,6 +316,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "tdn": 857,
   "team-global-express": 932,
   "teleship": 842,
+  "tfm-express": 756,
   "tforce-freight": 946,
   "the-courier-guy": 730,
   "thhy": 987,

@@ -17,18 +17,60 @@
   "timezone": "Asia/Dubai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "tfm-express",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 756
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "provider_code",
+    "offset_timestamps",
+    "delivered_at"
+  ],
   "portal": {
+    "url": "https://customer.tfmex.com/Skybill/TrackSkybill?awb={trackingNumber}",
     "searchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
     "canaryUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
-    "shows": [],
-    "scraped": [],
+    "shows": [
+      "status",
+      "history"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "provider_code",
+      "offset_timestamps",
+      "delivered_at"
+    ],
     "discarded": [],
-    "unavailable": []
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "proof_of_delivery",
+      "delivery_partner",
+      "delivery_tracking_number"
+    ]
   },
-  "links": [],
+  "links": [
+    {
+      "domains": [
+        "customer.tfmex.com"
+      ],
+      "pathPattern": "^/Skybill/TrackSkybill/?$",
+      "params": [
+        "awb"
+      ]
+    }
+  ],
   "detection": []
 }

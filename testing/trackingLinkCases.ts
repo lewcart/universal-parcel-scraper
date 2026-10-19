@@ -1518,6 +1518,11 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'sagawa-global', number: '100000000004',
     route: /^https:\/\/tracking\.sagawa-sgx\.com\/sgx\/trackeng\.asp\?ENC=JPN&CAT=AWB&AWB=100000000004$/,
     marker: /Sagawa Global Tracking|No Record\./ },
+  // The page's script posts the number from the address and clears it when TFM Express does not know it.
+  { carrier: 'tfm-express', number: '000000000000',
+    route: /^https:\/\/customer\.tfmex\.com\/Skybill\/TrackSkybill(?:\?awb=000000000000)?$/,
+    marker: /BY AWB NUMBER|Shipment Not Found|Where Your Shipment Has Been/,
+    forwarding: { notFound: /Shipment Not Found/ } },
 ];
 
 /**

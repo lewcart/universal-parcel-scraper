@@ -1071,6 +1071,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'starken', number: '100000009',
     route: /^https:\/\/www\.starken\.cl\/seguimiento\?codigo=100000009$/,
     marker: /Realiza seguimiento en línea|número de orden de flete/, renderTimeoutMs: 25_000 },
+  // The page reads the number from its address, looks it up on load and repeats it when it finds no shipment.
+  { carrier: 'pdq-chile', number: '100200300400',
+    route: /^https:\/\/www\.pdq\.cl\/tracking\?q=100200300400$/,
+    marker: /No encontramos ese envío|Rastrea tu envío/ },
   // The tracker spends several seconds on an ALTCHA proof of work before it looks the guide up, then clears an unknown
   // guide from its search field and says it found none.
   { carrier: 'interrapidisimo', number: '999999999999',

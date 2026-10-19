@@ -288,6 +288,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "pbt": 623,
   "pcp-express": 709,
   "pdn-express": 838,
+  "pdq-chile": 646,
   "pfc-express": 856,
   "phlpost": 903,
   "pitt-ohio": 737,

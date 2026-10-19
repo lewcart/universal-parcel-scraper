@@ -22660,7 +22660,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pdq-chile",
+      "recognitionRank": 646,
+      "localClocks": true
     },
     "canaryUrl": "https://www.pdq.cl/tracking",
     "trackingUrlTemplate": "https://www.pdq.cl/tracking?q={trackingNumber}",

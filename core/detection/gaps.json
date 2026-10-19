@@ -2802,6 +2802,12 @@
     "reason": "Fifteen-digit PCS waybills share their shape with many carriers' numeric waybills, so the shape cannot name PCS."
   },
   {
+    "carrier": "pdq-chile",
+    "pattern": "^\\d{12}$",
+    "kind": "collision",
+    "reason": "Twelve-digit PDQ guide numbers share their shape with many carriers' numeric waybills, so the shape cannot name PDQ."
+  },
+  {
     "carrier": "pecom",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

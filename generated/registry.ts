@@ -381,6 +381,7 @@ import { adapter as pathaoCourier } from '../carriers/pathao-courier/adapter.js'
 import { adapter as pbt } from '../carriers/pbt/adapter.js';
 import { adapter as pcpExpress } from '../carriers/pcp-express/adapter.js';
 import { adapter as pdnExpress } from '../carriers/pdn-express/adapter.js';
+import { adapter as pdqChile } from '../carriers/pdq-chile/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as pfcExpress } from '../carriers/pfc-express/adapter.js';
 import { adapter as phlpost } from '../carriers/phlpost/adapter.js';
@@ -943,6 +944,7 @@ export const REGISTRY: RegistryDefinition = {
     "pbt": pbt,
     "pcp-express": pcpExpress,
     "pdn-express": pdnExpress,
+    "pdq-chile": pdqChile,
     "pecom": pecom,
     "pfc-express": pfcExpress,
     "phlpost": phlpost,
@@ -1644,7 +1646,7 @@ export const REGISTRY: RegistryDefinition = {
     "pcp-express": "pcp-express",
     "pcs-logistics-vn": "universal",
     "pdn-express": "pdn-express",
-    "pdq-chile": "universal",
+    "pdq-chile": "pdq-chile",
     "pecom": "pecom",
     "peddler": "universal",
     "pelican-express": "universal",

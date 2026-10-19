@@ -89,17 +89,23 @@ function safeDate(value: unknown): string {
 /** France and the overseas places where La Poste scans items itself. */
 const LA_POSTE_COUNTRIES = new Set(['FR', 'GP', 'MQ', 'GF', 'RE', 'YT', 'PM', 'BL', 'MF']);
 
+/** An international tracked letter La Poste sends abroad: `L`, a letter, nine digits and `FR`. */
+const EXPORTED_LETTER = /^L[A-Z]\d{9}FR$/;
+
 /**
  * A partner post's scan abroad shows that office's wall clock, mislabelled:
- * Colissimo gives it Paris's offset, and imported tracked mail reads it as UTC
- * and shows it on Paris's clock. It is read in the country's zone, or kept as a
- * wall clock when the country has several. Null at home and for other
- * products, whose partner scans have not been compared with the partner's own.
+ * Colissimo gives it Paris's offset, and tracked mail, imported or an
+ * international tracked letter sent from France, reads it as UTC and shows it on
+ * Paris's clock (a Dutch scan of such a letter reached the feed before the
+ * instant it was labelled). It is read in the country's zone, or kept as a wall
+ * clock when the country has several. Null at home and for other products,
+ * whose partner scans have not been compared with the partner's own.
  */
-function partnerClock(raw: string, country: string, product: string): { time: string; local_time?: string } | null {
+function partnerClock(raw: string, country: string, product: string, exportedLetter: boolean): { time: string; local_time?: string } | null {
   if (!country || LA_POSTE_COUNTRIES.has(country) || !explicitOffsetTime(raw)) return null;
   const labelled = DateTime.fromISO(raw, { setZone: true });
-  const shown = product === 'colissimo' ? labelled : product === 'lettre et ppi import suivi' ? labelled.toUTC() : null;
+  const shown = product === 'colissimo' ? labelled
+    : product === 'lettre et ppi import suivi' || (exportedLetter && product !== 'chronopost') ? labelled.toUTC() : null;
   const wall = shown?.toISO({ includeOffset: false, suppressMilliseconds: true });
   if (!wall) return null;
   const zone = countryTimeZone(country);
@@ -257,7 +263,7 @@ function parseShipment(payload: unknown, trackingNumber: string): { result: Carr
     const location = clean(event.country, 80);
     return {
       time,
-      ...partnerClock(time, countryCode(location), product),
+      ...partnerClock(time, countryCode(location), product, EXPORTED_LETTER.test(requested)),
       location,
       description: description || 'Tracking update',
       stage: eventStage(group, code, description),

@@ -82,7 +82,9 @@ recognition reads it as unknown rather than as a transport failure.
   carries its offset; impossible dates are dropped. A partner post's scan abroad
   shows that office's wall clock under the wrong offset: Colissimo gives it the
   Paris offset, and imported tracked mail ("Lettre et PPI import suivi") reads
-  it as UTC and shows it on Paris's clock. Those scans are read in the
+  it as UTC and shows it on Paris's clock. So does an international tracked
+  letter sent from France (an `L` number ending in `FR`): a Dutch scan of one
+  reached the feed before the instant it was labelled. Those scans are read in the
   country's zone, or kept as `local_time` when the country has several. Other
   products keep the feed's instant until their partner scans are compared with
   the partner's own. The app's identity policy lets a corrected Colissimo scan

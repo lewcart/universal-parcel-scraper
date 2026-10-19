@@ -718,6 +718,27 @@ describe('La Poste response normalization', () => {
     ]);
   });
 
+  it('reads the partner scan of a tracked letter sent abroad as the wall clock read as UTC', () => {
+    // Live shape: a Dutch scan reached the feed before the instant it was labelled.
+    const letter = 'LA000000000FR';
+    const data = deliveredFixture();
+    data[0]!.shipment.idShip = letter;
+    data[0]!.shipment.product = 'Lettre suivie internationale';
+    data[0]!.shipment.event = [
+      { group: 'DISINTAS', code: 'ET3', label: 'Votre envoi poursuit son acheminement sur son territoire de destination.', date: '2026-07-09T18:16:00+02:00', country: 'NL', order: 2 },
+      { group: 'ACHORI', code: 'ET2', label: 'Votre envoi est prêt à partir de son territoire d’expédition.', date: '2026-07-08T18:01:00+02:00', country: 'FR', order: 1 },
+    ];
+    expect(parseLaPosteTrackingResponse(data, letter).events?.map((event) => event.time)).toEqual([
+      '2026-07-09T16:16:00+02:00', '2026-07-08T18:01:00+02:00',
+    ]);
+    // A Colissimo item keeps its own reading, and a domestic number the feed's instant.
+    data[0]!.shipment.product = 'Colissimo';
+    expect(parseLaPosteTrackingResponse(data, letter).events?.[0]?.time).toBe('2026-07-09T18:16:00+02:00');
+    data[0]!.shipment.product = 'Lettre suivie internationale';
+    data[0]!.shipment.idShip = TRACKING_NUMBER;
+    expect(parseLaPosteTrackingResponse(data, TRACKING_NUMBER).events?.[0]?.time).toBe('2026-07-09T18:16:00+02:00');
+  });
+
   it('keeps the feed\'s instant for scans in France and its overseas departments', () => {
     const data = deliveredFixture();
     data[0]!.shipment.event = [

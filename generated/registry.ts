@@ -169,6 +169,7 @@ import { adapter as emsVietnam } from '../carriers/ems-vietnam/adapter.js';
 import { adapter as energiaTk } from '../carriers/energia-tk/adapter.js';
 import { adapter as enviaColombia } from '../carriers/envia-colombia/adapter.js';
 import { adapter as envialia } from '../carriers/envialia/adapter.js';
+import { adapter as eparcelKr } from '../carriers/eparcel-kr/adapter.js';
 import { adapter as epostGlobal } from '../carriers/epost-global/adapter.js';
 import { adapter as equick } from '../carriers/equick/adapter.js';
 import { adapter as estafeta } from '../carriers/estafeta/adapter.js';
@@ -712,6 +713,7 @@ export const REGISTRY: RegistryDefinition = {
     "energia-tk": energiaTk,
     "envia-colombia": enviaColombia,
     "envialia": envialia,
+    "eparcel-kr": eparcelKr,
     "epost-global": epostGlobal,
     "equick": equick,
     "estafeta": estafeta,
@@ -1315,7 +1317,7 @@ export const REGISTRY: RegistryDefinition = {
     "energo": "universal",
     "envia-colombia": "envia-colombia",
     "envialia": "envialia",
-    "eparcel-kr": "universal",
+    "eparcel-kr": "eparcel-kr",
     "epost-global": "epost-global",
     "equick": "equick",
     "estafeta": "estafeta",

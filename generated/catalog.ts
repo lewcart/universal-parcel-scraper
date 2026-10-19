@@ -12682,9 +12682,11 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "eparcel-kr",
+      "recognitionRank": 624,
+      "localClocks": true
     },
-    "canaryUrl": "https://www.eparcel.kr/Track/Search",
+    "canaryUrl": "https://www.eparcel.kr/Track/Result",
     "trackingUrlTemplate": "https://www.eparcel.kr/Track/Result?mode=0&ids={trackingNumber}&lang=en-US",
     "trackingSearchUrl": "https://www.eparcel.kr/Track/Search",
     "linkRules": [

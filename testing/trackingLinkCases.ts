@@ -1374,6 +1374,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/a1post\.bg\/track\.php\?t=A10000000000$/,
     marker: /Package not found|Track at partner website/,
     forwarding: { notFound: /Package not found/ } },
+  // The server renders the page for the number in its query; its heading names an unknown one over the notice.
+  { carrier: 'eparcel-kr', number: 'EXX000000000KR',
+    route: /^https:\/\/www\.eparcel\.kr\/Track\/Result\?mode=0&ids=EXX000000000KR&lang=en-US$/,
+    marker: /Registration Number : EXX000000000KR|No data\./ },
   // The tracker answers a number it has no record of with a bare notice instead of its page.
   { carrier: 'exmate', number: 'EXK00000000J',
     route: /^https:\/\/pod\.exmate\.net\/pod\/\?exmno=EXK00000000J$/,

@@ -42,7 +42,8 @@ guest tracking client. It is included with the maintainer's approval.
   return-to-sender codes include returns still under way, which wording narrows to an
   exception. Codes neither knows take their stage, current one included, from the shared
   wording rules. A summary ahead of the history has no code; it is staged as the scan whose
-  live wording it repeats, else from the shared wording rules. `statusMap` in
+  live wording it repeats, else from the shared wording rules. Aggregators relay the scans'
+  sentences without their codes, and the universal providers' map stages those the same way. `statusMap` in
   [status.ts](status.ts) answers the app's review by trace code and wording; codes it does
   not know, and wording without a code, stay open.
 - Code 52 names the office the item is in. The app files it under sorting, but at a post
@@ -76,6 +77,8 @@ guest tracking client. It is included with the maintainer's approval.
   found.
 - Inbound foreign S10 numbers and retailer references (`GetCustItemSummary`) are out of
   scope.
+- Neither answer names an outbound item's destination, and the partner's relayed scans have
+  no location, so the result reports no destination country.
 - The website, `www.anpost.com/Post-Parcels/Track/History`, is behind Radware Bot Manager
   and turns automated sessions to a CAPTCHA. Its page calls the same service through a
   separate web gateway with a different key set in the page; it is not used.

@@ -81,6 +81,23 @@ describe('general delivery handoff candidates', () => {
       expect(deliveryHandoff('spring-gds', number, { destination_country: 'CH' })).toBeNull();
     },
   );
+  it('asks the post of the country a postal item from abroad is looked up from, when nothing names its destination', () => {
+    for (const hint of ['FI', ' fi ']) {
+      expect(deliveryHandoff('an-post', 'LX123456785IE', { status: 'in_transit' }, hint))
+        .toEqual({ carrier: 'posti', number: 'LX123456785IE', basis: 'destination' });
+    }
+    // A reported destination or partner comes first, even one no post answers for.
+    expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'SE' }, 'FI')?.carrier).toBe('postnord');
+    expect(deliveryHandoff('an-post', 'LX123456785IE', { destination_country: 'IT' }, 'FI')).toBeNull();
+    expect(deliveryHandoff('an-post', 'LX123456785IE', { delivery_carrier: 'usps' }, 'FI')?.carrier).toBe('usps');
+    // Not from the issuer's own country, a country no post answers for, a name, or no hint.
+    for (const hint of ['IE', 'XX', 'Finland', '', null, undefined]) {
+      expect(deliveryHandoff('an-post', 'LX123456785IE', {}, hint), String(hint)).toBeNull();
+    }
+    // Nor for a number that is no postal item, nor the post the parcel is already filed under.
+    expect(deliveryHandoff('la-poste', '1234567890', {}, 'FI')).toBeNull();
+    expect(deliveryHandoff('posti', 'LX123456785IE', {}, 'FI')).toBeNull();
+  });
   it('uses the destination instead of treating a postal reference’s issuer as its delivery operator', () => {
     expect(deliveryHandoff('aliexpress', 'LP00000000000001', {
       destination_country_name: 'Finland', delivery_tracking_number: 'RA123456785CH',

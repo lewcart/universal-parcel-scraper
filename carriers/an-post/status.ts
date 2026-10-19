@@ -111,6 +111,15 @@ const WORDINGS: ReadonlyMap<string, readonly [number, string]> = new Map(([
   [16, ATTEMPT_MADE],
 ] as const).map(([code, wording]): [string, readonly [number, string]] => [normalizeStatusWording(wording), [code, wording]]));
 
+/**
+ * The stage of An Post's own wording without its code, as aggregators relay
+ * its scans; any other wording gets none.
+ */
+export function anPostWordingStage(text: string): Stage | undefined {
+  const known = WORDINGS.get(normalizeStatusWording(text));
+  return known ? anPostScanStage(...known)?.stage : undefined;
+}
+
 /** The summary's status, which repeats the newest scan's activity without its code. */
 export function anPostSummaryStage(text: string): AnPostStage | undefined {
   const known = WORDINGS.get(normalizeStatusWording(text));

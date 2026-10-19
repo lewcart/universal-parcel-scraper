@@ -15,6 +15,7 @@ import type { Stage } from '../../generated/catalog.js';
 import type { CarrierEvent, CarrierResult, CarrierStatus } from '../../core/result/index.js';
 import { IndeterminateError, InvalidInputError } from '../../core/errors/index.js';
 import { isPostiAbroadLabel } from '../../carriers/posti/identity.js';
+import { anPostWordingStage } from '../../carriers/an-post/status.js';
 
 export type UniversalSource = '17TRACK' | 'ParcelsApp' | 'Postal Ninja' | 'Ship24' | 'UPU';
 const STAGES: Record<string, Stage> = {
@@ -67,6 +68,9 @@ function sourceEventStage(description: string, includeBroadMovement = true): Sta
   if (/colis en preparation chez l'expediteur/.test(french)) return 'registered';
   // Mondial Relay's hub scan, after the parcel was handed in at a relay or locker.
   if (/prise en charge de votre colis sur notre site logistique/.test(french)) return 'in_transit';
+  // An Post's scans keep its own whole sentences, staged as its trace codes stage them.
+  const anPost = anPostWordingStage(description);
+  if (anPost) return anPost;
   // A sender's parcel left at a pick-up point for a courier to collect: an acceptance, not a parcel awaiting its recipient.
   if (/^the (?:parcel|package) has been delivered to the pick-?up point\. a courier will pick it up\b/i.test(description)) return 'accepted';
   // Posti's handling labels survive in aggregator histories. Registration is

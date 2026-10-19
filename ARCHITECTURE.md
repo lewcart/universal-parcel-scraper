@@ -123,7 +123,10 @@ repeating at once.
 
 When a result names a delivery partner, the tracker also asks that partner's adapter. Its
 answer comes back separately, checked against the number on its own. Adopting it is the
-consumer's choice. AliExpress follows some parcels under the delivery carrier's own number and
+consumer's choice. A checksum-valid S10 item with no partner named proposes the post of the
+destination country its answer reports. When none is reported, a consumer may give
+`deliveryHandoff` the country the parcel is looked up from, which stands in unless it issued
+the item. AliExpress follows some parcels under the delivery carrier's own number and
 names no partner for them. The partner is then the carrier that delivers in the destination
 country Cainiao reports: the one whose high-confidence rule claims the number, unless it is an
 S10 number, else the one carrier at home there whose rule fits the number beside AliExpress's.

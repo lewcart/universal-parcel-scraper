@@ -355,6 +355,24 @@ describe("universal providers' answers", () => {
     }
   });
 
+  it("read An Post's relayed sentences as its trace codes stage them", () => {
+    for (const [code, wording, stage] of [
+      [35, 'We have received information about your incoming item from the sender', 'registered'],
+      [15, 'Your item has been handed to An Post', 'accepted'],
+      [48, 'We have your item and will process it for delivery', 'accepted'],
+      [5, 'Your item is being sent internationally. We will aim to show tracking updates as they become available, or visit the local delivery provider website for updates.', 'in_transit'],
+      [40, 'Your item arrived abroad. We will aim to show tracking information from the receiving post, but would recommend tracking the item further on their site', 'in_transit'],
+      [73, 'Your item is being prepared for delivery', 'in_transit'],
+      [70, 'Your item is now available for collection', 'ready_for_pickup'],
+      [13, 'Your item was not collected within the specified timeframe. This item will now be returned to sender.', 'failed_attempt'],
+    ] as const) {
+      expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
+      expect(answer('an-post', String(code), wording), wording).toEqual(mapped(stage));
+    }
+    // Only the whole sentence is An Post's.
+    expect(answer('unknown', null, 'We have received information about your incoming item')).toEqual(unknown);
+  });
+
   it("close the aggregators' whole scans no shared rule reads, and nothing like them", () => {
     for (const [wording, stage] of [
       ['Warehouse receipt.', 'accepted'], ['Received by warehouse', 'accepted'], ['Package received and scanned at warehouse', 'accepted'],

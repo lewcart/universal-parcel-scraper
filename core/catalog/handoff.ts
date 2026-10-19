@@ -31,8 +31,12 @@ export function hasDirectHandoffAdapter(carrier: string, number: string): boolea
     || detectCarrierMatch(number).candidates.includes(carrier as CarrierId);
 }
 
-/** Propose one confirmation lookup; a candidate never changes the carrier by itself. */
-export function deliveryHandoff(carrier: string, number: string, result: CarrierResult): DeliveryHandoff | null {
+/**
+ * Propose one confirmation lookup; a candidate never changes the carrier by itself.
+ * `countryHint` is the country the parcel is looked up from, which names a
+ * postal item's destination for this proposal only when nothing else does.
+ */
+export function deliveryHandoff(carrier: string, number: string, result: CarrierResult, countryHint?: string | null): DeliveryHandoff | null {
   if (result.delivery_tracking_number != null && (typeof result.delivery_tracking_number !== 'string'
     || !/^[A-Z0-9]{4,40}$/.test(result.delivery_tracking_number))) return null;
   const linked = carrierIdsFromPartnerLinks(
@@ -49,7 +53,12 @@ export function deliveryHandoff(carrier: string, number: string, result: Carrier
   // partner is named, and let the shared progress/freshness checks confirm it.
   // Japan Post does not track `U`-prefixed customs labels.
   if (!target && isValidS10TrackingNumber(reference)) {
-    target = nationalPostCandidate(destination);
+    // Origins such as An Post name no destination. The recipient of an item
+    // from abroad is likely the one looking it up; in the issuer's own
+    // country it is more likely the sender.
+    const hint = countryHint?.trim().toUpperCase();
+    const looked = destination === undefined && hint && /^[A-Z]{2}$/.test(hint) && hint !== reference.slice(-2) ? hint : undefined;
+    target = nationalPostCandidate(destination ?? looked);
     if (target === 'japan-post' && reference.startsWith('U')) target = undefined;
     if (target) basis = 'destination';
   }

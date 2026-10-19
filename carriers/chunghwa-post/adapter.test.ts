@@ -42,12 +42,22 @@ describe('Chunghwa Post international tracking', () => {
   it('refuses domestic, proprietary and other S10 references before any request, even when already cancelled', async () => {
     const fetcher = vi.fn<typeof fetch>();
     const carrier = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
-    for (const number of ['00000000000001', '00000000000000000001', 'PB00000000000', 'FT000000005TW', 'VA000000005TW', 'UA000000005TW']) {
+    for (const number of ['00000000000001', '00000000000000000001', 'PB00000000000', 'FT000000005TW', 'VA000000005TW', 'UA000000005TW', 'UH000000005CN']) {
       const refusal = { kind: 'invalid_input', message: expect.stringContaining('another tracking service') };
       await expect(new ChunghwaPostTracker({ fetcher }).fetch(number)).rejects.toMatchObject(refusal);
       await expect(carrier.track({ number }, { signal: AbortSignal.abort(), budgetMs: 1 })).rejects.toMatchObject(refusal);
     }
     expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('queries UH items issued in Taiwan through the same verified and identity-bound flow', async () => {
+    const number = 'UH000000005TW';
+    const payload = fixture(); payload[0]!.body.host_rs.MAILNO = number;
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('')).mockResolvedValueOnce(new Response('image'))
+      .mockResolvedValueOnce(Response.json(payload));
+    await expect(new ChunghwaPostTracker({ fetcher, solveCaptcha: async () => '1234' }).fetch(number)).resolves.toMatchObject({ current_stage: 'customs' });
+    expect(JSON.parse(String(fetcher.mock.calls[2]![1]?.body)).body.MAILNO).toBe(number);
+    expect(() => parseChunghwaPost(fixture(), number)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 
   it('opens one cookie jar, solves a fresh image and submits the same challenge with the whole item', async () => {

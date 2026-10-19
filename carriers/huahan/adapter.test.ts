@@ -1,0 +1,100 @@
+import { describe, expect, it, vi } from 'vitest';
+import { HuahanTracker, solveHuahanQuestion } from './adapter.js';
+import { parseHuahan } from './parser.js';
+
+const NUMBER = 'HHWAA0000000001YQ';
+const fixture = () => ({ ask: 1, data: [{ Code: NUMBER, Error_code: '0000', Status: 'Delivered',
+  Shipper_Hawbcode: 'PRIVATE', Local_Number: 'PRIVATE', Detail: [
+    { Occur_date: '2026-01-03 12:15:00', Status: 'CC', Comment: 'The parcel has been successfully delivered.', track_area: 'Destination facility', recipient: 'PRIVATE' },
+    { Occur_date: '2026-01-01 10:00:00', Status: 'DF', Comment: 'Departed from origin facility', track_area: 'SHENZHEN' },
+  ] }] });
+const response = (value: unknown) => Response.json(value);
+const init = () => {
+  const reply = response({ ask: 1, token: 'synthetic-token' });
+  Object.defineProperty(reply, 'url', { value: 'https://www.hh-exp.cn/WebTrack/init.php' });
+  reply.headers.set('Set-Cookie', 'PHPSESSID=synthetic; Path=/');
+  return reply;
+};
+function fetcher() {
+  return vi.fn<typeof fetch>().mockResolvedValueOnce(init())
+    .mockResolvedValueOnce(response({ ask: 1, type: 'text', question: '26 - 18 = ?' }))
+    .mockResolvedValueOnce(new Response('ok')).mockResolvedValueOnce(response(fixture()));
+}
+
+describe('HuaHan guest tracking', () => {
+  it('solves the issued question in one session and binds the complete waybill', async () => {
+    const fetch = fetcher();
+    const result = await new HuahanTracker({ fetcher: fetch }).fetch(NUMBER);
+    expect(result).toMatchObject({ current_stage: 'delivered', last_update: null, last_update_local: '2026-01-03T12:15:00' });
+    expect(result.events).toHaveLength(2);
+    expect(result.events![1]).toMatchObject({ local_time: '2026-01-01T10:00:00', provider_code: 'DF', stage: 'in_transit' });
+    expect(result.events!.every(event => !event.time)).toBe(true);
+    expect(JSON.stringify(result)).not.toContain('PRIVATE');
+    const verify = new URL(String(fetch.mock.calls[2]![0]));
+    expect(verify.searchParams.get('token')).toBe('synthetic-token');
+    expect(verify.searchParams.get('answer')).toBe('8');
+    const request = fetch.mock.calls[3]![1]!;
+    expect(request.method).toBe('POST');
+    expect(new URLSearchParams(String(request.body)).get('ordernumber')).toBe(NUMBER);
+    expect(new Headers(request.headers).get('cookie')).toBe('PHPSESSID=synthetic');
+    expect(request.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it('never evaluates code or guesses unsupported challenge types', async () => {
+    for (const question of ['1;process.exit() = ?', '1 + 2 + 3 = ?', '1000 + 1 = ?', '1 / 0 = ?', '1 / 2 = ?', null]) {
+      expect(() => solveHuahanQuestion(question)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    }
+    expect(solveHuahanQuestion('12 × 3 = ?')).toBe('36');
+    expect(solveHuahanQuestion('12 / 3 = ?')).toBe('4');
+    const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValueOnce(init()).mockResolvedValueOnce(response({ ask: 1, type: 'click', question: '1 + 2 = ?' }));
+    await expect(new HuahanTracker({ fetcher: fetch }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('requires accepted verification before looking up a shipment', async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValueOnce(init())
+      .mockResolvedValueOnce(response({ ask: 1, type: 'text', question: '1 + 2 = ?' })).mockResolvedValueOnce(new Response('error'));
+    await expect(new HuahanTracker({ fetcher: fetch }).fetch(NUMBER)).rejects.toMatchObject({ kind: 'challenge' });
+    expect(fetch).toHaveBeenCalledTimes(3);
+  });
+
+  it('only treats an explicit absence as not-found', () => {
+    expect(() => parseHuahan({ ask: 0, msg: '没有找到记录', data: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    expect(() => parseHuahan({ ask: 0, msg: '请先通过滑块验证', data: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseHuahan({ ask: 0, msg: 'too many requests', data: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'rate_limited' }));
+    expect(() => parseHuahan({ ask: 0, data: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(() => parseHuahan({ ask: 1, data: [] }, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const empty = fixture(); empty.data[0]!.Detail = [];
+    expect(() => parseHuahan(empty, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
+  });
+
+  it('rejects unrelated identities, contradictory results and malformed clocks', () => {
+    const wrong = fixture(); wrong.data[0]!.Code = 'HHWAA0000000002YQ';
+    expect(() => parseHuahan(wrong, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const failed = fixture(); failed.data[0]!.Error_code = '9999';
+    expect(() => parseHuahan(failed, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    const clock = fixture(); clock.data[0]!.Detail[0]!.Occur_date = '2026-02-30 12:00:00';
+    expect(() => parseHuahan(clock, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+    const duplicate = fixture(); duplicate.data.push(duplicate.data[0]!);
+    expect(() => parseHuahan(duplicate, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('preserves blocked, missing-route and rate-limit failures without session diagnostics', async () => {
+    for (const [status, body, kind] of [[200, '<html>Verification</html>', 'challenge'], [401, '{}', 'challenge'],
+      [404, 'missing', 'transport'], [429, 'PRIVATE', 'rate_limited']] as const) {
+      const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValue(new Response(body, { status }));
+      const failure = await new HuahanTracker({ fetcher: fetch }).fetch(NUMBER).catch(error => error);
+      expect(failure.kind).toBe(kind);
+      expect(failure.diagnostics).toBeUndefined();
+      expect(fetch).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it('refuses unsupported numbers and respects cancellation before requests', async () => {
+    const fetch = vi.fn<typeof globalThis.fetch>();
+    const tracker = new HuahanTracker({ fetcher: fetch });
+    await expect(tracker.fetch('HHWAA0000000001YQ,HHWAA0000000002YQ')).rejects.toMatchObject({ kind: 'invalid_input' });
+    await expect(tracker.fetch(NUMBER, { signal: AbortSignal.abort() })).rejects.toThrow();
+    expect(fetch).not.toHaveBeenCalled();
+  });
+});

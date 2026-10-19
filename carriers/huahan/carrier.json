@@ -18,17 +18,40 @@
   "timezone": "Asia/Shanghai",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "huahan",
+    "steps": [
+      "direct"
+    ],
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code"
+  ],
   "portal": {
     "searchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
     "canaryUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "delivery_tracking_number"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code"
+    ],
+    "discarded": [
+      "delivery_tracking_number"
+    ],
+    "unavailable": [
+      "offset_timestamps",
+      "eta",
+      "weight"
+    ]
   },
   "links": [],
   "detection": [

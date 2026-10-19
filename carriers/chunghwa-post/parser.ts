@@ -8,9 +8,10 @@ import { isRecord } from '../../core/types.js';
 import { chunghwaPostStage } from './status.js';
 
 export const PROVIDER = 'Chunghwa Post';
+export const isSupportedChunghwaPostNumber = (number: string): boolean => /^(?:[CELR][A-Z]\d{9}[A-Z]{2}|UH\d{9}TW)$/.test(number);
 export function normalizeChunghwaPostNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
-  if (!/^[CELR][A-Z]\d{9}[A-Z]{2}$/.test(number)) {
+  if (!isSupportedChunghwaPostNumber(number)) {
     throw new InvalidInputError(PROVIDER, 'Chunghwa Post requires an international postal S10 number');
   }
   return number;

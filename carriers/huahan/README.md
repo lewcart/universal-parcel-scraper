@@ -1,26 +1,38 @@
 # HuaHan Logistics
 
-HuaHan Logistics parcels use enabled universal providers. There is no dedicated adapter: the
-tracker's lookup answers only after a CAPTCHA, an arithmetic question asked before every search,
-and HuaHan's tracking API needs a customer account.
+Tracks HuaHan's own waybills through its public guest tracker. HuaHan carries parcels from
+China to destination delivery partners.
 
-HuaHan, a Shenzhen forwarder that trades as 华翰速递 (HuaHan Express), flies parcels from Shenzhen
-through Hong Kong to Europe and hands them to a local carrier there.
+## Retrieval
+
+The [public form](https://www.hh-exp.cn/WebTrack/CargoTrack.html) opens verification through
+`init.php`, reads a plain arithmetic question from `textcode.php`, and submits its answer to
+`check.php`. After an explicit acceptance, the adapter posts one complete waybill to
+`CargoTrackActiona.php` in the same cookie session. Each lookup opens a fresh session and
+shares one deadline across the four requests. No account, browser or external solver is needed.
+
+The reply must repeat the requested waybill and confirm success. An explicit absence is
+not found; verification failures, changed replies and an empty history remain distinct.
+The adapter keeps the server's scan order, milestone codes, wording and locations. Clocks
+have no offsets, including scans from destination partners, so they remain local times.
+Shipper references and partner identifiers are omitted.
 
 ## Numbers
 
-HuaHan waybills are `HHW`, two letters, ten digits and `YQ`. HuaHan's API documentation uses
-them in its examples and says they track on 17TRACK and on HuaHan's site. `huahan-1` claims the
-layout; the three-letter prefix is HuaHan's own. For some services HuaHan's API also returns a
-last-mile number, such as a China Post S10 number, which postal detection handles.
+HuaHan waybills are `HHW`, two letters, ten digits and `YQ`. Its API documentation describes
+that layout, which detection and the adapter accept. Postal and partner references are
+outside this adapter's scope.
 
-## Links
+## Limitations
 
-HuaHan's [tracker](https://www.hh-exp.cn/WebTrack/CargoTrack.html) posts the numbers to its own
-service, which answers only after the CAPTCHA, so no address opens one parcel. The page and
-HuaHan's home page point customers to 17TRACK for the same numbers.
+There is no cheap recognition flow: tracking requires a fresh verification exchange. Changed
+challenge types remain a challenge and enabled universal providers can recover. Provider
+history can supplement scans whose clocks cannot be placed on a timeline.
+
+The customer API at `api.hh-exp.com/default/svc/web-service` needs account credentials;
+it is separate from the anonymous web form.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+Set `HUAHAN_TRACKING_NUMBER` outside Git and run
+`npm run test:carriers:live -- carriers/huahan`. `HUAHAN_UNKNOWN_NUMBER` checks explicit absence.

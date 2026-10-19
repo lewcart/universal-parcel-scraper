@@ -19,12 +19,15 @@ are omitted. Only the server's explicit absence message for the requested item i
 ## Numbers
 
 Detection names Chunghwa Post for the EMS, parcel, registered and tracked-letter S10 items it
-issues: C, E, L or R first, TW last and a passing check digit. Its U-prefixed letter-post items
-stay with international mail, since its tracker does not read them.
+issues: C, E, L or R first, TW last and a passing check digit. UH-prefixed letter-post items
+stay with international mail in detection. The adapter can
+query a complete UH…TW reference when Chunghwa Post is explicitly selected or named by a
+provider; a successful reply must confirm the whole item. Other U series remain unsupported.
 
 ## Limitations
 
-The direct path supports international EMS, parcel, registered and tracked-letter S10 items.
+The direct path supports international EMS, parcel, registered and tracked-letter S10 items,
+and Taiwan-issued UH letter post.
 It refuses other postal services, numeric domestic references and proprietary mainland
 formats as invalid input before any request; enabled universal providers follow them.
 The tracker retains six months of history, and destination posts can withhold scans.

@@ -16201,7 +16201,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "huahan",
+      "localClocks": true
     },
     "canaryUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
     "trackingSearchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",

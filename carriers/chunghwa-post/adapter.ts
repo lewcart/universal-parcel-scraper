@@ -8,7 +8,7 @@ import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { ChunghwaPostOcr } from './ocr.js';
-import { isChunghwaCaptchaFailure, normalizeChunghwaPostNumber, parseChunghwaPost, PROVIDER } from './parser.js';
+import { isChunghwaCaptchaFailure, isSupportedChunghwaPostNumber, normalizeChunghwaPostNumber, parseChunghwaPost, PROVIDER } from './parser.js';
 
 export { normalizeChunghwaPostNumber, parseChunghwaPost } from './parser.js';
 const BASE = 'https://postserv.post.gov.tw/pstmail/';
@@ -23,7 +23,7 @@ export class ChunghwaPostTracker {
     // Domestic, proprietary and other S10 services' references are refused before any request:
     // the international gateway cannot read them, and enabled universal providers follow them.
     if (/^(?:\d{14}|\d{20}|(?:PB|FT|FZ)[A-Z0-9]{11})$/.test(normalized)
-      || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(normalized) && !/^[CELR]/.test(normalized)) {
+      || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(normalized) && !isSupportedChunghwaPostNumber(normalized)) {
       throw new InvalidInputError(PROVIDER, 'This Chunghwa Post reference uses another tracking service');
     }
     const number = normalizeChunghwaPostNumber(raw);

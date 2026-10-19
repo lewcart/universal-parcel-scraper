@@ -243,6 +243,7 @@ import { adapter as hongkongPost } from '../carriers/hongkong-post/adapter.js';
 import { adapter as houngAhLoun } from '../carriers/houng-ah-loun/adapter.js';
 import { adapter as hrParcel } from '../carriers/hr-parcel/adapter.js';
 import { adapter as hrvatskaPosta } from '../carriers/hrvatska-posta/adapter.js';
+import { adapter as huahan } from '../carriers/huahan/adapter.js';
 import { adapter as hunterExpress } from '../carriers/hunter-express/adapter.js';
 import { adapter as hywl } from '../carriers/hywl/adapter.js';
 import { adapter as icsCourier } from '../carriers/ics-courier/adapter.js';
@@ -784,6 +785,7 @@ export const REGISTRY: RegistryDefinition = {
     "houng-ah-loun": houngAhLoun,
     "hr-parcel": hrParcel,
     "hrvatska-posta": hrvatskaPosta,
+    "huahan": huahan,
     "hunter-express": hunterExpress,
     "hywl": hywl,
     "ics-courier": icsCourier,
@@ -1417,7 +1419,7 @@ export const REGISTRY: RegistryDefinition = {
     "hp-mostar": "universal",
     "hr-parcel": "hr-parcel",
     "hrvatska-posta": "hrvatska-posta",
-    "huahan": "universal",
+    "huahan": "huahan",
     "hunter-express": "hunter-express",
     "hywl": "hywl",
     "icc-worldwide": "universal",

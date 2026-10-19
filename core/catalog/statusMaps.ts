@@ -336,6 +336,7 @@ import { statusMap as pdqChile } from '../../carriers/pdq-chile/status.js';
 import { statusMap as pecom } from '../../carriers/pecom/status.js';
 import { statusMap as pfcExpress } from '../../carriers/pfc-express/status.js';
 import { statusMap as phlpost } from '../../carriers/phlpost/status.js';
+import { statusMap as pilotFreight } from '../../carriers/pilot-freight/status.js';
 import { statusMap as pitneyBowes } from '../../carriers/pitney-bowes/status.js';
 import { statusMap as pittOhio } from '../../carriers/pitt-ohio/status.js';
 import { statusMap as posIndonesia } from '../../carriers/pos-indonesia/status.js';
@@ -545,7 +546,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'one-world-express': oneWorldExpress, 'orlen-paczka': orlenPaczka, 'osm-worldwide': osmWorldwide, 'pack-man': packMan, packlink, packs,
   'pakistan-post': pakistanPost, palletways, 'pandu-logistics': panduLogistics, paperfly, paquetexpress, parcelpoint, passport,
   'pathao-courier': pathaoCourier, pbt, 'pcp-express': pcpExpress, 'pdn-express': pdnExpress, 'pdq-chile': pdqChile, pecom,
-  'pfc-express': pfcExpress, phlpost,
+  'pfc-express': pfcExpress, phlpost, 'pilot-freight': pilotFreight,
   'pitney-bowes': pitneyBowes, 'pitt-ohio': pittOhio, 'pos-indonesia': posIndonesia,
   'post-luxembourg': postLuxembourg, 'posta-faroe': postaFaroe, 'posta-kenya': postaKenya, 'posta-north-macedonia': postaNorthMacedonia, 'posta-romana': postaRomana,
   'posta-shqiptare': postaShqiptare,

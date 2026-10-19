@@ -1820,6 +1820,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   oca: 'the parcel page asks for a reCAPTCHA checkbox before it shows the history, so number forwarding cannot be verified',
   ocasa: 'the tracking link opens a reCAPTCHA checkbox, with the number in a hidden field, before it shows the shipment, so number forwarding cannot be verified',
   passport: 'track.passportglobal.com answers automated Chrome with a Human Verification page that watches the visitor\'s activity before it shows the tracker, so number forwarding cannot be verified',
+  'pilot-freight': 'Pilot\'s tracking service opens any shipment it holds under the pro number asked, and a synthetic nine-digit one can be another person\'s shipment, so only a known pro number verifies the link',
   'poste-italiane': 'the results page exposes no readable text to headless Chrome',
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',
   'tci-express': 'the page answers an unknown docket with an empty result and neither the number nor a notice, so only a real parcel verifies the link',

@@ -23083,7 +23083,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pilot-freight",
+      "recognitionRank": 572,
+      "localClocks": true
     },
     "canaryUrl": "https://delivers.maersk.com/tracking/",
     "trackingUrlTemplate": "https://delivers.maersk.com/tracking/{trackingNumber}",

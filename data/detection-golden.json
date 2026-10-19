@@ -8218,12 +8218,6 @@
     ]
   },
   {
-    "input": "064081081",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
-  },
-  {
     "input": "0642231309",
     "carrier": "unknown",
     "confidence": "low",
@@ -8238,22 +8232,6 @@
     "asked": [
       "relais-colis",
       "dhl-ecommerce-es"
-    ]
-  },
-  {
-    "input": "064342773",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "tnt",
-      "xpo-ltl"
-    ],
-    "preferred": [
-      "tnt"
-    ],
-    "asked": [
-      "tnt",
-      "xpo-ltl"
     ]
   },
   {
@@ -8744,12 +8722,6 @@
       "postlogistics",
       "dhl-ecommerce-pl"
     ]
-  },
-  {
-    "input": "080515093",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
   },
   {
     "input": "08080f060880",

@@ -388,6 +388,7 @@ import { adapter as pdqChile } from '../carriers/pdq-chile/adapter.js';
 import { adapter as pecom } from '../carriers/pecom/adapter.js';
 import { adapter as pfcExpress } from '../carriers/pfc-express/adapter.js';
 import { adapter as phlpost } from '../carriers/phlpost/adapter.js';
+import { adapter as pilotFreight } from '../carriers/pilot-freight/adapter.js';
 import { adapter as pitneyBowes } from '../carriers/pitney-bowes/adapter.js';
 import { adapter as pittOhio } from '../carriers/pitt-ohio/adapter.js';
 import { adapter as planzer } from '../carriers/planzer/adapter.js';
@@ -955,6 +956,7 @@ export const REGISTRY: RegistryDefinition = {
     "pecom": pecom,
     "pfc-express": pfcExpress,
     "phlpost": phlpost,
+    "pilot-freight": pilotFreight,
     "pitney-bowes": pitneyBowes,
     "pitt-ohio": pittOhio,
     "planzer": planzer,
@@ -1664,7 +1666,7 @@ export const REGISTRY: RegistryDefinition = {
     "pickupp": "universal",
     "pickupp-sg": "universal",
     "pigeon-express": "universal",
-    "pilot-freight": "universal",
+    "pilot-freight": "pilot-freight",
     "pitney-bowes": "pitney-bowes",
     "pitt-ohio": "pitt-ohio",
     "planzer": "planzer",

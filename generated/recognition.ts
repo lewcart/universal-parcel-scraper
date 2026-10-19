@@ -294,6 +294,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "pdq-chile": 646,
   "pfc-express": 856,
   "phlpost": 903,
+  "pilot-freight": 572,
   "pitt-ohio": 737,
   "poczta-polska": 750,
   "pos-indonesia": 964,

@@ -2,48 +2,6 @@
   "carrier": "pilot-freight",
   "records": [
     {
-      "number": "064342773",
-      "role": "shipment",
-      "evidence": "official_documentation_example",
-      "source": {
-        "url": "https://delivers.maersk.com/wp-content/uploads/2021/01/PilotTrackingService2021.pdf",
-        "date": "2021-01-20",
-        "dateKind": "publication",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "tnt",
-          "xpo-ltl"
-        ]
-      },
-      "note": "Pilot's Tracking API documentation uses it as a sample pro number in its request example."
-    },
-    {
-      "number": "064081081",
-      "role": "shipment",
-      "evidence": "official_documentation_example",
-      "source": {
-        "url": "https://delivers.maersk.com/wp-content/uploads/2021/01/PilotTrackingService2021.pdf",
-        "date": "2021-01-20",
-        "dateKind": "publication",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "Pilot's Tracking API documentation uses it as a sample pro number in its request example."
-    },
-    {
       "number": "061618092",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -105,25 +63,6 @@
       "note": "An archived lookup on Pilot's own quick-track page resolved the pro number to a shipment record and redirected to its detail page."
     },
     {
-      "number": "080515093",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://web.archive.org/web/20170703134354/http://www.pilotdelivers.com:80/quicktrack.aspx?Pro=080515093",
-        "date": "2017-07-03",
-        "dateKind": "capture",
-        "access": "indexed_excerpt"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "none"
-      },
-      "note": "An archived lookup on Pilot's own quick-track page; the capture was not opened."
-    },
-    {
       "number": "054491166",
       "role": "shipment",
       "evidence": "public_shipment_report",
@@ -143,7 +82,7 @@
           "tnt"
         ]
       },
-      "note": "An archived lookup on Pilot's own quick-track page; the capture redirects to an empty shipment detail, so the record was gone or not found then."
+      "note": "An archived lookup on Pilot's own quick-track page; the capture redirects to an empty shipment detail, and Pilot's tracking service answers that it has no tracking information for it."
     }
   ]
 }

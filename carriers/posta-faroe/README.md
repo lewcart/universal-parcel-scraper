@@ -47,7 +47,8 @@ customs in Tórshavn to delivery. The adapter takes S10 numbers from any post wi
 digit, and 20-digit numbers; anything else is invalid without a request.
 
 Generic postal detection handles S10 numbers, so no Posta rule claims them and preflight does
-not ask Posta about them. An item reaches the adapter when a caller or a provider names Posta.
+not ask Posta about them. An item reaches the adapter when a caller or a provider names Posta,
+or a result gives the Faroe Islands as the destination of an S10 item.
 DHL's waybills stay with DHL, and no public 20-digit number is known. The samples and their
 sources are in [`numbers.json`](numbers.json).
 

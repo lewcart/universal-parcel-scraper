@@ -50,6 +50,7 @@ describe('national postal lookup candidates', () => {
     ['IS', 'posturinn'], ['Iceland', 'posturinn'],
     ['KE', 'posta-kenya'], ['Kenya', 'posta-kenya'],
     ['UY', 'correo-uruguayo'], ['Uruguay', 'correo-uruguayo'],
+    ['FO', 'posta-faroe'], ['Faroe Islands', 'posta-faroe'],
   ])('suggests one operator for destination %s', (country, expected) => {
     expect(nationalPostCandidate(country)).toBe(expected);
   });

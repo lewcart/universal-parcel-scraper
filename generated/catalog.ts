@@ -24753,14 +24753,16 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rivigo",
+      "recognitionRank": 574
     },
     "canaryUrl": "https://zoom.rivigo.com/",
     "trackingUrlTemplate": "https://zoom.rivigo.com/#/trackconsignment/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
-          "zoom.rivigo.com"
+          "zoom.rivigo.com",
+          "zoom-ops.rivigo.com"
         ],
         "pathPattern": "^/?$",
         "fragment": "^/trackconsignment/([^/?#]+)"

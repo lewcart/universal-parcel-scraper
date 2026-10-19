@@ -1832,6 +1832,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   'pilot-freight': 'Pilot\'s tracking service opens any shipment it holds under the pro number asked, and a synthetic nine-digit one can be another person\'s shipment, so only a known pro number verifies the link',
   'poste-italiane': 'the results page exposes no readable text to headless Chrome',
   ptt: 'the link opens the home page, whose tracking window stays folded until a visitor opens it and asks for a Cloudflare Turnstile token before each lookup',
+  rivigo: 'Rivigo\'s ten-digit consignment numbers run densely, so a synthetic one can open another shipper\'s consignment, whose page names its consignor and consignee; only a known consignment verifies the link',
   'tci-express': 'the page answers an unknown docket with an empty result and neither the number nor a notice, so only a real parcel verifies the link',
   'team-express-ae': 'the page answers a number it does not hold with its empty tracking form, without the number or a notice, so only a real shipment verifies the link',
   'thailand-post': 'some of the tracker\'s servers stall on its script bundles, so the page often stays empty past the render window',

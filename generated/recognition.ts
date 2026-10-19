@@ -311,6 +311,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "tws-express": 884,
   "ubi-smart-parcel": 45,
   "ukrposhta": 490,
+  "united-delivery-service": 793,
   "uniuni": 770,
   "urvaam": 848,
   "uzbekistan-post": 906,

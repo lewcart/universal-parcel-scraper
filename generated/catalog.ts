@@ -28743,7 +28743,9 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "united-delivery-service",
+      "recognitionRank": 793,
+      "localClocks": true
     },
     "canaryUrl": "https://www.uniteddeliveryservice.com/track/",
     "trackingUrlTemplate": "https://www.uniteddeliveryservice.com/track/barcode/{trackingNumber}",

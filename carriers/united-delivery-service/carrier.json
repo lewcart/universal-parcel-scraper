@@ -17,18 +17,62 @@
   "timezone": "America/Chicago",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "united-delivery-service",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 793
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "location",
+    "eta",
+    "weight",
+    "dimensions",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://www.uniteddeliveryservice.com/track/barcode/{trackingNumber}",
     "searchUrl": "https://www.uniteddeliveryservice.com/track/",
     "canaryUrl": "https://www.uniteddeliveryservice.com/track/",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "progress_rail",
+      "location",
+      "eta",
+      "weight",
+      "dimensions",
+      "delivered_at",
+      "offset_timestamps",
+      "proof_of_delivery",
+      "delivery_photo"
+    ],
+    "scraped": [
+      "status",
+      "location",
+      "eta",
+      "weight",
+      "dimensions",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "progress_rail",
+      "proof_of_delivery",
+      "delivery_photo"
+    ],
+    "unavailable": [
+      "history",
+      "sender_name",
+      "recipient_name",
+      "recipient_address",
+      "service_name",
+      "provider_code"
+    ]
   },
   "links": [
     {

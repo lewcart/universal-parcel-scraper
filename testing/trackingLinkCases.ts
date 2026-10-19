@@ -1408,6 +1408,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'zr-express', number: '00-000000-ZR',
     route: /^https:\/\/www\.zrexpress\.net\/(?:suivi|en\/track|ar\/suivi)\?tn=00-000000-ZR$/,
     marker: /Aucun colis ne correspond à ce numéro/ },
+  // The tracker renders the barcode in its address on the server; an unknown one gets a notice naming it.
+  { carrier: 'united-delivery-service', number: '00UDS00000000000',
+    route: /^https:\/\/www\.uniteddeliveryservice\.com\/track\/barcode\/00UDS00000000000$/,
+    marker: /Barcode Not Found|Delivery Status/ },
 ];
 
 /**

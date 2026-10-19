@@ -20330,7 +20330,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "morning-global",
+      "recognitionRank": 682,
+      "localClocks": true
     },
     "canaryUrl": "https://www.morninglobal.com/trace-track/",
     "trackingUrlTemplate": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",

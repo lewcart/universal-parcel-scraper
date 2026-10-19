@@ -1765,6 +1765,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
     route: /^https:\/\/www\.acieshop\.com\/pod\.php\?OrderNo=000000000000$/,
     marker: /Track Shipments Detailed Results/,
     forwarding: { notFound: /Tracking Number\s*받는 사람\s*\*/ } },
+  // The page's script looks up the number in its address on load and names an unknown one beside the not-found notice.
+  { carrier: 'morning-global', number: 'BR000000000MG',
+    route: /^https:\/\/www\.morninglobal\.com\/trace-track\/\?tracking_number=BR000000000MG$/,
+    marker: /No shipment record was found for this tracking number|Shipment Journey/ },
 ];
 
 /**

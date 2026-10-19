@@ -1,12 +1,47 @@
 # Morning Global
 
-Morning Global parcels use enabled universal providers. There is no dedicated adapter.
-
 Morning Global is a Hong Kong express and postal group that sells MG International Express
-and MG International Postal. It runs its own tracker at morninglobal.com. The history follows
-a parcel from collection in Hong Kong through the flight and customs abroad to the hand-over
-to a local delivery partner in the destination country, whose reference the tracker also
-returns.
+and MG International Postal. It collects parcels in Hong Kong, flies them abroad, clears them
+through customs and hands them to a delivery partner in the destination country. Tracked
+through the lookup its tracker page makes.
+
+## How it works
+
+1. `direct`: a `GET https://www.morninglobal.com/trace-track/?tracking_number={number}`, the
+   page the tracker's links open, whose tracking plugin carries the WordPress nonce of its
+   lookup in its configuration. Then one `POST https://www.morninglobal.com/wp-admin/admin-ajax.php`
+   with `action=mg_tr_lookup`, that nonce, `tracking_number={number}` and the form's empty
+   `mg_tr_website` field, as the page's script sends them. No cookie, key or browser is needed.
+   The JSON reply has one result per number asked, with a summary and the scans oldest first.
+2. `retry`: both requests once more when one fails to reach the site or hangs. The first try gets
+   half of the budget, so the retry fits in the rest.
+
+- An unknown number is HTTP 200 with a result marked `found: false`, which the page reports as
+  not found. A known parcel without scans has no history.
+- WordPress answers a nonce it does not accept with HTTP 403 and `-1`, which is inconclusive
+  (`nonce_expired`), and an action no plugin registers with HTTP 400 and `0`, a moved lookup.
+  The plugin's own refusals carry `success: false` and are inconclusive.
+- The result must name the whole number asked. The tracker takes several numbers separated by
+  commas; the adapter sends one.
+- Recognition makes the same requests.
+
+## Notes
+
+- A scan's location is a country code with the offset of its clock, as `CA (UTC-4)`. The scan's
+  date and minute are read with that offset, unless the country keeps one zone whose clock had
+  another offset then, and the location keeps the code. Hub and flight scans name no place and
+  keep their wall clock in `local_time`.
+- Scans carry their status and a description that repeats it; a description that says more is
+  added after the status, without a signatory clause or phone numbers. The statuses stage the
+  scans. The former tracking API gave each a code; the current reply has none.
+- The destination country is the summary's destination when it names a country, else the
+  country of the scan that reports the arrival at destination.
+- The summary's `reference` is the delivery partner's number, but no field names the partner,
+  so there is no hand-off. The signatory, origin, weight, pieces and estimate are not kept.
+
+## Limitations
+
+- No delivery partner, and no estimate or weight.
 
 ## Numbers
 
@@ -14,7 +49,9 @@ Two layouts were seen on the carrier's own tracker. The older tracker page shows
 nine digits, a two-letter code and a two-digit counter. The current tracker shows two letters,
 nine digits and MG: the UPU S10 form with Madagascar's code, which the Morning Global waybill
 fails on the check digit. One example of each is too little to tell how the carrier numbers
-parcels, so no rule claims either layout and both are declared gaps.
+parcels, so no rule claims either layout and both are declared gaps. Without a rule of its own,
+Morning Global is not asked during recognition. The adapter sends eight to forty letters and
+digits. The samples and their sources are in [`numbers.json`](numbers.json).
 
 ## Links
 
@@ -24,5 +61,6 @@ lookups use `ydh` on the tracker and on the former `/yundan/status.php` page.
 
 ## Testing
 
-Provider live-test inputs and commands are in the
-[provider READMEs](../../providers/README.md).
+`npm run test:carriers:live -- carriers/morning-global`, with `MORNING_GLOBAL_TRACKING_NUMBER`
+and optionally `MORNING_GLOBAL_NO_HISTORY_NUMBER` for a parcel the tracker knows without scans
+and `MORNING_GLOBAL_UNKNOWN_NUMBER` set outside the repository.

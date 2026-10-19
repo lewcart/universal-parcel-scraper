@@ -252,6 +252,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "metropolitan-warehouse": 8,
   "micro-express": 697,
   "mng-kargo": 360,
+  "morning-global": 682,
   "mtscn": 986,
   "mylerz": 904,
   "nacex": 850,

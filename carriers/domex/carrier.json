@@ -18,18 +18,74 @@
   "timezone": "Asia/Colombo",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "domex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 643
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "delivered_at",
+    "offset_timestamps"
+  ],
   "portal": {
     "url": "https://domex.lk/Order-Details.php?wbno={trackingNumber}",
     "searchUrl": "https://domex.lk/Order-Details.php",
     "canaryUrl": "https://domex.lk/Order-Details.php",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "departure_date",
+      "payment_details",
+      "item_category",
+      "parcel_count",
+      "weight",
+      "sender_name",
+      "sender_address",
+      "contact_details",
+      "origin",
+      "driver_name",
+      "signatory",
+      "recipient_name",
+      "recipient_contact",
+      "destination"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "delivered_at",
+      "offset_timestamps"
+    ],
+    "discarded": [
+      "departure_date",
+      "payment_details",
+      "item_category",
+      "parcel_count",
+      "weight",
+      "sender_name",
+      "sender_address",
+      "contact_details",
+      "origin",
+      "driver_name",
+      "signatory",
+      "recipient_name",
+      "recipient_contact",
+      "destination"
+    ],
+    "unavailable": [
+      "eta",
+      "service_name",
+      "provider_code",
+      "recipient_address",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

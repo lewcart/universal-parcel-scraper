@@ -1787,6 +1787,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'pcs-logistics-vn', number: '000000000000000',
     route: /^https:\/\/pcs-logistics\.com\/en\/track-trace\?code=000000000000000$/,
     marker: /Up to 25 tracking number, one per line|What is a PCS tracking number\?/ },
+  // The server renders the lookup; its answer to an unknown waybill keeps the number in the search box.
+  { carrier: 'domex', number: '00000000',
+    route: /^https:\/\/domex\.lk\/Order-Details\.php\?wbno=00000000$/,
+    marker: /Record Not Found!|WAYBILL INFORMATION/ },
 ];
 
 /**

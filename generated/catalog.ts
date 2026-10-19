@@ -11272,7 +11272,8 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Colombo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "domex",
+      "recognitionRank": 643
     },
     "canaryUrl": "https://domex.lk/Order-Details.php",
     "trackingUrlTemplate": "https://domex.lk/Order-Details.php?wbno={trackingNumber}",

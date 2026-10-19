@@ -3460,12 +3460,6 @@
     "reason": "SP Express's Cainiao-page numbers, a destination country code and twelve digits, are too few to tie the layout to SP Express alone, so no rule claims them."
   },
   {
-    "carrier": "speed-and-safe",
-    "pattern": "^\\d{8}$",
-    "kind": "by_design",
-    "reason": "Eight digits are printed by many carriers and nothing in the number points to Gokulam Speed & Safe."
-  },
-  {
     "carrier": "speedex",
     "pattern": "^\\d{12}$",
     "kind": "by_design",

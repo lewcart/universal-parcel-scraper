@@ -26850,7 +26850,7 @@ export const CARRIER_CATALOG = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speed-and-safe"
     },
     "canaryUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",
     "trackingSearchUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/",

@@ -18691,16 +18691,6 @@
     ]
   },
   {
-    "input": "17086729",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
-    ]
-  },
-  {
     "input": "171009132742",
     "carrier": "unknown",
     "confidence": "low",

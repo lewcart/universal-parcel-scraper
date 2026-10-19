@@ -1,29 +1,5 @@
 {
   "carrier": "speed-and-safe",
-  "records": [
-    {
-      "number": "17086729",
-      "role": "shipment",
-      "evidence": "public_shipment_report",
-      "source": {
-        "url": "https://voxya.com/consumer-complaints/x/234996",
-        "date": "2024-09-07",
-        "dateKind": "publication",
-        "access": "full_page"
-      },
-      "context": {
-        "assessment": "candidate"
-      },
-      "expect": {
-        "carrier": "unknown",
-        "confidence": "low",
-        "candidates": [
-          "mondial-relay",
-          "colisweb",
-          "heppner"
-        ]
-      },
-      "note": "A Voxya complaint against Speed And Safe Courier Service gives it as the number of a courier booked at a Kozhikode franchisee for Alappuzha and not delivered."
-    }
-  ]
+  "gap": "Gokulam Speed & Safe's public sample is kept outside the repository as a live-test input: its tracker shows the consignee's name.",
+  "records": []
 }

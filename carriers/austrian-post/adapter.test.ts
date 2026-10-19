@@ -95,10 +95,25 @@ describe('Austrian Post public tracking', () => {
     });
   });
 
+  it('reads a parcel sent abroad under the EURODIS barcode the reply names for its 22-digit number', () => {
+    const payload = fixture();
+    payload.data.einzelsendung.sendungsnummer = '010000000000000000000001';
+    expect(parseAustrianPostResponse(payload, NUMBER)).toMatchObject({
+      status: 'delivered', canonical_tracking_number: '010000000000000000000001',
+    });
+    expect(parseAustrianPostResponse(fixture(), NUMBER)).not.toHaveProperty('canonical_tracking_number');
+  });
+
   it('rejects a different returned item', () => {
     const payload = fixture();
     payload.data.einzelsendung.sendungsnummer = '1000000000000000000002';
     expect(() => parseAustrianPostResponse(payload, NUMBER)).toThrow('different shipment');
+    // Only a 22-digit number may answer under a 24-digit barcode.
+    for (const [asked, answered] of [[NUMBER, '01000000000000000000001'], [NUMBER, '0100000000000000000000001'], ['010000000000000000000001', NUMBER]] as const) {
+      const other = fixture();
+      other.data.einzelsendung.sendungsnummer = answered;
+      expect(() => parseAustrianPostResponse(other, asked), answered).toThrow('different shipment');
+    }
     // A Hermes number binds the whole reply's number too.
     const box = receivingBox();
     box.data.einzelsendung.sendungsnummer = `00000000${HERMES}`;

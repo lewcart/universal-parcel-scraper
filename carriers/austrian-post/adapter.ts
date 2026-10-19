@@ -68,7 +68,12 @@ export function parseAustrianPostResponse(payload: unknown, rawNumber: string): 
   const parcel = payload.data.einzelsendung;
   // This is the official client's positive not-found signature.
   if (parcel === null) throw new NotFoundError(PROVIDER);
-  if (!isRecord(parcel) || clean(parcel.sendungsnummer, 64) !== number) throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
+  if (!isRecord(parcel)) throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
+  const own = clean(parcel.sendungsnummer, 64);
+  // A 22-digit parcel sent abroad answers under the 24-digit EURODIS barcode it
+  // travels on from the hand-over; any other number is another item.
+  const eurodis = own !== number && /^\d{22}$/.test(number) && /^\d{24}$/.test(own);
+  if (own !== number && !eurodis) throw new SchemaError(PROVIDER, 'Austrian Post returned a different shipment');
   if (!Array.isArray(parcel.sendungsEvents) || parcel.sendungsEvents.length > 500) throw new SchemaError(PROVIDER, 'Austrian Post returned invalid tracking history');
   const parsed: Array<{ event: CarrierEvent; timestamp: number; index: number }> = [];
   const seen = new Set<string>();
@@ -120,6 +125,7 @@ export function parseAustrianPostResponse(payload: unknown, rawNumber: string): 
     ...(weight === null ? {} : { weight_kg: weight }),
     ...(measured ? { dimensions_text: `${sides.join(' × ')} cm` } : {}),
     ...(deliveredAt ? { delivered_at: deliveredAt } : {}),
+    ...(eurodis ? { canonical_tracking_number: own } : {}),
     events,
   };
 }

@@ -29,7 +29,8 @@
     "weight",
     "dimensions",
     "delivered_at",
-    "provider_code"
+    "provider_code",
+    "canonical_tracking_number"
   ],
   "portal": {
     "url": "https://www.post.at/en/s/track-and-trace-search",
@@ -42,7 +43,8 @@
       "eta",
       "eta_window",
       "weight",
-      "dimensions"
+      "dimensions",
+      "canonical_tracking_number"
     ],
     "scraped": [
       "status",
@@ -53,7 +55,8 @@
       "location",
       "dimensions",
       "delivered_at",
-      "provider_code"
+      "provider_code",
+      "canonical_tracking_number"
     ],
     "discarded": [],
     "unavailable": [

@@ -19801,9 +19801,11 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maritime-ontario",
+      "localClocks": true
     },
-    "canaryUrl": "https://www.m-o.com/quick-track-form/",
+    "canaryUrl": "https://cp.m-o.com/trace/external.msw",
+    "trackingUrlTemplate": "https://www.m-o.com/quick-track-form/?t={trackingNumber}",
     "trackingSearchUrl": "https://www.m-o.com/quick-track-form/",
     "linkRules": [],
     "detectionRules": []

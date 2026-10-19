@@ -1692,6 +1692,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'midland-transport', number: '0000000000000000',
     route: /^https:\/\/ship\.midlandtransport\.com\/Tracking\/TrackClientTrackings\?TrackingNumber=0000000000000000&Lang=0$/,
     marker: /The shipment number does not exist|Travel History/ },
+  // The quick track looks the number in its address up and answers an unknown one with a notice naming it.
+  { carrier: 'maritime-ontario', number: 'F0000000',
+    route: /^https:\/\/www\.m-o\.com\/quick-track-form\/\?t=F0000000$/,
+    marker: /We couldn.t find a shipment matching|Track Your Shipment/ },
   // The FastNet page looks the probill in its address up on the server and answers an unknown one
   // with its notice, without the number.
   { carrier: 'fastfrate', number: '0000000000',

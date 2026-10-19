@@ -269,6 +269,7 @@ import { statusMap as mailamericas } from '../../carriers/mailamericas/status.js
 import { statusMap as mailplusAu } from '../../carriers/mailplus-au/status.js';
 import { statusMap as mainfreight } from '../../carriers/mainfreight/status.js';
 import { statusMap as maltapost } from '../../carriers/maltapost/status.js';
+import { statusMap as maritimeOntario } from '../../carriers/maritime-ontario/status.js';
 import { statusMap as matkahuolto } from '../../carriers/matkahuolto/status.js';
 import { statusMap as mauritiusPost } from '../../carriers/mauritius-post/status.js';
 import { statusMap as mayiyinfu } from '../../carriers/mayiyinfu/status.js';
@@ -513,7 +514,7 @@ export const STATUS_MAPS: Readonly<Record<string, CarrierStatusMap>> = {
   'la-poste-senegal': laPosteSenegal, labaih, 'latvijas-pasts': latvijasPasts,
   'leopards-courier': leopardsCourier, liccardi, 'lietuvos-pastas': lietuvosPastas, 'line-clear': lineClear, linhan, 'lion-parcel': lionParcel, logen, loggi, logistiq, logoix, 'loomis-express': loomisExpress,
   'lotte-global': lotteGlobal, 'm-and-p': mAndP, 'm-one': mOne, 'magyar-posta': magyarPosta, mailamericas, 'mailplus-au': mailplusAu, mainfreight,
-  maltapost, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu, 'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz,
+  maltapost, 'maritime-ontario': maritimeOntario, matkahuolto, 'mauritius-post': mauritiusPost, mayiyinfu, 'mds-collivery': mdsCollivery, meest, 'messenger-cz': messengerCz,
   'metropolitan-warehouse': metropolitanWarehouse, 'micro-express': microExpress, 'midland-transport': midlandTransport, 'mng-kargo': mngKargo,
   'mrl-global': mrlGlobal, mtscn, mylerz, naqel, nationex, 'next-level-delivery': nextLevelDelivery, nipost, 'nippon-express': nipponExpress, noest,
   'norsk-global': norskGlobal, northline, 'nova-global': novaGlobal, nox, 'nz-couriers': nzCouriers, 'oak-harbor': oakHarbor, oca, ocasa,

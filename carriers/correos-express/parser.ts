@@ -34,7 +34,7 @@ const SPAIN: ReadonlySet<string> = new Set([
   'GUADALAJARA', 'HUELVA', 'HUESCA', 'JAEN', 'LA RIOJA', 'LOGRONO', 'LEON', 'LLEIDA', 'LERIDA', 'LUGO', 'MADRID', 'MALAGA',
   'MURCIA', 'NAVARRA', 'PAMPLONA', 'OURENSE', 'ORENSE', 'PALENCIA', 'PONTEVEDRA', 'SALAMANCA', 'SEGOVIA', 'SEVILLA', 'SORIA',
   'TARRAGONA', 'TERUEL', 'TOLEDO', 'VALENCIA', 'VALLADOLID', 'ZAMORA', 'ZARAGOZA', 'CEUTA', 'MELILLA',
-  'BENAVENTE', 'ESTACION DE ESPELUY', 'JEREZ DE LA FRONTERA', 'SANTIAGO DE COMPOSTELA', 'VIGO',
+  'ALGECIRAS', 'BENAVENTE', 'ESTACION DE ESPELUY', 'JEREZ DE LA FRONTERA', 'SANTIAGO DE COMPOSTELA', 'VIGO',
 ]);
 /** The district capitals of mainland Portugal, less Vila Real, whose name a Spanish town also writes. */
 const PORTUGAL: ReadonlySet<string> = new Set([

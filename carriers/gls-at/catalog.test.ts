@@ -79,9 +79,9 @@ describe('GLS Austria', () => {
     expect(requested(fetcher)[0]!.searchParams.has('postalCode')).toBe(false);
   });
 
-  it('reads a postcode that does not match the parcel as not found', async () => {
+  it('asks for the postcode again when it does not match the parcel', async () => {
     const fetcher = replies('overview-delivered.json', Response.json({ lastError: 'E800' }, { status: 404 }));
-    await expect(track(fetcher, DELIVERED, '9999')).rejects.toMatchObject({ attempts: [{ source: 'gls-at', kind: 'not_found' }] });
+    await expect(track(fetcher, DELIVERED, '9999')).rejects.toMatchObject({ attempts: [{ source: 'gls-at', kind: 'input_required' }] });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 

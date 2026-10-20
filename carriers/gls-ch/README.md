@@ -24,9 +24,12 @@ request gets at most half of the time left, so the retry fits in the rest.
 A 404 with GLS's own `lastError` code means "no such parcel" and raises
 `GLSSwitzerlandTrackingError` (a `NotFoundError`; gls-de narrows on it with
 `instanceof`, so keep the class): `E000` for an expired parcel or `E206` for an
-unknown number on the overview, and `E000`, `E609` or `E800` for a postcode
-that does not match on the detail. Any other 404 is inconclusive, and a 400 or
-403 can be a challenge, so it stays an upstream error.
+unknown number on the overview, and `E000` on the detail. `E609` or `E800` on
+the detail is a postcode that does not match the parcel the overview found: an
+`input_required` error for the postcode with reason `postcode_mismatch`, so the
+owner is asked to correct it rather than told the parcel is unknown. Any other
+404 is inconclusive, and a 400 or 403 can be a challenge, so it stays an
+upstream error.
 
 ## Notes
 

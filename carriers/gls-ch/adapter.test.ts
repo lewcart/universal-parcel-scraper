@@ -313,6 +313,23 @@ describe('GLS Switzerland tracker', () => {
     });
   });
 
+  it.each(['E609', 'E800'])('asks for the postcode again when GLS has the parcel but not for that postcode (%s)', async (lastError) => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(Response.json(deliveredOverviewFixture()))
+      .mockResolvedValueOnce(Response.json({ lastError }, { status: 404 }));
+    await expect(new GLSSwitzerlandTracker({ fetcher, now: () => FIXED_MILLIS }).fetch(OFFICIAL_TEST_PARCEL_NUMBER, '8000'))
+      .rejects.toMatchObject({ kind: 'input_required', field: 'postcode', reason: 'postcode_mismatch' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('reads an expired parcel on the detail request as not found', async () => {
+    const fetcher = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(Response.json(deliveredOverviewFixture()))
+      .mockResolvedValueOnce(Response.json({ lastError: 'E000' }, { status: 404 }));
+    await expect(new GLSSwitzerlandTracker({ fetcher, now: () => FIXED_MILLIS }).fetch(OFFICIAL_TEST_PARCEL_NUMBER, '8000'))
+      .rejects.toMatchObject({ name: 'GLSSwitzerlandTrackingError', kind: 'not_found' });
+  });
+
   it('sends a request that hangs once more, inside the budget', async () => {
     useRequestClock();
     try {

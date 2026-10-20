@@ -146,11 +146,12 @@ describe('GLS Germany', () => {
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
-  it.each(['E609', 'E800'])('reports a postcode GLS does not match (%s) as not found, as GLS Switzerland does', async (lastError) => {
+  it.each(['E609', 'E800'])('asks for the postcode again when GLS does not match it (%s), as GLS Switzerland does', async (lastError) => {
     const fetcher = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(Response.json({ tuStatus: [parcel()] }))
       .mockResolvedValueOnce(Response.json({ lastError }, { status: 404 }));
-    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001')).rejects.toMatchObject({ name: 'GLSGermanyTrackingError', status: 404 });
+    await expect(new GLSGermanyTracker({ fetcher }).fetch(NUMBER, '8001'))
+      .rejects.toMatchObject({ kind: 'input_required', field: 'postcode', reason: 'postcode_mismatch', provider: 'GLS Germany' });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 

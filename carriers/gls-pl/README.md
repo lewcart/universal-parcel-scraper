@@ -17,8 +17,9 @@ adapter of its own: `tracking.adapter` is [`gls-de`](../gls-de/README.md), whose
   scans only after the delivery postcode. The postcode is optional in the catalog, so a
   parcel saved without it is tracked through enabled universal providers instead; the
   adapter then asks GLS nothing.
-- An expired number is GLS's `E000` on the overview and an unknown one `E206`, and a postcode that does not
-  match is `E609` or `E800` on the detail; both are not found.
+- An expired number is GLS's `E000` on the overview and an unknown one `E206`; both are not
+  found. A postcode that does not match is `E609` or `E800` on the detail, which asks for the
+  postcode again (`postcode_mismatch`).
 
 ## Notes
 

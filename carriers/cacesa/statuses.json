@@ -7,6 +7,7 @@
     { "code": "EVENTO/ico_aduana", "wording": "Start Custom clearance Process", "language": "en", "stage": "customs", "confirmedBy": "live" },
     { "code": "EVENTO/ico_okaduana", "wording": "Customs cleared-Green channel", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Customs released the parcel." },
     { "code": "EVENTO/ico_subirdocu", "wording": "Customs document required uploaded", "language": "en", "stage": "customs", "confirmedBy": "live", "note": "The recipient uploaded the document customs asked for." },
-    { "code": "INCIDENCIA/ico_aduana", "wording": "Shipment held in warehouse for inspection", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "An incident: customs holds the parcel for inspection." }
+    { "code": "INCIDENCIA/ico_aduana", "wording": "Shipment held in warehouse for inspection", "language": "en", "stage": "exception", "confirmedBy": "live", "note": "An incident: customs holds the parcel for inspection." },
+    { "code": "INCIDENCIA/ico_aduanako", "wording": "Held by customs-documentary verification", "language": "en", "stage": "exception", "confirmedBy": "live", "firstSeen": "2026-10-19", "note": "An incident: customs holds the parcel until it has checked the shipment's documents." }
   ]
 }

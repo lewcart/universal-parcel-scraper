@@ -17,9 +17,11 @@ const EVENTS: Readonly<Record<string, Stage>> = {
   ico_okaduana: 'in_transit',
 };
 
-// Incidents CACESA names by icon: customs holding the parcel for inspection.
+// Incidents CACESA names by icon: customs holding the parcel for inspection,
+// or for the documents it checks ("ko" beside the customs icon).
 const INCIDENTS: Readonly<Record<string, Stage>> = {
   ico_aduana: 'exception',
+  ico_aduanako: 'exception',
 };
 
 /** The provider code of a milestone: its type, a slash and its icon ("EVENTO/ico_aduana"). */

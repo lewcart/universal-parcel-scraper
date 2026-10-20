@@ -171,6 +171,8 @@ describe('CACESA status vocabulary', () => {
     }
     expect(statusMapAnswer({ carrier: 'cacesa', providerCode: 'EVENTO/ico_aduana', description: 'Start Custom clearance Process' }))
       .toEqual({ kind: 'mapped', stage: 'customs' });
+    expect(statusMapAnswer({ carrier: 'cacesa', providerCode: 'INCIDENCIA/ico_aduanako', description: 'Held by customs-documentary verification' }))
+      .toEqual({ kind: 'mapped', stage: 'exception' });
     expect(statusMap.stage('ENTREGADO/ico_entregaenmano', 'delivered')).toBe('delivered');
     expect(statusMap.stage('INCIDENCIA/ico_atention', 'pending review')).toBeUndefined();
     expect(statusMap.stage('EVENTO/ico_tax', 'taxes')).toBeUndefined();

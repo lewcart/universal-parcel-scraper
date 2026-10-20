@@ -25,9 +25,9 @@ service its tracking page's search box calls.
 - Each milestone has a type (`EVENTO`, `ENTREGADO`, `INCIDENCIA` or `ERROR`) and an icon. The
   provider code joins them, as in `EVENTO/ico_aduana`. `ENTREGADO` is delivered whatever its icon.
   The event icons replies showed have their own stage, a document uploaded for customs included,
-  and so does an incident in which customs holds the parcel for inspection. Errors and other icons
-  are left to the shared wording rules. The page's stylesheet names icons for delivery, pickup
-  points, absent recipients and taxes, but no reply showed one.
+  and so do the incidents in which customs holds the parcel for inspection or to check its
+  documents. Errors and other icons are left to the shared wording rules. The page's stylesheet
+  names icons for delivery, pickup points, absent recipients and taxes, but no reply showed one.
 - Wording is English, from the reply's English field.
 - Clocks are Madrid wall time without an offset, and the adapter reads them in `Europe/Madrid`:
   the customs milestones match Cainiao's to the second under Madrid's offset.

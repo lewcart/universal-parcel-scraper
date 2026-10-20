@@ -74,7 +74,8 @@ export function universalPlan(options: {
   const carrier = (options.carriers ?? []).find((candidate) => coverageTiers(candidate)) ?? null;
   const tiers = coverageTiers(carrier);
   const ordered = orderUniversalSources(eligible, tiers);
-  const priority = priorityUniversalSource(trackingNumber);
+  // The number's priority provider goes first, unless the carrier's evidence left it out.
+  const priority = ordered.find((source) => source === priorityUniversalSource(trackingNumber));
   return {
     sources: priority ? [priority, ...ordered.filter((source) => source !== priority)] : ordered,
     carrier,

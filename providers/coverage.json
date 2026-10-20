@@ -106,6 +106,12 @@
           }
         },
         {
+          "note": "Ship24 keeps this courier for its subscribers: an anonymous lookup answers HTTP 404 \"{courier} is not available for website.\", for some numbers only once the courier is named",
+          "results": {
+            "Ship24": "subscriber_only"
+          }
+        },
+        {
           "note": "A second reference",
           "results": {
             "Ship24": "history"
@@ -292,6 +298,12 @@
             "17TRACK": "no_history",
             "Postal Ninja": 4,
             "UPU": "no_history"
+          }
+        },
+        {
+          "note": "Ship24 keeps this courier for its subscribers: an anonymous lookup answers HTTP 404 \"{courier} is not available for website.\", for some numbers only once the courier is named",
+          "results": {
+            "Ship24": "subscriber_only"
           }
         },
         {
@@ -603,6 +615,12 @@
             "17TRACK": 27,
             "Postal Ninja": "no_history",
             "UPU": "n/a"
+          }
+        },
+        {
+          "note": "Ship24 keeps this courier for its subscribers: an anonymous lookup answers HTTP 404 \"{courier} is not available for website.\", for some numbers only once the courier is named",
+          "results": {
+            "Ship24": "subscriber_only"
           }
         },
         {

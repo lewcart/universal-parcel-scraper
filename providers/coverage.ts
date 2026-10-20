@@ -12,17 +12,19 @@
  * - `empty`: answered without history the library can use (no history, summary
  *   only, scans without an instant, a sign-in or postcode prompt);
  * - `excluded`: never history, and it answered with another carrier's parcel
- *   or refused the number format.
+ *   or refused the number format; or, whatever it once returned, it now keeps
+ *   the carrier for its subscribers (`subscriber_only`).
  *
  * Positives are strong evidence, negatives weak: one old reference can miss a
  * parcel the provider would know today. So an empty provider is asked last,
- * never skipped; only a wrong parcel or a refused format excludes it.
+ * never skipped; only a wrong parcel, a refused format or a courier kept for
+ * subscribers excludes it.
  */
 import data from './coverage.json' with { type: 'json' };
 import type { UniversalSource } from './types.js';
 
 export type CoverageAnswer = 'history' | 'no_history' | 'summary_only' | 'undated' | 'sign_in' | 'postcode_prompt'
-  | 'wrong_carrier' | 'refused' | 'error' | 'blocked' | 'unverified' | 'n/a';
+  | 'wrong_carrier' | 'refused' | 'subscriber_only' | 'error' | 'blocked' | 'unverified' | 'n/a';
 /** History rows, an answer, or history marked partial with the reason. */
 export type CoverageCell = number | CoverageAnswer | { rows: number; partial: string };
 export interface CoverageReference {
@@ -45,7 +47,7 @@ export type CoverageTier = 'full' | 'partial' | 'unknown' | 'empty' | 'excluded'
 
 export const COVERAGE_SOURCES: readonly UniversalSource[] = ['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU'];
 const ANSWERS = new Set<string>(['history', 'no_history', 'summary_only', 'undated', 'sign_in', 'postcode_prompt',
-  'wrong_carrier', 'refused', 'error', 'blocked', 'unverified', 'n/a']);
+  'wrong_carrier', 'refused', 'subscriber_only', 'error', 'blocked', 'unverified', 'n/a']);
 const EMPTY = new Set<CoverageCell>(['no_history', 'summary_only', 'undated', 'sign_in', 'postcode_prompt']);
 
 export const CARRIER_COVERAGE: readonly CarrierCoverage[] = data.carriers as CarrierCoverage[];
@@ -74,6 +76,8 @@ export function coverageProblems(entry: CarrierCoverage): string[] {
 
 function tierOf(source: UniversalSource, references: readonly CoverageReference[]): CoverageTier {
   const seen = references.filter((reference) => reference.results[source] !== undefined);
+  // A courier the provider keeps for its subscribers: no anonymous lookup can answer, whatever it once did.
+  if (seen.some((reference) => reference.results[source] === 'subscriber_only')) return 'excluded';
   // A reference another provider knew, which this one did not.
   const missed = seen.some((reference) => !reference.stale
     && (EMPTY.has(reference.results[source]!) || reference.results[source] === 'wrong_carrier')

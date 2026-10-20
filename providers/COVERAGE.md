@@ -31,7 +31,9 @@ A check mark means scan history came back. The number beside it counts projected
 partial histories included. Translations, repeated reports and postal exchange-office rows
 can raise that count without adding progress. A summary alone, a challenge or a failed
 identity check does not count as history. A negative on an expired reference says nothing
-about current coverage.
+about current coverage. "Subscribers only" marks a carrier a provider keeps for its
+subscribers: no anonymous lookup can answer, so routing leaves that provider out whatever it
+returned before.
 
 Postal Ninja's counts include scans with no zone. It places a scan on its service's clock
 where that is established and otherwise borrows a zone as a guess
@@ -44,12 +46,12 @@ is asked after the other aggregators whatever its count.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | [DHL](../carriers/dhl/README.md) | Yes | Blocked | ✓ 10 | ✓ 14 | No history | ✓ 14 | ✓ 1 |
 | [DHL Express](../carriers/dhl-express/README.md) | Yes | ✓ 23 | ✓ 23 | ✓ 23 | Unverified | Unverified | N/A |
-| [UPS](../carriers/ups/README.md) | Yes | ✓ 11 | ✓ 1, partial | ✓ 11 | ✓ 11 | ✓ 11 | N/A |
+| [UPS](../carriers/ups/README.md) | Yes | ✓ 11 | Subscribers only | ✓ 11 | ✓ 11 | ✓ 11 | N/A |
 | [FedEx](../carriers/fedex/README.md) | Yes | ✓ 14, intermittent | ✓ 14 | ✓ 14 | ✓ 14 | ✓ 14 | N/A |
 | [USPS](../carriers/usps/README.md) | Yes | ✓ 11 | No history | No history | ✓ 11 | No history | N/A |
 | [Amazon Logistics](../carriers/amazon-logistics/README.md) | Link only | Not tested | No history | Sign-in | No history | No history | N/A |
 | [Amazon Shipping](../carriers/amazon-shipping/README.md) | Yes | ✓ 12 | ✓ 12 | ✓ 12 | No history | ✓ 12 | N/A |
-| [Royal Mail](../carriers/royal-mail/README.md) | Yes (local Chromium) | ✓ 8 | No history | ✓ 1 | No history | ✓ 4 | No history |
+| [Royal Mail](../carriers/royal-mail/README.md) | Yes (local Chromium) | ✓ 8 | Subscribers only | ✓ 1 | No history | ✓ 4 | No history |
 | [Swiss Post](../carriers/swiss-post/README.md) | Yes | ✓ 8 | ✓ 8 | ✓ 8 | ✓ 8 | No history | N/A |
 | [La Poste / Colissimo](../carriers/la-poste/README.md) | Yes | ✓ 15 | ✓ 11, partial | ✓ 16 | ✓ 14 | ✓ 26 | No history |
 | [DPD Switzerland](../carriers/dpd/README.md) | Yes (Switzerland; optional postcode) | ✓ 4 | ✓ 1, partial | ✓ 4 | ✓ 4 | ✓ 4 | N/A |
@@ -57,7 +59,7 @@ is asked after the other aggregators whatever its count.
 | [AliExpress / Cainiao](../carriers/aliexpress/README.md) | Yes | ✓ 17 | No history | ✓ 17 | ✓ 17 | ✓ 17 | N/A |
 | [China Post](../carriers/china-post/README.md) | Yes (newest three scans) | Unverified; alternate ✓ 4, partial | ✓ 1, partial | ✓ 1, partial | ✓ 39 | ✓ 17 | ✓ 1 |
 | [EMS](../carriers/ems/README.md) | Yes | ✓ 7 | ✓ 6 | ✓ 18 | ✓ 24 | ✓ 6 | ✓ 6 |
-| [SF Express](../carriers/sf-express/README.md) | Yes | ✓ 22 | No history | No history | ✓ 27 | No history | N/A |
+| [SF Express](../carriers/sf-express/README.md) | Yes | ✓ 22 | Subscribers only | No history | ✓ 27 | No history | N/A |
 | [GLS Germany](../carriers/gls-de/README.md) | Yes (postcode) | Not tested (postcode) | No history | No history | No history | No history | N/A |
 | [GLS France](../carriers/gls-fr/README.md) | Yes | No history | No history | ✓ 4 | No history | No history | N/A |
 | [GLS Switzerland](../carriers/gls-ch/README.md) | Yes (postcode) | Unverified | Unverified | Unverified | Unverified | Unverified | N/A |
@@ -175,7 +177,7 @@ is asked after the other aggregators whatever its count.
 <!-- GENERATED:lookup-order -->
 | Source | Carriers with history | Full | Partial | Only source |
 | --- | ---: | ---: | ---: | ---: |
-| Ship24 | 63 | 24 | 39 | 0 |
+| Ship24 | 62 | 24 | 38 | 0 |
 | ParcelsApp | 80 | 52 | 28 | 6 |
 | 17TRACK | 76 | 49 | 27 | 4 |
 | Postal Ninja | 58 | 19 | 39 | 0 |
@@ -185,13 +187,14 @@ With Postal Ninja enabled, carriers without their own order use ParcelsApp → S
 | Carrier | Order |
 | --- | --- |
 | DHL Express | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
-| UPS | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| UPS | ParcelsApp → 17TRACK → Postal Ninja |
 | USPS | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Royal Mail | ParcelsApp → 17TRACK → Postal Ninja |
 | La Poste / Colissimo | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | AliExpress / Cainiao | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | China Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | EMS | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| SF Express | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| SF Express | 17TRACK → ParcelsApp → Postal Ninja |
 | GLS France | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | Chronopost | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | InPost | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |

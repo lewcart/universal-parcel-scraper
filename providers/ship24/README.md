@@ -41,7 +41,8 @@ The browser step runs only when a browser could fix the direct failure:
 - So is a courier Ship24 keeps for its subscribers (UPS, Royal Mail, SF Express): a 404
   saying "{courier} is not available for website.", for some only once the courier is
   named. It is a `NotFoundError` with reason `subscriber_only`; the courier's name stays
-  out of it.
+  out of it. [coverage.json](../coverage.json) records these couriers as `subscriber_only`,
+  so routing does not ask Ship24 for their parcels.
 - So is a parcel Ship24 knows but has no scans for after the refresh (`NoHistoryError`).
 
 Built without an HTTP client (as in browser tests), the adapter runs the browser step

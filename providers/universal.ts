@@ -5,12 +5,13 @@
  * Default order is ParcelsApp -> Ship24 -> 17TRACK -> UPU, with Postal Ninja after
  * the other aggregators only when the host enables it. A carrier with coverage
  * evidence (coverage.ts) gets its own order: fuller history first, HTTP before the
- * browser service within a tier, providers that answered with another parcel or
- * refused the format left out, Postal Ninja still after the other aggregators.
- * Validated China Post C/L numbers put 17TRACK first. Each provider is asked
- * once per lookup and the first usable history wins; the per-parcel router
- * remembers which provider answered, except UPU stays last and requires a
- * postal S10. The source names are persisted in routing state and must not change.
+ * browser service within a tier, providers that answered with another parcel,
+ * refused the format or keep the carrier for their subscribers left out, Postal
+ * Ninja still after the other aggregators. Validated China Post C/L numbers put
+ * 17TRACK first and ten-digit numbers Ship24, unless the carrier left it out.
+ * Each provider is asked once per lookup and the first usable history wins; the
+ * per-parcel router remembers which provider answered, except UPU stays last
+ * and requires a postal S10. The source names are persisted in routing state and must not change.
  *
  * This module owns the order and the aggregate failure; every protocol detail
  * lives in the provider folder next to it.

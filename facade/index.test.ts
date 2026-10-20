@@ -11,6 +11,13 @@ import { DEFAULT_USER_AGENT } from '../core/transport/userAgent.js';
 import type { UniversalSource } from '../providers/types.js';
 import { createTracker, TrackingError } from './index.js';
 
+// UPS and Royal Mail stand in for any carrier with an adapter, Ship24 for any provider. Their
+// coverage evidence, which leaves Ship24 out for both, is coverage.test.ts's to check.
+vi.mock(import('../providers/coverage.js'), async (importOriginal) => {
+  const actual = await importOriginal();
+  return { ...actual, coverageTiers: (carrier) => carrier === 'ups' || carrier === 'royal-mail' ? null : actual.coverageTiers(carrier) };
+});
+
 const number = '1Z999AA10123456784';
 const environment: AdapterEnvironment = { trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} };
 function registry(track: CarrierAdapter['track'], recordsSteps = false): AdapterRegistry {

@@ -15,7 +15,8 @@ const catalog = CARRIER_CATALOG as Record<string, { displayName: string }>;
 
 const WORDS: Record<string, string> = {
   no_history: 'No history', summary_only: 'Summary only', undated: 'Undated', sign_in: 'Sign-in', postcode_prompt: 'Postcode prompt',
-  wrong_carrier: 'Wrong carrier', refused: 'Refused', error: 'Error', blocked: 'Blocked', unverified: 'Unverified', 'n/a': 'N/A',
+  wrong_carrier: 'Wrong carrier', refused: 'Refused', subscriber_only: 'Subscribers only', error: 'Error', blocked: 'Blocked',
+  unverified: 'Unverified', 'n/a': 'N/A',
 };
 function cellText(cell: CoverageCell | undefined): string {
   if (typeof cell === 'number') return `✓ ${cell}`;
@@ -29,7 +30,9 @@ function coverageTable(): string {
     const folder = path.join(providersDirectory, '..', 'carriers', entry.carrier);
     const link = existsSync(path.join(folder, 'README.md')) ? 'README.md' : 'carrier.json';
     const name = entry.name ?? catalog[entry.carrier]!.displayName;
-    const results = COVERAGE_SOURCES.map((source) => cellText(entry.references[0]!.results[source]));
+    // A courier kept for subscribers outranks what the comparison reference once returned.
+    const results = COVERAGE_SOURCES.map((source) => cellText(entry.references
+      .some((reference) => reference.results[source] === 'subscriber_only') ? 'subscriber_only' : entry.references[0]!.results[source]));
     return `| [${name}](../carriers/${entry.carrier}/${link}) | ${entry.direct} | ${entry.sample} | ${results.join(' | ')} |`;
   });
   return [`| Carrier | Direct support | Direct sample | ${COVERAGE_SOURCES.join(' | ')} |`,
@@ -101,8 +104,12 @@ describe('coverage evidence', () => {
   it('grades each provider from all of a carrier\'s references', () => {
     // 17TRACK had every USPS history; ParcelsApp missed one it had.
     expect(coverageTiers('usps')).toMatchObject({ '17TRACK': 'full', ParcelsApp: 'partial', Ship24: 'empty', 'Postal Ninja': 'empty' });
-    // Label only for one reference.
-    expect(coverageTiers('ups')).toMatchObject({ Ship24: 'partial', ParcelsApp: 'full' });
+    // Marked partial for one reference.
+    expect(coverageTiers('la-poste')).toMatchObject({ Ship24: 'partial' });
+    // A courier kept for subscribers excludes the provider, whatever history it once returned.
+    expect(coverageTiers('ups')).toMatchObject({ Ship24: 'excluded', ParcelsApp: 'full' });
+    expect(coverageTiers('royal-mail')).toMatchObject({ Ship24: 'excluded' });
+    expect(coverageTiers('sf-express')).toMatchObject({ Ship24: 'excluded' });
     // ParcelsApp missed an Express waybill Ship24 knew.
     expect(coverageTiers('dhl-express')).toMatchObject({ Ship24: 'full', ParcelsApp: 'partial' });
     // A stranger's parcel or a refused format excludes a provider without history.
@@ -138,9 +145,9 @@ describe('coverage-based lookup order', () => {
 
   it('asks fuller history first, HTTP before the browser service within a tier', () => {
     expect(plan('usps').sources).toEqual(['17TRACK', 'ParcelsApp', 'Ship24', 'Postal Ninja', 'UPU']);
-    expect(plan('ups').sources).toEqual(['ParcelsApp', '17TRACK', 'Ship24', 'Postal Ninja', 'UPU']);
+    expect(plan('la-poste').sources).toEqual(['ParcelsApp', '17TRACK', 'Ship24', 'Postal Ninja', 'UPU']);
     expect(plan('spring-gds').sources).toEqual(['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU']);
-    expect(plan('ups').rank('ParcelsApp')).toBeLessThan(plan('ups').rank('Ship24'));
+    expect(plan('la-poste').rank('ParcelsApp')).toBeLessThan(plan('la-poste').rank('Ship24'));
   });
 
   it('asks Postal Ninja after the other aggregators and never ranks it fuller than them', () => {
@@ -155,6 +162,9 @@ describe('coverage-based lookup order', () => {
 
   it('leaves out excluded providers and Postal Ninja when it is disabled', () => {
     expect(plan('yamato').sources).not.toContain('ParcelsApp');
+    expect(plan('ups').sources).toEqual(['ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU']);
+    // Not even as the provider a ten-digit number puts first.
+    expect(plan('sf-express', { trackingNumber: '1234567891' }).sources).not.toContain('Ship24');
     expect(plan('australia-post', { enablePostalNinja: false }).sources).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'UPU']);
   });
 

@@ -17,14 +17,15 @@ import { isRecord } from '../../core/types.js';
 
 const PAGE = 'https://www.ship24.com/tracking';
 const API = 'https://api.ship24.com/api/parcels';
-// Public website checksum configuration, not a provisioned API credential.
-// Source (verified 2026-09-10):
-// https://cdn.ship24.com/assets/main.16f5bc7c0914804e.js
-// getOneParcel's N(...) argument and the first value appended to $zoho_.
+// Public website checksum configuration, not a provisioned API credential,
+// read from the site's main bundle (cdn.ship24.com/assets/main.<hash>.js,
+// named in the tracking page's HTML; the hash changes with each deploy): the
+// HMAC key that signs getOneParcel's token, and the first of the three values
+// the bundle appends to $zoho_.
 const WEBSITE_SIGNING_KEY = "qxV6SOr2tqw9m36j0-R-ohPt1PAB2et0"; // gitleaks:allow -- public frontend checksum constant, not an API credential
 const WEBSITE_SALT = '\u1780';
 // The other two values appended to $zoho_, which getWithCrawlerAuth's token
-// uses (https://cdn.ship24.com/assets/main.5992cb0ad5830e4b.js, checked 2026-10-10).
+// uses, in the same bundle.
 const REFRESH_MARKERS = ['\u1781', '\u1782'] as const;
 
 // Standard MurmurHash3 x86/32, used by the public frontend's request checksum.

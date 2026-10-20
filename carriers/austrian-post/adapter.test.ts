@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { recognitionCandidates } from '../../core/catalog/recognition.js';
+import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, AustrianPostTracker, normalizeAustrianPostNumber, parseAustrianPostResponse } from './adapter.js';
 import { austrianPostPlace } from './identity.js';
@@ -324,5 +326,18 @@ describe('Austrian Post public tracking', () => {
     await expect(tracker.recognize!('123')).resolves.toEqual({ known: false });
     expect(fetcher).not.toHaveBeenCalled();
     await expect(tracker.recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+  });
+});
+
+describe('Austrian Post detection', () => {
+  it('is listed first for the twenty-two-digit numbers that start like its parcel numbers, and only for those', () => {
+    expect(detectCarrierMatch(NUMBER)).toMatchObject({ carrier: 'unknown', confidence: 'low',
+      candidates: ['austrian-post', 'usps', 'estafeta'], preferred: ['austrian-post'] });
+    expect(recognitionCandidates(ABROAD)[0]).toMatchObject({ carrier: 'austrian-post', preferred: true });
+    const other = detectCarrierMatch('5000000000000000000001');
+    expect(other.candidates).toContain('austrian-post');
+    expect(other.preferred).not.toContain('austrian-post');
+    expect(detectCarrierMatch('9400100000000000000001').preferred).not.toContain('austrian-post');
+    expect(detectCarrierMatch('10000000000000000000001').candidates).not.toContain('austrian-post');
   });
 });

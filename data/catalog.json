@@ -2340,6 +2340,11 @@
     "linkRules": [],
     "detectionRules": [
       {
+        "pattern": "^10\\d{20}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{22}$",
         "confidence": "low"
       },

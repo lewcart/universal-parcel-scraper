@@ -10469,6 +10469,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -10923,6 +10926,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -10989,6 +10995,9 @@
       "austrian-post",
       "usps",
       "estafeta"
+    ],
+    "preferred": [
+      "austrian-post"
     ],
     "asked": [
       "austrian-post"
@@ -11232,6 +11241,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11423,6 +11435,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11476,6 +11491,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11489,6 +11507,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11501,6 +11522,9 @@
       "austrian-post",
       "usps",
       "estafeta"
+    ],
+    "preferred": [
+      "austrian-post"
     ],
     "asked": [
       "austrian-post"

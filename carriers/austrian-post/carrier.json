@@ -66,6 +66,12 @@
   "links": [],
   "detection": [
     {
+      "id": "austrian-post-4",
+      "pattern": "^10\\d{20}$",
+      "confidence": "low",
+      "preferred": true
+    },
+    {
       "id": "austrian-post-1",
       "pattern": "^\\d{22}$",
       "confidence": "low"

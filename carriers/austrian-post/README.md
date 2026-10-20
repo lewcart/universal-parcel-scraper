@@ -50,6 +50,10 @@ than the estimate's end also drops it.
 
 ## Limitations
 
+Twenty-two digits stay a low-confidence suggestion, since USPS's and Estafeta's
+rules take that length too. Austrian Post's parcel numbers start with `10`,
+which no other carrier's 22-digit samples do, so `austrian-post-4` lists it
+first for them and recognition settles on it when several carriers answer.
 `austrian-post-3` suggests Austrian Post for 24 digits at low confidence, beside
 the other carriers whose rules take that length, so recognition can ask its
 tracker. No public EURODIS barcode of an Austrian Post parcel has been found,

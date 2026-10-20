@@ -2342,6 +2342,11 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
+        "pattern": "^10\\d{20}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{22}$",
         "confidence": "low"
       },
@@ -31983,7 +31988,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
   "an-post": ["an-post-1"],
   "bpost": ["bpost-numeric-prefix","bpost-1","bpost-2","bpost-3","bpost-jjbe"],
-  "austrian-post": ["austrian-post-1","austrian-post-3","austrian-post-2"],
+  "austrian-post": ["austrian-post-4","austrian-post-1","austrian-post-3","austrian-post-2"],
   "postnord": ["postnord-1","postnord-2","postnord-5","postnord-3"],
   "posti": ["posti-1","posti-2","posti-3"],
   "correos-express": ["correos-express-1","correos-express-2"],

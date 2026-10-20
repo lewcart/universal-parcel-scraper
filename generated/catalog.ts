@@ -10851,7 +10851,8 @@ export const CARRIER_CATALOG = {
     "detectionRules": [
       {
         "pattern": "^\\d{11}$",
-        "confidence": "low"
+        "confidence": "low",
+        "checksum": "dhl-ecommerce-pl"
       }
     ]
   },

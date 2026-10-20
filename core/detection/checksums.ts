@@ -16,7 +16,7 @@ import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundE
 import { isValidFrankierId } from './frankierId.js';
 import { isValidGlsParcelNumber } from './gls.js';
 import { isValidHermesParcelNumber } from './hermes.js';
-import { isValidDhlIdentcode } from './identcode.js';
+import { isValidDhlEcommercePolandNumber, isValidDhlIdentcode } from './identcode.js';
 import { isValidMagyarPostaNumber } from './magyarPosta.js';
 import { isValidMondialRelayBarcode } from './mondialRelay.js';
 import {
@@ -70,4 +70,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   'magyar-posta': isValidMagyarPostaNumber,
   'poste-italiane': isValidPosteItalianeRegisteredNumber,
   'frankier-id': isValidFrankierId,
+  'dhl-ecommerce-pl': isValidDhlEcommercePolandNumber,
 };

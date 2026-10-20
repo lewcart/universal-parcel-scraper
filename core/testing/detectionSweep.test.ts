@@ -22,7 +22,7 @@ import { MAX_RECOGNITIONS, recognitionAskedCarriers, recognitionCandidates } fro
 import { isValidColissimoParcelNumber } from '../detection/colissimo.js';
 import { isValidEvriParcelNumber } from '../detection/evri.js';
 import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundEconomyNumber } from '../detection/fedex.js';
-import { isValidDhlIdentcode } from '../detection/identcode.js';
+import { isValidDhlEcommercePolandNumber, isValidDhlIdentcode } from '../detection/identcode.js';
 import {
   detectCarrierMatch,
   isValidCorreosSpainCheckLetter,
@@ -69,7 +69,8 @@ interface DetectionRule {
   readonly checksum?:
     | 's10' | 'mondial-relay' | 'hermes' | 'gls' | 'dhl-express' | 'tnt' | 'poczta-polska' | 'correos-spain' | 'dpd' | 'usps' | 'sscc'
     | 'ups' | 'colissimo' | 'ukrposhta' | 'evri' | 'mod7' | 'gs1' | 'ontrac' | 'luhn' | 'fedex' | 'sf-express'
-    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta' | 'poste-italiane';
+    | 'fedex-ground-96' | 'fedex-1d' | 'identcode' | 'fedex-ground-economy' | 'pos-laju' | 'saia' | 'magyar-posta' | 'poste-italiane'
+    | 'dhl-ecommerce-pl';
   readonly preferred?: true;
 }
 
@@ -130,6 +131,7 @@ function ruleMatches(rule: DetectionRule, value: string, raw: string): boolean {
   if (rule.checksum === 'saia') return isValidSaiaPro(value);
   if (rule.checksum === 'magyar-posta') return isValidMagyarPostaNumber(value);
   if (rule.checksum === 'poste-italiane') return isValidPosteItalianeRegisteredNumber(value);
+  if (rule.checksum === 'dhl-ecommerce-pl') return isValidDhlEcommercePolandNumber(value);
   return true;
 }
 

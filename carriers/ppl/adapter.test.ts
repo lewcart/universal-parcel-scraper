@@ -244,15 +244,16 @@ describe('PPL recognition', () => {
   it('is suggested for eleven digits opening with a product digit and asked first for a Czech parcel or one a provider names PPL', () => {
     for (const number of ['40000000001', '20000000000', '70000000009']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['ppl']) });
-      // The commoner eleven-digit carriers keep the first batch.
-      expect(recognitionAskedCarriers(number)).not.toContain('ppl');
+      // The commoner eleven-digit carriers come first.
+      expect(recognitionAskedCarriers(number).slice(0, 4)).toEqual(['gls-fr', 'gls-de', 'gls-ch', 'postlogistics']);
       expect(recognitionAskedCarriers(number, { countryHint: 'CZ' })[0]).toBe('ppl');
       expect(recognitionAskedCarriers(number, { hint: 'ppl' })[0]).toBe('ppl');
     }
     // A provider names PPL beside the DHL networks it hands over to; only PPL's rule fits.
     expect(universalCarrierHints(['PPL', 'DHL Express', 'DHL Parcel Netherlands'], NUMBER).discovered_carrier).toBe('ppl');
-    // PPL is no DHL network: a bare DHL name keeps DHL eCommerce Poland.
-    expect(universalCarrierHints(['DHL'], NUMBER).discovered_carrier).toBe('dhl-ecommerce-pl');
+    // PPL is no DHL network: a bare DHL name keeps DHL eCommerce Poland, when its check digit holds.
+    expect(universalCarrierHints(['DHL'], '40000000004').discovered_carrier).toBe('dhl-ecommerce-pl');
+    expect(universalCarrierHints(['DHL'], NUMBER).discovered_carrier).toBeUndefined();
     for (const number of ['4000000000', '400000000012', 'PPL40000000001', '00000000001', '14000000001']) {
       expect(detectCarrierMatch(number).candidates).not.toContain('ppl');
     }

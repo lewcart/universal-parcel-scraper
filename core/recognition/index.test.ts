@@ -31,11 +31,12 @@ describe('recognition candidates', () => {
   });
 
   it('asks GLS Poland and GLS Austria about 11 digits only for a caller in their country', () => {
-    // Synthetic: the GLS group's 11-digit layout names no network.
-    const number = '12345678901';
+    // Synthetic: the GLS group's 11-digit layout names no network. The number also passes DHL
+    // eCommerce Poland's check, which puts it first.
+    const number = '12345678900';
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['gls-at', 'gls-pl']));
-    expect(recognitionAskedCarriers(number)).toEqual(['gls-fr', 'gls-de', 'gls-ch', 'postlogistics', 'dhl-ecommerce-pl']);
+    expect(recognitionAskedCarriers(number)).toEqual(['dhl-ecommerce-pl', 'gls-fr', 'gls-de', 'gls-ch', 'postlogistics']);
     expect(recognitionAskedCarriers(number, { countryHint: 'PL' })).toContain('gls-pl');
     expect(recognitionAskedCarriers(number, { countryHint: 'AT' })[0]).toBe('gls-at');
     for (const country of ['DE', 'CH', 'FR', 'CZ', 'GB']) {
@@ -112,7 +113,6 @@ describe('recognition candidates', () => {
       { carrier: 'gls-fr', needsInput: null, preferred: false },
       { carrier: 'gls-ch', needsInput: 'postcode', preferred: false },
       { carrier: 'postlogistics', needsInput: null, preferred: false },
-      { carrier: 'dhl-ecommerce-pl', needsInput: null, preferred: false },
       { carrier: 'gls-pl', needsInput: null, preferred: false },
       { carrier: 'gls-at', needsInput: null, preferred: false },
     ]);

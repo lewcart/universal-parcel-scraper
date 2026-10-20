@@ -326,6 +326,19 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     r.add(r.complete('0'.repeat(11)), r.complete('9'.repeat(11)));
   },
 
+  'dhl-ecommerce-pl'(r) {
+    const valid = Array.from({ length: 8 }, () => r.complete(r.string(10)));
+    standard(r, valid);
+    // The Identcode's weights over ten digits, so the digit before the check weighs 9: a sum
+    // that is a multiple of ten closes with 0, and weights 9, 4 give another digit.
+    const zero = r.find(() => r.string(10), (head) => weightedSum(head, [4, 9]) % 10 === 0);
+    r.add(`${zero}0`, `${zero}1`);
+    const head = r.find(() => r.string(10), (digits) => weightedSum(digits, [4, 9]) % 10 !== weightedSum(digits, [9, 4]) % 10);
+    r.add(head + String((10 - weightedSum(head, [9, 4]) % 10) % 10));
+    // An Identcode is one digit longer.
+    r.add(r.complete('0'.repeat(10)), r.complete('9'.repeat(10)), `${valid[0]}0`);
+  },
+
   luhn(r) {
     const valid = [
       ...Array.from({ length: 4 }, () => r.complete(`${r.pick('0123')}${r.string(10)}`)),

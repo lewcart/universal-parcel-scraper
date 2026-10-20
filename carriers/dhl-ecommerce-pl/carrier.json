@@ -87,7 +87,8 @@
     {
       "id": "dhl-ecommerce-pl-1",
       "pattern": "^\\d{11}$",
-      "confidence": "low"
+      "confidence": "low",
+      "checksum": "dhl-ecommerce-pl"
     }
   ]
 }

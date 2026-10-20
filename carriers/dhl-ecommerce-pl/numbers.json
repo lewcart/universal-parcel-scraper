@@ -2,7 +2,7 @@
   "carrier": "dhl-ecommerce-pl",
   "records": [
     {
-      "number": "99999999990",
+      "number": "99999999995",
       "role": "shipment",
       "evidence": "synthetic",
       "derivedFrom": "official_shape",
@@ -15,14 +15,13 @@
           "gls-ch",
           "gls-fr",
           "gls-de",
-          "old-dominion",
           "dhl-ecommerce-pl",
           "gls-at",
           "gls-pl",
           "ppl"
         ]
       },
-      "note": "Made-up waybill in the eleven-digit shape the portal answers with; several carriers share the shape."
+      "note": "Made-up waybill in the eleven-digit shape the portal answers with, closing with its check digit; several carriers share the shape."
     },
     {
       "number": "JJD000030214008000129555645",
@@ -152,6 +151,92 @@
         ]
       },
       "note": "Waybill in a public review of DHL in Poland. The portal returns its status, a return to the sender."
+    },
+    {
+      "number": "25895566398",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20220727234656/https://sprawdz.dhl.com.pl/szukaj.aspx?m=0&sn=25895566398",
+        "date": "2022-07-27",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "Looked up on DHL Poland's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "14879021366",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20180208121054/https://sprawdz.dhl.com.pl/szukaj.aspx?m=0&sn=14879021366",
+        "date": "2018-02-08",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl"
+        ]
+      },
+      "note": "Looked up on DHL Poland's own tracker, as an archived address shows; the capture was not opened."
+    },
+    {
+      "number": "30409831109",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://web.archive.org/web/20260729172830/https://mojdhl.pl/paczki/dostawa/30409831109",
+        "date": "2026-07-29",
+        "dateKind": "capture",
+        "access": "indexed_excerpt"
+      },
+      "context": {
+        "assessment": "candidate"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "postlogistics",
+          "gls-ch",
+          "gls-fr",
+          "gls-de",
+          "dhl-ecommerce-pl",
+          "gls-at",
+          "gls-pl",
+          "ppl"
+        ]
+      },
+      "note": "Looked up on DHL Poland's own tracker, as an archived address shows; the capture was not opened."
     }
   ]
 }

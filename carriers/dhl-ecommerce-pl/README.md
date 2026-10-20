@@ -38,7 +38,10 @@ verification retain the API summary. A solved checkbox alone is insufficient:
 tracking requires a matching, nonempty history response. No recipient
 postcode is needed for scan history.
 
-Detection suggests eleven-digit waybills. Other accepted references, including
+Detection suggests eleven-digit waybills whose last digit is the check digit of
+DHL Paket's Identcode: weights 4 and 9 alternate from the left over the first
+ten digits. DHL does not document it for Poland, but every waybill archived
+from its trackers passes it. Other accepted references, including
 JJD licence plates, require the carrier to be named. Allegro Delivery numbers
 are rejected because that service is tracked by Allegro.
 

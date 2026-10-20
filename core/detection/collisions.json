@@ -1109,7 +1109,7 @@
     "reason": "The three GLS countries share one 8-character format; the number stays a low-confidence suggestion. Loggi also suggests this shape at low confidence."
   },
   {
-    "shape": "Eleven digits starting 2 to 9 that pass the mod 7 check",
+    "shape": "Eleven digits starting 2 to 9 that pass the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
       "blue-dart",
@@ -1126,7 +1126,23 @@
     "reason": "The mod 7 check digit that Aramex, Blue Dart and Japan Post's registered mail share adds all three to the carriers that accept any eleven digits; a check digit does not establish ownership, so a compact number stays a low-confidence suggestion. The printed eight-plus-three dash is high-confidence evidence for PostLogistics."
   },
   {
-    "shape": "Eleven digits starting 0 or 1 that pass the mod 7 check",
+    "shape": "Eleven digits starting 2 to 9 that pass the mod 7 check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "aramex",
+      "blue-dart",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "japan-post",
+      "postlogistics",
+      "ppl"
+    ],
+    "reason": "The mod 7 check digit that Aramex, Blue Dart and Japan Post's registered mail share adds all three to the carriers that accept any eleven digits; a check digit does not establish ownership, so a compact number stays a low-confidence suggestion. The printed eight-plus-three dash is high-confidence evidence for PostLogistics. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "Eleven digits starting 0 or 1 that pass the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
       "blue-dart",
@@ -1142,7 +1158,22 @@
     "reason": "The mod 7 check digit that Aramex, Blue Dart and Japan Post's registered mail share adds all three to the carriers that accept any eleven digits; a check digit does not establish ownership, so a compact number stays a low-confidence suggestion. The printed eight-plus-three dash is high-confidence evidence for PostLogistics. PPL drops out: its numbers start with a product digit from 2 to 9."
   },
   {
-    "shape": "10 and nine digits that pass the mod 7 check",
+    "shape": "Eleven digits starting 0 or 1 that pass the mod 7 check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "aramex",
+      "blue-dart",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "japan-post",
+      "postlogistics"
+    ],
+    "reason": "The mod 7 check digit that Aramex, Blue Dart and Japan Post's registered mail share adds all three to the carriers that accept any eleven digits; a check digit does not establish ownership, so a compact number stays a low-confidence suggestion. The printed eight-plus-three dash is high-confidence evidence for PostLogistics. PPL drops out: its numbers start with a product digit from 2 to 9. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "10 and nine digits that pass the mod 7 check, failing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
       "blue-dart",
@@ -1153,10 +1184,9 @@
       "gls-pl",
       "japan-post",
       "postlogistics",
-      "dhl-ecommerce-pl",
       "cdek"
     ],
-    "reason": "CDEK's own numbers count up from 10, so it joins the mod 7 carriers and the carriers that accept any eleven digits; nothing in the number decides between them, so it stays a low-confidence suggestion."
+    "reason": "CDEK's own numbers count up from 10, so it joins the mod 7 carriers and the carriers that accept any eleven digits; nothing in the number decides between them, so it stays a low-confidence suggestion. DHL eCommerce Poland drops out: its check digit fails."
   },
   {
     "shape": "9{10}",
@@ -1186,7 +1216,7 @@
     "reason": "10-digit numbers are shared by several carriers; the number stays a low-confidence suggestion. Packeta's packet ID never starts with 0."
   },
   {
-    "shape": "9{11} starting 2 to 9 that passes the mod 7 and Luhn checks",
+    "shape": "9{11} starting 2 to 9 that passes the mod 7 and Luhn checks, failing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
       "blue-dart",
@@ -1198,13 +1228,12 @@
       "japan-post",
       "old-dominion",
       "postlogistics",
-      "dhl-ecommerce-pl",
       "ppl"
     ],
-    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape and the mod 7 check Aramex, Blue Dart and Japan Post share."
+    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape and the mod 7 check Aramex, Blue Dart and Japan Post share. DHL eCommerce Poland drops out: its check digit fails."
   },
   {
-    "shape": "9{11} starting 0 or 1 that passes the mod 7 and Luhn checks",
+    "shape": "9{11} starting 0 or 1 that passes the mod 7 and Luhn checks, failing DHL eCommerce Poland's check",
     "carriers": [
       "aramex",
       "blue-dart",
@@ -1215,10 +1244,9 @@
       "gls-pl",
       "japan-post",
       "old-dominion",
-      "postlogistics",
-      "dhl-ecommerce-pl"
+      "postlogistics"
     ],
-    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape and the mod 7 check Aramex, Blue Dart and Japan Post share. PPL drops out: its numbers start with a product digit from 2 to 9."
+    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape and the mod 7 check Aramex, Blue Dart and Japan Post share. PPL drops out: its numbers start with a product digit from 2 to 9. DHL eCommerce Poland drops out: its check digit fails."
   },
   {
     "shape": "9{13} starting with 7, 8 or 9",
@@ -2201,7 +2229,7 @@
     "reason": "Without Ukrposhta's check digit, 13-digit numbers are shared by three carriers; the number stays a low-confidence suggestion."
   },
   {
-    "shape": "9{11} starting 2 to 9 that fails the mod 7 check",
+    "shape": "9{11} starting 2 to 9 that fails the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "dhl-ecommerce-pl",
       "gls-ch",
@@ -2215,7 +2243,20 @@
     "reason": "Without the mod 7 check digit Aramex, Blue Dart and Japan Post drop out; compact 11-digit numbers stay a low-confidence suggestion."
   },
   {
-    "shape": "9{11} starting 0 or 1 that fails the mod 7 check",
+    "shape": "9{11} starting 2 to 9 that fails the mod 7 check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "postlogistics",
+      "ppl"
+    ],
+    "reason": "Without the mod 7 check digit Aramex, Blue Dart and Japan Post drop out; compact 11-digit numbers stay a low-confidence suggestion. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "9{11} starting 0 or 1 that fails the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "dhl-ecommerce-pl",
       "gls-ch",
@@ -2228,7 +2269,19 @@
     "reason": "Without the mod 7 check digit Aramex, Blue Dart and Japan Post drop out; compact 11-digit numbers stay a low-confidence suggestion. PPL drops out: its numbers start with a product digit from 2 to 9."
   },
   {
-    "shape": "10 and nine digits that fail the mod 7 check",
+    "shape": "9{11} starting 0 or 1 that fails the mod 7 check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "postlogistics"
+    ],
+    "reason": "Without the mod 7 check digit Aramex, Blue Dart and Japan Post drop out; compact 11-digit numbers stay a low-confidence suggestion. PPL drops out: its numbers start with a product digit from 2 to 9. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "10 and nine digits that fail the mod 7 check, passing DHL eCommerce Poland's check",
     "carriers": [
       "dhl-ecommerce-pl",
       "gls-ch",
@@ -2240,6 +2293,19 @@
       "cdek"
     ],
     "reason": "CDEK's own numbers count up from 10, so it joins the carriers that accept any eleven digits; compact numbers stay a low-confidence suggestion."
+  },
+  {
+    "shape": "10 and nine digits that fail the mod 7 check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "postlogistics",
+      "cdek"
+    ],
+    "reason": "CDEK's own numbers count up from 10, so it joins the carriers that accept any eleven digits; compact numbers stay a low-confidence suggestion. DHL eCommerce Poland drops out: its check digit fails."
   },
   {
     "shape": "9{20} in DHL's 0034043 range",
@@ -2716,7 +2782,7 @@
     "reason": "Only the carriers that accept any twelve digits remain, SF Express first when its own check passes; the number stays a low-confidence suggestion. Poste Italiane's registered-mail check digit adds Poste Italiane as well."
   },
   {
-    "shape": "9{11} starting 2 to 9 that fails the mod 7 check and passes the Luhn check",
+    "shape": "9{11} starting 2 to 9 that fails the mod 7 check and passes the Luhn check, passing DHL eCommerce Poland's check",
     "carriers": [
       "dhl-ecommerce-pl",
       "gls-ch",
@@ -2731,7 +2797,21 @@
     "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape."
   },
   {
-    "shape": "9{11} starting 0 or 1 that fails the mod 7 check and passes the Luhn check",
+    "shape": "9{11} starting 2 to 9 that fails the mod 7 check and passes the Luhn check, failing DHL eCommerce Poland's check",
+    "carriers": [
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "old-dominion",
+      "postlogistics",
+      "ppl"
+    ],
+    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "9{11} starting 0 or 1 that fails the mod 7 check and passes the Luhn check, passing DHL eCommerce Poland's check",
     "carriers": [
       "dhl-ecommerce-pl",
       "gls-ch",
@@ -2745,9 +2825,21 @@
     "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape. PPL drops out: its numbers start with a product digit from 2 to 9."
   },
   {
-    "shape": "10 and nine digits that fail the mod 7 check and pass the Luhn check",
+    "shape": "9{11} starting 0 or 1 that fails the mod 7 check and passes the Luhn check, failing DHL eCommerce Poland's check",
     "carriers": [
-      "dhl-ecommerce-pl",
+      "gls-ch",
+      "gls-de",
+      "gls-fr",
+      "gls-at",
+      "gls-pl",
+      "old-dominion",
+      "postlogistics"
+    ],
+    "reason": "Old Dominion's prefixes decide when its Luhn check digit passes. Elsewhere the check only adds it as a suggestion beside the broad PostLogistics compact shape. PPL drops out: its numbers start with a product digit from 2 to 9. DHL eCommerce Poland drops out: its check digit fails."
+  },
+  {
+    "shape": "10 and nine digits that fail the mod 7 check and pass the Luhn check, failing DHL eCommerce Poland's check",
+    "carriers": [
       "gls-ch",
       "gls-de",
       "gls-fr",
@@ -2757,7 +2849,7 @@
       "postlogistics",
       "cdek"
     ],
-    "reason": "CDEK's own numbers count up from 10 and Old Dominion's Luhn check adds it as a suggestion; neither decides, so the number stays a low-confidence suggestion."
+    "reason": "CDEK's own numbers count up from 10 and Old Dominion's Luhn check adds it as a suggestion; neither decides, so the number stays a low-confidence suggestion. DHL eCommerce Poland drops out: its check digit fails."
   },
   {
     "shape": "9{13} in the Planzer 99990 range, ending 7, 8 or 9",
@@ -4563,7 +4655,6 @@
     "shape": "810, a dash and eight digits",
     "carriers": [
       "amerijet",
-      "dhl-ecommerce-pl",
       "gls-ch",
       "gls-de",
       "gls-fr",

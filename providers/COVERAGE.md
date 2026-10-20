@@ -39,7 +39,8 @@ Postal Ninja's counts include scans with no zone. It places a scan on its servic
 where that is established and otherwise borrows a zone as a guess
 ([Parsing](postal-ninja/README.md#parsing)), but many of its histories still have no scan a
 consumer can place on a timeline. In a host's lookups its answers left no usable scan, so it
-is asked after the other aggregators whatever its count.
+is asked after the other aggregators whatever its count, and about a carrier only when that
+carrier's evidence shows its history.
 
 <!-- GENERATED:coverage -->
 | Carrier | Direct support | Direct sample | Ship24 | ParcelsApp | 17TRACK | Postal Ninja | UPU |
@@ -182,63 +183,90 @@ is asked after the other aggregators whatever its count.
 | 17TRACK | 76 | 49 | 27 | 4 |
 | Postal Ninja | 58 | 19 | 39 | 0 |
 
-With Postal Ninja enabled, carriers without their own order use ParcelsApp → Ship24 → 17TRACK → Postal Ninja. These carriers have their own:
+With Postal Ninja enabled, a number no carrier is named for uses ParcelsApp → Ship24 → 17TRACK → Postal Ninja. A carrier without its own order uses ParcelsApp → Ship24 → 17TRACK. These carriers have their own:
 
 | Carrier | Order |
 | --- | --- |
-| DHL Express | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
+| DHL | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| DHL Express | Ship24 → 17TRACK → ParcelsApp |
 | UPS | ParcelsApp → 17TRACK → Postal Ninja |
-| USPS | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| FedEx | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| USPS | 17TRACK → ParcelsApp → Ship24 |
+| Amazon Shipping | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Royal Mail | ParcelsApp → 17TRACK → Postal Ninja |
+| Swiss Post | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | La Poste / Colissimo | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| DPD Switzerland | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| DHL eCommerce | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | AliExpress / Cainiao | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | China Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | EMS | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| SF Express | 17TRACK → ParcelsApp → Postal Ninja |
+| SF Express | 17TRACK → ParcelsApp |
+| GLS Germany | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | GLS France | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Chronopost | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| InPost | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
+| Hermes Germany | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| Chronopost | 17TRACK → ParcelsApp → Ship24 |
+| InPost | Ship24 → ParcelsApp → 17TRACK |
 | PostNL | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
+| Australia Post | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Japan Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| India Post | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
+| India Post | 17TRACK → Ship24 → ParcelsApp |
+| Poste Italiane | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Correos Spain | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| bpost | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| bpost | 17TRACK → ParcelsApp → Ship24 |
 | Austrian Post | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | PostNord | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Aramex | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| YunExpress | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | 4PX | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Yanwen | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| JD Logistics | ParcelsApp → Ship24 → 17TRACK |
-| YTO Express | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| Yamato Transport | 17TRACK → Ship24 → Postal Ninja |
+| Yanwen | ParcelsApp → 17TRACK → Ship24 |
+| YTO Express | ParcelsApp → 17TRACK → Ship24 |
+| Yamato Transport | 17TRACK → Ship24 |
+| Correios Brazil | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Singapore Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Hongkong Post | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Korea Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| Planzer | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| Planzer | 17TRACK → ParcelsApp → Ship24 |
+| Parcelforce Worldwide | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Purolator | 17TRACK → ParcelsApp → Ship24 |
-| DTDC | ParcelsApp → Ship24 → 17TRACK |
+| OnTrac | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Packeta | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
 | Poczta Polska | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Bring | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| An Post | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| CTT Portugal | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| CTT Express | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | BRT | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | SEUR | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| MRW | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Relais Colis | ParcelsApp → 17TRACK → Ship24 |
 | Asendia | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Landmark Global | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | NZ Post | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| Pos Malaysia | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| Pos Malaysia | ParcelsApp → 17TRACK → Ship24 |
+| Thailand Post | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | Ukrposhta | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
-| Correos de Chile | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
-| The Courier Guy | ParcelsApp → Ship24 → 17TRACK |
+| Correos de Chile | 17TRACK → ParcelsApp → Ship24 |
 | GEODIS | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
 | Heppner | Ship24 → 17TRACK |
-| C Chez Vous | ParcelsApp → Ship24 → 17TRACK |
 | Colisweb | ParcelsApp → 17TRACK |
-| SpeedX | 17TRACK → ParcelsApp → Ship24 → Postal Ninja |
+| UniUni | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| SpeedX | 17TRACK → ParcelsApp → Ship24 |
+| GOFO Express | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| Ecoscooting | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| Canpar | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| DPD Germany | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | DPD UK | Ship24 → ParcelsApp → 17TRACK → Postal Ninja |
 | Intelcom / Dragonfly | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
 | Nova Poshta (Ukraine) | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| CNE Express | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
-| DHL eCommerce UK | Ship24 → 17TRACK → ParcelsApp → Postal Ninja |
+| CNE Express | 17TRACK → Ship24 → ParcelsApp |
+| GOFO France | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
+| DHL eCommerce UK | Ship24 → 17TRACK → ParcelsApp |
+| DHL eCommerce Netherlands | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 | DPD Poland | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
-| DHL eCommerce Poland | 17TRACK → Ship24 → ParcelsApp → Postal Ninja |
-| SunYou | ParcelsApp → 17TRACK → Ship24 → Postal Ninja |
+| DHL eCommerce Poland | 17TRACK → Ship24 → ParcelsApp |
+| SunYou | ParcelsApp → 17TRACK → Ship24 |
+| GLS Italy | ParcelsApp → Ship24 → 17TRACK → Postal Ninja |
 <!-- /GENERATED:lookup-order -->
 
 ## Retrieval limits

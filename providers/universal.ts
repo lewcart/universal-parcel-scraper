@@ -7,7 +7,7 @@
  * evidence (coverage.ts) gets its own order: fuller history first, HTTP before the
  * browser service within a tier, providers that answered with another parcel,
  * refused the format or keep the carrier for their subscribers left out, Postal
- * Ninja still after the other aggregators. Validated China Post C/L numbers put
+ * Ninja still after the other aggregators and only if the evidence shows its history. Validated China Post C/L numbers put
  * 17TRACK first and ten-digit numbers Ship24, unless the carrier left it out.
  * Each provider is asked once per lookup and the first usable history wins; the
  * per-parcel router remembers which provider answered, except UPU stays last

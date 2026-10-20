@@ -20,7 +20,8 @@ number. [universal.ts](universal.ts) owns the factories, the order and the provi
 ## Order
 
 The default order is **ParcelsApp → Ship24 → 17TRACK → UPU**. Selecting `Postal Ninja` adds
-it after the other aggregators. A carrier with results in [coverage.json](coverage.json) gets
+it after the other aggregators, for a number no carrier is named for and for a carrier whose
+evidence shows Postal Ninja history. A carrier with results in [coverage.json](coverage.json) gets
 its own order, graded by [coverage.ts](coverage.ts), but Postal Ninja stays after the other
 aggregators. UPU needs a checksum-valid S10 number and always stays last. Checksum-valid China Post `C…CN` and `L…CN` numbers start with 17TRACK.
 [COMPARISON.md](COMPARISON.md) explains the order, and [COVERAGE.md](COVERAGE.md) compares

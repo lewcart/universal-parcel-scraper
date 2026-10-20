@@ -1,8 +1,12 @@
 # Postal Ninja
 
 Opt-in universal provider: selecting `Postal Ninja` in `providers` (`SCRAPER_PROVIDERS` for
-the CLI and server) asks it after the other aggregators, whatever its coverage evidence,
-because many of its international histories have no scan a consumer can place.
+the CLI and server) asks it after the other aggregators, whatever its rank in the coverage
+evidence, because many of its international histories have no scan a consumer can place. Its lookups
+take a browser session and rarely find a named carrier's parcel the others missed, so it is
+asked about a carrier only when that carrier's [coverage evidence](../COVERAGE.md) shows its
+history. A number no carrier is named for is where it most often has the only history, so it
+is asked about every such number.
 Through TRAWL it returns full histories, often with destination legs. Its scan times
 have no zone: scans of a service whose clock is established are placed on it, and others
 borrow a zone as a guess (see [Parsing](#parsing)). Persisted provider name: `Postal Ninja`. The results page needs a

@@ -1,5 +1,6 @@
 import { isValidS10TrackingNumber } from '../core/detection/s10.js';
 import { normalizeTrackingNumber } from '../core/detection/normalize.js';
+import { CARRIER_IDS } from '../generated/catalog.js';
 import { coverageTiers, type CoverageTier } from './coverage.js';
 import type { UniversalSource as Source } from './types.js';
 export const UNIVERSAL_SOURCES: Source[] = ['ParcelsApp', 'Ship24', '17TRACK', 'UPU'];
@@ -58,10 +59,18 @@ export function orderUniversalSources(eligible: readonly Source[], tiers: Partia
     || Number(BROWSER_SOURCES.has(a)) - Number(BROWSER_SOURCES.has(b)) || eligible.indexOf(a) - eligible.indexOf(b));
 }
 
+/** Catalog carriers other than the catalog's own `unknown`. */
+const CARRIERS: ReadonlySet<string> = new Set(CARRIER_IDS.filter((carrier) => carrier !== 'unknown'));
+
 /**
  * The providers to ask for a number, ordered by the coverage evidence of the
  * first of `carriers` that has some (the carrier the lookup is for, then the one
  * confirmed or discovered for the number), otherwise in the default order.
+ *
+ * Postal Ninja's browser lookups rarely find a named carrier's parcel that the
+ * other aggregators missed. It is asked about one only when that carrier's
+ * evidence shows its history, and about any number no carrier is named for,
+ * where it is often the only provider with the parcel.
  */
 export function universalPlan(options: {
   carriers?: ReadonlyArray<string | null | undefined>;
@@ -69,10 +78,13 @@ export function universalPlan(options: {
   enablePostalNinja?: boolean;
 } = {}): UniversalPlan {
   const { trackingNumber, enablePostalNinja = false } = options;
-  const defaults: Source[] = enablePostalNinja ? ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] : [...UNIVERSAL_SOURCES];
-  const eligible = defaults.filter((source) => source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber));
-  const carrier = (options.carriers ?? []).find((candidate) => coverageTiers(candidate)) ?? null;
+  const carriers = options.carriers ?? [];
+  const carrier = carriers.find((candidate) => coverageTiers(candidate)) ?? null;
   const tiers = coverageTiers(carrier);
+  const named = carriers.some((candidate) => candidate && CARRIERS.has(candidate));
+  const postalNinja = enablePostalNinja && (!named || ['full', 'partial'].includes(tiers?.['Postal Ninja'] ?? 'unknown'));
+  const defaults: Source[] = postalNinja ? ['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU'] : [...UNIVERSAL_SOURCES];
+  const eligible = defaults.filter((source) => source !== 'UPU' || trackingNumber === undefined || isValidS10TrackingNumber(trackingNumber));
   const ordered = orderUniversalSources(eligible, tiers);
   // The number's priority provider goes first, unless the carrier's evidence left it out.
   const priority = ordered.find((source) => source === priorityUniversalSource(trackingNumber));

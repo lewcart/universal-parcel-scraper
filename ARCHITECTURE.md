@@ -325,7 +325,7 @@ until a re-key.
 
 The universal providers answer when no dedicated adapter can, and can complete a dedicated
 adapter's partial answer. Commercial ones run only when the caller names them, and UPU is the
-default. `universalPlan()` orders the eligible providers from recorded evidence.
+default. `universalPlan()` picks and orders the eligible providers from recorded evidence.
 [providers/COMPARISON.md](providers/COMPARISON.md) explains the order and
 [providers/COVERAGE.md](providers/COVERAGE.md) holds the evidence.
 

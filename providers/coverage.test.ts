@@ -50,7 +50,8 @@ function lookupOrder(): string {
   });
   const chain = (carrier?: string) => universalPlan({ carriers: [carrier], enablePostalNinja: true }).sources
     .filter((source) => source !== 'UPU').join(' → ');
-  const standard = chain();
+  const unnamed = chain();
+  const standard = chain(Object.keys(catalog).find((carrier) => carrier !== 'unknown' && !coverageTiers(carrier)));
   const orders = CARRIER_COVERAGE.filter((entry) => chain(entry.carrier) !== standard)
     .map((entry) => `| ${entry.name ?? catalog[entry.carrier]!.displayName} | ${chain(entry.carrier)} |`);
   return [
@@ -58,7 +59,7 @@ function lookupOrder(): string {
     '| --- | ---: | ---: | ---: | ---: |',
     ...totals,
     '',
-    `With Postal Ninja enabled, carriers without their own order use ${standard}. These carriers have their own:`,
+    `With Postal Ninja enabled, a number no carrier is named for uses ${unnamed}. A carrier without its own order uses ${standard}. These carriers have their own:`,
     '',
     '| Carrier | Order |',
     '| --- | --- |',
@@ -144,7 +145,7 @@ describe('coverage-based lookup order', () => {
     universalPlan({ carriers: [carrier], enablePostalNinja: true, ...options });
 
   it('asks fuller history first, HTTP before the browser service within a tier', () => {
-    expect(plan('usps').sources).toEqual(['17TRACK', 'ParcelsApp', 'Ship24', 'Postal Ninja', 'UPU']);
+    expect(plan('usps').sources).toEqual(['17TRACK', 'ParcelsApp', 'Ship24', 'UPU']);
     expect(plan('la-poste').sources).toEqual(['ParcelsApp', '17TRACK', 'Ship24', 'Postal Ninja', 'UPU']);
     expect(plan('spring-gds').sources).toEqual(['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja', 'UPU']);
     expect(plan('la-poste').rank('ParcelsApp')).toBeLessThan(plan('la-poste').rank('Ship24'));
@@ -158,6 +159,15 @@ describe('coverage-based lookup order', () => {
       expect(['full', 'partial'], carrier).toContain(tier('Postal Ninja'));
       for (const other of sources.filter((source) => source !== 'UPU')) expect(rank('Postal Ninja'), carrier).toBeGreaterThanOrEqual(rank(other));
     }
+  });
+
+  it('asks Postal Ninja about a carrier only when its evidence shows Postal Ninja history', () => {
+    // No history, nothing conclusive, a refused format, no evidence at all.
+    for (const carrier of ['usps', 'quickpac', 'purolator', 'imile']) expect(plan(carrier).sources, carrier).not.toContain('Postal Ninja');
+    expect(universalPlan({ carriers: ['unknown', null, 'royal-mail'], enablePostalNinja: true }).sources).toContain('Postal Ninja');
+    // A number no carrier is named for.
+    expect(universalPlan({ carriers: ['unknown'], enablePostalNinja: true }).sources).toEqual(['ParcelsApp', 'Ship24', '17TRACK', 'Postal Ninja', 'UPU']);
+    expect(universalPlan({ enablePostalNinja: true }).sources).toContain('Postal Ninja');
   });
 
   it('leaves out excluded providers and Postal Ninja when it is disabled', () => {

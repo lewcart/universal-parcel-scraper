@@ -11,7 +11,11 @@ the requested parcel. The gateway's query error also occurs for unavailable
 orders and remains inconclusive rather than proving absence, with the reason
 `portal_not_found`: a label is unknown until the sender announces it. A parcel announced
 but not yet handed over is listed without scans, which reads as no history yet
-rather than a failure. Recognition knows such a parcel, since the listing names it.
+rather than a failure, as Ecoscooting's own page shows it ("No trajectory").
+Recognition knows such a parcel, since the listing names it.
+
+The `retry` step sends the form once more when it fails to reach the gateway or
+hangs. The first try gets half of the budget, so the retry fits in the rest.
 
 ## Notes
 

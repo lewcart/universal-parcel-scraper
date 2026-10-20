@@ -17,7 +17,8 @@
     "mode": "automatic",
     "adapter": "ecoscooting",
     "steps": [
-      "direct"
+      "direct",
+      "retry"
     ],
     "recognition": {
       "rank": 655,

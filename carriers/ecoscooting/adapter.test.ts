@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCarrierResult } from '../../core/result/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { adapter, EcoscootingTracker } from './adapter.js';
 import { normalizeEcoscootingNumber, parseEcoscooting } from './parser.js';
 import { ecoscootingStatus } from './status.js';
@@ -332,6 +333,24 @@ describe('Ecoscooting direct retrieval', () => {
       expect(Object.fromEntries([...form].filter(([key]) => key !== 'logistics_interface'))).toEqual({ msg_type: 'CN_OVERSEA_LOGISTICS_INQUIRY_TRACKING', logistic_provider_id: 'DISTRIBUTOR_30250031', data_digest: 'suibianxie', to_code: 'CNL_EU' });
       const headers = new Headers(init?.headers); expect(headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
       expect(headers.has('Cookie') || headers.has('Authorization')).toBe(false); expect(init?.signal).toBeInstanceOf(AbortSignal);
+    }
+  });
+  it('sends a query that fails to reach the gateway once more, and one that hangs inside the budget', async () => {
+    const dropped = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed'))
+      .mockResolvedValueOnce(new Response(JSON.stringify(fixture())));
+    await expect(new EcoscootingTracker({ fetcher: dropped }).fetch(NUMBER)).resolves.toMatchObject({ status: 'delivered' });
+    expect(dropped).toHaveBeenCalledTimes(2);
+    useRequestClock();
+    try {
+      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+      const spent = expect(new EcoscootingTracker({ fetcher }).fetch(NUMBER, { budgetMs: 120 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(120);
+      await spent;
+      // Half of the budget, then the retry until it ends.
+      expect(ended).toEqual([60, 120]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
     }
   });
   it.each([[404, 'transport'], [410, 'transport'], [403, 'challenge'], [429, 'rate_limited'], [503, 'maintenance']])('keeps HTTP %s distinct from parcel absence', async (status, kind) => {

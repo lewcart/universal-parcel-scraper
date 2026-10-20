@@ -8,8 +8,8 @@ native catalog all carry it; everything user-facing says PostNL.
 ## How it works
 
 1. `direct`: two POSTs on the same host.
-   - `postnl.post/api/v1/auth/token` returns a short-lived visitor token. An empty or
-     implausibly long token is refused.
+   - `postnl.post/api/v1/auth/token` returns a visitor token that lasts a day
+     (`expires_in`). An empty or implausibly long token is refused.
    - `postnl.post/api/v1/tracking-items` takes the barcode with that token. The answer echoes
      a batch; only the item whose `item` equals the requested number is read.
    - Each call replays once after a transport failure or HTTP 502/503/504, and after a 429
@@ -25,8 +25,10 @@ native catalog all carry it; everything user-facing says PostNL.
 
 - Token and lookup are one step: same host, same failure modes, so a second tier would add
   telemetry without a recovery path.
-- A fresh token per lookup: it is free and short-lived, and caching it would add an expiry
-  path to get wrong.
+- One token serves the adapter's lookups until five minutes before it expires. The token
+  endpoint's quota of 20 a minute is shared beyond one client and answers HTTP 429 past
+  it, so a token per lookup failed at a low request rate. A kept token PostNL refuses
+  (HTTP 401) is replaced once; a reply without a lifetime serves one lookup.
 - `datetime_local` is the scan's local time even though PostNL appends `Z`. Each scan is
   re-read in the zone of its own `country_code`. Countries spanning several zones (US, CA,
   BR…), Spain and Portugal's mainland/island clocks and ambiguous daylight-saving clocks

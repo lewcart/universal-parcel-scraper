@@ -7,10 +7,11 @@
  * GDS is PostNL's international subsidiary and its mailingtechnology.com
  * portal shows the same barcode (see this folder's README).
  *
- * `postnl.post` hands out a short-lived visitor token to anyone who asks, then
- * accepts a batch tracking request with it. Both calls replay once after a
- * transport failure or an HTTP 502/503/504, and an HTTP 429 only when it
- * supplies a short, valid `Retry-After`.
+ * `postnl.post` hands out a visitor token that lasts a day to anyone who asks,
+ * then accepts a batch tracking request with it. The tracker keeps the token
+ * for its later lookups. Both calls replay once after a transport failure or an
+ * HTTP 502/503/504, and an HTTP 429 only when it supplies a short, valid
+ * `Retry-After`.
  *
  * The response echoes the requested barcodes, so the item whose `item` equals
  * the requested number is the only one read. PostNL answers an unknown barcode
@@ -32,6 +33,9 @@ const TOKEN_TIMEOUT_MS = 10_000;
 const TRACK_TIMEOUT_MS = 15_000;
 const LOOKUP_TIMEOUT_MS = 25_000;
 const MAX_TOKEN_LENGTH = 16_384;
+// Visitor tokens last a day (`expires_in: 86400`); one is renewed this long before it expires.
+const MAX_TOKEN_LIFETIME_MS = 86_400_000;
+const TOKEN_RENEWAL_MARGIN_MS = 5 * 60_000;
 const NOT_FOUND_MESSAGE = /barcode was not found/i;
 // PostNL's own records (the pre-advice, the shipper's data) name no country and
 // keep Amsterdam time. See this folder's README for the evidence.
@@ -178,14 +182,24 @@ export class PostNLTracker {
   private readonly now: () => Date;
   private readonly headers: Record<string, string>;
 
+  /**
+   * The visitor token this tracker's lookups share until shortly before it
+   * expires. Each lasts a day, and the token endpoint's quota of 20 a minute
+   * is shared beyond one client.
+   */
+  private cachedToken: { value: string; expiresAt: number } | null = null;
+
   constructor(options: { fetcher?: typeof fetch; now?: () => Date; userAgent?: string } = {}) {
     this.fetcher = options.fetcher;
     this.now = options.now ?? (() => new Date());
     this.headers = siteHeaders(userAgentOf(options.userAgent));
   }
 
-  /** A fresh visitor token per lookup: it is short-lived and keyless. */
-  private async visitorToken(signal: AbortSignal): Promise<string> {
+  /** The shared visitor token, or a new one once it is close to expiring. */
+  private async visitorToken(signal: AbortSignal): Promise<{ value: string; reused: boolean }> {
+    const requestedAt = this.now().getTime();
+    if (this.cachedToken && requestedAt < this.cachedToken.expiresAt) return { value: this.cachedToken.value, reused: true };
+    this.cachedToken = null;
     const { bytes } = await fetchBounded(
       TOKEN_URL,
       { method: 'POST', headers: this.headers, body: '{}', signal },
@@ -197,11 +211,42 @@ export class PostNLTracker {
         fetcher: this.fetcher,
       },
     );
-    const accessToken = text(record(parseJsonBytes(bytes, 'PostNL authentication')).access_token);
+    const reply = record(parseJsonBytes(bytes, 'PostNL authentication'));
+    const accessToken = text(reply.access_token);
     if (!accessToken || accessToken.length > MAX_TOKEN_LENGTH) {
       throw new SchemaError(PROVIDER, 'PostNL returned an invalid visitor token');
     }
-    return accessToken;
+    // A token without a plausible lifetime serves this lookup only.
+    const lifetimeMs = typeof reply.expires_in === 'number' && Number.isFinite(reply.expires_in)
+      ? Math.min(reply.expires_in * 1000, MAX_TOKEN_LIFETIME_MS) : 0;
+    if (lifetimeMs > TOKEN_RENEWAL_MARGIN_MS) {
+      this.cachedToken = { value: accessToken, expiresAt: requestedAt + lifetimeMs - TOKEN_RENEWAL_MARGIN_MS };
+    }
+    return { value: accessToken, reused: false };
+  }
+
+  /** The tracking request. A token PostNL refuses with HTTP 401 is not kept. */
+  private async track(trackingNumber: string, accessToken: string, signal: AbortSignal): Promise<Uint8Array> {
+    const { bytes } = await fetchBounded(
+      TRACK_URL,
+      {
+        method: 'POST',
+        headers: { ...this.headers, Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ items: [trackingNumber], language_code: 'en' }),
+        signal,
+      },
+      {
+        provider: 'PostNL tracking',
+        timeoutMs: TRACK_TIMEOUT_MS,
+        maxBytes: 1_000_000,
+        retryTransient: true,
+        fetcher: this.fetcher,
+      },
+    ).catch((error: unknown) => {
+      if (error instanceof UpstreamHttpError && error.status === 401 && this.cachedToken?.value === accessToken) this.cachedToken = null;
+      throw error;
+    });
+    return bytes;
   }
 
   async fetch(trackingNumber: string, context: TrackingContext = {}): Promise<CarrierResult> {
@@ -210,23 +255,15 @@ export class PostNLTracker {
     context.signal?.throwIfAborted();
     const signal = AbortSignal.any([AbortSignal.timeout(Math.max(1, Math.floor(budget))), ...(context.signal ? [context.signal] : [])]);
     try {
-      const accessToken = await this.visitorToken(signal);
-      const { bytes } = await fetchBounded(
-        TRACK_URL,
-        {
-          method: 'POST',
-          headers: { ...this.headers, Authorization: `Bearer ${accessToken}` },
-          body: JSON.stringify({ items: [trackingNumber], language_code: 'en' }),
-          signal,
-        },
-        {
-          provider: 'PostNL tracking',
-          timeoutMs: TRACK_TIMEOUT_MS,
-          maxBytes: 1_000_000,
-          retryTransient: true,
-          fetcher: this.fetcher,
-        },
-      );
+      const token = await this.visitorToken(signal);
+      let bytes: Uint8Array;
+      try {
+        bytes = await this.track(trackingNumber, token.value, signal);
+      } catch (error) {
+        // A shared token PostNL no longer accepts is replaced once.
+        if (!token.reused || !(error instanceof UpstreamHttpError) || error.status !== 401) throw error;
+        bytes = await this.track(trackingNumber, (await this.visitorToken(signal)).value, signal);
+      }
       signal.throwIfAborted();
       return parsePostNLTrackingResponse(parseJsonBytes(bytes, 'PostNL tracking'), trackingNumber, this.now());
     } catch (error) {

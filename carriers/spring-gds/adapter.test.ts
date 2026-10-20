@@ -119,6 +119,64 @@ describe('PostNL wrong-number handling', () => {
   });
 });
 
+describe('PostNL visitor token', () => {
+  const tracked = () => jsonResponse({
+    data: { items: [{ item: POSTNL_WRONG_NUMBER, events: [{ category: 'Processing', datetime_local: '2026-08-30T12:00:00Z', country_code: 'NL' }] }] },
+  });
+  const tokenCalls = (fetcher: ReturnType<typeof vi.fn<typeof fetch>>) => fetcher.mock.calls.filter(([url]) => String(url).endsWith('/auth/token')).length;
+  const bearers = (fetcher: ReturnType<typeof vi.fn<typeof fetch>>) => fetcher.mock.calls
+    .filter(([url]) => String(url).endsWith('/tracking-items'))
+    .map(([, init]) => (init?.headers as Record<string, string>).Authorization);
+
+  it('is minted once for a tracker\'s lookups and again shortly before it expires', async () => {
+    let now = Date.parse('2026-10-20T08:00:00Z');
+    let minted = 0;
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).endsWith('/auth/token')
+      ? jsonResponse({ access_token: `visitor-token-${++minted}`, expires_in: 86_400, token_type: 'Bearer' }) : tracked());
+    const tracker = new PostNLTracker({ fetcher, now: () => new Date(now) });
+
+    await tracker.fetch(POSTNL_WRONG_NUMBER);
+    now += 23 * 3_600_000;
+    await tracker.fetch(POSTNL_WRONG_NUMBER);
+    expect(tokenCalls(fetcher)).toBe(1);
+    now += 3_600_000 - 4 * 60_000;
+    await tracker.fetch(POSTNL_WRONG_NUMBER);
+    expect(tokenCalls(fetcher)).toBe(2);
+    expect(bearers(fetcher)).toEqual(['Bearer visitor-token-1', 'Bearer visitor-token-1', 'Bearer visitor-token-2']);
+  });
+
+  it('serves one lookup when the reply gives no lifetime', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => String(url).endsWith('/auth/token')
+      ? jsonResponse({ access_token: 'visitor-token' }) : tracked());
+    const tracker = new PostNLTracker({ fetcher });
+
+    await tracker.fetch(POSTNL_WRONG_NUMBER);
+    await tracker.fetch(POSTNL_WRONG_NUMBER);
+    expect(tokenCalls(fetcher)).toBe(2);
+  });
+
+  it('is replaced once when PostNL refuses the shared one, and dropped when it refuses a new one', async () => {
+    let minted = 0;
+    const refused = new Set<string>();
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url, init) => {
+      if (String(url).endsWith('/auth/token')) return jsonResponse({ access_token: `visitor-token-${++minted}`, expires_in: 86_400 });
+      return refused.has((init?.headers as Record<string, string>).Authorization ?? '') ? new Response('', { status: 401 }) : tracked();
+    });
+    const tracker = new PostNLTracker({ fetcher });
+
+    await expect(tracker.fetch(POSTNL_WRONG_NUMBER)).resolves.toMatchObject({ status: 'in_transit' });
+    refused.add('Bearer visitor-token-1');
+    await expect(tracker.fetch(POSTNL_WRONG_NUMBER)).resolves.toMatchObject({ status: 'in_transit' });
+    expect(bearers(fetcher)).toEqual(['Bearer visitor-token-1', 'Bearer visitor-token-1', 'Bearer visitor-token-2']);
+    refused.add('Bearer visitor-token-2').add('Bearer visitor-token-3');
+    // The shared token is replaced once; the new one is refused too and the lookup fails.
+    await expect(tracker.fetch(POSTNL_WRONG_NUMBER)).rejects.toMatchObject({ status: 401 });
+    await expect(tracker.fetch(POSTNL_WRONG_NUMBER)).resolves.toMatchObject({ status: 'in_transit' });
+    expect(bearers(fetcher).slice(3)).toEqual(['Bearer visitor-token-2', 'Bearer visitor-token-3', 'Bearer visitor-token-4']);
+    expect(tokenCalls(fetcher)).toBe(4);
+  });
+});
+
 describe('official PostNL status categories', () => {
   it.each([
     ['Pre-advised', 'pending', 'registered'],

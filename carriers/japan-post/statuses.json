@@ -80,6 +80,14 @@
       "note": "Destination-country sorting scan on an international item."
     },
     {
+      "wording": "Item held at delivery depot/delivery office",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The destination post's delivery office has the item, logged with its round and delivery; it does not say the recipient can collect it."
+    },
+    {
       "wording": "Processing at delivery Post Office",
       "language": "en",
       "stage": "in_transit",

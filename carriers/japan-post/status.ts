@@ -14,6 +14,9 @@ const STATUS = new Map<string, ClassifiedStatus>([
   ['Item returned from import Customs', { status: 'in_transit', stage: 'in_transit' }],
   ['Departure from inward office of exchange', { status: 'in_transit', stage: 'in_transit' }],
   ['Item out of sorting centre', { status: 'in_transit', stage: 'in_transit' }],
+  // The destination post's delivery office has the item; like Retention, the
+  // label does not say whether the recipient can collect it.
+  ['Item held at delivery depot/delivery office', { status: 'in_transit', stage: 'in_transit' }],
   ['Processing at delivery Post Office', { status: 'in_transit', stage: 'in_transit' }],
   ['Item out for physical delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['Final delivery', { status: 'delivered', stage: 'delivered' }],

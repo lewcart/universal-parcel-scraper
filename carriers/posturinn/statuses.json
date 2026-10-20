@@ -36,6 +36,8 @@
     {"wording": "Bið eftir Póstboxi", "stage": "in_transit", "language": "is", "confirmedBy": "live", "note": "Waiting for a Póstbox locker, at the mail centre. Left in Icelandic in English replies."},
     {"wording": "Arrived at post office", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "live", "note": "The recipient is then told to collect it there."},
     {"wording": "Kom á pósthús", "stage": "ready_for_pickup", "language": "is", "confirmedBy": "live", "note": "The recipient is then told to collect it there."},
+    {"wording": "At final pick-up point", "stage": "ready_for_pickup", "language": "en", "confirmedBy": "live", "note": "At the post office the recipient collects it from, after its notices."},
+    {"wording": "Notice sent from post office", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The post office's notice to collect the parcel; it moves nothing."},
     {"wording": "Notifcation (Text msg./email)", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The text or email telling the recipient where the parcel is, sometimes while it still waits at the mail centre; it moves nothing. The misspelling is the tracker's."},
     {"wording": "Rafræn tilkynning (SMS eða tölvupóstur)", "unmapped": true, "language": "is", "confirmedBy": "live", "note": "The text or email telling the recipient where the parcel is; it moves nothing."},
     {"wording": "Barcode on consignment note changed", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A correction of the label's barcode; it moves nothing."},

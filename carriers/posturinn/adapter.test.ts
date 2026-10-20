@@ -88,6 +88,16 @@ describe('Pósturinn tracking adapter', () => {
       timestamp: '2026-05-14T08:00:00+00:00' }); }), INBOUND);
     expect(unknown.events![0]).toEqual({ local_time: '2026-05-14T08:00:00', location: 'POSTUR.IS', description: 'Sample event' });
     expect(unknown).toMatchObject({ current_stage: 'customs', last_update: null, last_update_local: '2026-05-14T08:00:00' });
+    // The post office's own wordings, on its notices and at collection, are Pósturinn's.
+    const office = parsePosturinn(edited('inbound', payload => {
+      for (const [description, timestamp] of [['Notice sent from post office', '2026-05-15T09:00:00+00:00'],
+        ['At final pick-up point', '2026-05-15T09:01:00+00:00']]) {
+        rows(payload).push({ ...rows(payload)[7]!, description, timestamp, location: { ...rows(payload)[7]!.location, name: 'Pósthús Dæmigötu 1' } });
+      }
+    }), INBOUND);
+    expect(office.events!.slice(0, 2).map(event => [event.time, event.stage]))
+      .toEqual([['2026-05-15T09:01:00+00:00', 'ready_for_pickup'], ['2026-05-15T09:00:00+00:00', undefined]]);
+    expect(office).toMatchObject({ current_stage: 'ready_for_pickup', last_update: '2026-05-15T09:01:00+00:00' });
   });
 
   it('keeps every scan of an item leaving Iceland as a wall clock, and no destination', () => {

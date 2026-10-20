@@ -47,6 +47,8 @@ export const POSTURINN_SCANS: Readonly<Record<string, Stage | null>> = {
   // The recipient is then told to collect it.
   'Arrived at post office': 'ready_for_pickup',
   'Kom á pósthús': 'ready_for_pickup',
+  'At final pick-up point': 'ready_for_pickup',
+  'Notice sent from post office': null,
   // The handover, recorded at the post office or locker it was collected from, often twice.
   'Delivery booked': 'delivered',
   'Afhending bókuð': 'delivered',
@@ -113,6 +115,7 @@ export const statusMap: CarrierStatusMap = {
   gaps: [
     { wording: 'notifcation (text msg./email)', note: 'The text or email telling the recipient where the parcel is; it moves nothing.' },
     { wording: 'rafræn tilkynning (sms eða tölvupóstur)', note: 'The text or email telling the recipient where the parcel is; it moves nothing.' },
+    { wording: 'notice sent from post office', note: 'The post office\'s notice to collect the parcel; it moves nothing.' },
     { wording: 'notice sent (import departm.)', note: 'The import department\'s notice asking the recipient for the invoice; it moves nothing.' },
     { wording: 'tilkynning send (tollalager)', note: 'The import department\'s notice asking the recipient for the invoice; it moves nothing.' },
     { wording: 'barcode on consignment note changed', note: 'A correction of the label\'s barcode; it moves nothing.' },

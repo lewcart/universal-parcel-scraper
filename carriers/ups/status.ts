@@ -63,15 +63,14 @@ const ACTIVITY_STAGES: ReadonlyMap<string, Stage> = new Map<string, Stage>([
   // Shipper created a label; UPS does not have the parcel yet.
   ['MP', 'registered'],
   // Drop-off at an access point, the access point readying it for UPS, a
-  // pickup scan, the RFID-confirmed collection from the access point, and the
-  // origin scan.
-  ['XD', 'accepted'], ['ZO', 'accepted'], ['PU', 'accepted'], ['PC', 'accepted'], ['OR', 'accepted'],
+  // pickup scan, the RFID-confirmed collection from the access point, the
+  // parcel on its way to its first UPS facility, and the origin scan there.
+  ['XD', 'accepted'], ['ZO', 'accepted'], ['PU', 'accepted'], ['PC', 'accepted'], ['AG', 'accepted'], ['OR', 'accepted'],
   // Facility scans, export and import scans.
   ['AR', 'in_transit'], ['DP', 'in_transit'], ['DS', 'in_transit'], ['YP', 'in_transit'], ['HL', 'in_transit'],
   ['EP', 'in_transit'], ['IP', 'in_transit'],
-  // A notice that the package is on its way, without a facility, and one that
-  // it is on its way to a UPS facility.
-  ['DA', 'in_transit'], ['AG', 'in_transit'],
+  // A notice that the package is on its way, without a facility.
+  ['DA', 'in_transit'],
   // Delays and new delivery plans: a late flight, a possible delay, a new
   // plan, a delivery a day early.
   ['18', 'in_transit'], ['Q5', 'in_transit'], ['E3', 'in_transit'], ['2U', 'in_transit'],

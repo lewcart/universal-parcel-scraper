@@ -247,8 +247,8 @@ describe('status map answers', () => {
     expect(answer('royal-mail', 'ZZZZZ', 'Synthetic scan')).toEqual(unknown);
   });
 
-  it("answers UPS's in-transit notice and DHL Express's supplementary data", () => {
-    expect(answer('ups', 'AG', 'Package is in transit to a UPS facility')).toEqual(mapped('in_transit'));
+  it("answers UPS's parcel on its way to its first facility and DHL Express's supplementary data", () => {
+    expect(answer('ups', 'AG', 'Package is in transit to a UPS facility')).toEqual(mapped('accepted'));
     expect(answer('dhl-express', 'EM', 'Supplementary information has been received and merged with applicable shipment data'))
       .toEqual(mapped('registered'));
   });

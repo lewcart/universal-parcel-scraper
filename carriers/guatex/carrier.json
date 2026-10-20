@@ -19,18 +19,53 @@
   "timezone": "America/Guatemala",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "guatex",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 566
+    }
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "delivered_at",
+    "provider_code"
+  ],
   "portal": {
     "url": "https://servicios.guatex.gt/Guatex/RastreoTracking?tipo=G&dato={trackingNumber}",
     "searchUrl": "https://servicios.guatex.gt/Guatex/RastreoTracking",
     "canaryUrl": "https://servicios.guatex.gt/Guatex/RastreoTracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "delivered_at",
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "delivered_at",
+      "provider_code"
+    ],
+    "discarded": [
+      "sender_name",
+      "recipient_name",
+      "signatory",
+      "payment_details"
+    ],
+    "unavailable": [
+      "location",
+      "eta",
+      "weight",
+      "service_name",
+      "offset_timestamps",
+      "proof_of_delivery"
+    ]
   },
   "links": [
     {

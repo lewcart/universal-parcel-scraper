@@ -15570,7 +15570,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Guatemala",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "guatex",
+      "recognitionRank": 566
     },
     "canaryUrl": "https://servicios.guatex.gt/Guatex/RastreoTracking",
     "trackingUrlTemplate": "https://servicios.guatex.gt/Guatex/RastreoTracking?tipo=G&dato={trackingNumber}",

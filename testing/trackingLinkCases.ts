@@ -1852,6 +1852,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'vozovoz', number: '100000000',
     route: /^https:\/\/vozovoz\.ru\/order\/manage\/\?id=100000000$/,
     marker: /Управление заказом|Проверьте корректность номера заказа/ },
+  // The page looks up the guía in its address on load and answers an unknown one with "La guía ingresada no existe".
+  { carrier: 'guatex', number: 'A0000X00000',
+    route: /^https:\/\/servicios\.guatex\.gt\/Guatex\/RastreoTracking\?tipo=G&dato=A0000X00000$/,
+    marker: /¿Por dónde va|Consultar el estado de tu envío/ },
 ];
 
 /**

@@ -298,6 +298,19 @@ function lookupNotice(value: CarrierEvent, now: number): boolean {
     && Math.abs(Date.parse(value.time) - now) <= NOTICE_WINDOW_MS;
 }
 
+// Cainiao's "Pending shipping by the seller" can come dated after the lookup, by
+// its look the time the seller has to ship by. Nothing has happened then, so the
+// entry keeps no time.
+const SELLER_PENDING = /^pending shipping by the seller[.!]?$/i;
+
+function sellerStep(value: CarrierEvent, now: number): CarrierEvent {
+  if (!SELLER_PENDING.test(value.description ?? '') || typeof value.time !== 'string'
+    || Date.parse(value.time) - now <= NOTICE_WINDOW_MS) return value;
+  const undated = { ...value };
+  delete undated.time;
+  return undated;
+}
+
 function moment(value: CarrierEvent): string {
   return value.time ?? (typeof value.local_time === 'string' ? value.local_time : '');
 }
@@ -307,7 +320,8 @@ export function result(events: CarrierEvent[], source: UniversalSource, preserve
   // omit offsets everywhere pass preserveOrder instead.
   const scans = new Map<string, CarrierEvent>();
   const now = Date.now();
-  for (const event of events) {
+  for (const entry of events) {
+    const event = sellerStep(entry, now);
     if (lookupNotice(event, now)) continue;
     const key = `${moment(event)}|${event.description}`;
     const earlier = scans.get(key);

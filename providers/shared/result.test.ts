@@ -17,4 +17,17 @@ describe('shared provider result', () => {
     // A notice alone says nothing about the parcel.
     expect(() => result([notice], 'ParcelsApp')).toThrow('No usable tracking events');
   });
+
+  it("keeps no time for the seller's step when it is dated after the lookup", () => {
+    const now = Date.now();
+    const at = (offset: number) => new Date(now + offset).toISOString();
+    const ahead = result([event(at(22 * 3_600_000), 'Pending shipping by the seller')!], 'ParcelsApp');
+    expect(ahead).toMatchObject({ status: 'pending', current_stage: 'registered', last_update: null });
+    expect(ahead.events).toHaveLength(1);
+    expect(ahead.events?.[0]).not.toHaveProperty('time');
+    // Dated before the lookup, it is the moment of the step.
+    expect(result([event(at(-3_600_000), 'Pending shipping by the seller')!], 'ParcelsApp').events?.[0]?.time).toBe(at(-3_600_000));
+    // Another scan dated ahead keeps its time, for the parcel app to flag.
+    expect(result([event(at(22 * 3_600_000), 'Arrived at sorting center')!], 'ParcelsApp').events?.[0]?.time).toBe(at(22 * 3_600_000));
+  });
 });

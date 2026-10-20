@@ -46,18 +46,19 @@ describe('TSJY HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('dates TSJY’s own steps as instants, keeps the line’s wall clocks and hands over to 17FEIA', () => {
+  it('dates TSJY’s own steps and 17FEIA’s rows from its warehouse in China as instants and hands over to 17FEIA', () => {
     const result = parseTsjy(fixture('at-line'), AT_LINE, LATER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
-      last_status_text: 'Order Confirmed.', last_update: null, last_update_local: '2026-03-05T13:22:41', expected_delivery: null,
+      last_status_text: 'Order Confirmed.', last_update: '2026-03-05T13:22:41+08:00', expected_delivery: null,
       delivery_carrier: '17feia', delivery_tracking_number: LINE });
+    expect(result.last_update_local).toBeUndefined();
     expect(clocks(result)).toEqual([
-      ['2026-03-05T13:22:41', 'Order Confirmed.', 'in_transit'],
-      ['2026-03-04T21:07:15', 'The order has information pending customer confirmation.', 'in_transit'],
-      ['2026-03-04T15:48:09', 'Warehouse receipt.', 'in_transit'],
+      ['2026-03-05T13:22:41+08:00', 'Order Confirmed.', 'in_transit'],
+      ['2026-03-04T21:07:15+08:00', 'The order has information pending customer confirmation.', 'in_transit'],
+      ['2026-03-04T15:48:09+08:00', 'Warehouse receipt.', 'in_transit'],
       ['2026-03-04T09:16:52+08:00', '订单已出库，开始国际运输', 'in_transit'],
       // 17FEIA's order data, while TSJY still holds the parcel.
-      ['2026-03-03T20:31:27', 'Item information received.', 'accepted'],
+      ['2026-03-03T20:31:27+08:00', 'Item information received.', 'accepted'],
       ['2026-03-03T11:05:38+08:00', '订单打包完成，等待出库', 'accepted'],
       ['2026-03-03T11:05:12+08:00', '订单打包完成，等待出库', 'accepted'],
       ['2026-03-03T10:42:57+08:00', '仓库拣货完成', 'accepted'],
@@ -86,12 +87,20 @@ describe('TSJY HTTP adapter', () => {
       ['2026-03-16T23:12:00', 'Broker picked up Shipment and delivered to warehouse.', 'customs'],
       ['2026-03-16T15:30:00', 'Flight Arrived at Clearance Port.', 'in_transit'],
       ['2026-03-14T04:10:00', 'Flight has departed.', 'in_transit'],
-      ['2026-03-12T10:55:21', 'Warehouse receipt.', 'in_transit'],
+      ['2026-03-12T10:55:21+08:00', 'Warehouse receipt.', 'in_transit'],
       ['2026-03-11T08:47:19+08:00', '订单已出库，开始国际运输', 'in_transit'],
-      ['2026-03-10T22:18:44', 'Item information received.', 'accepted'],
+      ['2026-03-10T22:18:44+08:00', 'Item information received.', 'accepted'],
       ['2026-03-10T14:02:06+08:00', '订单打包完成，等待出库', 'accepted'],
       ['2026-03-10T09:31:48+08:00', '订单已提交，等待系统确认', 'registered'],
     ]);
+  });
+
+  it('keeps the wall clocks of rows relayed from a line other than 17FEIA’s', () => {
+    const result = parseTsjy(changed('at-line', (order) => { order.channelNo = ''; }), AT_LINE, LATER);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-03-05T13:22:41' });
+    expect(result.delivery_carrier).toBeUndefined();
+    expect(clocks(result).slice(0, 4).map(([clock]) => clock))
+      .toEqual(['2026-03-05T13:22:41', '2026-03-04T21:07:15', '2026-03-04T15:48:09', '2026-03-04T09:16:52+08:00']);
   });
 
   it('keeps a relayed scan’s wall clock even where its place names a state', () => {

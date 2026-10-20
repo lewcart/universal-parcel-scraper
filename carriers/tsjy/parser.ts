@@ -3,6 +3,7 @@ import { detectCarrierMatch, normalizeTrackingNumber } from '../../core/detectio
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { cleanScalar } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { normalizeSeventeenFeiaNumber } from '../17feia/parser.js';
@@ -20,6 +21,20 @@ const EARLIEST = Date.UTC(2015, 0, 1);
 const MAX_ORDERS = 20;
 const MAX_ROWS = 500;
 const MAX_EVENTS = 100;
+/**
+ * 17FEIA's rows from its warehouse in China up to the export declaration.
+ * 17FEIA writes them on Beijing time, so TSJY's reading of them is their
+ * instant.
+ */
+const SEVENTEENFEIA_WAREHOUSE_ROWS: ReadonlySet<string> = new Set([
+  'item information received.',
+  'the package is on the way to the facility.',
+  'warehouse receipt.',
+  'the order has information pending customer confirmation.',
+  'order confirmed.',
+  'order dispatched from warehouse.',
+  'export declaration in progress.',
+]);
 
 /**
  * The lines TSJY hands orders to, by the catalog id that tracks them and the
@@ -54,16 +69,16 @@ function text(record: Record<string, unknown>, key: string, maxLength = 500): st
 /**
  * A row's clock. TSJY's server stamps its own steps with milliseconds: those
  * are instants. A partner's rows come in whole seconds, its wall clocks read
- * on Beijing time, which is right for 17FEIA's Chinese warehouse and unknown
- * elsewhere, so they keep that wall clock.
+ * on Beijing time, which is right for 17FEIA's rows from its warehouse in
+ * China and unknown elsewhere, so the others keep that wall clock.
  */
-function clockOf(stamp: number): { time: string } | { local_time: string } {
+function clockOf(stamp: number, warehouse: boolean): { time: string } | { local_time: string } {
   const home = DateTime.fromMillis(stamp, { zone: HOME_ZONE });
-  if (stamp % 1000 !== 0) return { time: home.startOf('second').toISO({ suppressMilliseconds: true })! };
+  if (stamp % 1000 !== 0 || warehouse) return { time: home.startOf('second').toISO({ suppressMilliseconds: true })! };
   return { local_time: home.toFormat("yyyy-MM-dd'T'HH:mm:ss") };
 }
 
-function projectRow(row: unknown, readAt: number): { key: string; at: number; event: CarrierEvent } | null {
+function projectRow(row: unknown, readAt: number, seventeenFeia: boolean): { key: string; at: number; event: CarrierEvent } | null {
   if (!isRecord(row)) throw new SchemaError(PROVIDER, 'TSJY returned an invalid scan');
   const stamp = row.date;
   if (typeof stamp !== 'number' || !Number.isSafeInteger(stamp) || stamp < EARLIEST) {
@@ -75,7 +90,7 @@ function projectRow(row: unknown, readAt: number): { key: string; at: number; ev
   const location = text(row, 'loc', 200);
   const staged = tsjyStage(description);
   const event: CarrierEvent = {
-    ...clockOf(stamp),
+    ...clockOf(stamp, seventeenFeia && SEVENTEENFEIA_WAREHOUSE_ROWS.has(normalizeStatusWording(description))),
     description,
     ...(location ? { location } : {}),
     ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
@@ -119,11 +134,12 @@ export function parseTsjy(payload: unknown, raw: string, readAt = Date.now()): C
   const rows = order.trackList;
   if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'TSJY returned an order without scans');
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'TSJY returned an oversized history');
+  const line = tsjyHandoff(text(order, 'channelNo', 64), number);
 
   const seen = new Set<string>();
   const scans: { at: number; event: CarrierEvent }[] = [];
   for (const row of rows) {
-    const scan = projectRow(row, readAt);
+    const scan = projectRow(row, readAt, line?.delivery_carrier === '17feia');
     if (!scan || seen.has(scan.key)) continue;
     seen.add(scan.key);
     scans.push(scan);
@@ -143,7 +159,7 @@ export function parseTsjy(payload: unknown, raw: string, readAt = Date.now()): C
     ...(newest.local_time ? { last_update_local: newest.local_time } : {}),
     expected_delivery: null,
     ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
-    ...tsjyHandoff(text(order, 'channelNo', 64), number),
+    ...line,
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

@@ -26,6 +26,10 @@ const ARRIVE = /^(Arrive)\s+([^,]{1,80}),\s*(at\s.+)$/i;
 const TOWN = /^\p{Lu}[\p{L}\p{M} .'’()-]{0,79}$/u;
 // A postcode between the town and the wording: `00000`, `00-000`, `AB1 2CD`.
 const POSTCODE_SEGMENT = /^(?=.*\d)[\p{Lu}\d][\p{Lu}\d -]{1,9}$/u;
+// A postcode opening the segment after a region: "00000 Arrive at …" or "00000".
+const POSTCODE_LEAD = /^\d{4,6}(?:-\d{4})?(?![\p{L}\p{N}])/u;
+// "Town Import customs clearance": the port's town before the clearance.
+const CLEARANCE = /^(.{1,80}?)\s+(import customs clearance\b.*)$/i;
 // A word holding a digit next to a town, as a postcode written before it.
 const DIGIT_WORD = /(?:^|\s+)\S*\d\S*/gu;
 // Four to six digits standing alone are a postcode far more often than anything else.
@@ -57,21 +61,29 @@ function scrub(value: string): string {
 
 /**
  * A row's wording and place. Rows at the destination open with the town and,
- * on a delivery, the postcode: "Town, 00000, Delivered". One names the town
- * after its verb: "Arrive Town, at the sorting and distribution center". The
- * town becomes the location and the postcode is dropped; text that does not
- * open with a town stays whole.
+ * on a delivery, the postcode: "Town, 00000, Delivered". In the United States
+ * the state comes between them: "Town, State, 00000 Arrive at …". One names
+ * the town after its verb: "Arrive Town, at the sorting and distribution
+ * center", and the import clearance before it: "Town Import customs
+ * clearance". The town, and the state with it, becomes the location and the
+ * postcode is dropped; text that does not open with a town stays whole.
  */
 export function linhanScan(content: string): { description: string; location: string } {
   const text = textFromHtml(content, 300);
   const arrive = ARRIVE.exec(text);
   const arrivedAt = arrive ? town(arrive[2]!) : '';
   if (arrive && arrivedAt) return { description: scrub(`${arrive[1]} ${arrive[3]}`), location: arrivedAt };
+  const clearance = CLEARANCE.exec(text);
+  // The destination agent's clearance names no town.
+  const port = clearance && !/\b(?:agent|carrier)\b/i.test(clearance[1]!) ? town(clearance[1]!) : '';
+  if (clearance && port) return { description: scrub(clearance[2]!), location: port };
   const [head = '', ...rest] = text.split(/\s*,\s*/);
+  const region = rest.length > 1 && POSTCODE_LEAD.test(rest[1]!) ? town(rest[0]!) : '';
+  if (region) rest.shift();
   while (rest.length && POSTCODE_SEGMENT.test(rest[0]!)) rest.shift();
   const place = rest.length ? town(head) : '';
   const description = place ? scrub(rest.join(', ')) : '';
-  if (place && /\p{L}/u.test(description)) return { description, location: place };
+  if (place && /\p{L}/u.test(description)) return { description, location: region ? `${place}, ${region}` : place };
   return { description: scrub(text), location: '' };
 }
 

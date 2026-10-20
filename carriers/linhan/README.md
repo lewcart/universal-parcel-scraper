@@ -34,9 +34,12 @@ destination. Tracked through the lookup its tracking page makes.
   tells which they keep. The tracker's order stands, and the newest scan's instant, when it has
   one, is the last update.
 - Rows at the destination open with the town, and the delivery with the postcode too: "Town,
-  00000, Delivered". One names the town after its verb: "Arrive Town, at the sorting and
-  distribution center". The town becomes the location so the wording stays the same from town
-  to town; the postcode is dropped.
+  00000, Delivered". In the United States the state follows the town: "Town, State, 00000
+  Arrive at …". One names the town after its verb: "Arrive Town, at the sorting and
+  distribution center", and the import clearance after the port's town: "Town Import customs
+  clearance". The town, with its state, becomes the location so the wording stays the same
+  from town to town; the postcode is dropped. A processing center's town inside the wording
+  stays there, and the map reads it as "…".
 - The tracker has no codes. [`status.ts`](status.ts) stages the scans by their wording, and
   other wording goes through the shared rules. The newest staged scan decides the parcel's
   stage, and the summary's status only when no scan has one.

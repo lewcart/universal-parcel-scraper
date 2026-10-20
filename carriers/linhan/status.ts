@@ -5,12 +5,13 @@ import statuses from './statuses.json' with { type: 'json' };
 interface Entry { readonly wording: string; readonly stage?: string; readonly unmapped?: boolean; readonly note?: string }
 const ENTRIES: readonly Entry[] = statuses.entries;
 
-// The next processing center's town sits inside this wording.
+// The next processing center's town sits inside this wording, and the one left in the other.
 const TRANSPORT_TO = /^(leave the processing center and transport to) .+ (processing center)$/;
+const LEAVE = /^(leave the) (?!processing center\b).+ (processing center)$/;
 
-/** A wording as the map keys it: its `normalizeStatusWording` form, with the next center's town as "…". */
+/** A wording as the map keys it: its `normalizeStatusWording` form, with a processing center's town as "…". */
 export function linhanStatusKey(wording: string): string {
-  return normalizeStatusWording(wording).replace(TRANSPORT_TO, '$1 … $2');
+  return normalizeStatusWording(wording).replace(TRANSPORT_TO, '$1 … $2').replace(LEAVE, '$1 … $2');
 }
 
 /**
@@ -25,6 +26,7 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(ENTRIES.filter((entry) => e
 const CHINA_STEPS: ReadonlySet<string> = new Set([
   'Order information received',
   'Arrive at the cross border receiving point',
+  'Arrive at the receiving point',
   'Goods leave the operation center',
   'Arrival at domestic internationality airport',
   'Departure from the airport of origin domestic',

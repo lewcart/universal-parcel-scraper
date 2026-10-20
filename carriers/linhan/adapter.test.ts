@@ -127,6 +127,21 @@ describe('LinHan International HTTP adapter', () => {
     expect(linhanScan('Sample Town, 00000, Delivered, signed by A SAMPLE PERSON')).toEqual({ description: 'Delivered', location: 'Sample Town' });
     expect(linhanScan('Sample Town, Delivery attempted, call +49 000 0000000')).toEqual({ description: 'Delivery attempted, call', location: 'Sample Town' });
     expect(linhanScan('<b>Sample Town</b>, Leaving the sorting center')).toEqual({ description: 'Leaving the sorting center', location: 'Sample Town' });
+    // In the United States the state comes between the town and the postcode, and the wording follows the postcode.
+    expect(linhanScan('Sample Town, Sample State, 00000 Arrive at the last mile sorting and distribution center'))
+      .toEqual({ description: 'Arrive at the last mile sorting and distribution center', location: 'Sample Town, Sample State' });
+    expect(linhanScan('Sample Town, Sample State, 00000-0000 Accepted at logistics carrier Regional Destination Facility'))
+      .toEqual({ description: 'Accepted at logistics carrier Regional Destination Facility', location: 'Sample Town, Sample State' });
+    expect(linhanScan('Sample Town, Sample State, 00000, Delivered')).toEqual({ description: 'Delivered', location: 'Sample Town, Sample State' });
+    // Wording before a postcode is no state.
+    expect(linhanScan('Sample Town, Delivered, 00000 Sample Street'))
+      .toEqual({ description: 'Delivered, Sample Street', location: 'Sample Town' });
+    // The port's town before the import clearance; the destination agent's clearance names none.
+    expect(linhanScan('Sample City Import customs clearance')).toEqual({ description: 'Import customs clearance', location: 'Sample City' });
+    expect(linhanScan('local carrier Agent Import customs clearance'))
+      .toEqual({ description: 'local carrier Agent Import customs clearance', location: '' });
+    expect(linhanScan('Local Carrier Agent Import customs clearance'))
+      .toEqual({ description: 'Local Carrier Agent Import customs clearance', location: '' });
   });
 
   it('takes the summary’s status when no scan has a stage, and stages new wording through the shared rules', () => {
@@ -313,10 +328,12 @@ describe('LinHan International status vocabulary', () => {
     }
     // LinHan's own steps in China, from the order data to the flight out, are recorded wordings.
     expect(statuses.entries.filter((entry) => linhanChinaStep(entry.wording)).map((entry) => entry.stage))
-      .toEqual(['registered', 'accepted', 'in_transit', 'in_transit', 'in_transit']);
-    // The next center's town is keyed out of its wording.
+      .toEqual(['registered', 'accepted', 'accepted', 'in_transit', 'in_transit', 'in_transit']);
+    // A processing center's town is keyed out of its wording.
     expect(linhanStatusKey('Leave the processing center and transport to Sample City processing center'))
       .toBe('leave the processing center and transport to … processing center');
+    expect(linhanStatusKey('Leave the Sample City processing center')).toBe('leave the … processing center');
+    expect(linhanStatusKey('Leave the processing center')).toBe('leave the processing center');
     expect(statusMapAnswer({ carrier: 'linhan', providerCode: null, description: 'Leave the processing center and transport to Sample City processing center' }))
       .toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'linhan', providerCode: null, description: 'Synthetic note' })).toEqual({ kind: 'unknown' });

@@ -7,6 +7,7 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, IMILE_API, IMILE_PAGE, IMILE_SIGNING, ImileTracker, imileSignature, scriptSigning, type ImileSigning } from './adapter.js';
+import { cainiaoScans, withCainiaoLeg } from './cainiao.js';
 import { imileWording, normalizeImileNumber, parseImile } from './parser.js';
 import { imileStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
@@ -22,6 +23,15 @@ type Shipment = Row & { trackInfos: Row[] };
 type Reply = Row & { resultObject: Shipment };
 
 const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as Reply;
+/** Cainiao's global feed, which holds the China leg of the parcels Cainiao hands to iMile. */
+const CAINIAO_DETAIL = 'https://global.cainiao.com/global/detail.json';
+type CainiaoReply = { module: (Row & { detailList: Row[] })[] };
+const cainiaoFixture = () => JSON.parse(readFileSync(new URL('./fixtures/cainiao-delivered.json', import.meta.url), 'utf8')) as CainiaoReply;
+/** Cainiao's answer for a number it has no record of. */
+const cainiaoUnknown = (number: string) => ({ module: [{ mailNo: number, mailNoSource: 'EXTERNAL', detailList: [] }], success: true });
+const toCainiao = ([url]: Parameters<typeof fetch>) => String(url).startsWith(`${CAINIAO_DETAIL}?`);
+/** The requests a lookup made to iMile itself. */
+const imileCalls = (fetcher: ReturnType<typeof vi.fn<typeof fetch>>) => fetcher.mock.calls.filter((call) => !toCainiao(call));
 const changed = (name: string, change: (shipment: Shipment, reply: Reply) => void) => {
   const reply = fixture(name);
   change(reply.resultObject, reply);
@@ -52,9 +62,13 @@ const script = (signing: ImileSigning) => `V=async e=>{let t=new v.v;t.setPublic
  * the number under the key in use, and the same empty reply otherwise.
  */
 function site(key: { privateKey: KeyObject; signing: ImileSigning }, shipments: Record<string, unknown>,
-  pages: { page?: () => Response; script?: () => Response } = {}) {
+  pages: { page?: () => Response; script?: () => Response; cainiao?: (number: string, init?: RequestInit) => Response | Promise<Response> } = {}) {
   return vi.fn<typeof fetch>(async (input, init) => {
     const url = new URL(String(input));
+    if (`${url.origin}${url.pathname}` === CAINIAO_DETAIL) {
+      const number = url.searchParams.get('mailNos')!;
+      return pages.cainiao?.(number, init) ?? reply(cainiaoUnknown(number));
+    }
     if (`${url.origin}${url.pathname}` === IMILE_API) {
       const number = url.searchParams.get('waybillNo')!;
       const sign = new Headers(init?.headers).get('sign') ?? '';
@@ -76,7 +90,10 @@ describe('iMile HTTP adapter', () => {
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
     await expect(new ImileTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0', signing: FIRST.signing }).fetch(' 6000-0000-00002 ', { budgetMs: 1000.5 }))
       .resolves.toMatchObject({ current_stage: 'customs' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
+    // iMile once, then Cainiao for the leg before iMile's.
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(String(fetcher.mock.calls[1]![0])).toBe(`${CAINIAO_DETAIL}?mailNos=${IN_TRANSIT}&lang=en-US`);
+    expect(fetcher.mock.calls[1]![1]).toMatchObject({ signal: expect.any(AbortSignal), headers: { 'User-Agent': 'SyntheticHost/1.0' } });
     const [url, init] = fetcher.mock.calls[0]!;
     const code = createHash('md5').update(`${IN_TRANSIT}syntheticSalt`).digest('hex');
     expect(String(url)).toBe(`${IMILE_API}?waybillNo=${IN_TRANSIT}&code=${code}`);
@@ -84,6 +101,7 @@ describe('iMile HTTP adapter', () => {
       headers: { Accept: 'application/json', lang: 'en_US', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(decrypt(FIRST.privateKey, (init!.headers as Record<string, string>).sign!)).toBe(IN_TRANSIT);
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'imile', step: 'direct', outcome: 'ok' }));
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'imile', step: 'cainiao', attempt: 2, outcome: 'not_found' }));
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
@@ -260,11 +278,11 @@ describe('iMile HTTP adapter', () => {
     const fetcher = site(SECOND, { [DELIVERED]: fixture('delivered'), [IN_TRANSIT]: fixture('in-transit') });
     const tracker = new ImileTracker({ fetcher, signing: FIRST.signing });
     await expect(tracker.fetch(DELIVERED)).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(fetcher).toHaveBeenCalledTimes(4);
+    expect(imileCalls(fetcher)).toHaveLength(4);
     const retried = new URL(String(fetcher.mock.calls[3]![0]));
     expect(retried.searchParams.get('code')).toBe(createHash('md5').update(`${DELIVERED}otherSalt`).digest('hex'));
     await expect(tracker.fetch(IN_TRANSIT)).resolves.toMatchObject({ current_stage: 'customs' });
-    expect(fetcher).toHaveBeenCalledTimes(5);
+    expect(imileCalls(fetcher)).toHaveLength(5);
   });
 
   it('keeps a changed or blocked page apart from an unknown number', async () => {
@@ -307,9 +325,11 @@ describe('iMile HTTP adapter', () => {
   });
 
   it('sends a read that failed to reach the site once more', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(fixture('in-transit')));
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed')).mockResolvedValueOnce(reply(fixture('in-transit')))
+      .mockResolvedValueOnce(reply(cainiaoUnknown(IN_TRANSIT)));
     await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 5000 })).resolves.toMatchObject({ current_stage: 'customs' });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(imileCalls(fetcher)).toHaveLength(2);
+    expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
   it('ends a hanging read inside the caller’s budget', async () => {
@@ -332,6 +352,8 @@ describe('iMile HTTP adapter', () => {
     const unasked = vi.fn<typeof fetch>();
     await expect(carrier(unasked).recognize!('SAMPLETRACKING')).resolves.toEqual({ known: false });
     expect(unasked).not.toHaveBeenCalled();
+    // Recognition asks iMile alone.
+    expect(known.mock.calls.some(toCainiao)).toBe(false);
   });
 
   it('routes a number filed under iMile to the adapter, and suggests iMile for a dated waybill only', async () => {
@@ -352,6 +374,130 @@ describe('iMile HTTP adapter', () => {
     for (const countryHint of [undefined, 'CO', 'ES', 'HU', 'KR', 'IN']) {
       expect(recognitionAskedCarriers(DATED, { countryHint }), countryHint ?? 'no hint').toContain('imile');
     }
+  });
+});
+
+describe('Cainiao’s leg in front of iMile’s history', () => {
+  type Step = { step: string; attempt: number; outcome: string; errorType: string | null; durationMs: number };
+  const lookup = (cainiao: (number: string, init?: RequestInit) => Response | Promise<Response>, budgetMs?: number, shipment: Reply = fixture('delivered')) => {
+    const recorder = { ...NOOP_RECORDER, step: vi.fn<(step: Step) => void>(), lookup: vi.fn() };
+    const fetcher = site(FIRST, { [DELIVERED]: shipment }, { cainiao });
+    const result = new ImileTracker({ fetcher, recorder, signing: FIRST.signing }).fetch(DELIVERED, budgetMs ? { budgetMs } : {});
+    const step = () => recorder.step.mock.calls.map(([recorded]) => recorded).find((recorded) => recorded.step === 'cainiao');
+    return { fetcher, result, step };
+  };
+  const codes = (result: { events?: readonly { provider_code?: unknown }[] }) => result.events!.map((event) => event.provider_code ?? null);
+  const CAINIAO_CODE = /^[A-Z_]+$/;
+  /** Cainiao's record with its scans from `from` on, newest first. */
+  const cainiaoFrom = (from: string) => {
+    const record = cainiaoFixture();
+    const scans = record.module[0]!.detailList;
+    record.module[0]!.detailList = scans.slice(scans.findIndex((scan) => scan.actionCode === from));
+    return record;
+  };
+
+  it('puts Cainiao’s China leg in front of iMile’s scans and keeps iMile’s scans and status', async () => {
+    const own = parseImile(fixture('delivered'), DELIVERED);
+    const { result, step } = lookup(() => reply(cainiaoFixture()));
+    const merged = await result;
+    expect({ ...merged, events: own.events }).toEqual(own);
+    expect(merged.events!.filter((event) => !CAINIAO_CODE.test(String(event.provider_code ?? '')))).toEqual(own.events);
+    // Cainiao's scans count up to iMile's flight; its relays of iMile's own scans, and of iMile's order, stay out.
+    expect(codes(merged).slice(13)).toEqual(['1002', 'LH_DEPART', 'LH_HO_AIRLINE', 'CC_EX_SUCCESS', 'CC_EX_START', 'LH_HO_IN_SUCCESS',
+      '1002', '1001', 'SC_OUTBOUND_SUCCESS', 'SC_INBOUND_SUCCESS', 'PU_PICKUP_SUCCESS']);
+    expect(merged.events).toHaveLength(own.events!.length + 8);
+    const scan = (code: string) => merged.events!.find((event) => event.provider_code === code);
+    expect(scan('SC_OUTBOUND_SUCCESS')).toEqual({ time: '2026-05-14T23:50:00+08:00', location: 'Sampletown',
+      description: 'Departed from sorting center', provider_code: 'SC_OUTBOUND_SUCCESS', stage: 'in_transit', stage_source: 'carrier_map' });
+    expect(scan('PU_PICKUP_SUCCESS')).toMatchObject({ time: '2026-05-14T15:30:00+08:00', stage: 'accepted' });
+    // Cainiao's handover to the airline has a day and no clock.
+    expect(scan('LH_HO_AIRLINE')).toMatchObject({ local_time: '2026-05-17', stage: 'in_transit' });
+    expect(scan('LH_HO_AIRLINE')).not.toHaveProperty('time');
+    expect(step()).toMatchObject({ attempt: 2, outcome: 'ok', errorType: null });
+  });
+
+  it('keeps iMile’s answer when Cainiao does not name iMile as the parcel’s carrier', async () => {
+    const stranger = cainiaoFixture();
+    const module = stranger.module[0]!;
+    module.destCpInfo = { cpName: 'Sample Express' };
+    for (const trace of [module.globalCombinedLogisticsTraceDTO, module.latestTrace]) delete (trace as Row).currentStatusCpInfo;
+    const { result, step } = lookup(() => reply(stranger));
+    await expect(result).resolves.toEqual(parseImile(fixture('delivered'), DELIVERED));
+    expect(step()).toMatchObject({ outcome: 'indeterminate' });
+    expect(() => cainiaoScans(stranger, DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate', reason: 'carrier_unconfirmed' }));
+  });
+
+  it.each([
+    ['its slider', () => new Response('<!DOCTYPE html><html><body><punish-component />\n<!--rgv587_flag:sm-->\n</body></html>',
+      { headers: { 'Content-Type': 'text/html' } }), 'challenge'],
+    ['HTTP 429', () => new Response('', { status: 429 }), 'rate_limited'],
+    ['a changed reply', () => reply({ success: true, module: 'none' }), 'schema'],
+    // Cainiao's reader reports a reply that is not JSON as an error of its own.
+    ['a page in place of its reply', () => reply('<html><title>Cainiao</title></html>'), 'error'],
+    ['no record of the number', () => reply(cainiaoUnknown(DELIVERED)), 'not_found'],
+  ] as const)('keeps iMile’s answer as it is when Cainiao answers with %s, and records %s', async (_name, answer, kind) => {
+    const { result, step } = lookup(answer);
+    await expect(result).resolves.toEqual(parseImile(fixture('delivered'), DELIVERED));
+    expect(step()).toMatchObject({ step: 'cainiao', outcome: kind });
+  });
+
+  it('gives Cainiao half of the time iMile left, and nothing when that is too short to ask', async () => {
+    const hanging = vi.fn((_number: string, init?: RequestInit) => new Promise<Response>((_resolve, reject) => {
+      init?.signal?.addEventListener('abort', () => reject(init.signal!.reason), { once: true });
+    }));
+    const started = performance.now();
+    const slow = lookup(hanging, 600);
+    await expect(slow.result).resolves.toEqual(parseImile(fixture('delivered'), DELIVERED));
+    expect(performance.now() - started).toBeLessThan(600);
+    expect(hanging).toHaveBeenCalledTimes(1);
+    // A hang is a transport failure, as the runner records one, after about half of the budget.
+    expect(slow.step()).toMatchObject({ outcome: 'transport' });
+    expect(slow.step()!.durationMs).toBeLessThan(450);
+
+    const unasked = vi.fn((number: string) => reply(cainiaoUnknown(number)));
+    const short = lookup(unasked, 300);
+    await expect(short.result).resolves.toEqual(parseImile(fixture('delivered'), DELIVERED));
+    expect(unasked).not.toHaveBeenCalled();
+    expect(short.step()).toMatchObject({ outcome: 'budget' });
+  });
+
+  it('asks Cainiao only once iMile answered with scans', async () => {
+    const unasked = vi.fn((number: string) => reply(cainiaoUnknown(number)));
+    const fetcher = site(FIRST, { [DELIVERED]: changed('delivered', (shipment) => { shipment.trackInfos = []; }) }, { cainiao: unasked });
+    const tracker = new ImileTracker({ fetcher, signing: FIRST.signing });
+    await expect(tracker.fetch(DELIVERED)).rejects.toMatchObject({ name: 'NoHistoryError' });
+    await expect(tracker.fetch(UNKNOWN)).rejects.toMatchObject({ kind: 'not_found' });
+    expect(unasked).not.toHaveBeenCalled();
+  });
+
+  it('lets Cainiao’s leg give the status while iMile holds only its order record', async () => {
+    const ordered = changed('delivered', (shipment) => { shipment.trackInfos = shipment.trackInfos.slice(-1); });
+    expect(parseImile(ordered, DELIVERED)).toMatchObject({ status: 'pending', current_stage: 'registered' });
+    const { result } = lookup(() => reply(cainiaoFrom('LH_DEPART')), undefined, ordered);
+    const merged = await result;
+    expect(codes(merged)).toEqual(['LH_DEPART', 'LH_HO_AIRLINE', 'CC_EX_SUCCESS', 'CC_EX_START', 'LH_HO_IN_SUCCESS', '1001',
+      'SC_OUTBOUND_SUCCESS', 'SC_INBOUND_SUCCESS', 'PU_PICKUP_SUCCESS']);
+    expect(merged).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      last_status_text: 'Departed from departure country/region', last_update: '2026-05-17T09:20:00+08:00', destination_country: 'SA' });
+    expect(merged).not.toHaveProperty('last_update_local');
+  });
+
+  it('keeps only the Cainiao scans older than iMile’s at any offset when iMile’s clocks have no zone', () => {
+    const own = parseImile(changed('delivered', (shipment) => { shipment.country = 'BRA'; }), DELIVERED);
+    expect(own.events![0]).not.toHaveProperty('time');
+    const merged = withCainiaoLeg(own, cainiaoScans(cainiaoFixture(), DELIVERED));
+    expect({ ...merged, events: own.events }).toEqual(own);
+    // iMile's flight may have left up to 14 hours before its wall clock: Cainiao's departure and handover may be later.
+    expect(codes(merged).filter((code) => CAINIAO_CODE.test(String(code))).slice(0, 3)).toEqual(['CC_EX_SUCCESS', 'CC_EX_START', 'LH_HO_IN_SUCCESS']);
+    expect(codes(merged).slice(0, 14)).toEqual(codes(own).slice(0, 14));
+  });
+
+  it('adds nothing to a history iMile cut short or to none', () => {
+    const scans = cainiaoScans(cainiaoFixture(), DELIVERED);
+    const truncated = { ...parseImile(fixture('delivered'), DELIVERED), history_truncated: true };
+    expect(withCainiaoLeg(truncated, scans)).toBe(truncated);
+    const empty = { status: 'unknown' as const, events: [] };
+    expect(withCainiaoLeg(empty, scans)).toBe(empty);
   });
 });
 

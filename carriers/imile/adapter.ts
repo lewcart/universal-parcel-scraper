@@ -1,11 +1,13 @@
 import { constants, createHash, createPublicKey, publicEncrypt, type KeyObject } from 'node:crypto';
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { ChallengeError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { BudgetExceededError, ChallengeError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
-import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
+import { errorTypeOf, NOOP_RECORDER, outcomeOf, safeRecorder, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
+import { CainiaoTracker } from '../aliexpress/adapter.js';
+import { CAINIAO, cainiaoScans, withCainiaoLeg } from './cainiao.js';
 import { IMILE_MAX_BYTES, normalizeImileNumber, parseImile, PROVIDER } from './parser.js';
 
 const ORIGIN = 'https://www.imile.com';
@@ -36,6 +38,11 @@ const SCRIPT_KEY = /setPublicKey\("([A-Za-z0-9+/]{200,1000}={0,2})"\)/;
 const SCRIPT_SALT = /\.MD5\(""\.concat\([\w$]+,"([\w-]{1,64})"\)\)/;
 // Bot checks Cloudflare, in front of the site, could put in place of a reply.
 const CHALLENGE = /_cf_chl_opt|cf-turnstile|challenge-platform|<title>\s*(?:Just a moment|Attention Required)/i;
+const DEFAULT_BUDGET_MS = 20_000;
+// Cainiao answers within a second or two; it gets half of what iMile left, at most this.
+const CAINIAO_MS = 8_000;
+// Less than this left for Cainiao is no time for a request.
+const CAINIAO_MIN_MS = 250;
 
 function publicKey(key: string): KeyObject {
   return createPublicKey({ key: Buffer.from(key, 'base64'), format: 'der', type: 'spki' });
@@ -77,14 +84,31 @@ export class ImileTracker {
   #signing: Readonly<ImileSigning>;
   // When the page last showed the values in use.
   #checkedAt = Number.NEGATIVE_INFINITY;
+  readonly #cainiao: CainiaoTracker;
 
   constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string; now?: () => number;
     signing?: Readonly<ImileSigning> } = {}) {
     this.#signing = options.signing ?? IMILE_SIGNING;
+    this.#cainiao = new CainiaoTracker({ fetcher: options.fetcher, userAgent: options.userAgent, timeoutMs: CAINIAO_MS });
   }
 
-  async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
+  /**
+   * iMile's answer, with Cainiao's leg in front of its history unless
+   * `cainiao` is false. Cainiao is asked only once iMile has answered with
+   * scans, and its failure leaves iMile's answer as it is.
+   */
+  async fetch(raw: string, context: TrackingContext = {}, { cainiao = true }: { cainiao?: boolean } = {}): Promise<CarrierResult> {
     const number = normalizeImileNumber(raw);
+    const started = performance.now();
+    const budgetMs = context.budgetMs ?? DEFAULT_BUDGET_MS;
+    let attempts = 0;
+    const result = await this.#imile(number, { signal: context.signal, budgetMs }, (attempt) => { attempts = attempt; });
+    if (!cainiao) return result;
+    return this.#withCainiao(number, result, context.signal, budgetMs - (performance.now() - started), attempts + 1);
+  }
+
+  async #imile(number: string, context: Required<Pick<TrackingContext, 'budgetMs'>> & TrackingContext,
+    attempted: (attempt: number) => void): Promise<CarrierResult> {
     const read = async (signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> => {
       const deadline = performance.now() + timeoutMs;
       const left = () => Math.max(1, Math.floor(deadline - performance.now()));
@@ -102,11 +126,39 @@ export class ImileTracker {
     };
     // A request that fails to reach the site, or hangs, gets one more try: the
     // first gets half of the budget, so the retry fits in the rest.
-    return runSteps({ carrier: 'imile', budgetMs: context.budgetMs ?? 20_000, signal: context.signal,
+    return runSteps({ carrier: 'imile', budgetMs: context.budgetMs, signal: context.signal,
       recorder: this.options.recorder ?? NOOP_RECORDER }, [
-      { id: 'direct', run: ({ signal, remainingMs }) => read(signal, firstAttemptMs(remainingMs)) },
-      networkRetryStep(({ signal, remainingMs }) => read(signal, remainingMs)),
+      { id: 'direct', run: ({ signal, remainingMs, attempt }) => { attempted(attempt); return read(signal, firstAttemptMs(remainingMs)); } },
+      networkRetryStep(({ signal, remainingMs, attempt }) => { attempted(attempt); return read(signal, remainingMs); }),
     ]);
+  }
+
+  /**
+   * Cainiao's leg of the parcel in front of iMile's history, recorded as the
+   * `cainiao` step. Cainiao gets half of the time iMile left, so iMile's
+   * answer comes back inside the budget whatever Cainiao does. Any failure,
+   * a challenge, a rate limit, an unknown number or a changed reply, is
+   * recorded with its kind and returns iMile's answer unchanged.
+   */
+  async #withCainiao(number: string, result: CarrierResult, signal: AbortSignal | undefined, remainingMs: number,
+    attempt: number): Promise<CarrierResult> {
+    const recorder = safeRecorder(this.options.recorder ?? NOOP_RECORDER);
+    const started = performance.now();
+    const record = (error?: unknown) => recorder.step({
+      carrier: 'imile', step: 'cainiao', attempt, outcome: error === undefined ? 'ok' : outcomeOf(error),
+      errorType: error === undefined ? null : errorTypeOf(error), durationMs: Math.max(0, performance.now() - started),
+      fallbackFrom: null, fallbackReason: null, fallbackErrorType: null, ...(error === undefined ? {} : { error }),
+    });
+    const budgetMs = Math.min(CAINIAO_MS, Math.floor(remainingMs / 2));
+    try {
+      if (budgetMs < CAINIAO_MIN_MS) throw new BudgetExceededError(CAINIAO, budgetMs);
+      const merged = withCainiaoLeg(result, cainiaoScans(await this.#cainiao.detail(number, { signal, budgetMs }), number));
+      record();
+      return merged;
+    } catch (error) {
+      record(error);
+      return result;
+    }
   }
 
   async #query(number: string, signing: ImileSigning, signal: AbortSignal, timeoutMs: number): Promise<unknown> {
@@ -149,9 +201,10 @@ export class ImileTracker {
 export const adapter: AdapterFactory = (environment) => {
   const tracker = new ImileTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
   return {
-    id: 'imile', recordsSteps: true, steps: ['direct', 'retry'],
+    id: 'imile', recordsSteps: true, steps: ['direct', 'retry', 'cainiao'],
     track: (input, context) => tracker.fetch(input.number, context),
-    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context),
+    // Recognition asks iMile alone: Cainiao's record of a number is no evidence that iMile knows it.
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context, { cainiao: false }),
       () => accepted(() => normalizeImileNumber(number))),
   };
 };

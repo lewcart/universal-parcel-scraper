@@ -185,8 +185,8 @@ function recordedInBeijing(scan: JsonObject, wall: string): boolean {
   return Number.isFinite(beijing.getTime()) && beijing.toISOString().slice(0, 19).replace('T', ' ') === wall;
 }
 
-/** Projects one `detail.json` payload. Pure: the offline tests target this. */
-export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: string): CarrierResult {
+/** The module of a `detail.json` payload for the number asked; any other shipment is refused. */
+function trackingModuleOf(value: unknown, trackingNumber: string): JsonObject {
   const payload = record(value);
   const rawModules = Array.isArray(payload.module)
     ? payload.module
@@ -204,6 +204,22 @@ export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: str
     (module) => comparableIdentifier(module.mailNo) === requested,
   );
   if (!trackingModule) throw new SchemaError(PROVIDER, 'Cainiao returned a different shipment');
+  return trackingModule;
+}
+
+/**
+ * The carriers a `detail.json` payload names for the number asked, in lower
+ * case: the destination carrier and each scan's carrier.
+ */
+export function cainiaoCarrierNames(value: unknown, trackingNumber: string): ReadonlySet<string> {
+  const trackingModule = trackingModuleOf(value, trackingNumber);
+  return carrierNames(trackingModule, recordArray(trackingModule.detailList));
+}
+
+/** Projects one `detail.json` payload. Pure: the offline tests target this. */
+export function parseCainiaoTrackingResponse(value: unknown, trackingNumber: string): CarrierResult {
+  const trackingModule = trackingModuleOf(value, trackingNumber);
+  const requested = comparableIdentifier(trackingNumber);
   const rawStatus = text(trackingModule.status);
   const latest = record(trackingModule.latestTrace ?? trackingModule.globalCombinedLogisticsTraceDTO);
   const rawDetails = trackingModule.detailList;
@@ -304,8 +320,8 @@ export class CainiaoTracker {
     const budget = lookupBudget(context, this.timeoutMs);
     try {
       // The feed refuses a request another site refers ("uri is null or empty").
-      return await this.read(`${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
-        DETAIL_PAGE, trackingNumber, budget);
+      return parseCainiaoTrackingResponse(await this.payload(`${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
+        DETAIL_PAGE, budget), trackingNumber);
     } catch (error) {
       if (!(error instanceof NotFoundError) || !HOME_DELIVERY.test(comparableIdentifier(trackingNumber))) throw error;
     }
@@ -318,14 +334,27 @@ export class CainiaoTracker {
     }
   }
 
+  /**
+   * The global feed's `detail.json` reply for a number, unparsed, for a
+   * carrier that reads Cainiao's leg of its own parcels.
+   */
+  async detail(trackingNumber: string, context: TrackingContext = {}): Promise<unknown> {
+    return this.payload(`${DETAIL_URL}?${new URLSearchParams({ mailNos: trackingNumber, lang: 'en-US' })}`,
+      DETAIL_PAGE, lookupBudget(context, this.timeoutMs));
+  }
+
   private async read(url: string, referer: string, trackingNumber: string, budget: LookupBudget): Promise<CarrierResult> {
+    return parseCainiaoTrackingResponse(await this.payload(url, referer, budget), trackingNumber);
+  }
+
+  private async payload(url: string, referer: string, budget: LookupBudget): Promise<unknown> {
     const { bytes } = await fetchBounded(
       url,
       { signal: budget.signal, headers: { ...BASE_HEADERS, 'User-Agent': this.userAgent, Referer: referer } },
       { provider: UPSTREAM, timeoutMs: Math.min(this.timeoutMs, budget.remainingMs()), fetcher: this.fetcher },
     );
     if (sliderPage(decodeText(bytes))) throw new ChallengeError(PROVIDER);
-    return parseCainiaoTrackingResponse(parseJsonBytes(bytes, UPSTREAM), trackingNumber);
+    return parseJsonBytes(bytes, UPSTREAM);
   }
 }
 

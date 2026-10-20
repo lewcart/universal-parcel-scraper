@@ -152,9 +152,6 @@ export function parseImile(payload: unknown, raw: string): CarrierResult {
   // Newest first, as the page lists them; an oldest-first reply is turned round.
   const newestFirst = (events[0]!.local_time as string) < (events.at(-1)!.local_time as string) ? events.reverse() : events;
 
-  const newest = newestFirst[0]!;
-  const current = newestFirst.find((event) => event.stage);
-  const stage = current?.stage as Stage | undefined;
   const code = text(shipment, 'country', 8).toUpperCase();
   const country = Object.hasOwn(COUNTRIES, code) ? COUNTRIES[code] : undefined;
   // Every scan shows the recipient country's clock: a country of one zone
@@ -164,16 +161,25 @@ export function parseImile(payload: unknown, raw: string): CarrierResult {
     const time = isoTime(local_time, zone)?.iso;
     return time ? { time, ...event } : { local_time, ...event };
   }) : newestFirst;
-  const latest = placed[0]!;
   return {
-    status: stage ? languageStageStatus(stage) : 'unknown',
-    ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
-    last_status_text: newest.description!,
-    last_update: latest.time ?? null,
-    ...(latest.time ? {} : { last_update_local: newest.local_time }),
+    ...imileSummary(placed),
     expected_delivery: null,
     ...(country ? { destination_country: country } : {}),
     events: placed.slice(0, MAX_EVENTS),
     ...(newestFirst.length > MAX_EVENTS ? { history_truncated: true } : {}),
+  };
+}
+
+/** The status a history newest first gives: its newest staged scan's stage, and its newest scan's wording and clock. */
+export function imileSummary(events: readonly CarrierEvent[]): CarrierResult {
+  const newest = events[0]!;
+  const current = events.find((event) => event.stage);
+  const stage = current?.stage as Stage | undefined;
+  return {
+    status: stage ? languageStageStatus(stage) : 'unknown',
+    ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source! } : {}),
+    last_status_text: newest.description!,
+    last_update: newest.time ?? null,
+    ...(newest.time ? {} : { last_update_local: newest.local_time }),
   };
 }

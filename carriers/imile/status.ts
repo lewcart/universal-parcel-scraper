@@ -1,5 +1,6 @@
 import { classifyWording, type ClassifiedWording, type Stage } from '../../core/status/index.js';
 import type { CarrierStatusMap } from '../../core/status/statusMap.js';
+import { statusMap as cainiaoStatusMap } from '../aliexpress/status.js';
 
 /**
  * iMile's `trackStage` codes, by the label the reply gives them. Delivered,
@@ -115,9 +116,16 @@ export function imileStage(code: string, wording: string): ClassifiedWording | n
   return worded.source === 'none' && code !== DELIVERY ? null : worded;
 }
 
+/** iMile's own codes are numbers; Cainiao's action codes, on the scans of its leg, are words. */
+const IMILE_CODE = /^\d{1,6}$/;
+
+/** iMile's map for its own scans, and Cainiao's for the scans of Cainiao's leg in front of them. */
 export const statusMap: CarrierStatusMap = {
-  stage: (code, wording) => imileMappedStage(code ?? '', wording) ?? undefined,
+  stage: (code, wording) => (code && !IMILE_CODE.test(code)
+    ? cainiaoStatusMap.stage(code, wording)
+    : imileMappedStage(code ?? '', wording) ?? undefined),
   gaps: [
     { code: DELIVERY, wording: 'lost order', note: 'A driver\'s reason during a delivery run, followed by the attempt\'s end; the parcel it was seen on went out again and was delivered, so it does not establish a loss.' },
+    ...cainiaoStatusMap.gaps,
   ],
 };

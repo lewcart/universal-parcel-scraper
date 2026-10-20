@@ -194,6 +194,17 @@ describe('status map answers', () => {
     expect(answer('aliexpress', null, 'Arrived at linehaul office')).toEqual(unknown);
   });
 
+  it("answers the Cainiao scans in front of an iMile history by Cainiao's map, and iMile's own by iMile's", () => {
+    expect(answer('imile', 'PU_PICKUP_SUCCESS', 'Received by logistics company')).toEqual(mapped('accepted'));
+    expect(answer('imile', 'CC_EX_START', 'Export customs clearance started')).toEqual(mapped('customs'));
+    expect(answer('imile', 'LH_DEPART', 'Departed from departure country/region')).toEqual(mapped('in_transit'));
+    expect(answer('imile', 'GTMS_ORDER_INFO_UPDATE', 'Delivery details updated')).toEqual(gap);
+    expect(answer('imile', 'NEW_UNSEEN_CODE', 'Synthetic scan')).toEqual(unknown);
+    // A numeric code is iMile's own, whatever Cainiao's map would say of its wording.
+    expect(answer('imile', '1003', 'User not at home')).toEqual(mapped('failed_attempt'));
+    expect(answer('imile', '9999', 'Departed from departure country/region')).toEqual(unknown);
+  });
+
   it("answers DPD France's wording, the only key its trace page has", () => {
     expect(answer('dpd-fr', null, 'Votre colis a été pris en charge dans notre réseau')).toEqual(mapped('accepted'));
     expect(answer('dpd-fr', null, 'Le destinataire est informé par SMS de la prise en charge de son colis dans notre réseau'))

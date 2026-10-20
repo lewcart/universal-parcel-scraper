@@ -27,7 +27,8 @@
     "adapter": "imile",
     "steps": [
       "direct",
-      "retry"
+      "retry",
+      "cainiao"
     ],
     "recognition": {
       "rank": 997

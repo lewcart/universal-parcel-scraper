@@ -2,7 +2,7 @@
 
 iMile delivers cross-border e-commerce parcels, mostly flown in from China, in the Middle East,
 Latin America, Europe, South Africa and Australia. Tracked through the lookup its tracking page
-makes.
+makes, with the China leg Cainiao's global tracker holds under the same number.
 
 ## How it works
 
@@ -13,6 +13,12 @@ makes.
    same for every visitor and ship with the adapter. No cookie, account or browser. The JSON
    reply has the shipment and its scans, newest first, in English.
 2. `retry`: the same read once more when the first did not reach the site.
+3. `cainiao`: once iMile has answered with scans, Cainiao's
+   `GET https://global.cainiao.com/global/detail.json?mailNos={number}&lang=en-US`, read as the
+   AliExpress adapter reads it. For a parcel Cainiao carries out of China, it has the pickup,
+   sorting, export and flight scans from before iMile's. It gets half of the time iMile left,
+   at most eight seconds. A slider, a rate limit, a changed reply or a number Cainiao does not
+   know is recorded with its kind and leaves iMile's answer as it is.
 
 - An unknown number is HTTP 200 with `"resultObject": null`, which the page reports as no data.
   A missing or wrong `sign` gets the same reply, so after an empty reply the adapter reads the
@@ -23,7 +29,25 @@ makes.
   404 or a redirect is a moved route. Cloudflare, in front of the site, lets the package's
   default User-Agent through.
 - The shipment must echo the number asked.
-- Recognition makes the same read: a shipment with scans is known, the empty reply is not.
+- Recognition makes the same read without Cainiao: a shipment with scans is known, the empty
+  reply is not.
+
+## Cainiao's leg
+
+- Cainiao's record must name iMile as the destination carrier or a scan's carrier; another
+  network's parcel under the same number adds nothing. Cainiao never makes a number iMile's: a
+  number iMile does not know, or knows without scans, stays iMile's answer.
+- Cainiao relays iMile's own scans on its own clocks, sometimes reworded. iMile's first scan
+  past its order record, such as a pickup, a centre or a flight, marks where iMile has the
+  parcel. Cainiao's scans count up to the newest one older than that scan, comparing instants;
+  a clock without a zone is taken at the earliest it can be. A scan at the same instant as one
+  of iMile's, such as Cainiao's record of iMile's order, stays out. The rest go among iMile's
+  older scans, newest first.
+- iMile's scans, stage, status and summary stay as iMile gave them, since iMile delivers the
+  parcel. While iMile has only its order record, the parcel is still on Cainiao's leg, and the
+  newest scan of either gives the status.
+- Cainiao's scans keep its action codes, placed in its own zones. The `imile` status map reads
+  them with Cainiao's; iMile's own codes are numbers.
 
 ## Notes
 
@@ -53,6 +77,10 @@ makes.
 ## Limitations
 
 - No estimated delivery, weight or service, and no delivery time as an instant.
+- Cainiao has no record of the parcels it did not carry, such as other marketplaces'
+  thirteen-digit waybills, and still gets asked. Its departure scan can sit beside iMile's
+  take-off scan for the same flight. In a country with several zones, the Cainiao scans in the
+  fourteen hours before iMile's first stay out, and its record of iMile's order stays in.
 - The tracker also answers marketplace references with CNBR and AP prefixes, which belong to
   the sender's logistics partner. The adapter tracks one filed under iMile, but no rule claims
   them.
@@ -78,4 +106,5 @@ The tracker on `imile.com` opens one parcel at `/<country>-<language>/track` wit
 ## Testing
 
 `npm run test:carriers:live -- carriers/imile`, with `IMILE_TRACKING_NUMBER` and optionally
-`IMILE_UNKNOWN_NUMBER` set outside the repository.
+`IMILE_UNKNOWN_NUMBER` set outside the repository. `IMILE_CAINIAO_TRACKING_NUMBER`, a parcel
+both iMile and Cainiao have scanned, checks Cainiao's leg.

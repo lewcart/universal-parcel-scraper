@@ -106,7 +106,6 @@ describe('recognition candidates', () => {
       { carrier: 'brt', needsInput: null, preferred: false },
       { carrier: 'ciblex', needsInput: null, preferred: false },
       { carrier: 'dhl-ecommerce-uk', needsInput: null, preferred: false },
-      { carrier: 'delhivery', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('12345678901', { hint: 'gls-de' })).toEqual([
       { carrier: 'gls-de', needsInput: 'postcode', preferred: false },
@@ -119,7 +118,7 @@ describe('recognition candidates', () => {
       { carrier: 'gls-at', needsInput: null, preferred: false },
     ]);
     expect(recognitionCandidates('06080000000002', { skip: (carrier) => carrier === 'dpd' }).map((candidate) => candidate.carrier))
-      .toEqual(['dpd-be', 'dpd-nl', 'dpd-de', 'seur', 'brt', 'ciblex', 'dhl-ecommerce-uk', 'delhivery']);
+      .toEqual(['dpd-be', 'dpd-nl', 'dpd-de', 'seur', 'brt', 'ciblex', 'dhl-ecommerce-uk']);
     // A selected carrier needs no recognition.
     expect(recognitionCandidates('1Z999AA10123456784')).toEqual([]);
     // A DPD France depot: DPD France cannot be asked, and DPD Switzerland's or

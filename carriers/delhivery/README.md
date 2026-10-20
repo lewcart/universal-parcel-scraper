@@ -11,6 +11,12 @@ not-found; other empty replies remain schema failures.
 Shared numeric waybill formats remain suggestions. HTTP recognition asks the same
 feed and confirms Delhivery only when its identity-bound result contains shipment activity.
 
+A thirteen- or fourteen-digit waybill is an account's series followed by a counter and a
+check digit from 0 to 6, and no series starts with 0. Detection offers Delhivery only for
+those, so a DPD parcel number starting with 0 or a number ending in 7, 8 or 9 is not asked
+about. Delhivery does not document the check, and some series compute it differently, so
+detection bounds only the last digit.
+
 ## Notes
 
 Future progress labels are excluded. Current status becomes a snapshot when no scan

@@ -49,7 +49,7 @@ describe('Shiprocket numbers', () => {
   it('puts ShiprocketX’s 832 AWBs first among the 13-digit carriers, and asks its tracker', () => {
     for (const number of [NUMBER, UNKNOWN, '8325550000000']) {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: ['shiprocket'] });
-      expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['shiprocket', 'delhivery', 'la-poste']));
+      expect(detectCarrierMatch(number).candidates).toEqual(expect.arrayContaining(['shiprocket', 'la-poste']));
       expect(recognitionCandidates(number)[0]).toMatchObject({ carrier: 'shiprocket', preferred: true });
     }
   });

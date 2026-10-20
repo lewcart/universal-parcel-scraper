@@ -562,6 +562,27 @@
         ]
       },
       "note": "A Delhivery tracking link archived by the Wayback Machine. Delhivery's tracker returns its history."
+    },
+    {
+      "number": "2250112664712",
+      "role": "shipment",
+      "evidence": "open_source_example",
+      "source": {
+        "url": "https://github.com/delhivery/project-polaris/blob/main/address.md",
+        "access": "full_page"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "la-poste",
+          "correos-chile",
+          "delhivery",
+          "yunda",
+          "korea-post"
+        ]
+      },
+      "note": "Delhivery's own API design notes give it as an example waybill; not a real shipment."
     }
   ]
 }

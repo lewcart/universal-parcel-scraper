@@ -3740,7 +3740,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^\\d{13,14}$",
+        "pattern": "^[1-9]\\d{11,12}[0-6]$",
         "confidence": "low"
       }
     ]

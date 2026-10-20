@@ -1462,7 +1462,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -2007,7 +2006,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -2528,7 +2526,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -3260,7 +3257,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -3518,13 +3514,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -4011,7 +4005,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4058,7 +4051,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4507,7 +4499,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4549,7 +4540,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4574,7 +4564,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4636,7 +4625,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4661,7 +4649,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -4707,7 +4694,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5103,7 +5089,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5128,7 +5113,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5195,7 +5179,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5253,7 +5236,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5298,7 +5280,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5324,7 +5305,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5350,7 +5330,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5376,7 +5355,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5402,7 +5380,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5428,7 +5405,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5454,7 +5430,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -5480,7 +5455,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -6128,7 +6102,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -6357,7 +6330,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -6674,12 +6646,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -6690,12 +6660,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -6827,7 +6795,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -6852,7 +6819,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7015,12 +6981,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7048,12 +7012,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7064,12 +7026,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7172,13 +7132,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7190,13 +7148,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7208,13 +7164,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7226,13 +7180,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7244,13 +7196,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7320,7 +7270,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7345,7 +7294,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7378,12 +7326,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7394,12 +7340,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7410,12 +7354,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -7434,7 +7376,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7459,7 +7400,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7506,7 +7446,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7579,7 +7518,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7634,7 +7572,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7855,7 +7792,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7918,7 +7854,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7947,7 +7882,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -7976,7 +7910,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8005,7 +7938,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8034,7 +7966,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8119,7 +8050,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8148,7 +8078,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8177,7 +8106,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8370,12 +8298,10 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -8513,7 +8439,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8569,7 +8494,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8607,7 +8531,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8633,7 +8556,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8857,7 +8779,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8882,7 +8803,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8907,7 +8827,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -8932,7 +8851,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -9053,7 +8971,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -9094,7 +9011,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -9253,7 +9169,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -9360,13 +9275,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -11697,13 +11610,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -11731,13 +11642,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -11748,13 +11657,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -12077,7 +11984,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -12092,8 +11998,7 @@
       "seur",
       "brt",
       "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -13052,13 +12957,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -13344,13 +13247,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -13695,13 +13596,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -13712,13 +13611,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -14603,7 +14500,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -15231,13 +15127,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -15329,7 +15223,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -15448,7 +15341,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -15556,7 +15448,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -16470,13 +16361,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -16505,14 +16394,12 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -16523,13 +16410,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -16681,7 +16566,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -16920,7 +16804,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -16934,8 +16817,7 @@
       "seur",
       "brt",
       "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -17064,7 +16946,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -17078,8 +16959,7 @@
       "seur",
       "brt",
       "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dhl-ecommerce-uk"
     ]
   },
   {
@@ -17950,7 +17830,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -18339,7 +18218,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -18419,7 +18297,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -18544,13 +18421,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -18685,13 +18560,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -18702,13 +18575,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -18719,13 +18590,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -19596,7 +19465,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -19622,7 +19490,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -20083,13 +19950,11 @@
       "dpd-fr",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -20535,7 +20400,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -20561,7 +20425,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -21650,13 +21513,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -22823,7 +22684,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -22950,7 +22810,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -23119,7 +22978,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -23246,7 +23104,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -23436,13 +23293,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -23651,15 +23506,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -23831,7 +23684,6 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "orlen-paczka"
@@ -23839,8 +23691,7 @@
     "asked": [
       "orlen-paczka",
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -23875,15 +23726,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "orlen-paczka"
     ],
     "asked": [
       "orlen-paczka",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -23973,7 +23822,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -24071,7 +23919,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -24318,7 +24165,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -24783,13 +24629,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -24939,7 +24783,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -25227,6 +25070,22 @@
       "relais-colis",
       "packeta",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "2250112664712",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda",
+      "korea-post"
+    ],
+    "asked": [
+      "la-poste",
+      "delhivery"
     ]
   },
   {
@@ -25665,7 +25524,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -25964,7 +25822,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -26261,13 +26118,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -26277,13 +26132,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -26375,7 +26228,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -26731,13 +26583,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -26848,13 +26698,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -27077,7 +26925,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -27150,7 +26997,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -27175,7 +27021,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -27442,7 +27287,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -27501,13 +27345,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -27676,13 +27518,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -28153,7 +27993,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -29108,13 +28947,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -29781,7 +29618,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -30510,7 +30346,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -30612,13 +30447,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -31842,7 +31675,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -31866,7 +31698,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -32124,13 +31955,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -32903,7 +32732,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -33398,14 +33226,12 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -35352,13 +35178,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -36619,13 +36443,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -37321,7 +37143,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -37608,7 +37429,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -40045,7 +39865,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -41007,7 +40826,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44291,7 +44109,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44315,7 +44132,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44406,7 +44222,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44481,7 +44296,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44665,7 +44479,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44721,7 +44534,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -44778,7 +44590,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -45186,15 +44997,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "imile"
     ],
     "asked": [
       "la-poste",
-      "imile",
-      "delhivery"
+      "imile"
     ]
   },
   {
@@ -45207,7 +45016,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dpd-be",
       "dpd-de",
       "dpd-nl",
@@ -45234,7 +45042,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dpd-be",
       "dpd-de",
       "dpd-nl",
@@ -45343,7 +45150,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dpd-be",
       "dpd-de",
       "dpd-nl",
@@ -45451,7 +45257,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dpd-be",
       "dpd-de",
       "dpd-nl",
@@ -45511,15 +45316,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -45576,15 +45379,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "imile"
     ],
     "asked": [
       "la-poste",
-      "imile",
-      "delhivery"
+      "imile"
     ]
   },
   {
@@ -45689,7 +45490,6 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl",
@@ -45698,8 +45498,7 @@
     "asked": [
       "fedex-pl",
       "la-poste",
-      "imile",
-      "delhivery"
+      "imile"
     ]
   },
   {
@@ -45807,13 +45606,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -45824,14 +45621,12 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -45841,13 +45636,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -45891,13 +45684,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -46047,13 +45838,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -46063,13 +45852,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -46105,15 +45892,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "imile"
     ],
     "asked": [
       "la-poste",
-      "imile",
-      "delhivery"
+      "imile"
     ]
   },
   {
@@ -46123,15 +45908,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "imile"
     ],
     "asked": [
       "la-poste",
-      "imile",
-      "delhivery"
+      "imile"
     ]
   },
   {
@@ -46277,15 +46060,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -47039,15 +46820,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -47530,7 +47309,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -47556,7 +47334,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -47692,7 +47469,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -48283,7 +48059,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -48378,7 +48153,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -48463,14 +48237,12 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -48555,13 +48327,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -48571,13 +48341,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -48621,13 +48389,11 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -48936,15 +48702,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -48954,15 +48718,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -49100,15 +48862,13 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda",
       "korea-post",
       "fedex-pl"
     ],
     "asked": [
       "fedex-pl",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -49234,7 +48994,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "city-express-rs",
       "dhl-ecommerce-uk",
       "dpd-be",
@@ -50628,7 +50387,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "zto",
       "dhl-ecommerce-uk",
       "dpd-be",
@@ -50938,7 +50696,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "zto",
       "dhl-ecommerce-uk",
       "dpd-be",
@@ -51951,12 +51708,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -52057,12 +51812,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -53677,12 +53430,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -53819,13 +53570,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -54490,12 +54239,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -54505,12 +54252,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -55658,7 +55403,6 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "preferred": [
@@ -55667,8 +55411,7 @@
     "asked": [
       "shiprocket",
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -55759,7 +55502,6 @@
       "shiprocket",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "preferred": [
@@ -55767,8 +55509,7 @@
     ],
     "asked": [
       "shiprocket",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -55803,7 +55544,6 @@
       "shiprocket",
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "preferred": [
@@ -55811,8 +55551,7 @@
     ],
     "asked": [
       "shiprocket",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -56168,7 +55907,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -56617,7 +56355,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -56975,12 +56712,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -57356,13 +57091,11 @@
       "la-poste",
       "ukrposhta",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
       "ukrposhta",
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -57689,7 +57422,6 @@
       "hermes-de",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -57919,12 +57651,10 @@
     "candidates": [
       "la-poste",
       "correos-chile",
-      "delhivery",
       "yunda"
     ],
     "asked": [
-      "la-poste",
-      "delhivery"
+      "la-poste"
     ]
   },
   {
@@ -59714,7 +59444,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",
@@ -61559,7 +61288,6 @@
       "ciblex",
       "seur",
       "brt",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd-be",
       "dpd-de",

@@ -27,8 +27,8 @@ describe('prefixed Asian shipment references and shared numeric formats', () => 
   it.each([
     ['LP00000000000001', 'aliexpress'],
     ['LP0000000000001CN', 'four-px'],
-    ['0000000000001', 'delhivery'],
-    ['00000000000001', 'delhivery'],
+    ['1000000000016', 'delhivery'],
+    ['10000000000016', 'delhivery'],
   ])('keeps %s ambiguous while allowing its direct HTTP confirmation', (number, carrier) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(detectCarrierMatch(number).candidates).toContain(carrier);

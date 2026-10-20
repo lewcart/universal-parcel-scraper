@@ -1200,16 +1200,25 @@
     "reason": "13-digit numbers are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 7, 8 or 9, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "la-poste",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "13-digit numbers are shared by four carriers; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "09{12}",
     "carriers": [
       "correos-chile",
-      "delhivery",
       "dpd-fr",
       "la-poste",
       "ukrposhta",
       "yunda"
     ],
-    "reason": "13-digit numbers starting with 0 add DPD France to the five carriers already sharing that length; the number stays a suggestion."
+    "reason": "13-digit numbers starting with 0 add DPD France to the four carriers already sharing that length; the number stays a suggestion."
   },
   {
     "shape": "9{13} starting with 1 or 250",
@@ -1225,6 +1234,18 @@
     "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the five carriers already sharing that length; the number stays a suggestion."
   },
   {
+    "shape": "9{13} starting with 1 or 250, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "dpd-fr",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the four carriers already sharing that length; the number stays a suggestion."
+  },
+  {
     "shape": "9{13} starting with 2 to 6, outside 250",
     "carriers": [
       "correos-chile",
@@ -1235,6 +1256,17 @@
       "yunda"
     ],
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by six carriers; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "9{13} starting with 2 to 6, outside 250, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
     "shape": "9{20} SSCC under Poczta Polska's GS1 prefix 5900773",
@@ -1331,6 +1363,22 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, starting 0 or ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-uk",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits",
     "carriers": [
       "brt",
@@ -1349,6 +1397,23 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-uk",
+      "seur",
+      "xpressbees",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits",
     "carriers": [
       "brt",
@@ -1365,11 +1430,25 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits",
     "carriers": [
       "brt",
       "ciblex",
-      "delhivery",
       "dpd",
       "dpd-be",
       "dpd-nl",
@@ -1380,7 +1459,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1402,11 +1481,47 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-uk",
+      "hermes-de",
+      "seur",
+      "xpressbees",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits starting 13",
     "carriers": [
       "brt",
       "ciblex",
       "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-fr",
+      "dpd-pl",
+      "dpd-uk",
+      "seur",
+      "xpressbees",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Most fourteen-digit numbers on DPD Poland's own archived tracking pages start with 13, so DPD Poland is listed first; the length stays shared with the other DPD networks and these carriers, so number shape alone cannot identify the carrier."
+  },
+  {
+    "shape": "14 digits starting 13, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dpd",
       "dpd-be",
       "dpd-nl",
@@ -1458,11 +1573,26 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
-    "shape": "14 digits",
+    "shape": "14 digits, ending 7, 8 or 9",
     "carriers": [
       "brt",
       "ciblex",
-      "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dpd",
       "dpd-be",
       "dpd-nl",
@@ -1473,7 +1603,7 @@
       "seur",
       "dhl-ecommerce-uk"
     ],
-    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Hermes Germany's low rule takes fourteen digits too; La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1493,6 +1623,22 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "la-poste",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. La Poste's low rule takes those starting 865, 866, 875, 880 or 885. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14 digits",
     "carriers": [
       "brt",
@@ -1508,6 +1654,22 @@
       "dhl-ecommerce-uk"
     ],
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "nova-poshta",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Nova Poshta's low rule takes its domestic prefixes, such as 204, 590 or 51. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
     "shape": "14 digits",
@@ -1527,11 +1689,44 @@
     "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex, Delhivery and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "xpressbees",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Fourteen digits is DPD's parcel number, taken by each DPD entry's low rule, and BRT, SEUR, Ciblex and DHL eCommerce UK issue numbers of the same length. Xpressbees's low rule takes those starting 1 or 9. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
     "shape": "14-digit Nova Poshta family passing the Hermes checksum",
     "carriers": [
       "brt",
       "ciblex",
       "delhivery",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "nova-poshta",
+      "seur",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Nova Poshta waybills overlap other numeric families; a valid Hermes checksum cannot establish carrier ownership."
+  },
+  {
+    "shape": "14-digit Nova Poshta family passing the Hermes checksum, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dpd",
       "dpd-be",
       "dpd-nl",
@@ -1965,6 +2160,15 @@
     "reason": "Without Ukrposhta's check digit, 13-digit numbers are shared by four carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 7, 8 or 9 that fails the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "Without Ukrposhta's check digit, 13-digit numbers are shared by three carriers; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "9{11} that fails the mod 7 check",
     "carriers": [
       "dhl-ecommerce-pl",
@@ -2023,6 +2227,17 @@
       "yunda"
     ],
     "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the four carriers sharing that length; the number stays a suggestion."
+  },
+  {
+    "shape": "9{13} starting with 1 or 250 that fails the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "dpd-fr",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "13-digit numbers starting with 1 or 250 add DPD France and Korea Post's registered letters to the three carriers sharing that length; the number stays a suggestion."
   },
   {
     "shape": "Twelve digits that pass the FedEx check",
@@ -2130,6 +2345,16 @@
     "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by five carriers; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "9{13} starting with 2 to 6, outside 250, that fails the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "13-digit numbers starting with 2 to 6, Korea Post's domestic parcels and registered letters among them, are shared by four carriers; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "6, a month, a day and a year from 24, then six digits, that fail the Ukrposhta check",
     "carriers": [
       "correos-chile",
@@ -2140,6 +2365,17 @@
       "yunda"
     ],
     "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and four other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "6, a month, a day and a year from 24, then six digits, that fail the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "imile",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "iMile's dated waybills sit inside the thirteen-digit space Korea Post's domestic parcels and three other carriers' counters share; the date does not establish ownership, so the number stays a low-confidence suggestion."
   },
   {
     "shape": "Twelve digits that pass the GLS check",
@@ -2467,15 +2703,14 @@
     "reason": "CDEK's own numbers count up from 10 and Old Dominion's Luhn check adds it as a suggestion; neither decides, so the number stays a low-confidence suggestion."
   },
   {
-    "shape": "9{13} in the Planzer 99990 range",
+    "shape": "9{13} in the Planzer 99990 range, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "delhivery",
       "la-poste",
       "planzer",
       "yunda"
     ],
-    "reason": "The Planzer 99990 range sits inside the 13-digit space four carriers match broadly; the Planzer rule decides."
+    "reason": "The Planzer 99990 range sits inside the 13-digit space three carriers match broadly; the Planzer rule decides."
   },
   {
     "shape": "9{20} SSCC with a Nordic GS1 prefix",
@@ -2979,6 +3214,23 @@
     "reason": "Hermes Germany parcel numbers share this numeric length with the DPD networks and these carriers, so number shape alone cannot identify a carrier."
   },
   {
+    "shape": "14 digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "seur",
+      "xpressbees",
+      "dhl-ecommerce-uk"
+    ],
+    "reason": "Hermes Germany parcel numbers share this numeric length with the DPD networks and these carriers, so number shape alone cannot identify a carrier."
+  },
+  {
     "shape": "Fifteen digits starting with 20",
     "carriers": [
       "brt",
@@ -3164,10 +3416,33 @@
     "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Delhivery, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "210 and ten digits that pass the GS1 check and fail the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "korea-post",
+      "la-poste",
+      "orlen-paczka",
+      "yunda"
+    ],
+    "reason": "ORLEN Paczka's parcel numbers sit inside the thirteen-digit space that Correos de Chile, Korea Post, La Poste and Yunda match broadly; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks",
     "carriers": [
       "correos-chile",
       "delhivery",
+      "korea-post",
+      "la-poste",
+      "orlen-paczka",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "210 and ten digits that pass both the GS1 and the Ukrposhta checks, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
       "korea-post",
       "la-poste",
       "orlen-paczka",
@@ -3188,10 +3463,19 @@
     "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, Delhivery, La Poste and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
   },
   {
-    "shape": "832 and ten digits that pass the Ukrposhta check",
+    "shape": "832 and ten digits, ending 7, 8 or 9",
     "carriers": [
       "correos-chile",
-      "delhivery",
+      "la-poste",
+      "shiprocket",
+      "yunda"
+    ],
+    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, La Poste and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "832 and ten digits that pass the Ukrposhta check, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
       "la-poste",
       "shiprocket",
       "ukrposhta",
@@ -3223,6 +3507,24 @@
       "brt",
       "ciblex",
       "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "hermes-de",
+      "seur",
+      "slovak-parcel-service",
+      "zto"
+    ],
+    "reason": "SPS parcel numbers start with 703, Slovakia's country code, and some also pass the Hermes check, so SPS is offered next to Hermes and the other fourteen-digit carriers; number shape alone cannot identify the carrier. The same whole identifiers are also domestic ZTO candidates."
+  },
+  {
+    "shape": "14 digits starting 703 that pass the Hermes checksum, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-be",
@@ -3528,7 +3830,6 @@
     "shape": "^\\d{13}$",
     "carriers": [
       "correos-chile",
-      "delhivery",
       "dpd-fr",
       "la-poste",
       "yunda"
@@ -3596,6 +3897,22 @@
       "brt",
       "ciblex",
       "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "seur",
+      "zto"
+    ],
+    "reason": "Domestic ZTO candidates overlap numeric parcel formats. A shape or checksum does not establish network ownership."
+  },
+  {
+    "shape": "7 followed by thirteen digits, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-be",
@@ -3824,12 +4141,11 @@
     "reason": "GLS Italy's low rule accepts eleven-character composites; the AyMakan prefix rule decides."
   },
   {
-    "shape": "14 digits starting 688001, 688002 or 688005",
+    "shape": "14 digits starting 688001, 688002 or 688005, ending 7, 8 or 9",
     "carriers": [
       "brt",
       "ciblex",
       "city-express-rs",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-be",
@@ -3858,11 +4174,26 @@
     "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
   },
   {
-    "shape": "14 digits starting 63 that pass the Hermes checksum",
+    "shape": "14 digits starting 63, ending 7, 8 or 9",
     "carriers": [
       "brt",
       "ciblex",
-      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd",
+      "dpd-be",
+      "dpd-nl",
+      "dpd-de",
+      "dpd-uk",
+      "mylerz",
+      "seur"
+    ],
+    "reason": "Mylerz barcodes are fourteen digits starting 63, which fit the other carriers' fourteen-digit rules. Every rule involved is low, so the number stays a low-confidence suggestion and recognition asks the candidates."
+  },
+  {
+    "shape": "14 digits starting 63 that pass the Hermes checksum, ending 7, 8 or 9",
+    "carriers": [
+      "brt",
+      "ciblex",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-be",
@@ -3920,7 +4251,6 @@
     "shape": "eight digits starting 0, four digits and one digit joined by hyphens",
     "carriers": [
       "correos-chile",
-      "delhivery",
       "dpd-fr",
       "la-poste",
       "ozon-logistics",
@@ -4326,7 +4656,6 @@
     "carriers": [
       "brt",
       "ciblex",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-at",
@@ -4443,7 +4772,6 @@
     "carriers": [
       "brt",
       "ciblex",
-      "delhivery",
       "dhl-ecommerce-uk",
       "dpd",
       "dpd-be",
@@ -4611,10 +4939,33 @@
     "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
   },
   {
+    "shape": "^\\d{13}$, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
+      "fedex-pl",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
     "shape": "^\\d{13}$",
     "carriers": [
       "correos-chile",
       "delhivery",
+      "fedex-pl",
+      "imile",
+      "korea-post",
+      "la-poste",
+      "yunda"
+    ],
+    "reason": "FedEx Poland's domestic numbers are thirteen digits starting with 6 and ending in a GS1 check digit, as some of these carriers' numbers also are, so its low rule joins theirs and recognition settles the carrier."
+  },
+  {
+    "shape": "^\\d{13}$, ending 7, 8 or 9",
+    "carriers": [
+      "correos-chile",
       "fedex-pl",
       "imile",
       "korea-post",

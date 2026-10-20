@@ -50,7 +50,7 @@
   "detection": [
     {
       "id": "delhivery-1",
-      "pattern": "^\\d{13,14}$",
+      "pattern": "^[1-9]\\d{11,12}[0-6]$",
       "confidence": "low"
     }
   ]

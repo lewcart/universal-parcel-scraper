@@ -141,7 +141,7 @@ describe('YTO domestic retrieval', () => {
   it('uses the actual anonymous JSON-array request without session bootstrap', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => new Response(JSON.stringify(fixture())));
     const instance = adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
-    expect(instance.id).toBe('yto'); expect(instance.steps).toEqual(['direct']);
+    expect(instance.id).toBe('yto'); expect(instance.steps).toEqual(['direct', 'retry']);
     expect(normalizeYtoNumber('yt-0000000000001')).toBe(NUMBER);
     await instance.track({ number: NUMBER }); await instance.track({ number: NUMBER });
     expect(fetcher).toHaveBeenCalledTimes(2);
@@ -164,6 +164,31 @@ describe('YTO domestic retrieval', () => {
   it.each([[401, 'challenge'], [403, 'challenge'], [404, 'transport'], [410, 'transport'], [429, 'rate_limited'], [503, 'maintenance']])('keeps endpoint HTTP %s separate from parcel absence', async (status, kind) => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response('Failure', { status: Number(status) }));
     await expect(new YtoTracker({ fetcher }).fetch(NUMBER)).rejects.toMatchObject({ kind });
+    // An HTTP status is never sent again.
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('tries once more after a read that does not reach the site', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValueOnce(new TypeError('fetch failed'))
+      .mockResolvedValueOnce(new Response(JSON.stringify(fixture())));
+    const recorder = { ...NOOP_RECORDER, step: vi.fn() };
+    await expect(new YtoTracker({ fetcher, recorder }).fetch(NUMBER, { budgetMs: 2000 })).resolves.toMatchObject({ current_stage: 'delivered' });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ step: 'retry', outcome: 'ok' }));
+  });
+
+  it('gives a hanging first read half of the budget and the retry the rest', async () => {
+    const signals: AbortSignal[] = [];
+    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
+      const signal = init!.signal!;
+      signals.push(signal);
+      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+    }));
+    const started = Date.now();
+    await expect(new YtoTracker({ fetcher }).fetch(NUMBER, { budgetMs: 80 })).rejects.toThrow();
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(signals.every(signal => signal.aborted)).toBe(true);
+    expect(Date.now() - started).toBeLessThan(2000);
   });
 
   it('propagates cancellation, fractional deadlines and streaming limits', async () => {

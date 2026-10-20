@@ -4,9 +4,13 @@ Tracks Chinese domestic waybills through the official website's consumer feed.
 
 ## How it works
 
-One anonymous JSON POST returns an identity-bound scan list. The website displays
-a slider before querying; the feed accepts reads without cookies or a challenge token.
-The adapter uses each scan's operation code and preserves the feed's newest-first order.
+1. `direct`: one anonymous JSON POST returns an identity-bound scan list. The website
+   displays a slider before querying; the feed accepts reads without cookies or a
+   challenge token. The adapter uses each scan's operation code and preserves the
+   feed's newest-first order.
+2. `retry`: a read that fails to reach the site, or hangs, runs once more within the
+   budget. The first read gets half of the budget. An HTTP status or a reply is never
+   sent again.
 
 ## Notes
 

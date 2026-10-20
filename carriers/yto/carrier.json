@@ -16,7 +16,8 @@
     "mode": "automatic",
     "adapter": "yto",
     "steps": [
-      "direct"
+      "direct",
+      "retry"
     ],
     "localClocks": true
   },

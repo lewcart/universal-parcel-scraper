@@ -35,7 +35,9 @@ services, and estimate fields the page never shows, so neither is read. The
 customer's order number is never read.
 
 Scan stages come from [status.ts](status.ts), which compares Yuntrack's wording
-without case or repeated spaces. "Delivered to local carrier" is the hand-over
+without case or repeated spaces. A partner line that names a place or a reason,
+such as a missed delivery's type or the depot a card left names, matches on its
+fixed words. "Delivered to local carrier" is the hand-over
 to the destination's last-mile carrier, so it stays in transit, as does a
 courier partner's acceptance; only the latest event's delivered code marks a
 delivery. A relayed notice, such as a reminder that failed to send, gets no

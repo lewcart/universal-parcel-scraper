@@ -95,6 +95,15 @@ describe('status map answers', () => {
     expect(answer('yunexpress', null, 'Arrived at GOFO Regional Destination Facility')).toEqual(mapped('in_transit'));
     expect(answer('yunexpress', null, 'REMINDER EMAIL SENT FAILED')).toEqual(gap);
     expect(answer('yunexpress', null, 'Shipping Label Created')).toEqual(mapped('registered'));
+    expect(answer('yunexpress', null, 'Shipment is in transit to carrier')).toEqual(mapped('in_transit'));
+    expect(answer('yunexpress', null, 'Delivery failed, type: Recipient absent or delivery location inaccessible. We will attempt redelivery soon.'))
+      .toEqual(mapped('failed_attempt'));
+    expect(answer('yunexpress', null, 'The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.'))
+      .toEqual(mapped('failed_attempt'));
+    // A card left after a transfer, stored with or without the courier page's markup around it.
+    expect(answer('yunexpress', null, '1 item has been transferred to Example (synthville) CARD LEFT')).toEqual(mapped('failed_attempt'));
+    expect(answer('yunexpress', null, "1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CP000000000001'>CARD LEFT</a></b>"))
+      .toEqual(mapped('failed_attempt'));
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to DPD.')).toEqual(mapped('registered'));
     expect(answer('four-px', 'FPX_O_IR', 'Order information has been transmitted to Example Post.')).toEqual(mapped('registered'));
     expect(answer('j-and-t-au', null, 'Your parcel is out for delivery. If you have any questions, please call, Thank you for your patience.')).toEqual(mapped('out_for_delivery'));

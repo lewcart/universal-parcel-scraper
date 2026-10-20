@@ -196,6 +196,14 @@
       "firstSeen": "2026-10-08"
     },
     {
+      "wording": "Shipment is in transit to carrier",
+      "stage": "in_transit",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "On the way to the last-mile carrier, as in the line that names DHL."
+    },
+    {
       "wording": "Sender goods issue",
       "stage": "registered",
       "language": "en",
@@ -385,6 +393,30 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-08",
       "note": "Relayed after the parcel left the facilities of the network that brought it to the courier partner: a hand-over, not the parcel's acceptance."
+    },
+    {
+      "wording": "Delivery failed, type: Recipient absent or delivery location inaccessible.",
+      "stage": "failed_attempt",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Relayed from GOFO, which goes on to promise another attempt; matched on its start."
+    },
+    {
+      "wording": "The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.",
+      "stage": "failed_attempt",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Relayed from GLS: the parcel box it was due in was full, so the depot keeps it."
+    },
+    {
+      "wording": "1 item has been transferred to <depot> (<town>) CARD LEFT",
+      "stage": "failed_attempt",
+      "language": "en",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Relayed from an Australian courier after a missed delivery: the card left names the depot that now holds the parcel. Matched on its fixed words; the courier's page wraps CARD LEFT in a link the adapter drops."
     },
     {
       "code": "10",

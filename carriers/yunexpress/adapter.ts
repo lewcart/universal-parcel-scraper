@@ -12,14 +12,10 @@ import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js'
 import { clean, type TrawlClient, type TrawlScrapeResponse } from '../../core/transport/index.js';
 import { withLocalBrowser } from '../../core/transport/localBrowser.js';
 import { isRecord } from '../../core/types.js';
-import { isYunExpressNotice, yunExpressCodeStatus, yunExpressStatus } from './status.js';
+import { isYunExpressNotice, withoutMarkup, yunExpressCodeStatus, yunExpressStatus } from './status.js';
 
 const API = 'https://services.yuntrack.com/Track/Query';
 const MAX_BYTES = 1_000_000;
-// A partner's line can carry its tracking page's markup, such as a link holding the parcel's
-// number around "CARD LEFT". The scan keeps the link's text, never the tag or its address.
-const MARKUP = /<\/?(?:a|b|i|u|em|strong|span|font|br|p|div)\b[^<>]{0,1000}>/gi;
-const withoutMarkup = (text: string) => text.replace(MARKUP, ' ');
 
 export function normalizeYunExpressNumber(raw: string): string {
   const number = raw.toUpperCase().replace(/[\s.-]/g, '');

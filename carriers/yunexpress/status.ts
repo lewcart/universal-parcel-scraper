@@ -30,6 +30,7 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   ['The driver is out for delivery', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['Departure from the international sorting center', { status: 'in_transit', stage: 'in_transit' }],
   ['Shipment in transit to DHL', { status: 'in_transit', stage: 'in_transit' }],
+  ['Shipment is in transit to carrier', { status: 'in_transit', stage: 'in_transit' }],
   ['Preparing for delivery', { status: 'in_transit', stage: 'in_transit' }],
   // Last-mile wording the feed relays without codes. DPD files its data
   // record before the parcel leaves China and its proof of delivery after the
@@ -59,7 +60,30 @@ const ENTRIES: ReadonlyArray<readonly [string, ClassifiedStatus]> = [
   // A courier partner's acceptance follows the scans of the network that
   // brought the parcel to it: a hand-over, not the parcel's acceptance.
   ['Package accepted at courier partner', { status: 'in_transit', stage: 'in_transit' }],
+  // GLS keeps the parcel at its depot after the parcel box it was due in was full.
+  ['The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.', { status: 'exception', stage: 'failed_attempt' }],
 ];
+
+const FAILED_ATTEMPT: ClassifiedStatus = { status: 'exception', stage: 'failed_attempt' };
+
+/**
+ * Partner lines that carry a place or a reason after fixed words, by their
+ * `normalizeStatusWording` form: GOFO's missed delivery with its type, and an
+ * Australian courier's transfer to a depot after it left a card.
+ */
+const PATTERNS: ReadonlyArray<readonly [RegExp, ClassifiedStatus]> = [
+  [/^delivery failed, type: ?recipient absent or delivery location inaccessible\b/, FAILED_ATTEMPT],
+  [/^\d+ items? (?:has|have) been transferred to \S.* card left$/, FAILED_ATTEMPT],
+];
+
+// A partner's line can carry its tracking page's markup, such as a link holding the parcel's
+// number around "CARD LEFT". The scan keeps the link's text, never the tag or its address.
+const MARKUP = /<\/?(?:a|b|i|u|em|strong|span|font|br|p|div)\b[^<>]{0,1000}>/gi;
+
+/** A partner's line without its tracking page's markup. */
+export function withoutMarkup(text: string): string {
+  return text.replace(MARKUP, ' ');
+}
 
 // A relayed notice about the parcel rather than a scan of it names no stage,
 // so the parcel keeps the one it had: here a reminder to collect it that
@@ -82,7 +106,8 @@ export function yunExpressStatus(description: string, code?: unknown): Classifie
   // The latest event's explicit delivered code also covers partner wording
   // containing variable delivery notes. It is never inherited by older scans.
   if (code === 50) return { status: 'delivered', stage: 'delivered' };
-  return WORDING.get(normalizeStatusWording(description));
+  const wording = normalizeStatusWording(description);
+  return WORDING.get(wording) ?? PATTERNS.find(([pattern]) => pattern.test(wording))?.[1];
 }
 
 /** The status the latest event's own code states, for wording the map does not know. */
@@ -92,9 +117,10 @@ export function yunExpressCodeStatus(code: unknown): CarrierStatus | undefined {
 
 /**
  * What the map says about one scan. Scans carry no code: the delivered code
- * comes only with the latest event and is never a scan's own.
+ * comes only with the latest event and is never a scan's own. Wording stored
+ * with a partner's markup reads as the adapter now writes it, without.
  */
 export const statusMap: CarrierStatusMap = {
-  stage: (_code, wording) => yunExpressStatus(wording)?.stage,
+  stage: (_code, wording) => yunExpressStatus(withoutMarkup(wording))?.stage,
   gaps: [{ wording: NOTICE, note: 'A reminder that failed to send, not a movement: the parcel keeps the stage it had.' }],
 };

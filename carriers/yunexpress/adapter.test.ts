@@ -7,7 +7,8 @@ import { TrawlClient, type TrawlScrapeResponse } from '../../core/transport/inde
 import { adapter, parse, parseCaptured, YunExpressTracker } from './adapter.js';
 import { InvalidInputError } from '../../core/errors/index.js';
 import statuses from './statuses.json' with { type: 'json' };
-import { yunExpressCodeStatus, yunExpressStatus } from './status.js';
+import { normalizeStatusWording } from '../../core/status/statusMap.js';
+import { statusMap, yunExpressCodeStatus, yunExpressStatus } from './status.js';
 
 const NUMBER = 'YT0000000000000001';
 const API = 'https://services.yuntrack.com/Track/Query';
@@ -59,6 +60,18 @@ describe('YunExpress captured response projection', () => {
     // Yuntrack's capitals and spacing vary; the wording does not.
     expect(yunExpressStatus('arrived at  SORT facility ')?.stage).toBe('in_transit');
     expect(yunExpressStatus('Delivered')).toBeUndefined();
+  });
+
+  it("reads partners' missed deliveries by their fixed words, whatever place or reason follows", () => {
+    expect(yunExpressStatus('Shipment is in transit to carrier')).toEqual({ status: 'in_transit', stage: 'in_transit' });
+    const missed = { status: 'exception', stage: 'failed_attempt' };
+    expect(yunExpressStatus('Delivery failed, type: Recipient absent or delivery location inaccessible. We will attempt redelivery soon.')).toEqual(missed);
+    expect(yunExpressStatus('The parcel is being stored in the GLS parcel center. It could not be delivered as the parcel box was occupied.')).toEqual(missed);
+    expect(yunExpressStatus('1 item has been transferred to Example (synthville) CARD LEFT')).toEqual(missed);
+    expect(yunExpressStatus('2 items have been transferred to Example depot CARD LEFT')).toEqual(missed);
+    // Another type of failure, or a transfer without a card, is not read as one.
+    expect(yunExpressStatus('Delivery failed, type: Synthetic reason')).toBeUndefined();
+    expect(yunExpressStatus('1 item has been transferred to Example (synthville)')).toBeUndefined();
   });
 
   it('requires a unique returned number and matching waybill identity', () => {
@@ -122,8 +135,13 @@ describe('YunExpress captured response projection', () => {
     const rows = payload.ResultList[0].TrackData.ProcessGroupList.flatMap((group: { ProcessDetailList: unknown[] }) => group.ProcessDetailList);
     rows[3].ProcessContent = "1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CP000000000001'>CARD LEFT</a></b>----Example facility";
     const event = parse(payload, NUMBER).events?.[3];
-    expect(event).toMatchObject({ description: '1 item has been transferred to Example (synthville) CARD LEFT', location: 'Example facility' });
+    expect(event).toMatchObject({ description: '1 item has been transferred to Example (synthville) CARD LEFT', location: 'Example facility',
+      stage: 'failed_attempt' });
     expect(JSON.stringify(event)).not.toMatch(/CP000000000001|href|</);
+    // The map reads wording stored with the markup as the adapter now writes it.
+    const stored = normalizeStatusWording("1 item has been transferred to Example (synthville) <b><a href='/Contact?tracNum=CP000000000001'>CARD LEFT</a></b>");
+    expect(statusMap.stage(null, stored)).toBe('failed_attempt');
+    expect(statusMap.stage(null, normalizeStatusWording(event!.description!))).toBe('failed_attempt');
   });
 
   it('keeps a dash given as the place out of a relayed line, newest or older', () => {

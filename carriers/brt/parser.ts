@@ -253,3 +253,46 @@ export function parseBrt(html: string, raw: string, parcelList?: string): Carrie
     ...(Number.isFinite(weight) && weight > 0 && weight <= 100_000 ? { weight_kg: weight } : {}),
     events: events.slice(0, 100) };
 }
+
+/** A partner that brings parcels to BRT from abroad under BRT's own code. */
+export type BrtOriginPartner = 'chronopost' | 'dpd';
+
+/**
+ * The partner that brought a shipment to BRT, named by the depot of its oldest
+ * scan: Chronopost's import depots open with `CHR-` and the DPD network's with
+ * `DPD`. A shipment that started at one of BRT's own depots has none.
+ */
+export function brtOriginPartner(result: CarrierResult): BrtOriginPartner | null {
+  const place = result.events?.at(-1)?.location ?? '';
+  return /^CHR-/.test(place) ? 'chronopost' : /^DPD\b/.test(place) ? 'dpd' : null;
+}
+
+// The fields of a result's current status.
+const STATUS_FIELDS = ['status', 'current_stage', 'current_stage_source', 'last_status_text', 'last_update', 'last_update_local', 'delivered_at'] as const;
+
+/**
+ * The shipment with the leg its partner carried it on before BRT: the
+ * partner's dated scans before BRT's first scan beyond the shipping data it was
+ * sent, which may have come before them. A clock without an offset may be up
+ * to 14 hours ahead of UTC, so a scan before one is dated more than 14 hours
+ * before its reading as UTC. These scans and BRT's shipping data follow BRT's other
+ * scans, in time order when all are dated. While BRT has only the shipping
+ * data, the partner's newer scan gives the current status.
+ */
+export function withOriginLeg(result: CarrierResult, partner: CarrierResult): CarrierResult {
+  const events = result.events ?? [];
+  let handover = events.length - 1;
+  while (handover >= 0 && events[handover]!.stage === 'registered') handover -= 1;
+  const scan = events[handover];
+  const before = !scan ? Infinity
+    : scan.time ? Date.parse(scan.time)
+      : typeof scan.local_time === 'string' ? Date.parse(`${scan.local_time}Z`) - 14 * 3_600_000 : NaN;
+  const leg = (partner.events ?? []).filter((event) => event.time && Date.parse(event.time) < before);
+  if (!leg.length) return result;
+  const older = [...leg, ...events.slice(handover + 1)];
+  if (older.every((event) => event.time)) older.sort((a, b) => Date.parse(b.time!) - Date.parse(a.time!));
+  const merged: CarrierResult = { ...result, events: [...events.slice(0, handover + 1), ...older].slice(0, 100) };
+  if (scan || older[0] !== partner.events![0]) return merged;
+  for (const field of STATUS_FIELDS) delete merged[field];
+  return { ...merged, ...Object.fromEntries(STATUS_FIELDS.flatMap((field) => partner[field] === undefined ? [] : [[field, partner[field]]])) };
+}

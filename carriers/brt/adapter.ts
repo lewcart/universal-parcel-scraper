@@ -1,14 +1,24 @@
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { BudgetExceededError, IndeterminateError, SchemaError } from '../../core/errors/index.js';
+import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
-import { brtParcelListPath, normalizeBrtNumber, parseBrt } from './parser.js';
+import { ChronopostTracker } from '../chronopost/adapter.js';
+import { DPDTracker } from '../dpd/adapter.js';
+import { brtOriginPartner, brtParcelListPath, normalizeBrtNumber, parseBrt, withOriginLeg, type BrtOriginPartner } from './parser.js';
 
 const BASE = 'https://vas.brt.it/vas/';
+/** The time kept for BRT's own answer when a partner's lookup runs out. */
+const ORIGIN_RESERVE_MS = 500;
+
+/** A partner's lookup of the number BRT tracks a parcel under. */
+export type BrtOriginLookup = (number: string, context: TrackingContext) => Promise<CarrierResult>;
 
 export class BrtTracker {
-  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string } = {}) {}
+  constructor(private readonly options: { fetcher?: typeof fetch; recorder?: StepRecorder; userAgent?: string;
+    /** The lookups of partners that bring parcels from abroad, by the BRTcode they share. */
+    origins?: Partial<Record<BrtOriginPartner, BrtOriginLookup>> } = {}) {}
 
   fetch(raw: string, context: TrackingContext = {}) {
     const number = normalizeBrtNumber(raw);
@@ -32,7 +42,19 @@ export class BrtTracker {
         if (charset && !['utf-8', 'utf8', 'iso-8859-1', 'windows-1252'].includes(charset)) throw new SchemaError('BRT', 'BRT response encoding changed');
         return decodeText(bytes, charset?.startsWith('utf') ? 'utf-8' : 'windows-1252');
       };
-      if (number.length === 14) return parseBrt(await page(`${BASE}sped_det_new.htm?brtCode=${number}&lang=en`), number);
+      if (number.length === 14) {
+        const result = parseBrt(await page(`${BASE}sped_det_new.htm?brtCode=${number}&lang=en`), number);
+        const partner = brtOriginPartner(result);
+        const lookup = partner && this.options.origins?.[partner];
+        const budget = Math.floor(deadline - performance.now() - ORIGIN_RESERVE_MS);
+        if (!lookup || budget <= 0) return result;
+        // The partner's leg adds to BRT's answer, which stands without it.
+        const leg = await lookup(number, { signal, budgetMs: budget }).catch(() => {
+          context.signal?.throwIfAborted();
+          return null;
+        });
+        return leg ? withOriginLeg(result, leg) : result;
+      }
       if (number.length === 12) {
         return parseBrt(await page(`${BASE}sped_det_show.hsm?lang=en`,
           { Nspediz: number, referer: 'sped_numspe_par.htm', RicercaNumeroSpedizione: 'Ricerca', lang: 'en' }), number);
@@ -47,7 +69,16 @@ export class BrtTracker {
 }
 
 export const adapter: AdapterFactory = environment => {
-  const tracker = new BrtTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'brt', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
+  const transport = { fetcher: environment.fetcher, userAgent: environment.userAgent };
+  const chronopost = new ChronopostTracker(transport);
+  // DPD's guest service answers for the whole group; Belgium's unit asks it alone.
+  const dpd = new DPDTracker({ ...transport, country: 'BE' });
+  const tracker = new BrtTracker({ ...transport, recorder: environment.recorder });
+  // Recognition reads BRT alone.
+  const tracking = new BrtTracker({ ...transport, recorder: environment.recorder, origins: {
+    chronopost: (number, context) => chronopost.fetch(number, context),
+    dpd: (number, context) => dpd.fetch(number, '', context),
+  } });
+  return { id: 'brt', recordsSteps: true, steps: ['direct'], track: (input, context) => tracking.fetch(input.number, context),
     recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeBrtNumber(number))) };
 };

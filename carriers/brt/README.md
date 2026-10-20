@@ -27,6 +27,14 @@ asked and named only when it finds the ID. BRT reads them case sensitively.
 Several shipments can share one, and the adapter only reads a reply that shows
 a single shipment.
 
+Chronopost and the DPD network bring parcels from abroad under a BRTcode they
+track too. BRT's history of such a parcel starts at their import depot, named
+`CHR-…` or `DPD…`, often with only the shipping data the partner sent. Tracking
+that BRTcode also asks the partner, with what is left of the budget:
+Chronopost's own tracking service, or DPD's guest service, which answers for
+the whole group with each milestone once, at its newest date and without a
+place. Without its answer BRT's stands; recognition reads BRT alone.
+
 ## Notes
 
 BRT's depots in Italy keep Italian civil time, which San Marino and the
@@ -54,6 +62,12 @@ it means delivery. A shipment returned to its sender ends with a delivery scan
 at the origin depot; after a return scan that delivery reads as returned.
 Held-parcel records and links to a delivering partner are not part of the
 history.
+
+The partner's dated scans before BRT's first scan beyond the shipping data
+join the history below BRT's other scans, with the shipping data, in time order
+when every clock among them is dated. A BRT clock without an offset may be up to
+14 hours ahead of UTC, so a partner scan must be older than that. While BRT has only
+the shipping data, a newer partner scan gives the current status.
 
 Recipient details, sender references and shipment identifiers beyond the
 requested identifier are excluded from the result.

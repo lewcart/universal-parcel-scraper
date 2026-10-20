@@ -1,12 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { describe, expect, it, vi } from 'vitest';
-import { normalizeCarrierResult } from '../../core/result/index.js';
-import { BrtTracker, adapter } from './adapter.js';
-import { normalizeBrtNumber, parseBrt } from './parser.js';
+import { normalizeCarrierResult, type CarrierEvent, type CarrierResult } from '../../core/result/index.js';
+import { BrtTracker, adapter, type BrtOriginLookup } from './adapter.js';
+import { brtOriginPartner, normalizeBrtNumber, parseBrt, withOriginLeg } from './parser.js';
 import { classifyBrtStatus } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
-import { InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
+import { IndeterminateError, InvalidInputError, NoHistoryError } from '../../core/errors/index.js';
 
 const NUMBER = '99000000000002';
 const OTHER = '99000000000003';
@@ -378,5 +378,95 @@ describe('BRT direct tracking', () => {
     const late = vi.fn<typeof fetch>(async () => { await new Promise(resolve => setTimeout(resolve, 35)); return response(); });
     await expect(new BrtTracker({ fetcher: late }).fetch(NUMBER, { budgetMs: 20.5 })).rejects.toMatchObject({ kind: 'budget' });
     expect(late).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('BRT origin legs', () => {
+  const scan = (description: string, clock: string, stage?: string): CarrierEvent => ({ description, ...(stage ? { stage } : {}),
+    ...(clock.length > 19 ? { time: clock } : { local_time: clock }) });
+  const brt = (events: CarrierEvent[], status: CarrierResult['status'] = 'in_transit'): CarrierResult => ({ status,
+    current_stage: events[0]!.stage, last_status_text: events[0]!.description, last_update: events[0]!.time ?? null,
+    ...(events[0]!.local_time ? { last_update_local: events[0]!.local_time } : {}), events });
+  const partner = (...events: CarrierEvent[]): CarrierResult => ({ status: 'in_transit', current_stage: 'in_transit',
+    last_status_text: events[0]!.description, last_update: events[0]!.time ?? null, history_truncated: true, events });
+  const descriptions = (result: CarrierResult) => result.events!.map(event => event.description);
+  const preAdvice = (clock: string) => scan('SHIPPING INFO SENT TO BRT', clock, 'registered');
+
+  it('names the partner of a shipment whose oldest scan is at its import depot', () => {
+    const from = (location: string) => brtOriginPartner({ events: [{ location: 'TEST DEPOT (990)' }, { location }] });
+    expect(from('CHR-FR SAMPLE (998)')).toBe('chronopost');
+    expect(from('DPD SAMPLE (990)')).toBe('dpd');
+    expect(from('DPD-ROV-SAMPLE (991)')).toBe('dpd');
+    for (const location of ['TEST DEPOT (990)', 'DPDSAMPLE (990)', 'SAMPLE DPD (990)', '']) expect(from(location), location).toBeNull();
+    expect(brtOriginPartner({ events: [{ location: 'DPD SAMPLE (990)' }, { location: 'TEST DEPOT (990)' }] })).toBeNull();
+  });
+
+  it('puts the partner\'s scans before BRT\'s first scan beyond its shipping data under BRT\'s, in time order', () => {
+    const result = withOriginLeg(brt([scan('DEPARTED', '2026-01-13T21:00:00+01:00', 'in_transit'), scan('COLLECTED', '2026-01-13T18:00:00+01:00', 'accepted'),
+      preAdvice('2026-01-12T18:02:00+01:00')]), partner(scan('Sample notice', '2026-01-14T19:00:00+01:00'), scan('Sample transit', '2026-01-13T15:58:00+01:00'),
+      scan('Sample sort', '2026-01-12T18:11:00+01:00'), scan('Sample preparation', '2026-01-12T07:45:00+01:00')));
+    expect(descriptions(result)).toEqual(['DEPARTED', 'COLLECTED', 'Sample transit', 'Sample sort', 'SHIPPING INFO SENT TO BRT', 'Sample preparation']);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'DEPARTED', last_update: '2026-01-13T21:00:00+01:00' });
+    expect(result.history_truncated).toBeUndefined();
+  });
+
+  it('takes the partner\'s status while BRT has only the shipping data and the partner has scanned the parcel since', () => {
+    const result = withOriginLeg(brt([preAdvice('2026-01-12T10:10:00')], 'pending'),
+      partner(scan('Sample on its way', '2026-01-17T00:53:00+01:00'), scan('Sample handed over', '2026-01-12T15:50:00Z')));
+    // BRT's wall clock cannot be placed among the partner's instants and stays last.
+    expect(descriptions(result)).toEqual(['Sample on its way', 'Sample handed over', 'SHIPPING INFO SENT TO BRT']);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Sample on its way', last_update: '2026-01-17T00:53:00+01:00' });
+    expect(result.last_update_local).toBeUndefined();
+    expect(result.history_truncated).toBeUndefined();
+    // Shipping data sent after the partner's last scan keeps BRT's status.
+    const sent = withOriginLeg(brt([preAdvice('2026-01-12T18:02:00+01:00')], 'pending'), partner(scan('Sample preparation', '2026-01-12T07:45:00+01:00')));
+    expect(descriptions(sent)).toEqual(['SHIPPING INFO SENT TO BRT', 'Sample preparation']);
+    expect(sent).toMatchObject({ status: 'pending', current_stage: 'registered', last_update: '2026-01-12T18:02:00+01:00' });
+  });
+
+  it('keeps only partner scans surely before a wall clock, and leaves a shipment without a dated leg as it was', () => {
+    const local = brt([scan('COLLECTED', '2026-01-13T18:00:00', 'accepted'), preAdvice('2026-01-12T10:00:00')]);
+    const result = withOriginLeg(local, partner(scan('Sample late', '2026-01-13T04:30:00Z'), scan('Sample early', '2026-01-13T03:30:00Z')));
+    expect(descriptions(result)).toEqual(['COLLECTED', 'Sample early', 'SHIPPING INFO SENT TO BRT']);
+    expect(withOriginLeg(local, partner(scan('Sample late', '2026-01-13T04:30:00Z')))).toBe(local);
+    expect(withOriginLeg(local, partner(scan('Sample undated', '2026-01-10T08:00:00')))).toBe(local);
+    expect(withOriginLeg(local, { status: 'in_transit', events: [] })).toBe(local);
+  });
+
+  it('asks the partner named by the oldest depot about the same BRTcode within the lookup budget', async () => {
+    const page = (location: string) => edit($ => $('.table_stato_dati tr').last().children('td').eq(2).text(location));
+    const dpd = vi.fn<BrtOriginLookup>(async () => partner(scan('Sample handed over', '2026-01-10T08:00:00Z')));
+    const chronopost = vi.fn<BrtOriginLookup>();
+    const tracker = (body: string) => new BrtTracker({ fetcher: vi.fn<typeof fetch>().mockResolvedValue(response(body)), origins: { dpd, chronopost } });
+    const result = await tracker(page('DPD SAMPLE (990)')).fetch(NUMBER, { budgetMs: 10_000 });
+    expect(dpd).toHaveBeenCalledTimes(1);
+    expect(dpd.mock.calls[0]![0]).toBe(NUMBER);
+    expect(dpd.mock.calls[0]![1].signal).toBeInstanceOf(AbortSignal);
+    expect(dpd.mock.calls[0]![1].budgetMs).toBeLessThan(10_000);
+    expect(chronopost).not.toHaveBeenCalled();
+    expect(result).toMatchObject({ status: 'delivered', last_update: '2026-01-16T21:07:00+01:00' });
+    expect(result.events!.map(event => event.description).slice(-3)).toEqual(['COLLECTED', 'Sample handed over', 'SHIPPING INFO SENT TO BRT']);
+    // A shipment that started at one of BRT's depots, or a parcel the partner cannot answer for, keeps BRT's answer.
+    expect(await tracker(html).fetch(NUMBER)).toEqual(parseBrt(html, NUMBER));
+    expect(dpd).toHaveBeenCalledTimes(1);
+    dpd.mockRejectedValueOnce(new IndeterminateError('DPD', 'Sample outage'));
+    expect(await tracker(page('DPD SAMPLE (990)')).fetch(NUMBER)).toEqual(parseBrt(page('DPD SAMPLE (990)'), NUMBER));
+    // The caller's cancellation still ends the lookup.
+    const controller = new AbortController();
+    dpd.mockImplementationOnce(async () => { controller.abort(); throw new Error('aborted'); });
+    await expect(tracker(page('DPD SAMPLE (990)')).fetch(NUMBER, { signal: controller.signal })).rejects.toBeInstanceOf(Error);
+  });
+
+  it('wires Chronopost to its own endpoint for tracking, and recognizes from BRT alone', async () => {
+    const body = edit($ => $('.table_stato_dati tr').last().children('td').eq(2).text('CHR-FR SAMPLE (998)'));
+    const fetcher = vi.fn<typeof fetch>(async (url) => String(url).startsWith('https://vas.brt.it/') ? response(body) : new Response('', { status: 404 }));
+    const instance = adapter(environment(fetcher));
+    expect(await instance.recognize!(NUMBER)).toMatchObject({ known: true });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(await instance.track({ number: NUMBER, postcode: null })).toEqual(parseBrt(body, NUMBER));
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    const [url, init] = fetcher.mock.calls[2]!;
+    expect(String(url)).toBe('https://ws.chronopost.fr/tracking-cxf/TrackingServiceWS');
+    expect(String(init?.body)).toContain(`<skybillNumber>${NUMBER}</skybillNumber>`);
   });
 });

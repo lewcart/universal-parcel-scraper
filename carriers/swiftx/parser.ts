@@ -1,5 +1,5 @@
 import { normalizeTrackingNumber } from '../../core/detection/index.js';
-import { IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { explicitOffsetTime } from '../../core/time/index.js';
@@ -17,6 +17,8 @@ const MAX_ROWS = 500;
 const MAX_EVENTS = 200;
 // The tracker's only notice for a number it does not know.
 const NOT_FOUND = 'Order not found.';
+// Its answer, for any number, to a query sent without the page's own verification.
+const VERIFICATION = 'Verification required.';
 // "2026-01-13 09:04:05", the scan site's wall clock.
 const STAMP = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 // "GMT-07:00" or "GMT-7:00", the scan site's offset at that time.
@@ -96,6 +98,7 @@ export function parseSwiftx(payload: unknown, raw: string, readAt = Date.now()):
   const list = info.trackingEventList;
   if (!info.success) {
     if (info.message === NOT_FOUND && (list === null || (Array.isArray(list) && list.length === 0))) throw new NotFoundError(PROVIDER);
+    if (info.message === VERIFICATION) throw new ChallengeError(PROVIDER, 'SwiftX asked for its tracking page\'s verification');
     throw new IndeterminateError(PROVIDER, 'SwiftX did not answer for the shipment');
   }
   if (!Array.isArray(list) || list.length > MAX_ROWS) throw new SchemaError(PROVIDER);

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
-import type { TrawlClient, TrawlScrapeResponse } from '../../core/transport/trawl.js';
+import { TrawlClient, type TrawlScrapeResponse } from '../../core/transport/trawl.js';
 import { adapter, normalizeSwiftxNumber, parseSwiftx, parseSwiftxCapture, swiftxTrackingUrl, SwiftxTracker, swiftxWording } from './adapter.js';
 import { SWIFTX_API } from './parser.js';
 import { statusMap, swiftxScanStage, swiftxStage } from './status.js';
@@ -87,6 +87,11 @@ describe('SwiftX tracking reply', () => {
     expect(() => parseSwiftx(fixture('not-found'), DELIVERED, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseSwiftx(fixture('delivered'), MOVING, READ_AT)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parseSwiftx({ errors: [{ message: 'Internal error' }], data: null }, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    // A query without the page's verification gets this notice for any number.
+    const unverified = fixture('not-found');
+    unverified.data.getOfficialWebsiteTrackingInfo.message = 'Verification required.';
+    expect(() => parseSwiftx(unverified, UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseSwiftxCapture(page([reply({ body: JSON.stringify(unverified) })]), UNKNOWN, READ_AT)).toThrow(expect.objectContaining({ kind: 'challenge' }));
     const empty = fixture('delivered');
     empty.data.getOfficialWebsiteTrackingInfo.trackingEventList = [];
     expect(() => parseSwiftx(empty, DELIVERED, READ_AT)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
@@ -142,6 +147,32 @@ describe('SwiftX browser capture', () => {
       captureResponses: [SWIFTX_API], settleTimeout: 10_000 });
     expect(request.maxTimeout).toBeLessThanOrEqual(30_000);
     expect(options).toMatchObject({ provider: 'TRAWL while fetching SwiftX', timeoutMs: request.maxTimeout });
+  });
+
+  it('calls the service\'s refusal a challenge only when its browser stood at a check', async () => {
+    const service = (body: string, status = 500) => new TrawlClient('http://trawl.test',
+      vi.fn(async () => new Response(body, { status, headers: { 'Content-Type': 'application/json' } })));
+    const failed = (attempt: Record<string, unknown>) => JSON.stringify({ error: 'Max tier reached without success',
+      timings: [{ tier: 2, status: 'error', durationMs: 900, reason: 'net::ERR_CONNECTION_RESET' }, { tier: 3, durationMs: 27_500, ...attempt }] });
+    for (const attempt of [
+      { status: 'error', reason: 'SwiftX produced no tracking response after submission' },
+      { status: 'blocked', reason: 'cloudflare-persistent' },
+    ]) {
+      const error = await new SwiftxTracker({ trawl: service(failed(attempt)) }).fetch(DELIVERED, { budgetMs: 40_000 }).catch((caught: unknown) => caught);
+      expect(error, attempt.reason).toMatchObject({ kind: 'challenge', provider: 'SwiftX', cause: expect.objectContaining({ status: 500 }) });
+    }
+    for (const [body, status] of [
+      [failed({ status: 'error', reason: 'Target page, context or browser has been closed' }), 500],
+      [failed({ status: 'error', reason: 'SwiftX tracking request failed: net::ERR_FAILED' }), 500],
+      [failed({ status: 'timeout', reason: 'deadline' }), 500],
+      [JSON.stringify({ error: 'Max tier reached without success', timings: [{ tier: 1, status: 'blocked', statusCode: 403 }] }), 500],
+      [JSON.stringify({ error: 'Internal error' }), 500],
+      ['{"error":"Max tier', 500],
+      [failed({ status: 'blocked', reason: 'cloudflare-persistent' }), 502],
+    ] as const) {
+      await expect(new SwiftxTracker({ trawl: service(body, status) }).fetch(DELIVERED, { budgetMs: 40_000 }), body)
+        .rejects.toMatchObject({ kind: 'indeterminate', status });
+    }
   });
 
   it('needs the browser service and a valid number before any request', async () => {

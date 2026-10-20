@@ -4,13 +4,32 @@ import type { CarrierResult } from '../../core/result/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { TRAWL_TRANSPORT_ALLOWANCE_MS, type TrawlClient, type TrawlScrapeResponse } from '../../core/transport/trawl.js';
+import { isRecord } from '../../core/types.js';
 import { normalizeSwiftxNumber, parseSwiftx, PROVIDER, SWIFTX_API, SWIFTX_MAX_BYTES, swiftxTrackingUrl } from './parser.js';
 
 export { normalizeSwiftxNumber, parseSwiftx, swiftxTrackingUrl, swiftxWording } from './parser.js';
 
-/** What the browser service may spend on one lookup; the challenge clears in a few seconds. */
+/** What the browser service may spend on one lookup; the page's checks take a few seconds when they pass. */
 const SERVICE_MS = 30_000;
 const SETTLE_MS = 10_000;
+/** The service's capture helper ends a page that never asked for the number with this reason. */
+const NO_QUERY = `${PROVIDER} produced no tracking response after submission`;
+
+/**
+ * Whether the browser service's HTTP 500 says its last browser tier stood at
+ * a check it could not pass: a challenge wall, or a page that never sent its
+ * query because its Turnstile widget was not passed. Any other failure keeps
+ * its own kind.
+ */
+function trawlChallenged(error: unknown): boolean {
+  if (!(error instanceof UpstreamHttpError) || error.status !== 500) return false;
+  let reply: unknown;
+  try { reply = JSON.parse(error.diagnostics?.body_excerpt ?? ''); } catch { return false; }
+  if (!isRecord(reply) || reply.error !== 'Max tier reached without success' || !Array.isArray(reply.timings)) return false;
+  const last: unknown = reply.timings.at(-1);
+  return isRecord(last) && (last.tier === 2 || last.tier === 3)
+    && (last.status === 'blocked' || (last.status === 'error' && last.reason === NO_QUERY));
+}
 
 /**
  * The tracking reply the page's own request received. The capture helper keeps
@@ -38,18 +57,24 @@ export function parseSwiftxCapture(page: TrawlScrapeResponse, number: string, re
 }
 
 /**
- * One lookup through the browser service: the tracking page clears
- * Cloudflare's check, asks its GraphQL endpoint for the number and the
- * service's capture helper returns that reply.
+ * One lookup through the browser service: the tracking page passes
+ * Cloudflare's check and its own Turnstile widget, asks its GraphQL endpoint
+ * for the number and the service's capture helper returns that reply.
  */
 export async function swiftxBrowser(trawl: TrawlClient, raw: string, signal: AbortSignal, remainingMs: number,
   fetcher?: typeof fetch): Promise<CarrierResult> {
   const number = normalizeSwiftxNumber(raw);
   const timeoutMs = Math.floor(Math.min(SERVICE_MS, remainingMs - 2000));
   if (timeoutMs < 1) throw new BudgetExceededError(PROVIDER, remainingMs);
-  const page = await trawl.scrape({ url: swiftxTrackingUrl(number), skipHttp: true, maxTier: 3,
-    maxTimeout: timeoutMs, captureResponses: [SWIFTX_API], settleTimeout: SETTLE_MS },
-  { provider: `TRAWL while fetching ${PROVIDER}`, timeoutMs, signal, fetcher, maxBytes: 4 * SWIFTX_MAX_BYTES });
+  let page: TrawlScrapeResponse;
+  try {
+    page = await trawl.scrape({ url: swiftxTrackingUrl(number), skipHttp: true, maxTier: 3,
+      maxTimeout: timeoutMs, captureResponses: [SWIFTX_API], settleTimeout: SETTLE_MS },
+    { provider: `TRAWL while fetching ${PROVIDER}`, timeoutMs, signal, fetcher, maxBytes: 4 * SWIFTX_MAX_BYTES });
+  } catch (error) {
+    if (trawlChallenged(error)) throw new ChallengeError(PROVIDER, 'SwiftX\'s tracking page did not pass its verification in the browser', { cause: error });
+    throw error;
+  }
   signal.throwIfAborted();
   return parseSwiftxCapture(page, number);
 }
@@ -60,7 +85,7 @@ export class SwiftxTracker {
   async fetch(raw: string, context: TrackingContext = {}): Promise<CarrierResult> {
     const number = normalizeSwiftxNumber(raw);
     const trawl = this.options.trawl;
-    // Cloudflare challenges every request to the tracker that does not come from a real browser.
+    // Cloudflare challenges the tracker and its API for other clients, and the query needs the page's verification.
     if (!trawl) throw new ChallengeError(PROVIDER, 'SwiftX requires the browser tracking service');
     return runSteps({ carrier: 'swiftx', budgetMs: context.budgetMs ?? SERVICE_MS + TRAWL_TRANSPORT_ALLOWANCE_MS,
       signal: context.signal, recorder: this.options.recorder ?? NOOP_RECORDER }, [

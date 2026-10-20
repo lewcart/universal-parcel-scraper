@@ -6,19 +6,23 @@ tracking page. Shippers and forwarders hand parcels to SwiftX for the last mile.
 ## How it works
 
 1. `trawl`: the browser service opens `swiftx-express.com/track?trackingNumber={number}`. Cloudflare
-   puts a managed challenge in front of the page and its API, which the service's browser clears.
-   The page then posts one `getOfficialWebsiteTrackingInfo` query to `/api/graphql` and gets a
-   compressed JSON reply. The service's capture helper keeps that reply only for the query naming
-   the whole number from the page's address; no request is replayed outside the browser.
+   puts a managed challenge in front of the page and of every `/api/` route, and the tracker asks
+   for the page's own verification before it looks a number up. The page then posts one
+   `getOfficialWebsiteTrackingInfo` query to `/api/graphql` and gets a compressed JSON reply. The
+   service's capture helper keeps that reply only for the query naming the whole number from the
+   page's address; no request is replayed outside the browser.
 
-Without the browser service the adapter fails as challenged before any request: plain HTTP, Node
-and automated Chrome all get the challenge. No account, key or CAPTCHA solving is needed. Production
-needs a TRAWL image built with the SwiftX helper.
+Without the browser service the adapter fails as challenged before any request: plain HTTP and
+headless Chrome get Cloudflare's checkbox on the page and its API, even from the unchallenged home
+page. Production needs a TRAWL image built with the SwiftX helper.
 
 A known number gets `success: true` and its scans. An unknown one gets `success: false` with the
-notice "Order not found." and the number echoed, which is the only missing parcel. Any other
-refusal, a reply naming another number, a GraphQL error, a challenge page in place of the reply,
-rate limits and incomplete captures keep their own failure kinds.
+notice "Order not found." and the number echoed, which is the only missing parcel. The notice
+"Verification required.", the tracker's answer for any number to a query without the page's
+verification, is a challenge. When the browser service answers HTTP 500 because its browser
+stopped at a challenge wall, or because the page never sent its query, the lookup fails as
+challenged too. Any other refusal, a reply naming another number, a GraphQL error, a challenge
+page in place of the reply, rate limits and incomplete captures keep their own failure kinds.
 
 ## Notes
 
@@ -39,7 +43,11 @@ rate limits and incomplete captures keep their own failure kinds.
 
 ## Limitations
 
-- Every lookup needs the browser service, so recognition never asks SwiftX.
+- Every lookup needs a browser that passes Cloudflare's check and the page's own verification, so
+  recognition never asks SwiftX. When the browser service cannot pass them, the lookup fails as
+  challenged and the universal providers answer.
+- SwiftX's shipper API at `prod.open.swiftx-express.com` needs a partner's key and a signature on
+  each request, and its Android app is for staff and contractors.
 - The reply names no sender, service, weight or delivery estimate.
 
 ## Numbers

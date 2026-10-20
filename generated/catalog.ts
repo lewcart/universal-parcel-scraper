@@ -2074,7 +2074,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
-      "browserRecognitionRank": 900,
+      "browserRecognitionRank": 910,
       "refresh": {
         "minMinutes": 60
       },

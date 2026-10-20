@@ -184,7 +184,7 @@
           "const": true
         },
         "browserRecognition": {
-          "description": "Present when the adapter implements recognizeWithBrowser(): opt-in browser confirmation without recipient inputs, requiring dated shipment activity. Higher rank is asked first after HTTP checks are inconclusive.",
+          "description": "Present when the adapter implements recognizeWithBrowser(): opt-in browser confirmation without recipient inputs, requiring dated shipment activity. Higher rank is asked first after HTTP checks are inconclusive; no two carriers share a browser rank.",
           "type": "object",
           "additionalProperties": false,
           "required": [

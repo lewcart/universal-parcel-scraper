@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { recognitionAskedCarriers } from '../../core/catalog/recognition.js';
 import { detectCarrierMatch, parseTrackingInput } from '../../core/detection/index.js';
 
 // A shared barcode shape establishes the brand, not its tracking service.
@@ -9,6 +10,16 @@ describe('Evri service routing', () => {
     expect(detectCarrierMatch(NUMBER)).toMatchObject({
       carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['evri', 'evri-uk', 'hermes-de']),
     });
+  });
+
+  it('lists the likelier service first by the barcode\'s sixth character, without choosing it', () => {
+    for (const number of ['H00ZZA0000000001', 'H00ZZD0000000004', 'T00ZZA0000000005']) {
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['evri-uk', 'evri'], preferred: ['evri-uk'] });
+      expect(recognitionAskedCarriers(number)).toEqual(['evri-uk', 'evri']);
+    }
+    expect(detectCarrierMatch('H00ZZC0000000003')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['evri', 'evri-uk'], preferred: ['evri'] });
+    expect(recognitionAskedCarriers('H00ZZC0000000003')).toEqual(['evri', 'evri-uk']);
+    expect(detectCarrierMatch('H00ZZB0000000002')).toMatchObject({ carrier: 'unknown', confidence: 'low', preferred: [] });
   });
 
   it('offers the domestic service alone for its C00HHA barcodes', () => {

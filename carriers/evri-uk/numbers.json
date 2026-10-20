@@ -15,8 +15,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "Public merchant reply with an Evri UK tracking link. Evri UK's tracker returns its history; the barcode shape alone does not identify domestic or international service."
@@ -36,8 +36,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       }
     },
@@ -78,8 +78,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns the history of a return to the retailer."
@@ -101,8 +101,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns a parcel it is still expecting."
@@ -124,8 +124,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -147,8 +147,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -170,8 +170,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -193,8 +193,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns the history of a parcel dropped at a locker for a ParcelShop."
@@ -216,8 +216,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -239,8 +239,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -262,8 +262,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -285,8 +285,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."
@@ -308,8 +308,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri UK tracking page archived by the Wayback Machine. Evri UK's tracker returns its history."

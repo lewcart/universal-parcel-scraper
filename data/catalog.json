@@ -2180,6 +2180,12 @@
     "linkRules": [],
     "detectionRules": [
       {
+        "pattern": "^[HT][0-9A-Z]{4}C\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
+      {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",
         "checksum": "evri"
@@ -13129,6 +13135,12 @@
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^[HT][0-9A-Z]{4}[AD]\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
       {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",

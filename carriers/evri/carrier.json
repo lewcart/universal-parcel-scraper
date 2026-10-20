@@ -67,6 +67,13 @@
   "links": [],
   "detection": [
     {
+      "id": "evri-international",
+      "pattern": "^[HT][0-9A-Z]{4}C\\d{10}$",
+      "confidence": "low",
+      "checksum": "evri",
+      "preferred": true
+    },
+    {
       "id": "evri-1",
       "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
       "confidence": "low",

@@ -81,6 +81,13 @@
   ],
   "detection": [
     {
+      "id": "evri-uk-domestic",
+      "pattern": "^[HT][0-9A-Z]{4}[AD]\\d{10}$",
+      "confidence": "low",
+      "checksum": "evri",
+      "preferred": true
+    },
+    {
       "id": "evri-uk-1",
       "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
       "confidence": "low",

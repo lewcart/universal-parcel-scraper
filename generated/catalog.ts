@@ -2182,6 +2182,12 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
+        "pattern": "^[HT][0-9A-Z]{4}C\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
+      {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",
         "checksum": "evri"
@@ -13131,6 +13137,12 @@ export const CARRIER_CATALOG = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^[HT][0-9A-Z]{4}[AD]\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
       {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",
@@ -32039,7 +32051,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "unknown": [],
   "royal-mail": ["royal-mail-1","royal-mail-2","royal-mail-3"],
   "parcelforce": ["parcelforce-1","parcelforce-2"],
-  "evri": ["evri-1"],
+  "evri": ["evri-international","evri-1"],
   "inpost": ["inpost-1","inpost-2","inpost-3","inpost-4","inpost-5"],
   "an-post": ["an-post-1"],
   "bpost": ["bpost-numeric-prefix","bpost-1","bpost-2","bpost-3","bpost-jjbe"],
@@ -32306,7 +32318,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "euroexpress-ba": [],
   "europochta": ["europochta-1"],
   "evdemo-lojistik": [],
-  "evri-uk": ["evri-uk-1","evri-uk-2","evri-uk-3"],
+  "evri-uk": ["evri-uk-domestic","evri-uk-1","evri-uk-2","evri-uk-3"],
   "evropat": [],
   "ewe": [],
   "exelot": ["exelot-1"],

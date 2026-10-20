@@ -378,8 +378,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "An Evri International parcel whose GlobalEco tracking page the Wayback Machine archived. Evri's international tracker returns its history. It has an A in the sixth place."

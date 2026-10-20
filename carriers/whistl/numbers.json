@@ -136,8 +136,8 @@
         "carrier": "unknown",
         "confidence": "low",
         "candidates": [
-          "evri",
-          "evri-uk"
+          "evri-uk",
+          "evri"
         ]
       },
       "note": "Looked up on Whistl's own tracker, as an archived address shows; the shape is an Evri parcel barcode, so Whistl may have handed it over."

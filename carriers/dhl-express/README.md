@@ -19,12 +19,15 @@ piece when DHL Express is named.
 
 ## Retrieval
 
-`direct` asks the mobile guest API for one waybill. It checks the application's
-waybill-encryption setting before tracking, so a configuration or
-authentication failure cannot look like a missing shipment. The adapter
-instance keeps a confirmed setting for 15 minutes, so a lookup, recognition
-included, usually needs only the tracking request. A tracking reply other than a
-shipment list discards the setting; a request that got no reply keeps it. The
+`direct` asks the mobile guest API for one waybill. Before it reads an empty
+shipment list as a missing shipment, it checks the application's
+waybill-encryption setting, so a configuration or authentication failure cannot
+look like a missing shipment. A shipment found needs no setting, and every
+adapter on the same transport keeps a confirmed setting for 15 minutes, so a
+lookup, recognition included, usually sends the tracking request alone: DHL
+turns its CAPTCHA on by the number of requests from an address. A tracking reply
+other than a shipment list discards the setting; a request that got no reply
+keeps it. The
 shared application bearer is included; consumers need no DHL account or key
 setup.
 After an HTTP challenge or transport failure, `trawl` loads DHL's global tracking

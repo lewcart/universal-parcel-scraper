@@ -71,31 +71,34 @@ export class DhlMobileApi {
   }
 
   /**
-   * One waybill's shipments. The encryption setting is read first unless it was
-   * confirmed within the TTL, so an empty list counts as missing only under a
-   * recently verified configuration. Any reply other than a shipment list
-   * discards the setting. A request that got no reply, including one its own
-   * lookup cancelled or ran out of time for, says nothing about it. A CAPTCHA
-   * holds for every waybill and device from the address for a while, so for
-   * `CAPTCHA_MEMORY_MS` after one, lookups through the same transport fail as a
-   * challenge without a request.
+   * One waybill's shipments. An empty list counts as missing only under a
+   * recently verified configuration, so the encryption setting is read after
+   * one unless it was confirmed within the TTL. A shipment found needs no
+   * setting, and DHL draws its CAPTCHA from an address's request count, so
+   * most lookups send the tracking request alone. Any reply other than a
+   * shipment list discards the setting. A request that got no reply, including
+   * one its own lookup cancelled or ran out of time for, says nothing about it.
+   * A CAPTCHA holds for every waybill and device from the address for a while,
+   * so for `CAPTCHA_MEMORY_MS` after one, lookups through the same transport
+   * fail as a challenge without a request.
    */
   async tracking(number: string, budget: LookupBudget): Promise<unknown> {
     const state = this.state;
     const captchaAt = state.captchaAt;
     if (captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
-    const checkedAt = state.settingsCheckedAt;
-    if (checkedAt === null || Date.now() - checkedAt >= SETTINGS_TTL_MS) await this.checkSettings(budget);
     let payload: unknown;
     try {
       payload = await this.request(budget, 'tracking', 'shipments', { airWayBill: number, countryCode: 'GB', languageCd: 'en',
         addShipmentToODD: 'N', moreDetails: 'Y', iv: Buffer.from(randomBytes(8).toString('hex')).toString('base64'), captchaVerificationData: {} });
     } catch (error) {
       if (!(error instanceof UpstreamNetworkError) && !budget.signal.aborted) state.settingsCheckedAt = null;
-      if (error instanceof CaptchaError) state.captchaAt = Date.now();
       throw error;
     }
     if (!Array.isArray(payload)) state.settingsCheckedAt = null;
+    else if (payload.length === 0) {
+      const checkedAt = state.settingsCheckedAt;
+      if (checkedAt === null || Date.now() - checkedAt >= SETTINGS_TTL_MS) await this.checkSettings(budget);
+    }
     return payload;
   }
 
@@ -134,7 +137,11 @@ export class DhlMobileApi {
       if (response.status !== 200) throw new UpstreamHttpError(PROVIDER, response.status);
       throw new SchemaError(PROVIDER, 'DHL mobile tracking returned invalid JSON', { cause: error });
     }
-    checkReply(payload, response.status);
+    try { checkReply(payload, response.status); }
+    catch (error) {
+      if (error instanceof CaptchaError) this.state.captchaAt = Date.now();
+      throw error;
+    }
     if (response.status !== 200) throw new UpstreamHttpError(PROVIDER, response.status);
     return payload;
   }

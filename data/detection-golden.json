@@ -39781,6 +39781,31 @@
     "candidates": []
   },
   {
+    "input": "48285234834793",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd",
+      "ciblex",
+      "hermes-de",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "dpd-uk"
+    ],
+    "asked": [
+      "hermes-de",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
+    ]
+  },
+  {
     "input": "483151203868516",
     "carrier": "unknown",
     "confidence": "low",
@@ -77390,6 +77415,14 @@
   },
   {
     "input": "LP107221675JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
+    ]
+  },
+  {
+    "input": "LP107777790JP",
     "carrier": "japan-post",
     "confidence": "high",
     "candidates": [

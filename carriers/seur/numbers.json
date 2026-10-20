@@ -613,6 +613,40 @@
         ]
       },
       "note": "Made-up number in the layout of a sender's reference, dated day before month, that SEUR's lookup found for its shipments."
+    },
+    {
+      "number": "48285234834793",
+      "role": "shipment",
+      "evidence": "public_shipment_report",
+      "source": {
+        "url": "https://www.ocu.org/reclamar/lista-reclamaciones-publicas/reclamaci-C3-B3n-formal-contra-seur/3d4034ae564773a03b",
+        "date": "2026-10-14",
+        "dateKind": "publication",
+        "access": "full_page"
+      },
+      "context": {
+        "assessment": "confirmed",
+        "reportedRole": "shipment_tracking",
+        "service": "SEUR"
+      },
+      "expect": {
+        "carrier": "unknown",
+        "confidence": "low",
+        "candidates": [
+          "dpd",
+          "ciblex",
+          "hermes-de",
+          "seur",
+          "brt",
+          "delhivery",
+          "dhl-ecommerce-uk",
+          "dpd-be",
+          "dpd-de",
+          "dpd-nl",
+          "dpd-uk"
+        ]
+      },
+      "note": "Tracking number in a complaint about a locker drop-off; SEUR's tracker returns its history."
     }
   ]
 }

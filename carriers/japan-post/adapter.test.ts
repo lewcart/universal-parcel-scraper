@@ -236,6 +236,12 @@ describe('Japan Post result projection', () => {
     ['Item returned from import Customs', 'in_transit', 'in_transit'],
     ['Item out of sorting centre', 'in_transit', 'in_transit'],
     ['Returned to sender', 'exception', 'returned'],
+    ['Returned to Sender', 'exception', 'returned'],
+    ['Held by import Customs', 'in_transit', 'customs'],
+    ['Import stopped', 'exception', 'exception'],
+    ['Item into sorting centre', 'in_transit', 'in_transit'],
+    ['Absence. Attempted delivery.', 'exception', 'failed_attempt'],
+    ['Office closed. Retention.', 'exception', 'failed_attempt'],
     ['Item out for physical delivery', 'out_for_delivery', 'out_for_delivery'],
     ['Final delivery', 'delivered', 'delivered'],
   ])('maps %s independently of previous events', (wording, status, stage) => {

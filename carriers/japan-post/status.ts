@@ -21,6 +21,13 @@ const STATUS = new Map<string, ClassifiedStatus>([
   // Held at the delivery office: after a missed delivery, for counter
   // collection or until a designated day. The label does not say which.
   ['Retention', { status: 'in_transit', stage: 'in_transit' }],
+  // These two say why the item is held: the round missed the addressee.
+  ['Office closed. Retention.', { status: 'exception', stage: 'failed_attempt' }],
+  ['Absence. Attempted delivery.', { status: 'exception', stage: 'failed_attempt' }],
+  ['Held by import Customs', { status: 'in_transit', stage: 'customs' }],
+  ['Import stopped', { status: 'exception', stage: 'exception' }],
+  ['Item into sorting centre', { status: 'in_transit', stage: 'in_transit' }],
+  ['Returned to Sender', { status: 'exception', stage: 'returned' }],
   ['Arrival', { status: 'in_transit', stage: 'in_transit' }],
   ['Dispatched from Exchange Office', { status: 'in_transit', stage: 'in_transit' }],
   ['Transported in bond', { status: 'in_transit', stage: 'customs' }],

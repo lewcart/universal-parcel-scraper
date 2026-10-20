@@ -155,6 +155,54 @@
       "confirmedBy": "documentation",
       "firstSeen": "2026-09-26",
       "note": "Official Japan Post tracking notices: https://www.post.japanpost.jp/service/send/oversea/information/ems_search_en.html"
+    },
+    {
+      "wording": "Office closed. Retention.",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, at a delivery office, before a request for re-delivery."
+    },
+    {
+      "wording": "Absence. Attempted delivery.",
+      "language": "en",
+      "stage": "failed_attempt",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, in the destination country after the inward office of exchange."
+    },
+    {
+      "wording": "Held by import Customs",
+      "language": "en",
+      "stage": "customs",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, after the arrival at the inward office of exchange."
+    },
+    {
+      "wording": "Import stopped",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, after the item was presented to import customs."
+    },
+    {
+      "wording": "Item into sorting centre",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, between the customs rows abroad."
+    },
+    {
+      "wording": "Returned to Sender",
+      "language": "en",
+      "stage": "returned",
+      "confirmedBy": "portal",
+      "firstSeen": "2026-10-20",
+      "note": "Seen in an archived capture of Japan Post's tracker, followed by a dispatch from the outward office of exchange abroad."
     }
   ]
 }

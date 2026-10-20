@@ -2754,7 +2754,11 @@
         "confidence": "high"
       },
       {
-        "pattern": "^(?:[13]UW[A-Z0-9]{10}|5P[A-Z0-9]{11})$",
+        "pattern": "^(?:[138]UW[A-Z0-9]{10}|5P[A-Z0-9]{11})$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JJITA[A-Z0-9]{13}$",
         "confidence": "high"
       },
       {

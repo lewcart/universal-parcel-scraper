@@ -39,6 +39,12 @@ mail from abroad to Italy is not handed to Poste Italiane.
 - Partners abroad hand Poste Italiane parcels under a DHL Parcel Connect plate, `JJD` and
   twenty-one digits, and link to Poste's tracker with it, as PPL does. The adapter takes those
   plates for that hand-off. DHL issues them, so no detection rule names Poste for them.
+- Poste Delivery Business Internazionale Plus codes start with `8UW`, as `1UW` and `3UW` codes
+  do for Poste's other parcels. Poste's tracker follows them.
+- Poste Italiane also prints its codes inside an ISO 15459 plate: `J`, the UPU's issuing-agency
+  code `J`, Poste's UPU operator code `ITA` and the thirteen-character code. Poste's tracker
+  follows the whole plate and echoes it, so `poste-italiane-plate` claims it at high confidence.
+  Aggregators can read the `JJ` as DHL's.
 - Complaints against Poste Italiane quote `JF` and eleven digits for parcels sent through
   MyPoste and Poste Delivery Web, and Poste's tracker names them Promo Pacco.
 - PROMOPACCO PLUS parcels carry `F`, three digits, `D` and eight digits. Poste's tracker

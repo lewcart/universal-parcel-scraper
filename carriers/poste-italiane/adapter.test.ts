@@ -63,6 +63,18 @@ describe('Poste Italiane tracking normalization', () => {
     );
   });
 
+  it('claims Business Internazionale Plus codes and the plate wrapping a code, and nothing near them', () => {
+    expect(normalizePosteItalianeTrackingNumber('8uw1a2b345678')).toBe('8UW1A2B345678');
+    expect(normalizePosteItalianeTrackingNumber('jjita 8uw1a2b345678')).toBe('JJITA8UW1A2B345678');
+    for (const number of ['8UW1A2B345678', 'JJITA8UW1A2B345678', 'JJITA1UW1G2J193065']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
+    }
+    for (const raw of ['2UW1A2B345678', 'JJITA8UW1A2B34567', 'JJITA8UW1A2B3456789', 'JJITB8UW1A2B345678', 'JJD8UW1A2B345678']) {
+      expect(() => normalizePosteItalianeTrackingNumber(raw), raw).toThrow(InvalidInputError);
+      expect(detectCarrierMatch(raw).carrier, raw).not.toBe('poste-italiane');
+    }
+  });
+
   it('takes the DHL Parcel Connect plates partners hand over, which detection leaves to DHL', () => {
     expect(normalizePosteItalianeTrackingNumber('jjd 000000000000000000001')).toBe('JJD000000000000000000001');
     for (const raw of ['JJD00000000000000000001', 'JJD0000000000000000000001', 'JJD0000000000000001', 'JJD00000000000000000000A']) {

@@ -1227,6 +1227,30 @@
         ]
       },
       "note": "Raccomandata A.R. its sender quotes, with the check digit after a dash, in a complaint against Poste Italiane."
+    },
+    {
+      "number": "8UW1A2B345678",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-20",
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of a Poste Delivery Business Internazionale Plus code, 8UW and ten letters and digits, which Poste's own tracker follows."
+    },
+    {
+      "number": "JJITA8UW1A2B345678",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "donated_real",
+      "shapeConfirmed": "2026-10-20",
+      "expect": {
+        "carrier": "poste-italiane",
+        "confidence": "high"
+      },
+      "note": "Made-up number in the shape of Poste Italiane's ISO 15459 plate: J, the UPU's agency code J, Poste's UPU operator code ITA and its thirteen-character code. Poste's own tracker follows the whole plate."
     }
   ]
 }

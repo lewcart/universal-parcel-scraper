@@ -56959,6 +56959,14 @@
     ]
   },
   {
+    "input": "8UW1A2B345678",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "8YDR098765432",
     "carrier": "inpost",
     "confidence": "high",
@@ -74922,6 +74930,14 @@
     "confidence": "high",
     "candidates": [
       "posti"
+    ]
+  },
+  {
+    "input": "JJITA8UW1A2B345678",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
     ]
   },
   {

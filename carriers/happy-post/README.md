@@ -52,7 +52,9 @@ through the lookup its tracking page makes, for Happy-Post's own parcel numbers.
 ## Numbers
 
 Happy-Post's own parcel numbers are runs of seven or eight digits. Mondial Relay, Colisweb,
-Heppner and SEUR numbers share these shapes, so no rule claims them. The tracker shows the
+Heppner and SEUR numbers share these shapes, so no rule claims them. The numbers are issued
+in sequence, so the tracker finds a parcel for almost any number in its current range: an
+answer cannot show that another carrier's number is Happy-Post's. The tracker shows the
 delivering carrier's number as the international tracking number, and detection names that
 carrier for it.
 

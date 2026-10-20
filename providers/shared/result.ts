@@ -283,6 +283,16 @@ export function localEvent(time: unknown, description: unknown, stage?: unknown)
   return { local_time: time, ...described };
 }
 
+// Providers stamp their own notices with the moment they answer. An entry whose wording no
+// rule reads, dated that close to the lookup, is a notice whatever its words; a real scan
+// that new is kept by the next lookup.
+const NOTICE_WINDOW_MS = 5 * 60_000;
+
+function lookupNotice(value: CarrierEvent, now: number): boolean {
+  return value.stage_source === 'none' && typeof value.time === 'string'
+    && Math.abs(Date.parse(value.time) - now) <= NOTICE_WINDOW_MS;
+}
+
 function moment(value: CarrierEvent): string {
   return value.time ?? (typeof value.local_time === 'string' ? value.local_time : '');
 }
@@ -291,7 +301,9 @@ export function result(events: CarrierEvent[], source: UniversalSource, preserve
   // Wall times sort alongside UTC instants only approximately; providers that
   // omit offsets everywhere pass preserveOrder instead.
   const scans = new Map<string, CarrierEvent>();
+  const now = Date.now();
   for (const event of events) {
+    if (lookupNotice(event, now)) continue;
     const key = `${moment(event)}|${event.description}`;
     const earlier = scans.get(key);
     // A carrier's copy can lack the place another copy of the same scan reported.

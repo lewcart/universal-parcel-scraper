@@ -76,7 +76,8 @@ jobs:
     needs: checks
     if: ${{ github.event_name == 'push' && github.repository == 'plhery/universal-parcel-scraper' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Long enough to build, publish and wait for npm to list the version.
+    timeout-minutes: 120
     # One job at a time plans and publishes to npm, whichever channel it serves.
     concurrency:
       group: release-npm
@@ -120,7 +121,7 @@ jobs:
     needs: checks
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     concurrency:
       group: release-npm
       cancel-in-progress: false

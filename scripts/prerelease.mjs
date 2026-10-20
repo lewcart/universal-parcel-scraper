@@ -280,13 +280,14 @@ export function settlePlan({ version, baseline }, differences) {
 }
 
 /**
- * Waits until `listed()` includes `version`. A lookup that fails counts as
- * not listed yet.
+ * Waits until `listed()` includes `version`, for an hour and a half by default:
+ * npm has taken close to half an hour to list a version. A lookup that fails
+ * counts as not listed yet.
  * @param {string} version
  * @param {() => string[]} listed
  * @param {{ attempts?: number, pauseMs?: number, pause?: (ms: number) => Promise<unknown> }} [options]
  */
-export async function awaitVersion(version, listed, { attempts = 120, pauseMs = 15_000, pause = delay } = {}) {
+export async function awaitVersion(version, listed, { attempts = 360, pauseMs = 15_000, pause = delay } = {}) {
   for (let attempt = 1; ; attempt += 1) {
     try {
       if (listed().includes(version)) return;

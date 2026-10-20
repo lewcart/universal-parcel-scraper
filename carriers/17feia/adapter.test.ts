@@ -43,23 +43,24 @@ describe('17FEIA HTTP adapter', () => {
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('dates the warehouse’s own rows in China and keeps the other wall clocks', () => {
+  it('dates the warehouse’s rows and steps in China on Beijing time', () => {
     const result = parseSeventeenFeia(fixture('dpd-at-warehouse'), WAREHOUSE, LATER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'accepted', current_stage_source: 'carrier_map',
-      last_status_text: 'Order Confirmed.', last_update: null, last_update_local: '2026-02-05T10:41:07', expected_delivery: null,
+      last_status_text: 'Order Confirmed.', last_update: '2026-02-05T10:41:07+08:00', expected_delivery: null,
       delivery_carrier: 'dpd-de', delivery_tracking_number: '09990000000017', destination_country: 'DE' });
+    expect(result.last_update_local).toBeUndefined();
     expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code ?? null, event.stage, event.location ?? null])).toEqual([
-      ['2026-02-05T10:41:07', '订单已确认', 'accepted', 'Haiport'],
-      ['2026-02-04T21:58:30', '订单待客户确认', 'accepted', 'Haiport'],
+      ['2026-02-05T10:41:07+08:00', '订单已确认', 'accepted', 'Haiport'],
+      ['2026-02-04T21:58:30+08:00', '订单待客户确认', 'accepted', 'Haiport'],
       ['2026-02-04T16:12:44+08:00', '仓库收货', 'accepted', 'Haiport, CN'],
-      // On its way to the warehouse, which does not have it yet.
-      ['2026-02-03T08:27:19', '包裹在去设施路上', 'registered', null],
+      // On its way to the warehouse, which does not have it yet: the order data's clock twelve hours on.
+      ['2026-02-03T08:27:19+08:00', '包裹在去设施路上', 'registered', null],
       ['2026-02-02T20:27:18+08:00', null, 'registered', 'Haiport, CN'],
     ]);
     expect(JSON.stringify(result)).not.toMatch(/0000000000000000000000000000000|1\.2|上海/);
   });
 
-  it('dates DHL’s relayed scans on Germany’s clock, keeps 17FEIA’s milestones local and drops the estimate', () => {
+  it('dates DHL’s relayed scans on Germany’s clock, keeps the flight’s and customs’ milestones local and drops the estimate', () => {
     const result = parseSeventeenFeia(fixture('dhl-relayed'), RELAYED, LATER);
     expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'wording:language',
       last_update: '2026-03-19T21:37:00+01:00', delivery_carrier: 'dhl', delivery_tracking_number: 'CE000000014DE', destination_country: 'FR' });
@@ -67,7 +68,7 @@ describe('17FEIA HTTP adapter', () => {
     expect(result.events!.map((event) => [event.time ?? event.local_time, event.provider_code ?? null, event.stage, event.location ?? null])).toEqual([
       ['2026-03-19T21:37:00+01:00', '运输途中', 'in_transit', 'Sampleburg, DE'],
       ['2026-03-19T06:14:00+01:00', '运输途中', 'in_transit', 'Exampledorf, DE'],
-      // 17FEIA's milestones carry a destination's offset without a country: their clocks stay as written.
+      // The flight's and customs' milestones carry a destination's offset without a country: their clocks stay as written.
       ['2026-03-17T13:03:00', '清关完成', 'in_transit', null],
       ['2026-03-17T08:49:00', '清关中', 'customs', null],
       ['2026-03-16T22:31:00', '清关行提货到仓', 'customs', null],
@@ -75,14 +76,28 @@ describe('17FEIA HTTP adapter', () => {
       ['2026-03-15T04:45:00', '航班在中转地起飞', 'in_transit', null],
       ['2026-03-14T11:20:00', '航班到达中转地', 'in_transit', null],
       ['2026-03-14T03:35:00', '航班已起飞', 'in_transit', null],
-      ['2026-03-12T10:01:33', '出口报关中', 'customs', null],
-      ['2026-03-11T19:00:00', '订单已出库', 'in_transit', null],
-      ['2026-03-09T15:22:08', '订单已确认', 'accepted', 'Bayside'],
+      // The steps at the warehouse in China are on Beijing time, whatever offset they carry.
+      ['2026-03-12T10:01:33+08:00', '出口报关中', 'customs', null],
+      ['2026-03-11T19:00:00+08:00', '订单已出库', 'in_transit', null],
+      ['2026-03-09T15:22:08+08:00', '订单已确认', 'accepted', 'Bayside'],
       ['2026-03-08T11:47:52+08:00', '仓库收货', 'accepted', 'Bayside, CN'],
-      ['2026-03-07T07:30:41', '包裹在去设施路上', 'registered', null],
+      ['2026-03-07T07:30:41+08:00', '包裹在去设施路上', 'registered', null],
       ['2026-03-06T19:30:40+08:00', null, 'registered', 'Bayside, CN'],
     ]);
     expect(result.events!.some((event) => /estimated/i.test(event.description ?? ''))).toBe(false);
+  });
+
+  it('reads the hand-in at the partner’s depot as transit, on its wall clock', () => {
+    const result = parseSeventeenFeia(changed('dhl-relayed', (order) => {
+      const milestones = order.currentOrderTrackInfos.filter((row) => row.status !== '运输途中');
+      order.currentOrderTrackInfos = [{ ...milestones[0]!, createTime: '2026-03-19 13:03:00', status: '已交仓，等待上网',
+        statusI18n: '已交仓，等待上网', description: 'Arrived at delivery hub，Awaiting carrie scan.', timeZone: '' }, ...milestones];
+    }), RELAYED, LATER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map',
+      last_update: null, last_update_local: '2026-03-19T13:03:00' });
+    expect(result.events![0]).toMatchObject({ local_time: '2026-03-19T13:03:00', provider_code: '已交仓，等待上网', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: '17feia', providerCode: '已交仓，等待上网', description: 'Arrived at delivery hub，Awaiting carrie scan.' }))
+      .toEqual({ kind: 'mapped', stage: 'in_transit' });
   });
 
   it('keeps a wall clock whose offset its country does not have then', () => {
@@ -121,8 +136,8 @@ describe('17FEIA HTTP adapter', () => {
       ['2026-04-12T21:39:00', 'customs'],
       ['2026-04-12T06:00:00', 'in_transit'],
       ['2026-04-10T09:51:00', 'in_transit'],
-      ['2026-04-08T09:26:27', 'customs'],
-      ['2026-04-07T18:00:00', 'in_transit'],
+      ['2026-04-08T09:26:27+08:00', 'customs'],
+      ['2026-04-07T18:00:00+08:00', 'in_transit'],
       ['2026-04-03T17:29:42+08:00', 'accepted'],
       ['2026-04-03T10:56:54+08:00', 'registered'],
     ]);

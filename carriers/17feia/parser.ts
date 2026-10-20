@@ -18,6 +18,12 @@ const WALL_CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
 const OFFSET = /^[+-]\d{2}:\d{2}$/;
 // 17FEIA's backend keeps the order data on Beijing time; a row kept as a wall clock is read in it only to hold back future ones.
 const HOME_ZONE = 'Asia/Shanghai';
+/**
+ * 17FEIA's steps at its warehouse in China before the flight. The backend
+ * writes them on Beijing time, as it writes the warehouse's receipt; the
+ * offset they carry is the destination line's, whatever the step's clock.
+ */
+const WAREHOUSE_STEPS: ReadonlySet<string> = new Set(['包裹在去设施路上', '订单待客户确认', '订单已确认', '订单已出库', '出口报关中']);
 // States whose places keep different clocks, so a state does not settle a clock's zone.
 const SPLIT_STATES = new Set(['AK', 'AZ', 'FL', 'ID', 'IN', 'KS', 'KY', 'MI', 'ND', 'NE', 'NV', 'OR', 'SD', 'TN', 'TX']);
 const MAX_ROWS = 500;
@@ -77,13 +83,14 @@ function placedTime(local: string, label: string, country: string, state: string
   return { iso: placed.toISO({ suppressMilliseconds: true }), timestamp: placed.toMillis() };
 }
 
-/** A row's clock: its instant where its place settles one, else its wall clock. */
-function clockOf(stamp: string, label: string, country: string, state: string): { time: string; at: number } | { local_time: string; at: number } {
+/** A row's clock: its instant where its place or its step at the warehouse settles one, else its wall clock. */
+function clockOf(stamp: string, step: string, label: string, country: string, state: string): { time: string; at: number } | { local_time: string; at: number } {
   const wall = WALL_CLOCK.exec(stamp);
   const local = wall ? `${wall[1]}T${wall[2]}` : '';
   const home = local ? firstOccurrence(DateTime.fromISO(local, { zone: HOME_ZONE })) : null;
   // Luxon rolls 24:00:00 over to the next day; only a clock that reads back unchanged is kept.
   if (!home?.isValid || home.toFormat("yyyy-MM-dd'T'HH:mm:ss") !== local) throw new SchemaError(PROVIDER, '17FEIA returned an invalid scan time');
+  if (WAREHOUSE_STEPS.has(step)) return { time: home.toISO({ suppressMilliseconds: true }), at: home.toMillis() };
   const time = placedTime(local, label, country, state);
   return time ? { time: time.iso, at: time.timestamp } : { local_time: local, at: home.toMillis() };
 }
@@ -96,7 +103,7 @@ function projectRow(row: unknown, readAt: number): { key: string; event: Carrier
   const stamp = text(row, 'createTime', 64);
   const country = text(row, 'country', 8).toUpperCase();
   // A US row's state is read only for its clock.
-  const { at, ...clock } = clockOf(stamp, text(row, 'timeZone', 16), country, country === 'US' ? text(row, 'state', 8).toUpperCase() : '');
+  const { at, ...clock } = clockOf(stamp, label, text(row, 'timeZone', 16), country, country === 'US' ? text(row, 'state', 8).toUpperCase() : '');
   // A row dated after the read is not a scan yet.
   if (at > readAt) return null;
   const place = text(row, 'location', 200) || text(row, 'city', 200);

@@ -28,6 +28,8 @@ const LABELS: ReadonlyMap<string, Stage> = new Map([
   ['清关行提货到仓', 'customs'],
   ['清关中', 'customs'],
   ['清关完成', 'in_transit'],
+  // Handed in at the partner's depot, before the partner's own first scan.
+  ['已交仓，等待上网', 'in_transit'],
   ['成功签收', 'delivered'],
 ]);
 

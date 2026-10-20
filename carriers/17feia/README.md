@@ -33,10 +33,13 @@ Tracked through the lookup its tracking page makes.
   relayed scans name such a place. A `timeZone` the place's clock does not have at that time
   keeps the wall clock, and so does a US row at midnight sharp: FedEx writes its pickup as a day,
   under another offset than its state's.
-- 17FEIA's own milestones name no place, and the reply gives no other clock for its rows. Their
-  `timeZone` is one offset per line whatever the season, and orders to destinations with other
-  clocks share their wall clocks to the second, so neither says which clock they keep and they
-  keep their wall clocks.
+- 17FEIA's own milestones name no place. Their `timeZone` is one offset per line whatever the
+  season, and one export declaration carries one destination's offset on an order and another's
+  on another, to the second, so it is not their clock. The steps at the warehouse in China before
+  the flight, from the row written twelve hours after the order data to the export declaration,
+  are read on Beijing time: the backend writes the warehouse's receipt on it, and DPD Germany
+  records the order that receipt creates minutes later. The flight's and customs' milestones may
+  be on China's clock or the destination's, so they keep their wall clocks.
 - The newest scan's instant, when it has one, is the last update, and a delivered scan's is the
   delivery time.
 - The estimated departure is written before the flight and is no scan: the adapter drops it.

@@ -256,6 +256,7 @@ describe('Japan Post result projection', () => {
   it.each([
     ['Item returned from import Customs', 'in_transit', 'in_transit'],
     ['Item out of sorting centre', 'in_transit', 'in_transit'],
+    ['Item held at delivery depot/delivery office', 'in_transit', 'in_transit'],
     ['Returned to sender', 'exception', 'returned'],
     ['Returned to Sender', 'exception', 'returned'],
     ['Held by import Customs', 'in_transit', 'customs'],
@@ -269,6 +270,25 @@ describe('Japan Post result projection', () => {
     const result = parse(withLastStatus(wording), NUMBER);
     expect(result).toMatchObject({ status, current_stage: stage });
     expect(result.events?.at(-1)?.stage).toBe('accepted');
+  });
+
+  it.each([
+    ['Item returned from import Customs', 'delivered', 'delivered', 'Final delivery'],
+    ['Item held at delivery depot/delivery office', 'delivered', 'delivered', 'Final delivery'],
+    ['Returned to sender', 'exception', 'returned', 'Returned to sender'],
+    ['Absence. Attempted delivery.', 'exception', 'failed_attempt', 'Absence. Attempted delivery.'],
+  ])('keeps the delivery against a later %s unless it is a return or a problem', (wording, status, stage, text) => {
+    const $ = load(fixture());
+    const history = $('table[summary="履歴情報"] tbody');
+    const pair = history.children('tr').slice(-2).clone();
+    pair.first().children('td').eq(0).text('09/04/2026 12:43');
+    pair.first().children('td').eq(1).text(wording);
+    history.append(pair);
+    const result = parse($.html(), NUMBER);
+    expect(result).toMatchObject({ status, current_stage: stage, last_status_text: text,
+      last_update: '2026-09-04T10:43:00Z', last_update_local: '2026-09-04T12:43:00' });
+    expect(result.events?.[0]!.description).toBe(wording);
+    expect(result.delivered_at).toBe(stage === 'delivered' ? '2026-09-04T09:43:00Z' : undefined);
   });
 
   it.each(['Not delivered', 'Delivery expected tomorrow', 'New upstream wording'])('keeps unknown wording %s visible without invented progress', (wording) => {

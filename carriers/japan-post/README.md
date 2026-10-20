@@ -50,7 +50,11 @@ carriers only when the digits before the last, divided by seven, leave the last 
   the carrier's order. Exact duplicates are dropped; the latest 100 are kept.
 - "Item returned from import Customs" is still in transit. A domestic `Retention` row (held at the
   delivery office after a missed delivery, for counter collection or until a designated day) stays in
-  transit because the label does not say which. Unknown wording stays unknown.
+  transit because the label does not say which, and so does the destination post's "Item held at
+  delivery depot/delivery office". Unknown wording stays unknown.
+- A delivery stays the item's status when later rows are not a return or another problem: a
+  destination post can log its customs system returning the item an hour after its "Final delivery".
+  `last_update` still follows the newest row.
 - Prior art: [BINM7MD/jp-post-api](https://github.com/BINM7MD/jp-post-api) (MIT) uses the same
   endpoint and row pairing.
 

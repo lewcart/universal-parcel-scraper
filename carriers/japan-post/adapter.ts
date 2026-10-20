@@ -173,14 +173,20 @@ export function parse(html: string, trackingNumber: string): CarrierResult {
     return true;
   });
   const latest = latestFirst[0]!;
-  const status = japanPostStatus(latest.description!);
+  // A delivery stands against the destination post's rows after it, such as
+  // its customs system returning the item an hour after the delivery; only a
+  // return or another problem says more.
+  const delivery = latestFirst.findIndex((event) => event.stage === 'delivered');
+  const current = delivery > 0 && latestFirst.slice(0, delivery)
+    .every((event) => japanPostStatus(event.description!)?.status !== 'exception') ? latestFirst[delivery]! : latest;
+  const status = japanPostStatus(current.description!);
   const settled = status && (status.status === 'exception' || ['delivered', 'returned', 'ready_for_pickup'].includes(status.stage));
   // The class of goods is the Japan Post service the item travels under: Yu-Pack, or EMS or Parcel abroad.
   const service = clean(fields.get('Class of goods'), 80);
   return { status: status?.status ?? 'unknown', ...(status ? { current_stage: status.stage } : {}),
-    last_status_text: latest.description, last_update: latest.time ?? null, last_update_local: latest.local_time,
+    last_status_text: current.description, last_update: latest.time ?? null, last_update_local: latest.local_time,
     expected_delivery: settled ? null : designatedDelivery(fields, String(latest.local_time)),
-    ...(status?.stage === 'delivered' && latest.time ? { delivered_at: latest.time } : {}),
+    ...(status?.stage === 'delivered' && current.time ? { delivered_at: current.time } : {}),
     ...(service ? { service_name: service } : {}), events: latestFirst.slice(0, 100) };
 }
 

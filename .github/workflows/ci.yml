@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           docker run -d --name parcel-scraper-test -p 127.0.0.1:8080:8080 -e SCRAPER_DEMO_PAGE=true universal-parcel-scraper:test
           trap 'docker logs parcel-scraper-test; docker rm -f parcel-scraper-test' EXIT
-          for attempt in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8080/health >/dev/null; then break; fi
             sleep 1
           done

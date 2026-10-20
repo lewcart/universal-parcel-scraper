@@ -56,7 +56,8 @@ jobs:
         env:
           CANARY_SUMMARY_TITLE: Carrier adapters with synthetic numbers
         run: |
-          export TRACKING_CHROMIUM_PATH="$(node -e "import('playwright-core').then(({ chromium }) => console.log(chromium.executablePath()))")"
+          TRACKING_CHROMIUM_PATH="$(node -e "import('playwright-core').then(({ chromium }) => console.log(chromium.executablePath()))")"
+          export TRACKING_CHROMIUM_PATH
           npm run test:carriers:canary -- --retry 1
 
   tracking-links:
@@ -162,7 +163,9 @@ jobs:
             gh issue reopen "$number" --comment "$body"
           else
             # Comment only when the set of failing checks changes, so a
-            # persistent failure does not notify every day.
+            # persistent failure does not notify every day. The backticks are
+            # Markdown, not command substitutions.
+            # shellcheck disable=SC2016
             checks() { grep -E '^(####|- )' | sed 's/`: .*/`/'; }
             previous=$(gh issue view "$number" --json body,comments --jq '(.comments | last | .body) // .body')
             if [ "$(checks <<<"$previous")" != "$(checks <<<"$failures")" ]; then

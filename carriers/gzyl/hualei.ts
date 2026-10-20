@@ -40,6 +40,17 @@ export interface HualeiTenant {
   /** Rows keep their wall clocks: some rows the tracker copies from another carrier come on that carrier's clock. */
   readonly wallClocks?: true;
   /**
+   * How a row's clock reads where the record settles it row by row: on the
+   * platform's clock, as a wall clock, or as its day alone. It takes the place
+   * of `wallClocks`.
+   */
+  readonly clock?: (row: HualeiRow) => 'platform' | 'wall' | 'day';
+  /**
+   * Whether a row's wording repeats another's, at the same clock, place and
+   * kind, with more around it: the row then counts once, as the other.
+   */
+  readonly repeats?: (wording: string, other: string) => boolean;
+  /**
    * Carriers the tenant hands records to without naming a channel: one takes a
    * record whose transfer number its own high-confidence rule claims whole.
    */
@@ -158,7 +169,8 @@ export function hualeiScanText(value: string, maxLength = 500): string {
     .replace(/^[\s,，:：;；/]+|[\s,，:：;；/]+$/g, '');
 }
 
-interface Row { readonly clock: string; readonly content: string; readonly location: string; readonly code: string }
+/** One row as the reply gives it: its wall clock, text, place and kind code. */
+export interface HualeiRow { readonly clock: string; readonly content: string; readonly location: string; readonly code: string }
 
 function stageOf(tenant: HualeiTenant, code: string, description: string): { stage: Stage; source: string } | undefined {
   const mapped = tenant.stage(code || null, normalizeStatusWording(description));
@@ -170,9 +182,9 @@ function stageOf(tenant: HualeiTenant, code: string, description: string): { sta
 /**
  * The rows as scans, newest first. A row dated after the lookup on the
  * trackers' clock is not a scan yet: tenants write whole timelines ahead.
- * Identical rows count once.
+ * Identical rows count once, and so do rows the tenant says repeat another.
  */
-function scans(rows: readonly Row[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean } {
+function scans(rows: readonly HualeiRow[], tenant: HualeiTenant, readAt: number): { events: CarrierEvent[]; truncated: boolean } {
   const seen = new Set<string>();
   const kept: { clock: string; index: number; event: CarrierEvent }[] = [];
   rows.forEach((row, index) => {
@@ -189,16 +201,21 @@ function scans(rows: readonly Row[], tenant: HualeiTenant, readAt: number): { ev
     if (seen.has(key)) return;
     seen.add(key);
     const staged = stageOf(tenant, row.code, description);
+    const reading = tenant.clock?.(row) ?? (tenant.wallClocks ? 'wall' : 'platform');
     kept.push({ clock: local, index, event: {
-      ...(tenant.wallClocks ? { local_time: local } : { time: placed.iso }), description,
+      ...(reading === 'platform' ? { time: placed.iso } : { local_time: reading === 'day' ? local.slice(0, 10) : local }), description,
       ...(location ? { location } : {}),
       ...(row.code ? { provider_code: row.code } : {}),
       ...(staged ? { stage: staged.stage, stage_source: staged.source } : {}),
     } });
   });
+  const { repeats } = tenant;
+  const unique = repeats ? kept.filter((entry) => !kept.some((other) => other !== entry && other.clock === entry.clock
+    && other.event.location === entry.event.location && other.event.provider_code === entry.event.provider_code
+    && repeats(entry.event.description!, other.event.description!))) : kept;
   // Rows come newest first; rows on one clock keep the reply's order.
-  kept.sort((a, b) => (a.clock === b.clock ? a.index - b.index : a.clock < b.clock ? 1 : -1));
-  const events = kept.map(({ event }) => event);
+  unique.sort((a, b) => (a.clock === b.clock ? a.index - b.index : a.clock < b.clock ? 1 : -1));
+  const events = unique.map(({ event }) => event);
   return { events: events.slice(0, MAX_EVENTS), truncated: events.length > MAX_EVENTS };
 }
 
@@ -216,7 +233,7 @@ interface Facts {
  * The result. The record's own summary status is not read: it can be ahead
  * of the rows held back.
  */
-function result(rows: readonly Row[], facts: Facts, tenant: HualeiTenant, readAt: number): CarrierResult {
+function result(rows: readonly HualeiRow[], facts: Facts, tenant: HualeiTenant, readAt: number): CarrierResult {
   const { events, truncated } = scans(rows, tenant, readAt);
   // The order exists, but nothing it holds is due yet.
   if (!events.length) throw new NoHistoryError(tenant.provider, `${tenant.provider} has no scans for the shipment yet`);
@@ -245,7 +262,7 @@ function result(rows: readonly Row[], facts: Facts, tenant: HualeiTenant, readAt
   };
 }
 
-function trackRow(raw: unknown, provider: string): Row {
+function trackRow(raw: unknown, provider: string): HualeiRow {
   if (!isRecord(raw)) throw new SchemaError(provider, `${provider} returned an invalid scan`);
   return {
     clock: text(raw, 'track_date', provider, 64), content: text(raw, 'track_content', provider),
@@ -319,7 +336,7 @@ export function parseHualeiTrack(payload: unknown, raw: string, tenant: HualeiTe
 interface PageWaybill {
   readonly pieces: string | null;
   readonly cells: ReadonlyMap<string, string>;
-  readonly rows: readonly Row[];
+  readonly rows: readonly HualeiRow[];
 }
 
 function pageWaybill($: CheerioAPI, block: Parameters<CheerioAPI>[0], provider: string): PageWaybill {

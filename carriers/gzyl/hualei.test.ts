@@ -5,7 +5,9 @@ import {
   ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError, TransportError,
 } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { HualeiTracker, hualeiPartner, hualeiScanText, normalizeHualeiNumber, parseHualeiPage, parseHualeiTrack } from './hualei.js';
+import {
+  HualeiTracker, hualeiPartner, hualeiScanText, normalizeHualeiNumber, parseHualeiPage, parseHualeiTrack, type HualeiRow,
+} from './hualei.js';
 import { GZYL } from './parser.js';
 
 const NUMBER = 'GZTEST00000001';
@@ -96,6 +98,24 @@ describe('Hualei track interface', () => {
     expect(result.history_truncated).toBe(true);
     expect(() => parseHualeiTrack(edited((record) => { record.trackDetails = Array.from({ length: 501 }, () => row('2026-03-01 10:00:00', 'Row')); }),
       NUMBER, GZYL, READ_AT)).toThrow(SchemaError);
+  });
+
+  it('reads each row on the clock its tenant gives it, and counts a row the tenant says repeats another once', () => {
+    const tenant = {
+      ...GZYL, repeats: (wording: string, other: string) => wording.endsWith(`, ${other}`),
+      clock: ({ clock }: HualeiRow) => (clock.endsWith(' 00:00:00') ? 'day' as const : clock.endsWith(':00') ? 'wall' as const : 'platform' as const),
+    };
+    const rows = edited((record) => {
+      record.trackDetails = [row('2026-03-05 00:00:00', 'Moving'), row('2026-03-04 21:07:00', 'Group, Arrived', 'HUB'),
+        row('2026-03-04 21:07:00', 'Arrived', 'HUB'), row('2026-03-04 21:07:00', 'Group, Arrived', 'OTHER HUB'), row('2026-03-03 10:15:42', 'Departed', 'ORIGIN')];
+    });
+    expect(parseHualeiTrack(rows, NUMBER, tenant, READ_AT)?.events?.map(({ time, local_time, description, location }) => [time ?? local_time, description, location]))
+      .toEqual([['2026-03-05', 'Moving', undefined], ['2026-03-04T21:07:00', 'Arrived', 'HUB'], ['2026-03-04T21:07:00', 'Group, Arrived', 'OTHER HUB'],
+        ['2026-03-03T10:15:42+08:00', 'Departed', 'ORIGIN']]);
+    // Without them, every row is on the platform's clock and each wording stands.
+    expect(parseHualeiTrack(rows, NUMBER, GZYL, READ_AT)?.events?.map(({ time, description }) => [time, description])).toEqual([
+      ['2026-03-05T00:00:00+08:00', 'Moving'], ['2026-03-04T21:07:00+08:00', 'Group, Arrived'], ['2026-03-04T21:07:00+08:00', 'Arrived'],
+      ['2026-03-04T21:07:00+08:00', 'Group, Arrived'], ['2026-03-03T10:15:42+08:00', 'Departed']]);
   });
 
   it('keeps no postcode or signatory in scan text', () => {

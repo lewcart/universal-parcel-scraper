@@ -35,6 +35,8 @@ describe('carrier search pages', () => {
       '<div contenteditable=""></div>',
     ].join(''))).toBe(0);
     expect(numberFields('<input type="search" name="q" placeholder="Search by tracking number">')).toBe(1);
+    // Mongol Infinity Post names its field q and asks for the parcel's number in Mongolian.
+    expect(numberFields('<input type="text" name="q" placeholder="Илгээмжийн дугаараа оруулна уу!">')).toBe(1);
   });
 
   it('names a search page for every carrier with a tracking link, or says why it has none', () => {

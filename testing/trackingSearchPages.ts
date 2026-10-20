@@ -23,7 +23,7 @@ export function countNumberFields(elements: Element[]): number {
     if (/e-?mail|user ?name|login|password|passwort|mot de passe/i.test(label)) return false;
     const siteSearch = /^(?:q|query|s|search|keywords?)$/i.test(field.name)
       || /^\s*(?:search|rechercher|suchen|buscar|cerca|szukaj)\b/i.test(field.placeholder || field.getAttribute('aria-label') || '');
-    return !siteSearch || /track|suivi|sendung|colis|parcel|package|shipment|waybill|consignment|number|numéro|nummer|número|numero/i.test(label);
+    return !siteSearch || /track|suivi|sendung|colis|parcel|package|shipment|waybill|consignment|number|numéro|nummer|número|numero|трек|номер|дугаар/i.test(label);
   }).length;
 }
 

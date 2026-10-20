@@ -38,8 +38,10 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
 - Exactly one `result` entry must have `id` equal to the number. Sibling references and
   shipment-wide personal detail objects are ignored.
 - Each scan is classified by its own `opCode`. Code `202` (已出库) sits in the frontend's warehouse
-  "delivered" group but means warehouse dispatch, not delivery. Codes `8000` and `70` (a delivery
-  that did not happen) depend on their `stayWhyCode`; unknown combinations stay unclassified. Code
+  "delivered" group but means warehouse dispatch, not delivery. Codes `8000` and `70` depend on
+  their `stayWhyCode`: the frontend groups `70` with reasons 5, 7 and 65 with the delivery round,
+  and its other reasons are a failed attempt or a parcel left at a pickup point. Unknown
+  combinations stay unclassified. Code
   `99` reads both "being returned" and "being forwarded", so it stays unclassified too.
 - Summary `expressState` `99` is broad transit, so a mapped latest scan wins over it. Other summary
   states win over the scan.

@@ -108,11 +108,13 @@ describe('SF Express public route parsing', () => {
       ['605', '', 'customs', 'in_transit'], // Under customs clearance
       ['70', '4', 'failed_attempt', 'exception'], // The receiver's address could not be reached
       ['70', '222', 'ready_for_pickup', 'out_for_delivery'], // Left at a post office or pickup point
+      ['70', '5', 'out_for_delivery', 'out_for_delivery'], // The frontend's delivery-round group
+      ['70', '65', 'out_for_delivery', 'out_for_delivery'],
     ] as const) {
       expect(sfExpressEventStatus(code, reason)).toEqual({ stage, status });
     }
     // Code 99 reads both "being returned" and "being forwarded"; 70 needs a known reason.
-    for (const [code, reason] of [['99', ''], ['70', ''], ['70', '5'], ['70', '999']] as const) expect(sfExpressEventStatus(code, reason)).toBeUndefined();
+    for (const [code, reason] of [['99', ''], ['70', ''], ['70', '999'], ['70_5', '']] as const) expect(sfExpressEventStatus(code, reason)).toBeUndefined();
     const value = copy(); value.result[0]!.signed = false; value.result[0]!.routes.pop();
     value.result[0]!.routes.push({ ...value.result[0]!.routes[0]!, scanDateTime: '2026-01-08 18:00:00', opCode: '70', stayWhyCode: '222',
       remark: 'The shipment has been placed at the self-pickup location, waiting for the customer to pick it up' });

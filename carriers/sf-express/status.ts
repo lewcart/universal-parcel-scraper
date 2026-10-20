@@ -5,10 +5,12 @@ const TRANSIT: ClassifiedStatus = { stage: 'in_transit', status: 'in_transit' };
 const EXCEPTION: ClassifiedStatus = { stage: 'exception', status: 'exception' };
 const RETURNED: ClassifiedStatus = { stage: 'returned', status: 'exception' };
 const REASONS = new Map<string, ClassifiedStatus>([['1', DELIVERED], ['2', EXCEPTION], ['3', TRANSIT], ['4', RETURNED], ['6', EXCEPTION]]);
-// Code 70 is a delivery that did not happen; its reason says why, as its remark
-// does: an address the courier could not reach, or a parcel left at a post
-// office or pickup point for the recipient.
+// Code 70 is read by its reason. The frontend groups reasons 5, 7 and 65 with
+// the delivery round; the remarks of the others say an address the courier
+// could not reach, or a parcel left at a post office or pickup point for the
+// recipient.
 const UNDELIVERED = new Map<string, ClassifiedStatus>([
+  ...['5', '7', '65'].map((reason) => [reason, { stage: 'out_for_delivery', status: 'out_for_delivery' } as const] as const),
   ['4', { stage: 'failed_attempt', status: 'exception' }],
   ['222', { stage: 'ready_for_pickup', status: 'out_for_delivery' }],
 ]);
@@ -19,16 +21,15 @@ const SUMMARY = new Map<string, ClassifiedStatus>([['2', EXCEPTION], ['3', TRANS
 // "delivered" group means dispatched. Code 99 reads both "being returned" and
 // "being forwarded", so it stays unclassified.
 const CODES = new Map<string, ClassifiedStatus>([
-  ...['80', '8000_1', '980'].map((code) => [code, DELIVERED] as const),
+  ...['80', '980'].map((code) => [code, DELIVERED] as const),
   ...['50', '54', '950'].map((code) => [code, { stage: 'accepted', status: 'in_transit' } as const] as const),
-  ...['44', '34', '122', '123', '630', '640', '83', '47', '634', '125', '204', '70_5', '70_7', '70_65']
+  ...['44', '34', '122', '123', '630', '640', '83', '47', '634', '125', '204']
     .map((code) => [code, { stage: 'out_for_delivery', status: 'out_for_delivery' } as const] as const),
   ...['14', '30', '31', '36', '105', '106', '88', '89', '205', '201', '206', '646', '202', '626']
     .map((code) => [code, TRANSIT] as const),
   // In transit, on the road, on a flight or at a stopover, departed or arrived.
   ...['98', '208', '649', '310', '115', '116', '302', '305'].map((code) => [code, TRANSIT] as const),
   ['605', { stage: 'customs', status: 'in_transit' }],
-  ['8000_2', EXCEPTION],
 ]);
 
 /** Codes 8000 and 70 are ambiguous without their reason; do not default them to signed. */

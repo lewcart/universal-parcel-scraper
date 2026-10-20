@@ -12,9 +12,18 @@ client's `EB500200` query envelope. One fresh challenge is allowed after an unre
 explicitly refused answer. Cookies and verification material stay within that lookup.
 
 The server must confirm verification and repeat the requested item. The parser keeps scan
-wording, event codes and processing locations. Overseas and domestic facility clocks retain
-their local time without invented offsets. Recipient, dispatch-bag and expanded remark fields
+wording, event codes and processing locations. Recipient, dispatch-bag and expanded remark fields
 are omitted. Only the server's explicit absence message for the requested item is not found.
+
+## Clocks
+
+Scan times carry no zone. A scan made by one of Chunghwa Post's own branches is dated on
+`Asia/Taipei`: Taiwan keeps one zone without daylight saving. The branch is read as the
+official client reads it: a branch code of digits or a `TW` office of exchange, on a row that
+links no other post's website. The tracker's notes say a scan in the destination country is
+on that country's local time, so a row abroad, which names the country and links its post,
+keeps its wall clock in `local_time`, as does a row whose branch code is missing or of another
+form.
 
 ## Numbers
 
@@ -31,6 +40,7 @@ and Taiwan-issued UH letter post.
 It refuses other postal services, numeric domestic references and proprietary mainland
 formats as invalid input before any request; enabled universal providers follow them.
 The tracker retains six months of history, and destination posts can withhold scans.
+Scans abroad have no instant, so an item that has left Taiwan has a wall clock as its last update.
 No cheap HTTP recognition is declared. Changed image geometry remains a challenge.
 
 ## Testing

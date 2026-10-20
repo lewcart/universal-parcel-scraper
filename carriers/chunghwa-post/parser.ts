@@ -3,11 +3,13 @@ import { normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus } from '../../core/status/index.js';
+import { firstOccurrence } from '../../core/time/index.js';
 import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { chunghwaPostStage } from './status.js';
 
 export const PROVIDER = 'Chunghwa Post';
+const TAIWAN = 'Asia/Taipei';
 export const isSupportedChunghwaPostNumber = (number: string): boolean => /^(?:[CELR][A-Z]\d{9}[A-Z]{2}|UH\d{9}TW)$/.test(number);
 export function normalizeChunghwaPostNumber(raw: string): string {
   const number = raw.length <= 64 ? normalizeTrackingNumber(raw) : '';
@@ -32,6 +34,23 @@ function clock(value: unknown): string {
     if (parsed.isValid && parsed.toFormat('yyyyMMddHHmmss') === value) return parsed.toFormat("yyyy-MM-dd'T'HH:mm:ss");
   }
   throw new SchemaError(PROVIDER, 'Chunghwa Post returned an invalid scan clock');
+}
+
+/**
+ * Whether Chunghwa Post's own branch made the scan. The official client reads a
+ * branch code of digits or a `TW` office of exchange as one of its own
+ * branches, and links another post's site for a scan made abroad.
+ */
+function ownBranch(row: Record<string, unknown>): boolean {
+  const branch = typeof row.BRHNO === 'string' ? row.BRHNO.trim().slice(0, 6) : '';
+  const abroad = row.POST_URL != null && (typeof row.POST_URL !== 'string' || row.POST_URL.trim() !== '');
+  return /^(?:\d{6}|TW[A-Z]{4})$/.test(branch) && !abroad;
+}
+
+/** A wall clock of Chunghwa Post's own branch: Taiwan keeps one zone, without daylight saving. */
+function taiwanInstant(wall: string): string | undefined {
+  const placed = firstOccurrence(DateTime.fromISO(wall, { zone: TAIWAN }));
+  return placed.isValid ? placed.toUTC().toISO({ suppressMilliseconds: true }) ?? undefined : undefined;
 }
 
 export function parseChunghwaPost(payload: unknown, raw: string): CarrierResult {
@@ -70,14 +89,17 @@ export function parseChunghwaPost(payload: unknown, raw: string): CarrierResult 
     if (!description || !/^[A-Z0-9]{1,8}$/.test(code)) throw new SchemaError(PROVIDER, 'Chunghwa Post returned an invalid scan status');
     const classified = chunghwaPostStage(description);
     const location = text(row, 'BRHNAT', 100);
-    return { local_time: clock(row.DATIME), description, provider_code: code, ...(location ? { location } : {}),
+    const localTime = clock(row.DATIME);
+    // A scan abroad is on that country's local clock, as the tracker's notes say, so it keeps its wall clock.
+    const time = ownBranch(row) ? taiwanInstant(localTime) : undefined;
+    return { ...(time ? { time } : {}), local_time: localTime, description, provider_code: code, ...(location ? { location } : {}),
       ...(classified ? { stage: classified.stage, stage_source: classified.source } : {}) };
   });
   const newest = events[0]!;
   const classified = chunghwaPostStage(newest.description!);
   return { status: classified ? languageStageStatus(classified.stage) : 'unknown',
     ...(classified ? { current_stage: classified.stage, current_stage_source: classified.source } : {}),
-    provider_code: newest.provider_code!, last_status_text: newest.description!, last_update: null,
+    provider_code: newest.provider_code!, last_status_text: newest.description!, last_update: newest.time ?? null,
     last_update_local: newest.local_time!, expected_delivery: null, events: events.slice(0, 100),
     ...(events.length > 100 ? { history_truncated: true } : {}) };
 }

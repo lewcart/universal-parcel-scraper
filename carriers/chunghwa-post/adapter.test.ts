@@ -25,6 +25,30 @@ describe('Chunghwa Post international tracking', () => {
     expect(parseChunghwaPost([{ ...row, body: { ...row.body, incorrectList: null } }], NUMBER).events).toHaveLength(2);
   });
 
+  it('dates the scans of its own branches on Taiwan time and keeps scans abroad on their local clocks', () => {
+    const items: Record<string, unknown>[] = [
+      { EVCODE: 'E', STATUS: '海關查驗', DATIME: '20260103102000', BRHNAT: '德國', BRHNO: 'DEXXXA', POST_URL: 'https://post.example/' },
+      { EVCODE: 'Y', STATUS: '郵袋接收', DATIME: '20260103064100', BRHNAT: '德國', BRHNO: '000001', POST_URL: 'https://post.example/' },
+      { EVCODE: 'C', STATUS: '已出口－資料詳如右方', DATIME: '20260102184319', BRHNAT: '國際航空郵件科', BRHNO: 'TWXXXB', POST_URL: '' },
+      { EVCODE: 'L', STATUS: '到達出口互換局', DATIME: '20260102085353', BRHNAT: '郵件處理中心', BRHNO: '000002' },
+      { EVCODE: 'A', STATUS: '交寄郵件', DATIME: '20260101160803', BRHNAT: '郵局', BRHNO: '000003' },
+      // A branch code the client does not read as a Taiwan branch, or none, settles no zone.
+      { EVCODE: 'A', STATUS: '交寄郵件', DATIME: '20260101150000', BRHNAT: '郵局', BRHNO: 'XX0001' },
+      { EVCODE: 'A', STATUS: '交寄郵件', DATIME: '20260101140000', BRHNAT: '郵局', BRHNO: 1 },
+    ];
+    const payload = fixture();
+    (payload[0]!.body.host_rs as { ITEM: unknown[] }).ITEM = items;
+    const result = parseChunghwaPost(payload, NUMBER);
+    expect(result.events!.map((event) => event.time)).toEqual([undefined, undefined, '2026-01-02T10:43:19Z',
+      '2026-01-02T00:53:53Z', '2026-01-01T08:08:03Z', undefined, undefined]);
+    expect(result.events!.map((event) => event.local_time)).toEqual(['2026-01-03T10:20:00', '2026-01-03T06:41:00',
+      '2026-01-02T18:43:19', '2026-01-02T08:53:53', '2026-01-01T16:08:03', '2026-01-01T15:00:00', '2026-01-01T14:00:00']);
+    expect(result).toMatchObject({ last_update: null, last_update_local: '2026-01-03T10:20:00' });
+    // An item still in Taiwan is dated by its newest scan.
+    items.splice(0, 2);
+    expect(parseChunghwaPost(payload, NUMBER)).toMatchObject({ last_update: '2026-01-02T10:43:19Z', last_update_local: '2026-01-02T18:43:19' });
+  });
+
   it('requires accepted verification and repeated identity, and recognizes only the matching absence message', () => {
     expect(() => parseChunghwaPost(unknown(), NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     expect(() => parseChunghwaPost(unknown('EA000000005TW'), NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));

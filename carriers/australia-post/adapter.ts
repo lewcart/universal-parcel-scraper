@@ -1,6 +1,6 @@
 
 import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
-import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
+import { BudgetExceededError, ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { recoverableByDefault, runSteps } from '../../core/runner/index.js';
@@ -145,8 +145,9 @@ function articleResult(selected: Record<string, unknown>, consignmentId: string)
   if (details.articleId !== selected.articleId || details.consignmentId !== consignmentId) {
     throw new SchemaError(PROVIDER, 'Australia Post returned mismatched article details');
   }
-  // A known article without scans, shown as "Updating Status": its history is gone or never began.
-  if (Array.isArray(details.events) && !details.events.length) throw new IndeterminateError(PROVIDER, 'Australia Post shows no history for this article');
+  // A known article without scans, shown as "Updating Status": its history is gone or never began,
+  // as for a label not yet scanned. Australia Post has answered for it, so it is no outage.
+  if (Array.isArray(details.events) && !details.events.length) throw new NoHistoryError(PROVIDER, 'Australia Post shows no history for this article');
   if (!Array.isArray(details.events) || details.events.length > 500) {
     throw new SchemaError(PROVIDER, 'Australia Post returned incomplete tracking history');
   }

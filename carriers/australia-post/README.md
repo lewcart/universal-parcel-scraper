@@ -77,8 +77,9 @@ every outgoing request unless the consumer sets `tracePropagationTargets: []`. T
 - Not-found is only the HTTP 200 entry with `status: 400`, `errorCode: 21`, `Invalid Tracking ID`,
   `Failed`. An entry with `status: 500` is the gateway failing on a reference it cannot process: it
   is inconclusive, and the browser is not asked the same question. So is a known article without
-  scans (`Updating Status`), whose history is gone or never began. Empty arrays, other identities
-  and other errors are schema failures.
+  scans (`Updating Status`), whose history is gone or never began, as for a label not yet scanned.
+  It is a `NoHistoryError`, so a consumer can tell it from an outage. Empty arrays, other
+  identities and other errors are schema failures.
 - Each scan is classified by its own `eventCode`, then its milestone label; `statuses.json` records
   the codes. A milestone groups several scans, so codes win: an item awaiting collection abroad is
   filed under `Delivered`, a failed attempt abroad under `It's on its way`. Awaiting collection,

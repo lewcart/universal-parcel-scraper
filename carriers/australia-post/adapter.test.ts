@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { adapter, AustraliaPostTracker, australiaPostApiUrl, australiaPostTrackingUrl, normalizeAustraliaPostNumber, parse } from './adapter.js';
 import { TrawlClient } from '../../core/transport/index.js';
+import { NoHistoryError } from '../../core/errors/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { sameInstantIdentityPolicy } from '../../app.js';
 import { australiaPostStatus } from './status.js';
@@ -160,12 +161,13 @@ describe('Australia Post parser', () => {
     for (const payload of [{}, [], [null]]) expect(() => parse(payload, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
-  it('calls a known article without scans inconclusive', () => {
+  it('calls a known article without scans inconclusive, with no history', () => {
     const payload = fixture();
     const article = payload[0].shipment.articles[0];
     article.trackStatusOfArticle = null;
     article.status = { statusAttributeName: 'status', statusAttributeValue: 'Updating Status' };
     article.details[0].events = [];
+    expect(() => parse(payload, NUMBER)).toThrow(NoHistoryError);
     expect(() => parse(payload, NUMBER)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
   });
 });

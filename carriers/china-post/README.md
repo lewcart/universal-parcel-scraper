@@ -39,7 +39,8 @@ and the China Post app hands tracking to the same backend. A lookup makes two
 POST requests with the body `{"mailNo":"<number>"}`:
 
 1. `/mail/getGisTraces/checkMail` opens the trace for the number. The app reads
-   its `info`: 2 asks for the last four digits of a contact phone, 3 shows "no
+   its `info`: 2 asks for the last four digits of the sender's or recipient's
+   phone, sent to the trace as `phoneTailNumber`; 3 shows "no
    logistics information", and any other value opens the map. The adapter does
    the same.
 2. `/mail/getGisTraces/subjection/v3` returns the mail record. Without a fresh
@@ -126,7 +127,9 @@ sender (711) reads "已退回".
   and never not found, in tracking and recognition alike.
 - Without TRAWL, a request for the phone digits ends as `input_required`.
 - Full history needs a signed-in account: `subjection/v2` answers guests with
-  "请登录后再查询" (sign in first). Accounts are not used.
+  "请登录后再查询" (sign in first), and the web channels ask for a user token.
+  Accounts are not used. The WeChat page's slider route
+  (`/common/getSlider`, then `subjection/v4`) returns the same three-scan window.
 - The EMS partner API requires issued customer credentials and is not used.
 
 ## Testing

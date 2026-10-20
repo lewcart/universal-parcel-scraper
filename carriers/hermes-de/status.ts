@@ -12,6 +12,7 @@
  * records the wording for review.
  */
 import type { CarrierStatus } from '../../core/result/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 import type { Stage } from '../../generated/catalog.js';
 
 export interface Milestone {
@@ -104,3 +105,12 @@ export const COLLECTED_AT_PARCELSHOP = new Set(['PARCELSHOP_COLLECTED_BY_CUSTOME
 export function hermesGermanyMilestone(parcelStatus: string): Milestone | undefined {
   return Object.hasOwn(STATUSES, parcelStatus) ? STATUSES[parcelStatus] : undefined;
 }
+
+/** What the map says about one row by its `parcelStatus`, the provider code every row carries. */
+export const statusMap: CarrierStatusMap = {
+  stage: (code) => (code ? hermesGermanyMilestone(code)?.stage : undefined),
+  gaps: [...IGNORED_BOOKING_STATUS].map((code) => ({
+    code,
+    note: "The recipient's delivery preference, not a movement: the adapter drops the row so it cannot move the parcel backwards.",
+  })),
+};

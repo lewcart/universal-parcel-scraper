@@ -1,4 +1,5 @@
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const STATUS = new Map<string, ClassifiedStatus>([
   ['123', { status: 'in_transit', stage: 'in_transit' }],
@@ -15,14 +16,35 @@ const STATUS = new Map<string, ClassifiedStatus>([
   ['746', { status: 'out_for_delivery', stage: 'out_for_delivery' }],
   ['745', { status: 'delivered', stage: 'delivered' }],
   ['835', { status: 'exception', stage: 'exception' }],
+  // A security check in the network, seen for a winter sports event: the parcel moves on.
+  ['996', { status: 'in_transit', stage: 'in_transit' }],
 ]);
+
+/** The locker or station code, read with its sign type. */
+const STATION = '751';
 
 /** Exact operation codes from the domestic website; unfamiliar codes stay unmapped. */
 export function ytoStatus(code: string, signType?: unknown): ClassifiedStatus | undefined {
-  if (code === '751') return signType === '1'
+  if (code === STATION) return signType === '1'
     ? { status: 'in_transit', stage: 'in_transit' } : { status: 'in_transit', stage: 'ready_for_pickup' };
   return STATUS.get(code);
 }
+
+/** The wording of a signature on the way back: the sender took the parcel. */
+export const YTO_RETURNED = 'Returned to the sender';
+
+/**
+ * What the map says about one scan by its operation code, where a signature
+ * worded as the trip back is the return. Code 751 is read by a sign type the
+ * code does not carry, so the code alone gives it no stage.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    const stage = code && code !== STATION ? ytoStatus(code)?.stage : undefined;
+    return stage === 'delivered' && wording === normalizeStatusWording(YTO_RETURNED) ? 'returned' : stage;
+  },
+  gaps: [],
+};
 
 export interface YtoScan {
   stage: Stage;

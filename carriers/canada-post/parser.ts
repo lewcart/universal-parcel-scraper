@@ -6,7 +6,7 @@ import type { Stage } from '../../core/status/index.js';
 import { canadaProvinceTimeZone, countryTimeZone, explicitOffsetTime, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord, type JsonObject } from '../../core/types.js';
-import { canadaPostPackageStage, canadaPostScanStage, canadaPostStage, isKnownCanadaPostScan, statusForStage } from './status.js';
+import { canadaPostPackageStage, canadaPostScanStage, canadaPostStage, isKnownCanadaPostScan, RETURNED_TO_SENDER, SIGNATURE_CODE, statusForStage } from './status.js';
 
 export function normalizeCanadaPostNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
@@ -175,7 +175,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     const country = isRecord(raw.locationAddr) ? textField(raw.locationAddr, 'countryCd', 8).toUpperCase() : '';
     const location = isRecord(raw.locationAddr)
       ? [textField(raw.locationAddr, 'city', 160), region].filter(Boolean).join(', ') : '';
-    const stage = type === 'Signature' || code === '20' ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
+    const stage = type === 'Signature' || code === SIGNATURE_CODE ? null : canadaPostScanStage(code, description) ?? canadaPostStage(description);
     const relayed = relayedClock(code, country, region);
     const clock = eventClock(raw.datetime, relayed);
     const event: CarrierEvent = { ...clock, description: stage === 'delivered' ? 'Delivered' : description,
@@ -192,7 +192,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
     if (row.returnCue) returning = true;
     if (returning) {
       row.event.provider_leg = 'return';
-      if (row.event.stage === 'delivered') { row.event.stage = 'returned'; row.event.description = 'Returned to sender'; }
+      if (row.event.stage === 'delivered') { row.event.stage = 'returned'; row.event.description = RETURNED_TO_SENDER; }
     }
   }
   const latest = rows[0]!;
@@ -244,7 +244,7 @@ export function parseCanadaPostTrackingResponse(payload: unknown, trackingNumber
   const service = clean(payload.productNmEn, 80);
   return { status: current ? statusForStage(current) : 'unknown', ...(current ? { current_stage: current } : {}),
     last_status_text: snapshot === 'return' ? 'Return to sender' : current === 'delivered' ? 'Delivered'
-      : current === 'returned' ? 'Returned to sender' : latest.event.description,
+      : current === 'returned' ? RETURNED_TO_SENDER : latest.event.description,
     last_update: snapshot ? null : latest.event.time ?? null,
     ...(!snapshot && latest.event.local_time ? { last_update_local: latest.event.local_time } : {}),
     expected_delivery: window?.expected_delivery ?? expected,

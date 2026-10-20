@@ -74,6 +74,14 @@
       "confirmedBy": "live"
     },
     {
+      "wording": "LM Carrier: [<carrier>] , LM tracking No.: [<reference>]",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The line naming the last-mile carrier and its reference, also written in Chinese. SpeedPAK files it under its label 同步尾程供应商, the hand-over to that carrier."
+    },
+    {
       "wording": "订单接受",
       "language": "zh",
       "stage": "registered",

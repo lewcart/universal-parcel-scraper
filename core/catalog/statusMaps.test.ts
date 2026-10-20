@@ -295,6 +295,100 @@ describe('status map answers', () => {
     expect(answer('ppl', null, 'We have delivered the shipment to the recipient')).toEqual(unknown);
   });
 
+  it('answers SF Express by its operation code, and code 99 by its remark', () => {
+    expect(answer('sf-express', '10', 'The shipment has departed from the transit place【CN,EXAMPLE】, flight departure')).toEqual(mapped('in_transit'));
+    expect(answer('sf-express', '11', 'The shipment has arrived at the transit place【CH,EXAMPLE】, flight arrival')).toEqual(mapped('in_transit'));
+    for (const code of ['1105', '1106']) {
+      expect(answer('sf-express', code, 'Shipment in transit at 【DE,EXAMPLE】, please wait in patience')).toEqual(mapped('in_transit'));
+    }
+    expect(answer('sf-express', '16', 'Under customs clearance, please wait patiently.')).toEqual(mapped('customs'));
+    expect(answer('sf-express', '950', 'Synthetic scan')).toEqual(mapped('accepted'));
+    expect(answer('sf-express', '80', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('sf-express', '99', 'The shipment is being returned.')).toEqual(mapped('returned'));
+    // Codes 8000 and 70 are read by a reason the code does not carry, and 99 only by the remarks it knows.
+    expect(answer('sf-express', '8000', 'Delivered')).toEqual(unknown);
+    expect(answer('sf-express', '70', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('sf-express', '99', 'Synthetic notice')).toEqual(unknown);
+    expect(answer('sf-express', null, 'Delivered')).toEqual(unknown);
+  });
+
+  it('answers Hermes Germany by its parcelStatus, and leaves the dropped delivery bookings out on purpose', () => {
+    expect(answer('hermes-de', 'INTERNATIONAL_PUDO_READY_FOR_COLLECTION', 'The shipment is ready for pick up in a parcel shop/store.'))
+      .toEqual(mapped('ready_for_pickup'));
+    expect(answer('hermes-de', 'INTERNATIONAL_PUDO_NOT_COLLECTED', 'The shipment was not picked up in the parcel shop/store.'))
+      .toEqual(mapped('exception'));
+    expect(answer('hermes-de', 'INTERNATIONAL_UNDELIVERABLE', 'The shipment could not be delivered.')).toEqual(mapped('exception'));
+    expect(answer('hermes-de', 'ANNOUNCED', 'Synthetic wording')).toEqual(mapped('registered'));
+    expect(answer('hermes-de', 'DELIVERED_NEIGHBOUR', 'Synthetic wording')).toEqual(mapped('delivered'));
+    expect(answer('hermes-de', 'DELIVERED_PARCELBOX', 'Synthetic wording')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('hermes-de', 'EDL_BOOKED_PARCELSHOP', 'Für die Sendung wurde ein WunschPaketShop gebucht.')).toEqual(gap);
+    expect(answer('hermes-de', 'SYNTHETIC_CODE', 'The shipment was delivered.')).toEqual(unknown);
+    expect(answer('hermes-de', null, 'The shipment was delivered.')).toEqual(unknown);
+  });
+
+  it('answers Canada Post by its scan code, else its wording, and leaves its notices and the signature out on purpose', () => {
+    expect(answer('canada-post', '0198', 'Label correction applied')).toEqual(mapped('in_transit'));
+    expect(answer('canada-post', '1301', 'Synthetic scan')).toEqual(mapped('accepted'));
+    expect(answer('canada-post', '1410', 'Item held at post office at customer request')).toEqual(mapped('ready_for_pickup'));
+    expect(answer('canada-post', '1410', 'Delivery on hold at customer request')).toEqual(mapped('in_transit'));
+    expect(answer('canada-post', '9999', 'Item out for delivery')).toEqual(mapped('out_for_delivery'));
+    expect(answer('canada-post', '1496', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('canada-post', '1496', 'Returned to sender')).toEqual(mapped('returned'));
+    expect(answer('canada-post', '20', 'Signature available')).toEqual(gap);
+    expect(answer('canada-post', '1200', 'Expected delivery date updated')).toEqual(gap);
+    expect(answer('canada-post', '2001', 'Photo available')).toEqual(gap);
+    expect(answer('canada-post', '9999', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('canada-post', null, 'Item out for delivery')).toEqual(unknown);
+  });
+
+  it('answers Yanwen by its wording, and a delivery by its milestone icon', () => {
+    expect(answer('yanwen', null, 'Yanwen Pickup Scan')).toEqual(mapped('accepted'));
+    expect(answer('yanwen', null, 'Order Submited.')).toEqual(mapped('registered'));
+    expect(answer('yanwen', null, '【EXAMPLE】Arrived.')).toEqual(mapped('in_transit'));
+    expect(answer('yanwen', 'LM40', 'Synthetic last-mile wording')).toEqual(mapped('delivered'));
+    expect(answer('yanwen', 'XX10', 'Delivered.')).toEqual(mapped('delivered'));
+    // A partner's line whose place in the timeline decides between registration and intake.
+    expect(answer('yanwen', null, 'Shipment information received')).toEqual(unknown);
+    expect(answer('yanwen', 'XX10', 'Synthetic scan')).toEqual(unknown);
+  });
+
+  it('answers SpeedPAK by its English wording, the hand-off to the last-mile carrier included', () => {
+    expect(answer('speedpak', null, 'LM Carrier: [Example Post] , LM tracking No.: [EXAMPLE0000000]')).toEqual(mapped('in_transit'));
+    expect(answer('speedpak', null, '尾程供应商:[Example Post] , 尾程跟踪号：[EXAMPLE0000000]')).toEqual(mapped('in_transit'));
+    expect(answer('speedpak', null, "Delivered. (Recipient's front door)")).toEqual(mapped('delivered'));
+    expect(answer('speedpak', null, 'Package Received')).toEqual(mapped('accepted'));
+    expect(answer('speedpak', null, 'Shipment Data Received')).toEqual(mapped('registered'));
+    // The Chinese label that stages a last-mile carrier's wording is not kept on the scan.
+    expect(answer('speedpak', null, 'PROCESSED THROUGH SORT FACILITY')).toEqual(unknown);
+    expect(answer('speedpak', null, 'LM Carrier: [Example Post] , LM tracking No.: []')).toEqual(unknown);
+    expect(answer('speedpak', 'ZZ', 'Package Received')).toEqual(unknown);
+  });
+
+  it('answers TIPSA by its labels and the Spanish wording rules it reads them with', () => {
+    expect(answer('tipsa', null, 'PENDIENTE DE ENTREGAR A TIPSA')).toEqual(mapped('registered'));
+    expect(answer('tipsa', null, 'LECTURA EN AGENCIA DESTINO EJEMPLO 01')).toEqual(mapped('in_transit'));
+    expect(answer('tipsa', null, 'Ausente')).toEqual(mapped('failed_attempt'));
+    expect(answer('tipsa', null, 'ENTREGADO')).toEqual(mapped('delivered'));
+    expect(answer('tipsa', null, 'EL ENVÍO ESTÁ EN REPARTO.')).toEqual(mapped('out_for_delivery'));
+    // Labels whose step TIPSA's history does not settle stay open.
+    for (const wording of ['FALTAN DATOS / DATOS INCORRECTOS', 'PENDIENTE DE RECOGER EN TIPSA', 'DISPONIBLE', 'PENDIENTE DE LLEGADA']) {
+      expect(answer('tipsa', null, wording), wording).toEqual(unknown);
+    }
+    expect(answer('tipsa', 'ZZ', 'ENTREGADO')).toEqual(unknown);
+  });
+
+  it('answers YTO by its operation code, on the way out and back', () => {
+    expect(answer('yto', '996', '冬运会安检')).toEqual(mapped('in_transit'));
+    expect(answer('yto', '310', 'Picked up')).toEqual(mapped('accepted'));
+    expect(answer('yto', '710', 'Out for delivery back to the sender')).toEqual(mapped('out_for_delivery'));
+    expect(answer('yto', '745', 'Delivered')).toEqual(mapped('delivered'));
+    expect(answer('yto', '745', 'Returned to the sender')).toEqual(mapped('returned'));
+    // Code 751 is read by a sign type the code does not carry.
+    expect(answer('yto', '751', 'In a parcel locker or pickup station')).toEqual(unknown);
+    expect(answer('yto', '999', 'Synthetic scan')).toEqual(unknown);
+    expect(answer('yto', null, 'Delivered')).toEqual(unknown);
+  });
+
   it.each(['app', '', 'hongkong-post', '__proto__', 'toString', 'Unknown'])('does not know %s', (carrier) => {
     expect(answer(carrier, 'DLO', 'Delivered')).toEqual(unknown);
   });

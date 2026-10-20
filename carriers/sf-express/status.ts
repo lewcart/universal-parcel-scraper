@@ -1,4 +1,5 @@
 import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const DELIVERED: ClassifiedStatus = { stage: 'delivered', status: 'delivered' };
 const TRANSIT: ClassifiedStatus = { stage: 'in_transit', status: 'in_transit' };
@@ -49,6 +50,16 @@ export function sfExpressEventStatus(code: string, reason: string, remark = ''):
   if (code === '99') return NOTICES.find(([wording]) => wording.test(remark.trim()))?.[1];
   return CODES.get(code);
 }
+
+/**
+ * What the map says about one scan by its operation code, and code 99 by its
+ * remark, which is the scan's wording. Codes 8000 and 70 are read by a reason
+ * the provider code does not carry, so the code alone gives them no stage.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? sfExpressEventStatus(code, '', wording)?.stage : undefined),
+  gaps: [],
+};
 
 export function sfExpressSummaryStatus(state: string, signed: boolean): ClassifiedStatus | undefined {
   const explicit = SUMMARY.get(state);

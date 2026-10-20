@@ -5,12 +5,10 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { countryCode, epochMillisTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { speedpakScanStatus } from './status.js';
+import { HANDOFF, speedpakScanStatus } from './status.js';
 import { withoutRoutingPrefix } from './wording.js';
 
 const PROVIDER = 'SpeedPAK';
-// Written in English or Chinese, with a full- or half-width colon.
-const HANDOFF = /^(?:LM Carrier|尾程供应商)\s*[:：]\s*\[([^\]]+)\]\s*,\s*(?:LM tracking No[.．]?|尾程跟踪号)\s*[:：]\s*\[([A-Z0-9]{4,40})\]$/;
 
 export function normalizeSpeedpakNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);

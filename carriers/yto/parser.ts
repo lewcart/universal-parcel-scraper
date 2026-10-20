@@ -5,7 +5,7 @@ import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { zonedTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
-import { ytoScan, ytoStatus } from './status.js';
+import { YTO_RETURNED, ytoScan, ytoStatus } from './status.js';
 
 const PROVIDER = 'YTO Express';
 // The domestic client's /ec/apollo/checkWaybillNo rules. Keep them local so a
@@ -53,7 +53,7 @@ export function parseYto(payload: unknown, trackingNumber: string): CarrierResul
     const mapped = ytoStatus(code, ext.signType);
     const stage = returning && mapped?.stage === 'delivered' ? 'returned' : mapped?.stage;
     const wording = ytoScan(label)?.wording ?? label;
-    const description = returning && mapped?.stage === 'delivered' ? 'Returned to the sender'
+    const description = returning && mapped?.stage === 'delivered' ? YTO_RETURNED
       : returning && mapped?.stage === 'out_for_delivery' ? 'Out for delivery back to the sender'
         : returning && mapped?.stage === 'ready_for_pickup' ? 'In a parcel locker or station on its way back' : wording;
     const clock = clean(raw.opTime, 64);

@@ -1,5 +1,6 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const WORDING = new Map<string, ClassifiedStatus>([
   ['Delivered.', { status: 'delivered', stage: 'delivered' }],
@@ -55,14 +56,26 @@ const CATEGORY = new Map<string, { status: CarrierStatus; stage?: Stage }>([
   ['包裹退回', { status: 'exception', stage: 'returned' }],
 ]);
 
+// The timeline marks the delivery scan with its LM40 milestone icon, whatever
+// wording the last-mile carrier used for it.
+const DELIVERY_ICON = 'LM40';
+
+// Partner wording can prefix its facility in full-width brackets. Removing
+// that observed prefix makes the remaining exact wording reusable.
+const withoutFacility = (description: string) => description.replace(/^【[^】]*】\s*/, '').trim();
+
 export function yanwenStatus(description: string, code?: string): ClassifiedStatus | undefined {
-  // The timeline marks the delivery scan with its LM40 milestone icon, whatever
-  // wording the last-mile carrier used for it.
-  if (code === 'LM40') return { status: 'delivered', stage: 'delivered' };
-  // Partner wording can prefix its facility in full-width brackets. Removing
-  // that observed prefix makes the remaining exact wording reusable.
-  return WORDING.get(description.replace(/^【[^】]*】\s*/, '').trim());
+  if (code === DELIVERY_ICON) return { status: 'delivered', stage: 'delivered' };
+  return WORDING.get(withoutFacility(description));
 }
+
+const STAGE_BY_WORDING = new Map([...WORDING].map(([wording, { stage }]) => [normalizeStatusWording(wording), stage]));
+
+/** What the map says about one scan by its milestone icon, the only code it keeps, else its wording. */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code === DELIVERY_ICON ? 'delivered' : STAGE_BY_WORDING.get(withoutFacility(wording))),
+  gaps: [],
+};
 
 /** The parcel's status from the category on its identity field, for scans the map does not know. */
 export function yanwenCategory(category: unknown): { status: CarrierStatus; stage?: Stage } | undefined {

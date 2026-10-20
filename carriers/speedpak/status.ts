@@ -1,4 +1,5 @@
-import type { ClassifiedStatus } from '../../core/status/index.js';
+import type { ClassifiedStatus, Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 const MAP: Readonly<Record<string, ClassifiedStatus>> = {
   'Shipment Data Received': { status: 'pending', stage: 'registered' },
@@ -51,8 +52,18 @@ const LABELS: Readonly<Record<string, ClassifiedStatus>> = {
   派送完成: { status: 'delivered', stage: 'delivered' },
 };
 
+const DELIVERED = /^Delivered(?:$|\. \()/;
+
+/**
+ * The line naming the last-mile carrier and its reference, in English or
+ * Chinese, with a full- or half-width colon. SpeedPAK files it under
+ * 同步尾程供应商, the hand-over to that carrier, so it is a movement.
+ */
+export const HANDOFF = /^(?:LM Carrier|尾程供应商)\s*[:：]\s*\[([^\]]+)\]\s*,\s*(?:LM tracking No[.．]?|尾程跟踪号)\s*[:：]\s*\[([A-Z0-9]{4,40})\]$/;
+
 export function speedpakStatus(wording: string): ClassifiedStatus | null {
-  if (wording === 'Delivered' || /^Delivered\. \(/.test(wording)) return { status: 'delivered', stage: 'delivered' };
+  if (DELIVERED.test(wording)) return { status: 'delivered', stage: 'delivered' };
+  if (HANDOFF.test(wording)) return MOVING;
   return Object.hasOwn(MAP, wording) ? MAP[wording]! : null;
 }
 
@@ -60,3 +71,22 @@ export function speedpakStatus(wording: string): ClassifiedStatus | null {
 export function speedpakScanStatus(wording: string, label: string): ClassifiedStatus | null {
   return speedpakStatus(wording) ?? (Object.hasOwn(LABELS, label) ? LABELS[label]! : null);
 }
+
+const STAGE_BY_WORDING = new Map<string, Stage>(Object.entries(MAP).map(([wording, { stage }]) => [normalizeStatusWording(wording), stage]));
+const DELIVERED_WORDING = new RegExp(DELIVERED.source, 'i');
+const HANDOFF_WORDING = new RegExp(HANDOFF.source, 'i');
+
+/**
+ * What the map says about one scan by its English wording, the only key a scan
+ * keeps: it has no code, and SpeedPAK's Chinese label, which stages the scans
+ * whose English wording is a last-mile carrier's, is not stored with it.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    if (code) return undefined;
+    if (DELIVERED_WORDING.test(wording)) return 'delivered';
+    if (HANDOFF_WORDING.test(wording)) return MOVING.stage;
+    return STAGE_BY_WORDING.get(wording);
+  },
+  gaps: [],
+};

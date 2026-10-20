@@ -82,6 +82,16 @@ describe('YTO domestic parser', () => {
     expect(parseYto(value, NUMBER).delivered_at).toBeUndefined();
   });
 
+  it('keeps a security check in the network moving', () => {
+    const value = fixture();
+    value[0].waybillProcessInfo.splice(3, 0, { ...value[0].waybillProcessInfo[3],
+      opCode: '996', opName: '冬运会安检', opTime: '2026-01-02 21:00:00', description: '快件已安检' });
+    value[0].waybillProcessInfo.splice(0, 3);
+    const result = parseYto(value, NUMBER);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', last_status_text: '冬运会安检' });
+    expect(result.events?.[0]).toMatchObject({ provider_code: '996', stage: 'in_transit' });
+  });
+
   it('leaves unknown operations unmapped even when earlier history was delivered', () => {
     const value = fixture();
     value[0].waybillProcessInfo.unshift({ ...value[0].waybillProcessInfo[0], opCode: 'NEW', opName: 'New operation', opTime: '2026-01-04 10:00:00' });

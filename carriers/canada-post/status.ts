@@ -1,5 +1,6 @@
 import type { CarrierStatus } from '../../core/result/index.js';
 import { trackingLanguageStage, type Stage } from '../../core/status/index.js';
+import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 /** The official client's package enum and English translations. */
 export const CANADA_POST_STATUS_STAGE: Readonly<Record<string, Stage>> = {
@@ -42,13 +43,40 @@ export function canadaPostScanStage(code: string, description = ''): Stage | nul
   return Object.hasOwn(SCAN_STAGE, code) ? SCAN_STAGE[code]! : null;
 }
 
-/** Notices that move nothing: a revised delivery date, the recipient's delivery preference or a delivery photo. */
-const NOTICES = new Set(['1200', '1220', '1225', '2001']);
+/** Notices that move nothing, and why. */
+const NOTICES: ReadonlyMap<string, string> = new Map([
+  ['1200', 'A revised delivery date: the new date is the estimate, and the parcel does not move.'],
+  ['1220', "The recipient's delivery preference: it moves nothing."],
+  ['1225', "The recipient's delivery preference: it moves nothing."],
+  ['2001', 'A delivery photo is available: it moves nothing, and the photo is not read.'],
+]);
+
+/** The signature captured at delivery, a proof beside the delivery scan. */
+export const SIGNATURE_CODE = '20';
+
+/** The wording of a delivery on the way back: the return reached the sender. */
+export const RETURNED_TO_SENDER = 'Returned to sender';
 
 /** A code whose meaning is known, whether or not it carries a stage. */
 export function isKnownCanadaPostScan(code: string): boolean {
   return canadaPostScanStage(code) !== null || NOTICES.has(code);
 }
+
+/**
+ * What the map says about one scan by its code, else its wording, as the
+ * parser stages it. Every scan carries its code.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => {
+    if (!code || code === SIGNATURE_CODE) return undefined;
+    const stage = canadaPostScanStage(code, wording) ?? canadaPostStage(wording) ?? undefined;
+    return stage === 'delivered' && wording === normalizeStatusWording(RETURNED_TO_SENDER) ? 'returned' : stage;
+  },
+  gaps: [
+    { code: SIGNATURE_CODE, note: 'The signature captured at delivery: a proof beside the delivery scan, not a scan of its own.' },
+    ...[...NOTICES].map(([code, note]) => ({ code, note })),
+  ],
+};
 
 export function canadaPostStage(text: string): Stage | null {
   const value = text.toLowerCase();

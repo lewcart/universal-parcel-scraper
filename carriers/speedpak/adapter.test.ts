@@ -152,6 +152,21 @@ describe('SpeedPAK hand-off wording', () => {
     expect(JSON.stringify(result)).not.toContain('42000000');
   });
 
+  it('reads the hand-off line as a movement without SpeedPAK\'s label, in English or Chinese', () => {
+    const payload = fixture();
+    expect(parseSpeedpak(payload, NUMBER).events?.[2]).toMatchObject({ stage: 'in_transit', stage_source: 'carrier_map' });
+    payload.result.waybills[0].traces[2] = { eventDesc: '尾程供应商:[Uni Uni] , 尾程跟踪号：[UUS00T0000000000000]', oprTimestamp: 1767362400000 };
+    expect(parseSpeedpak(payload, NUMBER).events?.[2]).toMatchObject({ stage: 'in_transit' });
+    // As the summary, it is the parcel's stage until a later scan.
+    payload.result.waybills[0].traces.splice(0, 2);
+    payload.result.waybills[0].lastStatus = trimmed;
+    expect(parseSpeedpak(payload, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    // A line without its reference names no hand-off.
+    payload.result.waybills[0].traces[0].eventDesc = 'LM Carrier: [Uni Uni] , LM tracking No.: []';
+    payload.result.waybills[0].lastStatus = 'LM Carrier: [Uni Uni] , LM tracking No.: []';
+    expect(parseSpeedpak(payload, NUMBER)).toMatchObject({ status: 'unknown' });
+  });
+
   it('lets a hand-off line stored with the routing barcode take the trimmed wording', () => {
     const policy = sameInstantIdentityPolicy('speedpak', { supportsScanMatching: true });
     expect(sameInstantIdentityPolicy('speedpak')).toBeUndefined();

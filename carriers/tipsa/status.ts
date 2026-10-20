@@ -1,4 +1,5 @@
 import { languageStageStatus, trackingLanguageStage, type ClassifiedStatus } from '../../core/status/index.js';
+import type { CarrierStatusMap } from '../../core/status/statusMap.js';
 
 function comparable(value: string): string {
   return value.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
@@ -24,3 +25,12 @@ export function tipsaStatus(label: string): ClassifiedStatus | undefined {
   const worded = trackingLanguageStage(label);
   return worded ? { status: languageStageStatus(worded), stage: worded } : undefined;
 }
+
+/**
+ * What the map says about one history label, the only key a scan has: TIPSA's
+ * own labels, else the shared wording rules the adapter reads them with.
+ */
+export const statusMap: CarrierStatusMap = {
+  stage: (code, wording) => (code ? undefined : tipsaStatus(wording)?.stage),
+  gaps: [],
+};

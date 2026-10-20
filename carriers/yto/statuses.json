@@ -155,6 +155,15 @@
       "note": "ParcelsApp's translation of PDA正常签收扫描; stored as \"Delivered\"."
     },
     {
+      "wording": "冬运会安检",
+      "code": "996",
+      "language": "zh",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "A security check of the parcel in the network for a winter sports event; the parcel moves on."
+    },
+    {
       "wording": "已取件",
       "code": "311",
       "language": "zh",

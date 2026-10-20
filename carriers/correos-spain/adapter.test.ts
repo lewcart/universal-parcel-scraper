@@ -100,6 +100,8 @@ describe('Correos Spain response parsing', () => {
       ['L03D320R', 'exception', 'returned'],
       ['A170000V', 'pending', 'registered'],
       ['E000001V', 'in_transit', 'customs'],
+      ['B170000V', 'in_transit', 'customs'],
+      ['E510000V', 'in_transit', 'in_transit'],
       ['I020000V', 'exception', 'returned'],
       ['I01H230V', 'exception', 'returned'],
       ['L03D240R', 'exception', 'returned'],

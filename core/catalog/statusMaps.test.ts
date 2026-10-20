@@ -192,6 +192,9 @@ describe('status map answers', () => {
     expect(answer('correos-spain', 'G01L020V', 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', null, 'A disposición del destinatario')).toEqual(mapped('ready_for_pickup'));
     expect(answer('correos-spain', 'A010000V', 'Admitido.')).toEqual(mapped('accepted'));
+    // Origin customs holds the parcel; a completed customs processing puts it back in transit.
+    expect(answer('correos-spain', 'B170000V', 'En aduana de origen')).toEqual(mapped('customs'));
+    expect(answer('correos-spain', 'E510000V', 'Finalizada tramitación aduanera')).toEqual(mapped('in_transit'));
     expect(answer('correos-spain', 'Z999999Z', 'A disposición del destinatario')).toEqual(unknown);
     expect(answer('correos-spain', null, 'Admitido.')).toEqual(unknown);
   });

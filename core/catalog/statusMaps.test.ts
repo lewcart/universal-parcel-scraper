@@ -128,6 +128,9 @@ describe('status map answers', () => {
     expect(answer('js-express', null, 'The cargo tally in the supervised warehouse is in progress.')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Domestic allocation has begun')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Under domestic allocation')).toEqual(mapped('in_transit'));
+    expect(answer('js-express', null, 'Inbound to customs temporary warehouse')).toEqual(mapped('customs'));
+    // A courier's record of the parcel's data moves nothing.
+    expect(answer('js-express', null, 'Your package is being prepared by the sender and will be handed over to us soon')).toEqual(gap);
   });
 
   it("answers La Poste by the group and code it reads, for every carrier its adapter serves", () => {

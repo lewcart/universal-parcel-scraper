@@ -20,6 +20,7 @@
     {"wording": "Item Flight landing", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "NOA-Notification of arrival from GHA", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination airport's ground handling agent reports the shipment arrived."},
     {"wording": "The goods have been picked up abroad", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "The destination agent took the shipment from the airport; JS Express accepted the parcel long before."},
+    {"wording": "Inbound to customs temporary warehouse", "stage": "customs", "language": "en", "confirmedBy": "live", "note": "The shipment entered a customs warehouse to wait for its clearance."},
     {"wording": "Released From Import Customs", "stage": "in_transit", "language": "en", "confirmedBy": "live"},
     {"wording": "Prepared for last mile handover", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by ParcelsApp after the import release at the destination airport, before the destination courier has the parcel."},
     {"wording": "The cargo tally in the supervised warehouse is in progress.", "stage": "in_transit", "language": "en", "confirmedBy": "source", "note": "Relayed by ParcelsApp after the import release: the bonded warehouse counting the shipment's pieces, no new customs step."},
@@ -30,6 +31,7 @@
     {"wording": "SHIPPING INFORMATION RECEIVED", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A partner's record of the parcel's data, written while the parcel was already flying; it moves nothing."},
     {"wording": "SHIPMENT CREATED", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A partner's record of the parcel's data, written after JS Express had the order; it moves nothing."},
     {"wording": "Package information is created in the system", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination courier's record of the parcel's data, written days before it has the parcel; it moves nothing."},
+    {"wording": "Your package is being prepared by the sender and will be handed over to us soon", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "A courier's record of the parcel's data, in its own voice, before JS Express hands the parcel over; it moves nothing."},
     {"wording": "Package will be delivered before 9:00pm", "unmapped": true, "language": "en", "confirmedBy": "live", "note": "The destination courier's delivery forecast for the day, with its place moved into the location; no scan."}
   ]
 }

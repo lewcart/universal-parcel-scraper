@@ -210,6 +210,14 @@ describe('JS Express tracking adapter', () => {
     expect(recorded).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_status_text: 'SHIPMENT CREATED' });
   });
 
+  it("stages a customs warehouse's inbound, and a courier's announcement of the parcel moves nothing", () => {
+    const parsed = parseJsExpress(withList(
+      row('2026-05-02 10:00:00', 'Sample Town', 'Your package is being prepared by the sender and will be handed over to us soon')
+      + row('2026-05-02 09:00:00', 'AMS', 'Inbound to customs temporary warehouse')), DELIVERED);
+    expect(parsed).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map' });
+    expect(parsed.events?.map((event) => [event.stage, event.stage_source])).toEqual([[undefined, undefined], ['customs', 'carrier_map']]);
+  });
+
   it('reads the page\'s "no data" answer as not found, and an empty answer as inconclusive', async () => {
     expect(() => parseJsExpress(page('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
     expect(() => parseJsExpress(withList('暂无轨迹数据'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));

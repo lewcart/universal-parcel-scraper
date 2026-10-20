@@ -20,9 +20,9 @@ import { classifyStatus, comparableText, includesAny } from './status.js';
 // - One page can describe two parcels: an outbound number and its return
 //   number. The requested number decides which leg is read; the other leg's
 //   rows never enter the result.
-// - Cloudflare normally challenges anonymous direct requests, so the page is
-//   fetched directly first and through the private browser service's native
-//   scrape API when that request is challenged.
+// - Cloudflare challenges every anonymous direct request, so the page is
+//   fetched through the private browser service's native scrape API when one
+//   is configured, and directly only without one.
 const TRACKING_BASE = 'https://trace.dpd.fr/fr/trace';
 const TIMEZONE = 'Europe/Paris';
 const DEFAULT_TIMEOUT_MS = 90_000;
@@ -273,9 +273,9 @@ export class DPDFranceTracker {
       try {
         return await this.directGet(url, capped(this.directTimeoutMs, timeoutMs), signal);
       } catch (error) {
-        // Without a browser service there is no second tier, so the
-        // challenge has to carry the operator's next step itself.
-        if (trawl || !(error instanceof DPDFranceChallengeError)) throw error;
+        // The GET runs only without a browser service, so the challenge has
+        // to carry the operator's next step itself.
+        if (!(error instanceof DPDFranceChallengeError)) throw error;
         throw new DPDFranceChallengeError(
           'DPD France requires a browser challenge solver; configure FLARESOLVERR_URL',
         );
@@ -284,14 +284,15 @@ export class DPDFranceTracker {
     const html = await runSteps<string>({
       carrier: 'dpd-fr', budgetMs: context.budgetMs ?? this.budgetMs, signal: context.signal, recorder: this.recorder,
     }, [
-      // A GET that fails to reach DPD, or hangs, is sent once more: the first
-      // gets at most half of what is left, so the second fits in the rest.
-      { id: 'direct', run: ({ remainingMs, signal }) => direct(firstAttemptMs(remainingMs), signal) },
-      networkRetryStep(({ remainingMs, signal }) => direct(remainingMs, signal)),
+      // Cloudflare challenges every plain GET, so a browser service, when
+      // there is one, is asked at once. Without one, a GET that fails to
+      // reach DPD, or hangs, is sent once more: the first gets at most half
+      // of what is left, so the second fits in the rest.
+      { id: 'direct', enabled: trawl === null, run: ({ remainingMs, signal }) => direct(firstAttemptMs(remainingMs), signal) },
+      { ...networkRetryStep(({ remainingMs, signal }) => direct(remainingMs, signal)), enabled: trawl === null },
       {
         id: 'trawl',
         enabled: trawl !== null,
-        recovers: (error) => error instanceof DPDFranceChallengeError,
         run: async ({ remainingMs, signal }) => {
           const timeoutMs = capped(this.timeoutMs, remainingMs);
           return (await trawl!.scrape({
@@ -350,8 +351,7 @@ export const adapter: AdapterFactory = (environment) => {
   });
   return {
     id: 'dpd-fr',
-    // One direct HTML GET, then the browser service's native scrape API when
-    // Cloudflare challenges it.
+    // The browser service's native scrape API, or a direct HTML GET without one.
     steps: ['direct', 'retry', 'trawl'],
     track: (input, context) => tracker.fetch(input.number, context),
   };

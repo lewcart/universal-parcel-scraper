@@ -366,13 +366,8 @@ describe('DPD France transport tiers', () => {
     expect(steps.map((step) => [step.step, step.outcome])).toEqual([['direct', 'ok']]);
   });
 
-  it('falls back to the same TRAWL scrape protocol used for UPS', async () => {
-    const challenge = new Response('<title>Just a moment...</title>', {
-      status: 403,
-      headers: { 'CF-Mitigated': 'challenge' },
-    });
+  it('asks the browser service at once, with the same TRAWL scrape protocol used for UPS', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch')
-      .mockResolvedValueOnce(challenge)
       .mockResolvedValueOnce(new Response(JSON.stringify({
         tier: 3,
         statusCode: 200,
@@ -387,27 +382,22 @@ describe('DPD France transport tiers', () => {
       recorder,
     }).fetch(TEST_TRACKING_NUMBER)).resolves.toMatchObject({ status: 'exception' });
 
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(String(fetcher.mock.calls[1]![0])).toBe('http://trawl.internal:8191/scrape');
-    const trawlRequest = JSON.parse(String(fetcher.mock.calls[1]![1]?.body));
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(String(fetcher.mock.calls[0]![0])).toBe('http://trawl.internal:8191/scrape');
+    const trawlRequest = JSON.parse(String(fetcher.mock.calls[0]![1]?.body));
     expect(trawlRequest).toEqual({
       url: dpdFranceTrackingUrl(TEST_TRACKING_NUMBER),
       skipHttp: true,
       maxTier: 3,
       maxTimeout: 2_000,
     });
-    expect(steps.map((step) => [step.step, step.outcome])).toEqual([['direct', 'challenge'], ['trawl', 'ok']]);
-    expect(steps[1]).toMatchObject({ fallbackFrom: 'direct', fallbackReason: 'challenge' });
+    expect(steps.map((step) => [step.step, step.outcome])).toEqual([['trawl', 'ok']]);
   });
 
   it('gives the browser tier the caller\'s signal and what is left of the budget', async () => {
     let reached!: () => void;
     const browserRequest = new Promise<void>((resolve) => { reached = resolve; });
     const fetcher = vi.spyOn(globalThis, 'fetch')
-      .mockResolvedValueOnce(new Response('<title>Just a moment...</title>', {
-        status: 403,
-        headers: { 'CF-Mitigated': 'challenge' },
-      }))
       .mockImplementationOnce((_url, init) => new Promise<Response>((_resolve, reject) => {
         init!.signal!.addEventListener('abort', () => reject(init!.signal!.reason), { once: true });
         reached();
@@ -421,9 +411,9 @@ describe('DPD France transport tiers', () => {
     controller.abort(cancelled);
 
     await expect(lookup).rejects.toBe(cancelled);
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(fetcher.mock.calls[1]![1]?.signal?.aborted).toBe(true);
-    expect(JSON.parse(String(fetcher.mock.calls[1]![1]?.body)).maxTimeout).toBeLessThanOrEqual(30_000);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0]![1]?.signal?.aborted).toBe(true);
+    expect(JSON.parse(String(fetcher.mock.calls[0]![1]?.body)).maxTimeout).toBeLessThanOrEqual(30_000);
   });
 
   it('retries a GET that hangs once, inside the budget, but not an unknown parcel', async () => {

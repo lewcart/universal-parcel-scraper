@@ -6,16 +6,15 @@ in [`dpd`](../dpd/README.md).
 
 ## How it works
 
-1. `direct`: one GET of `https://trace.dpd.fr/fr/trace/{number}` with a
-   browser-like `User-Agent`, 20 s timeout. A 403 with
-   `cf-mitigated: challenge` or a "Just a moment" page is a Cloudflare challenge.
-2. `retry`: the same GET once more after a network failure or timeout. Until
+1. `trawl`: with a browser service (`FLARESOLVERR_URL`), its `scrape` API
+   (`skipHttp`, `maxTier: 3`) loads `https://trace.dpd.fr/fr/trace/{number}`.
+2. `direct`: without one, a GET of the same page with a browser-like
+   `User-Agent`, 20 s timeout. A 403 with `cf-mitigated: challenge` or a "Just
+   a moment" page is a Cloudflare challenge, which says "configure
+   FLARESOLVERR_URL".
+3. `retry`: that GET once more after a network failure or timeout. Until
    then `direct` gets at most half of the time left, so a GET that hangs
    leaves time for it.
-3. `trawl`: the browser service's `scrape` API (`skipHttp`, `maxTier: 3`), only
-   after a challenge. The step is disabled when `FLARESOLVERR_URL` is unset;
-   the `direct` challenge then says "configure FLARESOLVERR_URL" itself, so
-   telemetry shows one step and the operator still gets the hint.
 
 Both tiers return HTML for the same parser. "Numéro de colis inconnu" (or "pas
 en mesure de retrouver") with no parcel number on the page is not-found. Other
@@ -31,9 +30,9 @@ non-2xx statuses are indeterminate.
   links often carry that form. When the check digit matches, detection lists DPD
   France first and the adapter looks the parcel up by its fifteen digits, the
   number the trace page shows. Other sixteen-digit numbers are refused.
-- `direct` is kept although Cloudflare usually challenges it: when it passes it
-  saves a browser session. (Mondial Relay dropped its direct tier because it
-  never passed.)
+- With a browser service the plain GET is skipped: Cloudflare challenged every
+  one, from a server and from a home connection alike, so it only added a
+  failure before each browser lookup. Without one it is the only way to ask.
 - One page can show an outbound parcel (`#infos1`, `tr.tabTraceColisAller`) and
   its return (`#infos2`, `tr.tabTraceColisRetour`). The requested number picks
   the leg; the other leg's rows are never read. A page without the requested

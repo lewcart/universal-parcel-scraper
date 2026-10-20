@@ -30,7 +30,9 @@ carry none, and no other carrier issues them. RV and VF have rarely been seen
 outside the dedicated prefixes, so there they only suggest Chronopost, as
 other postal-shaped identifiers do. A fifteen-character numeric identifier
 must pass the shared DPD check-character validation. These shapes suggest a
-lookup, not carrier ownership.
+lookup, not carrier ownership. Asked directly, as when a provider names
+Chronopost, the adapter also takes the fourteen digits without their check
+character, as DPD's notices print them: Chronopost answers either form.
 
 Chronopost also answers for other posts' letter and parcel items that pass
 through one of its hubs, often with that single scan. La Poste delivers those

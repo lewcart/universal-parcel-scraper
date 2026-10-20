@@ -368,7 +368,8 @@ describe('Chronopost direct tracking', () => {
   it('shares the whole-number validation, claims its own prefixes and asks Chronopost for a generic postal number over HTTP', async () => {
     expect(normalizeChronopostNumber('xt 123456785 ts')).toBe(number);
     expect(normalizeChronopostNumber('12345678901234E')).toBe('12345678901234E');
-    for (const invalid of ['12345678901234A', '6A00000000000', '12345678901234', number + '<tag>']) {
+    expect(normalizeChronopostNumber('1234 5678 9012 34')).toBe('12345678901234');
+    for (const invalid of ['12345678901234A', '6A00000000000', '1234567890123', number + '<tag>']) {
       expect(() => normalizeChronopostNumber(invalid)).toThrow(expect.objectContaining({ kind: 'invalid_input' }));
     }
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'chronopost', confidence: 'high' });

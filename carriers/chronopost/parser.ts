@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { isValidDpdParcelNumber } from '../../core/detection/dpd.js';
+import { dpdParcelNumber, isValidDpdParcelNumber } from '../../core/detection/dpd.js';
 import { isValidS10TrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
@@ -29,8 +29,10 @@ function laPosteDelivers(number: string): boolean {
 
 export function normalizeChronopostNumber(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s.-]/g, '');
-  if (!/^[A-Z]{2}\d{9}[A-Z]{2}$/.test(value) && !isValidDpdParcelNumber(value)) {
-    throw new InvalidInputError('Chronopost', 'Chronopost requires a postal-shaped identifier or a checked 15-character parcel number');
+  // A DPD parcel number, with its check character or without it as notices often
+  // print it: Chronopost answers either form, echoing the number as asked.
+  if (!/^[A-Z]{2}\d{9}[A-Z]{2}$/.test(value) && dpdParcelNumber(value) === null) {
+    throw new InvalidInputError('Chronopost', 'Chronopost requires a postal-shaped identifier or a DPD parcel number');
   }
   return value;
 }

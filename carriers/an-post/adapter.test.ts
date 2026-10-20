@@ -51,7 +51,7 @@ describe('An Post numbers', () => {
 });
 
 describe('An Post guest history', () => {
-  it('binds the summary to the number and keeps newest-first local clocks without people or references', async () => {
+  it('binds the summary to the number and keeps newest-first clocks without people or references', async () => {
     const fetcher = service();
     const result = normalizeCarrierResult(await instance(fetcher).track({ number: NUMBER }, { budgetMs: 5_000 }));
     expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'ready_for_pickup', current_stage_source: 'carrier_map',
@@ -68,7 +68,10 @@ describe('An Post guest history', () => {
       ['2026-03-04T14:37:34', '15', 'accepted'],
       ['2026-03-02T20:12:39', '35', 'registered'],
     ]);
-    expect(result.events?.every(event => event.stage_source === 'carrier_map' && event.time === undefined)).toBe(true);
+    expect(result.events?.every(event => event.stage_source === 'carrier_map')).toBe(true);
+    // An Post's own scans are on Irish time, GMT in March; the partner's relayed ones keep their wall clocks.
+    expect(result.events?.map(event => event.time)).toEqual([undefined, undefined, undefined, undefined, undefined,
+      '2026-03-05T16:03:38+00:00', '2026-03-04T14:37:34+00:00', '2026-03-02T20:12:39+00:00']);
     expect(result.events?.filter(event => event.location)).toEqual([expect.objectContaining({ provider_code: '48', location: 'SYNTHETIC MAIL CENTRE' })]);
     expect(JSON.stringify(result)).not.toMatch(PRIVATE);
 
@@ -260,6 +263,37 @@ describe('An Post guest history', () => {
     expect(JSON.stringify(missed)).not.toMatch(/UNDELIVERED/);
     expect(ahead({ status: 'Synthetic status' })).toMatchObject({ status: 'unknown', last_status_text: 'Synthetic status' });
     expect(ahead({ status: 'Synthetic status' }).current_stage).toBeUndefined();
+  });
+
+  it("dates An Post's own scans on Irish time and keeps the clocks of the partner's relayed scans", () => {
+    // As live: An Post's scans carry seconds, the partner's arrive in whole minutes.
+    const sent = scan(5, 'Your item is being sent internationally.', '2026-09-22T18:46:48');
+    const accepted = scan(37, 'We have your item and will process it for delivery', '2026-09-22T16:46:48');
+    const informed = scan(35, 'We have received information about your incoming item from the sender', '2026-09-09T20:41:19');
+    const partner = [scan(14, 'Your item has been delivered', '2026-09-29T18:29:00'),
+      scan(4, 'Your item is out for delivery', '2026-09-28T07:35:00'),
+      scan(40, 'Your item arrived abroad.', '2026-09-25T08:19:00')];
+    const outbound = parseAnPostEvents(eventsOf([...partner, sent, accepted, informed]), summaryFor(partner[0]!));
+    expect(outbound.events?.map(event => [event.provider_code, event.time])).toEqual([['14', undefined], ['4', undefined],
+      ['40', undefined], ['5', '2026-09-22T18:46:48+01:00'], ['37', '2026-09-22T16:46:48+01:00'], ['35', '2026-09-09T20:41:19+01:00']]);
+    expect(outbound).toMatchObject({ last_update: null, last_update_local: '2026-09-29T18:29:00' });
+    // While the item is still with An Post, its current scan is the update's instant.
+    const leaving = parseAnPostEvents(eventsOf([sent, accepted, informed]), summaryFor(sent));
+    expect(leaving).toMatchObject({ last_update: '2026-09-22T18:46:48+01:00', last_update_local: '2026-09-22T18:46:48' });
+    // An Post's scans after the partner's stay on the wall clock too: the return of an item abroad.
+    const back = scan(53, 'Your item is being returned to the sender', '2026-10-02T10:12:31');
+    expect(parseAnPostEvents(eventsOf([back, ...partner, sent]), summaryFor(back)).events?.[0]).not.toHaveProperty('time');
+    // A domestic item is An Post's alone; a summary ahead of the history is no scan and keeps its wall clock.
+    const delivered = scan(14, 'Your item has been delivered', '2026-09-24T11:01:30');
+    expect(parseAnPostEvents(eventsOf([delivered, informed]), summaryFor(delivered))).toMatchObject({
+      last_update: '2026-09-24T11:01:30+01:00', last_update_local: '2026-09-24T11:01:30' });
+    const ahead = parseAnPostSummary(summaryOf([{ ...summaryItem(), status: delivered.activity, date: delivered.date }]), NUMBER);
+    expect(parseAnPostEvents(eventsOf([informed]), ahead)).toMatchObject({ last_update: null, last_update_local: delivered.date });
+    // A wall time the clocks skip names no instant.
+    const skipped = scan(4, 'Your item is out for delivery', '2026-03-29T01:30:00');
+    const before = parseAnPostEvents(eventsOf([skipped, scan(48, accepted.activity, '2026-03-28T23:30:12')]), summaryFor(skipped));
+    expect(before.events?.map(event => event.time)).toEqual([undefined, '2026-03-28T23:30:12+00:00']);
+    expect(before).toMatchObject({ last_update: null, last_update_local: skipped.date });
   });
 
   it.each([

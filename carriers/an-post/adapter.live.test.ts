@@ -13,8 +13,10 @@ const confirmed = (corpus.records as { number: string; quarantine?: boolean; con
 
 function expectHistory(result: CarrierResult) {
   expect(result.events?.length).toBeGreaterThan(0);
-  expect(result.events?.every(event => event.time === undefined && typeof event.local_time === 'string'
-    && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(event.local_time)))
+  // An Post's own scans are also dated on Irish time, GMT or IST.
+  expect(result.events?.every(event => typeof event.local_time === 'string'
+    && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(event.local_time)
+    && (event.time === undefined || [`${event.local_time}+00:00`, `${event.local_time}+01:00`].includes(event.time))))
     .toBe(true);
   expect(result.events?.every(event => event.provider_code !== undefined)).toBe(true);
   expect(JSON.stringify(result)).not.toMatch(/receiverName|geisDelivery|senderNo|countryOfOrigin/);

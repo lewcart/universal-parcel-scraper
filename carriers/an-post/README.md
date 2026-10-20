@@ -30,11 +30,14 @@ guest tracking client. It is included with the maintainer's approval.
   requested number. Another number or a repeated item ends the lookup before the history
   is asked for. The history echoes no number, so it is only ever asked for the bound
   `anPostNo`.
-- Times: every clock is a wall time without an offset, kept in `local_time`; the catalog
-  zone is `Europe/Dublin`. On an outbound item, the scans relayed from the destination
-  country's delivery partner (code 67 and the partner's later scans, in whole minutes) may
-  keep that country's clock, so they are neither converted nor reordered. No update
-  instant or delivery estimate is invented.
+- Times: every clock is a wall time without an offset, kept in `local_time`. An Post's own
+  scans, which carry seconds, are also dated on `Europe/Dublin`: the universal providers'
+  copies of them show the same instants. After an outbound item's dispatch abroad (code 5,
+  itself dated) or from its first relayed partner scan (code 40, 49, 67 or 68, in whole
+  minutes), whichever comes first, scans may keep the destination country's clock, so none
+  of them is dated or reordered, An Post's own on a return included. The update instant is
+  the current scan's when it is dated; a summary ahead of the history keeps its wall clock.
+  No delivery estimate is invented.
 - Stages map from `traceCode` through `status.ts`: the codes seen live, and the app's own
   category for each code it knows (delivered, delivery attempted, customs, received,
   sorting, in transit, return to sender). The app's sorting and in-transit categories also

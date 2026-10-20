@@ -2,7 +2,7 @@ import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/de
 import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus } from '../../core/status/index.js';
-import { calendarDay } from '../../core/time/index.js';
+import { calendarDay, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { ATTEMPT_DELIVERED, ATTEMPT_MADE, anPostPostOffice, anPostScanStage, anPostSummaryStage, type AnPostStage } from './status.js';
@@ -11,6 +11,12 @@ export const AN_POST = 'An Post';
 const MAX_ITEMS = 50;
 const MAX_SCANS = 500;
 const CLOCK = /^(\d{4})-(\d{2})-(\d{2})T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/;
+const ZONE = 'Europe/Dublin';
+/**
+ * An outbound item's codes as it leaves Ireland (5) and as the destination's
+ * delivery partner relays its scans (40, 49, 67, 68), in whole minutes.
+ */
+const ABROAD = new Set([5, 40, 49, 67, 68]);
 
 /** The item's identity and current status from GetItemSummary. Names and references are never kept. */
 export interface AnPostSummary {
@@ -40,6 +46,12 @@ function wallClock(value: unknown): string {
   const match = typeof value === 'string' ? CLOCK.exec(value) : null;
   if (!match || !calendarDay(Number(match[1]), Number(match[2]), Number(match[3]))) invalid('An Post returned an invalid scan clock');
   return match[0];
+}
+
+/** An Post's own wall clock on Irish time, unless the clocks skip it. */
+function irishTime(local: string): string | undefined {
+  const placed = isoTime(local, ZONE);
+  return placed?.iso.startsWith(local) ? placed.iso : undefined;
 }
 
 function text(value: unknown, max: number): string {
@@ -94,6 +106,7 @@ interface Current {
 
 interface Scan extends Current {
   event: CarrierEvent;
+  code: number;
   /** The scan's own wording, empty for a delivery attempt worded from its reason. */
   activity: string;
 }
@@ -160,14 +173,25 @@ export function parseAnPostEvents(payload: unknown, summary: AnPostSummary): Car
     const key = JSON.stringify(event);
     if (seen.has(key)) continue;
     seen.add(key);
-    scans.push({ event, activity, stage, text: description, local, ...(office ? { office } : {}) });
+    scans.push({ event, code, activity, stage, text: description, local, ...(office ? { office } : {}) });
   }
+  // The scans until an outbound item's dispatch abroad, or before the partner's
+  // first relayed scan, are An Post's own, on Irish time. Later ones may keep
+  // the destination's clock, so they keep their wall clocks.
+  let abroad = -1;
+  scans.forEach(({ code }, index) => { if (ABROAD.has(code)) abroad = index; });
+  scans.forEach((scan, index) => {
+    const time = abroad < 0 || index > abroad || (index === abroad && scan.code === 5) ? irishTime(scan.local) : undefined;
+    if (time) scan.event = { time, ...scan.event };
+  });
   // Provider order is kept: relayed partner scans may keep another country's
   // clock, so the wall clocks do not reorder them.
   const current = currentState(scans, summary);
   const pickup = pickupPoint(scans, current);
+  // A summary ahead of the history is no listed scan, so it keeps its wall clock.
+  const time = scans.includes(current as Scan) ? (current as Scan).event.time : undefined;
   return { status: current.stage ? languageStageStatus(current.stage.stage) : 'unknown',
     ...(current.stage ? { current_stage: current.stage.stage, current_stage_source: current.stage.source } : {}),
-    last_status_text: current.text, last_update: null, last_update_local: current.local,
+    last_status_text: current.text, last_update: time ?? null, last_update_local: current.local,
     ...(pickup ? { pickup_point: pickup } : {}), expected_delivery: null, events: scans.slice(0, 100).map(({ event }) => event) };
 }

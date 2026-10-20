@@ -48,8 +48,8 @@ mail from abroad to Italy is not handed to Poste Italiane.
   them, for ROAD EUROPE shipments for instance. No public sample is known, so the shape only
   suggests Poste Italiane (`poste-italiane-d`) and recognition asks it.
 - SDA's 13-character codes with a digit before the `C` start with `3`, as complaints quote
-  them, or with `1`, which Poste's tracker follows for Crono Express parcels. No public sample
-  starts with `1`.
+  them, with `1`, which Poste's tracker follows for Crono Express parcels, or with `9`, which it
+  follows for CRONO PLUS parcels arriving from Cainiao. No public sample starts with `1` or `9`.
 - Registered mail (Raccomandata, Raccomandata 1, A.R. and judicial documents) carries eleven
   digits and a check digit, printed after a dash or a space. Poste's
   [barcode specification](https://business.poste.it/business/files/1473808025319/raccomandatagiudiziaria-codice-a-barre.pdf)

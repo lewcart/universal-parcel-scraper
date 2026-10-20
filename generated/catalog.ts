@@ -13819,6 +13819,41 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": []
   },
+  "first-line": {
+    "displayName": "FIRST LINE",
+    "color": "#683088",
+    "aliases": [
+      "1ST",
+      "1ST Group",
+      "Yidai International",
+      "ONE LINE",
+      "一代国际",
+      "一代集团",
+      "壹代國際",
+      "一代国际集团",
+      "深圳市一代国际物流（集团）有限公司",
+      "壹号专线",
+      "深圳市壹号专线供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "first-line",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^1ST\\d{11}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "flash-express": {
     "displayName": "Flash Express",
     "color": "#ffea33",
@@ -31556,6 +31591,7 @@ export const CARRIER_IDS = [
   "fg-delivery",
   "first-delivery-tn",
   "first-fly-express",
+  "first-line",
   "flash-express",
   "flash-express-ph",
   "fleetex",
@@ -32336,6 +32372,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "fg-delivery": ["fg-delivery-fgd","fg-delivery-1"],
   "first-delivery-tn": [],
   "first-fly-express": [],
+  "first-line": ["first-line-1"],
   "flash-express": ["flash-express-1"],
   "flash-express-ph": ["flash-express-ph-1"],
   "fleetex": [],

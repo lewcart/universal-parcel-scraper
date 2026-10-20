@@ -130,6 +130,25 @@ describe('NACEX direct tracking', () => {
     expect(parseNacex(pickup, NUMBER)).toMatchObject({ status: 'in_transit', current_stage: 'ready_for_pickup', last_status_text: 'Disponible en punto NACEX' });
   });
 
+  it('registers a shipment booked through the web channel until its first movement', () => {
+    const history = (summary: string, rows: string[]) => edit($ => {
+      $('#tabla_estado tr').eq(1).children('td').last().text(summary);
+      $('#table_historico').html('<tr><td class="sg_hist_fecha" colspan="2">15 January 2026</td></tr>'
+        + rows.map(row => `<tr><td class="sg_hist_desc">${row}</td></tr>`).join(''));
+    });
+    const booked = parseNacex(history('Notificado', ['<b>Notificado</b>', '<b>Aceptada</b><br>9900 - WEB']), NUMBER);
+    expect(booked).toMatchObject({ status: 'pending', current_stage: 'registered', last_status_text: 'Notificado' });
+    expect(booked.events?.map(event => [event.provider_status, event.stage, event.stage_source, event.location]))
+      .toEqual([['Notificado', 'registered', 'none', undefined], ['Aceptada', 'registered', undefined, undefined]]);
+    expect(parseNacex(history('Aceptada', ['<b>Aceptada</b><br>9900 - WEB', '<b>Notificado</b>']), NUMBER))
+      .toMatchObject({ status: 'pending', current_stage: 'registered', last_status_text: 'Aceptada' });
+    const moving = parseNacex(history('En tránsito', ['<b>En tránsito</b><br>9900 - TEST ORIGIN', '<b>Notificado</b>', '<b>Aceptada</b><br>9900 - WEB']), NUMBER);
+    expect(moving).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(moving.events?.map(event => event.stage)).toEqual(['in_transit', 'registered', 'registered']);
+    expect(parseNacex(history('Aceptada', ['<b>Aceptada</b><br>9900 - TEST ORIGIN']), NUMBER))
+      .toMatchObject({ status: 'in_transit', current_stage: 'accepted', events: [{ stage: 'accepted', location: 'TEST ORIGIN' }] });
+  });
+
   it('rejects a delivered header contradicted by the newest mapped scan, allowing newer administrative rows', () => {
     const contradiction = edit($ => {
       $('.sg_hist_desc').first().children('font').text('En reparto');

@@ -38,7 +38,7 @@ export function isNacexNotice(label: string): boolean {
 export const statusMap: CarrierStatusMap = {
   stage: (code, wording) => (code || isNacexNotice(wording) ? undefined : classifyNacexStatus(wording)?.stage),
   gaps: [
-    { wording: 'notificado', note: 'A notice recorded around collection: it keeps the stage of the scan before it, and registers only a shipment that has no scan yet.' },
+    { wording: 'notificado', note: 'A notice recorded the day the shipment is booked: it keeps the stage of the scan before it, and registers only a shipment that has no scan yet.' },
     { wording: 'sin estado', note: 'An administrative note: it keeps the stage of the scan before it, and registers only a shipment that has no scan yet.' },
   ],
 };

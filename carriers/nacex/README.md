@@ -20,9 +20,12 @@ their source order, including repeated descriptions on the same day. Unknown
 current wording cannot inherit an older delivery. A delivered summary must agree
 with the newest mapped physical scan; contradictory responses are rejected.
 
-Notices (a notification or an administrative note) record a message, not a
-movement: they keep the stage of the scan before them, and only a first notice
-registers the shipment. Agreed redeliveries, address changes and pickup point
+A shipment booked online is accepted at the agency's web channel (`WEB` as
+its place) and notified the same day, before or after that acceptance; NACEX
+has no collection scan, so the booking registers the shipment until its first
+transit scan. Notices (`Notificado`, or an administrative note) record a
+message, not a movement: they keep the stage of the scan before them, and only
+a first notice registers the shipment. Agreed redeliveries, address changes and pickup point
 redirects resume delivery; requests to contact the agency and incidents closed
 without success are problems. A parenthetical agency or pickup point code after
 a label is dropped.

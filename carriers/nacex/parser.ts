@@ -20,6 +20,9 @@ function headingDay(text: string): string | null {
 }
 
 const AGENCY_CODE = /\s*\(\d{4}(?:-\d{1,3})?\)$/;
+/** An acceptance placed at the agency's web channel: the shipment is booked online, not yet in NACEX's hands. */
+const WEB_CHANNEL = /^\d{4}(?:-\d{1,3})?\s*-\s*WEB$/i;
+const BOOKED: ClassifiedStatus = { status: 'pending', stage: 'registered' };
 const NO_HISTORY ='No existe ningún albarán introducido en el sistema cumpliendo los criterios especificados. Consulte con su agencia NACEX más cercana.';
 
 export function normalizeNacexNumber(raw: string): string {
@@ -110,11 +113,12 @@ export function parseNacex(html: string, raw: string): CarrierResult {
     if (labels.length !== 1 || !/^[\p{L}][\p{L}\s.-]{1,119}$/u.test(label)) {
       throw new SchemaError('NACEX', 'NACEX returned an invalid scan label');
     }
-    const mapped = classifyNacexStatus(label);
     const trailing = clean(cell.contents().filter((_, node) => node.nodeType === 3).map((_, node) => $(node).text()).get().join(' '), 300);
+    const booked = classifyNacexStatus(label)?.stage === 'accepted' && WEB_CHANNEL.test(trailing);
+    const mapped = booked ? BOOKED : classifyNacexStatus(label);
     // The same trailing column holds a recipient after delivery. Only the
     // observed depot/locality shape of a movement scan is a location.
-    const locality = isNacexMovement(label) && /^\d{4}(?:-\d{1,3})?\s*-\s*([\p{L}][\p{L}\s.()-]{1,99})$/u.exec(trailing)?.[1];
+    const locality = !booked && isNacexMovement(label) && /^\d{4}(?:-\d{1,3})?\s*-\s*([\p{L}][\p{L}\s.()-]{1,99})$/u.exec(trailing)?.[1];
     scans.push({ mapped, notice: isNacexNotice(label), event: { description: mapped?.status === 'delivered' ? 'Delivered' : label,
       provider_status: label, ...(day ? { local_time: day } : dayText ? { provider_time_text: dayText } : {}),
       ...(locality ? { location: locality } : {}) } });
@@ -136,8 +140,9 @@ export function parseNacex(html: string, raw: string): CarrierResult {
   if (!events.length || !events.some(event => event.stage)) throw new IndeterminateError('NACEX', 'NACEX returned no actual tracking scans');
   // Calendar headings have no scan clock or zone: a scan keeps its day alone.
   // Preserve provider order, including same-day repeated scans.
+  // The summary repeats the newest scan's label, read as that scan is.
   const mapped = classifyNacexStatus(summaryLabel);
-  const current = isNacexNotice(summaryLabel) ? applied.get(events[0]!) ?? mapped : mapped;
+  const current = isNacexNotice(summaryLabel) || summaryLabel === events[0]!.provider_status ? applied.get(events[0]!) ?? mapped : mapped;
   const latestPhysical = scans.find(scan => scan.mapped && !scan.notice);
   if (mapped?.stage === 'delivered' && latestPhysical?.mapped?.stage !== 'delivered') {
     throw new SchemaError('NACEX', 'NACEX current status contradicts its latest shipment scan');

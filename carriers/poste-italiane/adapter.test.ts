@@ -47,6 +47,7 @@ describe('Poste Italiane tracking normalization', () => {
     expect(normalizePosteItalianeTrackingNumber('1UW1G2J193065')).toBe('1UW1G2J193065');
     expect(normalizePosteItalianeTrackingNumber('2IMA0051035900')).toBe('2IMA0051035900');
     expect(normalizePosteItalianeTrackingNumber('cw 123 456 785 it')).toBe('CW123456785IT');
+    expect(normalizePosteItalianeTrackingNumber('CP123456785IT')).toBe('CP123456785IT');
     // PROMOPACCO PLUS: F, three digits, D and eight digits.
     expect(normalizePosteItalianeTrackingNumber('f990d00000001')).toBe('F990D00000001');
     // D, five digits, a letter and six digits.
@@ -54,7 +55,7 @@ describe('Poste Italiane tracking normalization', () => {
     // Registered mail: eleven digits and the check digit, printed after a dash or a space.
     expect(normalizePosteItalianeTrackingNumber('99000000001-0')).toBe('990000000010');
     expect(normalizePosteItalianeTrackingNumber('99000000001 0')).toBe('990000000010');
-    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785IT', 'F990D0000001', 'F990E00000001',
+    for (const raw of ['12345', 'Z8328162951', 'LD156008025FR', 'CW123456780IT', 'CP123456785FR', 'F990D0000001', 'F990E00000001',
       'D9900A000001', 'D990000000001', 'E99000A000001', '990000000011', '99000000001', '9900000000100', '']) {
       expect(() => normalizePosteItalianeTrackingNumber(raw)).toThrow(InvalidInputError);
     }

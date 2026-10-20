@@ -2025,7 +2025,7 @@ export const CARRIER_CATALOG = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -2781,6 +2781,17 @@ export const CARRIER_CATALOG = {
         "pattern": "^CW\\d{9}IT$",
         "confidence": "high",
         "checksum": "s10"
+      },
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}IT$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       },
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|[139]C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
@@ -32193,7 +32204,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "nacex": ["nacex-1"],
   "ctt": ["ctt-1"],
   "ctt-express": ["ctt-express-3","ctt-express-1","ctt-express-2"],
-  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-plate","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d","poste-italiane-registered"],
+  "poste-italiane": ["poste-italiane-1","poste-italiane-2","poste-italiane-plate","poste-italiane-3","poste-italiane-4","poste-italiane-delivery-europe","poste-italiane-own","poste-italiane-s10","poste-italiane-sda-domestic","poste-italiane-promopacco","poste-italiane-d","poste-italiane-registered"],
   "brt": ["brt-1","brt-shipment-number","brt-parcel-id","brt-customer-parcel-id"],
   "ecoscooting": ["ecoscooting-postcode-label","ecoscooting-postcode","ecoscooting-1","ecoscooting-2","ecoscooting-without-cn","ecoscooting-shein-package"],
   "tipsa": ["tipsa-1","tipsa-2"],

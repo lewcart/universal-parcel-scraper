@@ -91,7 +91,7 @@
         "assessment": "candidate"
       },
       "expect": {
-        "carrier": "intl-post",
+        "carrier": "poste-italiane",
         "confidence": "high"
       },
       "note": "The sender on the Cuba Post review page says this EMS item has shown a customs exit event in Cuba since January."

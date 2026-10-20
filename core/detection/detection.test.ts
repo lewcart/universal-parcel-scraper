@@ -137,6 +137,25 @@ describe('Croatian S10 items', () => {
   });
 });
 
+describe('Italian S10 items', () => {
+  it.each(['CE123456785IT', 'CP123456785IT', 'EE123456785IT', 'LC123456785IT', 'RN123456785IT'])('names Poste Italiane, which tracks %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'poste-italiane', confidence: 'high', candidates: ['poste-italiane'] });
+    expect(recognitionAskedCarriers(number)).toEqual([]);
+  });
+
+  it('leaves its other items to international mail and asks it about them', () => {
+    for (const number of ['KK123456785IT', 'UB123456785IT']) {
+      expect(detectCarrierMatch(number), number).toMatchObject({ carrier: 'intl-post', confidence: 'high', candidates: ['intl-post'] });
+      expect(recognitionAskedCarriers(number)[0], number).toBe('poste-italiane');
+    }
+  });
+
+  it('names nobody for a failed check digit or another issuer', () => {
+    expect(detectCarrierMatch('CP123456780IT').candidates).not.toContain('poste-italiane');
+    expect(detectCarrierMatch('CP123456785IL').candidates).not.toContain('poste-italiane');
+  });
+});
+
 describe('Latvian S10 items', () => {
   it.each(['CC123456785LV', 'EE123456785LV', 'LY123456785LV', 'RR123456785LV'])('names Latvijas Pasts, which tracks %s', (number) => {
     expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'latvijas-pasts', confidence: 'high', candidates: ['latvijas-pasts'] });

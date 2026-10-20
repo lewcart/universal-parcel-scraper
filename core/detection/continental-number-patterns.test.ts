@@ -128,17 +128,18 @@ describe('continental shipment candidates', () => {
     expect(isPosteItalianeTrackingNumber('ABCDEF0000001')).toBe(false);
   });
 
-  it('assigns Poste Delivery Europe numbers to Poste Italiane and leaves other S10 numbers alone', () => {
-    expect(isPosteItalianeTrackingNumber('CW123456785IT')).toBe(true);
+  it('lets Poste Italiane take the S10 numbers it issues and leaves foreign ones alone', () => {
+    for (const number of ['CW123456785IT', 'CP123456785IT', 'KK123456785IT']) {
+      expect(isPosteItalianeTrackingNumber(number)).toBe(true);
+    }
     expect(detectCarrierMatch('CW123456785IT')).toMatchObject({ carrier: 'poste-italiane', confidence: 'high' });
-    // A failed check digit is no Poste number, and other Italian or foreign S10 numbers stay postal.
+    // A failed check digit is no Poste number, and foreign S10 numbers stay postal.
     expect(isPosteItalianeTrackingNumber('CW123456780IT')).toBe(false);
     expect(detectCarrierMatch('CW123456780IT').candidates).not.toContain('poste-italiane');
-    for (const number of ['CP123456785IT', 'CW123456785FR']) {
+    for (const number of ['CW123456785FR', 'CP123456785PL']) {
       expect(isPosteItalianeTrackingNumber(number)).toBe(false);
       expect(detectCarrierMatch(number).carrier).not.toBe('poste-italiane');
     }
-    expect(detectCarrierMatch('CP123456785IT')).toMatchObject({ carrier: 'intl-post', confidence: 'high' });
   });
 
   it('retains the historical PostNL id for its complete 3S barcode', () => {

@@ -405,6 +405,15 @@
     "reason": "The Slovenian issuer suffix suggests Pošta Slovenije but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
   },
   {
+    "shape": "AA9{9}IT with a valid S10 check digit",
+    "carriers": [
+      "chronopost",
+      "intl-post",
+      "poste-italiane"
+    ],
+    "reason": "On Italian items not starting C, E, L or R, the issuer suffix suggests Poste Italiane but does not establish the delivering carrier; the postal fallback remains selected until recognition confirms a direct carrier."
+  },
+  {
     "shape": "AA9{9}HR with a valid S10 check digit",
     "carriers": [
       "chronopost",
@@ -752,7 +761,7 @@
       "chronopost",
       "poste-italiane"
     ],
-    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps Poste Italiane's CW…IT numbers; the country-specific high-confidence rule decides."
+    "reason": "Chronopost's low-confidence rule accepts any S10 shape, so it overlaps the parcel, EMS, registered and tracked-letter items Poste Italiane issues (C, E, L or R first, IT last); the country-specific high-confidence rule decides."
   },
   {
     "shape": "AA9{9}AA",

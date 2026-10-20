@@ -4,9 +4,13 @@ The Italian postal operator. Tracked through the keyless DoveQuando REST endpoin
 `poste.it/cerca` tracker. Dutch handoffs of Poste Italiane consignments stay with
 [PostNL](../spring-gds/README.md). SDA parcel shapes are recognition candidates;
 matching native Poste status or progress confirms them. Other postal shapes use the generic postal fallback.
-Of the S10 numbers, the adapter takes only Poste Delivery Europe's (`CW…IT` with a valid check
-digit), which Poste issues and its tracker follows from acceptance. It refuses the others, so
-mail from abroad to Italy is not handed to Poste Italiane.
+Of the S10 numbers, the adapter takes the ones Poste issues (`IT` last and a valid check digit)
+and refuses the others: mail from abroad is relabelled with a code of Poste's own, so the
+tracker does not know the sender's number. Detection names Poste Italiane for the parcels, EMS,
+registered and tracked-letter items it issues (`C`, `E`, `L` or `R` first). Its tracker follows
+them abroad, to delivery or back. Its other `IT` codes stay with the generic postal carrier, and
+the low-confidence `poste-italiane-s10` rule makes recognition ask Poste Italiane first. `UB`
+codes, for one, label goods for customs and are not tracked.
 
 ## How it works
 

@@ -64875,6 +64875,14 @@
     ]
   },
   {
+    "input": "CB055492622IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "CB212298281IE",
     "carrier": "an-post",
     "confidence": "high",
@@ -65283,6 +65291,14 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "CE009577060IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
     ]
   },
   {
@@ -69641,13 +69657,10 @@
   },
   {
     "input": "EE426921890IT",
-    "carrier": "intl-post",
+    "carrier": "poste-italiane",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "poste-italiane"
     ]
   },
   {
@@ -76027,6 +76040,18 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "KK123456785IT",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "poste-italiane",
+      "chronopost"
+    ]
   },
   {
     "input": "KLD1CS28943670",
@@ -84086,6 +84111,14 @@
     "confidence": "high",
     "candidates": [
       "india-post"
+    ]
+  },
+  {
+    "input": "RN700062106IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
     ]
   },
   {

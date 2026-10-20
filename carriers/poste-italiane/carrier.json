@@ -109,6 +109,19 @@
       "checksum": "s10"
     },
     {
+      "id": "poste-italiane-own",
+      "pattern": "^[CELR][A-Z]\\d{9}IT$",
+      "confidence": "high",
+      "checksum": "s10"
+    },
+    {
+      "id": "poste-italiane-s10",
+      "pattern": "^[A-Z]{2}\\d{9}IT$",
+      "confidence": "low",
+      "preferred": true,
+      "checksum": "s10"
+    },
+    {
       "id": "poste-italiane-sda-domestic",
       "pattern": "^(?:\\d{6}[A-Z]\\d{6}|[139]C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
       "confidence": "low"

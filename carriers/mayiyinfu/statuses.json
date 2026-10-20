@@ -27,6 +27,8 @@
     {"wording": "The instruction data for this shipment have been provided by the sender to DHL electronically", "language": "en", "stage": "registered", "confirmedBy": "live", "note": "Relayed from DHL: the label's data, on the day the order was created."},
     {"wording": "The international shipment has been processed in the parcel center of origin", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Relayed from DHL in Germany after the hand-off."},
     {"wording": "The international shipment has been processed in the export parcel center", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Relayed from DHL in Germany."},
-    {"wording": "The shipment has arrived in the destination country/destination area.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Relayed from DHL, followed by the destination operator's tracking link in brackets; the map reads the wording without the link."}
+    {"wording": "The shipment has arrived in the destination country/destination area.", "language": "en", "stage": "in_transit", "confirmedBy": "live", "note": "Relayed from DHL, followed by the destination operator's tracking link in brackets; the map reads the wording without the link."},
+    {"wording": "The shipment has been loaded onto the delivery vehicle", "language": "en", "stage": "out_for_delivery", "confirmedBy": "live", "firstSeen": "2026-10-20", "note": "The last-mile carrier's delivery run, in Mayi Yinfu's English."},
+    {"wording": "The shipment has been successfully delivered", "language": "en", "stage": "delivered", "confirmedBy": "live", "firstSeen": "2026-10-20"}
   ]
 }

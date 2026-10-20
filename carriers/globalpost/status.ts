@@ -15,6 +15,7 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   // GlobalPost's own consolidation facility; a partner's inbound scans can come before it.
   ['Arrived at GlobalPost Facility', 'accepted'],
   ['Departed GlobalPost Facility', 'in_transit'],
+  ['Departed from Origin Country', 'in_transit'],
   ['In Transit', 'in_transit'],
   ['In-Transit', 'in_transit'],
   ['Arrived in Destination Country', 'in_transit'],
@@ -23,12 +24,17 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map(([
   ['Out for Delivery', 'out_for_delivery'],
   ['Attempted Delivery', 'failed_attempt'],
   ['Exception, No Action Required', 'exception'],
+  ['Delayed, No Action Required', 'exception'],
   ['Delivered', 'delivered'],
 ] as const).map(([wording, stage]) => [normalizeStatusWording(wording), stage]));
 
-/** The stage the map gives a wording, if it knows it. */
+/** The tracker's reassurance that can follow a scan's wording in the same cell. */
+const NOTE = /\s*tracking updates may take time\b.*$/;
+
+/** The stage the map gives a wording, if it knows it, with or without the tracker's note after it. */
 export function globalpostMappedStage(wording: string): Stage | undefined {
-  return WORDINGS.get(normalizeStatusWording(wording));
+  const key = normalizeStatusWording(wording);
+  return WORDINGS.get(key) ?? WORDINGS.get(key.replace(NOTE, ''));
 }
 
 /** A scan's stage from its wording, else the shared wording rules, else nothing, which keeps it visible for review. */

@@ -2,6 +2,7 @@
   "carrier": "dhlink",
   "entries": [
     {"code": "WH001", "wording": "Package received & scanned at warehouse", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Node Dispatched: DHLink's warehouse received the parcel."},
+    {"wording": "Package received and scanned at warehouse", "stage": "accepted", "language": "en", "confirmedBy": "live", "firstSeen": "2026-10-20", "note": "The same receipt spelled out, on a row without a node code."},
     {"code": "WH011", "wording": "Package departed from the warehouse", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Node Outbound."},
     {"code": "EUBJ007", "wording": "Parcel handed over to carrier,waiting for transportation", "stage": "accepted", "language": "en", "confirmedBy": "live", "note": "Node Dispatched on the ePacket line: the collection point received the parcel."},
     {"code": "EUBJ009", "wording": "Shipment Departed From Original Country at …", "stage": "in_transit", "language": "en", "confirmedBy": "live", "note": "Node Origin leaving; the wording repeats the row's clock."},

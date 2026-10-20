@@ -199,8 +199,10 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^order information has been sent to [a-z][a-z .-]{1,30}$/i.test(value)) return 'registered';
   // A shipment manifested, with a courier on the way to collect it from the sender: not in hand yet.
   if (/^manifested(?: - out for pick-?up)?[.!]?$/i.test(value)) return 'registered';
-  // GZYL's destination processing centre taking the cleared parcel and sending it on, in GZYL's own spelling.
-  if (/^internationall?i?y package received at processing cent(?:er|re)[.!]?$|^leave the e?mail processing cent(?:er|re)[.!]?$/i.test(value)) return 'in_transit';
+  // GZYL's destination processing centre taking the cleared parcel and sending it on, in GZYL's own spelling,
+  // and a line's scan leaving the named city's centre after import clearance.
+  if (/^internationall?i?y package received at processing cent(?:er|re)[.!]?$|^leave the (?:e?mail|[a-z][a-z .'-]{1,30}?) processing cent(?:er|re)[.!]?$/i.test(value)
+    && !/^leave the return\b/i.test(value)) return 'in_transit';
   // Mayi Yinfu's parcel booked out of its operations centre, and the flight booked for it, as its own map reads them.
   if (/^已出库(?:[,，]货物离开操作中心)?$|^已排航班$/u.test(value)) return 'in_transit';
   // Hermes Germany's hub steps in an aggregator's English, and the aggregator's label for an inbound one.

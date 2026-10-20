@@ -43,6 +43,7 @@ const WORDINGS: ReadonlyMap<string, Stage> = new Map([
   ['arrive at the collection warehouse', 'accepted'],
   ['the collection warehouse has completed sorting', 'accepted'],
   ['package received & scanned at warehouse', 'accepted'],
+  ['package received and scanned at warehouse', 'accepted'],
   ['parcel handed over to carrier,waiting for transportation', 'accepted'],
   // China Post's receipt (中国邮政 已收取邮件).
   ['package received', 'accepted'],

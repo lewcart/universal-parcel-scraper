@@ -43,7 +43,9 @@ Tracked through the page its tracker renders for one number.
 - GlobalPost relays its partners' scans in its own wording, without codes; the wordings are
   mapped and any other goes to the shared wording rules. Arrival at a GlobalPost facility is its
   acceptance, though USPS scans on the way there can come first. Cleared customs puts the
-  parcel back in transit. A registration listed after the parcel moved is no step back.
+  parcel back in transit. A registration listed after the parcel moved is no step back. A
+  scan's wording can carry the tracker's note that updates may take time; the map reads the
+  wording before it, and the description keeps both.
 - Places are cut at their first word holding a digit, where the page puts the shipper's ZIP
   code or a facility's cut-off one. "Not Available" is no place.
 - The final-mile partner is named only when the catalog knows its exact name and its link, if

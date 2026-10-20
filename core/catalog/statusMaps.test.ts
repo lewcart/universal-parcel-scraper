@@ -202,6 +202,14 @@ describe('status map answers', () => {
     expect(answer('imile', 'NEW_UNSEEN_CODE', 'Synthetic scan')).toEqual(unknown);
     // A numeric code is iMile's own, whatever Cainiao's map would say of its wording.
     expect(answer('imile', '1003', 'User not at home')).toEqual(mapped('failed_attempt'));
+    expect(answer('imile', '1003', 'Traffic, Strike, Bad weather')).toEqual(mapped('failed_attempt'));
+    expect(answer('dhlink', null, 'Package received and scanned at warehouse')).toEqual(mapped('accepted'));
+    expect(answer('globalpost', null, 'Departed from Origin Country')).toEqual(mapped('in_transit'));
+    expect(answer('globalpost', null, 'Delayed, No Action Required')).toEqual(mapped('exception'));
+    expect(answer('globalpost', null, 'Arrived in Destination Country Tracking updates may take time— rest assured, your package is still on its way.')).toEqual(mapped('in_transit'));
+    expect(answer('globalpost', null, 'Arrived in Destination Country, Example note')).toEqual(unknown);
+    expect(answer('mayiyinfu', null, 'The shipment has been loaded onto the delivery vehicle')).toEqual(mapped('out_for_delivery'));
+    expect(answer('mayiyinfu', null, 'The shipment has been successfully delivered')).toEqual(mapped('delivered'));
     expect(answer('imile', '9999', 'Departed from departure country/region')).toEqual(unknown);
   });
 
@@ -586,6 +594,7 @@ describe("universal providers' answers", () => {
       ['Delivery branch. Received at Distribution Branch', 'in_transit'], ['Receiving destination mail. Received by Distributor', 'in_transit'],
       ['Container reception', 'in_transit'],
       ['Internationaliy Package received at processing center', 'in_transit'], ['Leave the email processing center', 'in_transit'],
+      ['Leave the Example City processing center', 'in_transit'],
       ['邮件到达处理中心【示例】', 'in_transit'], ['快件离开处理中心【示例】', 'in_transit'], ['航空公司接收【示例】', 'in_transit'],
       ['已交承运商运输【示例】', 'in_transit'], ['邮件已完成分拣，准备发出【示例】', 'in_transit'], ['出口海关/放行【示例】', 'in_transit'],
       ['启运【示例】', 'in_transit'], ['干线中转', 'in_transit'],
@@ -664,7 +673,7 @@ describe("universal providers' answers", () => {
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', '目的港已提货待清关', 'Received by our network partner in Example', 'Checked in at origin hub of Example', 'Parcel shipped to Example', 'The shipment was left at a drop-off location for the courier', 'Order information has been sent',
       'Received.', 'Received. Your order has been received by the store', 'Package finished at the store',
-      'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Dirección entrega incompleta y teléfono', 'Cause of problem',
+      'Package received at processing center', '未出库', '已出库待取件', '未排航班', 'Pendiente de recoger en Example', 'Dirección entrega incompleta y teléfono', 'Leave the return processing center', 'Cause of problem',
       'Rescheduled delivery', 'Parcel handed to the recipient', 'Parcel handed over to the recipient', 'Handed over to your neighbour', 'Pickup document attached', 'Pickup completed', 'Pickup scheduled',
       'Order registered by the recipient', 'We will come back with details about the delivery', 'The package is in the local warehouse for collection',
       'Courier collection complete', 'Collection complete from sender',

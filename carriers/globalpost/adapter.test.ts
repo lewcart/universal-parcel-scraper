@@ -442,7 +442,7 @@ describe('GlobalPost numbers', () => {
 
 describe('GlobalPost status vocabulary', () => {
   it('records every wording the map knows with the stage it gives', () => {
-    expect(statuses.entries).toHaveLength(15);
+    expect(statuses.entries).toHaveLength(17);
     for (const entry of statuses.entries) {
       expect(statusMap.stage(null, entry.wording.toLowerCase()), entry.wording).toBe(entry.stage);
       expect(globalpostStage(entry.wording), entry.wording).toEqual({ stage: entry.stage, source: 'carrier_map' });

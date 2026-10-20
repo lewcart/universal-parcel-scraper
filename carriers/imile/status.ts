@@ -59,6 +59,7 @@ const PHRASES: ReadonlyMap<string, Stage | null> = new Map<string, Stage | null>
   ['switch off', 'failed_attempt'],
   ['customer wants to change location', 'failed_attempt'],
   ['route not completed', 'failed_attempt'],
+  ['traffic, strike, bad weather', 'failed_attempt'],
   ['user not at home', 'failed_attempt'],
   ['wrong address', 'failed_attempt'],
   ['<bad address>', 'failed_attempt'],

@@ -5,11 +5,11 @@ import { detectCarrierMatch } from '../../core/detection/index.js';
 import { IndeterminateError } from '../../core/errors/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
-import { parseHualeiPage } from '../gzyl/hualei.js';
+import { parseHualeiPage, parseHualeiTrack } from '../gzyl/hualei.js';
 import { GZYL } from '../gzyl/parser.js';
 import { THHY } from '../thhy/parser.js';
 import { adapter, ByhdTracker } from './adapter.js';
-import { BYHD_ORIGIN, parseByhdPage } from './parser.js';
+import { BYHD, BYHD_ORIGIN, parseByhdPage } from './parser.js';
 import { statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
@@ -82,6 +82,18 @@ describe('BYHD tracking adapter', () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(fixture('no-track'))).mockResolvedValueOnce(html(page('page-unknown')));
     await expect(adapter(environment(fetcher)).track({ number: UNKNOWN })).rejects.toMatchObject({ kind: 'not_found' });
     expect(() => parseByhdPage(page('page-unknown'), 'BYHD990000008', READ_AT)).toThrow(IndeterminateError);
+  });
+
+  it('stages its receiving point and operation center scans by their wording, not their kind code', () => {
+    const row = (track_date: string, track_kind: string, track_content: string) => ({ track_date, track_kind, track_content, track_location: '' });
+    const result = parseHualeiTrack([{ ack: 'true', data: [{ business_seqinvoicecode: NUMBER, consigneeCountry: 'CH', trackDetails: [
+      row('2026-03-05 18:00:00', 'SHIPMENT', 'Goods leaving the operation center'),
+      row('2026-03-05 09:00:00', 'ARRIVAL', '到达收货点'),
+    ] }] }], NUMBER, BYHD, READ_AT);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit', current_stage_source: 'carrier_map' });
+    expect(result!.events!.map((event) => [event.provider_code, event.stage, event.stage_source])).toEqual([
+      ['SHIPMENT', 'in_transit', 'carrier_map'], ['ARRIVAL', 'accepted', 'carrier_map']]);
+    expect(statusMap.stage('ARRIVAL', 'synthetic arrival')).toBeUndefined();
   });
 
   it('maps every wording it lists by wording alone, and the app reads the map', () => {

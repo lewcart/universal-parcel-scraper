@@ -129,6 +129,10 @@ describe('status map answers', () => {
     expect(answer('js-express', null, 'Domestic allocation has begun')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Under domestic allocation')).toEqual(mapped('in_transit'));
     expect(answer('js-express', null, 'Inbound to customs temporary warehouse')).toEqual(mapped('customs'));
+    // BYHD's kind codes group wordings; the wording decides.
+    expect(answer('byhd', 'ARRIVAL', '到达收货点')).toEqual(mapped('accepted'));
+    expect(answer('byhd', 'SHIPMENT', 'Goods leaving the operation center')).toEqual(mapped('in_transit'));
+    expect(answer('byhd', 'ARRIVAL', 'Synthetic arrival')).toEqual(unknown);
     // A courier's record of the parcel's data moves nothing.
     expect(answer('js-express', null, 'Your package is being prepared by the sender and will be handed over to us soon')).toEqual(gap);
   });

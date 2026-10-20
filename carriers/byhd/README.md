@@ -31,8 +31,9 @@ form post. No account, key, cookie, CAPTCHA or browser is needed, and no portal 
 
 ## Limitations
 
-A reference stored without its dashes is not found. Only the platform's own row has been seen at
-BYHD, so its scan wordings fall back to the shared wording rules.
+A reference stored without its dashes is not found. BYHD's scans are mapped by their wording, in
+English or Chinese; a row's kind code, such as `ARRIVAL`, groups several wordings and decides
+nothing. Wording the map does not list falls back to the shared wording rules.
 
 ## Numbers
 

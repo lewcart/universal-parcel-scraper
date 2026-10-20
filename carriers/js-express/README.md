@@ -2,32 +2,41 @@
 
 JS Express (急速国际), run by 急创速供应链管理（苏州）有限公司, ships parcels abroad from China
 for online shops, through dedicated lines, express and postal services, and a local carrier
-delivers them. Tracked through the form on its home page.
+delivers them. Tracked through the lookup its English tracking page makes.
 
 ## How it works
 
-1. `direct`: one `POST https://www.js-exp.com/index.php?page=19` with the form body
-   `card_num={number}`, as the tracking form on js-exp.com's home page sends it. It needs no
-   cookie, token, captcha or browser. The page comes back rendered on the server, with the
-   number in the form and the scans below it.
+1. `direct`: one `POST https://www.js-exp.com/EN/index.php?c=trace` with the form body
+   `card_num={number}`, as the script of the English tracking page `EN/index.php?page=19` sends
+   it, with that page as the referrer. It needs no cookie, token, captcha or browser. The reply
+   is JSON, served as HTML: the waybill, the country it goes to, the destination courier's
+   number once it has one, and the scans newest first.
 2. `retry`: a lookup that fails to reach the tracker, or hangs, is sent once more within the
    budget. The first try gets half of the budget.
 
-- An unknown number gets "未获取到任何数据,请提供有效单号!" in place of the scans, which is not
-  found. "暂无轨迹数据", the page script's wording for a known waybill without scans, has no
-  history. An empty answer is inconclusive. A 403, a Cloudflare check or a captcha prompt in
-  place of the answer is a challenge. A 404 or a redirect is a moved route.
-- The page must echo the whole requested number. The tracker matches whole numbers only.
+- An unknown number gets `code` 1 and "未获取到任何数据,请提供有效单号!", which is not found. A
+  waybill without scans, which the page's script shows as "暂无轨迹数据", has no history. An
+  empty reply is inconclusive. A 403, a Cloudflare check, a captcha prompt or the lookup's
+  refusal alone in place of the answer is a challenge. A 404 or a redirect is a moved route.
+- The reply must name the whole requested number as `jsWaybillNo`. The tracker matches whole
+  numbers only.
 - Recognition makes the same request.
 
 ## Notes
 
-- The tracking page's own query button posts to `index.php?c=test` and asks for an image
-  captcha first, then lets the browser skip it for four hours. The home page's form reaches the
-  same scans without it, so the adapter uses the form.
-- A row is a clock, a place in `【…】` and a wording. Clocks are wall clocks to the second, with
+- The Chinese tracking page's query button posts to `index.php?c=test` and asks for an image
+  captcha first. The home page's form renders the same scans without it, but not the courier's
+  number or the country. The English page's lookup gives both without a captcha, so the adapter
+  uses it.
+- Without the tracking page as its referrer, the lookup prints the refusal "非法请求" and then
+  answers anyway. The adapter sends the referrer and drops a refusal printed before an answer.
+- `trackNo` is the destination courier's number and becomes the delivery tracking number; a USPS
+  routing barcode gives its package identifier. The reply does not name the courier. It is the
+  carrier the catalog settles the number for at high confidence, when that carrier works in the
+  country the parcel goes to, and the tracker then asks that carrier's adapter.
+- A row is a clock, a place and a wording. Clocks are wall clocks to the second, with
   no zone, and one history mixes China's with the airports' and the destination courier's, so
-  the page's order stands.
+  the reply's order stands.
 - A row at a place in mainland China, named for the country, a region such as South China, a
   province or a city, is on Beijing time. A flight's departure filed there keeps its wall clock:
   one has come hours after its flight could have left, given the landing that followed.
@@ -37,7 +46,8 @@ delivers them. Tracked through the form on its home page.
   inbound scan only when the one is read on UTC and the other on Beijing time, and its
   deliveries then come before the 9 pm its round promises.
 - Rows at an airport's code or without a place keep `local_time`, as do other couriers' rows:
-  iMile's name no country. The newest row's instant, when it has one, is the last update, and a
+  iMile's name no country. Each row also carries an offset, which the adapter does not read:
+  Straightship's rows carry China's, and Amsterdam's carry its winter offset in summer. The newest row's instant, when it has one, is the last update, and a
   dated delivery's is the delivery time.
 - JS Express's own rows and its partners' share the history in their partners' words. A
   destination courier's wording repeats the place with its province, as "Delivered (Sample Town,
@@ -48,8 +58,8 @@ delivers them. Tracked through the form on its home page.
 
 ## Limitations
 
-- The page has no summary, ETA, weight, service, destination or the delivering courier's own
-  number.
+- The reply has no summary, weight or service, and does not name the destination courier.
+- The delivery estimate, the delivery photos and the shop's order number are not read.
 
 ## Numbers
 

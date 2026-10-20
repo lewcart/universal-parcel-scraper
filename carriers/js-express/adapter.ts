@@ -5,15 +5,14 @@ import { runSteps } from '../../core/runner/index.js';
 import { firstAttemptMs, networkRetryStep } from '../../core/runner/networkRetry.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
 import { decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
-import { JS_EXPRESS_MAX_BYTES, normalizeJsExpressNumber, parseJsExpress, PROVIDER } from './parser.js';
+import { JS_EXPRESS_MAX_BYTES, jsExpressReply, normalizeJsExpressNumber, parseJsExpress, PROVIDER } from './parser.js';
 
-/**
- * The tracking page. The tracking form on js-exp.com's home page posts the
- * number here as `card_num`, and the page comes back with the scans in it.
- */
-export const JS_EXPRESS_TRACKER = 'https://www.js-exp.com/index.php?page=19';
+/** The English tracking page, whose script posts the number to the lookup as `card_num`. */
+export const JS_EXPRESS_PAGE = 'https://www.js-exp.com/EN/index.php?page=19';
+/** The lookup that page makes. It answers JSON, with the destination courier's number. */
+export const JS_EXPRESS_TRACKER = 'https://www.js-exp.com/EN/index.php?c=trace';
 const REDIRECTS = [301, 302, 303, 307, 308];
-// A missing route is not a missing parcel: the page answers unknown numbers itself.
+// A missing route is not a missing parcel: the lookup answers unknown numbers itself.
 const GONE = [404, 410];
 
 export class JsExpressTracker {
@@ -23,15 +22,14 @@ export class JsExpressTracker {
     const number = normalizeJsExpressNumber(raw);
     const read = async (signal: AbortSignal, timeoutMs: number): Promise<CarrierResult> => {
       const { response, bytes } = await fetchBounded(JS_EXPRESS_TRACKER, { method: 'POST', signal, headers: {
-        Accept: 'text/html,application/xhtml+xml', 'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': userAgentOf(this.options.userAgent),
+        Accept: 'application/json, text/javascript, */*; q=0.01', 'Content-Type': 'application/x-www-form-urlencoded',
+        // The lookup refuses a request whose referrer is not the tracking page, and then answers anyway.
+        Referer: JS_EXPRESS_PAGE, 'X-Requested-With': 'XMLHttpRequest', 'User-Agent': userAgentOf(this.options.userAgent),
       }, body: new URLSearchParams({ card_num: number }).toString() }, { provider: PROVIDER, timeoutMs: Math.max(1, Math.floor(timeoutMs)),
         maxBytes: JS_EXPRESS_MAX_BYTES, redirect: 'manual', allowHttpStatuses: [...REDIRECTS, ...GONE], fetcher: this.options.fetcher });
       if (REDIRECTS.includes(response.status)) throw new IndeterminateError(PROVIDER, 'JS Express sent the lookup to another page');
       if (GONE.includes(response.status)) throw new TransportError(PROVIDER, 'The JS Express tracker is unavailable', { status: response.status });
-      const html = decodeText(bytes);
-      if (!html.trim()) throw new IndeterminateError(PROVIDER, 'JS Express returned an empty page');
-      return parseJsExpress(html, number);
+      return parseJsExpress(jsExpressReply(decodeText(bytes)), number);
     };
     // A request that fails to reach the tracker, or hangs, gets one more try:
     // the first gets half of the budget, so the retry fits in the rest.

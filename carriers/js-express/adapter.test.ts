@@ -1,30 +1,35 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
+import { deliveryHandoff } from '../../core/catalog/handoff.js';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { createTracker } from '../../facade/index.js';
-import { adapter, JS_EXPRESS_TRACKER, JsExpressTracker } from './adapter.js';
-import { jsExpressScan, normalizeJsExpressNumber, parseJsExpress } from './parser.js';
+import { adapter, JS_EXPRESS_PAGE, JS_EXPRESS_TRACKER, JsExpressTracker } from './adapter.js';
+import { jsExpressReply, jsExpressScan, normalizeJsExpressNumber, parseJsExpress } from './parser.js';
 import { jsExpressMappedStage, jsExpressStage, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 
 const DELIVERED = 'JSEZZ0000000001YQ';
 const IN_TRANSIT = 'JSEZZ0000000002YQ';
 const UNKNOWN = 'JSEZZ0000000003YQ';
-const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.html`, import.meta.url), 'utf8');
+const page = (name: string) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8');
+const parsed = (name: string) => JSON.parse(page(name)) as unknown;
+// The lookup answers JSON as HTML.
 const reply = (body: string, status = 200) => new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
 const carrier = (fetcher: typeof fetch) => adapter({ fetcher, recorder: NOOP_RECORDER, env: {}, trawl: null, browserExecutablePath: null });
-// One history row, as the page writes it.
-const row = (time: string, place: string, wording: string) =>
-  `<li><div><p class="time">${time}</p><p class="addr">【${place}】<span>${wording}</span></p></div></li>`;
-// The not-found page with its answer replaced, for the delivered fixture's number.
-const withList = (list: string) => page('not-found').replace(UNKNOWN, DELIVERED).replace('未获取到任何数据,请提供有效单号!', list);
+interface Row { date?: unknown; address?: unknown; status?: unknown; timeZone?: string }
+// One history row, as the lookup writes it.
+const row = (date: string, address: string, status: string): Row => ({ date, status, address, timeZone: '+08:00' });
+// A reply for the delivered fixture's number, with these rows and waybill fields.
+const waybill = (tracking: unknown, fields: Record<string, unknown> = {}) => ({ code: 0, message: 'Success',
+  data: [{ jsWaybillNo: DELIVERED, orderNo: 'SN000000000009', trackNo: '', country: 'Canada', pod: [], tracking, ...fields }] });
+const withList = (rows: Row[]) => waybill(rows);
 const CLOUDFLARE = '<!DOCTYPE html><html><head><title>Just a moment...</title></head><body><script>window._cf_chl_opt={};</script></body></html>';
 
 describe('JS Express tracking adapter', () => {
-  it('posts the whole number to the tracking page once, as the home page\'s form does, through the supplied transport', async () => {
+  it('posts the whole number to the lookup once, as the English tracking page does, through the supplied transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(reply(page('delivered')));
     const recorder = { ...NOOP_RECORDER, step: vi.fn(), lookup: vi.fn() };
     await expect(new JsExpressTracker({ fetcher, recorder, userAgent: 'SyntheticHost/1.0' }).fetch(' jsezz 0000000001 yq ', { budgetMs: 1000.5 }))
@@ -33,15 +38,17 @@ describe('JS Express tracking adapter', () => {
     const [url, init] = fetcher.mock.calls[0]!;
     expect(String(url)).toBe(JS_EXPRESS_TRACKER);
     expect(init).toMatchObject({ method: 'POST', redirect: 'manual', signal: expect.any(AbortSignal), body: `card_num=${DELIVERED}`,
-      headers: { Accept: 'text/html,application/xhtml+xml', 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'SyntheticHost/1.0' } });
+      headers: { Accept: 'application/json, text/javascript, */*; q=0.01', 'Content-Type': 'application/x-www-form-urlencoded',
+        Referer: JS_EXPRESS_PAGE, 'X-Requested-With': 'XMLHttpRequest', 'User-Agent': 'SyntheticHost/1.0' } });
     expect(recorder.step).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'js-express', step: 'direct', outcome: 'ok' }));
     expect(recorder.lookup).toHaveBeenCalledTimes(1);
   });
 
-  it('reads a parcel delivered abroad in the page\'s order, with the courier\'s place as the location', () => {
-    const result = parseJsExpress(page('delivered'), DELIVERED);
+  it('reads a parcel delivered abroad in the reply\'s order, with the courier\'s place as the location', () => {
+    const result = parseJsExpress(parsed('delivered'), DELIVERED);
     expect(result).toMatchObject({ status: 'delivered', current_stage: 'delivered', current_stage_source: 'carrier_map',
-      last_status_text: 'Delivered', last_update: '2026-03-12T20:41:05Z', delivered_at: '2026-03-12T20:41:05Z', expected_delivery: null });
+      last_status_text: 'Delivered', last_update: '2026-03-12T20:41:05Z', delivered_at: '2026-03-12T20:41:05Z', expected_delivery: null,
+      destination_country: 'CA', delivery_carrier: 'straightship', delivery_tracking_number: 'STRCA0000000000001' });
     expect(result).not.toHaveProperty('last_update_local');
     expect(result.events!.map(event => [event.time ?? event.local_time, event.location, event.description, event.stage])).toEqual([
       // Straightship's rows, on the UTC clock of its own page.
@@ -107,7 +114,7 @@ describe('JS Express tracking adapter', () => {
   });
 
   it('dates rows at places in China on Beijing time, and keeps flights, airports\' codes and other places on their wall clocks', () => {
-    const clocks = (...rows: string[]) => parseJsExpress(withList(rows.join('')), DELIVERED).events!.map(event => event.time ?? event.local_time);
+    const clocks = (...rows: Row[]) => parseJsExpress(withList(rows), DELIVERED).events!.map(event => event.time ?? event.local_time);
     expect(clocks(
       // The country, a region, a province and cities, each opening the label.
       row('2026-05-01 09:00:00', 'China', 'Released From Export Customs'),
@@ -135,7 +142,7 @@ describe('JS Express tracking adapter', () => {
   });
 
   it('dates Straightship\'s rows on UTC only in a history that names it, and keeps other couriers\' wall clocks', () => {
-    const clocks = (...rows: string[]) => parseJsExpress(withList(rows.join('')), DELIVERED).events!.map(event => [event.time ?? event.local_time, event.location]);
+    const clocks = (...rows: Row[]) => parseJsExpress(withList(rows), DELIVERED).events!.map(event => [event.time ?? event.local_time, event.location]);
     const attempt = 'An attempt was made to deliver your package-consignee closed (please e-mail SS@straightship.com to make arrangement)';
     expect(clocks(
       row('2026-05-03 21:10:00', 'Sample Town', 'Delivered (Sample Town, BC)'),
@@ -161,8 +168,8 @@ describe('JS Express tracking adapter', () => {
   });
 
   it('follows the newest row\'s instant with the last update, and a dated delivery\'s with the delivery time', () => {
-    const read = (...rows: string[]) => {
-      const { current_stage, last_update, last_update_local, delivered_at } = parseJsExpress(withList(rows.join('')), DELIVERED);
+    const read = (...rows: Row[]) => {
+      const { current_stage, last_update, last_update_local, delivered_at } = parseJsExpress(withList(rows), DELIVERED);
       return { current_stage, last_update, last_update_local, delivered_at };
     };
     const china = [row('2026-05-01 18:00:00', 'Sample Hub', 'Package information is created in the system'),
@@ -198,70 +205,110 @@ describe('JS Express tracking adapter', () => {
   });
 
   it('stages new wording through the shared rules and keeps the rest without a stage', () => {
-    const one = (wording: string) => parseJsExpress(withList(row('2026-05-01 09:00:00', 'Sample Town', wording)), DELIVERED);
+    const one = (wording: string) => parseJsExpress(withList([row('2026-05-01 09:00:00', 'Sample Town', wording)]), DELIVERED);
     expect(one('Out for delivery')).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery' });
     const unknown = one('Sample counter scan');
     expect(unknown).toMatchObject({ status: 'unknown', last_status_text: 'Sample counter scan', last_update_local: '2026-05-01T09:00:00' });
     expect(unknown.current_stage).toBeUndefined();
     expect(unknown.events).toEqual([{ local_time: '2026-05-01T09:00:00', location: 'Sample Town', description: 'Sample counter scan' }]);
     // A partner's record of the data is the newest row: the older scan sets the stage.
-    const recorded = parseJsExpress(withList(row('2026-05-01 10:00:00', '', 'SHIPMENT CREATED')
-      + row('2026-05-01 09:00:00', 'Sample Center', 'Item has been collected')), DELIVERED);
+    const recorded = parseJsExpress(withList([row('2026-05-01 10:00:00', '', 'SHIPMENT CREATED'),
+      row('2026-05-01 09:00:00', 'Sample Center', 'Item has been collected')]), DELIVERED);
     expect(recorded).toMatchObject({ status: 'in_transit', current_stage: 'accepted', last_status_text: 'SHIPMENT CREATED' });
   });
 
   it("stages a customs warehouse's inbound, and a courier's announcement of the parcel moves nothing", () => {
-    const parsed = parseJsExpress(withList(
-      row('2026-05-02 10:00:00', 'Sample Town', 'Your package is being prepared by the sender and will be handed over to us soon')
-      + row('2026-05-02 09:00:00', 'AMS', 'Inbound to customs temporary warehouse')), DELIVERED);
-    expect(parsed).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map' });
-    expect(parsed.events?.map((event) => [event.stage, event.stage_source])).toEqual([[undefined, undefined], ['customs', 'carrier_map']]);
+    const announced = parseJsExpress(withList([
+      row('2026-05-02 10:00:00', 'Sample Town', 'Your package is being prepared by the sender and will be handed over to us soon'),
+      row('2026-05-02 09:00:00', 'AMS', 'Inbound to customs temporary warehouse')]), DELIVERED);
+    expect(announced).toMatchObject({ status: 'in_transit', current_stage: 'customs', current_stage_source: 'carrier_map' });
+    expect(announced.events?.map((event) => [event.stage, event.stage_source])).toEqual([[undefined, undefined], ['customs', 'carrier_map']]);
   });
 
-  it('reads the page\'s "no data" answer as not found, and an empty answer as inconclusive', async () => {
-    expect(() => parseJsExpress(page('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
-    expect(() => parseJsExpress(withList('暂无轨迹数据'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
-    expect(() => parseJsExpress(withList(' '), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate' }));
-    expect(() => parseJsExpress(withList('验证码错误，请重新输入'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'challenge' }));
-    expect(() => parseJsExpress(withList('Sample service notice'), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  it('reads the lookup\'s "no data" answer as not found, a waybill without scans as no history, and an empty reply as inconclusive', async () => {
+    expect(() => parseJsExpress(parsed('not-found'), UNKNOWN)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+    expect(() => parseJsExpress(withList([]), DELIVERED)).toThrow(expect.objectContaining({ kind: 'indeterminate', name: 'NoHistoryError' }));
+    // The Chinese page's lookup answers a wrong captcha so; a refusal alone is a block too.
+    expect(() => parseJsExpress({ code: -1, message: '验证码错误，请重新输入' }, DELIVERED)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseJsExpress({ code: 1, message: '非法请求' }, DELIVERED)).toThrow(expect.objectContaining({ kind: 'challenge' }));
+    expect(() => parseJsExpress({ code: 1, data: null, message: 'Sample service notice' }, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const lookup = (body: string, number = UNKNOWN) => carrier(vi.fn<typeof fetch>().mockResolvedValue(reply(body))).track({ number });
     await expect(lookup(page('not-found'))).rejects.toMatchObject({ kind: 'not_found' });
     await expect(lookup('  ')).rejects.toMatchObject({ kind: 'indeterminate' });
     await expect(lookup(CLOUDFLARE)).rejects.toMatchObject({ kind: 'challenge' });
     await expect(lookup('<html><body>Sample maintenance page</body></html>')).rejects.toMatchObject({ kind: 'schema' });
-    // The page carries the captcha dialog and Cloudflare's script with every answer.
-    await expect(lookup(page('delivered'), DELIVERED)).resolves.toMatchObject({ status: 'delivered' });
+    await expect(lookup('{"code":1,"message":"非法请求"}')).rejects.toMatchObject({ kind: 'challenge' });
+    // Without the page as its referrer, the lookup prints its refusal and then answers.
+    await expect(lookup(`{"code":1,"message":"非法请求"}${page('delivered')}`, DELIVERED)).resolves.toMatchObject({ status: 'delivered' });
+    expect(() => jsExpressReply('{"code":1,"message":"非法请求"}{"code":0')).toThrow(expect.objectContaining({ kind: 'schema' }));
   });
 
-  it('binds the page to the whole requested number and rejects a changed page', () => {
-    expect(() => parseJsExpress(page('delivered'), 'JSEZZ0000000009YQ'))
+  it('binds the reply to the whole requested number and rejects a changed reply', () => {
+    expect(() => parseJsExpress(parsed('delivered'), 'JSEZZ0000000009YQ'))
       .toThrow(expect.objectContaining({ kind: 'schema', message: 'JS Express answered for another waybill' }));
-    expect(parseJsExpress(page('delivered').replace(`value="${DELIVERED}"`, `value="${DELIVERED.toLowerCase()}"`), DELIVERED).events).toHaveLength(21);
-    // A page that lost the number did not answer the form.
-    expect(() => parseJsExpress(page('delivered').replace(`value="${DELIVERED}"`, 'value=""'), DELIVERED))
-      .toThrow(expect.objectContaining({ kind: 'indeterminate' }));
+    expect(parseJsExpress(JSON.parse(page('delivered').replace(`"${DELIVERED}"`, `"${DELIVERED.toLowerCase()}"`)), DELIVERED).events).toHaveLength(21);
     const delivered = page('delivered');
+    const scans = (parsed('delivered') as { data: { tracking: Row[] }[] }).data[0]!.tracking;
+    const first = (change: Partial<Row>) => waybill([{ ...scans[0]!, ...change }, ...scans.slice(1)]);
     for (const changed of [
-      delivered.replace('id="card_num"', 'id="waybill"'),
-      delivered.replace('class="cxlistbox clearfix"', 'class="results"'),
-      delivered.replace('<form', `<input id="card_num" value="${DELIVERED}"><form`),
-      delivered.replace('2026-03-12 20:41:05', '12/03/2026 20:41'),
-      delivered.replace('2026-03-12 20:41:05', '2026-02-30 20:41:05'),
-      delivered.replace('2026-03-12 20:41:05', '2026-03-12 24:00:00'),
-      delivered.replace('<p class="addr">【Sample Town】<span>Delivered (Sample Town, ON)</span>', '<p class="addr">Sample Town <span>Delivered</span>'),
-      delivered.replace('<span>Delivered (Sample Town, ON)</span>', '<span> </span>'),
-      delivered.replace('<p class="time">2026-03-12 20:41:05</p>', ''),
+      [],
+      {},
+      { code: '0', data: [] },
+      { code: 0, data: {} },
+      { code: 0, data: [{ waybill: DELIVERED, tracking: scans }] },
+      waybill(scans, { jsWaybillNo: 'JSEZZ0000000009YQ' }),
+      { code: 0, data: [...waybill(scans).data, ...waybill(scans).data] },
+      waybill({}),
+      waybill(scans, { country: 1 }),
+      first({ date: '12/03/2026 20:41' }),
+      first({ date: '2026-02-30 20:41:05' }),
+      first({ date: '2026-03-12 24:00:00' }),
+      first({ date: undefined }),
+      first({ status: ' ' }),
+      first({ status: 1 }),
+      first({ address: ['Sample Town'] }),
+      JSON.parse(delivered.replace('"tracking": [', '"tracking": [1, ')),
     ]) {
-      expect(() => parseJsExpress(changed, DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+      expect(() => parseJsExpress(changed, DELIVERED), JSON.stringify(changed).slice(0, 80)).toThrow(expect.objectContaining({ kind: 'schema' }));
     }
-    const long = Array.from({ length: 501 }, () => row('2026-05-01 09:00:00', 'Sample Town', 'Item Flight landing')).join('');
+    const long = Array.from({ length: 501 }, () => row('2026-05-01 09:00:00', 'Sample Town', 'Item Flight landing'));
     expect(() => parseJsExpress(withList(long), DELIVERED)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('names the destination courier\'s number, and the courier when the catalog settles the number for one at home where the parcel goes', () => {
+    const scans = [row('2026-05-03 10:00:00', 'YYZ', 'Delivery to local courier')];
+    const read = (fields: Record<string, unknown>) => {
+      const { destination_country, destination_country_name, delivery_carrier, delivery_tracking_number } = parseJsExpress(waybill(scans, fields), DELIVERED);
+      return { destination_country, destination_country_name, delivery_carrier, delivery_tracking_number };
+    };
+    expect(read({ trackNo: 'STRCA0000000000001', country: 'Canada' }))
+      .toEqual({ destination_country: 'CA', delivery_carrier: 'straightship', delivery_tracking_number: 'STRCA0000000000001' });
+    expect(read({ trackNo: 'H1000000000000000001', country: 'Germany' }))
+      .toEqual({ destination_country: 'DE', delivery_carrier: 'hermes-de', delivery_tracking_number: 'H1000000000000000001' });
+    expect(read({ trackNo: '6A12345678905', country: 'France' }))
+      .toEqual({ destination_country: 'FR', delivery_carrier: 'la-poste', delivery_tracking_number: '6A12345678905' });
+    // A USPS routing barcode gives its package identifier.
+    expect(read({ trackNo: '420000009400100000000000000006', country: 'United States' }))
+      .toEqual({ destination_country: 'US', delivery_carrier: 'usps', delivery_tracking_number: '9400100000000000000006' });
+    // A courier that does not work where the parcel goes, a number the catalog does not settle, or no country names no courier.
+    expect(read({ trackNo: 'H1000000000000000001', country: 'France' }))
+      .toEqual({ destination_country: 'FR', delivery_tracking_number: 'H1000000000000000001' });
+    expect(read({ trackNo: '12345678901234', country: 'Germany' })).toEqual({ destination_country: 'DE', delivery_tracking_number: '12345678901234' });
+    expect(read({ trackNo: 'STRCA0000000000001', country: 'Sample Land' }))
+      .toEqual({ destination_country_name: 'Sample Land', delivery_tracking_number: 'STRCA0000000000001' });
+    // No number yet, the waybill's own, or one that is no tracking number.
+    for (const trackNo of ['', null, DELIVERED, 'SAMPLE NUMBER?']) expect(read({ trackNo, country: 'Canada' }), String(trackNo)).toEqual({ destination_country: 'CA' });
+    // The tracker hands the parcel to the courier's adapter.
+    expect(deliveryHandoff('js-express', DELIVERED, parseJsExpress(parsed('delivered'), DELIVERED)))
+      .toEqual({ carrier: 'straightship', number: 'STRCA0000000000001', basis: 'partner' });
+    expect(deliveryHandoff('js-express', IN_TRANSIT, parseJsExpress(parsed('in-transit'), IN_TRANSIT)))
+      .toEqual({ carrier: 'hermes-de', number: 'H1000000000000000001', basis: 'partner' });
   });
 
   it('keeps the newest hundred rows of a long history and says it cut the rest', () => {
     const rows = Array.from({ length: 120 }, (_, index) =>
       row(`2026-05-01 ${String(Math.floor((119 - index) / 60)).padStart(2, '0')}:${String((119 - index) % 60).padStart(2, '0')}:00`, 'Sample Hub', 'Item Flight landing'));
-    const result = parseJsExpress(withList(rows.join('')), DELIVERED);
+    const result = parseJsExpress(withList(rows), DELIVERED);
     expect(result.events).toHaveLength(100);
     expect(result).toMatchObject({ history_truncated: true, last_update_local: '2026-05-01T01:59:00' });
   });
@@ -311,16 +358,18 @@ describe('JS Express tracking adapter', () => {
       .rejects.toMatchObject({ kind: expect.stringMatching(/^(?:transport|budget)$/) });
     expect(slow.mock.calls.length).toBeLessThanOrEqual(2);
     expect(slow.mock.calls.every(([, init]) => init?.signal?.aborted)).toBe(true);
-    const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(1024 * 1024 + 1)));
+    const large = vi.fn<typeof fetch>().mockResolvedValue(new Response(new Uint8Array(256 * 1024 + 1)));
     await expect(carrier(large).track({ number: DELIVERED })).rejects.toThrow('unexpectedly large');
   });
 
-  it('routes a JS Express waybill, which detection settles, to the adapter', async () => {
+  it('routes a JS Express waybill, which detection settles, to the adapter, which names the destination courier', async () => {
     expect(detectCarrierMatch(DELIVERED)).toMatchObject({ carrier: 'js-express', confidence: 'high' });
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => reply(page('delivered')));
     const answer = await createTracker({ fetcher, providers: [], env: {} }).track({ number: DELIVERED }, { budgetMs: 3000 });
-    expect(answer).toMatchObject({ carrier: 'js-express', source: 'js-express', result: { current_stage: 'delivered' } });
-    expect(fetcher.mock.calls.every(([url]) => String(url) === JS_EXPRESS_TRACKER)).toBe(true);
+    expect(answer).toMatchObject({ carrier: 'js-express', source: 'js-express',
+      result: { current_stage: 'delivered', delivery_carrier: 'straightship', delivery_tracking_number: 'STRCA0000000000001' } });
+    expect(String(fetcher.mock.calls[0]![0])).toBe(JS_EXPRESS_TRACKER);
+    expect(fetcher.mock.calls.filter(([url]) => String(url) === JS_EXPRESS_TRACKER)).toHaveLength(1);
   });
 });
 

@@ -30,32 +30,42 @@
   },
   "capabilities": [
     "history",
-    "location"
+    "location",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "searchUrl": "https://www.js-exp.com/index.php?catid=19",
     "canaryUrl": "https://www.js-exp.com/",
     "shows": [
       "history",
-      "location"
+      "location",
+      "destination_country",
+      "delivery_tracking_number",
+      "eta",
+      "provider_code",
+      "offset_timestamps",
+      "proof_of_delivery"
     ],
     "scraped": [
       "history",
-      "location"
-    ],
-    "discarded": [],
-    "unavailable": [
-      "status",
-      "eta",
-      "weight",
-      "service_name",
-      "provider_code",
+      "location",
       "destination_country",
-      "delivery_partner",
-      "delivery_tracking_number",
-      "delivered_at",
+      "delivery_tracking_number"
+    ],
+    "discarded": [
+      "eta",
+      "provider_code",
       "offset_timestamps",
       "proof_of_delivery"
+    ],
+    "unavailable": [
+      "status",
+      "weight",
+      "service_name",
+      "delivery_partner",
+      "delivered_at"
     ]
   },
   "links": [],

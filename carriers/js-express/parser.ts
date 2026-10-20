@@ -1,28 +1,30 @@
-import { load } from 'cheerio';
 import { DateTime } from 'luxon';
-import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { CARRIER_DEFINITIONS } from '../../core/catalog/definitions.js';
+import { detectCarrierMatch, normalizeTrackingNumber } from '../../core/detection/index.js';
+import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detection/usps.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { canadaProvinceTimeZone, countryCode, isoTime, usStateTimeZone } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
+import { isRecord } from '../../core/types.js';
 import { jsExpressStage } from './status.js';
 
 export const PROVIDER = 'JS Express';
-// The page is under 100 kB with a long history.
-export const JS_EXPRESS_MAX_BYTES = 1024 * 1024;
+// A reply is a few kilobytes; five hundred rows stay under 256 kB.
+export const JS_EXPRESS_MAX_BYTES = 256 * 1024;
 
 // JSE, two letters, ten digits and YQ.
 const NUMBER = /^JSE[A-Z]{2}\d{10}YQ$/;
 const CLOCK = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/;
-// The page's answers in place of scans: an unknown number, and, in its script, a known one without scans.
+// The lookup's answer for a number it does not know.
 const NOT_FOUND = '未获取到任何数据';
-const NO_SCANS = '暂无轨迹数据';
-// The image captcha the page's own query button asks for, should the server ask it of the form.
+// The answer the lookup prints, before its own, to a request that does not come from the tracking page.
+const REFUSED = '非法请求';
+const REFUSAL = /^\s*\{\s*"code"\s*:\s*1\s*,\s*"message"\s*:\s*"非法请求"\s*\}(?=\s*\{)/;
+// The image captcha the Chinese page's lookup asks for, should this one ask it too.
 const CAPTCHA = /验证码/;
-// A firewall or bot check's page, which can come back with HTTP 200. The tracking page itself
-// loads Cloudflare's scripts and carries the captcha dialog's markup, so only a page without the
-// tracker's form is read for these.
+// A firewall or bot check's page, which can come back with HTTP 200.
 const BLOCKED = /_cf_chl_opt|cf-turnstile|<title>\s*(?:Just a moment|Attention Required|Access denied)|g-recaptcha|geetest/i;
 // A run of nine or more digits, with the separators phone numbers are written with; a date stays.
 const PHONE = /(?<![A-Z\d])(?!\d{4}-\d{2}-\d{2}(?!\d))\+?\d(?:[\s().-]{0,2}\d){8,}(?![A-Z\d])/gi;
@@ -122,53 +124,88 @@ function scanZone(description: string, location: string, label: string, straight
   return location && !FLIGHT.test(description) && inChina(location) ? CHINA_ZONE : null;
 }
 
-/**
- * The tracking page `index.php?page=19` answers the form with, for one
- * number: the form again with the number filled in, then the scans newest
- * first by wall clock, each a time, a place in 【…】 and a wording. An unknown
- * number gets "未获取到任何数据,请提供有效单号!" in place of the scans.
- */
-export function parseJsExpress(html: string, rawNumber: string): CarrierResult {
-  const number = normalizeJsExpressNumber(rawNumber);
-  const $ = load(html);
-  const field = $('input#card_num');
-  const list = $('div.cxbox ul.cxlistbox');
-  if (field.length !== 1 || list.length !== 1) {
-    if (BLOCKED.test(html.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'JS Express answered with a block page');
-    throw new SchemaError(PROVIDER, 'JS Express did not return its tracking page');
-  }
-  const echoed = clean(field.attr('value'), 64);
-  if (!echoed) throw new IndeterminateError(PROVIDER, 'JS Express returned its page without the number');
-  if (normalizeTrackingNumber(echoed) !== number) throw new SchemaError(PROVIDER, 'JS Express answered for another waybill');
+/** An optional text field; anything but a string is a changed reply. */
+function text(record: Record<string, unknown>, key: string, maxLength = 300): string {
+  const value = record[key];
+  if (value === null || value === undefined) return '';
+  if (typeof value !== 'string') throw new SchemaError(PROVIDER, `JS Express returned an invalid ${key}`);
+  return clean(value, maxLength);
+}
 
-  const rows = list.children('li');
-  if (!rows.length) {
-    const notice = clean(list.clone().children('p.bian2').remove().end().text(), 200);
-    if (notice.startsWith(NOT_FOUND)) throw new NotFoundError(PROVIDER);
-    if (notice.startsWith(NO_SCANS)) throw new NoHistoryError(PROVIDER);
-    if (CAPTCHA.test(notice)) throw new ChallengeError(PROVIDER, 'JS Express asked for its captcha');
-    if (!notice) throw new IndeterminateError(PROVIDER, 'JS Express returned its page without an answer');
-    throw new SchemaError(PROVIDER, 'JS Express returned an unexpected notice');
+/**
+ * The lookup's body as JSON. Without the tracking page as its referrer, the
+ * lookup prints a refusal before its answer, which is dropped; a block page
+ * in place of JSON is a challenge.
+ */
+export function jsExpressReply(body: string): unknown {
+  if (!body.trim()) throw new IndeterminateError(PROVIDER, 'JS Express returned an empty reply');
+  try {
+    return JSON.parse(body.replace(REFUSAL, ''));
+  } catch (cause) {
+    if (BLOCKED.test(body.slice(0, 64_000))) throw new ChallengeError(PROVIDER, 'JS Express answered with a block page', { cause });
+    throw new SchemaError(PROVIDER, 'JS Express returned a reply that is not JSON', { cause });
   }
+}
+
+/**
+ * The destination courier's number, `trackNo`, and that courier when the
+ * catalog settles the number for one carrier at high confidence and that
+ * carrier works in the country the parcel goes to. The reply names no
+ * courier. A USPS routing barcode gives its package identifier.
+ */
+function handoff(waybill: Record<string, unknown>, number: string, country: string | null): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+  const compact = normalizeTrackingNumber(text(waybill, 'trackNo', 64)).toUpperCase();
+  const reference = USPS_ROUTING_BARCODE.test(compact) ? uspsPackageIdentifier(compact) ?? '' : compact;
+  if (!/^[A-Z0-9]{4,40}$/.test(reference) || reference === number) return {};
+  const detected = detectCarrierMatch(reference);
+  const partner = detected.confidence === 'high' && detected.carrier !== 'js-express' && country
+    && CARRIER_DEFINITIONS[detected.carrier]?.countries?.includes(country) ? detected.carrier : undefined;
+  return { ...(partner ? { delivery_carrier: partner } : {}), delivery_tracking_number: reference };
+}
+
+/**
+ * The reply of the English tracking page's lookup `index.php?c=trace` for one
+ * number: `code` 0 and the waybill, with the country it goes to, the
+ * destination courier's number once it has one, and the scans newest first by
+ * wall clock, each a date, a place and a wording. An unknown number gets
+ * `code` 1 and "未获取到任何数据,请提供有效单号!". The rows' offsets, the
+ * shop's order number, the delivery photos and the estimate are not read.
+ */
+export function parseJsExpress(payload: unknown, rawNumber: string): CarrierResult {
+  const number = normalizeJsExpressNumber(rawNumber);
+  if (!isRecord(payload) || typeof payload.code !== 'number') throw new SchemaError(PROVIDER, 'JS Express returned an invalid reply');
+  if (payload.code !== 0) {
+    const message = text(payload, 'message', 200);
+    if (payload.code === 1 && message.startsWith(NOT_FOUND)) throw new NotFoundError(PROVIDER);
+    if (message === REFUSED) throw new ChallengeError(PROVIDER, 'JS Express refused the lookup');
+    if (CAPTCHA.test(message)) throw new ChallengeError(PROVIDER, 'JS Express asked for its captcha');
+    throw new SchemaError(PROVIDER, 'JS Express returned an unexpected answer');
+  }
+  if (!Array.isArray(payload.data)) throw new SchemaError(PROVIDER, 'JS Express returned an invalid reply');
+  const waybills = payload.data.map((waybill: unknown) => {
+    if (!isRecord(waybill) || typeof waybill.jsWaybillNo !== 'string') throw new SchemaError(PROVIDER, 'JS Express returned a waybill without its number');
+    return waybill;
+  }).filter((waybill) => normalizeTrackingNumber(clean(waybill.jsWaybillNo, 64)) === number);
+  if (waybills.length !== 1) throw new SchemaError(PROVIDER, 'JS Express answered for another waybill');
+  const waybill = waybills[0]!;
+  const rows = waybill.tracking;
+  if (!Array.isArray(rows)) throw new SchemaError(PROVIDER, 'JS Express returned a waybill with invalid scans');
+  // The page's script says "暂无轨迹数据" for a waybill without scans.
+  if (!rows.length) throw new NoHistoryError(PROVIDER);
   if (rows.length > MAX_ROWS) throw new SchemaError(PROVIDER, 'JS Express returned an oversized history');
 
   const seen = new Set<string>();
   const scans: { local: string; label: string; description: string; location: string }[] = [];
-  for (const node of rows.toArray()) {
-    const row = $(node);
-    const time = row.find('p.time');
-    const addr = row.find('p.addr');
-    const wording = addr.children('span');
-    if (time.length !== 1 || addr.length !== 1 || wording.length !== 1) throw new SchemaError(PROVIDER, 'JS Express history changed');
-    const label = /^【([^】]*)】$/.exec(clean(addr.clone().children('span').remove().end().text(), 200));
-    if (!label) throw new SchemaError(PROVIDER, 'JS Express history changed');
-    const local = wallClock(clean(time.text(), 32));
-    const { description, location } = jsExpressScan(wording.text(), label[1]!);
+  for (const row of rows) {
+    if (!isRecord(row) || typeof row.date !== 'string' || typeof row.status !== 'string') throw new SchemaError(PROVIDER, 'JS Express history changed');
+    const label = text(row, 'address', 200);
+    const local = wallClock(clean(row.date, 32));
+    const { description, location } = jsExpressScan(row.status, label);
     if (!description) throw new SchemaError(PROVIDER, 'JS Express returned a scan without wording');
     const key = JSON.stringify([local, location, description]);
     if (seen.has(key)) continue;
     seen.add(key);
-    scans.push({ local, label: clean(label[1], 120), description, location });
+    scans.push({ local, label: clean(label, 120), description, location });
   }
 
   const straightship = scans.some((scan) => STRAIGHTSHIP.test(scan.description));
@@ -184,12 +221,14 @@ export function parseJsExpress(html: string, rawNumber: string): CarrierResult {
     };
   });
 
-  // The page's order stands: a history mixes the clocks of several countries.
+  // The reply's order stands: a history mixes the clocks of several countries.
   // The newest row's instant, when it has one, is the last update, and a dated
   // delivery's is the delivery time.
   const newest = events[0]!;
   const current = events.find((event) => event.stage);
   const stage = current?.stage as Stage | undefined;
+  const destination = text(waybill, 'country', 60);
+  const country = countryCode(destination);
   return {
     status: stage ? languageStageStatus(stage) : 'unknown',
     ...(stage ? { current_stage: stage, current_stage_source: current!.stage_source } : {}),
@@ -198,6 +237,8 @@ export function parseJsExpress(html: string, rawNumber: string): CarrierResult {
     ...(newest.time ? {} : { last_update_local: newest.local_time! }),
     ...(stage === 'delivered' && current!.time ? { delivered_at: current!.time } : {}),
     expected_delivery: null,
+    ...(country ? { destination_country: country } : destination ? { destination_country_name: destination } : {}),
+    ...handoff(waybill, number, country),
     events: events.slice(0, MAX_EVENTS),
     ...(events.length > MAX_EVENTS ? { history_truncated: true } : {}),
   };

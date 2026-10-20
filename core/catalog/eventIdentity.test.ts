@@ -56,6 +56,12 @@ describe('same-instant identity policies', () => {
     });
   });
 
+  it('lets SF Express scans take over universal copies at the same instant', () => {
+    expect(sameInstantIdentityPolicy('sf-express')).toEqual({
+      sourceCarrierId: 'sf-express', storedSources: ['sf-express', 'unknown'], requireProviderCode: false,
+    });
+  });
+
   it.each(['dhl', 'gls', '', 'toString'])('does not opt in %s', (source) => {
     expect(sameInstantIdentityPolicy(source)).toBeUndefined();
     expect(sameInstantIdentityPolicy(source, { supportsScanMatching: true })).toBeUndefined();

@@ -54,6 +54,8 @@ Budget: 45 s by default (max 60 s), including a 15 s TRAWL transport allowance.
   countries only take a plausible time on that reading. A scan's instant comes from its own clock
   alone. The newest scan is the last update, and a delivered parcel's newest delivery scan the
   delivery time. Events sort by their clocks, like the portal. There is no ETA.
+- Universal providers copy SF's scans to the second on that clock, in their own wording. The app
+  lets SF's scan take over the copy stored at the same instant when each is the only one there.
 - A scan's `zoneCode` names its site, a three-digit mainland area code (`755` is Shenzhen) with
   letters for the site, `852` or `853` for Hong Kong or Macau, or abroad an airport's code with a
   number and a letter. Its clock does not follow the site, so the adapter does not read it.

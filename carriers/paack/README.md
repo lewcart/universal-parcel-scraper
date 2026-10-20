@@ -98,8 +98,9 @@ Spain and other carriers deliver them elsewhere, so that shape only suggests Paa
   when it ended before the newest scan. A failed attempt keeps it: it is the new attempt's.
 - Through Evri International the result is that tracker's: Evri's scans up to the hand-over,
   then Paack's, in Evri's English wording and stages, with locations and the parcel's weight.
-  Its clocks have no offset, so they are kept as `local_time` and the catalog marks Paack's
-  clocks local. It has no delivery window. Sender, destination and comments are never read.
+  Its clocks have no offset. Paack's, from "Arrived In Country" on, have the digits of
+  Paack's own UTC instants to the second, so they become instants. Evri's are kept as
+  `local_time`, and the catalog marks Paack's clocks local. It has no delivery window. Sender, destination and comments are never read.
 - Retailer, recipient name, e-mail, phone, address and per-event `variables` (which
   interpolate them) are never read; a test asserts it. The PaackGo Point's pickup code
   (`pudo_passcode`), QR link and collection deadline are not read either. The delivery

@@ -5,11 +5,13 @@
  * Paack gives these parcels a number of its own, `PK` and 18 digits, and
  * Evri International's tracker finds a parcel by its delivery partner's number
  * as well as by its Evri barcode. The reply is Evri's whole journey: its own
- * scans up to the hand-over, then Paack's, on offset-less wall clocks.
+ * scans up to the hand-over, then Paack's, on offset-less wall clocks. Paack's,
+ * from "Arrived In Country" on, have the digits of Paack's own UTC instants to
+ * the second, so they become instants. Evri's keep their wall clocks.
  */
 import type { TrackingContext } from '../../core/adapter/index.js';
 import { SchemaError } from '../../core/errors/index.js';
-import type { CarrierResult } from '../../core/result/index.js';
+import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { fetchEvriInternational } from '../evri/adapter.js';
 import { evriPartner, parseEvriInternational } from '../evri/parser.js';
 
@@ -27,7 +29,24 @@ export function parsePaackEvriReply(html: string, number: string): CarrierResult
   if (shipment.carrierTracking !== number || evriPartner(shipment.carrierLabel) !== 'paack') {
     throw new SchemaError('Paack', 'Evri International returned a parcel another carrier delivers');
   }
-  return shipment.result;
+  return paackLegInstants(shipment.result);
+}
+
+/** The newest-first reply with Paack's scans, from its arrival in the country on, read as UTC. */
+function paackLegInstants(result: CarrierResult): CarrierResult {
+  const events = result.events ?? [];
+  const arrival = events.findIndex((event) => event.description === 'Arrived In Country');
+  if (arrival < 0) return result;
+  const dated = events.map((event, index): CarrierEvent => {
+    if (index > arrival || typeof event.local_time !== 'string') return event;
+    const instant: CarrierEvent = { ...event, time: new Date(`${event.local_time}Z`).toISOString() };
+    delete instant.local_time;
+    return instant;
+  });
+  const newest = dated[0]!.time;
+  const instants: CarrierResult = { ...result, last_update: typeof newest === 'string' ? newest : null, events: dated };
+  if (instants.last_update) delete instants.last_update_local;
+  return instants;
 }
 
 export async function trackPaackThroughEvri(

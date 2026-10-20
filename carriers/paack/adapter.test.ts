@@ -784,12 +784,10 @@ describe('Paack numbers on parcels from Evri International', () => {
 
   it('binds the reply to the whole Carrier Tracking value and a Paack carrier label', () => {
     const result = parsePaackEvriReply(evriReply, EVRI_PARTNER_NUMBER);
-    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: null,
-      last_update_local: '2026-03-12T07:31:05', weight_kg: 0.8 });
+    expect(result).toMatchObject({ status: 'out_for_delivery', current_stage: 'out_for_delivery', weight_kg: 0.8 });
     expect(result.events?.map((event) => event.stage)).toEqual([
       'out_for_delivery', 'in_transit', 'in_transit', 'in_transit', 'in_transit', 'accepted', 'registered',
     ]);
-    expect(result.events?.every((event) => event.local_time && !event.time)).toBe(true);
     expect(result.events?.[4]?.location).toBe('Example Crossdock, NL');
     // The Evri barcode, sender, destination, comments and links stay out.
     expect(JSON.stringify(result)).not.toMatch(/PRIVATE|H000000000000001|mydeliveries|delivery_carrier/);
@@ -801,6 +799,24 @@ describe('Paack numbers on parcels from Evri International', () => {
     // A reply to the Evri barcode is not a reply to the Paack number.
     expect(() => parsePaackEvriReply(evriReply, EVRI_BARCODE)).toThrow(expect.objectContaining({ kind: 'schema' }));
     expect(() => parsePaackEvriReply(evriNotFound, EVRI_PARTNER_NUMBER)).toThrow(expect.objectContaining({ kind: 'not_found' }));
+  });
+
+  it('reads Paack\'s scans as UTC instants from its arrival in the country, and keeps Evri\'s wall clocks', () => {
+    // Live shape: Evri International writes Paack's scans with the digits of Paack's own UTC instants, to the second.
+    const result = parsePaackEvriReply(evriReply, EVRI_PARTNER_NUMBER);
+    expect(result.events?.map(({ time, local_time, description }) => [time ?? local_time, description])).toEqual([
+      ['2026-03-12T07:31:05.000Z', 'Out for delivery'], ['2026-03-12T05:02:44.000Z', 'In transit'],
+      ['2026-03-11T16:20:13.000Z', 'Arrived In Country'], ['2026-03-10T11:47:30', 'Customs cleared'],
+      ['2026-03-10T09:15:52', 'Cross Docked'], ['2026-03-09T08:40:19', 'Accepted'], ['2026-03-08T13:05:27', 'Created'],
+    ]);
+    expect(result.events?.slice(0, 3).every((event) => !event.local_time)).toBe(true);
+    expect(result.last_update).toBe('2026-03-12T07:31:05.000Z');
+    expect(result).not.toHaveProperty('last_update_local');
+    // Before the hand-over, every scan is Evri's.
+    const before = parsePaackEvriReply(evriReply.replace(/<tr><td>2026-03-1[12][^\n]*\n/g, ''), EVRI_PARTNER_NUMBER);
+    expect(before.events?.map((event) => event.description)).toEqual(['Customs cleared', 'Cross Docked', 'Accepted', 'Created']);
+    expect(before).toMatchObject({ last_update: null, last_update_local: '2026-03-10T11:47:30' });
+    expect(before.events?.every((event) => event.local_time && !event.time)).toBe(true);
   });
 
   it('asks Evri International alone without a postcode, in one bounded form POST', async () => {

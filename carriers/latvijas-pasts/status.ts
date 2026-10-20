@@ -13,6 +13,7 @@ const EVENTS: Readonly<Record<string, Stage>> = {
   1114: 'registered',
   1: 'accepted',
   78: 'accepted',
+  2: 'in_transit',
   3: 'in_transit',
   // Presented to customs at the office of exchange; code 7 is its release.
   4: 'customs',

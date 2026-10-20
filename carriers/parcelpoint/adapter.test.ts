@@ -4,6 +4,7 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, PARCELPOINT_API, ParcelpointTracker, parcelpointTrackUrl } from './adapter.js';
 import { normalizeParcelpointNumber, parseParcelpoint } from './parser.js';
@@ -207,21 +208,25 @@ describe('ParcelPoint HTTP adapter', () => {
   });
 
   it('tries a read that hangs once more, and ends inside the budget', async () => {
-    const signals: AbortSignal[] = [];
-    const hang: typeof fetch = (_input, init) => new Promise((_resolve, reject) => {
-      const signal = init!.signal!;
-      signals.push(signal);
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
-    });
-    const recovered = vi.fn<typeof fetch>(hang).mockImplementationOnce(hang).mockResolvedValueOnce(reply(fixture('collected')));
-    await expect(carrier(recovered).track({ number: CONSIGNMENT }, { budgetMs: 400 })).resolves.toMatchObject({ current_stage: 'delivered' });
-    expect(recovered).toHaveBeenCalledTimes(2);
-    const hanging = vi.fn<typeof fetch>(hang);
-    const started = Date.now();
-    await expect(carrier(hanging).track({ number: CONSIGNMENT }, { budgetMs: 120 })).rejects.toThrow();
-    expect(hanging).toHaveBeenCalledTimes(2);
-    expect(signals.every((signal) => signal.aborted)).toBe(true);
-    expect(Date.now() - started).toBeLessThan(1000);
+    useRequestClock();
+    try {
+      const recovered = delayedFetcher([{ afterMs: Infinity }, { afterMs: 50, reply: () => reply(fixture('collected')) }]);
+      const answered = carrier(recovered.fetcher).track({ number: CONSIGNMENT }, { budgetMs: 400 });
+      await vi.advanceTimersByTimeAsync(250);
+      await expect(answered).resolves.toMatchObject({ current_stage: 'delivered' });
+      // Half of the budget, then the retry within the rest.
+      expect(recovered.ended).toEqual([200, 250]);
+      const started = performance.now();
+      const hanging = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+      const spent = expect(carrier(hanging.fetcher).track({ number: CONSIGNMENT }, { budgetMs: 120 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(120);
+      await spent;
+      expect(hanging.fetcher).toHaveBeenCalledTimes(2);
+      expect(hanging.ended.map((at) => at - started)).toEqual([60, 120]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('routes a number filed under ParcelPoint to the adapter', async () => {

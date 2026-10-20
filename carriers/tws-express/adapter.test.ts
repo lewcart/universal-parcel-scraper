@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, TWS_API, TwsTracker } from './adapter.js';
 import { normalizeTwsNumber, parseTws } from './parser.js';
@@ -199,16 +200,19 @@ describe('TWS Express HTTP adapter', () => {
   });
 
   it('tries a read that hangs once more within the budget', async () => {
-    let calls = 0;
-    const fetcher = vi.fn<typeof fetch>((_input, init) => {
-      calls += 1;
-      if (calls > 1) return Promise.resolve(reply(fixture('in-transit')));
-      return new Promise((_resolve, reject) => {
-        init?.signal?.addEventListener('abort', () => reject(init.signal?.reason), { once: true });
-      });
-    });
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 200 })).resolves.toMatchObject({ current_stage: 'in_transit' });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    useRequestClock();
+    try {
+      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: 10, reply: () => reply(fixture('in-transit')) }]);
+      const answered = carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 200 });
+      await vi.advanceTimersByTimeAsync(110);
+      await expect(answered).resolves.toMatchObject({ current_stage: 'in_transit' });
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      // Half of the budget, then the retry within the rest.
+      expect(ended).toEqual([100, 110]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('routes a waybill filed under TWS to the adapter', async () => {

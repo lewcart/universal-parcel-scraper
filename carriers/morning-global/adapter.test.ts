@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, MORNING_GLOBAL_ACTION, MORNING_GLOBAL_API, MORNING_GLOBAL_PAGE, MorningGlobalTracker } from './adapter.js';
 import { morningGlobalWording, normalizeMorningGlobalNumber, parseMorningGlobal, parseMorningGlobalNonce } from './parser.js';
@@ -248,17 +249,19 @@ describe('Morning Global HTTP adapter', () => {
   });
 
   it('tries a read that hangs once more inside the budget', async () => {
-    const signals: AbortSignal[] = [];
-    const fetcher = vi.fn<typeof fetch>((_input, init) => new Promise((_resolve, reject) => {
-      const signal = init!.signal!;
-      signals.push(signal);
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
-    }));
-    const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(signals.every((signal) => signal.aborted)).toBe(true);
-    expect(Date.now() - started).toBeLessThan(2_000);
+    useRequestClock();
+    try {
+      const { fetcher, ended } = delayedFetcher([{ afterMs: Infinity }, { afterMs: Infinity }]);
+      const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 120 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(120);
+      await spent;
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      // Half of the budget, then the retry until it ends.
+      expect(ended).toEqual([60, 120]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('recognizes a known number and the unknown-number answer, and asks nothing for a number Morning Global does not issue', async () => {

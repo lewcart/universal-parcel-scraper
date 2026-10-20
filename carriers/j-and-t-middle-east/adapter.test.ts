@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { detectCarrierMatch } from '../../core/detection/index.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
+import { delayedFetcher, useRequestClock } from '../../core/testing/hang.js';
 import { createTracker } from '../../facade/index.js';
 import { adapter, J_AND_T_MIDDLE_EAST_API, J_AND_T_MIDDLE_EAST_CAPTCHA_SWITCH, JAndTMiddleEastTracker } from './adapter.js';
 import { normalizeJAndTMiddleEastNumber, parseJAndTMiddleEast } from './parser.js';
@@ -198,19 +199,22 @@ describe('J&T Express Middle East HTTP adapter', () => {
   });
 
   it('ends a hanging lookup and its one retry inside the budget', async () => {
-    const signals: AbortSignal[] = [];
-    const fetcher = site(() => new Promise<Response>((_resolve, reject) => {
-      const signal = fetcher.mock.calls.at(-1)![1]!.signal!;
-      signals.push(signal);
-      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
-    }));
-    const started = Date.now();
-    await expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 300 })).rejects.toThrow();
-    expect(Date.now() - started).toBeLessThan(1000);
-    expect(signals).toHaveLength(2);
-    expect(signals.every((signal) => signal.aborted)).toBe(true);
-    // The switch was read once, for both tries.
-    expect(fetcher).toHaveBeenCalledTimes(3);
+    useRequestClock();
+    try {
+      // The switch answers first; both tries of the lookup hang.
+      const { fetcher, ended } = delayedFetcher([{ afterMs: 0, reply: () => reply(OFF) }, { afterMs: Infinity }, { afterMs: Infinity }]);
+      const spent = expect(carrier(fetcher).track({ number: IN_TRANSIT }, { budgetMs: 300 })).rejects.toThrow();
+      await vi.advanceTimersByTimeAsync(300);
+      await spent;
+      expect(lookups(fetcher)).toHaveLength(2);
+      // The switch was read once, for both tries.
+      expect(fetcher).toHaveBeenCalledTimes(3);
+      // Half of the budget, then the retry until it ends.
+      expect(ended).toEqual([0, 150, 300]);
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    }
   });
 
   it('routes a waybill filed under J&T Express Middle East, or detected as one, to the adapter', async () => {

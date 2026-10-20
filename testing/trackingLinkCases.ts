@@ -1928,6 +1928,7 @@ export const uncheckedTrackingLinks: Partial<Record<CarrierId, string>> = {
   sagawa: 'the inquiry page the link opens answers Access Denied while Sagawa keeps its inquiry service suspended after unauthorized access',
   servientrega: 'the tracker shows its result in a frame from mobile.servientrega.com, which does not answer connections from Europe, North America or Asia, so number forwarding cannot be verified daily',
   slgtrax: 'sonic.pk drops connections from the daily check\'s network and some others, so number forwarding cannot be verified daily; the page looks up the number in its address as it opens',
+  shiprocket: 'shiprocket.co answers an AWB it does not know with HTTP 400 and a not-found page that does not show the number, so only a real AWB verifies the link',
   'shree-maruti': 'shreemaruti.com shows the tracker in a frame from tracking.shreemaruti.com, which looks the number up on load, and the page itself holds only the menu and notices the home page has, so the rendered-page check cannot tell it is a tracker',
   swiftx: 'swiftx-express.com answers automated Chrome with a Cloudflare managed challenge before the tracking page, so number forwarding cannot be verified',
   'spee-dee': 'the tracker shows its result in a frame from packages.speedeedelivery.com, which drops connections from many networks, so number forwarding cannot be verified daily',

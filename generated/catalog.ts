@@ -26131,6 +26131,44 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "shiprocket": {
+    "displayName": "Shiprocket",
+    "color": "#735ae5",
+    "aliases": [
+      "ShiprocketX",
+      "Shiprocket X",
+      "Shiprocket Cross Border"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "shiprocket",
+      "recognitionRank": 592,
+      "localClocks": true
+    },
+    "canaryUrl": "https://shiprocket.co/tracking",
+    "trackingUrlTemplate": "https://shiprocket.co/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.shiprocket.in/shipment-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "shiprocket.co"
+        ],
+        "path": "^/tracking/([A-Za-z0-9]{8,30})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^832\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
     "color": "#f58220",
@@ -31815,6 +31853,7 @@ export const CARRIER_IDS = [
   "shipa",
   "shipblu",
   "shipentegra",
+  "shiprocket",
   "shree-anjani",
   "shree-mahabali-express",
   "shree-mahavir",
@@ -32594,6 +32633,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "shipa": ["shipa-1"],
   "shipblu": [],
   "shipentegra": ["shipentegra-1"],
+  "shiprocket": ["shiprocket-1"],
   "shree-anjani": [],
   "shree-mahabali-express": [],
   "shree-mahavir": [],

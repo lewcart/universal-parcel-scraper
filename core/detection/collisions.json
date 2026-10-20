@@ -3128,6 +3128,29 @@
     "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ORLEN Paczka's thirteen digits; the number stays a low-confidence suggestion."
   },
   {
+    "shape": "832 and ten digits",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "la-poste",
+      "shiprocket",
+      "yunda"
+    ],
+    "reason": "ShiprocketX's AWBs sit inside the thirteen-digit space that Correos de Chile, Delhivery, La Poste and Yunda match broadly. Its preferred rule lists Shiprocket first, and recognition asks Shiprocket's tracker; the number stays a low-confidence suggestion."
+  },
+  {
+    "shape": "832 and ten digits that pass the Ukrposhta check",
+    "carriers": [
+      "correos-chile",
+      "delhivery",
+      "la-poste",
+      "shiprocket",
+      "ukrposhta",
+      "yunda"
+    ],
+    "reason": "When the number also carries a valid Ukrposhta check digit, Ukrposhta joins the carriers sharing ShiprocketX's thirteen digits; the number stays a low-confidence suggestion."
+  },
+  {
     "shape": "14 digits starting 703",
     "carriers": [
       "brt",

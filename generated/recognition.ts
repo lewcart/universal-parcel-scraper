@@ -366,6 +366,7 @@ export const CARRIER_RECOGNITION_RANKS: Readonly<Record<string, number>> = {
   "shadowfax": 595,
   "shipblu": 789,
   "shipentegra": 833,
+  "shiprocket": 592,
   "shree-anjani": 752,
   "shree-maruti": 822,
   "skroutz-last-mile": 913,

@@ -55601,6 +55601,148 @@
     ]
   },
   {
+    "input": "8322808791901",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8323453324128",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "ukrposhta",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "ukrposhta",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8323670318096",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8324880071944",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8326765640442",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8328118685422",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
+    "input": "8328449311568",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
     "input": "83288127766585",
     "carrier": "unknown",
     "confidence": "low",
@@ -55622,6 +55764,26 @@
       "dpd-nl",
       "dpd-de",
       "seur"
+    ]
+  },
+  {
+    "input": "8329468061579",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "shiprocket",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda"
+    ],
+    "preferred": [
+      "shiprocket"
+    ],
+    "asked": [
+      "shiprocket",
+      "la-poste",
+      "delhivery"
     ]
   },
   {

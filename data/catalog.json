@@ -26129,6 +26129,44 @@
       }
     ]
   },
+  "shiprocket": {
+    "displayName": "Shiprocket",
+    "color": "#735ae5",
+    "aliases": [
+      "ShiprocketX",
+      "Shiprocket X",
+      "Shiprocket Cross Border"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "shiprocket",
+      "recognitionRank": 592,
+      "localClocks": true
+    },
+    "canaryUrl": "https://shiprocket.co/tracking",
+    "trackingUrlTemplate": "https://shiprocket.co/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://www.shiprocket.in/shipment-tracking/",
+    "linkRules": [
+      {
+        "domains": [
+          "shiprocket.co"
+        ],
+        "path": "^/tracking/([A-Za-z0-9]{8,30})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^832\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ]
+  },
   "shree-anjani": {
     "displayName": "Shree Anjani Courier",
     "color": "#f58220",

@@ -28,12 +28,18 @@ carriers only when the digits before the last, divided by seven, leave the last 
   HTTP 404/410 means the endpoint is gone (transport error), not the parcel.
 - History rows come in pairs: the event row, then a postal-code row that is not an event. Postal
   codes, the free-form details column and office contacts are discarded.
-- The history header labels overseas scans as local time. Every event keeps its wall clock in
-  `local_time`. A UTC `time` is added only when the row's own Prefecture/Country cell names a Japanese
-  prefecture or `JAPAN` (`Asia/Tokyo`) or `MALTA` (`Europe/Malta`) and the timestamp is full and
-  unambiguous (not date-only, not in a DST gap or fold). A delivered item's final scan with such a
-  time also sets `delivered_at`. Another scan's zone or
-  the destination never fills the gap: a guessed zone produces wrong instants that look authoritative.
+- The history header labels overseas scans as local time: a scan abroad carries the clock of the
+  post that made it, as Singapore Post's, Ukrposhta's and Canada Post's offsets for the same scans
+  show. Every event keeps its wall clock in `local_time`. A UTC `time` is added only when the row's
+  own Prefecture/Country cell names a Japanese prefecture (`Asia/Tokyo`) or a country
+  `countryTimeZone` gives one zone (the portal's `KOREA REP`, `HONG KONG` and `REPUBLIC OF SERBIA`
+  are mapped first), and the timestamp is full and unambiguous (not date-only, not in a DST gap or
+  fold). Other countries, such as `UNITED STATES OF AMERICA`, `CANADA`, `KAZAKHSTAN` or `GEORGIA`,
+  stay local. So do Spain, Portugal and France, whose posts also deliver on other clocks under the
+  same name: the Canaries, Madeira, the Azores and the overseas departments Japan Post's France
+  covers. A delivery scan names no office, only the country. A delivered item's final scan with
+  such a time also sets `delivered_at`. Another scan's zone, the office or the destination never
+  fills the gap: a guessed zone produces wrong instants that look authoritative.
 - `last_update` is set only when the latest row itself resolved; otherwise it is null and
   `last_update_local` carries the wall clock. Routing then also tries universal providers for a dated
   timeline, keeps the direct history as fallback, and never lets an unresolved result overwrite a

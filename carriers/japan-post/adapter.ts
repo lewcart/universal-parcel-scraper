@@ -6,7 +6,7 @@ import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.j
 import { isValidS10TrackingNumber, normalizeTrackingNumber } from '../../core/detection/index.js';
 import { ChallengeError, InvalidInputError, NotFoundError, SchemaError, TransportError, UpstreamHttpError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
-import { calendarDay, firstOccurrence } from '../../core/time/index.js';
+import { calendarDay, countryCode, countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import { clean, decodeText, fetchBounded, userAgentOf } from '../../core/transport/index.js';
 import { japanPostStatus } from './status.js';
 
@@ -14,20 +14,32 @@ const PROVIDER = 'Japan Post';
 const ENDPOINT = 'https://trackings.post.japanpost.jp/services/srv/search/direct';
 const MAX_RESPONSE_BYTES = 1_000_000;
 // Every Japanese prefecture keeps Japan's civil time.
-const PREFECTURES = [
+const PREFECTURES = new Set([
   'HOKKAIDO', 'AOMORI', 'IWATE', 'MIYAGI', 'AKITA', 'YAMAGATA', 'FUKUSHIMA', 'IBARAKI', 'TOCHIGI', 'GUNMA',
   'SAITAMA', 'CHIBA', 'TOKYO', 'KANAGAWA', 'NIIGATA', 'TOYAMA', 'ISHIKAWA', 'FUKUI', 'YAMANASHI', 'NAGANO',
   'GIFU', 'SHIZUOKA', 'AICHI', 'MIE', 'SHIGA', 'KYOTO', 'OSAKA', 'HYOGO', 'NARA', 'WAKAYAMA', 'TOTTORI',
   'SHIMANE', 'OKAYAMA', 'HIROSHIMA', 'YAMAGUCHI', 'TOKUSHIMA', 'KAGAWA', 'EHIME', 'KOCHI', 'FUKUOKA', 'SAGA',
   'NAGASAKI', 'KUMAMOTO', 'OITA', 'MIYAZAKI', 'KAGOSHIMA', 'OKINAWA',
-];
-// The history header explicitly states that overseas scans use local time.
-// Resolve only these confirmed prefecture/country labels from the row itself;
-// never inherit another scan's zone or the parcel's destination.
-const EVENT_ZONES: Readonly<Record<string, string>> = {
-  ...Object.fromEntries(PREFECTURES.map((prefecture) => [prefecture, 'Asia/Tokyo'])),
-  JAPAN: 'Asia/Tokyo', MALTA: 'Europe/Malta',
+]);
+// Country names the portal prints that `countryCode` does not read.
+const COUNTRY_NAMES: Readonly<Record<string, string>> = {
+  'KOREA REP': 'KR', 'HONG KONG': 'HK', 'REPUBLIC OF SERBIA': 'RS',
 };
+// These posts also deliver on other clocks under the same country name: Spain
+// and Portugal on their islands, France in the overseas departments Japan
+// Post's France covers. A delivery scan names no office, only the country.
+const OVERSEAS_CLOCKS = new Set(['ES', 'FR', 'PT']);
+
+// The history header states that overseas scans are in local time, the clock
+// of the post that scanned. A row's own Prefecture / Country cell settles its
+// zone when it names a prefecture or a single-zone country. The office,
+// another scan's zone or the parcel's destination never does.
+function rowZone(region: string): string | null {
+  const name = region.toUpperCase();
+  if (PREFECTURES.has(name)) return 'Asia/Tokyo';
+  const code = Object.hasOwn(COUNTRY_NAMES, name) ? COUNTRY_NAMES[name]! : countryCode(name);
+  return code && !OVERSEAS_CLOCKS.has(code) ? countryTimeZone(code) : null;
+}
 
 export function normalizeJapanPostNumber(raw: string): string {
   const number = normalizeTrackingNumber(raw);
@@ -50,7 +62,7 @@ function wallTime(raw: string): string {
 }
 
 function eventInstant(localTime: string, region: string): string | null {
-  const zone = EVENT_ZONES[region.toUpperCase()];
+  const zone = rowZone(region);
   if (!zone || !localTime.includes('T')) return null;
   const date = firstOccurrence(DateTime.fromISO(localTime, { zone }));
   // Luxon can shift a nonexistent spring clock forward or pick one side of

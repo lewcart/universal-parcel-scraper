@@ -110,27 +110,76 @@ describe('Japan Post result projection', () => {
     expect(normalizeJapanPostNumber('cn 000.000-005 jp')).toBe(NUMBER);
   });
 
-  it.each(['UNITED STATES', 'CANADA', 'SPAIN', 'PORTUGAL', 'UNKNOWN', ''])('retains %s wall time without a guessed timezone', (region) => {
+  it.each([
+    ['GERMANY', '2026-09-04T09:43:00Z'],
+    ['ITALY', '2026-09-04T09:43:00Z'],
+    ['UNITED KINGDOM', '2026-09-04T10:43:00Z'],
+    ['BELARUS', '2026-09-04T08:43:00Z'],
+    ['THAILAND', '2026-09-04T04:43:00Z'],
+    ['SINGAPORE', '2026-09-04T03:43:00Z'],
+    ['KOREA REP', '2026-09-04T02:43:00Z'],
+    ['HONG KONG', '2026-09-04T03:43:00Z'],
+    ['REPUBLIC OF SERBIA', '2026-09-04T09:43:00Z'],
+    ['Japan', '2026-09-04T02:43:00Z'],
+  ])('dates a %s row on its own country clock and takes it as the last update', (region, instant) => {
     const $ = load(fixture());
     $('table[summary="履歴情報"] tr').eq(-2).children('td').eq(4).text(region);
     const result = parse($.html(), NUMBER);
-    expect(result.last_update).toBeNull();
-    expect(result.last_update_local).toBe('2026-09-04T11:43:00');
-    expect(result.events?.[0]!.time).toBeUndefined();
-    expect(result.events?.[0]!.local_time).toBe('2026-09-04T11:43:00');
+    expect(result).toMatchObject({ last_update: instant, last_update_local: '2026-09-04T11:43:00', delivered_at: instant });
+    expect(result.events?.[0]).toMatchObject({ time: instant, local_time: '2026-09-04T11:43:00', location: region });
     expect(result.events?.[1]!.time).toBe('2026-09-04T05:45:00Z');
   });
 
-  it.each([
-    ['03/29/2026 02:30', null],
-    ['10/25/2026 02:30', null],
-    ['01/10/2026 11:43', '2026-01-10T10:43:00Z'],
-    ['07/10/2026 11:43', '2026-07-10T09:43:00Z'],
-  ])('preserves Malta timezone uncertainty and seasonal offsets for %s', (raw, instant) => {
+  it.each(['UNITED STATES OF AMERICA', 'CANADA', 'KAZAKHSTAN', 'GEORGIA', 'SPAIN', 'PORTUGAL', 'FRANCE', 'UNKNOWN', ''])(
+    'retains %s wall time without a guessed timezone', (region) => {
+      const $ = load(fixture());
+      $('table[summary="履歴情報"] tr').eq(-2).children('td').eq(4).text(region);
+      const result = parse($.html(), NUMBER);
+      expect(result.last_update).toBeNull();
+      expect(result.last_update_local).toBe('2026-09-04T11:43:00');
+      expect(result.delivered_at).toBeUndefined();
+      expect(result.status).toBe('delivered');
+      expect(result.events?.[0]!.time).toBeUndefined();
+      expect(result.events?.[0]!.local_time).toBe('2026-09-04T11:43:00');
+      expect(result.events?.[1]!.time).toBe('2026-09-04T05:45:00Z');
+    },
+  );
+
+  it('dates each overseas row by its own country and never by the office, the next row or the destination', () => {
     const $ = load(fixture());
-    $('table[summary="履歴情報"] tr').eq(-2).children('td').eq(0).text(raw);
+    const rows = $('table[summary="履歴情報"] tr');
+    const [customs, out, delivery] = [-6, -4, -2].map((index) => rows.eq(index).children('td'));
+    customs!.eq(4).text('LITHUANIA');
+    out!.eq(3).text('SINGAPORE');
+    out!.eq(4).empty();
+    delivery!.eq(4).text('BELARUS');
+    const result = parse($.html(), NUMBER);
+    expect(result.events?.slice(0, 3).map((event) => [event.time, event.location])).toEqual([
+      ['2026-09-04T08:43:00Z', 'BELARUS'],
+      [undefined, 'SINGAPORE'],
+      ['2026-09-03T09:55:00Z', 'EXAMPLE IMPORT, LITHUANIA'],
+    ]);
+    expect(result).toMatchObject({ last_update: '2026-09-04T08:43:00Z', delivered_at: '2026-09-04T08:43:00Z' });
+  });
+
+  it.each([
+    ['MALTA', '03/29/2026 02:30', null],
+    ['MALTA', '10/25/2026 02:30', null],
+    ['MALTA', '01/10/2026 11:43', '2026-01-10T10:43:00Z'],
+    ['MALTA', '07/10/2026 11:43', '2026-07-10T09:43:00Z'],
+    ['GERMANY', '10/25/2026 02:30', null],
+    ['UNITED KINGDOM', '03/29/2026 01:30', null],
+    ['UNITED KINGDOM', '10/25/2026 01:30', null],
+    ['UNITED KINGDOM', '01/10/2026 11:43', '2026-01-10T11:43:00Z'],
+    ['GERMANY', '09/04/2026', null],
+  ])('preserves %s timezone uncertainty and seasonal offsets for %s', (region, raw, instant) => {
+    const $ = load(fixture());
+    const cells = $('table[summary="履歴情報"] tr').eq(-2).children('td');
+    cells.eq(0).text(raw);
+    cells.eq(4).text(region);
     const result = parse($.html(), NUMBER);
     expect(result.last_update).toBe(instant);
+    expect(result.delivered_at ?? null).toBe(instant);
     expect(result.events?.[0]!.time ?? null).toBe(instant);
     expect(result.events?.[0]!.local_time).toEqual(expect.any(String));
   });

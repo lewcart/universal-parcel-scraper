@@ -281,7 +281,7 @@ export function trackingLanguageStage(description: string): Stage | undefined {
   // The sender still has to hand the parcel over: "Pendiente de entregar a TIPSA".
   if (/\bpendiente de (?:entregar|entrega|recepcion|admision|recibir) (?:a|al|en|por) (?:la |el )?(?:agencia|transportista|operador|correos|seur|mrw|nacex|tipsa|ctt|gls|dhl|dpd|ups|fedex|envialia|zeleris|paack|inpost|celeritas)\b|\bpendiente de (?:recepcion|admision)\b|\baguarda entrada\b|\bpendente de (?:rececao|recepcao|entrada)\b/.test(text)) return 'registered';
   if (/or awaiting processing|ou en attente de traitement|oder wartet auf.*bearbeitung|o in attesa di elaborazione/.test(text)) return 'registered';
-  if (/will be transported|sera (?:transporte|achemine)|wird.*transportiert|sara trasportat/.test(text)) return 'in_transit';
+  if (/will be transported|\barrange (?:a )?(?:truck|train|rail|road) transfer\b|sera (?:transporte|achemine)|wird.*transportiert|sara trasportat/.test(text)) return 'in_transit';
   if (/will be available|sera disponible|(?:sera|va etre|doit etre) (?:distribue|remis|mis en (?:livraison|distribution))|wird.*verfugbar|sara disponibile|to be delivered|a livrer|noch zuzustellen|da consegnare|(?:once|when|as soon as) (?:the |your )?(?:shipment|parcel|package|item) is out for delivery/.test(text)) return 'in_transit';
   if (/\bestara disponi(?:ble|vel)\b|\bpor entregar\b|\bpendiente de (?:entrega|entregar|reparto)\b|\bpendente de entrega\b|\b(?:aguarda|aguardando|a aguardar) (?:a )?entrega\b|\bsera (?:enviad|transportad|expedid|encaminhad)[oa]s?\b/.test(text)) return 'in_transit';
 

@@ -352,6 +352,7 @@ describe('classifyWording', () => {
       'The notification for delivery has been sent to the recipient',
       'Item handed over to delivery partner', 'Item distributed', 'The shipment item has been loaded.',
       'Your package has been loaded onto a vehicle',
+      'The latest feedback from abroad is expected to arrange truck transfer to the destination port of Example on October 13th',
     ]) expect(classifyWording(wording)).toEqual({ stage: 'in_transit', source: 'wording:language' });
     expect(wordingStage('On vehicle for delivery')).toBe('out_for_delivery');
     expect(wordingStage('On FedEx vehicle for delivery')).toBe('out_for_delivery');

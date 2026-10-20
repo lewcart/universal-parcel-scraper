@@ -175,6 +175,8 @@ function providerWordingStage(description: string): Stage | undefined {
   // recipient who cannot be reached closes the delivery and starts the return.
   if (/^order submit+ed[.!]?$/i.test(value)) return 'registered';
   if (/^we have received the shipment from the sender[.!]?$/i.test(value)) return 'accepted';
+  // An export warehouse receiving the parcel after the origin's sorting centre has sent it on.
+  if (/^received at (?:the )?origin warehouse[.!]?$/i.test(value)) return 'in_transit';
   if (/^(?:received\.|(?:\d\) )?[a-z ]{1,40} cent(?:er|re)) your order has been received[.!]?$|^(?:\S+ )?cent(?:er|re) (?:received|parcel shipped to \S+)[.!]?$|^origin port warehouse receive\b|^the flight has taken off[.!]?$|^(?:\S+ )?dispatch task assigned to da[.!]?$/i.test(value)) return 'in_transit';
   if (/^<bad address>$/i.test(value)) return 'failed_attempt';
   // Speedaf's issue scan ending a delivery round the recipient had moved to another day, as its own map reads it.

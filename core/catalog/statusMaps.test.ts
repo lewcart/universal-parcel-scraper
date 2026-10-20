@@ -631,13 +631,14 @@ describe("universal providers' answers", () => {
       ['Package information is created in the system', 'registered'],
       ['Package Received with Origin Scan warehouse (Exampleton, ON)', 'accepted'],
       ['Package is received at a Straightship station (Exampleton, ON)', 'in_transit'],
+      ['Received at Origin Warehouse', 'in_transit'],
     ] as const) expect(answer('unknown', null, wording), wording).toEqual(mapped(stage));
     // Each is matched whole: the same words in another scan, and the report's open wording, stay unread.
     for (const wording of ['Order received from retailer, awaiting stock', 'Warehouse receipt pending', 'Not received from retailer',
       'Parcel is with the driver', 'Item received', 'Driver assigned', 'Benachrichtigt', 'Delivery branch. Rescheduling', 'Order confirmed., pending',
       'Przesyłka w oddziale', 'Przesyłka w oddziale FedEx czeka na odbiór', 'Your order has been shipped from the distribution center to the store',
       'Concertación entrega flexible', 'Waiting for carrier to collect the order from the warehouse', 'Depositado en punto MRW de origen',
-      'Order Closed', 'Center', 'Dispatch task assigned', 'Expecting your parcel back', 'Parcel received by relay point',
+      'Order Closed', 'Center', 'Dispatch task assigned', 'Received at origin warehouse pending', 'Expecting your parcel back', 'Parcel received by relay point',
       'Ready for delivery', 'Shipment received from retailer', 'Received at hub',
       'Delivery has been made at the destination port of Example', '目的港已提货待清关', 'Received by our network partner in Example', 'Checked in at origin hub of Example', 'Parcel shipped to Example', 'The shipment was left at a drop-off location for the courier', 'Order information has been sent',
       'Received.', 'Received. Your order has been received by the store', 'Package finished at the store',

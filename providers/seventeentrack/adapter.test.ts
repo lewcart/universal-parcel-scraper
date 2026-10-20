@@ -212,6 +212,21 @@ describe('17TRACK result parsing', () => {
       .toBe('2026-05-07T20:22:51.000Z');
   });
 
+  it('reads Huiyi Logistics\' rows in China on Beijing\'s clock, not as their "+00:00", and keeps the others\' reading', () => {
+    const row = (time: string, location: string) => ({
+      time_iso: `2026-05-07T${time}+00:00`, time_utc: `2026-05-07T${time}Z`, time_raw: { date: '2026-05-07', time, timezone: '+00:00' },
+      description: 'In Transit', location, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, events: unknown[]) => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'HYWL' }, events }] } } }] });
+    const parsed = parse17TrackResponse(reply(192109, [row('22:43:31', 'Example Town, 00000'), row('19:43:31', 'Hong Kong International Hub'),
+      row('15:51:00', 'Shenzhen 00000000'), row('10:43:31', '深圳')]), number);
+    expect(parsed.events?.map((event) => event.time)).toEqual(['2026-05-07T22:43:31.000Z', '2026-05-07T11:43:31.000Z',
+      '2026-05-07T07:51:00.000Z', '2026-05-07T02:43:31.000Z']);
+    expect(parsed.undated_event_count).toBeUndefined();
+    // Another feed keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, [row('15:51:00', 'Shenzhen')]), number).events?.[0]?.time).toBe('2026-05-07T15:51:00.000Z');
+  });
+
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },

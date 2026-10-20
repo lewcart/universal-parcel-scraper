@@ -113,6 +113,11 @@ carrier.
   Shiprocket's own page. A row placed in an Indian state is read on India's clock, as the
   [Shiprocket adapter](../../carriers/shiprocket/README.md) reads it; any other keeps its wall
   clock in `local_time`.
+- Huiyi Logistics' leg (carrier key 192109) keeps the `+00:00` of the line's rows, whose
+  digits are wall clocks ([Huiyi Logistics](../../carriers/hywl/README.md)). Read as labeled,
+  most of its rows in China fall between midnight and 06:00 there, and on Beijing's clock all
+  in the day. A row placed in China or Hong Kong is read on Beijing's clock; any other keeps
+  17TRACK's reading, the last guess.
 - NZ Post's leg (carrier key 14061) shows NZ Post's wall clocks, and 17TRACK labels them
   with New Zealand's offset on the day it looks: in October it put `+13:00` on August
   scans, when New Zealand kept `+12:00` (checked 2026-10-10). That leg's `time_raw` is read

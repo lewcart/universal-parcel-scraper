@@ -21,6 +21,7 @@ import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { HYWL_CHINA_ZONE, hywlInChina } from '../../carriers/hywl/clock.js';
 import { placedInIndia } from '../../carriers/shiprocket/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { universalCarrierHints } from '../shared/hints.js';
@@ -151,6 +152,16 @@ const SWISS_POST = 19251;
  * as Shiprocket's adapter keeps a row abroad's or a partner's.
  */
 const SHIPROCKET = 100662;
+
+/**
+ * 17TRACK's carrier 192109, Huiyi Logistics, keeps the "+00:00" of its rows,
+ * whose digits are the line's wall clocks. Read as labeled, most of its rows
+ * in China fell between midnight and 06:00 there; on Beijing's clock all fell
+ * in the day (checked 2026-10-21). A row placed in China or Hong Kong is read on
+ * Beijing's clock, as Huiyi Logistics' adapter reads it; any other keeps
+ * 17TRACK's reading, the last guess.
+ */
+const HYWL = 192109;
 
 /** The recipient's country, the only field of the address read. */
 function recipientCountry(shipment: Record<string, unknown>): string | null {
@@ -331,13 +342,15 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const sender = salvador && isValidS10TrackingNumber(number) ? countryTimeZone(number.slice(-2)) : null;
     const bound = reported.key === SWISS_POST ? recipientCountry(shipment) : null;
     const shiprocket = reported.key === SHIPROCKET;
+    const hywl = reported.key === HYWL;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
       const exchange = origin !== null && ORIGIN_EXCHANGE.test(text(raw.description));
       const own = !salvador ? null : OUTBOUND.test(text(raw.description)) ? sender : 'UTC';
-      // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset.
-      const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound) : null;
+      // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset, or Huiyi Logistics' row in China under "+00:00".
+      const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound)
+        : hywl && hywlInChina(text(raw.location)) ? HYWL_CHINA_ZONE : null;
       // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's or Shiprocket's, on which 17TRACK puts one offset for the whole parcel.
       const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket ? facilityWall(raw) : null;
       const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'

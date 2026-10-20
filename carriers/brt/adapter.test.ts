@@ -160,6 +160,18 @@ describe('BRT direct tracking', () => {
     expect(result.delivered_at).toBeUndefined();
   });
 
+  it('reads a shipment a public demonstration holds up as an exception, until a later scan moves it on', () => {
+    const held = parseBrt(edit($ => $('.table_stato_dati tr').eq(1).children('td').last().text('TURMOIL')), NUMBER);
+    expect(held).toMatchObject({ status: 'exception', current_stage: 'exception', last_status_text: 'TURMOIL' });
+    expect(held.events![0]).toMatchObject({ stage: 'exception', provider_status: 'TURMOIL' });
+    const moved = parseBrt(edit($ => {
+      $('.table_stato_dati tr').eq(1).children('td').last().text('ARRIVED AT DEPOT');
+      $('.table_stato_dati tr').eq(2).children('td').last().text('TURMOIL');
+    }), NUMBER);
+    expect(moved).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(moved.events![1]).toMatchObject({ stage: 'exception' });
+  });
+
   it('dates a shipment delivered in Italy on Rome\'s clock at each of BRT\'s depots, and its last update by the newest scan', () => {
     // Collected and delivered in Italy, in summer time.
     const result = parseBrt(parcelPage, SHIPMENT);

@@ -60,7 +60,9 @@ status even when the newest clock is unresolved.
 Arrival at a locker or BRT-fermopoint means ready for pickup; collection from
 it means delivery. A shipment returned to its sender ends with a delivery scan
 at the origin depot; after a return scan that delivery reads as returned.
-Held-parcel records and links to a delivering partner are not part of the
+The English page's TURMOIL is the scan the Italian page names MANIFESTAZIONE
+PUBBLICA, a public demonstration holding the parcel up: an exception until a
+later scan moves the parcel on. Held-parcel records and links to a delivering partner are not part of the
 history.
 
 The partner's dated scans before BRT's first scan beyond the shipping data

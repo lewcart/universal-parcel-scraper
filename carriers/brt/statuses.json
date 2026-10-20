@@ -68,6 +68,13 @@
       "confirmedBy": "live"
     },
     {
+      "wording": "TURMOIL",
+      "language": "en",
+      "stage": "exception",
+      "confirmedBy": "live",
+      "note": "BRT's Italian page names the same scan MANIFESTAZIONE PUBBLICA: a public demonstration holds the parcel up. Later scans move it on."
+    },
+    {
       "wording": "RETURNED TO SENDER",
       "language": "en",
       "stage": "returned",

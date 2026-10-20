@@ -11,6 +11,8 @@ const labels: Record<string, ClassifiedStatus> = {
   'ARRIVED AT BRT-FERMOPOINT': { status: 'in_transit', stage: 'ready_for_pickup' },
   'COLLECTED AT BRT-FERMOPOINT': { status: 'delivered', stage: 'delivered' },
   'UNKNOWN/INCOMPLETE CONSIGNEE': { status: 'exception', stage: 'failed_attempt' },
+  // BRT's Italian page names it MANIFESTAZIONE PUBBLICA: a public demonstration holds the parcel up.
+  TURMOIL: { status: 'exception', stage: 'exception' },
   'RETURNED TO SENDER': { status: 'exception', stage: 'returned' },
   DELIVERED: { status: 'delivered', stage: 'delivered' },
 };

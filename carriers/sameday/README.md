@@ -27,8 +27,8 @@ HTML, 403 and 429 replies and malformed JSON are never read as not found.
 - The number is checked the way the site checks it: 5 to 28 letters and digits, a leading
   `#` dropped. A number without a digit is refused before any request.
 - An AWB starts with `1` and a three-character client code. Detection offers Sameday when the
-  code is letters, or when it holds a digit and `LN` and nine digits follow. Neither shape
-  carries a check, so both stay low confidence.
+  code is letters, or when it holds a digit and `LN` or `LL` follows, with nine to twelve digits
+  as after a code of letters. Neither shape carries a check, so both stay low confidence.
 - The reply holds the AWB's own history, newest first, and each parcel's scans, oldest
   first. A parcel number (the AWB and a three-digit suffix) is answered with the whole AWB:
   the adapter reads that parcel's scans and reports the AWB as `canonical_tracking_number`.

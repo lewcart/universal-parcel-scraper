@@ -25579,7 +25579,7 @@ export const CARRIER_CATALOG = {
         "confidence": "low"
       },
       {
-        "pattern": "^1[A-Z][A-Z0-9]{2}LN\\d{9}$",
+        "pattern": "^1[A-Z][A-Z0-9]{2}L[LN]\\d{9,12}$",
         "confidence": "low"
       }
     ]

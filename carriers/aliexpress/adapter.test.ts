@@ -165,6 +165,20 @@ describe('Cainiao Express home-delivery numbers', () => {
     ]);
   });
 
+  it("stages a partner's parcel on its way to Cainiao Express", () => {
+    const history = [
+      ['IN_TRANSIT_FR', 'Shipment is in transit to Cainiao Express', 'in_transit'],
+      ['PARTNER_OUTBOUND_FR', "Shipment has left Cainiao Express's partner facility", 'in_transit'],
+      ['LABEL_CREATED', 'Shipment data information received', 'registered'],
+    ] as const;
+    const detailList = history.map(([actionCode, desc], index) => ({ actionCode, desc, timeStr: `2026-04-0${7 - index} 10:00:00`, timeZone: 'GMT+2' }));
+    const result = parseCainiaoTrackingResponse({ data: [{ mailNo: HOME_DELIVERY, latestTrace: detailList[0], detailList }] }, HOME_DELIVERY);
+    expect(result).toMatchObject({ status: 'in_transit', current_stage: 'in_transit' });
+    expect(result.events?.map((event) => [event.provider_code, event.stage])).toEqual(history.map(([code, , stage]) => [code, stage]));
+    const registered = parseCainiaoTrackingResponse({ data: [{ mailNo: HOME_DELIVERY, latestTrace: detailList[2], detailList: [detailList[2]] }] }, HOME_DELIVERY);
+    expect(registered).toMatchObject({ status: 'pending', current_stage: 'registered' });
+  });
+
   it('reads a home-delivery number neither feed knows as inconclusive, not missing', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(empty('EXTERNAL')).mockResolvedValueOnce(empty('EXTERNAL'));
     await expect(new CainiaoTracker({ fetcher }).fetch(HOME_DELIVERY)).rejects.toMatchObject({

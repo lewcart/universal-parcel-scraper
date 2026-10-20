@@ -43,6 +43,11 @@ export const CAINIAO_ACTION_STATUS = new Map<string, CarrierStatus>([
   ['GWMS_PACKAGE', 'pending'],
   ['PRE_READY_TO_SHIP', 'pending'],
   ['CONSIGN', 'pending'],
+  // Cainiao Express's steps for a partner's parcel before Cainiao Express has
+  // it: the shipment's data, then its way from the partner's facility.
+  ['LABEL_CREATED', 'pending'],
+  ['PARTNER_OUTBOUND_FR', 'in_transit'],
+  ['IN_TRANSIT_FR', 'in_transit'],
   ['CW_INBOUND', 'in_transit'],
   ['CW_OUTBOUND', 'in_transit'],
   ['CW_COMMON_PROCESSING1', 'in_transit'],

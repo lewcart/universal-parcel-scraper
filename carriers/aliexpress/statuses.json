@@ -665,6 +665,33 @@
       "confirmedBy": "live",
       "firstSeen": "2026-10-14",
       "note": "No stage: the order's delivery details changed, which moves no parcel."
+    },
+    {
+      "code": "LABEL_CREATED",
+      "wording": "Shipment data information received",
+      "language": "en",
+      "stage": "registered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Cainiao Express holds the shipment's data from a partner; the parcel has not reached it yet."
+    },
+    {
+      "code": "PARTNER_OUTBOUND_FR",
+      "wording": "Shipment has left Cainiao Express's partner facility",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The partner's parcel leaves the partner's facility for Cainiao Express in France; the partner accepted it before."
+    },
+    {
+      "code": "IN_TRANSIT_FR",
+      "wording": "Shipment is in transit to Cainiao Express",
+      "language": "en",
+      "stage": "in_transit",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "The partner's parcel on its way to Cainiao Express in France."
     }
   ]
 }

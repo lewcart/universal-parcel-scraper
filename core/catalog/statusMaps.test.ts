@@ -168,6 +168,10 @@ describe('status map answers', () => {
       expect(answer('aliexpress', null, wording), wording).toEqual(mapped('in_transit'));
     }
     expect(answer('aliexpress', 'GTMS_DO_DEPART', 'Out for delivery')).toEqual(mapped('out_for_delivery'));
+    // Cainiao Express's steps before it has a partner's parcel.
+    expect(answer('aliexpress', 'LABEL_CREATED', 'Shipment data information received')).toEqual(mapped('registered'));
+    expect(answer('aliexpress', 'PARTNER_OUTBOUND_FR', "Shipment has left Cainiao Express's partner facility")).toEqual(mapped('in_transit'));
+    expect(answer('aliexpress', 'IN_TRANSIT_FR', 'Shipment is in transit to Cainiao Express')).toEqual(mapped('in_transit'));
     expect(answer('aliexpress', 'NEW_UNSEEN_CODE', 'Synthetic scan')).toEqual(unknown);
     expect(answer('aliexpress', null, 'Arrived at linehaul office')).toEqual(unknown);
   });

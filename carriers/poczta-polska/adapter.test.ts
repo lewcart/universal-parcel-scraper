@@ -110,6 +110,18 @@ describe('Poczta Polska identity-bound scans', () => {
     expect(result).not.toHaveProperty('delivered_at');
   });
 
+  it("dates item data from Poczta Polska's own sender platform on Warsaw time", () => {
+    const sent = (time: string, name = 'Elektroniczny Nadawca') => {
+      const value = payload(); value.mailInfo.events[0].time = time;
+      value.mailInfo.events[0].postOffice = { name };
+      return parsePocztaPolska(value, NUMBER).events?.at(-1);
+    };
+    expect(sent('2026-01-04T08:00:00')).toMatchObject({ time: '2026-01-04T08:00:00+01:00', location: 'Elektroniczny Nadawca' });
+    expect(sent('2026-07-04T08:00:00', 'ELEKTRONICZNY NADAWCA')).toMatchObject({ time: '2026-07-04T08:00:00+02:00' });
+    expect(sent('2026-07-04T08:00:00', 'International Postal System')).toMatchObject({ local_time: '2026-07-04T08:00:00' });
+    expect(sent('2026-07-04T08:00:00', 'International Postal System')).not.toHaveProperty('time');
+  });
+
   it("keeps the provider's order when every scan is dated", () => {
     const office = { code: '000001', name: 'Example Post Office', officeType: 'UP' };
     const value = payload(); value.mailInfo.events = [

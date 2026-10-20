@@ -41,8 +41,9 @@ office dates the delivery.
 ## Limitations
 
 Clocks carry no offset. A scan at a Polish office, which carries an office type,
-is read on Polish time (`Europe/Warsaw`). Scans relayed from partners abroad,
-office-less scans such as electronic pre-advice, and wall clocks that a
+is read on Polish time (`Europe/Warsaw`), and so is item data from Poczta
+Polska's own sender platform, "Elektroniczny Nadawca", which has none. Scans
+relayed from partners abroad, other office-less scans, and wall clocks that a
 daylight-saving change skips or repeats keep their local digits. Scans keep the
 provider's order. See [ROUTING.md](https://github.com/plhery/delivery-tracker/blob/main/docs/ROUTING.md) for
 unresolved history handling. Empty history, invalidated scans, ambiguous

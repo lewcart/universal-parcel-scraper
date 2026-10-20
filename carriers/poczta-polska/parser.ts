@@ -19,11 +19,13 @@ export function normalizePocztaPolskaNumber(raw: string): string {
   return `${number}${(10 - sum % 10) % 10}`;
 }
 
-// Poczta Polska's own offices carry an office type. Scans relayed from partners
-// abroad carry none and keep the sending country's wall clock; an office code
-// alone could be a foreign postcode.
+// Poczta Polska's own offices carry an office type. Its platform for senders'
+// item data, "Elektroniczny Nadawca", carries none but is Poczta Polska's own
+// system in Poland. Scans relayed from partners abroad carry none and keep the
+// sending country's wall clock; an office code alone could be a foreign postcode.
 function polishOffice(office: unknown): boolean {
-  return isRecord(office) && clean(office.officeType, 40) !== '';
+  return isRecord(office) && (clean(office.officeType, 40) !== ''
+    || clean(office.name, 160).toLowerCase() === 'elektroniczny nadawca');
 }
 
 // A Polish office dates its scans on Polish time. A wall clock the zone skips

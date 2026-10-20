@@ -202,6 +202,11 @@ function providerWordingStage(description: string): Stage | undefined {
   // sent on and received by the post abroad.
   if (/^item announced[.!]?$/i.test(value)) return 'registered';
   if (/^item sent[.!]?$|^item received in destination country[.!]?$/i.test(value)) return 'in_transit';
+  // Its office of exchange taking in an item from abroad, as ParcelsApp relays it.
+  if (/^item received at exchange office[.!]?$/i.test(value)) return 'in_transit';
+  // An Post's item waiting at the post office it names (code 52), and GLS Italy's delivery round, as their own maps read them.
+  if (/^your delivery is in [^,]{1,60}, post office[.!]?$/i.test(value)) return 'ready_for_pickup';
+  if (/^delivery scheduled during the day[.!]?$/i.test(value)) return 'out_for_delivery';
   // Latvijas Pasts' acceptance at a post office, which ParcelsApp follows with the office's name.
   if (/^item posted \/ received from customer\b/i.test(value)) return 'accepted';
   // A postal item accepted abroad as the receiving post's map reads the UPU event (Canada Post's 4000), and
@@ -221,7 +226,7 @@ function providerWordingStage(description: string): Stage | undefined {
   if (/^parcel shipped[.!]?$|^(?:airline|flight) delay(?:ed)?[.!]?$/i.test(value)) return 'in_transit';
   // A bare "parcel handed" is a hand-over to a carrier, which 17TRACK files as a pickup.
   if (/^parcel handed[.!]?$/i.test(value)) return 'accepted';
-  if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^received in warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: (?:and|&) scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^received by our network[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^仓库收货$|^rfid confirmed pick-?up$|^usps in possession of item\b/i.test(value)) return 'accepted';
+  if (/^warehouse receipt[.!]?$|^(?:package |parcel )?received by (?:the )?warehouse[.!]?$|^received in warehouse[.!]?$|^(?:package|parcel) (?:bulk )?received(?: (?:and|&) scanned)? at (?:the )?warehouse[.!]?$|^we['’]ve got it[.!]?$|^received at evri[.!]?$|^received by our network[.!]?$|^acceptance, sent to [a-z ]+$|^china post has received the mail\b|^envio recogido en origen[.!]?$|^first parcel scan along poste italiane['’]s logistic network\b|已收寄|^仓库收货$|^rfid confirmed pick-?up$|^usps in possession of (?:the )?item\b/i.test(value)) return 'accepted';
   if (/^goods leave the operation cent(?:er|re)[.!]?$|^the shipment has left (?:the )?origin country[.!]?$|^(?:delivery\. )?your order has been shipped from (?:\d\) )?[a-z ]{1,40} cent(?:er|re)[.!]?$|^nuevo reparto(?:\. concertacion entrega flexible)?[.!]?$|^new delivery, flexible delivery arrangement[.!]?$|^inventory in a warehouse[.!]?$|^hand over to airline[.!]?$|^in lavorazione[.!]?$|^uscita centro postale[.!]?$|^przesyłka w oddziale \w{2,20}[.!]?$|^(?:package |parcel )?(?:left|leaves?) the warehouse[.!]?$|^we['’]re processing your parcel at our hub\b|^warehouse\. (?:inbound warehouse|delivery in last mile facilities|ready to hand over to last-mile supplier)[.!]?$|^hand over to last mile[.!]?$|^at destination country\/region[.!]?$|^(?:beladung|entladung)$|^entrance to the terminal from the driver$|^outbou?n?d from pickup terminal to the line ?h[ao]u?l$|^inbound from l?ine ?h[ao]u?l to (?:the )?terminal$|^[\w ]+ warehouse, .{1,80}? processing,? (?:order has been (?:in|out)bounded|assembling operation)$|^received in site[- ]|^exported[.!]?$|^(?:the )?plane has landed[.!]?$|^received by (?:the )?airline[.!]?$|^flight delay(?:ed)?[.!](?:$| the flight scheduled\b)|^wi\s*[–-]\s*intermediate warehouse\. (?:container received|package received at intermediate warehouse)[.!]?$|^delivery branch\. received at distribution branch[.!]?$|^receiving destination mail\. received by distributor[.!]?$|^container reception[.!]?$|(?:邮件|快件)(?:到达|离开)处理中心|航空公司接收|已交承运商运输|已完成分拣|^出口海关\/放行|^启运|^干线中转/i.test(value)) return 'in_transit';
   return undefined;
 }

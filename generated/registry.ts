@@ -206,6 +206,7 @@ import { adapter as fargoUz } from '../carriers/fargo-uz/adapter.js';
 import { adapter as fastdrop } from '../carriers/fastdrop/adapter.js';
 import { adapter as fastfrate } from '../carriers/fastfrate/adapter.js';
 import { adapter as fedex } from '../carriers/fedex/adapter.js';
+import { adapter as fedexFreight } from '../carriers/fedex-freight/adapter.js';
 import { adapter as fedexPl } from '../carriers/fedex-pl/adapter.js';
 import { adapter as fermopoint } from '../carriers/fermopoint/adapter.js';
 import { adapter as fgDelivery } from '../carriers/fg-delivery/adapter.js';
@@ -808,6 +809,7 @@ export const REGISTRY: RegistryDefinition = {
     "fastdrop": fastdrop,
     "fastfrate": fastfrate,
     "fedex": fedex,
+    "fedex-freight": fedexFreight,
     "fedex-pl": fedexPl,
     "fermopoint": fermopoint,
     "fg-delivery": fgDelivery,
@@ -1458,7 +1460,7 @@ export const REGISTRY: RegistryDefinition = {
     "fastdrop": "fastdrop",
     "fastfrate": "fastfrate",
     "fedex": "fedex",
-    "fedex-freight": "universal",
+    "fedex-freight": "fedex-freight",
     "fedex-pl": "fedex-pl",
     "fermopoint": "fermopoint",
     "fg-delivery": "fg-delivery",

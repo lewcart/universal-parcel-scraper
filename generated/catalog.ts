@@ -13598,7 +13598,8 @@ export const CARRIER_CATALOG = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fedex-freight",
+      "localClocks": true
     },
     "canaryUrl": "https://www.fedexfreight.com/en-us/tracking",
     "trackingUrlTemplate": "https://www.fedexfreight.com/fedextrack/?trknbr={trackingNumber}",

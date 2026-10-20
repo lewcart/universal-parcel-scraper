@@ -108,6 +108,11 @@ carrier.
   partners' scans too, and 17TRACK labels those digits with US Eastern time. A Swiss Post
   scan at 18:20 `+02:00` is A1's 16:20, which 17TRACK showed as 16:20 `-04:00` (checked
   2026-10-10). That leg's `time_raw` is read as UTC.
+- Shiprocket's leg (carrier key 100662) shows its rows' wall clocks, India's for the hubs in
+  India, and 17TRACK labels them with US Eastern time, nine and a half hours late against
+  Shiprocket's own page. A row placed in an Indian state is read on India's clock, as the
+  [Shiprocket adapter](../../carriers/shiprocket/README.md) reads it; any other keeps its wall
+  clock in `local_time`.
 - NZ Post's leg (carrier key 14061) shows NZ Post's wall clocks, and 17TRACK labels them
   with New Zealand's offset on the day it looks: in October it put `+13:00` on August
   scans, when New Zealand kept `+12:00` (checked 2026-10-10). That leg's `time_raw` is read

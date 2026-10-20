@@ -21,6 +21,7 @@ import { countryTimeZone, firstOccurrence } from '../../core/time/index.js';
 import type { TrawlClient } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
 import { trackingPlace } from '../../places/trackingLocation.js';
+import { placedInIndia } from '../../carriers/shiprocket/clock.js';
 import { swissPostDestinationZone } from '../../carriers/swiss-post/clock.js';
 import { universalCarrierHints } from '../shared/hints.js';
 import { capturedBodies, captureFailure, loadCapture, type CaptureSpec } from '../shared/capture.js';
@@ -140,6 +141,16 @@ const OUTBOUND = /\((?:salida|recibido por EDI)\)$/i;
  * scans as Swiss Post does (carriers/swiss-post/clock.ts).
  */
 const SWISS_POST = 19251;
+
+/**
+ * 17TRACK's carrier 100662, Shiprocket, shows the wall clocks of its rows,
+ * India's for those of the hubs in India, and 17TRACK labels them with US
+ * Eastern time: each Delhi hub scan came with the clock Shiprocket's own page
+ * shows on India's time, under -04:00, so nine and a half hours late. A row
+ * placed in India is read on India's clock. Any other keeps its wall clock,
+ * as Shiprocket's adapter keeps a row abroad's or a partner's.
+ */
+const SHIPROCKET = 100662;
 
 /** The recipient's country, the only field of the address read. */
 function recipientCountry(shipment: Record<string, unknown>): string | null {
@@ -319,6 +330,7 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
     const salvador = reported.key === CORREO_EL_SALVADOR;
     const sender = salvador && isValidS10TrackingNumber(number) ? countryTimeZone(number.slice(-2)) : null;
     const bound = reported.key === SWISS_POST ? recipientCountry(shipment) : null;
+    const shiprocket = reported.key === SHIPROCKET;
     for (const [index, raw] of provider.events.entries()) {
       if (++count > MAX_EVENTS || !isRecord(raw)) throw new SchemaError(SOURCE, '17TRACK returned invalid events');
       if (undatedScan(raw)) undated++;
@@ -326,17 +338,17 @@ export function parse17TrackResponse(payload: unknown, trackingNumber: string, p
       const own = !salvador ? null : OUTBOUND.test(text(raw.description)) ? sender : 'UTC';
       // The destination post's scan Swiss Post relays, its wall clock under Swiss Post's offset.
       const relayed = bound ? swissPostDestinationZone(text(raw.description), text(raw.location), bound) : null;
-      // A facility's clock, A1's UTC, NZ Post's or Correos de El Salvador's, on which 17TRACK puts one offset for the whole parcel.
-      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own ? facilityWall(raw) : null;
+      // A facility's clock, A1's UTC, NZ Post's, Correos de El Salvador's or Shiprocket's, on which 17TRACK puts one offset for the whole parcel.
+      const wall = relayed ? rawClock(raw) : relaysFacilityClock(name) || utc || nz || exchange || own || shiprocket ? facilityWall(raw) : null;
       const zone = !wall ? null : relayed ?? own ?? (abroad.has(index) ? abroad.get(index) ?? null : exchange ? origin : utc ? 'UTC'
-        : nz ? 'Pacific/Auckland' : facilityZone(text(raw.location)));
+        : nz ? 'Pacific/Auckland' : shiprocket ? (placedInIndia(text(raw.location)) ? 'Asia/Kolkata' : null) : facilityZone(text(raw.location)));
       const placed = wall && zone ? firstOccurrence(DateTime.fromISO(wall, { zone })) : null;
       let parsed: CarrierEvent | null;
       try { parsed = seventeenTrackEvent(raw, operator, placed?.isValid ? placed.toUTC().toISO() ?? undefined : undefined); }
       catch (cause) { throw new SchemaError(SOURCE, '17TRACK returned an invalid tracking event', { cause }); }
       if (!parsed) continue;
-      if (wall && abroad.has(index) && !zone) {
-        // A scan NZ Post dated abroad, in a country on several clocks, keeps its description as a wall time.
+      if (wall && (abroad.has(index) || shiprocket) && !zone) {
+        // A scan NZ Post dated abroad, in a country on several clocks, or a Shiprocket row outside India, keeps its description as a wall time.
         const local: CarrierEvent = { ...parsed, local_time: wall };
         delete local.time;
         events.push(local);

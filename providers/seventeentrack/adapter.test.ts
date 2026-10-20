@@ -194,6 +194,24 @@ describe('17TRACK result parsing', () => {
     expect(parse17TrackResponse(scan(100999), number).events?.[0]?.time).toBe('2026-05-07T20:20:00.000Z');
   });
 
+  it('reads Shiprocket\'s rows in India on India\'s clock, not as US Eastern time, and others as wall times', () => {
+    const row = (time: string, location: string | null, timezone: string | null = null) => ({
+      time_iso: `2026-05-07T${time}${timezone ?? '-04:00'}`, time_utc: null, time_raw: { date: '2026-05-07', time, timezone },
+      description: 'In Transit - Trip Arrived', location, stage: null, sub_status: 'InTransit_Other' });
+    const reply = (key: number, events: unknown[]) => ({ meta: { code: 200 }, shipments: [{ number, code: 200,
+      shipment: { latest_status: { status: 'InTransit' }, tracking: { providers: [{ provider: { key, name: 'Shiprocket' }, events }] } } }] });
+    const parsed = parse17TrackResponse(reply(100662, [row('18:10:00', 'EXAMPLE CITY'), row('16:22:51', 'Example_Hub_D (Delhi)'),
+      row('12:46:17', 'Example_Hub (Haryana)'), row('10:16:04', null), row('09:00:00', 'Example_Hub (Delhi)', '+05:30')]), number);
+    expect(parsed.events?.map((event) => event.time ?? event.local_time).sort()).toEqual(['2026-05-07T03:30:00.000Z',
+      '2026-05-07T07:16:17.000Z', '2026-05-07T10:16:04', '2026-05-07T10:52:51.000Z', '2026-05-07T18:10:00']);
+    expect(parsed.events?.find((event) => event.location?.includes('Hub_D'))).toMatchObject({ time: '2026-05-07T10:52:51.000Z',
+      provider_time_iso: '2026-05-07T16:22:51-04:00', time_provenance: 'provider_inferred' });
+    expect(parsed.undated_event_count).toBeUndefined();
+    // Another feed of the same name keeps 17TRACK's reading.
+    expect(parse17TrackResponse(reply(100999, [row('16:22:51', 'Example_Hub_D (Delhi)')]), number).events?.[0]?.time)
+      .toBe('2026-05-07T20:22:51.000Z');
+  });
+
   it('reads NZ Post\'s clock at the scan\'s own date, abroad too when nothing names a country', () => {
     const row = (date: string, time: string, offset: string, description: string) => ({
       time_iso: `${date}T${time}${offset}`, time_utc: null, time_raw: { date, time, timezone: null },

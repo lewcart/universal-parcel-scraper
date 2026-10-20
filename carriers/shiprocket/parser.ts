@@ -7,6 +7,7 @@ import { languageStageStatus, type Stage } from '../../core/status/index.js';
 import { calendarDay, firstOccurrence, townKey } from '../../core/time/index.js';
 import { clean } from '../../core/transport/index.js';
 import { isRecord } from '../../core/types.js';
+import { placedInIndia } from './clock.js';
 import { shiprocketStage } from './status.js';
 
 export const PROVIDER = 'Shiprocket';
@@ -28,15 +29,6 @@ const ORDER_SLACK_MS = 30 * 86_400_000;
 const DAY_MS = 86_400_000;
 // A wall clock read on India's may be up to this much ahead of it (UTC+14).
 const AHEAD_MS = 8.5 * 3_600_000;
-// India's states and union territories, and the country: a row placed in one keeps India's clock.
-const INDIA = new Set([
-  'india', 'andhrapradesh', 'arunachalpradesh', 'assam', 'bihar', 'chhattisgarh', 'goa', 'gujarat', 'haryana',
-  'himachalpradesh', 'jharkhand', 'karnataka', 'kerala', 'madhyapradesh', 'maharashtra', 'manipur', 'meghalaya',
-  'mizoram', 'nagaland', 'odisha', 'orissa', 'punjab', 'rajasthan', 'sikkim', 'tamilnadu', 'telangana', 'tripura',
-  'uttarpradesh', 'uttarakhand', 'uttaranchal', 'westbengal', 'andamanandnicobarislands', 'chandigarh',
-  'dadraandnagarhavelianddamananddiu', 'delhi', 'newdelhi', 'ncr', 'jammuandkashmir', 'ladakh', 'lakshadweep',
-  'puducherry', 'pondicherry',
-].map(townKey));
 // Shiprocket's own rows: its order, and its export hub's arrival and departure, which it places in Delhi or nowhere.
 const OWN_ROWS = new Set(['order received', 'order arrived at facility', 'order departed from facility']);
 const ORDER_ROW = 'order received';
@@ -130,20 +122,11 @@ function wallClock(row: Row, after: number | null, readAt: number): DateTime {
 const wording = (description: string) => description.toLowerCase().split(/\s+/).join(' ');
 
 /**
- * The domestic courier's place in India: a hub with its state in brackets,
- * "Gurgaon_Hub (Haryana)", or a place whose last part is a state, "DELHI".
- */
-function inIndia(location: string): boolean {
-  const state = /\(([^()]+)\)$/.exec(location)?.[1] ?? location.split(',').at(-1) ?? '';
-  return INDIA.has(townKey(state));
-}
-
-/**
  * Whether a row's clock is India's: every row of a courier within India, and
  * otherwise a row placed in India or one of Shiprocket's own.
  */
 function indiaClock(row: Row, domestic: boolean): boolean {
-  return domestic || OWN_ROWS.has(wording(row.description)) || (row.location !== '' && inIndia(row.location));
+  return domestic || OWN_ROWS.has(wording(row.description)) || (row.location !== '' && placedInIndia(row.location));
 }
 
 function eventOf(row: Row, wall: DateTime, domestic: boolean): CarrierEvent {

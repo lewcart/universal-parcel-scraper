@@ -244,6 +244,7 @@ describe('USPS lookup steps', () => {
       url: `https://tools.usps.com/tracking/${DELIVERED_NUMBER}`,
       skipHttp: true,
       maxTier: 3,
+      contentWaitForSelector: '#trackingNum',
     });
     expect(records).toEqual(['trawl:ok', 'lookup:trawl:ok']);
   });

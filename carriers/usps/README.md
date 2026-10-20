@@ -33,7 +33,9 @@ FLARESOLVERR_URL for browser fallback')`.
 
 1. `trawl`: the browser service loads
    `https://tools.usps.com/tracking/…`, runs the interstitial check, and
-   the rendered DOM is parsed. There is no tracking XHR to capture: the page carries its data
+   waits for the visible tracking number before the rendered DOM is parsed. The verification
+   page can finish loading before it reloads into tracking, so network idleness alone is
+   insufficient. There is no tracking XHR to capture: the page carries its data
    as HTML.
 
 Parsing, in order:

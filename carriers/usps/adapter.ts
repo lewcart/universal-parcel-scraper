@@ -298,6 +298,8 @@ export class USPSTracker {
       skipHttp: true,
       maxTier: 3,
       maxTimeout: timeoutMs,
+      // The verification page can become idle before it reloads into tracking.
+      contentWaitForSelector: '#trackingNum',
     }, {
       provider: 'TRAWL while fetching USPS',
       timeoutMs,

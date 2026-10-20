@@ -134,21 +134,45 @@ function datedOnly(name: unknown, status: string, date: unknown): string | null 
 }
 
 /**
- * The networks a reply dates by their day alone: every scan of theirs at
- * 00:00:00 and without an offset of its own, at least three of them over two
- * days or more. ParcelsApp writes Shiprocket's scans that way, while
- * Shiprocket's own tracker gives each of them its minute (2026-10-17). A
- * network with one scan at midnight keeps it.
+ * The networks a reply dates by their day alone: at least three scans of
+ * theirs over two days or more, none with an offset of its own, on a clock
+ * nobody scanned at (`dayClock`). ParcelsApp writes every scan of Shiprocket's
+ * at 00:00:00, while Shiprocket's own tracker gives each of them its minute
+ * (2026-10-17), and CDEK's and SEUR's on one minute with seconds that count
+ * the scans (07:00:00, 07:00:01...), while CDEK's own lookup has each scan's
+ * instant. A network with one scan at midnight keeps it. The rendered page
+ * prints no seconds (`minutes`).
  */
-function dayOnlyNetworks(entries: readonly { name: unknown; date: unknown; offset?: string | null }[]): Set<string> {
+function dayOnlyNetworks(entries: readonly { name: unknown; date: unknown; offset?: string | null }[], minutes = false): Set<string> {
   const walls = new Map<string, (string | null)[]>();
   for (const { name, date, offset } of entries) walls.set(nameKey(name), [...walls.get(nameKey(name)) ?? [], offset ? null : mislabeledWallTime(date)]);
-  return new Set([...walls].filter(([, list]) => list.length >= 3
-    && list.every((wall) => wall !== null && /T00:00:00(?:\.0+)?$/.test(wall))
+  return new Set([...walls].filter(([, list]) => list.length >= 3 && dayClock(list, minutes)
     && new Set(list.map((wall) => wall!.slice(0, 10))).size >= 2).map(([key]) => key));
 }
 
-/** The day of a scan whose network the reply dates by its day alone (`dayOnlyNetworks`). */
+/**
+ * Whether a network's wall clocks, in the reply's order, stand for no time:
+ * all at 00:00:00, or all on one minute with whole seconds that step by one
+ * from scan to scan, up or down. Real scans to the minute vary their minutes,
+ * and real seconds do not count scans across days; seconds that skip or carry
+ * milliseconds keep their times. Without seconds, one minute for all is enough.
+ */
+function dayClock(walls: readonly (string | null)[], minutes: boolean): boolean {
+  const clocks = walls.map((wall) => wall ? /T(\d{2}:\d{2}):(\d{2})(?:\.0+)?$/.exec(wall) : null);
+  if (!clocks.every((clock) => clock && clock[1] === clocks[0]![1])) return false;
+  const seconds = clocks.map((clock) => Number(clock![2]));
+  const step = seconds[1]! - seconds[0]!;
+  return minutes || (clocks[0]![1] === '00:00' && seconds.every((second) => second === 0))
+    || (Math.abs(step) === 1 && seconds.every((second, index) => !index || second - seconds[index - 1]! === step));
+}
+
+/**
+ * The day of a scan whose network the reply dates by its day alone
+ * (`dayOnlyNetworks`): that of ParcelsApp's digits, the network's own clock,
+ * as the midnight rule takes it. The UTC day of the instant they read as can
+ * be another: a count from 00:00:01 on Madrid's winter time is 23:00:01 UTC
+ * the day before.
+ */
 function networkDay(networks: ReadonlySet<string>, name: unknown, date: unknown): string | null {
   return networks.has(nameKey(name)) ? mislabeledWallTime(date)?.slice(0, 10) ?? null : null;
 }
@@ -1241,7 +1265,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     return { name, key: wall && text ? `${wall}|${text}` : '', zone: zones[index]!,
       fixed: Boolean(state.offset) || relaysFacilityClock(name), location: '' };
   })).forEach((zone, index) => { if (zone) zones[index] = zone; });
-  const dayOnly = dayOnlyNetworks(rows.map(({ name, state }) => ({ name, date: state.date, offset: state.offset })));
+  const dayOnly = dayOnlyNetworks(rows.map(({ name, state }) => ({ name, date: state.date, offset: state.offset })), true);
   for (const [index, { name, description, state, scan }] of rows.entries()) {
     const zone = zones[index]!;
     const unplaced = !zone && relaysFacilityClock(name);

@@ -156,7 +156,12 @@ step exists for future protocol changes.
   other carriers' midnight scans keep their instants.
 - A network whose every scan in the reply is at 00:00, at least three of them over two
   days or more, keeps their days in `local_time` the same way. ParcelsApp writes
-  Shiprocket's scans so, while Shiprocket's own tracker gives each its minute.
+  Shiprocket's scans so, while Shiprocket's own tracker gives each its minute. So does a
+  network whose scans, again three or more over two days or more, sit on one minute with
+  whole seconds counting them one by one in the reply's order (07:00:00, 07:00:01…), as
+  ParcelsApp writes CDEK's and SEUR's while CDEK's own lookup has each scan's instant; the
+  rendered page prints no seconds, so there one minute for all is enough. The day is that
+  of ParcelsApp's digits, the network's clock, not the UTC day of the instant they read as.
 - DHL Express scans carry the facility's clock, whatever the label: DHL's mobile API gives
   the same clocks scan for scan, and Ship24 gives them with the facility's offset. They
   skip the steps above and take the zone the

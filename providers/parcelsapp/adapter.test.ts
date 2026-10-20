@@ -939,6 +939,54 @@ describe('ParcelsApp result parsing', () => {
     ])?.[0]).toMatch(/^2026-10-16T08:30:00/);
   });
 
+  it('keeps the days of a network whose scans the reply clocks by a count of seconds on one minute', () => {
+    const scan = (date: string, status: string, carrier = 0) => ({ date, status, carrier });
+    const parse = (carriers: string[], states: Record<string, unknown>[], timezone: string | null = null) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity(), timezone);
+    const read = (carriers: string[], states: Record<string, unknown>[], timezone: string | null = null) =>
+      parse(carriers, states, timezone).events?.map(({ time, local_time }) => time ?? local_time);
+    // Shape of ParcelsApp's copies of CDEK's scans: their days, each at 07:00 with seconds counting them, which
+    // CDEK's own lookup gives at their instants. The latest stays a scan with no time.
+    const labels = ['Принят в городе отправителя', 'Отправлен в город получателя', 'В транзитном городе', 'Принят в городе получателя',
+      'На доставке у курьера', 'Вручено'];
+    const cdek = labels.map((status, index) => scan(`2026-10-${12 + index}T07:00:0${index}Z`, status)).reverse();
+    const delivered = parse(['CDEK'], cdek);
+    expect(delivered.events?.map(({ time, local_time }) => time ?? local_time))
+      .toEqual(['2026-10-17', '2026-10-16', '2026-10-15', '2026-10-14', '2026-10-13', '2026-10-12']);
+    expect(delivered).toMatchObject({ status: 'delivered', last_status_text: 'Вручено', last_update: null });
+    // A count from 01, at 23:00, keeps the days of its digits.
+    expect(read(['Example Parcel Co'], [scan('2026-10-15T23:00:04Z', 'Delivered'), scan('2026-10-14T23:00:03Z', 'Out for delivery'),
+      scan('2026-10-14T23:00:02Z', 'In transit'), scan('2026-10-13T23:00:01Z', 'Accepted')])).toEqual(['2026-10-15', '2026-10-14', '2026-10-14', '2026-10-13']);
+    // So does one from 00:00:01 that SEUR's clock would put on the UTC day before, in winter.
+    expect(read(['SEUR'], [scan('2026-01-15T00:00:03.000Z', 'Entregado'), scan('2026-01-14T00:00:02.000Z', 'En reparto'),
+      scan('2026-01-13T00:00:01.000Z', 'Admitido')], 'Europe/Madrid')).toEqual(['2026-01-15', '2026-01-14', '2026-01-13']);
+    // Scans to the minute, seconds that skip, go back or carry milliseconds, a count on one day or of two scans keep their instants.
+    const instants = (states: Record<string, unknown>[]) => read(['CDEK'], states)?.every((value) => String(value).endsWith('Z'));
+    const run = (clocks: string[], days = clocks.map((_, index) => 15 - index)) =>
+      clocks.map((clock, index) => scan(`2026-10-${days[index]}T${clock}Z`, labels[5 - index]!));
+    expect(instants(run(['07:00:02', '07:00:01', '07:00:00']))).toBe(false);
+    expect(instants(run(['16:05:00', '09:41:00', '11:20:00']))).toBe(true);
+    expect(instants(run(['07:00:05', '07:00:02', '07:00:00']))).toBe(true);
+    expect(instants(run(['07:00:02', '07:00:01', '07:00:02']))).toBe(true);
+    expect(instants(run(['07:00:02.250', '07:00:01.250', '07:00:00.250']))).toBe(true);
+    expect(instants(run(['07:00:02', '07:00:01.250', '07:00:00']))).toBe(true);
+    expect(instants(run(['07:00:02', '07:01:01', '07:00:00']))).toBe(true);
+    expect(instants(run(['07:00:02', '07:00:01', '07:00:00'], [15, 15, 15]))).toBe(true);
+    expect(instants(run(['07:00:01', '07:00:00']))).toBe(true);
+    // Another network's scans in the same reply keep theirs.
+    const mixed = read(['CDEK', 'Example Parcel Co'], [scan('2026-10-18T08:30:00Z', 'Delivered', 1), ...cdek]);
+    expect(mixed?.[0]).toMatch(/^2026-10-18T08:30:00/);
+    expect(mixed?.slice(1)).toEqual(['2026-10-17', '2026-10-16', '2026-10-15', '2026-10-14', '2026-10-13', '2026-10-12']);
+    // The rendered page prints no seconds: there, a network's every scan on one minute, three or more over two days or more, is enough.
+    const page = (rows: [string, string, string][]) => parseParcelsAppHtml(rendered(rows.map(([day, time, carrier], index) =>
+      carrierRow(`${day} Oct 2026`, time, labels[5 - index]!, carrier)).join('')), number).events?.map(({ time, local_time }) => time ?? local_time);
+    expect(page([['15', '07:00', 'CDEK'], ['14', '07:00', 'CDEK'], ['13', '07:00', 'CDEK']])).toEqual(['2026-10-15', '2026-10-14', '2026-10-13']);
+    expect(page([['15', '16:05', 'CDEK'], ['14', '07:00', 'CDEK'], ['13', '07:00', 'CDEK']])?.every((value) => String(value).endsWith('Z'))).toBe(true);
+    expect(page([['15', '07:00', 'CDEK'], ['15', '07:00', 'CDEK'], ['15', '07:00', 'CDEK']])?.every((value) => String(value).endsWith('Z'))).toBe(true);
+    expect(page([['16', '08:30', 'Example Parcel Co'], ['15', '07:00', 'CDEK'], ['14', '07:00', 'CDEK'], ['13', '07:00', 'CDEK']])?.[0])
+      .toMatch(/^2026-10-16T08:30:00/);
+  });
+
   it('reads USPS, Canada Post, GOFO and SpeedPAK scans in the state, province or country their location names', () => {
     // Live shapes (2026-10-10): each carrier's local clock labeled UTC. USPS's
     // page, Canada Post's digits, GOFO's US feed and Orange Connex's offsets

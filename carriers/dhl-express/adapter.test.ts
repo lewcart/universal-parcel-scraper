@@ -327,7 +327,7 @@ describe('DHL mobile API', () => {
       expect(services(fetcher)).toEqual(['shipments-tracking', 'shipments-tracking', 'common-countrySettingsBySettingName']);
     }
   });
-  it('asks nothing for any waybill while a CAPTCHA may hold, and recovers through the browser meanwhile', async () => {
+  it('asks nothing for any waybill while a CAPTCHA may hold, and goes straight to the browser meanwhile', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     try {
       const fetcher = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => JSON.parse(String(init?.body)).method === 'tracking'
@@ -342,15 +342,20 @@ describe('DHL mobile API', () => {
       fetcher.mockClear();
       await expect(tracker.direct('1234567880')).rejects.toThrow('recently required verification');
       await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
-      expect(recorder.step).toHaveBeenLastCalledWith(expect.objectContaining({ step: 'trawl', fallbackFrom: 'direct', fallbackErrorType: 'ChallengeError' }));
+      expect(recorder.step.mock.calls.map(([record]) => [record.step, record.outcome, record.fallbackFrom])).toEqual([['trawl', 'ok', null]]);
       expect(scrape).toHaveBeenCalledOnce();
+      // Without a browser service the held CAPTCHA stays the lookup's answer.
+      await expect(new DhlExpressTracker(environment(fetcher)).fetch(number)).rejects.toThrow('recently required verification');
       vi.setSystemTime(Date.now() + CAPTCHA_MEMORY_MS - 1);
       await expect(tracker.direct(number)).rejects.toThrow(ChallengeError);
       expect(fetcher).not.toHaveBeenCalled();
       vi.setSystemTime(Date.now() + 1);
       fetcher.mockImplementation(async (_url, init) => new Response(JSON.stringify(JSON.parse(String(init?.body)).method === 'tracking' ? mobilePayload() : settings)));
-      await expect(tracker.direct(number)).resolves.toMatchObject({ status: 'delivered' });
+      recorder.step.mockClear();
+      await expect(tracker.fetch(number)).resolves.toMatchObject({ status: 'delivered' });
+      expect(recorder.step.mock.calls.map(([record]) => [record.step, record.outcome])).toEqual([['direct', 'ok']]);
       expect(services(fetcher)).toEqual(['shipments-tracking']);
+      expect(scrape).toHaveBeenCalledOnce();
     } finally {
       vi.useRealTimers();
     }

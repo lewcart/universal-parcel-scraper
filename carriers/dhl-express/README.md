@@ -86,8 +86,10 @@ limit, not a block of the address.
 Asked every two minutes, the code stayed on past a quarter of an hour; after
 half an hour without requests it was gone. So after one, no adapter instance in
 the process that sends through the same fetcher asks the mobile API for half an
-hour, and lookups go to the browser. A restart forgets it, so a host that
-restarts often asks again each time and can keep the code on.
+hour. With a browser service, lookups skip `direct` meanwhile and go straight to
+`trawl`, so only the request that drew the code records a challenge; without
+one, `direct` answers with the challenge at once. A restart forgets it, so a
+host that restarts often asks again each time and can keep the code on.
 
 Checkpoint stages come from [status.ts](status.ts). DHL's fixed sentences match
 whole, and those that end with the facility ("Processed at CITY - COUNTRY")

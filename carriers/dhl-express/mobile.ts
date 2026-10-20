@@ -84,8 +84,7 @@ export class DhlMobileApi {
    */
   async tracking(number: string, budget: LookupBudget): Promise<unknown> {
     const state = this.state;
-    const captchaAt = state.captchaAt;
-    if (captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
+    if (this.captchaHeld()) throw new ChallengeError(PROVIDER, 'DHL mobile tracking recently required verification');
     let payload: unknown;
     try {
       payload = await this.request(budget, 'tracking', 'shipments', { airWayBill: number, countryCode: 'GB', languageCd: 'en',
@@ -100,6 +99,12 @@ export class DhlMobileApi {
       if (checkedAt === null || Date.now() - checkedAt >= SETTINGS_TTL_MS) await this.checkSettings(budget);
     }
     return payload;
+  }
+
+  /** Whether a CAPTCHA drawn through this transport may still hold, so tracking would fail without a request. */
+  captchaHeld(): boolean {
+    const captchaAt = this.state.captchaAt;
+    return captchaAt !== null && Date.now() - captchaAt < CAPTCHA_MEMORY_MS;
   }
 
   private async checkSettings(budget: LookupBudget): Promise<void> {

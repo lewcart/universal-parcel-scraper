@@ -264,9 +264,12 @@ export class DhlExpressTracker {
       return runSteps(run, [{ id: 'trawl', run: ({ signal, remainingMs }) => this.browserPiece(piece, { signal, budgetMs: remainingMs }) }]);
     }
     const number = normalizeNumber(raw);
+    const trawl = !!this.environment.trawl;
     return runSteps(run, [
-      { id: 'direct', run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(remainingMs, 10_000) }) },
-      { id: 'trawl', enabled: !!this.environment.trawl, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
+      // While a CAPTCHA holds the app's API would fail without a request, so a browser service is asked at once.
+      { id: 'direct', enabled: !(trawl && this.mobile.captchaHeld()),
+        run: ({ signal, remainingMs }) => this.direct(number, { signal, budgetMs: Math.min(remainingMs, 10_000) }) },
+      { id: 'trawl', enabled: trawl, run: ({ signal, remainingMs }) => this.browser(number, { signal, budgetMs: remainingMs }) },
     ]);
   }
 }

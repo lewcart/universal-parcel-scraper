@@ -4,7 +4,7 @@ import { parseHuahan } from './parser.js';
 
 const NUMBER = 'HHWAA0000000001YQ';
 const fixture = () => ({ ask: 1, data: [{ Code: NUMBER, Error_code: '0000', Status: 'Delivered',
-  Shipper_Hawbcode: 'PRIVATE', Local_Number: 'PRIVATE', Detail: [
+  Shipper_Hawbcode: 'PRIVATE', Local_Carrier: 'CAINIAO', Local_Number: 'DOFR0000000000001HD', Country_code: 'FR', Detail: [
     { Occur_date: '2026-01-03 12:15:00', Status: 'CC', Comment: 'The parcel has been successfully delivered.', track_area: 'Destination facility', recipient: 'PRIVATE' },
     { Occur_date: '2026-01-01 10:00:00', Status: 'DF', Comment: 'Departed from origin facility', track_area: 'SHENZHEN' },
   ] }] });
@@ -77,6 +77,47 @@ describe('HuaHan guest tracking', () => {
     expect(() => parseHuahan(clock, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
     const duplicate = fixture(); duplicate.data.push(duplicate.data[0]!);
     expect(() => parseHuahan(duplicate, NUMBER)).toThrow(expect.objectContaining({ kind: 'schema' }));
+  });
+
+  it('names the destination carrier, its number and the destination country', () => {
+    expect(parseHuahan(fixture(), NUMBER)).toMatchObject({ destination_country: 'FR', delivery_carrier: 'aliexpress',
+      delivery_tracking_number: 'DOFR0000000000001HD' });
+    const usps = fixture();
+    Object.assign(usps.data[0]!, { Local_Carrier: 'USPS', Local_Number: '9214490000000000000010_D104', Country_code: 'US' });
+    expect(parseHuahan(usps, NUMBER)).toMatchObject({ destination_country: 'US', delivery_carrier: 'usps',
+      delivery_tracking_number: '9214490000000000000010' });
+    // A partner the catalog does not know, or whose rules do not fit the number, keeps only the number.
+    const unknown = fixture();
+    Object.assign(unknown.data[0]!, { Local_Carrier: 'Sample Couriers', Local_Number: 'SMP12345678' });
+    const result = parseHuahan(unknown, NUMBER);
+    expect(result.delivery_tracking_number).toBe('SMP12345678');
+    expect(result.delivery_carrier).toBeUndefined();
+    const none = fixture();
+    Object.assign(none.data[0]!, { Local_Carrier: '', Local_Number: NUMBER, Country_code: null });
+    expect(parseHuahan(none, NUMBER)).not.toHaveProperty('delivery_tracking_number');
+    expect(parseHuahan(none, NUMBER)).not.toHaveProperty('destination_country');
+  });
+
+  it('places the destination carrier\'s scans after the hand-off in a destination of one zone', () => {
+    const relayed = fixture();
+    relayed.data[0]!.Detail = [
+      { Occur_date: '2026-01-06 11:17:00', Status: 'CC', Comment: 'Delivery Successful, Your shipment has been delivered successfully', track_area: 'SAMPLE TOWN' },
+      { Occur_date: '2026-01-05 20:44:00', Status: 'IA', Comment: 'Sorting Center Inbound, Your shipment has arrived at sorting center', track_area: 'Sample Hub' },
+      { Occur_date: '2026-01-04 15:28:22', Status: 'JY', Comment: 'Has been given to local carrier', track_area: 'NL' },
+      { Occur_date: '2026-01-03 14:59:51', Status: 'LD', Comment: 'Arrived at destination airport', track_area: 'NL' },
+      { Occur_date: '2026-01-01 10:00:00', Status: 'DF', Comment: 'Departed from origin facility', track_area: 'SHENZHEN' },
+    ];
+    const result = parseHuahan(relayed, NUMBER);
+    expect(result).toMatchObject({ current_stage: 'delivered', last_update: '2026-01-06T11:17:00+01:00' });
+    expect(result).not.toHaveProperty('last_update_local');
+    expect(result.events!.map(event => event.time ?? event.local_time)).toEqual(['2026-01-06T11:17:00+01:00',
+      '2026-01-05T20:44:00+01:00', '2026-01-04T15:28:22', '2026-01-03T14:59:51', '2026-01-01T10:00:00']);
+    expect(result.events![2]).toMatchObject({ provider_code: 'JY', stage: 'in_transit', stage_source: 'carrier_map' });
+    // A destination of several zones keeps every clock local.
+    relayed.data[0]!.Country_code = 'US';
+    const several = parseHuahan(relayed, NUMBER);
+    expect(several).toMatchObject({ last_update: null, last_update_local: '2026-01-06T11:17:00' });
+    expect(several.events!.every(event => !event.time)).toBe(true);
   });
 
   it('keeps pickup-point arrival distinct from delivery to the recipient', () => {

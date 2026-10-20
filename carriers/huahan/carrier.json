@@ -27,7 +27,10 @@
   "capabilities": [
     "history",
     "location",
-    "provider_code"
+    "provider_code",
+    "destination_country",
+    "delivery_partner",
+    "delivery_tracking_number"
   ],
   "portal": {
     "searchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html",
@@ -36,17 +39,20 @@
       "status",
       "history",
       "location",
+      "destination_country",
+      "delivery_partner",
       "delivery_tracking_number"
     ],
     "scraped": [
       "status",
       "history",
       "location",
-      "provider_code"
-    ],
-    "discarded": [
+      "provider_code",
+      "destination_country",
+      "delivery_partner",
       "delivery_tracking_number"
     ],
+    "discarded": [],
     "unavailable": [
       "offset_timestamps",
       "eta",

@@ -1,8 +1,11 @@
 import { DateTime } from 'luxon';
-import { normalizeTrackingNumber } from '../../core/detection/index.js';
+import { carrierIdFromPartner } from '../../core/catalog/hints.js';
+import { detectCarrierMatch, normalizeTrackingNumber } from '../../core/detection/index.js';
+import { USPS_ROUTING_BARCODE, uspsPackageIdentifier } from '../../core/detection/usps.js';
 import { ChallengeError, IndeterminateError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import { languageStageStatus } from '../../core/status/index.js';
+import { countryCode, countryTimeZone, isoTime } from '../../core/time/index.js';
 import { clean } from '../../core/transport/text.js';
 import { isRecord } from '../../core/types.js';
 import { huahanStage } from './status.js';
@@ -20,6 +23,27 @@ function text(row: Record<string, unknown>, key: string, max = 500): string {
   if (value == null) return '';
   if (typeof value !== 'string' || value.length > max) throw new SchemaError(PROVIDER, 'HuaHan returned an invalid tracking field');
   return clean(value, max);
+}
+
+/** A partner field: anything but a string is left out rather than failing the lookup. */
+function partnerText(row: Record<string, unknown>, key: string): string {
+  return typeof row[key] === 'string' ? clean(row[key], 80) : '';
+}
+
+/**
+ * The destination carrier and its number from `Local_Carrier` and
+ * `Local_Number`. The number can end in a suffix after an underscore
+ * ("…_D104") that the partner's own number lacks. The carrier is named only
+ * when the catalog knows it and its rules fit the number; a USPS routing
+ * barcode gives its package identifier.
+ */
+function handoff(row: Record<string, unknown>, number: string): Pick<CarrierResult, 'delivery_carrier' | 'delivery_tracking_number'> {
+  const compact = normalizeTrackingNumber(partnerText(row, 'Local_Number').split('_')[0]!).toUpperCase();
+  const reference = USPS_ROUTING_BARCODE.test(compact) ? uspsPackageIdentifier(compact) ?? '' : compact;
+  if (!/^[A-Z0-9]{4,40}$/.test(reference) || reference === number) return {};
+  const partner = carrierIdFromPartner(partnerText(row, 'Local_Carrier'));
+  const named = partner && partner !== 'huahan' && (detectCarrierMatch(reference).candidates as string[]).includes(partner);
+  return { ...(named ? { delivery_carrier: partner } : {}), delivery_tracking_number: reference };
 }
 
 function clock(value: string): string {
@@ -63,9 +87,22 @@ export function parseHuahan(payload: unknown, raw: string): CarrierResult {
   // The page renders Detail in server order, newest first. Clocks from different facilities cannot be sorted as instants.
   const newest = events[0]!;
   const current = huahanStage(newest.provider_code ?? '', newest.description!) ?? huahanStage('', text(row, 'Status'));
+  const country = countryCode(partnerText(row, 'Country_code')) ?? undefined;
+  // The scans after the hand-off to the destination carrier (JY) relay that
+  // carrier's own clock: a destination of one zone places them. HuaHan's own
+  // scans keep their wall clocks.
+  const handedOver = events.findIndex((event) => event.provider_code === 'JY');
+  const zone = handedOver > 0 && country ? countryTimeZone(country) : null;
+  const placed = zone ? events.map(({ local_time, ...event }, index): CarrierEvent => {
+    const time = index < handedOver ? isoTime(local_time, zone)?.iso : undefined;
+    return time ? { time, ...event } : { local_time, ...event };
+  }) : events;
+  const latest = placed[0]!;
   return { status: current ? languageStageStatus(current.stage) : 'unknown',
     ...(current ? { current_stage: current.stage, current_stage_source: current.source } : {}),
     ...(newest.provider_code ? { provider_code: newest.provider_code } : {}),
-    last_status_text: newest.description!, last_update: null, last_update_local: newest.local_time!, expected_delivery: null,
-    events: events.slice(0, 100), ...(events.length > 100 ? { history_truncated: true } : {}) };
+    last_status_text: newest.description!, last_update: latest.time ?? null,
+    ...(latest.time ? {} : { last_update_local: newest.local_time! }), expected_delivery: null,
+    ...(country ? { destination_country: country } : {}), ...handoff(row, number),
+    events: placed.slice(0, 100), ...(placed.length > 100 ? { history_truncated: true } : {}) };
 }

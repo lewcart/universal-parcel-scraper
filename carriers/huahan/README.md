@@ -13,9 +13,19 @@ shares one deadline across the four requests. No account, browser or external so
 
 The reply must repeat the requested waybill and confirm success. An explicit absence is
 not found; verification failures, changed replies and an empty history remain distinct.
-The adapter keeps the server's scan order, milestone codes, wording and locations. Clocks
-have no offsets, including scans from destination partners, so they remain local times.
-Shipper references and partner identifiers are omitted.
+The adapter keeps the server's scan order, milestone codes, wording and locations. The
+history runs from the order data in China through export, the flight and import clearance
+to the destination carrier's scans.
+
+- `Country_code` is the destination country. `Local_Carrier` and `Local_Number` name the
+  destination carrier and its number. A suffix after an underscore (`_D104`) is not part of
+  that number. The carrier is named only when the catalog knows it and its rules fit the
+  number. The shipper's reference is omitted.
+- Clocks have no offsets. After `Has been given to local carrier` (`JY`) the reply relays the
+  destination carrier's scans on that carrier's clock, cut to the minute: a French history
+  matched its partner's own tracker in French time. A destination country of one zone
+  places those scans. HuaHan's own scans, in China and at the destination airport, stay
+  local times.
 
 ## Numbers
 

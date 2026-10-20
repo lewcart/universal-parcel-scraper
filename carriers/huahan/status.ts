@@ -2,9 +2,10 @@ import { classifyWording, type ClassifiedWording, type Stage } from '../../core/
 import { normalizeStatusWording, type CarrierStatusMap } from '../../core/status/statusMap.js';
 
 // The origin milestone codes are documented by getCargoTrack. PB is the web
-// tracker's partner scan for arrival at the delivery point, ready for collection.
+// tracker's partner scan for arrival at the delivery point, ready for collection,
+// and JY the hand-off to the destination carrier.
 const CODES: ReadonlyMap<string, Stage> = new Map([
-  ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'], ['PB', 'ready_for_pickup'],
+  ['IR', 'registered'], ['AF', 'accepted'], ['DF', 'in_transit'], ['PB', 'ready_for_pickup'], ['JY', 'in_transit'],
 ]);
 // Scans 17TRACK relays without their code: "Data processed" comes between departures from the origin facility.
 const WORDINGS: ReadonlyMap<string, Stage> = new Map([['data processed', 'in_transit']]);

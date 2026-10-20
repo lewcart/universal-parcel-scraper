@@ -1,7 +1,9 @@
 # J&T Express Australia
 
 J&T Express Australia runs its own network, site and tracker, apart from the Southeast Asian J&T
-operations in `j-and-t`. Tracked through the lookup its tracking page makes.
+operations in `j-and-t`. Tracked through the lookup its tracking page makes. J&T Express Germany's
+page makes the same lookup on its own host, so [official.ts](official.ts) holds the request and
+the reading of its reply for both networks.
 
 ## How it works
 

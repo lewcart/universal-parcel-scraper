@@ -71,6 +71,14 @@ describe('French carrier number candidates', () => {
     }
   });
 
+  it('suggests Vinted Go first for FMP, a digit, UW, a digit and nine letters only', () => {
+    expect(detectCarrierMatch('FMP1UW2ABCDEFGHI')).toMatchObject({ carrier: 'unknown', confidence: 'low', candidates: ['vinted-go'] });
+    expect(recognitionCandidates('FMP1UW2ABCDEFGHI')[0]).toMatchObject({ carrier: 'vinted-go', preferred: true });
+    for (const number of ['FMP5P12A34567890', 'FMP1UW2ABCDEFGH1', 'FMP1UW2ABCDEFGH', 'FMP1UW2ABCDEFGHIJ', 'FMX1UW2ABCDEFGHI', 'FMP1UX2ABCDEFGHI']) {
+      expect(detectCarrierMatch(number).candidates ?? [], number).not.toContain('vinted-go');
+    }
+  });
+
   it('settles a French endpoint confirmation ahead of the shared GLS group answer', () => {
     const matches: RecognitionOutcome[] = recognitionCandidates('A1B2C3D4')
       .filter(({ carrier }) => ['gls-ch', 'gls-fr'].includes(carrier))

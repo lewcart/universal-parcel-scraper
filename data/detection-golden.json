@@ -71650,6 +71650,20 @@
     ]
   },
   {
+    "input": "FMP1UW2ABCDEFGHI",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "vinted-go"
+    ],
+    "preferred": [
+      "vinted-go"
+    ],
+    "asked": [
+      "vinted-go"
+    ]
+  },
+  {
     "input": "FMPP0000000001",
     "carrier": "ekart",
     "confidence": "high",

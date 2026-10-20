@@ -30302,6 +30302,11 @@
       {
         "pattern": "^VGS\\d{14}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+        "confidence": "low",
+        "preferred": true
       }
     ]
   },

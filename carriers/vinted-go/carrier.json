@@ -101,6 +101,12 @@
       "id": "vinted-go-vgs",
       "pattern": "^VGS\\d{14}$",
       "confidence": "high"
+    },
+    {
+      "id": "vinted-go-fmp",
+      "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+      "confidence": "low",
+      "preferred": true
     }
   ]
 }

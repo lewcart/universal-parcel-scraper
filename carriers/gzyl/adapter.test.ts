@@ -4,8 +4,8 @@ import { statusMapAnswer } from '../../core/catalog/statusMaps.js';
 import { normalizeStatusWording } from '../../core/status/statusMap.js';
 import { NOOP_RECORDER } from '../../core/telemetry/index.js';
 import { adapter, GzylTracker } from './adapter.js';
-import { GZYL_ORIGIN, normalizeGzylNumber, parseGzylPage, parseGzylTrack } from './parser.js';
-import { statusMap } from './status.js';
+import { GZYL_ORIGIN, normalizeGzylNumber, parseGzylPage, parseGzylTrack, splitGzylRow } from './parser.js';
+import { PLACED_WORDINGS, statusMap } from './status.js';
 import statuses from './statuses.json' with { type: 'json' };
 import carrier from './carrier.json' with { type: 'json' };
 
@@ -76,6 +76,24 @@ describe('GZYL tracking adapter', () => {
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Arrival sorting, distribution center Sampletown' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Arrival sorting, distribution centers' })).toEqual({ kind: 'unknown' });
     expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Leaving the sorting center Sampletown' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    expect(statusMapAnswer({ carrier: 'gzyl', providerCode: null, description: 'Package is on the way' })).toEqual({ kind: 'mapped', stage: 'in_transit' });
+    for (const wording of PLACED_WORDINGS) expect(statuses.entries.map((entry) => entry.wording)).toContain(wording);
+  });
+
+  it('reads the town GZYL writes after a wording as the scan’s place', () => {
+    expect(splitGzylRow('Package is on the way Sampletown', '')).toEqual({ content: 'Package is on the way', location: 'Sampletown' });
+    expect(splitGzylRow('leaving the  sorting center Sample-Town 00000', '')).toEqual({ content: 'leaving the sorting center', location: 'Sample-Town 00000' });
+    expect(splitGzylRow('Arrival sorting, distribution center Sampletown', 'Sampletown')).toEqual({ content: 'Arrival sorting, distribution center', location: 'Sampletown' });
+    expect(splitGzylRow('Arrival sorting, distribution centers', '')).toEqual({ content: 'Arrival sorting, distribution centers', location: '' });
+    expect(splitGzylRow('Package is on the way, see the partner', '')).toEqual({ content: 'Package is on the way, see the partner', location: '' });
+    expect(splitGzylRow('Goods leave the operation center', '')).toEqual({ content: 'Goods leave the operation center', location: '' });
+
+    const reply = structuredClone(fixture('track')) as [{ data: [{ trackDetails: Record<string, string>[] }] }];
+    const details = reply[0].data[0].trackDetails;
+    details.splice(1, 0, { ...details[1]!, track_content: 'Package is on the way Sampletown 00000', track_date: '2026-03-06 10:00:00' });
+    const result = parseGzylTrack(reply, NUMBER, READ_AT)!;
+    expect(result.events![0]).toMatchObject({ description: 'Package is on the way', location: 'Sampletown', stage: 'in_transit' });
+    expect(result.last_status_text).toBe('Package is on the way');
   });
 
   it('links no plain-HTTP page', () => {

@@ -40,6 +40,9 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   the destination's own clock allows. Every row is read on Beijing time, as on the other tenants
   except Mayi Yinfu, where a row copied from the delivering carrier without a place can come on
   that carrier's clock.
+- GZYL leaves a row's place empty and writes the town after some wordings, as in "Leaving the
+  sorting center" followed by the town. The adapter reads that town as the place, so a wording
+  reads the same for every town.
 - A record that names its channel and the channel's transfer number hands the parcel over when
   the channel label is in the platform's table, the delivery carrier's own detection offers the
   number and it serves the destination. The table holds Swiss Post's labels, the destination of

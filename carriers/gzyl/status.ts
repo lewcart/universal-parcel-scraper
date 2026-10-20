@@ -4,17 +4,19 @@ import statuses from './statuses.json' with { type: 'json' };
 
 const WORDINGS = new Map<string, Stage>(statuses.entries.map((entry) => [normalizeStatusWording(entry.wording), entry.stage as Stage]));
 
-const PLACE = '<place>';
-// A wording ending in `<place>` stands for every town GZYL writes into its end.
-const PLACED = statuses.entries.filter((entry) => entry.wording.endsWith(PLACE))
-  .map((entry) => [`${normalizeStatusWording(entry.wording.slice(0, -PLACE.length))} `, entry.stage as Stage] as const);
+/** Wordings GZYL writes a town after, leaving the row's own place empty. */
+export const PLACED_WORDINGS: readonly string[] = ['Arrival sorting, distribution center', 'Leaving the sorting center', 'Package is on the way'];
+const PLACED = PLACED_WORDINGS.map((wording) => `${normalizeStatusWording(wording)} `);
 
 /**
  * The stage GZYL's map gives a row, by its `normalizeStatusWording` wording.
  * A row's kind code, when it has one, groups many wordings and decides nothing.
+ * A placed wording that still carries its town, as a provider relays it, reads
+ * as the wording alone.
  */
 export function gzylStage(_code: string | null, wording: string): Stage | undefined {
-  return WORDINGS.get(wording) ?? PLACED.find(([prefix]) => wording.startsWith(prefix))?.[1];
+  const prefix = PLACED.find((placed) => wording.startsWith(placed));
+  return WORDINGS.get(wording) ?? (prefix ? WORDINGS.get(prefix.trimEnd()) : undefined);
 }
 
 export const statusMap: CarrierStatusMap = { stage: gzylStage, gaps: [] };

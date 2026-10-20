@@ -13821,7 +13821,7 @@ export const CARRIER_CATALOG = {
   },
   "first-line": {
     "displayName": "FIRST LINE",
-    "color": "#683088",
+    "color": "#55207a",
     "aliases": [
       "1ST",
       "1ST Group",

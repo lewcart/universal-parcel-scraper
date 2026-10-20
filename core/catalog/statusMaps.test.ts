@@ -171,6 +171,7 @@ describe('status map answers', () => {
     expect(answer('swiss-post', 'LETTER.*.90.1800', 'Delay')).toEqual(gap);
     expect(answer('swiss-post', 'PARCEL.*.0.501', 'Picked up at the client')).toEqual(mapped('accepted'));
     expect(answer('swiss-post', 'PARCEL.*.1.502', 'Picked up')).toEqual(mapped('accepted'));
+    expect(answer('swiss-post', 'PARCEL.*.1.2000', 'Delivered over counter')).toEqual(mapped('delivered'));
     expect(answer('swiss-post', 'PARCEL.*.1.9999', 'Synthetic scan')).toEqual(unknown);
   });
 

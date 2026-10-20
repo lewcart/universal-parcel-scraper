@@ -88,6 +88,8 @@ export const EVENT_STAGE_BY_CODE: Record<string, Stage> = {
   '1204': 'in_transit',
   '1213': 'in_transit',
   '1218': 'in_transit',
+  // Handed to the recipient at a post office counter.
+  '2000': 'delivered',
   // A pickup notice like 910: the item waits at a post office for collection.
   '2100': 'ready_for_pickup',
   '2101': 'ready_for_pickup',

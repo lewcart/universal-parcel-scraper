@@ -79,6 +79,7 @@ describe('Swiss Post historical event codes', () => {
     ['1204', 'Consignment is being processed', 'in_transit'],
     ['1213', 'Sorted for delivery', 'in_transit'],
     ['1218', 'Sorted for delivery', 'in_transit'],
+    ['2000', 'Delivered over counter', 'delivered'],
     ['3800', 'Delivered to the mailbox/letter box', 'delivered'],
     ['4020', 'Forwarding abroad', 'in_transit'],
   ])('classifies scan %s from its code for letters and parcels alike', (code, description, stage) => {

@@ -450,6 +450,15 @@
       "firstSeen": "2026-09-10"
     },
     {
+      "code": "2000",
+      "wording": "Delivered over counter",
+      "language": "en",
+      "stage": "delivered",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Handed to the recipient at a post office counter."
+    },
+    {
       "code": "2100",
       "wording": "Registered for collection",
       "language": "en",

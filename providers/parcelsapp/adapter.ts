@@ -133,6 +133,26 @@ function datedOnly(name: unknown, status: string, date: unknown): string | null 
   return nameKey(name) === 'fedex' && /^picked\s+up$/i.test(status.trim()) && wall && /T00:00:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 10) : null;
 }
 
+/**
+ * The networks a reply dates by their day alone: every scan of theirs at
+ * 00:00:00 and without an offset of its own, at least three of them over two
+ * days or more. ParcelsApp writes Shiprocket's scans that way, while
+ * Shiprocket's own tracker gives each of them its minute (2026-10-17). A
+ * network with one scan at midnight keeps it.
+ */
+function dayOnlyNetworks(entries: readonly { name: unknown; date: unknown; offset?: string | null }[]): Set<string> {
+  const walls = new Map<string, (string | null)[]>();
+  for (const { name, date, offset } of entries) walls.set(nameKey(name), [...walls.get(nameKey(name)) ?? [], offset ? null : mislabeledWallTime(date)]);
+  return new Set([...walls].filter(([, list]) => list.length >= 3
+    && list.every((wall) => wall !== null && /T00:00:00(?:\.0+)?$/.test(wall))
+    && new Set(list.map((wall) => wall!.slice(0, 10))).size >= 2).map(([key]) => key));
+}
+
+/** The day of a scan whose network the reply dates by its day alone (`dayOnlyNetworks`). */
+function networkDay(networks: ReadonlySet<string>, name: unknown, date: unknown): string | null {
+  return networks.has(nameKey(name)) ? mislabeledWallTime(date)?.slice(0, 10) ?? null : null;
+}
+
 /** A step dated by its day alone. */
 function dayEvent(day: string, description: string): CarrierEvent | null {
   const parsed = localEvent(`${day}T00:00:00`, description);
@@ -1072,6 +1092,7 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
   copiedNetworkZones(entries.map((entry, index) => ({ name: entry.name, key: copyKey(entry), zone: zones[index]!.zone,
     fixed: Boolean(entry.offset) || relaysFacilityClock(entry.name), location: entry.location })))
     .forEach((zone, index) => { if (zone) zones[index] = { zone, step: 'copy' }; });
+  const dayOnly = dayOnlyNetworks(entries);
   const latest = new LatestScan(SOURCE);
   for (const [index, entry] of entries.entries()) {
     const { raw, name, scan, date } = entry;
@@ -1085,8 +1106,8 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));
     const localOnly = !zone && !unplaced && entry.wallOnly;
-    // A step its carrier dates by its day alone keeps the day (`datedOnly`).
-    const day = datedOnly(name, relayedLabel(raw.status), date);
+    // A step or network its carrier dates by the day alone keeps the day (`datedOnly`, `dayOnlyNetworks`).
+    const day = datedOnly(name, relayedLabel(raw.status), date) ?? networkDay(dayOnly, name, date);
     const parsed = day ? dayEvent(day, entry.wording)
       : localEvent((zone ? mislabeledLocalTime(date, zone)?.iso : unplaced || localOnly ? mislabeledWallTime(date) : undefined) ?? date, entry.wording);
     if (parsed) latest.see(mislabeledWallTime(date) ?? '', facility);
@@ -1220,6 +1241,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
     return { name, key: wall && text ? `${wall}|${text}` : '', zone: zones[index]!,
       fixed: Boolean(state.offset) || relaysFacilityClock(name), location: '' };
   })).forEach((zone, index) => { if (zone) zones[index] = zone; });
+  const dayOnly = dayOnlyNetworks(rows.map(({ name, state }) => ({ name, date: state.date, offset: state.offset })));
   for (const [index, { name, description, state, scan }] of rows.entries()) {
     const zone = zones[index]!;
     const unplaced = !zone && relaysFacilityClock(name);
@@ -1228,7 +1250,7 @@ export function parseParcelsAppHtml(html: string, trackingNumber: string, timezo
       undated++;
       continue;
     }
-    const day = datedOnly(name, description, state.date);
+    const day = datedOnly(name, description, state.date) ?? networkDay(dayOnly, name, state.date);
     // A scan whose label nothing vouches for keeps its wall clock, as in the JSON reply.
     const wall = !zone && state.wallOnly ? mislabeledWallTime(state.date) : null;
     const parsed = day ? dayEvent(day, scan?.wording ?? description)

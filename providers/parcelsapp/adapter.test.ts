@@ -911,6 +911,33 @@ describe('ParcelsApp result parsing', () => {
     expect(parseParcelsAppHtml(rendered(carrierRow('11 Aug 2026', '00:00', 'Picked Up', 'FedEx')), number).events?.[0]?.time).toBeUndefined();
   });
 
+  it('keeps the days of a network whose every scan the reply writes at 00:00', () => {
+    const scan = (date: string, status: string, carrier = 0) => ({ date, status, carrier, location: 'Example_Hub (Example State)' });
+    const read = (carriers: string[], states: Record<string, unknown>[]) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity()).events?.map(({ time, local_time }) => time ?? local_time);
+    // Shape of ParcelsApp's copies of Shiprocket's scans: days at 00:00, which Shiprocket gives to the minute.
+    expect(read(['Shiprocket'], [
+      scan('2026-10-15T00:00:00Z', 'Order Arrived at Facility'),
+      scan('2026-10-14T00:00:00Z', 'In Transit - Trip Arrived'),
+      scan('2026-10-13T00:00:00Z', 'In Transit - Shipment picked up'),
+    ])).toEqual(['2026-10-15', '2026-10-14', '2026-10-13']);
+    // Three scans on one day, a network with a scan at another time, or with only two scans, keep their instants.
+    const instants = (states: Record<string, unknown>[], carriers = ['Shiprocket']) => read(carriers, states)?.every((value) => String(value).endsWith('Z'));
+    expect(instants([scan('2026-10-13T00:00:00Z', 'Order Arrived at Facility'), scan('2026-10-13T00:00:00Z', 'In Transit - Trip Arrived'),
+      scan('2026-10-13T00:00:00Z', 'In Transit - Shipment picked up')])).toBe(true);
+    expect(instants([scan('2026-10-15T00:00:00Z', 'Order Arrived at Facility'), scan('2026-10-14T09:12:00Z', 'In Transit - Trip Arrived'),
+      scan('2026-10-13T00:00:00Z', 'In Transit - Shipment picked up')])).toBe(true);
+    expect(instants([scan('2026-10-14T00:00:00Z', 'In Transit - Trip Arrived'), scan('2026-10-13T00:00:00Z', 'In Transit - Shipment picked up')]))
+      .toBe(true);
+    // Another network's scans in the same reply keep theirs.
+    expect(read(['Shiprocket', 'Example Parcel Co'], [
+      scan('2026-10-16T08:30:00Z', 'Delivered', 1),
+      scan('2026-10-15T00:00:00Z', 'Order Arrived at Facility'),
+      scan('2026-10-14T00:00:00Z', 'In Transit - Trip Arrived'),
+      scan('2026-10-13T00:00:00Z', 'In Transit - Shipment picked up'),
+    ])?.[0]).toMatch(/^2026-10-16T08:30:00/);
+  });
+
   it('reads USPS, Canada Post, GOFO and SpeedPAK scans in the state, province or country their location names', () => {
     // Live shapes (2026-10-10): each carrier's local clock labeled UTC. USPS's
     // page, Canada Post's digits, GOFO's US feed and Orange Connex's offsets

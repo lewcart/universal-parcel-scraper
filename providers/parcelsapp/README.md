@@ -154,6 +154,9 @@ step exists for future protocol changes.
   time FedEx never gives. It stays a scan, so when it is the latest one `last_update` is
   null. A pickup at another time, another FedEx scan at 00:00 and
   other carriers' midnight scans keep their instants.
+- A network whose every scan in the reply is at 00:00, at least three of them over two
+  days or more, keeps their days in `local_time` the same way. ParcelsApp writes
+  Shiprocket's scans so, while Shiprocket's own tracker gives each its minute.
 - DHL Express scans carry the facility's clock, whatever the label: DHL's mobile API gives
   the same clocks scan for scan, and Ship24 gives them with the facility's offset. They
   skip the steps above and take the zone the

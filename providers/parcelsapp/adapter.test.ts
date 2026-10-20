@@ -711,6 +711,20 @@ describe('ParcelsApp result parsing', () => {
     expect(result.events?.map((scan) => scan.time)).toEqual(['2026-10-19T02:51:27.000Z', '2026-10-09T03:26:10.000Z']);
   });
 
+  it('reads iMile\'s scans on the destination\'s clock, wherever they happened', () => {
+    // iMile's page writes every scan on the recipient country's clock and ParcelsApp has its
+    // digits; read on iMile's catalog zone they came out two hours early in Italy.
+    const parse = (destinationCode: string) => parseParcelsAppResponse({ carriers: ['iMile'], destinationCode, states: [
+      { date: '2026-09-24T17:14:34Z', status: '【Example center】Your order has been received.', carrier: 0, location: 'Example center' },
+      { date: '2026-09-17T19:16:16Z', status: 'Order submitted, pending to receive.', carrier: 0 },
+    ] }, number, identity());
+    expect(parse('IT').events?.map((scan) => scan.time)).toEqual(['2026-09-24T15:14:34.000Z', '2026-09-17T17:16:16.000Z']);
+    // A destination of several clocks leaves them wall clocks, as iMile's own lookup does.
+    expect(parse('AU').events?.map((scan) => [scan.time, scan.local_time])).toEqual([
+      [undefined, '2026-09-24T17:14:34.000'], [undefined, '2026-09-17T19:16:16.000'],
+    ]);
+  });
+
   it('reads Asendia scans filed under another name in their place\'s clock, not as UTC', () => {
     // Live shape (2026-09-30): an eBay shipment whose Asendia scans ParcelsApp
     // files under "EasyShip", on local clocks. Ship24's instants agree.

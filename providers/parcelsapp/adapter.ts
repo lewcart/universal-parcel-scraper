@@ -709,6 +709,7 @@ function carrierClock(payload: Record<string, unknown>, state: Record<string, un
   if (typeof name === 'string' && ASENDIA_USA.test(name.trim())) return null;
   if (carrier === 'paack' || carrier === 'vinted-go' || carrier === 'austrian-post' || carrier === 'straightship' || ownOffset(name, state.date)) return null;
   if (key === 'sunyousytrack' && SUNYOU_DESTINATION_LEG.test(status.trim())) return countryTimeZone(destination) ?? undefined;
+  if (carrier === 'imile') return countryTimeZone(destination);
   // Cainiao's copies of Speedaf's scans keep Speedaf's digits, its arrival at the linehaul office too.
   if (carrier === 'speedaf' || (key === 'cainiao' && speedafDeparture(payload))) return speedafZone(payload, state.date, destination);
   // A SwiftX label keeps its own clock, and a listed SwiftX site dates its scans (`siteZone`).
@@ -822,6 +823,10 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
   const wallClock = WALL_CLOCKS.has(nameKey(name)) && !offset;
   const laterLeg = cttyexLaterLeg(name, status);
   const own = laterLeg ? null : carrierClock(payload, raw, number, status, destination);
+  // iMile's page writes every scan on the recipient country's clock, wherever it happened, and
+  // ParcelsApp has its digits; read on iMile's catalog zone they came out early. A destination
+  // of one zone places them, and without one they keep their wall clock.
+  const imileWall = own === null && !offset && typeof name === 'string' && carrierIdFromName(name) === 'imile';
   const sited = own === undefined ? siteZone(payload, raw, number, inNorthAmerica, status, destination) : undefined;
   const placed = own !== undefined ? own : sited;
   // A posting that only its office's capital places borrows first (`postingOffice`).
@@ -836,7 +841,7 @@ function readState(payload: Record<string, unknown>, raw: Record<string, unknown
     local: zone !== null && zone === regionScanZone(name, location, inNorthAmerica)?.zone,
     fallback: wallClock || office ? fitsPlace(fallback, location) : null, known: known?.zone ?? null, arrival: known?.country ?? null,
     // With no zone, a scan whose label nothing vouches for keeps its wall clock.
-    wallOnly: laterLeg || unknownNetwork(name) || militaryPostOffice(location) };
+    wallOnly: laterLeg || imileWall || unknownNetwork(name) || militaryPostOffice(location) };
 }
 
 type ZoneStep = 'carrier' | 'place' | 'copy' | 'borrowed' | 'routing' | 'known' | 'labeled';
@@ -1124,8 +1129,9 @@ function parseHistory(payload: unknown, trackingNumber: string, timezone: string
     // A DHL Express scan whose facility the rule cannot place is a wall clock
     // with no instant, and so is a UPS or FedEx scan with no location that
     // nothing places. A scan at a US military post office, of a network no
-    // table knows (`unknownNetwork`) or of CTTYEX after China (`cttyexLaterLeg`)
-    // keeps its wall clock as its local time. Any other scan with no zone
+    // table knows (`unknownNetwork`), of CTTYEX after China (`cttyexLaterLeg`)
+    // or of iMile for a destination of several zones keeps its wall clock as
+    // its local time. Any other scan with no zone
     // keeps ParcelsApp's label.
     const facility = !zone && relaysFacilityClock(name);
     const unplaced = facility || (!zone && !entry.location && UNLOCATED_LOCAL_CLOCKS.has(nameKey(name)));

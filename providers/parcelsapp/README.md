@@ -287,7 +287,10 @@ step exists for future protocol changes.
   partner scans it relays. Step 1 reads them on that clock. SunYou's feed dates its destination leg,
   from "Arrived At Destination Country Airport" to the delivery, on the destination's clock
   ("+02:00" for Spain, where EcoScooting's own instants agree), so those scans take the
-  destination's single clock, or else only a guess. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
+  destination's single clock, or else only a guess. "iMile" has the digits of iMile's
+  page, which writes every scan on the recipient country's clock, wherever it was: they
+  take the destination's single clock, or else keep their wall clock, as iMile's own
+  lookup does. "South Korea Post" (Korea Post's page), "Posten Norge - Norway
   Post" (Bring's offsets, in Denmark too) and "Royal Mail" (Parcelforce's offsets) were
   checked at home only, so their home clock is a step 3 guess that a location in another
   country rules out. So was "Japan Post" (2026-10-11): Japan Post's portal gives local

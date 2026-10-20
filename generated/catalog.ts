@@ -17344,6 +17344,48 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "j-and-t-de": {
+    "displayName": "J&T Express Germany",
+    "color": "#e60000",
+    "aliases": [
+      "J&T Express (DE)",
+      "J&T Express DE",
+      "J&T Express Deutschland",
+      "J&T Germany",
+      "J&T Express Germany GmbH",
+      "极兔速递 · 德国区"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "j-and-t-de"
+    },
+    "canaryUrl": "https://www.jtexpress.de/tracking",
+    "trackingUrlTemplate": "https://www.jtexpress.de/tracking?q={trackingNumber}",
+    "trackingSearchUrl": "https://www.jtexpress.de/tracking",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.de",
+          "jtexpress.de"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTDE\\d{12}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "j-and-t-middle-east": {
     "displayName": "J&T Express Middle East",
     "color": "#e60000",
@@ -31682,6 +31724,7 @@ export const CARRIER_IDS = [
   "j-and-t-br",
   "j-and-t-cargo",
   "j-and-t-cn",
+  "j-and-t-de",
   "j-and-t-middle-east",
   "j-and-t-mx",
   "jadlog",
@@ -32463,6 +32506,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "j-and-t-br": [],
   "j-and-t-cargo": ["j-and-t-cargo-1","j-and-t-cargo-2"],
   "j-and-t-cn": ["j-and-t-cn-1"],
+  "j-and-t-de": ["j-and-t-de-1"],
   "j-and-t-middle-east": ["j-and-t-middle-east-1"],
   "j-and-t-mx": ["j-and-t-mx-1"],
   "jadlog": [],

@@ -75467,6 +75467,30 @@
     ]
   },
   {
+    "input": "JTDE100007312985",
+    "carrier": "j-and-t-de",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-de"
+    ]
+  },
+  {
+    "input": "JTDE100027319088",
+    "carrier": "j-and-t-de",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-de"
+    ]
+  },
+  {
+    "input": "JTDE900000979616",
+    "carrier": "j-and-t-de",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-de"
+    ]
+  },
+  {
     "input": "JTE000013652109",
     "carrier": "j-and-t-middle-east",
     "confidence": "high",

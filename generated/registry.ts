@@ -304,6 +304,7 @@ import { adapter as jumppoint } from '../carriers/jumppoint/adapter.js';
 import { adapter as kazpost } from '../carriers/kazpost/adapter.js';
 import { adapter as kex } from '../carriers/kex/adapter.js';
 import { adapter as kexExpressHk } from '../carriers/kex-express-hk/adapter.js';
+import { adapter as kitTk } from '../carriers/kit-tk/adapter.js';
 import { adapter as koreaPost } from '../carriers/korea-post/adapter.js';
 import { adapter as kuehneNagel } from '../carriers/kuehne-nagel/adapter.js';
 import { adapter as kunyoung } from '../carriers/kunyoung/adapter.js';
@@ -901,6 +902,7 @@ export const REGISTRY: RegistryDefinition = {
     "kazpost": kazpost,
     "kex": kex,
     "kex-express-hk": kexExpressHk,
+    "kit-tk": kitTk,
     "korea-post": koreaPost,
     "kuehne-nagel": kuehneNagel,
     "kunyoung": kunyoung,
@@ -1583,7 +1585,7 @@ export const REGISTRY: RegistryDefinition = {
     "kerry-tj": "universal",
     "kex": "kex",
     "kex-express-hk": "kex-express-hk",
-    "kit-tk": "universal",
+    "kit-tk": "kit-tk",
     "kolay-gelsin": "universal",
     "korea-post": "korea-post",
     "kronos-express": "universal",

@@ -12,13 +12,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the opened capture shows only the tracker shell, because the history loads by script, so the history was not visible."
+      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the capture shows only the tracker shell, because the history loads by script. KIT's tracker knows the consignment, from the new order to its issue at the terminal."
     },
     {
       "number": "НВЗБЛГ0110946226",
@@ -37,7 +37,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the capture was not opened, so the history was not visible."
+      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the capture was not opened, so the history was not visible. KIT's tracker no longer finds it."
     },
     {
       "number": "НВБХМС0117198087",
@@ -50,13 +50,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the opened capture shows only the tracker shell, because the history loads by script, so the history was not visible."
+      "note": "An archived lookup of this forwarding receipt on KIT's own direct tracking link; the capture shows only the tracker shell, because the history loads by script. KIT's tracker knows the consignment, from the new order to its issue at the terminal."
     },
     {
       "number": "глжмск0118722874",
@@ -69,13 +69,13 @@
         "access": "full_page"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup of this forwarding receipt, typed in lower case, on KIT's own direct tracking link on tk-kit.ru; the opened capture shows only the tracker shell, because the history loads by script, so the history was not visible."
+      "note": "An archived lookup of this forwarding receipt, typed in lower case, on KIT's own direct tracking link on tk-kit.ru; the capture shows only the tracker shell, because the history loads by script. KIT's tracker knows the consignment by the receipt and by its ten digits alone, from the new order to its issue at the terminal."
     },
     {
       "number": "РНДНУР0050381658",
@@ -94,7 +94,7 @@
         "carrier": "unknown",
         "confidence": "none"
       },
-      "note": "An archived lookup of this forwarding receipt on KIT's earlier tracker address (?track=on) on tk-kit.ru; the capture was not opened, so the history was not visible."
+      "note": "An archived lookup of this forwarding receipt on KIT's earlier tracker address (?track=on) on tk-kit.ru; the capture was not opened, so the history was not visible. KIT's tracker no longer finds it."
     },
     {
       "number": "0108212286",
@@ -107,7 +107,7 @@
         "access": "indexed_excerpt"
       },
       "context": {
-        "assessment": "candidate"
+        "assessment": "confirmed"
       },
       "expect": {
         "carrier": "unknown",
@@ -121,7 +121,7 @@
           "dhl-ecommerce-es"
         ]
       },
-      "note": "An archived lookup of this ten-digit number on KIT's own direct tracking link; the archive holds a 403 reply for it, so the history was not visible."
+      "note": "An archived lookup of this ten-digit number on KIT's own direct tracking link; the archive holds a 403 reply for it. KIT's tracker finds the consignment by these ten digits alone, under a forwarding receipt that ends in them, from the new order to its issue at the terminal."
     }
   ]
 }

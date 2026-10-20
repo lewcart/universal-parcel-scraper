@@ -18131,7 +18131,9 @@ export const CARRIER_CATALOG = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kit-tk",
+      "recognitionRank": 567,
+      "localClocks": true
     },
     "canaryUrl": "https://tk-kit.ru/tracking",
     "trackingUrlTemplate": "https://tk-kit.ru/tracking?track_code={trackingNumber}",

@@ -1840,6 +1840,10 @@ export const trackingLinkCases: TrackingLinkCase[] = [
   { carrier: 'gms-worldwide', number: '000000009',
     route: /^https:\/\/www\.gmsworldwide\.com\/shipment-tracking\/\?tracking_no=000000009&tracking_type=cnno$/,
     marker: /Invalid (?:Consignment|Tracking) No\.|Shipment Number/ },
+  // The page writes the number into its search field and looks it up on load; an unknown one gets "Заказ не найден".
+  { carrier: 'kit-tk', number: '0000000009',
+    route: /^https:\/\/tk-kit\.ru\/tracking\?track_code=0000000009$/,
+    marker: /Отслеживание груза|Заказ не найден/ },
 ];
 
 /**

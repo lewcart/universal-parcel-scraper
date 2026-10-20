@@ -24,18 +24,61 @@
   "timezone": "Europe/Moscow",
   "tracking": {
     "mode": "automatic",
-    "adapter": "universal",
-    "steps": []
+    "adapter": "kit-tk",
+    "steps": [
+      "direct",
+      "retry"
+    ],
+    "recognition": {
+      "rank": 567
+    },
+    "localClocks": true
   },
-  "capabilities": [],
+  "capabilities": [
+    "history",
+    "location",
+    "provider_code",
+    "weight",
+    "pickup_point"
+  ],
   "portal": {
     "url": "https://tk-kit.ru/tracking?track_code={trackingNumber}",
     "searchUrl": "https://tk-kit.ru/tracking",
     "canaryUrl": "https://tk-kit.ru/tracking",
-    "shows": [],
-    "scraped": [],
-    "discarded": [],
-    "unavailable": []
+    "shows": [
+      "status",
+      "history",
+      "location",
+      "eta",
+      "weight",
+      "volume",
+      "parcel_count",
+      "pickup_point",
+      "office_contact_details",
+      "office_opening_hours",
+      "payment_details"
+    ],
+    "scraped": [
+      "status",
+      "history",
+      "location",
+      "provider_code",
+      "weight",
+      "pickup_point"
+    ],
+    "discarded": [
+      "eta",
+      "volume",
+      "parcel_count",
+      "office_contact_details",
+      "office_opening_hours",
+      "payment_details"
+    ],
+    "unavailable": [
+      "sender_name",
+      "recipient_name",
+      "offset_timestamps"
+    ]
   },
   "links": [
     {

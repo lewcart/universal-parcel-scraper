@@ -152,8 +152,9 @@ step exists for future protocol changes.
   FedEx's own feed sends that step with a date, a 00:00:00 time and no offset, and every
   other scan with its offset and time. Read at midnight on the pickup's clock, it took a
   time FedEx never gives. It stays a scan, so when it is the latest one `last_update` is
-  null. A pickup at another time, another FedEx scan at 00:00 and
-  other carriers' midnight scans keep their instants.
+  null. BRT's "FOR DELIVERY" at 00:00 keeps its day the same way: BRT's page gives that
+  step a date and no time. A pickup at another time, another FedEx or BRT scan at 00:00
+  and other carriers' midnight scans keep their instants.
 - A network whose every scan in the reply is at 00:00, at least three of them over two
   days or more, keeps their days in `local_time` the same way. ParcelsApp writes
   Shiprocket's scans so, while Shiprocket's own tracker gives each its minute. So does a
@@ -309,7 +310,10 @@ step exists for future protocol changes.
   "SPL", Saudi Post, on Riyadh time: its own tracker dates an origin post's scans and an
   EMS partner's abroad on their own place's clock ([Saudi Post](../../carriers/saudi-post/README.md)),
   so a location in another country, or a copy at the same place (above), dates them
-  instead. Royal Mail's relays of its partners' scans abroad are on Central European time
+  instead. So was "BRT Bartolini", with or without the identifier type in brackets, on
+  Rome time: its dates have the digits of BRT's own page, which writes its depots'
+  Italian wall clocks; BRT's catalog zone, UTC, read them two hours late in summer.
+  Royal Mail's relays of its partners' scans abroad are on Central European time
   whatever the country's clock: its receipt and departure at France's office of exchange
   have the digits of La Poste's own scans, and its "Item Received" and customs scans in
   Portugal come an hour after CTT's digits, at the same minute. Step 1 reads a Royal Mail

@@ -126,11 +126,14 @@ const UNLOCATED_LOCAL_CLOCKS = new Set(['ups', 'fedex']);
  * a 00:00:00 time and no offset, and every other scan with its offset.
  * ParcelsApp words it "Picked Up", with a no-break space. Read at midnight on
  * the pickup's clock, it took a time FedEx never gives; it keeps its day in
- * `local_time` instead.
+ * `local_time` instead. BRT's page gives its "FOR DELIVERY" step a date and
+ * no time, and ParcelsApp writes it at 00:00 too.
  */
 function datedOnly(name: unknown, status: string, date: unknown): string | null {
   const wall = mislabeledWallTime(date);
-  return nameKey(name) === 'fedex' && /^picked\s+up$/i.test(status.trim()) && wall && /T00:00:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 10) : null;
+  const step = nameKey(name) === 'fedex' ? /^picked\s+up$/i
+    : typeof name === 'string' && carrierIdFromName(name) === 'brt' ? /^for\s+delivery$/i : null;
+  return step?.test(status.trim()) && wall && /T00:00:00(?:\.0+)?$/.test(wall) ? wall.slice(0, 10) : null;
 }
 
 /**
@@ -413,13 +416,17 @@ function cttZone(payload: Record<string, unknown>, location: string, date: unkno
  * whatever zone routing passes. Saudi Post's (SPL's) are Riyadh's at home and
  * their place's abroad: its own tracker dates an origin post's scans and an EMS
  * partner's on their own place's clock (carriers/saudi-post), and its copy of
- * a departure from Sydney has the digits of EMS's there. Their home clock is
- * a guess, which a location in another country rules out.
+ * a departure from Sydney has the digits of EMS's there. "BRT Bartolini"'s,
+ * with or without the identifier type in brackets, are Rome's: they have the
+ * digits of BRT's own page, which writes its depots' Italian wall clocks
+ * (2026-10-21). Their home clock is a guess, which a location in another
+ * country rules out.
  */
 const HOME_COUNTRIES: Readonly<Record<string, string>> = {
   southkoreapost: 'Asia/Seoul', postennorgenorwaypost: 'Europe/Oslo', royalmail: 'Europe/London', japanpost: 'Asia/Tokyo',
   pekaes: 'Europe/Warsaw', yodel: 'Europe/London', inpostuk: 'Europe/London', collect: 'Europe/London', xzg: 'Asia/Shanghai',
   spl: 'Asia/Riyadh', saudipost: 'Asia/Riyadh',
+  brtbartolini: 'Europe/Rome', brtbartoliniparcelid: 'Europe/Rome', brtbartolinidpd: 'Europe/Rome',
 };
 /**
  * Royal Mail relays its partners' scans abroad on Central European time,

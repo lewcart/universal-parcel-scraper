@@ -1694,6 +1694,36 @@ describe('ParcelsApp result parsing', () => {
     ]);
   });
 
+  it('reads BRT\'s scans on Rome\'s clock and keeps the day of its untimed delivery round', () => {
+    // Live shape: ParcelsApp writes the wall clocks of BRT's own page under a UTC label,
+    // and its "FOR DELIVERY", which BRT dates without a time, at 00:00.
+    const read = (states: Record<string, unknown>[], carriers = ['BRT Bartolini (Parcel ID)'], timezone: string | null = null) =>
+      parseParcelsAppResponse({ carriers, states }, number, identity(), timezone).events
+        ?.map(({ time, local_time, stage }) => ({ time, local_time, stage }));
+    const scan = (date: string, status: string, location = 'EXAMPLE DEPOT (990)') => ({ date, status, carrier: 0, location });
+    expect(read([
+      scan('2026-10-16T15:19:00Z', 'Delivered'),
+      scan('2026-10-16T07:17:00Z', 'ARRIVED AT DEPOT'),
+      scan('2026-10-16T00:00:00Z', 'FOR DELIVERY'),
+      scan('2026-10-15T21:00:00Z', 'DEPARTED', 'EXAMPLE ORIGIN (991)'),
+    ])).toEqual([
+      { time: '2026-10-16T13:19:00.000Z', local_time: undefined, stage: 'delivered' },
+      { time: '2026-10-16T05:17:00.000Z', local_time: undefined, stage: 'in_transit' },
+      { time: undefined, local_time: '2026-10-16', stage: 'out_for_delivery' },
+      { time: '2026-10-15T19:00:00.000Z', local_time: undefined, stage: 'in_transit' },
+    ]);
+    // Whatever zone routing passes, and in winter on +01:00.
+    expect(read([scan('2026-10-15T21:00:00Z', 'DEPARTED')], ['BRT Bartolini'], 'UTC')?.[0]?.time).toBe('2026-10-15T19:00:00.000Z');
+    expect(read([scan('2026-01-13T21:00:00Z', 'DEPARTED')], ['BRT Bartolini (DPD)'])?.[0]?.time).toBe('2026-01-13T20:00:00.000Z');
+    // A location in another country takes that country's clock, and another step at 00:00 keeps its instant.
+    expect(read([scan('2026-10-15T21:00:00Z', 'DEPARTED', 'Example Town, United Kingdom')])?.[0]?.time).toBe('2026-10-15T20:00:00.000Z');
+    expect(read([scan('2026-10-16T00:00:00Z', 'DEPARTED')])?.[0]).toMatchObject({ time: '2026-10-15T22:00:00.000Z', local_time: undefined });
+    // The rendered page gives the same day.
+    const page = parseParcelsAppHtml(rendered(carrierRow('16 Oct 2026', '00:00', 'FOR DELIVERY', 'BRT Bartolini (Parcel ID)')), number);
+    expect(page.events?.[0]).toMatchObject({ local_time: '2026-10-16' });
+    expect(page.events?.[0]?.time).toBeUndefined();
+  });
+
   it('reads a DPD Group scan on the clock its labelling network shares with the destination', () => {
     // Live shape: a line carrier's parcel from China that DPD Switzerland delivers. ParcelsApp
     // names DPD's number next, and DPD Switzerland's own tracker dates the scan "+02:00".

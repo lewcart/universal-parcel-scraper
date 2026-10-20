@@ -3978,7 +3978,8 @@
     "asked": [
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -4626,6 +4627,7 @@
       "dpd",
       "dpd-de",
       "chronopost",
+      "dpd-uk",
       "brt"
     ]
   },
@@ -7476,7 +7478,8 @@
     "asked": [
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -8921,7 +8924,8 @@
     "asked": [
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -8983,7 +8987,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -9004,7 +9009,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -9025,7 +9031,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -9056,7 +9063,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -9077,7 +9085,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -9127,7 +9136,8 @@
       "dpd-pt",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -14323,7 +14333,8 @@
     "asked": [
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -15149,7 +15160,8 @@
       "dpd-pl",
       "dpd",
       "dpd-de",
-      "chronopost"
+      "chronopost",
+      "dpd-uk"
     ]
   },
   {
@@ -16633,11 +16645,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16661,10 +16673,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16709,6 +16722,9 @@
       "dpd-uk"
     ],
     "asked": [
+      "dpd-uk",
+      "dpd",
+      "dpd-de",
       "chronopost",
       "brt"
     ]
@@ -16732,6 +16748,9 @@
       "dpd-uk"
     ],
     "asked": [
+      "dpd-uk",
+      "dpd",
+      "dpd-de",
       "chronopost",
       "brt"
     ]
@@ -16750,6 +16769,9 @@
       "dpd-uk"
     ],
     "asked": [
+      "dpd-uk",
+      "dpd",
+      "dpd-de",
       "chronopost"
     ]
   },
@@ -16775,11 +16797,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16803,10 +16825,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16831,11 +16854,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16860,11 +16883,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16889,11 +16912,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16918,11 +16941,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16947,11 +16970,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -16976,11 +16999,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -17005,11 +17028,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -17034,11 +17057,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -17064,11 +17087,11 @@
       "dpd-uk"
     ],
     "asked": [
+      "dpd-uk",
       "hermes-de",
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk"
+      "dpd-be",
+      "dpd",
+      "dpd-nl"
     ]
   },
   {
@@ -17093,11 +17116,11 @@
       "dpd-uk"
     ],
     "asked": [
-      "seur",
-      "brt",
-      "ciblex",
-      "dhl-ecommerce-uk",
-      "delhivery"
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -17482,6 +17505,35 @@
       "relais-colis",
       "packeta",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "15970000000000",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-uk",
+      "dpd",
+      "dpd-fr",
+      "ciblex",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "xpressbees"
+    ],
+    "preferred": [
+      "dpd-uk"
+    ],
+    "asked": [
+      "dpd-uk",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
     ]
   },
   {
@@ -37444,6 +37496,7 @@
       "dpd",
       "dpd-de",
       "chronopost",
+      "dpd-uk",
       "brt"
     ]
   },

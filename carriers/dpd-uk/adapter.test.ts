@@ -157,6 +157,27 @@ describe('DPD UK public history projection', () => {
   });
 });
 
+describe('DPD UK recognition', () => {
+  const carrier = (fetcher: typeof fetch) => adapter({ fetcher, env: {}, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER });
+  const absent = (message: string) => json({ error: { statusCode: 404, error: 'Not Found', message } }, 404);
+
+  it('knows a parcel the reference service finds, through the same three reads', async () => {
+    const payload = fixture();
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json(payload.reference)).mockResolvedValueOnce(json(payload.detail)).mockResolvedValueOnce(json(payload.history));
+    await expect(carrier(fetcher).recognize!(NUMBER)).resolves.toMatchObject({ known: true });
+    expect(fetcher).toHaveBeenCalledTimes(3);
+  });
+
+  it('takes the named unknown reference as unknown, a bare 404 as a failure, and asks nothing about a number DPD UK does not issue', async () => {
+    await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(absent('Your reference number could not be found'))).recognize!(NUMBER))
+      .resolves.toEqual({ known: false });
+    await expect(carrier(vi.fn<typeof fetch>().mockResolvedValue(absent('Not Found'))).recognize!(NUMBER)).rejects.toMatchObject({ kind: 'transport' });
+    const fetcher = vi.fn<typeof fetch>();
+    for (const number of ['ORDER-REFERENCE', '1550000000000', `${NUMBER}N`]) await expect(carrier(fetcher).recognize!(number)).resolves.toEqual({ known: false });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+});
+
 describe('DPD UK anonymous retrieval', () => {
   it('performs three bounded reads with an empty postcode and server-returned handle', async () => {
     const payload = fixture();

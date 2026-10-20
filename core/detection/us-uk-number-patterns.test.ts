@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { recognitionCandidates } from '../catalog/recognition.js';
+import { settleRecognition, type RecognitionOutcome } from '../recognition/index.js';
 import { checksumRejections, detectCarrierMatch, parseTrackingInput } from './index.js';
 import { isValidFedEx1DBarcode } from './fedex.js';
 import { isValidUspsPackageBarcode, uspsPackageIdentifier } from './usps.js';
@@ -198,7 +199,8 @@ describe('Royal Mail and Parcelforce links', () => {
 
 describe('UK fourteen-digit parcel numbers', () => {
   // Synthetic numbers in the ranges the carriers' own tracking pages show.
-  it.each([['15500000000001', 'dpd-uk'], ['15500000000001M', 'dpd-uk'], ['60120000000000', 'dhl-ecommerce-uk']])(
+  it.each([['15500000000001', 'dpd-uk'], ['15500000000001M', 'dpd-uk'], ['15970000000000', 'dpd-uk'], ['15970000000000E', 'dpd-uk'],
+    ['60120000000000', 'dhl-ecommerce-uk']])(
     'suggests the carrier of its range first: %s', (number, carrier) => {
       expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'unknown', confidence: 'low' });
       expect(detectCarrierMatch(number).candidates[0]).toBe(carrier);
@@ -207,6 +209,22 @@ describe('UK fourteen-digit parcel numbers', () => {
   it('suggests neither first outside those ranges, nor for a wrong check character', () => {
     expect(detectCarrierMatch('31500000000000').candidates.slice(0, 1)).not.toEqual(expect.arrayContaining(['dpd-uk', 'dhl-ecommerce-uk']));
     expect(detectCarrierMatch('15500000000001N').candidates).not.toContain('dpd-uk');
+    for (const number of ['15960000000000', '15980000000000', '15570000000000']) {
+      expect(detectCarrierMatch(number).preferred ?? [], number).not.toContain('dpd-uk');
+    }
+  });
+
+  it('asks DPD UK first about its ranges and a British number, and files the parcel under it when other DPD networks know it too', () => {
+    expect(recognitionCandidates('15970000000000')[0]).toMatchObject({ carrier: 'dpd-uk', preferred: true });
+    expect(recognitionCandidates('15500000000001')[0]).toMatchObject({ carrier: 'dpd-uk', preferred: true });
+    expect(recognitionCandidates('09440000000000', { countryHint: 'GB' })[0]).toMatchObject({ carrier: 'dpd-uk', countryMatch: 'home' });
+    for (const [number, countryHint] of [['15970000000000', undefined], ['09440000000000', 'GB']] as const) {
+      const known: RecognitionOutcome[] = recognitionCandidates(number, { countryHint })
+        .filter(({ carrier }) => ['dpd-uk', 'dpd', 'dpd-be'].includes(carrier))
+        .map((candidate) => ({ ...candidate, status: 'known', lastActivityAt: '2026-09-09T10:00:00Z' }));
+      expect(known.map(({ carrier }) => carrier).sort(), number).toEqual(['dpd', 'dpd-be', 'dpd-uk']);
+      expect(settleRecognition(known, new Date('2026-09-10T12:00:00Z')), number).toEqual({ carrier: 'dpd-uk', choices: [] });
+    }
   });
 });
 

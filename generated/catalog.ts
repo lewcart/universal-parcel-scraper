@@ -11673,6 +11673,7 @@ export const CARRIER_CATALOG = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-uk",
+      "recognitionRank": 858,
       "localClocks": true
     },
     "canaryUrl": "https://track.dpd.co.uk/",
@@ -11692,12 +11693,12 @@ export const CARRIER_CATALOG = {
     ],
     "detectionRules": [
       {
-        "pattern": "^1550\\d{10}$",
+        "pattern": "^15(?:50|97)\\d{10}$",
         "confidence": "low",
         "preferred": true
       },
       {
-        "pattern": "^1550\\d{10}[0-9A-Z]$",
+        "pattern": "^15(?:50|97)\\d{10}[0-9A-Z]$",
         "confidence": "low",
         "checksum": "dpd",
         "preferred": true

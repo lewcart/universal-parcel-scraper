@@ -23,7 +23,12 @@ before reading history under the returned handle.
 - A cancellation by the sender is an exception.
 - Fourteen digits is also the shape of other DPD networks and carriers.
   Detection suggests DPD UK first for numbers starting with 1550, the range
-  its tracking pages show most.
+  its tracking pages show most, or 1597, the start a British retailer's courier
+  help gives for DPD numbers.
+- Recognition makes the same lookup. DPD's group tracker and other DPD networks
+  also know a British parcel, sometimes only as an order, so recognition asks
+  DPD UK first for those ranges or a British country hint, and files the parcel
+  under it when they all know it.
 - Scan times have no stated timezone, including delivery-partner scans. They
   remain local clocks; the adapter does not assign a London offset.
 - History stays in the page's newest-first order. Exact repeated scans are

@@ -1,4 +1,4 @@
-import type { AdapterFactory, TrackingContext } from '../../core/adapter/index.js';
+import { accepted, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { CarrierError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import { runSteps } from '../../core/runner/index.js';
 import { NOOP_RECORDER, type StepRecorder } from '../../core/telemetry/index.js';
@@ -51,5 +51,7 @@ export class DpdUkTracker {
 
 export const adapter: AdapterFactory = environment => {
   const tracker = new DpdUkTracker({ fetcher: environment.fetcher, recorder: environment.recorder, userAgent: environment.userAgent });
-  return { id: 'dpd-uk', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context) };
+  return { id: 'dpd-uk', recordsSteps: true, steps: ['direct'], track: (input, context) => tracker.fetch(input.number, context),
+    // The reference service names a number it does not know, so the lookup answers recognition.
+    recognize: (number, context) => recognizeFromLookup(() => tracker.fetch(number, context), () => accepted(() => normalizeDpdUkNumber(number))) };
 };

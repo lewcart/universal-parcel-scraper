@@ -27,6 +27,10 @@ package identifier after it instead, which Webtrack also tracks, and the result 
 that identifier as `canonical_tracking_number`. A barcode without a single identifier is
 refused before any request.
 
+Webtrack also finds a package by the shipper's own package id, which is unique only within
+that shipper's account: a seven-digit number returned another shipper's parcel. Numbers
+shorter than ten characters, below DHL's own identifiers, are refused before any request.
+
 ## Parsing
 
 Webtrack must return one identified package matching the requested number or

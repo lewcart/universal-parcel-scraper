@@ -53,11 +53,13 @@ function cleanNumber(raw: string): string {
  * The number DHL is asked for. A USPS routing barcode opens with the
  * recipient's ZIP code; Webtrack also knows the package by the identifier
  * after it, so only that identifier is sent, and a barcode without a single
- * one is not sent at all.
+ * one is not sent at all. Webtrack also finds a package by the shipper's own
+ * package id, so a number shorter than DHL's own identifiers is not sent: a
+ * short one names some shipper's package, not necessarily the reader's.
  */
 export function normalizeDHLEcommerceNumber(raw: string): string {
   const number = cleanNumber(raw);
-  if (!/^(?=.*\d)[A-Z0-9]{5,40}$/.test(number)) throw new InvalidInputError(PROVIDER, 'DHL eCommerce tracking number is invalid');
+  if (!/^(?=.*\d)[A-Z0-9]{10,40}$/.test(number)) throw new InvalidInputError(PROVIDER, 'DHL eCommerce tracking number is invalid');
   if (!USPS_ROUTING_BARCODE.test(number)) return number;
   const pic = uspsPackageIdentifier(number);
   if (!pic) throw new InvalidInputError(PROVIDER, 'A USPS routing barcode without a single package identifier is not sent');

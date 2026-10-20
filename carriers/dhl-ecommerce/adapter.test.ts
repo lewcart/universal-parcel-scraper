@@ -603,6 +603,20 @@ describe('DHL eCommerce USPS routing barcodes', () => {
     expect(browser).toHaveBeenCalledTimes(2);
   });
 
+  it('sends no number shorter than its own identifiers, which can name another shipper\'s package', async () => {
+    const browser = vi.spyOn(trackingBrowser, 'scrapeUniversalPage');
+    const fetcher = vi.fn(async () => reply(routed()));
+    const tracker = new DHLEcommerceTracker({ executablePath: '/test/chromium', fetcher });
+    for (const raw of ['1234567', '123456789', 'AB-1234-567']) {
+      expect(() => normalizeDHLEcommerceNumber(raw)).toThrow('tracking number is invalid');
+      await expect(tracker.fetch(raw)).rejects.toMatchObject({ kind: 'invalid_input' });
+      await expect(tracker.recognize(raw)).resolves.toEqual({ known: false });
+    }
+    expect(normalizeDHLEcommerceNumber('1234567890')).toBe('1234567890');
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(browser).not.toHaveBeenCalled();
+  });
+
   it('sends no routing barcode without a single package identifier', async () => {
     const browser = vi.spyOn(trackingBrowser, 'scrapeUniversalPage');
     const fetcher = vi.fn(async () => reply(routed()));

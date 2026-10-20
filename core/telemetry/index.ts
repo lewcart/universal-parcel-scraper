@@ -38,7 +38,7 @@ export interface LookupRecord {
   durationMs: number;
   /** Number of step attempts made. */
   attempts: number;
-  /** Number of enabled steps the lookup could have run; 1 means direct was the only tier. */
+  /** Number of enabled steps the lookup could have run; 1 means its one step, direct or not, was the whole lookup. */
   stepsAvailable?: number;
   error?: unknown;
 }

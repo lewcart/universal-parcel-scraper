@@ -29,6 +29,11 @@ const DEFAULT_DIRECT_TIMEOUT_MS = 20_000;
 const SETTLE_TIMEOUT_MS = 15_000;
 // Retain the latest bounded sequence of matching replies.
 const MAX_CAPTURED = 20;
+// UPS's status call answers HTTP 500 in bursts. During one, the browser's call failed again
+// for every lookup that followed within a minute and nearly every one within five, while
+// lookups after a longer pause were answered. After a 500 the browser rests that long, and
+// the caller's next source answers meanwhile.
+export const STATUS_HOLD_MS = 5 * 60_000;
 // Provider strings are short; the rendered page's whole text is not, and the
 // identity check reads all of it, so it passes its own limit to `clean`.
 const PAGE_TEXT_LIMIT = 2_000_000;
@@ -64,6 +69,30 @@ export class UPSUnavailableError extends IndeterminateError {
     super('UPS', `UPS tracking is temporarily unavailable (error ${code})`);
     this.name = 'UPSUnavailableError';
   }
+}
+
+/**
+ * The browser step, skipped while UPS's status call would likely answer HTTP 500
+ * again: inconclusive, so another source may answer.
+ */
+export class UPSStatusHeldError extends IndeterminateError {
+  constructor(readonly heldMs: number) {
+    super('UPS', `UPS's status call answered HTTP 500 moments ago; the browser waits ${Math.ceil(heldMs / 1_000)} s more`);
+    this.name = 'UPSStatusHeldError';
+  }
+}
+
+/**
+ * When the status call last answered HTTP 500, by browser service. Every
+ * tracker in the process that uses the service shares it, as a host's several
+ * registries do; a restart forgets it.
+ */
+const statusFailedAt = new Map<string, number>();
+
+/** How long the browser service still rests after a 500, or 0. */
+function statusHeldMs(trawl: TrawlClient): number {
+  const failedAt = statusFailedAt.get(trawl.endpoint.href);
+  return failedAt === undefined ? 0 : Math.max(0, failedAt + STATUS_HOLD_MS - Date.now());
 }
 
 /** The error codes UPS's page answers with "try again later". */
@@ -546,9 +575,12 @@ export class UPSTracker {
       {
         id: 'trawl',
         enabled: trawl !== null,
-        run: ({ remainingMs, signal }) => this.#trawlResult(
-          trawl!, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal,
-        ),
+        run: async ({ remainingMs, signal }) => {
+          // The skip is recorded as this step's failure, under its own error type.
+          const held = statusHeldMs(trawl!);
+          if (held > 0) throw new UPSStatusHeldError(held);
+          return this.#trawlResult(trawl!, number, Math.max(1, Math.floor(Math.min(this.timeoutMs, remainingMs))), signal);
+        },
       },
     ]);
   }
@@ -605,6 +637,7 @@ export class UPSTracker {
     const entry = page.capturedResponses.filter((capture) => capture.url === STATUS_API).slice(-MAX_CAPTURED).at(-1);
     // UPS's 428 verification flow can still leave a valid rendered answer.
     if (entry && entry.status !== 428) {
+      if (entry.status === 500) statusFailedAt.set(trawl.endpoint.href, Date.now());
       if (entry.status >= 400) throw capturedHttpError(entry.status, entry.headers);
       if (entry.status !== 200 || entry.truncated || entry.body === null || entry.base64Encoded || entry.error) {
         throw new SchemaError('UPS', 'UPS returned an unreadable status response');

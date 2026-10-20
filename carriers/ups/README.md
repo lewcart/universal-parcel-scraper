@@ -44,6 +44,11 @@ rendered status, after that wait.
 - HTTP 429 from a direct request, captured status call or browser page stays rate limited.
   Numeric and HTTP-date `Retry-After` hints are retained. A throttled session is neither
   refreshed nor discarded, and rendered HTML cannot hide the throttle.
+- UPS's status call answers HTTP 500 in bursts. Within one, the browser's call failed again
+  for lookups that followed within minutes and was answered after a longer pause. After a
+  captured 500 the `trawl` step rests for five minutes per browser service, shared by every
+  tracker in the process: it fails at once with `UPSStatusHeldError` (indeterminate), which
+  the step record names, and the caller's next source answers. A restart forgets the rest.
 - `direct` is disabled whenever a browser exists, with no cooldown probe: every probe costs
   the full direct timeout and hits the same block.
 - Each scan's `actCode` is kept as `provider_code` and mapped to a stage

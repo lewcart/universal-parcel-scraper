@@ -6,7 +6,7 @@ import { IndeterminateError, InvalidInputError, NotFoundError } from '../../core
 import { resolveResult } from '../../core/result/resolve.js';
 import type { StepRecorder } from '../../core/telemetry/index.js';
 import { TrawlClient } from '../../core/transport/index.js';
-import { UPSTracker, parseUPSTrackingHtml, parseUPSTrackingResponse, upsTrackingUrl } from './adapter.js';
+import { STATUS_HOLD_MS, UPSStatusHeldError, UPSTracker, parseUPSTrackingHtml, parseUPSTrackingResponse, upsTrackingUrl } from './adapter.js';
 import statuses from './statuses.json' with { type: 'json' };
 import { UPS_PROGRESS_STATUS, upsActivityStage, upsStatus } from './status.js';
 
@@ -698,13 +698,45 @@ describe('UPS captured response sequence', () => {
     return { url: STATUS_API, status, headers: {}, body, truncated: false, base64Encoded: false, error: null, ...overrides };
   }
 
-  function browser(capturedResponses: unknown[], extra = {}) {
+  // A 500 holds the browser service it came through, so each case gets its own.
+  let services = 0;
+  function browser(capturedResponses: unknown[], extra = {}, endpoint = `${TRAWL_URL}/sequence-${services += 1}`) {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({
       tier: 3, statusCode: 200, html: RENDERED_PAGE, cookies: [], capturedResponses, ...extra,
     }));
     const { recorder, records } = stepRecorder();
-    return { fetcher, records, tracker: new UPSTracker({ trawl: new TrawlClient(TRAWL_URL, fetcher), fetcher, recorder }) };
+    return { fetcher, records, tracker: new UPSTracker({ trawl: new TrawlClient(endpoint, fetcher), fetcher, recorder }) };
   }
+
+  it('rests the browser service for five minutes after the status call answers HTTP 500', async () => {
+    let now = Date.parse('2026-08-04T06:00:00Z');
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    const endpoint = `${TRAWL_URL}/held`;
+    const failed = browser([capture(), capture(500, '')], {}, endpoint);
+    await expect(failed.tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ kind: 'indeterminate', status: 500 });
+    // Another tracker on the same service, as another registry in the process, asks nothing meanwhile.
+    now += STATUS_HOLD_MS - 1_000;
+    const held = browser([capture()], {}, endpoint);
+    const error = await held.tracker.fetch(TRACKING_NUMBER).catch((reason: unknown) => reason);
+    expect(error).toBeInstanceOf(UPSStatusHeldError);
+    expect(error).toMatchObject({ kind: 'indeterminate', name: 'UPSStatusHeldError', heldMs: 1_000 });
+    expect(held.fetcher).not.toHaveBeenCalled();
+    expect(held.records).toEqual(['trawl:indeterminate', 'lookup:trawl:indeterminate']);
+    // Another browser service is not held.
+    await expect(browser([capture()]).tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'structured-web-response' });
+    // Once the hold ends the browser is asked again.
+    now += 1_000;
+    await expect(held.tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'structured-web-response' });
+    expect(held.fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([429, 502, 503])('does not rest the browser service after HTTP %i', async (status) => {
+    const endpoint = `${TRAWL_URL}/not-held-${status}`;
+    await expect(browser([capture(status, '')], {}, endpoint).tracker.fetch(TRACKING_NUMBER)).rejects.toMatchObject({ status });
+    const next = browser([capture()], {}, endpoint);
+    await expect(next.tracker.fetch(TRACKING_NUMBER)).resolves.toMatchObject({ tracking_source: 'structured-web-response' });
+    expect(next.fetcher).toHaveBeenCalledTimes(1);
+  });
 
   it.each([
     [401, 'challenge'], [403, 'challenge'], [419, 'challenge'], [429, 'rate_limited'],

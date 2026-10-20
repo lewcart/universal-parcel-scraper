@@ -1,7 +1,7 @@
 
 import { accepted, lookupBudget, recognizeFromLookup, type AdapterFactory, type TrackingContext } from '../../core/adapter/index.js';
 import { isPosteItalianePartnerPlate, isPosteItalianeTrackingNumber } from '../../core/detection/posteItaliane.js';
-import { IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
+import { ChallengeError, IndeterminateError, InvalidInputError, NotFoundError, SchemaError, TransportError } from '../../core/errors/index.js';
 import type { CarrierEvent, CarrierResult } from '../../core/result/index.js';
 import type { ClassifiedStatus } from '../../core/status/index.js';
 import { clean, fetchBounded, parseJsonBytes, UpstreamHttpError, userAgentOf } from '../../core/transport/index.js';
@@ -85,6 +85,19 @@ function serviceName(value: unknown, trackingNumber: string): string {
   const text = clean(value, 80);
   return /^[\p{L}][\p{L}\d '+.&-]{2,59}$/u.test(text) && !/\d{6}/.test(text)
     && text.toLocaleUpperCase('en-US').replace(/[\s.-]/g, '') !== trackingNumber ? text : '';
+}
+
+/**
+ * After a burst of searches from one address, the service refuses more with HTTP 400 and an
+ * error envelope until the caller solves its CAPTCHA.
+ */
+function captchaRequired(bytes: Uint8Array): boolean {
+  try {
+    const payload: unknown = JSON.parse(new TextDecoder().decode(bytes));
+    return isRecord(payload) && payload.tipo === 'error' && /captcha/i.test(clean(payload.descrizione, 200));
+  } catch {
+    return false;
+  }
 }
 
 export function normalizePosteItalianeTrackingNumber(raw: string): string {
@@ -266,6 +279,9 @@ export class PosteItalianeTracker {
       throw new TransportError('Poste Italiane', 'Poste Italiane tracking endpoint is unavailable', {
         cause: new UpstreamHttpError('Poste Italiane tracking', response.status),
       });
+    }
+    if (response.status === 400 && captchaRequired(bytes)) {
+      throw new ChallengeError('Poste Italiane', 'Poste Italiane asks for a CAPTCHA before more searches');
     }
     if (!response.ok) throw new UpstreamHttpError('Poste Italiane tracking', response.status);
     return parsePosteItalianeTrackingResponse(parseJsonBytes(bytes, 'Poste Italiane tracking'), trackingNumber);

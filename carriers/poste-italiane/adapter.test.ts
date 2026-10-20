@@ -448,6 +448,13 @@ describe('PosteItalianeTracker fetch', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({}, 503));
     await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
       .rejects.toMatchObject({ name: 'UpstreamHttpError', status: 503 });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ id: '1', tipo: 'error',
+      descrizione: "Non e' possibile effettuare ulteriori richieste senza specificare una captcha valida" }, 400));
+    await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ name: 'ChallengeError', kind: 'challenge' });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ id: '1', tipo: 'error', descrizione: 'Richiesta non valida' }, 400));
+    await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
+      .rejects.toMatchObject({ name: 'UpstreamHttpError', kind: 'transport', status: 400 });
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(response('not json', 200));
     await expect(new PosteItalianeTracker({ timeoutMs: 1_000 }).fetch(TRACKING_NUMBER))
       .rejects.toThrow(TypeError);

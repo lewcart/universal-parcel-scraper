@@ -22,7 +22,9 @@ mail from abroad to Italy is not handed to Poste Italiane.
    - `esitoRicerca` `3` for letter post (`tipoSpedizione` `C`) at `stato` `1`, with neither a
      product nor a movement list: a code Poste does not know, so not-found. A code whose check
      digit fails answers that way.
-   - HTTP 404/410 means the tracking endpoint is unavailable. Other non-200 replies remain upstream errors.
+   - HTTP 404/410 means the tracking endpoint is unavailable. After a burst of searches from one
+     address, the service answers HTTP 400 with an error envelope asking for a CAPTCHA: a
+     challenge. Other non-200 replies remain upstream errors.
    - Missing or unusable history is a schema failure. Unrecognized empty envelopes remain inconclusive.
 
 ## Notes

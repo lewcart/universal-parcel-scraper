@@ -39,7 +39,8 @@ link would leave the number in the clear, and the canary checks 17TRACK instead.
   at the destination were shown up to seven hours before their clock read as UTC, earlier than
   the destination's own clock allows. Every row is read on Beijing time, as on the other tenants
   except Mayi Yinfu, where a row copied from the delivering carrier without a place can come on
-  that carrier's clock.
+  that carrier's clock, and [Kun Express](../kun-express/README.md), whose rows copied from USPS
+  are on the facility's clock.
 - GZYL leaves a row's place empty and writes the town after some wordings, as in "Leaving the
   sorting center" followed by the town. The adapter reads that town as the place, so a wording
   reads the same for every town.

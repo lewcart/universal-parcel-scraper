@@ -76159,6 +76159,30 @@
     ]
   },
   {
+    "input": "KUN6666669444",
+    "carrier": "kun-express",
+    "confidence": "high",
+    "candidates": [
+      "kun-express"
+    ]
+  },
+  {
+    "input": "KUN8000015561",
+    "carrier": "kun-express",
+    "confidence": "high",
+    "candidates": [
+      "kun-express"
+    ]
+  },
+  {
+    "input": "KUN9991027071",
+    "carrier": "kun-express",
+    "confidence": "high",
+    "candidates": [
+      "kun-express"
+    ]
+  },
+  {
     "input": "KYV009956937",
     "carrier": "purolator",
     "confidence": "high",

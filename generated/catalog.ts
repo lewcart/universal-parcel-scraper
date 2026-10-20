@@ -18419,6 +18419,36 @@ export const CARRIER_CATALOG = {
       }
     ]
   },
+  "kun-express": {
+    "displayName": "Kun Express",
+    "color": "#0761ff",
+    "aliases": [
+      "KUN",
+      "KUNEXPRESS",
+      "KunExpress",
+      "鲲辰",
+      "鯤辰",
+      "杭州鲲辰跨境供应链管理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "kun-express",
+      "localClocks": true
+    },
+    "canaryUrl": "https://t.17track.net/",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^KUN\\d{10}$",
+        "confidence": "high"
+      }
+    ]
+  },
   "kunyoung": {
     "displayName": "Kunyoung Express",
     "color": "#04378c",
@@ -31765,6 +31795,7 @@ export const CARRIER_IDS = [
   "kronos-express",
   "ktd",
   "kuehne-nagel",
+  "kun-express",
   "kunyoung",
   "kwick-box",
   "kyoungdong",
@@ -32547,6 +32578,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "kronos-express": [],
   "ktd": ["ktd-1"],
   "kuehne-nagel": ["kuehne-nagel-1","kuehne-nagel-2"],
+  "kun-express": ["kun-express-1"],
   "kunyoung": [],
   "kwick-box": [],
   "kyoungdong": [],

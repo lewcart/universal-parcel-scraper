@@ -25487,6 +25487,10 @@ export const CARRIER_CATALOG = {
       {
         "pattern": "^1[A-Z]{3,5}\\d{9,12}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^1[A-Z][A-Z0-9]{2}LN\\d{9}$",
+        "confidence": "low"
       }
     ]
   },
@@ -32620,7 +32624,7 @@ export const DETECTION_RULE_IDS: Readonly<Record<CarrierId, readonly string[]>> 
   "sahara-express": [],
   "saia": ["saia-1"],
   "sailpost": [],
-  "sameday": ["sameday-1"],
+  "sameday": ["sameday-1","sameday-2"],
   "sapx-express": [],
   "sat-ukraine": [],
   "saudi-post": ["saudi-post-1"],

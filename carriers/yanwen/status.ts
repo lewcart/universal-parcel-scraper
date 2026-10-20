@@ -23,6 +23,7 @@ const WORDING = new Map<string, ClassifiedStatus>([
   // among them: the parcel is in Yanwen's hands and has not moved yet.
   ['Processing information input', { status: 'in_transit', stage: 'accepted' }],
   ['shipping label created', { status: 'in_transit', stage: 'accepted' }],
+  ['Shipment order created', { status: 'in_transit', stage: 'accepted' }],
   ['Order processed by shipper', { status: 'pending', stage: 'registered' }],
   ['Order Submited.', { status: 'pending', stage: 'registered' }],
   ['Waybill Generated', { status: 'pending', stage: 'registered' }],

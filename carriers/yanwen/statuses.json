@@ -128,6 +128,14 @@
       "firstSeen": "2026-10-17"
     },
     {
+      "wording": "Shipment order created",
+      "language": "en",
+      "stage": "accepted",
+      "confirmedBy": "live",
+      "firstSeen": "2026-10-20",
+      "note": "Written in the same second as Processing information input, after the pickup scan."
+    },
+    {
       "wording": "Order processed by shipper",
       "language": "en",
       "stage": "registered",

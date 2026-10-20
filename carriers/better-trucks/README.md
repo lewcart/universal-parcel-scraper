@@ -45,8 +45,6 @@ through the lookup its tracking page makes.
 - The tracker also takes five-character package codes, and `BTS` followed by such a code, and
   swaps them for the tracking number they stand for. A code that short lets a made-up value open
   a stranger's parcel, so the adapter refuses them as invalid input.
-- Numbers written with an underscore, such as `BTS_` ones, do not pass the library's
-  tracking-number check, so they reach the adapter only when it is called directly.
 - No estimate, weight, service, sender or recipient.
 
 ## Numbers

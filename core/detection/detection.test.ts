@@ -175,6 +175,15 @@ describe('normalization', () => {
     expect(normalizeTrackingNumber('CIO00000001NL')).toBe('CIO00000001NL');
   });
 
+  it('accepts one underscore inside a number, as Better Trucks writes its BTS_ numbers', () => {
+    expect(normalizeTrackingNumber(' bts_0123smpl002 ')).toBe('BTS_0123SMPL002');
+    expect(validTrackingNumber(' bts_0123smpl002 ')).toBe(true);
+    expect(parseTrackingInput('BTS_0123SMPL002')).toMatchObject({ source: 'number', trackingNumber: 'BTS_0123SMPL002' });
+    for (const raw of ['_BTS0123SMPL002', 'BTS0123SMPL002_', 'BTS__0123SMPL002', 'BTS_0123_SMPL002', 'BTS_SMPL']) {
+      expect(validTrackingNumber(raw), raw).toBe(false);
+    }
+  });
+
   it('leaves other bracketed GS1 identifiers as typed', () => {
     // (420) carries the destination ZIP, which is no parcel number.
     for (const raw of ['(420) 12345', '(420) 12345 (92) 612 90 100 13043 50825 07', '(00) 37012345678901234', '(01) 09501101530003']) {

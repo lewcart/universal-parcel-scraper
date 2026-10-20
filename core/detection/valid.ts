@@ -12,9 +12,10 @@ import { normalizeTrackingNumber } from './normalize.js';
 function hasTrackingShape(normalized: string): boolean {
   return normalized.length >= 4
     && normalized.length <= 40
-    // The NACEX agency/shipment composite is the only tracking shape allowed
-    // to keep punctuation; everything else stays strict alphanumeric.
-    && (/^[A-Z0-9]+$/.test(normalized) || /^\d{4}\/\d{8}$/.test(normalized));
+    // Letters and digits, with one underscore inside as Better Trucks writes
+    // its BTS_ numbers. The NACEX agency/shipment composite is the only other
+    // shape allowed to keep punctuation.
+    && (/^[A-Z0-9]+(?:_[A-Z0-9]+)?$/.test(normalized) || /^\d{4}\/\d{8}$/.test(normalized));
 }
 
 /**

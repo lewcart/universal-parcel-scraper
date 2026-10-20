@@ -527,6 +527,18 @@
         "confidence": "high"
       },
       "note": "Made-up Deutsche Post registered letter number that follows the S10 format."
+    },
+    {
+      "number": "A0123456789ABCDEF01F",
+      "role": "shipment",
+      "evidence": "synthetic",
+      "derivedFrom": "official_shape",
+      "shapeConfirmed": "2026-10-20",
+      "expect": {
+        "carrier": "dhl",
+        "confidence": "high"
+      },
+      "note": "Made-up Frankier-ID: A0, seventeen hexadecimal characters and the CRC-4 check character of Deutsche Post's DV-Freimachung specification."
     }
   ]
 }

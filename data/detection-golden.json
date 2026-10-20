@@ -62329,6 +62329,14 @@
     ]
   },
   {
+    "input": "A0123456789ABCDEF01F",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "A0984R00009",
     "carrier": "unknown",
     "confidence": "none",

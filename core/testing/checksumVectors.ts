@@ -29,6 +29,7 @@ export const VECTORS_PATH = path.resolve(testingDirectory, '../../data/checksum-
 const DIGITS = '0123456789';
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALNUM = DIGITS + LETTERS;
+const HEX = '0123456789ABCDEF';
 const S10_WEIGHTS = [8, 6, 4, 2, 3, 5, 9, 7];
 
 /** mulberry32: small, seedable and the same on every platform. */
@@ -396,6 +397,23 @@ const RECIPES: Record<ChecksumId, (recipe: Recipe) => void> = {
     const digits = valid[0]!.slice(1);
     r.add(`D${digits}`, `M${digits}`, `W${digits}`, `4${digits}`);
     r.add(r.complete(`C${'0'.repeat(13)}`), r.complete(`D${'9'.repeat(13)}`));
+  },
+
+  'frankier-id'(r) {
+    // Nineteen characters and the check character, all hexadecimal on a tracked letter.
+    const valid = [
+      ...Array.from({ length: 5 }, () => r.complete(`A0${r.string(17, HEX)}`, '', HEX)),
+      r.complete(r.string(19, HEX), '', HEX), r.complete(r.string(19), '', HEX), r.complete(`A0${'0'.repeat(17)}`, '', HEX),
+    ];
+    standard(r, valid);
+    // The specification's own example, whose order mark and customer number hold letters past F.
+    r.add('RA51251496FC301A6903', 'RA51251496FC301A6902');
+    // The CRC runs over the ASCII bytes from zero without a final inversion: a check of 0 and one of F.
+    const zero = r.find(() => `A0${r.string(17, HEX)}`, (head) => CHECKSUMS[r.id](`${head}0`));
+    const full = r.find(() => `A0${r.string(17, HEX)}`, (head) => CHECKSUMS[r.id](`${head}F`));
+    r.add(`${zero}0`, `${zero}F`, `${full}F`, `${full}0`);
+    // Lower-case hexadecimal is not normalized here, and a check past F is no hexadecimal digit.
+    r.add(valid[0]!.toLowerCase(), `${valid[0]!.slice(0, 19)}G`);
   },
 
   'poczta-polska'(r) {

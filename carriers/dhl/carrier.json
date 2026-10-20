@@ -101,6 +101,12 @@
       "checksum": "s10"
     },
     {
+      "id": "dhl-15",
+      "pattern": "^A0[0-9A-F]{18}$",
+      "confidence": "high",
+      "checksum": "frankier-id"
+    },
+    {
       "id": "dhl-9",
       "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
       "confidence": "high"

@@ -154,6 +154,20 @@ describe('Latvian S10 items', () => {
   });
 });
 
+describe('Deutsche Post Frankier-IDs', () => {
+  it.each(['A0123456789ABCDEF01F', 'A000000000000000000A'])('names DHL, whose letter tracking answers %s', (number) => {
+    expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'dhl', confidence: 'high', candidates: ['dhl'] });
+    expect(detectCarrierMatch(number.toLowerCase())).toMatchObject({ carrier: 'dhl', confidence: 'high' });
+  });
+
+  it('names nobody for a failed check character, another order mark or a number without letters', () => {
+    for (const number of ['A0123456789ABCDEF010', 'A0123456789ABCDEF01G', 'B0123456789ABCDEF01F', 'A0123456789ABCDEF01', '00123456789012345670']) {
+      expect(detectCarrierMatch(number).candidates, number).not.toContain('dhl');
+    }
+    expect(checksumFailures('A0123456789ABCDEF010')).toContainEqual(expect.objectContaining({ carrier: 'dhl', rule: 'dhl-15' }));
+  });
+});
+
 describe('normalization', () => {
   it('uppercases and strips the separators carriers print', () => {
     expect(normalizeTrackingNumber(' ra 123 456-789 ch ')).toBe('RA123456789CH');

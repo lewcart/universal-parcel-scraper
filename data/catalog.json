@@ -566,6 +566,11 @@
         "checksum": "s10"
       },
       {
+        "pattern": "^A0[0-9A-F]{18}$",
+        "confidence": "high",
+        "checksum": "frankier-id"
+      },
+      {
         "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
         "confidence": "high"
       },

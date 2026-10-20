@@ -44,6 +44,14 @@ once.
   letter tracking, the lookup deutschepost.de embeds as well, so they are DHL's
   when their S10 check digit holds rather than international mail. A letter
   without scans yet comes back with `briefNichtGefunden` and reads as no data.
+- A Frankier-ID is the twenty-character identity of a letter franked with Deutsche
+  Post's machine-readable postage, such as a stamp with a Matrixcode, and the
+  number its basic letter tracking takes. It shows at most two letter-centre scans.
+  Its last character is a CRC-4 check over the other nineteen, as the
+  [DV-Freimachung specification](https://www.deutschepost.de/dam/jcr:41a5bcd7-24e1-4752-94da-2e6c1f934aea/dp-datamatrixcode-dv-freimachung_1.5.4.pdf)
+  (6.2) defines it. This endpoint answers them, so an ID of `A0` and eighteen
+  hexadecimal characters whose check holds is DHL's; no other carrier issues the
+  shape. Other order marks are not claimed.
 - `0034043…` numbers are SSCCs. DHL Paket issues its own under GS1 company
   prefixes from `4043383` up, where its numbers fall. Manufacturers hold
   prefixes below and among them for their own SSCCs. A number under a prefix

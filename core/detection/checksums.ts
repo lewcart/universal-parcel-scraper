@@ -13,6 +13,7 @@ import { isValidCorreosSpainCheckLetter } from './correosSpain.js';
 import { isValidDpdParcelNumber } from './dpd.js';
 import { isValidEvriParcelNumber } from './evri.js';
 import { isValidFedEx1DBarcode, isValidFedExGround96Barcode, isValidFedExGroundEconomyNumber } from './fedex.js';
+import { isValidFrankierId } from './frankierId.js';
 import { isValidGlsParcelNumber } from './gls.js';
 import { isValidHermesParcelNumber } from './hermes.js';
 import { isValidDhlIdentcode } from './identcode.js';
@@ -68,4 +69,5 @@ export const CHECKSUMS: Readonly<Record<ChecksumId, (trackingNumber: string) => 
   saia: isValidSaiaPro,
   'magyar-posta': isValidMagyarPostaNumber,
   'poste-italiane': isValidPosteItalianeRegisteredNumber,
+  'frankier-id': isValidFrankierId,
 };
